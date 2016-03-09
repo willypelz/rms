@@ -15,6 +15,9 @@ Route::get('/', function () {
     return view('guest.landing');
 });
 
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -28,4 +31,23 @@ Route::get('/', function () {
 
 Route::group(['middleware' => ['web']], function () {
     //
+});
+
+Route::group(['middleware' => 'web'], function () {
+    Route::auth();
+
+    Route::any('sign-up', function () {
+	    return view('auth.register');
+	});
+
+	Route::any('log-in', function () {
+	    return view('auth.login');
+	});
+
+    Route::get('/home', 'HomeController@index');
+});
+Route::group(['middleware' => 'web'], function () {
+    Route::auth();
+
+    Route::get('/home', 'HomeController@index');
 });

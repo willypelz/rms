@@ -125,7 +125,7 @@
                                             </div>
 
                                             <div class="col-xs-12 text-center"><br>
-                                                <p>Not registered? <a href="signup.php">Sign Up Here</a></p>
+                                                <p>Not registered? <a href="{{ url('sign-up') }}">Sign Up Here</a></p>
                                             </div>
 
                                         </div>
@@ -236,7 +236,7 @@
                                 </div>
 
                                 <div class="col-xs-12 text-center">
-                                    <p>Already registered? <a href="signin.php">Sign In Here</a></p>
+                                    <p>Already registered? <a href="{{ url('log-in') }}">Sign In Here</a></p>
                                 </div>
 
                             </div>

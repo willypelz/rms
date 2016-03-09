@@ -1,4 +1,4 @@
-@extends('layout.template-guest')
+@extends('layout.template-default')
 
 
 @section('navbar')

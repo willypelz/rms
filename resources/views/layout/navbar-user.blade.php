@@ -8,33 +8,49 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="course-page-user.php"><b><i class="fa fa-skype"></i>&nbsp; Seamless Hiring</b></a>
+                <a class="navbar-brand" href="{{ URL::to('dashboard') }}"><b><i class="fa fa-skype"></i>&nbsp; Seamless Hiring</b></a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li>
-                        <a class="" href="dashboard.php">Dashboard &nbsp; <i class="fa fa-tachometer"></i></a>
+                    <li class="active">
+                        <a class="" href="{{ URL::to('dashboard') }}">Dashboard &nbsp;<i class="fa fa-tachometer"></i></a>
                     </li>
 
-                    <li>
-                        <a class="" href="create-job.php">Create Job &nbsp; <i class="fa fa-plus-circle"></i></a>
+                    <li class="">
+                        <a class="" href="{{ URL::to('cv/search-results') }}">Talent Pool <i class="fa fa-users mask"></i></a>
                     </li>
 
-                    <li>
-                        <a class="" href="create-job.php">Help &nbsp; <i class="fa fa-life-ring"></i></a>
+                    <li class="">
+                        <a class="" href="{{ URL::to('jobs/list') }}">My Jobs <i class="fa fa-briefcase mask"></i></a>
                     </li>
+
+
+                    <li class="">
+                        <a class="" href="{{ URL::to('jobs/create') }}">My Company <i class="fa fa-building mask"></i></a>
+                    </li>
+
                 </ul>
+
                     <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="" class="animated tada"><i class="fa fa-bell fa-lg"></i></a>
+
+                    <li class="dropdown">
+                        <a class="animated tada dropdown-toggle" id="dropBell" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="label label-danger label-sm">3</span>
+                            <i class="fa fa-bell fa-lg"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropBell"> 
+                            <li><a href="setting.php">Account Setting</a></li> 
+                            <li role="separator" class="divider"></li> 
+                            <li><a href="_index.php">Logout</a></li> 
+                        </ul> 
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="" class="animated">3 <i class="fa fa-shopping-basket fa-lg"></i></a>
-                    </li>
+                    </li> -->
                         <li id="fat-menu" class="dropdown"> 
                             <a class="a-user" id="drop3" href="#" class="dropdown-toggle" style="" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
-                                <img src="http://dummyimage.com/300x300/ffffff/405465.jpg&text=DL" width="40px" class="img-profile" height="40px" alt="User's name"> 
+                                <img src="http://dummyimage.com/300x300/ffffff/405465.jpg&text=DL" width="40px" class="img-profile" height="40px" alt=""> 
                                 <span class="caret"></span> 
                             </a> 
                             <ul class="dropdown-menu" aria-labelledby="drop3"> 

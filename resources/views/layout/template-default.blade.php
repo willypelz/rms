@@ -1,10 +1,10 @@
 
-@if (Auth::check())
+@if(Auth::check())
 
-	@extends('layout.template-user')
+	@include('layout.template-user')
 
 @else
 
-	@extends('layout.template-guest')
+	@include('layout.template-guest')
 
 @endif

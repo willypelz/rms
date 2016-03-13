@@ -63,7 +63,7 @@
                                 </div>
 
                                 <div class="col-xs-12 text-center"><br>
-                                    <p>Not registered? <a href="signup.php">Sign Up Here</a></p>
+                                    <p>Not registered? <a href="{{ URL::to('sign-up') }}">Sign Up Here</a></p>
                                 </div>
 
                             </div>

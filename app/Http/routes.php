@@ -15,7 +15,59 @@ Route::get('/', function () {
     return view('guest.landing');
 });
 
+Route::get('about', function () {
+    return view('guest.about');
+});
 
+
+Route::get('dashboard', function () {
+    return view('talent-pool.dashboard');
+});
+
+/**
+ * Route Group for everything cv
+ */
+Route::group(['prefix'=>'cv'], function(){
+
+    Route::get('search-results', function () {
+        return view('cv-sales.search-results');
+    });
+
+});
+
+/**
+ * Route Group for everything jobs
+ */
+Route::group(['prefix'=>'jobs'], function(){
+
+    Route::get('list', function () {
+        return view('job.job-list');
+    });
+
+    Route::get('dashboard', function () {
+        return view('job.dashboard');
+    });
+
+    Route::get('create', function () {
+        return view('job.create');
+    });
+    
+    Route::get('advertise', function () {
+        return view('job.advertise');
+    });
+
+    Route::get('share', function () {
+        return view('job.share');
+    });
+
+    Route::get('add-candidates', function () {
+        return view('job.add-candidates');
+    });
+
+    Route::get('preview', function () {
+        return view('job.preview');
+    });
+});
 
 
 /*

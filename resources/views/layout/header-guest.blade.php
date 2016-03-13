@@ -9,11 +9,11 @@
 
     <title> &middot; Seamless Hiring</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/seamless.css" rel="stylesheet">
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/font-awesome.css" rel="stylesheet">
-    <link href="css/bootstrap-social.css" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/seamless.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap-social.css') }}" rel="stylesheet">
 
     
     <script src="//cdn.ckeditor.com/4.5.7/basic/ckeditor.js"></script>

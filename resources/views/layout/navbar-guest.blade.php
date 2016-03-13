@@ -8,25 +8,25 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="_index.php"><b><i class="fa fa-skype"></i>&nbsp; Seamless Hiring</b></a>
+            <a class="navbar-brand" href="{{ URL::to('/') }}"><b><i class="fa fa-skype"></i>&nbsp; Seamless Hiring</b></a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li>
-                    <a class="" href="signin.php">Create a Job</a>
-                </li>
-                <li>
+                <li class="active">
                     <a class="" href="features.php">Features</a>
                 </li>
 
                 <li>
-                    <a class="" href="about.php">About</a>
+                    <a class="" href="{{ URL::to('about') }}">About</a>
+                </li>
+                <li>
+                    <a class="" href="{{ URL::to('cv/search-results') }}">Find Resumes &nbsp;<i class="fa fa-search"> </i></a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a class="btn btn-success" href="#" data-toggle="modal" data-target="#SignupModal">SIGN UP</a>
+                    <a class="btn btn-warning" href="#" data-toggle="modal" data-target="#SignupModal">SIGN UP</a>
                 </li>
                 <li>
                     <a class="signin" href="#" data-toggle="modal" data-target="#loginModal">LOG IN</a>

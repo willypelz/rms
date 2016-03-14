@@ -147,7 +147,7 @@
                                                 </div> 
                                             </div> 
                                         </div> 
-                                        <div class="col-sm-12"><hr><a href="{{ URL::to('jobs/share') }}" class="pull-right btn btn-primary">Save and Proceed &raquo;</a></div>
+                                        <div class="col-sm-12"><hr><a href="{{ url('jobs/share') }}" class="pull-right btn btn-primary">Save and Proceed &raquo;</a></div>
                                       </div>
                                 </div>
                             </div>

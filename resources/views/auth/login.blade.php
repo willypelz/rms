@@ -1,12 +1,11 @@
 @extends('layout.template-default')
 
-
 @section('navbar')
     
 @show()
 
 @section('content')
-    <section>
+<section>
         <div class="container">
             <div class="row">
 
@@ -20,8 +19,9 @@
                     <div class="white padbox rounded">
 
 
-                        <form role="form" class="form-signin" action="dashboard.php">
-
+                        <form role="form" class="form-signin" method="POST" action="{{ url('/login') }}">
+                            {!! csrf_field() !!}
+                            
                             <div class="row">
                                 <p class="text-center">Sign in with</p>
                                 <div class="col-sm-6">
@@ -41,16 +41,27 @@
                             <div class="row">
                             <fieldset><legend>or</legend></fieldset>
                             <div class="col-sm-12">
-                                <div class="form-group">
+                                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                     <label for="">Your Email</label>
-                                    <input type="email" class="form-control" id="" placeholder="">
+                                    <input type="email" class="form-control" id="" placeholder="" name="email" value="{{ old('email') }}">
+
+                                    @if ($errors->has('email'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
 
                             <div class="col-sm-12">
-                                <div class="form-group">
+                                <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                                     <label for="">Your Password</label>
-                                    <input type="password" class="form-control" id="" placeholder="">
+                                    <input type="password" class="form-control" id="" placeholder="" name="password">
+                                    @if ($errors->has('password'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
 
@@ -63,7 +74,7 @@
                                 </div>
 
                                 <div class="col-xs-12 text-center"><br>
-                                    <p>Not registered? <a href="{{ URL::to('sign-up') }}">Sign Up Here</a></p>
+                                    <p>Not registered? <a href="{{ url('sign-up') }}">Sign Up Here</a></p>
                                 </div>
 
                             </div>

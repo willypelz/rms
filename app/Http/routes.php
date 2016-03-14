@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('guest.landing');
 });
 
+Route::get('boss', function () {
+    return view('cv-sales.tobi');
+});
+
 Route::get('about', function () {
     return view('guest.about');
 });
@@ -88,18 +92,22 @@ Route::group(['middleware' => ['web']], function () {
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
 
-    Route::any('sign-up', function () {
-	    return view('auth.register');
-	});
+ //    Route::controllers([
+ //        'auth' => 'Auth\AuthController', 
+ //        'password' => 'Auth\PasswordController',
+ //    ]);
 
-	Route::any('log-in', function () {
-	    return view('auth.login');
-	});
+    Route::get('log-in', 'Auth\AuthController@showLoginForm');
 
-    Route::get('/home', 'HomeController@index');
-});
-Route::group(['middleware' => 'web'], function () {
-    Route::auth();
+    Route::post('log-in', 'Auth\AuthController@login');
+
+    Route::get('sign-up', 'Auth\AuthController@showRegistrationForm');
+
+    Route::post('sign-up', 'Auth\AuthController@register');
+    
+	// Route::any('log-in', function () {
+	//     return view('auth.login');
+	// });
 
     Route::get('/home', 'HomeController@index');
 });

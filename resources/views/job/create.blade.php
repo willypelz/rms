@@ -33,7 +33,7 @@
                             
                             
                             <div class="col-md-8 col-md-offset-2">
-                                <form class="job-details" role="job-details" action="{{ URL::to('jobs/advertise') }}">
+                                <form class="job-details" role="job-details" action="{{ url('jobs/advertise') }}">
                                         <div class="row">
                                             <div class="separator separator-small"></div>
                                         </div>

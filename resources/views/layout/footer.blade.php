@@ -136,7 +136,7 @@
                                             </div>
 
                                             <div class="col-xs-12 text-center"><br>
-                                                <p>Not registered? <a href="{{ URL::to('sign-up') }}">Sign Up Here</a></p>
+                                                <p>Not registered? <a href="{{ url('sign-up') }}">Sign Up Here</a></p>
                                             </div>
 
                                         </div>
@@ -173,7 +173,7 @@
                         <div class="white padbox rounded">
 
 
-                        <form role="form" class="form-signup" action="{{ URL::to('sign-up') }}">
+                        <form role="form" class="form-signup" action="{{ url('sign-up') }}">
 
                             <div class="row">
 
@@ -247,7 +247,7 @@
                                 </div>
 
                                 <div class="col-xs-12 text-center">
-                                    <p>Already registered? <a href="{{ URL::to('log-in') }}">Sign In Here</a></p>
+                                    <p>Already registered? <a href="{{ url('log-in') }}">Sign In Here</a></p>
                                 </div>
 
                             </div>

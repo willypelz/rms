@@ -151,7 +151,7 @@
                                            <p class="text-center">
                                                <a href="addCan-job.php"> Skip this step </a>
                                                        &nbsp; &middot; &nbsp;
-                                               <a href="{{ URL::to('jobs/add-candidates') }}" class="btn btn-primary">Proceed &raquo;</a>
+                                               <a href="{{ url('jobs/add-candidates') }}" class="btn btn-primary">Proceed &raquo;</a>
                                            </p>
                                            
                                    </div>

@@ -18,10 +18,10 @@
                         <ul class="list-inline text-white">
                             <!--<li><strong>Company:</strong>&nbsp; JobAcess</li>-->
                             <!-- <li>
-                                <a href="create-{{ URL::to('jobs/preview') }}" class="btn btn-line btn-sm"><i class="fa fa-eye"></i> View Job</a>
+                                <a href="create-{{ url('jobs/preview') }}" class="btn btn-line btn-sm"><i class="fa fa-eye"></i> View Job</a>
                             </li> -->
                             <!-- <li>
-                                <a href="create-{{ URL::to('jobs/preview') }}" class="btn btn-danger btn-sm"><i class="fa fa-pencil"></i> Edit Job</a>
+                                <a href="create-{{ url('jobs/preview') }}" class="btn btn-danger btn-sm"><i class="fa fa-pencil"></i> Edit Job</a>
                             </li> -->
                             <li>
                                 <strong>&nbsp;Posted:</strong>&nbsp; 07 Jun, 2014</li>
@@ -60,10 +60,10 @@
                                 <a href="" type="button" class="btn-sm btn btn-danger status"><i class="fa fa-ban"></i> Unpublish Job</a>
                             </div>
                             <div  class="btn-group" role="group">
-                                <a href="{{ URL::to('jobs/preview') }}" target="_blank" type="button" class="btn-sm btn btn-success status"><i class="fa fa-file"></i> Preview</a>
+                                <a href="{{ url('jobs/preview') }}" target="_blank" type="button" class="btn-sm btn btn-success status"><i class="fa fa-file"></i> Preview</a>
                             </div>
                             <div  class="btn-group" role="group">
-                                <a href="create-{{ URL::to('jobs/preview') }}" type="button" class="btn-sm btn btn-success status"><i class="fa fa-pencil"></i> Edit Details</a>
+                                <a href="create-{{ url('jobs/preview') }}" type="button" class="btn-sm btn btn-success status"><i class="fa fa-pencil"></i> Edit Details</a>
                             </div>
                         </div>
                 

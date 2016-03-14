@@ -9,13 +9,13 @@
                     <h3>26 Jobs</h3>
                 </div> -->
                 <div class="col-xs-2"><br>
-                    <a href="{{ URL::to('jobs/create') }}" class="btn btn-success btn- btn-block"><i class="fa fa-plus"></i> Post a New  Job</a>
+                    <a href="{{ url('jobs/create') }}" class="btn btn-success btn- btn-block"><i class="fa fa-plus"></i> Post a New  Job</a>
                 </div>
                 <div class="col-xs-2"><br>
-                    <a href="{{ URL::to('cv/search-results') }}" class="btn btn-success btn- btn-block dropdown">&plus;<i class="fa fa-user"></i> Add Candidate</a>
+                    <a href="{{ url('cv/search-results') }}" class="btn btn-success btn- btn-block dropdown">&plus;<i class="fa fa-user"></i> Add Candidate</a>
                 </div>
                 <div class="col-xs-2"><br>
-                    <a href="{{ URL::to('jobs/create') }}" class="btn btn-success btn- btn-block"><i class="fa fa-bar-chart"></i> View Statistics</a>
+                    <a href="{{ url('jobs/create') }}" class="btn btn-success btn- btn-block"><i class="fa fa-bar-chart"></i> View Statistics</a>
                 </div>
                 <div class="col-xs-6"><br>
                     <a href="create-job.php" class="btn btn-line btn- pull-right transparent"><i class="fa fa-cog no-margin fa-inverse"></i></a>

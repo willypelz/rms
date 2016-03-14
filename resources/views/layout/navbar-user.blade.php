@@ -8,26 +8,26 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ URL::to('dashboard') }}"><b><i class="fa fa-skype"></i>&nbsp; Seamless Hiring</b></a>
+                <a class="navbar-brand" href="{{ url('dashboard') }}"><b><i class="fa fa-skype"></i>&nbsp; Seamless Hiring</b></a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="active">
-                        <a class="" href="{{ URL::to('dashboard') }}">Dashboard &nbsp;<i class="fa fa-tachometer"></i></a>
+                        <a class="" href="{{ url('dashboard') }}">Dashboard &nbsp;<i class="fa fa-tachometer"></i></a>
                     </li>
 
                     <li class="">
-                        <a class="" href="{{ URL::to('cv/search-results') }}">Talent Pool <i class="fa fa-users mask"></i></a>
+                        <a class="" href="{{ url('cv/search-results') }}">Talent Pool <i class="fa fa-users mask"></i></a>
                     </li>
 
                     <li class="">
-                        <a class="" href="{{ URL::to('jobs/list') }}">My Jobs <i class="fa fa-briefcase mask"></i></a>
+                        <a class="" href="{{ url('jobs/list') }}">My Jobs <i class="fa fa-briefcase mask"></i></a>
                     </li>
 
 
                     <li class="">
-                        <a class="" href="{{ URL::to('jobs/create') }}">My Company <i class="fa fa-building mask"></i></a>
+                        <a class="" href="{{ url('jobs/create') }}">My Company <i class="fa fa-building mask"></i></a>
                     </li>
 
                 </ul>

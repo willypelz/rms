@@ -419,7 +419,7 @@
                                         </form>
                                     </div>
                                     <div class="col-xs-4 col-xs-offset-4"><hr>
-                                        <a href="{{ URL::to('jobs/dashboard') }}" class="btn btn-block btn-primary">Proceed to Job Dashboard &raquo;</a>
+                                        <a href="{{ url('jobs/dashboard') }}" class="btn btn-block btn-primary">Proceed to Job Dashboard &raquo;</a>
                                     </div>
                                 </div>
 

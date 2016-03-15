@@ -1,9 +1,9 @@
 @extends('layout.master')
 
 @section('header')
-	@include('layout.header-user')
+	@include('layout.includes.header-user')
 @show()
 
 @section('navbar')
-	@include('layout.navbar-user')
+	@include('layout.includes.navbar-user')
 @show()

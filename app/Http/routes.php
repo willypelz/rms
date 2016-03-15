@@ -11,9 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('guest.landing');
-});
+
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +29,90 @@ Route::get('/', function () {
 
 Route::group(['middleware' => ['web']], function () {
     //
+});
+
+Route::group(['middleware' => 'web'], function () {
+    Route::auth();
+
+ //    Route::controllers([
+ //        'auth' => 'Auth\AuthController', 
+ //        'password' => 'Auth\PasswordController',
+ //    ]);
+    Route::get('/', function () {
+        return view('guest.landing');
+    });
+    Route::get('log-in', 'Auth\AuthController@showLoginForm');
+
+    Route::post('log-in', 'Auth\AuthController@login');
+
+    Route::get('sign-up', 'Auth\AuthController@showRegistrationForm');
+
+    Route::post('sign-up', 'Auth\AuthController@register');
+    
+	// Route::any('log-in', function () {
+	//     return view('auth.login');
+	// });
+
+    Route::get('boss', function () {
+        return view('cv-sales.tobi');
+    });
+
+    Route::get('about', function () {
+        return view('guest.about');
+    });
+
+
+    Route::get('dashboard', function () {
+        return view('talent-pool.dashboard');
+    });
+
+    /**
+     * Route Group for everything cv
+     */
+    Route::group(['prefix'=>'cv'], function(){
+
+        Route::get('search-results', function () {
+            return view('cv-sales.search-results');
+        });
+
+        /**
+         * Post Variable for cv search form search box
+         */
+        Route::post('search', 'CvSalesController@search');
+
+    });
+
+    /**
+     * Route Group for everything jobs
+     */
+    Route::group(['prefix'=>'jobs'], function(){
+
+        Route::get('list', function () {
+            return view('job.job-list');
+        });
+
+        Route::get('dashboard', function () {
+            return view('job.dashboard');
+        });
+
+        Route::get('create', function () {
+            return view('job.create');
+        });
+        
+        Route::get('advertise', function () {
+            return view('job.advertise');
+        });
+
+        Route::get('share', function () {
+            return view('job.share');
+        });
+
+        Route::get('add-candidates', function () {
+            return view('job.add-candidates');
+        });
+
+        Route::get('preview', function () {
+            return view('job.preview');
+        });
+    });
 });

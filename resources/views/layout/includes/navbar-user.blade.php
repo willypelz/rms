@@ -56,7 +56,7 @@
                             <ul class="dropdown-menu" aria-labelledby="drop3"> 
                                 <li><a href="setting.php">Account Setting</a></li> 
                                 <li role="separator" class="divider"></li> 
-                                <li><a href="_index.php">Logout</a></li> 
+                                <li><a href="{{ url('logout') }}">Logout</a></li> 
                             </ul> 
                         </li>
                     </ul>

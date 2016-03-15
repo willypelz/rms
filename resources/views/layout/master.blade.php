@@ -6,6 +6,7 @@
 @show()
 
 
+
 <body>
     <!-- Navbar -->
     @section('navbar')
@@ -18,7 +19,7 @@
     
 
     @section('footer')
-        @include('layout.footer')
+        @include('layout.includes.footer')
     @show()
 
 

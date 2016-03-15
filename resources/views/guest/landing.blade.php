@@ -20,10 +20,11 @@
                            <!-- <div class="col-xs-12 col-md-6 col-sm-8">
                                <a href="" class="btn btn-success btn-block btn-lg text-uppercase text-bold">No Dulling. Start Now <i class="fa fa-chevron-right"></i></a>
                                </div> -->
-                        <form action="cv-search.php" class="form-group"><br>
+                        <form action="{{ url('cv/search') }}" class="form-group" method="POST"><br>
+                          {!! csrf_field() !!}
                            <div class="form-lg hidden-xs">
                              <div class="col-sm-8">
-                               <div class="row"><input placeholder="Find something you want" class="form-control input-lg input-talent" type="text"></div>
+                               <div class="row"><input placeholder="Find something you want" class="form-control input-lg input-talent" name="search_query" type="text"></div>
                              </div>
                              <div class="col-sm-4">
                                <div class="row"><button type="submit" class="btn btn-lg btn-block btn-success btn-talent">Find Candidates &nbsp; <span class="hidden-xs"><i class="fa fa-chevron-right"></i></span></button></div>

@@ -1,6 +1,4 @@
-@extends('layout.template-default')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <section class="s-div dark homepage">
         <div class="container">
@@ -21,8 +19,9 @@
                            <!-- <div class="col-xs-12 col-md-6 col-sm-8">
                                <a href="" class="btn btn-success btn-block btn-lg text-uppercase text-bold">No Dulling. Start Now <i class="fa fa-chevron-right"></i></a>
                                </div> -->
-                        <form action="{{ url('cv/search') }}" class="form-group" method="POST"><br>
-                          {!! csrf_field() !!}
+                        <form action="<?php echo e(url('cv/search')); ?>" class="form-group" method="POST"><br>
+                          <?php echo csrf_field(); ?>
+
                            <div class="form-lg hidden-xs">
                              <div class="col-sm-8">
                                <div class="row"><input placeholder="Find something you want" class="form-control input-lg input-talent" name="search_query" type="text"></div>
@@ -300,4 +299,5 @@
             </div>
         </div>
     </section>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.template-default', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

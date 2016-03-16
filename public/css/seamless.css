@@ -29,6 +29,10 @@ body{
 .ptn {
     background: #4fa1bb url(../img/ptn.png) center fixed repeat;
 }
+.p{
+    /* For font Lato only */
+    font-size:15px;
+}
 a, a:hover, a:focus {
     outline: 0;
     color: #239fb1;
@@ -56,6 +60,16 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .modal-open .modal{
     /*background: #E1E1E1 url(../img/notebook.png) fixed;*/
     background:rgba(255, 255, 255, 0.88);
+}
+.dropdown-menu{
+        box-shadow: 0 1px 3px rgba(0,0,0,.175);
+            border: 0px solid rgba(0,0,0,.15);
+}
+.navbar-brand{
+
+    font-family: 'Montserrat', sans-serif;
+    font-weight:300;
+    text-transform:capitalize;
 }
 .navbar.fold > .container .navbar-brand.logo{
     background-size: 110px;
@@ -129,6 +143,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     padding: 20px 0;
     border-radius: 0;
 }
+.btn-group-justified.btn-tabs.job-dash>.btn-group .btn{
+    font-size:10px;
+}
 .btn-group-justified.btn-tabs>.btn-group .btn.in{
     /*border-top:2px solid #A2B23D;*/
     border-bottom:0px solid;
@@ -138,6 +155,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 .btn-group-justified.btn-progress >.btn-group .btn{
     height:34px;
+    border-radius:30px;
 }
 .btn-group-justified.btn-progress >.btn-group .btn-primary{    
     border:none;
@@ -458,7 +476,11 @@ section.brand-info.white {
     left: 100px;
     top: -6px;
     border-radius: 50%;
-}.brand-img a.upload:hover {
+}
+.push-down-sm{
+    padding-top:10px;
+}
+.brand-img a.upload:hover {
     background-color: #239fb1;
 }
 .brand-img img {
@@ -479,7 +501,7 @@ h3.brand-title {
     padding: 1em 0;
 }
 .btn{
-    border-radius:30px;
+    /* border-radius:30px; */
 }
 .btn:focus, .btn:active:focus, .btn.active:focus, textarea, input {
     outline: none;
@@ -648,6 +670,9 @@ h3.brand-title {
     margin-top: -60px;
     border-radius: 5px;
 }
+.pushup-sm {
+    margin-top: -17px;
+}
 .pagehead {
     padding-bottom: 2.6em;
 }
@@ -777,7 +802,7 @@ h3.faq-section {
     border: 1px solid transparent;
 }
 .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
-    border: 1px solid #d4d4d4;
+    /* border: 1px solid #d4d4d4; */
     border-bottom: none;
     border-radius: 5px 5px 0 0;
     background: #314C67;
@@ -832,8 +857,8 @@ h3.faq-section {
     width: 194px;
 }
 footer {
-    padding: 1.25em 0 ;
-    /*background: #22252c;*/
+    padding: 2em 0 1.25em;
+    background: #EFF2F5;
     /*#3d444d*/
     color: #b5c4c7;
 }
@@ -842,7 +867,7 @@ footer a {
     font-weight: normal;
 }
 footer a:hover {
-    color: #000;
+    color: #3A5979;
     font-weight: normal;
     text-decoration: none;
 }
@@ -1235,6 +1260,9 @@ h3.blue {
     padding: 0;
     list-style-type: none;
 }
+.search-results hr{
+    margin:10px 0;
+}
 .search-results .label {
     margin: 0 0 0 10px;
     padding: 0.1em 0.6em 0.1em;
@@ -1422,15 +1450,32 @@ textarea:focus {
     padding-top: 0;
     height: 27em;
 }
+.btn.btn-label{
+        padding: 10px 5px 15px 20px;
+    margin-bottom: 6px;
+    text-align: left;
+    white-space:normal;
+    min-height: 75px;
+}
+.btn.btn-label input{
+    position:absolute;
+    left:25px;
+
+}
+/* [data-toggle=buttons]>.btn input[type=checkbox], [data-toggle=buttons]>.btn input[type=radio], [data-toggle=buttons]>.btn-group>.btn input[type=checkbox], [data-toggle=buttons]>.btn-group>.btn input[type=radio] {
+    position: absolute;
+    clip: auto;
+    pointer-events: none;
+} */
 .form-control.input-talent{
     background: url(../img/lens2.png) #fff no-repeat 10px 5px;
     background-size:35px;
-    border-radius: 25px 0 0 25px;
+    border-radius: 3px 0 0 3px;
     border: none;
     padding-left:55px;
 }
 .btn.btn-talent{
-        border-radius: 0 30px 30px 0;
+        border-radius: 0 3px 3px 0;
         border:none;
         padding: 11px 10px;
 }
@@ -1597,7 +1642,7 @@ ul.notif > li a img {
 .text-brandon{
     /* font-family: "Brandon Text"; */
     font-family: 'Montserrat', sans-serif;
-    text-transform:uppercase;
+    /* text-transform:uppercase; */
     font-weight:700;
 }
 .text-light{
@@ -2226,7 +2271,7 @@ body.employer {
     background-repeat: no-repeat;
 }
 .excerpt-p {
-    margin: 10px;
+    margin: 10px 0;
 }
 .excerpt-p:after{
     content:" ... ";
@@ -2416,7 +2461,7 @@ iframe::-webkit-scrollbar {
 label{
     text-transform:uppercase;
     color:#666;
-    font-size:13px;
+    font-size:12px;
 }
 label.normal{
     font-weight: normal;
@@ -3196,6 +3241,7 @@ section.s-blue{
     border: 2px solid #CCCCCC;
     background: #F7F7F7;
     font-weight: 700;
+    right: 7.5%;
 }
 .well-cart #item-count b{
     border: 2px solid rgba(144, 144, 144, 0.46);
@@ -4143,6 +4189,10 @@ a.less-link:after {
   }
   .page {
     padding: 1em;
+}
+button.close {
+    font-size: 2em;
+    top: -10px;
 }
 .job-cta {
     margin-top: -18px;
@@ -5171,6 +5221,14 @@ form.form-search .input-s{
     height: 46px;
     padding: 10px;
 }
+#form-cv-search.form-group{
+    position: absolute;
+    width: 95%;
+    margin-top: -5px;
+}
+#form-cv-search.form-group .fa-close{
+    position: absolute;  margin-left: 6px;  top: 10px; z-index:1;
+}
 .input-s:hover{
     background-color: rgba(238, 238, 238, 0.42);
 }
@@ -5218,7 +5276,7 @@ form.form-search .input-s{
     /*transition:ease-in 0.3s;*/
 }
 
-@font-face{font-family:'Proxima';src:url(../fonts/proximanova-regular-webfont.eot?1307578394);src:url("../fonts/proximanova-regular-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-regular-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-regular-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-regular-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-style:italic;src:url(../fonts/proximanova-regitalic-webfont.eot?1307578394);src:url("../fonts/proximanova-regitalic-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-regitalic-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-regitalic-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-regitalic-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:300;src:url(../fonts/proximanova-light-webfont.eot?1307578394);src:url("../fonts/proximanova-light-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-light-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-light-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-light-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:600;src:url(../fonts/proximanova-semibold-webfont.eot?1307578394);src:url("../fonts/proximanova-semibold-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-semibold-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-semibold-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-semibold-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:600;font-style:italic;src:url(../fonts/proximanova-semibolditalic-webfont.eot?1307578394);src:url("../fonts/proximanova-semibolditalic-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-semibolditalic-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-semibolditalic-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-semibolditalic-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:bold;src:url(../fonts/proximanova-bold-webfont.eot?1307578394);src:url("../fonts/proximanova-bold-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-bold-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-bold-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-bold-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:bold;font-style:italic;src:url(../fonts/proximanova-boldit-webfont.eot?1307578394);src:url("../fonts/proximanova-boldit-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-boldit-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-boldit-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-boldit-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:900;src:url(../fonts/proximanova-extrabold-webfont.eot?1307578394);src:url("../fonts/proximanova-extrabold-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-extrabold-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-extrabold-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-extrabold-webfont.svg#webfont2rpW2ohz") format("svg")}
+/* @font-face{font-family:'Proxima';src:url(../fonts/proximanova-regular-webfont.eot?1307578394);src:url("../fonts/proximanova-regular-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-regular-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-regular-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-regular-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-style:italic;src:url(../fonts/proximanova-regitalic-webfont.eot?1307578394);src:url("../fonts/proximanova-regitalic-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-regitalic-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-regitalic-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-regitalic-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:300;src:url(../fonts/proximanova-light-webfont.eot?1307578394);src:url("../fonts/proximanova-light-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-light-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-light-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-light-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:600;src:url(../fonts/proximanova-semibold-webfont.eot?1307578394);src:url("../fonts/proximanova-semibold-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-semibold-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-semibold-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-semibold-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:600;font-style:italic;src:url(../fonts/proximanova-semibolditalic-webfont.eot?1307578394);src:url("../fonts/proximanova-semibolditalic-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-semibolditalic-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-semibolditalic-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-semibolditalic-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:bold;src:url(../fonts/proximanova-bold-webfont.eot?1307578394);src:url("../fonts/proximanova-bold-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-bold-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-bold-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-bold-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:bold;font-style:italic;src:url(../fonts/proximanova-boldit-webfont.eot?1307578394);src:url("../fonts/proximanova-boldit-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-boldit-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-boldit-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-boldit-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:900;src:url(../fonts/proximanova-extrabold-webfont.eot?1307578394);src:url("../fonts/proximanova-extrabold-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-extrabold-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-extrabold-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-extrabold-webfont.svg#webfont2rpW2ohz") format("svg")} */
 /* latin */
 @font-face {
   font-family: 'Montserrat';

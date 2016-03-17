@@ -1,5 +1,6 @@
 <?php $__env->startSection('content'); ?>
 
+    <script src="<?php echo e(asset('js/jquery-1.11.1.min.js')); ?>"></script>
 
 <section class="s-div dark">
         <div class="container">
@@ -99,8 +100,21 @@
                                             <a href="cv.html" class="btn btn-line btn-sm" data-toggle="modal" data-target="#cvViewModal">Preview CV</a>
 
                                             <span class="purchase-action">
-                                                  <a href="" class="btn btn-success btn-sm btn-cv-buy" data-count="1" data-cost="500"><i class="fa fa-plus"></i> Purchase CV for N500</a>
-                                                <button class="btn btn-line btn-sm btn-cv-discard collapse" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                  <?php 
+                                                    if($ids != null)
+                                                      $in_cart = in_array($cv['id'], $ids);
+                                                    else
+                                                      $in_cart = "";
+                                                  ?>
+                                                  
+                                                  <?php if($in_cart): ?>
+                                                    <button id="cartRemove<?php echo e($cv['id']); ?>" class="btn btn-line btn-sm btn-cv-discard" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                  <?php else: ?>
+
+
+                                                  <a href="" id="cartAdd<?php echo e($cv['id']); ?>" class="btn btn-success btn-sm btn-cv-buy" data-count="1" data-cost="500"><i class="fa fa-plus"></i> Purchase CV for N500</a>
+                                                <button id="cartRemove<?php echo e($cv['id']); ?>" class="btn btn-line btn-sm btn-cv-discard collapse" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                <?php endif; ?>
                                           </span>
 
                                         </p>
@@ -108,6 +122,68 @@
                               </span>
 
                         </li><hr>
+                          
+
+                          <script>
+                              $(document).ready(function(){
+
+                                  var id = "<?php echo e($cv['id']); ?>";
+                                  var url = "<?php echo e(route('cart')); ?>"
+                                  
+                                  $("#cartAdd"+id).click(function(){
+                                      // console.log(url)
+                                      $.ajax
+                                      ({
+                                        type: "POST",
+                                        url: url,
+                                        data: ({ rnd : Math.random() * 100000, cv_id: id, type:'add', name:"<?php echo e($cv['first_name']. " " . $cv['last_name']); ?>", 'qty':1, 'price':500, "_token":"<?php echo e(csrf_token()); ?>"}),
+                                        success: function(response){
+                                          
+                                          console.log(response);
+                                          
+                                        }
+                                    });
+
+                                  });
+
+
+                                  $("#cartRemove"+id).click(function(){
+                                      // console.log(url)
+                                      $.ajax
+                                      ({
+                                        type: "POST",
+                                        url: url,
+                                        data: ({ rnd : Math.random() * 100000, cv_id: id, type:'remove', "_token":"<?php echo e(csrf_token()); ?>"}),
+                                        success: function(response){
+                                          
+                                          console.log(response);
+                                          
+                                        }
+                                    });
+
+                                  });
+
+                                  $("#clearCart").click(function(){
+                                      // console.log(url)
+                                      $.ajax
+                                      ({
+                                        type: "POST",
+                                        url: url,
+                                        data: ({ rnd : Math.random() * 100000, cv_id: id, type:'clear', "_token":"<?php echo e(csrf_token()); ?>"}),
+                                        success: function(response){
+                                          
+                                          console.log(response);
+                                          
+                                        }
+                                    });
+
+                                  });
+
+
+                              })
+
+                          </script>
+
                         <?php endforeach; ?>
 
                       <?php else: ?>
@@ -127,29 +203,46 @@
             <!-- End of col-9 -->
 
             <div class="col-sm-4">
+               
+                <?php if(empty($items)): ?>
                 <div id="collapseWellCart" class="well well-cart animated slideInUp collapse">
+                <?php else: ?>
+                <div id="collapseWellCart" class="well well-cart animated slideInUp">
+                <?php endif; ?>
                     <div class="row">
                         <div class="col-md-3 hidden-xs hidden-sm small text-light text-muted">Cart<br>
                               <i class="fa fa-shopping-cart fa-3x"></i>
-                            </span>
                         </div>
                         <div class="col-md-4 col-xs-3 col-sm-3 small text-left text-muted text-light"> Items<br>
                             <span id="item-count">
+                                  <?php if(empty($items)): ?>
                                     <span class="bounceInDown fa-2x" style="display: inline-block;">0</span>
+                                  <?php else: ?>  
+                                    <span class="bounceInDown fa-2x" style="display: inline-block;"><?php echo e($many); ?></span>
+                                  <?php endif; ?>
                             </span>
                         </div>
                         <div class="col-md-5 col-xs-9 col-sm-9 small text-right text-muted text-light"> Cost<br>
                             <span class="pull-right fa-2x">
                                 &#8358; 
-                                <span id="price-total" >0</span> 
+                                  <?php if(empty($items)): ?>
+                                    <span id="price-total" >0</span> 
+                                  <?php else: ?>
+                                    <span id="price-total" ><?php echo e($many * 500); ?></span> 
+                                    <?php endif; ?>
                             </span>
                         </div>
                     </div><hr>
                     <div class="row">
-                        <div class="col-xs-6"><a href="#" target="_blank" data-toggle="modal" data-target="#myInvoice" class="btn btn-block btn-danger btn-sm btn-cart-checkout"> Checkout &raquo;</a></div>
-                        <div class="col-xs-6"><button class="btn btn-block btn-line btn-sm btn-cart-clear text-muted"><i class="fa fa-close"></i> Clear</button></div>
+                        <div class="col-xs-6"><a id="checkout" href="#" target="_blank" data-toggle="modal" data-target="#myInvoice" class="btn btn-block btn-danger btn-sm btn-cart-checkout"> Checkout &raquo;</a></div>
+                        <div class="col-xs-6"><button id="clearCart" class="btn btn-block btn-line btn-sm btn-cart-clear text-muted"><i class="fa fa-close"></i> Clear</button></div>
                     </div>
                 </div>
+                
+
+
+
+
               <div class="panel-group" id="accordion">
 
 
@@ -246,5 +339,51 @@
             </div>
         </div>
     </section>
+
+
+
+
+     <div class="modal fade" tabindex="-1" id="myInvoice" role="dialog" aria-labelledby="myInvoice">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+            <h3 class="text-center">Confirm your order</h3>
+
+              <div id="invoice-res">
+                
+              </div>
+       
+
+          <script>
+
+                           var url = "<?php echo e(route('ajax_cart')); ?>";
+
+                 $("#contentArea").html('<img src="<?php echo e(asset("img/wheel.gif")); ?>" width="100px" /> please wait...');
+                              
+                                $("#checkout").click(function(){
+                                      // console.log(url)
+                                      $.ajax
+                                      ({
+                                        type: "POST",
+                                        url: url,
+                                        data: ({ rnd : Math.random() * 100000, "_token":"<?php echo e(csrf_token()); ?>"}),
+                                        success: function(response){
+                                          
+                                          // console.log(response);
+                                          $('#invoice-res').html(response)
+                                          
+                                        }
+                                    });
+
+                                  });
+
+          </script>
+
+        </div>
+      </div>
+    </div>
+
+
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layout.template-user', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

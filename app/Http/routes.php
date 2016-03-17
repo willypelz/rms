@@ -65,6 +65,19 @@ Route::group(['middleware' => 'web'], function () {
         return view('auth.register2');
     });
 
+    Route::get('cv_pool', function () {
+        return view('cv-sales.cv_pool');
+    });
+
+    Route::get('cv_purchased', function () {
+        return view('cv-sales.cv_purchased');
+    });
+
+
+    Route::get('cv_saved', function () {
+        return view('cv-sales.cv_saved');
+    });
+
 
     Route::get('dashboard', function () {
         return view('talent-pool.dashboard');

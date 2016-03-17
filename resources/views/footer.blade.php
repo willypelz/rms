@@ -150,7 +150,7 @@
                                 
 
                                 <div class="col-sm-6"><br>
-                                    <p>Not registered? <a href="forgotpass">:( I can't remember my password!</a></p>
+                                    <p><a href="">:( I can't remember my password!</a></p>
                                 </div>
 
                                 <div class="col-sm-6"><br>

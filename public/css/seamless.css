@@ -38,6 +38,9 @@ a, a:hover, a:focus {
     color: #239fb1;
     font-weight: normal;
 }
+form{
+    margin:0;
+}
 button.close{
     font-size: 4em;
     right: 0;
@@ -556,6 +559,9 @@ h3.brand-title {
     font-size: 10px;
     border-radius: 3px;
     margin-top: 5px;
+}
+.btn i{
+    line-height: 1.55;
 }
 .btn-abs{
     position: absolute;
@@ -1268,6 +1274,10 @@ h3.blue {
     padding: 0.1em 0.6em 0.1em;
     vertical-align: 1px;
 }
+.search-results h4{
+    line-height: 1.85;
+    margin-top: 0;
+}
 .search-results li h4 a{
     font-weight:700;
 }
@@ -1478,6 +1488,9 @@ textarea:focus {
         border-radius: 0 3px 3px 0;
         border:none;
         padding: 11px 10px;
+}
+.btn.btn-talent i {
+    line-height: 1.0;
 }
 .btn-line.text-white{
     border-color:#fff;

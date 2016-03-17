@@ -17,8 +17,13 @@
                         <a class="" href="<?php echo e(url('dashboard')); ?>">Dashboard &nbsp;<i class="fa fa-tachometer"></i></a>
                     </li>
 
-                    <li class="">
-                        <a class="" href="<?php echo e(url('cv/search-results')); ?>">Talent Pool <i class="fa fa-users mask"></i></a>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" href="cv-search.php" data-toggle="dropdown">Candidates &nbsp; <i class="fa fa-caret-down no-margin"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="<?php echo e(url('cv_pool')); ?>">All my CVs</a></li>
+                            <li><a href="<?php echo e(url('cv_saved')); ?>">Saved Cvs</a></li>
+                            <li><a href="<?php echo e(url('cv_purchased')); ?>">Purchased Cvs</a></li>
+                        </ul>
                     </li>
 
                     <li class="">

@@ -42,12 +42,14 @@
                     <li class="dropdown">
                         <a class="animated tada dropdown-toggle" id="dropBell" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <span class="label label-danger label-sm">3</span>
-                            <i class="fa fa-bell fa-lg"></i>
+                            <i class="fa fa-shopping-cart fa-lg"></i>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropBell"> 
-                            <li><a href="setting.php">Account Setting</a></li> 
+                            <li><a href="setting.php">View Cart</a></li> 
+
                             <li role="separator" class="divider"></li> 
-                            <li><a href="_index.php">Logout</a></li> 
+
+                            <li class="col-xs-12"><button class="btn btn-block btn-danger" href="_index.php">Pay Now</button></li> 
                         </ul> 
                     </li>
                     <!-- <li>

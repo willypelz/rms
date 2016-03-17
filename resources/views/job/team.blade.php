@@ -86,7 +86,7 @@
 
                         <div class="btn-group btn-group-justified btn-tabs job-dash no-pad text-brandon" role="group" aria-label="...">
                           <div class="btn-group" role="group">
-                            <a href="{{ url('dashboard') }}" type="button" class="btn btn-line text-capitalize text-muted in">
+                            <a href="{{ url('dashboard') }}" type="button" class="btn btn-line text-capitalize text-muted">
                             <span class="fa-lg"><i class="fa fa-cog"></i>
                             <span class="hidden-xs"> &nbsp; Promote Job</span></span>
                             <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
@@ -107,7 +107,7 @@
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="{{ url('team') }}" type="button" class="btn btn-line text-capitalize">
+                            <a href="{{ url('team') }}" type="button" class="btn btn-line text-capitalize in">
                             <span class="fa-lg"><i class="fa fa-users"></i>
                             <span class="hidden-xs"> &nbsp; Job Team</span></span>
                             <!-- <small class="text-muted hidden-xs">Resumes / CVs</small> -->

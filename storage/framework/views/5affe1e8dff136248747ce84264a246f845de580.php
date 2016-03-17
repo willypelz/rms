@@ -1,6 +1,4 @@
-@extends('layout.template-user')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="separator separator-small"></div>
 
     <section class="no-pad">
@@ -177,4 +175,5 @@
     </section>
 
 <div class="separator separator-small"></div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.template-user', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

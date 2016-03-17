@@ -2037,6 +2037,7 @@ section.grey hr{
     border: 1px solid #FFFFFf;
     padding: 0 15px 15px;
     border-radius: 3px;
+    background: rgba(0, 0, 0, 0.1);
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.17);
 }
 .job-progress {
@@ -2091,17 +2092,19 @@ section.grey hr{
     margin-top: 35px;
 }
 .filter-div {
-    padding: 20px 25px 25px 25px;
-    background-color: rgba(245, 245, 245, 0.36);
-    font-size: 13px;
-    border: rgb(245, 245, 245) solid;
+    font-size: 12px;
+    border-radius: 5px;
+    border: rgba(245, 245, 245, 0.65) solid;
     border-width: 5px;
+    margin-left: 60px;
+    font-weight: 700;
 }
 .filter-div hr {
     margin: 10px 0;
 }
 .filter-div p {
     text-transform: uppercase;
+    color: #98AF98;
 }
 .filter-div p:after {
     /*content:" ---";*/
@@ -2332,18 +2335,19 @@ body.employer {
 }
 .select-all {
     border: 1px solid #ccc;
-    padding: 5px 10px;
+    padding: 7px 3px 7px 7px;
     border-radius: 3px;
     font-weight: normal;
-    font-size: 13px;
+    font-size: 10px;
     color: grey;
+    vertical-align: middle;
     margin-bottom: 0px;
 }
 .select-all:hover {
     border-color: #666;
 }
 .select-all input[type=checkbox] {
-    margin-left: 7px;
+    margin: 0 0 0 3px;
     float: right;
 }
 
@@ -3237,6 +3241,7 @@ section.s-blue{
     background: #F9F9F9;
     font-weight: 700;  
     padding: 10px 15px;  
+    margin-left:60px;
 }
 .well-cart .btn {
     padding: 2px 10px;

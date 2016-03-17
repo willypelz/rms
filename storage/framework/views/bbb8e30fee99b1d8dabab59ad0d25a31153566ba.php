@@ -1,6 +1,4 @@
-@extends('layout.template-user')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 
 
@@ -13,7 +11,7 @@
                     <h3 class="text-green-light">
                         36 Sesewa Recruit Jobs
                         &nbsp;x
-                        <a href="{{ url('jobs/create') }}" class="btn btn-success"><i class="fa fa-plus"></i> Post a New Job</a>
+                        <a href="<?php echo e(url('jobs/create')); ?>" class="btn btn-success"><i class="fa fa-plus"></i> Post a New Job</a>
 
                         <small class="pull-right text-white">Active (3) | Suspended (34)</small>
                     </h3>
@@ -176,4 +174,5 @@
     </section>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.template-user', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

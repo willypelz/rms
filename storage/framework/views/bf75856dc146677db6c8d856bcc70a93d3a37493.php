@@ -1,10 +1,8 @@
-@extends('layout.template-default')
-
-@section('navbar')
+<?php $__env->startSection('navbar'); ?>
     
-@show()
+<?php echo $__env->yieldSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <section>
         <div class="container">
             <div class="row">
@@ -19,8 +17,9 @@
                     <div class="white padbox rounded">
 
 
-                        <form role="form" class="form-signin" method="POST" action="{{ url('/login') }}">
-                            {!! csrf_field() !!}
+                        <form role="form" class="form-signin" method="POST" action="<?php echo e(url('/login')); ?>">
+                            <?php echo csrf_field(); ?>
+
                             
                             <div class="row">
                                 <p class="text-center">Sign in with</p>
@@ -41,27 +40,27 @@
                             <div class="row">
                             <fieldset><legend>or</legend></fieldset>
                             <div class="col-sm-12">
-                                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                <div class="form-group<?php echo e($errors->has('email') ? ' has-error' : ''); ?>">
                                     <label for="">Your Email</label>
-                                    <input type="email" class="form-control" id="" placeholder="" name="email" value="{{ old('email') }}">
+                                    <input type="email" class="form-control" id="" placeholder="" name="email" value="<?php echo e(old('email')); ?>">
 
-                                    @if ($errors->has('email'))
+                                    <?php if($errors->has('email')): ?>
                                         <span class="help-block">
-                                            <strong>{{ $errors->first('email') }}</strong>
+                                            <strong><?php echo e($errors->first('email')); ?></strong>
                                         </span>
-                                    @endif
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
                             <div class="col-sm-12">
-                                <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                                <div class="form-group<?php echo e($errors->has('password') ? ' has-error' : ''); ?>">
                                     <label for="">Your Password</label>
                                     <input type="password" class="form-control" id="" placeholder="" name="password">
-                                    @if ($errors->has('password'))
+                                    <?php if($errors->has('password')): ?>
                                         <span class="help-block">
-                                            <strong>{{ $errors->first('password') }}</strong>
+                                            <strong><?php echo e($errors->first('password')); ?></strong>
                                         </span>
-                                    @endif
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
@@ -78,7 +77,7 @@
                                 </div>
 
                                 <div class="col-sm-6"><br>
-                                    <p class="small text-right">Not registered? <a href="{{ url('sign-up') }}">Sign Up Here</a></p>
+                                    <p class="small text-right">Not registered? <a href="<?php echo e(url('sign-up')); ?>">Sign Up Here</a></p>
                                 </div>
 
                             </div>
@@ -92,8 +91,9 @@
             </div>
         </div>
     </section>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('footer')
+<?php $__env->startSection('footer'); ?>
     
-@show()
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.template-default', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

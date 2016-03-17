@@ -61,6 +61,10 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.about');
     });
 
+    Route::get('register2', function () {
+        return view('auth.register2');
+    });
+
 
     Route::get('dashboard', function () {
         return view('talent-pool.dashboard');

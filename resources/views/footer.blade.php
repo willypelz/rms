@@ -7,7 +7,7 @@
                 <div class="col-sm-3">
                     <ul class="list-unstyled footer-logo">
                         <li>
-                            <h4 class=""> <i class="fa fa-skype"></i> Seamless Hiring</h4>
+                            <h4 class="text-brandon" style="text-transform: capitalize;"> <i class="fa fa-skype"></i> Seamless Hiring</h4>
                             <small class="text-muted">&copy; 2016. All Rights Reserved. <br>An Insidify.com Campany</small>
                         </li>
                     </ul>
@@ -144,10 +144,16 @@
                             <div class="row"><br>
 
                                 <div class="col-sm-10 col-sm-offset-1">
-                                    <button type="submit" class="btn btn-default btn-block">Proceed &raquo;</button>
+                                    <button type="submit" class="btn btn-success btn-block">Proceed &raquo;</button>
                                 </div>
 
-                                <div class="col-xs-12 text-center"><br>
+                                
+
+                                <div class="col-sm-6"><br>
+                                    <p>Not registered? <a href="forgotpass">:( I can't remember my password!</a></p>
+                                </div>
+
+                                <div class="col-sm-6"><br>
                                     <p>Not registered? <a href="{{ url('sign-up') }}">Sign Up Here</a></p>
                                 </div>
 
@@ -169,7 +175,7 @@
     </div>
 
 
-    <!-- Signin Modal -->
+    <!-- Signup Modal -->
     <div class="modal animated animated-fast slideInUp" id="SignupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="">
@@ -277,7 +283,7 @@
                                 </div>
 
                                 <div class="col-sm-6">
-                                    <button type="submit" class="btn btn-default btn-block">Proceed &raquo;</button>
+                                    <button type="submit" class="btn btn-success btn-block">Proceed &raquo;</button>
                                 </div>
 
                                 <div class="col-sm-12">

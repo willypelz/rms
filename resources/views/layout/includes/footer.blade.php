@@ -7,7 +7,7 @@
                 <div class="col-sm-3">
                     <ul class="list-unstyled footer-logo">
                         <li>
-                            <h4 class=""> <i class="fa fa-skype"></i> Seamless Hiring</h4>
+                            <h4 class="text-brandon" style="text-transform: capitalize;"> <i class="fa fa-skype"></i> Seamless Hiring</h4>
                             <small class="text-muted">&copy; 2016. All Rights Reserved. <br>An Insidify.com Campany</small>
                         </li>
                     </ul>
@@ -70,6 +70,7 @@
 
         </div><br>
     </footer>
+
 
 
     <!-- Login Modal -->

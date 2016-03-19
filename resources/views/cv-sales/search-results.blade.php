@@ -2,6 +2,7 @@
 
 @section('content')
 
+    <script src="{{ asset('js/jquery-1.11.1.min.js') }}"></script>
 
 <section class="s-div dark">
         <div class="container">
@@ -100,8 +101,21 @@
                                             <a href="cv.html" class="btn btn-line btn-sm" data-toggle="modal" data-target="#cvViewModal">Preview CV</a>
 
                                             <span class="purchase-action">
-                                                  <a href="" class="btn btn-success btn-sm btn-cv-buy" data-count="1" data-cost="500"><i class="fa fa-plus"></i> Purchase CV for N500</a>
-                                                <button class="btn btn-line btn-sm btn-cv-discard collapse" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                  <?php 
+                                                    if($ids != null)
+                                                      $in_cart = in_array($cv['id'], $ids);
+                                                    else
+                                                      $in_cart = "";
+                                                  ?>
+                                                  
+                                                  @if($in_cart)
+                                                    <button id="cartRemove{{ $cv['id'] }}" class="btn btn-line btn-sm btn-cv-discard" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                  @else
+
+
+                                                  <a href="" id="cartAdd{{ $cv['id'] }}" class="btn btn-success btn-sm btn-cv-buy" data-count="1" data-cost="500"><i class="fa fa-plus"></i> Purchase CV for N500</a>
+                                                <button id="cartRemove{{ $cv['id'] }}" class="btn btn-line btn-sm btn-cv-discard collapse" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                @endif
                                           </span>
 
                                         </p>
@@ -109,6 +123,68 @@
                               </span>
 
                         </li><hr>
+                          
+
+                          <script>
+                              $(document).ready(function(){
+
+                                  var id = "{{ $cv['id'] }}";
+                                  var url = "{{ route('cart') }}"
+                                  
+                                  $("#cartAdd"+id).click(function(){
+                                      // console.log(url)
+                                      $.ajax
+                                      ({
+                                        type: "POST",
+                                        url: url,
+                                        data: ({ rnd : Math.random() * 100000, cv_id: id, type:'add', name:"{{ $cv['first_name']. " " . $cv['last_name'] }}", 'qty':1, 'price':500, "_token":"{{ csrf_token() }}"}),
+                                        success: function(response){
+                                          
+                                          console.log(response);
+                                          
+                                        }
+                                    });
+
+                                  });
+
+
+                                  $("#cartRemove"+id).click(function(){
+                                      // console.log(url)
+                                      $.ajax
+                                      ({
+                                        type: "POST",
+                                        url: url,
+                                        data: ({ rnd : Math.random() * 100000, cv_id: id, type:'remove', "_token":"{{ csrf_token() }}"}),
+                                        success: function(response){
+                                          
+                                          console.log(response);
+                                          
+                                        }
+                                    });
+
+                                  });
+
+                                  $("#clearCart").click(function(){
+                                      // console.log(url)
+                                      $.ajax
+                                      ({
+                                        type: "POST",
+                                        url: url,
+                                        data: ({ rnd : Math.random() * 100000, cv_id: id, type:'clear', "_token":"{{ csrf_token() }}"}),
+                                        success: function(response){
+                                          
+                                          console.log(response);
+                                          
+                                        }
+                                    });
+
+                                  });
+
+
+                              })
+
+                          </script>
+
                         @endforeach
 
                       @else
@@ -128,29 +204,47 @@
             <!-- End of col-9 -->
 
             <div class="col-sm-4">
+               
+                @if(empty($items))
                 <div id="collapseWellCart" class="well well-cart animated slideInUp collapse">
+                @else
+                <div id="collapseWellCart" class="well well-cart animated slideInUp">
+                @endif
                     <div class="row">
                         <div class="col-md-3 hidden-xs hidden-sm small text-light text-muted">Cart<br>
                               <i class="fa fa-shopping-cart fa-3x"></i>
-                            </span>
                         </div>
                         <div class="col-md-4 col-xs-3 col-sm-3 small text-left text-muted text-light"> Items<br>
                             <span id="item-count">
+                                  @if(empty($items))
                                     <span class="bounceInDown fa-2x" style="display: inline-block;">0</span>
+                                  @else  
+                                    <span class="bounceInDown fa-2x" style="display: inline-block;">{{ $many }}</span>
+                                  @endif
                             </span>
                         </div>
                         <div class="col-md-5 col-xs-9 col-sm-9 small text-right text-muted text-light"> Cost<br>
                             <span class="pull-right fa-2x">
                                 &#8358; 
-                                <span id="price-total" >0</span> 
+                                  @if(empty($items))
+                                    <span id="price-total" >0</span> 
+                                  @else
+                                    <span id="price-total" >{{ $many * 500 }}</span> 
+                                    @endif
                             </span>
                         </div>
                     </div><hr>
                     <div class="row">
-                        <div class="col-xs-6"><a href="#" target="_blank" data-toggle="modal" data-target="#myInvoice" class="btn btn-block btn-danger btn-sm btn-cart-checkout"> Checkout &raquo;</a></div>
-                        <div class="col-xs-6"><button class="btn btn-block btn-line btn-sm btn-cart-clear text-muted"><i class="fa fa-close"></i> Clear</button></div>
+                        <div class="col-xs-6"><a id="checkout" href="#" target="_blank" data-toggle="modal" data-target="#myInvoice" class="btn btn-block btn-danger btn-sm btn-cart-checkout"> Checkout &raquo;</a></div>
+                        <div class="col-xs-6"><button id="clearCart" class="btn btn-block btn-line btn-sm btn-cart-clear text-muted"><i class="fa fa-close"></i> Clear</button></div>
                     </div>
                 </div>
+                
+
+
+
+
+              <!-- <div class="panel-group" id="accordion"> -->
               <div class="panel-group filter-div" id="accordion">
 
 
@@ -228,7 +322,7 @@
             </div> <!--/col-sm-4-->
 
             </div>
-
+            
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group text-right">
@@ -246,4 +340,50 @@
             </div>
         </div>
     </section>
+
+
+
+
+     <div class="modal fade" tabindex="-1" id="myInvoice" role="dialog" aria-labelledby="myInvoice">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+            <h3 class="text-center">Confirm your order</h3>
+
+              <div id="invoice-res">
+                
+              </div>
+       
+
+          <script>
+
+                           var url = "{{ route('ajax_cart') }}";
+
+                 $("#contentArea").html('<img src="{{ asset("img/wheel.gif") }}" width="100px" /> please wait...');
+                              
+                                $("#checkout").click(function(){
+                                      // console.log(url)
+                                      $.ajax
+                                      ({
+                                        type: "POST",
+                                        url: url,
+                                        data: ({ rnd : Math.random() * 100000, "_token":"{{ csrf_token() }}"}),
+                                        success: function(response){
+                                          
+                                          // console.log(response);
+                                          $('#invoice-res').html(response)
+                                          
+                                        }
+                                    });
+
+                                  });
+
+          </script>
+
+        </div>
+      </div>
+    </div>
+
+
+
 @endsection

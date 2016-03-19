@@ -146,6 +146,7 @@
 
                                 <div class="col-sm-10 col-sm-offset-1">
                                     <button type="submit" class="btn btn-success btn-block">Proceed &raquo;</button>
+
                                 </div>
 
                                 <div class="col-xs-12"><hr></div>

@@ -4,14 +4,14 @@ $(window).scroll(function() {
 
         if ($(".navbar").offset().top > 100) {
 
-    	// animating navbar background
+        // animating navbar background
         navbar.removeClass("transparent");
 
         //Fix or release Cart
         $(".well-cart").addClass("fixer");
     } else {
 
-    	// animating navbar background
+        // animating navbar background
         navbar.addClass("transparent");
 
         //Fix or release Cart
@@ -83,14 +83,14 @@ $(window).scroll(function() {
     
 //     //--------Buy CV and update cart--------//
 
-// 	var cv_cart = 0;
-// 	var p_total = 0;
+//  var cv_cart = 0;
+//  var p_total = 0;
 
 //     $('.btn-cv-buy').on('click',function(e){
 
-//     	cv_cart++;
-//     	p_total += 500;
-//     	console.log(cv_cart);
+//      cv_cart++;
+//      p_total += 500;
+//      console.log(cv_cart);
 
 //         e.preventDefault();
 //         $(this).parents('.purchase-action').find('.btn-cv-discard').removeClass('collapse');
@@ -107,9 +107,9 @@ $(window).scroll(function() {
 //     //--------Remove item from Cart--------//
 //     $('.btn-cv-discard').on('click',function(e){
 
-//     	cv_cart--;
-//     	p_total -= 500;
-//     	console.log(cv_cart);
+//      cv_cart--;
+//      p_total -= 500;
+//      console.log(cv_cart);
 
 //         e.preventDefault();
 //         $(this).parents('.purchase-action').find('.btn-cv-buy').removeClass('collapse');
@@ -119,10 +119,10 @@ $(window).scroll(function() {
 //        $('#price-total').html('<span class="animated zoomIn" style="display: inline-block; color:#333"><b>'+p_total+'</b></span>');
 
 //        if(p_total == 0){
-// 			$(".btn-cart-checkout").addClass("disabled");
+//          $(".btn-cart-checkout").addClass("disabled");
 
-// 			return p_total;
-// 		}
+//          return p_total;
+//      }
 
 //     });
 
@@ -130,9 +130,9 @@ $(window).scroll(function() {
 
 //     $('.btn-cart-clear').on('click',function(e){
 
-//     	cv_cart = 0;
-//     	p_total = 0;
-//     	console.log(cv_cart);
+//      cv_cart = 0;
+//      p_total = 0;
+//      console.log(cv_cart);
 
 //         e.preventDefault();
 //         $('.btn-cv-buy').removeClass('collapse');
@@ -144,11 +144,11 @@ $(window).scroll(function() {
 
 
 
-// 		if(p_total == 0){
-// 			$(".btn-cart-checkout").addClass("disabled");
+//      if(p_total == 0){
+//          $(".btn-cart-checkout").addClass("disabled");
 
-// 			return p_total;
-// 		}
+//          return p_total;
+//      }
 
 
 //     });

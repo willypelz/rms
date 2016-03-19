@@ -1,7 +1,9 @@
 @extends('layout.template-user')
 
 @section('content')
-  <div class="separator separator-small"></div>
+
+
+<div class="separator separator-small"></div>
     <section class="s-div green about hidden">
         <div class="container">
 
@@ -17,14 +19,11 @@
             <div class="row">
 
                 <div class="col-sm-12">
-                    <h4 class="no-margin text-center text-uppercase l-sp-5">Job Creation</h4><br>
+                    <h5 class="no-margin text-center text-uppercase l-sp-5 text-brandon">Promote your Job</h5><br>
                     <div class="page">
 
                         <div class="btn-group btn-group-justified btn-progress" role="group" aria-label="...">
-                          <div class="btn-group" role="group">
-                            <a href="create-job.php" type="button" class="btn btn-line text-capitalize"><i class="fa fa-file-text-o"></i>
-                            &nbsp; <span class="hidden-xs">1. job details</span></a>
-                          </div>
+                          
                           <div class="btn-group" role="group">
                             <a href="advertise-job.php" type="button" class="btn btn-line text-capitalize"><i class="fa fa-send"></i>
                             &nbsp; <span class="hidden-xs">2. advertise</span></a>
@@ -96,7 +95,7 @@
                                </div>
 
                                        <p>
-                                           <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-success"><i class="fa fa-envelope"></i> &nbsp; Refer Job to People</a>
+                                           <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-line"><i class="fa fa-envelope"></i> &nbsp; Refer Job to People</a>
                                        </p>
                                        <div class="separator separator-small"></div>
                                    </div>
@@ -138,7 +137,7 @@
                                    <p class="text-right">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima aut magnam eum, aspernatur officia amet quibusdam nam.</p><br>
 
                                    <p>
-                                       <a href="" class="pull-right btn btn-success"><i class="fa fa-cogs"></i> &nbsp;Get the Widget</a>
+                                       <a href="" class="pull-right btn btn-line"><i class="fa fa-cogs"></i> &nbsp;Get the Widget</a>
                                    </p>
 
                                </div>
@@ -151,7 +150,7 @@
                                            <p class="text-center">
                                                <a href="addCan-job.php"> Skip this step </a>
                                                        &nbsp; &middot; &nbsp;
-                                               <a href="{{ url('jobs/add-candidates') }}" class="btn btn-primary">Proceed &raquo;</a>
+                                               <a href="addCan-job.php" class="btn btn-success">Proceed &raquo;</a>
                                            </p>
                                            
                                    </div>
@@ -169,4 +168,6 @@
     </section>
 
 <div class="separator separator-small"></div>
+
+
 @endsection

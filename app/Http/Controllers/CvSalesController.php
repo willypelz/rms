@@ -31,6 +31,8 @@ class CvSalesController extends Controller
 
             $cart = Cart::content();
             $count = Cart::count(false); 
+
+            // dd($cart);
             // dd(!empty($cart));
             //to get ids of all items in cart so as to check the button to display in view
             foreach ($cart as $k) {

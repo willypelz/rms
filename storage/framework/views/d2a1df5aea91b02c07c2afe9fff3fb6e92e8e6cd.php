@@ -68,7 +68,7 @@
                 // console.log('<?php echo e(asset("img/ajaxloader.gif")); ?>')
                  $("#contentArea").html('<img src="<?php echo e(asset("img/wheel.gif")); ?>" width="100px" /> please wait...');
 
-                            var url = "<?php echo e(route('ajax_checkout')); ?>";
+                                var url = "<?php echo e(route('ajax_checkout')); ?>";
 
                                       $.ajax
                                       ({

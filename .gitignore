@@ -1,7 +1,6 @@
 /vendor
 /node_modules
 /public/storage
-/bootstrap/cache/services.php
 Homestead.yaml
 Homestead.json
 .env

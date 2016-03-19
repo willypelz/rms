@@ -1,6 +1,4 @@
-@extends('layout.template-user')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
     <section class="s-div dark">
         <div class="container">
@@ -386,4 +384,5 @@
             </div>
         </div>
     </section>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.template-user', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

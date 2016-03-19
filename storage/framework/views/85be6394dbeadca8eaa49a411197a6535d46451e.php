@@ -1,6 +1,4 @@
-@extends('layout.template-user')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 
     <section class="no-pad">
@@ -86,35 +84,35 @@
 
                         <div class="btn-group btn-group-justified btn-tabs job-dash no-pad text-brandon" role="group" aria-label="...">
                           <div class="btn-group" role="group">
-                            <a href="{{ url('dashboard') }}" type="button" class="btn btn-line text-capitalize text-muted in">
+                            <a href="<?php echo e(url('dashboard')); ?>" type="button" class="btn btn-line text-capitalize text-muted">
                             <span class="fa-lg"><i class="fa fa-cog"></i>
                             <span class="hidden-xs"> &nbsp; Promote Job</span></span>
                             <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="{{ url('activities') }}" type="button" class="btn btn-line text-capitalize">
+                            <a href="<?php echo e(url('activities')); ?>" type="button" class="btn btn-line text-capitalize">
                             <span class="fa-lg"><i class="fa fa-bar-chart"></i>
                             <span class="hidden-xs"> &nbsp; Activities & Stats</span></span>
                             <!-- <small class="text-muted hidden-xs">Job Statistics</small> -->
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="{{ url('applicants') }}" type="button" class="btn btn-line text-capitalize">
+                            <a href="<?php echo e(url('applicants')); ?>" type="button" class="btn btn-line text-capitalize">
                             <span class="fa-lg"><i class="fa fa-edit"></i>
                             <span class="hidden-xs"> &nbsp; Applicants</span></span>
                             <!-- <small class="text-muted hidden-xs">See all applicants and their status </small> -->
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="{{ url('team') }}" type="button" class="btn btn-line text-capitalize">
+                            <a href="<?php echo e(url('team')); ?>" type="button" class="btn btn-line text-capitalize in">
                             <span class="fa-lg"><i class="fa fa-users"></i>
                             <span class="hidden-xs"> &nbsp; Job Team</span></span>
                             <!-- <small class="text-muted hidden-xs">Resumes / CVs</small> -->
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="{{ url('matching') }}" type="button" class="btn btn-line text-capitalize text-muted">
+                            <a href="<?php echo e(url('matching')); ?>" type="button" class="btn btn-line text-capitalize text-muted">
                             <span class="fa-lg"><i class="fa fa-user-md"></i>
                             <span class="hidden-xs"> &nbsp; Matching Candidates</span></span>
                             <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
@@ -152,4 +150,5 @@
     </section>
 
 <div class="separator separator-small"><br></div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.template-user', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

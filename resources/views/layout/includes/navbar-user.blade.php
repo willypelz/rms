@@ -17,8 +17,13 @@
                         <a class="" href="{{ url('dashboard') }}">Dashboard &nbsp;<i class="fa fa-tachometer"></i></a>
                     </li>
 
-                    <li class="">
-                        <a class="" href="{{ url('cv/search-results') }}">Talent Pool <i class="fa fa-users mask"></i></a>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" href="cv-search.php" data-toggle="dropdown">Candidates &nbsp; <i class="fa fa-caret-down no-margin"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url('cv_pool') }}">All my CVs</a></li>
+                            <li><a href="{{ url('cv_saved') }}">Saved Cvs</a></li>
+                            <li><a href="{{ url('cv_purchased') }}">Purchased Cvs</a></li>
+                        </ul>
                     </li>
 
                     <li class="">
@@ -37,12 +42,14 @@
                     <li class="dropdown">
                         <a class="animated tada dropdown-toggle" id="dropBell" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <span class="label label-danger label-sm">3</span>
-                            <i class="fa fa-bell fa-lg"></i>
+                            <i class="fa fa-shopping-cart fa-lg"></i>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropBell"> 
-                            <li><a href="setting.php">Account Setting</a></li> 
+                            <li><a href="setting.php">View Cart</a></li> 
+
                             <li role="separator" class="divider"></li> 
-                            <li><a href="_index.php">Logout</a></li> 
+
+                            <li class="col-xs-12"><button class="btn btn-block btn-danger" href="_index.php">Pay Now</button></li> 
                         </ul> 
                     </li>
                     <!-- <li>

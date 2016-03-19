@@ -179,7 +179,7 @@
                         <div class="col-xs-6"><button class="btn btn-block btn-line btn-sm btn-cart-clear text-muted"><i class="fa fa-close"></i> Clear</button></div>
                     </div>
                 </div>
-              <div class="panel-group" id="accordion">
+              <div class="panel-group filter-div" id="accordion">
 
 
                   <div class="panel panel-default" style="border-width: 3px">

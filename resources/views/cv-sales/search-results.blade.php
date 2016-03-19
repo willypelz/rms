@@ -7,9 +7,9 @@
         <div class="container">
 
             <div class="row">
-                <div class="col-md-4 col-md-offset-1 hidden-sm hidden-xs">
+                <div class="col-md-6 hidden-sm hidden-xs">
                     <div class=""><br>
-                        <h2 class="text-white push-down no-margin"> <i class="fa fa-street-view"></i> Talent Pool</h2>
+                        <h4 class="text-white push-down text-uppercase text-brandon"> <i class="fa fa-street-view"></i> Talent Pool</h4>
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-12">
@@ -38,7 +38,7 @@
         <div class="container">
             <div class="row">
 
-                <div class="col-md-10 col-md-offset-1 col-sm-12">
+                <div class="col-md-12">
 
                     <div class="content rounded ">
 
@@ -151,7 +151,7 @@
                         <div class="col-xs-6"><button class="btn btn-block btn-line btn-sm btn-cart-clear text-muted"><i class="fa fa-close"></i> Clear</button></div>
                     </div>
                 </div>
-              <div class="panel-group" id="accordion">
+              <div class="panel-group filter-div" id="accordion">
 
 
                   <div class="panel panel-default" style="border-width: 3px">
@@ -224,23 +224,22 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
+            </div> <!--/col-sm-4-->
 
-                            </div> <!--/col-sm-3-->
-                        </div>
+            </div>
 
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group text-right">
-                                    <a data-toggle="modal" data-target="#myInvoice" href="#" target="_blank" type="submit" class="btn btn-danger disabled btn-cart-checkout">Proceed to payment &raquo;</a>
-                                </div>
-                            </div>
-                        </div>
-
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group text-right">
+                        <a data-toggle="modal" data-target="#myInvoice" href="#" target="_blank" type="submit" class="btn btn-danger disabled btn-cart-checkout">Proceed to payment &raquo;</a>
                     </div>
-
                 </div>
+            </div>
+
+        </div>
+
+    </div>
 
                 
 

@@ -39,7 +39,7 @@
                             </div>
 
                             <div class="row">
-                            <fieldset><legend>or use the form below</legend></fieldset>
+                            <fieldset><legend>or use the form below</legend></fieldset><br>
 
                                 <div class="col-sm-6">
                                     <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
@@ -112,7 +112,7 @@
                                 </div>
 
                                 <div class="col-sm-6">
-                                    <button type="submit" class="btn btn-default btn-block">Proceed &raquo;</button>
+                                    <button type="submit" class="btn btn-success btn-block">Proceed &raquo;</button>
                                 </div>
 
                                 <div class="col-sm-12">

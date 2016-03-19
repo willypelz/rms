@@ -1,7 +1,10 @@
 @extends('layout.template-user')
 
 @section('content')
-  <section class="no-pad">
+
+
+
+    <section class="no-pad">
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-md-offset-1 col-sm-12">
@@ -197,4 +200,6 @@
     </section>
 
 <div class="separator separator-small"><br></div>
+
+
 @endsection

@@ -69,12 +69,16 @@
 
                             <div class="row"><br>
 
-                                <div class="col-sm-10 col-sm-offset-1">
-                                    <button type="submit" class="btn btn-default btn-block">Proceed &raquo;</button>
+                                <div class="col-sm-10 col-sm-offset-1 col-md-12 col-sm-offset-0">
+                                    <button type="submit" class="btn btn-success btn-block">Proceed &raquo;</button>
                                 </div>
 
-                                <div class="col-xs-12 text-center"><br>
-                                    <p>Not registered? <a href="{{ url('sign-up') }}">Sign Up Here</a></p>
+                                <div class="col-sm-6"><br>
+                                    <p class="small text-left"><a href="">:( I can't remember my password!</a></p>
+                                </div>
+
+                                <div class="col-sm-6"><br>
+                                    <p class="small text-right">Not registered? <a href="{{ url('sign-up') }}">Sign Up Here</a></p>
                                 </div>
 
                             </div>
@@ -91,5 +95,5 @@
 @endsection
 
 @section('footer')
-        
+    
 @show()

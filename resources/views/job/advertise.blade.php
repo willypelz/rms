@@ -1,83 +1,93 @@
 @extends('layout.template-user')
 
 @section('content')
-  <div class="separator separator-small"></div>
-    <section class="s-div green about hidden">
-        <div class="container">
 
-            <div class="row pagehead text-center">
-                <h1>About Us</h1>
-            </div>
-
-        </div>
-    </section>
+<div class="separator separator-small"></div>
 
     <section class="no-pad">
         <div class="container">
+
+                    <div class="row text-center">
+                        <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+                            <h5 class="no-margin text-uppercase l-sp-5 text-brandon">Promote your Job</h5>
+                        </div>
+                    </div>
+
             <div class="row">
 
                 <div class="col-sm-12">
-                    <h4 class="no-margin text-center text-uppercase l-sp-5">Job Creation</h4><br>
+                    <br>
                     <div class="page">
 
                         <div class="btn-group btn-group-justified text-uppercase btn-progress" role="group" aria-label="...">
-                          <div class="btn-group" role="group">
+                          <!-- <div class="btn-group" role="group">
                             <a href="create-job.php" type="button" class="btn btn-line text-capitalize"><i class="fa fa-file-text-o"></i>
                             &nbsp; <span class="hidden-xs">1. job details</span></a>
-                          </div>
+                          </div> -->
                           <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-primary text-capitalize"><i class="fa fa-send"></i>
-                            &nbsp; <span class="hidden-xs">advertise</span></button>
+                            <a href="" type="button" class="btn btn-primary text-capitalize"><i class="fa fa-send"></i>
+                            &nbsp; <span class="hidden-xs"> advertise</span></a>
                           </div>
+                          
                           <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-muted text-capitalize disabled"><i class="fa fa-share-alt"></i>
-                            &nbsp; <span class="hidden-xs">3. sharing</span></button>
+                            <a href="share-job.php" type="button" class="btn btn-line text-capitalize"><i class="fa fa-share-alt"></i>
+                            &nbsp; <span class="hidden-xs"> sharing</span></a>
                           </div>
+
                           <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-muted text-capitalize disabled"><i class="fa fa-search-plus"></i>
-                            &nbsp; <span class="hidden-xs">4. add candidates</span></button>
+                            <a href="addCan-job.php" type="button" class="btn btn-line text-capitalize"><i class="fa fa-search-plus"></i>
+                            &nbsp; <span class="hidden-xs"> add candidates</span></a>
                           </div>
                         </div>
                         <div class="row">
                             
                             
-                            <div class="col-md-8 col-md-offset-2"><br>
-                                <h6 class="text-uppercase text-center">Post this job on</h6>
-                                <div class="row">
-                                <div class="col-xs-12">
-                                        <h5 class="text-brandon text-uppercase">
-                                        Free Job Board 
-                                        <span class="pull-right"><i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i></span>
-                                        </h5><hr>
-                                    </div>
-                                    <div class="col-sm-6"> 
-                                        <div class="thumbnail">
-                                            <div class="caption"> 
-                                        <img alt="Job Provider name" src="http://insidify.com/desktop/img/logo.png" width="60%" height="">  <hr>
-                                                <h4 class="">Insidify.com</h4>
-                                                <p class="small">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p> 
-                                                <p class="text-success">
+                            <div class="col-md-10 col-md-offset-1"><br>
+                            <div class="alert alert-success">
+                                <div class="col-xs-7">
+                                    <i class="fa fa-check"></i> You Job has been successfully posted on <b>Insidify.com</b>, <b>hotnigeriajob.com</b>. <br>
+                                </div>
 
-                                                          <button class="btn btn-line" data-count="1" data-cost="500"><i class="fa fa-check"></i> Added to Cart for free </button>
-
-                                                </p> 
-                                            </div> 
-                                        </div> 
+                                <div class="col-xs-5">
+                                
+                                    <div id="collapseWellCart" class="well well-cart animated slideInUp collapse no-margin">
+                                        <div class="row">
+                                            <div class="col-md-3 hidden-xs hidden-sm small text-light text-muted">Cart<br>
+                                                  <i class="fa fa-shopping-cart fa-3x"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-4 col-xs-3 col-sm-3 small text-left text-muted text-light"> Items<br>
+                                                <span id="item-count">
+                                                        <span class="bounceInDown fa-2x" style="display: inline-block;">0</span>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-5 col-xs-9 col-sm-9 small text-right text-muted text-light"> Cost<br>
+                                                <span class="pull-right fa-2x">
+                                                    &#8358; 
+                                                    <span id="price-total" >0</span> 
+                                                </span>
+                                            </div>
+                                        </div><hr>
+                                        <div class="row">
+                                            <div class="col-xs-6"><a href="#" target="_blank" data-toggle="modal" data-target="#myInvoice" class="btn btn-block btn-danger btn-sm btn-cart-checkout"> Checkout &raquo;</a></div>
+                                            <div class="col-xs-6"><button class="btn btn-block btn-line btn-sm btn-cart-clear text-muted"><i class="fa fa-close"></i> Clear</button></div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="alert alert-info" style="background: rgba(217, 237, 247, 0.22)">
+                                <div class="clearfix"></div>
+                            </div>
+                                <div>
                                     <div class="row">
-                                    <div class="col-xs-12 text-center">
+                                    <div class="col-xs-12">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perspiciatis voluptatum unde, placeat repellendus dolores, nam enim eveniet earum eius molestiae explicabo in architecto maiores quaerat voluptatibus iste laudantium quo natus.</p><br>
                                         <h5 class="text-brandon text-uppercase">
-                                        <i class="fa fa-star"></i>&nbsp; Premium Job Board &nbsp;<i class="fa fa-star"></i> 
+                                        <i class="fa fa-star"></i>&nbsp; Paid Job Board 
                                         </h5><br>
                                     </div>
                                         <div class="col-sm-6"> 
                                             <div class="thumbnail">  
                                                 <div class="caption">
-                                            <img alt="Job Provider name" src="http://www.jobberman.com/img/new/logo.png" width="60%" height=""> <hr>
+                                            <img alt="{{Job Provider name}}" src="http://www.jobberman.com/img/new/logo.png" height="45px"> <hr>
                                                     <h4 class="">Jobberman.com</h4>
                                                     <p class="small">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p> 
                                                     <p>
@@ -94,7 +104,7 @@
                                         <div class="col-sm-6"> 
                                             <div class="thumbnail"> 
                                                 <div class="caption"> 
-                                            <img alt="Job Provider name" src="http://www.myjobmag.com/pics/logo6.png" width="60%" height=""> <hr>
+                                            <img alt="{{Job Provider name}}" src="http://www.myjobmag.com/pics/logo6.png"  height="45px"> <hr>
                                                     <h4 class="">My JobMag</h4>
                                                     <p class="small">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p> 
                                                     <p><!-- <a href="#" class="btn btn-success" role="button">&plus; Add to Cart for &#8358;2000</a> --> 
@@ -115,7 +125,7 @@
                                         <div class="col-sm-6"> 
                                             <div class="thumbnail"> 
                                                 <div class="caption"> 
-                                            <img alt="Job Provider name" src="http://www.hotnigerianjobs.com/images/banner2.gif" width="60%" height=""> <hr>
+                                            <img alt="{{Job Provider name}}" src="http://www.hotnigerianjobs.com/images/banner2.gif"  height="45px"> <hr>
                                                     <h4 class="">Hot Nigerian Jobs</h4>
                                                     <p class="small">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p> 
                                                     <p>
@@ -133,7 +143,7 @@
                                         <div class="col-sm-6"> 
                                             <div class="thumbnail"> 
                                                 <div class="caption"> 
-                                            <img alt="Job Provider name" src="http://www.hotnigerianjobs.com/images/banner2.gif" width="60%" height=""> <hr>
+                                            <img alt="{{Job Provider name}}" src="http://www.hotnigerianjobs.com/images/banner2.gif"  height="45px"> <hr>
                                                     <h4 class="">Hot Nigerian Jobs</h4>
                                                     <p class="small">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p> 
                                                     <p>
@@ -147,7 +157,7 @@
                                                 </div> 
                                             </div> 
                                         </div> 
-                                        <div class="col-sm-12"><hr><a href="{{ url('jobs/share') }}" class="pull-right btn btn-primary">Save and Proceed &raquo;</a></div>
+                                        <div class="col-sm-12"><hr><a href="share-job.php" class="pull-right btn btn-danger btn-cart-checkout disabled">Proceed to payment &raquo;</a></div>
                                       </div>
                                 </div>
                             </div>
@@ -163,4 +173,5 @@
     </section>
 
 <div class="separator separator-small"></div>
+
 @endsection

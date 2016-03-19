@@ -48,16 +48,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('sign-up', 'Auth\AuthController@showRegistrationForm');
 
     Route::post('sign-up', 'Auth\AuthController@register');
-   
-
-    Route::match(['get', 'post'], 'cart', ['uses' => 'CvSalesController@Cart', 'as' => 'cart']);
-    Route::match(['get', 'post'], 'cart_details', ['uses' => 'CvSalesController@CartDetails', 'as' => 'cartDe']);
-    Route::match(['get', 'post'], 'output', ['uses' => 'CvSalesController@Output', 'as' => 'out']);
-    Route::match(['get', 'post'], 'ajax_cart', ['uses' => 'CvSalesController@Ajax_cart', 'as' => 'ajax_cart']);
-    Route::match(['get', 'post'], 'ajax_checkout', ['uses' => 'CvSalesController@Ajax_checkout', 'as' => 'ajax_checkout']);
-    Route::match(['get', 'post'], 'payment', ['uses' => 'CvSalesController@Payment', 'as' => 'payment']);
-    Route::match(['get', 'post'], 'transactions', ['uses' => 'CvSalesController@Transactions', 'as' => 'transactions']);
-
+    
 	// Route::any('log-in', function () {
 	//     return view('auth.login');
 	// });
@@ -70,10 +61,47 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.about');
     });
 
+    Route::get('register2', function () {
+        return view('auth.register2');
+    });
 
     Route::get('dashboard', function () {
         return view('talent-pool.dashboard');
     });
+
+    // ================Added by familoni for preview sake ================//
+
+    Route::get('matching', function () {
+        return view('job.matching');
+    });
+
+    Route::get('applicants', function () {
+        return view('job.applicants');
+    });
+
+    Route::get('team', function () {
+        return view('job.team');
+    });
+
+    Route::get('activities', function () {
+        return view('job.activities');
+    });
+
+    Route::get('cv_pool', function () {
+        return view('cv-sales.cv_pool');
+    });
+
+    Route::get('cv_purchased', function () {
+        return view('cv-sales.cv_purchased');
+    });
+
+
+    Route::get('cv_saved', function () {
+        return view('cv-sales.cv_saved');
+    });
+
+
+    //================Added by familoni for preview sake ================//
 
     /**
      * Route Group for everything cv
@@ -89,6 +117,22 @@ Route::group(['middleware' => 'web'], function () {
          */
         Route::post('search', 'CvSalesController@search');
 
+
+        Route::get('cv_pool', function () {
+            return view('cv-sales.cv_pool');
+        });
+
+        Route::get('cv_purchased', function () {
+            return view('cv-sales.cv_purchased');
+        });
+
+
+        Route::get('cv_saved', function () {
+            return view('cv-sales.cv_saved');
+        });
+
+
+
     });
 
     /**
@@ -102,6 +146,22 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::get('dashboard', function () {
             return view('job.dashboard');
+        });
+
+        Route::get('matching', function () {
+            return view('job.matching');
+        });
+
+        Route::get('applicants', function () {
+            return view('job.applicants');
+        });
+
+        Route::get('team', function () {
+            return view('job.team');
+        });
+
+        Route::get('activities', function () {
+            return view('job.activities');
         });
 
         Route::get('create', function () {

@@ -8,7 +8,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<?php echo e(url('dashboard')); ?>"><b><i class="fa fa-skype"></i>&nbsp; Seamless Hiring</b></a>
+                <a class="navbar-brand" href="<?php echo e(url('dashboard')); ?>"><i class="fa fa-skype"></i>&nbsp; Seamless Hiring</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

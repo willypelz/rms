@@ -8,10 +8,11 @@
                     <div class="pagehead text-white text-center"> 
                         <!-- <img src="" alt="seamless Hiring logo" width="100%"> -->
                         <!-- <i class="fa fa-skype fa-inverse fa-5x hidden-xs"></i>&nbsp;  -->
-                        <div class="separator separator-small"><br></div>
+                        <div class="separator separator-small"><br></div>                        
+                       <div class="separator separator-small hidden-xs"></div>
 
-                       <h1 class="fa-3x no-margin bold hidden-xs">About Seamless Hiring</h1>
-                       <h1 class=" hidden-sm hidden-md hidden-lg no-margin bold">About Seamless Hiring</h1>
+                       <h1 class="fa-3x no-margin bold hidden-xs text-brandon text-light">About Seamless Hiring</h1>
+                       <h1 class=" hidden-sm hidden-md hidden-lg no-margin  text-brandon text-light">About Seamless Hiring</h1>
 
                        <p class="lead"><br>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus commodi, excepturi doloremque, eius. Nobis fugiat repellat dolor.</p>
                        <div class="row">
@@ -40,13 +41,16 @@
                                <div class=""><a href="cv-search.php" class="no-bod-rad btn btn-lg btn-block btn-warning">Find Candidates &nbsp; <i class="fa fa-chevron-right"></i></a></div>
                              </div>
                            </div>
-                        <div class="">
-                       <div class="separator separator-small hidden-xs"><br></div>
-                          <p>
-                            <a href="" class="btn btn-line text-white"><i class="fa fa-cloud-download"></i> &nbsp; Download Brochure</a>
-                            <span class="hidden-xs">&nbsp; | &nbsp;</span>
-                            <a href="" class="btn btn-line text-white"><i class="fa fa-bars"></i> &nbsp; Learn More</a>
-                          </p>
+                        <div class="col-sm-8 col-sm-offset-2">
+                              <div class="separator separator-sm"><br><br></div>
+                              <div class="col-sm-6">
+                                <a href="" class="btn btn-block btn-line text-white"><i class="fa fa-cloud-download"></i> &nbsp; Download Brochure</a>
+                              </div>
+                              <div class="col-sm-6">
+                                <a href="" class="btn btn-block btn-line text-white"><i class="fa fa-bars"></i> &nbsp; Learn More</a>
+                              </div>
+                              <div class="clearfix"></div>
+                            <!-- <div class="separator separator-small hidden-xs">&nbsp;</div> <--><br>
                         </div>
                        </div>
                     </div>

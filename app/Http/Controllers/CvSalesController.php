@@ -65,19 +65,12 @@ class CvSalesController extends Controller
     }
 
     public function CartDetails(Request $request){
-        
         Cart::destroy();
-
     }
 
     public function Output(){
-        // Cart::remove($search[0]);
         $cart = Cart::content();
-        
-
         dd($cart);
-
-
     }
 
     public function Ajax_cart(){

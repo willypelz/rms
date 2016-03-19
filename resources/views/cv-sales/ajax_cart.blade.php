@@ -68,7 +68,7 @@
                 // console.log('{{ asset("img/ajaxloader.gif") }}')
                  $("#contentArea").html('<img src="{{ asset("img/wheel.gif") }}" width="100px" /> please wait...');
 
-                            var url = "{{ route('ajax_checkout') }}";
+                                var url = "{{ route('ajax_checkout') }}";
 
                                       $.ajax
                                       ({

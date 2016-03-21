@@ -1,4 +1,111 @@
+<script>
+    $(document).ready(function(){
 
+    //--------Homepage Sticky header----------//
+
+    //updateLink();
+
+        $('#sticky-header ul li a').on('click',function(){
+            $('html,body').animate({
+               scrollTop: $("#mydiv").offset().top
+            });
+        });
+
+    //--------End Homepage Sticky header----------//
+
+
+
+    //-------- CV cart--------//    
+    
+    //--------Buy CV and update cart--------//
+
+    var cv_cart = 0;
+    var p_total = 0;
+
+    $('.btn-cv-buy').on('click',function(e){
+
+
+        var cart_count = "<?php echo e(\App\Libraries\Utilities::getCartCount()); ?>"
+        
+        console.log(cart_count);
+        if(cart_count == 0){
+            cv_cart++;
+            p_total += 500;
+            console.log(cv_cart);
+        }else{
+            cv_cart = Number(cart_count) + 1;
+            p_total = 500 * cv_cart;
+            console.log(cv_cart);
+        }
+
+        e.preventDefault();
+        $(this).parents('.purchase-action').find('.btn-cv-discard').removeClass('collapse');
+        $(this).addClass('collapse');
+       $('#collapseWellCart').removeClass('collapse');
+       $(".btn-cart-checkout").removeClass("disabled");
+
+       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block; color:#333"><b>'+cv_cart+'</b></span>');
+       $('#price-total').html('<span class="animated zoomIn" style="display: inline-block; color:#333"><b>'+p_total+'</b></span>');
+
+    });
+
+
+    //--------Remove item from Cart--------//
+    $('.btn-cv-discard').on('click',function(e){
+
+        var cart_count = "<?php echo e(\App\Libraries\Utilities::getCartCount()); ?>"
+        console.log(cart_count);
+        var ptoat = Number(cart_count) * 500;
+
+        cv_cart = Number(cart_count) - 1;
+        p_total = ptoat - 500;
+        console.log(cv_cart);
+
+        e.preventDefault();
+        $(this).parents('.purchase-action').find('.btn-cv-buy').removeClass('collapse');
+        $(this).addClass('collapse');
+
+       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block; color:#333"><b>'+cv_cart+'</b></span>');
+       $('#price-total').html('<span class="animated zoomIn" style="display: inline-block; color:#333"><b>'+p_total+'</b></span>');
+
+       if(p_total == 0){
+            $(".btn-cart-checkout").addClass("disabled");
+
+            return p_total;
+        }
+
+    });
+
+    //--------Clear Cart button--------////
+
+    $('.btn-cart-clear').on('click',function(e){
+
+        cv_cart = 0;
+        p_total = 0;
+        console.log(cv_cart);
+
+        e.preventDefault();
+        $('.btn-cv-buy').removeClass('collapse');
+        $('.btn-cv-discard').addClass('collapse');
+        // $(".btn-cart-checkout").addClass("disabled");
+
+       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block;"><b>'+cv_cart+'</b></span>');
+       $('#price-total').html('<span class="animated zoomIn" style="display: inline-block;">'+p_total+'</span>');
+
+
+
+        if(p_total == 0){
+            $(".btn-cart-checkout").addClass("disabled");
+
+            return p_total;
+        }
+
+
+    });
+
+    //--------End CV cart--------//    
+});
+</script>
     <footer>
         <div class="container">
 
@@ -7,7 +114,7 @@
                 <div class="col-sm-3">
                     <ul class="list-unstyled footer-logo">
                         <li>
-                            <h4 class=""> <i class="fa fa-skype"></i> Seamless Hiring</h4>
+                            <h4 class="text-brandon" style="text-transform: capitalize;"> <i class="fa fa-skype"></i> Seamless Hiring</h4>
                             <small class="text-muted">&copy; 2016. All Rights Reserved. <br>An Insidify.com Campany</small>
                         </li>
                     </ul>
@@ -70,6 +177,7 @@
 
         </div><br>
     </footer>
+
 
 
     <!-- Login Modal -->
@@ -145,11 +253,17 @@
                             <div class="row"><br>
 
                                 <div class="col-sm-10 col-sm-offset-1">
-                                    <button type="submit" class="btn btn-default btn-block">Proceed &raquo;</button>
+                                    <button type="submit" class="btn btn-success btn-block">Proceed &raquo;</button>
                                 </div>
 
-                                <div class="col-xs-12 text-center"><br>
-                                    <p>Not registered? <a href="<?php echo e(url('sign-up')); ?>">Sign Up Here</a></p>
+                                <div class="col-xs-12"><hr></div>
+
+                                <div class="col-sm-6">
+                                    <p class="text-center"><a href="">I can't remember my password!</a></p>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <p class="text-center">Not registered? <a href="<?php echo e(url('sign-up')); ?>">Sign Up Here</a></p>
                                 </div>
 
                             </div>
@@ -279,7 +393,7 @@
                                 </div>
 
                                 <div class="col-sm-6">
-                                    <button type="submit" class="btn btn-default btn-block">Proceed &raquo;</button>
+                                    <button type="submit" class="btn btn-success btn-block">Proceed &raquo;</button>
                                 </div>
 
                                 <div class="col-sm-12">

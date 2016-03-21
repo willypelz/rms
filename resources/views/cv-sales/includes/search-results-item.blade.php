@@ -45,8 +45,19 @@
                     <a href="cv.html" class="btn btn-line btn-sm" data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">Preview CV</a>
 
                     <span class="purchase-action">
-                          <a href="" class="btn btn-success btn-sm btn-cv-buy" data-count="1" data-cost="500"><i class="fa fa-plus"></i> Purchase CV for N500</a>
-                        <button class="btn btn-line btn-sm btn-cv-discard collapse" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
+                          <?php 
+                            if($ids != null)
+                              $in_cart = in_array($cv['id'], $ids);
+                            else
+                              $in_cart = "";
+                          ?>
+                          
+                          @if($in_cart)
+                            <button id="cartRemove{{ $cv['id'] }}" class="btn btn-line btn-sm btn-cv-discard" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
+                          @else
+                            <a href="" id="cartAdd{{ $cv['id'] }}" class="btn btn-success btn-sm btn-cv-buy" data-count="1" data-cost="500"><i class="fa fa-plus"></i> Purchase CV for N500</a>
+                            <button id="cartRemove{{ $cv['id'] }}" class="btn btn-line btn-sm btn-cv-discard collapse" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
+                          @endif
                   </span>
 
                 </p>
@@ -55,6 +66,66 @@
 
 </li><hr>
 @include('cv-sales.includes.cv-preview')
+
+<script>
+    $(document).ready(function(){
+
+        var id = "{{ $cv['id'] }}";
+        var url = "{{ route('cart') }}"
+        
+        $("#cartAdd"+id).click(function(){
+            // console.log(url)
+            $.ajax
+            ({
+              type: "POST",
+              url: url,
+              data: ({ rnd : Math.random() * 100000, cv_id: id, type:'add', name:"{{ $cv['first_name']. " " . $cv['last_name'] }}", 'qty':1, 'price':500, "_token":"{{ csrf_token() }}"}),
+              success: function(response){
+                
+                console.log(response);
+                
+              }
+          });
+
+        });
+
+
+        $("#cartRemove"+id).click(function(){
+            // console.log(url)
+            $.ajax
+            ({
+              type: "POST",
+              url: url,
+              data: ({ rnd : Math.random() * 100000, cv_id: id, type:'remove', "_token":"{{ csrf_token() }}"}),
+              success: function(response){
+                
+                console.log(response);
+                
+              }
+          });
+
+        });
+
+        $("#clearCart").click(function(){
+            // console.log(url)
+            $.ajax
+            ({
+              type: "POST",
+              url: url,
+              data: ({ rnd : Math.random() * 100000, cv_id: id, type:'clear', "_token":"{{ csrf_token() }}"}),
+              success: function(response){
+                
+                console.log(response);
+                
+              }
+          });
+
+        });
+
+
+    })
+
+</script>
 @endforeach
 
 @else

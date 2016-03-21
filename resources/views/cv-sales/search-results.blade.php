@@ -69,27 +69,38 @@
             <!-- End of col-9 -->
 
             <div class="col-sm-4">
+                @if(empty($items))
                 <div id="collapseWellCart" class="well well-cart animated slideInUp collapse">
+                @else
+                <div id="collapseWellCart" class="well well-cart animated slideInUp">
+                @endif
                     <div class="row">
                         <div class="col-md-3 hidden-xs hidden-sm small text-light text-muted">Cart<br>
                               <i class="fa fa-shopping-cart fa-3x"></i>
-                            </span>
                         </div>
                         <div class="col-md-4 col-xs-3 col-sm-3 small text-left text-muted text-light"> Items<br>
                             <span id="item-count">
+                                  @if(empty($items))
                                     <span class="bounceInDown fa-2x" style="display: inline-block;">0</span>
+                                  @else  
+                                    <span class="bounceInDown fa-2x" style="display: inline-block;">{{ $many }}</span>
+                                  @endif
                             </span>
                         </div>
                         <div class="col-md-5 col-xs-9 col-sm-9 small text-right text-muted text-light"> Cost<br>
                             <span class="pull-right fa-2x">
                                 &#8358; 
-                                <span id="price-total" >0</span> 
+                                  @if(empty($items))
+                                    <span id="price-total" >0</span> 
+                                  @else
+                                    <span id="price-total" >{{ $many * 500 }}</span> 
+                                    @endif
                             </span>
                         </div>
                     </div><hr>
                     <div class="row">
-                        <div class="col-xs-6"><a href="#" target="_blank" data-toggle="modal" data-target="#myInvoice" class="btn btn-block btn-danger btn-sm btn-cart-checkout"> Checkout &raquo;</a></div>
-                        <div class="col-xs-6"><button class="btn btn-block btn-line btn-sm btn-cart-clear text-muted"><i class="fa fa-close"></i> Clear</button></div>
+                        <div class="col-xs-6"><a id="checkout" href="#" target="_blank" data-toggle="modal" data-target="#myInvoice" class="btn btn-block btn-danger btn-sm btn-cart-checkout"> Checkout &raquo;</a></div>
+                        <div class="col-xs-6"><button id="clearCart" class="btn btn-block btn-line btn-sm btn-cart-clear text-muted"><i class="fa fa-close"></i> Clear</button></div>
                     </div>
                 </div>
               @if( $result['response']['numFound'] > 0 )
@@ -132,7 +143,7 @@
                               @foreach( $result['facet_counts']['facet_fields']['marital_status'] as $key => $marital_status )
                                   @if( $key % 2 == 0 &&  $marital_status != ''  && $marital_status != "0"  )
                                     
-                                    <label class="normal"><input type="checkbox" class="" data-field="marital_status" data-value="{{ $marital_status }}"> {{ ucwords( $marital_status )." (".$result['facet_counts']['facet_fields']['marital_status'][ $key + 1 ].")" }}</label> <br>
+                                    <label class="normal"><input type="checkbox" class="see-more-filter" data-field="marital_status" data-value="{{ $marital_status }}"> {{ ucwords( $marital_status )." (".$result['facet_counts']['facet_fields']['marital_status'][ $key + 1 ].")" }}</label> <br>
                                   @else
 
                                     {{--*/ @$other_marital_status += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /*--}}
@@ -234,6 +245,50 @@
             </div>
         </div>
     </section>
+
+
+
+
+<div class="modal fade" tabindex="-1" id="myInvoice" role="dialog" aria-labelledby="myInvoice">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+        <h3 class="text-center">Confirm your order</h3>
+
+          <div id="invoice-res">
+            
+          </div>
+   
+        <script src="http://malsup.github.com/jquery.form.js"></script> 
+
+      <script>
+
+                       var url = "{{ route('ajax_cart') }}";
+
+             $("#contentArea").html('<img src="{{ asset("img/wheel.gif") }}" width="100px" /> please wait...');
+                          
+                            $("#checkout").click(function(){
+                                  // console.log(url)
+                                  $.ajax
+                                  ({
+                                    type: "POST",
+                                    url: url,
+                                    data: ({ rnd : Math.random() * 100000, "_token":"{{ csrf_token() }}"}),
+                                    success: function(response){
+                                      
+                                      // console.log(response);
+                                      $('#invoice-res').html(response)
+                                      
+                                    }
+                                });
+
+                              });
+
+      </script>
+
+    </div>
+  </div>
+</div>
 
 <script type="text/javascript">
     $(document).ready(function(){

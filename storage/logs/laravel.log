@@ -6563,3 +6563,9 @@ Stack trace:
 [2016-03-21 19:19:44] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Cart' not found' in /Applications/AMPPS/www/seamlesshiring/app/Http/Controllers/CvSalesController.php:34
 Stack trace:
 #0 {main}  
+[2016-03-21 19:29:15] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Call to undefined method App\Libraries\Utilities::getCartCount()' in /Applications/AMPPS/www/seamlesshiring/storage/framework/views/848cbc4a073a28d48da5e3f2a439f83e1d3653a4.php:24
+Stack trace:
+#0 {main}  
+[2016-03-21 19:29:20] production.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Cart' not found' in /Applications/AMPPS/www/seamlesshiring/app/Http/Controllers/CvSalesController.php:34
+Stack trace:
+#0 {main}  

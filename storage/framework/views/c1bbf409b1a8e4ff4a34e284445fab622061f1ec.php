@@ -46,8 +46,19 @@
                     <a href="cv.html" class="btn btn-line btn-sm" data-toggle="modal" data-target="#showCv[data-user='<?php echo e(@$cv['id']); ?>']">Preview CV</a>
 
                     <span class="purchase-action">
-                          <a href="" class="btn btn-success btn-sm btn-cv-buy" data-count="1" data-cost="500"><i class="fa fa-plus"></i> Purchase CV for N500</a>
-                        <button class="btn btn-line btn-sm btn-cv-discard collapse" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
+                          <?php 
+                            if($ids != null)
+                              $in_cart = in_array($cv['id'], $ids);
+                            else
+                              $in_cart = "";
+                          ?>
+                          
+                          <?php if($in_cart): ?>
+                            <button id="cartRemove<?php echo e($cv['id']); ?>" class="btn btn-line btn-sm btn-cv-discard" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
+                          <?php else: ?>
+                            <a href="" id="cartAdd<?php echo e($cv['id']); ?>" class="btn btn-success btn-sm btn-cv-buy" data-count="1" data-cost="500"><i class="fa fa-plus"></i> Purchase CV for N500</a>
+                            <button id="cartRemove<?php echo e($cv['id']); ?>" class="btn btn-line btn-sm btn-cv-discard collapse" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
+                          <?php endif; ?>
                   </span>
 
                 </p>
@@ -56,6 +67,66 @@
 
 </li><hr>
 <?php echo $__env->make('cv-sales.includes.cv-preview', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+<script>
+    $(document).ready(function(){
+
+        var id = "<?php echo e($cv['id']); ?>";
+        var url = "<?php echo e(route('cart')); ?>"
+        
+        $("#cartAdd"+id).on('click',function(){
+            // console.log(url)
+            $.ajax
+            ({
+              type: "POST",
+              url: url,
+              data: ({ rnd : Math.random() * 100000, cv_id: id, type:'add', name:"<?php echo e($cv['first_name']. " " . $cv['last_name']); ?>", 'qty':1, 'price':500, "_token":"<?php echo e(csrf_token()); ?>"}),
+              success: function(response){
+                
+                console.log(response);
+                
+              }
+          });
+
+        });
+
+
+        $("#cartRemove"+id).click(function(){
+            // console.log(url)
+            $.ajax
+            ({
+              type: "POST",
+              url: url,
+              data: ({ rnd : Math.random() * 100000, cv_id: id, type:'remove', "_token":"<?php echo e(csrf_token()); ?>"}),
+              success: function(response){
+                
+                console.log(response);
+                
+              }
+          });
+
+        });
+
+        $("#clearCart").click(function(){
+            // console.log(url)
+            $.ajax
+            ({
+              type: "POST",
+              url: url,
+              data: ({ rnd : Math.random() * 100000, cv_id: id, type:'clear', "_token":"<?php echo e(csrf_token()); ?>"}),
+              success: function(response){
+                
+                console.log(response);
+                
+              }
+          });
+
+        });
+
+
+    })
+
+</script>
 <?php endforeach; ?>
 
 <?php else: ?>

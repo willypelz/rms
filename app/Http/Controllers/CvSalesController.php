@@ -53,10 +53,20 @@ class CvSalesController extends Controller
 
             $this->search_params['q'] = $request->search_query;
             $this->search_params['filter_query'] = @$request->filter_query;//dd($this->search_params);
+
+            $cart = Cart::content();
+            $count = Cart::count(false); 
+
+             foreach ($cart as $k) {
+                $ids[] = ($k->id);
+            }
+
+            if(empty($ids))
+                $ids = null;
             
             $response = Solr::search_resume($this->search_params);
 
-            return view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query ]);
+            return view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids ]);
     }
 
     public function getCvPreview(Request $request)

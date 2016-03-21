@@ -112,6 +112,10 @@ Route::group(['middleware' => 'web'], function () {
             return view('cv-sales.search-results');
         });
 
+         Route::post('filter_search', 'CvSalesController@filter_search');
+
+
+        
         /**
          * Post Variable for cv search form search box
          */

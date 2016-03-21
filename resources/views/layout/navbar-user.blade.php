@@ -8,31 +8,26 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<?php echo e(url('dashboard')); ?>"><i class="fa fa-skype"></i>&nbsp; Seamless Hiring</a>
+                <a class="navbar-brand" href="{{ url('dashboard') }}"><b><i class="fa fa-skype"></i>&nbsp; Seamless Hiring</b></a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="active">
-                        <a class="" href="<?php echo e(url('dashboard')); ?>">Dashboard &nbsp;<i class="fa fa-tachometer"></i></a>
-                    </li>
-
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" href="cv-search.php" data-toggle="dropdown">Candidates &nbsp; <i class="fa fa-caret-down no-margin"></i></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="<?php echo e(url('cv_pool')); ?>">All my CVs</a></li>
-                            <li><a href="<?php echo e(url('cv_saved')); ?>">Saved Cvs</a></li>
-                            <li><a href="<?php echo e(url('cv_purchased')); ?>">Purchased Cvs</a></li>
-                        </ul>
+                        <a class="" href="{{ url('dashboard') }}">Dashboard &nbsp;<i class="fa fa-tachometer"></i></a>
                     </li>
 
                     <li class="">
-                        <a class="" href="<?php echo e(url('jobs/list')); ?>">My Jobs <i class="fa fa-briefcase mask"></i></a>
+                        <a class="" href="{{ url('cv/search-results') }}">Talent Pool <i class="fa fa-users mask"></i></a>
+                    </li>
+
+                    <li class="">
+                        <a class="" href="{{ url('jobs/list') }}">My Jobs <i class="fa fa-briefcase mask"></i></a>
                     </li>
 
 
                     <li class="">
-                        <a class="" href="<?php echo e(url('jobs/create')); ?>">My Company <i class="fa fa-building mask"></i></a>
+                        <a class="" href="{{ url('jobs/create') }}">My Company <i class="fa fa-building mask"></i></a>
                     </li>
 
                 </ul>
@@ -42,14 +37,12 @@
                     <li class="dropdown">
                         <a class="animated tada dropdown-toggle" id="dropBell" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <span class="label label-danger label-sm">3</span>
-                            <i class="fa fa-shopping-cart fa-lg"></i>
+                            <i class="fa fa-bell fa-lg"></i>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropBell"> 
-                            <li><a href="setting.php">View Cart</a></li> 
-
+                            <li><a href="setting.php">Account Setting</a></li> 
                             <li role="separator" class="divider"></li> 
-
-                            <li class="col-xs-12"><button class="btn btn-block btn-danger" href="_index.php">Pay Now</button></li> 
+                            <li><a href="_index.php">Logout</a></li> 
                         </ul> 
                     </li>
                     <!-- <li>
@@ -63,7 +56,7 @@
                             <ul class="dropdown-menu" aria-labelledby="drop3"> 
                                 <li><a href="setting.php">Account Setting</a></li> 
                                 <li role="separator" class="divider"></li> 
-                                <li><a href="<?php echo e(url('logout')); ?>">Logout</a></li> 
+                                <li><a href="{{ url('logout') }}">Logout</a></li> 
                             </ul> 
                         </li>
                     </ul>

@@ -2,7 +2,10 @@
 
 @section('content')
 
+{{-- dd($result) --}}
+<pre>
 
+</pre>
 <section class="s-div dark">
         <div class="container">
 
@@ -13,10 +16,11 @@
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-12">
-                    <form action="cv-search.php" class="form-group"><br>
+                    <form action="{{ url('cv/search') }}" class="form-group" method="POST"><br>
+                      {!! csrf_field() !!}
                        <div class="form-lg">
                          <div class="col-xs-10">
-                           <div class="row"><input placeholder="Find something you want" value="Frontend Developer" class="form-control input-lg input-talent" type="text"></div>
+                           <div class="row"><input placeholder="Find something you want" name="search_query" id="search_query" value="{{ $search_query }}" class="form-control input-lg input-talent" type="text"></div>
                          </div>
                          <div class="col-xs-2">
                            <div class="row">
@@ -28,6 +32,7 @@
                          </div>
                        </div>
                     </form>
+
                 </div>
             </div>
 
@@ -43,7 +48,7 @@
                     <div class="content rounded ">
 
         <div class="row">
-
+{{-- file_get_contents("http://127.0.0.1:5000/extract?file_name=".( "http://files.insidify.com/uploads/cv/adeigbe_musibau_2015.doc" ) ) --}}
 
 
             <div class="col-sm-8">
@@ -51,77 +56,13 @@
                   <div class="" id="search-results">
 
                     <ul class="search-results">
-
-                      @if( $result['response']['numFound'] > 0 )
                       
-                      @foreach( $result['response']['docs'] as $cv )
+                       @include('cv-sales.includes.search-results-item')
 
-                        <li class="row">
-                              <span class="col-md-2 col-sm-3">
-                                  <a class="" href="my-cv.html">
-                                      <img class="media-object job-team-img" width="100%" src="{{ ( $cv['display_picture'] ) ? $cv['display_picture'] : asset('img/avatar-cv.jpg') }}" alt="">
-                                  </a>
-                              </span>
-
-                              <span class="col-md-10 col-sm-9">
-                                      <h4 class="text-muted">
-                                      <a href="my-cv.html">{{ ucwords( $cv['first_name']. " " . $cv['last_name'] ) }}</a>
-                                          <span class="small">
-                                          
-                                          @if(@$cv['dob'])
-                                            . {{ \App\Libraries\Utilities::getAge($cv['dob']) }}
-                                          
-                                          @endif
-                                          <!--<span class="label label-primary">INSIDIFY</span>-->
-                                      </h4>
-                                      <span> {{ @$cv['tagline'] }}</span>
-
-                                      <div class="description">
-                                          <p class="sub-box excerpt-p text-muted hidden"><i>bodied security men and women needed in a hotel. Must be smart and able to work in a corporate environment</i></p>
-                                          <br>
-                                        <p class="">
-                                              <!-- Single button -->
-                                          <div class="btn-group">
-                                            <button type="button" class="btn btn-line btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                              Save into Folder &nbsp; <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                              <li><a href="#"><i class="fa fa-folder-o"></i> Devlopers</a></li>
-                                              <li><a href="#"><i class="fa fa-folder-o"></i> Medicals</a></li>
-                                              <li><a href="#"><i class="fa fa-folder-o"></i> Fashion</a></li>
-
-                                              <li role="separator" class="divider"></li>
-
-                                              <li>
-                                                  <a href="#"><i class="fa fa-plus"></i> Create new</a>
-                                              </li>
-                                            </ul>
-                                          </div>
-                                            <a href="cv.html" class="btn btn-line btn-sm" data-toggle="modal" data-target="#cvViewModal">Preview CV</a>
-
-                                            <span class="purchase-action">
-                                                  <a href="" class="btn btn-success btn-sm btn-cv-buy" data-count="1" data-cost="500"><i class="fa fa-plus"></i> Purchase CV for N500</a>
-                                                <button class="btn btn-line btn-sm btn-cv-discard collapse" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
-                                          </span>
-
-                                        </p>
-                                      </div>
-                              </span>
-
-                        </li><hr>
-                        @endforeach
-
-                      @else
-                        <li class="row">
-                          <div class="text-center text-muted">
-                          <i class="fa fa-frown-o fa-3x"></i>
-                            <h3>Not Found. Please Search again.</h3>
-                          </div>
-                        </li>
-                      @endif
+                      
                       
                     </ul>
-
+                
               </div> <!--/tab-content-->
 
             </div>
@@ -151,6 +92,7 @@
                         <div class="col-xs-6"><button class="btn btn-block btn-line btn-sm btn-cart-clear text-muted"><i class="fa fa-close"></i> Clear</button></div>
                     </div>
                 </div>
+              @if( $result['response']['numFound'] > 0 )
               <div class="panel-group filter-div" id="accordion">
 
 
@@ -167,64 +109,110 @@
                       <div class="panel-body">
                           <p class="border-bottom-thin text-muted">Gender<i class="glyphicon glyphicon-user pull-right"></i></p>
                           <div class="checkbox-inline">
-                              <label class="normal"><input type="checkbox" class=""> Male</label> <br>
-                              <label class="normal"><input type="checkbox" class=""> Female</label> <br>
+                              {{--*/ $other_gender = 0  /*--}}
+                              @foreach( $result['facet_counts']['facet_fields']['gender'] as $key => $gender )
+                                  @if( $key % 2 == 0 && ( $gender == 'male' || $gender == 'female' ))
+                                    
+                                    <label class="normal"><input type="checkbox" class="" data-field="gender" data-value="{{ $gender }}"> {{ ucwords( $gender )." (".$result['facet_counts']['facet_fields']['gender'][ $key + 1 ].")" }}</label> <br>
+                                  @else
+
+                                    {{--*/ @$other_gender += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /*--}}
+
+                                  @endif
+                              @endforeach
+
+                              <label class="normal"><input type="checkbox" class="" data-field="gender" data-value="null"> unspecified {{ " (".$other_gender.")" }}</label> <br>
                           </div>
 
                           <p>--</p>
 
-                        <p class="border-bottom-thin text-muted">Location<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+                        <p class="border-bottom-thin text-muted">Marital Status<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
                           <div class="checkbox-inline">
-                              <label class="normal"><input type="checkbox" class=""> Lagos</label> <br>
-                              <label class="normal"><input type="checkbox" class=""> Abuja</label> <br>
-                              <label class="normal"><input type="checkbox" class=""> Ife City</label> <br>
+                              {{--*/ $other_marital_status = 0  /*--}}
+                              @foreach( $result['facet_counts']['facet_fields']['marital_status'] as $key => $marital_status )
+                                  @if( $key % 2 == 0 &&  $marital_status != ''  && $marital_status != "0"  )
+                                    
+                                    <label class="normal"><input type="checkbox" class="" data-field="marital_status" data-value="{{ $marital_status }}"> {{ ucwords( $marital_status )." (".$result['facet_counts']['facet_fields']['marital_status'][ $key + 1 ].")" }}</label> <br>
+                                  @else
+
+                                    {{--*/ @$other_marital_status += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /*--}}
+
+                                  @endif
+                              @endforeach
+
+                              <label class="normal"><input type="checkbox" class=""> unspecified {{ " (".$other_marital_status.")" }}</label> <br>
                           </div>
+                        
+                        <p>--</p>
+
+                        <p class="border-bottom-thin text-muted">School<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+                          <div class="checkbox-inline">
+                              {{--*/ $other_edu_school = 0  /*--}}
+                              @foreach( $result['facet_counts']['facet_fields']['edu_school'] as $key => $edu_school )
+                                  @if( $key % 2 == 0 &&  $edu_school != ''  && $edu_school != "0"  )
+                                    
+                                    <label class="normal"><input type="checkbox" class="" data-field="edu_school" data-value="{{ $edu_school }}"> {{ ucwords( $edu_school )." (".$result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ].")" }}</label> <br>
+                                  @else
+
+                                    {{--*/ @$other_edu_school += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /*--}}
+
+                                  @endif
+                              @endforeach
+
+                              <label class="normal"><input type="checkbox" class=""> unspecified {{ " (".$other_edu_school.")" }}</label> <br>
+                          </div>
+
+
+                        <p>--</p>
+
+                        <p class="border-bottom-thin text-muted">Company<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+                          <div class="checkbox-inline">
+                              {{--*/ $other_exp_company = 0  /*--}}
+                              @foreach( $result['facet_counts']['facet_fields']['exp_company'] as $key => $exp_company )
+                                  @if( $key % 2 == 0 &&  $exp_company != ''  && $exp_company != "0"  )
+                                    
+                                    <label class="normal"><input type="checkbox" class="" data-field="exp_company" data-value="{{ $exp_company }}"> {{ ucwords( $exp_company )." (".$result['facet_counts']['facet_fields']['exp_company'][ $key + 1 ].")" }}</label> <br>
+                                  @else
+
+                                    {{--*/ @$other_exp_company += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /*--}}
+
+                                  @endif
+                              @endforeach
+
+                              <label class="normal"><input type="checkbox" class=""> unspecified {{ " (".$other_exp_company.")" }}</label> <br>
+                          </div>
+
+
+                        <p>--</p>
+
+                        <p class="border-bottom-thin text-muted">Grade<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+                          <div class="checkbox-inline">
+                              {{--*/ $other_edu_grade = 0  /*--}}
+                              @foreach( $result['facet_counts']['facet_fields']['edu_grade'] as $key => $edu_grade )
+                                  @if( $key % 2 == 0 &&  $edu_grade != ''  && $edu_grade != "0" && $edu_grade != "-Choose-" )
+                                    
+                                    <label class="normal"><input type="checkbox" class="" data-field="edu_grade" data-value="{{ $edu_grade }}"> {{ ucwords( $edu_grade )." (".$result['facet_counts']['facet_fields']['edu_grade'][ $key + 1 ].")" }}</label> <br>
+                                  @else
+
+                                    {{--*/ @$other_edu_grade += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /*--}}
+
+                                  @endif
+                              @endforeach
+
+                              <label class="normal"><input type="checkbox" class=""> unspecified {{ " (".$other_edu_grade.")" }}</label> <br>
+                          </div>
+                          <div><a href="#" class="more-link read-more-show "><small>See More</small></a></div>
+                          
                           <!-- <div><small class="">&nbsp; <a href="" class="">See More</a></small></div> -->
 
-                <div><a href="#" class="more-link read-more-show hide"><small>See More</small></a>
-                    <div class="read-more-content checkbox-inline">
-                        <label class="normal">
-                            <input type="checkbox" class="">Lagos</label>
-                        <br>
-                        <label class="normal">
-                            <input type="checkbox" class="">Abuja</label>
-                        <br>
-                        <label class="normal">
-                            <input type="checkbox" class="">Ife City</label>
-                        <br>
-                        <a href="#" class="less-link read-more-hide hide"><small>Less</small></a>
-                    </div>
-                </div>
 
 
-                          <p>--</p>
-
-                        <p class="border-bottom-thin text-muted">Company<i class="glyphicon glyphicon-briefcase pull-right"></i></p>
-                          <div class="checkbox-inline">
-                              <label class="normal"><input type="checkbox" class=""> Administrator</label> <br>
-                              <label class="normal"><input type="checkbox" class=""> Creative Director</label> <br>
-                              <label class="normal"><input type="checkbox" class=""> Head Officer</label> <br>
-                          </div>
-                          <div><small class="">&nbsp; <a href="">See More</a></small></div>
-
-                
-                          <p>--</p>
-
-                          <p class="border-bottom-thin text-muted">Job Type<i class="glyphicon glyphicon-paperclip pull-right"></i></p>
-                          <div class="checkbox-inline">
-                              <label class="normal"><input type="checkbox" class=""> Corporate</label> <br>
-                              <label class="normal"><input type="checkbox" class=""> Assistant</label> <br>
-                              <label class="normal"><input type="checkbox" class=""> Officer</label> <br>
-                          </div>
-                          <div><small class="">&nbsp; <a href="">See More</a></small></div>
-                
-                          <p>--</p>
-                          <p class="border-bottom-thin text-muted">Age Group<i class="glyphicon glyphicon-pushpin pull-right"></i></p>
 
                       </div>
                     </div>
                   </div>
                 </div>
+                @endif
             </div> <!--/col-sm-4-->
 
             </div>
@@ -246,4 +234,35 @@
             </div>
         </div>
     </section>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        filters = [];
+
+        $('.filter-div input[type=checkbox').on('change',function(){
+            console.log("changed");
+
+            var filter = $(this).attr('data-field') + ':"' + $(this).attr('data-value') + '"';
+            var index = $.inArray( filter, filters );
+            console.log( filter + "---" + index );
+            if( index == -1 )
+            {
+              filters.push( filter );
+            }
+            else
+            {
+                filters.splice(index, 1);
+            }
+
+            $('.search-results').html("Loading");
+            $.post("{{ url('cv/filter_search') }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
+                //console.log(data);
+                $('.search-results').html(data);
+            });
+        });
+    });
+</script>
+
+
 @endsection
+

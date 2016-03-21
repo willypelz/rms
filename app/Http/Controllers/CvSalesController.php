@@ -9,6 +9,8 @@ use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use App\Libraries\Solr;
 use Cart;
+use Auth;
+use Mail;
 
 
 class CvSalesController extends Controller
@@ -66,6 +68,7 @@ class CvSalesController extends Controller
         }
     }
 
+    /* CART TESTING */
     public function CartDetails(Request $request){
         Cart::destroy();
     }
@@ -75,6 +78,8 @@ class CvSalesController extends Controller
         dd($cart);
     }
 
+    // END OF CART TESTING
+
     public function Ajax_cart(){
         $items = Cart::content();
         $view = view('cv-sales.ajax_cart', compact('items'));
@@ -82,6 +87,13 @@ class CvSalesController extends Controller
     }
 
     public function Ajax_checkout(){
+
+        $user = Auth::user();
+        if(empty($user)){
+            $view = view('auth.ajax_login');
+            return $view;
+        }
+
         $items = Cart::content();
         
         $total_amount = 0;
@@ -107,17 +119,24 @@ class CvSalesController extends Controller
         }
         $order_id = $order->id;
 
-        $view = view('cv-sales.ajax_checkout', compact('items', 'order_id', 'total_amount'));
+       Mail::send('emails.cv-sales.invoice', ['user' => $user], function ($m) use ($user) {
+            $m->from('alerts@insidify.com', 'Your Application');
+
+            $m->to('lanaayodele@gmail.com', 'Ayo')->subject('Your Reminder!');
+        });
+       
+        $view = view('cv-sales.checkout_ajax', compact('items', 'order_id', 'total_amount'));
         return $view;
     }
 
     public function Payment(Request $request){
 
+        // dd('Yess');
         $items = Cart::content();
         $type = ($request->payment_option);
         $order_id = $request->order_id;
         $total_amount = $request->amount.'00';
-        return view('cv-sales.payment', compact('type', 'items', 'order_id', 'total_amount'));
+        return view('cv-sales.pay', compact('type', 'items', 'order_id', 'total_amount'));
     }
     
 
@@ -130,5 +149,17 @@ class CvSalesController extends Controller
         ]);
 
         return $transaction;
+    }
+
+    public function TestEmail(){
+
+        $user = Auth::user();
+        // dd($user);
+        Mail::send('emails.cv-sales.invoice', ['user' => $user], function ($m) use ($user) {
+            $m->from('alerts@insidify.com', 'Your Application');
+
+            $m->to('lanaayodele@gmail.com', 'Ayo')->subject('Your Reminder!');
+        });
+
     }
 }

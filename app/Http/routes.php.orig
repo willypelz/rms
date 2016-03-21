@@ -49,6 +49,8 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::post('sign-up', 'Auth\AuthController@register');
     
+<<<<<<< HEAD
+=======
     Route::match(['get', 'post'], 'auth/ajax_login', ['uses' => 'Auth\AuthController@AjaxLogin', 'as' => 'ajax_login']);
 
 
@@ -61,6 +63,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'transactions', ['uses' => 'CvSalesController@Transactions', 'as' => 'transactions']);
     Route::match(['get', 'post'], 'emails-test', ['uses' => 'CvSalesController@TestEmail', 'as' => 'emails']);
 
+>>>>>>> dev
 	// Route::any('log-in', function () {
 	//     return view('auth.login');
 	// });

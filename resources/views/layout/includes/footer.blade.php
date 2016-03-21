@@ -19,32 +19,24 @@
     
     //--------Buy CV and update cart--------//
 
-    var cv_cart = 0;
+    //var cv_cart = 0;
     var p_total = 0;
+    var cart_count = {{ \App\Libraries\Utilities::getCartCount() }};
 
     $('.btn-cv-buy').on('click',function(e){
 
-
-        var cart_count = "{{ \App\Libraries\Utilities::getCartCount() }}"
         
-        console.log(cart_count);
-        if(cart_count == 0){
-            cv_cart++;
-            p_total += 500;
-            console.log(cv_cart);
-        }else{
-            cv_cart = Number(cart_count) + 1;
-            p_total = 500 * cv_cart;
-            console.log(cv_cart);
-        }
-
+        
+        cart_count = Number(cart_count) + 1;
+        p_total = 500 * cart_count;
+        
         e.preventDefault();
         $(this).parents('.purchase-action').find('.btn-cv-discard').removeClass('collapse');
         $(this).addClass('collapse');
        $('#collapseWellCart').removeClass('collapse');
        $(".btn-cart-checkout").removeClass("disabled");
 
-       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block; color:#333"><b>'+cv_cart+'</b></span>');
+       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block; color:#333"><b>'+cart_count+'</b></span>');
        $('#price-total').html('<span class="animated zoomIn" style="display: inline-block; color:#333"><b>'+p_total+'</b></span>');
 
     });
@@ -53,19 +45,20 @@
     //--------Remove item from Cart--------//
     $('.btn-cv-discard').on('click',function(e){
 
-        var cart_count = "{{ \App\Libraries\Utilities::getCartCount() }}"
-        console.log(cart_count);
-        var ptoat = Number(cart_count) * 500;
+        console.log('cart count is '+cart_count);
+        
+        cart_count = Number(cart_count) - 1;
+        p_total = 500 * cart_count;
 
-        cv_cart = Number(cart_count) - 1;
-        p_total = ptoat - 500;
-        console.log(cv_cart);
+        //console.log('New cart count is '+cv_cart+' and New cost is '+p_total);
+
+       //  //console.log(cv_cart);
 
         e.preventDefault();
         $(this).parents('.purchase-action').find('.btn-cv-buy').removeClass('collapse');
         $(this).addClass('collapse');
 
-       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block; color:#333"><b>'+cv_cart+'</b></span>');
+       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block; color:#333"><b>'+cart_count+'</b></span>');
        $('#price-total').html('<span class="animated zoomIn" style="display: inline-block; color:#333"><b>'+p_total+'</b></span>');
 
        if(p_total == 0){
@@ -80,16 +73,15 @@
 
     $('.btn-cart-clear').on('click',function(e){
 
-        cv_cart = 0;
+        cart_count = 0;
         p_total = 0;
-        console.log(cv_cart);
-
+        
         e.preventDefault();
         $('.btn-cv-buy').removeClass('collapse');
         $('.btn-cv-discard').addClass('collapse');
         // $(".btn-cart-checkout").addClass("disabled");
 
-       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block;"><b>'+cv_cart+'</b></span>');
+       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block;"><b>'+cart_count+'</b></span>');
        $('#price-total').html('<span class="animated zoomIn" style="display: inline-block;">'+p_total+'</span>');
 
 

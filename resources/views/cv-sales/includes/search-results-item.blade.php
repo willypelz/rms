@@ -4,6 +4,7 @@
 <li class="row">
       <span class="col-md-2 col-sm-3">
           <a class="" href="my-cv.html">
+
               <img class="media-object job-team-img" width="100%" src="{{ ( @$cv['display_picture'] ) ? $cv['display_picture'] : asset('img/avatar-cv.jpg') }}" alt="">
           </a>
       </span>
@@ -42,7 +43,7 @@
                       </li>
                     </ul>
                   </div>
-                    <a href="cv.html" class="btn btn-line btn-sm" data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">Preview CV</a>
+                    <a href="cv.html" class="btn btn-line btn-sm" id='showCvBtn' data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">Preview CV</a>
 
                     <span class="purchase-action">
                           <?php 
@@ -65,8 +66,8 @@
       </span>
 
 </li><hr>
-@include('cv-sales.includes.cv-preview')
-
+<div class="modal fade no-border" id="showCv" data-user="{{ @$cv['id'] }}" tabindex="-1" role="dialog" aria-labelledby="cvViewModalLabel" aria-hidden="false">
+</div>
 <script>
     $(document).ready(function(){
 

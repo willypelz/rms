@@ -29,6 +29,7 @@ class CvSalesController extends Controller
     public function search(Request $request)
     {
             $this->search_params['q'] = $request->search_query;
+            $this->search_params['filter_query'] = @$request->filter_query;
             $response = Solr::search_resume($this->search_params);
 
             $cart = Cart::content();
@@ -44,14 +45,26 @@ class CvSalesController extends Controller
             if(empty($ids))
                 $ids = null;
         // $in_cart = in_array('26618', $ids);
-
-            return view('cv-sales.search-results',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids]);
+            if($request->ajax())
+            {
+                $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids])->render();    
+                $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query])->render();
+                return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters ] );
+                
+            }
+            else{
+                return view('cv-sales.search-results',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids ]);
+            }
+            
     }
+
+
+
 
     public function filter_search(Request $request)
     {
 
-            $this->search_params['q'] = $request->search_query;
+            /*$this->search_params['q'] = $request->search_query;
             $this->search_params['filter_query'] = @$request->filter_query;//dd($this->search_params);
 
             $cart = Cart::content();
@@ -66,14 +79,17 @@ class CvSalesController extends Controller
             
             $response = Solr::search_resume($this->search_params);
 
-            return view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids ]);
+            return view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids ]);*/
     }
 
     public function getCvPreview(Request $request)
     {
         //http://127.0.0.1:5000/extract
         // $text = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );
-        return file_get_contents("http://127.0.0.1:5000/extract" );
+        $filepath = public_path("adeigbe_musibau_2015.doc");
+        $cv = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );
+
+        return view('cv-sales.includes.cv-preview',['cv' => $cv ]);
     }
 
     public function Cart(Request $request){

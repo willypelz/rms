@@ -125,7 +125,7 @@ Route::group(['middleware' => 'web'], function () {
         });
 
          Route::post('filter_search', 'CvSalesController@filter_search');
-
+         Route::post('get_cv_preview', 'CvSalesController@getCvPreview');
 
         
         /**

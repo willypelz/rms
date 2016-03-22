@@ -1,5 +1,8 @@
 <?php $__env->startSection('content'); ?>
-
+<style type="text/css">
+  .see-more{display: none;}
+  .see-more-shown{ display: block; }
+</style>
 
             <script src="http://malsup.github.com/jquery.form.js"></script> 
 
@@ -9,7 +12,7 @@
             <div class="row">
                 <div class="col-md-6 hidden-sm hidden-xs">
                     <div class=""><br>
-                        <h4 class="text-white push-down text-uppercase text-brandon"> <i class="fa fa-street-view"></i> Talent Pool</h4>
+                        <h4 class="text-white push-down text-uppercase text-brandon"> <i class="fa fa-street-view"></i> Search Results</h4>
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-12">
@@ -102,127 +105,11 @@
                         <div class="col-xs-6"><button id="clearCart" class="btn btn-block btn-line btn-sm btn-cart-clear text-muted"><i class="fa fa-close"></i> Clear</button></div>
                     </div>
                 </div>
-              <?php if( $result['response']['numFound'] > 0 ): ?>
-              <div class="panel-group filter-div" id="accordion">
-
-
-                  <div class="panel panel-default" style="border-width: 3px">
-                    <div class="panel-heading">
-                      <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                          Filter Result here
-                        </a>
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="pull-right"><img src="<?php echo e(asset('img/up.png')); ?>"></a>
-                      </h4>
-                    </div>
-                    <div id="collapseOne" class="panel-collapse collapse in">
-                      <div class="panel-body">
-                          <p class="border-bottom-thin text-muted">Gender<i class="glyphicon glyphicon-user pull-right"></i></p>
-                          <div class="checkbox-inline">
-                              <?php /**/ $other_gender = 0  /**/ ?>
-                              <?php foreach( $result['facet_counts']['facet_fields']['gender'] as $key => $gender ): ?>
-                                  <?php if( $key % 2 == 0 && ( $gender == 'male' || $gender == 'female' )): ?>
-                                    
-                                    <label class="normal"><input type="checkbox" class="" data-field="gender" data-value="<?php echo e($gender); ?>"> <?php echo e(ucwords( $gender )." (".$result['facet_counts']['facet_fields']['gender'][ $key + 1 ].")"); ?></label> <br>
-                                  <?php else: ?>
-
-                                    <?php /**/ @$other_gender += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /**/ ?>
-
-                                  <?php endif; ?>
-                              <?php endforeach; ?>
-
-                              <label class="normal"><input type="checkbox" class="" data-field="gender" data-value="null"> unspecified <?php echo e(" (".$other_gender.")"); ?></label> <br>
-                          </div>
-
-                          <p>--</p>
-
-                        <p class="border-bottom-thin text-muted">Marital Status<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
-                          <div class="checkbox-inline">
-                              <?php /**/ $other_marital_status = 0  /**/ ?>
-                              <?php foreach( $result['facet_counts']['facet_fields']['marital_status'] as $key => $marital_status ): ?>
-                                  <?php if( $key % 2 == 0 &&  $marital_status != ''  && $marital_status != "0"  ): ?>
-                                    
-                                    <label class="normal"><input type="checkbox" class="see-more-filter" data-field="marital_status" data-value="<?php echo e($marital_status); ?>"> <?php echo e(ucwords( $marital_status )." (".$result['facet_counts']['facet_fields']['marital_status'][ $key + 1 ].")"); ?></label> <br>
-                                  <?php else: ?>
-
-                                    <?php /**/ @$other_marital_status += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /**/ ?>
-
-                                  <?php endif; ?>
-                              <?php endforeach; ?>
-
-                              <label class="normal"><input type="checkbox" class=""> unspecified <?php echo e(" (".$other_marital_status.")"); ?></label> <br>
-                          </div>
-                        
-                        <p>--</p>
-
-                        <p class="border-bottom-thin text-muted">School<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
-                          <div class="checkbox-inline">
-                              <?php /**/ $other_edu_school = 0  /**/ ?>
-                              <?php foreach( $result['facet_counts']['facet_fields']['edu_school'] as $key => $edu_school ): ?>
-                                  <?php if( $key % 2 == 0 &&  $edu_school != ''  && $edu_school != "0"  ): ?>
-                                    
-                                    <label class="normal"><input type="checkbox" class="" data-field="edu_school" data-value="<?php echo e($edu_school); ?>"> <?php echo e(ucwords( $edu_school )." (".$result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ].")"); ?></label> <br>
-                                  <?php else: ?>
-
-                                    <?php /**/ @$other_edu_school += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /**/ ?>
-
-                                  <?php endif; ?>
-                              <?php endforeach; ?>
-
-                              <label class="normal"><input type="checkbox" class=""> unspecified <?php echo e(" (".$other_edu_school.")"); ?></label> <br>
-                          </div>
-
-
-                        <p>--</p>
-
-                        <p class="border-bottom-thin text-muted">Company<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
-                          <div class="checkbox-inline">
-                              <?php /**/ $other_exp_company = 0  /**/ ?>
-                              <?php foreach( $result['facet_counts']['facet_fields']['exp_company'] as $key => $exp_company ): ?>
-                                  <?php if( $key % 2 == 0 &&  $exp_company != ''  && $exp_company != "0"  ): ?>
-                                    
-                                    <label class="normal"><input type="checkbox" class="" data-field="exp_company" data-value="<?php echo e($exp_company); ?>"> <?php echo e(ucwords( $exp_company )." (".$result['facet_counts']['facet_fields']['exp_company'][ $key + 1 ].")"); ?></label> <br>
-                                  <?php else: ?>
-
-                                    <?php /**/ @$other_exp_company += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /**/ ?>
-
-                                  <?php endif; ?>
-                              <?php endforeach; ?>
-
-                              <label class="normal"><input type="checkbox" class=""> unspecified <?php echo e(" (".$other_exp_company.")"); ?></label> <br>
-                          </div>
-
-
-                        <p>--</p>
-
-                        <p class="border-bottom-thin text-muted">Grade<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
-                          <div class="checkbox-inline">
-                              <?php /**/ $other_edu_grade = 0  /**/ ?>
-                              <?php foreach( $result['facet_counts']['facet_fields']['edu_grade'] as $key => $edu_grade ): ?>
-                                  <?php if( $key % 2 == 0 &&  $edu_grade != ''  && $edu_grade != "0" && $edu_grade != "-Choose-" ): ?>
-                                    
-                                    <label class="normal"><input type="checkbox" class="" data-field="edu_grade" data-value="<?php echo e($edu_grade); ?>"> <?php echo e(ucwords( $edu_grade )." (".$result['facet_counts']['facet_fields']['edu_grade'][ $key + 1 ].")"); ?></label> <br>
-                                  <?php else: ?>
-
-                                    <?php /**/ @$other_edu_grade += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /**/ ?>
-
-                                  <?php endif; ?>
-                              <?php endforeach; ?>
-
-                              <label class="normal"><input type="checkbox" class=""> unspecified <?php echo e(" (".$other_edu_grade.")"); ?></label> <br>
-                          </div>
-                          <div><a href="#" class="more-link read-more-show "><small>See More</small></a></div>
-                          
-                          <!-- <div><small class="">&nbsp; <a href="" class="">See More</a></small></div> -->
-
-
-
-
-                      </div>
-                    </div>
-                  </div>
+                <div id="search-filters">
+                    <?php echo $__env->make('cv-sales.includes.search-filters', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
                 </div>
-                <?php endif; ?>
+                
+
             </div> <!--/col-sm-4-->
 
             </div>
@@ -319,12 +206,13 @@
     $(document).ready(function(){
         filters = [];
 
-        $('.filter-div input[type=checkbox').on('change',function(){
-            console.log("changed");
+        $(document).on('change', '.filter-div input[type=checkbox]', function(){
+            // console.log("changed");
 
             var filter = $(this).attr('data-field') + ':"' + $(this).attr('data-value') + '"';
+
             var index = $.inArray( filter, filters );
-            console.log( filter + "---" + index );
+            // console.log( filter + "---" + index );
             if( index == -1 )
             {
               filters.push( filter );
@@ -335,9 +223,35 @@
             }
 
             $('.search-results').html("Loading");
-            $.post("<?php echo e(url('cv/filter_search')); ?>", {search_query: $('#search_query').val(), filter_query : filters },function(data){
-                //console.log(data);
-                $('.search-results').html(data);
+            $.post("<?php echo e(url('cv/search')); ?>", {search_query: $('#search_query').val(), filter_query : filters },function(data){
+                //console.log(response);
+                // var response = JSON.parse(data);
+                // console.log(data.search_results);
+                $('.search-results').html(data.search_results);
+                $('#search-filters').html(data.search_filters);
+
+                $.each(filters, function(index,value){
+                    
+                    var arr = value.split(':');
+                    
+                    $('.filter-div input[type=checkbox]' + '[data-field=' + arr[0] + ']' + '[data-value=' + arr[1] + ']' ).attr('checked',true);
+                });
+            });
+        });
+
+        $(document).on('click','.read-more-show', function(){
+            // console.log($(this).text() );
+            // $(this).prev().find('.see-more').show();
+            $(this).closest('div').prev().find('.see-more').toggleClass('see-more-shown');
+
+            var text = ( $(this).text() == 'See More' ) ? 'See Less' : 'See More';
+            $(this).text(text);
+        });
+
+        $(document).on('click', '#showCvBtn', function(){ 
+          var this_one = $(this);
+            $.post("<?php echo e(url('cv/get_cv_preview')); ?>",function(data){
+               $( this_one.attr('data-target') ).html(data);
             });
         });
     });

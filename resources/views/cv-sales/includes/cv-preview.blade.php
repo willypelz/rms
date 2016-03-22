@@ -1,4 +1,4 @@
-<div class="modal fade no-border" id="showCv" data-user="{{ @$cv['id'] }}" tabindex="-1" role="dialog" aria-labelledby="cvViewModalLabel" aria-hidden="false">
+
             <div class="">
             <div class="container">
 
@@ -48,8 +48,7 @@
                 <div class="clearfix"></div>
                 <div class="tab-content stack" id="cv">
                     <pre>
-                        {{ "http://127.0.0.1:5000/extract?file_name=".urlencode( "https://files.insidify.com/uploads/cv/". @$cv['cv_file'] ) }}
-                        {{ @file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( "https://files.insidify.com/uploads/cv/". @$cv['cv_file'] ) ) }}
+                        {{ $cv }}
                     </pre>
                 </div>
    
@@ -190,4 +189,3 @@
             </div>
             </div>
             </div>
-        </div>

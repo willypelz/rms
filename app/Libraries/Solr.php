@@ -54,7 +54,7 @@ class Solr {
 
 					// $filter_string .= implode('', $filter_item);
 				
-				$filename .= '&fq='.$value;
+				$filename .= '&fq='.str_ireplace(" ", "+", $value);
 			}
 			// $filename .= $filter_string;
 		}

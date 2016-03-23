@@ -20,6 +20,9 @@
         "classmap": [
             "database"
         ],
+         "files": [
+            "app/Helpers/util.php"
+        ],
         "psr-4": {
             "App\\": "app/"
         }

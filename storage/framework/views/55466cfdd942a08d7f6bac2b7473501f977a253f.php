@@ -39,7 +39,7 @@
 
                     <ul class="nav navbar-nav navbar-right">
 
-                    <li class="dropdown">
+                    <!-- <li class="dropdown">
                         <a class="animated tada dropdown-toggle" id="dropBell" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <span class="label label-danger label-sm">3</span>
                             <i class="fa fa-shopping-cart fa-lg"></i>
@@ -51,7 +51,7 @@
 
                             <li class="col-xs-12"><button class="btn btn-block btn-danger" href="_index.php">Pay Now</button></li> 
                         </ul> 
-                    </li>
+                    </li> -->
                     <!-- <li>
                         <a href="" class="animated">3 <i class="fa fa-shopping-basket fa-lg"></i></a>
                     </li> -->

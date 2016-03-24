@@ -87,7 +87,7 @@
                                         <div class="col-sm-6"> 
                                             <div class="thumbnail">  
                                                 <div class="caption">
-                                            <img alt="{{Job Provider name}}" src="http://www.jobberman.com/img/new/logo.png" height="45px"> <hr>
+                                            <img alt="" src="http://www.jobberman.com/img/new/logo.png" height="45px"> <hr>
                                                     <h4 class="">Jobberman.com</h4>
                                                     <p class="small">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p> 
                                                     <p>
@@ -104,7 +104,7 @@
                                         <div class="col-sm-6"> 
                                             <div class="thumbnail"> 
                                                 <div class="caption"> 
-                                            <img alt="{{Job Provider name}}" src="http://www.myjobmag.com/pics/logo6.png"  height="45px"> <hr>
+                                            <img alt="" src="http://www.myjobmag.com/pics/logo6.png"  height="45px"> <hr>
                                                     <h4 class="">My JobMag</h4>
                                                     <p class="small">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p> 
                                                     <p><!-- <a href="#" class="btn btn-success" role="button">&plus; Add to Cart for &#8358;2000</a> --> 
@@ -125,7 +125,7 @@
                                         <div class="col-sm-6"> 
                                             <div class="thumbnail"> 
                                                 <div class="caption"> 
-                                            <img alt="{{Job Provider name}}" src="http://www.hotnigerianjobs.com/images/banner2.gif"  height="45px"> <hr>
+                                            <img alt="" src="http://www.hotnigerianjobs.com/images/banner2.gif"  height="45px"> <hr>
                                                     <h4 class="">Hot Nigerian Jobs</h4>
                                                     <p class="small">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p> 
                                                     <p>
@@ -143,7 +143,7 @@
                                         <div class="col-sm-6"> 
                                             <div class="thumbnail"> 
                                                 <div class="caption"> 
-                                            <img alt="{{Job Provider name}}" src="http://www.hotnigerianjobs.com/images/banner2.gif"  height="45px"> <hr>
+                                            <img alt="" src="http://www.hotnigerianjobs.com/images/banner2.gif"  height="45px"> <hr>
                                                     <h4 class="">Hot Nigerian Jobs</h4>
                                                     <p class="small">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p> 
                                                     <p>
@@ -173,5 +173,7 @@
     </section>
 
 <div class="separator separator-small"></div>
+
+
 
 @endsection

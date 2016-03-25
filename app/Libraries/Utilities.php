@@ -14,8 +14,11 @@ class Utilities {
 		// return Carbon::createFromDate(1991, 7, 19)->diff(Carbon::now())->format('%y years, %m months and %d days');
 	}
 
-	static function getCartCount(){
-		return Cart::count(false);
+	static function getBoardCartCount(){
+		// return Cart::count(false);
+		return Cart::instance('JobBoard')->count(false);
+
 	}
 	
+
 }

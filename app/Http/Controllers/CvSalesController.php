@@ -98,14 +98,10 @@ class CvSalesController extends Controller
             Cart::remove($search[0]);
 
             echo 'Deleted';
-            // echo 'Deleted'. $request->cv_id;
         }elseif ($request->type == 'clear') {
-            # code...
             Cart::destroy();
-
         }
         else{
-            //Adding to Cart
             Cart::add(array('rowid'=>111111, 'id' => $request->cv_id, 'name' => $request->name, 'qty' => 1, 'price' => 500));
             echo 'Successfully Added';
         }

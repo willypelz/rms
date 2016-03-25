@@ -1,6 +1,9 @@
 @extends('layout.template-user')
 
 @section('content')
+
+    <link href="{{ asset('css/summernote.css') }}" rel="stylesheet">
+
 <div class="separator separator-small"></div>
 
     <section class="no-pad">
@@ -11,25 +14,38 @@
                     <h5 class="no-margin text-center l-sp-5 text-brandon text-uppercase">Job Creation</h5><br>
                     <div class="page">
                         <div class="row">
-                            
+
+                                 @if ($errors->any())
+                                <ul class="alert alert-danger">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                                 @endif
                             
                             <div class="col-md-8 col-md-offset-2">
                             <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio voluptatibus magni officiis id error numquam.</p>
-                                <form class="job-details" role="job-details" action="advertise-job.php">
+                                <form class="job-details" role="job-details" method="post" action="{{ route('post-job') }}">
+                                        
+                                        {!! csrf_field() !!}
+
                                         <div class="row">
                                             <div class="separator separator-small"></div>
                                         </div>
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-sm-6"><label for="job-title">job title <span class="text-danger">*</span></label><input id="job-title" type="text" class="form-control"></div>
-                                            <div class="col-sm-6"><label for="job-loc">location <span class="text-danger">*</span></label><input id="job-loc" type="text" class="form-control"></div>
+                                            <div class="col-sm-6"><label for="job-title">job title <span class="text-danger">*</span></label>
+                                            <input id="job-title" type="text" name="job_title" class="form-control" {{ (Request::old('job_title')) ? ' value='. e(Request::old('job_title')) .'' : '' }}></div>
+                                           
+                                            <div class="col-sm-6"><label for="job-loc">location <span class="text-danger">*</span></label>
+                                            <input id="job-loc" name="job_location" type="text" class="form-control" {{ (Request::old('job_location')) ? ' value='. e(Request::old('job_location')) .'' : '' }}></div>
                                         </div>
                                     </div>
-                                    <div class="form-group hidden">
+                               <!--      <div class="form-group hidden">
                                         <div class="row">
                                             <div class="col-sm-9">
                                                 <label for="">company description <span class="text-danger">*</span></label>
-                                                <textarea name="" id="" cols="30" rows="6" class="form-control" placeholder=""></textarea>
+                                                <textarea name="" cols="30" rows="6" class="form-control" placeholder=""></textarea>
                                             </div>
                                             <div class="col-sm-3">
                                             <label for="">company logo <span class="text-danger">*</span></label>
@@ -39,42 +55,52 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <label for="">Job description / responsibilities <span class="text-danger">*</span></label>
-                                                <textarea name="" id="" cols="30" rows="6" class="form-control" placeholder=""></textarea>
+                                                <textarea name="job_description" id="summernote" cols="30" rows="6" class="form-control" placeholder="">{{ (Request::old('job_description')) ? ' value='. e(Request::old('job_description')) .'' : '' }}</textarea>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <label for="">Qualification <span class="text-danger">*</span></label>
-                                                <textarea name="" id="" cols="30" rows="4" class="form-control" placeholder=""></textarea>
+                                                <label for="">Requirement <span class="text-danger">*</span></label>
+                                                <textarea name="requirement" id="" cols="30" rows="4" class="form-control" placeholder="">{{ (Request::old('requirement')) ? ' value='. e(Request::old('requirement')) .'' : '' }}</textarea>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-sm-4"><label for="job-title">job type <span class="text-danger">*</span></label><select required="" id="job-title" type="text" class="form-control">
-                                                    <option>Full-Time</opition>
-                                                    <option>Part-Time</opition>
-                                                    <option>Contract</opition>
+                                            <div class="col-sm-4"><label for="job-title">job type <span class="text-danger">*</span></label>
+                                                    <select name="job_type" required="" id="job-title" type="text" class="form-control">
+                                                             <option value=""> --Choose-- </opition>
+                                                            <option value="full-time" @if (Request::old('job_type') == 'full-time') selected="selected" @endif>Full-Time</opition>
+                                                            <option value="part-time" @if (Request::old('job_type') == 'part-time') selected="selected" @endif>Part-Time</opition>
+                                                            <option value="contract" @if (Request::old('job_type') == 'contract') selected="selected" @endif>Contract</opition>
+                                                    </select>
+                                            </div>
+                                            <div class="col-sm-4"><label for="job-loc">Salary per annum</label>
+                                            <input name="salary" type="number" class="form-control" {{ (Request::old('salary')) ? ' value='. e(Request::old('salary')) .'' : '' }}></div>
+                                            
+                                            <div class="col-sm-4"><label for="job-loc">Minimum Qualification</label>
+
+                                            <select class="form-control" name="qualification" required>
+                                                    <option value=""> --Choose-- </opition>
+                                                   @foreach($qualifications as $q)
+                                                    <option value="{{ $q }}" @if (Request::old('qualification') == "{{ $q }}") selected="selected" @endif>{{ $q }}</opition>
+                                                    @endforeach
                                             </select></div>
-                                            <div class="col-sm-4"><label for="job-loc">Salary per annum</label><input id="job-loc" type="number" class="form-control"></div>
-                                            <div class="col-sm-4"><label for="job-loc">Minimum Qualification</label><select id="job-loc" type="text" class="form-control">
-                                                    <option></opition>
-                                                    <option></opition>
-                                            </select></div>
+
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <label for="">Additional Information</label>
-                                                <textarea name="" id="" cols="30" rows="4" class="form-control" placeholder=""></textarea>
+                                                <textarea name="additional_info" id="" cols="30" rows="4" class="form-control" placeholder="">{{ (Request::old('additional_info')) ? ' value='. e(Request::old('additional_info')) .'' : '' }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -90,47 +116,29 @@
                                             </div>
                                         <div class="col-xs-6">
                                             <div class="">
+                                              @foreach($board1 as $b)  
                                               <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
-                                                <input type="checkbox" class="" autocomplete="off" checked>
-                                                <span class="col-xs-6"><img src="https://insidify.com/desktop/img/logo.png" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b>Insidify Jobs</b><br>www.insidify.com</span>
+                                                <input type="checkbox" class="" autocomplete="off" name="boards[]" value="{{ $b['id'] }}" checked>
+                                                <span class="col-xs-6"><img src="{{ $b['img'] }}" width="100%" alt=""></span>
+                                                <span class="col-xs-6"><b>{{ $b['name'] }}</b><br>{{ $b['url'] }}</span>
                                                 <span class="clearfix"></span>
                                               </label>
-                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
-                                                <input type="checkbox" class="" autocomplete="off" checked>
-                                                <span class="col-xs-6"><img src="https://www.britishcouncil.org.ng/profiles/solas2/themes/britishcouncil/images/desktop/logo-british-council-color.png" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b>Guargian Jobs</b><br>www.insidify.com</span>
-                                                <span class="clearfix"></span>
-                                              </label>
-                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
-                                                <input type="checkbox" class="" autocomplete="off" checked>
-                                                <span class="col-xs-6"><img src="http://www.jobberman.com/img/new/logo.png" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b>Punch Jobs</b><br>www.insidify.com</span>
-                                                <span class="clearfix"></span>
-                                              </label>
+                                              @endforeach
+                                            
                                           </div>
                                         </div>
 
                                         <div class="col-xs-6">
                                             <div class="">
+                                                @foreach($board2 as $jb)
                                               <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
-                                                <input type="checkbox" class="" autocomplete="off" checked>
-                                                <span class="col-xs-6"><img src="http://www.jobimu.com/wp-content/uploads/2014/07/cropped-jobimu-logo.jpg" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b>Naij Jobs</b><br>www.insidify.com</span>
+                                                <input type="checkbox" class="" autocomplete="off" name="boards[]" value="{{ $jb['id'] }}"  checked>
+                                                <span class="col-xs-6"><img src="{{ $jb['img'] }}" width="100%" alt=""></span>
+                                                <span class="col-xs-6"><b>{{ $jb['name'] }}</b><br>{{ $jb['url'] }}</span>
                                                 <span class="clearfix"></span>
                                               </label>
-                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
-                                                <input type="checkbox" class="" autocomplete="off" checked>
-                                                <span class="col-xs-6"><img src="http://www.myjobmag.com/pics/logo6.png" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b>My Job Mag</b><br>www.insidify.com</span>
-                                                <span class="clearfix"></span>
-                                              </label>
-                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
-                                                <input type="checkbox" class="" autocomplete="off" checked>
-                                                <span class="col-xs-6"><img src="http://www.hotnigerianjobs.com/images/banner2.gif" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b>Hot Nigerian Jobs</b><br>www.insidify.com</span>
-                                                <span class="clearfix"></span>
-                                              </label>
+                                               @endforeach
+                                           
                                           </div>
                                         </div>
 
@@ -175,6 +183,17 @@
             </div>
         </div>
     </section>
+   
+
+    <script src="{{ asset('js/summernote.js') }}"></script>
+
+
+<script>
+    $(document).ready(function(){
+         $('#summernote').summernote();
+    })
+</script>
+    
 
 <div class="separator separator-small"></div>
 @endsection

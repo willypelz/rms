@@ -25,7 +25,7 @@
 
     $('.btn-cv-buy').on('click',function(e){
 
-        
+        console.log('Using thuis')
         
         cart_count = Number(cart_count) + 1;
         p_total = 500 * cart_count;
@@ -68,6 +68,70 @@
         }
 
     });
+
+
+
+
+
+
+
+
+    //--------Buy BOARD and update cart--------//
+
+    //var cv_cart = 0;
+    var p_total = 0;
+    var cart_count = {{ \App\Libraries\Utilities::getBoardCartCount() }};
+
+    $('.btn-board-buy').on('click',function(e){
+
+        console.log('Board thuis')
+        
+        cart_count = Number(cart_count) + 1;
+        p_total = 500 * cart_count;
+        
+        e.preventDefault();
+        $(this).parents('.purchase-action').find('.btn-board-discard').removeClass('collapse');
+        $(this).addClass('collapse');
+       $('#collapseWellCart').removeClass('collapse');
+       $(".btn-cart-checkout").removeClass("disabled");
+
+       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block; color:#333"><b>'+cart_count+'</b></span>');
+       $('#price-total').html('<span class="animated zoomIn" style="display: inline-block; color:#333"><b>'+p_total+'</b></span>');
+
+    });
+
+
+    //--------Remove item from Cart--------//
+    $('.btn-board-discard').on('click',function(e){
+
+        console.log('cart count is '+cart_count);
+        
+        cart_count = Number(cart_count) - 1;
+        p_total = 500 * cart_count;
+
+        console.log('cart count is '+cart_count);
+        
+        //console.log('New cart count is '+cv_cart+' and New cost is '+p_total);
+
+       //  //console.log(cv_cart);
+
+        e.preventDefault();
+        $(this).parents('.purchase-action').find('.btn-board-buy').removeClass('collapse');
+        $(this).addClass('collapse');
+
+       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block; color:#333"><b>'+cart_count+'</b></span>');
+       $('#price-total').html('<span class="animated zoomIn" style="display: inline-block; color:#333"><b>'+p_total+'</b></span>');
+
+       if(p_total == 0){
+            $(".btn-cart-checkout").addClass("disabled");
+
+            return p_total;
+        }
+
+    });
+
+
+
 
     //--------Clear Cart button--------////
 

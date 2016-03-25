@@ -61,6 +61,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'transactions', ['uses' => 'CvSalesController@Transactions', 'as' => 'transactions']);
     Route::match(['get', 'post'], 'emails-test', ['uses' => 'CvSalesController@TestEmail', 'as' => 'emails']);
 
+    //JOB
+    Route::match(['get', 'post'], 'jobs/post-a-job', ['uses' => 'JobsController@PostJob', 'as' => 'post-job']);
+    Route::match(['get', 'post'], 'jobs/advertise-your-job', ['uses' => 'JobsController@Advertise', 'as' => 'advertise']);
+
 	// Route::any('log-in', function () {
 	//     return view('auth.login');
 	// });

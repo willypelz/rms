@@ -178,7 +178,7 @@
 
                        var url = "{{ route('ajax_cart') }}";
 
-             $("#contentArea").html('<img src="{{ asset("img/wheel.gif") }}" width="100px" /> please wait...');
+                        $("#contentArea").html('<img src="{{ asset("img/wheel.gif") }}" width="100px" /> please wait...');
                           
                             $("#checkout").click(function(){
                                   // console.log(url)

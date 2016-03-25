@@ -34,18 +34,38 @@ class Solr {
 			$search_field .= ':';
 
 		$filename = Solr::$host."q=".$search_field.$q."&rows=".$row."&start=".$start
+							."&facet=true&facet.field=gender&facet.field=marital_status&facet.field=edu_school&facet.field=exp_company&facet.field=edu_grade"
 							// ."&facet=true&facet.field=job_type&facet.field=company&facet.field=loc&facet.field=job_level&facet.field=site_name&facet.date=expiry_date&facet.date.start=NOW/DAY&facet.date.end=NOW/DAY%2B60DAY&facet.date.gap=%2B7DAY&wt=json"
 							// ."&sort=".$sort
-							."&wt=json"
+							."&fq=cv_file:*&wt=json"
 							;
-		
+		if(@$filter_query)
+		{
+			//$filter_string = "";
+
+			foreach ($filter_query as $key => $value) {
+				
+					// $filter_item = array();
+
+				// foreach ($value as $key => $field) {
+				// 	// $filter_item[] = "&fq=".$value."=".$
+				// 	$filter_string .= "&fq=".$value."=".$field;
+				// }
+
+					// $filter_string .= implode('', $filter_item);
+				
+				$filename .= '&fq='.$value;
+			}
+			// $filename .= $filter_string;
+		}
 		// if(!$show_expired)	
 		// 	$filename .= "&fq=expiry_date:[NOW+TO+*]";
 
 		
 		// echo $filename.'<br/>';
 		
-	
+		// dd( $filename );
+		
 		try {
 		 	// $handle = fopen($filename, "r");
 

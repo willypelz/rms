@@ -5,7 +5,16 @@
 
 <?php echo $__env->yieldSection(); ?>
 
+<meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+<script src="<?php echo e(asset('js/jquery-1.11.1.min.js')); ?>"></script>
 
+<script type="text/javascript">
+	$(function () {
+	    $.ajaxSetup({
+	        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+	    });
+	});
+</script>
 
 <body>
     <!-- Navbar -->

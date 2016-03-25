@@ -1,6 +1,9 @@
 /vendor
+/storage
 /node_modules
 /public/storage
+/storage/logs/
+/bootstrap
 Homestead.yaml
 Homestead.json
 .env

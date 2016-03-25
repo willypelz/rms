@@ -1,4 +1,103 @@
+<script>
+    $(document).ready(function(){
 
+    //--------Homepage Sticky header----------//
+
+    //updateLink();
+
+        $('#sticky-header ul li a').on('click',function(){
+            $('html,body').animate({
+               scrollTop: $("#mydiv").offset().top
+            });
+        });
+
+    //--------End Homepage Sticky header----------//
+
+
+
+    //-------- CV cart--------//    
+    
+    //--------Buy CV and update cart--------//
+
+    //var cv_cart = 0;
+    var p_total = 0;
+    var cart_count = {{ \App\Libraries\Utilities::getCartCount() }};
+
+    $('.btn-cv-buy').on('click',function(e){
+
+        
+        
+        cart_count = Number(cart_count) + 1;
+        p_total = 500 * cart_count;
+        
+        e.preventDefault();
+        $(this).parents('.purchase-action').find('.btn-cv-discard').removeClass('collapse');
+        $(this).addClass('collapse');
+       $('#collapseWellCart').removeClass('collapse');
+       $(".btn-cart-checkout").removeClass("disabled");
+
+       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block; color:#333"><b>'+cart_count+'</b></span>');
+       $('#price-total').html('<span class="animated zoomIn" style="display: inline-block; color:#333"><b>'+p_total+'</b></span>');
+
+    });
+
+
+    //--------Remove item from Cart--------//
+    $('.btn-cv-discard').on('click',function(e){
+
+        console.log('cart count is '+cart_count);
+        
+        cart_count = Number(cart_count) - 1;
+        p_total = 500 * cart_count;
+
+        //console.log('New cart count is '+cv_cart+' and New cost is '+p_total);
+
+       //  //console.log(cv_cart);
+
+        e.preventDefault();
+        $(this).parents('.purchase-action').find('.btn-cv-buy').removeClass('collapse');
+        $(this).addClass('collapse');
+
+       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block; color:#333"><b>'+cart_count+'</b></span>');
+       $('#price-total').html('<span class="animated zoomIn" style="display: inline-block; color:#333"><b>'+p_total+'</b></span>');
+
+       if(p_total == 0){
+            $(".btn-cart-checkout").addClass("disabled");
+
+            return p_total;
+        }
+
+    });
+
+    //--------Clear Cart button--------////
+
+    $('.btn-cart-clear').on('click',function(e){
+
+        cart_count = 0;
+        p_total = 0;
+        
+        e.preventDefault();
+        $('.btn-cv-buy').removeClass('collapse');
+        $('.btn-cv-discard').addClass('collapse');
+        // $(".btn-cart-checkout").addClass("disabled");
+
+       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block;"><b>'+cart_count+'</b></span>');
+       $('#price-total').html('<span class="animated zoomIn" style="display: inline-block;">'+p_total+'</span>');
+
+
+
+        if(p_total == 0){
+            $(".btn-cart-checkout").addClass("disabled");
+
+            return p_total;
+        }
+
+
+    });
+
+    //--------End CV cart--------//    
+});
+</script>
     <footer>
         <div class="container">
 
@@ -308,191 +407,7 @@
     </div>
 
     <!-- CV Modal -->
-    <div class="modal fade no-border" id="cvViewModal" tabindex="-1" role="dialog" aria-labelledby="cvViewModalLabel" aria-hidden="false">
-            <div class="">
-            <div class="container">
-
-                <div class="row">
-
-            <div class="col-xs-10 col-xs-offset-1 view">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-<br>
-                <div class="row">
-                    <div class="col-xs-5">
-                        
-                          <p class="">
-                                <!-- Single button -->
-                            <div class="btn-group">
-                              <button type="button" class="btn btn-line btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Save into Folder &nbsp; <span class="caret"></span>
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li><a href="#"><i class="fa fa-folder-o"></i> Devlopers</a></li>
-                                <li><a href="#"><i class="fa fa-folder-o"></i> Medicals</a></li>
-                                <li><a href="#"><i class="fa fa-folder-o"></i> Fashion</a></li>
-
-                                <li role="separator" class="divider"></li>
-
-                                <li><a href="#"><i class="fa fa-plus"></i> Create new</a></li>
-                              </ul>
-                            </div>
-
-
-                                          <span class="purchase-action hidden">
-                                                <a href="" class="btn btn-success btn-sm btn-cv-buy" data-count="1" data-cost="500"><i class="fa fa-plus"></i> Purchase CV for N500</a>
-                                              <button class="btn btn-line btn-sm btn-cv-discard collapse" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
-                                        </span>
-                          </p>
-                    </div>
-
-                    <div class="col-xs-2">
-                        <div class="text-center cv-portrait">
-                            <img src="{{ asset('img/brand-img.jpg') }}" class="img-circle">
-                        </di) v>
-                    </div>
-
-                    <div class="col-xs-5">
-                    </div>
-                </div>
-
-                <div class="tab-content stack" id="cv">
-
-                    <div class="row">
-                        <div class="col-xs-12 cv-name text-center">
-                            <h2>Ernest Ojeh</h2>
-                            <p class="text-muted">Designer &amp; Something else at <a href="#">Google Inc.</a>
-                            </p>
-                            <hr>
-                        </div>
-                    </div>
-
-                    <div class="unit-box">
-                        <div class="row">
-                            <div class="col-xs-1 r-left">
-                                <span class="glyphicon glyphicon-file"></span>
-                            </div>
-                            <div class="col-xs-11">
-                                <h5>PERSONAL INFO</h5>
-                                <p class="text-muted">Medical Doctor, Entrepreneur, Passionate about change and excellence</p>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <strong>Sex:</strong>&nbsp; Male</li>
-                                    <li>
-                                        <strong>Email:</strong>&nbsp; emmanuel@insidify.com</li>
-                                    <li>
-                                        <strong>Phone:</strong>&nbsp; 08068873719</li>
-                                    <li>
-                                        <strong>Age:</strong>&nbsp; 27 years old
-                                        <span class="text-muted">(Oct 01, 1987)</span>
-                                    </li>
-                                    <li>
-                                        <strong>Address:</strong>&nbsp; Magodo GRA, Lagos.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="unit-box">
-                        <div class="row">
-                            <div class="col-xs-1 r-left">
-                                <span class="glyphicon glyphicon-wrench"></span>
-                            </div>
-                            <div class="col-xs-11">
-                                <h5>SKILLS</h5>
-                                <p class="text-muted">Medical Doctor, Entrepreneur, Public Speaker</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="unit-box">
-                        <div class="row">
-                            <div class="col-xs-1 r-left">
-                                <span class="glyphicon glyphicon-briefcase"></span>
-                            </div>
-                            <div class="col-xs-11">
-                                <h5>WORK EXPERIENCE</h5>
-
-                                <div class="sub-box">
-                                    <p class="text-muted">May 2013 - present</p>
-                                    <h5>Co-founder and CEO at <a href="#">Insidify.com</a>
-                                    </h5>
-                                    <p>Lagos, Nigeria</p>
-                                </div>
-
-                                <div class="sub-box">
-                                    <p class="text-muted">Apr 2012 - Apr 2013</p>
-                                    <h5>House Physician at <a href="#">St. Nicholas Hospital Lagos</a>
-                                    </h5>
-                                    <p>Lagos, Nigeria</p>
-                                </div>
-
-                                <div class="sub-box">
-                                    <p class="text-muted">Dec 2007 - present</p>
-                                    <h5>Head Business Development at <a href="#">Waressence</a>
-                                    </h5>
-                                    <p>Lagos, Nigeria</p>
-                                </div>
-
-                                <div class="sub-box">
-                                    <p class="text-muted">Dec 1999 - present</p>
-                                    <h5>Curator at <a href="#">Employment Edge</a>
-                                    </h5>
-                                    <p>Lagos, Nigeria</p>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="unit-box">
-                        <div class="row">
-                            <div class="col-xs-1 r-left">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                            </div>
-                            <div class="col-xs-11">
-                                <h5>EDUCATION</h5>
-
-                                <div class="sub-box">
-                                    <p class="text-muted">Aug 2003 - Aug 2011</p>
-                                    <h5>Medicine and Surgery at Obafemi Awolowo University</h5>
-                                    <p>M.B.ch.B, Pass</p>
-                                </div>
-
-                                <div class="sub-box">
-                                    <p class="text-muted">Jan 1970 - Dec 2003</p>
-                                    <h5>Hallmark Secondary School</h5>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="unit-box">
-                        <div class="row">
-                            <div class="col-xs-1 r-left">
-                                <span class="glyphicon glyphicon-link"></span>
-                            </div>
-                            <div class="col-xs-11">
-                                <h5>LINKS</h5>
-                                <ul class="list-unstyled">
-                                    <li><a href="http://www.facebook.com/olamide.okeleji">http://www.facebook.com/olamide.okeleji</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-                <!--/tab-content-->
-
-            </div>
-
-
-            </div>
-            </div>
-            </div>
-        </div>
+    
         
     <!-- My Cart Invoice -->
     <div class="modal fade" tabindex="-1" id="myInvoice" role="dialog" aria-labelledby="myInvoice">
@@ -603,6 +518,6 @@
       </div>
     </div>
 
-    <script src="{{ asset('js/jquery-1.11.1.min.js') }}"></script>
+    
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>

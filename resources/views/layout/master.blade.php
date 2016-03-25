@@ -5,7 +5,16 @@
 
 @show()
 
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="{{ asset('js/jquery-1.11.1.min.js') }}"></script>
 
+<script type="text/javascript">
+	$(function () {
+	    $.ajaxSetup({
+	        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+	    });
+	});
+</script>
 
 <body>
     <!-- Navbar -->

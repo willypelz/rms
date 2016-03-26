@@ -21,7 +21,7 @@
 
     //var cv_cart = 0;
     var p_total = 0;
-    var cart_count = <?php echo e(\App\Libraries\Utilities::getCartCount()); ?>;
+    var cart_count = <?php echo e(\App\Libraries\Utilities::getBoardCartCount()); ?>;
 
     $('.btn-cv-buy').on('click',function(e){
 
@@ -80,14 +80,14 @@
 
     //var cv_cart = 0;
     var p_total = 0;
-    var cart_count = <?php echo e(\App\Libraries\Utilities::getCartCount()); ?>;
+    var cart_count = <?php echo e(\App\Libraries\Utilities::getBoardCartCount()); ?>;
 
     $('.btn-board-buy').on('click',function(e){
 
         console.log('Board thuis')
         
         cart_count = Number(cart_count) + 1;
-        p_total = 500 * cart_count;
+        p_total = 1000 * cart_count;
         
         e.preventDefault();
         $(this).parents('.purchase-action').find('.btn-board-discard').removeClass('collapse');
@@ -107,7 +107,7 @@
         console.log('cart count is '+cart_count);
         
         cart_count = Number(cart_count) - 1;
-        p_total = 500 * cart_count;
+        p_total = 1000 * cart_count;
 
         console.log('cart count is '+cart_count);
         
@@ -483,7 +483,7 @@
             <h3 class="text-center">Confirm your order</h3>
 
 
-        <section class="no-pad">
+        <section class="no-pad" id='ContentAREA'>
                 <div class="">
                     <div class="row">
                         <div class="col-sm-12">

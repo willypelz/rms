@@ -72,7 +72,7 @@
             <!-- End of col-9 -->
 
             <div class="col-sm-4">
-                @if(empty($items))
+                @if(count== 0)
                 <div id="collapseWellCart" class="well well-cart animated slideInUp collapse">
                 @else
                 <div id="collapseWellCart" class="well well-cart animated slideInUp">

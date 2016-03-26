@@ -19,6 +19,11 @@ class Order extends Model
      *
      * @var array
      */
-    protected $fillable = ['company_id', 'order_date', 'total_amount', 'discount'];
+    protected $fillable = ['company_id', 'order_date', 'type', 'total_amount', 'discount'];
+
+     public function orderItems()
+    {
+        return $this->hasMany('App\Models\OrderItem');
+    }
 
 }

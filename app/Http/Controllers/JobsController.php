@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\JobBoard;
 use App\Models\Job;
 use Validator;
-// use Input;
+use Cart;
 
 class JobsController extends Controller
 {
@@ -105,11 +105,20 @@ class JobsController extends Controller
         foreach ($job_boards as $s) {
             $bds[] = ($s['id']);
         }
-        // dd($b);
+
+        $price = 0;
+        $cart = Cart::instance('JobBoard')->content();
+        $count = Cart::instance('JobBoard')->count();
+        foreach ($cart as $k) {
+                $ids[] = ($k->id);
+                $price += $k->price; 
+        }
+        // dd($price);
+            if(empty($ids))
+                $ids = null;
 
 
-
-        return view('job.advertise', compact('board1', 'board2'));
+        return view('job.advertise', compact('board1', 'board2', 'ids', 'cart', 'count', 'price'));
     }
 
 }

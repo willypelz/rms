@@ -101,11 +101,11 @@
 
                     function paystackcallback(response){
 
-                 $("#paymemt-success").html('<img src="{{ asset("img/wheel.gif") }}" width="100px" /> please wait...');
+                      $("#paymemt-success").html('<img src="{{ asset("img/wheel.gif") }}" width="100px" /> please wait...');
 
-                    var url = "https://paystack.ng/charge/verification";
-                    $.ajax
-                      ({
+                      var url = "https://paystack.ng/charge/verification";
+                      $.ajax
+                        ({
                           type: "POST",
                           url: url,
                           data: ({trxref:response.trxref, merchantid:'pk_test_7d7271a9f0ca45ac76d8ca1569ea47948e1bb5f5'}),
@@ -163,8 +163,56 @@
 
                             </div>
 
-                        
-                        <div class="col-sm-12">
+                  @if(!empty($jobBoards))
+                   <div class="col-sm-12">
+                        <br>
+                        <div class="">
+                            <span class="title">Invoice #80186</span><br>
+                            Invoice Date: 11/09/2015<br>
+                            Due Date: 25/09/2015
+                        </div>
+
+                            <br>
+                            <table class="table table-striped table-bordered">
+                                <tbody>
+                                <thead class="title textcenter">
+                                    <tr>
+                                        <td>Description</td>
+                                        <td>Amount</td>
+                                    </tr>
+                                </thead>
+                            
+                           <?php $total=0; ?>
+                            @foreach($items as $item)
+                                <tr>
+                                    <td>{{ $item->name }} *</td>
+                                    <td class="textcenter">{{ $item->price }}</td>
+                                </tr>
+                                <?php $total += $item->price;
+                                 ?>
+                             @endforeach 
+                             <?php 
+                             $vat = (5 / 100) * $total; 
+
+                             ?>  <tr class="title">
+                                    <td class="text-right">Sub Total:</td>
+                                    <td class="textcenter">&#8358;{{ $total }}</td>
+                                </tr>
+                                    <tr class="title">
+                                    <td class="text-right">5.00% VAT:</td>
+                                    <td class="textcenter">&#8358;{{ $vat }}</td>
+                                </tr>
+                                      
+                                <tr class="title">
+                                    <td class="text-right">Total:</td>
+                                    <td class="textcenter">N{{ $total }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                      </div>
+
+                  @else
+                      <div class="col-sm-12">
                         <br>
                         <div class="">
                             <span class="title">Invoice #80186</span><br>
@@ -206,7 +254,10 @@
                                 </tr>
                                 </tbody>
                             </table>
-                        </div>
+                      </div>
+                  @endif
+
+
                         <div class="clearfix">
                         <div class="separator separator-small"></div>
 
@@ -217,4 +268,6 @@
                     </div>
                 </div>
          </section>
+
+
 @endsection

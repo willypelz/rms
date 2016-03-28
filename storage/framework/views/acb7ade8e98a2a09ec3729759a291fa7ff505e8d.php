@@ -71,7 +71,7 @@
             <!-- End of col-9 -->
 
             <div class="col-sm-4">
-                <?php if(empty($items)): ?>
+                <?php if(count== 0): ?>
                 <div id="collapseWellCart" class="well well-cart animated slideInUp collapse">
                 <?php else: ?>
                 <div id="collapseWellCart" class="well well-cart animated slideInUp">

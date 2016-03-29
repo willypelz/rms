@@ -71,7 +71,7 @@
             <!-- End of col-9 -->
 
             <div class="col-sm-4">
-                <?php if(empty($items)): ?>
+                <?php if($many== 0): ?>
                 <div id="collapseWellCart" class="well well-cart animated slideInUp collapse">
                 <?php else: ?>
                 <div id="collapseWellCart" class="well well-cart animated slideInUp">
@@ -177,7 +177,7 @@
 
                        var url = "<?php echo e(route('ajax_cart')); ?>";
 
-             $("#contentArea").html('<img src="<?php echo e(asset("img/wheel.gif")); ?>" width="100px" /> please wait...');
+                        $("#contentArea").html('<img src="<?php echo e(asset("img/wheel.gif")); ?>" width="100px" /> please wait...');
                           
                             $("#checkout").click(function(){
                                   // console.log(url)

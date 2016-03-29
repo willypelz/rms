@@ -29,7 +29,7 @@ class JobsController extends Controller
      */
    
     public function PostJob(Request $request)
-    {   var_dump( test() ); exit;
+    {   
         $qualifications = qualifications();
         // dd('hellp');
         // dd($qua);
@@ -88,6 +88,7 @@ class JobsController extends Controller
                         }
 
                         $job_url = 'in/'.$job->id.'/'.str_slug($request->job_title);
+                        dd($job_url);
                        
                         Job::where('id', $job->id)
                           ->update(['job_url' => $job_url]);

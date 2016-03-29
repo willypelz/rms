@@ -121,4 +121,9 @@ class JobsController extends Controller
         return view('job.advertise', compact('board1', 'board2', 'ids', 'cart', 'count', 'price'));
     }
 
+    public function viewJob()
+    {
+        
+    }
+
 }

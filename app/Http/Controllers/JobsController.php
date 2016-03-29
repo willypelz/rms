@@ -8,6 +8,7 @@ use App\Models\JobBoard;
 use App\Models\Job;
 use Validator;
 use Cart;
+use Session;
 
 class JobsController extends Controller
 {
@@ -61,7 +62,8 @@ class JobsController extends Controller
                         'requirement' => 'required',
                         'job_type' => 'required',
                         'qualification' => 'required'
-                ]);
+            ]);
+
 
             if($validator->fails()){
                        return redirect()->back()
@@ -70,7 +72,6 @@ class JobsController extends Controller
                     }else{
                         // dd('Success');
                         $pickd_boards = $request->boards;
-
                         $job = Job::FirstorCreate([
                                 'title' => $request->job_title,
                                 'location' => $request->job_location,
@@ -85,6 +86,11 @@ class JobsController extends Controller
                             if(in_array($p, $bds))
                                 $job->boards()->attach($p);
                         }
+
+                        $job_url = 'in/'.$job->id.'/'.str_slug($request->job_title);
+                       
+                        Job::where('id', $job->id)
+                          ->update(['job_url' => $job_url]);
 
                     }
                         

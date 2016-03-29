@@ -9,7 +9,7 @@
                     <h3>26 Jobs</h3>
                 </div> -->
                 <div class="col-xs-2"><br>
-                    <a href="{{ url('jobs/create') }}" class="btn btn-success btn- btn-block"><i class="fa fa-plus"></i> Post a New  Job</a>
+                    <a href="{{ route('post-job') }}" class="btn btn-success btn- btn-block"><i class="fa fa-plus"></i> Post a New  Job</a>
                 </div>
                 <div class="col-xs-2"><br>
                     <a href="{{ url('cv/search-results') }}" class="btn btn-success btn- btn-block dropdown">&plus;<i class="fa fa-user"></i> Add Candidate</a>
@@ -34,7 +34,7 @@
 
                         <div class=" btn-group-justified btn-dash" role="group" aria-label="...">
                           <div class="btn-group" role="group">
-                            <a href="create-job.php" type="button" class="btn btn-line text-capitalize in">
+                            <a href="{{ route('post-job') }}" type="button" class="btn btn-line text-capitalize in">
                             <span class="fa-lg"><i class="fa fa-tachometer"></i>
                             <span class="hidden-xs"> Post a New Job</span><br></span>
                             <small class="text-muted hidden-xs">Notifications & Statistics </small>

@@ -29,7 +29,7 @@ class JobsController extends Controller
      */
    
     public function PostJob(Request $request)
-    {   
+    {   var_dump( test() ); exit;
         $qualifications = qualifications();
         // dd('hellp');
         // dd($qua);

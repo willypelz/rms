@@ -71,7 +71,11 @@
             <!-- End of col-9 -->
 
             <div class="col-sm-4">
+<<<<<<< HEAD
+                <?php if(count== 0): ?>
+=======
                 <?php if($many== 0): ?>
+>>>>>>> 92d778d9d29350e8ee5302c65a7664b071ffc820
                 <div id="collapseWellCart" class="well well-cart animated slideInUp collapse">
                 <?php else: ?>
                 <div id="collapseWellCart" class="well well-cart animated slideInUp">

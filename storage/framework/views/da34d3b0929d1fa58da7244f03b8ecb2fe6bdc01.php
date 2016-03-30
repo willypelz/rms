@@ -2,10 +2,11 @@
 <style type="text/css">
   .see-more{display: none;}
   .see-more-shown{ display: block; }
+  .pagination .page{ padding: 0px !important; }
 </style>
 
             <script src="http://malsup.github.com/jquery.form.js"></script> 
-
+<script src="<?php echo e(asset('js/jquery.twbsPagination.min.js')); ?>"></script>
 <section class="s-div dark">
         <div class="container">
 

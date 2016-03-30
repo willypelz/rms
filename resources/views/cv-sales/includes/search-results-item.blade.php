@@ -129,6 +129,20 @@
 </script>
 @endforeach
 
+<ul id="pagination-demo" class="pagination-sm"></ul>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+       $('#pagination-demo').twbsPagination({
+        totalPages: 35,
+        visiblePages: 7,
+        onPageClick: function (event, page) {
+            $('#page-content').text('Page ' + page);
+        }
+    });
+  });
+</script>
+
 @else
   <li class="row">
     <div class="text-center text-muted">

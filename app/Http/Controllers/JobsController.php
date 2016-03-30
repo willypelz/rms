@@ -123,7 +123,7 @@ class JobsController extends Controller
 
     public function viewJob()
     {
-        
+        return view('job.preview')
     }
 
 }

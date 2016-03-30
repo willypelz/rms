@@ -6,11 +6,14 @@ use App\Http\Requests;
 use App\Models\Order;
 use App\Models\Transaction;
 use App\Models\OrderItem;
+use App\Models\CompanyFolder;
+use App\Models\FolderContent;
 use Illuminate\Http\Request;
 use App\Libraries\Solr;
 use Cart;
 use Auth;
 use Mail;
+use Carbon\Carbon;
 
 
 class CvSalesController extends Controller
@@ -288,4 +291,52 @@ class CvSalesController extends Controller
         echo 'Sent';
 
     }
+
+    public function getMyFolders(){
+        if( Auth::check() )
+        {
+            $company_folder_obj = new CompanyFolder(); 
+            $folders = $company_folder_obj->getMyFolders( Auth::user()->id );
+            return response()->json( ['folders' => $folders] );
+
+        }
+        else
+        {
+            return "You need to be logged in to get folders";
+        }
+    }
+
+    public function addFolders(Request $request)
+    {
+        if( Auth::check() )
+        {
+            $company_folder_obj = new CompanyFolder(); 
+            $company_folder_obj::create( ['name' => $request->name, 'date_added' => Carbon::now(), 'user_id' => Auth::user()->id ] );
+
+            
+            return response()->json( true );
+
+        }
+        else
+        {
+            return "You need to be logged in to add folders";
+        }
+    }
+
+    public function saveToFolder(Request $request)
+    {
+        if( Auth::check() )
+        {
+            $folder_content_obj = new FolderContent(); 
+            $folder_content_obj::create( ['item_id' => $request->item_id, 'item_type' => $request->item_type, 'folder_id' => $request->folder_id, 'date_added' => Carbon::now() ] );
+
+            return response()->json( true );
+
+        }
+        else
+        {
+            return "You need to be logged in to add folders";
+        }
+    }
+    
 }

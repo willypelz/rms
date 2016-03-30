@@ -32,17 +32,19 @@
                     <button type="button" class="btn btn-line btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       Save into Folder &nbsp; <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu">
-                      <li><a href="#"><i class="fa fa-folder-o"></i> Devlopers</a></li>
-                      <li><a href="#"><i class="fa fa-folder-o"></i> Medicals</a></li>
-                      <li><a href="#"><i class="fa fa-folder-o"></i> Fashion</a></li>
+                    <ul class="dropdown-menu" id="folders" data-cv="<?php echo e(@$cv['id']); ?>">
+                      
 
                       <li role="separator" class="divider"></li>
 
                       <li>
-                          <a href="#"><i class="fa fa-plus"></i> Create new</a>
+                          <a href="#" id="add_folder_btn" ><i class="fa fa-plus"></i> Create new</a>
                       </li>
+
+
                     </ul>
+
+                    <input type="text" style="display:none;" id="add_folder" />
                   </div>
                     <a href="cv.html" class="btn btn-line btn-sm" id='showCvBtn' data-toggle="modal" data-target="#showCv[data-user='<?php echo e(@$cv['id']); ?>']">Preview CV</a>
 

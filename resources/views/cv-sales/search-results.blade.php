@@ -1,13 +1,14 @@
-@extends('layout.template-user')
+@extends('layout.template-default')
 
 @section('content')
 <style type="text/css">
   .see-more{display: none;}
   .see-more-shown{ display: block; }
+  .pagination .page{ padding: 0px !important; }
 </style>
 
             <script src="http://malsup.github.com/jquery.form.js"></script> 
-
+<script src="{{ asset('js/jquery.twbsPagination.min.js') }}"></script>
 <section class="s-div dark">
         <div class="container">
 
@@ -204,8 +205,34 @@
 </div>
 
 <script type="text/javascript">
+    var folders = [];
     $(document).ready(function(){
         filters = [];
+
+        $.fn.setMyFolders = function()
+        {
+          var html = "" ;
+          $.each(folders,function(index,value){
+              html += '<li id="folder-item" data-ref="' + value.id + '"><a href="#"><i class="fa fa-folder-o"></i> ' + value.name + '</a></li>';
+          });
+          return html;
+        }
+
+        $.fn.getMyFolders = function()
+        {
+          $.post("{{ url('cv/get-my-folders') }}",function(data){
+                // console.log(data);
+                folders = data.folders;
+                $('body #folder-item').remove();
+                $('body #folders').each(function(index,value){
+                    $(this).prepend($(this).setMyFolders());
+                })
+          });
+        }
+
+        
+
+        $(document).getMyFolders();
 
         $(document).on('change', '.filter-div input[type=checkbox]', function(){
             // console.log("changed");
@@ -255,6 +282,43 @@
                $( this_one.attr('data-target') ).html(data);
             });
         });
+
+        $('body').on('click', '#add_folder_btn',function(){
+            var input = $(this).parent().parent().parent().find('#add_folder');
+            input.show();
+        });
+
+
+        $('body').on('keydown', '#add_folder',function(){
+            if(event.which == 13) 
+            {
+                $field = $(this);
+                $.post("{{ url('cv/add-folder') }}", {name: $field.val() },function(data){
+                    if(data == true)
+                    {
+                      $field.val("").hide();
+                      $(this).getMyFolders();
+                    }
+                    
+                });
+
+            }
+        });
+
+        $('body').on('click','#folder-item',function(){
+
+            $field = $(this);
+            
+            $.post("{{ url('cv/save-to-folder') }}", {folder_id: $field.attr( 'data-ref' ),item_id: $(this).closest('#folders').attr('data-cv'), item_type: 'saved', },function(data){
+                    if(data == true)
+                    {
+                      $field.addClass( 'active' );
+                    }
+                    
+                });
+
+        });
+
     });
 </script>
 

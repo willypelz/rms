@@ -152,8 +152,13 @@ Route::group(['middleware' => 'web'], function () {
             return view('cv-sales.cv_saved');
         });
 
+        Route::post('get-my-folders', 'CvSalesController@getMyFolders');
 
+        Route::post('add-folder', 'CvSalesController@addFolders');
 
+        Route::post('save-to-folder', 'CvSalesController@saveToFolder');
+
+        
     });
 
     /**

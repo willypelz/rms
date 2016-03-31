@@ -1,8 +1,6 @@
-@extends('layout.template-user')
+@extends('layout.template-default')
 
 @section('content')
-
-    <link href="{{ asset('css/summernote.css') }}" rel="stylesheet">
 
 <div class="separator separator-small"></div>
 
@@ -60,7 +58,7 @@
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <label for="">Job description / responsibilities <span class="text-danger">*</span></label>
-                                                <textarea name="job_description" id="summernote" cols="30" rows="6" class="form-control" placeholder="">{{ (Request::old('job_description')) ? ' value='. e(Request::old('job_description')) .'' : '' }}</textarea>
+                                                <textarea name="job_description" id="editor1" cols="30" rows="6" class="form-control" placeholder="">{{ (Request::old('job_description')) ? ' value='. e(Request::old('job_description')) .'' : '' }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -185,14 +183,16 @@
     </section>
    
 
-    <script src="{{ asset('js/summernote.js') }}"></script>
 
 
-<script>
-    $(document).ready(function(){
-         $('#summernote').summernote();
-    })
-</script>
+            <script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                $(document).ready(function(){
+                CKEDITOR.replace( 'editor1' );
+
+                })
+            </script>
     
 
 <div class="separator separator-small"></div>

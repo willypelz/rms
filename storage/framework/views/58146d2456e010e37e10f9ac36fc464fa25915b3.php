@@ -1,5 +1,8 @@
 <?php $__env->startSection('content'); ?>
-  <section class="s-div">
+
+
+
+    <section class="s-div">
         <div class="container">
             <div class="row no-pad">
 
@@ -7,6 +10,9 @@
 
                     <h3 class="text-green-light">
                         36 Sesewa Recruit Jobs
+                        &nbsp;x
+                        <a href="<?php echo e(url('jobs/create')); ?>" class="btn btn-success"><i class="fa fa-plus"></i> Post a New Job</a>
+
                         <small class="pull-right text-white">Active (3) | Suspended (34)</small>
                     </h3>
 
@@ -39,8 +45,8 @@
                         <div class="panel-body no-pad">
 
                             <div class="title-job pull-left">
-                                <big><a target="_blank" href="<?php echo e(url('jobs/dashboard')); ?>"><b>Creative and Brand Expert</b></a></big><hr/>
-                                <small class="text-muted"><i class="glyphicon glyphicon-ban-circle "></i> Job Suspended | <a href="">View Job</a></small><br/>
+                                <big><a target="_blank" href="job-board.php"><b>Creative and Brand Expert</b></a></big><hr/>
+                                <small class="text-muted"><i class="glyphicon glyphicon-ban-circle "></i> Job Suspended | <a href="<?php echo e(url('jobs/preview')); ?>">View Job</a></small><br/>
                                 <small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> Lagos, Nigeria &nbsp;
                                     <i class="glyphicon glyphicon-calendar"></i> Date Created : 12:09am | 12 June, 2013</small>
                             </div>
@@ -71,8 +77,8 @@
                         <div class="panel-body no-pad">
 
                             <div class="title-job pull-left">
-                                <big><a target="_blank" href="<?php echo e(url('jobs/dashboard')); ?>"><b>Driver (Round-the-clock)</b></a></big><hr/>
-                                <small class="text-success"><i class="glyphicon glyphicon-check "></i> Job Active | <a href="">View Job</a></small><br/>
+                                <big><a target="_blank" href="job-board.php"><b>Driver (Round-the-clock)</b></a></big><hr/>
+                                <small class="text-success"><i class="glyphicon glyphicon-check "></i> Job Active | <a href="<?php echo e(url('jobs/preview')); ?>">View Job</a></small><br/>
                                 <small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> Lagos, Nigeria &nbsp;
                                     <i class="glyphicon glyphicon-calendar"></i> Date Created : 12:09am | 12 June, 2013</small>
                             </div>
@@ -103,8 +109,8 @@
                         <div class="panel-body no-pad">
 
                             <div class="title-job pull-left">
-                                <big><a target="_blank" href="<?php echo e(url('jobs/dashboard')); ?>"><b>Security Guard (8:00pm - 8:00am)</b></a></big><hr/>
-                                <small class="text-success"><i class="glyphicon glyphicon-check "></i> Job Active | <a href="">View Job</a></small><br/>
+                                <big><a target="_blank" href="job-board.php"><b>Security Guard (8:00pm - 8:00am)</b></a></big><hr/>
+                                <small class="text-success"><i class="glyphicon glyphicon-check "></i> Job Active | <a href="<?php echo e(url('jobs/preview')); ?>">View Job</a></small><br/>
                                 <small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> Lagos, Nigeria &nbsp;
                                     <i class="glyphicon glyphicon-calendar"></i> Date Created : 12:09am | 12 June, 2013</small>
                             </div>
@@ -134,8 +140,8 @@
                         <div class="panel-body no-pad">
 
                             <div class="title-job pull-left">
-                                <big><a target="_blank" href="<?php echo e(url('jobs/dashboard')); ?>"><b>Security Guard (8:00pm - 8:00am)</b></a></big><hr/>
-                                <small class="text-success"><i class="glyphicon glyphicon-check "></i> Job Active | <a href="">View Job</a></small><br/>
+                                <big><a target="_blank" href="job-board.php"><b>Security Guard (8:00pm - 8:00am)</b></a></big><hr/>
+                                <small class="text-success"><i class="glyphicon glyphicon-check "></i> Job Active | <a href="<?php echo e(url('jobs/preview')); ?>">View Job</a></small><br/>
                                 <small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> Lagos, Nigeria &nbsp;
                                     <i class="glyphicon glyphicon-calendar"></i> Date Created : 12:09am | 12 June, 2013</small>
                             </div>
@@ -166,5 +172,7 @@
             </div>
         <h1></h1>
     </section>
+
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layout.template-user', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

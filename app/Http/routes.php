@@ -45,12 +45,12 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::post('log-in', 'Auth\AuthController@login');
 
-    Route::get('sign-up', 'Auth\AuthController@showRegistrationForm');
+    // Route::get('sign-up', 'Auth\AuthController@showRegistrationForm');
 
-    Route::post('sign-up', 'Auth\AuthController@register');
+    // Route::post('sign-up', 'Auth\AuthController@register');
     
     Route::match(['get', 'post'], 'auth/ajax_login', ['uses' => 'Auth\AuthController@AjaxLogin', 'as' => 'ajax_login']);
-
+    Route::match(['get', 'post'], 'sign-up', ['uses' => 'Auth\AuthController@Registration', 'as' => 'registration']);
 
     Route::match(['get', 'post'], 'cart', ['uses' => 'CvSalesController@Cart', 'as' => 'cart']);
     Route::match(['get', 'post'], 'cart_details', ['uses' => 'CvSalesController@CartDetails', 'as' => 'cartDe']);
@@ -63,7 +63,8 @@ Route::group(['middleware' => 'web'], function () {
 
     //JOB
     Route::match(['get', 'post'], 'jobs/post-a-job', ['uses' => 'JobsController@PostJob', 'as' => 'post-job']);
-    Route::match(['get', 'post'], 'jobs/advertise-your-job', ['uses' => 'JobsController@Advertise', 'as' => 'advertise']);
+    Route::match(['get', 'post'], 'jobs/advertise-your-job/{jobID}', ['uses' => 'JobsController@Advertise', 'as' => 'advertise']);
+    Route::match(['get', 'post'], 'jobs/share-your-job/{jobID}', ['uses' => 'JobsController@Share', 'as' => 'share-job']);
 
 	// Route::any('log-in', function () {
 	//     return view('auth.login');

@@ -2,7 +2,6 @@
 /storage
 /node_modules
 /public/storage
-/storage
 /bootstrap
 Homestead.yaml
 Homestead.json

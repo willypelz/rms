@@ -2,8 +2,8 @@
 
 @section('header')
 	@include('layout.includes.header-guest')
-@show()
+@endsection
 
 @section('navbar')
 	@include('layout.includes.navbar-guest')
-@show()
+@endsection

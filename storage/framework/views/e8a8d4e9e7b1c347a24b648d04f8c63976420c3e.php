@@ -1,3 +1,5 @@
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+
 <script>
     $(document).ready(function(){
 
@@ -244,8 +246,8 @@
                 <section class="no-pad">
 
                 
-                    <div class="">
-                        <div class="row">
+                    <div class="" >
+                        <div class="row" id="content-Area">
 
                             <div class="col-sm-12 text-center">
                                 <h2>Seamless Hiring</h2>
@@ -255,9 +257,10 @@
                             <div class="col-sm-12">
 
                                 <div class="white padbox rounded">
-
-
-                                    <form role="form" class="form-signin" method="POST" action="<?php echo e(url('/login')); ?>">
+                                
+                                <div id="mssg"></div>
+                                
+                                    <form role="form" id="AjaxLogin" class="form-signin" method="POST" action="<?php echo e(route('ajax_login')); ?>">
                             <?php echo csrf_field(); ?>
 
                             
@@ -282,7 +285,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group<?php echo e($errors->has('email') ? ' has-error' : ''); ?>">
                                     <label for="">Your Email</label>
-                                    <input type="email" class="form-control" id="" placeholder="" name="email" value="<?php echo e(old('email')); ?>">
+                                    <input type="email" class="form-control" id="" placeholder="" name="email" value="<?php echo e(old('email')); ?>" required>
 
                                     <?php if($errors->has('email')): ?>
                                         <span class="help-block">
@@ -295,7 +298,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group<?php echo e($errors->has('password') ? ' has-error' : ''); ?>">
                                     <label for="">Your Password</label>
-                                    <input type="password" class="form-control" id="" placeholder="" name="password">
+                                    <input type="password" class="form-control" id="" placeholder="" name="password" required>
                                     <?php if($errors->has('password')): ?>
                                         <span class="help-block">
                                             <strong><?php echo e($errors->first('password')); ?></strong>
@@ -309,7 +312,7 @@
                             <div class="row"><br>
 
                                 <div class="col-sm-10 col-sm-offset-1">
-                                    <button type="submit" class="btn btn-success btn-block">Proceed &raquo;</button>
+                                    <button type="submit" id="SubBtn" class="btn btn-success btn-block">Proceed &raquo;</button>
                                 </div>
 
                                 <div class="col-xs-12"><hr></div>
@@ -332,6 +335,45 @@
 
                         </div>
                     </div>
+
+                    <script>
+                    $(document).ready(function() { 
+
+                       // console.log("<?php echo e(asset('img/loader-logo-32.gif')); ?>")
+
+                        $('#AjaxLogin').ajaxForm({
+                                beforeSubmit: genPreSubmit,
+                                success: function(response){
+                                  console.log(response);
+                                    if(response == 'Failed'){
+                                        $('#mssg').html("<span class='alert alert-danger' > Your login credentials are incorrect. </span>")
+                                        $("#SubBtn").html('Proceed');
+                                        
+                                    }else{
+                                        // $('#mssg').html("<span class='alert alert-success' > Logged in successfully. </span>")
+                                        $("#SubBtn").html('Logging you in');
+                                         $("#content-Area").html('<img src="<?php echo e(asset('img/loader-logo-32.gif')); ?>" width="30px" /> please wait...');
+
+                                        setTimeout(function(){ 
+                                            window.location = "<?php echo e(url('dashboard')); ?>";
+                                        }, 3000);
+                                    }
+
+                                },
+                                 reset: true
+                         }); 
+
+                        function genPreSubmit(){
+                          console.log("We are here....");
+                          $("#SubBtn").html('please wait...');
+
+                        }
+
+                       
+                    });
+
+
+                    </script>
                 
 
             </section>

@@ -19,7 +19,7 @@ class Job extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'details', 'location', 'post_date', 'expiry_date', 'job_type', 'qualification', 'published', 'experience'];
+    protected $fillable = ['title', 'details', 'company_id', 'location', 'post_date', 'expiry_date', 'job_type', 'qualification', 'published', 'experience'];
 
 
     public function boards()

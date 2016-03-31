@@ -196,4 +196,4 @@
 
 <div class="separator separator-small"></div>
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layout.template-user', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php echo $__env->make('layout.template-default', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

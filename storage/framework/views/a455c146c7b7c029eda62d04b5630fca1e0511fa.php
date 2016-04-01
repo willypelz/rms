@@ -26,7 +26,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a class="btn btn-warning" href="#" data-toggle="modal" data-target="#SignupModal">SIGN UP</a>
+                    <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#SignupModal">SIGN UP</a>
                 </li>
                 <li>
                     <a class="signin" href="#" data-toggle="modal" data-target="#loginModal">LOG IN</a>

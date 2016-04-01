@@ -7,8 +7,8 @@
             <div class="row no-pad">
 
                 <div class="col-xs-12 no-margin">
-
-                    <h3 class="text-green-light">
+                <br>
+                    <h3 class="text-green-light no-margin">
                         36 Sesewa Recruit Jobs
                         &nbsp;
                         <a href="create-job.php" class="btn btn-success"><i class="fa fa-plus"></i> Post a New Job</a>

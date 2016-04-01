@@ -97,7 +97,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     background:transparent;
 }
 .navbar a.btn{
-    background-color: #D47C15;
+    background-color: #d9534f;
     padding: 8px 20px;
     margin-top: 6px;
     font-weight: 700;
@@ -150,6 +150,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     border-width: 0 1px 1px 0;
     padding: 20px 0;
     border-radius: 0;
+    background: #FBFCFD;
 }
 .btn-group-justified.btn-tabs.job-dash>.btn-group .btn{
     font-size:10px;
@@ -157,6 +158,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .btn-group-justified.btn-tabs>.btn-group .btn.in{
     /*border-top:2px solid #A2B23D;*/
     border-bottom:0px solid;
+    background: #ffffff;
 }
 .btn-group.btn-tabs>.btn-group:last-child:not(:first-child)>.btn:first-child{
     border-right:none;
@@ -323,7 +325,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     /*color: #ffffff;*/
 }
 section {
-    padding: 2em 0;
+    padding: 5em 0;
 }
 section.white, .white {
     background: #fff;
@@ -361,6 +363,8 @@ section.s-div{
 }
 section.s-div.homepage{
     min-height:450px;
+    background: fixed bottom url('../img/intro-bg.jpg');
+    background-size:cover;
     /*border-bottom:3px solid #5CB85C;*/
 }
 section.dark-blue .page {
@@ -1828,7 +1832,7 @@ ul.notif > li a img {
 }
 
 section.blue{
-    background: #3A5979 url(../img/b2.jpg) center top;
+    background: #3A5979 url('../img/intro-bg2.jpg') center bottom fixed;
     background-size: cover;
     color: #ffffff;
 }
@@ -4251,6 +4255,9 @@ a.less-link:after {
   }
 }
 @media (max-width: 768px) {
+    section{
+        padding:1.5em 0;
+    }
   body {
     min-width: 0;
   }
@@ -4359,9 +4366,6 @@ button.close {
     }
     .selectboxit-container {
         width: 100%;
-    }
-    section {
-        padding: 1em 0;
     }
     hr {
         margin-top: 10px;
@@ -4511,9 +4515,6 @@ li:hover .drop-menu {
   }
   .selectboxit-container {
     width: 100%;
-  }
-  section {
-    padding: 1em 0;
   }
   hr {
     margin-top: 10px;
@@ -5113,6 +5114,7 @@ text-shadow:{ 0px 1px 0px rgba(255,255,255,0.45);
 .img-screen {
     border: 3px solid #fff;
     box-shadow: 0px 2px 5px rgba(0,0,0,0.28);
+    margin:1.5em 0;
 }
 .navbar-home .navbar-nav.links {
     /*float: right !important;*/

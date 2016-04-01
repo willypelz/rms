@@ -6925,3 +6925,207 @@ Stack trace:
 #40 /Applications/AMPPS/www/seamlesshiring/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))
 #41 /Applications/AMPPS/www/seamlesshiring/public/index.php(54): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))
 #42 {main}  
+[2016-03-26 20:45:33] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Gloudemans\Shoppingcart\ShoppingcartServiceProvider' not found' in C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php:146
+Stack trace:
+#0 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(133): Symfony\Component\Debug\Exception\FatalErrorException->__construct()
+#1 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(118): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalExceptionFromError()
+#2 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(0): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#3 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(114): Illuminate\Foundation\ProviderRepository->createProvider()
+#4 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(60): Illuminate\Foundation\ProviderRepository->compileManifest()
+#5 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(507): Illuminate\Foundation\ProviderRepository->load()
+#6 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterProviders.php(17): Illuminate\Foundation\Application->registerConfiguredProviders()
+#7 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(203): Illuminate\Foundation\Bootstrap\RegisterProviders->bootstrap()
+#8 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(232): Illuminate\Foundation\Application->bootstrapWith()
+#9 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(127): Illuminate\Foundation\Http\Kernel->bootstrap()
+#10 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter()
+#11 C:\wamp\www\seamlesshiring\public\index.php(54): Illuminate\Foundation\Http\Kernel->handle()
+#12 C:\wamp\www\seamlesshiring\public\index.php(0): {main}()
+#13 {main}  
+[2016-03-26 20:45:40] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Gloudemans\Shoppingcart\ShoppingcartServiceProvider' not found' in C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php:146
+Stack trace:
+#0 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(133): Symfony\Component\Debug\Exception\FatalErrorException->__construct()
+#1 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(118): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalExceptionFromError()
+#2 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(0): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#3 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(114): Illuminate\Foundation\ProviderRepository->createProvider()
+#4 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(60): Illuminate\Foundation\ProviderRepository->compileManifest()
+#5 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(507): Illuminate\Foundation\ProviderRepository->load()
+#6 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterProviders.php(17): Illuminate\Foundation\Application->registerConfiguredProviders()
+#7 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(203): Illuminate\Foundation\Bootstrap\RegisterProviders->bootstrap()
+#8 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(232): Illuminate\Foundation\Application->bootstrapWith()
+#9 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(127): Illuminate\Foundation\Http\Kernel->bootstrap()
+#10 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter()
+#11 C:\wamp\www\seamlesshiring\public\index.php(54): Illuminate\Foundation\Http\Kernel->handle()
+#12 C:\wamp\www\seamlesshiring\public\index.php(0): {main}()
+#13 {main}  
+[2016-03-26 20:45:44] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Gloudemans\Shoppingcart\ShoppingcartServiceProvider' not found' in C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php:146
+Stack trace:
+#0 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(133): Symfony\Component\Debug\Exception\FatalErrorException->__construct()
+#1 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(118): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalExceptionFromError()
+#2 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(0): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#3 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(114): Illuminate\Foundation\ProviderRepository->createProvider()
+#4 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(60): Illuminate\Foundation\ProviderRepository->compileManifest()
+#5 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(507): Illuminate\Foundation\ProviderRepository->load()
+#6 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterProviders.php(17): Illuminate\Foundation\Application->registerConfiguredProviders()
+#7 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(203): Illuminate\Foundation\Bootstrap\RegisterProviders->bootstrap()
+#8 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(232): Illuminate\Foundation\Application->bootstrapWith()
+#9 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(127): Illuminate\Foundation\Http\Kernel->bootstrap()
+#10 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter()
+#11 C:\wamp\www\seamlesshiring\public\index.php(54): Illuminate\Foundation\Http\Kernel->handle()
+#12 C:\wamp\www\seamlesshiring\public\index.php(0): {main}()
+#13 {main}  
+[2016-03-29 08:09:03] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Gloudemans\Shoppingcart\ShoppingcartServiceProvider' not found' in C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php:146
+Stack trace:
+#0 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(133): Symfony\Component\Debug\Exception\FatalErrorException->__construct()
+#1 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(118): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalExceptionFromError()
+#2 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(0): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#3 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(114): Illuminate\Foundation\ProviderRepository->createProvider()
+#4 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(60): Illuminate\Foundation\ProviderRepository->compileManifest()
+#5 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(507): Illuminate\Foundation\ProviderRepository->load()
+#6 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterProviders.php(17): Illuminate\Foundation\Application->registerConfiguredProviders()
+#7 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(203): Illuminate\Foundation\Bootstrap\RegisterProviders->bootstrap()
+#8 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(232): Illuminate\Foundation\Application->bootstrapWith()
+#9 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(127): Illuminate\Foundation\Http\Kernel->bootstrap()
+#10 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter()
+#11 C:\wamp\www\seamlesshiring\public\index.php(54): Illuminate\Foundation\Http\Kernel->handle()
+#12 C:\wamp\www\seamlesshiring\public\index.php(0): {main}()
+#13 {main}  
+[2016-03-29 08:09:03] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Gloudemans\Shoppingcart\ShoppingcartServiceProvider' not found' in C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php:146
+Stack trace:
+#0 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(133): Symfony\Component\Debug\Exception\FatalErrorException->__construct()
+#1 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(118): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalExceptionFromError()
+#2 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(0): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#3 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(114): Illuminate\Foundation\ProviderRepository->createProvider()
+#4 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(60): Illuminate\Foundation\ProviderRepository->compileManifest()
+#5 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(507): Illuminate\Foundation\ProviderRepository->load()
+#6 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterProviders.php(17): Illuminate\Foundation\Application->registerConfiguredProviders()
+#7 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(203): Illuminate\Foundation\Bootstrap\RegisterProviders->bootstrap()
+#8 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(232): Illuminate\Foundation\Application->bootstrapWith()
+#9 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(127): Illuminate\Foundation\Http\Kernel->bootstrap()
+#10 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter()
+#11 C:\wamp\www\seamlesshiring\public\index.php(54): Illuminate\Foundation\Http\Kernel->handle()
+#12 C:\wamp\www\seamlesshiring\public\index.php(0): {main}()
+#13 {main}  
+[2016-03-29 09:36:20] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Gloudemans\Shoppingcart\ShoppingcartServiceProvider' not found' in C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php:146
+Stack trace:
+#0 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(133): Symfony\Component\Debug\Exception\FatalErrorException->__construct()
+#1 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(118): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalExceptionFromError()
+#2 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(0): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#3 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(114): Illuminate\Foundation\ProviderRepository->createProvider()
+#4 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(60): Illuminate\Foundation\ProviderRepository->compileManifest()
+#5 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(507): Illuminate\Foundation\ProviderRepository->load()
+#6 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterProviders.php(17): Illuminate\Foundation\Application->registerConfiguredProviders()
+#7 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(203): Illuminate\Foundation\Bootstrap\RegisterProviders->bootstrap()
+#8 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php(208): Illuminate\Foundation\Application->bootstrapWith()
+#9 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php(105): Illuminate\Foundation\Console\Kernel->bootstrap()
+#10 C:\wamp\www\seamlesshiring\artisan(36): Illuminate\Foundation\Console\Kernel->handle()
+#11 C:\wamp\www\seamlesshiring\artisan(0): {main}()
+#12 {main}  
+[2016-03-29 09:37:08] local.ERROR: exception 'ErrorException' with message 'file_put_contents(C:\wamp\www\seamlesshiring/bootstrap/cache/services.php): failed to open stream: No such file or directory' in C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Filesystem\Filesystem.php:81
+Stack trace:
+#0 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'file_put_conten...', 'C:\\wamp\\www\\sea...', 81, Array)
+#1 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Filesystem\Filesystem.php(81): file_put_contents('C:\\wamp\\www\\sea...', '<?php return ar...', 0)
+#2 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(188): Illuminate\Filesystem\Filesystem->put('C:\\wamp\\www\\sea...', '<?php return ar...')
+#3 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(135): Illuminate\Foundation\ProviderRepository->writeManifest(Array)
+#4 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(60): Illuminate\Foundation\ProviderRepository->compileManifest(Array)
+#5 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(507): Illuminate\Foundation\ProviderRepository->load(Array)
+#6 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterProviders.php(17): Illuminate\Foundation\Application->registerConfiguredProviders()
+#7 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(203): Illuminate\Foundation\Bootstrap\RegisterProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#8 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php(208): Illuminate\Foundation\Application->bootstrapWith(Array)
+#9 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php(105): Illuminate\Foundation\Console\Kernel->bootstrap()
+#10 C:\wamp\www\seamlesshiring\artisan(36): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#11 {main}  
+[2016-03-29 09:41:33] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Gloudemans\Shoppingcart\ShoppingcartServiceProvider' not found' in C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php:146
+Stack trace:
+#0 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(133): Symfony\Component\Debug\Exception\FatalErrorException->__construct()
+#1 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(118): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalExceptionFromError()
+#2 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(0): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#3 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(114): Illuminate\Foundation\ProviderRepository->createProvider()
+#4 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(60): Illuminate\Foundation\ProviderRepository->compileManifest()
+#5 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(507): Illuminate\Foundation\ProviderRepository->load()
+#6 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterProviders.php(17): Illuminate\Foundation\Application->registerConfiguredProviders()
+#7 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(203): Illuminate\Foundation\Bootstrap\RegisterProviders->bootstrap()
+#8 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(232): Illuminate\Foundation\Application->bootstrapWith()
+#9 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(127): Illuminate\Foundation\Http\Kernel->bootstrap()
+#10 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter()
+#11 C:\wamp\www\seamlesshiring\public\index.php(54): Illuminate\Foundation\Http\Kernel->handle()
+#12 C:\wamp\www\seamlesshiring\public\index.php(0): {main}()
+#13 {main}  
+[2016-03-29 09:41:36] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Gloudemans\Shoppingcart\ShoppingcartServiceProvider' not found' in C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php:146
+Stack trace:
+#0 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(133): Symfony\Component\Debug\Exception\FatalErrorException->__construct()
+#1 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(118): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalExceptionFromError()
+#2 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(0): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#3 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(114): Illuminate\Foundation\ProviderRepository->createProvider()
+#4 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(60): Illuminate\Foundation\ProviderRepository->compileManifest()
+#5 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(507): Illuminate\Foundation\ProviderRepository->load()
+#6 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterProviders.php(17): Illuminate\Foundation\Application->registerConfiguredProviders()
+#7 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(203): Illuminate\Foundation\Bootstrap\RegisterProviders->bootstrap()
+#8 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(232): Illuminate\Foundation\Application->bootstrapWith()
+#9 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(127): Illuminate\Foundation\Http\Kernel->bootstrap()
+#10 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter()
+#11 C:\wamp\www\seamlesshiring\public\index.php(54): Illuminate\Foundation\Http\Kernel->handle()
+#12 C:\wamp\www\seamlesshiring\public\index.php(0): {main}()
+#13 {main}  
+[2016-03-29 09:41:40] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Gloudemans\Shoppingcart\ShoppingcartServiceProvider' not found' in C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php:146
+Stack trace:
+#0 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(133): Symfony\Component\Debug\Exception\FatalErrorException->__construct()
+#1 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(118): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalExceptionFromError()
+#2 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(0): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#3 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(114): Illuminate\Foundation\ProviderRepository->createProvider()
+#4 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(60): Illuminate\Foundation\ProviderRepository->compileManifest()
+#5 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(507): Illuminate\Foundation\ProviderRepository->load()
+#6 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterProviders.php(17): Illuminate\Foundation\Application->registerConfiguredProviders()
+#7 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(203): Illuminate\Foundation\Bootstrap\RegisterProviders->bootstrap()
+#8 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(232): Illuminate\Foundation\Application->bootstrapWith()
+#9 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(127): Illuminate\Foundation\Http\Kernel->bootstrap()
+#10 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter()
+#11 C:\wamp\www\seamlesshiring\public\index.php(54): Illuminate\Foundation\Http\Kernel->handle()
+#12 C:\wamp\www\seamlesshiring\public\index.php(0): {main}()
+#13 {main}  
+[2016-03-30 15:22:53] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Gloudemans\Shoppingcart\ShoppingcartServiceProvider' not found' in C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php:146
+Stack trace:
+#0 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(133): Symfony\Component\Debug\Exception\FatalErrorException->__construct()
+#1 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(118): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalExceptionFromError()
+#2 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(0): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#3 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(114): Illuminate\Foundation\ProviderRepository->createProvider()
+#4 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(60): Illuminate\Foundation\ProviderRepository->compileManifest()
+#5 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(507): Illuminate\Foundation\ProviderRepository->load()
+#6 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterProviders.php(17): Illuminate\Foundation\Application->registerConfiguredProviders()
+#7 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(203): Illuminate\Foundation\Bootstrap\RegisterProviders->bootstrap()
+#8 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(232): Illuminate\Foundation\Application->bootstrapWith()
+#9 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(127): Illuminate\Foundation\Http\Kernel->bootstrap()
+#10 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter()
+#11 C:\wamp\www\seamlesshiring\public\index.php(54): Illuminate\Foundation\Http\Kernel->handle()
+#12 C:\wamp\www\seamlesshiring\public\index.php(0): {main}()
+#13 {main}  
+[2016-03-30 15:24:24] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'Gloudemans\Shoppingcart\ShoppingcartServiceProvider' not found' in C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php:146
+Stack trace:
+#0 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(133): Symfony\Component\Debug\Exception\FatalErrorException->__construct()
+#1 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(118): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalExceptionFromError()
+#2 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(0): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#3 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(114): Illuminate\Foundation\ProviderRepository->createProvider()
+#4 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(60): Illuminate\Foundation\ProviderRepository->compileManifest()
+#5 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(507): Illuminate\Foundation\ProviderRepository->load()
+#6 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterProviders.php(17): Illuminate\Foundation\Application->registerConfiguredProviders()
+#7 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(203): Illuminate\Foundation\Bootstrap\RegisterProviders->bootstrap()
+#8 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(232): Illuminate\Foundation\Application->bootstrapWith()
+#9 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(127): Illuminate\Foundation\Http\Kernel->bootstrap()
+#10 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter()
+#11 C:\wamp\www\seamlesshiring\public\index.php(54): Illuminate\Foundation\Http\Kernel->handle()
+#12 C:\wamp\www\seamlesshiring\public\index.php(0): {main}()
+#13 {main}  
+[2016-03-30 15:35:12] local.ERROR: exception 'ErrorException' with message 'file_put_contents(C:\wamp\www\seamlesshiring\bootstrap/cache/services.php): failed to open stream: No such file or directory' in C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Filesystem\Filesystem.php:81
+Stack trace:
+#0 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'file_put_conten...', 'C:\\wamp\\www\\sea...', 81, Array)
+#1 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Filesystem\Filesystem.php(81): file_put_contents('C:\\wamp\\www\\sea...', '<?php return ar...', 0)
+#2 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(188): Illuminate\Filesystem\Filesystem->put('C:\\wamp\\www\\sea...', '<?php return ar...')
+#3 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(135): Illuminate\Foundation\ProviderRepository->writeManifest(Array)
+#4 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\ProviderRepository.php(60): Illuminate\Foundation\ProviderRepository->compileManifest(Array)
+#5 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(520): Illuminate\Foundation\ProviderRepository->load(Array)
+#6 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterProviders.php(17): Illuminate\Foundation\Application->registerConfiguredProviders()
+#7 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(203): Illuminate\Foundation\Bootstrap\RegisterProviders->bootstrap(Object(Illuminate\Foundation\Application))
+#8 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(232): Illuminate\Foundation\Application->bootstrapWith(Array)
+#9 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(127): Illuminate\Foundation\Http\Kernel->bootstrap()
+#10 C:\wamp\www\seamlesshiring\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(99): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#11 C:\wamp\www\seamlesshiring\public\index.php(54): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))
+#12 {main}  

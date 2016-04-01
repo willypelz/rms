@@ -28,6 +28,8 @@
                             <li>
                                 <strong>&nbsp;Expires:</strong>&nbsp; 21 Jun, 2014</li>
                         </ul>
+
+                        <div class="label label-success" style="">Job is active</div> <!-- <small>To change</small> -->
                 
                         <!-- <div class="badge badge-job badge-job-active">
                             <small class="">
@@ -57,7 +59,7 @@
                 
                         <div class="btn-group btn-group-justified" role="group">
                             <div  class="btn-group" role="group">
-                                <a href="job.php" target="_blank" type="button" class="btn-sm btn btn-info status"><i class="fa fa-send"></i> &nbsp; Advertise</a>
+                                <a href="job.php" target="_blank" type="button" class="btn-sm btn btn-info status"><i class="fa fa-file-o"></i> &nbsp; Preview</a>
                             </div>
                             <div  class="btn-group" role="group">
                                 <a href="create-job.php" type="button" class="btn-sm btn btn-info status"><i class="fa fa-pencil"></i> &nbsp; Edit Details</a>
@@ -84,8 +86,8 @@
 
                         <div class="btn-group btn-group-justified btn-tabs job-dash no-pad text-brandon" role="group" aria-label="...">
                           <div class="btn-group" role="group">
-                            <a href="<?php echo e(url('dashboard')); ?>" type="button" class="btn btn-line text-capitalize text-muted">
-                            <span class="fa-lg"><i class="fa fa-cog"></i>
+                            <a href="<?php echo e(url('jobs/dashboard')); ?>" type="button" class="btn btn-line text-capitalize text-muted">
+                            <span class="fa-lg"><i class="fa fa-send"></i>
                             <span class="hidden-xs"> &nbsp; Promote Job</span></span>
                             <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
                             </a>
@@ -100,7 +102,7 @@
                           <div class="btn-group" role="group">
                             <a href="<?php echo e(url('applicants')); ?>" type="button" class="btn btn-line text-capitalize">
                             <span class="fa-lg"><i class="fa fa-edit"></i>
-                            <span class="hidden-xs"> &nbsp; Applicants</span></span>
+                            <span class="hidden-xs"> &nbsp; <b>234</b> Applicants</span></span>
                             <!-- <small class="text-muted hidden-xs">See all applicants and their status </small> -->
                             </a>
                           </div>
@@ -123,23 +125,88 @@
 
                         <div class="row">                           
                         <!-- applicant -->
+                        <div class="col-xs-7">
+                            <h5 class="no-margin"> <!-- <i class="fa fa-lg fa-users"></i> --> Team members</h5><hr>
 
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="col-xs-2"><img class="img-circle" src="img/avatar.jpg" alt="" width="100%"></div>
+                                    <div class="col-xs-6">
+                                        <h5>Rashid Davidson</h5>
+                                        <p>rdavidson@expressdelivery.com</p>
+                                    </div>
+                                    <div class="col-xs-4 small"><br>
+                                        <span class="pull-right"><a href="" class=""><i class="fa fa-pencil"></i> &nbsp; Edit</a> &nbsp; &middot; &nbsp;
+                                            <a href="" class="text-muted"><i class="fa fa-close"></i> Remove</a></span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="col-xs-2"><img class="img-circle" src="img/avatar.jpg" alt="" width="100%"></div>
+                                    <div class="col-xs-6">
+                                        <h5>Anifowose Bashiru</h5>
+                                        <p>aninibas@hpconsult.com</p>
+                                    </div>
+                                    <div class="col-xs-4 small"><br>
+                                        <span class="pull-right"><a href="" class=""><i class="fa fa-pencil"></i> &nbsp; Edit</a> &nbsp; &middot; &nbsp;
+                                            <a href="" class="text-muted"><i class="fa fa-close"></i> Remove</a></span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                        <div class="col-xs-5">
+                            <h5 class="no-margin">Add New Team member <span class="pull-right"><i class="fa fa-lg fa-user-plus"></i></span></h5><hr>
+
+                            <a href="#AddTeamMember" data-target="#AddTeamMember"  data-toggle="collapse" class="btn btn-warning" aria-expanded="false" aria-controls="AddTeamMember"><i class="fa fa-user-plus"></i> Add New Member</a>
+
+                            <div class="collapse" id="AddTeamMember">
+                               <div class="alert alert-success"><i class="fa fa-check fa-lg"></i>
+                                    &nbsp; Your mail has been sent. Refresh page to send more.</div>
+                                   <form action="">
+
+                                   <div class="form-group">
+                                       <label for="">From: </label>
+                                       <input class="form-control" type="text" value="dejilana@insidify.com" disabled>
+                                       
+                                       <label for="">To: </label>
+                                       <small>Separate your addresses by a comma</small>
+                                       <input class="form-control" type="text" placeholder="email addresses here">
+                                   </div>
+
+                                   <label for="editor1">Body of Mail</label>
+                                       <textarea name="" id="editor1" cols="30" rows="10">
+                                       <p>Hello there, I have a job you might be interested in</p>
+                                       <hr style="width: 45%">
+                                           <strong class="">Human Resource Administrator<br>
+                                               <small>at Kingston Industries</small>
+                                           </strong>
+                                           <p>
+                                               <a href="job-page.php">Visit this link to see Job details.</a>
+                                           </p>
+                                           <p>Thank you.</p>
+                                       </textarea>
+                                       <script>
+                                           // Replace the <textarea id="editor1"> with a CKEditor
+                                           // instance, using default configuration.
+                                           CKEDITOR.replace( 'editor1' );
+                                       </script>
+                                   </form>
+                                   <br>
+                                   <p>
+                                       <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-line btn-sm"><i class="fa fa-times"></i> &nbsp; Cancel</a>
+
+                                       <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-success btn-sm pull-right">Send Mail &nbsp; <i class="fa fa-send"></i></a>
+                                   </p>
+                               </div>
+                        </div>
                                 
                         </div>
 
-                        <!--<div class="panel panel-default">-->
-                        <!--<div class="panel-heading">-->
-                        <!--<h4 class="panel-title">Friends who work <p>Medical Doctor, Valuepreneur, Doer... </p></h4>-->
-                        <!--</div>-->
-                        <!--<div class="panel-collapse skill">-->
-                        <!--<div class="panel-body">-->
-                        <!--<a href="#" class="btn btn-info" role="button">CSS</a> <a href="#" class="btn btn-info" role="button">HTML</a> <a href="#" class="btn btn-info" role="button">jQuery</a>-->
-                        <!--</div>-->
-                        <!--</div>-->
-                        <!--</div>-->
-
                     </div>
-                        </div>
+                    </div>
 
                     </div>
                     <!--/tab-content-->

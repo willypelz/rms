@@ -83,10 +83,9 @@
 
 
                         <div class="btn-group btn-group-justified btn-tabs job-dash no-pad text-brandon" role="group" aria-label="...">
-
                           <div class="btn-group" role="group">
-                            <a href="<?php echo e(url('dashboard')); ?>" type="button" class="btn btn-line text-capitalize text-muted">
-                            <span class="fa-lg"><i class="fa fa-cog"></i>
+                            <a href="<?php echo e(url('jobs/dashboard')); ?>" type="button" class="btn btn-line text-capitalize text-muted">
+                            <span class="fa-lg"><i class="fa fa-send"></i>
                             <span class="hidden-xs"> &nbsp; Promote Job</span></span>
                             <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
                             </a>
@@ -101,7 +100,7 @@
                           <div class="btn-group" role="group">
                             <a href="<?php echo e(url('applicants')); ?>" type="button" class="btn btn-line text-capitalize in">
                             <span class="fa-lg"><i class="fa fa-edit"></i>
-                            <span class="hidden-xs"> &nbsp; Applicants</span></span>
+                            <span class="hidden-xs"> &nbsp; <b>234</b> Applicants</span></span>
                             <!-- <small class="text-muted hidden-xs">See all applicants and their status </small> -->
                             </a>
                           </div>
@@ -140,7 +139,8 @@
                                         </li>
                                         <li><a href="#">Rejected <span class="badge">3</span></a>
                                         </li>
-                                    </ul>
+                                    </ul><br>
+                                <small class="text-muted">Showing 12 of 234 apllicants</small>
                                 </div>
 
                                <div class="col-xs-2">

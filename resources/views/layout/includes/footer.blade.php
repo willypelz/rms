@@ -95,9 +95,27 @@
 
     });
 
-    //--------End CV cart--------//    
+    //--------End CV cart--------//  
+
+    $("#owl-posts").owlCarousel({
+          navigation: true,
+          items: 4,
+          responsive: false,
+          scrollPerPage: false,
+          pagination: true,
+          autoPlay: false,
+          // rewindNav: false,
+          navigationText: [
+            "<span class='fa fa-chevron-left'></span>",
+            "<span class='fa fa-chevron-right'></span>"
+          ],
+
+    });
+
 });
 </script>
+
+
     <footer>
         <div class="container">
 
@@ -521,3 +539,6 @@
     
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('js/owl.carousel.js') }}"></script>
+
+

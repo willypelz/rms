@@ -299,6 +299,12 @@
                       $field.val("").hide();
                       $(this).getMyFolders();
                     }
+
+                    else
+                    {
+                      $field.val("").hide();
+                      $field.after('<p>'+ data +'</p>');
+                    }
                     
                 });
 

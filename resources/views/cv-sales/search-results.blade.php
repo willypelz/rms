@@ -303,7 +303,9 @@
                     else
                     {
                       $field.val("").hide();
-                      $field.after('<p>'+ data +'</p>');
+                      // $field.after('<p>'+ data +'</p>');
+                      $('#loginModal #mssg').text(data);
+                      $('.signin').trigger('click');
                     }
                     
                 });

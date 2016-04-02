@@ -14,15 +14,15 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="">
-                        <a class="" href="<?php echo e(url('dashboard')); ?>">Dashboard &nbsp;<i class="fa fa-tachometer"></i></a>
+                        <a class="" href="<?php echo e(url('dashboard')); ?>">Dashboard <!-- &nbsp;<i class="fa fa-tachometer"></i> --></a>
                     </li>
 
                     <li class="dropdown">
                         <a class="dropdown-toggle" href="cv-search.php" data-toggle="dropdown">Candidates &nbsp; <i class="fa fa-caret-down no-margin"></i></a>
                         <ul class="dropdown-menu">
-                            <li><a href="<?php echo e(url('cv_pool')); ?>">All my CVs</a></li>
-                            <li><a href="<?php echo e(url('cv_saved')); ?>">Saved Cvs</a></li>
-                            <li><a href="<?php echo e(url('cv_purchased')); ?>">Purchased Cvs</a></li>
+                            <li><a href="<?php echo e(url('cv/cv_pool')); ?>">All my CVs</a></li>
+                            <li><a href="<?php echo e(url('cv/cv_saved')); ?>">Saved Cvs</a></li>
+                            <li><a href="<?php echo e(url('cv/cv_purchased')); ?>">Purchased Cvs</a></li>
                         </ul>
                     </li>
 

@@ -28,6 +28,12 @@
                             <li>
                                 <strong>&nbsp;Expires:</strong>&nbsp; 21 Jun, 2014</li>
                         </ul>
+
+                        <div class="label label-success" style="">Job is active</div> 
+
+                        <div class="label label-warning" style="">Job is warning</div> 
+
+                        <div class="label label-danger" style="">Job is in danger</div> <!-- <small>To change</small> -->
                 
                         <!-- <div class="badge badge-job badge-job-active">
                             <small class="">
@@ -57,13 +63,13 @@
                 
                         <div class="btn-group btn-group-justified" role="group">
                             <div  class="btn-group" role="group">
-                                <a href="job.php" target="_blank" type="button" class="btn-sm btn btn-info status"><i class="fa fa-send"></i> &nbsp; Advertise</a>
+                                <a href="<?php echo e(url('jobs/preview')); ?>" target="_blank" type="button" class="btn-sm btn btn-info status"><i class="fa fa-file-o"></i> &nbsp; Preview</a>
                             </div>
                             <div  class="btn-group" role="group">
-                                <a href="create-job.php" type="button" class="btn-sm btn btn-info status"><i class="fa fa-pencil"></i> &nbsp; Edit Details</a>
+                                <a href="<?php echo e(url('jobs/create')); ?>" type="button" class="btn-sm btn btn-info status"><i class="fa fa-pencil"></i> &nbsp; Edit Details</a>
                             </div>
                             <div class="btn-group" role="group">
-                                <a href="" type="button" class="btn-sm btn btn-danger status"><i class="fa fa-ban"></i> &nbsp; Unpublish Job</a>
+                                <a href="#" type="button" class="btn-sm btn btn-danger status"><i class="fa fa-ban"></i> &nbsp; Unpublish Job</a>
                             </div>
                         </div>
                 
@@ -74,7 +80,7 @@
                         </div>
             </div>
         
-    </section>
+        </section>
             <div class="row">
 
                 <div class="col-sm-12">
@@ -91,37 +97,38 @@
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="<?php echo e(url('activities')); ?>" type="button" class="btn btn-line text-capitalize in">
+                            <a href="<?php echo e(url('jobs/activities')); ?>" type="button" class="btn btn-line text-capitalize in">
                             <span class="fa-lg"><i class="fa fa-bar-chart"></i>
                             <span class="hidden-xs"> &nbsp; Activities & Stats</span></span>
                             <!-- <small class="text-muted hidden-xs">Job Statistics</small> -->
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="<?php echo e(url('applicants')); ?>" type="button" class="btn btn-line text-capitalize">
+                            <a href="<?php echo e(url('jobs/applicants')); ?>" type="button" class="btn btn-line text-capitalize">
                             <span class="fa-lg"><i class="fa fa-edit"></i>
                             <span class="hidden-xs"> &nbsp; <b>234</b> Applicants</span></span>
                             <!-- <small class="text-muted hidden-xs">See all applicants and their status </small> -->
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="<?php echo e(url('team')); ?>" type="button" class="btn btn-line text-capitalize">
+                            <a href="<?php echo e(url('jobs/team')); ?>" type="button" class="btn btn-line text-capitalize">
                             <span class="fa-lg"><i class="fa fa-users"></i>
                             <span class="hidden-xs"> &nbsp; Job Team</span></span>
                             <!-- <small class="text-muted hidden-xs">Resumes / CVs</small> -->
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="<?php echo e(url('matching')); ?>" type="button" class="btn btn-line text-capitalize text-muted">
+                            <a href="<?php echo e(url('jobs/matching')); ?>" type="button" class="btn btn-line text-capitalize text-muted">
                             <span class="fa-lg"><i class="fa fa-user-md"></i>
                             <span class="hidden-xs"> &nbsp; Matching Candidates</span></span>
                             <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
                             </a>
                           </div>
                         </div>
-                            <div class="tab-content">
+                        
+                <div class="tab-content">
 
-                        <div class="row">                           
+                    <div class="row">                           
                         <!-- applicant -->
 
 

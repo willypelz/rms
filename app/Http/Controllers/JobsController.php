@@ -32,11 +32,12 @@ class JobsController extends Controller
    
     public function PostJob(Request $request)
     {   
+
         $qualifications = qualifications();
 
         $user = Auth::user();
         $d = User::with('companies')->where('id', $user->id)->first();
-        $company = ($d->companies[0]);
+        $company = ($d->companies);
         // dd('hellp');
         // dd($qua);
         $job_boards = JobBoard::where('type', 'free')->get()->toArray();
@@ -106,6 +107,8 @@ class JobsController extends Controller
             return redirect()->route('advertise', [$job->id]);
 
         }
+
+        // dd('here');
         return view('job.create', compact('qualifications', 'board1', 'board2'));
     }
 
@@ -146,9 +149,26 @@ class JobsController extends Controller
         return view ('job.share', compact('company', 'job'));
     }
 
-    public function viewJob()
+    public function JobView($jobid, $slug, Request $request)
     {
-        return view('job.preview');
+        $job = Job::find($jobid);
+        return view('job.job-details', compact('job'));
+    }
+    
+    public function JobList(Request $request){
+
+        $user = Auth::user();
+
+        $comp = User::with('companies.jobs')->where('id', $user->id)->get();
+        $jobs = ($comp[0]->companies[0]->jobs);
+
+        return view('job.job-list', compact('jobs'));
     }
 
+    public function JobBoard($id, $slug, Request $request){
+
+        $job = Job::find($id);
+
+        return view('job.board.home', compact('job'));
+    }
 }

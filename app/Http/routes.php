@@ -65,6 +65,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'jobs/post-a-job', ['uses' => 'JobsController@PostJob', 'as' => 'post-job']);
     Route::match(['get', 'post'], 'jobs/advertise-your-job/{jobID}', ['uses' => 'JobsController@Advertise', 'as' => 'advertise']);
     Route::match(['get', 'post'], 'jobs/share-your-job/{jobID}', ['uses' => 'JobsController@Share', 'as' => 'share-job']);
+    
+    Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
+    Route::match(['get', 'post'], 'my-job-board/{jobID}/{jobSlug}', ['uses' => 'JobsController@JobBoard', 'as' => 'job-board']);
+    Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}', ['uses' => 'JobsController@JobView', 'as' => 'job-view']);
 
 	// Route::any('log-in', function () {
 	//     return view('auth.login');

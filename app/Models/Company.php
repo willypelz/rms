@@ -22,4 +22,9 @@ class Company extends Model
     protected $fillable = ['name', 'logo', 'phone', 'address', 'website', 'slug', 'about', 'location_id'];
 
     public $timestamps = false;
+
+    public function jobs(){
+        return $this->hasMany('App\Models\Job', 'company_id');
+    }
+
 }

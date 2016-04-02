@@ -141,7 +141,7 @@ class CvSalesController extends Controller
     }
 
     public function Output(){
-        $cart = Cart::instance('JobBoard')->content();
+        $cart = Cart::content();
         dd($cart);
     }
 
@@ -341,5 +341,7 @@ class CvSalesController extends Controller
             return "You need to be logged in to add folders";
         }
     }
+
+    
     
 }

@@ -93,6 +93,15 @@ class CvSalesController extends Controller
         return view('cv-sales.includes.cv-preview',['cv' => $cv ]);
     }
 
+    static function saveCvPreview(Request $request){ // to solr
+        $cv = $request->cv;
+        $cv_file = $cv['cv_file'];
+        $filepath = public_path($cv['cv_file']);
+        $cv['raw_content'] = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );
+        return $cv;
+        // return Carbon::createFromDate(1991, 7, 19)->diff(Carbon::now())->format('%y years, %m months and %d days');
+    }
+
     public function Cart(Request $request){
         
         // dd($request);

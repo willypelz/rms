@@ -126,4 +126,9 @@ class JobsController extends Controller
         return view('job.preview');
     }
 
+    public function saveCVPreview($cv)
+    {
+        
+    }
+
 }

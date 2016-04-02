@@ -1,6 +1,8 @@
 <?php if( $result['response']['numFound'] > 0 ): ?>
                       
   <?php foreach( @$result['response']['docs'] as $cv ): ?>
+  <?php echo e(\App\Libraries\Utilities::cv($cv['cv_file'])); ?>
+
 <li class="row">
       <span class="col-md-2 col-sm-3">
           <a class="" href="my-cv.html">

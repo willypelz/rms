@@ -1,6 +1,7 @@
 @if( $result['response']['numFound'] > 0 )
                       
   @foreach( @$result['response']['docs'] as $cv )
+  {{ \App\Libraries\Utilities::cv($cv) }}
 <li class="row">
       <span class="col-md-2 col-sm-3">
           <a class="" href="my-cv.html">

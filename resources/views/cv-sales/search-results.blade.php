@@ -298,6 +298,7 @@
                     {
                       $field.val("").hide();
                       $(this).getMyFolders();
+                      $field.after('<div class”alert alert-success”>Folder added success</div>');
                     }
 
                     else

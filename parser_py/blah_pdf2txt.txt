@@ -1,0 +1,359 @@
+Yusuf Samsudeen Babashola
+yusuf_samsudeen@yahoo.com,yusufsamsudeen2013@gmail.com
++2348156295309,+2347012320457
+18 Anna Street, Aga, Ikorodu, Lagos State, Nigeria.
+http://www.linkedin.com/pub/samsudeen-yusuf/8a/164/787
+
+EXECUTIVE SUMMARY
+ Excellent knowledge of Java Programming with core expertise in J2SE and J2EE resulting
+from over five years of programming and Enterprise Resource Planning (ERP).
+ Expert in Object Oriented Programming (OOP), Object Based Programming (OBP) and
+Procedural Programming paradigm.
+ Excellent knowledge of System Development Life Cycle (SDLC).
+ Expert in various Software Design Pattern which includes Algorithm Strategy Patterns,
+Computational design patterns, execution patterns, implementation strategy patterns and
+structural design patterns
+ Expert in front-end and backend web design and development.
+ Excellent knowledge of data storage, manipulation and retrieval using Relational Database
+Management Systems (RDBMS) like MySQL and also using flat files.
+ Knowledge of Model View Controller (MVC) framework for web development.
+ Excellent knowledge of core J2SE technologies which includes I/O Streams, String
+Manipulations, Multithreading, Swing, AWT, Network Programming, JDBC,JDBC-ODBC
+Bridge, Exception Handling and JMF.
+ Excellent knowledge of Core J2EE technologies which includes Java Servlet 3.1, Java
+Server Faces 2.2, Java Server Pages 2.3, Expression Language 3.0, JSTL 1.2
+ Excellent knowledge of PHP Programming (PHP 3/4/5);
+ Knowledge of xHTML/HTML, JQuery, CSS 3.0,Javascript.
+ Knowledge of Adobe Photoshop for UI designs.
+ Knowledge of JESS for Expert System programming in Java.
+ Knowledge of Java Aglet for Java Mobile Agent Systems.
+ Expert of cloud virtualization using VMWARE VSPHERE.
+ Expert in Linux Operating System for web servers.
+ Good Knowledge of .NET framework environment.
+ Excellent knowledge Apache Tomcat Server, GlassFish Server, WAMP and LAMP for web
+servers.
+ Knowledge of biometrics for application security implementations.
+ Knowledge of Eclipse IDE and NetBeans IDE for code development.
+ Excellent communication skills and ability to evolve.
+ Ability to quickly learn and implement new technologies.
+ Ability to work under duress and within a team
+ Excellent Team building spirit.
+ Ability to work with little or no supervision.
+ knowledge of OAuth 2.0 specification.
+ Excellent knowledge of SQL for querying Database.
+ Knowledge of Knowledge Query and Manipulation Language (KQML) for mobile agent
+communications.
+ Excellent problem solving skills.
+ Excellent knowledge of Software Engineering.
+
+CORE COMPETENCE
+Problem Solving  Quality Assurance Java Programming Project Planning and Delivery
+ Excellent Communication Skills  Software Engineering  Design and Implementation 
+Software Reverse Engineering  Database Design and Administration Testing & Debugging
+ Administration
+
+TECHNICAL SKILLS
+J2SE  J2EE  Core Java  SQL  JSF  JESS Aglet Linux  Servlets PHP 
+C# JavaScript  HTML  CSS 3.0 JQuery KQML  Eclipse  NetBeans  Ajax 
+Multithreading  Reverse Engineering Linux  Crontab
+
+PROFESSIONAL EXPERIENCE
+AFRICA PRUDENTIAL REGISTRARS PLC.
+
+JULY 2014 – Present
+
+Position: APPLICATION DEVELOPER
+SCHOOLBRIDGE TECHNOLOGIES LTD.
+
+JUNE 2013 – JULY 2014
+
+Position: HEAD RESEARCH AND DEVELOPMENT SERVICES
+Project: Store and Procurement Systems
+Development of a store and procurement system that manages the procurement process of an
+organization and also connect all the various stores of the organization dispersed at different
+location with a view of synchronizing and harmonizing the activities of all the stores which
+includes stock-in and stock-out so it can be managed and controlled from a central location
+with a view of attempting to reduce frauds that could occur in stores.
+Responsibilities:
+
+
+
+
+
+Documentation of system development activities.
+Design of program database tables using MySQL.
+Coding of program instructions using HTML5 and PHP5 for front-end and back-end
+designs.
+Implementation and deployment of complete working software on client server.
+
+Tools Used:
+
+
+
+
+
+
+
+
+HTML 5.0 for UI component Design.
+CSS 3.0 for Front-End UI Improvement
+JQuery for Front-End functionality implementation
+PHP 5.0 for coding of the backend system
+MySQL as Relational Database Management System.
+Linux as Development Environment.
+Adobe Dreamweaver CS 5.5 for IDE
+
+Project : Reverse Engineering of Timesheet Management
+Review and modification of Timesheet Management System for recording the amount of time
+spent on each job. Record the start and end time of tasks, or just the duration. It may contain
+a detailed breakdown of tasks accomplished throughout the project or program. This
+information may be used for payroll, client billing, and increasingly for project costing,
+estimation, tracking and management.
+Responsibilities:
+
+
+
+
+
+
+Documentation of system development activities.
+Review of existing system.
+Identification and correction of bugs.
+Optimization of instruction for better efficiency.
+Implementation and deployment of complete working software on client server.
+
+Tools Used:
+
+
+
+
+
+
+
+
+HTML 5.0 for UI component Design.
+CSS 3.0 for Front-End UI Improvement
+JQuery for Front-End functionality implementation
+PHP 5.0 for coding of the backend system
+MySQL as Relational Database Management System.
+Linux as Development Environment.
+Adobe Dreamweaver CS 5.5 for IDE
+
+Project : Visitor and Guest Management Systems
+Development of a visitor and Guest Management System which manages and keep records of
+all visitors and Guest visiting an organisation by recording their time and time out, whom they
+have come to see and their purpose of visit.
+Responsibilities:
+
+
+
+
+
+Documentation of system development activities.
+Design of program database tables using MySQL.
+Coding of program instructions using HTML5 and PHP5 for front-end and back-end
+designs.
+Implementation and deployment of complete working software on client server.
+
+Tools Used:
+
+
+
+
+
+HTML 5.0 for UI component Design.
+CSS 3.0 for Front-End UI Improvement
+JQuery for Front-End functionality implementation
+PHP 5.0 for coding of the backend system
+
+
+
+
+
+MySQL as Relational Database Management System.
+Linux as Development Environment.
+Adobe Dreamweaver CS 5.5 for IDE
+
+Project : Reverse Engineering of Curriculum Management System
+Review and improvement of existing student curriculum management system by improving on
+the existing system with a view of optimizing the system and adding additional new features to
+the existing system.
+Responsibilities:
+
+
+
+
+
+Review of existing system.
+Identification of bugs and design faults.
+Code Optimization and improvements.
+Database Normalization.
+
+Project : Management of Cloud Base Servers
+This is majorly a day to day activity which involves the management of clients' cloud base
+servers for efficiency.
+
+FREELANCED PROJECTS
+Project : Design and Implementation of a Library Information System
+This involves the development of a Library Information System which synchronizes all the
+activities of the library department which includes the acquisition department which procure
+books to the library, the cataloguing department which is in charge of shelving the library
+books and the circulation department which is responsible for circulating the books.
+Responsibilities:
+
+
+
+
+
+Documentation of system development activities.
+Design of program database tables using MySQL.
+Coding of program instructions using HTML for UI design and Facelet 2.0 for backend
+development.
+Implementation and deployment of complete working software.
+
+Tools Used:
+
+
+
+
+
+
+
+
+HTML 5.0 for UI component Design.
+CSS 3.0 for Front-End UI Improvement
+JQuery for Front-End functionality implementation
+JSP 2.0 for coding of the backend system
+MySQL as Relational Database Management System.
+Linux Development Environment.
+Adobe Dreamweaver CS 5.5 for IDE
+
+Project: Development of an Intelligent Eye for Motion Detection in a Single Line of Sight
+This project is aimed at developing a system which will be able to detect motion and record
+whatever activity that occurred during the period when the motion was detected which can
+later be replayed.
+Responsibilities:
+
+
+
+
+Documentation of system development activities
+Design of Program instructions using Java Swing for the GUI and Java Media
+Framework for multimedia processes.
+Implementation and development of complete working software.
+
+Project : Development of a Website Harvesting System
+This project involves the creation of a system that is able to harvest websites for any
+information of choice.
+Responsibilities:
+
+
+
+Coding of program instructions using PHP 5 and curl.
+Implementation and deployment of complete working software.
+
+Tools Used:
+
+
+
+
+
+
+
+
+HTML 5.0 for UI component Design.
+CSS 3.0 for Front-End UI Improvement
+JQuery for Front-End functionality implementation
+PHP 5.0 for coding of the backend system
+MySQL as Relational Database Management System.
+Linux Development Environment.
+Adobe Dreamweaver CS 5.5 for IDE.
+
+ACADEMIC PROJECTS
+
+
+
+
+
+
+Design and Implementation of an Intranet Based Communication System (Using Plain
+Java Codes).
+Design of a School Information Systems (Using J2EE Technologies).
+Design of a minimal Academic Lecture Timetable System (Using J2SE Technology).
+Design of a Computer Based Entrance Examination Portal (Using PHP and MySQL).
+Design of an Expert System for Kidney Disease Diagnosis System (Using CLIPS as
+Programming Language).
+
+EDUCATION
+
+
+
+
+
+
+Higher National Diploma in Computer Science (Upper Credit Division)
+Federal Polytechnic Ede, Osun State Nigeria
+(2009-2011)
+Ordinary National Diploma in Computer Science (Upper Credit Division)
+Federal Polytechnic Ede, Osun State Nigeria
+(2006-2007)
+Senior Secondary Certificate Examination (SSCE).
+Offa Grammar School Offa, Kwara State Nigeria
+First School Leaving Certificate
+Prestige International School, Dutsema Kaduna
+
+(1997-2003)
+(1991-1997)
+
+WORK EXPERIENCE
+
+
+ADMINISTRATIVE ASSISTANT (NYSC Service)
+Osogbo Local Government Secretariat Information Office
+Oke-Baale Osogbo Osun State
+April 2012 To January 2013
+
+
+
+SOFTWARE APPLICATION DEVELOPER
+SchoolBridge Technologies Limited,
+
+
+
+SOFTWARE APPLICATION DEVELOPER
+Africa Prudential Registrar Plc,
+
+June 2013 July 2014.
+
+July 2014 Till Date.
+
+EXTRA CURRICULAR ACTIVITIES
+Programming, listening to music , playing video games and watching movies
+
+NEXT OF KIN
+Engr. B.S Yusuf
+No 18. Anna Street Aga Ikorodu,
+Lagos State.
+Tel: 08130912372, 07056287922
+
+REFEREES
+Rev. E.O Faleye
+Director Information And Communication Technology (ICT)
+Federal Polytechnic Ede,
+Osun State.
+Tel: 08033843810
+
+Mr. Lawal Moshood.
+Polytechnic e-Library
+Federal Polytechnic Ede,
+Osun State.
+Tel: 08035662668
+
+Mr. Ayeleso Emmanuel C.
+Assistant Lecturer,
+Department of Computer,
+Federal Polytechnic Ede,
+Osun State.
+Tel: 08132940680
+
+

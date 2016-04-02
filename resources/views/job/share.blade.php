@@ -25,7 +25,7 @@
                         <div class="btn-group btn-group-justified btn-progress" role="group" aria-label="...">
                           
                           <div class="btn-group" role="group">
-                            <a href="advertise-job.php" type="button" class="btn btn-line text-capitalize"><i class="fa fa-send"></i>
+                            <a href="{{ route('advertise', [$job->id]) }}" type="button" class="btn btn-line text-capitalize"><i class="fa fa-send"></i>
                             &nbsp; <span class="hidden-xs">2. advertise</span></a>
                           </div>
                           <div class="btn-group" role="group">
@@ -53,15 +53,16 @@
                                    </p>
                                
                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima aut magnam eum, aspernatur officia amet quibusdam nam.</p><br>
-
-                               <div class="collapse" id="collapseWYSIWYG">
-                               <div class="alert alert-success"><i class="fa fa-check fa-lg"></i>
+                            
+                            <div class="hideSendEmails"></div>
+                            <div class="collapse" id="collapseWYSIWYG">
+                               <div class="alert alert-success hidden"><i class="fa fa-check fa-lg"></i>
                                     &nbsp; Your mail has been sent. Refresh page to send more.</div>
                                    <form action="">
 
                                    <div class="form-group">
                                        <label for="">From: </label>
-                                       <input class="form-control" type="text" value="dejilana@insidify.com" disabled>
+                                       <input class="form-control" type="text" value="{{ $company->email }}" disabled>
                                        
                                        <label for="">To: </label>
                                        <small>Separate your addresses by a comma</small>
@@ -76,7 +77,7 @@
                                                <small>at Kingston Industries</small>
                                            </strong>
                                            <p>
-                                               <a href="job-page.php">Visit this link to see Job details.</a>
+                                               <a href="{{ $job->url }}">Visit this link to see Job details.</a>
                                            </p>
                                            <p>Thank you.</p>
                                        </textarea>
@@ -90,9 +91,16 @@
                                    <p>
                                        <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-line btn-sm"><i class="fa fa-times"></i> &nbsp; Cancel</a>
 
-                                       <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-success btn-sm pull-right">Send Mail &nbsp; <i class="fa fa-send"></i></a>
+                                       <a role="button" id="ReferEmail" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-success btn-sm pull-right">Send Mail &nbsp; <i class="fa fa-send"></i></a>
                                    </p>
-                               </div>
+                            </div>
+
+                                <script>
+                                $('#ReferEmail').click(function(){
+                                    $(".hideSendEmails").html('<img src="{{ asset('img/loader-logo-32.gif') }}" width="30px" /> please wait...');
+
+                                })
+                                </script>
 
                                        <p>
                                            <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-line"><i class="fa fa-envelope"></i> &nbsp; Refer Job to People</a>

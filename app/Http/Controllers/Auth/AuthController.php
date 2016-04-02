@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Models\Company;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -10,6 +11,7 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Auth;
+use DB;
 
 
 class AuthController extends Controller
@@ -85,5 +87,61 @@ class AuthController extends Controller
         }else{
             echo 'Failed';
         }
+    }
+
+    public function Registration (Request $request){
+
+        if ($request->isMethod('post')) {
+            // dd($request->request); 
+
+            $file_name  = ($request->logo->getClientOriginalName());
+            $fi =  $request->file('logo')->getClientOriginalExtension();  
+            $logo = $file_name.'-'.$request->company_name;
+
+            $com['name'] = $request->company_name;
+            $com['slug'] = $request->slug;
+            $com['phone'] = $request->phone;
+            $com['website'] = $request->website;
+            $com['address'] = $request->address;
+            $com['about'] = $request->about_company;
+
+            $user = User::FirstorCreate([
+                                'name' => $request->first_name.' '.$request->last_name,
+                                'email' => $request->email,
+                                'password' => bcrypt($request->password),
+            ]);
+
+            $comp = Company::FirstorCreate([
+                                'name' => $request->company_name,
+                                'email' => $request->company_email,
+                                'slug' => $request->slug,
+                                'phone' => $request->phone,
+                                'website' => $request->website,
+                                'address' => $request->address,
+                                'about' => $request->about_company,
+                                'logo' => $logo,
+                                'date_added' => date('Y-m-d H:i:s'),
+            ]);
+
+            $assoc  = DB::table('company_users')->insert([
+                      ['user_id' => $user->id, 'company_id'=> $comp->id]
+            ]);
+
+            $upload = $request->file('logo')->move(
+                env('fileupload'), $logo
+            );
+
+
+            if($upload){
+                $login  = Auth::attempt(['email' => $request->email, 'password' => $request->password]);
+
+                if($login)
+                    return redirect('dashboard');
+            }
+            
+
+
+        }
+        return view('auth.register');
     }
 }

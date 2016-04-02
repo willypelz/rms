@@ -183,6 +183,9 @@ class CvSalesController extends Controller
             return $view;
         }
 
+        $d = User::with('companies')->where('id', $user->id)->first();
+        $company = ($d->companies[0]);
+
         if(isset($request->cart_type)){
 
             if($request->cart_type == 'jobBoards'){
@@ -191,7 +194,7 @@ class CvSalesController extends Controller
                 $total_amount = $request->total_amount;
                 
                 $order = Order::firstOrCreate([
-                        'company_id' => '1',
+                        'company_id' => $company->id,
                         'order_date'=> date('Y-m-d H:i:s'),
                         'total_amount'=>$total_amount,
                         'type'=> 'Job Board'
@@ -224,7 +227,7 @@ class CvSalesController extends Controller
               $total_amount += ($k->price);
             }
             $order = Order::firstOrCreate([
-                        'company_id' => '1',
+                        'company_id' => $company->id,
                         'order_date'=> date('Y-m-d H:i:s'),
                         'total_amount'=>$total_amount,
                         'type'=>'cvs',

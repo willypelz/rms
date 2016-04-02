@@ -16,7 +16,9 @@
     <link href="<?php echo e(asset('css/bootstrap-social.css')); ?>" rel="stylesheet">
 
     
-    <script src="//cdn.ckeditor.com/4.5.7/basic/ckeditor.js"></script>
+    <script src="<?php echo e(asset('js/ckeditor/ckeditor.js')); ?>"></script>
+
+    <!--<script src="//cdn.ckeditor.com/4.5.7/basic/ckeditor.js"></script>-->
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>

@@ -166,7 +166,7 @@
                                         </div>
                                         @endforeach
                                        
-                                        <div class="col-sm-12"><hr><a href="share-job.php" class="pull-right btn btn-danger btn-cart-checkout disabled">Proceed to payment &raquo;</a></div>
+                                        <div class="col-sm-12"><hr><a href="{{ route('share-job', [$jobid]) }}" class="pull-right btn btn-danger btn-cart-checkout">Skip &raquo;</a></div>
                                       </div>
                                 </div>
                             </div>

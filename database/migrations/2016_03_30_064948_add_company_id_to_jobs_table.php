@@ -14,7 +14,7 @@ class AddCompanyIdToJobsTable extends Migration
     {
         Schema::table('jobs', function (Blueprint $table) {
             //
-             $table->integer('company_id')->unsigned()->index();
+             $table->integer('company_id')->nullable()->unsigned()->index()->after('company');
 
 
              $table->foreign('company_id')
@@ -32,7 +32,7 @@ class AddCompanyIdToJobsTable extends Migration
     {
         Schema::table('jobs', function (Blueprint $table) {
             //
-             Schema::drop('jobs');
+             Schema::dropColumn('company_id');
 
         });
     }

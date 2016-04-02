@@ -171,4 +171,9 @@ class JobsController extends Controller
 
         return view('job.board.home', compact('job'));
     }
+    public function saveCVPreview($cv)
+    {
+        
+    }
+
 }

@@ -32,7 +32,7 @@
 
 
                     <li class="">
-                        <a class="" href="{{ url('jobs/create') }}">My Company <i class="fa fa-building mask"></i></a>
+                        <a class="" href="{{ url('jobs/listing') }}">My Company <i class="fa fa-building mask"></i></a>
                     </li>
 
                 </ul>

@@ -1,5 +1,8 @@
 @extends('layout.template-user')
 
+@section('navbar')    
+@show()
+
 @section('content')
 
 
@@ -101,8 +104,9 @@
                                             <div class="" id="">
                                             
                                                     <ul class="search-results">
+                                                        @for($i = 0; $i < 6; $i++)
                                                         <li>
-                                                            <h4><a href="">Security Officer in a hotel</a>
+                                                            <h4><a href="{{ url('jobs/preview') }}">Security Officer in a hotel</a>
                                                             </h4>
                                                             <div class="dt">Company - Not Specified, Location: Lagos Mainland. Posted: 3 weeks ago</div>
                                                             <div class="description">
@@ -115,9 +119,8 @@
                                                                 </span>
                                                             </div><hr>
                                                         </li>
-                                            
-                                                        <li>
-                                                            <h4><a href="">Security Officer in a hotel</a>
+
+                                                            <h4><a href="{{ url('jobs/preview') }}">Security Officer in a hotel</a>
                                                             </h4>
                                                             <div class="dt">Company - Not Specified, Location: Lagos Mainland. Posted: 3 weeks ago</div>
                                                             <div class="description">
@@ -143,75 +146,12 @@
                                                                 
                                                             </ul></span></div><hr>
                                                         </li>
+                                                        @endfor
                                             
                                                         <li>
-                                                            <h4><a href="">Security Officer in a hotel</a>
-                                                            </h4>
-                                                            <div class="dt">Company - Not Specified, Location: Lagos Mainland. Posted: 3 weeks ago</div>
-                                                            <div class="description">
-                                                                <p>Able bodied security men and women needed in a hotel. Must be smart and able to work in a corporate environment ...</p>
-                                                                <span class="result-details"><a href="">olx.com.ng</a> -
-                                                                    <strong>Expiry:</strong>1 week to go. <a href="">Save Job</a> - <a href="">Email to a friend</a> - <a href="">Apply for this Job</a>
-                                                                </span>
+                                                        
                                             
-                                                                <span class="f-box-wrap clearfix">
-                                                                    <ul class="f-box">
-                                                                        <li>
-                                                                            <a href="">
-                                                                                <img src="img/update-poster.jpg">
-                                                                            </a>
-                                                                            <a href="">
-                                                                                <img src="img/update-poster.jpg">
-                                                                            </a>
-                                                                            <a href="">
-                                                                                <img src="img/update-poster.jpg">
-                                                                            </a>
-                                                                            <em>3 friends work</em>
-                                                                        </li>
-                                                                
-                                                            </ul></span></div><hr>
-                                                        </li>
-                                            
-                                            
-                                                        <li>
-                                                            <h4><a href="">Security Officer in a hotel</a>
-                                                            </h4>
-                                                            <div class="dt">Company - Not Specified, Location: Lagos Mainland. Posted: 3 weeks ago</div>
-                                                            <div class="description">
-                                                                <p>Able bodied security men and women needed in a hotel. Must be smart and able to work in a corporate environment ...</p>
-                                                                <span class="result-details"><a href="">olx.com.ng</a> -
-                                                                    <strong>Expiry:</strong>1 week to go. <a href="">Save Job</a> - <a href="">Email to a friend</a> - <a href="">Apply for this Job</a>
-                                                                </span>
-                                                            </div><hr>
-                                                        </li>
-                                            
-                                                        <li>
-                                                            <h4><a href="">Security Officer in a hotel</a>
-                                                            </h4>
-                                                            <div class="dt">Company - Not Specified, Location: Lagos Mainland. Posted: 3 weeks ago</div>
-                                                            <div class="description">
-                                                                <p>Able bodied security men and women needed in a hotel. Must be smart and able to work in a corporate environment ...</p>
-                                                                <span class="result-details"><a href="">olx.com.ng</a> -
-                                                                    <strong>Expiry:</strong>1 week to go. <a href="">Save Job</a> - <a href="">Email to a friend</a> - <a href="">Apply for this Job</a>
-                                                                </span>
-                                            
-                                                                <span class="f-box-wrap clearfix">
-                                                                    <ul class="f-box">
-                                                                        <li>
-                                                                            <a href="">
-                                                                                <img src="img/update-poster.jpg">
-                                                                            </a>
-                                                                            <a href="">
-                                                                                <img src="img/update-poster.jpg">
-                                                                            </a>
-                                                                            <a href="">
-                                                                                <img src="img/update-poster.jpg">
-                                                                            </a>
-                                                                            <em>3 friends work</em>
-                                                                        </li>
-                                                                
-                                                            </ul></span></div><hr>
-                                                        </li>
+                                                       
                                             
                                                         </ul>
                                             

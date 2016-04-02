@@ -13,7 +13,7 @@
                     <h3 class="text-green-light no-margin">
                         36 Sesewa Recruit Jobs
                         &nbsp;
-                        <a href="create-job.php" class="btn btn-success"><i class="fa fa-plus"></i> Post a New Job</a>
+                        <a href="create-{{ url('jobs/dashboard') }}" class="btn btn-success"><i class="fa fa-plus"></i> Post a New Job</a>
 
                         <small class="pull-right text-white">Active (3) | Suspended (34)</small>
                     </h3>
@@ -47,8 +47,8 @@
                         <div class="panel-body no-pad">
 
                             <div class="title-job pull-left">
-                                <big><a target="_blank" href="job-board.php"><b>Creative and Brand Expert</b></a></big><hr/>
-                                <small class="text-muted"><i class="glyphicon glyphicon-ban-circle "></i> Job Suspended | <a href="job.php" target="_blank">View Job</a></small><br/>
+                                <big><a target="_blank" href="{{ url('jobs/dashboard') }}"><b>Creative and Brand Expert</b></a></big><hr/>
+                                <small class="text-muted"><i class="glyphicon glyphicon-ban-circle "></i> Job Suspended | <a href="{{ url('jobs/dashboard') }}" target="_blank">View Job</a></small><br/>
                                 <small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> Lagos, Nigeria &nbsp;
                                     <i class="glyphicon glyphicon-calendar"></i> Date Created : 12:09am | 12 June, 2013</small>
                             </div>
@@ -94,7 +94,7 @@
                         <div class="panel-body no-pad">
 
                             <div class="title-job pull-left">
-                                <big><a target="_blank" href="job-board.php"><b>Driver (Round-the-clock)</b></a></big><hr/>
+                                <big><a target="_blank" href="{{ url('jobs/dashboard') }}"><b>Driver (Round-the-clock)</b></a></big><hr/>
                                 <small class="text-success"><i class="glyphicon glyphicon-check "></i> Job Active | <a href="">View Job</a></small><br/>
                                 <small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> Lagos, Nigeria &nbsp;
                                     <i class="glyphicon glyphicon-calendar"></i> Date Created : 12:09am | 12 June, 2013</small>
@@ -126,7 +126,7 @@
                         <div class="panel-body no-pad">
 
                             <div class="title-job pull-left">
-                                <big><a target="_blank" href="job-board.php"><b>Security Guard (8:00pm - 8:00am)</b></a></big><hr/>
+                                <big><a target="_blank" href="{{ url('jobs/dashboard') }}"><b>Security Guard (8:00pm - 8:00am)</b></a></big><hr/>
                                 <small class="text-success"><i class="glyphicon glyphicon-check "></i> Job Active | <a href="">View Job</a></small><br/>
                                 <small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> Lagos, Nigeria &nbsp;
                                     <i class="glyphicon glyphicon-calendar"></i> Date Created : 12:09am | 12 June, 2013</small>
@@ -157,7 +157,7 @@
                         <div class="panel-body no-pad">
 
                             <div class="title-job pull-left">
-                                <big><a target="_blank" href="job-board.php"><b>Security Guard (8:00pm - 8:00am)</b></a></big><hr/>
+                                <big><a target="_blank" href="{{ url('jobs/dashboard') }}"><b>Security Guard (8:00pm - 8:00am)</b></a></big><hr/>
                                 <small class="text-success"><i class="glyphicon glyphicon-check "></i> Job Active | <a href="">View Job</a></small><br/>
                                 <small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> Lagos, Nigeria &nbsp;
                                     <i class="glyphicon glyphicon-calendar"></i> Date Created : 12:09am | 12 June, 2013</small>

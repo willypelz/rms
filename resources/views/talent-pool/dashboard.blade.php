@@ -19,21 +19,21 @@
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="{{ url('cv/search-results') }}" type="button" class="btn btn-line text-capitalize">
+                            <a href="{{ url('/') }}" type="button" class="btn btn-line text-capitalize">
                             <span class="fa-lg"><i class="fa fa-user-plus"></i>
                             <span class="hidden-xs text-brandon text-capitalize"> Add Candidate</span><br></span>
                             <small class="text-muted hidden-xs">Upload CV in folder</small>
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="{{ url('jobs/create') }}" type="button" class="btn btn-line text-capitalize">
+                            <a href="#" type="button" class="btn btn-line text-capitalize">
                             <span class="fa-lg"><i class="fa fa-bar-chart"></i>
                             <span class="hidden-xs text-brandon text-capitalize"> View Statistics</span><br></span>
                             <small class="text-muted hidden-xs">Resumes / CVs</small>
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="setting.php" type="button" class="btn btn-line text-capitalize text-muted">
+                            <a href="#" type="button" class="btn btn-line text-capitalize text-muted">
                             <span class="fa-lg"><i class="fa fa-cogs"></i>
                             <span class="hidden-xs text-brandon text-capitalize"> Settings</span><br></span>
                             <small class="text-muted hidden-xs">Edit your settings</small>

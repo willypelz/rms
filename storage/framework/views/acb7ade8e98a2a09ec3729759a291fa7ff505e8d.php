@@ -1,6 +1,6 @@
 <?php $__env->startSection('content'); ?>
 
-    <script src="<?php echo e(asset('js/jquery-1.11.1.min.js')); ?>"></script>
+
             <script src="http://malsup.github.com/jquery.form.js"></script> 
 
 <section class="s-div dark">
@@ -13,10 +13,12 @@
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-12">
-                    <form action="cv-search.php" class="form-group"><br>
+                    <form action="<?php echo e(url('cv/search')); ?>" class="form-group" method="POST"><br>
+                      <?php echo csrf_field(); ?>
+
                        <div class="form-lg">
                          <div class="col-xs-10">
-                           <div class="row"><input placeholder="Find something you want" value="Frontend Developer" class="form-control input-lg input-talent" type="text"></div>
+                           <div class="row"><input placeholder="Find something you want" name="search_query" id="search_query" value="<?php echo e($search_query); ?>" class="form-control input-lg input-talent" type="text"></div>
                          </div>
                          <div class="col-xs-2">
                            <div class="row">
@@ -28,6 +30,7 @@
                          </div>
                        </div>
                     </form>
+
                 </div>
             </div>
 
@@ -43,7 +46,7 @@
                     <div class="content rounded ">
 
         <div class="row">
-
+<?php /* file_get_contents("http://127.0.0.1:5000/extract?file_name=".( "http://files.insidify.com/uploads/cv/adeigbe_musibau_2015.doc" ) ) */ ?>
 
 
             <div class="col-sm-8">
@@ -51,158 +54,20 @@
                   <div class="" id="search-results">
 
                     <ul class="search-results">
-
-                      <?php if( $result['response']['numFound'] > 0 ): ?>
                       
-                      <?php foreach( $result['response']['docs'] as $cv ): ?>
 
-                        <li class="row">
-                              <span class="col-md-2 col-sm-3">
-                                  <a class="" href="my-cv.html">
-                                      <img class="media-object job-team-img" width="100%" src="<?php echo e(( $cv['display_picture'] ) ? $cv['display_picture'] : asset('img/avatar-cv.jpg')); ?>" alt="">
-                                  </a>
-                              </span>
+                       <?php echo $__env->make('cv-sales.includes.search-results-item', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
-                              <span class="col-md-10 col-sm-9">
-                                      <h4 class="text-muted">
-                                      <a href="my-cv.html"><?php echo e(ucwords( $cv['first_name']. " " . $cv['last_name'] )); ?></a>
-                                          <span class="small">
-                                          
-                                          <?php if(@$cv['dob']): ?>
-                                            . <?php echo e(\App\Libraries\Utilities::getAge($cv['dob'])); ?>
-
-                                          
-                                          <?php endif; ?>
-                                          <!--<span class="label label-primary">INSIDIFY</span>-->
-                                      </h4>
-                                      <span> <?php echo e(@$cv['tagline']); ?></span>
-
-                                      <div class="description">
-                                          <p class="sub-box excerpt-p text-muted hidden"><i>bodied security men and women needed in a hotel. Must be smart and able to work in a corporate environment</i></p>
-                                          <br>
-                                        <p class="">
-                                              <!-- Single button -->
-                                          <div class="btn-group">
-                                            <button type="button" class="btn btn-line btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                              Save into Folder &nbsp; <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                              <li><a href="#"><i class="fa fa-folder-o"></i> Devlopers</a></li>
-                                              <li><a href="#"><i class="fa fa-folder-o"></i> Medicals</a></li>
-                                              <li><a href="#"><i class="fa fa-folder-o"></i> Fashion</a></li>
-
-                                              <li role="separator" class="divider"></li>
-
-                                              <li>
-                                                  <a href="#"><i class="fa fa-plus"></i> Create new</a>
-                                              </li>
-                                            </ul>
-                                          </div>
-                                            <a href="cv.html" class="btn btn-line btn-sm" data-toggle="modal" data-target="#cvViewModal">Preview CV</a>
-
-                                            <span class="purchase-action">
-                                                  <?php 
-                                                    if($ids != null)
-                                                      $in_cart = in_array($cv['id'], $ids);
-                                                    else
-                                                      $in_cart = "";
-                                                  ?>
-                                                  
-                                                  <?php if($in_cart): ?>
-                                                    <button id="cartRemove<?php echo e($cv['id']); ?>" class="btn btn-line btn-sm btn-cv-discard" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
-                                                  <?php else: ?>
-                                                    <a href="" id="cartAdd<?php echo e($cv['id']); ?>" class="btn btn-success btn-sm btn-cv-buy" data-count="1" data-cost="500"><i class="fa fa-plus"></i> Purchase CV for N500</a>
-                                                    <button id="cartRemove<?php echo e($cv['id']); ?>" class="btn btn-line btn-sm btn-cv-discard collapse" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
-                                                  <?php endif; ?>
-                                          </span>
-
-                                        </p>
-                                      </div>
-                              </span>
-
-                        </li><hr>
-                          
-
-                          <script>
-                              $(document).ready(function(){
-
-                                  var id = "<?php echo e($cv['id']); ?>";
-                                  var url = "<?php echo e(route('cart')); ?>"
-                                  
-                                  $("#cartAdd"+id).click(function(){
-                                      // console.log(url)
-                                      $.ajax
-                                      ({
-                                        type: "POST",
-                                        url: url,
-                                        data: ({ rnd : Math.random() * 100000, cv_id: id, type:'add', name:"<?php echo e($cv['first_name']. " " . $cv['last_name']); ?>", 'qty':1, 'price':500, "_token":"<?php echo e(csrf_token()); ?>"}),
-                                        success: function(response){
-                                          
-                                          console.log(response);
-                                          
-                                        }
-                                    });
-
-                                  });
-
-
-                                  $("#cartRemove"+id).click(function(){
-                                      // console.log(url)
-                                      $.ajax
-                                      ({
-                                        type: "POST",
-                                        url: url,
-                                        data: ({ rnd : Math.random() * 100000, cv_id: id, type:'remove', "_token":"<?php echo e(csrf_token()); ?>"}),
-                                        success: function(response){
-                                          
-                                          console.log(response);
-                                          
-                                        }
-                                    });
-
-                                  });
-
-                                  $("#clearCart").click(function(){
-                                      // console.log(url)
-                                      $.ajax
-                                      ({
-                                        type: "POST",
-                                        url: url,
-                                        data: ({ rnd : Math.random() * 100000, cv_id: id, type:'clear', "_token":"<?php echo e(csrf_token()); ?>"}),
-                                        success: function(response){
-                                          
-                                          console.log(response);
-                                          
-                                        }
-                                    });
-
-                                  });
-
-
-                              })
-
-                          </script>
-
-                        <?php endforeach; ?>
-
-                      <?php else: ?>
-                        <li class="row">
-                          <div class="text-center text-muted">
-                          <i class="fa fa-frown-o fa-3x"></i>
-                            <h3>Not Found. Please Search again.</h3>
-                          </div>
-                        </li>
-                      <?php endif; ?>
+                      
                       
                     </ul>
-
+                
               </div> <!--/tab-content-->
 
             </div>
             <!-- End of col-9 -->
 
             <div class="col-sm-4">
-               
                 <?php if(empty($items)): ?>
                 <div id="collapseWellCart" class="well well-cart animated slideInUp collapse">
                 <?php else: ?>
@@ -237,12 +102,7 @@
                         <div class="col-xs-6"><button id="clearCart" class="btn btn-block btn-line btn-sm btn-cart-clear text-muted"><i class="fa fa-close"></i> Clear</button></div>
                     </div>
                 </div>
-                
-
-
-
-
-              <!-- <div class="panel-group" id="accordion"> -->
+              <?php if( $result['response']['numFound'] > 0 ): ?>
               <div class="panel-group filter-div" id="accordion">
 
 
@@ -259,68 +119,114 @@
                       <div class="panel-body">
                           <p class="border-bottom-thin text-muted">Gender<i class="glyphicon glyphicon-user pull-right"></i></p>
                           <div class="checkbox-inline">
-                              <label class="normal"><input type="checkbox" class=""> Male</label> <br>
-                              <label class="normal"><input type="checkbox" class=""> Female</label> <br>
+                              <?php /**/ $other_gender = 0  /**/ ?>
+                              <?php foreach( $result['facet_counts']['facet_fields']['gender'] as $key => $gender ): ?>
+                                  <?php if( $key % 2 == 0 && ( $gender == 'male' || $gender == 'female' )): ?>
+                                    
+                                    <label class="normal"><input type="checkbox" class="" data-field="gender" data-value="<?php echo e($gender); ?>"> <?php echo e(ucwords( $gender )." (".$result['facet_counts']['facet_fields']['gender'][ $key + 1 ].")"); ?></label> <br>
+                                  <?php else: ?>
+
+                                    <?php /**/ @$other_gender += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /**/ ?>
+
+                                  <?php endif; ?>
+                              <?php endforeach; ?>
+
+                              <label class="normal"><input type="checkbox" class="" data-field="gender" data-value="null"> unspecified <?php echo e(" (".$other_gender.")"); ?></label> <br>
                           </div>
 
                           <p>--</p>
 
-                        <p class="border-bottom-thin text-muted">Location<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+                        <p class="border-bottom-thin text-muted">Marital Status<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
                           <div class="checkbox-inline">
-                              <label class="normal"><input type="checkbox" class=""> Lagos</label> <br>
-                              <label class="normal"><input type="checkbox" class=""> Abuja</label> <br>
-                              <label class="normal"><input type="checkbox" class=""> Ife City</label> <br>
+                              <?php /**/ $other_marital_status = 0  /**/ ?>
+                              <?php foreach( $result['facet_counts']['facet_fields']['marital_status'] as $key => $marital_status ): ?>
+                                  <?php if( $key % 2 == 0 &&  $marital_status != ''  && $marital_status != "0"  ): ?>
+                                    
+                                    <label class="normal"><input type="checkbox" class="see-more-filter" data-field="marital_status" data-value="<?php echo e($marital_status); ?>"> <?php echo e(ucwords( $marital_status )." (".$result['facet_counts']['facet_fields']['marital_status'][ $key + 1 ].")"); ?></label> <br>
+                                  <?php else: ?>
+
+                                    <?php /**/ @$other_marital_status += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /**/ ?>
+
+                                  <?php endif; ?>
+                              <?php endforeach; ?>
+
+                              <label class="normal"><input type="checkbox" class=""> unspecified <?php echo e(" (".$other_marital_status.")"); ?></label> <br>
                           </div>
+                        
+                        <p>--</p>
+
+                        <p class="border-bottom-thin text-muted">School<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+                          <div class="checkbox-inline">
+                              <?php /**/ $other_edu_school = 0  /**/ ?>
+                              <?php foreach( $result['facet_counts']['facet_fields']['edu_school'] as $key => $edu_school ): ?>
+                                  <?php if( $key % 2 == 0 &&  $edu_school != ''  && $edu_school != "0"  ): ?>
+                                    
+                                    <label class="normal"><input type="checkbox" class="" data-field="edu_school" data-value="<?php echo e($edu_school); ?>"> <?php echo e(ucwords( $edu_school )." (".$result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ].")"); ?></label> <br>
+                                  <?php else: ?>
+
+                                    <?php /**/ @$other_edu_school += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /**/ ?>
+
+                                  <?php endif; ?>
+                              <?php endforeach; ?>
+
+                              <label class="normal"><input type="checkbox" class=""> unspecified <?php echo e(" (".$other_edu_school.")"); ?></label> <br>
+                          </div>
+
+
+                        <p>--</p>
+
+                        <p class="border-bottom-thin text-muted">Company<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+                          <div class="checkbox-inline">
+                              <?php /**/ $other_exp_company = 0  /**/ ?>
+                              <?php foreach( $result['facet_counts']['facet_fields']['exp_company'] as $key => $exp_company ): ?>
+                                  <?php if( $key % 2 == 0 &&  $exp_company != ''  && $exp_company != "0"  ): ?>
+                                    
+                                    <label class="normal"><input type="checkbox" class="" data-field="exp_company" data-value="<?php echo e($exp_company); ?>"> <?php echo e(ucwords( $exp_company )." (".$result['facet_counts']['facet_fields']['exp_company'][ $key + 1 ].")"); ?></label> <br>
+                                  <?php else: ?>
+
+                                    <?php /**/ @$other_exp_company += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /**/ ?>
+
+                                  <?php endif; ?>
+                              <?php endforeach; ?>
+
+                              <label class="normal"><input type="checkbox" class=""> unspecified <?php echo e(" (".$other_exp_company.")"); ?></label> <br>
+                          </div>
+
+
+                        <p>--</p>
+
+                        <p class="border-bottom-thin text-muted">Grade<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+                          <div class="checkbox-inline">
+                              <?php /**/ $other_edu_grade = 0  /**/ ?>
+                              <?php foreach( $result['facet_counts']['facet_fields']['edu_grade'] as $key => $edu_grade ): ?>
+                                  <?php if( $key % 2 == 0 &&  $edu_grade != ''  && $edu_grade != "0" && $edu_grade != "-Choose-" ): ?>
+                                    
+                                    <label class="normal"><input type="checkbox" class="" data-field="edu_grade" data-value="<?php echo e($edu_grade); ?>"> <?php echo e(ucwords( $edu_grade )." (".$result['facet_counts']['facet_fields']['edu_grade'][ $key + 1 ].")"); ?></label> <br>
+                                  <?php else: ?>
+
+                                    <?php /**/ @$other_edu_grade += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /**/ ?>
+
+                                  <?php endif; ?>
+                              <?php endforeach; ?>
+
+                              <label class="normal"><input type="checkbox" class=""> unspecified <?php echo e(" (".$other_edu_grade.")"); ?></label> <br>
+                          </div>
+                          <div><a href="#" class="more-link read-more-show "><small>See More</small></a></div>
+                          
                           <!-- <div><small class="">&nbsp; <a href="" class="">See More</a></small></div> -->
 
-                <div><a href="#" class="more-link read-more-show hide"><small>See More</small></a>
-                    <div class="read-more-content checkbox-inline">
-                        <label class="normal">
-                            <input type="checkbox" class="">Lagos</label>
-                        <br>
-                        <label class="normal">
-                            <input type="checkbox" class="">Abuja</label>
-                        <br>
-                        <label class="normal">
-                            <input type="checkbox" class="">Ife City</label>
-                        <br>
-                        <a href="#" class="less-link read-more-hide hide"><small>Less</small></a>
-                    </div>
-                </div>
 
 
-                          <p>--</p>
-
-                        <p class="border-bottom-thin text-muted">Company<i class="glyphicon glyphicon-briefcase pull-right"></i></p>
-                          <div class="checkbox-inline">
-                              <label class="normal"><input type="checkbox" class=""> Administrator</label> <br>
-                              <label class="normal"><input type="checkbox" class=""> Creative Director</label> <br>
-                              <label class="normal"><input type="checkbox" class=""> Head Officer</label> <br>
-                          </div>
-                          <div><small class="">&nbsp; <a href="">See More</a></small></div>
-
-                
-                          <p>--</p>
-
-                          <p class="border-bottom-thin text-muted">Job Type<i class="glyphicon glyphicon-paperclip pull-right"></i></p>
-                          <div class="checkbox-inline">
-                              <label class="normal"><input type="checkbox" class=""> Corporate</label> <br>
-                              <label class="normal"><input type="checkbox" class=""> Assistant</label> <br>
-                              <label class="normal"><input type="checkbox" class=""> Officer</label> <br>
-                          </div>
-                          <div><small class="">&nbsp; <a href="">See More</a></small></div>
-                
-                          <p>--</p>
-                          <p class="border-bottom-thin text-muted">Age Group<i class="glyphicon glyphicon-pushpin pull-right"></i></p>
 
                       </div>
                     </div>
                   </div>
                 </div>
+                <?php endif; ?>
             </div> <!--/col-sm-4-->
 
             </div>
-            
+
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group text-right">
@@ -342,17 +248,17 @@
 
 
 
-     <div class="modal fade" tabindex="-1" id="myInvoice" role="dialog" aria-labelledby="myInvoice">
-      <div class="modal-dialog">
-        <div class="modal-content">
+<div class="modal fade" tabindex="-1" id="myInvoice" role="dialog" aria-labelledby="myInvoice">
+  <div class="modal-dialog">
+    <div class="modal-content">
 
-            <h3 class="text-center">Confirm your order</h3>
+        <h3 class="text-center">Confirm your order</h3>
+
 
               <div id="invoice-res">
                 
               </div>
        
-            <script src="http://malsup.github.com/jquery.form.js"></script> 
 
           <script>
 
@@ -379,11 +285,66 @@
 
           </script>
 
-        </div>
-      </div>
-    </div>
 
+      <script>
+
+                       var url = "<?php echo e(route('ajax_cart')); ?>";
+
+             $("#contentArea").html('<img src="<?php echo e(asset("img/wheel.gif")); ?>" width="100px" /> please wait...');
+                          
+                            $("#checkout").click(function(){
+                                  // console.log(url)
+                                  $.ajax
+                                  ({
+                                    type: "POST",
+                                    url: url,
+                                    data: ({ rnd : Math.random() * 100000, "_token":"<?php echo e(csrf_token()); ?>"}),
+                                    success: function(response){
+                                      
+                                      // console.log(response);
+                                      $('#invoice-res').html(response)
+                                      
+                                    }
+                                });
+
+                              });
+
+      </script>
+
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        filters = [];
+
+        $('.filter-div input[type=checkbox').on('change',function(){
+            console.log("changed");
+
+            var filter = $(this).attr('data-field') + ':"' + $(this).attr('data-value') + '"';
+            var index = $.inArray( filter, filters );
+            console.log( filter + "---" + index );
+            if( index == -1 )
+            {
+              filters.push( filter );
+            }
+            else
+            {
+                filters.splice(index, 1);
+            }
+
+            $('.search-results').html("Loading");
+            $.post("<?php echo e(url('cv/filter_search')); ?>", {search_query: $('#search_query').val(), filter_query : filters },function(data){
+                //console.log(data);
+                $('.search-results').html(data);
+            });
+        });
+    });
+</script>
 
 
 <?php $__env->stopSection(); ?>
+
+
 <?php echo $__env->make('layout.template-user', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

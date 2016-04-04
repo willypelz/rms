@@ -37,8 +37,8 @@ class ScheduleController extends Controller
 
         echo $cv_file.'\n\n';
         
-        $resp = Curl::to('http://localhost:5000/extract')
-                                ->withData('file_name', urlencode( $cv_file ))
+        $resp = Curl::to('http://127.0.0.1:5000/extract')
+                                ->withData('file_name', $cv_file)
                                 ->get();
 
         echo $resp;

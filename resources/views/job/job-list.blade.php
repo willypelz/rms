@@ -49,17 +49,12 @@
                         <div class="panel-body no-pad">
 
                             <div class="title-job pull-left">
-<<<<<<< HEAD
+
                                 <big><a target="_blank" href="{{ route('job-board', [$job['id'],  str_slug($job['title'])]) }}"><b>{{ $job['title'] }}</b></a></big><hr/>
                                 <small class="text-muted"><i class="glyphicon glyphicon-ban-circle "></i> @if($job['published'] == 1) Job Live @else  Job Suspended @endif| <a href="{{ route('job-view', [$job['id'],  str_slug($job['title'])]) }}">View Job</a></small><br/>
                                 <small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }} &nbsp;
-                                    <i class="glyphicon glyphicon-calendar"></i> Date Created : <?php echo date('D, M Y', strtotime($job['created_at'])) ?></small>
-=======
-                                <big><a target="_blank" href="{{ url('jobs/dashboard') }}"><b>Creative and Brand Expert</b></a></big><hr/>
-                                <small class="text-muted"><i class="glyphicon glyphicon-ban-circle "></i> Job Suspended | <a href="{{ url('jobs/dashboard') }}" target="_blank">View Job</a></small><br/>
-                                <small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> Lagos, Nigeria &nbsp;
-                                    <i class="glyphicon glyphicon-calendar"></i> Date Created : 12:09am | 12 June, 2013</small>
->>>>>>> master
+                                    <i class="glyphicon glyphicon-calendar"></i> Date Created : {{ date('D, M Y', strtotime($job['created_at'])) }}</small>
+
                             </div>
 
                         <div class="btn-group btn-abs-ad">
@@ -98,85 +93,6 @@
                 </div>
                 @endforeach
 
-
-<<<<<<< HEAD
-               
-
-=======
-                <div class="col-xs-12">
-                    <div class="panel panel-default b-db">
-                        <div class="panel-body no-pad">
-
-                            <div class="title-job pull-left">
-                                <big><a target="_blank" href="{{ url('jobs/dashboard') }}"><b>Driver (Round-the-clock)</b></a></big><hr/>
-                                <small class="text-success"><i class="glyphicon glyphicon-check "></i> Job Active | <a href="">View Job</a></small><br/>
-                                <small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> Lagos, Nigeria &nbsp;
-                                    <i class="glyphicon glyphicon-calendar"></i> Date Created : 12:09am | 12 June, 2013</small>
-                            </div>
-
-                            <div class="job-item ">
-                                <span class="number">26</span><br/>Hired
-                            </div>
-                            <div class="job-item ">
-                                <span class="number">1006</span><br/>Assessed
-                            </div>
-                            <div class="job-item ">
-                                <span class="number">106</span><br/>Interviewed
-                            </div>
-                            <div class="job-item ">
-                                <span class="number text-muted">00</span><br/>Reviewed
-                            </div>
-                            <div class="job-item purple">
-                                <span class="number text-muted">00</span><br/>New
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-xs-12">
-                    <div class="panel panel-default b-db">
-                        <div class="panel-body no-pad">
-
-                            <div class="title-job pull-left">
-                                <big><a target="_blank" href="{{ url('jobs/dashboard') }}"><b>Security Guard (8:00pm - 8:00am)</b></a></big><hr/>
-                                <small class="text-success"><i class="glyphicon glyphicon-check "></i> Job Active | <a href="">View Job</a></small><br/>
-                                <small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> Lagos, Nigeria &nbsp;
-                                    <i class="glyphicon glyphicon-calendar"></i> Date Created : 12:09am | 12 June, 2013</small>
-                            </div>
-
-                            <div class="job-item ">
-                                <span class="number">26</span><br/>Hired
-                            </div>
-                            <div class="job-item ">
-                                <span class="number">1006</span><br/>Assessed
-                            </div>
-                            <div class="job-item">
-                                <span class="number">106</span><br/>Interviewed
-                            </div>
-                            <div class="job-item ">
-                                <span class="number text-muted">00</span><br/>Reviewed
-                            </div>
-                            <div class="job-item  purple">
-                                <span class="number text-muted">00</span><br/>New
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xs-12">
-                    <div class="panel panel-default b-db">
-                        <div class="panel-body no-pad">
-
-                            <div class="title-job pull-left">
-                                <big><a target="_blank" href="{{ url('jobs/dashboard') }}"><b>Security Guard (8:00pm - 8:00am)</b></a></big><hr/>
-                                <small class="text-success"><i class="glyphicon glyphicon-check "></i> Job Active | <a href="">View Job</a></small><br/>
-                                <small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> Lagos, Nigeria &nbsp;
-                                    <i class="glyphicon glyphicon-calendar"></i> Date Created : 12:09am | 12 June, 2013</small>
-                            </div>
->>>>>>> master
 
                
 

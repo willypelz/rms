@@ -880,6 +880,7 @@
                 "laravel"
             ],
             "time": "2016-04-03 01:43:55"
+
         },
         {
             "name": "laravelcollective/html",
@@ -934,6 +935,7 @@
             "description": "HTML and Form Builders for the Laravel Framework",
             "homepage": "http://laravelcollective.com",
             "time": "2016-01-27 22:29:54"
+
         },
         {
             "name": "league/flysystem",

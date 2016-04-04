@@ -91,40 +91,6 @@ Route::group(['middleware' => 'web'], function () {
         return view('talent-pool.dashboard');
     });
 
-    // ================Added by familoni for preview sake ================//
-
-    Route::get('matching', function () {
-        return view('job.matching');
-    });
-
-    Route::get('applicants', function () {
-        return view('job.applicants');
-    });
-
-    Route::get('team', function () {
-        return view('job.team');
-    });
-
-    Route::get('activities', function () {
-        return view('job.activities');
-    });
-
-    Route::get('cv_pool', function () {
-        return view('cv-sales.cv_pool');
-    });
-
-    Route::get('cv_purchased', function () {
-        return view('cv-sales.cv_purchased');
-    });
-
-
-    Route::get('cv_saved', function () {
-        return view('cv-sales.cv_saved');
-    });
-
-
-    //================Added by familoni for preview sake ================//
-
     /**
      * Route Group for everything cv
      */
@@ -216,5 +182,25 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('preview', function () {
             return view('job.preview');
         });
+
+        Route::get('listing', function () {
+            return view('job.listing');
+        });
+        Route::get('matching', function () {
+            return view('job.matching');
+        });
+
+        Route::get('applicants', function () {
+            return view('job.applicants');
+        });
+
+        Route::get('team', function () {
+            return view('job.team');
+        });
+
+        Route::get('activities', function () {
+            return view('job.activities');
+        });
+
     });
 });

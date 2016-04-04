@@ -298,6 +298,15 @@
                     {
                       $field.val("").hide();
                       $(this).getMyFolders();
+                      $field.after('<div class”alert alert-success”>Folder added success</div>');
+                    }
+
+                    else
+                    {
+                      $field.val("").hide();
+                      // $field.after('<p>'+ data +'</p>');
+                      $('#loginModal #mssg').text(data);
+                      $('.signin').trigger('click');
                     }
                     
                 });

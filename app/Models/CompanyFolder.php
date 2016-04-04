@@ -19,7 +19,7 @@ class CompanyFolder extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'name','date_added'];
+    protected $fillable = ['company_id', 'name','date_added'];
 
     public $timestamps = false;
 

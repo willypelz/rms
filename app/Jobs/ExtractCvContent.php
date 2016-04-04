@@ -34,7 +34,10 @@ class ExtractCvContent extends Job implements ShouldQueue
     {
         
         $cv_file = '/home/insidify/subdomains/files/uploads/cv/'.$this->cv->cv_file;
-        $this->cv->extracted_content = Curl::to('http://50.28.104.199:5000/extract')
+
+        echo $cv_file.'\n\n';
+        
+        $this->cv->extracted_content = Curl::to('http://localhost:5000/extract')
                                 ->withData('file_name', urlencode( $cv_file ))
                                 ->get();
 

@@ -13,7 +13,7 @@ class CompanyFoldersCvs extends Migration
     public function up()
     {
 
-        Schema::drop('user_folder_contents');
+       Schema::drop('user_folder_contents');
 
         Schema::create('company_folders_cvs', function (Blueprint $table) {
             $table->increments('id');

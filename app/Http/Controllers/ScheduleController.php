@@ -33,7 +33,7 @@ class ScheduleController extends Controller
 
     public function getTestExtract(){
 
-        $cv_file = '/home/insidify/subdomains/files/uploads/cv/Resume-_VALENTINE.doc_2_.doc';
+        $cv_file = '/home/insidify/subdomains/files/uploads/cv/vv2.pdf';
 
         echo $cv_file.'\n\n';
         

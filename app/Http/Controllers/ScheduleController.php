@@ -28,6 +28,21 @@ class ScheduleController extends Controller
 
 
     }
+
+
+    public function test_extract(){
+
+        $cv_file = '/home/insidify/subdomains/files/uploads/cv/Resume-_VALENTINE.doc_2_.doc';
+
+        echo $cv_file.'\n\n';
+        
+        $resp = Curl::to('http://localhost:5000/extract')
+                                ->withData('file_name', urlencode( $cv_file ))
+                                ->get();
+
+        echo $resp;
+
+    }
             
 
     

@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Cv;
 use App\Jobs\ExtractCvContent;
+use Curl;
 
 
 class ScheduleController extends Controller

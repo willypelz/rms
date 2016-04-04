@@ -158,7 +158,6 @@ class JobsController extends Controller
     public function JobList(Request $request){
 
         $user = Auth::user();
-
         $comp = User::with('companies.jobs')->where('id', $user->id)->get();
         $jobs = ($comp[0]->companies[0]->jobs);
 
@@ -168,9 +167,17 @@ class JobsController extends Controller
     public function JobBoard($id, $slug, Request $request){
 
         $job = Job::find($id);
-
         return view('job.board.home', compact('job'));
     }
+
+    public function JobTeam(Request $request){
+        
+        $job = Job::find(2);
+
+        return view('job.board.team', compact('job'));
+    }
+
+
     public function saveCVPreview($cv)
     {
         

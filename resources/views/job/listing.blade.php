@@ -7,6 +7,7 @@
 
 
 
+
     <section class="no-pad">
         <div class="container">
             <div class="row">
@@ -16,19 +17,17 @@
                         <div class="">
                             <div class="row">
                             
-                                <div class="col-sm-8 col-sm-offset-2 text-center">
-                                    <small class="text-brandon l-sp-5 text-uppercase">job title</small>
+                                <div class="col-sm-12 text-center">
+                                    <small class="text-brandon l-sp-5 text-uppercase">job board</small>
                             
                                     <h2 class="job-title">
-                                            Brand Manager &amp; Creative Director in the very capital city of Abuja in the in Nigeria
+                                            Name of Company comes here
                                     </h2>
                                     <hr>
                                     <ul class="list-inline text-white">
                                         <!--<li><strong>Company:</strong>&nbsp; JobAcess</li>-->
                                         <li>
-                                            <strong>&nbsp;Posted:</strong>&nbsp; 07 Jun, 2014</li>
-                                        <li>
-                                            <strong>&nbsp;Expires:</strong>&nbsp; 21 Jun, 2014</li>
+                                            <strong>&nbsp;25</strong>&nbsp; Job Openings</li>
                                     </ul>
                             
                                     <!-- <div class="badge badge-job badge-job-active">
@@ -51,10 +50,10 @@
                             <div class="col-sm-12">
                                 <div class="page no-bod-rad" style="border-radius: 0 0 0 0">
                                     <div class="row">
-                                    <div class=" job-cta">
-                                    <div class="col-sm-3">
-                                        <a href="" class="btn btn-success btn-block"><i class="fa fa-edit"></i> Apply <span class="">for Job</span></a>
-                                    </div>
+                                    <div class=" job-cta hidden">
+                                        <div class="col-sm-3">
+                                            <a href="" class="btn btn-success btn-block"><i class="fa fa-edit"></i> Apply <span class="">for Job</span></a>
+                                        </div>
                                         <div class="col-sm-5">                                            
                                             <div class="btn-group btn-group-justified">
                                                 <div class="btn-group">
@@ -99,43 +98,68 @@
                                     <div class="row">
                                         
                                         <div class="col-sm-8">
-                                            <h6 class="text-brandon text-uppercase l-sp-5 no-margin">Job details</h6>
+                                            <h6 class="text-brandon text-uppercase l-sp-5 no-margin">Job Openings</h6>
                                             <br>
-                                            <div class="row">
 
-                                                <div class="col-xs-6 col-sm-3"><small class="text-muted">Job Type</small>
-                                                <br>
-                                                <i class="fa fa-3x fa-clock-o text-info"></i>
-                                                <h5 class="text-uppercase text-brandon">full time</h5>
-                                                </div>
-                                                <div class="col-xs-6 col-sm-4"><small class="text-muted">Salary Range</small>
-                                                <br>
-                                                <i class="fa fa-3x fa-money text-success"></i>
-                                                <h5 class="text-uppercase text-brandon">Not Specified</h5>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-5"><small class="text-muted">Minimum Qualification</small>
-                                                <br>
-                                                <i class="fa fa-3x fa-user-md text-danger"></i>
-                                                <h5 class="text-uppercase text-brandon">BSc. Computer Science</h5>
-                                                </div>
+                                            <div class="" id="">
+                                            
+                                                    <ul class="search-results">
+                                                        @for($i = 0; $i < 6; $i++)
+                                                        <li>
+                                                            <h4><a href="{{ url('jobs/preview') }}">Security Officer in a hotel</a>
+                                                            </h4>
+                                                            <div class="dt">Company - Not Specified, Location: Lagos Mainland. Posted: 3 weeks ago</div>
+                                                            <div class="description">
+                                                                <p>Able bodied security men and women needed in a hotel. Must be smart and able to work in a corporate environment ...</p>
 
-                                                <div class="col-xs-12"><hr></div>
+                                                                    <strong>Expiry:</strong>1 week to go. &nbsp; 
+                                                                    <a href=""><i class="fa fa-save"></i> Save Job</a> &nbsp; - &nbsp;
+                                                                    <a href=""><i class="fa fa-envelope"></i> Email to a friend</a> &nbsp; - &nbsp;
+                                                                    <a href=""><i class="fa fa-edit"></i> Apply for this Job</a>
+                                                                </span>
+                                                            </div><hr>
+                                                        </li>
 
-                                                <div class="col-xs-12">
-                                                <h5>Job Description</h5>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo eum corrupti deserunt officia beatae praesentium possimus explicabo rerum quia architecto itaque a vero odio dolores saepe, quisquam natus. Voluptatum, harum!</p><br>
-                                                </div>
-
-                                                <div class="col-xs-12">
-                                                <h5>Qualifications</h5>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo eum corrupti deserunt officia beatae praesentium possimus explicabo rerum quia architecto itaque a vero odio dolores saepe, quisquam natus. Voluptatum, harum!</p><br>
-                                                </div>
-                                            </div>
-
-                                            <div class="alert alert-warning transparent">
-                                                <h6 class="no-margin">Additional Information <i class="fa fa-alert-o pull-right"></i></h6><br class="hr-xs">
-                                                <p class="small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum itaque, sint impedit recusandae sunt vel quod optio voluptas laudantium doloremque aspernatur deleniti autem delectus expedita veritatis explicabo quidem perspiciatis, sapiente!</p>
-                                            </div>
+                                                            <h4><a href="{{ url('jobs/preview') }}">Security Officer in a hotel</a>
+                                                            </h4>
+                                                            <div class="dt">Company - Not Specified, Location: Lagos Mainland. Posted: 3 weeks ago</div>
+                                                            <div class="description">
+                                                                <p>Able bodied security men and women needed in a hotel. Must be smart and able to work in a corporate environment ...</p>
+                                                                <span class="result-details"><a href="">olx.com.ng</a> -
+                                                                    <strong>Expiry:</strong>1 week to go. <a href="">Save Job</a> - <a href="">Email to a friend</a> - <a href="">Apply for this Job</a>
+                                                                </span>
+                                            
+                                                                <span class="f-box-wrap clearfix">
+                                                                    <ul class="f-box">
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <img src="img/update-poster.jpg">
+                                                                            </a>
+                                                                            <a href="">
+                                                                                <img src="img/update-poster.jpg">
+                                                                            </a>
+                                                                            <a href="">
+                                                                                <img src="img/update-poster.jpg">
+                                                                            </a>
+                                                                            <em>3 friends work</em>
+                                                                        </li>
+                                                                
+                                                            </ul></span></div><hr>
+                                                        </li>
+                                                        @endfor
+                                            
+                                                        <li>
+                                                        
+                                            
+                                                       
+                                            
+                                                        </ul>
+                                            
+                                            
+                                                        <a href="" class="btn btn-line load">
+                                                            <span class="glyphicon glyphicon-repeat"></span>&nbsp; Load more</a>
+                                            
+                                            </div>                                            
                                         </div>
                                                 
                                         <div class="col-sm-4">

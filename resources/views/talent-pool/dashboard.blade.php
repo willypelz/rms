@@ -1,85 +1,127 @@
 @extends('layout.template-user')
 
 @section('content')
-<section class="s-div text-white">
-        <div class="container">
 
-            <div class="row">
-                <!-- <div class="col-xs-10">
-                    <h3>26 Jobs</h3>
-                </div> -->
-                <div class="col-xs-2"><br>
-                    <a href="{{ route('post-job') }}" class="btn btn-success btn- btn-block"><i class="fa fa-plus"></i> Post a New  Job</a>
-                </div>
-                <div class="col-xs-2"><br>
-                    <a href="{{ url('cv/search-results') }}" class="btn btn-success btn- btn-block dropdown">&plus;<i class="fa fa-user"></i> Add Candidate</a>
-                </div>
-                <div class="col-xs-2"><br>
-                    <a href="{{ url('jobs/create') }}" class="btn btn-success btn- btn-block"><i class="fa fa-bar-chart"></i> View Statistics</a>
-                </div>
-                <div class="col-xs-6"><br>
-                    <a href="create-job.php" class="btn btn-line btn- pull-right transparent"><i class="fa fa-cog no-margin fa-inverse"></i></a>
-                </div>
-            </div>
 
-        </div>
-    </section>
 <div class="separator separator-small"></div>
 
     <section class="no-pad">
         <div class="container">
             <div class="row">
 
-                <div class="col-sm-12 hidden">
+                <div class="col-sm-12 ">
 
                         <div class=" btn-group-justified btn-dash" role="group" aria-label="...">
                           <div class="btn-group" role="group">
-                            <a href="{{ route('post-job') }}" type="button" class="btn btn-line text-capitalize in">
+                            <a href="{{ route('post-job') }}" type="button" class="btn btn-success text-capitalize in">
+
                             <span class="fa-lg"><i class="fa fa-tachometer"></i>
-                            <span class="hidden-xs"> Post a New Job</span><br></span>
-                            <small class="text-muted hidden-xs">Notifications & Statistics </small>
+                            <span class="hidden-xs text-brandon text-capitalize"> Add Job</span><br></span>
+                            <small class="text-white hidden-xs">Create a new Job</small>
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="addCan-job.php" type="button" class="btn btn-line text-capitalize">
-                            <span class="fa-lg"><i class="fa fa-briefcase"></i>
-                            <span class="hidden-xs"> Add Candidate</span><br></span>
-                            <small class="text-muted hidden-xs">Jobs you have created</small>
+                            <a href="{{ url('/') }}" type="button" class="btn btn-line text-capitalize">
+                            <span class="fa-lg"><i class="fa fa-user-plus"></i>
+                            <span class="hidden-xs text-brandon text-capitalize"> Add Candidate</span><br></span>
+                            <small class="text-muted hidden-xs">Upload CV in folder</small>
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="stat.php" type="button" class="btn btn-line text-capitalize">
-                            <span class="fa-lg"><i class="fa fa-file-text"></i>
-                            <span class="hidden-xs"> View Statistics</span><br></span>
+                            <a href="#" type="button" class="btn btn-line text-capitalize">
+                            <span class="fa-lg"><i class="fa fa-bar-chart"></i>
+                            <span class="hidden-xs text-brandon text-capitalize"> View Statistics</span><br></span>
                             <small class="text-muted hidden-xs">Resumes / CVs</small>
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="setting.php" type="button" class="btn btn-line text-capitalize text-muted">
-                            <span class="fa-lg"><i class="fa fa-cog"></i>
-                            <span class="hidden-xs"> Settings</span><br></span>
+                            <a href="#" type="button" class="btn btn-line text-capitalize text-muted">
+                            <span class="fa-lg"><i class="fa fa-cogs"></i>
+                            <span class="hidden-xs text-brandon text-capitalize"> Settings</span><br></span>
                             <small class="text-muted hidden-xs">Edit your settings</small>
                             </a>
                           </div>
                         </div>
-                    </div>
-                    <div class="col-xs-9">
+                </div>
+
+                <div class="col-xs-8">
 
                     <div class="page no-rad-btn">
 
 
                         <div class="row">
-                            <div class="col-sm-7">
-                                <h3>
-                                    <br>Google for Jobs</h3>
-                                <p>Insidify.com works like Google for jobs, collating job openings from ALL major Nigerian job sites, company career pages, newspapers and classifieds, so that you can search for all Nigerian jobs from one place!</p>
-                                <p><a href="" class="btn btn-primary radius">Find a job now &nbsp; <span class="glyphicon glyphicon-chevron-right"></span></a>
-                                </p>
-                            </div>
+                        <h6 class="no-margin">
+                            <span class="text-brandon text-uppercase">
+                            Your Activities: 4 new updates 
+                            </span> 
+                            <span class="pull-right"><a href=""><i class="fa fa-cog"></i>Notification Settings</a></span>
+                        </h6>
+                        <div class="clearfix"><hr></div>
 
-                            <div class="col-sm-5">
-                                <!-- <p><img src="img/brws.png"></p> -->
-                            </div>
+                            <ul class="list-group list-notify">
+                              <li class="list-group-item" role="cv-notifications">
+
+                               <span class="fa-stack fa-lg i-notify">
+                                  <i class="fa fa-circle fa-stack-2x text-info"></i>
+                                  <i class="fa fa-folder fa-stack-1x fa-inverse"></i>
+                                </span>
+
+                                <h5 class="no-margin text-info">CV Upload</h5>
+                                <p>
+                                    <small class="text-muted pull-right">[Wed 12:23pm]</small> You uploaded 20 new resumes. <a href="cv/cv_saved">Go to saved resume</a>
+                                </p>
+                              </li>
+
+                              <li class="list-group-item" role="job-notifications">
+
+                               <span class="fa-stack fa-lg i-notify">
+                                  <i class="fa fa-circle fa-stack-2x text-success"></i>
+                                  <i class="fa fa-briefcase fa-stack-1x fa-inverse"></i>
+                                </span>
+
+                                <h5 class="no-margin text-success">Jobs</h5>
+                                <p>
+                                    <small class="text-muted pull-right">[Wed 12:23pm]</small> You created 2 new job openings. <a href="jobs/list">Go to job list</a>
+                                </p>
+                                <p>
+                                    <small class="text-muted pull-right">[Wed 12:23pm]</small> You closed 1  job openings. <a href="jobs/dashboard">View Job</a>
+                                </p>
+                              </li>
+
+                              <li class="list-group-item" role="candidate-notifications">
+
+                               <span class="fa-stack fa-lg i-notify">
+                                  <i class="fa fa-circle fa-stack-2x text-warning"></i>
+                                  <i class="fa fa-user-plus fa-stack-1x fa-inverse"></i>
+                                </span>
+
+                                <h5 class="no-margin text-warning">Applications</h5>
+                                <p>
+                                    <small class="text-muted pull-right">[Wed 12:23pm]</small>2 new applicants for <a href="jobs/dashboard" class="">Brand Manager at Oando</a>. <a href="jobs/applicants">Go to job board</a>
+                                </p>
+                                <p>
+                                    <small class="text-muted pull-right">[Wed 12:23pm]</small>
+                                    You closed 1  job openings. <a href="jobs/dashboard">View Job</a>
+                                </p>
+                              </li>
+
+                              <li class="list-group-item" role="warning-notifications">
+
+                               <span class="fa-stack fa-lg i-notify">
+                                  <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                                  <i class="fa fa-exclamation fa-stack-1x fa-inverse"></i>
+                                </span>
+
+                                <h5 class="no-margin text-danger">Warnings</h5>
+                                <p>
+                                    <small class="text-muted pull-right">[Wed 12:23pm]</small>
+                                    You haveYou have not performed <a href=""> this important task</a>
+                                </p>
+                              </li>
+
+                            </ul>
+
+                            <div class="clearfix"></div>
                         </div>
 
 
@@ -87,12 +129,126 @@
                     <!--/tab-content-->
 
                 </div>
-                <div class="col-xs-3">
+
+                <div class="col-xs-4">
                     <div class="page no-rad-btn">
-                        Section2
+                        
+                        <h6 class="no-margin pull-right">
+                            <span class="text-danger text-brandon text-uppercase">Your Statistics:</span> 
+                        </h6>
+
+                        <div class="separator separator-small"></div>
+
+                        <table class="table table-bordered"> 
+                        <tbody> 
+                        <tr> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="jos/list">34</a></h1><small class="text-muted">Jobs Created</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">12,234</a></h1><small class="text-muted">Candidates</small></td> 
+                        </tr> 
+                        <tr> 
+                            <td class="text-center"><h1 class="no-margin text-muted">24</h1><small class="text-muted">Jobs Closed</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">13,234</a></h1><small class="text-muted">Resumes</small></td> 
+                        </tr>
+                        </tbody> </table>
+
+                        <p class="small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe ex voluptatem dicta, minima iste magni, eligendi deserunt repellat nesciunt repellendus dolores illo possimus voluptas sit ratione harum libero odio perferendis.</p>
+                        <p><a href="" class="btn btn-line">Action</a></p>
+
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="separator separator-small"><br></div>
+
+                <div class="col-xs-12">
+                <hr>
+                        <h6 class="no-margin">
+                            <span class="text-brandon text-uppercase">Your Activities:</span> 4 new updates
+                        </h6><br>
+                    <div id="owl-posts">
+                        <div class="owl-item">
+                            <div class="panel-body text-left">
+                              <p class="post-img">
+                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
+                              </p>
+                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
+                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
+                              </p>
+                              <p>
+                                  <a href="" class="btn btn-line">Read</a>
+                              </p>
+                            </div>
+                        </div>
+                        <div class="owl-item">
+                            <div class="panel-body text-left">
+                              <p class="post-img">
+                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
+                              </p>
+                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
+                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
+                              </p>
+                              <p>
+                                  <a href="" class="btn btn-line">Read</a>
+                              </p>
+                            </div>
+                        </div>
+                        <div class="owl-item">
+                            <div class="panel-body text-left">
+                              <p class="post-img">
+                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
+                              </p>
+                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
+                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
+                              </p>
+                              <p>
+                                  <a href="" class="btn btn-line">Read</a>
+                              </p>
+                            </div>
+                        </div>
+                        <div class="owl-item">
+                            <div class="panel-body text-left">
+                              <p class="post-img">
+                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
+                              </p>
+                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
+                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
+                              </p>
+                              <p>
+                                  <a href="" class="btn btn-line">Read</a>
+                              </p>
+                            </div>
+                        </div>
+                        <div class="owl-item">
+                            <div class="panel-body text-left">
+                              <p class="post-img">
+                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
+                              </p>
+                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
+                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
+                              </p>
+                              <p>
+                                  <a href="" class="btn btn-line">Read</a>
+                              </p>
+                            </div>
+                        </div>
+                        <div class="owl-item">
+                            <div class="panel-body text-left">
+                              <p class="post-img">
+                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
+                              </p>
+                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
+                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
+                              </p>
+                              <p>
+                                  <a href="" class="btn btn-line">Read</a>
+                              </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 

@@ -28,7 +28,9 @@
 */
 
 Route::group(['middleware' => ['web']], function () {
-    //
+    
+    Route::controller('schedule', 'ScheduleController');
+    
 });
 
 Route::group(['middleware' => 'web'], function () {

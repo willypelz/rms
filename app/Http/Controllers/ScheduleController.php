@@ -30,7 +30,7 @@ class ScheduleController extends Controller
     }
 
 
-    public function testExtract(){
+    public function getTestExtract(){
 
         $cv_file = '/home/insidify/subdomains/files/uploads/cv/Resume-_VALENTINE.doc_2_.doc';
 

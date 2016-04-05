@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('QUEUE_DRIVER', 'sync'),
+    'default' => env('QUEUE_DRIVER', 'database'),
 
     /*
     |--------------------------------------------------------------------------
@@ -37,7 +37,7 @@ return [
 
         'database' => [
             'driver' => 'database',
-            'table'  => 'jobs',
+            'table'  => 'queue_jobs',
             'queue'  => 'default',
             'expire' => 60,
         ],
@@ -80,7 +80,7 @@ return [
 
     'failed' => [
         'database' => env('DB_CONNECTION', 'mysql'),
-        'table'    => 'failed_jobs',
+        'table'    => 'failed_queue_jobs',
     ],
 
 ];

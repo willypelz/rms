@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterCompanyFoldersTable2 extends Migration
+class AlterCompanyFoldersTable extends Migration
 {
     /**
      * Run the migrations.

@@ -28,7 +28,9 @@
                   <br>
                 <p class="">
                       <!-- Single button -->
+                  @if( Auth::check() )
                   <div class="btn-group">
+
                     <button type="button" class="btn btn-line btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       Save into Folder &nbsp; <span class="caret"></span>
                     </button>
@@ -46,6 +48,9 @@
 
                     <input type="text" style="display:none;" id="add_folder" />
                   </div>
+                  @else
+                      <a href="{{ url('log-in') }}" class="btn btn-line btn-sm dropdown-toggle">Save into Folder</a>
+                  @endif
                     <a href="cv.html" class="btn btn-line btn-sm" id='showCvBtn' data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">Preview CV</a>
 
                     <span class="purchase-action">
@@ -135,12 +140,21 @@
 <ul id="pagination-demo" class="pagination-sm"></ul>
 
 <script type="text/javascript">
+
   $(document).ready(function(){
        $('#pagination-demo').twbsPagination({
-        totalPages: 35,
+        totalPages: "{{ ceil( $result['response']['numFound'] / 20 ) }}",
         visiblePages: 7,
         onPageClick: function (event, page) {
+          console.log(page,filters);
             $('#page-content').text('Page ' + page);
+            /*$('.search-results').html("Loading");
+            $.get("{{ url('cv/search') }}", {search_query: $('#search_query').val(), start: ( page - 1 ) , filter_query : filters },function(data){
+                //console.log(response);
+                // var response = JSON.parse(data);
+                // console.log(data.search_results);
+                $('.search-results').html(data.search_results);
+            });*/
         }
     });
   });

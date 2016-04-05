@@ -11,6 +11,7 @@
 <script src="{{ asset('js/jquery.twbsPagination.min.js') }}"></script>
 <section class="s-div dark">
         <div class="container">
+{{ Session::put('url.intended', url()->full() ) }}
 
             <div class="row">
                 <div class="col-md-6 hidden-sm hidden-xs">
@@ -19,8 +20,8 @@
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-12">
-                    <form action="{{ url('cv/search') }}" class="form-group" method="POST"><br>
-                      {!! csrf_field() !!}
+                    <form action="{{ url('cv/search') }}" class="form-group"><br>
+                      
                        <div class="form-lg">
                          <div class="col-xs-10">
                            <div class="row"><input placeholder="Find something you want" name="search_query" id="search_query" value="{{ $search_query }}" class="form-control input-lg input-talent" type="text"></div>
@@ -68,6 +69,8 @@
                     </ul>
                 
               </div> <!--/tab-content-->
+
+
 
             </div>
             <!-- End of col-9 -->
@@ -206,8 +209,10 @@
 
 <script type="text/javascript">
     var folders = [];
+    var filters = [];
+
     $(document).ready(function(){
-        filters = [];
+        
 
         $.fn.setMyFolders = function()
         {
@@ -251,7 +256,7 @@
             }
 
             $('.search-results').html("Loading");
-            $.post("{{ url('cv/search') }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
+            $.get("{{ url('cv/search') }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);

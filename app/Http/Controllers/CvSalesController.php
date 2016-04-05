@@ -32,6 +32,13 @@ class CvSalesController extends Controller
     public function search(Request $request)
     {
             $this->search_params['q'] = $request->search_query;
+
+            if( $this->search_params['start'] )
+            {
+                $this->search_params['start'] = $request->start;
+            }
+            
+            
             $this->search_params['filter_query'] = @$request->filter_query;
             $response = Solr::search_resume($this->search_params);
 
@@ -88,8 +95,9 @@ class CvSalesController extends Controller
         //http://127.0.0.1:5000/extract
         // $text = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );
         $filepath = public_path("adeigbe_musibau_2015.doc");
+        //http://127.0.0.1:5000/extract?file_name=http://files.insidify.com/uploads/cv/Resume-_VALENTINE.doc_2_.doc
         $cv = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );
-
+        return $cv;
         return view('cv-sales.includes.cv-preview',['cv' => $cv ]);
     }
 

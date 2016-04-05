@@ -107,7 +107,7 @@ Route::group(['middleware' => 'web'], function () {
         /**
          * Post Variable for cv search form search box
          */
-        Route::post('search', 'CvSalesController@search');
+        Route::get('search', 'CvSalesController@search');
 
 
         Route::get('cv_pool', function () {

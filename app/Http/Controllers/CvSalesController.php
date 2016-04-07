@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Models\Order;
+use App\User;
 use App\Models\Transaction;
 use App\Models\OrderItem;
 use App\Models\CompanyFolder;
@@ -244,11 +245,11 @@ class CvSalesController extends Controller
             }
             $order_id = $order->id;
 
-           Mail::send('emails.cv-sales.invoice', ['user' => $user], function ($m) use ($user) {
-                $m->from('alerts@insidify.com', 'Your Application');
+           // Mail::send('emails.cv-sales.invoice', ['user' => $user], function ($m) use ($user) {
+           //      $m->from('alerts@insidify.com', 'Your Application');
 
-                $m->to('lanaayodele@gmail.com', 'Ayo')->subject('Your Reminder!');
-            });
+           //      $m->to('lanaayodele@gmail.com', 'Ayo')->subject('Your Reminder!');
+           //  });
            
             $view = view('cv-sales.checkout_ajax', compact('items', 'order_id', 'total_amount'));
             return $view;

@@ -50,7 +50,7 @@
                               {!! Form::open(array('route'=>'registration','method'=>'POST', 'id'=>'SignUPform', 'files'=>true, 'class'=>'form-signup', 'role'=>'form')) !!}
 
                             {!! csrf_field() !!}
-                            <div class="row">
+                            <div class="row hidden">
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
@@ -64,10 +64,11 @@
                                     </div>
                                 </div>
 
+                                <fieldset><legend>or use the form below</legend></fieldset><br>
                             </div>
 
                             <div class="row">
-                            <fieldset><legend>or use the form below</legend></fieldset><br>
+                            
 
                                 <div class="col-sm-6">
                                     <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
@@ -131,9 +132,11 @@
                             </div>
                             
                             <hr>
-                            <br>
-                            <legend>Company Information</legend>
-                            <br>
+                            <br style="clear: both;"><br style="clear: both;">
+
+                            
+                            <fieldset class="text-center"><legend>Company Information</legend></fieldset>
+                            
                             
 
                                 <div class="col-sm-12">
@@ -150,8 +153,12 @@
 
                                 <div class="col-sm-12">
                                     <div class="form-group{{ $errors->has('slug') ? ' has-error' : '' }}">
-                                        <label for="">Slug</label>
-                                        <input type="text" class="form-control slug" id="" placeholder="" name="slug" value="{{ old('slug') }}" required>
+                                        <label for="">Company url</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">http://</span>
+                                            <input type="text" class="form-control slug" id="" placeholder="" name="slug" value="{{ old('slug') }}" required>
+                                            <span class="input-group-addon">.seamlesshiring.com</span>
+                                        </div>
                                         @if ($errors->has('slug'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('slug') }}</strong>
@@ -184,7 +191,7 @@
                                     </div>
                                 </div>
 
-                                 <div class="col-sm-6">
+                                 <div class="col-sm-12">
                                     <div class="form-group{{ $errors->has('website') ? ' has-error' : '' }}">
                                         <label for="">Website</label>
                                         <input type="text" class="form-control" id="" placeholder="" name="website" value="{{ old('website') }}" required>

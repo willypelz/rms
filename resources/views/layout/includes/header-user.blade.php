@@ -14,7 +14,6 @@
     <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-social.css') }}" rel="stylesheet">
     <link href="{{ asset('css/owl.carousel.css') }}" rel="stylesheet">
-
     
     <script src="//cdn.ckeditor.com/4.5.7/basic/ckeditor.js"></script>
 

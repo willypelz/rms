@@ -27,4 +27,9 @@ class Company extends Model
         return $this->hasMany('App\Models\Job', 'company_id');
     }
 
+    public function users()
+    {
+        return $this->belongsToMany('App\User', 'company_users');
+    }
+
 }

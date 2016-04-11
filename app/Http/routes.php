@@ -69,9 +69,17 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'jobs/share-your-job/{jobID}', ['uses' => 'JobsController@Share', 'as' => 'share-job']);
     
     Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
-    Route::match(['get', 'post'], 'my-job-board/{jobID}/{jobSlug}', ['uses' => 'JobsController@JobBoard', 'as' => 'job-board']);
-    Route::match(['get', 'post'], 'my-job-board/team', ['uses' => 'JobsController@JobTeam', 'as' => 'job-team']);
     Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}', ['uses' => 'JobsController@JobView', 'as' => 'job-view']);
+    
+    Route::match(['get', 'post'], 'job/dashboard/{jobID}', ['uses' => 'JobsController@JobBoard', 'as' => 'job-board']);
+    Route::match(['get', 'post'], 'job/activities/{jobID}', ['uses' => 'JobsController@JobActivities', 'as' => 'job-activities']);
+    Route::match(['get', 'post'], 'job/candidates/{jobID}', ['uses' => 'JobsController@JobCandidates', 'as' => 'job-candidates']);
+    Route::match(['get', 'post'], 'job/team/{jobID}', ['uses' => 'JobsController@JobTeam', 'as' => 'job-team']);
+    Route::match(['get', 'post'], 'job/matching/{jobID}', ['uses' => 'JobsController@JobMatching', 'as' => 'job-matching']);
+    
+    Route::match(['get', 'post'], 'jobs/teamedit', ['uses' => 'JobsController@Ajax', 'as' => 'ajax-edit-team']);
+
+    // Route::match(['get', 'post'], 'job/dashboard/{jobID}', ['uses' => 'JobsController@JobDashboard', 'as' => 'job-view']);
 
 	// Route::any('log-in', function () {
 	//     return view('auth.login');

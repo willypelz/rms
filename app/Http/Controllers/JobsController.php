@@ -6,6 +6,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Models\JobBoard;
 use App\Models\Job;
+use App\Models\Company;
 use App\User;
 use Validator;
 use Cart;
@@ -37,7 +38,7 @@ class JobsController extends Controller
 
         $user = Auth::user();
         $d = User::with('companies')->where('id', $user->id)->first();
-        $company = ($d->companies);
+        $company = ($d->companies[0]);
         // dd('hellp');
         // dd($qua);
         $job_boards = JobBoard::where('type', 'free')->get()->toArray();
@@ -164,23 +165,60 @@ class JobsController extends Controller
         return view('job.job-list', compact('jobs'));
     }
 
-    public function JobBoard($id, $slug, Request $request){
+    public function JobBoard($id, Request $request){
 
         $job = Job::find($id);
-        return view('job.board.home', compact('job'));
+        $active_tab = 'promote';
+        return view('job.board.home', compact('job', 'active_tab'));
     }
 
-    public function JobTeam(Request $request){
+    public function JobTeam($id, Request $request){
         
-        $job = Job::find(2);
+        $user = User::with('companies')->find(Auth::user()->id);
+        $comp_id = ($user->companies[0]->id);
 
-        return view('job.board.team', compact('job'));
+        $users  = Company::with('users')->find($comp_id);
+        
+        $job = Job::find($id);
+        $active_tab = 'team';
+
+        return view('job.board.team', compact('job', 'active_tab', 'users'));
+    }
+
+    public function JobActivities($id, Request $request){
+         $job = Job::find($id);
+        $active_tab = 'activities';
+
+        return view('job.board.activities', compact('job', 'active_tab'));
+    }
+
+    public function JobCandidates($id, Request $request){
+         $job = Job::find($id);
+        $active_tab = 'candidates';
+
+
+        return view('job.board.candidates', compact('job', 'active_tab'));
+    }
+
+    public function JobMatching($id, Request $request){
+         $job = Job::find($id);
+        $active_tab = 'matching';
+
+
+        return view('job.board.matching', compact('job', 'active_tab'));
     }
 
 
     public function saveCVPreview($cv)
     {
         
+    }
+
+    public function Ajax(Request $request){
+
+        $user = User::find($request->user_id);
+
+        return view('job.ajax-team-edit', compact('user'));
     }
 
 }

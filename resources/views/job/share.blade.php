@@ -41,11 +41,11 @@
                             
                            <div class="col-sm-12">
                                 <div class="separator separator-small">
-                                   <h3 class="text-center">Human Resource Administrator<br>
-                                       <small>at Kingston Industries</small>
+                                   <h3 class="text-center">{{ $job->title }}<br>
+                                       <small>at {{ $company->name }}</small>
                                    </h3><hr style="width: 45%">
                                </div>
-                               <div class="col-md-4">
+                               <div class="col-md-6">
                                    <div class="">
                                
                                    <p class="text-brandon text-uppercase">
@@ -108,7 +108,10 @@
                                        <div class="separator separator-small"></div>
                                    </div>
                                </div>
-                               <div class="col-md-4 text-center">
+                          
+
+
+                               <div class="col-md-6 text-center">
                                
                                    <p class="text-brandon text-uppercase">
                                        share your job
@@ -137,18 +140,7 @@
                                            </a>
                                    </div>
                                
-                               <div class="col-md-4">
-                                   <p class="text-brandon text-uppercase text-right">
-                                       Embed on your Site
-                                   </p>                                   
-                           
-                                   <p class="text-right">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima aut magnam eum, aspernatur officia amet quibusdam nam.</p><br>
-
-                                   <p>
-                                       <a href="" class="pull-right btn btn-line"><i class="fa fa-cogs"></i> &nbsp;Get the Widget</a>
-                                   </p>
-
-                               </div>
+                             
 
                                    <div class="col-md-6 col-md-offset-3">
                                        

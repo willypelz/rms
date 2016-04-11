@@ -1,47 +1,75 @@
-@extends('layouts.app')
+@extends('layout.template-default')
+
+
+@section('navbar')
+    
+@show()
+
+@section('content')
 
 <!-- Main Content -->
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+<section>
+        <div class="container">
+            <div class="row">
 
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">
-                        {!! csrf_field() !!}
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input type="email" class="form-control" name="email" value="{{ old('email') }}">
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-envelope"></i>Send Password Reset Link
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                <div class="col-sm-4 col-sm-offset-4 text-center">
+                    <h2>Seamless Hiring</h2>
+                    <p class="text-muted">Africa's fastest growing network of professionals</p>
                 </div>
+
+                <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+
+                    <div class="white padbox rounded">
+
+
+                        <form role="form" class="form-signin" method="POST" action="{{ url('/password/email') }}">
+                            {!! csrf_field() !!}
+                            
+                            <div class="row">
+                                <p class="text-center">Sign in with</p>
+                        
+                            <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                    <label for="">Your Email</label>
+                                    <input type="email" class="form-control" id="" placeholder="" name="email" value="{{ old('email') }}">
+
+                                    @if ($errors->has('email'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                         
+                            </div>
+
+                            <div class="row"><br>
+
+                                <div class="col-sm-10 col-sm-offset-1 col-md-12 col-sm-offset-0">
+                                    <button type="submit" class="btn btn-success btn-block">Send Password Reset Link &raquo;</button>
+                                </div>
+
+
+                                <div class="col-sm-6"><br>
+                                    <p class="small text-right">Not registered? <a href="{{ url('sign-up') }}">Sign Up Here</a></p>
+                                </div>
+
+                            </div>
+                        </form>
+
+                    </div>
+                    <!--/tab-content-->
+
+                </div>
+
             </div>
         </div>
-    </div>
-</div>
+    </section>
+
+@endsection
+
+@section('footer')
+        
 @endsection

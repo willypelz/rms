@@ -146,9 +146,20 @@ class JobsController extends Controller
         $company = ($d->companies[0]);
 
         $job = Job::find($id)->first();
-
+        // dd($company);
         return view ('job.share', compact('company', 'job'));
     }
+
+    public function AddCandidates($id){
+
+        return view ('job.add-candidates');
+    }
+
+     public function UploadCVfile($id){
+
+    
+    }
+
 
     public function JobView($jobid, $slug, Request $request)
     {

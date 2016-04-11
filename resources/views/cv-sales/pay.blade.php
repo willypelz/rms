@@ -3,36 +3,6 @@
 @section('content')
 
 
-<section class="s-div dark">
-        <div class="container">
-
-            <div class="row">
-                <div class="col-md-4 col-md-offset-1 hidden-sm hidden-xs">
-                    <div class=""><br>
-                        <h2 class="text-white push-down no-margin"> <i class="fa fa-street-view"></i> Talent Pool</h2>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-12">
-                    <form action="cv-search.php" class="form-group"><br>
-                       <div class="form-lg">
-                         <div class="col-xs-10">
-                           <div class="row"><input placeholder="Find something you want" value="Frontend Developer" class="form-control input-lg input-talent" type="text"></div>
-                         </div>
-                         <div class="col-xs-2">
-                           <div class="row">
-                               <button type="submit" class="btn btn-lg btn-block btn-success btn-talent">
-                               <!-- Find <span class="hidden-sm hidden-xs">Candidates</span>  -->
-                               <i class="fa fa-search fa-lg"></i>
-                               </button>
-                           </div>
-                         </div>
-                       </div>
-                    </form>
-                </div>
-            </div>
-
-        </div>
-    </section>
 
 
 

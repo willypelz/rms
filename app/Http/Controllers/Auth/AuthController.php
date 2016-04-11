@@ -79,8 +79,6 @@ class AuthController extends Controller
     }
 
     public function AjaxLogin(Request $request){
-        // return 'Yes';
-        // dd($request->request);
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             // return redirect()->route('ajax_checkout');
             echo 'True';
@@ -94,6 +92,15 @@ class AuthController extends Controller
         if ($request->isMethod('post')) {
             // dd($request->request); 
 
+             $validator = Validator::make($request->all(), [
+                'slug' => 'unique:companies'
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+           
             $file_name  = ($request->logo->getClientOriginalName());
             $fi =  $request->file('logo')->getClientOriginalExtension();  
             $logo = $file_name.'-'.$request->company_name;
@@ -112,15 +119,15 @@ class AuthController extends Controller
             ]);
 
             $comp = Company::FirstorCreate([
-                                'name' => $request->company_name,
-                                'email' => $request->company_email,
-                                'slug' => $request->slug,
-                                'phone' => $request->phone,
-                                'website' => $request->website,
-                                'address' => $request->address,
-                                'about' => $request->about_company,
-                                'logo' => $logo,
-                                'date_added' => date('Y-m-d H:i:s'),
+                'name' => $request->company_name,
+                'email' => $request->company_email,
+                'slug' => $request->slug,
+                'phone' => $request->phone,
+                'website' => $request->website,
+                'address' => $request->address,
+                'about' => $request->about_company,
+                'logo' => $logo,
+                'date_added' => date('Y-m-d H:i:s'),
             ]);
 
             $assoc  = DB::table('company_users')->insert([

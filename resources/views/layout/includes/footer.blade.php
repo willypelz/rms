@@ -178,6 +178,21 @@
 
     });
 
+    $("#owl-posts2").owlCarousel({
+          navigation: true,
+          items: 3,
+          responsive: false,
+          scrollPerPage: false,
+          pagination: true,
+          autoPlay: false,
+          // rewindNav: false,
+          navigationText: [
+            "<span class='fa fa-chevron-left'></span>",
+            "<span class='fa fa-chevron-right'></span>"
+          ],
+
+    });
+
 });
 </script>
 

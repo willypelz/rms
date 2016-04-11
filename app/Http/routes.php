@@ -205,6 +205,10 @@ Route::group(['middleware' => 'web'], function () {
             return view('job.preview');
         });
 
+        Route::get('applied', function () {
+            return view('job.applied');
+        });
+
         Route::get('listing', function () {
             return view('job.listing');
         });

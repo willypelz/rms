@@ -1009,7 +1009,7 @@ footer .footer-logo {
         background: #EFF2F5;
     border-radius: 3px;
 }
-#owl-posts .owl-item{
+#owl-posts .owl-item, #owl-posts2 .owl-item{
     /* box-shadow:2px 2px 2px rgba(0,0,0,0.2); */
     padding-right: 20px;
 }
@@ -2190,20 +2190,38 @@ section.grey hr{
 .option-aps {
     padding: 0;
     margin: 0;
+    background: #EBEFEA;
+    /* border: 3px solid rgba(110, 219, 185, 0.19); */
+    border-radius: 3px;
+    text-transform: uppercase;
+    overflow:hidden;
+    font-size: 11px;
+    line-height:20px;
 }
 .option-aps li a {
-    padding: 4px 10px;
+    padding: 10px;
+    font-weight:bold;
     /*font-size: 12px;*/
 }
 .option-aps > li.active a {
     /*background-color: #95A245;*/
-    padding:5px;
+    border-radius:0 0 0 0;
+    padding:10px;
+    margin:0;
+    border:none;
 }
-.option-aps > li.active a > span {
-    color: #95A245;
+.option-aps > li>a>.badge {
+    background-color: #CA5656;
 }
 .option-aps > li:hover a {
     background-color: rgba(204, 204, 204, 0.38);
+    border-radius:0 0 0 0;
+}
+.option-aps>li>a:focus, .nav>li>a:hover {
+    text-decoration: none;
+    background-color: #337AB7;
+    color: #fff;
+    border-radius: 0;
 }
 .job-head.blue{
     background: #3A5979;

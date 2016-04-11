@@ -10,6 +10,9 @@
 <script src="{{ asset('js/jquery.slugify.js') }}"></script>
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+
+
 <script type="text/javascript" charset="utf-8">
             $().ready(function () {
                 $('.slug').slugify('#company_name');
@@ -50,22 +53,6 @@
                               {!! Form::open(array('route'=>'registration','method'=>'POST', 'id'=>'SignUPform', 'files'=>true, 'class'=>'form-signup', 'role'=>'form')) !!}
 
                             {!! csrf_field() !!}
-                            <div class="row hidden">
-
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <a id="social" class="btn btn-social btn-linkedin btn-block"> <i class="fa fa-linkedin"></i> Sign up with Linkedin</a>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <a id="social" class="btn btn-social btn-facebook btn-block"> <i class="fa fa-facebook"></i> Sign up with Facebook</a>
-                                    </div>
-                                </div>
-
-                                <fieldset><legend>or use the form below</legend></fieldset><br>
-                            </div>
 
                             <div class="row">
                             
@@ -207,7 +194,7 @@
                                  <div class="col-sm-12">
                                     <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
                                         <label for="">Address</label>
-                                        <textarea name="address" class="form-control" id="" cols="30" rows="10" required></textarea>
+                                        <textarea name="address" class="form-control" id="" cols="30" rows="10" required>   {{ old('address') }} </textarea>
                                         @if ($errors->has('address'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('address') }}</strong>
@@ -219,7 +206,7 @@
                                  <div class="col-sm-12">
                                     <div class="form-group{{ $errors->has('about_company') ? ' has-error' : '' }}">
                                         <label for="">About Company</label>
-                                        <textarea name="about_company" class="form-control" id="" cols="30" rows="10" required></textarea>
+                                        <textarea name="about_company" class="form-control" id="" cols="30" rows="10" required>{{ old('about_company') }}</textarea>
                                         @if ($errors->has('about_company'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('about_company') }}</strong>
@@ -230,10 +217,24 @@
                                 
                                 <div class="col-sm-12">
                                     <div class="form-group{{ $errors->has('about_company') ? ' has-error' : '' }}">
-                                        <label for="">Company Logo</label>
-                                <?php  echo Form::file('logo'); ?>
+                                        <label class="col-md-12" for="">Company Logo</label>
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
+                                              <div>
+                                                <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span>
+                                                 <?php  echo Form::file('logo'); ?>
+                                                </span>
+                                                <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                              </div>
+                                            </div>
+
+
                                     </div>
                                 </div>
+
+                                
+                            
+
 
                             </div>
 
@@ -283,6 +284,9 @@
             }
         });
     </script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+
 @endsection
 
 @section('footer')

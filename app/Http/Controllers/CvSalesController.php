@@ -34,7 +34,7 @@ class CvSalesController extends Controller
     {
             $this->search_params['q'] = $request->search_query;
 
-            if( $this->search_params['start'] )
+            if( $request->start )
             {
                 $this->search_params['start'] = $request->start;
             }
@@ -98,6 +98,7 @@ class CvSalesController extends Controller
         $filepath = public_path("adeigbe_musibau_2015.doc");
         //http://127.0.0.1:5000/extract?file_name=http://files.insidify.com/uploads/cv/Resume-_VALENTINE.doc_2_.doc
         $cv = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );
+        // dd($cv);
         return $cv;
         return view('cv-sales.includes.cv-preview',['cv' => $cv ]);
     }
@@ -294,6 +295,10 @@ class CvSalesController extends Controller
             'status'=> $request->status,
             'message'=>$request->message
         ]);
+
+        if ($request->message == 'Transaction Successful') {
+            Cart::destroy();
+        }
 
         return $transaction;
     }

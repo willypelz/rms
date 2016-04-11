@@ -295,25 +295,9 @@
                                 
                                     <form role="form" id="AjaxLogin" class="form-signin" method="POST" action="{{ route('ajax_login') }}">
                             {!! csrf_field() !!}
-                            
-                            <div class="row">
-                                <p class="text-center">Sign in with</p>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <a id="social" class="btn btn-social btn-linkedin btn-block"> <i class="fa fa-linkedin"></i> Linkedin</a>
-                                    </div>
-                                </div>
 
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <a id="social" class="btn btn-social btn-facebook btn-block"> <i class="fa fa-facebook"></i> Facebook</a>
-                                    </div>
-                                </div>
-
-                            </div>
 
                             <div class="row">
-                            <fieldset><legend>or</legend></fieldset>
                             <div class="col-sm-12">
                                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                     <label for="">Your Email</label>
@@ -350,7 +334,7 @@
                                 <div class="col-xs-12"><hr></div>
 
                                 <div class="col-sm-6">
-                                    <p class="text-center"><a href="">I can't remember my password!</a></p>
+                                    <p class="text-center"><a href="{{ url('password/reset') }}">I can't remember my password!</a></p>
                                 </div>
 
                                 <div class="col-sm-6">
@@ -432,24 +416,8 @@
 
                         <form role="form" class="form-signup" method="POST" action="{{ url('/register') }}">
                             {!! csrf_field() !!}
-                            <div class="row">
-
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <a id="social" class="btn btn-social btn-linkedin btn-block"> <i class="fa fa-linkedin"></i> Sign up with Linkedin</a>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <a id="social" class="btn btn-social btn-facebook btn-block"> <i class="fa fa-facebook"></i> Sign up with Facebook</a>
-                                    </div>
-                                </div>
-
-                            </div>
 
                             <div class="row">
-                            <fieldset><legend>or use the form below</legend></fieldset>
 
                                 <div class="col-sm-6">
                                     <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">

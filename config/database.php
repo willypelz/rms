@@ -54,10 +54,10 @@ return [
 
         'mysql' => [
             'driver'    => 'mysql',
-            'host'      => env('DB_HOST', 'localhost'),
-            'database'  => env('DB_DATABASE', 'seamlesshiring'),
-            'username'  => env('DB_USERNAME', 'root'),
-            'password'  => env('DB_PASSWORD', ''),
+            'host'      => env('DB_HOST', '50.28.104.199'),
+            'database'  => env('DB_DATABASE', 'seamless_hiring'),
+            'username'  => env('DB_USERNAME', 'dejinsidfy'),
+            'password'  => env('DB_PASSWORD', 'd3j1ndify'),
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',

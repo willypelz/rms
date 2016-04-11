@@ -43,12 +43,10 @@
                             
                            <div class="col-sm-12">
                                 <div class="separator separator-small">
-                                   <h3 class="text-center">Job Title goes here<br>
-                                       <small>at {Company Name}</small>
+                                   <h3 class="text-center">{{ $job->title }}<br>
+                                       <small>at {{ $company->name }}</small>
                                    </h3><hr style="width: 45%">
                                </div>
-
-
 
                                <!-- Email Job -->
                                <div class="col-md-6">
@@ -113,11 +111,10 @@
                                        </p>
                                        <div class="separator separator-small"></div>
                                    </div>
-                               </div><!-- End of Email Job -->
+                               </div>
 
+                               <div class="col-md-6 text-center">
 
-                               <!-- Job sharing -->
-                               <div class="col-md-4 col-md-offset-2">
                                
                                    <p class="text-brandon text-uppercase">
                                        share your job
@@ -154,6 +151,15 @@
                                            </ul>
                                    </div><!-- End of Job sharing -->
                                
+                                         <!--   <a href="" class="">
+                                                   <span class="fa-stack fa-2x">
+                                                     <i class="fa fa-circle fa-stack-2x text-"></i>
+                                                     <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                                                   </span>
+                                           </a>
+                                   </div>
+                                -->
+                             
                                <!-- Job Embed -->
                                <!-- <div class="col-md-4">
                                    <p class="text-brandon text-uppercase text-right">

@@ -317,7 +317,7 @@ class CvSalesController extends Controller
         if( Auth::check() )
         {
             $company_folder_obj = new CompanyFolder(); 
-            $folders = $company_folder_obj->getMyFolders( Auth::user()->id );
+            $folders = $company_folder_obj->getMyFolders( Auth::user()->companies[0]->id );
             return response()->json( ['folders' => $folders] );
 
         }
@@ -332,7 +332,7 @@ class CvSalesController extends Controller
         if( Auth::check() )
         {
             $company_folder_obj = new CompanyFolder(); 
-            $company_folder_obj::create( ['name' => $request->name, 'date_added' => Carbon::now(), 'user_id' => Auth::user()->id ] );
+            $company_folder_obj::create( ['name' => $request->name, 'type' => $request->type, 'date_added' => Carbon::now(), 'company_id' => Auth::user()->companies[0]->id ] );
 
             
             return response()->json( true );
@@ -349,7 +349,7 @@ class CvSalesController extends Controller
         if( Auth::check() )
         {
             $folder_content_obj = new FolderContent(); 
-            $folder_content_obj::create( ['item_id' => $request->item_id, 'item_type' => $request->item_type, 'folder_id' => $request->folder_id, 'date_added' => Carbon::now() ] );
+            $folder_content_obj::create( ['cv_id' => $request->cv_id, 'company_folder_id' => $request->folder_id ] );
 
             return response()->json( true );
 

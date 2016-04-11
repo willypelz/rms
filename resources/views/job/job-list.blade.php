@@ -1,4 +1,4 @@
-@extends('layout.template-user')
+@extends('layout.template-default')
 
 @section('content')
 
@@ -42,7 +42,7 @@
         <div class="container">
             <div class="row">
 
-                
+            @if( count(@$jobs) > 0 )
                 @foreach($jobs as $job)
                 <div class="col-xs-12">
                     <div class="panel panel-default b-db">
@@ -93,7 +93,7 @@
                 </div>
                 @endforeach
 
-
+                @endif
                
 
                 <span class="col-xs-6"></span>

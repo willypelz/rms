@@ -50,7 +50,7 @@
                                     <div class="row">
                                     <div class=" job-cta">
                                     <div class="col-sm-3">
-                                        <a href="" class="btn btn-success btn-block"><i class="fa fa-edit"></i> Apply <span class="">for Job</span></a>
+                                        <a href="{{ url('job/apply/'.$job['id'].'/'.str_slug($job['title']) ) }}" class="btn btn-success btn-block"><i class="fa fa-edit"></i> Apply <span class="">for Job</span></a>
                                     </div>
                                         <div class="col-sm-5">                                            
                                             <div class="btn-group btn-group-justified">

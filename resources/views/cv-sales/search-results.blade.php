@@ -11,7 +11,8 @@
 <script src="{{ asset('js/jquery.twbsPagination.min.js') }}"></script>
 <section class="s-div dark">
         <div class="container">
-{{ Session::put('url.intended', url()->full() ) }}
+{{-- dd($result) --}}
+{{  Session::put('url.intended', url()->full() ) }}
 
             <div class="row">
                 <div class="col-md-6 hidden-sm hidden-xs">
@@ -298,7 +299,7 @@
             if(event.which == 13) 
             {
                 $field = $(this);
-                $.post("{{ url('cv/add-folder') }}", {name: $field.val() },function(data){
+                $.post("{{ url('cv/add-folder') }}", {name: $field.val(),type: 'saved' },function(data){
                     if(data == true)
                     {
                       $field.val("").hide();
@@ -323,7 +324,7 @@
 
             $field = $(this);
             
-            $.post("{{ url('cv/save-to-folder') }}", {folder_id: $field.attr( 'data-ref' ),item_id: $(this).closest('#folders').attr('data-cv'), item_type: 'saved', },function(data){
+            $.post("{{ url('cv/save-to-folder') }}", {folder_id: $field.attr( 'data-ref' ),cv_id: $(this).closest('#folders').attr('data-cv') },function(data){
                     if(data == true)
                     {
                       $field.addClass( 'active' );

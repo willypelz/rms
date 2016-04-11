@@ -40,6 +40,17 @@ Route::group(['middleware' => 'web'], function () {
  //        'auth' => 'Auth\AuthController', 
  //        'password' => 'Auth\PasswordController',
  //    ]);
+ 
+    //Sub Domain routing
+    /*Route::group(['domain' => '{account}.localhost/seamlesshiring/public_html'], function() {
+        Route::get('/', function($account) {
+            // return url('/sdfsd/aa');
+            return "worked yo " .  $account ;
+        }); 
+
+        Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}', ['uses' => 'JobsController@JobView', 'as' => 'job-view-guest']);
+    });*/
+
     Route::get('/', function () {
         return view('guest.landing');
     });
@@ -73,6 +84,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'my-job-board/team', ['uses' => 'JobsController@JobTeam', 'as' => 'job-team']);
     Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}', ['uses' => 'JobsController@JobView', 'as' => 'job-view']);
 
+    Route::match(['get', 'post'], 'job/apply/{jobID}/{slug}', ['uses' => 'JobsController@jobApply', 'as' => 'job-apply']);
 	// Route::any('log-in', function () {
 	//     return view('auth.login');
 	// });
@@ -205,4 +217,7 @@ Route::group(['middleware' => 'web'], function () {
         });
 
     });
+
+    
+
 });

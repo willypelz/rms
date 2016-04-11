@@ -34,19 +34,19 @@
                     <button type="button" class="btn btn-line btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       Save into Folder &nbsp; <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu" id="folders" data-cv="{{ @$cv['id'] }}">
+                    <ul class="dropdown-menu" id="folders" data-folders="{{ @implode( ':', @$cv['company_folder_id'] ) }}" data-cv="{{ @$cv['id'] }}">
                       
 
                       <li role="separator" class="divider"></li>
 
                       <li>
-                          <a href="#" id="add_folder_btn" ><i class="fa fa-plus"></i> Create new</a>
+                          <a href="#" id="add_folder_btn" target="_blank" data-toggle="modal" data-target="#newFolder" ><i class="fa fa-plus"></i> Create new</a>
                       </li>
 
 
                     </ul>
 
-                    <input type="text" style="display:none;" id="add_folder" />
+
                   </div>
                   @else
                       <a href="{{ url('log-in') }}" class="btn btn-line btn-sm dropdown-toggle">Save into Folder</a>
@@ -137,24 +137,29 @@
 </script>
 @endforeach
 
-<ul id="pagination-demo" class="pagination-sm"></ul>
+
 
 <script type="text/javascript">
 
   $(document).ready(function(){
-       $('#pagination-demo').twbsPagination({
+        if($('#pagination').data("twbs-pagination")){
+            $('#pagination').twbsPagination('destroy');
+        }
+
+       $('#pagination').twbsPagination({
         totalPages: "{{ ceil( $result['response']['numFound'] / 20 ) }}",
         visiblePages: 7,
+        initiateStartPageClick: false,
         onPageClick: function (event, page) {
           console.log(page,filters);
             $('#page-content').text('Page ' + page);
-            /*$('.search-results').html("Loading");
+            $('.search-results').html("Loading");
             $.get("{{ url('cv/search') }}", {search_query: $('#search_query').val(), start: ( page - 1 ) , filter_query : filters },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);
                 $('.search-results').html(data.search_results);
-            });*/
+            });
         }
     });
   });

@@ -50,22 +50,6 @@
                               {!! Form::open(array('route'=>'registration','method'=>'POST', 'id'=>'SignUPform', 'files'=>true, 'class'=>'form-signup', 'role'=>'form')) !!}
 
                             {!! csrf_field() !!}
-                            <div class="row hidden">
-
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <a id="social" class="btn btn-social btn-linkedin btn-block"> <i class="fa fa-linkedin"></i> Sign up with Linkedin</a>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <a id="social" class="btn btn-social btn-facebook btn-block"> <i class="fa fa-facebook"></i> Sign up with Facebook</a>
-                                    </div>
-                                </div>
-
-                                <fieldset><legend>or use the form below</legend></fieldset><br>
-                            </div>
 
                             <div class="row">
                             

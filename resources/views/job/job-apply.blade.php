@@ -2,7 +2,49 @@
 
 
 @section('content')
- <div class="page no-bod-rad" style="border-radius: 0 0 0 0">
+    <section class="no-pad">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1 col-sm-12">
+                    <div class="">
+                        <section class="job-head blue no-margin">
+                        <div class="">
+                            <div class="row">
+                            
+                                <div class="col-sm-8 col-sm-offset-2 text-center">
+                                    <small class="text-brandon l-sp-5 text-uppercase">job title</small>
+                            
+                                    <h2 class="job-title">
+                                        {{ ucfirst( $job['title'] ) }}
+                                    </h2>
+                                    <hr>
+                                    <ul class="list-inline text-white">
+                                        <!--<li><strong>Company:</strong>&nbsp; JobAcess</li>-->
+                                        <li>
+                                            <strong>&nbsp;Posted:</strong>&nbsp; <?php echo date('d, M Y', strtotime($job['created_at'])) ?></li>
+                                        <li>
+                                            <strong>&nbsp;Expires:</strong>&nbsp; 21 Jun, 2014</li>
+                                    </ul>
+                            
+                                    <!-- <div class="badge badge-job badge-job-active">
+                                        <small class="">
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                            &nbsp; Job is active
+                                        </small>
+                                    </div> -->
+                                </div>
+                                <div class="clearfix"></div>
+                                
+                            
+                            
+                                </div>
+                        </div>
+                                
+                            </section>
+                        <div class="row">
+                        
+                            <div class="col-sm-12">
+                                 <div class="page no-bod-rad" style="border-radius: 0 0 0 0">
                                     <div class="row">
                                     <div class=" job-cta">
                                     <div class="col-sm-12">
@@ -13,13 +55,13 @@
                                     </div>
 
                                         <div class="tab-content">
-                        
+
                                     <div class="row">
                                         
                                         <div class="col-sm-8">
                                             <p class="text-center">Please fill in the information below carefully.</p>
 
-    
+
                                 {!! Form::open(array('url' => 'apply/'.$job->slug, 'class'=>'job-details', 'files'=>true)) !!}
 
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}" id="lar_token">
@@ -77,7 +119,7 @@
                                         </div>
                                     </div>
                                     
-                
+
                                     <br/><hr/>
                                     <p class="text-center">Career Summary.</p><Br/>
 
@@ -259,7 +301,7 @@
                                         <div class="clearfix"></div>
 
                                     </div>
-                        
+
                                     <!--<div class="panel panel-default">-->
                                     <!--<div class="panel-heading">-->
                                     <!--<h4 class="panel-title">Friends who work <p>Medical Doctor, Valuepreneur, Doer... </p></h4>-->
@@ -270,19 +312,47 @@
                                     <!--</div>-->
                                     <!--</div>-->
                                     <!--</div>-->
-                        
+
                                 </div>
                                     </div>
-                        
+
+                            </div>
+
+                            <script type="text/javascript">
+                                $(document).ready(function() {
+                                    $('#datepicker').datepicker({
+                                        format:'yyyy-mm-dd',
+                                        autoclose: true,
+
+                                    });
+                                });
+                            </script>
+                                <!--/tab-content-->
+                                <div class="page page-sm foot no-bod-rad">
+                                    <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
+                                        <p>Powered by <a href="http://www.seamlesshiring.com"><i class="fa fa-skype"></i> Seamless Hiring</a> <br>
+                                        <small class="text-muted">&copy; 2016. Seamless Hiring</small></p>
+                                    </div>
+                                    <div class="clearfix"></div>
                                 </div>
+                        
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="separator separator-small hidden">
+                                <br>
+                                    <div class="col-sm-3 col-sm-offset-3">
+                                        <a class="btn btn-line btn-block" href="create-job.php">Edit this Job</a>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <a class="btn btn-danger btn-block" href="create-job.php">Unpublish this Job</a>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#datepicker').datepicker({
-            format:'yyyy-mm-dd',
-            autoclose: true,
-
-        });
-    });
-</script>
+<div class="separator separator-small"><br></div>
 @endsection

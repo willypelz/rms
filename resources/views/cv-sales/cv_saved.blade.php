@@ -61,16 +61,7 @@
                       <!-- Single button -->
                         <div class="col-xs-6"> 
                       <span class="text-brandon"><i class="fa fa-folder"></i> Folders &nbsp;</span>                 
-                            <div class="btn-group">
-                              <button type="button" class="btn btn-sm btn-line dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                All &nbsp; <span class="caret"></span>
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li><a href="#">Medical</a></li>
-                                <li><a href="#">Designers</a></li>
-                                <li><a href="#">Expatriate </a></li>
-                              </ul>
-                            </div>
+                            
                               <button class="btn btn-line btn-sm"><i class="fa fa-plus"></i> Create New</button>
                         </div>
                         <div class="col-xs-6">

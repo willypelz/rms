@@ -29,7 +29,7 @@
                       @endif
                   @endforeach
 
-                  <div><label class="normal"><input type="checkbox"  class="" data-field="gender" data-value="null"> unspecified {{ " (".$other_gender.")" }}</label> <br></div>
+                  <div class="hide"><label class="normal"><input type="checkbox"  class="" data-field="gender" data-value="null"> unspecified {{ " (".$other_gender.")" }}</label> <br></div>
               </div>
               
               @if($index > 4)
@@ -53,7 +53,7 @@
                       @endif
                   @endforeach
 
-                  <div><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_marital_status.")" }}</label> <br></div>
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_marital_status.")" }}</label> <br></div>
               </div>
               
               @if($index > 4)
@@ -77,7 +77,7 @@
                       @endif
                   @endforeach
 
-                  <div><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_edu_school.")" }}</label> <br></div>
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_edu_school.")" }}</label> <br></div>
               </div>
               
               @if($index > 4)
@@ -102,7 +102,7 @@
                       @endif
                   @endforeach
 
-                  <div><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_exp_company.")" }}</label> <br></div>
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_exp_company.")" }}</label> <br></div>
               </div>
               
               @if($index > 4)
@@ -127,7 +127,7 @@
                       @endif
                   @endforeach
 
-                  <div><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_edu_grade.")" }}</label> <br></div>
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_edu_grade.")" }}</label> <br></div>
               </div>
               
               @if($index > 4)

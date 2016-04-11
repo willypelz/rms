@@ -23,23 +23,6 @@
                             {!! csrf_field() !!}
                             
                             <div class="row">
-                                <p class="text-center">Sign in with</p>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <a id="social" class="btn btn-social btn-linkedin btn-block"> <i class="fa fa-linkedin"></i> Linkedin</a>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <a id="social" class="btn btn-social btn-facebook btn-block"> <i class="fa fa-facebook"></i> Facebook</a>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                            <fieldset><legend>or</legend></fieldset>
                             <div class="col-sm-12">
                                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                     <label for="">Your Email</label>

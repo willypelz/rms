@@ -28,6 +28,7 @@
 
                     <li class="">
                         <a class="" href="{{ url('my-jobs') }}">My Jobs <i class="fa fa-briefcase mask"></i></a>
+
                     </li>
 
 

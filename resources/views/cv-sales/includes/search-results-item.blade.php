@@ -6,7 +6,7 @@
       <span class="col-md-2 col-sm-3">
           <a class="" href="my-cv.html">
 
-              <img class="media-object job-team-img" width="100%" src="{{ ( @$cv['display_picture'] ) ? $cv['display_picture'] : asset('img/avatar-cv.jpg') }}" alt="">
+              <img class="media-object job-team-img" width="100%" src="{{ ( @$cv['display_picture'] ) ? $cv['display_picture'] : asset('img/default-profile.png') }}" alt="">
           </a>
       </span>
 

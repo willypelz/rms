@@ -66,14 +66,14 @@
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <label for="">Requirement <span class="text-danger">*</span></label>
-                                                <textarea name="requirement" id="" cols="30" rows="4" class="form-control" placeholder="">{{ (Request::old('requirement')) ? ' value='. e(Request::old('requirement')) .'' : '' }}</textarea>
+                                                <textarea name="requirement" id="editor2" cols="30" rows="4" class="form-control" placeholder="">{{ (Request::old('requirement')) ? ' value='. e(Request::old('requirement')) .'' : '' }}</textarea>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-4"><label for="job-title">job type <span class="text-danger">*</span></label>
-                                                    <select name="job_type" required="" id="job-title" type="text" class="form-control">
+                                                    <select name="job_type" required="" id="job-title" type="text" class="form-control summernote">
                                                              <option value=""> --Choose-- </opition>
                                                             <option value="full-time" @if (Request::old('job_type') == 'full-time') selected="selected" @endif>Full-Time</opition>
                                                             <option value="part-time" @if (Request::old('job_type') == 'part-time') selected="selected" @endif>Part-Time</opition>
@@ -98,7 +98,7 @@
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <label for="">Additional Information</label>
-                                                <textarea name="additional_info" id="" cols="30" rows="4" class="form-control" placeholder="">{{ (Request::old('additional_info')) ? ' value='. e(Request::old('additional_info')) .'' : '' }}</textarea>
+                                                <textarea name="additional_info" id="editor3" cols="30" rows="4" class="form-control" placeholder="">{{ (Request::old('additional_info')) ? ' value='. e(Request::old('additional_info')) .'' : '' }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -190,6 +190,8 @@
                 // instance, using default configuration.
                 $(document).ready(function(){
                 CKEDITOR.replace( 'editor1' );
+                CKEDITOR.replace( 'editor3' );
+                CKEDITOR.replace( 'editor2' );
 
                 })
             </script>

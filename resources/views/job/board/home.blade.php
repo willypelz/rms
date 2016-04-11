@@ -12,47 +12,131 @@
                         <div class="row">
 
 
-                        <div class="btn-group btn-group-justified btn-tabs job-dash no-pad text-brandon" role="group" aria-label="...">
-                          <div class="btn-group" role="group">
-                            <a href="{{ url('dashboard') }}" type="button" class="btn btn-line text-capitalize text-muted in">
-                            <span class="fa-lg"><i class="fa fa-cog"></i>
-                            <span class="hidden-xs"> &nbsp; Overview</span></span>
-                            <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
-                            </a>
-                          </div>
-                          <div class="btn-group" role="group">
-                            <a href="{{ url('activities') }}" type="button" class="btn btn-line text-capitalize">
-                            <span class="fa-lg"><i class="fa fa-bar-chart"></i>
-                            <span class="hidden-xs"> &nbsp; Activities</span></span>
-                            <!-- <small class="text-muted hidden-xs">Job Statistics</small> -->
-                            </a>
-                          </div>
-                          <div class="btn-group" role="group">
-                            <a href="{{ url('applicants') }}" type="button" class="btn btn-line text-capitalize">
-                            <span class="fa-lg"><i class="fa fa-edit"></i>
-                            <span class="hidden-xs"> &nbsp; Candidates</span></span>
-                            <!-- <small class="text-muted hidden-xs">See all applicants and their status </small> -->
-                            </a>
-                          </div>
-                          <div class="btn-group" role="group">
-                            <a href="{{ url('team') }}" type="button" class="btn btn-line text-capitalize">
-                            <span class="fa-lg"><i class="fa fa-users"></i>
-                            <span class="hidden-xs"> &nbsp; Job Team</span></span>
-                            <!-- <small class="text-muted hidden-xs">Resumes / CVs</small> -->
-                            </a>
-                          </div>
-                          <div class="btn-group" role="group">
-                            <a href="{{ url('matching') }}" type="button" class="btn btn-line text-capitalize text-muted">
-                            <span class="fa-lg"><i class="fa fa-user-md"></i>
-                            <span class="hidden-xs"> &nbsp; Matching Candidates</span></span>
-                            <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
-                            </a>
-                          </div>
-                        </div>
+                            @include('job.board.job-board-tabs')
+                        
                             <div class="tab-content">
 
                         <div class="row">                           
                         <!-- applicant -->
+
+                            <div class="col-xs-8">
+
+                                <div class="panel panel-default">
+                                
+                                  <div class="panel-heading">
+                                    <h3 class="panel-title">Advertise on Job Boards</h3>
+                                  </div>
+                                  <div class="panel-body">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <p class="">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem distinctio incidunt voluptas!</p>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <br>
+                                            </div>
+                                        <div class="col-xs-6">
+                                            <div class="">
+                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left disabled">
+                                                <input type="checkbox" disabled="" checked="" autocomplete="off" class="">
+                                                <span class="col-xs-6"><img width="100%" alt="" src="https://insidify.com/desktop/img/logo.png"></span>
+                                                <span class="col-xs-6"><b>Insidify Jobs</b><br>www.insidify.com</span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
+                                                <input type="checkbox" checked="" autocomplete="off" class="">
+                                                <span class="col-xs-6"><img width="100%" alt="" src="https://www.britishcouncil.org.ng/profiles/solas2/themes/britishcouncil/images/desktop/logo-british-council-color.png"></span>
+                                                <span class="col-xs-6"><b>Guargian Jobs</b><br>www.insidify.com</span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
+                                                <input type="checkbox" checked="" autocomplete="off" class="">
+                                                <span class="col-xs-6"><img width="100%" alt="" src="http://www.jobberman.com/img/new/logo.png"></span>
+                                                <span class="col-xs-6"><b>Punch Jobs</b><br>www.insidify.com</span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                          </div>
+                                        </div>
+
+                                        <div class="col-xs-6">
+                                            <div class="">
+                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
+                                                <input type="checkbox" checked="" autocomplete="off" class="">
+                                                <span class="col-xs-6"><img width="100%" alt="" src="http://www.jobimu.com/wp-content/uploads/2014/07/cropped-jobimu-logo.jpg"></span>
+                                                <span class="col-xs-6"><b>Naij Jobs</b><br>www.insidify.com</span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
+                                                <input type="checkbox" checked="" autocomplete="off" class="">
+                                                <span class="col-xs-6"><img width="100%" alt="" src="http://www.myjobmag.com/pics/logo6.png"></span>
+                                                <span class="col-xs-6"><b>My Job Mag</b><br>www.insidify.com</span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
+                                                <input type="checkbox" checked="" autocomplete="off" class="">
+                                                <span class="col-xs-6"><img width="100%" alt="" src="http://www.hotnigerianjobs.com/images/banner2.gif"></span>
+                                                <span class="col-xs-6"><b>Hot Nigerian Jobs</b><br>www.insidify.com</span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                          </div>
+                                        </div>
+                                        <div class="col-xs-12"><br>
+                                            <a class="pull-right btn btn-success" href="">proceed</a>
+                                        </div>
+                                        <div class="clearfix"></div>
+
+                                        </div>
+
+                                    </div>
+                                  </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-xs-4">
+
+                                <div class="panel panel-default">
+                                
+                                  <div class="panel-heading">
+                                    <h3 class="panel-title text-center">Share on Social Media</h3>
+                                  </div>
+                                  <div class="panel-body">
+                                    <div class="text-center">
+                                   <p class="">Share this job publishing on LinkedIn, Twitter, Facebook.</p><br>
+                               
+                                           <ul class="list-inline">
+                                               <li>
+                                                   <a class="" href="">
+                                                           <span class="fa-stack fa-2x">
+                                                             <i class="fa fa-circle fa-stack-2x text-"></i>
+                                                             <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                                           </span>
+                                                   </a>
+                                               </li>
+                                                                              
+                                               <li>
+                                                   <a class="" href="">
+                                                           <span class="fa-stack fa-2x">
+                                                             <i class="fa fa-circle fa-stack-2x text-"></i>
+                                                             <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                                           </span>
+                                                   </a>
+                                               </li>
+                                                                              
+                                               <li>
+                                                   <a class="" href="">
+                                                           <span class="fa-stack fa-2x">
+                                                             <i class="fa fa-circle fa-stack-2x text-"></i>
+                                                             <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                                                           </span>
+                                                   </a>
+                                               </li>
+                                           </ul>
+                                   </div>
+                                  </div>
+                                </div>
+                                
+                            </div>
 
                                 
                         </div>

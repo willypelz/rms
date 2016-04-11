@@ -6,6 +6,7 @@
 @section('content')
 
 
+<style>footer{opacity:0;}</style>
 
     <section class="no-pad">
         <div class="container">

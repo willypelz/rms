@@ -181,6 +181,10 @@ Route::group(['middleware' => 'web'], function () {
             return view('job.team');
         });
 
+        Route::get('applicant', function () {
+            return view('job.applicant');
+        });
+
         Route::get('activities', function () {
             return view('job.activities');
         });

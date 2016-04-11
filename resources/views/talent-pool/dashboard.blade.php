@@ -167,7 +167,7 @@
                             <span class="text-brandon text-uppercase">Your Activities:</span> 4 new updates
                         </h6><br>
                     <div id="owl-posts">
-                        <div class="owl-item">
+                        <div class="owl-item col-sm-3">
                             <div class="panel-body text-left">
                               <p class="post-img">
                                 <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
@@ -180,7 +180,7 @@
                               </p>
                             </div>
                         </div>
-                        <div class="owl-item">
+                        <div class="owl-item col-sm-3">
                             <div class="panel-body text-left">
                               <p class="post-img">
                                 <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
@@ -193,7 +193,7 @@
                               </p>
                             </div>
                         </div>
-                        <div class="owl-item">
+                        <div class="owl-item col-sm-3">
                             <div class="panel-body text-left">
                               <p class="post-img">
                                 <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
@@ -206,7 +206,7 @@
                               </p>
                             </div>
                         </div>
-                        <div class="owl-item">
+                        <div class="owl-item col-sm-3">
                             <div class="panel-body text-left">
                               <p class="post-img">
                                 <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
@@ -219,7 +219,7 @@
                               </p>
                             </div>
                         </div>
-                        <div class="owl-item">
+                        <div class="owl-item col-sm-3">
                             <div class="panel-body text-left">
                               <p class="post-img">
                                 <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
@@ -232,7 +232,7 @@
                               </p>
                             </div>
                         </div>
-                        <div class="owl-item">
+                        <div class="owl-item col-sm-3">
                             <div class="panel-body text-left">
                               <p class="post-img">
                                 <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">

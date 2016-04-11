@@ -5,7 +5,7 @@
 
 @section('content')
 
-
+<style>footer{opacity:0;}</style>
 
     <section class="no-pad">
         <div class="container">
@@ -54,31 +54,48 @@
                                     <div class="row">
                                     <div class=" job-cta">
 
-                                    <div class="col-sm-4 col-sm-offset-4">
+                                    <div class="col-sm-5 col-sm-offset-4">
                                         
-                                       <p class="no-margin">
+                                       <span class="">
+                                           <ul class="list-inline no-margin">
                                             Share Job on  &nbsp;
-                                           <a href="" class="">
-                                                   <span class="fa-stack fa-lg">
-                                                     <i class="fa fa-circle fa-stack-2x text-"></i>
-                                                     <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                                   </span>
-                                           </a>
-                                                                          
-                                           <a href="" class="">
-                                                   <span class="fa-stack fa-lg">
-                                                     <i class="fa fa-circle fa-stack-2x text-"></i>
-                                                     <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                                   </span>
-                                           </a>
-                                                                          
-                                           <a href="" class="">
-                                                   <span class="fa-stack fa-lg">
-                                                     <i class="fa fa-circle fa-stack-2x text-"></i>
-                                                     <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
-                                                   </span>
-                                           </a>
-                                       </p>
+                                               <li>
+                                                   <a href="" class="">
+                                                           <span class="fa-stack fa-lg">
+                                                             <i class="fa fa-circle fa-stack-2x text-"></i>
+                                                             <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                                           </span>
+                                                   </a>
+                                               </li>
+                                                                              
+                                               <li>
+                                                   <a href="" class="">
+                                                           <span class="fa-stack fa-lg">
+                                                             <i class="fa fa-circle fa-stack-2x text-"></i>
+                                                             <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                                           </span>
+                                                   </a>
+                                               </li>
+                                                                              
+                                               <li>
+                                                   <a href="" class="">
+                                                           <span class="fa-stack fa-lg">
+                                                             <i class="fa fa-circle fa-stack-2x text-"></i>
+                                                             <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                                                           </span>
+                                                   </a>
+                                               </li>
+                                                                              
+                                               <li>
+                                                   <a href="" class="">
+                                                           <span class="fa-stack fa-lg">
+                                                             <i class="fa fa-circle fa-stack-2x text-"></i>
+                                                             <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                                           </span>
+                                                   </a>
+                                               </li>
+                                           </ul>
+                                       </span>
                                     </div>
                                     <div class="clearfix"></div>
                                     </div>
@@ -145,7 +162,7 @@
                                                 Latest Discovery Posts
                                             </h6><br>
                     <div id="owl-posts2">
-                        <div class="owl-item">
+                        <div class="owl-item col-sm-4">
                             <div class="panel-body text-left">
                               <p class="post-img">
                                 <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
@@ -158,7 +175,7 @@
                               </p>
                             </div>
                         </div>
-                        <div class="owl-item">
+                        <div class="owl-item col-sm-4">
                             <div class="panel-body text-left">
                               <p class="post-img">
                                 <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
@@ -171,7 +188,7 @@
                               </p>
                             </div>
                         </div>
-                        <div class="owl-item">
+                        <div class="owl-item col-sm-4">
                             <div class="panel-body text-left">
                               <p class="post-img">
                                 <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
@@ -184,7 +201,7 @@
                               </p>
                             </div>
                         </div>
-                        <div class="owl-item">
+                        <div class="owl-item col-sm-4">
                             <div class="panel-body text-left">
                               <p class="post-img">
                                 <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
@@ -197,7 +214,7 @@
                               </p>
                             </div>
                         </div>
-                        <div class="owl-item">
+                        <div class="owl-item col-sm-4">
                             <div class="panel-body text-left">
                               <p class="post-img">
                                 <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
@@ -210,7 +227,7 @@
                               </p>
                             </div>
                         </div>
-                        <div class="owl-item">
+                        <div class="owl-item col-sm-4">
                             <div class="panel-body text-left">
                               <p class="post-img">
                                 <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">

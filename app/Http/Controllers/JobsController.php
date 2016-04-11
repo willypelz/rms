@@ -320,8 +320,9 @@ class JobsController extends Controller
 
         
         return view('job.job-apply', compact('job', 'qualifications', 'states'));
-    }
 
+    }
+    
     public function Ajax(Request $request){
 
         $user = User::find($request->user_id);

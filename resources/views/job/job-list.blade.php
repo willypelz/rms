@@ -1,4 +1,4 @@
-@extends('layout.template-user')
+@extends('layout.template-default')
 
 @section('content')
 
@@ -42,7 +42,7 @@
         <div class="container">
             <div class="row">
 
-                
+            @if( count(@$jobs) > 0 )
                 @foreach($jobs as $job)
                 <div class="col-xs-12">
                     <div class="panel panel-default b-db">
@@ -51,7 +51,7 @@
                             <div class="title-job pull-left">
 
                                 <big><a target="_blank" href="{{ route('job-board', [$job['id']]) }}"><b>{{ $job['title'] }}</b></a></big><hr/>
-                                <small class="text-muted"><i class="glyphicon glyphicon-ban-circle "></i> @if($job['published'] == 1) Job Live @else  Job Suspended @endif| <a href="{{ route('job-view', [$job['id'],  str_slug($job['title'])]) }}">View Job</a></small><br/>
+                                <small class="text-muted"><i class="glyphicon glyphicon-ban-circle "></i> @if($job['published'] == 1) Job Live @else  Job Suspended @endif| <a href="{{ route('job-view', [$job['id'],  str_slug($job['title'])]) }}" target="_blank">View Job</a></small><br/>
                                 <small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }} &nbsp;
                                     <i class="glyphicon glyphicon-calendar"></i> Date Created : {{ date('D, M Y', strtotime($job['created_at'])) }}</small>
 
@@ -93,7 +93,7 @@
                 </div>
                 @endforeach
 
-
+                @endif
                
 
                 <span class="col-xs-6"></span>

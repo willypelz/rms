@@ -33,6 +33,13 @@ class CvSalesController extends Controller
     public function search(Request $request)
     {
             $this->search_params['q'] = $request->search_query;
+
+            if( $request->start )
+            {
+                $this->search_params['start'] = $request->start;
+            }
+            
+            
             $this->search_params['filter_query'] = @$request->filter_query;
             $response = Solr::search_resume($this->search_params);
 
@@ -89,8 +96,10 @@ class CvSalesController extends Controller
         //http://127.0.0.1:5000/extract
         // $text = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );
         $filepath = public_path("adeigbe_musibau_2015.doc");
+        //http://127.0.0.1:5000/extract?file_name=http://files.insidify.com/uploads/cv/Resume-_VALENTINE.doc_2_.doc
         $cv = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );
-
+        // dd($cv);
+        return $cv;
         return view('cv-sales.includes.cv-preview',['cv' => $cv ]);
     }
 
@@ -313,7 +322,7 @@ class CvSalesController extends Controller
         if( Auth::check() )
         {
             $company_folder_obj = new CompanyFolder(); 
-            $folders = $company_folder_obj->getMyFolders( Auth::user()->id );
+            $folders = $company_folder_obj->getMyFolders( Auth::user()->companies[0]->id );
             return response()->json( ['folders' => $folders] );
 
         }
@@ -328,7 +337,7 @@ class CvSalesController extends Controller
         if( Auth::check() )
         {
             $company_folder_obj = new CompanyFolder(); 
-            $company_folder_obj::create( ['name' => $request->name, 'date_added' => Carbon::now(), 'user_id' => Auth::user()->id ] );
+            $company_folder_obj::create( ['name' => $request->name, 'type' => $request->type, 'date_added' => Carbon::now(), 'company_id' => Auth::user()->companies[0]->id ] );
 
             
             return response()->json( true );
@@ -345,7 +354,7 @@ class CvSalesController extends Controller
         if( Auth::check() )
         {
             $folder_content_obj = new FolderContent(); 
-            $folder_content_obj::create( ['item_id' => $request->item_id, 'item_type' => $request->item_type, 'folder_id' => $request->folder_id, 'date_added' => Carbon::now() ] );
+            $folder_content_obj::create( ['cv_id' => $request->cv_id, 'company_folder_id' => $request->folder_id ] );
 
             return response()->json( true );
 

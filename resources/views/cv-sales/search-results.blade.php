@@ -11,6 +11,9 @@
 <script src="{{ asset('js/jquery.twbsPagination.min.js') }}"></script>
 <section class="s-div dark">
         <div class="container">
+{{-- dd($result) --}}
+{{ Auth::user()->companies[0]->id }}
+{{  Session::put('url.intended', url()->full() ) }}
 
             <div class="row">
                 <div class="col-md-6 hidden-sm hidden-xs">
@@ -19,8 +22,8 @@
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-12">
-                    <form action="{{ url('cv/search') }}" class="form-group" method="POST"><br>
-                      {!! csrf_field() !!}
+                    <form action="{{ url('cv/search') }}" class="form-group"><br>
+                      
                        <div class="form-lg">
                          <div class="col-xs-10">
                            <div class="row"><input placeholder="Find something you want" name="search_query" id="search_query" value="{{ $search_query }}" class="form-control input-lg input-talent" type="text"></div>
@@ -66,8 +69,10 @@
                       
                       
                     </ul>
-                
+                    <ul id="pagination" class="pagination-sm"></ul>
               </div> <!--/tab-content-->
+
+
 
             </div>
             <!-- End of col-9 -->
@@ -206,14 +211,25 @@
 
 <script type="text/javascript">
     var folders = [];
-    $(document).ready(function(){
-        filters = [];
+    var filters = [];
 
-        $.fn.setMyFolders = function()
+    $(document).ready(function(){
+        
+
+        $.fn.setMyFolders = function(cv_folders)
         {
           var html = "" ;
           $.each(folders,function(index,value){
-              html += '<li id="folder-item" data-ref="' + value.id + '"><a href="#"><i class="fa fa-folder-o"></i> ' + value.name + '</a></li>';
+
+              if(cv_folders.indexOf( value.id.toString() ) >= 0)
+              {
+                active = "active";
+              }
+              else
+              {
+                active = "";
+              }
+              html += '<li id="folder-item" data-ref="' + value.id + '" class="' + active + '"><a href="#"><i class="fa fa-folder-o"></i> ' + value.name + '</a></li>';
           });
           return html;
         }
@@ -225,7 +241,8 @@
                 folders = data.folders;
                 $('body #folder-item').remove();
                 $('body #folders').each(function(index,value){
-                    $(this).prepend($(this).setMyFolders());
+                    cv_folders = $(this).attr('data-folders').split(':');
+                    $(this).prepend($(this).setMyFolders(cv_folders));
                 })
           });
         }
@@ -251,7 +268,7 @@
             }
 
             $('.search-results').html("Loading");
-            $.post("{{ url('cv/search') }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
+            $.get("{{ url('cv/search') }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);
@@ -283,22 +300,43 @@
             });
         });
 
-        $('body').on('click', '#add_folder_btn',function(){
+        /*$('body').on('click', '#add_folder_btn',function(){
             var input = $(this).parent().parent().parent().find('#add_folder');
             input.show();
-        });
-
+        });*/
+        
+        $('#newFolder').on('shown.bs.modal', function () {
+            $('#add_folder').focus();
+        })
 
         $('body').on('keydown', '#add_folder',function(){
             if(event.which == 13) 
             {
-                $field = $(this);
-                $.post("{{ url('cv/add-folder') }}", {name: $field.val() },function(data){
+                $(this).createFolder();
+
+            }
+        });
+
+        $('body #createFolderBtn').click(function(){
+          $(this).createFolder();
+        });
+
+        $.fn.createFolder = function()
+        {
+              $field = $('body #add_folder');
+
+              $field.attr('disabled','disabled');
+
+              $('#newFolder #message').html('<div class”text-center”>Creating...</div>');
+
+                $.post("{{ url('cv/add-folder') }}", {name: $field.val(),type: 'saved' },function(data){
                     if(data == true)
                     {
-                      $field.val("").hide();
+                      // $field.val("").hide();
                       $(this).getMyFolders();
-                      $field.after('<div class”alert alert-success”>Folder added success</div>');
+                      $('#newFolder #message').html('<div class="alert alert-success">Folder added successfully</div>');
+                      $('#newFolder').modal('toggle');
+                      
                     }
 
                     else
@@ -310,18 +348,23 @@
                     }
                     
                 });
-
-            }
-        });
+        }
 
         $('body').on('click','#folder-item',function(){
 
             $field = $(this);
             
-            $.post("{{ url('cv/save-to-folder') }}", {folder_id: $field.attr( 'data-ref' ),item_id: $(this).closest('#folders').attr('data-cv'), item_type: 'saved', },function(data){
+            $.post("{{ url('cv/save-to-folder') }}", {folder_id: $field.attr( 'data-ref' ),cv_id: $(this).closest('#folders').attr('data-cv') },function(data){
                     if(data == true)
                     {
                       $field.addClass( 'active' );
+
+                       $field.closest('.description').append('<div id="notification"><div class="clearfix"></div><div class="alert alert-success">Added to folder successfully</div></div>');
+                        window.setTimeout(function() {
+                            $field.closest('.description').find('#notification').fadeTo(500, 0).slideUp(500, function(){
+                                $(this).remove(); 
+                            });
+                        }, 5000);
                     }
                     
                 });
@@ -331,6 +374,43 @@
     });
 </script>
 
+
+
+<div class="modal fade" tabindex="-1" id="newFolder" role="dialog" aria-labelledby="newFolder">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+            <h3 class="text-center">Create new folder</h3>
+
+
+        <section class="no-pad" id='ContentAREA'>
+                <div class="">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="content rounded">
+                                <div id="message"></div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control" id="add_folder" placeholder="" name="email">
+                                    
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    
+                                  </div>
+                                  <div class="clearfix"></div>
+                              <div class="pull-right">
+                                  <a href="javascript://" id="createFolderBtn" class="btn btn-success pull-right">Create</a>
+                                  <div class="separator separator-small"></div>
+                              </div>
+        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+         </section>
+        </div>
+      </div>
+    </div>
 
 @endsection
 

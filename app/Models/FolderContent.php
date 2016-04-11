@@ -12,16 +12,16 @@ class FolderContent extends Model
      *
      * @var string
      */
-    protected $table = 'user_folder_contents';
+    protected $table = 'company_folders_cvs';
 
     /**
      * Attributes that should be mass-assignable.
      *
      * @var array
      */
-    protected $fillable = ['item_type', 'item_id', 'folder_id','date_added'];
+    protected $fillable = ['company_folder_id', 'cv_id'];
 
-    public $timestamps = false;
+    // public $timestamps = false;
 
     public function getMyFolders($user_id)
     {

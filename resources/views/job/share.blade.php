@@ -45,6 +45,8 @@
                                        <small>at {{ $company->name }}</small>
                                    </h3><hr style="width: 45%">
                                </div>
+
+                               <!-- Email Job -->
                                <div class="col-md-6">
                                    <div class="">
                                
@@ -108,39 +110,67 @@
                                        <div class="separator separator-small"></div>
                                    </div>
                                </div>
-                          
-
 
                                <div class="col-md-6 text-center">
+
                                
                                    <p class="text-brandon text-uppercase">
                                        share your job
                                    </p>
                                    <p>Share this job publishing on LinkedIn, Twitter, Facebook.</p>
                                
-                                           <a href="" class="">
-                                                   <span class="fa-stack fa-2x">
-                                                     <i class="fa fa-circle fa-stack-2x text-"></i>
-                                                     <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                                   </span>
-                                           </a>
+                                           <ul class="list-inline">
+                                             <li>
+                                               <a href="" class="">
+                                                       <span class="fa-stack fa-2x">
+                                                         <i class="fa fa-circle fa-stack-2x text-"></i>
+                                                         <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                                       </span>
+                                               </a>
+                                             </li>
+                                                                            
+                                             <li>
+                                               <a href="" class="">
+                                                       <span class="fa-stack fa-2x">
+                                                         <i class="fa fa-circle fa-stack-2x text-"></i>
+                                                         <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                                       </span>
+                                               </a>
+                                             </li>
+                                                                            
+                                             <li>
+                                               <a href="" class="">
+                                                       <span class="fa-stack fa-2x">
+                                                         <i class="fa fa-circle fa-stack-2x text-"></i>
+                                                         <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                                                       </span>
+                                               </a>
+                                             </li>
+                                           </ul>
+                                   </div><!-- End of Job sharing -->
                                
-                                           <a href="" class="">
-                                                   <span class="fa-stack fa-2x">
-                                                     <i class="fa fa-circle fa-stack-2x text-"></i>
-                                                     <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                                   </span>
-                                           </a>
-                               
-                                           <a href="" class="">
+                                         <!--   <a href="" class="">
                                                    <span class="fa-stack fa-2x">
                                                      <i class="fa fa-circle fa-stack-2x text-"></i>
                                                      <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
                                                    </span>
                                            </a>
                                    </div>
-                               
+                                -->
                              
+                               <!-- Job Embed -->
+                               <!-- <div class="col-md-4">
+                                   <p class="text-brandon text-uppercase text-right">
+                                       Embed on your Site
+                                   </p>                                   
+                           
+                                   <p class="text-right">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima aut magnam eum, aspernatur officia amet quibusdam nam.</p><br>
+
+                                   <p>
+                                       <a href="" class="pull-right btn btn-line"><i class="fa fa-cogs"></i> &nbsp;Get the Widget</a>
+                                   </p>
+
+                               </div> -->
 
                                    <div class="col-md-6 col-md-offset-3">
                                        

@@ -27,7 +27,8 @@
                     </li>
 
                     <li class="">
-                        <a class="" href="{{ route('job-list') }}">My Jobs <i class="fa fa-briefcase mask"></i></a>
+                        <a class="" href="{{ url('my-jobs') }}">My Jobs <i class="fa fa-briefcase mask"></i></a>
+
                     </li>
 
 

@@ -280,8 +280,7 @@
                                 
                                     <form role="form" id="AjaxLogin" class="form-signin" method="POST" action="{{ route('ajax_login') }}">
                             {!! csrf_field() !!}
-                            
-                        
+
 
                             <div class="row">
                             <div class="col-sm-12">
@@ -402,24 +401,8 @@
 
                         <form role="form" class="form-signup" method="POST" action="{{ url('/register') }}">
                             {!! csrf_field() !!}
-                            <div class="row">
-
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <a id="social" class="btn btn-social btn-linkedin btn-block"> <i class="fa fa-linkedin"></i> Sign up with Linkedin</a>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <a id="social" class="btn btn-social btn-facebook btn-block"> <i class="fa fa-facebook"></i> Sign up with Facebook</a>
-                                    </div>
-                                </div>
-
-                            </div>
 
                             <div class="row">
-                            <fieldset><legend>or use the form below</legend></fieldset>
 
                                 <div class="col-sm-6">
                                     <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">

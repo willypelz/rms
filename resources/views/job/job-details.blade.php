@@ -17,7 +17,7 @@
                                     <small class="text-brandon l-sp-5 text-uppercase">job title</small>
                             
                                     <h2 class="job-title">
-                                        {{ $job['title'] }}
+                                        {{ ucfirst( $job['title'] ) }}
                                     </h2>
                                     <hr>
                                     <ul class="list-inline text-white">
@@ -50,7 +50,7 @@
                                     <div class="row">
                                     <div class=" job-cta">
                                     <div class="col-sm-3">
-                                        <a href="" class="btn btn-success btn-block"><i class="fa fa-edit"></i> Apply <span class="">for Job</span></a>
+                                        <a href="{{ url('job/apply/'.$job['id'].'/'.str_slug($job['title']) ) }}" class="btn btn-success btn-block" target="_blank"><i class="fa fa-edit"></i> Apply <span class="">for Job</span></a>
                                     </div>
                                         <div class="col-sm-5">                                            
                                             <div class="btn-group btn-group-justified">
@@ -103,7 +103,7 @@
                                                 <div class="col-xs-6 col-sm-3"><small class="text-muted">Job Type</small>
                                                 <br>
                                                 <i class="fa fa-3x fa-clock-o text-info"></i>
-                                                <h5 class="text-uppercase text-brandon">full time</h5>
+                                                <h5 class="text-uppercase text-brandon">{{ $job['job_type'] }}</h5>
                                                 </div>
                                                 <div class="col-xs-6 col-sm-4"><small class="text-muted">Salary Range</small>
                                                 <br>
@@ -113,19 +113,19 @@
                                                 <div class="col-xs-12 col-sm-5"><small class="text-muted">Minimum Qualification</small>
                                                 <br>
                                                 <i class="fa fa-3x fa-user-md text-danger"></i>
-                                                <h5 class="text-uppercase text-brandon">BSc. Computer Science</h5>
+                                                <h5 class="text-uppercase text-brandon">{{ $job['qualification'] }}</h5>
                                                 </div>
 
                                                 <div class="col-xs-12"><hr></div>
 
                                                 <div class="col-xs-12">
                                                 <h5>Job Description</h5>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo eum corrupti deserunt officia beatae praesentium possimus explicabo rerum quia architecto itaque a vero odio dolores saepe, quisquam natus. Voluptatum, harum!</p><br>
+                                                    {!!html_entity_decode( ucfirst( $job['details'] ) )!!}
                                                 </div>
 
                                                 <div class="col-xs-12">
                                                 <h5>Qualifications</h5>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo eum corrupti deserunt officia beatae praesentium possimus explicabo rerum quia architecto itaque a vero odio dolores saepe, quisquam natus. Voluptatum, harum!</p><br>
+                                                   {!!html_entity_decode( ucfirst( $job['experience'] ) )!!}
                                                 </div>
                                             </div>
 

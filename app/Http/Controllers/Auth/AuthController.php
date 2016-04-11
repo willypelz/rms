@@ -34,6 +34,7 @@ class AuthController extends Controller
      *
      * @var string
      */
+    // protected $redirectTo = '/dashboard';
     protected $redirectTo = '/dashboard';
 
     /**
@@ -44,7 +45,18 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'logout']);
+
     }
+
+    // public function redirectPath()
+    // {
+    //     // // Logic that determines where to send the user
+    //     // if (\Auth::user()->type == 'admin') {
+    //     //     return '/admin';
+    //     // }
+        
+    //     return '/poop';
+    // }
 
     /**
      * Get a validator for an incoming registration request.

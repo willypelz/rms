@@ -21,9 +21,8 @@
                            <!-- <div class="col-sm-12 col-md-6 col-sm-8">
                                <a href="" class="btn btn-success btn-block btn-lg text-uppercase text-bold">No Dulling. Start Now <i class="fa fa-chevron-right"></i></a>
                                </div> -->
-                        <form action="{{ url('cv/search') }}" class="form-group" method="POST">
+                        <form action="{{ url('cv/search') }}" class="form-group">
                         <br class="hidden-xs">
-                          {!! csrf_field() !!}
                            <div class="form-lg hidden-xs">
                              <div class="col-sm-8">
                                <div class="row"><input placeholder="Find something you want" class="form-control input-lg input-talent" name="search_query" type="text"></div>

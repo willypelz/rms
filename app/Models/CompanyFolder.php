@@ -19,13 +19,13 @@ class CompanyFolder extends Model
      *
      * @var array
      */
-    protected $fillable = ['company_id', 'name','date_added'];
+    protected $fillable = ['company_id', 'name','type','date_added'];
 
     public $timestamps = false;
 
-    public function getMyFolders($user_id)
+    public function getMyFolders($company_id)
     {
-        return $this->where('user_id',$user_id)->get()->toArray();
+        return $this->where('company_id',$company_id)->get()->toArray();
     }
 
 

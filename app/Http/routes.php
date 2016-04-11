@@ -40,6 +40,17 @@ Route::group(['middleware' => 'web'], function () {
  //        'auth' => 'Auth\AuthController', 
  //        'password' => 'Auth\PasswordController',
  //    ]);
+ 
+    //Sub Domain routing
+    /*Route::group(['domain' => '{account}.localhost/seamlesshiring/public_html'], function() {
+        Route::get('/', function($account) {
+            // return url('/sdfsd/aa');
+            return "worked yo " .  $account ;
+        }); 
+
+        Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}', ['uses' => 'JobsController@JobView', 'as' => 'job-view-guest']);
+    });*/
+
     Route::get('/', function () {
         return view('guest.landing');
     });
@@ -84,6 +95,7 @@ Route::group(['middleware' => 'web'], function () {
 
     // Route::match(['get', 'post'], 'job/dashboard/{jobID}', ['uses' => 'JobsController@JobDashboard', 'as' => 'job-view']);
 
+    Route::match(['get', 'post'], 'job/apply/{jobID}/{slug}', ['uses' => 'JobsController@jobApply', 'as' => 'job-apply']);
 	// Route::any('log-in', function () {
 	//     return view('auth.login');
 	// });
@@ -120,7 +132,7 @@ Route::group(['middleware' => 'web'], function () {
         /**
          * Post Variable for cv search form search box
          */
-        Route::post('search', 'CvSalesController@search');
+        Route::get('search', 'CvSalesController@search');
 
 
         Route::get('cv_pool', function () {
@@ -216,4 +228,7 @@ Route::group(['middleware' => 'web'], function () {
         });
 
     });
+
+    
+
 });

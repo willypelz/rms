@@ -22,8 +22,6 @@
                         <form role="form" class="form-signin" method="POST" action="{{ url('/login') }}">
                             {!! csrf_field() !!}
                             
-                          
-
                             <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">

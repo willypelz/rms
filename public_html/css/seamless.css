@@ -2787,6 +2787,11 @@ div.baser {
     padding: 20px 10px 20px 20px;
     font-weight: normal;
     text-transform: capitalize;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width:550px;
 }
 .title-job hr{
     margin: 5px 0;

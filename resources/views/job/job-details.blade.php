@@ -1,5 +1,9 @@
 @extends('layout.template-user')
 
+@section('navbar')
+    
+@show()
+
 @section('content')
 
 

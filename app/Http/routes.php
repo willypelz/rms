@@ -36,24 +36,14 @@ Route::group(['middleware' => ['web']], function () {
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
 
- //    Route::controllers([
- //        'auth' => 'Auth\AuthController', 
- //        'password' => 'Auth\PasswordController',
- //    ]);
- 
-    //Sub Domain routing
-    /*Route::group(['domain' => '{account}.localhost/seamlesshiring/public_html'], function() {
-        Route::get('/', function($account) {
-            // return url('/sdfsd/aa');
-            return "worked yo " .  $account ;
-        }); 
-
-        Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}', ['uses' => 'JobsController@JobView', 'as' => 'job-view-guest']);
-    });*/
-
     Route::get('/', function () {
         return view('guest.landing');
     });
+
+    Route::get('simple-pay', function(){
+        return view('payment.simplepay');
+    });
+
     Route::get('log-in', 'Auth\AuthController@showLoginForm');
 
     Route::post('log-in', 'Auth\AuthController@login');
@@ -76,6 +66,8 @@ Route::group(['middleware' => 'web'], function () {
 
     //JOB
     Route::match(['get', 'post'], 'jobs/post-a-job', ['uses' => 'JobsController@PostJob', 'as' => 'post-job']);
+    Route::match(['get', 'post'], 'edit-job/{jobid}', ['uses' => 'JobsController@EditJob', 'as' => 'edit-job']);
+
     Route::match(['get', 'post'], 'jobs/advertise-your-job/{jobID}', ['uses' => 'JobsController@Advertise', 'as' => 'advertise']);
     Route::match(['get', 'post'], 'jobs/share-your-job/{jobID}', ['uses' => 'JobsController@Share', 'as' => 'share-job']);
     Route::match(['get', 'post'], 'jobs/add-candidates/{jobID}', ['uses' => 'JobsController@AddCandidates', 'as' => 'add-candidates']);
@@ -96,6 +88,7 @@ Route::group(['middleware' => 'web'], function () {
     // Route::match(['get', 'post'], 'job/dashboard/{jobID}', ['uses' => 'JobsController@JobDashboard', 'as' => 'job-view']);
 
     Route::match(['get', 'post'], 'job/apply/{jobID}/{slug}', ['uses' => 'JobsController@jobApply', 'as' => 'job-apply']);
+    Route::match(['get', 'post'], 'job-status', ['uses' => 'JobsController@JobStatus', 'as' => 'job-status']);
 	// Route::any('log-in', function () {
 	//     return view('auth.login');
 	// });

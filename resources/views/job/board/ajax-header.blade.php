@@ -1,6 +1,5 @@
- <section class="no-pad" >
-    <div class="container" >
-        <section class="job-head blue" id="jobHead">
+
+<section class="job-head blue" id="jobHead">
             <div class="" >
                 <div class="row">
                 
@@ -27,10 +26,10 @@
                         </ul>
                         
                         @if($job['published'] == 1)
-                        <div id="status-box" class="label label-success" style="">Job is active</div>
+                        <div class="label label-success" style="">Job is active</div>
                         @else 
                         <div class="label label-warning" style="">Job is warning</div> 
-                        <div id="status-box" class="label label-danger" style="">Job is in danger</div> <!-- <small>To change</small> -->
+                        <div class="label label-danger" style="">Job is in danger</div> <!-- <small>To change</small> -->
                         @endif
                         <!-- <div class="badge badge-job badge-job-active">
                             <small class="">
@@ -68,9 +67,8 @@
                             <div class="btn-group" role="group">
                                 @if($job['published'] == 1)
                                     <a href="" id="statusBtn"  type="button" class="btn-sm btn btn-danger status" onclick="Publish(1); return false;" ><i class="fa fa-ban"></i> &nbsp; Unpublish Job</a>
-                                    <!-- <a href="" id="statusBtn2"  type="button" class="hidden btn-sm btn btn-danger status" onclick="UnPublish(1); return false;" ><i class="fa fa-ban"></i> &nbsp; Publish Job</a> -->
                                 @else
-                                    <a href="" id="statusBtn" type="button" class="btn-sm btn btn-success status" onclick="Publish(2); return false;" ><i class="fa fa-ban"></i> &nbsp; Publish Job</a>
+                                    <a href="" id="statusBtn" type="button" class="btn-sm btn btn-danger status" onclick="Publish(2); return false;" ><i class="fa fa-ban"></i> &nbsp; Publish Job</a>
                                 @endif
                             </div>
                         </div>
@@ -79,51 +77,7 @@
                     </div>
                 
                 
-                    </div>
-                </div>
-            </section>
-
-
-
-<script>
-
-    function Publish(id){
-        console.log(id)
-        $('#statusBtn').text('Please wait... ')
-
-        var url = "{{ route('job-status') }}"
-
-        $.ajax
-            ({
-                type: "POST",
-                url: url,
-                data: ({ rnd : Math.random() * 100000,  job_id:"{{ $job['id'] }}" }),
-                success: function(response){
-                     // $('#statusBtn').hide()
-                     $('#statusBtn').text('Publish').attr('onclick', 'UnPublish(1); return false')
-                     $('#status-box').text('Job is in danger').removeClass('label-success').addClass('label-danger')
-                }
-            });
-
-    }
-
-    function UnPublish(id){
-        $('#statusBtn').text('Please wait... ')
-
-        var url = "{{ route('job-status') }}"
-
-        $.ajax
-            ({
-                type: "POST",
-                url: url,
-                data: ({ rnd : Math.random() * 100000,  job_id:"{{ $job['id'] }}" }),
-                success: function(response){
-                     $('#statusBtn').text('Un Publish').attr('onclick', 'Publish(1); return false')
-                     $('#status-box').text('Job is active').removeClass('label-danger').addClass('label-success')
-                }
-            });
-    }
-    
-</script>
-
+                        </div>
+            </div>
+</section>
 

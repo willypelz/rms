@@ -11,26 +11,12 @@
                 <div class="col-xs-12 no-margin">
                 <br>
                     <h3 class="text-green-light no-margin">
-                        36 Sesewa Recruit Jobs
+                        {{ $active + $suspended }} {{ $comp_name }} Jobs
                         &nbsp;
-                        <a href="create-{{ url('jobs/dashboard') }}" class="btn btn-success"><i class="fa fa-plus"></i> Post a New Job</a>
+                        <a href="{{ route('post-job') }}" class="btn btn-success"><i class="fa fa-plus"></i> Post a New Job</a>
 
-                        <small class="pull-right text-white">Active (3) | Suspended (34)</small>
+                        <small class="pull-right text-white">Active ({{ $active }}) | Suspended ({{ $suspended }})</small>
                     </h3>
-
-                    <!--<hr>
-                    <ul class="list-inline">
-                        <li><strong>Company:</strong>&nbsp; JobAcess</li>
-                        <li>
-                            <strong>
-                                <span class="glyphicon glyphicon-map-marker"></span>&nbsp;Location:</strong>&nbsp; Lagos, Nigeria</li>
-                        <li>
-                            <strong>
-                                <span class="glyphicon glyphicon-calendar"></span>&nbsp;Posted Date:</strong>&nbsp; 07 Jun, 2014</li>
-                        <li>
-                            <strong>
-                                <span class="glyphicon glyphicon-calendar"></span>&nbsp;Expiry Date:</strong>&nbsp; 21 Jun, 2014</li>
-                    </ul>-->
                 </div>
 
             </div>
@@ -51,7 +37,7 @@
                             <div class="title-job pull-left">
 
                                 <big><a target="_blank" href="{{ route('job-board', [$job['id']]) }}"><b>{{ $job['title'] }}</b></a></big><hr/>
-                                <small class="text-muted"><i class="glyphicon glyphicon-ban-circle "></i> @if($job['published'] == 1) Job Live @else  Job Suspended @endif| <a href="{{ route('job-view', [$job['id'],  str_slug($job['title'])]) }}" target="_blank">View Job</a></small><br/>
+                                <small class="text-muted"><i class="glyphicon glyphicon-ban-circle "></i> @if($job['published'] == 1) Job Live @else  Job Suspended @endif| <a href="{{ route('job-board', [$job['id']]) }}" >View Job</a> | <a href="{{ route('job-view', [$job['id'],  str_slug($job['title'])]) }}" target="_blank">Preview Job</a></small><br/>
                                 <small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }} &nbsp;
                                     <i class="glyphicon glyphicon-calendar"></i> Date Created : {{ date('D, M Y', strtotime($job['created_at'])) }}</small>
 

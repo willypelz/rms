@@ -174,7 +174,18 @@ class JobsController extends Controller
         $comp = User::with('companies.jobs')->where('id', $user->id)->get();
         $jobs = ($comp[0]->companies[0]->jobs);
         
-        return view('job.job-list', compact('jobs'));
+        $active = 0;
+        $suspended = 0;
+        foreach($jobs as $job){
+            if ($job->published == 1) {
+                $active++;
+            }else{
+                $suspended++;
+            }
+        }
+       $comp_name = ($comp[0]->companies[0]->name);
+
+        return view('job.job-list', compact('jobs', 'active', 'suspended', 'comp_name'));
     }
 
     public function JobBoard($id, Request $request){
@@ -340,6 +351,25 @@ class JobsController extends Controller
 
         return view('job.ajax-team-edit', compact('user'));
 
+    }
+
+    public function EditJob(Request $request, $jobid){
+
+        $job = Job::findOrFail($jobid);
+
+        $qualifications = qualifications();
+
+        return view('job.edit', compact('qualifications', 'job'));
+
+    }
+
+    public function JobStatus(Request $request){
+
+        $job = Job::find($request->job_id);
+
+        echo true;
+
+        //return view('job.board.ajax-header', compact('job'));
     }
 
 }

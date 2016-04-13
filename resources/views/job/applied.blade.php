@@ -161,7 +161,7 @@
                                             <h6 class="text-brandon">
                                                 Latest Discovery Posts
                                             </h6><br>
-                    <div id="owl-posts2">
+                    <div id="owl-posts2" class="hidden-sm">
                         <div class="owl-item col-sm-4">
                             <div class="panel-body text-left">
                               <p class="post-img">
@@ -228,6 +228,49 @@
                             </div>
                         </div>
                         <div class="owl-item col-sm-4">
+                            <div class="panel-body text-left">
+                              <p class="post-img">
+                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
+                              </p>
+                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
+                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
+                              </p>
+                              <p>
+                                  <a href="" class="btn btn-line">Read</a>
+                              </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="discovery-post hidden-md hidden-lg">
+                      
+                        <div class="col-sm-4">
+                            <div class="panel-body text-left">
+                              <p class="post-img">
+                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
+                              </p>
+                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
+                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
+                              </p>
+                              <p>
+                                  <a href="" class="btn btn-line">Read</a>
+                              </p>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="panel-body text-left">
+                              <p class="post-img">
+                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
+                              </p>
+                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
+                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
+                              </p>
+                              <p>
+                                  <a href="" class="btn btn-line">Read</a>
+                              </p>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
                             <div class="panel-body text-left">
                               <p class="post-img">
                                 <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">

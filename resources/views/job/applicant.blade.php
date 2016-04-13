@@ -219,7 +219,7 @@
                         <div class="unit-box">
                             <div class="row">
                                 <div class="col-xs-1 r-left">
-                                    <span class="fa fa-file-o"></span>
+                                    <span class="fa fa-pencil-square-o"></span>
                                 </div>
                                 <div class="col-xs-11">
                                     <h5>Cover Letter</h5>
@@ -232,7 +232,7 @@
 
                         <div class="row">
                         <div class="col-xs-1 r-left">
-                          <span class="fa fa-file-o"></span>
+                          <span class="fa fa-file-text-o"></span>
                         </div>
                           <div class="col-xs-11">
                             <h5>Curriculum Vitae</h5>

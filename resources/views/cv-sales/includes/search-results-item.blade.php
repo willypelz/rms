@@ -6,7 +6,7 @@
       <span class="col-md-2 col-sm-3">
           <a class="" href="my-cv.html">
 
-              <img class="media-object job-team-img" width="100%" src="{{ ( @$cv['display_picture'] ) ? $cv['display_picture'] : asset('img/default-profile.png') }}" alt="">
+              <img class="media-object job-team-img" width="100%" src="{{ ( @$cv['display_picture'] ) ? asset('img/'.$cv['display_picture']) : asset('img/default-profile.png') }}" alt="">
           </a>
       </span>
 
@@ -26,13 +26,25 @@
               <div class="description">
                   <p class="sub-box excerpt-p text-muted hidden"><i>bodied security men and women needed in a hotel. Must be smart and able to work in a corporate environment</i></p>
                   <br>
+                  @if(@$is_saved)
+                    <span class="details-small">
+                      <!-- <span class="small text-danger no-margin pull-right">Purchased Thu 12-03-16</span> -->
+                      <span class="small text-muted" id="saved_folders_view"></span>
+                    </span>
+                  @endif
                 <p class="">
                       <!-- Single button -->
                   @if( Auth::check() )
                   <div class="btn-group">
 
                     <button type="button" class="btn btn-line btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Save into Folder &nbsp; <span class="caret"></span>
+                      @if(@$is_saved)
+                        Change Folder
+                      @else
+                        Save into Folder
+                      @endif
+
+                       &nbsp; <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" id="folders" data-folders="{{ @implode( ':', @$cv['company_folder_id'] ) }}" data-cv="{{ @$cv['id'] }}">
                       
@@ -51,9 +63,13 @@
                   @else
                       <a href="{{ url('log-in') }}" class="btn btn-line btn-sm dropdown-toggle">Save into Folder</a>
                   @endif
-                    <a href="cv.html" class="btn btn-line btn-sm" id='showCvBtn' data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">Preview CV</a>
+                    <a href="javascript://" class="btn btn-line btn-sm" id='showCvBtn' data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">Preview CV</a>
 
                     <span class="purchase-action">
+                          @if(@$is_saved)
+                            <a href="javascript://" class="btn btn-sm btn-line pull-right" title="Delete CV" id='removeSavedCV' data-user='{{ @$cv['id'] }}'><i class="fa fa-trash no-margin"></i></a>
+                          @endif
+
                           <?php 
                             if($ids != null)
                               $in_cart = in_array($cv['id'], $ids);
@@ -67,6 +83,7 @@
                             <a href="" id="cartAdd{{ $cv['id'] }}" class="btn btn-success btn-sm btn-cv-buy" data-count="1" data-cost="500"><i class="fa fa-plus"></i> Purchase CV for N500</a>
                             <button id="cartRemove{{ $cv['id'] }}" class="btn btn-line btn-sm btn-cv-discard collapse" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
                           @endif
+
                   </span>
 
                 </p>
@@ -75,6 +92,7 @@
 
 </li><hr>
 <div class="modal fade no-border" id="showCv" data-user="{{ @$cv['id'] }}" tabindex="-1" role="dialog" aria-labelledby="cvViewModalLabel" aria-hidden="false">
+  @include('cv-sales.includes.cv-preview')
 </div>
 <script>
     $(document).ready(function(){

@@ -2,6 +2,8 @@
 
 namespace App\Libraries;
 
+use Auth;
+
 class Solr {
 
 	static $host = "http://50.28.104.199:8983/solr/resumes/select?";
@@ -104,7 +106,7 @@ class Solr {
 
 	static function get_saved_cvs($data)
 	{
-		$additional = "&fq=cv_file:". @Auth::user()->companies[0]->id;
+		$additional = "&fq=company_folder_id:". @Auth::user()->companies[0]->id;
 		return Solr::search_resume($data,$additional);
 	}
 

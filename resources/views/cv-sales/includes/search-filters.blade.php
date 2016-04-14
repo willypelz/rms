@@ -13,6 +13,34 @@
         </div>
         <div id="collapseOne" class="panel-collapse collapse in">
           <div class="panel-body">
+
+              @if(@$is_saved)
+
+                  <p class="border-bottom-thin text-muted">Folder<i class="glyphicon glyphicon-user pull-right"></i></p>
+                    <div class="checkbox-inline">
+                        {{--*/ $other_gender = 0  /*--}}
+                        {{--*/ $index = 0  /*--}}
+                        @foreach( $result['facet_counts']['facet_fields']['folder_name'] as $key => $folder_name )
+                            @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['folder_name'][ $key + 1 ] != 0 )
+                              
+                              {{--*/ $index++  /*--}}
+                              <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="folder_name" data-value="{{ $folder_name }}" > {{ $folder_name ." (".$result['facet_counts']['facet_fields']['folder_name'][ $key + 1 ].")" }}</label> <br></div>
+                            @else
+
+                              {{--*/ @$other_folder_name += $result['facet_counts']['facet_fields']['folder_name'][ $key + 1 ] /*--}}
+
+                            @endif
+                        @endforeach
+
+                        <div class="hide"><label class="normal"><input type="checkbox"  class="" data-field="gender" data-value="null"> unspecified {{ " (".$other_folder_name.")" }}</label> <br></div>
+                    </div>
+                    
+                    @if($index > 4)
+                      <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+                    @endif
+                    <p>--</p>
+
+              @endif
               <p class="border-bottom-thin text-muted">Gender<i class="glyphicon glyphicon-user pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_gender = 0  /*--}}

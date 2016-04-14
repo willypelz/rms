@@ -12,14 +12,17 @@
 <section class="s-div dark">
         <div class="container">
 {{-- dd($result) --}}
-{{ Auth::user()->companies[0]->id }}
+
 {{  Session::put('url.intended', url()->full() ) }}
+
 
             <div class="row">
                 <div class="col-md-6 hidden-sm hidden-xs">
-                    <div class=""><br>
-                        <h4 class="text-white push-down text-uppercase text-brandon"> <i class="fa fa-street-view"></i> Search Results</h4>
-                    </div>
+                    
+                      <div class=""><br>
+                          <h4 class="text-white push-down text-uppercase text-brandon"> <i class="fa fa-street-view"></i> Search Results</h4>
+                      </div>
+
                 </div>
                 <div class="col-md-6 col-sm-12">
                     <form action="{{ url('cv/search') }}" class="form-group"><br>
@@ -223,13 +226,13 @@
 
               if(cv_folders.indexOf( value.id.toString() ) >= 0)
               {
-                active = "active";
+                active = ' &nbsp; <i class="fa fa-check"></i> ';
               }
               else
               {
                 active = "";
               }
-              html += '<li id="folder-item" data-ref="' + value.id + '" class="' + active + '"><a href="#"><i class="fa fa-folder-o"></i> ' + value.name + '</a></li>';
+              html += '<li id="folder-item" data-ref="' + value.id + '" ><a href="#"><i class="fa fa-folder-o"></i> ' + value.name + active + '</a></li>';
           });
           return html;
         }
@@ -293,12 +296,12 @@
             $(this).text(text);
         });
 
-        $(document).on('click', '#showCvBtn', function(){ 
-          var this_one = $(this);
-            $.post("{{ url('cv/get_cv_preview') }}",function(data){
-               $( this_one.attr('data-target') ).html(data);
-            });
-        });
+        // $(document).on('click', '#showCvBtn', function(){ 
+        //   var this_one = $(this);
+        //     $.post("{{ url('cv/get_cv_preview') }}",function(data){
+        //        $( this_one.attr('data-target') ).html(data);
+        //     });
+        // });
 
         /*$('body').on('click', '#add_folder_btn',function(){
             var input = $(this).parent().parent().parent().find('#add_folder');

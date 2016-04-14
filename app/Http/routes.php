@@ -145,6 +145,9 @@ Route::group(['middleware' => 'web'], function () {
             return view('cv-sales.cv_saved');
         });
 
+        Route::get('saved', 'CvSalesController@viewSaved');
+
+
         Route::post('get-my-folders', 'CvSalesController@getMyFolders');
 
         Route::post('add-folder', 'CvSalesController@addFolders');
@@ -181,6 +184,10 @@ Route::group(['middleware' => 'web'], function () {
             return view('job.team');
         });
 
+        Route::get('applicant', function () {
+            return view('job.profile');
+        });
+
         Route::get('activities', function () {
             return view('job.activities');
         });
@@ -205,6 +212,10 @@ Route::group(['middleware' => 'web'], function () {
             return view('job.preview');
         });
 
+        Route::get('applied', function () {
+            return view('job.applied');
+        });
+
         Route::get('listing', function () {
             return view('job.listing');
         });
@@ -225,6 +236,43 @@ Route::group(['middleware' => 'web'], function () {
         });
 
     });
+
+
+
+
+    Route::get('/{c_url}', 'JobsController@company');
+
+    Route::get('/{c_url}/job/{job_id}', 'JobsController@JobView');
+    Route::get('/{c_url}/job/{job_id}/{job_slug}', 'JobsController@JobView');
+
+    /**
+     * Route Group for everything applicant
+     */ 
+
+    Route::group(['prefix'=>'applicant'], function(){
+
+        Route::get('profile', function () {
+            return view('applicant.profile');
+        });
+
+        Route::get('compose-mail', function () {
+            return view('applicant.compose-mail');
+        });
+
+        Route::get('view-mail', function () {
+            return view('applicant.view-mail');
+        });
+
+        Route::get('notes', function () {
+            return view('applicant.notes');
+        });
+
+        Route::get('b-check', function () {
+            return view('applicant.b-check');
+        });
+
+    });
+
 
     
 

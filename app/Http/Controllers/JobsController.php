@@ -162,10 +162,17 @@ class JobsController extends Controller
     }
 
 
-    public function JobView($jobid, $slug, Request $request)
+    public function JobView($company_slug, $jobid, $job_slug, Request $request)
     {
-        $job = Job::find($jobid);
-        return view('job.job-details', compact('job'));
+        $company = Company::where('slug', $company_slug)->first();
+        $job = Job::where('id', $jobid)->where("company_id",$company->id)->first();
+
+        if(empty($job)){
+            // redirect to 404 page
+        }
+
+
+        return view('job.job-details', compact('job', 'company'));
     }
     
     public function JobList(Request $request){
@@ -331,6 +338,18 @@ class JobsController extends Controller
 
         
         return view('job.job-apply', compact('job', 'qualifications', 'states'));
+
+    }
+
+
+    public function company($c_url){
+
+        $company = Company::with(['jobs'=>function($query){
+                                        $query->where('published', 1);
+                                    }])->where('slug', $c_url)->first();
+
+
+        return view('job.company', compact('company'));
 
     }
     

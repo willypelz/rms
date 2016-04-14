@@ -12,8 +12,10 @@
 <section class="s-div dark">
         <div class="container">
 {{-- dd($result) --}}
+@if(Auth::check())
 {{ Auth::user()->companies[0]->id }}
 {{  Session::put('url.intended', url()->full() ) }}
+@endif
 
             <div class="row">
                 <div class="col-md-6 hidden-sm hidden-xs">

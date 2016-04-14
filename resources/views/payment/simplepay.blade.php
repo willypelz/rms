@@ -11,8 +11,19 @@
 	function processPayment (token) {
     // implement your code here - we call this after a token is generated
     // example:
-   alert('Got here')
-   console.log('We are')
+   // alert(token)
+   // console.log(token)
+   var url ="{{ route('simplepay') }}"
+    $.ajax
+      ({
+          type: "POST",
+          url: url,
+          data: ({ rnd : Math.random() * 100000, token:token }),
+          success: function(response){
+               console.log(response)
+          }
+      });
+
 }
 
 // Configure SimplePay's Gateway
@@ -29,15 +40,18 @@ $('#btn-checkout').on('click', function (e) { // add the event to your "pay" but
     handler.open(SimplePay.CHECKOUT, // type of payment
     {
        email: 'customer@store.com', // optional: user's email
-       phone: '+234*', // optional: user's phone number
-       description: 'My Test Store Checkout 123-456', // a description of your choosing
-       address: '31 Kade St, Abuja, Nigeria', // user's address
+       // phone: '+234{{ $company->phone }}', // optional: user's phone number
+       description: 'Payment for Job boards', // a description of your choosing
+       address: '{{ $company->address }}', // user's address
        postal_code: '110001', // user's postal code
-       city: 'Abuja', // user's city
+       city: '{{ $company->location }}', // user's city
        country: 'NG', // user's country
-       amount: '110000', // value of the purchase, ₦ 1100
+       amount: '{{  }}', // value of the purchase, ₦ 1100
        currency: 'NGN' // currency of the transaction
     });
+
+
+
 });
 
 

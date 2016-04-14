@@ -41,6 +41,8 @@ Route::group(['middleware' => 'web'], function () {
     });
 
     Route::get('simple-pay', function(){
+
+        dd(save_activities(4, 'Job application', '', '', 'THis is a very nice comment'));
         return view('payment.simplepay');
     });
 
@@ -65,6 +67,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'emails-test', ['uses' => 'CvSalesController@TestEmail', 'as' => 'emails']);
 
     //JOB
+    Route::match(['get', 'post'], 'jobs/save-job', ['uses' => 'JobsController@SaveJob', 'as' => 'job-draft']);
+    Route::match(['get', 'post'], 'jobs/refer-job', ['uses' => 'JobsController@ReferJob', 'as' => 'refer-job']);
     Route::match(['get', 'post'], 'jobs/post-a-job', ['uses' => 'JobsController@PostJob', 'as' => 'post-job']);
     Route::match(['get', 'post'], 'edit-job/{jobid}', ['uses' => 'JobsController@EditJob', 'as' => 'edit-job']);
 

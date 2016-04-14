@@ -46,4 +46,7 @@ $('#btn-checkout').on('click', function (e) { // add the event to your "pay" but
 
 
 
+
+
+
 @stop

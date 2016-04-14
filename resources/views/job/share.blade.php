@@ -62,24 +62,27 @@
                                     &nbsp; Your mail has been sent. Refresh page to send more.</div>
                                    <form action="">
 
+                                        <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
+
+
                                    <div class="form-group">
                                        <label for="">From: </label>
                                        <input class="form-control" type="text" value="{{ $company->email }}" disabled>
                                        
                                        <label for="">To: </label>
                                        <small>Separate your addresses by a comma</small>
-                                       <input class="form-control" type="text" placeholder="email addresses here">
+                                       <input class="form-control" id="to_email" name="to_email" type="text" placeholder="email addresses here">
                                    </div>
 
                                    <label for="editor1">Body of Mail</label>
-                                       <textarea name="" id="editor1" cols="30" rows="10">
+                                       <textarea name="email_body"  id="editor1" cols="30" rows="10">
                                        <p>Hello there, I have a job you might be interested in</p>
                                        <hr style="width: 45%">
-                                           <strong class="">Human Resource Administrator<br>
-                                               <small>at Kingston Industries</small>
-                                           </strong>
-                                           <p>
-                                               <a href="{{ $job->url }}">Visit this link to see Job details.</a>
+                                              
+                                              <?php echo $job->details ?>
+
+
+                                               <a href="#">Visit this link to see Job details.</a>
                                            </p>
                                            <p>Thank you.</p>
                                        </textarea>
@@ -90,6 +93,7 @@
                                        </script>
                                    </form>
                                    <br>
+                                   <div style="color:red" id="ErrorMsg"></div>
                                    <p>
                                        <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-line btn-sm"><i class="fa fa-times"></i> &nbsp; Cancel</a>
 
@@ -100,6 +104,32 @@
                                 <script>
                                 $('#ReferEmail').click(function(){
                                     $(".hideSendEmails").html('<img src="{{ asset('img/loader-logo-32.gif') }}" width="30px" /> please wait...');
+
+                                    var to = $('#to_email').val()
+                                    var body = $('#editor1').val()
+                                    var token = $('#token').val()
+                                    var jobid = "{{ $job->id }}"
+
+                                    if (to == null || to == "") {
+                                        $('#ErrorMsg').html('Recipient name is missing')
+                                        return false;
+                                    }
+
+                                    var url = "{{ route('refer-job') }}"
+                                     $.ajax
+                                    ({
+                                        type: "POST",
+                                        url: url,
+                                        data: ({ rnd : Math.random() * 100000, _token:token, to:to, body:body, jobid:jobid }),
+                                        success: function(response){
+                                             if(response == 'sent'){
+                                                 $(".hideSendEmails").hide();
+                                                 $(".collapseWYSIWYG").show();
+
+                                             }
+                                        }
+                                    });
+
 
                                 })
                                 </script>
@@ -178,9 +208,9 @@
                                            <div class="separator separator-small"></div>
                                            <hr style="width: 50%">
                                            <p class="text-center">
-                                               <a href="addCan-job.php"> Skip this step </a>
-                                                       &nbsp; &middot; &nbsp;
-                                               <a href="addCan-job.php" class="btn btn-success">Proceed &raquo;</a>
+                                               <!-- <a href="addCan-job.php"> Skip this step </a> -->
+                                                       <!-- &nbsp; &middot; &nbsp; -->
+                                               <a href="{{ route('add-candidates', [$job->id]) }}" class="btn btn-success">Proceed &raquo;</a>
                                            </p>
                                            
                                    </div>

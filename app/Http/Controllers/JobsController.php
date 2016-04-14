@@ -13,6 +13,7 @@ use Validator;
 use Cart;
 use Session;
 use Auth;
+use Mail;
 
 class JobsController extends Controller
 {
@@ -37,10 +38,14 @@ class JobsController extends Controller
 
         $qualifications = qualifications();
 
+        $locations = locations();
+        // dd($locations);
+
+
         $user = Auth::user();
         $d = User::with('companies')->where('id', $user->id)->first();
         $company = ($d->companies[0]);
-        // dd('hellp');
+        // dd($company);
         // dd($qua);
         $job_boards = JobBoard::where('type', 'free')->get()->toArray();
         $c = (count($job_boards) / 2);
@@ -54,23 +59,27 @@ class JobsController extends Controller
         // dd($job_bards);
         if ($request->isMethod('post')) {
 
+            // dd($request->request);
             $data = [
                 'job_title' => $request->job_title,
                 'job_location' => $request->job_location,
-                'job_description' => $request->job_description,
-                'requirement' => $request->requirement,
+                'details' => $request->details,
+                'experience' => $request->experience,
                 'job_type' => $request->job_type,
-                'salary' => $request->salary,
-                'qualification' => $request->qualification
+                'position' => $request->position,
+                'post_date' => $request->post_date,
+                'expiry_date' => $request->expiry_date
             ];
+
 
             $validator = Validator::make( $data, [
                         'job_title' => 'required',
                         'job_location' => 'required',
-                        'job_description' => 'required',
-                        'requirement' => 'required',
+                        'details' => 'required',
+                        'experience' => 'required',
                         'job_type' => 'required',
-                        'qualification' => 'required'
+                        'position' => 'required',
+                        'expiry_date' => 'required'
                 ]);
 
             if($validator->fails()){
@@ -84,11 +93,13 @@ class JobsController extends Controller
                         $job = Job::FirstorCreate([
                                 'title' => $request->job_title,
                                 'location' => $request->job_location,
-                                'details' => $request->job_description,
-                                'experience' => $request->requirement,
-                                'qualification' => $request->qualification,
-                                'job_type' => $request->job_type,
-                                'published' => 1,
+                                'details' => $request->details,
+                                'experience' => $request->experience,
+                                'job_level' => $request->job_type,
+                                'position' => $request->position,
+                                'post_date' => $request->post_date,
+                                'expiry_date' => $request->expiry_date,
+                                'status' => 'ACTIVE',
                                 'company_id' => $company->id
                         ]);
 
@@ -96,11 +107,6 @@ class JobsController extends Controller
                             if(in_array($p, $bds))
                                 $job->boards()->attach($p);
                         }
-
-                        $job_url = $job->id.'/'.str_slug($request->job_title);
-                       
-                        Job::where('id', $job->id)
-                          ->update(['job_url' => $job_url]);
 
                         // dd($job_url);
                     }
@@ -111,7 +117,11 @@ class JobsController extends Controller
         }
 
         // dd('here');
-        return view('job.create', compact('qualifications', 'board1', 'board2'));
+        return view('job.create', compact('qualifications', 'board1', 'board2', 'locations'));
+    }
+
+    public function SaveJob(Request $request){
+        dd($request->request);
     }
 
     public function Advertise($jobid){
@@ -146,8 +156,8 @@ class JobsController extends Controller
         $d = User::with('companies')->where('id', $user->id)->first();
         $company = ($d->companies[0]);
 
-        $job = Job::find($id)->first();
-        // dd($company);
+        $job = Job::find($id);
+        // dd($job);
         return view ('job.share', compact('company', 'job'));
     }
 
@@ -356,10 +366,18 @@ class JobsController extends Controller
     public function EditJob(Request $request, $jobid){
 
         $job = Job::findOrFail($jobid);
-
+        $locations = locations();
         $qualifications = qualifications();
 
-        return view('job.edit', compact('qualifications', 'job'));
+        if($request->isMethod('post')){
+            $job->update($request->all());
+        
+            return redirect()->route('job-view', ['id' => $job->id, 'slug'=>str_slug($job->title)]);
+
+        }
+
+
+        return view('job.edit', compact('qualifications', 'job', 'locations'));
 
     }
 
@@ -370,6 +388,28 @@ class JobsController extends Controller
         echo true;
 
         //return view('job.board.ajax-header', compact('job'));
+    }
+
+    public function ReferJob(Request $request){
+        // dd($request->request);
+        if($request->isMethod('post')){
+
+            $to = explode(',', $request->to);
+            $job = Job::find($request->jobid);
+
+             $mail = Mail::queue('emails.cv-sales-invoice', ['job' => $job], function ($m) use($to) {
+                    $m->from('hello@app.com', 'Your Application');
+
+                    $m->to($to)->subject('Your Reminder!');
+            });
+
+             if($mail){
+                echo 'sent';
+             }else{
+                echo "error sending";
+             }
+
+        }
     }
 
 }

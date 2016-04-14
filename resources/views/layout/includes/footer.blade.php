@@ -64,7 +64,7 @@
        $('#price-total').html('<span class="animated zoomIn" style="display: inline-block; color:#333"><b>'+p_total+'</b></span>');
 
        if(p_total == 0){
-            $(".btn-cart-checkout").addClass("disabled");
+            // $(".btn-cart-checkout").addClass("disabled");
 
             return p_total;
         }
@@ -614,5 +614,20 @@
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('js/owl.carousel.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('js/select2.min.js') }}"></script>
+    
+    <script>
+    
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            defaultDate:'now',
+            autoclose: true
+        });
+
+          $('.select2').select2();
+
+
+    </script>
 
 

@@ -78,6 +78,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'jobs/post-a-job', ['uses' => 'JobsController@PostJob', 'as' => 'post-job']);
     Route::match(['get', 'post'], 'jobs/advertise-your-job/{jobID}', ['uses' => 'JobsController@Advertise', 'as' => 'advertise']);
     Route::match(['get', 'post'], 'jobs/share-your-job/{jobID}', ['uses' => 'JobsController@Share', 'as' => 'share-job']);
+    Route::match(['get', 'post'], 'jobs/add-candidates/{jobID}', ['uses' => 'JobsController@AddCandidates', 'as' => 'add-candidates']);
     
     Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
     Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}', ['uses' => 'JobsController@JobView', 'as' => 'job-view']);
@@ -89,6 +90,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'job/matching/{jobID}', ['uses' => 'JobsController@JobMatching', 'as' => 'job-matching']);
     
     Route::match(['get', 'post'], 'jobs/teamedit', ['uses' => 'JobsController@Ajax', 'as' => 'ajax-edit-team']);
+    
+    Route::match(['get', 'post'], 'job/import-cv-file', ['uses' => 'JobsController@UploadCVfile', 'as' => 'upload-file']);
 
     // Route::match(['get', 'post'], 'job/dashboard/{jobID}', ['uses' => 'JobsController@JobDashboard', 'as' => 'job-view']);
 
@@ -184,6 +187,10 @@ Route::group(['middleware' => 'web'], function () {
             return view('job.team');
         });
 
+        Route::get('applicant', function () {
+            return view('job.profile');
+        });
+
         Route::get('activities', function () {
             return view('job.activities');
         });
@@ -208,6 +215,10 @@ Route::group(['middleware' => 'web'], function () {
             return view('job.preview');
         });
 
+        Route::get('applied', function () {
+            return view('job.applied');
+        });
+
         Route::get('listing', function () {
             return view('job.listing');
         });
@@ -228,6 +239,43 @@ Route::group(['middleware' => 'web'], function () {
         });
 
     });
+
+
+
+
+    Route::get('/{c_url}', 'JobsController@company');
+
+    Route::get('/{c_url}/job/{job_id}', 'JobsController@JobView');
+    Route::get('/{c_url}/job/{job_id}/{job_slug}', 'JobsController@JobView');
+
+    /**
+     * Route Group for everything applicant
+     */ 
+
+    Route::group(['prefix'=>'applicant'], function(){
+
+        Route::get('profile', function () {
+            return view('applicant.profile');
+        });
+
+        Route::get('compose-mail', function () {
+            return view('applicant.compose-mail');
+        });
+
+        Route::get('view-mail', function () {
+            return view('applicant.view-mail');
+        });
+
+        Route::get('notes', function () {
+            return view('applicant.notes');
+        });
+
+        Route::get('b-check', function () {
+            return view('applicant.b-check');
+        });
+
+    });
+
 
     
 

@@ -34,7 +34,7 @@
                                         <li><a href="#">Rejected <span class="badge">3</span></a>
                                         </li>
                                     </ul><br>
-                                <small class="text-muted">Showing 12 of 234 apllicants</small>
+                                <small class="text-muted">Showing 12 of 234 Hired Candidates</small>
                                 </div>
 
                                <div class="col-xs-2">

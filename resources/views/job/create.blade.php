@@ -161,7 +161,7 @@
                                             <a href="job.php" target="_blank" type="submit" class="btn btn-line"><i class="fa fa-save"></i> Save as draft</a>
                                         </div>
                                         <div class="col-sm-4">
-                                            <a href="job.php" target="_blank" type="submit" class="btn pull-right">Preview Job</a>
+                                            <!-- <a href="job.php" target="_blank" type="submit" class="btn pull-right">Preview Job</a> -->
                                         </div>
 
                                         <div class="col-sm-4">

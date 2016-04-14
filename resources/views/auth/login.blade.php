@@ -57,7 +57,7 @@
                                 </div>
 
                                 <div class="col-sm-6"><br>
-                                    <p class="small text-left"><a href="">:( I can't remember my password!</a></p>
+                                    <p class="small text-left"><a href="{{ url('password/reset') }}">:( I can't remember my password!</a></p>
                                 </div>
 
                                 <div class="col-sm-6"><br>

@@ -15,6 +15,7 @@
 
 {{  Session::put('url.intended', url()->full() ) }}
 
+
             <div class="row">
                 <div class="col-md-6 hidden-sm hidden-xs">
                     

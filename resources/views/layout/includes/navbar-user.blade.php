@@ -30,10 +30,15 @@
                         <a class="" href="{{ url('my-jobs') }}">My Jobs <i class="fa fa-briefcase mask"></i></a>
 
                     </li>
+                    <?php //dd(Auth::user()->companies[0]) ?>
+
+                    <li class="">
+                        <a class="" href="{{ url(Auth::user()->companies[0]->slug) }}" target="_blank" >My Career Page <i class="fa fa-building mask"></i></a>
+                    </li>
 
 
                     <li class="">
-                        <a class="" href="{{ url('jobs/listing') }}">My Company <i class="fa fa-building mask"></i></a>
+                        <a class="" href="{{ url('jobs/listing') }}">Mail <span class="badge badge-danger animated bounce">3</span></a>
                     </li>
 
                 </ul>

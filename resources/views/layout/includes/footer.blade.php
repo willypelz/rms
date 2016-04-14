@@ -178,6 +178,21 @@
 
     });
 
+    $("#owl-posts2").owlCarousel({
+          navigation: true,
+          items: 3,
+          responsive: false,
+          scrollPerPage: false,
+          pagination: true,
+          autoPlay: false,
+          // rewindNav: false,
+          navigationText: [
+            "<span class='fa fa-chevron-left'></span>",
+            "<span class='fa fa-chevron-right'></span>"
+          ],
+
+    });
+
 });
 </script>
 
@@ -280,7 +295,7 @@
                                 
                                     <form role="form" id="AjaxLogin" class="form-signin" method="POST" action="{{ route('ajax_login') }}">
                             {!! csrf_field() !!}
-                            
+
 
                             <div class="row">
                             <div class="col-sm-12">
@@ -319,7 +334,7 @@
                                 <div class="col-xs-12"><hr></div>
 
                                 <div class="col-sm-6">
-                                    <p class="text-center"><a href="">I can't remember my password!</a></p>
+                                    <p class="text-center"><a href="{{ url('password/reset') }}">I can't remember my password!</a></p>
                                 </div>
 
                                 <div class="col-sm-6">

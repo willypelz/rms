@@ -301,6 +301,10 @@ class CvSalesController extends Controller
             'message'=>$request->message
         ]);
 
+        if ($request->message == 'Transaction Successful') {
+            Cart::destroy();
+        }
+
         return $transaction;
     }
 

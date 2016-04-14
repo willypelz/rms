@@ -103,7 +103,7 @@
                                                     <input type="text" name="expiry_date" class="datepicker form-control"  value="{{ $job->expiry_date }}">
                                             </div>
 
-                                            <input type="hidden" name="status" value="PENDING">
+                                            <input type="hidden" name="status" value="ACTIVE">
                                         </div>
                                     </div>
 

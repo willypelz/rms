@@ -403,10 +403,12 @@ class JobsController extends Controller
     public function JobStatus(Request $request){
 
         $job = Job::find($request->job_id);
-
-        echo true;
-
-        //return view('job.board.ajax-header', compact('job'));
+       
+        $res = Job::where('id', $request->job_id)
+                ->update(['status' => $request->status]);
+                
+        if($res)
+            echo true;
     }
 
     public function ReferJob(Request $request){

@@ -169,76 +169,63 @@
 
                 <div class="col-xs-8">
                     <ul class="nav nav-tabs ">
-                        <li class="active"><a>Resume (CV)</a>
+                        <li><a href="profile">Resume (CV)</a>
                         </li>
-                        <li><a href="">Message</a>
+                        <li class="active"><a href="#">Message</a>
                         </li>
-                        <li><a href="">Activities</a>
+                        <li><a href="">Background Checks</a>
                         </li>
-                        <li><a href="">Dialogues</a>
+                        <li><a href="notes">Interview Notes</a>
                         </li>
-                        <li class=""><a href="">Send Message</a>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" type="button" id="dropOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">More &nbsp; <i class="fa fa-caret-down"></i></a>
+                              <ul class="dropdown-menu" aria-labelledby="dropOptions">
+                                <li><a href="#">Medicals</a></li>
+                                <li><a href="#">Assessments</a></li>
+                              </ul>
                         </li>
-                        <!--<li class="pull-right">-->
-                            <!--<span class="adj-pad">-->
-                            <!--<a href="" class="pull-left"><i class="glyphicon glyphicon-circle-arrow-left"></i> Previous</a>-->
-                            <!--<a href="" class="pull-right">Next <i class="glyphicon glyphicon-circle-arrow-right"></i></a>-->
-                            <!--</span>-->
-                        <!--</li>-->
                     </ul>
 
                     <div class="tab-content" id="">
 
-
-                        <div class="unit-box">
-                            <div class="row">
-                                <div class="col-xs-1 r-left">
-                                    <span class="fa fa-user"></span>
+                              <div class="row">
+                                <div class="col-xs-12">
+                                  <a href="compose-mail" class="btn btn-success">Mail Applicant</a>
+                                  <a href="view-mail" class="btn btn-line pull-right">View Conversations</a>
                                 </div>
-                                <div class="col-xs-11">
-                                    <h5>PERSONAL INFO</h5>
-                                    <p class="text-muted">Medical Doctor, Entrepreneur, Passionate about change and excellence</p>
-                                    <ul class="list-unstyled">
-                                        <li>
-                                            <strong>Sex:</strong>&nbsp; Male</li>
-                                        <li>
-                                            <strong>Email:</strong>&nbsp; emmanuel@insidify.com</li>
-                                        <li>
-                                            <strong>Phone:</strong>&nbsp; 08068873719</li>
-                                        <li>
-                                            <strong>Age:</strong>&nbsp; 27 years old
-                                            <span class="text-muted">(Oct 01, 1987)</span>
-                                        </li>
-                                        <li>
-                                            <strong>Address:</strong>&nbsp; Magodo GRA, Lagos.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                              </div>
 
-                        <div class="unit-box">
-                            <div class="row">
-                                <div class="col-xs-1 r-left">
-                                    <span class="fa fa-pencil-square-o"></span>
-                                </div>
-                                <div class="col-xs-11">
-                                    <h5>Cover Letter</h5>
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis enim eligendi laudantium magni dolorem repellendus, est hic modi, ipsa accusantium a quaerat sapiente! Quis impedit iure delectus, dolorem quod repudiandae!</p>
+                                <div class="message-content">
 
-                                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis enim eligendi laudantium magni dolorem repellendus, est hic modi, ipsa accusantium a quaerat sapiente! Quis impedit iure delectus, dolorem quod repudiandae!</p>
-                                </div>
-                            </div>
-                        </div>
+                                    <form class="form-horizontal" role="form">
+                                        <div class="form-group">
+                                            <label for="recipient" class="col-xs-2 control-label">To:</label>
+                                            <div class="col-xs-10">
+                                                <input type="email" class="form-control" id="recipient" placeholder="Enter recipient's name" value="mofesolababalola@mettalloids.com " disabled="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="subj" class="col-xs-2 control-label">Subject:</label>
+                                            <div class="col-xs-10">
+                                                <input type="text" class="form-control" id="subj" placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="msg" class="col-xs-2 control-label">Message:</label>
+                                            <div class="col-xs-10">
+                                                <textarea class="form-control" id="msg" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-xs-offset-2 col-xs-10">
+                                                <button type="submit" class="btn btn-success">Send Message</button>
+                                            </div>
+                                        </div>
+                                    </form>
 
-                        <div class="row">
-                        <div class="col-xs-1 r-left">
-                          <span class="fa fa-file-text-o"></span>
-                        </div>
-                          <div class="col-xs-11">
-                            <h5>Curriculum Vitae</h5>
-                            <iframe class="iframe-cv" width="100%" src="" frameborder="0"></iframe>
-                          </div>
-                        </div>
+                                </div>
+
+                        
 
                     </div>
                     <!--/tab-content-->

@@ -185,7 +185,7 @@ Route::group(['middleware' => 'web'], function () {
         });
 
         Route::get('applicant', function () {
-            return view('job.applicant');
+            return view('job.profile');
         });
 
         Route::get('activities', function () {
@@ -233,6 +233,34 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::get('activities', function () {
             return view('job.activities');
+        });
+
+    });
+
+    /**
+     * Route Group for everything applicant
+     */ 
+
+    Route::group(['prefix'=>'applicant'], function(){
+
+        Route::get('profile', function () {
+            return view('applicant.profile');
+        });
+
+        Route::get('compose-mail', function () {
+            return view('applicant.compose-mail');
+        });
+
+        Route::get('view-mail', function () {
+            return view('applicant.view-mail');
+        });
+
+        Route::get('notes', function () {
+            return view('applicant.notes');
+        });
+
+        Route::get('b-check', function () {
+            return view('applicant.b-check');
         });
 
     });

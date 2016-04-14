@@ -36,6 +36,11 @@
                         <a class="" href="{{ url('jobs/listing') }}">My Company <i class="fa fa-building mask"></i></a>
                     </li>
 
+
+                    <li class="">
+                        <a class="" href="{{ url('jobs/listing') }}">Mail <span class="badge badge-danger animated bounce">3</span></a>
+                    </li>
+
                 </ul>
 
                     <ul class="nav navbar-nav navbar-right">

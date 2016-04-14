@@ -169,22 +169,21 @@
 
                 <div class="col-xs-8">
                     <ul class="nav nav-tabs ">
-                        <li class="active"><a>Resume (CV)</a>
+                        <li class="active"><a href="profile">Resume (CV)</a>
                         </li>
-                        <li><a href="">Message</a>
+                        <li><a href="compose-mail">Message</a>
                         </li>
-                        <li><a href="">Activities</a>
+                        <li><a href="">Background Checks</a>
                         </li>
-                        <li><a href="">Dialogues</a>
+                        <li><a href="notes">Interview Notes</a>
                         </li>
-                        <li class=""><a href="">Send Message</a>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" type="button" id="dropOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">More &nbsp; <i class="fa fa-caret-down"></i></a>
+                              <ul class="dropdown-menu" aria-labelledby="dropOptions">
+                                <li><a href="#">Medicals</a></li>
+                                <li><a href="#">Assessments</a></li>
+                              </ul>
                         </li>
-                        <!--<li class="pull-right">-->
-                            <!--<span class="adj-pad">-->
-                            <!--<a href="" class="pull-left"><i class="glyphicon glyphicon-circle-arrow-left"></i> Previous</a>-->
-                            <!--<a href="" class="pull-right">Next <i class="glyphicon glyphicon-circle-arrow-right"></i></a>-->
-                            <!--</span>-->
-                        <!--</li>-->
                     </ul>
 
                     <div class="tab-content" id="">

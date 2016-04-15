@@ -119,5 +119,10 @@ class JobApplicationsController extends Controller
         
     }
 
+    public function massAction( Request $request )
+    {
+        JobApplication::massAction( $request->job_id, $request->cv_ids, $request->status );
+    }
+
 
 }

@@ -3,7 +3,7 @@
   @foreach( @$result['response']['docs'] as $cv )
   
   <hr>
-  <div class="comment media">
+  <div class="comment media" data-cv="{{ $cv['id'] }}">
       <span class="col-md-2 col-sm-3">
         <a href="{{ route('applicant-profile', $cv['id'] ) }}"  class="pull-left">
             <img alt="" src="{{ default_picture( $cv ) }}" class="media-object " width="100%">

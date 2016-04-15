@@ -44,17 +44,13 @@
 
                                 <div id="h_act-on" class="col-xs-12 collapse app-action">
                                     <div>
-                                        <div class="btn-group select-action">
-                                            <button class="btn btn-default status-1" type="button">Reject All</button>
-                                            <button class="btn btn-default status-1" type="button">Message All</button>
-                                            <button class="btn btn-default status-1" type="button">Assess All</button>
+                                        <div class="btn-group select-action" id="mass-action">
+                                            <button class="btn btn-default status-1" type="button" data-action="REJECTED">Reject All</button>
+                                            <!-- <button class="btn btn-default status-1" type="button" data-action="REJECT">Message All</button> -->
+                                            <button class="btn btn-default status-1" type="button" data-action="ASSESSED">Assess All</button>
+                                            <button class="btn btn-default status-1" type="button" data-action="SHORTLISTED">Shortlist All</button>
                                         </div>
                                         
-                                        <div class="btn-group select-action">
-                                            <button class="btn btn-default status-1" type="button">Mark as Reviewed</button>
-                                            <button class="btn btn-default status-1" type="button">Mark as Interviewed</button>
-                                            <button class="btn btn-default status-1" type="button">Mark as Hired</button>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -346,6 +342,39 @@
             {
                 $('.search-results .media-body input[type=checkbox]').prop('checked', false);
             }
+        });
+
+        $('#mass-action button').on('click',function(){
+            // cvs = $('.search-results .comment.media').prop('data-cv');
+            $field = $(this);
+            var cv_ids =$(".search-results .comment.media").map(function(i,v){
+
+                       return $(this).data("cv");
+
+                    }).get();
+
+            $.post("{{ route('mass-action') }}", {job_id: '{{ $jobID }}',cv_ids :  cv_ids,status: $field.data('action') },function(data){
+                    // if(data == true)
+                    // {
+                    //   // $field.val("").hide();
+                    //   $(this).getMyFolders();
+                    //   $('#newFolder #message').html('<div class="alert alert-success">Folder added successfully</div>');
+                    //   $('#newFolder').modal('toggle');
+                      
+                    // }
+
+                    // else
+                    // {
+                    //   $field.val("").hide();
+                    //   // $field.after('<p>'+ data +'</p>');
+                    //   $('#loginModal #mssg').text(data);
+                    //   $('.signin').trigger('click');
+                    // }
+                    
+                    $('#status_filters a[data-value="' + $field.data('action') + '"]').trigger('click');
+                });
+
+            console.log(cvs);
         });
 
     });

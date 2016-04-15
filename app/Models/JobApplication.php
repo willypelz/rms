@@ -10,7 +10,7 @@ class JobApplication extends Model
 
     public $guarded = [];
 
-    public $timestamps = true;
+    public $timestamps = false;
 
     public function job()
     {
@@ -20,5 +20,12 @@ class JobApplication extends Model
     public function cv()
     {
         return $this->belongsTo('App\Models\Cv', 'cv_id');
+    }
+
+    public static function massAction($job_id, $cv_ids, $status)
+    {
+        return JobApplication::where('job_id',$job_id)
+                                ->whereIn('cv_id',$cv_ids)
+                                ->update( ['status'=>$status] );
     }
 }

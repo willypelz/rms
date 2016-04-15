@@ -41,19 +41,16 @@ class CreateJobActivitiesTable extends Migration
             $table->dropColumn('job_category_id');
             $table->dropColumn('job_url');
             $table->dropColumn('address');
-            $table->dropColumn('post_date');
-            $table->dropColumn('expiry_date');
             $table->dropColumn('skill');
             $table->dropColumn('hiring_progress_id');
             $table->dropColumn('company');
             $table->dropColumn('published');
-            $table->dropColumn('status');
             $table->dropColumn('approved');
             $table->dropColumn('verified');
 
-            $table->string('status');
-            $table->date('post_date');
-            $table->date('expir_date');
+            $table->string('status')->change();
+            $table->date('post_date')->change();
+            $table->date('expiry_date')->change();
 
         });
     }

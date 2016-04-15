@@ -19,8 +19,8 @@
                                 <div class="col-xs-6">
 
                                     <strong>Invoiced To</strong><br>
-                                    bunmifamiloni<br>familoni oluwatayo<br>
-                                    mayfair, ile ife, Osun, 234, Nigeria
+                                    {{ $company->name }},<br>{{$company->phone}}<br>
+                                    {{ $company->address }}
 
                                 </div>
                                 <div class="col-xs-6">
@@ -217,10 +217,9 @@
 
                                 <div class="col-xs-6">
 
-                                    <strong>Invoiced To</strong><br>
-                                    bunmifamiloni<br>familoni oluwatayo<br>
-                                    mayfair, ile ife, Osun, 234, Nigeria
-
+                                     <strong>Invoiced To</strong><br>
+                                    {{ $company->name }},<br>{{$company->phone}},<br>
+                                    {{ $company->address }}
                                 </div>
                                 <div class="col-xs-6">
 
@@ -244,8 +243,7 @@
                         <br>
                         <div class="">
                             <span class="title">Invoice #80186</span><br>
-                            Invoice Date: 11/09/2015<br>
-                            Due Date: 25/09/2015
+                            Invoice Date: <?php echo date('Y-m-d') ?><br>
                         </div>
 
                             <br>
@@ -260,17 +258,17 @@
                             
                             @foreach($items as $item)
                                 <tr>
-                                    <td>{{ $item->name }} (25/09/2015 - 24/09/2016) *</td>
+                                    <td>{{ $item->name }}  *</td>
                                     <td class="textcenter">N500.00</td>
                                 </tr>
                              @endforeach   
                                 <tr class="title">
                                     <td class="text-right">Sub Total:</td>
-                                    <td class="textcenter">N5,338.88</td>
+                                    <td class="textcenter">N{{ $total_amount }}</td>
                                 </tr>
                                     <tr class="title">
                                     <td class="text-right">5.00% VAT:</td>
-                                    <td class="textcenter">N257.14</td>
+                                    <td class="textcenter"><?php echo ((5/100) * 100) ?></td>
                                 </tr>
                                         <tr class="title">
                                     <td class="text-right">Credit:</td>
@@ -278,7 +276,7 @@
                                 </tr>
                                 <tr class="title">
                                     <td class="text-right">Total:</td>
-                                    <td class="textcenter">N5,596.02</td>
+                                    <td class="textcenter">N{{ $total_amount }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -290,7 +288,7 @@
                         <div class="col-sm-12">
                             <form action="{{ route('payment') }}" method="post">
                                 Bank Transfer/Deposit: <input type="radio" name="payment_option" value="bank" required><br>
-                                Pay Online via Paystack: <input type="radio" name="payment_option" value="paystack"><br>
+                                Pay Online via SimplePay: <input type="radio" name="payment_option" value="paystack"><br>
                                     <input type="hidden" name="order_id" value="{{ $order_id }}">
                                     <input type="hidden" name="amount" value="{{ $total_amount }}">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">

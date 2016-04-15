@@ -1,6 +1,5 @@
- <section class="no-pad" >
-    <div class="container" >
-        <section class="job-head blue" id="jobHead">
+
+<section class="job-head blue" id="jobHead">
             <div class="" >
                 <div class="row">
                 
@@ -26,18 +25,11 @@
                                 <strong>&nbsp;Expires:</strong>&nbsp; 21 Jun, 2014</li>
                         </ul>
                         
-                        
-
-
-
-                        @if($job['status'] == 'ACTIVE')
-                        <div id="status-box" class="label label-success" style="">Job is active</div>
-                        @elseif($job['status'] == 'DRAFT')
-                        <div id="status-box"  class="label label-warning" style="">Job is in Draft</div> 
-                        @elseif($job['status'] == 'SUSPENDED')
-                        <div id="status-box"  class="label label-danger" style="">Job is suspended</div> 
-                        @else
-                        <div id="status-box" class="label label-danger" style="">Job has expired</div> <!-- <small>To change</small> -->
+                        @if($job['published'] == 1)
+                        <div class="label label-success" style="">Job is active</div>
+                        @else 
+                        <div class="label label-warning" style="">Job is warning</div> 
+                        <div class="label label-danger" style="">Job is in danger</div> <!-- <small>To change</small> -->
                         @endif
                         <!-- <div class="badge badge-job badge-job-active">
                             <small class="">
@@ -73,17 +65,11 @@
                                 <a href="{{ route('edit-job', [$job['id']] ) }}" type="button" class="btn-sm btn btn-info status"><i class="fa fa-pencil"></i> &nbsp; Edit Details</a>
                             </div>
                             <div class="btn-group" role="group">
-                                
-                                @if($job['status'] == 'ACTIVE')
-                                    <a href="" id="statusBtn"  type="button" class="btn-sm btn btn-danger status" onclick="UnPublish(1); return false;" ><i class="fa fa-ban"></i> &nbsp; Unpublish Job</a>
-                                @elseif($job['status'] == 'DRAFT')
-                                    <a href="" id="statusBtn" type="button" class="btn-sm btn btn-success status" onclick="Publish(2); return false;" ><i class="fa fa-ban"></i> &nbsp; Publish Job</a>
-                                @elseif($job['status'] == 'SUSPENDED')
-                                    <a href="" id="statusBtn" type="button" class="btn-sm btn btn-success status" onclick="Publish(2); return false;" ><i class="fa fa-ban"></i> &nbsp; Publish Job</a>
+                                @if($job['published'] == 1)
+                                    <a href="" id="statusBtn"  type="button" class="btn-sm btn btn-danger status" onclick="Publish(1); return false;" ><i class="fa fa-ban"></i> &nbsp; Unpublish Job</a>
                                 @else
-                                    <a disabled href="" id="statusBtn"  type="button" class="btn-sm btn btn-danger status" onclick="UnPublish(1); return false;" ><i class="fa fa-ban"></i> &nbsp; Unpublish Job</a>
+                                    <a href="" id="statusBtn" type="button" class="btn-sm btn btn-danger status" onclick="Publish(2); return false;" ><i class="fa fa-ban"></i> &nbsp; Publish Job</a>
                                 @endif
-
                             </div>
                         </div>
                 
@@ -91,57 +77,7 @@
                     </div>
                 
                 
-                    </div>
-                </div>
-            </section>
-
-
-
-<script>
-
-    function Publish(id){
-        console.log(id)
-        $('#statusBtn').text('Please wait... ')
-
-        var url = "{{ route('job-status') }}"
-
-        $.ajax
-            ({
-                type: "POST",
-                url: url,
-                data: ({ rnd : Math.random() * 100000,  job_id:"{{ $job['id'] }}" , status:'ACTIVE'}),
-                success: function(response){
-                     // $('#statusBtn').hide()
-                     $('#statusBtn').text('Un Publish').attr('onclick', 'UnPublish(1); return false')
-                     $('#status-box').text('Job is active').removeClass('label-danger').addClass('label-success')
-
-                }
-            });
-
-    }
-
-    function UnPublish(id){
-        $('#statusBtn').text('Please wait... ')
-
-        console.log('unpublish')
-
-        var url = "{{ route('job-status') }}"
-
-        $.ajax
-            ({
-                type: "POST",
-                url: url,
-                data: ({ rnd : Math.random() * 100000,  job_id:"{{ $job['id'] }}", status:'SUSPENDED'}),
-                success: function(response){
-                    
-                     $('#statusBtn').text('Publish').attr('onclick', 'Publish(1); return false')
-                     $('#status-box').text('Job is suspended').removeClass('label-success').addClass('label-danger')
-
-                }
-        });
-
-    }
-    
-</script>
-
+                        </div>
+            </div>
+</section>
 

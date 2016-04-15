@@ -193,6 +193,9 @@ class CvSalesController extends Controller
     public function Ajax_checkout(Request $request){
 
         $user = Auth::user();
+
+        // $company = Auth::user()->companies[0];
+
         if(empty($user)){
             $view = view('auth.ajax_login');
             return $view;
@@ -229,7 +232,7 @@ class CvSalesController extends Controller
 
                 $order_id = $order->id;
                 $jobBoards = 'JOB Boards';
-                $view = view('cv-sales.checkout_ajax', compact('items', 'order_id', 'total_amount', 'jobBoards'));
+                $view = view('cv-sales.checkout_ajax', compact('items', 'order_id', 'total_amount', 'jobBoards', 'company'));
                 return $view;
             }
 
@@ -265,12 +268,15 @@ class CvSalesController extends Controller
            //      $m->to('lanaayodele@gmail.com', 'Ayo')->subject('Your Reminder!');
            //  });
            
-            $view = view('cv-sales.checkout_ajax', compact('items', 'order_id', 'total_amount'));
+            $view = view('cv-sales.checkout_ajax', compact('items', 'order_id', 'total_amount', 'company'));
             return $view;
         }
     }
 
     public function Payment(Request $request, $type = null){
+
+        $company = Auth::user()->companies[0];
+
 
         if($type != null){
 
@@ -281,14 +287,14 @@ class CvSalesController extends Controller
             $jobBoards = 'JOB Boards';
             $type= 'bank';
 
-            return view('cv-sales.pay', compact('type', 'items', 'order_id', 'total_amount', 'jobBoards'));
+            return view('cv-sales.pay', compact('type', 'items', 'order_id', 'total_amount', 'jobBoards', 'company', 'total_amount'));
 
         }else{
             $items = Cart::content();
             $type = ($request->payment_option);
             $order_id = $request->order_id;
             $total_amount = $request->amount.'00';
-            return view('cv-sales.pay', compact('type', 'items', 'order_id', 'total_amount'));
+            return view('cv-sales.pay', compact('type', 'items', 'order_id', 'total_amount', 'company', 'total_amount'));
         }        
     }
     

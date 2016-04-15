@@ -2,7 +2,9 @@
 
 @section('content')
     <section class="no-pad white no-margin"><br>
-          <h4 class="text-center">Applicants for: <a href="">Frontend Developer at Konga.com, Yaba, Montgomery Rd, Lagos</a></h4><br></section>
+          <h4 class="text-center">Applicants for: <a href="{{ url('job/activities/'.$appl->job->id  ) }}" target="_blank">{{ $appl->job->title }}</a></h4>
+          <br>
+    </section>
     <section class="no-pad applicant">
         <div class="container">
         <div class="row">

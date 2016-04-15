@@ -91,7 +91,7 @@ Route::group(['middleware' => 'web'], function () {
     
     Route::match(['get', 'post'], 'job/dashboard/{jobID}', ['uses' => 'JobsController@JobBoard', 'as' => 'job-board']);
     Route::match(['get', 'post'], 'job/activities/{jobID}', ['uses' => 'JobsController@JobActivities', 'as' => 'job-activities']);
-    Route::match(['get', 'post'], 'job/candidates/{jobID}', ['uses' => 'JobsController@JobCandidates', 'as' => 'job-candidates']);
+    
     Route::match(['get', 'post'], 'job/team/{jobID}', ['uses' => 'JobsController@JobTeam', 'as' => 'job-team']);
     Route::match(['get', 'post'], 'job/matching/{jobID}', ['uses' => 'JobsController@JobMatching', 'as' => 'job-matching']);
     
@@ -104,6 +104,10 @@ Route::group(['middleware' => 'web'], function () {
 	//     return view('auth.login');
 	// });
 
+
+    Route::match(['get', 'post'], 'job/candidates/{jobID}', ['uses' => 'JobApplicationsController@viewApplicants', 'as' => 'job-candidates']);
+
+    
     Route::get('boss', function () {
         return view('cv-sales.tobi');
     });
@@ -247,10 +251,15 @@ Route::group(['middleware' => 'web'], function () {
 
 
 
-    Route::get('/{c_url}', 'JobsController@company');
+    Route::get('/my-career-page', 'JobsController@MyCompany');
 
     // Route::get('/{c_url}/job/{job_id}', 'JobsController@JobView');
     Route::get('/{c_url}/job/{job_id}/{job_slug}', 'JobsController@JobView');
+
+    Route::get('/{c_url}', 'JobsController@company');
+
+    
+
 
     /**
      * Route Group for everything applicant
@@ -258,16 +267,22 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::group(['prefix'=>'applicant'], function(){
 
+        Route::get('profile/{appl_id}', ['uses' => 'JobApplicationsController@Profile', 'as' => 'applicant-profile']);
+        Route::get('messages/{appl_id}', ['uses' => 'JobApplicationsController@Messages', 'as' => 'applicant-messages']);
+
+
         Route::get('profile', function () {
             return view('applicant.profile');
         });
+
+
 
         Route::get('compose-mail', function () {
             return view('applicant.compose-mail');
         });
 
         Route::get('view-mail', function () {
-            return view('applicant.view-mail');
+            return view('applicant.messages');
         });
 
         Route::get('notes', function () {

@@ -24,9 +24,11 @@ class JobApplicationsController extends Controller
 
     	$appl = JobApplication::with('job', 'cv')->find($appl_id);
 
+    	$nav_type = 'profile';
+
     	// dd($appl->toArray());
 
-    	return view('applicant.profile', compact('appl'));
+    	return view('applicant.profile', compact('appl', 'nav_type'));
 
     }
 
@@ -35,9 +37,11 @@ class JobApplicationsController extends Controller
 
     	$appl = JobApplication::with('job', 'cv')->find($appl_id);
 
+    	$nav_type = 'profile';
+
     	// dd($appl->toArray());
 
-    	return view('applicant.messages', compact('appl'));
+    	return view('applicant.messages', compact('appl', 'nav_type'));
 
     }
 

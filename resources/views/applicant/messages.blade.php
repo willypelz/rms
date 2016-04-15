@@ -42,8 +42,8 @@
                                       <div class="msg-box">
                                           <div class="date">{{ date('M d, Y') }}</div>
                                           <div class="">
-                                              <h5>{{ $appl->cv->first_name.' '.$appl->cv->last_name }}<em>($appl->cv->tagline)</em></h5>
-                                              <p>$appl->cover_note</p>
+                                              <h5>{{ $appl->cv->first_name.' '.$appl->cv->last_name }} <em>({{ $appl->cv->tagline }})</em></h5>
+                                              <p>{{ $appl->cover_note }}</p>
                                           </div>
                                       </div>
                                   

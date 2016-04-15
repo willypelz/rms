@@ -1,7 +1,7 @@
 <ul class="nav nav-tabs ">
-    <li class="active"><a href="{{ route('applicant-profile',  $appl->id) }}">Resume (CV)</a>
+    <li  @if($nav_type=='profile')class="active"@endif ><a href="{{ route('applicant-profile',  $appl->id) }}">Resume (CV)</a>
     </li>
-    <li><a href="{{ route('applicant-messages',  $appl->id) }}">Message</a>
+    <li  @if($nav_type=='message')class="active"@endif ><a href="{{ route('applicant-messages',  $appl->id) }}">Message</a>
     </li>
     <li><a href="">Background Checks</a>
     </li>

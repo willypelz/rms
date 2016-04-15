@@ -1,9 +1,14 @@
 @extends('layout.template-user')
 
 @section('content')
+
+    @include('applicant.includes.job-title-bar')
+
     <section class="applicant">
         <div class="container">
 
+          @include('applicant.includes.pagination')
+          
             <div class="row">
             <div class="col-xs-4">
                 @include('applicant.includes.badge')
@@ -62,18 +67,7 @@
 
             </div>
 
-        <div class="row">
-          <div class="col-xs-12"><hr>
-            <h5 class="text-brandon text-center">
-              <a href="#" class="pull-left text-muted"><i class="fa fa-arrow-left"></i> &nbsp; Prev</a>
-              1 of 20
-              <a href="" class="pull-right">Next &nbsp; <i class="fa fa-arrow-right"></i></a>
-            </h5><hr>
-          </div>
-          <div class="col-xs-12">
-            <div class="separator separator-small"></div>
-          </div>
-        </div>
+       @include('applicant.includes.pagination')
 
         </div>
     </section>

@@ -84,7 +84,7 @@ class JobApplicationsController extends Controller
 
     	$appl = JobApplication::with('job', 'cv')->find($appl_id);
 
-    	$nav_type = 'profile';
+    	$nav_type = 'messages';
 
     	// dd($appl->toArray());
 

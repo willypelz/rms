@@ -192,7 +192,7 @@ class JobsController extends Controller
         $active = 0;
         $suspended = 0;
         foreach($jobs as $job){
-            if ($job->published == 1) {
+            if ($job->status == 'ACTIVE') {
                 $active++;
             }else{
                 $suspended++;
@@ -362,7 +362,7 @@ class JobsController extends Controller
     public function company($c_url){
 
         $company = Company::with(['jobs'=>function($query){
-                                        $query->where('published', 1);
+                                        $query->where('status', "ACTIVE")->where('expiry_date','>',date('Y-m-d'));
                                     }])->where('slug', $c_url)->first();
 
 

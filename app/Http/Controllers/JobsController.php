@@ -6,6 +6,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Models\JobBoard;
 use App\Models\Job;
+use App\Models\Cv;
 use App\Models\JobApplication;
 use App\Models\Company;
 use App\User;
@@ -14,6 +15,7 @@ use Cart;
 use Session;
 use Auth;
 use Mail;
+use Curl;
 
 class JobsController extends Controller
 {
@@ -169,18 +171,7 @@ class JobsController extends Controller
     }
 
 
-    public function JobView($company_slug, $jobid, $job_slug, Request $request)
-    {
-        $company = Company::where('slug', $company_slug)->first();
-        $job = Job::where('id', $jobid)->where("company_id",$company->id)->first();
-
-        if(empty($job)){
-            // redirect to 404 page
-        }
-
-
-        return view('job.job-details', compact('job', 'company'));
-    }
+    
     
     public function JobList(Request $request){
 
@@ -250,9 +241,33 @@ class JobsController extends Controller
         
     }
 
+    public function JobView($company_slug, $jobid, $job_slug, Request $request)
+    {
+        $company = Company::where('slug', $company_slug)->first();
+        $job = Job::where('id', $jobid)->where("company_id",$company->id)->first();
+
+        if(empty($job)){
+            // redirect to 404 page
+        }
+
+        //increment job views
+
+
+        return view('job.job-details', compact('job', 'company'));
+    }
+
+
+
     public function jobApply($jobID, $slug, Request $request){
 
-        $job = Job::where('id', $jobID)->first();
+        $job = Job::with('company')->where('id', $jobID)->first();
+        $company = $job->company;
+        
+
+        if(empty($job)){
+            // redirect to 404 page
+        }
+
 
         $qualifications = [
 
@@ -317,20 +332,15 @@ class JobsController extends Controller
 
             if ($request->hasFile('cv_file')) {
 
-                $filename = str_slug($request->email).'_'.$request->file('cv_file')->getClientOriginalName();
-                $destinationPath = env('UPLOAD_PATH');
+                $filename = time().'_'.str_slug($request->email).'_'.$request->file('cv_file')->getClientOriginalName();
+                $destinationPath = env('fileupload').'/CVs';
+                // dd($destinationPath);
                 $request->file('cv_file')->move($destinationPath, $filename);
 
                 $data['cv_file'] = $filename;
 
                 // dd($data);
-            }    
-
-
-
-            
-            $data['job_id'] = $job->id;
-            unset($data['_token']);
+            }   
 
             $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
 
@@ -339,14 +349,41 @@ class JobsController extends Controller
 
             $data['state_of_origin'] = $states[$data['state_of_origin']];
             $data['location'] = $states[$data['location']];
-            $data['created_at'] = date('Y-m-d H:i:s');
-            $data['updated_at'] = date('Y-m-d H:i:s');
+            $data['created'] = date('Y-m-d H:i:s');
+            $data['action_date'] = date('Y-m-d H:i:s');
 
-            // dd($data);
 
-            JobApplication::insert($data);
 
-            // return redirect('/applied/'.$slug);
+            //saving cv...  
+            $cv = new Cv;
+            $cv->first_name = $data['first_name'];
+            $cv->last_name = $data['last_name'];
+            $cv->headline = $data['cover_note'];
+            $cv->email = $data['email'];
+            $cv->phone = $data['phone'];
+            $cv->gender = $data['gender'];
+            $cv->date_of_birth = $data['date_of_birth'];
+            $cv->marital_status = $data['marital_status'];
+            $cv->state = $data['location'];
+            $cv->highest_qualification = $data['highest_qualification'];
+            $cv->last_position = $data['last_position'];
+            $cv->last_company_worked = $data['last_company_worked'];
+            $cv->years_of_experience = $data['years_of_experience'];
+            $cv->willing_to_relocate = $data['willing_to_relocate'];
+            $cv->cv_file = $data['cv_file'];
+            $cv->save();
+
+            //saving job application...
+            $appl = new JobApplication;
+            $appl->cover_note = $data['cover_note'];
+            $appl->cv_id = $cv->id;
+            $appl->job_id = $job->id;
+            $appl->status = 'PENDING';
+            $appl->created = $data['created'];
+            $appl->action_date = $data['action_date'];
+            $appl->save();
+            
+            return redirect('jobs/applied/'.$jobID.'/'.$slug);
             // dd($request->all());
 
 
@@ -354,7 +391,28 @@ class JobsController extends Controller
         }
 
         
-        return view('job.job-apply', compact('job', 'qualifications', 'states'));
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company'));
+
+    }
+
+    public function JobApplied($jobID, $job_slug, Request $request)
+    {
+        $job = Job::with('company')->where('id', $jobID)->first();
+        $company = $job->company;
+        
+
+        if(empty($job)){
+            // redirect to 404 page
+        }
+
+        $response = Curl::to('https://api.insidify.com/articles/get-posts')
+                                ->withData(array('limit'=>6))
+                                ->post();
+
+        $posts = json_decode($response)->data->posts;
+
+
+        return view('job.applied', compact('job', 'company', 'posts'));
 
     }
 

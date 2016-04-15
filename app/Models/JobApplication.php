@@ -10,7 +10,7 @@ class JobApplication extends Model
 
     public $guarded = [];
 
-    public $timestamps = true;
+    public $timestamps = false;
 
     public function job()
     {

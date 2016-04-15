@@ -27,4 +27,9 @@ class Job extends Model
         return $this->belongsToMany('App\Models\JobBoard', 'jobs_job_boards');
     }
 
+    public function company()
+    {
+        return $this->belongsTo('App\Models\Company', 'company_id');
+    }
+
 }

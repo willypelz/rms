@@ -99,6 +99,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'job/import-cv-file', ['uses' => 'JobsController@UploadCVfile', 'as' => 'upload-file']);
     // Route::match(['get', 'post'], 'job/dashboard/{jobID}', ['uses' => 'JobsController@JobDashboard', 'as' => 'job-view']);
     Route::match(['get', 'post'], 'job/apply/{jobID}/{slug}', ['uses' => 'JobsController@jobApply', 'as' => 'job-apply']);
+    Route::match(['get', 'post'], 'job/applied/{jobID}/{slug}', ['uses' => 'JobsController@jobApplied', 'as' => 'job-applied']);
     Route::match(['get', 'post'], 'job-status', ['uses' => 'JobsController@JobStatus', 'as' => 'job-status']);
 	// Route::any('log-in', function () {
 	//     return view('auth.login');

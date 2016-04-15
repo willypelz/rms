@@ -20,15 +20,15 @@
                                     <small class="text-brandon l-sp-5 text-uppercase">job title</small>
                             
                                     <h2 class="job-title">
-                                            Brand Manager &amp; Creative Director in the very capital city of Abuja in the in Nigeria
+                                        {{ $job->title }}
                                     </h2>
                                     <hr>
                                     <ul class="list-inline text-white">
                                         <!--<li><strong>Company:</strong>&nbsp; JobAcess</li>-->
                                         <li>
-                                            <strong>&nbsp;Posted:</strong>&nbsp; 07 Jun, 2014</li>
+                                            <strong>&nbsp;Posted:</strong>&nbsp; {{ date('d M, Y', strtotime($job->post_date)) }}</li>
                                         <li>
-                                            <strong>&nbsp;Expires:</strong>&nbsp; 21 Jun, 2014</li>
+                                            <strong>&nbsp;Expires:</strong>&nbsp; {{ date('d M, Y', strtotime($job->expiry_date)) }}</li>
                                     </ul>
                             
                                     <!-- <div class="badge badge-job badge-job-active">
@@ -60,7 +60,7 @@
                                            <ul class="list-inline no-margin">
                                             Share Job on  &nbsp;
                                                <li>
-                                                   <a href="" class="">
+                                                   <a href="https://www.facebook.com/sharer/sharer.php?u={{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" class="" target="_blank" >
                                                            <span class="fa-stack fa-lg">
                                                              <i class="fa fa-circle fa-stack-2x text-"></i>
                                                              <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
@@ -69,7 +69,7 @@
                                                </li>
                                                                               
                                                <li>
-                                                   <a href="" class="">
+                                                   <a href="https://twitter.com/home?status={{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" class="" target="_blank" >
                                                            <span class="fa-stack fa-lg">
                                                              <i class="fa fa-circle fa-stack-2x text-"></i>
                                                              <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
@@ -78,7 +78,7 @@
                                                </li>
                                                                               
                                                <li>
-                                                   <a href="" class="">
+                                                   <a href="https://plus.google.com/share?url={{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" class="" target="_blank" >
                                                            <span class="fa-stack fa-lg">
                                                              <i class="fa fa-circle fa-stack-2x text-"></i>
                                                              <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
@@ -104,16 +104,16 @@
                         
                                     <div class="row">
                                         
-                                        <div class="col-sm-8 col-sm-offset-2 text-center">
+                                         <div class="col-sm-8 col-sm-offset-2 text-center">
                                             <!-- <h6 class="text-brandon text-uppercase l-sp-5 no-margin">Application Report</h6> -->
                                             <br>
                                             <h3 class="text-brandon">Congratulations!</h3> 
                                             <p class="lead">Your application has been submitted.</p> 
 
-                                            <p>You can <a href="">Sign up</a> to <a href="">Insidify.com</a> to receive updates on this job and find several other jobs like this from all over the internet.</p> 
+                                            <p>You can <a href="https://insidify.com/register" target="_blank">Sign up</a> to <a href="https://insidify.com/" target="_blank">Insidify.com</a> to receive updates on this job and find several other jobs like this from all over the internet.</p> 
 
                                             <p>
-                                                <a href="" class="btn btn-success btn-lg">Sign up Here</a>
+                                                <a href="https://insidify.com/register" target="_blank" class="btn btn-success btn-lg">Sign up Here</a>
                                             </p><br>
                                         </div>
 
@@ -159,132 +159,42 @@
 
                                         <div class="col-sm-12">
                                             <h6 class="text-brandon">
-                                                Latest Discovery Posts
+                                                See some useful articles that can help your career
                                             </h6><br>
                     <div id="owl-posts2" class="hidden-sm">
+                       @foreach($posts as $post)
                         <div class="owl-item col-sm-4">
                             <div class="panel-body text-left">
                               <p class="post-img">
-                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
+                                <a href="https://insidify.com/discovery/{{ $post->slug }}" >
+                                  <img src="https://files.insidify.com/{{ $post->picture }}" class="img-responsive" width="100%">
+                                </a>  
                               </p>
-                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
-                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
+                              <h4 class="post-title"><a href="https://insidify.com/discovery/{{ $post->slug }}">{{ $post->title }}</a></h4>
+                              <p class="">{!! $post->summary !!} 
                               </p>
                               <p>
-                                  <a href="" class="btn btn-line">Read</a>
+                                  <a href="https://insidify.com/discovery/{{ $post->slug }}" class="btn btn-danger">Read</a>
                               </p>
                             </div>
                         </div>
-                        <div class="owl-item col-sm-4">
-                            <div class="panel-body text-left">
-                              <p class="post-img">
-                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
-                              </p>
-                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
-                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
-                              </p>
-                              <p>
-                                  <a href="" class="btn btn-line">Read</a>
-                              </p>
-                            </div>
-                        </div>
-                        <div class="owl-item col-sm-4">
-                            <div class="panel-body text-left">
-                              <p class="post-img">
-                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
-                              </p>
-                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
-                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
-                              </p>
-                              <p>
-                                  <a href="" class="btn btn-line">Read</a>
-                              </p>
-                            </div>
-                        </div>
-                        <div class="owl-item col-sm-4">
-                            <div class="panel-body text-left">
-                              <p class="post-img">
-                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
-                              </p>
-                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
-                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
-                              </p>
-                              <p>
-                                  <a href="" class="btn btn-line">Read</a>
-                              </p>
-                            </div>
-                        </div>
-                        <div class="owl-item col-sm-4">
-                            <div class="panel-body text-left">
-                              <p class="post-img">
-                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
-                              </p>
-                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
-                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
-                              </p>
-                              <p>
-                                  <a href="" class="btn btn-line">Read</a>
-                              </p>
-                            </div>
-                        </div>
-                        <div class="owl-item col-sm-4">
-                            <div class="panel-body text-left">
-                              <p class="post-img">
-                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
-                              </p>
-                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
-                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
-                              </p>
-                              <p>
-                                  <a href="" class="btn btn-line">Read</a>
-                              </p>
-                            </div>
-                        </div>
-                    </div>
+                      @endforeach  
 
-                    <div class="discovery-post hidden-md hidden-lg">
-                      
-                        <div class="col-sm-4">
-                            <div class="panel-body text-left">
-                              <p class="post-img">
-                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
-                              </p>
-                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
-                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
-                              </p>
-                              <p>
-                                  <a href="" class="btn btn-line">Read</a>
-                              </p>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="panel-body text-left">
-                              <p class="post-img">
-                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
-                              </p>
-                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
-                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
-                              </p>
-                              <p>
-                                  <a href="" class="btn btn-line">Read</a>
-                              </p>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="panel-body text-left">
-                              <p class="post-img">
-                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
-                              </p>
-                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
-                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
-                              </p>
-                              <p>
-                                  <a href="" class="btn btn-line">Read</a>
-                              </p>
-                            </div>
-                        </div>
+                        
                     </div>
                                             
+                                        </div>
+
+
+                                        <div class="col-sm-12"><hr></div>
+
+                                        <div class="col-sm-8 col-sm-offset-2 text-center">
+                                            <!-- <h6 class="text-brandon text-uppercase l-sp-5 no-margin">Application Report</h6> -->
+                                            <Br/><Br/>
+
+                                            <p>
+                                                <a href="https://insidify.com/latest-jobs-in-nigeria" target="_blank" class="btn btn-success btn-lg">See Latest Verified Jobs in Nigeria Here</a>
+                                            </p><br>
                                         </div>
 
 

@@ -123,6 +123,12 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .navbar-toggle .icon-bar {
     background: #A2B23D;
 }
+.btn-group>.btn:first-child:not(:last-child):not(.dropdown-toggle) {
+    border-right: 0;
+}
+.btn-group>.btn:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+    border-right: 0;
+}
 .btn-group.btn-abs-ad{
     position: absolute;
     bottom: 4rem;
@@ -609,8 +615,8 @@ h3.brand-title {
     margin: 0;
 }
 .nav-tabs > li a {
-    padding-right: 26px;
-    padding-left: 26px;
+    padding-right: 23px;
+    padding-left: 23px;
     padding-bottom: 13px;
     padding-top:15px;
 }
@@ -5412,7 +5418,10 @@ form.form-search .input-s{
     transform: rotate(270deg);
     /*transition:ease-in 0.3s;*/
 }
-
+.modal-content{
+        box-shadow: 0 1px 5px rgba(0,0,0,.15);
+        border:0;
+}
 /* @font-face{font-family:'Proxima';src:url(../fonts/proximanova-regular-webfont.eot?1307578394);src:url("../fonts/proximanova-regular-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-regular-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-regular-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-regular-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-style:italic;src:url(../fonts/proximanova-regitalic-webfont.eot?1307578394);src:url("../fonts/proximanova-regitalic-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-regitalic-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-regitalic-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-regitalic-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:300;src:url(../fonts/proximanova-light-webfont.eot?1307578394);src:url("../fonts/proximanova-light-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-light-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-light-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-light-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:600;src:url(../fonts/proximanova-semibold-webfont.eot?1307578394);src:url("../fonts/proximanova-semibold-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-semibold-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-semibold-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-semibold-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:600;font-style:italic;src:url(../fonts/proximanova-semibolditalic-webfont.eot?1307578394);src:url("../fonts/proximanova-semibolditalic-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-semibolditalic-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-semibolditalic-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-semibolditalic-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:bold;src:url(../fonts/proximanova-bold-webfont.eot?1307578394);src:url("../fonts/proximanova-bold-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-bold-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-bold-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-bold-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:bold;font-style:italic;src:url(../fonts/proximanova-boldit-webfont.eot?1307578394);src:url("../fonts/proximanova-boldit-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-boldit-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-boldit-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-boldit-webfont.svg#webfont2rpW2ohz") format("svg")}@font-face{font-family:'Proxima';font-weight:900;src:url(../fonts/proximanova-extrabold-webfont.eot?1307578394);src:url("../fonts/proximanova-extrabold-webfont.eot?iefix") format("eot"),url(../fonts/proximanova-extrabold-webfont.woff?1307578394) format("woff"),url(../fonts/proximanova-extrabold-webfont.ttf?1307578394) format("truetype"),url("../fonts/proximanova-extrabold-webfont.svg#webfont2rpW2ohz") format("svg")} */
 /* latin */
 @font-face {

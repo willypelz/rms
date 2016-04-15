@@ -3,8 +3,8 @@
 @section('navbar')    
 @show()
 
-
 @section('content')
+
 
 
 
@@ -17,19 +17,17 @@
                         <div class="">
                             <div class="row">
                             
-                                <div class="col-sm-8 col-sm-offset-2 text-center">
-                                    <small class="text-brandon l-sp-5 text-uppercase">job details</small>
+                                <div class="col-sm-12 text-center">
+                                    <small class="text-brandon l-sp-5 text-uppercase">Career Page</small>
                             
                                     <h2 class="job-title">
-                                        {{ ucfirst( $job['title'] ) }}
+                                        {{ $company->name }}
                                     </h2>
                                     <hr>
                                     <ul class="list-inline text-white">
                                         <!--<li><strong>Company:</strong>&nbsp; JobAcess</li>-->
                                         <li>
-                                            <strong>&nbsp;Posted:</strong>&nbsp; <?php echo date('d, M Y', strtotime($job['created_at'])) ?></li>
-                                        <li>
-                                            <strong>&nbsp;Expires:</strong>&nbsp; 21 Jun, 2014</li>
+                                            <strong>&nbsp;{{ count($company->jobs) }}</strong>&nbsp; Job Opening(s)</li>
                                     </ul>
                             
                                     <!-- <div class="badge badge-job badge-job-active">
@@ -52,10 +50,10 @@
                             <div class="col-sm-12">
                                 <div class="page no-bod-rad" style="border-radius: 0 0 0 0">
                                     <div class="row">
-                                    <div class=" job-cta">
-                                    <div class="col-sm-3">
-                                        <a href="{{ url('job/apply/'.$job['id'].'/'.str_slug($job['title']) ) }}" class="btn btn-success btn-block"><i class="fa fa-edit"></i> Apply <span class="">for Job</span></a>
-                                    </div>
+                                    <div class=" job-cta hidden">
+                                        <div class="col-sm-3">
+                                            <a href="" class="btn btn-success btn-block"><i class="fa fa-edit"></i> Apply <span class="">for Job</span></a>
+                                        </div>
                                         <div class="col-sm-5">                                            
                                             <div class="btn-group btn-group-justified">
                                                 <div class="btn-group">
@@ -70,21 +68,21 @@
                                             
                                                <p class="pull-right no-margin">
                                                     Share on &nbsp;
-                                                   <a href="https://www.facebook.com/sharer/sharer.php?u={{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" class="" target="_blank" >
+                                                   <a href="" class="">
                                                            <span class="fa-stack fa-lg">
                                                              <i class="fa fa-circle fa-stack-2x text-"></i>
                                                              <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
                                                            </span>
                                                    </a>
                                                                                   
-                                                   <a href="https://twitter.com/home?status={{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" class="" target="_blank" >
+                                                   <a href="" class="">
                                                            <span class="fa-stack fa-lg">
                                                              <i class="fa fa-circle fa-stack-2x text-"></i>
                                                              <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
                                                            </span>
                                                    </a>
                                                                                   
-                                                   <a href="https://plus.google.com/share?url={{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" class="" target="_blank" >
+                                                   <a href="" class="">
                                                            <span class="fa-stack fa-lg">
                                                              <i class="fa fa-circle fa-stack-2x text-"></i>
                                                              <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
@@ -100,43 +98,41 @@
                                     <div class="row">
                                         
                                         <div class="col-sm-8">
-                                            <h6 class="text-brandon text-uppercase l-sp-5 no-margin">Job details</h6>
+                                            <h6 class="text-brandon text-uppercase l-sp-5 no-margin">Job Openings</h6>
                                             <br>
-                                            <div class="row">
 
-                                                <div class="col-xs-6 col-sm-3"><small class="text-muted">Job Type</small>
-                                                <br>
-                                                <i class="fa fa-3x fa-clock-o text-info"></i>
-                                                <h5 class="text-uppercase text-brandon">{{ $job['job_type'] }}</h5>
-                                                </div>
-                                                <div class="col-xs-6 col-sm-4"><small class="text-muted">Salary Range</small>
-                                                <br>
-                                                <i class="fa fa-3x fa-money text-success"></i>
-                                                <h5 class="text-uppercase text-brandon">Not Specified</h5>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-5"><small class="text-muted">Minimum Qualification</small>
-                                                <br>
-                                                <i class="fa fa-3x fa-user-md text-danger"></i>
-                                                <h5 class="text-uppercase text-brandon">{{ $job['qualification'] }}</h5>
-                                                </div>
+                                            <div class="" id="">
+                                            
+                                                    <ul class="search-results">
+                                                        @foreach($company->jobs as $job)
+                                                        <li>
+                                                            <h4><a href="{{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"  target="_blank">{{ $job->title }}</a>
+                                                            </h4>
+                                                            <div class="dt">
+                                                                <strong>Location:</strong> {{ $job->location }} .  &nbsp; 
+                                                                <strong>Posted:</strong> {{ human_time($job->post_date, 1) }}.  &nbsp; 
+                                                                <strong>Expiry:</strong>{{ human_time($job->expiry_date, 1) }}. &nbsp; 
+                                                            </div>
+                                                            <div class="description">
+                                                                <p>{{ str_limit(strip_tags($job->details), 200) }}</p>
 
-                                                <div class="col-xs-12"><hr></div>
+                                                                    <a href="{{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"  target="_blank"><i class="fa fa-envelope"></i> Email to a friend</a> &nbsp; - &nbsp;
+                                                                    <a href="{{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"  target="_blank"><i class="fa fa-edit"></i> View Job Details</a>
+                                                                </span>
+                                                            </div><hr>
+                                                        </li>
 
-                                                <div class="col-xs-12">
-                                                <h5>Job Description</h5>
-                                                    {!!html_entity_decode( ucfirst( $job['details'] ) )!!}
-                                                </div>
-
-                                                <div class="col-xs-12">
-                                                <h5>Qualifications</h5>
-                                                   {!!html_entity_decode( ucfirst( $job['experience'] ) )!!}
-                                                </div>
-                                            </div>
-
-                                            <div class="alert alert-warning transparent">
-                                                <h6 class="no-margin">Additional Information <i class="fa fa-alert-o pull-right"></i></h6><br class="hr-xs">
-                                                <p class="small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum itaque, sint impedit recusandae sunt vel quod optio voluptas laudantium doloremque aspernatur deleniti autem delectus expedita veritatis explicabo quidem perspiciatis, sapiente!</p>
-                                            </div>
+                                                           
+                                                        @endforeach
+                                                       
+                                            
+                                                        </ul>
+                                            
+                                            
+                                                        <!--a href="" class="btn btn-line load">
+                                                            <span class="glyphicon glyphicon-repeat"></span>&nbsp; Load more</a-->
+                                            
+                                            </div>                                            
                                         </div>
                                                 
                                         <div class="col-sm-4">

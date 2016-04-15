@@ -38,7 +38,7 @@
 
                     <div class="col-xs-2">
                         <div class="text-center cv-portrait">
-                            <img src="{{ asset('img/brand-img.jpg') }}" class="img-circle">
+                            <img src="{{ asset('img/'.$cv['display_picture']) }}" class="img-circle">
                         </div>
                     </div>
 
@@ -48,7 +48,7 @@
                 <div class="clearfix"></div>
                 <div class="tab-content stack" id="cv">
                     <pre>
-                        {{ $cv }}
+                        {{ $cv['extracted_content'][0] }}
                     </pre>
                 </div>
    

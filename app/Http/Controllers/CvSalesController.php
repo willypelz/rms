@@ -32,7 +32,12 @@ class CvSalesController extends Controller
 
     public function search(Request $request)
     {
-            $this->search_params['q'] = $request->search_query;
+            
+
+            if( $request->search_query && $request->search_query != '' )
+            {
+                $this->search_params['q'] = $request->search_query;
+            }
 
             if( $request->start )
             {
@@ -188,6 +193,9 @@ class CvSalesController extends Controller
     public function Ajax_checkout(Request $request){
 
         $user = Auth::user();
+
+        // $company = Auth::user()->companies[0];
+
         if(empty($user)){
             $view = view('auth.ajax_login');
             return $view;
@@ -224,7 +232,7 @@ class CvSalesController extends Controller
 
                 $order_id = $order->id;
                 $jobBoards = 'JOB Boards';
-                $view = view('cv-sales.checkout_ajax', compact('items', 'order_id', 'total_amount', 'jobBoards'));
+                $view = view('cv-sales.checkout_ajax', compact('items', 'order_id', 'total_amount', 'jobBoards', 'company'));
                 return $view;
             }
 
@@ -260,12 +268,15 @@ class CvSalesController extends Controller
            //      $m->to('lanaayodele@gmail.com', 'Ayo')->subject('Your Reminder!');
            //  });
            
-            $view = view('cv-sales.checkout_ajax', compact('items', 'order_id', 'total_amount'));
+            $view = view('cv-sales.checkout_ajax', compact('items', 'order_id', 'total_amount', 'company'));
             return $view;
         }
     }
 
     public function Payment(Request $request, $type = null){
+
+        $company = Auth::user()->companies[0];
+
 
         if($type != null){
 
@@ -276,14 +287,14 @@ class CvSalesController extends Controller
             $jobBoards = 'JOB Boards';
             $type= 'bank';
 
-            return view('cv-sales.pay', compact('type', 'items', 'order_id', 'total_amount', 'jobBoards'));
+            return view('cv-sales.pay', compact('type', 'items', 'order_id', 'total_amount', 'jobBoards', 'company', 'total_amount'));
 
         }else{
             $items = Cart::content();
             $type = ($request->payment_option);
             $order_id = $request->order_id;
             $total_amount = $request->amount.'00';
-            return view('cv-sales.pay', compact('type', 'items', 'order_id', 'total_amount'));
+            return view('cv-sales.pay', compact('type', 'items', 'order_id', 'total_amount', 'company', 'total_amount'));
         }        
     }
     
@@ -365,6 +376,44 @@ class CvSalesController extends Controller
         }
     }
 
-    
+    public function viewSaved(Request $request)
+    {
+        $this->search_params['q'] = ( $request->search_query && trim( $request->search_query ) != '' ) ? $request->search_query : '*' ;
+
+        if( $request->start )
+        {
+            $this->search_params['start'] = $request->start;
+        }
+        
+        
+        $this->search_params['filter_query'] = @$request->filter_query;
+        // $response = Solr::search_resume($this->search_params);
+        $response = Solr::get_saved_cvs($this->search_params);
+
+
+        $cart = Cart::content();
+        $count = Cart::count(false); 
+
+        //to get ids of all items in cart so as to check the button to display in view
+        foreach ($cart as $k) {
+            $ids[] = ($k->id);
+        }
+
+        if(empty($ids))
+            $ids = null;
+    // $in_cart = in_array('26618', $ids);
+        if($request->ajax())
+        {
+            
+            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'is_saved' => true])->render();    
+            $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query])->render();
+            return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters ] );
+            
+        }
+        else{
+            return view('cv-sales.cv_saved',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'is_saved' => true ]);
+        }
+        // return view('cv-sales.cv_saved');
+    }
     
 }

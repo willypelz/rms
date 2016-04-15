@@ -13,6 +13,7 @@ use Validator;
 use Cart;
 use Session;
 use Auth;
+use Mail;
 
 class JobsController extends Controller
 {
@@ -37,10 +38,14 @@ class JobsController extends Controller
 
         $qualifications = qualifications();
 
+        $locations = locations();
+        // dd($locations);
+
+
         $user = Auth::user();
         $d = User::with('companies')->where('id', $user->id)->first();
         $company = ($d->companies[0]);
-        // dd('hellp');
+        // dd($company);
         // dd($qua);
         $job_boards = JobBoard::where('type', 'free')->get()->toArray();
         $c = (count($job_boards) / 2);
@@ -54,23 +59,27 @@ class JobsController extends Controller
         // dd($job_bards);
         if ($request->isMethod('post')) {
 
+            // dd($request->request);
             $data = [
                 'job_title' => $request->job_title,
                 'job_location' => $request->job_location,
-                'job_description' => $request->job_description,
-                'requirement' => $request->requirement,
+                'details' => $request->details,
+                'experience' => $request->experience,
                 'job_type' => $request->job_type,
-                'salary' => $request->salary,
-                'qualification' => $request->qualification
+                'position' => $request->position,
+                'post_date' => $request->post_date,
+                'expiry_date' => $request->expiry_date
             ];
+
 
             $validator = Validator::make( $data, [
                         'job_title' => 'required',
                         'job_location' => 'required',
-                        'job_description' => 'required',
-                        'requirement' => 'required',
+                        'details' => 'required',
+                        'experience' => 'required',
                         'job_type' => 'required',
-                        'qualification' => 'required'
+                        'position' => 'required',
+                        'expiry_date' => 'required'
                 ]);
 
             if($validator->fails()){
@@ -84,11 +93,13 @@ class JobsController extends Controller
                         $job = Job::FirstorCreate([
                                 'title' => $request->job_title,
                                 'location' => $request->job_location,
-                                'details' => $request->job_description,
-                                'experience' => $request->requirement,
-                                'qualification' => $request->qualification,
-                                'job_type' => $request->job_type,
-                                'published' => 1,
+                                'details' => $request->details,
+                                'experience' => $request->experience,
+                                'job_level' => $request->job_type,
+                                'position' => $request->position,
+                                'post_date' => $request->post_date,
+                                'expiry_date' => $request->expiry_date,
+                                'status' => 'ACTIVE',
                                 'company_id' => $company->id
                         ]);
 
@@ -96,11 +107,6 @@ class JobsController extends Controller
                             if(in_array($p, $bds))
                                 $job->boards()->attach($p);
                         }
-
-                        $job_url = $job->id.'/'.str_slug($request->job_title);
-                       
-                        Job::where('id', $job->id)
-                          ->update(['job_url' => $job_url]);
 
                         // dd($job_url);
                     }
@@ -111,7 +117,11 @@ class JobsController extends Controller
         }
 
         // dd('here');
-        return view('job.create', compact('qualifications', 'board1', 'board2'));
+        return view('job.create', compact('qualifications', 'board1', 'board2', 'locations'));
+    }
+
+    public function SaveJob(Request $request){
+        dd($request->request);
     }
 
     public function Advertise($jobid){
@@ -146,8 +156,8 @@ class JobsController extends Controller
         $d = User::with('companies')->where('id', $user->id)->first();
         $company = ($d->companies[0]);
 
-        $job = Job::find($id)->first();
-        // dd($company);
+        $job = Job::find($id);
+        // dd($job);
         return view ('job.share', compact('company', 'job'));
     }
 
@@ -162,19 +172,36 @@ class JobsController extends Controller
     }
 
 
-    public function JobView($jobid, $slug, Request $request)
+    public function JobView($company_slug, $jobid, $job_slug, Request $request)
     {
-        $job = Job::find($jobid);
-        return view('job.job-details', compact('job'));
+        $company = Company::where('slug', $company_slug)->first();
+        $job = Job::where('id', $jobid)->where("company_id",$company->id)->first();
+
+        if(empty($job)){
+            // redirect to 404 page
+        }
+
+
+        return view('job.job-details', compact('job', 'company'));
     }
     
     public function JobList(Request $request){
 
         $user = Auth::user();
-        $comp = User::with('companies.jobs')->where('id', $user->id)->get();
-        $jobs = ($comp[0]->companies[0]->jobs);
+        $user = User::with('companies.jobs')->where('id', $user->id)->first();
+        $jobs = ($user->companies[0]->jobs);
+        $company = $user->companies[0];
         
-        return view('job.job-list', compact('jobs'));
+        $active = 0;
+        $suspended = 0;
+        foreach($jobs as $job){
+            if ($job->published == 1) {
+                $active++;
+            }else{
+                $suspended++;
+            }
+        }
+        return view('job.job-list', compact('jobs', 'active', 'suspended', 'company'));
     }
 
     public function JobBoard($id, Request $request){
@@ -333,12 +360,130 @@ class JobsController extends Controller
         return view('job.job-apply', compact('job', 'qualifications', 'states'));
 
     }
+
+
+    public function company($c_url){
+
+        $company = Company::with(['jobs'=>function($query){
+                                        $query->where('published', 1);
+                                    }])->where('slug', $c_url)->first();
+
+
+        return view('job.company', compact('company'));
+
+    }
     
     public function Ajax(Request $request){
 
         $user = User::find($request->user_id);
 
         return view('job.ajax-team-edit', compact('user'));
+
+    }
+
+    public function EditJob(Request $request, $jobid){
+
+        $job = Job::findOrFail($jobid);
+        $locations = locations();
+        $qualifications = qualifications();
+
+        if($request->isMethod('post')){
+            $job->update($request->all());
+        
+            return redirect()->route('job-view', ['id' => $job->id, 'slug'=>str_slug($job->title)]);
+
+        }
+
+
+        return view('job.edit', compact('qualifications', 'job', 'locations'));
+
+    }
+
+    public function JobStatus(Request $request){
+
+        $job = Job::find($request->job_id);
+       
+        $res = Job::where('id', $request->job_id)
+                ->update(['status' => $request->status]);
+
+        if($res)
+            echo true;
+    }
+
+    public function ReferJob(Request $request){
+        // dd($request->request);
+        if($request->isMethod('post')){
+
+            $to = explode(',', $request->to);
+            $job = Job::find($request->jobid);
+
+             $mail = Mail::queue('emails.cv-sales-invoice', ['job' => $job], function ($m) use($to) {
+                    $m->from('hello@app.com', 'Your Application');
+
+                    $m->to($to)->subject('Your Reminder!');
+            });
+
+             if($mail){
+                echo 'sent';
+             }else{
+                echo "error sending";
+             }
+
+        }
+    }
+
+    public function SimplePay(Request $request){
+        
+        $private_key = 'test_pr_bbe9d51b272e4a718b01d5c8eb7d2c1f';
+
+        // Retrieve data returned in payment gateway callback
+        // $token = $_POST["token"];
+        $token = $request->token;
+        // $transaction_id = $_POST["transaction_id"]; // we don't really need this here, is just an example
+
+        $data = array (
+            'token' => $token
+        );
+        $data_string = json_encode($data); 
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://checkout.simplepay.ng/v1/payments/verify/');
+        curl_setopt($ch, CURLOPT_USERPWD, $private_key . ':');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+            'Content-Type: application/json',                                                                                
+            'Content-Length: ' . strlen($data_string)                                                                       
+        ));       
+
+        $curl_response = curl_exec($ch);
+        $curl_response = preg_split("/\r\n\r\n/",$curl_response);
+        $response_content = $curl_response[1];
+        $json_response = json_decode(chop($response_content), TRUE);
+
+        $response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        curl_close($ch);
+
+        if ($response_code == '200') {
+            // even is http status code is 200 we still need to check transaction had issues or not
+            if ($json_response['response_code'] == '20000'){
+                // header('Location: success.html');
+                // dd('Success');
+                return $json_response;
+            }else{
+                // header('Location: failed.html');
+                dd('Failed');
+            }
+        } else {
+            // header('Location: failed.html');
+            dd('Failed');
+        }
+
 
     }
 

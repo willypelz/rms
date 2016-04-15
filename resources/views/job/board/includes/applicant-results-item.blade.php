@@ -3,7 +3,7 @@
   @foreach( @$result['response']['docs'] as $cv )
   
   <hr>
-  <div class="comment media">
+  <div class="comment media" data-cv="{{ $cv['id'] }}">
       <span class="col-md-2 col-sm-3">
         <a href="{{ route('applicant-profile', $cv['id'] ) }}"  class="pull-left">
             <img alt="" src="{{ default_picture( $cv ) }}" class="media-object " width="100%">
@@ -15,7 +15,7 @@
           </h4>
           <p>{{ @$cv['tagline'] }}</p>
           <small>
-              <span class="text-muted">18 minutes ago</span>
+              <span class="text-muted">{{ human_time( @$cv['created'], 1) }}</span>
               &nbsp;
               <a id='showCvBtn' data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">Cv</a>
               <span class="text-muted">·</span>
@@ -107,7 +107,7 @@
 
 
 <script type="text/javascript">
-
+  total_candidates = "{{ $result['response']['numFound'] }}";
   $(document).ready(function(){
         if($('#pagination').data("twbs-pagination")){
             $('#pagination').twbsPagination('destroy');

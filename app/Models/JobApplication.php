@@ -21,4 +21,11 @@ class JobApplication extends Model
     {
         return $this->belongsTo('App\Models\Cv', 'cv_id');
     }
+
+    public static function massAction($job_id, $cv_ids, $status)
+    {
+        return JobApplication::where('job_id',$job_id)
+                                ->whereIn('cv_id',$cv_ids)
+                                ->update( ['status'=>$status] );
+    }
 }

@@ -96,11 +96,32 @@ class JobApplicationsController extends Controller
     {
         $job = Job::find($request->jobID);
         $active_tab = 'candidates';
+        $jobID = $request->jobID;
 
-        $result = Solr::get_applicants($this->search_params, $request->jobID);
-        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+        $this->search_params['filter_query'] = @$request->filter_query;
+        
+        $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status);
+        
 
-        return view('job.board.candidates', compact('job', 'active_tab','result','application_statuses'));
+
+        if($request->ajax())
+        {
+            $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab','result','jobID'))->render();    
+            $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query])->render();
+            return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters ] );
+            
+        }
+        else{
+            $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+            return view('job.board.candidates', compact('job', 'active_tab','result','application_statuses','jobID'));
+        }
+
+        
+    }
+
+    public function massAction( Request $request )
+    {
+        JobApplication::massAction( $request->job_id, $request->cv_ids, $request->status );
     }
 
 

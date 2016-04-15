@@ -107,6 +107,8 @@ Route::group(['middleware' => 'web'], function () {
 
 
     Route::match(['get', 'post'], 'job/candidates/{jobID}', ['uses' => 'JobApplicationsController@viewApplicants', 'as' => 'job-candidates']);
+    Route::post('job/applicant/mass-action', ['uses' => 'JobApplicationsController@massAction', 'as' => 'mass-action']);
+
 
     
     Route::get('boss', function () {

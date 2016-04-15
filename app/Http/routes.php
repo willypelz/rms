@@ -256,16 +256,19 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::get('profile/{appl_id}', ['uses' => 'JobApplicationsController@Profile', 'as' => 'applicant-profile']);
         Route::get('messages/{appl_id}', ['uses' => 'JobApplicationsController@Messages', 'as' => 'applicant-messages']);
+        Route::get('activities/{appl_id}', ['uses' => 'JobApplicationsController@activities', 'as' => 'applicant-activities']);
+        Route::get('checks/{appl_id}', ['uses' => 'JobApplicationsController@checks', 'as' => 'applicant-checks']);
+        Route::get('notes/{appl_id}', ['uses' => 'JobApplicationsController@notes', 'as' => 'applicant-notes']);
+        Route::get('assess/{appl_id}', ['uses' => 'JobApplicationsController@assess', 'as' => 'applicant-assess']);
+        Route::get('medicals/{appl_id}', ['uses' => 'JobApplicationsController@medicals', 'as' => 'applicant-medicals']);
 
 
         Route::get('profile', function () {
             return view('applicant.profile');
         });
 
-
-
-        Route::get('compose-mail', function () {
-            return view('applicant.compose-mail');
+        Route::get('checks', function () {
+            return view('applicant.checks');
         });
 
         Route::get('view-mail', function () {
@@ -276,8 +279,8 @@ Route::group(['middleware' => 'web'], function () {
             return view('applicant.notes');
         });
 
-        Route::get('b-check', function () {
-            return view('applicant.b-check');
+        Route::get('activities', function () {
+            return view('applicant.activities');
         });
 
     });

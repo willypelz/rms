@@ -1,11 +1,11 @@
 @extends('layout.template-user')
 
 @section('content')
-    <section class="no-pad white no-margin"><br>
+    <section class="no-pad white no-margin hidden"><br>
           <h4 class="text-center">Applicants for: <a href="">Frontend Developer at Konga.com, Yaba, Montgomery Rd, Lagos</a></h4><br></section>
-    <section class="no-pad applicant">
+    <section class="applicant">
         <div class="container">
-        <div class="row">
+        <div class="row hidden">
           <div class="col-xs-12"><br>
             <h5 class="text-brandon text-center">
               <a href="#" class="pull-left text-muted"><i class="fa fa-arrow-left"></i> &nbsp; Prev</a>

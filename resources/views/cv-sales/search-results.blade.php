@@ -183,14 +183,13 @@
           </script>
 
 
-      <script>
+    <!--  <script>
 
                        var url = "{{ route('ajax_cart') }}";
 
                         $("#contentArea").html('<img src="{{ asset("img/wheel.gif") }}" width="100px" /> please wait...');
                           
                             $("#checkout").click(function(){
-                                  // console.log(url)
                                   $.ajax
                                   ({
                                     type: "POST",
@@ -198,7 +197,6 @@
                                     data: ({ rnd : Math.random() * 100000, "_token":"{{ csrf_token() }}"}),
                                     success: function(response){
                                       
-                                      // console.log(response);
                                       $('#invoice-res').html(response)
                                       
                                     }
@@ -206,7 +204,7 @@
 
                               });
 
-      </script>
+      </script>-->
 
     </div>
   </div>

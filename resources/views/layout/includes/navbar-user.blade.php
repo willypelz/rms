@@ -8,7 +8,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ url('dashboard') }}"><i class="fa fa-skype"></i>&nbsp; Seamless Hiring</a>
+                <a class="navbar-brand" href="{{ url('/') }}"><i class="fa fa-skype"></i>&nbsp; Seamless Hiring</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -30,10 +30,9 @@
                         <a class="" href="{{ url('my-jobs') }}">My Jobs <i class="fa fa-briefcase mask"></i></a>
 
                     </li>
-                    <?php //dd(Auth::user()->companies[0]) ?>
-
+                    
                     <li class="">
-                        <a class="" href="{{ url(Auth::user()->companies[0]->slug) }}" target="_blank" >My Career Page <i class="fa fa-building mask"></i></a>
+                        <a class="" href="{{ url('my-career-page') }}" target="_blank" >My Career Page <i class="fa fa-building mask"></i></a>
                     </li>
 
 
@@ -63,7 +62,7 @@
                     </li> -->
                         <li id="fat-menu" class="dropdown"> 
                             <a class="a-user" id="drop3" href="#" class="dropdown-toggle" style="" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
-                                <img src="http://dummyimage.com/300x300/ffffff/405465.jpg&text={{ Auth::user()->first_name }}" width="40px" class="img-profile" height="40px" alt=""> 
+                                <img src="{{ default_picture( Auth::user(), 'user' ) }}" width="40px" class="img-profile" height="40px" alt=""> 
                                 <span class="caret"></span> 
                             </a> 
                             <ul class="dropdown-menu" aria-labelledby="drop3"> 

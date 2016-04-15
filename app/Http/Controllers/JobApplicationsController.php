@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Models\JobApplication;
+use App\Models\Job;
+use App\Libraries\Solr;
 
 class JobApplicationsController extends Controller
 {
+    private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'post_date+desc', 'grouped'=>FALSE ];
+
     /**
      * Create a new controller instance.
      *
@@ -87,5 +91,17 @@ class JobApplicationsController extends Controller
     	return view('applicant.messages', compact('appl', 'nav_type'));
 
     }
+
+    public function viewApplicants( Request $request )
+    {
+        $job = Job::find($request->jobID);
+        $active_tab = 'candidates';
+
+        $response = Solr::get_applicants($this->search_params, $request->jobID);
+        dd($response);
+
+        return view('job.board.candidates', compact('job', 'active_tab'));
+    }
+
 
 }

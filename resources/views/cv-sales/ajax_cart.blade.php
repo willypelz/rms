@@ -117,7 +117,7 @@
                                 <?php $total=0; ?>
                             @foreach($items as $item)
                                 <tr>
-                                    <td>{{ $item->name }} (25/09/2015 - 24/09/2016) *</td>
+                                    <td>{{ $item->name }} *</td>
                                     <td class="textcenter">N500.00</td>
                                 </tr>
                                 <?php $total += 500 ?>

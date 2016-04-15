@@ -115,7 +115,7 @@ class AuthController extends Controller
            
             $file_name  = ($request->logo->getClientOriginalName());
             $fi =  $request->file('logo')->getClientOriginalExtension();  
-            $logo = $file_name.'-'.$request->company_name;
+            $logo = $request->company_name.'-'.$file_name;
 
             $com['name'] = $request->company_name;
             $com['slug'] = $request->slug;

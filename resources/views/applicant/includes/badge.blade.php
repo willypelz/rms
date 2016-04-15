@@ -9,7 +9,7 @@
                                   <div class=" border-bottom-thin">
                                       <div class="col-xs-4">
                                           <div class="img-fixer" style="padding-left:5px">
-                                            <img src="http://dummyimage.com/300x300/ffffff/405465.jpg&text={{ substr($appl->cv->last_name,0,1).substr($appl->cv->first_name,0,1) }}" class="img-responsive">
+                                            <img src="{{ default_picture( $appl->cv ) }}" class="img-responsive">
                                           </div>
                                       </div>
                                       <div class="col-xs-8">

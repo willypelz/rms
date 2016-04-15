@@ -37,10 +37,7 @@ class JobsController extends Controller
     {   
 
         $qualifications = qualifications();
-
         $locations = locations();
-        // dd($locations);
-
 
         $user = Auth::user();
         $d = User::with('companies')->where('id', $user->id)->first();
@@ -95,7 +92,7 @@ class JobsController extends Controller
                                 'location' => $request->job_location,
                                 'details' => $request->details,
                                 'experience' => $request->experience,
-                                'job_level' => $request->job_type,
+                                'job_type' => $request->job_type,
                                 'position' => $request->position,
                                 'post_date' => $request->post_date,
                                 'expiry_date' => $request->expiry_date,
@@ -124,7 +121,7 @@ class JobsController extends Controller
         dd($request->request);
     }
 
-    public function Advertise($jobid){
+    public function Advertise($jobid, $slug= null){
 
         $job_boards = JobBoard::where('type', 'paid')->get()->toArray();
         $c = (count($job_boards) / 2);
@@ -147,7 +144,7 @@ class JobsController extends Controller
                 $ids = null;
 
 
-        return view('job.advertise', compact('board1', 'board2', 'ids', 'cart', 'count', 'price', 'jobid'));
+        return view('job.advertise', compact('board1', 'board2', 'ids', 'cart', 'count', 'price', 'jobid', 'slug'));
     }
 
     public function Share($id){
@@ -372,6 +369,17 @@ class JobsController extends Controller
         return view('job.company', compact('company'));
 
     }
+
+    public function MyCompany(){
+
+        $user = Auth::user();
+        $d = User::with('companies')->where('id', $user->id)->first();
+        $company = ($d->companies[0]);
+
+        return redirect('/'.$company->slug);
+
+
+    }
     
     public function Ajax(Request $request){
 
@@ -484,6 +492,45 @@ class JobsController extends Controller
             dd('Failed');
         }
 
+
+    }
+
+    public function SendJob(Request $request){
+        // dd($request->request);
+            $job = Job::find($request->jobid);
+            $to = $request->emails;
+
+            $mail = Mail::queue('emails.cv-sales-invoice', ['job' => $job], function ($m) use($to) {
+            $m->from('alerts@insidify.com', 'Your Application');
+
+            $m->to($to)->subject('Job for you');
+            });
+
+             if($mail){
+                echo 'Email has been sent successfully';
+             }else{
+                echo "Error sending, please try again in few minutes";
+             }
+
+    }
+
+    public function SavetoMailbox(Request $request){
+        
+        $user = Auth::user();
+        $job = Job::find($request->jobid);
+        $to = $user->email;
+
+        $mail = Mail::queue('emails.cv-sales-invoice', ['job' => $job], function ($m) use($to) {
+        $m->from('alerts@insidify.com', 'Your Application');
+
+        $m->to($to)->subject('Job for you');
+        });
+
+         if($mail){
+            echo 'Email has been sent successfully';
+         }else{
+            echo "Error sending, please try again in few minutes";
+         }
 
     }
 

@@ -19,6 +19,7 @@
                     <br>
                     <div class="page">
 
+                        @if(empty($slug))
                         <div class="btn-group btn-group-justified text-uppercase btn-progress" role="group" aria-label="...">
                           <!-- <div class="btn-group" role="group">
                             <a href="create-job.php" type="button" class="btn btn-line text-capitalize"><i class="fa fa-file-text-o"></i>
@@ -39,6 +40,8 @@
                             &nbsp; <span class="hidden-xs"> add candidates </span></a>
                           </div>
                         </div>
+                        @endif
+
                         <div class="row">
                             
                             
@@ -153,11 +156,11 @@
                                                             ?>
 
                                                             @if($in_cart)
-                                                                <button class="btn btn-line btn-board-discard collapse" data-count="1" data-cost="500" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
-                                                            @else
-                                                                <a href="" class="btn btn-success btn-board-buy" data-count="1" data-cost="500" onclick="AddBoardCart({{ $b['id'] }}, {{ $b['price'] }}, '{{ $b["name"] }}')"><i class="fa fa-plus"></i> Post for &#8358; {{ $b['price'] }}</a>
-                                                                <button class="btn btn-line btn-board-discard collapse" data-count="1" data-cost="500" onclick="DeleteBoardCart({{ $b['id'] }}) "><i class="fa fa-trash"></i> Remove from Cart </button>
-                                                            @endif
+                                                            <button class="btn btn-line btn-board-discard" data-count="1" data-cost="500" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                        @else
+                                                            <a href="" class="btn btn-success btn-board-buy" data-count="1" onclick="AddBoardCart({{ $b['id'] }}, {{ $b['price'] }}, '{{ $b["name"] }}')" data-cost="500"><i class="fa fa-plus"></i> Post for &#8358; {{ $b['price'] }}</a>
+                                                            <button class="btn btn-line btn-board-discard collapse" data-count="1" data-cost="500" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                        @endif
                                                     </span>
 
                                                     </p> 
@@ -272,6 +275,7 @@
 
 
 </script>
+
 
 
 

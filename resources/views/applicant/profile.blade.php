@@ -1,9 +1,17 @@
 @extends('layout.template-user')
 
 @section('content')
+<<<<<<< HEAD
     <section class="no-pad white no-margin hidden"><br>
           <h4 class="text-center">Applicants for: <a href="">Frontend Developer at Konga.com, Yaba, Montgomery Rd, Lagos</a></h4><br></section>
     <section class="applicant">
+=======
+    <section class="no-pad white no-margin"><br>
+          <h4 class="text-center">Applicants for: <a href="{{ url('job/activities/'.$appl->job->id  ) }}" target="_blank">{{ $appl->job->title }}</a></h4>
+          <br>
+    </section>
+    <section class="no-pad applicant">
+>>>>>>> 1924d3618d4615dfd0183d95e374701d683a9d8c
         <div class="container">
         <div class="row hidden">
           <div class="col-xs-12"><br>

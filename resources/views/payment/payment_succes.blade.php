@@ -55,7 +55,7 @@
             
             <div class="col-md-6 col-md-offset-3">
               <div class="controls text-center">
-                  <a href="job-board.php" class="btn btn-success btn-block">Proceed to Job Board &raquo;</a> 
+                  <a href="{{ url('dashboard') }}" class="btn btn-success btn-block">Proceed to DashBoard &raquo;</a> 
               </div>
             </div>
        </div>

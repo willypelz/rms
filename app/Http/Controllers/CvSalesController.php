@@ -199,7 +199,7 @@ class CvSalesController extends Controller
             return $view;
         }
 
-        $invoice_no = mt_rand();
+        $invoice_no = '#'.mt_rand();
 
         $d = User::with('companies')->where('id', $user->id)->first();
         $company = ($d->companies[0]);
@@ -215,8 +215,8 @@ class CvSalesController extends Controller
                         'company_id' => $company->id,
                         'order_date'=> date('Y-m-d H:i:s'),
                         'total_amount'=>$total_amount,
-                        'type'=> 'Job Board',
                         'invoice_no'=> $invoice_no,
+                        'type'=> 'Job Board',
                 ]);
 
                 foreach ($items as $k) {
@@ -233,7 +233,7 @@ class CvSalesController extends Controller
 
                 $order_id = $order->id;
                 $jobBoards = 'JOB Boards';
-                $view = view('cv-sales.checkout_ajax', compact('items', 'order_id', 'total_amount', 'jobBoards', 'company'));
+                $view = view('cv-sales.checkout_ajax', compact('items', 'order_id', 'total_amount', 'jobBoards', 'company', 'invoice_no'));
                 return $view;
             }
 
@@ -249,6 +249,7 @@ class CvSalesController extends Controller
                         'company_id' => $company->id,
                         'order_date'=> date('Y-m-d H:i:s'),
                         'total_amount'=>$total_amount,
+                        'invoice_no'=> $invoice_no,
                         'type'=>'cvs',
             ]);
 
@@ -304,6 +305,16 @@ class CvSalesController extends Controller
 
     public function Transactions(Request $request){
 
+        if(isset($request->jsonres)){
+            $r = ($request->jsonres);
+            $trans_id = $r['id'];
+            $card = $r['source']['id'];
+            $cus_id = $r['customer']['id'];
+
+            Order::where('id', $request->order_id)
+              ->update(['trans_id' => $trans_id, 'customer_id'=>$cus_id, 'customer_card'=>$card]);
+        }
+
         $transaction = Transaction::firstOrCreate([
             'order_id' => $request->order_id,
             'status'=> $request->status,
@@ -312,8 +323,9 @@ class CvSalesController extends Controller
 
         if ($request->message == 'Transaction Successful') {
             Cart::destroy();
-        }
+            Cart::instance('JobBoard')->destroy();
 
+        }
         return $transaction;
     }
 

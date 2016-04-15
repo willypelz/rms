@@ -40,6 +40,10 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.landing');
     });
 
+     Route::get('payment_successful', function () {
+        return view('payment.payment_succes');
+    });
+
     Route::get('simple-pay', function(){
 
         // dd(save_activities(4, 'Job application', '', '', 'THis is a very nice comment'));

@@ -37,10 +37,7 @@ class JobsController extends Controller
     {   
 
         $qualifications = qualifications();
-
         $locations = locations();
-        // dd($locations);
-
 
         $user = Auth::user();
         $d = User::with('companies')->where('id', $user->id)->first();
@@ -95,7 +92,7 @@ class JobsController extends Controller
                                 'location' => $request->job_location,
                                 'details' => $request->details,
                                 'experience' => $request->experience,
-                                'job_level' => $request->job_type,
+                                'job_type' => $request->job_type,
                                 'position' => $request->position,
                                 'post_date' => $request->post_date,
                                 'expiry_date' => $request->expiry_date,

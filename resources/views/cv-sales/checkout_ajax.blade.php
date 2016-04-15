@@ -1,8 +1,7 @@
 <script src="https://checkout.simplepay.ng/simplepay.js"></script>
 
  @if(!empty($jobBoards))
-
-    <script src="https://paystack.ng/js/inline.js"></script>
+ 
 
  <section class="no-pad">
                 <div class="">
@@ -46,7 +45,7 @@
                         <div class="col-sm-12">
                         <br>
                         <div class="">
-                            <span class="title">Invoice #80186</span><br>
+                            <span class="title">Invoice {{ $invoice_no }}</span><br>
                             Invoice Date: 11/09/2015<br>
                             Due Date: 25/09/2015
                         </div>
@@ -97,12 +96,12 @@
                         <div class="col-sm-12">
                             <form method="post" action="{{ route('payment') }}" id="BoardPaymentForm">
                                 Bank Transfer/Deposit: <input type="radio" name="payment_option" value="bank" required><br>
-                                Pay Online via Paystack: <input type="radio" name="payment_option" value="paystack"><br>
+                                Pay Online via SimplePay: <input type="radio" name="payment_option" value="paystack"><br>
                                     <input type="hidden" name="order_id" value="{{ $order_id }}">
                                     <input type="hidden" name="amount" value="{{ $total }}">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="hidden" name="cart_type" value="jobBoards">
-                                <input type="submit" class="btn btn-success pull-right" value="Pay">
+                                <input type="submit" id="PayBtnn2" class="btn btn-success pull-right" value="Pay">
                         <div class="separator separator-small"></div>
 
                             </form>
@@ -117,9 +116,7 @@
 
                 <script>
                 $("#BoardPaymentForm").submit(function(event){
-
                             event.preventDefault();
-
                     // var total_amount = "{{ $total }}"
                     var radioo = $('input[name=payment_option]:checked', '#BoardPaymentForm').val()
 
@@ -134,71 +131,83 @@
                 });
                 
                 function pay(){
-                // console.log('got here')
-                    <?php
-                            $uuid = uniqid(true);
-                    ?>
-                    var ajax_image = "<img src='<?php echo asset('img/faceb.gif') ?>' alt='Loading...' />";
+                    $('#PayBtnn2').html('please wait...')
+                    console.log('SimplePay working fine');
 
-                    var url = "{{ route('transactions') }}";
+                     var url = "{{ route('transactions') }}";
                     $.ajax
                       ({
                           type: "POST",
                           url: url,
                           data: ({order_id: "{{ $order_id }}", status:false, message:'Transaction Not Found', "_token":"{{ csrf_token() }}"}),
                           success: function(response){
-                            // console.log(response) 
+                            console.log(response) 
                             $('#myInvoice').modal('hide')
-                            loadPaystack();
+                            loadSimplePay();
                           }
-                      });                    
+                      });
+
                 }
 
+                function loadSimplePay(){
+                     var handler = SimplePay.configure({
+                           token: processPayment, // callback function to be called after token is received
+                           key: 'test_pu_6afdbcd91aa446ecb7f79a2f29c2b530', // place your api key. Demo: test_pu_*. Live: pu_*
+                           image: 'http://' // optional: an url to an image of your choice
+                        });
 
-                    function loadPaystack(){
-                        var handler = PaystackPop.setup({
-                            key: 'pk_test_7d7271a9f0ca45ac76d8ca1569ea47948e1bb5f5',
-                            email: 'info@bus.com.ng',
-                            amount: "{{ $total_amount }}",
-                            ref: '<?php echo $uuid; ?>',
-                            callback: paystackcallback
-                        })
-                        handler.openIframe()
-                    }
+                    handler.open(SimplePay.CHECKOUT, // type of payment
+                        {
+                           email: '{{ $company->email }}', // optional: user's email
+                           phone: '{{ $company->phone }}', // optional: user's phone number
+                           description: 'Payment for Job boards', // a description of your choosing
+                           address: '{{ $company->address }}', // user's address
+                           postal_code: '110001', // user's postal code
+                           // city: '{{ $company->location }}', // user's city
+                           country: 'NG', // user's country
+                           amount: '{{ $total_amount.'00' }}', // value of the purchase, ₦ 1100
+                           currency: 'NGN' // currency of the transaction
+                        });
+                }   
 
-                    function paystackcallback(response){
+                function processPayment (token) {
 
-                      $("#paymemt-success").html('<img src="{{ asset("img/wheel.gif") }}" width="100px" /> please wait...');
+                    $('#myInvoice').modal('show')
+                    $("#invoice-response").html('<img src="{{ asset("img/wheel.gif") }}" width="100px" /> please wait... Verifying your payment');
 
-                      var url = "https://paystack.ng/charge/verification";
-                      $.ajax
-                        ({
-                          type: "POST",
-                          url: url,
-                          data: ({trxref:response.trxref, merchantid:'pk_test_7d7271a9f0ca45ac76d8ca1569ea47948e1bb5f5'}),
-                          success: function(response){
-                            var pars = (JSON.parse(response))
-                            var resp =(pars.status)
 
-                            if(resp == 'success'){
+                 var url ="{{ route('simplepay') }}"
+                  $.ajax
+                    ({
+                        type: "POST",
+                        url: url,
+                        data: ({ rnd : Math.random() * 100000, token:token }),
+                        success: function(response){
+                             console.log(response)
+
+                             if(response != null){
                                  var oldurl = "{{ route('transactions') }}";
 
                                  $.ajax
                                   ({
                                       type: "POST",
                                       url: oldurl,
-                                      data: ({order_id:"{{ $order_id }}", status:true, message:'Transaction Successful', "_token":"{{ csrf_token() }}"}),
+                                      data: ({ jsonres:response, order_id:"{{ $order_id }}", status:true, message:'Transaction Successful', "_token":"{{ csrf_token() }}"}),
                                       success: function(response){
-                                          // conosle.log(response);
-                                    $("#paymemt-success").html('Payment Successful');
+                                        console.log(response);
+                                        $("#paymemt-success").html('Payment Successful');
+                                        window.location = "{{ url('payment_successful') }}";
+
 
                                       }
                                   });
-                            }
-                          }
-                      });
-                  }
+                             }
+                        }
+                    });
 
+
+
+              }
 
                 </script>
 </section>
@@ -357,10 +366,6 @@
         }
 
          function processPayment (token) {
-                  // implement your code here - we call this after a token is generated
-                  // example:
-                 // alert(token)
-                 // console.log(token)
                  var url ="{{ route('simplepay') }}"
                   $.ajax
                     ({
@@ -377,10 +382,12 @@
                                   ({
                                       type: "POST",
                                       url: oldurl,
-                                      data: ({order_id:"{{ $order_id }}", status:true, message:'Transaction Successful', "_token":"{{ csrf_token() }}"}),
+                                      data: ({ jsonres:response, order_id:"{{ $order_id }}", status:true, message:'Transaction Successful', "_token":"{{ csrf_token() }}"}),
                                       success: function(response){
-                                         console.log(response);
+                                        console.log(response);
                                         $("#paymemt-success").html('Payment Successful');
+                                        window.location = "{{ url('payment_successful') }}";
+
 
                                       }
                                   });
@@ -404,13 +411,13 @@
             handler.open(SimplePay.CHECKOUT, // type of payment
                 {
                    email: '{{ $company->email }}', // optional: user's email
-                   // phone: '+234*', // optional: user's phone number
+                   phone: '{{ $company->phone }}', // optional: user's phone number
                    description: 'Payment for Job boards', // a description of your choosing
                    address: '{{ $company->address }}', // user's address
                    postal_code: '110001', // user's postal code
                    // city: '{{ $company->location }}', // user's city
                    country: 'NG', // user's country
-                   amount: '{{ $total_amount }}', // value of the purchase, ₦ 1100
+                   amount: '{{ $total_amount.'00' }}', // value of the purchase, ₦ 1100
                    currency: 'NGN' // currency of the transaction
                 });
         }

@@ -143,4 +143,20 @@ use App\Models\JobActivity;
 		return 'http://dummyimage.com/300x300/ffffff/405465.jpg&text='.strtoupper( substr($string1,0,1).substr($string2,0,1) );
 		
 	}
+
+	function get_application_statuses($status)
+	{
+
+		$status_array = [];
+
+		$status_array['PENDING'] = ( array_search('PENDING', $status) !== false && intval( array_search('PENDING', $status) + 1 ) > 0 ) ? $status[ intval( array_search('PENDING', $status) ) + 1 ] : 0;
+		$status_array['INTERVIEWED'] = ( array_search('INTERVIEWED', $status) !== false && intval( array_search('INTERVIEWED', $status) + 1 ) > 0 ) ? $status[ intval( array_search('INTERVIEWED', $status) ) + 1 ] : 0;
+		$status_array['REJECTED'] = ( array_search('REJECTED', $status) !== false && intval( array_search('REJECTED', $status) + 1 ) > 0 ) ? $status[ intval( array_search('REJECTED', $status) ) + 1 ] : 0;
+		$status_array['HIRED'] = ( array_search('HIRED', $status) !== false && intval( array_search('HIRED', $status) + 1 ) > 0 ) ? $status[ intval( array_search('HIRED', $status) ) + 1 ] : 0;
+		$status_array['ASSESSED'] = ( array_search('ASSESSED', $status) !== false && intval( array_search('ASSESSED', $status) + 1 ) > 0 ) ? $status[ intval( array_search('ASSESSED', $status) ) + 1 ] : 0;
+		
+		// dd(array_search('PENDING', $status));
+
+		return $status_array;
+	}
 ?>

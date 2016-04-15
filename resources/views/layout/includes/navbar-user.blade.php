@@ -33,7 +33,7 @@
                     <?php //dd(Auth::user()->companies[0]) ?>
 
                     <li class="">
-                        <a class="" href="{{ url(Auth::user()->companies[0]->slug) }}" target="_blank" >My Career Page <i class="fa fa-building mask"></i></a>
+                        <a class="" href="{{ url('my-career-page') }}" target="_blank" >My Career Page <i class="fa fa-building mask"></i></a>
                     </li>
 
 

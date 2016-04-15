@@ -52,7 +52,7 @@
                                              <!-- <input id="job-title" type="text" name="job_title" class="form-control" {{ (Request::old('job_title')) ? ' value='. e(Request::old('job_title')) .'' : '' }}></div> -->
                                            
                                             <div class="col-sm-6">
-                                                    <label for="job-title">job level <span class="text-danger">*</span>
+                                                    <label for="job-title">Job Type <span class="text-danger">*</span>
                                                     </label>
                                                     
                                                     <select name="job_type" id="job_level" required="" type="text" class="form-control">
@@ -106,7 +106,7 @@
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <label for="">Experience <span class="text-danger">*</span></label>
-                                                <textarea name="experience" id="editor2" cols="30" rows="4" class="form-control" placeholder="">{{ (Request::old('experience')) ? ' value='. e(Request::old('experience')) .'' : '' }}</textarea>
+                                                <textarea name="experience" id="editor3" cols="30" rows="4" class="form-control" placeholder="">{{ (Request::old('experience')) ? ' value='. e(Request::old('experience')) .'' : '' }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -245,11 +245,12 @@
                   
 
 
+                
+
+                })
                 CKEDITOR.replace( 'editor1' );
                 CKEDITOR.replace( 'editor3' );
                 CKEDITOR.replace( 'editor2' );
-
-                })
             </script>
     
 

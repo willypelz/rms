@@ -40,6 +40,10 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.landing');
     });
 
+     Route::get('payment_successful', function () {
+        return view('payment.payment_succes');
+    });
+
     Route::get('simple-pay', function(){
 
         // dd(save_activities(4, 'Job application', '', '', 'THis is a very nice comment'));
@@ -70,12 +74,15 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'emails-test', ['uses' => 'CvSalesController@TestEmail', 'as' => 'emails']);
 
     //JOB
+    Route::match(['get', 'post'], 'jobs/send-job', ['uses' => 'JobsController@SendJob', 'as' => 'send-to-friends']);
+    Route::match(['get', 'post'], 'jobs/save-to-mailbox', ['uses' => 'JobsController@SavetoMailbox', 'as' => 'savetoMailbox']);
+   
     Route::match(['get', 'post'], 'jobs/save-job', ['uses' => 'JobsController@SaveJob', 'as' => 'job-draft']);
     Route::match(['get', 'post'], 'jobs/refer-job', ['uses' => 'JobsController@ReferJob', 'as' => 'refer-job']);
     Route::match(['get', 'post'], 'jobs/post-a-job', ['uses' => 'JobsController@PostJob', 'as' => 'post-job']);
     Route::match(['get', 'post'], 'edit-job/{jobid}', ['uses' => 'JobsController@EditJob', 'as' => 'edit-job']);
 
-    Route::match(['get', 'post'], 'jobs/advertise-your-job/{jobID}', ['uses' => 'JobsController@Advertise', 'as' => 'advertise']);
+    Route::match(['get', 'post'], 'jobs/advertise-your-job/{jobID}/{slug?}', ['uses' => 'JobsController@Advertise', 'as' => 'advertise']);
     Route::match(['get', 'post'], 'jobs/share-your-job/{jobID}', ['uses' => 'JobsController@Share', 'as' => 'share-job']);
     Route::match(['get', 'post'], 'jobs/add-candidates/{jobID}', ['uses' => 'JobsController@AddCandidates', 'as' => 'add-candidates']);
     
@@ -89,11 +96,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'job/matching/{jobID}', ['uses' => 'JobsController@JobMatching', 'as' => 'job-matching']);
     
     Route::match(['get', 'post'], 'jobs/teamedit', ['uses' => 'JobsController@Ajax', 'as' => 'ajax-edit-team']);
-    
     Route::match(['get', 'post'], 'job/import-cv-file', ['uses' => 'JobsController@UploadCVfile', 'as' => 'upload-file']);
-
     // Route::match(['get', 'post'], 'job/dashboard/{jobID}', ['uses' => 'JobsController@JobDashboard', 'as' => 'job-view']);
-
     Route::match(['get', 'post'], 'job/apply/{jobID}/{slug}', ['uses' => 'JobsController@jobApply', 'as' => 'job-apply']);
     Route::match(['get', 'post'], 'job-status', ['uses' => 'JobsController@JobStatus', 'as' => 'job-status']);
 	// Route::any('log-in', function () {
@@ -249,7 +253,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('/my-career-page', 'JobsController@MyCompany');
 
-    Route::get('/{c_url}/job/{job_id}', 'JobsController@JobView');
+    // Route::get('/{c_url}/job/{job_id}', 'JobsController@JobView');
     Route::get('/{c_url}/job/{job_id}/{job_slug}', 'JobsController@JobView');
 
     Route::get('/{c_url}', 'JobsController@company');
@@ -265,16 +269,19 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::get('profile/{appl_id}', ['uses' => 'JobApplicationsController@Profile', 'as' => 'applicant-profile']);
         Route::get('messages/{appl_id}', ['uses' => 'JobApplicationsController@Messages', 'as' => 'applicant-messages']);
+        Route::get('activities/{appl_id}', ['uses' => 'JobApplicationsController@activities', 'as' => 'applicant-activities']);
+        Route::get('checks/{appl_id}', ['uses' => 'JobApplicationsController@checks', 'as' => 'applicant-checks']);
+        Route::get('notes/{appl_id}', ['uses' => 'JobApplicationsController@notes', 'as' => 'applicant-notes']);
+        Route::get('assess/{appl_id}', ['uses' => 'JobApplicationsController@assess', 'as' => 'applicant-assess']);
+        Route::get('medicals/{appl_id}', ['uses' => 'JobApplicationsController@medicals', 'as' => 'applicant-medicals']);
 
 
         Route::get('profile', function () {
             return view('applicant.profile');
         });
 
-
-
-        Route::get('compose-mail', function () {
-            return view('applicant.compose-mail');
+        Route::get('checks', function () {
+            return view('applicant.checks');
         });
 
         Route::get('view-mail', function () {
@@ -285,8 +292,8 @@ Route::group(['middleware' => 'web'], function () {
             return view('applicant.notes');
         });
 
-        Route::get('b-check', function () {
-            return view('applicant.b-check');
+        Route::get('activities', function () {
+            return view('applicant.activities');
         });
 
     });

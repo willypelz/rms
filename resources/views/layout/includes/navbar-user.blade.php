@@ -8,7 +8,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ url('dashboard') }}"><i class="fa fa-skype"></i>&nbsp; Seamless Hiring</a>
+                <a class="navbar-brand" href="{{ url('/') }}"><i class="fa fa-skype"></i>&nbsp; Seamless Hiring</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -37,7 +37,7 @@
 
 
                     <li class="">
-                        <a class="" href="{{ url('jobs/listing') }}">Mail <span class="badge badge-danger animated bounce">3</span></a>
+                        <a class="" href="">Mail <span class="badge badge-danger animated bounce">3</span></a>
                     </li>
 
                 </ul>

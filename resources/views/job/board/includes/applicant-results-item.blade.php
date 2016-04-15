@@ -15,7 +15,7 @@
           </h4>
           <p>{{ @$cv['tagline'] }}</p>
           <small>
-              <span class="text-muted">18 minutes ago</span>
+              <span class="text-muted">{{ human_time( @$cv['created'], 1) }}</span>
               &nbsp;
               <a id='showCvBtn' data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">Cv</a>
               <span class="text-muted">·</span>
@@ -107,7 +107,7 @@
 
 
 <script type="text/javascript">
-
+  total_candidates = "{{ $result['response']['numFound'] }}";
   $(document).ready(function(){
         if($('#pagination').data("twbs-pagination")){
             $('#pagination').twbsPagination('destroy');

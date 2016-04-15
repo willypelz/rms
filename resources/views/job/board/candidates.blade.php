@@ -5,6 +5,14 @@
                     @include('job.board.jobBoard-header')
             
    {{-- dd($result) --}}
+   <style type="text/css">
+  .see-more{display: none;}
+  .see-more-shown{ display: block; }
+  .pagination .page{ padding: 0px !important; }
+</style>
+
+            <script src="http://malsup.github.com/jquery.form.js"></script> 
+<script src="{{ asset('js/jquery.twbsPagination.min.js') }}"></script>
             <div class="row">
 
                 <div class="col-sm-12">
@@ -25,7 +33,7 @@
                                 @include('job.board.includes.applicant-status')
                                 
 
-                                <small class="text-muted">Showing 12 of 234 Hired Candidates</small>
+                                <small class="text-muted " id="showing"></small>
                                 </div>
 
                                <div class="col-xs-2">
@@ -59,7 +67,7 @@
                               @include('job.board.includes.applicant-results-item')
                               
                             </div>
-                            <ul id="pagination" class="pagination-sm"></ul>
+                            <!-- <ul id="pagination" class="pagination-sm"></ul> -->
 
                             
 
@@ -118,7 +126,12 @@
 <script type="text/javascript">
     var folders = [];
     var filters = [];
+    var status_filter = "";
+    var total_candidates = "{{ $result['response']['numFound'] }}";
 
+    String.prototype.capitalize = function() {
+        return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
+    }
     $(document).ready(function(){
         
 
@@ -155,7 +168,9 @@
 
         
 
-        $(document).getMyFolders();
+        // $(document).getMyFolders();
+
+        
 
         $(document).on('change', '.filter-div input[type=checkbox]', function(){
             // console.log("changed");
@@ -174,7 +189,7 @@
             }
 
             $('.search-results').html("Loading");
-            $.get("{{ url('cv/search') }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
+            $.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);
@@ -275,6 +290,62 @@
                     
                 });
 
+        });
+
+        $('#status_filters').on('click', 'a', function(){
+
+            status_filter = $(this).attr('data-value');
+
+            $('#status_filters li').removeClass('active');
+            $(this).closest('li').addClass('active');
+
+            if( status_filter == "ALL" )
+            {
+                status_filter = "";
+            }
+            
+            
+
+            $('.search-results').html("Loading");
+            $.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
+                //console.log(response);
+                // var response = JSON.parse(data);
+                // console.log(data.search_results);
+                $('.search-results').html(data.search_results);
+                $('#search-filters').html(data.search_filters);
+
+                $(document).getShowing();
+            });
+        });
+
+        $.fn.getShowing = function(){
+            count = $('.search-results .comment.media').length;
+            status_page = "";
+            if(status_filter == "")
+            {
+                status_page = 'All';
+            }
+            else
+            {
+                status_page = status_filter.capitalize();
+            }
+            // console.log( status_filter );
+            $('#showing').text( 'Showing ' + count + ' of ' + total_candidates + ' ' + status_page + ' Candidates' );
+        }
+
+        $(document).getShowing();
+
+        $('.select-all input[type=checkbox]').on('click',function(){
+
+            if( $(this).prop('checked') )
+            {
+                console.log("here");
+                $('.search-results .media-body input[type=checkbox]').prop('checked', true);
+            }
+            else
+            {
+                $('.search-results .media-body input[type=checkbox]').prop('checked', false);
+            }
         });
 
     });

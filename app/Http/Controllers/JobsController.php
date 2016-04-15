@@ -372,6 +372,17 @@ class JobsController extends Controller
         return view('job.company', compact('company'));
 
     }
+
+    public function MyCompany(){
+
+        $user = Auth::user();
+        $d = User::with('companies')->where('id', $user->id)->first();
+        $company = ($d->companies[0]);
+
+        return redirect('/'.$company->slug);
+
+
+    }
     
     public function Ajax(Request $request){
 

@@ -19,7 +19,7 @@ class JobActivity extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'job_id', 'cv_id', 'activity_type', 'comment'];
+    protected $fillable = ['user_id', 'job_id', 'job_application_id', 'activity_type', 'comment'];
 
     
 }

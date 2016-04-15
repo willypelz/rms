@@ -1,6 +1,6 @@
 <?php
 use App\Models\JobActivity;
-
+// use Faker;
 
 	function test(){
 
@@ -41,16 +41,28 @@ use App\Models\JobActivity;
 	}
 	
 
-	function save_activities($user_id, $activity_type,  $job_id = false, $cv_id = false, $comment = false) {
+	function save_activities($activity_type,  $job_id = false, $job_app_id = false, $comment = false) {
+
+		// List of all Activity type
+		/*
+			REJECT
+			HIRE
+			ADD-TEAM
+			SHARE-APPLICANT
+			MESSAGE
+			SUSPEND-JOB
+			PUBLISH-JOB
+		*/
+
 		  if (!$job_id) $job_id = NULL;
-		  if (!$cv_id) $cv_id = NULL;
+		  if (!$job_app_id) $job_app_id = NULL;
 		  if (!$comment) $comment = NULL;
 
 		$response =  JobActivity::firstOrCreate([
-		  	'user_id'=>$user_id,
+		  	'user_id'=> Auth::user()->id,
 		  	'activity_type'=>$activity_type,
 		  	'job_id'=>$job_id,
-		  	'cv_id'=>$cv_id,
+		  	'job_application_id'=>$job_app_id,
 		  	'comment'=>$comment,
 		  	]);
 
@@ -131,7 +143,7 @@ use App\Models\JobActivity;
 			case 'user':
 				$data_arr = explode(' ', $data['name']);
 				$string1 = $data_arr[0];
-				$string2 = $data_arr[1];
+				$string2 = @$data_arr[1];
 				
 				break;
 			

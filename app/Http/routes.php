@@ -251,16 +251,22 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::group(['prefix'=>'applicant'], function(){
 
+        Route::get('profile/{appl_id}', ['uses' => 'JobApplicationsController@Profile', 'as' => 'applicant-profile']);
+        Route::get('messages/{appl_id}', ['uses' => 'JobApplicationsController@Messages', 'as' => 'applicant-messages']);
+
+
         Route::get('profile', function () {
             return view('applicant.profile');
         });
+
+
 
         Route::get('compose-mail', function () {
             return view('applicant.compose-mail');
         });
 
         Route::get('view-mail', function () {
-            return view('applicant.view-mail');
+            return view('applicant.messages');
         });
 
         Route::get('notes', function () {

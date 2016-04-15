@@ -188,8 +188,9 @@ class JobsController extends Controller
     public function JobList(Request $request){
 
         $user = Auth::user();
-        $comp = User::with('companies.jobs')->where('id', $user->id)->get();
-        $jobs = ($comp[0]->companies[0]->jobs);
+        $user = User::with('companies.jobs')->where('id', $user->id)->first();
+        $jobs = ($user->companies[0]->jobs);
+        $company = $user->companies[0];
         
         $active = 0;
         $suspended = 0;
@@ -200,9 +201,7 @@ class JobsController extends Controller
                 $suspended++;
             }
         }
-       $comp_name = ($comp[0]->companies[0]->name);
-
-        return view('job.job-list', compact('jobs', 'active', 'suspended', 'comp_name'));
+        return view('job.job-list', compact('jobs', 'active', 'suspended', 'company'));
     }
 
     public function JobBoard($id, Request $request){

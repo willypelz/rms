@@ -110,6 +110,12 @@ class Solr {
 		return Solr::search_resume($data,$additional);
 	}
 
+	static function get_applicants($data, $job_id)
+	{
+		$additional = "&fq=job_id:". $job_id;
+		return Solr::search_resume($data,$additional);
+	}
+
 
 	static function quick_search_job($data){
 		extract($data);

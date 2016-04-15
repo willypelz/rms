@@ -9,7 +9,7 @@
 <br>
                 
                 <div class="row">
-                    <div class="col-xs-5">
+                    <div class="col-xs-5 hidden">
                         
                           <p class="">
                                 <!-- Single button -->
@@ -48,7 +48,7 @@
                 <div class="clearfix"></div>
                 <div class="tab-content stack" id="cv">
                     <pre>
-                        {{ $cv['extracted_content'][0] }}
+                        {{ removeCVCcontact( $cv['extracted_content'][0] ) }}
                     </pre>
                 </div>
    

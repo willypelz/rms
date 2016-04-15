@@ -84,7 +84,7 @@ Route::group(['middleware' => 'web'], function () {
     
     Route::match(['get', 'post'], 'job/dashboard/{jobID}', ['uses' => 'JobsController@JobBoard', 'as' => 'job-board']);
     Route::match(['get', 'post'], 'job/activities/{jobID}', ['uses' => 'JobsController@JobActivities', 'as' => 'job-activities']);
-    Route::match(['get', 'post'], 'job/candidates/{jobID}', ['uses' => 'JobsController@JobCandidates', 'as' => 'job-candidates']);
+    
     Route::match(['get', 'post'], 'job/team/{jobID}', ['uses' => 'JobsController@JobTeam', 'as' => 'job-team']);
     Route::match(['get', 'post'], 'job/matching/{jobID}', ['uses' => 'JobsController@JobMatching', 'as' => 'job-matching']);
     
@@ -100,6 +100,10 @@ Route::group(['middleware' => 'web'], function () {
 	//     return view('auth.login');
 	// });
 
+
+    Route::match(['get', 'post'], 'job/candidates/{jobID}', ['uses' => 'JobApplicationsController@viewApplicants', 'as' => 'job-candidates']);
+
+    
     Route::get('boss', function () {
         return view('cv-sales.tobi');
     });

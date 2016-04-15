@@ -104,4 +104,13 @@ use App\Models\JobActivity;
 	
 	}
 
+	function removeCVCcontact($string) {
+	    // remove email
+	    $string = preg_replace('/([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)/','',$string);
+
+	    // remove phone
+	    $string = preg_replace('/([+]?[0-9]+[\- ]?[0-9]+)/','',$string);
+
+	    return $string;
+	}
 ?>

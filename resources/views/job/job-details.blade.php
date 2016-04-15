@@ -6,8 +6,6 @@
 
 @section('content')
 
-
-
     <section class="no-pad">
         <div class="container">
             <div class="row">
@@ -31,17 +29,8 @@
                                         <li>
                                             <strong>&nbsp;Expires:</strong>&nbsp; 21 Jun, 2014</li>
                                     </ul>
-                            
-                                    <!-- <div class="badge badge-job badge-job-active">
-                                        <small class="">
-                                            <span class="glyphicon glyphicon-ok"></span>
-                                            &nbsp; Job is active
-                                        </small>
-                                    </div> -->
                                 </div>
                                 <div class="clearfix"></div>
-                                
-                            
                             
                                 </div>
                         </div>
@@ -56,15 +45,19 @@
                                     <div class="col-sm-3">
                                         <a href="{{ url('job/apply/'.$job['id'].'/'.str_slug($job['title']) ) }}" class="btn btn-success btn-block"><i class="fa fa-edit"></i> Apply <span class="">for Job</span></a>
                                     </div>
-                                        <div class="col-sm-5">                                            
+
+                                        <div class="col-sm-5">
+                                                <span style='color:red' id='saveMailboxResponse'></span>
+                                                                                    
                                             <div class="btn-group btn-group-justified">
                                                 <div class="btn-group">
-                                                    <a href="" class="btn btn-line"> Save <span class="">to mailbox</span></a>
+                                                    <a href="" onclick="SavetoMailbox(); return false;" id="saveTomyMailbox" class="btn btn-line"> Save <span class="">to mailbox</span></a>
                                                 </div>
                                                 <div class="btn-group">
-                                                    <a href="" class="btn btn-line"> Send<span class=""> to friend</span></a>
+                                                    <a href="" class="btn btn-line" data-toggle="modal" data-target="#myModal"> Send<span class=""> to friend</span></a>
                                                 </div>
                                             </div>
+                                          
                                         </div>
                                         <div class="col-sm-4">
                                             
@@ -161,17 +154,6 @@
 
                                     </div>
                         
-                                    <!--<div class="panel panel-default">-->
-                                    <!--<div class="panel-heading">-->
-                                    <!--<h4 class="panel-title">Friends who work <p>Medical Doctor, Valuepreneur, Doer... </p></h4>-->
-                                    <!--</div>-->
-                                    <!--<div class="panel-collapse skill">-->
-                                    <!--<div class="panel-body">-->
-                                    <!--<a href="#" class="btn btn-info" role="button">CSS</a> <a href="#" class="btn btn-info" role="button">HTML</a> <a href="#" class="btn btn-info" role="button">jQuery</a>-->
-                                    <!--</div>-->
-                                    <!--</div>-->
-                                    <!--</div>-->
-                        
                                 </div>
                                     </div>
                         
@@ -202,6 +184,89 @@
             </div>
         </div>
     </section>
+
+
+
+    <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Send to Friends</h4>
+      </div>
+      <div class="modal-body">
+        <span style='color:red' id="responseData"></span>
+      <form action="{{ route('send-to-friends') }}" id="SendJob">
+        Email Address<br>
+        <input type="text" id="inputemail"  name="emails" class="form-control" placeholder="separate with commas (,)">
+        <input type="hidden"  name="jobid" value="{{ $job['id'] }}">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" id="SendEmailBtn" class="btn btn-primary">Send Email</button>
+      </div>
+    </div>
+    </form>
+  </div>
+</div>
+
+<script>
+                    function SavetoMailbox(){
+
+                        $('#saveTomyMailbox').html('please wait ....')
+                        var url = "{{ route('savetoMailbox') }}"
+                        $.ajax
+                        ({
+                            type: "POST",
+                            url: url,
+                            data: ({ rnd : Math.random() * 100000, jobid:"{{ $job['id'] }}" }),
+                            success: function(response){
+                                 console.log(response)
+                                $('#saveMailboxResponse').html(response);
+                                // $('#saveTomyMailbox').html('Save to mailbox')
+
+                                 setTimeout(alertFunc, 1500);
+                                    function alertFunc() {
+                                       $('#saveMailboxResponse').html('');
+                                        $('#saveTomyMailbox').html('Save to mailbox')
+                                    }
+
+                            }
+                        });
+                    }
+
+                    $(document).ready(function() { 
+
+                        
+                        
+                        $('#SendJob').ajaxForm({
+                                beforeSubmit: genPreSubmit,
+                                success: function(response){
+                                // console.log(response);
+                                $("#SendEmailBtn").html('Send Email');
+                                $("#responseData").html(response);
+
+                                    setTimeout(alertFunc, 1500);
+                                    function alertFunc() {
+                                        $('#myModal').modal('hide')
+                                        $("#responseData").html('');
+                                        $("#inputemail").val('');
+                                    }
+
+                                },
+                                 reset: true
+                         }); 
+
+                        function genPreSubmit(){
+                          console.log("We are here....");
+                          $("#SendEmailBtn").html('please wait...');
+
+                        }
+                    });
+</script>
+
+
 
 <div class="separator separator-small"><br></div>
 

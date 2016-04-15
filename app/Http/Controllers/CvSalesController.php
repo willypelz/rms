@@ -194,12 +194,12 @@ class CvSalesController extends Controller
 
         $user = Auth::user();
 
-        // $company = Auth::user()->companies[0];
-
         if(empty($user)){
             $view = view('auth.ajax_login');
             return $view;
         }
+
+        $invoice_no = mt_rand();
 
         $d = User::with('companies')->where('id', $user->id)->first();
         $company = ($d->companies[0]);
@@ -215,7 +215,8 @@ class CvSalesController extends Controller
                         'company_id' => $company->id,
                         'order_date'=> date('Y-m-d H:i:s'),
                         'total_amount'=>$total_amount,
-                        'type'=> 'Job Board'
+                        'type'=> 'Job Board',
+                        'invoice_no'=> $invoice_no,
                 ]);
 
                 foreach ($items as $k) {
@@ -261,6 +262,8 @@ class CvSalesController extends Controller
                 ]);
             }
             $order_id = $order->id;
+
+
 
            // Mail::send('emails.cv-sales.invoice', ['user' => $user], function ($m) use ($user) {
            //      $m->from('alerts@insidify.com', 'Your Application');

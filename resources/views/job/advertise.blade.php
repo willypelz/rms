@@ -19,6 +19,7 @@
                     <br>
                     <div class="page">
 
+                        @if(empty($slug))
                         <div class="btn-group btn-group-justified text-uppercase btn-progress" role="group" aria-label="...">
                           <!-- <div class="btn-group" role="group">
                             <a href="create-job.php" type="button" class="btn btn-line text-capitalize"><i class="fa fa-file-text-o"></i>
@@ -39,6 +40,8 @@
                             &nbsp; <span class="hidden-xs"> add candidates </span></a>
                           </div>
                         </div>
+                        @endif
+
                         <div class="row">
                             
                             
@@ -272,6 +275,7 @@
 
 
 </script>
+
 
 
 

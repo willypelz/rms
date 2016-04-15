@@ -54,10 +54,10 @@ class JobApplicationsController extends Controller
         $job = Job::find($request->jobID);
         $active_tab = 'candidates';
 
-        $response = Solr::get_applicants($this->search_params, $request->jobID);
-        dd($response);
+        $result = Solr::get_applicants($this->search_params, $request->jobID);
+        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
-        return view('job.board.candidates', compact('job', 'active_tab'));
+        return view('job.board.candidates', compact('job', 'active_tab','result','application_statuses'));
     }
 
 

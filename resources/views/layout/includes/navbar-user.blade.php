@@ -30,8 +30,7 @@
                         <a class="" href="{{ url('my-jobs') }}">My Jobs <i class="fa fa-briefcase mask"></i></a>
 
                     </li>
-                    <?php //dd(Auth::user()->companies[0]) ?>
-
+                    
                     <li class="">
                         <a class="" href="{{ url('my-career-page') }}" target="_blank" >My Career Page <i class="fa fa-building mask"></i></a>
                     </li>

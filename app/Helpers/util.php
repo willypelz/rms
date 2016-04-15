@@ -104,13 +104,43 @@ use App\Models\JobActivity;
 	
 	}
 
-	function removeCVCcontact($string) {
+	function remove_cv_contact($string) {
 	    // remove email
-	    $string = preg_replace('/([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)/','',$string);
+	    $string = preg_replace('/([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)/','*****@****.***',$string);
 
 	    // remove phone
-	    $string = preg_replace('/([+]?[0-9]+[\- ]?[0-9]+)/','',$string);
+	    $string = preg_replace("/((\+)*\s*\(*(234|0)\)*\s*\(*(234|0|1*)\)*\s*\-*\s*\d{3}\s*\-*\s*\d{3}\s*\d{4}|(\+)*\s*\(*(234|0|1)\)*\s*\(*(234|0|1)*\)*\s*\-*\s*\d{3}\s*\-*\s*\d{4})/i",'***-***-****',$string);
+	    // '/([+]?[0-9]+[\- ]?[0-9]+)/'
 
 	    return $string;
+	}
+
+	function default_picture($data, $type='cv')
+	{
+		if( !is_array($data) )
+		{
+			$data = $data->toArray();
+		}
+
+		switch ($type) {
+			case 'cv':
+				$string1 = $data['first_name'];
+				$string2 = $data['last_name'];
+				
+				break;
+			case 'user':
+				$data_arr = explode(' ', $data['name']);
+				$string1 = $data_arr[0];
+				$string2 = $data_arr[1];
+				
+				break;
+			
+			default:
+				# code...
+				break;
+		}
+
+		return 'http://dummyimage.com/300x300/ffffff/405465.jpg&text='.strtoupper( substr($string1,0,1).substr($string2,0,1) );
+		
 	}
 ?>

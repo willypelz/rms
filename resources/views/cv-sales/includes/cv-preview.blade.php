@@ -9,12 +9,12 @@
 <br>
                 
                 <div class="row">
-                    <div class="col-xs-5 hidden">
+                    <div class="col-xs-5 ">
                         
-                          <p class="">
+                          <p class="hide">
                                 <!-- Single button -->
                             <div class="btn-group">
-                              <button type="button" class="btn btn-line btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <button type="button" class="btn btn-line btn-sm dropdown-toggle hide" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Save into Folder &nbsp; <span class="caret"></span>
                               </button>
                               <ul class="dropdown-menu">
@@ -38,7 +38,7 @@
 
                     <div class="col-xs-2">
                         <div class="text-center cv-portrait">
-                            <img src="{{ asset('img/'.$cv['display_picture']) }}" class="img-circle">
+                            <img src="{{ default_picture( $cv ) }}" class="img-circle">
                         </div>
                     </div>
 
@@ -48,7 +48,7 @@
                 <div class="clearfix"></div>
                 <div class="tab-content stack" id="cv">
                     <pre>
-                        {{ removeCVCcontact( $cv['extracted_content'][0] ) }}
+                        {{ remove_cv_contact( $cv['extracted_content'][0] ) }}
                     </pre>
                 </div>
    

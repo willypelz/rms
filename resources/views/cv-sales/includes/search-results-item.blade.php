@@ -12,7 +12,7 @@
 
       <span class="col-md-10 col-sm-9">
               <h4 class="text-muted">
-              <a href="my-cv.html">{{ ucwords( $cv['first_name']. " " . $cv['last_name'] ) }}</a>
+              <a href="javascript://" id='showCvBtn' data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">{{ ucwords( $cv['first_name']. " " . $cv['last_name'] ) }}</a>
                   <span class="small">
                   
                   @if(@$cv['dob'])

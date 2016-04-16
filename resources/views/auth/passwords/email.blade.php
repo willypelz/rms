@@ -13,8 +13,8 @@
             <div class="row">
 
                 <div class="col-sm-4 col-sm-offset-4 text-center">
-                    <h2>Seamless Hiring</h2>
-                    <p class="text-muted">Africa's fastest growing network of professionals</p>
+                    <h2 class="text-brandon text-light">Seamless Hiring</h2>
+                    <p class="">Your Password Reset</p>
                 </div>
 
                 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
@@ -28,7 +28,7 @@
                             <div class="row">
                                 <p class="text-center">Sign in with</p>
                         
-                            <div class="row">
+                            <div class="">
                             <div class="col-sm-12">
                                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                     <label for="">Your Email</label>
@@ -45,14 +45,14 @@
                          
                             </div>
 
-                            <div class="row"><br>
+                            <div class=""><br>
 
-                                <div class="col-sm-10 col-sm-offset-1 col-md-12 col-sm-offset-0">
+                                <div class="col-sm-12">
                                     <button type="submit" class="btn btn-success btn-block">Send Password Reset Link &raquo;</button>
                                 </div>
 
 
-                                <div class="col-sm-6"><br>
+                                <div class="col-sm-12"><br>
                                     <p class="small text-right">Not registered? <a href="{{ url('sign-up') }}">Sign Up Here</a></p>
                                 </div>
 

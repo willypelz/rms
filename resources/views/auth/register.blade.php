@@ -33,18 +33,22 @@
     .error{
         color:red;
     }
+    body{
+        background:url('img/intro-bg.jpg') no-repeat fixed ;
+        background-size:cover;
+    }
 </style>
 
-<section>
+<section class="no-pad">
         <div class="container">
             <div class="row">
 
-                <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-center">
-                    <h2>Seamless Hiring</h2>
-                    <p class="text-muted">Africa's fastest growing network of professionals</p>
+                <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-center text-white">
+                    <h2 class="text-brandon text-light">Seamless Hiring</h2>
+                    <p class="">Africa's fastest growing network of professionals</p><br>
                 </div>
 
-                <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+                <div class="col-sm-8 col-sm-offset-2">
 
                     <div class="white padbox rounded">
 
@@ -117,8 +121,6 @@
                                     @endif
                                 </div>
                             </div>
-                            
-                            <hr>
                             <br style="clear: both;"><br style="clear: both;">
 
                             
@@ -262,6 +264,10 @@
 
                     </div>
                     <!--/tab-content-->
+
+                    <div class="separator separator-small text-center text-muted">
+                        <p class="small">&copy; 2016. Seamless Hiring. All Rights Reserved</p>
+                    </div>
 
                 </div>
 

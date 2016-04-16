@@ -28,4 +28,11 @@ class JobApplication extends Model
                                 ->whereIn('cv_id',$cv_ids)
                                 ->update( ['status'=>$status] );
     }
+
+
+    public function requests(){
+
+        return $this->hasMany('App\Models\AtsRequest');
+
+    }
 }

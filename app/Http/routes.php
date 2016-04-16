@@ -45,9 +45,9 @@ Route::group(['middleware' => 'web'], function () {
     });
 
     Route::get('simple-pay', function(){
-
-        // dd(save_activities(4, 'Job application', '', '', 'THis is a very nice comment'));
-        return view('payment.simplepay');
+        dd('here');
+        dd(save_activities('HIRE', '', '', 'THis is a very nice comment'));
+        //return view('payment.simplepay');
     });
 
     Route::get('log-in', 'Auth\AuthController@showLoginForm');
@@ -84,13 +84,15 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'jobs/advertise-your-job/{jobID}/{slug?}', ['uses' => 'JobsController@Advertise', 'as' => 'advertise']);
     Route::match(['get', 'post'], 'jobs/share-your-job/{jobID}', ['uses' => 'JobsController@Share', 'as' => 'share-job']);
-    Route::match(['get', 'post'], 'jobs/add-candidates/{jobID}', ['uses' => 'JobsController@AddCandidates', 'as' => 'add-candidates']);
+    Route::match(['get', 'post'], 'jobs/add-candidates/{jobID}', ['uses' => 'JobsController@AddCandidates', 'as' => 'add-job-candidates']);
+    Route::match(['get', 'post'], 'jobs/add-candidates', ['uses' => 'JobsController@AddCandidates', 'as' => 'add-candidates']);
     
     Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
     Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}', ['uses' => 'JobsController@JobView', 'as' => 'job-view']);
+    Route::match(['get', 'post'], 'job/preview/{jobID}', ['uses' => 'JobsController@Preview', 'as' => 'job-preview']);
     
-    Route::match(['get', 'post'], 'job/dashboard/{jobID}', ['uses' => 'JobsController@JobBoard', 'as' => 'job-board']);
-    Route::match(['get', 'post'], 'job/activities/{jobID}', ['uses' => 'JobsController@JobActivities', 'as' => 'job-activities']);
+    Route::match(['get', 'post'], 'job/activities/{jobID}', ['uses' => 'JobsController@JobActivities', 'as' => 'job-board']);
+    Route::match(['get', 'post'], 'job/promote/{jobID}', ['uses' => 'JobsController@JobPromote', 'as' => 'job-promote']);
     
     Route::match(['get', 'post'], 'job/team/{jobID}', ['uses' => 'JobsController@JobTeam', 'as' => 'job-team']);
     Route::match(['get', 'post'], 'job/matching/{jobID}', ['uses' => 'JobsController@JobMatching', 'as' => 'job-matching']);
@@ -99,6 +101,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'job/import-cv-file', ['uses' => 'JobsController@UploadCVfile', 'as' => 'upload-file']);
     // Route::match(['get', 'post'], 'job/dashboard/{jobID}', ['uses' => 'JobsController@JobDashboard', 'as' => 'job-view']);
     Route::match(['get', 'post'], 'job/apply/{jobID}/{slug}', ['uses' => 'JobsController@jobApply', 'as' => 'job-apply']);
+    Route::match(['get', 'post'], 'job/applied/{jobID}/{slug}', ['uses' => 'JobsController@jobApplied', 'as' => 'job-applied']);
     Route::match(['get', 'post'], 'job-status', ['uses' => 'JobsController@JobStatus', 'as' => 'job-status']);
 	// Route::any('log-in', function () {
 	//     return view('auth.login');
@@ -122,9 +125,7 @@ Route::group(['middleware' => 'web'], function () {
         return view('auth.register2');
     });
 
-    Route::get('dashboard', function () {
-        return view('talent-pool.dashboard');
-    });
+    Route::get('dashboard', ['uses'=>'HomeController@dashbaord', 'as'=>'dashboard']);
 
     /**
      * Route Group for everything cv
@@ -220,10 +221,7 @@ Route::group(['middleware' => 'web'], function () {
             return view('job.share');
         });
 
-        Route::get('add-candidates', function () {
-            return view('job.add-candidates');
-        });
-
+        
         Route::get('preview', function () {
             return view('job.preview');
         });

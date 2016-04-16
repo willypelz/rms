@@ -222,8 +222,13 @@ class JobsController extends Controller
 
     public function ActivityContent(Request $request){
          $content = '<ul class="list-group list-notify">';
-        $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_id', $request->jobid)->orderBy('created_at', 'desc')->get();
-        // dd($activities->toArray());
+        
+        if(!empty($request->appl_id)){
+            $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('created_at', 'desc')->get();
+        }else{
+            $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_id', $request->jobid)->orderBy('created_at', 'desc')->get();
+        }
+
         foreach ($activities as $ac) {
             $type = $ac->activity_type;
 
@@ -261,7 +266,7 @@ class JobsController extends Controller
                                   </p>
                                 </li>';
                      break;
-                 case "MESSAGE":
+                 case "COMMENT":
                  $applicant = $ac->application->cv;
 
                      $content .= '<li role="messaging" class="list-group-item">
@@ -271,25 +276,10 @@ class JobsController extends Controller
                                     <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
                                   </span>
                           
-                                  <h5 class="no-margin text-success">Message</h5>
+                                  <h5 class="no-margin text-success">Comment</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']
                                       </small> '. $ac->user->name .' said '.$ac->comment.' about <a href="#">'.$applicant->first_name.'</a>
-                                  </p>
-                                  
-                                </li>';
-                     break;
-                 case "SHARE-APPLICANT":
-                     $content .= '<li role="messaging" class="list-group-item">
-                          
-                                 <span class="fa-stack fa-lg i-notify">
-                                    <i class="fa fa-circle fa-stack-2x text-success"></i>
-                                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
-                                  </span>
-                          
-                                  <h5 class="no-margin text-success">Message</h5>
-                                  <p>
-                                      <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']</small> Olwatosin Oriola reply <a href="jobs/list">your message. Go to Message</a>
                                   </p>
                                   
                                 </li>';

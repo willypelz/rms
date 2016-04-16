@@ -36,8 +36,6 @@
                           <div class="clearfix"><hr></div>
                             
                             <div id="ActivityContent"></div>
-                             <?php  $content ?>
-
                             <!-- <a href="background-check" class="btn btn-success btn-sm pull-right"><i class="fa fa-commenting-o"></i> &nbsp; Add a Comment</a> -->
                           
                               <div class="clearfix"></div>

@@ -159,6 +159,9 @@ Route::group(['middleware' => 'web'], function () {
         });
 
         Route::get('saved', 'CvSalesController@viewSaved');
+        Route::get('purchased', 'CvSalesController@viewPurchased');
+        Route::get('talent-pool', 'CvSalesController@viewTalentPool');
+        
 
 
         Route::post('get-my-folders', 'CvSalesController@getMyFolders');

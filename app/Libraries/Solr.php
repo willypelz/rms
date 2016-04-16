@@ -106,9 +106,22 @@ class Solr {
 
 	static function get_saved_cvs($data)
 	{
+		$additional = "&fq=company_folder_id:". @Auth::user()->companies[0]->id."&fq=folder_type:saved";
+		return Solr::search_resume($data,$additional);
+	}
+
+	static function get_purchased_cvs($data)
+	{
+		$additional = "&fq=company_folder_id:". @Auth::user()->companies[0]->id."&fq=folder_type:purchased";
+		return Solr::search_resume($data,$additional);
+	}
+
+	static function get_all_my_cvs($data)
+	{
 		$additional = "&fq=company_folder_id:". @Auth::user()->companies[0]->id;
 		return Solr::search_resume($data,$additional);
 	}
+	
 
 	static function get_applicants($data, $job_id, $status = "")
 	{

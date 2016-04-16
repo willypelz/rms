@@ -20,9 +20,9 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle" href="cv-search.php" data-toggle="dropdown">Candidates &nbsp; <i class="fa fa-caret-down no-margin"></i></a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ url('cv/cv_pool') }}">All my CVs</a></li>
+                            <li><a href="{{ url('cv/talent-pool') }}">All my CVs</a></li>
                             <li><a href="{{ url('cv/saved') }}">Saved Cvs</a></li>
-                            <li><a href="{{ url('cv/cv_purchased') }}">Purchased Cvs</a></li>
+                            <li><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li>
                         </ul>
                     </li>
 

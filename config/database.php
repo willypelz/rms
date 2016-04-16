@@ -68,7 +68,7 @@ return [
         'mysql_inf' => [
             'driver'    => 'mysql',
             'host'      => env('DB_HOST', '50.28.104.199'),
-            'database'  => 'infrastructure_bank',
+            'database'  => 'infrastructure',
             'username'  => env('DB_USERNAME', 'dejinsidfy'),
             'password'  => env('DB_PASSWORD', 'd3j1ndify'),
             'charset'   => 'utf8',

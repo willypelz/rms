@@ -5,13 +5,13 @@
   <hr>
   <div class="comment media" data-cv="{{ $cv['id'] }}">
       <span class="col-md-2 col-sm-3">
-        <a href="{{ route('applicant-profile', $cv['application_id'] ) }}" target="_blank"  class="pull-left">
+        <a href="{{ route('applicant-profile', $cv['application_id'][0] ) }}" target="_blank"  class="pull-left">
             <img alt="" src="{{ default_picture( $cv ) }}" class="media-object " width="100%">
         </a>
       </span>
       <div class="media-body">
           <input type="checkbox" class="media-body-check pull-right">
-          <h4 class="media-heading text-muted"><a href="{{ route('applicant-profile', $cv['application_id'] ) }}" target="_blank">{{ ucwords( $cv['first_name']. " " . $cv['last_name'] ) }}</a>
+          <h4 class="media-heading text-muted"><a href="{{ route('applicant-profile', $cv['application_id'][0] ) }}" target="_blank">{{ ucwords( $cv['first_name']. " " . $cv['last_name'] ) }}</a>
           </h4>
           <p>{{ @$cv['tagline'] }}</p>
           <small>
@@ -19,7 +19,7 @@
               &nbsp;
               <a id='showCvBtn' data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">Cv</a>
               <span class="text-muted">·</span>
-              <a href="#">Review</a>
+              <a href="#" data-toggle="modal" data-target="#reviewCv[data-user='{{ @$cv['id'] }}']" id="reviewBtn-{{ $cv['application_id'][0] }}">Review</a>
               <span class="text-muted">·</span>
               <a href="#">Assess</a>
               <span class="text-muted">·</span>
@@ -28,11 +28,8 @@
               <a href="#">Reject</a>
 
               <span class="pull-right">
-                  <a class="text-muted" href="#">other items</a>
+                  <a class="text-muted" href="#">Background Check</a>
                   <span class="text-muted">·</span>
-                  <a class="text-muted" href="#">option1</a>
-                  <span class="text-muted">·</span>
-                  <a class="text-muted" href="#">option2</a>
               </span>
           </small>
 
@@ -43,6 +40,39 @@
 <div class="modal fade no-border" id="showCv" data-user="{{ @$cv['id'] }}" tabindex="-1" role="dialog" aria-labelledby="cvViewModalLabel" aria-hidden="false">
   @include('cv-sales.includes.cv-preview')
 </div>
+
+<div class="modal fade" tabindex="-1" id="reviewCv" data-user="{{ @$cv['id'] }}" role="dialog" aria-labelledby="reviewCv">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+            <h3 class="text-center">Write a review</h3>
+
+
+        <section class="no-pad" id='ContentAREA'>
+                <div class="">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="content rounded">
+                                <div id="message"></div>
+                                <div class="form-group">
+                                    <textarea class="form-control" id="add_folder" data-app-id="{{ $cv['application_id'][0] }}"></textarea>
+                              
+                                    
+                                  </div>
+                                  <div class="clearfix"></div>
+                              <div class="pull-right">
+                                  <a href="javascript://" id="writeReviewBtn" data-app-id="{{ $cv['application_id'][0] }}" data-cv="{{ $cv['id'] }}" class="btn btn-success pull-right">Send</a>
+                                  <div class="separator separator-small"></div>
+                              </div>
+        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+         </section>
+        </div>
+      </div>
+    </div>
 <!--script>
     $(document).ready(function(){
 

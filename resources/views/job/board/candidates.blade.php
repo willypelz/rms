@@ -13,6 +13,8 @@
 
             <script src="http://malsup.github.com/jquery.form.js"></script> 
 <script src="{{ asset('js/jquery.twbsPagination.min.js') }}"></script>
+<script src="{{ asset('js/jquery.jscroll.min.js') }}"></script>
+
             <div class="row">
 
                 <div class="col-sm-12">
@@ -58,14 +60,13 @@
                             <div class="clearfix"></div>
 
                             
-                            <div class="search-results">
+                            <div class="search-results scroll">
 
                               @include('job.board.includes.applicant-results-item')
                               
+                              <a href="{{ route('job-candidates-infinite', [$jobID, $start ]) }}" class="nextPageLoad">load next page</a>
                             </div>
                             <!-- <ul id="pagination" class="pagination-sm"></ul> -->
-
-                            
 
                             
 
@@ -130,6 +131,19 @@
     }
     $(document).ready(function(){
         
+        // $('.infinite-scroll').jscroll({
+        //     loadingHtml: 'Loading...',
+        //     padding: 20,
+        //     nextSelector: 'a.jscroll-next:last',
+        //     contentSelector: 'li'
+        // });
+        
+        // $(".scroll").jscroll({ 
+        //     nextSelector: ".nextPageLoad",
+        //     callback: function(){
+        //         console.log("shit");
+        //     }
+        // });
 
         $.fn.setMyFolders = function(cv_folders)
         {
@@ -348,8 +362,11 @@
             // cvs = $('.search-results .comment.media').prop('data-cv');
             $field = $(this);
             var cv_ids =$(".search-results .comment.media").map(function(i,v){
-
-                       return $(this).data("cv");
+                        if( $(this).find('.media-body-check').is(':checked') )
+                        {
+                            return $(this).data("cv");
+                        }
+                       
 
                     }).get();
 
@@ -375,6 +392,31 @@
                 });
 
             // console.log(cvs);
+        });
+
+        $('body #writeReviewBtn').on('click', function(){
+            $field = $(this);
+            $.post("{{ route('write-review') }}", {job_id: '{{ $jobID }}',comment :  $('body textarea[data-app-id="' + $field.data('app-id') + '"]').val() ,job_app_id: $field.data('app-id') },function(data){
+                    // if(data == true)
+                    // {
+                    //   // $field.val("").hide();
+                    //   $(this).getMyFolders();
+                    //   $('#newFolder #message').html('<div class="alert alert-success">Folder added successfully</div>');
+                    //   $('#newFolder').modal('toggle');
+                      
+                    // }
+
+                    // else
+                    // {
+                    //   $field.val("").hide();
+                    //   // $field.after('<p>'+ data +'</p>');
+                    //   $('#loginModal #mssg').text(data);
+                    //   $('.signin').trigger('click');
+                    // }
+                    
+                    // $('#reviewBtn-' + $field.data('app-id') ).trigger('click');
+                    $( '#reviewCv[data-user="' + $field.data('cv') + '"]' ).modal('toggle');
+                });
         });
 
     });

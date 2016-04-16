@@ -106,6 +106,8 @@ class JobApplicationsController extends Controller
         $jobID = $request->jobID;
 
         $this->search_params['filter_query'] = @$request->filter_query;
+        $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start + $this->search_params['row'] ) : 0;
+        
         
         $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status);
         
@@ -113,23 +115,30 @@ class JobApplicationsController extends Controller
 
         if($request->ajax())
         {
-            $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab','result','jobID'))->render();    
+            $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab','result','jobID','start'))->render();    
             $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters ] );
             
         }
         else{
             $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
-            return view('job.board.candidates', compact('job', 'active_tab','result','application_statuses','jobID'));
+            return view('job.board.candidates', compact('job', 'active_tab','result','application_statuses','jobID','start'));
         }
 
         
     }
+
+
 
     public function massAction( Request $request )
     {
         JobApplication::massAction( $request->job_id, $request->cv_ids, $request->status );
     }
 
+    public function writeReview( Request $request )
+    {
+         return save_activities('REVIEW',  $request->job_id, $request->job_app_id, $request->comment );
+    }
 
+    
 }

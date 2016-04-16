@@ -80,7 +80,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 .navbar {
     background: #3A5979;
-    border-top: 2px solid #BDFDBA;
+    /* border-top: 2px solid #BDFDBA; */
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     box-shadow: 0 1px 0px rgba(255, 255, 255, 0.07);
 }

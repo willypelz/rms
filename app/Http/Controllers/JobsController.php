@@ -28,7 +28,10 @@ class JobsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => [
+            'JobView',
+            'company',
+        ]]);
     }
 
     /**
@@ -561,6 +564,8 @@ class JobsController extends Controller
                                         $query->where('status', "ACTIVE")->where('expiry_date','>',date('Y-m-d'));
                                     }])->where('slug', $c_url)->first();
 
+
+        // dd($company);
 
         return view('job.company', compact('company'));
 

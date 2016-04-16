@@ -28,7 +28,7 @@
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="#" type="button" class="btn btn-line text-capitalize">
+                            <a href="{{ url('cv/talent-pool') }}" type="button" class="btn btn-line text-capitalize">
                             <span class="fa-lg"><i class="fa fa-bar-chart"></i>
                             <span class="hidden-xs text-brandon text-capitalize"> View Talent Pool</span><br></span>
                             <small class="text-muted hidden-xs">Resumes / CVs</small>
@@ -172,16 +172,16 @@
                         <div class="owl-item col-sm-3">
                             <div class="panel-body text-left">
                               <p class="post-img">
-                                <a href="{{ 'https://insidify.com/discovery'.$post->slug }}" target="_blank" >
+                                <a href="{{ 'https://insidify.com/discovery/'.$post->slug }}" target="_blank" >
                                   <img src="https://files.insidify.com/{{ $post->picture }}" class="img-responsive" width="100%">
                                 </a>
                               </p>
-                              <h4 class="post-title"><a href="{{ 'https://insidify.com/discovery'.$post->slug }}" target="_blank">
+                              <h4 class="post-title"><a href="{{ 'https://insidify.com/discovery/'.$post->slug }}" target="_blank">
                                 {{ $post->title }}</a></h4>
                               <p class="">{{ $post->summary }}
                               </p>
                               <p>
-                                  <a href="{{ 'https://insidify.com/discovery'.$post->slug }}" target="_blank" class="btn btn-line">Read</a>
+                                  <a href="{{ 'https://insidify.com/discovery/'.$post->slug }}" target="_blank" class="btn btn-line">Read</a>
                               </p>
                             </div>
                         </div>

@@ -21,5 +21,15 @@ class JobActivity extends Model
      */
     protected $fillable = ['user_id', 'job_id', 'job_application_id', 'activity_type', 'comment'];
 
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+     public function application()
+    {
+        return $this->belongsTo('App\Models\JobApplication', 'job_application_id');
+    }
     
 }

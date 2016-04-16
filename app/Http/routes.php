@@ -45,8 +45,7 @@ Route::group(['middleware' => 'web'], function () {
     });
 
     Route::get('simple-pay', function(){
-
-        // dd('here');
+        dd('here');
         dd(save_activities('HIRE', '', '', 'THis is a very nice comment'));
         //return view('payment.simplepay');
     });

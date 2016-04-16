@@ -29,15 +29,16 @@
                         <div class="col-xs-12">
                           <h6 class="no-margin">
                               <span class="text-brandon text-uppercase">
-                              Applicants Activities 
+                              Job Activities 
                               </span> 
-                              <span class="pull-right"><a href=""><i class="fa fa-cog"></i>Notification Settings</a></span>
+                              <!-- <span class="pull-right"><a href=""><i class="fa fa-cog"></i>Notification Settings</a></span> -->
                           </h6>
                           <div class="clearfix"><hr></div>
-                          
-                             <?php  echo $content ?>
+                            
+                            <div id="ActivityContent"></div>
+                             <?php  $content ?>
 
-                            <a href="background-check" class="btn btn-success btn-sm pull-right"><i class="fa fa-commenting-o"></i> &nbsp; Add a Comment</a>
+                            <!-- <a href="background-check" class="btn btn-success btn-sm pull-right"><i class="fa fa-commenting-o"></i> &nbsp; Add a Comment</a> -->
                           
                               <div class="clearfix"></div>
                         </div>
@@ -50,6 +51,30 @@
                     <!--/tab-content-->
 
                 </div>
+
+                <script>
+                      $("#ActivityContent").html('<img src="{{ asset('img/loader-logo-32.gif') }}" width="30px" /> please wait...');
+                     
+                      var url = "{{ route('get-activity-content') }}"
+
+                          setTimeout(function(){ getCon(); }, 2000);
+
+                      function getCon(){
+                         $.ajax
+                        
+                        ({
+                            type: "POST",
+                            url: url,
+                            data: ({ rnd : Math.random() * 100000, jobid:"{{ $job->id }}" }),
+                            success: function(response){
+                            $("#ActivityContent").html(response);
+
+                            }
+                        });
+                      }
+
+
+                </script>
 
                 <div class="col-xs-4 col-xs-push-1">
                     <div class="">

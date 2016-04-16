@@ -31,5 +31,10 @@ class JobActivity extends Model
     {
         return $this->belongsTo('App\Models\JobApplication', 'job_application_id');
     }
+
+    public function job()
+    {
+        return $this->belongsTo('App\Models\Job', 'job_id');
+    }
     
 }

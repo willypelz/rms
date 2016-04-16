@@ -16,6 +16,8 @@
 	});
 </script>
 
+@include('layout.includes.analytics')
+
 <body>
     <!-- Navbar -->
     @section('navbar')

@@ -19,7 +19,22 @@ class JobActivity extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'job_id', 'cv_id', 'activity_type', 'comment'];
+    protected $fillable = ['user_id', 'job_id', 'job_application_id', 'activity_type', 'comment'];
 
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+     public function application()
+    {
+        return $this->belongsTo('App\Models\JobApplication', 'job_application_id');
+    }
+
+    public function job()
+    {
+        return $this->belongsTo('App\Models\Job', 'job_id');
+    }
     
 }

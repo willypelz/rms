@@ -1,6 +1,6 @@
 <?php
 use App\Models\JobActivity;
-
+// use Faker;
 
 	function test(){
 
@@ -41,16 +41,28 @@ use App\Models\JobActivity;
 	}
 	
 
-	function save_activities($user_id, $activity_type,  $job_id = false, $cv_id = false, $comment = false) {
+	function save_activities($activity_type,  $job_id = false, $job_app_id = false, $comment = false) {
+
+		// List of all Activity type
+		/*
+			REJECT
+			HIRE
+			ADD-TEAM
+			SHARE-APPLICANT
+			MESSAGE
+			SUSPEND-JOB
+			PUBLISH-JOB
+		*/
+
 		  if (!$job_id) $job_id = NULL;
-		  if (!$cv_id) $cv_id = NULL;
+		  if (!$job_app_id) $job_app_id = NULL;
 		  if (!$comment) $comment = NULL;
 
 		$response =  JobActivity::firstOrCreate([
-		  	'user_id'=>$user_id,
+		  	'user_id'=> Auth::user()->id,
 		  	'activity_type'=>$activity_type,
 		  	'job_id'=>$job_id,
-		  	'cv_id'=>$cv_id,
+		  	'job_application_id'=>$job_app_id,
 		  	'comment'=>$comment,
 		  	]);
 
@@ -131,7 +143,7 @@ use App\Models\JobActivity;
 			case 'user':
 				$data_arr = explode(' ', $data['name']);
 				$string1 = $data_arr[0];
-				$string2 = $data_arr[1];
+				$string2 = @$data_arr[1];
 				
 				break;
 			
@@ -142,5 +154,23 @@ use App\Models\JobActivity;
 
 		return 'http://dummyimage.com/300x300/ffffff/405465.jpg&text='.strtoupper( substr($string1,0,1).substr($string2,0,1) );
 		
+	}
+
+	function get_application_statuses($status)
+	{
+
+		$status_array = [];
+
+		$status_array['PENDING'] = ( array_search('PENDING', $status) !== false && intval( array_search('PENDING', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('PENDING', $status) ) + 1 ] : 0;
+		$status_array['INTERVIEWED'] = ( array_search('INTERVIEWED', $status) !== false && intval( array_search('INTERVIEWED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('INTERVIEWED', $status) ) + 1 ] : 0;
+		$status_array['REJECTED'] = ( array_search('REJECTED', $status) !== false && intval( array_search('REJECTED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('REJECTED', $status) ) + 1 ] : 0;
+		$status_array['HIRED'] = ( array_search('HIRED', $status) !== false && intval( array_search('HIRED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('HIRED', $status) ) + 1 ] : 0;
+		$status_array['ASSESSED'] = ( array_search('ASSESSED', $status) !== false && intval( array_search('ASSESSED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('ASSESSED', $status) ) + 1 ] : 0;
+		$status_array['SHORTLISTED'] = ( array_search('SHORTLISTED', $status) !== false && intval( array_search('SHORTLISTED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('SHORTLISTED', $status) ) + 1 ] : 0;
+		
+		
+		// dd(array_search('PENDING', $status));
+
+		return $status_array;
 	}
 ?>

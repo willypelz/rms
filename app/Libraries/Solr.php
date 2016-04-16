@@ -36,7 +36,7 @@ class Solr {
 			$search_field .= ':';
 
 		$filename = Solr::$host."q=".$search_field.$q."&rows=".$row."&start=".$start
-							."&facet=true&facet.field=gender&facet.field=marital_status&facet.field=edu_school&facet.field=exp_company&facet.field=edu_grade&facet.field=folder_name&facet.field=folder_type"
+							."&facet=true&facet.field=gender&facet.field=marital_status&facet.field=edu_school&facet.field=exp_company&facet.field=edu_grade&facet.field=folder_name&facet.field=folder_type&facet.field=application_status"
 							// ."&facet=true&facet.field=job_type&facet.field=company&facet.field=loc&facet.field=job_level&facet.field=site_name&facet.date=expiry_date&facet.date.start=NOW/DAY&facet.date.end=NOW/DAY%2B60DAY&facet.date.gap=%2B7DAY&wt=json"
 							// ."&sort=".$sort
 							.$additional
@@ -106,13 +106,32 @@ class Solr {
 
 	static function get_saved_cvs($data)
 	{
-		$additional = "&fq=company_folder_id:". @Auth::user()->companies[0]->id;
+		$additional = "&fq=company_folder_id:". @Auth::user()->companies[0]->id."&fq=folder_type:saved";
 		return Solr::search_resume($data,$additional);
 	}
 
-	static function get_applicants($data, $job_id)
+	static function get_purchased_cvs($data)
+	{
+		$additional = "&fq=company_folder_id:". @Auth::user()->companies[0]->id."&fq=folder_type:purchased";
+		return Solr::search_resume($data,$additional);
+	}
+
+	static function get_all_my_cvs($data)
+	{
+		$additional = "&fq=company_folder_id:". @Auth::user()->companies[0]->id;
+		return Solr::search_resume($data,$additional);
+	}
+	
+
+	static function get_applicants($data, $job_id, $status = "")
 	{
 		$additional = "&fq=job_id:". $job_id;
+
+		if($status != "")
+		{
+			$additional .= "&fq=application_status:". $status;
+		}
+
 		return Solr::search_resume($data,$additional);
 	}
 

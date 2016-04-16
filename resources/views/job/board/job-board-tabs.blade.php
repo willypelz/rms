@@ -1,16 +1,18 @@
 <div class="btn-group btn-group-justified btn-tabs job-dash no-pad text-brandon" role="group" aria-label="...">
-                          <div class="btn-group" role="group">
-                            <a href="{{ route('job-board', [$job->id]) }}" type="button" class="btn btn-line text-capitalize text-muted @if($active_tab == 'promote') in @endif">
-                            <span class="fa-lg"><i class="fa fa-send"></i>
-                            <span class="hidden-xs"> &nbsp; Promote Job</span></span>
-                            <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
-                            </a>
-                          </div>
-                          <div class="btn-group" role="group">
-                            <a href="{{ route('job-activities', [$job->id]) }}" type="button" class="btn btn-line text-capitalize @if($active_tab == 'activities') in @endif">
+                           <div class="btn-group" role="group">
+                            <a href="{{ route('job-board', [$job->id]) }}" type="button" class="btn btn-line text-capitalize @if($active_tab == 'activities') in @endif">
                             <span class="fa-lg"><i class="fa fa-bar-chart"></i>
                             <span class="hidden-xs"> &nbsp; Activities</span></span>
                             <!-- <small class="text-muted hidden-xs">Job Statistics</small> -->
+                            </a>
+                          </div>
+
+
+                          <div class="btn-group" role="group">
+                            <a href="{{ route('job-promote', [$job->id]) }}" type="button" class="btn btn-line text-capitalize text-muted @if($active_tab == 'promote') in @endif">
+                            <span class="fa-lg"><i class="fa fa-send"></i>
+                            <span class="hidden-xs"> &nbsp; Promote Job</span></span>
+                            <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
                             </a>
                           </div>
                           <div class="btn-group" role="group">

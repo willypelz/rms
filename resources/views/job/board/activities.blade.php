@@ -22,84 +22,57 @@
 
                 <div class="col-xs-7">
 
+                     <div class="tab-content" id="">
 
                         <div class="row">
-                        <h6 class="no-margin">
-                            <span class="text-brandon text-uppercase">
-                            Your Activities: 4 new updates 
-                            </span> 
-                            <span class="pull-right"><a href=""><i class="fa fa-cog"></i>Notification Settings</a></span>
-                        </h6>
-                        <div class="clearfix"><hr></div>
 
-                            <ul class="list-group list-notify">
-                              <li role="cv-notifications" class="list-group-item">
-
-                               <span class="fa-stack fa-lg i-notify">
-                                  <i class="fa fa-circle fa-stack-2x text-info"></i>
-                                  <i class="fa fa-folder fa-stack-1x fa-inverse"></i>
-                                </span>
-
-                                <h5 class="no-margin text-info">CV Upload</h5>
-                                <p>
-                                    <small class="text-muted pull-right">[Wed 12:23pm]</small> You uploaded 20 new resumes. <a href="cv/cv_saved">Go to saved resume</a>
-                                </p>
-                              </li>
-
-                              <li role="job-notifications" class="list-group-item">
-
-                               <span class="fa-stack fa-lg i-notify">
-                                  <i class="fa fa-circle fa-stack-2x text-success"></i>
-                                  <i class="fa fa-briefcase fa-stack-1x fa-inverse"></i>
-                                </span>
-
-                                <h5 class="no-margin text-success">Jobs</h5>
-                                <p>
-                                    <small class="text-muted pull-right">[Wed 12:23pm]</small> You created 2 new job openings. <a href="jobs/list">Go to job list</a>
-                                </p>
-                                <p>
-                                    <small class="text-muted pull-right">[Wed 12:23pm]</small> You closed 1  job openings. <a href="jobs/dashboard">View Job</a>
-                                </p>
-                              </li>
-
-                              <li role="candidate-notifications" class="list-group-item">
-
-                               <span class="fa-stack fa-lg i-notify">
-                                  <i class="fa fa-circle fa-stack-2x text-warning"></i>
-                                  <i class="fa fa-user-plus fa-stack-1x fa-inverse"></i>
-                                </span>
-
-                                <h5 class="no-margin text-warning">Applications</h5>
-                                <p>
-                                    <small class="text-muted pull-right">[Wed 12:23pm]</small>2 new applicants for <a class="" href="jobs/dashboard">Brand Manager at Oando</a>. <a href="jobs/applicants">Go to job board</a>
-                                </p>
-                                <p>
-                                    <small class="text-muted pull-right">[Wed 12:23pm]</small>
-                                    You closed 1  job openings. <a href="jobs/dashboard">View Job</a>
-                                </p>
-                              </li>
-
-                              <li role="warning-notifications" class="list-group-item">
-
-                               <span class="fa-stack fa-lg i-notify">
-                                  <i class="fa fa-circle fa-stack-2x text-danger"></i>
-                                  <i class="fa fa-exclamation fa-stack-1x fa-inverse"></i>
-                                </span>
-
-                                <h5 class="no-margin text-danger">Warnings</h5>
-                                <p>
-                                    <small class="text-muted pull-right">[Wed 12:23pm]</small>
-                                    You haveYou have not performed <a href=""> this important task</a>
-                                </p>
-                              </li>
-
-                            </ul>
-
-                            <div class="clearfix"></div>
+                        <div class="col-xs-12">
+                          <h6 class="no-margin">
+                              <span class="text-brandon text-uppercase">
+                              Job Activities 
+                              </span> 
+                              <!-- <span class="pull-right"><a href=""><i class="fa fa-cog"></i>Notification Settings</a></span> -->
+                          </h6>
+                          <div class="clearfix"><hr></div>
+                            
+                            <div id="ActivityContent"></div>
+                            <!-- <a href="background-check" class="btn btn-success btn-sm pull-right"><i class="fa fa-commenting-o"></i> &nbsp; Add a Comment</a> -->
+                          
+                              <div class="clearfix"></div>
                         </div>
+                        </div>
+                    <!--/tab-content-->                       
+
+                    </div>
+                    <!--/tab-content-->
+
                     <!--/tab-content-->
 
                 </div>
+
+                <script>
+                      $("#ActivityContent").html('<img src="{{ asset('img/loader-logo-32.gif') }}" width="30px" /> please wait...');
+                     
+                      var url = "{{ route('get-activity-content') }}"
+
+                          setTimeout(function(){ getCon(); }, 2000);
+
+                      function getCon(){
+                         $.ajax
+                        
+                        ({
+                            type: "POST",
+                            url: url,
+                            data: ({ rnd : Math.random() * 100000, jobid:"{{ $job->id }}" }),
+                            success: function(response){
+                            $("#ActivityContent").html(response);
+
+                            }
+                        });
+                      }
+
+
+                </script>
 
                 <div class="col-xs-4 col-xs-push-1">
                     <div class="">

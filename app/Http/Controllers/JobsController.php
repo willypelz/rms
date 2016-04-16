@@ -6,6 +6,8 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Models\JobBoard;
 use App\Models\Job;
+use App\Models\JobActivity;
+use App\Models\Cv;
 use App\Models\JobApplication;
 use App\Models\Company;
 use App\User;
@@ -14,6 +16,8 @@ use Cart;
 use Session;
 use Auth;
 use Mail;
+use Curl;
+
 
 class JobsController extends Controller
 {
@@ -158,9 +162,13 @@ class JobsController extends Controller
         return view ('job.share', compact('company', 'job'));
     }
 
-    public function AddCandidates($id){
+    public function AddCandidates($jobid = null){
 
-        return view ('job.add-candidates');
+        if(!empty($jobid)){
+            $job = Job::find($jobid);
+        }
+
+        return view ('job.add-candidates', compact('jobid', 'job'));
     }
 
      public function UploadCVfile($id){
@@ -169,18 +177,7 @@ class JobsController extends Controller
     }
 
 
-    public function JobView($company_slug, $jobid, $job_slug, Request $request)
-    {
-        $company = Company::where('slug', $company_slug)->first();
-        $job = Job::where('id', $jobid)->where("company_id",$company->id)->first();
-
-        if(empty($job)){
-            // redirect to 404 page
-        }
-
-
-        return view('job.job-details', compact('job', 'company'));
-    }
+    
     
     public function JobList(Request $request){
 
@@ -192,7 +189,7 @@ class JobsController extends Controller
         $active = 0;
         $suspended = 0;
         foreach($jobs as $job){
-            if ($job->published == 1) {
+            if ($job->status == 'ACTIVE') {
                 $active++;
             }else{
                 $suspended++;
@@ -201,11 +198,13 @@ class JobsController extends Controller
         return view('job.job-list', compact('jobs', 'active', 'suspended', 'company'));
     }
 
-    public function JobBoard($id, Request $request){
+    public function JobPromote($id, Request $request){
 
         $job = Job::find($id);
+        $company = $job->company()->first();
+
         $active_tab = 'promote';
-        return view('job.board.home', compact('job', 'active_tab'));
+        return view('job.board.home', compact('job', 'active_tab', 'company'));
     }
 
     public function JobTeam($id, Request $request){
@@ -221,11 +220,141 @@ class JobsController extends Controller
         return view('job.board.team', compact('job', 'active_tab', 'users'));
     }
 
+    public function ActivityContent(Request $request){
+         $content = '<ul class="list-group list-notify">';
+        
+        if(!empty($request->appl_id)){
+            $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('created_at', 'desc')->get();
+        }else{
+            $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_id', $request->jobid)->orderBy('created_at', 'desc')->get();
+        }
+
+        foreach ($activities as $ac) {
+            $type = $ac->activity_type;
+
+            switch ($type) {
+                
+                 case "HIRE":
+                 $applicant = $ac->application->cv;
+                     $content .= '<li role="candidate-application" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-info"></i>
+                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-info">Application</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['.  date('D, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      '.$applicant->first_name.' '.$applicant->last_name.' has been hired.
+                                  </p>
+                                </li>';
+                     break;
+                 case "REJECT":
+                 $applicant = $ac->application->cv;
+                    $content .= '<li role="warning-notifications" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                                    <i class="fa fa-exclamation fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-danger">REJECT</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['.  date('D, h:i A', strtotime($ac->created_at)) .']</small>
+                                      '.$applicant->first_name.' '.$applicant->last_name.' application was rejected by <a href=""> '.$ac->user->name.'</a>
+                                  </p>
+                                </li>';
+                     break;
+                 case "COMMENT":
+                 $applicant = $ac->application->cv;
+
+                     $content .= '<li role="messaging" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-success"></i>
+                                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-success">Comment</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']
+                                      </small> '. $ac->user->name .' said '.$ac->comment.' about <a href="#">'.$applicant->first_name.'</a>
+                                  </p>
+                                  
+                                </li>';
+                     break;
+
+                    case "SUSPEND-JOB":
+                     $content .= '<li role="messaging" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                                    <i class="fa fa-ban fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-success">Suspend Job</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      '. $ac->user->name .' suspended <a href="#">'.$ac->job->title .'</a> job
+                                  </p>
+                                  
+                                </li>';
+                     break;
+
+                     case "PUBLISH-JOB":
+                     $content .= '<li role="messaging" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-success"></i>
+                                    <i class="fa fa-thumbs-o-up fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-success">Publish Job</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      '. $ac->user->name .' published <a href="#">'.$ac->job->title .'</a> job
+                                  </p>
+                                  
+                                </li>';
+                     break;
+
+                     case "ADD-TEAM":
+                     $content .= '<li role="messaging" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-success"></i>
+                                    <i class="fa fa-user-plus fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-success">Team</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      '. $ac->user->name .' added a new Team member.
+                                  </p>
+                                  
+                                </li>';
+                     break;
+
+                 default:
+                     $content.= '';
+            }
+
+        }
+        // dd($act->toArray());
+
+        $content .= '</ul>';
+
+        return $content;
+    }
+
     public function JobActivities($id, Request $request){
          $job = Job::find($id);
+         // dd($job);
+        
         $active_tab = 'activities';
 
-        return view('job.board.activities', compact('job', 'active_tab'));
+        return view('job.board.activities', compact('job', 'active_tab', 'content'));
     }
 
     public function JobCandidates($id, Request $request){
@@ -250,9 +379,33 @@ class JobsController extends Controller
         
     }
 
+    public function JobView($company_slug, $jobid, $job_slug, Request $request)
+    {
+        $company = Company::where('slug', $company_slug)->first();
+        $job = Job::where('id', $jobid)->where("company_id",$company->id)->first();
+
+        if(empty($job)){
+            // redirect to 404 page
+        }
+
+        //increment job views
+
+
+        return view('job.job-details', compact('job', 'company'));
+    }
+
+
+
     public function jobApply($jobID, $slug, Request $request){
 
-        $job = Job::where('id', $jobID)->first();
+        $job = Job::with('company')->where('id', $jobID)->first();
+        $company = $job->company;
+        
+
+        if(empty($job)){
+            // redirect to 404 page
+        }
+
 
         $qualifications = [
 
@@ -317,20 +470,15 @@ class JobsController extends Controller
 
             if ($request->hasFile('cv_file')) {
 
-                $filename = str_slug($request->email).'_'.$request->file('cv_file')->getClientOriginalName();
-                $destinationPath = env('UPLOAD_PATH');
+                $filename = time().'_'.str_slug($request->email).'_'.$request->file('cv_file')->getClientOriginalName();
+                $destinationPath = env('fileupload').'/CVs';
+                // dd($destinationPath);
                 $request->file('cv_file')->move($destinationPath, $filename);
 
                 $data['cv_file'] = $filename;
 
                 // dd($data);
-            }    
-
-
-
-            
-            $data['job_id'] = $job->id;
-            unset($data['_token']);
+            }   
 
             $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
 
@@ -339,14 +487,41 @@ class JobsController extends Controller
 
             $data['state_of_origin'] = $states[$data['state_of_origin']];
             $data['location'] = $states[$data['location']];
-            $data['created_at'] = date('Y-m-d H:i:s');
-            $data['updated_at'] = date('Y-m-d H:i:s');
+            $data['created'] = date('Y-m-d H:i:s');
+            $data['action_date'] = date('Y-m-d H:i:s');
 
-            // dd($data);
 
-            JobApplication::insert($data);
 
-            // return redirect('/applied/'.$slug);
+            //saving cv...  
+            $cv = new Cv;
+            $cv->first_name = $data['first_name'];
+            $cv->last_name = $data['last_name'];
+            $cv->headline = $data['cover_note'];
+            $cv->email = $data['email'];
+            $cv->phone = $data['phone'];
+            $cv->gender = $data['gender'];
+            $cv->date_of_birth = $data['date_of_birth'];
+            $cv->marital_status = $data['marital_status'];
+            $cv->state = $data['location'];
+            $cv->highest_qualification = $data['highest_qualification'];
+            $cv->last_position = $data['last_position'];
+            $cv->last_company_worked = $data['last_company_worked'];
+            $cv->years_of_experience = $data['years_of_experience'];
+            $cv->willing_to_relocate = $data['willing_to_relocate'];
+            $cv->cv_file = $data['cv_file'];
+            $cv->save();
+
+            //saving job application...
+            $appl = new JobApplication;
+            $appl->cover_note = $data['cover_note'];
+            $appl->cv_id = $cv->id;
+            $appl->job_id = $job->id;
+            $appl->status = 'PENDING';
+            $appl->created = $data['created'];
+            $appl->action_date = $data['action_date'];
+            $appl->save();
+            
+            return redirect('jobs/applied/'.$jobID.'/'.$slug);
             // dd($request->all());
 
 
@@ -354,7 +529,28 @@ class JobsController extends Controller
         }
 
         
-        return view('job.job-apply', compact('job', 'qualifications', 'states'));
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company'));
+
+    }
+
+    public function JobApplied($jobID, $job_slug, Request $request)
+    {
+        $job = Job::with('company')->where('id', $jobID)->first();
+        $company = $job->company;
+        
+
+        if(empty($job)){
+            // redirect to 404 page
+        }
+
+        $response = Curl::to('https://api.insidify.com/articles/get-posts')
+                                ->withData(array('limit'=>6))
+                                ->post();
+
+        $posts = json_decode($response)->data->posts;
+
+
+        return view('job.applied', compact('job', 'company', 'posts'));
 
     }
 
@@ -362,7 +558,7 @@ class JobsController extends Controller
     public function company($c_url){
 
         $company = Company::with(['jobs'=>function($query){
-                                        $query->where('published', 1);
+                                        $query->where('status', "ACTIVE")->where('expiry_date','>',date('Y-m-d'));
                                     }])->where('slug', $c_url)->first();
 
 
@@ -377,6 +573,15 @@ class JobsController extends Controller
         $company = ($d->companies[0]);
 
         return redirect('/'.$company->slug);
+
+
+    }
+
+    public function Preview($job_id){
+
+        $job = Job::with('company')->find($job_id);
+
+        return redirect('/'.$job->company->slug.'/job/'.$job->id.'/'.str_slug($job->title));
 
 
     }

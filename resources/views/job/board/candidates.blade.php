@@ -4,7 +4,15 @@
 
                     @include('job.board.jobBoard-header')
             
-   
+   {{-- dd($result) --}}
+   <style type="text/css">
+  .see-more{display: none;}
+  .see-more-shown{ display: block; }
+  .pagination .page{ padding: 0px !important; }
+</style>
+
+            <script src="http://malsup.github.com/jquery.form.js"></script> 
+<script src="{{ asset('js/jquery.twbsPagination.min.js') }}"></script>
             <div class="row">
 
                 <div class="col-sm-12">
@@ -20,21 +28,12 @@
                             <div class="col-xs-8 ">
                             <div class="row">
                                 <div class="col-xs-10">
-                                    <ul class="nav nav-pills option-aps">
-                                        <li class="active"><a href="#">All <span class="badge">12</span></a>
-                                        </li>
-                                        <li><a href="#">In Review</a>
-                                        </li>
-                                        <li><a href="#">Assessed <span class="badge">3</span></a>
-                                        </li>
-                                        <li><a href="#">Interviewed</a>
-                                        </li>
-                                        <li><a href="#">Hired <span class="badge">1</span></a>
-                                        </li>
-                                        <li><a href="#">Rejected <span class="badge">3</span></a>
-                                        </li>
-                                    </ul><br>
-                                <small class="text-muted">Showing 12 of 234 Hired Candidates</small>
+                                    
+
+                                @include('job.board.includes.applicant-status')
+                                
+
+                                <small class="text-muted " id="showing"></small>
                                 </div>
 
                                <div class="col-xs-2">
@@ -45,169 +44,30 @@
 
                                 <div id="h_act-on" class="col-xs-12 collapse app-action">
                                     <div>
-                                        <div class="btn-group select-action">
-                                            <button class="btn btn-default status-1" type="button">Reject All</button>
-                                            <button class="btn btn-default status-1" type="button">Message All</button>
-                                            <button class="btn btn-default status-1" type="button">Assess All</button>
+                                        <div class="btn-group select-action" id="mass-action">
+                                            <button class="btn btn-default status-1" type="button" data-action="REJECTED">Reject All</button>
+                                            <!-- <button class="btn btn-default status-1" type="button" data-action="REJECT">Message All</button> -->
+                                            <button class="btn btn-default status-1" type="button" data-action="ASSESSED">Assess All</button>
+                                            <button class="btn btn-default status-1" type="button" data-action="SHORTLISTED">Shortlist All</button>
                                         </div>
                                         
-                                        <div class="btn-group select-action">
-                                            <button class="btn btn-default status-1" type="button">Mark as Reviewed</button>
-                                            <button class="btn btn-default status-1" type="button">Mark as Interviewed</button>
-                                            <button class="btn btn-default status-1" type="button">Mark as Hired</button>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="clearfix"></div>
 
-                            <hr>
+                            
+                            <div class="search-results">
 
-                            <div class="comment media">
-                                <a href="#" class="pull-left">
-                                    <img alt="" src="img/avatar.jpg" class="media-object">
-                                </a>
-                                <div class="media-body">
-                                    <input type="checkbox" class="media-body-check pull-right">
-                                    <h4 class="media-heading text-muted"><a href="">Ernest Ojeh</a>
-                                    </h4>
-                                    <p>Teacher, Southgate College. Ikorodu</p>
-                                    <small>
-                                        <span class="text-muted">18 minutes ago</span>
-                                        &nbsp;
-                                        <a data-target="#myModal" data-toggle="modal" href="share.html">Share</a>
-                                        <span class="text-muted">·</span>
-                                        <a href="#">Review</a>
-                                        <span class="text-muted">·</span>
-                                        <a href="#">Assess</a>
-                                        <span class="text-muted">·</span>
-                                        <a href="#">Interview</a>
-                                        <span class="text-muted">·</span>
-                                        <a href="#">Reject</a>
-
-                                        <span class="pull-right">
-                                            <a class="text-muted" href="#">other items</a>
-                                            <span class="text-muted">·</span>
-                                            <a class="text-muted" href="#">option1</a>
-                                            <span class="text-muted">·</span>
-                                            <a class="text-muted" href="#">option2</a>
-                                        </span>
-                                    </small>
-
-
-
-                                </div>
+                              @include('job.board.includes.applicant-results-item')
+                              
                             </div>
+                            <!-- <ul id="pagination" class="pagination-sm"></ul> -->
 
-                            <hr>
+                            
 
-                            <div class="comment media">
-                                <a href="#" class="pull-left">
-                                    <img alt="" src="img/avatar.jpg" class="media-object">
-                                </a>
-                                <div class="media-body">
-                                    <input type="checkbox" class="media-body-check pull-right">
-                                    <h4 class="media-heading text-muted"><a href="">Ernest Ojeh</a>
-                                    </h4>
-                                    <p>Teacher, Southgate College. Ikorodu</p>
-                                    <small>
-                                        <span class="text-muted">18 minutes ago</span>
-                                        &nbsp;
-                                        <a href="#">Share</a>
-                                        <span class="text-muted">·</span>
-                                        <a href="#">Review</a>
-                                        <span class="text-muted">·</span>
-                                        <a href="#">Assess</a>
-                                        <span class="text-muted">·</span>
-                                        <a href="#">Interview</a>
-                                        <span class="text-muted">·</span>
-                                        <a href="#">Reject</a>
-
-                                        <span class="pull-right">
-                                            <a class="text-muted" href="#">other items</a>
-                                            <span class="text-muted">·</span>
-                                            <a class="text-muted" href="#">option1</a>
-                                            <span class="text-muted">·</span>
-                                            <a class="text-muted" href="#">option2</a>
-                                        </span>
-                                    </small>
-
-                                </div>
-                            </div>
-
-                            <hr>
-
-                            <div class="comment media">
-                                <a href="#" class="pull-left">
-                                    <img alt="" src="img/avatar.jpg" class="media-object">
-                                </a>
-                                <div class="media-body">
-                                    <input type="checkbox" class="media-body-check pull-right">
-                                    <h4 class="media-heading text-muted"><a href="">Ernest Ojeh</a>
-                                    </h4>
-                                    <p>Teacher, Southgate College. Ikorodu</p>
-                                    <small>
-                                        <span class="text-muted">18 minutes ago</span>
-                                        &nbsp;
-                                        <a href="#">Share</a>
-                                        <span class="text-muted">·</span>
-                                        <a href="#">Review</a>
-                                        <span class="text-muted">·</span>
-                                        <a href="#">Assess</a>
-                                        <span class="text-muted">·</span>
-                                        <a href="#">Interview</a>
-                                        <span class="text-muted">·</span>
-                                        <a href="#">Reject</a>
-
-                                        <span class="pull-right">
-                                            <a class="text-muted" href="#">other items</a>
-                                            <span class="text-muted">·</span>
-                                            <a class="text-muted" href="#">option1</a>
-                                            <span class="text-muted">·</span>
-                                            <a class="text-muted" href="#">option2</a>
-                                        </span>
-                                    </small>
-
-                                </div>
-                            </div>
-
-                            <hr>
-
-                            <div class="comment media">
-                                <a href="#" class="pull-left">
-                                    <img alt="" src="img/avatar.jpg" class="media-object">
-                                </a>
-                                <div class="media-body">
-                                    <input type="checkbox" class="media-body-check pull-right">
-                                    <h4 class="media-heading text-muted"><a href="">Ernest Ojeh</a>
-                                    </h4>
-                                    <p>Teacher, Southgate College. Ikorodu</p>
-                                    <small>
-                                        <span class="text-muted">18 minutes ago</span>
-                                        &nbsp;
-                                        <a href="#">Share</a>
-                                        <span class="text-muted">·</span>
-                                        <a href="#">Review</a>
-                                        <span class="text-muted">·</span>
-                                        <a href="#">Assess</a>
-                                        <span class="text-muted">·</span>
-                                        <a href="#">Interview</a>
-                                        <span class="text-muted">·</span>
-                                        <a href="#">Reject</a>
-
-                                        <span class="pull-right">
-                                            <a class="text-muted" href="#">other items</a>
-                                            <span class="text-muted">·</span>
-                                            <a class="text-muted" href="#">option1</a>
-                                            <span class="text-muted">·</span>
-                                            <a class="text-muted" href="#">option2</a>
-                                        </span>
-                                    </small>
-
-                                </div>
-                            </div>
-
+                            
 
                             <a class="btn btn-line btn-block load" href="">
                                 <span class="glyphicon glyphicon-repeat"></span>&nbsp; Load more</a>
@@ -239,80 +99,8 @@
                                     <div class="col-xs-6"><button class="btn btn-block btn-line btn-sm btn-cart-clear text-muted"><i class="fa fa-close"></i> Clear</button></div>
                                 </div>
                             </div>
-                          <div id="accordion" class="filter-div panel-group">
-
-
-                              <div style="border-width: 3px" class="panel panel-default">
-                                <div class="panel-heading">
-                                  <h4 class="panel-title">
-                                    <a href="#collapseOne" data-parent="#accordion" data-toggle="collapse">
-                                      Filter Result here
-                                    </a>
-                                    <a class="pull-right" href="#collapseOne" data-parent="#accordion" data-toggle="collapse"><img src="img/up.png"></a>
-                                  </h4>
-                                </div>
-                                <div class="panel-collapse collapse in" id="collapseOne">
-                                  <div class="panel-body">
-                                      <p class="border-bottom-thin text-muted">Gender<i class="glyphicon glyphicon-user pull-right"></i></p>
-                                      <div class="checkbox-inline">
-                                          <label class="normal"><input type="checkbox" class=""> Male</label> <br>
-                                          <label class="normal"><input type="checkbox" class=""> Female</label> <br>
-                                      </div>
-
-                                      <p>--</p>
-
-                                    <p class="border-bottom-thin text-muted">Location<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
-                                      <div class="checkbox-inline">
-                                          <label class="normal"><input type="checkbox" class=""> Lagos</label> <br>
-                                          <label class="normal"><input type="checkbox" class=""> Abuja</label> <br>
-                                          <label class="normal"><input type="checkbox" class=""> Ife City</label> <br>
-                                      </div>
-                                      <!-- <div><small class="">&nbsp; <a href="" class="">See More</a></small></div> -->
-
-                            <div><a class="more-link read-more-show hide" href="#"><small>See More</small></a>
-                                <div class="read-more-content checkbox-inline">
-                                    <label class="normal">
-                                        <input type="checkbox" class="">Lagos</label>
-                                    <br>
-                                    <label class="normal">
-                                        <input type="checkbox" class="">Abuja</label>
-                                    <br>
-                                    <label class="normal">
-                                        <input type="checkbox" class="">Ife City</label>
-                                    <br>
-                                    <a class="less-link read-more-hide hide" href="#"><small>Less</small></a>
-                                </div>
-                            </div>
-
-
-                                      <p>--</p>
-
-                                    <p class="border-bottom-thin text-muted">Company<i class="glyphicon glyphicon-briefcase pull-right"></i></p>
-                                      <div class="checkbox-inline">
-                                          <label class="normal"><input type="checkbox" class=""> Administrator</label> <br>
-                                          <label class="normal"><input type="checkbox" class=""> Creative Director</label> <br>
-                                          <label class="normal"><input type="checkbox" class=""> Head Officer</label> <br>
-                                      </div>
-                                      <div><small class="">&nbsp; <a href="">See More</a></small></div>
-
-                            
-                                      <p>--</p>
-
-                                      <p class="border-bottom-thin text-muted">Job Type<i class="glyphicon glyphicon-paperclip pull-right"></i></p>
-                                      <div class="checkbox-inline">
-                                          <label class="normal"><input type="checkbox" class=""> Corporate</label> <br>
-                                          <label class="normal"><input type="checkbox" class=""> Assistant</label> <br>
-                                          <label class="normal"><input type="checkbox" class=""> Officer</label> <br>
-                                      </div>
-                                      <div><small class="">&nbsp; <a href="">See More</a></small></div>
-                            
-                                      <p>--</p>
-                                      <p class="border-bottom-thin text-muted">Age Group<i class="glyphicon glyphicon-pushpin pull-right"></i></p>
-
-                                  </div>
-                                </div>
-                              </div>
-
+                          <div id="search-filters">
+                                @include('cv-sales.includes.search-filters')
                             </div>
 
                             </div> <!--/col-sm-3-->
@@ -330,4 +118,265 @@
     </section>
 
 <div class="separator separator-small"><br></div>
+
+<script type="text/javascript">
+    var folders = [];
+    var filters = [];
+    var status_filter = "";
+    var total_candidates = "{{ $result['response']['numFound'] }}";
+
+    String.prototype.capitalize = function() {
+        return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
+    }
+    $(document).ready(function(){
+        
+
+        $.fn.setMyFolders = function(cv_folders)
+        {
+          var html = "" ;
+          $.each(folders,function(index,value){
+
+              if(cv_folders.indexOf( value.id.toString() ) >= 0)
+              {
+                active = ' &nbsp; <i class="fa fa-check"></i> ';
+              }
+              else
+              {
+                active = "";
+              }
+              html += '<li id="folder-item" data-ref="' + value.id + '" ><a href="#"><i class="fa fa-folder-o"></i> ' + value.name + active + '</a></li>';
+          });
+          return html;
+        }
+
+        $.fn.getMyFolders = function()
+        {
+          $.post("{{ url('cv/get-my-folders') }}",function(data){
+                // console.log(data);
+                folders = data.folders;
+                $('body #folder-item').remove();
+                $('body #folders').each(function(index,value){
+                    cv_folders = $(this).attr('data-folders').split(':');
+                    $(this).prepend($(this).setMyFolders(cv_folders));
+                })
+          });
+        }
+
+        
+
+        // $(document).getMyFolders();
+
+        
+
+        $(document).on('change', '.filter-div input[type=checkbox]', function(){
+            // console.log("changed");
+
+            var filter = $(this).attr('data-field') + ':"' + $(this).attr('data-value') + '"';
+
+            var index = $.inArray( filter, filters );
+            // console.log( filter + "---" + index );
+            if( index == -1 )
+            {
+              filters.push( filter );
+            }
+            else
+            {
+                filters.splice(index, 1);
+            }
+
+            $('.search-results').html("Loading");
+            $.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
+                //console.log(response);
+                // var response = JSON.parse(data);
+                // console.log(data.search_results);
+                $('.search-results').html(data.search_results);
+                $('#search-filters').html(data.search_filters);
+
+                $.each(filters, function(index,value){
+                    
+                    var arr = value.split(':');
+                    
+                    $('.filter-div input[type=checkbox]' + '[data-field=' + arr[0] + ']' + '[data-value=' + arr[1] + ']' ).attr('checked',true);
+                });
+            });
+        });
+
+        $(document).on('click','.read-more-show', function(){
+            // console.log($(this).text() );
+            // $(this).prev().find('.see-more').show();
+            $(this).closest('div').prev().find('.see-more').toggleClass('see-more-shown');
+
+            var text = ( $(this).text() == 'See More' ) ? 'See Less' : 'See More';
+            $(this).text(text);
+        });
+
+        // $(document).on('click', '#showCvBtn', function(){ 
+        //   var this_one = $(this);
+        //     $.post("{{ url('cv/get_cv_preview') }}",function(data){
+        //        $( this_one.attr('data-target') ).html(data);
+        //     });
+        // });
+
+        /*$('body').on('click', '#add_folder_btn',function(){
+            var input = $(this).parent().parent().parent().find('#add_folder');
+            input.show();
+        });*/
+        
+        $('#newFolder').on('shown.bs.modal', function () {
+            $('#add_folder').focus();
+        })
+
+        $('body').on('keydown', '#add_folder',function(){
+            if(event.which == 13) 
+            {
+                $(this).createFolder();
+
+            }
+        });
+
+        $('body #createFolderBtn').click(function(){
+          $(this).createFolder();
+        });
+
+        $.fn.createFolder = function()
+        {
+              $field = $('body #add_folder');
+
+              $field.attr('disabled','disabled');
+
+              $('#newFolder #message').html('<div class”text-center”>Creating...</div>');
+
+                $.post("{{ url('cv/add-folder') }}", {name: $field.val(),type: 'saved' },function(data){
+                    if(data == true)
+                    {
+                      // $field.val("").hide();
+                      $(this).getMyFolders();
+                      $('#newFolder #message').html('<div class="alert alert-success">Folder added successfully</div>');
+                      $('#newFolder').modal('toggle');
+                      
+                    }
+
+                    else
+                    {
+                      $field.val("").hide();
+                      // $field.after('<p>'+ data +'</p>');
+                      $('#loginModal #mssg').text(data);
+                      $('.signin').trigger('click');
+                    }
+                    
+                });
+        }
+
+        $('body').on('click','#folder-item',function(){
+
+            $field = $(this);
+            
+            $.post("{{ url('cv/save-to-folder') }}", {folder_id: $field.attr( 'data-ref' ),cv_id: $(this).closest('#folders').attr('data-cv') },function(data){
+                    if(data == true)
+                    {
+                      $field.addClass( 'active' );
+
+                       $field.closest('.description').append('<div id="notification"><div class="clearfix"></div><div class="alert alert-success">Added to folder successfully</div></div>');
+                        window.setTimeout(function() {
+                            $field.closest('.description').find('#notification').fadeTo(500, 0).slideUp(500, function(){
+                                $(this).remove(); 
+                            });
+                        }, 5000);
+                    }
+                    
+                });
+
+        });
+
+        $('#status_filters').on('click', 'a', function(){
+
+            status_filter = $(this).attr('data-value');
+
+            $('#status_filters li').removeClass('active');
+            $(this).closest('li').addClass('active');
+
+            if( status_filter == "ALL" )
+            {
+                status_filter = "";
+            }
+            
+            
+
+            $('.search-results').html("Loading");
+            $.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
+                //console.log(response);
+                // var response = JSON.parse(data);
+                // console.log(data.search_results);
+                $('.search-results').html(data.search_results);
+                $('#search-filters').html(data.search_filters);
+
+                $(document).getShowing();
+            });
+        });
+
+        $.fn.getShowing = function(){
+            count = $('.search-results .comment.media').length;
+            status_page = "";
+            if(status_filter == "")
+            {
+                status_page = 'All';
+            }
+            else
+            {
+                status_page = status_filter.capitalize();
+            }
+            // console.log( status_filter );
+            $('#showing').text( 'Showing ' + count + ' of ' + total_candidates + ' ' + status_page + ' Candidates' );
+        }
+
+        $(document).getShowing();
+
+        $('.select-all input[type=checkbox]').on('click',function(){
+
+            if( $(this).prop('checked') )
+            {
+                console.log("here");
+                $('.search-results .media-body input[type=checkbox]').prop('checked', true);
+            }
+            else
+            {
+                $('.search-results .media-body input[type=checkbox]').prop('checked', false);
+            }
+        });
+
+        $('#mass-action button').on('click',function(){
+            // cvs = $('.search-results .comment.media').prop('data-cv');
+            $field = $(this);
+            var cv_ids =$(".search-results .comment.media").map(function(i,v){
+
+                       return $(this).data("cv");
+
+                    }).get();
+
+            $.post("{{ route('mass-action') }}", {job_id: '{{ $jobID }}',cv_ids :  cv_ids,status: $field.data('action') },function(data){
+                    // if(data == true)
+                    // {
+                    //   // $field.val("").hide();
+                    //   $(this).getMyFolders();
+                    //   $('#newFolder #message').html('<div class="alert alert-success">Folder added successfully</div>');
+                    //   $('#newFolder').modal('toggle');
+                      
+                    // }
+
+                    // else
+                    // {
+                    //   $field.val("").hide();
+                    //   // $field.after('<p>'+ data +'</p>');
+                    //   $('#loginModal #mssg').text(data);
+                    //   $('.signin').trigger('click');
+                    // }
+                    
+                    $('#status_filters a[data-value="' + $field.data('action') + '"]').trigger('click');
+                });
+
+            // console.log(cvs);
+        });
+
+    });
+</script>
 @endsection

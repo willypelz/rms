@@ -29,20 +29,21 @@
                         <!-- applicant -->
                             <div class="col-xs-8 ">
                             <div class="row">
-                                <div class="col-xs-10">
+                                <div class="col-xs-12">
                                     
 
-                                @include('job.board.includes.applicant-status')
+                                    @include('job.board.includes.applicant-status')
                                 
 
-                                <small class="text-muted " id="showing"></small>
-                                </div>
+                                    <small class="text-muted " id="showing"></small>
 
-                               <div class="col-xs-2">
-                                    <label data-toggle="collapse" aria-controls="h_act-on" aria-expanded="false" data-target="#h_act-on" role="button" class="select-all pull-right">Select All
-                                       <input type="checkbox">
-                                   </label>
-                               </div>
+                                   <div class="">
+                                        <label data-toggle="collapse" aria-controls="h_act-on" aria-expanded="false" data-target="#h_act-on" role="button" class="select-all pull-right">Select All
+                                           <input type="checkbox">
+                                       </label>
+                                   </div>
+                               
+                                </div>
 
                                 <div id="h_act-on" class="col-xs-12 collapse app-action">
                                     <div>

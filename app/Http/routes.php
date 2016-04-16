@@ -253,6 +253,7 @@ Route::group(['middleware' => 'web'], function () {
     });
 
 
+    Route::get('/migrate-inf', 'TalentPoolController@MigrateInfrastructure');
 
 
     Route::get('/my-career-page', 'JobsController@MyCompany');

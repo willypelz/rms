@@ -220,19 +220,22 @@ class JobsController extends Controller
         return view('job.board.team', compact('job', 'active_tab', 'users'));
     }
 
-    public function JobActivities($id, Request $request){
-         $job = Job::find($id);
-         // dd($job);
-
+    public function ActivityContent(Request $request){
          $content = '<ul class="list-group list-notify">';
-        $activities =  JobActivity::with('user', 'application')->where('job_id', $id)->get();
+        
+        if(!empty($request->appl_id)){
+            $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('created_at', 'desc')->get();
+        }else{
+            $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_id', $request->jobid)->orderBy('created_at', 'desc')->get();
+        }
+
         foreach ($activities as $ac) {
             $type = $ac->activity_type;
 
             switch ($type) {
                 
                  case "HIRE":
-
+                 $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
                                  <span class="fa-stack fa-lg i-notify">
@@ -242,12 +245,13 @@ class JobsController extends Controller
                           
                                   <h5 class="no-margin text-info">Application</h5>
                                   <p>
-                                      <small class="text-muted pull-right">[Wed 12:23pm]</small> 
-                                      You have been successfully hired.
+                                      <small class="text-muted pull-right">['.  date('D, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      '.$applicant->first_name.' '.$applicant->last_name.' has been hired.
                                   </p>
                                 </li>';
                      break;
                  case "REJECT":
+                 $applicant = $ac->application->cv;
                     $content .= '<li role="warning-notifications" class="list-group-item">
                           
                                  <span class="fa-stack fa-lg i-notify">
@@ -255,14 +259,16 @@ class JobsController extends Controller
                                     <i class="fa fa-exclamation fa-stack-1x fa-inverse"></i>
                                   </span>
                           
-                                  <h5 class="no-margin text-danger">Warnings</h5>
+                                  <h5 class="no-margin text-danger">REJECT</h5>
                                   <p>
-                                      <small class="text-muted pull-right">[Wed 12:23pm]</small>
-                                      You haveYou have not performed <a href=""> this important task</a>
+                                      <small class="text-muted pull-right">['.  date('D, h:i A', strtotime($ac->created_at)) .']</small>
+                                      '.$applicant->first_name.' '.$applicant->last_name.' application was rejected by <a href=""> '.$ac->user->name.'</a>
                                   </p>
                                 </li>';
                      break;
-                 case "SHARE-APPLICANT":
+                 case "COMMENT":
+                 $applicant = $ac->application->cv;
+
                      $content .= '<li role="messaging" class="list-group-item">
                           
                                  <span class="fa-stack fa-lg i-notify">
@@ -270,21 +276,82 @@ class JobsController extends Controller
                                     <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
                                   </span>
                           
-                                  <h5 class="no-margin text-success">Message</h5>
+                                  <h5 class="no-margin text-success">Comment</h5>
                                   <p>
-                                      <small class="text-muted pull-right">[Wed 12:23pm]</small> Olwatosin Oriola reply <a href="jobs/list">your message. Go to Message</a>
+                                      <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']
+                                      </small> '. $ac->user->name .' said '.$ac->comment.' about <a href="#">'.$applicant->first_name.'</a>
                                   </p>
                                   
                                 </li>';
                      break;
+
+                    case "SUSPEND-JOB":
+                     $content .= '<li role="messaging" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                                    <i class="fa fa-ban fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-success">Suspend Job</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      '. $ac->user->name .' suspended <a href="#">'.$ac->job->title .'</a> job
+                                  </p>
+                                  
+                                </li>';
+                     break;
+
+                     case "PUBLISH-JOB":
+                     $content .= '<li role="messaging" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-success"></i>
+                                    <i class="fa fa-thumbs-o-up fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-success">Publish Job</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      '. $ac->user->name .' published <a href="#">'.$ac->job->title .'</a> job
+                                  </p>
+                                  
+                                </li>';
+                     break;
+
+                     case "ADD-TEAM":
+                     $content .= '<li role="messaging" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-success"></i>
+                                    <i class="fa fa-user-plus fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-success">Team</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      '. $ac->user->name .' added a new Team member.
+                                  </p>
+                                  
+                                </li>';
+                     break;
+
                  default:
-                     $content.= '<li role="messaging" class="list-group-item">Hello THere </li> ';
+                     $content.= '';
             }
 
         }
         // dd($act->toArray());
 
         $content .= '</ul>';
+
+        return $content;
+    }
+
+    public function JobActivities($id, Request $request){
+         $job = Job::find($id);
+         // dd($job);
+        
         $active_tab = 'activities';
 
         return view('job.board.activities', compact('job', 'active_tab', 'content'));

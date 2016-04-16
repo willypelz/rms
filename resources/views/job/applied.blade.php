@@ -1,4 +1,4 @@
-@extends('layout.template-user')
+`@extends('layout.template-user')
 
 @section('navbar')    
 @show()

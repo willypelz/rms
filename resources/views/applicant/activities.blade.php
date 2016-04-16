@@ -42,90 +42,12 @@
                               <span class="text-brandon text-uppercase">
                               Applicants Activities 
                               </span> 
-                              <span class="pull-right"><a href=""><i class="fa fa-cog"></i>Notification Settings</a></span>
+                              <!-- <span class="pull-right"><a href=""><i class="fa fa-cog"></i>Notification Settings</a></span> -->
                           </h6>
                           <div class="clearfix"><hr></div>
                           
-                              <ul class="list-group list-notify">
-                                <li class="list-group-item" role="candidate-application">
-                          
-                                 <span class="fa-stack fa-lg i-notify">
-                                    <i class="fa fa-circle fa-stack-2x text-info"></i>
-                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
-                                  </span>
-                          
-                                  <h5 class="no-margin text-info">Application</h5>
-                                  <p>
-                                      <small class="text-muted pull-right">[Wed 12:23pm]</small> 
-                                      Applied on Wednesday 12:23pm from hotnaijajobs.com
-                                  </p>
-                                </li>
-                          
-                                <li class="list-group-item" role="messaging">
-                          
-                                 <span class="fa-stack fa-lg i-notify">
-                                    <i class="fa fa-circle fa-stack-2x text-success"></i>
-                                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
-                                  </span>
-                          
-                                  <h5 class="no-margin text-success">Message</h5>
-                                  <p>
-                                      <small class="text-muted pull-right">[Wed 12:23pm]</small> Olwatosin Oriola reply <a href="jobs/list">your message. Go to Message</a>
-                                  </p>
-                                  <p>
-                                      <small class="text-muted pull-right">[Wed 12:27pm]</small> Olwatosin Oriola reply <a href="jobs/list">your message. Go to Message</a>
-                                  </p>
-                                </li>
-                          
-                                <li class="list-group-item" role="candidate-comments">
-                          
-                                 <span class="fa-stack fa-lg i-notify">
-                                    <i class="fa fa-circle fa-stack-2x text-warning"></i>
-                                    <i class="fa fa-commenting-o fa-stack-1x fa-inverse"></i>
-                                  </span>
-                          
-                                  <h5 class="no-margin text-warning">Comments</h5>
-                                  <div class="commenter">
-                                    <p>
-                                      <a>Ernest Ojeh</a> made a comment on applicant
-                                          <small class="text-muted pull-right">[Wed 12:23pm]</small>
-                                    </p>
-                                    <blockquote class="small">
-                                      <i role="comment-body text-muted">
-                                          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, tempora assumenda fugit alias ab tempore nemo voluptatum reiciendis tenetur beatae eum exercitationem recusandae delectus dicta, accusantium soluta qui accusamus maxime. <!-- <a href="jobs/applicants">Go to job board</a> -->
-                                      </i>
-                                    </blockquote>
-                                  </div>
-
-                                  <div class="commenter">
-                                    <p>
-                                      <a>Another Team member</a> made a comment on applicant
-                                          <small class="text-muted pull-right">[Wed 12:23pm]</small>
-                                    </p>
-                                    <blockquote class="small">
-                                      <i role="comment-body text-muted">
-                                          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, tempora assumenda fugit alias ab tempore nemo voluptatum reiciendis tenetur beatae eum exercitationem recusandae delectus dicta, accusantium soluta qui accusamus maxime. <!-- <a href="jobs/applicants">Go to job board</a> -->
-                                      </i>
-                                    </blockquote>
-                                  </div>
-                                </li>
-                          
-                                <li class="list-group-item" role="warning-notifications">
-                          
-                                 <span class="fa-stack fa-lg i-notify">
-                                    <i class="fa fa-circle fa-stack-2x text-danger"></i>
-                                    <i class="fa fa-exclamation fa-stack-1x fa-inverse"></i>
-                                  </span>
-                          
-                                  <h5 class="no-margin text-danger">Warnings</h5>
-                                  <p>
-                                      <small class="text-muted pull-right">[Wed 12:23pm]</small>
-                                      You haveYou have not performed <a href=""> this important task</a>
-                                  </p>
-                                </li>
-                          
-                              </ul>
-
+                            <div id="ActivityContent"></div>
+                            
                             <a href="background-check" class="btn btn-success btn-sm pull-right"><i class="fa fa-commenting-o"></i> &nbsp; Add a Comment</a>
                           
                               <div class="clearfix"></div>
@@ -139,6 +61,30 @@
                 </div>
 
             </div>
+
+              <script>
+                      $("#ActivityContent").html('<img src="{{ asset('img/loader-logo-32.gif') }}" width="30px" /> please wait...');
+                     
+                      var url = "{{ route('get-activity-content') }}"
+
+                          setTimeout(function(){ getCon(); }, 2000);
+
+                      function getCon(){
+                         $.ajax
+                        
+                        ({
+                            type: "POST",
+                            url: url,
+                            data: ({ rnd : Math.random() * 100000, appl_id:"{{ $appl->id }}" }),
+                            success: function(response){
+                            $("#ActivityContent").html(response);
+
+                            }
+                        });
+                      }
+
+
+                </script>
 
         @include('applicant.includes.pagination')
 

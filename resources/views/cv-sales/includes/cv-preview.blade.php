@@ -48,7 +48,9 @@
                 <div class="clearfix"></div>
                 <div class="tab-content stack" id="cv">
                     <pre>
-                        {{ remove_cv_contact( $cv['extracted_content'][0] ) }}
+                        @if(isset($cv['extracted_content'][0] )))
+                            {{ remove_cv_contact( $cv['extracted_content'][0] ) }}
+                        @endif
                     </pre>
                 </div>
    

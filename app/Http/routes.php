@@ -92,6 +92,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'job/preview/{jobID}', ['uses' => 'JobsController@Preview', 'as' => 'job-preview']);
     
     Route::match(['get', 'post'], 'job/activities/{jobID}', ['uses' => 'JobsController@JobActivities', 'as' => 'job-board']);
+    Route::match(['get', 'post'], 'job/activities-content', ['uses' => 'JobsController@ActivityContent', 'as' => 'get-activity-content']);
     Route::match(['get', 'post'], 'job/promote/{jobID}', ['uses' => 'JobsController@JobPromote', 'as' => 'job-promote']);
     
     Route::match(['get', 'post'], 'job/team/{jobID}', ['uses' => 'JobsController@JobTeam', 'as' => 'job-team']);

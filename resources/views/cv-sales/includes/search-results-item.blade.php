@@ -172,7 +172,9 @@
           console.log(page,filters);
             $('#page-content').text('Page ' + page);
             $('.search-results').html("Loading");
-            $.get("{{ url('cv/search') }}", {search_query: $('#search_query').val(), start: ( page - 1 ) , filter_query : filters },function(data){
+            var url = "{{ (@$is_saved) ? url('cv/saved') : url('cv/search')   }}";
+            var pagination_url = "";
+            $.get(pagination_url, {search_query: $('#search_query').val(), start: ( page - 1 ) , filter_query : filters },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);

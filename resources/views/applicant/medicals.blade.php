@@ -1,22 +1,14 @@
 @extends('layout.template-user')
 
 @section('content')
-    <section class="no-pad white no-margin"><br>
-          <h4 class="text-center">Applicants for: <a href="">Frontend Developer at Konga.com, Yaba, Montgomery Rd, Lagos</a></h4><br></section>
+    
+    @include('applicant.includes.job-title-bar')
+    
     <section class="no-pad applicant">
         <div class="container">
-        <div class="row">
-          <div class="col-xs-12"><br>
-            <h5 class="text-brandon text-center">
-              <a href="#" class="pull-left text-muted"><i class="fa fa-arrow-left"></i> &nbsp; Prev</a>
-              1 of 20
-              <a href="" class="pull-right">Next &nbsp; <i class="fa fa-arrow-right"></i></a>
-            </h5>
-          </div>
-          <div class="col-xs-12">
-            <div class="separator separator-small"></div>
-          </div>
-        </div>
+        
+        @include('applicant.includes.pagination')
+
             <div class="row">
             <div class="col-xs-4">
                 @include('applicant.includes.badge')
@@ -31,7 +23,7 @@
                         <div class="row">
                           <div class="col-xs-12">
                             <h5> <span class="text-brandon">Medical Check</span>
-                            <a data-toggle="modal" data-target="#CheckModal" href="#CheckModal" class="btn btn-sm btn-line pull-right"><i class="fa fa-plus"></i>Add Medical Check</a>
+                            <a data-toggle="modal" data-target="#CheckModal" href="#CheckModal" class="btn btn-sm btn-line pull-right"><i class="fa fa-plus"></i>Request Medical Check</a>
                               <!-- <a href="background-check" class="btn btn-line">Medicals</a> -->
                               <div class="clearfix"></div>
                             </h5>
@@ -43,9 +35,17 @@
 
                     <div class="">
                         <div class="panel panel-default">
+
+                            @if(count($requests) > 0)
                             <div class="panel-heading">
-                                <h3 class="panel-title">Past Employment Check</h3>
+                                <h3 class="panel-title">Requested Medical Check(s)</h3>
                             </div>
+                            @else
+                                <em>No Medical checks has been requested for {{ $appl->cv->first_name }}.</em>
+                            @endif
+
+                            @foreach($requests as $req)
+                            
                             <div class="panel-body">
 
                                 <div class="row">
@@ -53,104 +53,35 @@
                                         <div class="col-xs-9">
                                             <div class="media-left pull-left" style="padding-right: 20px;">
                                                 <a href="#">
-                                                    <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNGU5MGRiMmU5YSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE0ZTkwZGIyZTlhIj48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxNC41IiB5PSIzNi41Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" data-holder-rendered="true" style="width: 64px; height: 64px;">
+                                                    <img class="media-object" alt="64x64" src="{{ $req->product->provider->logo }}" style="width: 64px; height: 64px;">
                                                 </a>
                                             </div>
                                             <div class="media-body">
-                                                <h5 class="media-heading">Media heading</h5>
-                                                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. <a href="#">...more</a>
+                                                <h5 class="media-heading">{{ $req->product->name }}</h5>
+                                                {{ $req->product->summary }}    
+                                                 <a href="#">...more</a><br/>
+                                                 <span class="label label-info label-large" >{{ $req->status }}</span> | 
+                                                 Requested: {{ human_time($req->created, 1) }}
                                             </div>
                                         </div>
                                         <div class="col-xs-3">
                                             <p>
-                                            <button class="btn btn-sm btn-success">
-                                                View
-                                            </button>
+                                            @if($req->status == 'COMPLETED')    
+                                                <button class="btn btn-sm btn-success">
+                                                    View Result
+                                                </button>
+                                            @endif
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            @endforeach
                         </div>
 
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Criminal Check</h3>
-                            </div>
-                            <div class="panel-body">
+                        
 
-                                <div class="row">
-                                    <div class="media small">
-                                    <div class="col-xs-9">
-                                        <div class="media-left pull-left" style="padding-right: 20px;">
-                                            <a href="#">
-                                                <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNGU5MGRiMmU5YSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE0ZTkwZGIyZTlhIj48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxNC41IiB5PSIzNi41Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" data-holder-rendered="true" style="width: 64px; height: 64px;">
-                                            </a>
-                                        </div>
-                                        <div class="media-body">
-                                            <h5 class="media-heading">Media heading</h5>
-                                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. <a href="#">...more</a>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <p>
-                                        <button class="btn btn-sm btn-success">
-                                            View
-                                        </button></p>
-                                    </div>
-                                </div>
-                                    <div class="media small">
-                                        <div class="col-xs-9">
-                                            <div class="media-left pull-left" style="padding-right: 20px;">
-                                                <a href="#">
-                                                    <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNGU5MGRiMmU5YSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE0ZTkwZGIyZTlhIj48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxNC41IiB5PSIzNi41Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" data-holder-rendered="true" style="width: 64px; height: 64px;">
-                                                </a>
-                                            </div>
-                                            <div class="media-body">
-                                                <h5 class="media-heading">Media heading</h5>
-                                                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. <a href="#">...more</a>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-3">
-                                            <p><!-- &#8358;2000 -->
-                                            <button class="btn btn-sm btn-success">
-                                                View
-                                            </button></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Past Employment Check</h3>
-                            </div>
-                            <div class="panel-body">
-
-                                <div class="row">
-                                    <div class="media small">
-                                        <div class="col-xs-9">
-                                            <div class="media-left pull-left" style="padding-right: 20px;">
-                                                <a href="#">
-                                                    <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNGU5MGRiMmU5YSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE0ZTkwZGIyZTlhIj48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxNC41IiB5PSIzNi41Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" data-holder-rendered="true" style="width: 64px; height: 64px;">
-                                                </a>
-                                            </div>
-                                            <div class="media-body">
-                                                <h5 class="media-heading">Media heading</h5>
-                                                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. <a href="#">...more</a>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-3">
-                                            <p><!-- &#8358;2000 -->
-                                            <button class="btn btn-sm btn-success">
-                                                View
-                                            </button></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>                       
 
                     </div>
@@ -160,18 +91,7 @@
 
             </div>
 
-        <div class="row">
-          <div class="col-xs-12"><hr>
-            <h5 class="text-brandon text-center">
-              <a href="#" class="pull-left text-muted"><i class="fa fa-arrow-left"></i> &nbsp; Prev</a>
-              1 of 20
-              <a href="" class="pull-right">Next &nbsp; <i class="fa fa-arrow-right"></i></a>
-            </h5><hr>
-          </div>
-          <div class="col-xs-12">
-            <div class="separator separator-small"></div>
-          </div>
-        </div>
+       @include('applicant.includes.pagination')
 
         </div>
     </section>

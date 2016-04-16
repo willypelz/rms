@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\JobApplication;
 use App\Models\Job;
+use App\Models\AtsRequest;
 use App\Libraries\Solr;
 
 class JobApplicationsController extends Controller
@@ -45,8 +46,11 @@ class JobApplicationsController extends Controller
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
         $nav_type = 'medicals';
+
+        $requests = $appl->requests()->with('product.provider')->where('service_type', 'medicals')->get();
+
         
-        return view('applicant.medicals', compact('appl', 'nav_type'));
+        return view('applicant.medicals', compact('appl', 'nav_type', 'requests'));
     }
 
     public function notes($appl_id){
@@ -63,8 +67,11 @@ class JobApplicationsController extends Controller
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
         $nav_type = 'checks';
-        
-        return view('applicant.checks', compact('appl', 'nav_type'));
+
+        $requests = $appl->requests()->with('product.provider')->where('service_type', 'background')->get();
+
+
+        return view('applicant.checks', compact('appl', 'nav_type', 'requests'));
     }
 
     public function Profile($appl_id){
@@ -84,7 +91,7 @@ class JobApplicationsController extends Controller
 
     	$appl = JobApplication::with('job', 'cv')->find($appl_id);
 
-    	$nav_type = 'profile';
+    	$nav_type = 'messages';
 
     	// dd($appl->toArray());
 
@@ -96,11 +103,32 @@ class JobApplicationsController extends Controller
     {
         $job = Job::find($request->jobID);
         $active_tab = 'candidates';
+        $jobID = $request->jobID;
 
-        $response = Solr::get_applicants($this->search_params, $request->jobID);
-        dd($response);
+        $this->search_params['filter_query'] = @$request->filter_query;
+        
+        $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status);
+        
 
-        return view('job.board.candidates', compact('job', 'active_tab'));
+
+        if($request->ajax())
+        {
+            $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab','result','jobID'))->render();    
+            $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query])->render();
+            return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters ] );
+            
+        }
+        else{
+            $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+            return view('job.board.candidates', compact('job', 'active_tab','result','application_statuses','jobID'));
+        }
+
+        
+    }
+
+    public function massAction( Request $request )
+    {
+        JobApplication::massAction( $request->job_id, $request->cv_ids, $request->status );
     }
 
 

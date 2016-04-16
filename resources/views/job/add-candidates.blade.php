@@ -20,9 +20,17 @@
             <div class="row">
 
                 <div class="col-sm-12">
-                    <h4 class="no-margin text-center text-uppercase l-sp-5">Job Creation</h4><br>
+                    <h4 class="no-margin text-center text-uppercase l-sp-5">
+                        @if(!empty($job))   
+                            Job Creation
+                        @else
+                            Talent Pool
+                        @endif    
+                    </h4><br>
                     <div class="page">
 
+                        
+                        @if(!empty($job))    
                         <div class="btn-group btn-group-justified" role="group" aria-label="...">
                           <div class="btn-group" role="group">
                             <a href="create-job.php" type="button" class="btn btn-line text-capitalize"><i class="fa fa-file-text-o"></i>
@@ -41,6 +49,7 @@
                             &nbsp; <span class="hidden-xs">4. add candidates</span></a>
                           </div>
                         </div>
+                        @endif
 
         <div class="row">
         </div>
@@ -51,8 +60,14 @@
                                 <div class="row tab-content ">
                                 <div class="col-sm-12 text-center">
 
-                                <h4 class="text-center">Add Candidates to this Job</h4>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                @if(!empty($job)) 
+                                    <h4 class="text-center">Add Candidates to {{  $job->title }}</h4>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                @else
+                                    <h4 class="text-center">Add Candidates to your Talent Pool</h4>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+
+                                @endif    
                                 <hr>
 
                                     <div class="col-sm-6">
@@ -76,22 +91,49 @@
                                     </div>
 
 
+                                    @if(!empty($job))     
                                     <div class="col-sm-6">
-                                        <a href="job-board.php" type="button" class="btn btn-success text-capitalize"><i class="fa fa-user-md"></i>
-                                            &nbsp; <span class="hidden-xs">Find Matching Candidates</span>
+                                        <ul class="list-group list-notify text-left">
+                                          
+
+                                          <li role="candidate-notifications" class="list-group-item">
+
+                                           <span class="fa-stack fa-lg i-notify">
+                                              <i class="fa fa-circle fa-stack-2x text-warning"></i>
+                                              <i class="fa fa-users fa-stack-1x fa-inverse"></i>
+                                            </span>
+
+                                            <h5 class="no-margin text-warning">Matching CVs</h5>
+                                            <p>
+                                                <br/>
+                                                <!--small class="text-muted pull-right">[Wed 12:23pm]</small-->
+                                                We found 6315 applicants that match your job.
+                                            </p>
+                                            
+                                          </li>
+
+                                         
+
+                                        </ul>
+
+                                        <a href="{{ route('job-board', [$jobid]) }}" type="button" class="btn btn-success text-capitalize"><i class="fa fa-users-md"></i>
+                                            &nbsp; <span class="hidden-xs">See CVs that Match your Job</span>
                                         </a><p></p>
-                                        <p>
+                                        <!--p>
                                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia suscipit, enim minus pariatur vitae eum reiciendis? Laborum quasi repudiandae ad aliquam, qui veniam ex ut at eveniet iste, facere sequi.
-                                        </p>
+                                        </p-->
                                     </div>
+                                    @endif
 
                                     <div class="col-sm-12">
                                         <hr>
 
-                                    <h5 class="no-margin text-center text-success">
+                                    <h5 class="no-margin text-center text-success hidden">
                                             <i class="fa fa-spinner fa-pulse"></i> &nbsp;
                                             Importing Candidates
                                         </h5>
+
+                                        <div class="col-sm-12"><hr><a href="{{ route('job-board', [$jobid]) }}" class="pull-right btn btn-danger btn-cart-checkout">Go to Job Dashbaord &raquo;</a></div>
                                     </div>
                                 </div>
 

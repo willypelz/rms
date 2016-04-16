@@ -21,9 +21,9 @@
                                     <ul class="list-inline text-white">
                                         <!--<li><strong>Company:</strong>&nbsp; JobAcess</li>-->
                                         <li>
-                                            <strong>&nbsp;Posted:</strong>&nbsp; <?php echo date('d, M Y', strtotime($job['created_at'])) ?></li>
+                                            <strong>&nbsp;Posted:</strong>&nbsp; <?php echo date('d, M Y', strtotime($job['post_date'])) ?></li>
                                         <li>
-                                            <strong>&nbsp;Expires:</strong>&nbsp; 21 Jun, 2014</li>
+                                            <strong>&nbsp;Expires:</strong>&nbsp; <?php echo date('d, M Y', strtotime($job['expiry_date'])) ?></li>
                                     </ul>
                             
                                     <!-- <div class="badge badge-job badge-job-active">
@@ -62,7 +62,7 @@
                                             <p class="text-center">Please fill in the information below carefully.</p>
 
 
-                                {!! Form::open(array('url' => 'apply/'.$job->slug, 'class'=>'job-details', 'files'=>true)) !!}
+                                {!! Form::open(array('class'=>'job-details', 'files'=>true)) !!}
 
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}" id="lar_token">
                                         <div class="row">
@@ -281,22 +281,21 @@
                                                 
                                         <div class="col-sm-4">
                                             <h6 class="text-brandon text-uppercase l-sp-5 no-margin">company details</h6><br>
-                                            <p class="text-muted">The Infrastructure Bank</p>
-                                            <p><img src="{{ asset('InfrastructureBank/assets/tib-logo.jpg') }}" alt="" width="80%"></p><br>
-                                            <p class="small">Formerly known as Urban Development Bank of Nigeria Plc, The Infrastructure Bank Plc was established in 1992 under decree No. 51 of the 1992 constitution of the Federal Republic of Nigeria. The Infrastructure Bank Plc is Nigeria's dedicated infrastructure bank providing financial solutions to support key long term infrastructure projects, including transportation infrastructure, municipal common services, mass housing and district development, solid waste management and water provision, and power and renewable energy projects.</p>
-                                            <p><i class="fa fa-map-marker"></i> Plot No. 977, Central Business Area, (Adjacent National Mosque), Garki, Abuja</p>
+                                            <p class="text-muted">{{ $company->name }}</p>
+                                            <p><img src="https://www.britishcouncil.org.ng/profiles/solas2/themes/britishcouncil/images/desktop/logo-british-council-color.png" alt="" width="60%"></p><br>
+                                            <p class="small">{{ $company->about }}</p>
+                                            <p><i class="fa fa-map-marker"></i> Magodo, Phase 2. Lagos</p>
+                                            <!--p>
+                                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4448.570052456479!2d3.3791209324273184!3d6.618898622434336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b93a899b7c9b7%3A0x8630de71dbc44ffd!2sMagodo+GRA+Phase+II%2C+Lagos!5e0!3m2!1sen!2sng!4v1457754339276" frameborder="0" width="100%" height="200px" allowfullscreen></iframe>
+                                            </p-->
                                             <p>
-                                                
-                                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.053443203597!2d7.490861314878479!3d9.058889993500113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104e0bb0172dc2e7%3A0x4e306a178129abb2!2sThe+Infrastructure+Bank+PLC!5e0!3m2!1sen!2s!4v1459173018514" width="100%" height="200px" frameborder="0" style="border:0" allowfullscreen></iframe>
-                                            </p>
-                                            <p>
-                                                <i class="fa fa-envelope"></i> enquiries@tibplc.com <br>
-                                                <i class="fa fa-globe"></i> www.infrastructurebankplc.com
+                                                <i class="fa fa-envelope"></i> {{ $company->email }}  <br>
+                                                <i class="fa fa-globe"></i> {{ $company->website }}
                                             </p>
                                         </div>
                                         <div class="col-sm-6 col-sm-offset-3 text-center hidden"><!-- <hr> -->
-                                            <p >Powered by <a href="http://www.insidify.com">Insidify.com </a> <br>
-                                            <small class="text-muted">&copy; 2016. Insidify.com</small></p>
+                                            <p >Powered by <a href="http://www.seamlesshiring.com"><i class="fa fa-skype"></i> Seamless Hiring</a> <br>
+                                            <small class="text-muted">&copy; {{ date('Y') }}. Seamless Hiring</small></p>
                                         </div>
                                         <div class="clearfix"></div>
 

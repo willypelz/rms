@@ -7,14 +7,14 @@
                             </a>
                           </div>
 
+
                           <div class="btn-group" role="group">
-                            <a href="{{ route('job-board', [$job->id]) }}" type="button" class="btn btn-line text-capitalize text-muted @if($active_tab == 'promote') in @endif">
+                            <a href="{{ route('job-promote', [$job->id]) }}" type="button" class="btn btn-line text-capitalize text-muted @if($active_tab == 'promote') in @endif">
                             <span class="fa-lg"><i class="fa fa-send"></i>
                             <span class="hidden-xs"> &nbsp; Promote Job</span></span>
                             <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
                             </a>
                           </div>
-                         
                           <div class="btn-group" role="group">
                             <a href="{{ route('job-candidates', [$job->id]) }}" type="button" class="btn btn-line text-capitalize @if($active_tab == 'candidates') in @endif">
                             <span class="fa-lg"><i class="fa fa-edit"></i>

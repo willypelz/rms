@@ -430,5 +430,86 @@ class CvSalesController extends Controller
         }
         // return view('cv-sales.cv_saved');
     }
+
+    public function viewPurchased(Request $request)
+    {
+        $this->search_params['q'] = ( $request->search_query && trim( $request->search_query ) != '' ) ? $request->search_query : '*' ;
+
+        if( $request->start )
+        {
+            $this->search_params['start'] = $request->start;
+        }
+        
+        
+        $this->search_params['filter_query'] = @$request->filter_query;
+        // $response = Solr::search_resume($this->search_params);
+        $response = Solr::get_purchased_cvs($this->search_params);
+
+
+        $cart = Cart::content();
+        $count = Cart::count(false); 
+
+        //to get ids of all items in cart so as to check the button to display in view
+        foreach ($cart as $k) {
+            $ids[] = ($k->id);
+        }
+
+        if(empty($ids))
+            $ids = null;
+    // $in_cart = in_array('26618', $ids);
+        if($request->ajax())
+        {
+            
+            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'is_saved' => true])->render();    
+            $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query])->render();
+            return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters ] );
+            
+        }
+        else{
+            return view('cv-sales.cv_purchased',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'is_saved' => true ]);
+        }
+        // return view('cv-sales.cv_saved');
+    }
+    
+    public function viewTalentPool(Request $request)
+    {
+        $this->search_params['q'] = ( $request->search_query && trim( $request->search_query ) != '' ) ? $request->search_query : '*' ;
+
+        if( $request->start )
+        {
+            $this->search_params['start'] = $request->start;
+        }
+        
+        
+        $this->search_params['filter_query'] = @$request->filter_query;
+        // $response = Solr::search_resume($this->search_params);
+        $response = Solr::get_all_my_cvs($this->search_params);
+
+
+        $cart = Cart::content();
+        $count = Cart::count(false); 
+
+        //to get ids of all items in cart so as to check the button to display in view
+        foreach ($cart as $k) {
+            $ids[] = ($k->id);
+        }
+
+        if(empty($ids))
+            $ids = null;
+    // $in_cart = in_array('26618', $ids);
+        if($request->ajax())
+        {
+            
+            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'is_saved' => true])->render();    
+            $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query])->render();
+            return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters ] );
+            
+        }
+        else{
+            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'is_saved' => true ]);
+        }
+        // return view('cv-sales.cv_saved');
+    }
+
     
 }

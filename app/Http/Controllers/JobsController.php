@@ -6,6 +6,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Models\JobBoard;
 use App\Models\Job;
+use App\Models\JobActivity;
 use App\Models\Cv;
 use App\Models\JobApplication;
 use App\Models\Company;
@@ -16,6 +17,7 @@ use Session;
 use Auth;
 use Mail;
 use Curl;
+
 
 class JobsController extends Controller
 {
@@ -220,9 +222,72 @@ class JobsController extends Controller
 
     public function JobActivities($id, Request $request){
          $job = Job::find($id);
+         // dd($job);
+
+         $content = '<ul class="list-group list-notify">';
+        $activities =  JobActivity::with('user', 'application')->where('job_id', $id)->get();
+        foreach ($activities as $ac) {
+            $type = $ac->activity_type;
+
+            switch ($type) {
+                
+                 case "HIRE":
+
+                     $content .= '<li role="candidate-application" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-info"></i>
+                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-info">Application</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">[Wed 12:23pm]</small> 
+                                      You have been successfully hired.
+                                  </p>
+                                </li>';
+                     break;
+                 case "REJECT":
+                    $content .= '<li role="warning-notifications" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                                    <i class="fa fa-exclamation fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-danger">Warnings</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">[Wed 12:23pm]</small>
+                                      You haveYou have not performed <a href=""> this important task</a>
+                                  </p>
+                                </li>';
+                     break;
+                 case "SHARE-APPLICANT":
+                     $content .= '<li role="messaging" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-success"></i>
+                                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-success">Message</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">[Wed 12:23pm]</small> Olwatosin Oriola reply <a href="jobs/list">your message. Go to Message</a>
+                                  </p>
+                                  
+                                </li>';
+                     break;
+                 default:
+                     $content.= '<li role="messaging" class="list-group-item">Hello THere </li> ';
+            }
+
+        }
+        // dd($act->toArray());
+
+        $content .= '</ul>';
         $active_tab = 'activities';
 
-        return view('job.board.activities', compact('job', 'active_tab'));
+        return view('job.board.activities', compact('job', 'active_tab', 'content'));
     }
 
     public function JobCandidates($id, Request $request){

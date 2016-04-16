@@ -374,7 +374,7 @@
                     $('#status_filters a[data-value="' + $field.data('action') + '"]').trigger('click');
                 });
 
-            console.log(cvs);
+            // console.log(cvs);
         });
 
     });

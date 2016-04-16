@@ -45,9 +45,9 @@ Route::group(['middleware' => 'web'], function () {
     });
 
     Route::get('simple-pay', function(){
-
-        // dd(save_activities(4, 'Job application', '', '', 'THis is a very nice comment'));
-        return view('payment.simplepay');
+        dd('here');
+        dd(save_activities('HIRE', '', '', 'THis is a very nice comment'));
+        //return view('payment.simplepay');
     });
 
     Route::get('log-in', 'Auth\AuthController@showLoginForm');
@@ -160,6 +160,9 @@ Route::group(['middleware' => 'web'], function () {
         });
 
         Route::get('saved', 'CvSalesController@viewSaved');
+        Route::get('purchased', 'CvSalesController@viewPurchased');
+        Route::get('talent-pool', 'CvSalesController@viewTalentPool');
+        
 
 
         Route::post('get-my-folders', 'CvSalesController@getMyFolders');

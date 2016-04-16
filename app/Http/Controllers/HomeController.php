@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Curl;
 
 class HomeController extends Controller
 {
@@ -25,5 +26,17 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+    public function dashbaord()
+    {
+
+        $response = Curl::to('https://api.insidify.com/articles/get-posts')
+                                ->withData(array('limit'=>6))
+                                ->post();
+
+        $posts = json_decode($response)->data->posts;
+
+        return view('talent-pool.dashboard', compact('posts'));
     }
 }

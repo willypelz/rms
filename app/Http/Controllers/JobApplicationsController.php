@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\JobApplication;
 use App\Models\Job;
+use App\Models\AtsRequest;
 use App\Libraries\Solr;
 
 class JobApplicationsController extends Controller
@@ -45,8 +46,11 @@ class JobApplicationsController extends Controller
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
         $nav_type = 'medicals';
+
+        $requests = $appl->requests()->with('product.provider')->where('service_type', 'medicals')->get();
+
         
-        return view('applicant.medicals', compact('appl', 'nav_type'));
+        return view('applicant.medicals', compact('appl', 'nav_type', 'requests'));
     }
 
     public function notes($appl_id){
@@ -63,8 +67,11 @@ class JobApplicationsController extends Controller
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
         $nav_type = 'checks';
-        
-        return view('applicant.checks', compact('appl', 'nav_type'));
+
+        $requests = $appl->requests()->with('product.provider')->where('service_type', 'background')->get();
+
+
+        return view('applicant.checks', compact('appl', 'nav_type', 'requests'));
     }
 
     public function Profile($appl_id){

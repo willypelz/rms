@@ -51,11 +51,11 @@
                 
                 
                         <ul class="pagination pull-right job-progress">
-                            <li><a href="#">New</a>
+                            <li><a href="#" class="active">New</a>
                             </li>
                             <li><a href="#">In Review</a>
                             </li>
-                            <li><a href="#" class="active">Interview</a>
+                            <li><a href="#">Interview</a>
                             </li>
                             <li><a href="#">Assessed</a>
                             </li>
@@ -67,7 +67,7 @@
                 
                         <div class="btn-group btn-group-justified" role="group">
                             <div  class="btn-group" role="group">
-                                <a href="job.php" target="_blank" type="button" class="btn-sm btn btn-info status"><i class="fa fa-send"></i> &nbsp; Advertise</a>
+                                <a href="{{ route('job-preview', $job['id']) }}" target="_blank" type="button" class="btn-sm btn btn-info status"><i class="fa fa-send"></i> &nbsp; Preview</a>
                             </div>
                             <div  class="btn-group" role="group">
                                 <a href="{{ route('edit-job', [$job['id']] ) }}" type="button" class="btn-sm btn btn-info status"><i class="fa fa-pencil"></i> &nbsp; Edit Details</a>

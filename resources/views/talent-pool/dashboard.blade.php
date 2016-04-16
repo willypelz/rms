@@ -17,11 +17,11 @@
 
                             <span class="fa-lg"><i class="fa fa-tachometer"></i>
                             <span class="hidden-xs text-brandon text-capitalize"> Add Job</span><br></span>
-                            <small class="text-white hidden-xs">Create a new Job</small>
+                            <small class="text-white hidden-xs">Post a new Job</small>
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="{{ url('/') }}" type="button" class="btn btn-line text-capitalize">
+                            <a href="{{ route('add-candidates', false) }}" type="button" class="btn btn-line text-capitalize">
                             <span class="fa-lg"><i class="fa fa-user-plus"></i>
                             <span class="hidden-xs text-brandon text-capitalize"> Add Candidate</span><br></span>
                             <small class="text-muted hidden-xs">Upload CV in folder</small>
@@ -30,7 +30,7 @@
                           <div class="btn-group" role="group">
                             <a href="#" type="button" class="btn btn-line text-capitalize">
                             <span class="fa-lg"><i class="fa fa-bar-chart"></i>
-                            <span class="hidden-xs text-brandon text-capitalize"> View Statistics</span><br></span>
+                            <span class="hidden-xs text-brandon text-capitalize"> View Talent Pool</span><br></span>
                             <small class="text-muted hidden-xs">Resumes / CVs</small>
                             </a>
                           </div>
@@ -167,84 +167,26 @@
                             <span class="text-brandon text-uppercase">Your Activities:</span> 4 new updates
                         </h6><br>
                     <div id="owl-posts">
+                        
+                        @foreach($posts as $post)
                         <div class="owl-item col-sm-3">
                             <div class="panel-body text-left">
                               <p class="post-img">
-                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
+                                <a href="{{ 'https://insidify.com/discovery'.$post->slug }}" target="_blank" >
+                                  <img src="https://files.insidify.com/{{ $post->picture }}" class="img-responsive" width="100%">
+                                </a>
                               </p>
-                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
-                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
+                              <h4 class="post-title"><a href="{{ 'https://insidify.com/discovery'.$post->slug }}" target="_blank">
+                                {{ $post->title }}</a></h4>
+                              <p class="">{{ $post->summary }}
                               </p>
                               <p>
-                                  <a href="" class="btn btn-line">Read</a>
+                                  <a href="{{ 'https://insidify.com/discovery'.$post->slug }}" target="_blank" class="btn btn-line">Read</a>
                               </p>
                             </div>
                         </div>
-                        <div class="owl-item col-sm-3">
-                            <div class="panel-body text-left">
-                              <p class="post-img">
-                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
-                              </p>
-                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
-                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
-                              </p>
-                              <p>
-                                  <a href="" class="btn btn-line">Read</a>
-                              </p>
-                            </div>
-                        </div>
-                        <div class="owl-item col-sm-3">
-                            <div class="panel-body text-left">
-                              <p class="post-img">
-                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
-                              </p>
-                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
-                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
-                              </p>
-                              <p>
-                                  <a href="" class="btn btn-line">Read</a>
-                              </p>
-                            </div>
-                        </div>
-                        <div class="owl-item col-sm-3">
-                            <div class="panel-body text-left">
-                              <p class="post-img">
-                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
-                              </p>
-                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
-                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
-                              </p>
-                              <p>
-                                  <a href="" class="btn btn-line">Read</a>
-                              </p>
-                            </div>
-                        </div>
-                        <div class="owl-item col-sm-3">
-                            <div class="panel-body text-left">
-                              <p class="post-img">
-                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
-                              </p>
-                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
-                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
-                              </p>
-                              <p>
-                                  <a href="" class="btn btn-line">Read</a>
-                              </p>
-                            </div>
-                        </div>
-                        <div class="owl-item col-sm-3">
-                            <div class="panel-body text-left">
-                              <p class="post-img">
-                                <img src="https://files.insidify.com/uploads/discovery/five.jpg" class="img-responsive" width="100%">
-                              </p>
-                              <h4 class="post-title"><a href="https://insidify.com/discovery/5-things-you-actually-don't-have-to-have-figured-out-by-30">5 Things You Actually Don't Have to Have Figured Out by 30</a></h4>
-                              <p class="">Worry happens to everyone at some point but it seems to be more evident when age catches up with our dreams and expectations. 
-                              </p>
-                              <p>
-                                  <a href="" class="btn btn-line">Read</a>
-                              </p>
-                            </div>
-                        </div>
+                        @endforeach
+
                     </div>
                 </div>
             </div>

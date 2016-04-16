@@ -160,9 +160,13 @@ class JobsController extends Controller
         return view ('job.share', compact('company', 'job'));
     }
 
-    public function AddCandidates($id){
+    public function AddCandidates($jobid = null){
 
-        return view ('job.add-candidates');
+        if(!empty($jobid)){
+            $job = Job::find($jobid);
+        }
+
+        return view ('job.add-candidates', compact('jobid', 'job'));
     }
 
      public function UploadCVfile($id){
@@ -192,11 +196,13 @@ class JobsController extends Controller
         return view('job.job-list', compact('jobs', 'active', 'suspended', 'company'));
     }
 
-    public function JobBoard($id, Request $request){
+    public function JobPromote($id, Request $request){
 
         $job = Job::find($id);
+        $company = $job->company()->first();
+
         $active_tab = 'promote';
-        return view('job.board.home', compact('job', 'active_tab'));
+        return view('job.board.home', compact('job', 'active_tab', 'company'));
     }
 
     public function JobTeam($id, Request $request){
@@ -435,6 +441,15 @@ class JobsController extends Controller
         $company = ($d->companies[0]);
 
         return redirect('/'.$company->slug);
+
+
+    }
+
+    public function Preview($job_id){
+
+        $job = Job::with('company')->find($job_id);
+
+        return redirect('/'.$job->company->slug.'/job/'.$job->id.'/'.str_slug($job->title));
 
 
     }

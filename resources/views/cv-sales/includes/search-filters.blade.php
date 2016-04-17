@@ -41,6 +41,17 @@
                     <p>--</p>
 
               @endif
+
+              <p class="border-bottom-thin text-muted">Keyword search<i class="glyphicon glyphicon-user pull-right"></i></p>
+              <div class="input-group">
+                
+                <input type="text" class="form-control" id="search_keyword" placeholder="keyword">
+                <a class="btn btn-small input-group-addon" href="#" onclick="searchKeyword(); return false;" >GO</a>
+              </div>
+              <p>--</p> 
+
+
+
               <p class="border-bottom-thin text-muted">Gender<i class="glyphicon glyphicon-user pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_gender = 0  /*--}}

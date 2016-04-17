@@ -135,6 +135,47 @@
     String.prototype.capitalize = function() {
         return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
     }
+
+    function searchKeyword(){
+
+            var filter = 'text' + ':"' + $(search_keyword).val() + '"';
+
+            var index = $.inArray( filter, filters );
+            // console.log( filter + "---" + index );
+            if( index == -1 )
+            {
+              filters.push( filter );
+            }
+            else
+            {
+                filters.splice(index, 1);
+            }
+
+            $('.search-results').html('{!! preloader() !!}');
+            scrollTo('.job-progress-xs');
+            $('.result-label').html('');
+            $('#pagination').hide();
+            $.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
+                //console.log(response);
+                // var response = JSON.parse(data);
+                // console.log(data.search_results);
+                $('.search-results').html(data.search_results);
+                $('#search-filters').html(data.search_filters);
+                $('.result-label').html(data.showing);
+                $('#pagination').show();
+
+                $.each(filters, function(index,value){
+                    
+                    var arr = value.split(':');
+                    
+                    $('.filter-div input[type=checkbox]' + '[data-field=' + arr[0] + ']' + '[data-value=' + arr[1] + ']' ).attr('checked',true);
+                });
+            });
+
+            return false;
+        }
+
+        
     $(document).ready(function(){
         
         // $('.infinite-scroll').jscroll({
@@ -225,6 +266,8 @@
                 });
             });
         });
+
+
 
         $(document).on('click','.read-more-show', function(){
             // console.log($(this).text() );

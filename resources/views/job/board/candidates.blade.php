@@ -18,7 +18,7 @@
             <div class="row">
 
                 <div class="col-sm-12">
-                    <div class="page no-bod-rad">
+                    <div class="page no-bod-rad" id="job-dash-content">
                         <div class="row">
 
 
@@ -35,7 +35,7 @@
                                     @include('job.board.includes.applicant-status')
                                 
 
-                                    <small class="text-muted " id="showing"></small>
+                                    <small class="text-muted result-label" id="showing"></small>
 
                                    <div class="">
                                         <label data-toggle="collapse" aria-controls="h_act-on" aria-expanded="false" data-target="#h_act-on" role="button" class="select-all pull-right">Select All
@@ -65,14 +65,19 @@
 
                               @include('job.board.includes.applicant-results-item')
                               
-                              <a href="{{ route('job-candidates-infinite', [$jobID, $start ]) }}" class="nextPageLoad">load next page</a>
+                              <!--a href="{{ route('job-candidates-infinite', [$jobID, $start ]) }}" class="nextPageLoad">load next page</a-->
                             </div>
-                            <!-- <ul id="pagination" class="pagination-sm"></ul> -->
+
+                            <br style="clear:both" />
+                            <small class="text-muted result-label" id="showing"></small>
+                            <br style="clear:both" />
+
+                            <ul id="pagination" class="pagination-sm"></ul>
 
                             
 
-                            <a class="btn btn-line btn-block load" href="">
-                                <span class="glyphicon glyphicon-repeat"></span>&nbsp; Load more</a>
+                            <!--a class="btn btn-line btn-block load" href="">
+                                <span class="glyphicon glyphicon-repeat"></span>&nbsp; Load more</a-->
                         </div>
 
                         <!-- Filter -->
@@ -199,13 +204,18 @@
                 filters.splice(index, 1);
             }
 
-            $('.search-results').html("Loading");
+            $('.search-results').html('{!! preloader() !!}');
+            scrollTo('.job-progress-xs');
+            $('.result-label').html('');
+            $('#pagination').hide();
             $.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);
                 $('.search-results').html(data.search_results);
                 $('#search-filters').html(data.search_filters);
+                $('.result-label').html(data.showing);
+                $('#pagination').show();
 
                 $.each(filters, function(index,value){
                     
@@ -317,11 +327,16 @@
             
             
 
-            $('.search-results').html("Loading");
+            $('.search-results').html('{!! preloader() !!}');
+            scrollTo('.job-progress-xs');
+            $('.result-label').html('');
+            $('#pagination').hide();
             $.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);
+                $('.result-label').html(data.showing);
+                $('#pagination').show();
                 $('.search-results').html(data.search_results);
                 $('#search-filters').html(data.search_filters);
 
@@ -341,7 +356,7 @@
                 status_page = status_filter.capitalize();
             }
             // console.log( status_filter );
-            $('#showing').text( 'Showing ' + count + ' of ' + total_candidates + ' ' + status_page + ' Candidates' );
+            $('.result-label').text( 'Showing 1 - ' + count + ' of ' + total_candidates + ' ' + status_page + ' applicants' );
         }
 
         $(document).getShowing();
@@ -421,5 +436,40 @@
         });
 
     });
+</script>
+
+
+
+<script type="text/javascript">
+  total_candidates = "{{ $result['response']['numFound'] }}";
+  $(document).ready(function(){
+        if($('#pagination').data("twbs-pagination")){
+            $('#pagination').twbsPagination('destroy');
+        }
+
+       $('#pagination').twbsPagination({
+        totalPages: "{{ ceil( $result['response']['numFound'] / 20 ) }}",
+        visiblePages: 5,
+        initiateStartPageClick: false,
+        onPageClick: function (event, page) {
+          // console.log(page,filters);
+            scrollTo('.job-progress-xs')
+            $('#page-content').text('Page ' + page);
+            $('.result-label').html('')
+            $('#pagination').hide();
+            $('.search-results').html('{!! preloader() !!}');
+            var url = "{{ (@$is_saved) ? url('cv/saved') : url('cv/search')   }}";
+            var pagination_url = "";
+            $.get(pagination_url, {search_query: $('#search_query').val(), start: ( page - 1 ) , filter_query : filters },function(data){
+                //console.log(response);
+                // var response = JSON.parse(data);
+                // console.log(data.search_results);
+                $('.result-label').html(data.showing)
+                $('.search-results').html(data.search_results);
+                $('#pagination').show();
+            });
+        }
+    });
+  });
 </script>
 @endsection

@@ -13,11 +13,11 @@
           <input type="checkbox" class="media-body-check pull-right">
           <h4 class="media-heading text-muted"><a href="{{ route('applicant-profile', $cv['application_id'][0] ) }}" target="_blank">{{ ucwords( $cv['first_name']. " " . $cv['last_name'] ) }}</a>
           </h4>
-          <p>{{ @$cv['tagline'] }}</p>
+          <p>{{ @$cv['last_position'].' at '.@$cv['last_company_worked'] }}</p>
           <small>
-              <span class="text-muted">{{ human_time( @$cv['created'], 1) }}</span>
+              <span class="text-muted">{{ human_time( @$cv['application_date'], 1) }}</span>
               &nbsp;
-              <a id='showCvBtn' data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">Cv</a>
+              <a id="showCvBtn" data-toggle="modal" data-target="#cvModal"  onclick="showCvModal('{{ $cv['id'] }}',true);" >View Cv</a>
               <span class="text-muted">·</span>
               <a href="#" data-toggle="modal" data-target="#reviewCv[data-user='{{ @$cv['id'] }}']" id="reviewBtn-{{ $cv['application_id'][0] }}">Review</a>
               <span class="text-muted">·</span>
@@ -37,9 +37,7 @@
 
       </div>
   </div>
-<div class="modal fade no-border" id="showCv" data-user="{{ @$cv['id'] }}" tabindex="-1" role="dialog" aria-labelledby="cvViewModalLabel" aria-hidden="false">
-  @include('cv-sales.includes.cv-preview')
-</div>
+
 
 <div class="modal fade" tabindex="-1" id="reviewCv" data-user="{{ @$cv['id'] }}" role="dialog" aria-labelledby="reviewCv">
       <div class="modal-dialog">
@@ -136,39 +134,12 @@
 
 
 
-<script type="text/javascript">
-  total_candidates = "{{ $result['response']['numFound'] }}";
-  $(document).ready(function(){
-        if($('#pagination').data("twbs-pagination")){
-            $('#pagination').twbsPagination('destroy');
-        }
-
-       $('#pagination').twbsPagination({
-        totalPages: "{{ ceil( $result['response']['numFound'] / 20 ) }}",
-        visiblePages: 7,
-        initiateStartPageClick: false,
-        onPageClick: function (event, page) {
-          console.log(page,filters);
-            $('#page-content').text('Page ' + page);
-            $('.search-results').html("Loading");
-            var url = "{{ (@$is_saved) ? url('cv/saved') : url('cv/search')   }}";
-            var pagination_url = "";
-            $.get(pagination_url, {search_query: $('#search_query').val(), start: ( page - 1 ) , filter_query : filters },function(data){
-                //console.log(response);
-                // var response = JSON.parse(data);
-                // console.log(data.search_results);
-                $('.search-results').html(data.search_results);
-            });
-        }
-    });
-  });
-</script>
 
 @else
   <li class="row">
     <div class="text-center text-muted">
     <i class="fa fa-frown-o fa-3x"></i>
-      <h3>Not Found. Please Search again.</h3>
+      <h3>There are no Applicants in this Section.</h3>
     </div>
   </li>
 @endif

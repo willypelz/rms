@@ -12,7 +12,7 @@ use App\Libraries\Solr;
 
 class JobApplicationsController extends Controller
 {
-    private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'post_date+desc', 'grouped'=>FALSE ];
+    private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'application_date+desc', 'grouped'=>FALSE ];
 
     /**
      * Create a new controller instance.
@@ -106,18 +106,33 @@ class JobApplicationsController extends Controller
         $jobID = $request->jobID;
 
         $this->search_params['filter_query'] = @$request->filter_query;
-        $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start + $this->search_params['row'] ) : 0;
+        $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start * $this->search_params['row'] ) : 0;
         
         
         $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status);
-        
 
+        $end = (($start + $this->search_params['row']) > intval($result['response']['numFound']))?$result['response']['numFound']:($start + $this->search_params['row']);
+        $showing = "Showing ".($start+1)." - ".$end." of ".$result['response']['numFound']." Applicants [Page ".floor($request->start + 1)."]";
+
+        $filter_text = '';
+        if(isset($request->filter_query)){
+
+            $filter_text .= "<br/>Filtering by: ";
+            foreach ($request->filter_query as $fq) {
+                
+                $filter_text .= ucwords(str_ireplace("_", " ", $fq)).', ';
+            }
+
+            $filter_text .= ".";
+
+        }
+        $showing .= $filter_text;
 
         if($request->ajax())
         {
             $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab','result','jobID','start'))->render();    
             $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query])->render();
-            return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters ] );
+            return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing ] );
             
         }
         else{
@@ -139,6 +154,31 @@ class JobApplicationsController extends Controller
     {
          return save_activities('REVIEW',  $request->job_id, $request->job_app_id, $request->comment );
     }
+
+    public function JobListData(Request $request){
+
+        $result = Solr::get_applicants($this->search_params, $request->job_id,@$request->status);
+        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+
+        echo '<div class="job-item ">
+                    <span class="number">'.$application_statuses['HIRED'].'</span><br/>Hired
+                </div>
+                <div class="job-item ">
+                    <span class="number">'.$application_statuses['ASSESSED'].'</span><br/>Assessed
+                </div>
+                <div class="job-item ">
+                    <span class="number">'.$application_statuses['INTERVIEWED'].'</span><br/>Interviewed
+                </div>
+                <div class="job-item ">
+                    <span class="number text-muted">'.$application_statuses['SHORTLISTED'].'</span><br/>Reviewed
+                </div>
+                <div class="job-item  purple">
+                    <span class="number text-muted">'.$result['response']['numFound'].'</span><br/>All
+                </div>';
+
+        
+    }
+
 
     
 }

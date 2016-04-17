@@ -21,7 +21,7 @@
                   @endif
                   <!--<span class="label label-primary">INSIDIFY</span>-->
               </h4>
-              <span> {{ @$cv['tagline'] }}</span>
+              <p>{{ @$cv['last_position'].' at '.@$cv['last_company_worked'] }}</p>
 
               <div class="description">
                   <p class="sub-box excerpt-p text-muted hidden"><i>bodied security men and women needed in a hotel. Must be smart and able to work in a corporate environment</i></p>
@@ -166,7 +166,7 @@
 
        $('#pagination').twbsPagination({
         totalPages: "{{ ceil( $result['response']['numFound'] / 20 ) }}",
-        visiblePages: 7,
+        visiblePages: 5,
         initiateStartPageClick: false,
         onPageClick: function (event, page) {
           console.log(page,filters);
@@ -178,6 +178,7 @@
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);
+                $('#showing').html(data.showing)
                 $('.search-results').html(data.search_results);
             });
         }

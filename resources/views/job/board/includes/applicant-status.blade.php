@@ -1,8 +1,8 @@
 <ul class="nav nav-pills option-aps" id="status_filters">
     <li class="active"><a href="javascript://" data-value="ALL">All <span class="badge">{{ $result['response']['numFound'] }}</span></a>
     </li>
-    <li><a href="javascript://" data-value="PENDING">Pending <span class="badge">{{ $application_statuses['PENDING'] }}</span></a> 
-    </li>
+    <!--li><a href="javascript://" data-value="PENDING">Pending <span class="badge">{{ $application_statuses['PENDING'] }}</span></a> 
+    </li-->
     <li><a href="javascript://" data-value="SHORTLISTED">Shortlisted <span class="badge">{{ $application_statuses['SHORTLISTED'] }}</span></a>
     <li><a href="javascript://" data-value="ASSESSED">Assessed <span class="badge">{{ $application_statuses['ASSESSED'] }}</span></a>
     </li>

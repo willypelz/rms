@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Models\Order;
 use App\User;
+use App\Models\Cv;
 use App\Models\Transaction;
 use App\Models\OrderItem;
 use App\Models\CompanyFolder;
 use App\Models\FolderContent;
+use App\Models\JobApplication;
 use Illuminate\Http\Request;
 use App\Libraries\Solr;
 use Cart;
@@ -19,7 +21,7 @@ use Carbon\Carbon;
 
 class CvSalesController extends Controller
 {
-    private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'post_date+desc', 'grouped'=>FALSE ];
+    private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'score+asc', 'grouped'=>FALSE ];
     /**
      * Create a new controller instance.
      *
@@ -98,14 +100,16 @@ class CvSalesController extends Controller
 
     public function getCvPreview(Request $request)
     {
-        //http://127.0.0.1:5000/extract
-        // $text = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );
-        $filepath = public_path("adeigbe_musibau_2015.doc");
-        //http://127.0.0.1:5000/extract?file_name=http://files.insidify.com/uploads/cv/Resume-_VALENTINE.doc_2_.doc
-        $cv = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );
-        // dd($cv);
-        return $cv;
-        return view('cv-sales.includes.cv-preview',['cv' => $cv ]);
+        $cv = Cv::find($request->cv_id)->toArray();
+        $cv['dob'] = $cv['date_of_birth'];
+        $is_applicant = $request->is_applicant;
+        $is_embedded = $request->is_embedded;
+        if(isset($request->appl_id)){
+            $appl = JobApplication::find($request->appl_id);    
+        }
+        
+        
+        return view('cv-sales.includes.cv-preview',compact("cv", "is_applicant", "appl", 'is_embedded'));
     }
 
     static function saveCvPreview(Request $request){ // to solr

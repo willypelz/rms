@@ -8,7 +8,7 @@ class Solr {
 
 	static $host = "http://50.28.104.199:8983/solr/resumes/select?";
 
-	static $default_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'post_date+desc', 'grouped'=>FALSE ];
+	static $default_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'application_date+desc', 'grouped'=>FALSE ];
 	
 
 
@@ -36,9 +36,9 @@ class Solr {
 			$search_field .= ':';
 
 		$filename = Solr::$host."q=".$search_field.$q."&rows=".$row."&start=".$start
-							."&facet=true&facet.field=gender&facet.field=marital_status&facet.field=edu_school&facet.field=exp_company&facet.field=edu_grade&facet.field=folder_name&facet.field=folder_type&facet.field=application_status"
+							."&facet=true&facet.field=gender&facet.field=marital_status&facet.field=last_position&facet.field=years_of_experience&facet.field=state_of_origin&facet.field=last_company_worked&facet.field=folder_name&facet.field=folder_type&facet.field=application_status"
 							// ."&facet=true&facet.field=job_type&facet.field=company&facet.field=loc&facet.field=job_level&facet.field=site_name&facet.date=expiry_date&facet.date.start=NOW/DAY&facet.date.end=NOW/DAY%2B60DAY&facet.date.gap=%2B7DAY&wt=json"
-							// ."&sort=".$sort
+							."&sort=".$sort
 							.$additional
 							."&fq=cv_file:*&wt=json"
 							;

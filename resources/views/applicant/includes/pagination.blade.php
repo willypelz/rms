@@ -1,4 +1,4 @@
-<div class="row">
+<!--div class="row">
           <div class="col-xs-12"><br>
             <h5 class="text-brandon text-center">
               <a href="#" class="pull-left text-muted"><i class="fa fa-arrow-left"></i> &nbsp; Prev</a>
@@ -9,4 +9,4 @@
           <div class="col-xs-12">
             <div class="separator separator-small"></div>
           </div>
-        </div>
+        </div-->

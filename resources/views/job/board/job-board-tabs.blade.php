@@ -7,6 +7,21 @@
                             </a>
                           </div>
 
+                           <div class="btn-group" role="group">
+                            <a href="{{ route('job-candidates', [$job->id]) }}" type="button" class="btn btn-line text-capitalize @if($active_tab == 'candidates') in @endif">
+                            <span class="fa-lg"><i class="fa fa-users"></i>
+                            <span class="hidden-xs"> &nbsp; Applicants</span></span>
+                            <!-- <small class="text-muted hidden-xs">See all applicants and their status </small> -->
+                            </a>
+                          </div>
+
+                          <div class="btn-group" role="group">
+                            <a href="{{ route('job-matching', [$job->id]) }}" type="button" class="btn btn-line text-capitalize text-muted @if($active_tab == 'matching') in @endif">
+                            <span class="fa-lg"><i class="fa fa-user-md"></i>
+                            <span class="hidden-xs"> &nbsp; Matching CVs</span></span>
+                            <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
+                            </a>
+                          </div>
 
                           <div class="btn-group" role="group">
                             <a href="{{ route('job-promote', [$job->id]) }}" type="button" class="btn btn-line text-capitalize text-muted @if($active_tab == 'promote') in @endif">
@@ -16,24 +31,11 @@
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="{{ route('job-candidates', [$job->id]) }}" type="button" class="btn btn-line text-capitalize @if($active_tab == 'candidates') in @endif">
-                            <span class="fa-lg"><i class="fa fa-edit"></i>
-                            <span class="hidden-xs"> &nbsp; Candidates</span></span>
-                            <!-- <small class="text-muted hidden-xs">See all applicants and their status </small> -->
-                            </a>
-                          </div>
-                          <div class="btn-group" role="group">
                             <a href="{{ route('job-team', [$job->id]) }}" type="button" class="btn btn-line text-capitalize @if($active_tab == 'team') in @endif">
-                            <span class="fa-lg"><i class="fa fa-users"></i>
+                            <span class="fa-lg"><i class="fa fa-edits"></i>
                             <span class="hidden-xs"> &nbsp; Job Team</span></span>
                             <!-- <small class="text-muted hidden-xs">Resumes / CVs</small> -->
                             </a>
                           </div>
-                          <div class="btn-group" role="group">
-                            <a href="{{ route('job-matching', [$job->id]) }}" type="button" class="btn btn-line text-capitalize text-muted @if($active_tab == 'matching') in @endif">
-                            <span class="fa-lg"><i class="fa fa-user-md"></i>
-                            <span class="hidden-xs"> &nbsp; Matching Candidates</span></span>
-                            <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
-                            </a>
-                          </div>
+                          
 </div>

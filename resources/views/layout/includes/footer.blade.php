@@ -625,6 +625,17 @@
       </div>
     </div>
 
+
+
+    <!-- modals -->
+    <div class="modal fade no-border" id="cvModal" role="dialog" aria-labelledby="cvViewModalLabel" aria-hidden="false">
+       <div id="cvModalContent">
+
+            
+         
+       </div>
+    </div>
+
     
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
@@ -640,7 +651,39 @@
             autoclose: true
         });
 
-          $('.select2').select2();
+        $('.select2').select2();
+
+
+        function showCvModal(cv_id, is_applicant){
+
+            $("#cvModalContent").html( '{!! preloader() !!}' );
+            // $("#cvModalContent").modal('show');
+
+             $.ajax
+              ({
+                  type: "POST",
+                  url: "{{ route('cv-preview') }}",
+                  data: ({ rnd : Math.random() * 100000, cv_id:cv_id, is_applicant:is_applicant }),
+                  success: function(response){
+                    $("#cvModalContent").html(response);
+                       
+                  }
+              });
+
+            
+
+
+            return false;
+
+
+        }
+
+
+        function scrollTo(target){
+          $('html, body').animate({
+                scrollTop: $(target).offset().top
+            }, 2000);          
+        }
 
 
     </script>

@@ -142,8 +142,8 @@
                         <table class="table table-bordered"> 
                         <tbody> 
                         <tr> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="jos/list">10</a></h1><small class="text-muted">Jobs Created</small></td> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">2,504</a></h1><small class="text-muted">Candidates</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">10</a></h1><small class="text-muted">Jobs Created</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">2,504</a></h1><small class="text-muted">Candidates</small></td> 
                         </tr> 
                         <!--tr> 
                             <td class="text-center"><h1 class="no-margin text-muted">24</h1><small class="text-muted">Jobs Closed</small></td> 

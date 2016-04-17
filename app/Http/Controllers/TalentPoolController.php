@@ -109,7 +109,7 @@ class TalentPoolController extends Controller
 
     public function InfMigrate2(){
 
-        $jas = JobApplication::where('job_id', '>', 9)->get();
+        $jas = JobApplication::where('job_id', '>', 9)->take(10)->get();
         foreach ($jas as $ja) {
             JobActivity::firstOrCreate([
                 'activity_type'=>'APPLIED',

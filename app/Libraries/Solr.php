@@ -40,7 +40,7 @@ class Solr {
 							// ."&facet=true&facet.field=job_type&facet.field=company&facet.field=loc&facet.field=job_level&facet.field=site_name&facet.date=expiry_date&facet.date.start=NOW/DAY&facet.date.end=NOW/DAY%2B60DAY&facet.date.gap=%2B7DAY&wt=json"
 							."&sort=".$sort
 							.$additional
-							."&fq=cv_file:*&wt=json"
+							."&fq=cv_file:*&group=true&group.field=email&group.main=true&wt=json"
 							;
 		if(@$filter_query)
 		{

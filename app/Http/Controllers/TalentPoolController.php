@@ -9,6 +9,7 @@ use DB;
 use App\Models\Job;
 use App\Models\Cv;
 use App\Models\JobApplication;
+use App\Models\JobActivity;
 use App\Models\JobApplicationMessage;
 
 
@@ -91,10 +92,32 @@ class TalentPoolController extends Controller
     		$jam->created = $ja->created_at;
     		$jam->modified = $ja->updated_at;
     		$jam->save();
+
+            JobActivity::firstOrCreate([
+                'activity_type'=>'APPLIED',
+                'job_id'=>$job_id,
+                'job_application_id'=>$app->id,
+                'created_at'=>$app->created
+                ]);
  
 
     	}
 
 
+    }
+
+
+    public function InfMigrate2(){
+
+        $jas = JobApplication::where('job_id', '>', 9)->get();
+        foreach ($jas as $ja) {
+            JobActivity::firstOrCreate([
+                'activity_type'=>'APPLIED',
+                'job_id'=>$ja->job_id,
+                'job_application_id'=>$ja->id,
+                'created_at'=>$ja->created
+                ]);
+        }
+        
     }
 }

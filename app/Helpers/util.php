@@ -54,6 +54,7 @@ use App\Models\JobActivity;
 			MESSAGE
 			SUSPEND-JOB
 			PUBLISH-JOB
+			APPLIED
 		*/
 
 		  if (!$job_id) $job_id = NULL;

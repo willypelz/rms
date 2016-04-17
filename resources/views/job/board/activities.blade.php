@@ -51,7 +51,7 @@
                 </div>
 
                 <script>
-                      $("#ActivityContent").html('<img src="{{ asset('img/loader-logo-32.gif') }}" width="30px" /> please wait...');
+                      $("#ActivityContent").html('{!! preloader() !!}');
                      
                       var url = "{{ route('get-activity-content') }}"
 

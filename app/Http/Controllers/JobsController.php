@@ -28,7 +28,10 @@ class JobsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => [
+            'JobView',
+            'company',
+        ]]);
     }
 
     /**
@@ -224,9 +227,9 @@ class JobsController extends Controller
          $content = '<ul class="list-group list-notify">';
         
         if(!empty($request->appl_id)){
-            $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('created_at', 'desc')->get();
+            $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('created_at', 'desc')->take(20)->get();
         }else{
-            $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_id', $request->jobid)->orderBy('created_at', 'desc')->get();
+            $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_id', $request->jobid)->orderBy('created_at', 'desc')->take(20)->get();
         }
 
         foreach ($activities as $ac) {
@@ -234,6 +237,23 @@ class JobsController extends Controller
 
             switch ($type) {
                 
+                 case "APPLIED":
+                     $applicant = $ac->application->cv;
+                     $job = $ac->application->job;
+                     $content .= '<li role="candidate-application" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-info"></i>
+                                    <i class="fa fa-user-plus fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-info">Job Application</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['.  date('D, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      '.$applicant->first_name.' '.$applicant->last_name.' applied for <strong>'.$job->title.'</strong>
+                                  </p>
+                                </li>';
+                     break;
                  case "HIRE":
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
@@ -562,6 +582,8 @@ class JobsController extends Controller
                                     }])->where('slug', $c_url)->first();
 
 
+        // dd($company);
+
         return view('job.company', compact('company'));
 
     }
@@ -738,5 +760,6 @@ class JobsController extends Controller
          }
 
     }
+
 
 }

@@ -14,8 +14,10 @@ use App\Models\JobActivity;
 	function human_time($time, $max_units = NULL)
 	{	
 		$time  = strtotime($time);
-		$lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
-		$units = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
+		// $lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
+		// $units = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
+		$lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560);
+		$units = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year');
 		$unit_string_array = array();
 
 		$max_units = (is_numeric($max_units) && in_array($max_units, range(1,8))) ? $max_units : sizeOf($lengths);
@@ -52,6 +54,7 @@ use App\Models\JobActivity;
 			MESSAGE
 			SUSPEND-JOB
 			PUBLISH-JOB
+			APPLIED
 		*/
 
 		  if (!$job_id) $job_id = NULL;
@@ -172,5 +175,12 @@ use App\Models\JobActivity;
 		// dd(array_search('PENDING', $status));
 
 		return $status_array;
+	}
+
+
+	function preloader(){
+
+		return '<div style="width:100%;text-align:center"><img src="'.asset('img/hourglass.svg').'"></div>';
+
 	}
 ?>

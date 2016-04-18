@@ -41,6 +41,17 @@
                     <p>--</p>
 
               @endif
+
+              <p class="border-bottom-thin text-muted">Keyword search<i class="glyphicon glyphicon-user pull-right"></i></p>
+              <div class="input-group">
+                
+                <input type="text" class="form-control" id="search_keyword" placeholder="keyword">
+                <a class="btn btn-small input-group-addon" href="#" onclick="searchKeyword(); return false;" >GO</a>
+              </div>
+              <p>--</p> 
+
+
+
               <p class="border-bottom-thin text-muted">Gender<i class="glyphicon glyphicon-user pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_gender = 0  /*--}}
@@ -89,18 +100,18 @@
               @endif
             <p>--</p>
 
-            <p class="border-bottom-thin text-muted">School<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+            <p class="border-bottom-thin text-muted">Last Position<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_edu_school = 0  /*--}}
                   {{--*/ $index = 0  /*--}}
-                  @foreach( $result['facet_counts']['facet_fields']['edu_school'] as $key => $edu_school )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ] != 0 &&  $edu_school != ''  && $edu_school != "0"  )
+                  @foreach( $result['facet_counts']['facet_fields']['last_position'] as $key => $last_position )
+                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['last_position'][ $key + 1 ] != 0 &&  $last_position != ''  && $last_position != "0"  )
                         
                         {{--*/ $index++  /*--}}
-                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="edu_school" data-value="{{ $edu_school }}"> {{ ucwords( $edu_school )." (".$result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ].")" }}</label> <br></div>
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="last_position" data-value="{{ $last_position }}"> {{ ucwords( $last_position )." (".$result['facet_counts']['facet_fields']['last_position'][ $key + 1 ].")" }}</label> <br></div>
                       @else
 
-                        {{--*/ @$other_edu_school += $result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ] /*--}}
+                        {{--*/ @$other_edu_school += $result['facet_counts']['facet_fields']['last_position'][ $key + 1 ] /*--}}
 
                       @endif
                   @endforeach
@@ -114,18 +125,18 @@
 
             <p>--</p>
 
-            <p class="border-bottom-thin text-muted">Company<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+            <p class="border-bottom-thin text-muted">Last Company Worked<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_exp_company = 0  /*--}}
                   {{--*/ $index = 0  /*--}}
-                  @foreach( $result['facet_counts']['facet_fields']['exp_company'] as $key => $exp_company )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['exp_company'][ $key + 1 ] != 0 &&  $exp_company != ''  && $exp_company != "0"  )
+                  @foreach( $result['facet_counts']['facet_fields']['last_company_worked'] as $key => $last_company_worked )
+                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ] != 0 &&  $last_company_worked != ''  && $last_company_worked != "0"  )
                         
                         {{--*/ $index++  /*--}}
-                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="exp_company" data-value="{{ $exp_company }}"> {{ ucwords( $exp_company )." (".$result['facet_counts']['facet_fields']['exp_company'][ $key + 1 ].")" }}</label> <br></div>
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="last_company_worked" data-value="{{ $last_company_worked }}"> {{ ucwords( $last_company_worked )." (".$result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ].")" }}</label> <br></div>
                       @else
 
-                        {{--*/ @$other_exp_company += $result['facet_counts']['facet_fields']['exp_company'][ $key + 1 ] /*--}}
+                        {{--*/ @$other_exp_company += $result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ] /*--}}
 
                       @endif
                   @endforeach
@@ -139,18 +150,18 @@
 
             <p>--</p>
 
-            <p class="border-bottom-thin text-muted">Grade<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+            <p class="border-bottom-thin text-muted">State of Origin<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_edu_grade = 0  /*--}}
                   {{--*/ $index = 0  /*--}}
-                  @foreach( $result['facet_counts']['facet_fields']['edu_grade'] as $key => $edu_grade )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['edu_grade'][ $key + 1 ] != 0 &&  $edu_grade != ''  && $edu_grade != "0" && $edu_grade != "-Choose-" )
+                  @foreach( $result['facet_counts']['facet_fields']['state_of_origin'] as $key => $state_of_origin )
+                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ] != 0 &&  $state_of_origin != ''  && $state_of_origin != "0" && $state_of_origin != "-Choose-" )
                         
                         {{--*/ $index++  /*--}}
-                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="edu_grade" data-value="{{ $edu_grade }}"> {{ ucwords( $edu_grade )." (".$result['facet_counts']['facet_fields']['edu_grade'][ $key + 1 ].")" }}</label> <br></div>
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="state_of_origin" data-value="{{ $state_of_origin }}"> {{ ucwords( $state_of_origin )." (".$result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ].")" }}</label> <br></div>
                       @else
 
-                        {{--*/ @$other_edu_grade += $result['facet_counts']['facet_fields']['edu_grade'][ $key + 1 ] /*--}}
+                        {{--*/ @$other_edu_grade += $result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ] /*--}}
 
                       @endif
                   @endforeach

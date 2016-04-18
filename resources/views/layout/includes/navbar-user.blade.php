@@ -36,9 +36,9 @@
                     </li>
 
 
-                    <li class="">
+                    <!--li class="">
                         <a class="" href="">Mail <span class="badge badge-danger animated bounce">3</span></a>
-                    </li>
+                    </li-->
 
                 </ul>
 

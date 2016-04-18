@@ -1,6 +1,9 @@
-@extends('layout.template-user')
+@extends('layout.template-guest')
 
 @section('navbar')    
+@show()
+
+@section('footer')
 @show()
 
 @section('content')

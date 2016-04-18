@@ -56,27 +56,48 @@
                             <li role="separator" class="divider"></li>
                             <li><a href="#">Separated link</a></li>
                           </ul>
-                        </div>                            
+                        </div>    
 
-                            <div class="job-item ">
-                                <span class="number">26</span><br/>Hired
+                            <div id="job-list-data-{{ $job['id'] }}">                        
+
+                                <div class="job-item ">
+                                    <span class="number">--</span><br/>Hired
+                                </div>
+                                <div class="job-item ">
+                                    <span class="number">--</span><br/>Assessed
+                                </div>
+                                <div class="job-item ">
+                                    <span class="number">--</span><br/>Interviewed
+                                </div>
+                                <div class="job-item ">
+                                    <span class="number text-muted">--</span><br/>Reviewed
+                                </div>
+                                <div class="job-item  purple">
+                                    <span class="number text-muted">--</span><br/>New
+                                </div>
+                                <div class="clearfix"></div>
+
                             </div>
-                            <div class="job-item ">
-                                <span class="number">1006</span><br/>Assessed
-                            </div>
-                            <div class="job-item ">
-                                <span class="number">106</span><br/>Interviewed
-                            </div>
-                            <div class="job-item ">
-                                <span class="number text-muted">00</span><br/>Reviewed
-                            </div>
-                            <div class="job-item  purple">
-                                <span class="number text-muted">00</span><br/>New
-                            </div>
-                            <div class="clearfix"></div>
                         </div>
                     </div>
                 </div>
+
+                <script type="text/javascript">
+                    $(document).ready(function(){
+
+                         $.ajax
+                          ({
+                              type: "POST",
+                              url: "{{ route('job-list-data') }}",
+                              data: ({ rnd : Math.random() * 100000, job_id:{{$job['id']}} }),
+                              success: function(response){
+                                $("#job-list-data-{{ $job['id'] }}").html(response);
+                                   
+                              }
+                          });
+
+                    });
+                </script>    
                 @endforeach
 
                 @endif

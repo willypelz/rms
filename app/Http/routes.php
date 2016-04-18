@@ -111,6 +111,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'job/candidates/{jobID}', ['uses' => 'JobApplicationsController@viewApplicants', 'as' => 'job-candidates']);
     Route::match(['get', 'post'], 'job/candidates/{jobID}/{start}', ['uses' => 'JobApplicationsController@viewApplicants', 'as' => 'job-candidates-infinite']);
+    Route::match(['get', 'post'], 'job-list-data', ['uses' => 'JobApplicationsController@JobListData', 'as' => 'job-list-data']);
     
     Route::post('job/applicant/mass-action', ['uses' => 'JobApplicationsController@massAction', 'as' => 'mass-action']);
     Route::post('job/applicant/write-review', ['uses' => 'JobApplicationsController@writeReview', 'as' => 'write-review']);
@@ -141,7 +142,7 @@ Route::group(['middleware' => 'web'], function () {
         });
 
          Route::post('filter_search', 'CvSalesController@filter_search');
-         Route::post('get_cv_preview', 'CvSalesController@getCvPreview');
+         Route::post('cv-preview', ['uses'=>'CvSalesController@getCvPreview', 'as'=>'cv-preview']);
 
         
         /**
@@ -256,6 +257,9 @@ Route::group(['middleware' => 'web'], function () {
     });
 
 
+    Route::get('/migrate-inf', 'TalentPoolController@MigrateInfrastructure');
+    Route::get('/migrate-inf2', 'TalentPoolController@InfMigrate2');
+    Route::get('/migrate-inf3', 'TalentPoolController@InfMigrate3');
 
 
     Route::get('/my-career-page', 'JobsController@MyCompany');

@@ -28,7 +28,7 @@
                             </a>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="#" type="button" class="btn btn-line text-capitalize">
+                            <a href="{{ url('cv/talent-pool') }}" type="button" class="btn btn-line text-capitalize">
                             <span class="fa-lg"><i class="fa fa-bar-chart"></i>
                             <span class="hidden-xs text-brandon text-capitalize"> View Talent Pool</span><br></span>
                             <small class="text-muted hidden-xs">Resumes / CVs</small>
@@ -142,17 +142,17 @@
                         <table class="table table-bordered"> 
                         <tbody> 
                         <tr> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="jos/list">34</a></h1><small class="text-muted">Jobs Created</small></td> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">12,234</a></h1><small class="text-muted">Candidates</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">10</a></h1><small class="text-muted">Jobs Created</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">2,504</a></h1><small class="text-muted">Candidates</small></td> 
                         </tr> 
-                        <tr> 
+                        <!--tr> 
                             <td class="text-center"><h1 class="no-margin text-muted">24</h1><small class="text-muted">Jobs Closed</small></td> 
                             <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">13,234</a></h1><small class="text-muted">Resumes</small></td> 
-                        </tr>
+                        </tr-->
                         </tbody> </table>
 
                         <p class="small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe ex voluptatem dicta, minima iste magni, eligendi deserunt repellat nesciunt repellendus dolores illo possimus voluptas sit ratione harum libero odio perferendis.</p>
-                        <p><a href="" class="btn btn-line">Action</a></p>
+                        <p><a href="{{ route('job-list') }}" class="btn btn-default">See My Jobs</a></p>
 
                     </div>
                 </div>
@@ -172,16 +172,16 @@
                         <div class="owl-item col-sm-3">
                             <div class="panel-body text-left">
                               <p class="post-img">
-                                <a href="{{ 'https://insidify.com/discovery'.$post->slug }}" target="_blank" >
+                                <a href="{{ 'https://insidify.com/discovery/'.$post->slug }}" target="_blank" >
                                   <img src="https://files.insidify.com/{{ $post->picture }}" class="img-responsive" width="100%">
                                 </a>
                               </p>
-                              <h4 class="post-title"><a href="{{ 'https://insidify.com/discovery'.$post->slug }}" target="_blank">
+                              <h4 class="post-title"><a href="{{ 'https://insidify.com/discovery/'.$post->slug }}" target="_blank">
                                 {{ $post->title }}</a></h4>
                               <p class="">{{ $post->summary }}
                               </p>
                               <p>
-                                  <a href="{{ 'https://insidify.com/discovery'.$post->slug }}" target="_blank" class="btn btn-line">Read</a>
+                                  <a href="{{ 'https://insidify.com/discovery/'.$post->slug }}" target="_blank" class="btn btn-line">Read</a>
                               </p>
                             </div>
                         </div>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Curl;
 use App\Models\Company;
 use App\Models\Job;
+use App\Models\JobActivity;
 use Auth;
 
 
@@ -38,7 +39,7 @@ class HomeController extends Controller
         // $comp = Auth::user()->companies;
         // $comp_id = ($comp[0]->id);
 
-        // $jobs = Job::with('activities')->where('company_id', $comp_id)->get();
+        // $jobs = JobActivity::with('job.company')->orderBy('created_at', 'desc')->get();
         // dd($jobs->toArray());
 
 

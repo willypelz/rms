@@ -228,15 +228,40 @@ class JobsController extends Controller
         
         if(!empty($request->appl_id)){
             $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('created_at', 'desc')->take(20)->get();
+        }elseif($request->type == 'dashboard'){
+
+          $comp = Auth::user()->companies;
+          $comp_id = ($comp[0]->id);
+
+          $jobs = Job::where('company_id', $comp_id)->get(['id'])->toArray();
+          $activities = JobActivity::with('user', 'application.cv', 'job')->whereIn('job_id', $jobs)->orderBy('created_at', 'desc')->take(20)->get();
+          // dd($activities);
+
         }else{
             $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_id', $request->jobid)->orderBy('created_at', 'desc')->take(20)->get();
         }
-
+            // dd($activities);
         foreach ($activities as $ac) {
             $type = $ac->activity_type;
 
             switch ($type) {
-                
+
+                case "JOB-CREATED":
+                     $job = $ac->job;
+                     $content .= '<li role="candidate-application" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-info"></i>
+                                    <i class="fa fa-user-plus fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-info">Job Created</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      '. $ac->user->name .' Created a new Job <strong>'.$job->title.'</strong>.
+                                  </p>
+                                </li>';
+                     break;
                  case "APPLIED":
                      $applicant = $ac->application->cv;
                      $job = $ac->application->job;
@@ -271,7 +296,8 @@ class JobsController extends Controller
                                 </li>';
                      break;
                  case "REJECT":
-                 $applicant = $ac->application->cv;
+                    $applicant = $ac->application->cv;
+                    // dd($ac->to);
                     $content .= '<li role="warning-notifications" class="list-group-item">
                           
                                  <span class="fa-stack fa-lg i-notify">
@@ -357,7 +383,19 @@ class JobsController extends Controller
                      break;
 
                  default:
-                     $content.= '';
+                     $content .= '<li role="messaging" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-success"></i>
+                                    <i class="fa fa-user-plus fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-success">Not Set -- '.$act->activity_type.'</h5>
+                                  <p>
+                                     
+                                  </p>
+                                  
+                                </li>';
             }
 
         }

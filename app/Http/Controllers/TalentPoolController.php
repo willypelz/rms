@@ -120,4 +120,64 @@ class TalentPoolController extends Controller
         }
         
     }
+
+    public function InfMigrate3(){
+
+        $jas = DB::connection('mysql_inf')->select('SELECT * FROM job_applications WHERE id > 2726');
+
+        foreach ($jas as $ja) {
+
+            $j = DB::connection('mysql_inf')->select('SELECT * FROM jobs WHERE id = '.$ja->job_id);
+            $j = $j[0];
+            $job = Job::where('title', $j->title)->first();
+            // dd($j);
+
+            
+            $cv = new CV;
+            $cv->first_name = $ja->first_name;
+            $cv->last_name = $ja->last_name;
+            $cv->email = $ja->email;
+            $cv->phone = $ja->phone;
+            $cv->gender = $ja->gender;
+            $cv->date_of_birth = $ja->date_of_birth;
+            $cv->state_of_origin = $ja->state_of_origin;
+            $cv->willing_to_relocate = $ja->willing_to_relocate;
+            $cv->marital_status = $ja->marital_status;
+            $cv->state = $ja->location;
+            $cv->headline = $ja->cover_note;
+            $cv->highest_qualification = $ja->highest_qualification;
+            $cv->last_position = $ja->last_position;
+            $cv->last_company_worked = $ja->last_company_worked;
+            $cv->years_of_experience = $ja->years_of_experience;
+            $cv->cv_file = $ja->cv_file;
+            $cv->save();
+
+            $app = new JobApplication;
+            $app->status = $ja->status;
+            $app->cv_id = $cv->id;
+            $app->job_id = $job->id;
+            $app->cover_note = $ja->cover_note;
+            $app->created = $ja->created_at;
+            $app->action_date = $ja->updated_at;
+            $app->save();
+
+            $jam = new JobApplicationMessage;
+            $jam->job_application_id = $app->id;
+            $jam->message = $ja->cover_note;
+            $jam->created = $ja->created_at;
+            $jam->modified = $ja->updated_at;
+            $jam->save();
+
+            JobActivity::firstOrCreate([
+                'activity_type'=>'APPLIED',
+                'job_id'=>$job->id,
+                'job_application_id'=>$app->id,
+                'created_at'=>$app->created
+                ]);
+ 
+
+        }
+
+
+    }
 }

@@ -133,7 +133,7 @@
                                             Importing Candidates
                                         </h5>
 
-                                        <div class="col-sm-12"><hr><a href="{{ route('job-board', [$jobid]) }}" class="pull-right btn btn-danger btn-cart-checkout">Go to Job Dashbaord &raquo;</a></div>
+                                        <div class="col-sm-12"><hr><a href="{{ route('job-board', $job->id) }}" class="pull-right btn btn-danger btn-cart-checkout">Go to Job Dashbaord &raquo;</a></div>
                                     </div>
                                 </div>
 

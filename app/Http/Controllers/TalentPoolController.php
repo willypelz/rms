@@ -123,7 +123,11 @@ class TalentPoolController extends Controller
 
     public function InfMigrate3(){
 
-        $jas = DB::connection('mysql_inf')->select('SELECT * FROM job_applications WHERE id > 2726');
+
+        $count = JobApplication::whereIn('job_id', array(10,11,12,13,14,15,16,17,18,19))->count();
+        // dd($count);
+
+        $jas = DB::connection('mysql_inf')->select('SELECT * FROM job_applications WHERE id > '.$count);
 
         foreach ($jas as $ja) {
 

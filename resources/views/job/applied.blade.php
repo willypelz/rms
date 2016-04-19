@@ -3,6 +3,10 @@
 @section('navbar')    
 @show()
 
+@section('footer')
+@show()
+
+
 @section('content')
 
 <style>footer{opacity:0;}</style>

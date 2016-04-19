@@ -1,5 +1,11 @@
 @extends('layout.template-default')
 
+@section('navbar')    
+@show()
+
+@section('footer')
+@show()
+
 
 @section('content')
     <section class="no-pad">

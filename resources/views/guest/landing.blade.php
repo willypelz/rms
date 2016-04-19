@@ -14,7 +14,7 @@
                        <div class="separator separator-small hidden-xs"></div>
 
                        <h1 class="fa-3x no-margin bold hidden-xs text-brandon text-light"><span class="text-green-light">Everything</span> You Need To Hire, <br>In One Place!</h1>
-                       <h1 class=" hidden-sm hidden-md hidden-lg no-margin  text-brandon text-light">About Seamless Hiring</h1>
+                       <h1 class=" hidden-sm hidden-md hidden-lg no-margin  text-brandon text-light"><span class="text-green-light">Everything</span> You Need To Hire, <br>In One Place!</h1>
 
                        <p class="p-banner text-light"><br>Broadcast jobs everywhere <span>&nbsp; &xrarr; &nbsp;</span> Collate, Filter and Sort Applicants <span>&nbsp; &xrarr; &nbsp;</span> Track the Recruitment Process <span>&nbsp; &xrarr; &nbsp;</span> Conduct Online Recruitment Tests <span>&nbsp; &xrarr; &nbsp;</span> Run background Checks <span>&nbsp; &xrarr; &nbsp;</span> Do a lot more!</p>
                        <div class="row">
@@ -76,7 +76,9 @@
                 <i class="fa fa-send fa-stack-1x text-green"></i>
               </span>
               </h2> <br> Broadcast Jobs everywhere.</span><br></span>
-              <i class="fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+              <i class="hidden-xs fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+
+                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-send fa-stack-1x  text-green"></i>
               </a>
             </div>
 
@@ -89,7 +91,9 @@
                 <i class="fa fa-briefcase fa-stack-1x text"></i>
               </span>
               </h2> <br> Organize, Sort & Track your Applicants</span><br></span>
-              <i class="fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+              <i class="hidden-xs fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+
+                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-briefcase fa-stack-1x  text"></i>
               </a>
             </div>
 
@@ -102,7 +106,9 @@
                 <i class="fa fa-pencil-square-o fa-stack-1x  text-orange"></i>
               </span>
               </h2> <br> Conduct Online Recruitment Tests</span><br></span>
-              <i class="fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+              <i class="hidden-xs fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+
+                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-pencil-square-o fa-stack-1x  text-orange"></i>
               </a>
             </div>
 
@@ -115,7 +121,10 @@
                 <i class="fa fa-heartbeat fa-stack-1x  text-pink"></i>
               </span>
               </h2> <br> Run Background & Health Checks</span><br></span>
-              <i class="fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+              <i class="hidden-xs fa fa-arrow-right pull-right fa-abx fa-lg"></i> 
+
+                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-heartbeat fa-stack-1x  text-pink"></i>
+
               </a>
             </div>
 
@@ -129,6 +138,8 @@
               </span>
               </h2> <br> Save & Download the Entire Process</span><br></span>
               <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
+
+                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-cloud-download fa-stack-1x  text-red"></i>
               </a>
             </div>
           </div> 

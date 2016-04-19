@@ -128,12 +128,12 @@
                                     <div class="col-sm-12">
                                         <hr>
 
-                                    <h5 class="no-margin text-center text-success hidden">
+                                        <h5 class="no-margin text-center text-success hidden">
                                             <i class="fa fa-spinner fa-pulse"></i> &nbsp;
                                             Importing Candidates
                                         </h5>
 
-                                        <div class="col-sm-12"><hr><a href="{{ route('job-board', [$jobid]) }}" class="pull-right btn btn-danger btn-cart-checkout">Go to Job Dashbaord &raquo;</a></div>
+                                        <div class="col-sm-12"><hr><a href="{{ route('job-board', $jobid) }}" class="pull-right btn btn-danger btn-cart-checkout">Go to Job Dashbaord &raquo;</a></div>
                                     </div>
                                 </div>
 

@@ -231,7 +231,7 @@
                                     </div-->
 
 
-                                    <div class="form-group">
+                                   <!--  <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <label for="">Do you reside in Abuja or are you willing to relocate to Abuja?<span class="text-danger">*</span></label><br/>
@@ -239,7 +239,30 @@
                                                 <label>{{ Form::radio('willing_to_relocate', 'no',  false, ['required']) }} No </label>
                                             </div>
                                         </div>
+                                    </div> -->
+                                    
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                 <label for="">Do you reside in Abuja or are you willing to relocate to Abuja?<span class="text-danger">*</span></label><br/>
+                                                <label>{{ Form::radio('willing_to_relocate', 'yes',  false, ['required']) }} Yes</label>
+                                                <label>{{ Form::radio('willing_to_relocate', 'no',  false, ['required']) }} No </label>
+
+                                            </div>
+
+                                           <div class="col-sm-6"><label for="job-title">Job Specialization <span class="text-danger">*</span></label>
+                                                    <br><select name="specializations[]" multiple="" id="" required class="select2" style="width: 253px;">
+                                                        <option value="">--choose specialization</option>
+                                                        @foreach($specializations as $s)
+                                                            <option value="{{ $s->id }}">{{ $s->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                            </div>  
+
+                                        </div>
                                     </div>
+
+
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">

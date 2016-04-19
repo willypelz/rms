@@ -2,8 +2,6 @@
 
 @section('content')
 
-
-
     <section class="s-div">
         <div class="container">
             <div class="row no-pad">
@@ -54,7 +52,17 @@
                             <li><a href="#">Another action</a></li>
                             <li><a href="#">Something else here</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
+                            @if($job['status'] == 'SUSPENDED')
+                            <li><a href="#" onclick="Activate( {{$job['id']}} ); return false">Activate Job</a></li>
+                            @elseif($job['status'] == 'DRAFT')
+                            <li><a href="#" onclick="Activate( {{$job['id']}} ); return false">Activate Job</a></li>
+                            @elseif($job['status'] == 'EXPIRED')
+                            <li><a href="#" disabled>EXPIRED</a></li>
+                            @elseif($job['status'] == 'ACTIVE')
+                            <li><a href="#" onclick="Suspend( {{$job['id']}} ); return false">Suspend Job</a></li>
+                            @endif
+                            <li><a href="#" onclick="DuplicateJob( {{$job['id']}} ); return false">Duplicate Job</a></li>
+
                           </ul>
                         </div>    
 
@@ -97,6 +105,59 @@
                           });
 
                     });
+
+                    function Activate(id){
+                        console.log(id)
+                         var url = "{{ route('job-status') }}"
+
+                         $.ajax
+                            ({
+                                type: "POST",
+                                url: url,
+                                data: ({ rnd : Math.random() * 100000,  job_id:id , status:'ACTIVE'}),
+                                success: function(response){
+                                     // $('#statusBtn').hide()
+                                    alert('Job has been Activated')
+                                    location.reload();
+                                     // alert('success')
+
+                                }
+                            });
+                    }
+
+                    function Suspend(id){
+                        console.log(id)
+                         var url = "{{ route('job-status') }}"
+
+                         $.ajax
+                            ({
+                                type: "POST",
+                                url: url,
+                                data: ({ rnd : Math.random() * 100000,  job_id:id , status:'SUSPENDED'}),
+                                success: function(response){
+                                     // $('#statusBtn').hide()
+                                    alert('Job has been Suspended')
+                                    location.reload();
+                                }
+                            });
+                    }
+
+                    function DuplicateJob(id){
+                        console.log(id)
+                         var url = "{{ route('duplicate-job') }}"
+
+                         $.ajax
+                            ({
+                                type: "POST",
+                                url: url,
+                                data: ({ rnd : Math.random() * 100000,  job_id:id}),
+                                success: function(response){
+                                     // $('#statusBtn').hide()
+                                    alert('Job has been Duplicated')
+                                    location.reload();
+                                }
+                            });
+                    }
                 </script>    
                 @endforeach
 

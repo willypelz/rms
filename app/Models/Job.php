@@ -27,6 +27,12 @@ class Job extends Model
         return $this->belongsToMany('App\Models\JobBoard', 'jobs_job_boards');
     }
 
+     public function specializations()
+    {
+        return $this->belongsToMany('App\Models\Specialization', 'jobs_specializations');
+    }
+
+
     public function company()
     {
         return $this->belongsTo('App\Models\Company', 'company_id');

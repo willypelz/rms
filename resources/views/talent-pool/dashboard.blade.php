@@ -16,22 +16,22 @@
                             <a href="{{ route('post-job') }}" type="button" class="btn btn-success text-capitalize in">
 
                             <span class="fa-lg"><i class="fa fa-tachometer"></i>
-                            <span class="hidden-xs text-brandon text-capitalize"> Add Job</span><br></span>
-                            <small class="text-white hidden-xs">Post a new Job</small>
+                            <span class="hidden-xs text-brandon text-capitalize"> Post a Job</span><br></span>
+                            <small class="text-white hidden-xs">Broadcast Jobs everywhere</small>
                             </a>
                           </div>
                           <div class="btn-group" role="group">
                             <a href="{{ route('add-candidates', false) }}" type="button" class="btn btn-line text-capitalize">
                             <span class="fa-lg"><i class="fa fa-user-plus"></i>
-                            <span class="hidden-xs text-brandon text-capitalize"> Add Candidate</span><br></span>
-                            <small class="text-muted hidden-xs">Upload CV in folder</small>
+                            <span class="hidden-xs text-brandon text-capitalize"> Upload Candidates</span><br></span>
+                            <small class="text-muted hidden-xs">Upload CVs to your Talent Pool</small>
                             </a>
                           </div>
                           <div class="btn-group" role="group">
                             <a href="{{ url('cv/talent-pool') }}" type="button" class="btn btn-line text-capitalize">
                             <span class="fa-lg"><i class="fa fa-bar-chart"></i>
                             <span class="hidden-xs text-brandon text-capitalize"> View Talent Pool</span><br></span>
-                            <small class="text-muted hidden-xs">Resumes / CVs</small>
+                            <small class="text-muted hidden-xs">Your Talent Database</small>
                             </a>
                           </div>
                           <div class="btn-group" role="group">
@@ -54,7 +54,7 @@
                             <span class="text-brandon text-uppercase">
                             Your Activities: 4 new updates 
                             </span> 
-                            <span class="pull-right"><a href=""><i class="fa fa-cog"></i>Notification Settings</a></span>
+                            <!-- <span class="pull-right"><a href=""><i class="fa fa-cog"></i>Notification Settings</a></span> -->
                         </h6>
                         <div class="clearfix"><hr></div>
 
@@ -74,7 +74,7 @@
                     <div class="page no-rad-btn">
                         
                         <h6 class="no-margin pull-right">
-                            <span class="text-danger text-brandon text-uppercase">Your Jobs:</span> 
+                            <span class="text-danger text-brandon text-uppercase">Quick Stats:</span> 
                         </h6>
 
                         <div class="separator separator-small"></div>
@@ -83,50 +83,23 @@
                         <tbody> 
                         <tr> 
                             <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">10</a></h1><small class="text-muted">Jobs Created</small></td> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">2,504</a></h1><small class="text-muted">Candidates</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">2,504</a></h1><small class="text-muted">Talent pool</small></td> 
                         </tr> 
-                        <!--tr> 
-                            <td class="text-center"><h1 class="no-margin text-muted">24</h1><small class="text-muted">Jobs Closed</small></td> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">13,234</a></h1><small class="text-muted">Resumes</small></td> 
-                        </tr-->
-                        </tbody> </table>
-
-                        <p class="small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe ex voluptatem dicta, minima iste magni, eligendi deserunt repellat nesciunt repellendus dolores illo possimus voluptas sit ratione harum libero odio perferendis.</p>
-                        <p><a href="{{ route('job-list') }}" class="btn btn-default">See My Jobs</a></p>
-
-                    </div>
-                </div>
-
-                        
-                        <br><br><br>  
-
-                <div class="col-xs-4">
-                    <div class="page no-rad-btn">
-                        
-                        <h6 class="no-margin pull-right">
-                            <span class="text-danger text-brandon text-uppercase">Your Talent Pool:</span> 
-                        </h6>
-
-                        <div class="separator separator-small"></div>
-
-                        <table class="table table-bordered"> 
-                        <tbody> 
                         <tr> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">10</a></h1><small class="text-muted">Jobs Created</small></td> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">2,504</a></h1><small class="text-muted">Candidates</small></td> 
-                        </tr> 
-                        <!--tr> 
-                            <td class="text-center"><h1 class="no-margin text-muted">24</h1><small class="text-muted">Jobs Closed</small></td> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">13,234</a></h1><small class="text-muted">Resumes</small></td> 
-                        </tr-->
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">780</a></h1><small class="text-muted">Purchsed Cvs</small></td> 
+
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">1,234</a></h1><small class="text-muted">Saved Cvs</small></td> 
+                        </tr
                         </tbody> </table>
 
-                        <p class="small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe ex voluptatem dicta, minima iste magni, eligendi deserunt repellat nesciunt repellendus dolores illo possimus voluptas sit ratione harum libero odio perferendis.</p>
-                        <p><a href="{{ route('job-list') }}" class="btn btn-default">See My Jobs</a></p>
+                        <!-- <p class="small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe ex voluptatem dicta, minima iste magni, eligendi deserunt repellat nesciunt repellendus dolores illo possimus voluptas sit ratione harum libero odio perferendis.</p> -->
+                        <p><a href="{{ route('job-list') }}" class="text-centre btn btn-default">See My Jobs</a></p>
 
                     </div>
                 </div>
 
+                        
+                       
 
             </div>
 
@@ -136,7 +109,7 @@
                 <div class="col-xs-12">
                 <hr>
                         <h6 class="no-margin">
-                            <span class="text-brandon text-uppercase">Your Activities:</span> 4 new updates
+                            <span class="text-brandon text-uppercase"> Discovery for Employers:</span> 4 new updates
                         </h6><br>
                     <div id="owl-posts">
                         

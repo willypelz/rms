@@ -6,6 +6,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Models\JobBoard;
 use App\Models\Job;
+use App\Models\Specialization;
 use App\Models\JobActivity;
 use App\Models\Cv;
 use App\Models\JobApplication;
@@ -45,12 +46,11 @@ class JobsController extends Controller
 
         $qualifications = qualifications();
         $locations = locations();
+        $specializations = Specialization::get();
 
         $user = Auth::user();
         $d = User::with('companies')->where('id', $user->id)->first();
         $company = ($d->companies[0]);
-        // dd($company);
-        // dd($qua);
         $job_boards = JobBoard::where('type', 'free')->get()->toArray();
         $c = (count($job_boards) / 2);
         $t = array_chunk($job_boards, $c);
@@ -63,15 +63,17 @@ class JobsController extends Controller
         // dd($job_bards);
         if ($request->isMethod('post')) {
 
-            // dd($request->request);
+                $pickd_boards = $request->boards;
+
+           
+
             $data = [
                 'job_title' => $request->job_title,
                 'job_location' => $request->job_location,
                 'details' => $request->details,
-                'experience' => $request->experience,
                 'job_type' => $request->job_type,
                 'position' => $request->position,
-                'post_date' => $request->post_date,
+                // 'post_date' => $request->post_date,
                 'expiry_date' => $request->expiry_date
             ];
 
@@ -80,7 +82,6 @@ class JobsController extends Controller
                         'job_title' => 'required',
                         'job_location' => 'required',
                         'details' => 'required',
-                        'experience' => 'required',
                         'job_type' => 'required',
                         'position' => 'required',
                         'expiry_date' => 'required'
@@ -98,30 +99,35 @@ class JobsController extends Controller
                                 'title' => $request->job_title,
                                 'location' => $request->job_location,
                                 'details' => $request->details,
-                                'experience' => $request->experience,
                                 'job_type' => $request->job_type,
                                 'position' => $request->position,
-                                'post_date' => $request->post_date,
+                                'post_date' => date('Y-m-d'),
                                 'expiry_date' => $request->expiry_date,
                                 'status' => 'ACTIVE',
                                 'company_id' => $company->id
                         ]);
 
+                         $out_boards = array();
                         foreach ($pickd_boards as $p) {
                             if(in_array($p, $bds))
                                 $job->boards()->attach($p);
+                                $out_boards[] = JobBoard::where('id', $p)->first()->name;
+                        }
+                        $flash_boards = implode(', ', $out_boards);
+
+                        foreach ($request->specializations as $e) {
+                           $job->specializations()->attach($e);
                         }
 
-                        // dd($job_url);
                     }
-                        
-            Session::flash('flash_message', 'You Job has been successfully posted on your selected free advertising boards!');
-            return redirect()->route('advertise', [$job->id]);
 
+                    
+                        
+            Session::flash('flash_message', 'Congratulations! Your job has been posted on '.$flash_boards.'. You will begin to receive the applications for your jobs on all these job advert platforms on SeamlessHiring soon – no need to open accounts elsewhere.');
+            return redirect()->route('advertise', [$job->id]);
         }
 
-        // dd('here');
-        return view('job.create', compact('qualifications', 'board1', 'board2', 'locations'));
+        return view('job.create', compact('qualifications', 'specializations', 'board1', 'board2', 'locations'));
     }
 
     public function SaveJob(Request $request){
@@ -162,7 +168,7 @@ class JobsController extends Controller
 
         $job = Job::find($id);
         // dd($job);
-        return view ('job.share', compact('company', 'job'));
+        return view ('job.share', compact('company', 'job', 'user'));
     }
 
     public function AddCandidates($jobid = null){
@@ -458,6 +464,7 @@ class JobsController extends Controller
 
         $job = Job::with('company')->where('id', $jobID)->first();
         $company = $job->company;
+        $specializations = Specialization::get();
         
 
         if(empty($job)){
@@ -524,16 +531,18 @@ class JobsController extends Controller
 
         if ($request->isMethod('post')) {
 
+          // dd($request->request);
+
             $data = $request->all();
 
             if ($request->hasFile('cv_file')) {
 
-                $filename = time().'_'.str_slug($request->email).'_'.$request->file('cv_file')->getClientOriginalName();
-                $destinationPath = env('fileupload').'/CVs';
-                // dd($destinationPath);
-                $request->file('cv_file')->move($destinationPath, $filename);
+                // $filename = time().'_'.str_slug($request->email).'_'.$request->file('cv_file')->getClientOriginalName();
+                // $destinationPath = env('fileupload').'/CVs';
+                // // dd($destinationPath);
+                // $request->file('cv_file')->move($destinationPath, $filename);
 
-                $data['cv_file'] = $filename;
+                // $data['cv_file'] = $filename;
 
                 // dd($data);
             }   
@@ -578,6 +587,10 @@ class JobsController extends Controller
             $appl->created = $data['created'];
             $appl->action_date = $data['action_date'];
             $appl->save();
+
+             foreach ($request->specializations as $e) {
+                  $cv->specializations()->attach($e);
+              }
             
             return redirect('jobs/applied/'.$jobID.'/'.$slug);
             // dd($request->all());
@@ -587,7 +600,7 @@ class JobsController extends Controller
         }
 
         
-        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company'));
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations'));
 
     }
 
@@ -675,7 +688,7 @@ class JobsController extends Controller
     public function JobStatus(Request $request){
 
         $job = Job::find($request->job_id);
-       
+       // dd($job);
         $res = Job::where('id', $request->job_id)
                 ->update(['status' => $request->status]);
 
@@ -799,5 +812,13 @@ class JobsController extends Controller
 
     }
 
+    public function DuplicateJob (Request $request){
+
+      $newJob = Job::find($request->job_id)->replicate()->save();
+      
+      if ($newJob) {
+        echo true;
+      }
+    }
 
 }

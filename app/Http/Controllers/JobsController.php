@@ -32,7 +32,8 @@ class JobsController extends Controller
             'JobView',
             'company',
             'jobApply',
-            'JobApplied'
+            'JobApplied',
+            'jobApplied',
         ]]);
     }
 

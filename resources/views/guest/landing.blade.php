@@ -16,9 +16,7 @@
                        <h1 class="fa-3x no-margin bold hidden-xs text-brandon text-light"><span class="text-green-light">Everything</span> You Need To Hire, <br>In One Place!</h1>
                        <h1 class=" hidden-sm hidden-md hidden-lg no-margin  text-brandon text-light">About Seamless Hiring</h1>
 
-                       <p class="p-banner text-light"><br>Broadcast jobs everywhere &raquo; Collate, Filter and Sort Applicants &raquo; Track the Recruitment Process &raquo; 
-
-Conduct Online Recruitment Tests &raquo; Run background Checks &raquo; Do a lot more!</p>
+                       <p class="p-banner text-light"><br>Broadcast jobs everywhere <span>&nbsp; &xrarr; &nbsp;</span> Collate, Filter and Sort Applicants <span>&nbsp; &xrarr; &nbsp;</span> Track the Recruitment Process <span>&nbsp; &xrarr; &nbsp;</span> Conduct Online Recruitment Tests <span>&nbsp; &xrarr; &nbsp;</span> Run background Checks <span>&nbsp; &xrarr; &nbsp;</span> Do a lot more!</p>
                        <div class="row">
                            <!-- <div class="col-sm-12 col-md-6 col-sm-8">
                                <a href="" class="btn btn-success btn-block btn-lg text-uppercase text-bold">No Dulling. Start Now <i class="fa fa-chevron-right"></i></a>
@@ -199,7 +197,7 @@ Conduct Online Recruitment Tests &raquo; Run background Checks &raquo; Do a lot 
           </table>
   
           <p><br>
-            <a href="" class="btn btn-success"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>
+            <a href="" class="btn btn-success text-brandon"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>
             <a href="#tab-2" aria-controls="tab-2" role="tab-2" data-toggle="tab" type="button" class="pull-right btn btn-line text-capitalize">Next &nbsp; <i class="fa fa-chevron-right"></i></a>
           </p>
   
@@ -219,7 +217,7 @@ Conduct Online Recruitment Tests &raquo; Run background Checks &raquo; Do a lot 
     <div class="row">
         <div class=" text-center">
         <!-- <h2 class="no-margin text-brandon">1</h2><br> -->
-        <h5 class="col-sm-12 animated fadeIn no-margin text-brandon text-uppercase l-sp-5"><span class="text-orange">Tracking Applicants is now unbelievably, </span> Sorting &  Seamlessly easy!</h5>
+        <h5 class="col-sm-12 animated fadeIn no-margin text-brandon text-uppercase l-sp-5">Tracking Applicants is now <span class="text-orange">unbelievably Seamlessly easy!</span></h5>
         <div class="clearfix"></div>
         <hr class="hr-bg"><br></div>
   
@@ -339,7 +337,7 @@ Conduct Online Recruitment Tests &raquo; Run background Checks &raquo; Do a lot 
       </div>
   
       <div class="col-sm-4 animated zoomIn">
-        <img src="img/screenshot-ATS.jpg" width="100%" alt="">
+        <img src="img/bci.jpg" width="100%" alt="">
       </div>
   
       <div class="col-sm-12">
@@ -383,7 +381,7 @@ Conduct Online Recruitment Tests &raquo; Run background Checks &raquo; Do a lot 
           </ul></p><br>
   
           <p><br>
-            <a href="" class="btn btn-danger btn-lg"><i class="fa fa-play"></i> &nbsp; Great? Get Started!</a>
+            <a href="{{ url('register') }}" class="btn btn-danger btn-lg"><i class="fa fa-play"></i> &nbsp; Great? Get Started!</a>
           </p>
   
       </div>
@@ -395,7 +393,16 @@ Conduct Online Recruitment Tests &raquo; Run background Checks &raquo; Do a lot 
 </div>
 
 
-<!-- <section class="s-div dark homepage"></section> -->
+<section class="s-div dark no-margin">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-sm-12">
+        <p class="lead text-brandon text-white">Recruitment Made Unbelievably Easy. It is an easy and seamless journey.</p>
+        <a href="{{ url('register') }}" class="btn btn-success btn-lg"> Get Started</a>
+      </div>
+    </div><div class="clearfix"><br></div>
+  </div>
+</section>
 
 <script>
   $('.navbar').removeClass('navbar-fixed-top');

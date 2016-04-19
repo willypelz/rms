@@ -162,7 +162,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .btn-group-justified.btn-tabs.home-tabs>.btn-group .btn{
     white-space:normal;
     padding: 0 35px 35px;
-    min-height:100px;
+    height:125px;
     font-size:12px;
     border-width: 0;
     color: #3A5979;
@@ -601,6 +601,7 @@ h3.brand-title {
 }
 .btn{
     /* border-radius:30px; */
+    font-family:Montserrat;
 }
 .btn:focus, .btn:active:focus, .btn.active:focus, textarea, input {
     outline: none;

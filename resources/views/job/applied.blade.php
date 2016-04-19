@@ -1,9 +1,35 @@
-`@extends('layout.template-user')
+@extends('layout.template-default')
 
 @section('navbar')    
 @show()
 
+@section('footer')
+@show()
+
+
 @section('content')
+<link href="{{ asset('css/owl.carousel.css') }}" rel="stylesheet">
+<script src="{{ asset('js/owl.carousel.js') }}"></script>
+<script>
+    $(document).ready(function(){
+
+      $("#owl-posts2").owlCarousel({
+          navigation: true,
+          items: 3,
+          responsive: false,
+          scrollPerPage: false,
+          pagination: true,
+          autoPlay: false,
+          // rewindNav: false,
+          navigationText: [
+            "<span class='fa fa-chevron-left'></span>",
+            "<span class='fa fa-chevron-right'></span>"
+          ],
+
+      });
+
+});
+</script>    
 
 <style>footer{opacity:0;}</style>
 

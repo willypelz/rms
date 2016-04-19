@@ -31,6 +31,9 @@ class JobsController extends Controller
         $this->middleware('auth', ['except' => [
             'JobView',
             'company',
+            'jobApply',
+            'JobApplied',
+            'jobApplied',
         ]]);
     }
 

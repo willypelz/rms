@@ -13,7 +13,7 @@
                         <div class="separator separator-small"><br></div>                        
                        <div class="separator separator-small hidden-xs"></div>
 
-                       <h1 class="fa-3x no-margin bold hidden-xs text-brandon text-light"><u style="text-decoration: none; border-bottom: 2px solid;">Everything</u> You Need To Hire, <br>In One Place!</h1>
+                       <h1 class="fa-3x no-margin bold hidden-xs text-brandon text-light"><span class="text-green-light">Everything</span> You Need To Hire, <br>In One Place!</h1>
                        <h1 class=" hidden-sm hidden-md hidden-lg no-margin  text-brandon text-light">About Seamless Hiring</h1>
 
                        <p class="p-banner text-light"><br>Broadcast jobs everywhere &raquo; Collate, Filter and Sort Applicants &raquo; Track the Recruitment Process &raquo; 

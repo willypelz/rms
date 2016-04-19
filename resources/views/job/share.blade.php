@@ -225,7 +225,7 @@
                                            <p class="text-center">
                                                <!-- <a href="addCan-job.php"> Skip this step </a> -->
                                                        <!-- &nbsp; &middot; &nbsp; -->
-                                               <a href="{{ route('add-job-candidates', [$job->id] ) }}" class="btn btn-success">Proceed &raquo;</a>
+                                               <a href="{{ route('add-job-candidates', [$job->id]) }}" class="btn btn-success">Proceed &raquo;</a>
                                            </p>
                                            
                                    </div>

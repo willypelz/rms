@@ -22,7 +22,7 @@
 
                 <div class="col-xs-7">
 
-                     <div class="tab-content" id="">
+                     <div class="" id="">
 
                         <div class="row">
 

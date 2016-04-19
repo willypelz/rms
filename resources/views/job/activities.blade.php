@@ -257,4 +257,23 @@
     </section>
 
 <div class="separator separator-small"><br></div>
+    
+    <script>
+                $(document).ready(function(){
+
+                         $.ajax
+                          ({
+                              type: "POST",
+                              url: "{{ route('job-list-data') }}",
+                              data: ({ rnd : Math.random() * 100000, job_id:{{$job['id']}} }),
+                              success: function(response){
+                                // $("#job-list-data-{{ $job['id'] }}").html(response);
+                                console.log(response);
+                                   
+                              }
+                          });
+
+                    });
+     </script>
+
 @endsection

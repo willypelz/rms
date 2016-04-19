@@ -113,6 +113,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'job/candidates/{jobID}', ['uses' => 'JobApplicationsController@viewApplicants', 'as' => 'job-candidates']);
     Route::match(['get', 'post'], 'job/candidates/{jobID}/{start}', ['uses' => 'JobApplicationsController@viewApplicants', 'as' => 'job-candidates-infinite']);
     Route::match(['get', 'post'], 'job-list-data', ['uses' => 'JobApplicationsController@JobListData', 'as' => 'job-list-data']);
+    Route::match(['get', 'post'], 'job-view-data', ['uses' => 'JobApplicationsController@JobViewData', 'as' => 'job-view-data']);
     
     Route::post('job/applicant/mass-action', ['uses' => 'JobApplicationsController@massAction', 'as' => 'mass-action']);
     Route::post('job/applicant/write-review', ['uses' => 'JobApplicationsController@writeReview', 'as' => 'write-review']);

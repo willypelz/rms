@@ -591,14 +591,15 @@ class JobsController extends Controller
             $appl->action_date = $data['action_date'];
             $appl->save();
 
-             foreach ($request->specializations as $e) {
-                  $cv->specializations()->attach($e);
-              }
+             // foreach ($request->specializations as $e) {
+             //      $cv->specializations()->attach($e);
+             //  }
             
             // return redirect('jobs/applied/'.$jobID.'/'.$slug);
 
             return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);
             // dd($request->all());
+
 
 
 

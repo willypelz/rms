@@ -246,11 +246,11 @@
                                             </div>
                                         </div>
                                     </div> -->
-                                    
+                                  <!--   
                                     <div class="form-group">
                                         <div class="row">
 
-                                           <div class="col-sm-6"><label for="job-title">Job Specialization <span class="text-danger">*</span></label>
+                                           <div class="col-sm-6"><label for="job-title">Your Specialization <span class="text-danger">*</span></label>
                                                     <br><select name="specializations[]" multiple="" id="" required class="select2" style="width: 253px;">
                                                         <option value="">--choose specialization</option>
                                                         @foreach($specializations as $s)
@@ -260,7 +260,7 @@
                                             </div>  
 
                                         </div>
-                                    </div>
+                                    </div> -->
 
 
                                     <div class="form-group">
@@ -378,7 +378,7 @@
 
                                     });
         $('.select2').select2();
-                                    
+
                                 });
                             </script>
 

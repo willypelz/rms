@@ -8,6 +8,8 @@
 
 
 @section('content')
+    <link href="{{ asset('css/select2.css') }}" rel="stylesheet">
+
     <section class="no-pad">
         <div class="container">
             <div class="row">

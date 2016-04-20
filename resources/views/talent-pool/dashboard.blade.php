@@ -86,7 +86,7 @@
                             <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">3,281</a></h1><small class="text-muted">Talent pool</small></td> 
                         </tr> 
                         <tr> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">0</a></h1><small class="text-muted">Purchsed Cvs</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">0</a></h1><small class="text-muted">Purchased Cvs</small></td> 
 
                             <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">0</a></h1><small class="text-muted">Saved Cvs</small></td> 
                         </tr

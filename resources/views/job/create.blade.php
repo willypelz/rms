@@ -9,7 +9,7 @@
             <div class="row">
 
                 <div class="col-sm-12">
-                    <h5 class="no-margin text-center l-sp-5 text-brandon text-uppercase">Job Creation</h5><br>
+                    <h5 class="no-margin text-center l-sp-5 text-brandon text-uppercase">Fill in your job details here.</h5><br>
                     <div class="page">
                         <div class="row">
 
@@ -22,27 +22,26 @@
                                  @endif
                             
                             <div class="col-md-8 col-md-offset-2">
-                            <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio voluptatibus magni officiis id error numquam.</p>
+                            <!-- <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio voluptatibus magni officiis id error numquam.</p> -->
                                 <form class="job-details" id="myForm" role="job-details" method="post" action="{{ route('post-job') }}">
                                         
                                         <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
 
 
-                                        <div class="row">
-                                            <div class="separator separator-small"></div>
-                                        </div>
+                                        
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-12"><label for="job-title">job title <span class="text-danger">*</span></label>
-                                            <input required id="job_title" type="text" name="job_title" class="form-control" {{ (Request::old('job_title')) ? ' value='. e(Request::old('job_title')) .'' : '' }}></div>
-                                           
+                                            <input required id="job_title" type="text" name="job_title" class="form-control" {{ (Request::old('job_title')) ? ' value='. e(Request::old('job_title')) .'' : '' }}>
+                                            &nbsp;&nbsp; <small>e.g. Marketer at XYZ limited</small>
+                                           </div>
                                         </div>
                                     </div>
 
                                      <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-6"><label for="job-title">Location <span class="text-danger">*</span></label>
-                                                <select name="job_location" id="location" class="select2 form-control">
+                                                <select name="job_location" id="location" class="select2" style="width: 303px;">
                                                     <option value="">--choose state--</option>
                                                     @foreach($locations as $state)
                                                     <option value="{{ $state }}" @if (Request::old('job_location') == '{{ $state }}') selected="selected" @endif >{{ $state }}</option>
@@ -71,6 +70,8 @@
                                             
                                             <div class="col-sm-12"><label for="job-loc">Position</label>
                                                 <input type="text" name="position" class="form-control" value="{{ Request::old('position')}}">
+                                                <small>e.g. Associate Marketer</small>
+
                                             </div>
                                             
                                         </div>
@@ -79,8 +80,13 @@
 
                                      <div class="form-group">
                                         <div class="row">
-                                            <div class="col-sm-6"><label for="job-title">Post Date <span class="text-danger">*</span></label>
-                                                    <input type="text" name="post_date" class="datepicker form-control" value="{{ Request::old('post_date')}}">
+                                            <div class="col-sm-6"><label for="job-title">Job Specialization <span class="text-danger">*</span></label>
+                                                    <br><select name="specializations[]" id="" multiple="" required class="select2" style="width: 303px;">
+                                                        <option value="">--choose specialization</option>
+                                                        @foreach($specializations as $s)
+                                                            <option value="{{ $s->id }}">{{ $s->name }}</option>
+                                                        @endforeach
+                                                    </select>
                                             </div>                                            
 
                                             <div class="col-sm-6">
@@ -92,7 +98,15 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    
+                                    <!-- <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <label for="">Summary <span class="text-danger">*</span></label>
+                                                <textarea name="Summary" id="editor3" cols="30" rows="4" class="form-control" placeholder="">{{ (Request::old('experience')) ? ' value='. e(Request::old('experience')) .'' : '' }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div> -->
                               
                                     <div class="form-group">
                                         <div class="row">
@@ -102,14 +116,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                <label for="">Experience <span class="text-danger">*</span></label>
-                                                <textarea name="experience" id="editor3" cols="30" rows="4" class="form-control" placeholder="">{{ (Request::old('experience')) ? ' value='. e(Request::old('experience')) .'' : '' }}</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
+                                   
                                    
 
                                     <div class="row">
@@ -121,8 +128,8 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-8 col-xs-offset-2 text-center">
-                                                <label for="">Make my Job automatically posted for free on the Job sites below</label>
-                                                <small class="text-center text-muted">kindly post your job to see more available job sites.</small>
+                                                <label for="">Your job will be posted automatically on these free job platforms </label>
+                                                <small class="text-center text-muted">We will send you an email with the links to the job adverts</small>
                                             </div>
                                             <div class="col-xs-12">
                                                 <br>

@@ -165,6 +165,12 @@ class JobApplicationsController extends Controller
         $result = Solr::get_applicants($this->search_params, $request->job_id,@$request->status);
         $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
+        if($request->type == 'job_view'){
+            $total_applicants = ($result['response']['numFound']);
+            echo $total_applicants;
+            exit;
+        }
+
         echo '<div class="job-item ">
                     <span class="number">'.$application_statuses['HIRED'].'</span><br/>Hired
                 </div>
@@ -182,6 +188,38 @@ class JobApplicationsController extends Controller
                 </div>';
 
         
+    }
+
+    public function JobViewData(Request $request){
+
+
+        $result = Solr::get_applicants($this->search_params, $request->job_id,@$request->status);
+        $total_applicants = ($result['response']['numFound']);
+        $matching = 10000;
+
+        $job = Job::find($request->job_id);
+
+        $now = time(); // or your date as well
+         $your_date = strtotime($job->created_at);
+         $datediff = $now - $your_date;
+         $open_days =  floor($datediff/(60*60*24));
+
+         $amount_spent = 0;
+        
+           $stats =      '<table class="table table-bordered"> 
+                            <tbody> 
+                        <tr> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="jos/list">'.$total_applicants.'</a></h1><small class="text-muted">Applicants</small></td> 
+                            <!--td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">'.$matching.'</a></h1><small class="text-muted">Matching Candidates</small></td--> 
+                        </tr> 
+                        <tr> 
+                            <td class="text-center"><h1 class="no-margin text-muted">'.$open_days.'</h1><small class="text-muted">Days Opended</small></td> 
+                            <!--td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">'.$amount_spent.'</a></h1><small class="text-muted">Amount Spent</small></td--> 
+                        </tr>
+                        </tbody> 
+                        </table>';
+        echo $stats;
+
     }
 
 

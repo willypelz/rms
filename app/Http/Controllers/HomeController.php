@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Curl;
+use App\Models\Company;
+use App\Models\Job;
+use App\Models\JobActivity;
+use Auth;
+
 
 class HomeController extends Controller
 {
@@ -30,6 +35,13 @@ class HomeController extends Controller
 
     public function dashbaord()
     {
+
+        // $comp = Auth::user()->companies;
+        // $comp_id = ($comp[0]->id);
+
+        // $jobs = JobActivity::with('job.company')->orderBy('created_at', 'desc')->get();
+        // dd($jobs->toArray());
+
 
         $response = Curl::to('https://api.insidify.com/articles/get-posts')
                                 ->withData(array('limit'=>6))

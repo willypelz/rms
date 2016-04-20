@@ -61,8 +61,8 @@
                                 <div class="col-sm-12 text-center">
 
                                 @if(!empty($job)) 
-                                    <h4 class="text-center">Add Candidates to {{  $job->title }}</h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                    <h4 class="text-center">Bring in the Databases! </h4>
+                                    <p> You can find candidates from our massive database of professionals OR from your own database.</p>
                                 @else
                                     <h4 class="text-center">Add Candidates to your Talent Pool</h4>
                                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
@@ -71,23 +71,28 @@
                                 <hr>
 
                                     <div class="col-sm-6">
+                                    <p>
+                                            Do you already have relevant resumes in a folder somewhere?
+                                            Upload them here and add them to your pool of applicants.
+
+                                        </p>
                                        <form action="{{ route('upload-file') }}" method="post"> 
                                             <div class="fileinput fileinput-new input-group" data-provides="fileinput">
                                               <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
-                                              <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span><input type="file" name="..."></span>
+                                              <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                                                <input type="file" name="cv-upload-file" placeholder="zip">
+                                              </span>
                                               <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
                                             </div>
 
                                             <button onclick="UploadFile(); return false;" id="UploadCvFileBtn" class="btn btn-success text-capitalize">
-                                                    <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Import from file</span>
+                                                    <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Import file</span>
                                             </button>
                                         </form>
 
                                         <div id="funcMsg" style="color:red"></div>
 
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni veniam cumque neque ipsum, id in, nihil sapiente et harum consequuntur expedita ea unde nulla nostrum pariatur nesciunt, dolore soluta ipsa.
-                                        </p>
+                                        
                                     </div>
 
 
@@ -128,12 +133,12 @@
                                     <div class="col-sm-12">
                                         <hr>
 
-                                    <h5 class="no-margin text-center text-success hidden">
+                                        <h5 class="no-margin text-center text-success hidden">
                                             <i class="fa fa-spinner fa-pulse"></i> &nbsp;
                                             Importing Candidates
                                         </h5>
 
-                                        <div class="col-sm-12"><hr><a href="{{ route('job-board', [$jobid]) }}" class="pull-right btn btn-danger btn-cart-checkout">Go to Job Dashbaord &raquo;</a></div>
+                                        <div class="col-sm-12"><hr><a href="{{ route('job-board', $jobid) }}" class="pull-right btn btn-danger btn-cart-checkout">Go to Job Dashbaord &raquo;</a></div>
                                     </div>
                                 </div>
 

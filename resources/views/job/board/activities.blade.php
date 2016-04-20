@@ -22,7 +22,7 @@
 
                 <div class="col-xs-7">
 
-                     <div class="tab-content" id="">
+                     <div class="" id="">
 
                         <div class="row">
 
@@ -83,20 +83,22 @@
 
                         <div class="separator separator-small"></div>
 
-                        <table class="table table-bordered"> 
+                        <!-- <table class="table table-bordered"> 
                         <tbody> 
                         <tr> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="jos/list">34</a></h1><small class="text-muted">Jobs Created</small></td> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">12,234</a></h1><small class="text-muted">Candidates</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="jos/list" id="no_applicants" ></a></h1><small class="text-muted">Applicants</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">12,234</a></h1><small class="text-muted">Matching Candidates</small></td> 
                         </tr> 
                         <tr> 
-                            <td class="text-center"><h1 class="no-margin text-muted">24</h1><small class="text-muted">Jobs Closed</small></td> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">13,234</a></h1><small class="text-muted">Resumes</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-muted">24</h1><small class="text-muted">Days Opended</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">13,234</a></h1><small class="text-muted">Amount Spent</small></td> 
                         </tr>
-                        </tbody> </table>
+                        </tbody> 
+                        </table> -->
 
-                        <p class="small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe ex voluptatem dicta, minima iste magni, eligendi deserunt repellat nesciunt repellendus dolores illo possimus voluptas sit ratione harum libero odio perferendis.</p>
-                        <p><a class="btn btn-line" href="">Action</a></p>
+                        <div id="job_view_stats_table"></div>
+
+                        
 
                     </div>
                 </div>
@@ -113,7 +115,26 @@
                 </div>
             </div>
         </div>
+
     </section>
 
 <div class="separator separator-small"><br></div>
+
+ <script>
+                $(document).ready(function(){
+
+                         $.ajax
+                          ({
+                              type: "POST",
+                              url: "{{ route('job-view-data') }}",
+                              data: ({ rnd : Math.random() * 100000, job_id:{{$job->id }}  }),
+                              success: function(response){
+                                $("#job_view_stats_table").html(response);
+                                // console.log(response);
+                                   
+                              }
+                          });
+
+                    });
+     </script>
 @endsection

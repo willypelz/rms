@@ -74,6 +74,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'emails-test', ['uses' => 'CvSalesController@TestEmail', 'as' => 'emails']);
 
     //JOB
+    Route::match(['get', 'post'], 'jobs/duplicate', ['uses' => 'JobsController@DuplicateJob', 'as' => 'duplicate-job']);
     Route::match(['get', 'post'], 'jobs/send-job', ['uses' => 'JobsController@SendJob', 'as' => 'send-to-friends']);
     Route::match(['get', 'post'], 'jobs/save-to-mailbox', ['uses' => 'JobsController@SavetoMailbox', 'as' => 'savetoMailbox']);
    
@@ -102,9 +103,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'job/import-cv-file', ['uses' => 'JobsController@UploadCVfile', 'as' => 'upload-file']);
     // Route::match(['get', 'post'], 'job/dashboard/{jobID}', ['uses' => 'JobsController@JobDashboard', 'as' => 'job-view']);
     Route::match(['get', 'post'], 'job/apply/{jobID}/{slug}', ['uses' => 'JobsController@jobApply', 'as' => 'job-apply']);
-    Route::match(['get', 'post'], 'job/applied/{jobID}/{slug}', ['uses' => 'JobsController@jobApplied', 'as' => 'job-applied']);
+    Route::match(['get', 'post'], 'job/applied/{jobID}/{slug}', ['uses' => 'JobsController@JobApplied', 'as' => 'job-applied']);
     Route::match(['get', 'post'], 'job-status', ['uses' => 'JobsController@JobStatus', 'as' => 'job-status']);
-	// Route::any('log-in', function () {
+	
+    // Route::any('log-in', function () {
 	//     return view('auth.login');
 	// });
 
@@ -112,6 +114,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'job/candidates/{jobID}', ['uses' => 'JobApplicationsController@viewApplicants', 'as' => 'job-candidates']);
     Route::match(['get', 'post'], 'job/candidates/{jobID}/{start}', ['uses' => 'JobApplicationsController@viewApplicants', 'as' => 'job-candidates-infinite']);
     Route::match(['get', 'post'], 'job-list-data', ['uses' => 'JobApplicationsController@JobListData', 'as' => 'job-list-data']);
+    Route::match(['get', 'post'], 'job-view-data', ['uses' => 'JobApplicationsController@JobViewData', 'as' => 'job-view-data']);
     
     Route::post('job/applicant/mass-action', ['uses' => 'JobApplicationsController@massAction', 'as' => 'mass-action']);
     Route::post('job/applicant/write-review', ['uses' => 'JobApplicationsController@writeReview', 'as' => 'write-review']);

@@ -1,7 +1,15 @@
 @extends('layout.template-default')
 
+@section('navbar')    
+@show()
+
+@section('footer')
+@show()
+
 
 @section('content')
+    <link href="{{ asset('css/select2.css') }}" rel="stylesheet">
+
     <section class="no-pad">
         <div class="container">
             <div class="row">
@@ -115,7 +123,7 @@
                                                 {{ Form::select('marital_status', array('Single' => 'Single', 'Married' => 'Married', 'Divorced'=>'Divorced', 'Separated'=>'Separated'), 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
 
                                             </div>
-                                            <div class="col-sm-4"><label for="job-loc">date of Birth <span class="text-danger">*</span></label><input id="datepicker" name="date_of_birth"  type="text" class="form-control"></div>
+                                            <div class="col-sm-4"><label for="job-loc">date of Birth <span class="text-danger">*</span></label><input id="datepicker2" name="date_of_birth"  type="text" class=" form-control"></div>
                                         </div>
                                     </div>
                                     
@@ -231,7 +239,7 @@
                                     </div-->
 
 
-                                    <div class="form-group">
+                                   <!--  <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <label for="">Do you reside in Abuja or are you willing to relocate to Abuja?<span class="text-danger">*</span></label><br/>
@@ -239,7 +247,24 @@
                                                 <label>{{ Form::radio('willing_to_relocate', 'no',  false, ['required']) }} No </label>
                                             </div>
                                         </div>
+                                    </div> -->
+                                    
+                                    <div class="form-group">
+                                        <div class="row">
+
+                                           <div class="col-sm-6"><label for="job-title">Your Specialization <span class="text-danger">*</span></label>
+                                                    <br><select name="specializations[]" multiple="" id="" required class="select2" style="width: 253px;">
+                                                        <option value="">--choose specialization</option>
+                                                        @foreach($specializations as $s)
+                                                            <option value="{{ $s->id }}">{{ $s->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                            </div>  
+
+                                        </div>
                                     </div>
+
+
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
@@ -282,9 +307,9 @@
                                         <div class="col-sm-4">
                                             <h6 class="text-brandon text-uppercase l-sp-5 no-margin">company details</h6><br>
                                             <p class="text-muted">{{ $company->name }}</p>
-                                            <p><img src="https://www.britishcouncil.org.ng/profiles/solas2/themes/britishcouncil/images/desktop/logo-british-council-color.png" alt="" width="60%"></p><br>
+                                            <p><img src="{{ asset('uploads/'.$company->logo) }}" alt="" width="60%"></p><br>
                                             <p class="small">{{ $company->about }}</p>
-                                            <p><i class="fa fa-map-marker"></i> Magodo, Phase 2. Lagos</p>
+                                            <p><i class="fa fa-map-marker"></i> {{ $company->address }}</p>
                                             <!--p>
                                                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4448.570052456479!2d3.3791209324273184!3d6.618898622434336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b93a899b7c9b7%3A0x8630de71dbc44ffd!2sMagodo+GRA+Phase+II%2C+Lagos!5e0!3m2!1sen!2sng!4v1457754339276" frameborder="0" width="100%" height="200px" allowfullscreen></iframe>
                                             </p-->
@@ -317,15 +342,7 @@
 
                             </div>
 
-                            <script type="text/javascript">
-                                $(document).ready(function() {
-                                    $('#datepicker').datepicker({
-                                        format:'yyyy-mm-dd',
-                                        autoclose: true,
-
-                                    });
-                                });
-                            </script>
+                           
                                 <!--/tab-content-->
                                 <div class="page page-sm foot no-bod-rad">
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
@@ -352,6 +369,25 @@
             </div>
         </div>
     </section>
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="{{ asset('js/select2.min.js') }}"></script>
+     <script type="text/javascript">
+                                $(document).ready(function() {
+                                    $('#datepicker2').datepicker({
+                                           dateFormat: "yy-mm-dd",
+                                        autoclose: true,
+                                        changeMonth: true,
+            changeYear: true,
+            yearRange: '-100:+0'
+
+                                    });
+        $('.select2').select2();
+
+                                });
+                            </script>
+
 
 <div class="separator separator-small"><br></div>
 @endsection

@@ -205,8 +205,8 @@
                 <div class="col-sm-3">
                     <ul class="list-unstyled footer-logo">
                         <li>
-                            <h4 class="text-brandon" style="text-transform: capitalize;"> <i class="fa fa-skype"></i> Seamless Hiring</h4>
-                            <small class="text-muted">&copy; 2016. All Rights Reserved. <br>An Insidify.com Campany</small>
+                            <h4 class="text-brandon" style="text-transform: capitalize;"> Seamless Hiring</h4>
+                            <small class="text-muted">&copy; 2016. All Rights Reserved.</small>
                         </li>
                     </ul>
                 </div>
@@ -284,7 +284,7 @@
 
                             <div class="col-sm-12 text-center">
                                 <h2>Seamless Hiring</h2>
-                                <p class="text-muted">Africa's fastest growing network of professionals</p>
+                                <p class="text-muted">Everything You Need To Hire, In One Place!</p>
                             </div>
 
                             <div class="col-sm-12">
@@ -646,11 +646,16 @@
     <script src="{{ asset('js/select2.min.js') }}"></script>
     
     <script>
+
+    var nowDate = new Date();
+    var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
     
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd',
-            defaultDate:'now',
-            autoclose: true
+            todayHighlight: true,
+            autoclose: true,
+            startDate: today 
+
         });
 
         $('.select2').select2();

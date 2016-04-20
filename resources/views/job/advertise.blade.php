@@ -97,9 +97,9 @@
                                 <div>
                                   <div class="row">
                                     <div class="col-xs-12">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perspiciatis voluptatum unde, placeat repellendus dolores, nam enim eveniet earum eius molestiae explicabo in architecto maiores quaerat voluptatibus iste laudantium quo natus.</p><br>
+                                    <h3>You can multiply your talent flow by posting your jobs on these premium sites.</h3><br>
                                         <h5 class="text-brandon text-uppercase">
-                                        <i class="fa fa-star"></i>&nbsp; Paid Job Board 
+                                        <i class="fa fa-star"></i>&nbsp; Paid Job Boards
                                         </h5><br>
                                     </div>
                                        @foreach($board1 as $b)

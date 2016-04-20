@@ -9,4 +9,9 @@ class Cv extends Model
     //
 
     public $timestamps = false;
+
+     public function specializations()
+    {
+        return $this->belongsToMany('App\Models\Specialization', 'cvs_specializations');
+    }
 }

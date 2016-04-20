@@ -552,8 +552,8 @@ class JobsController extends Controller
 
             $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
 
-            if($data['willing_to_relocate'] == 'yes')
-                $data['willing_to_relocate'] = true;
+            // if($data['willing_to_relocate'] == 'yes')
+            //     $data['willing_to_relocate'] = true;
 
             $data['state_of_origin'] = $states[$data['state_of_origin']];
             $data['location'] = $states[$data['location']];
@@ -577,7 +577,7 @@ class JobsController extends Controller
             $cv->last_position = $data['last_position'];
             $cv->last_company_worked = $data['last_company_worked'];
             $cv->years_of_experience = $data['years_of_experience'];
-            $cv->willing_to_relocate = $data['willing_to_relocate'];
+            // $cv->willing_to_relocate = $data['willing_to_relocate'];
             $cv->cv_file = $data['cv_file'];
             $cv->save();
 
@@ -595,7 +595,9 @@ class JobsController extends Controller
                   $cv->specializations()->attach($e);
               }
             
-            return redirect('jobs/applied/'.$jobID.'/'.$slug);
+            // return redirect('jobs/applied/'.$jobID.'/'.$slug);
+
+            return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);
             // dd($request->all());
 
 

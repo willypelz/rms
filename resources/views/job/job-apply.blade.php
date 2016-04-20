@@ -121,7 +121,7 @@
                                                 {{ Form::select('marital_status', array('Single' => 'Single', 'Married' => 'Married', 'Divorced'=>'Divorced', 'Separated'=>'Separated'), 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
 
                                             </div>
-                                            <div class="col-sm-4"><label for="job-loc">date of Birth <span class="text-danger">*</span></label><input id="datepicker" name="date_of_birth"  type="text" class="form-control"></div>
+                                            <div class="col-sm-4"><label for="job-loc">date of Birth <span class="text-danger">*</span></label><input id="datepicker" name="date_of_birth"  type="text" class=" form-control"></div>
                                         </div>
                                     </div>
                                     
@@ -249,12 +249,6 @@
                                     
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-sm-6">
-                                                 <label for="">Do you reside in Abuja or are you willing to relocate to Abuja?<span class="text-danger">*</span></label><br/>
-                                                <label>{{ Form::radio('willing_to_relocate', 'yes',  false, ['required']) }} Yes</label>
-                                                <label>{{ Form::radio('willing_to_relocate', 'no',  false, ['required']) }} No </label>
-
-                                            </div>
 
                                            <div class="col-sm-6"><label for="job-title">Job Specialization <span class="text-danger">*</span></label>
                                                     <br><select name="specializations[]" multiple="" id="" required class="select2" style="width: 253px;">
@@ -346,15 +340,7 @@
 
                             </div>
 
-                            <script type="text/javascript">
-                                $(document).ready(function() {
-                                    $('#datepicker').datepicker({
-                                        format:'yyyy-mm-dd',
-                                        autoclose: true,
-
-                                    });
-                                });
-                            </script>
+                           
                                 <!--/tab-content-->
                                 <div class="page page-sm foot no-bod-rad">
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
@@ -381,6 +367,21 @@
             </div>
         </div>
     </section>
+
+    <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('js/select2.min.js') }}"></script>
+     <script type="text/javascript">
+                                $(document).ready(function() {
+                                    $('#datepicker').datepicker({
+                                        format:'yyyy-mm-dd',
+                                        autoclose: true,
+
+                                    });
+        $('.select2').select2();
+                                    
+                                });
+                            </script>
+
 
 <div class="separator separator-small"><br></div>
 @endsection

@@ -14,8 +14,10 @@ class CreateCvsSpecsTable extends Migration
     {
         Schema::create('cvs_specializations', function (Blueprint $table) {
             $table->increments('id');
-             $table->integer('cv_id');
-             $table->integer('specialization_id');
+            $table->integer('cv_id');
+            $table->integer('specialization_id');
+
+            $table->timestamps();
 
 
         });

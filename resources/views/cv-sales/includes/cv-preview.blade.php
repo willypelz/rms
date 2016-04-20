@@ -118,7 +118,7 @@
                                     <li>
                                         <strong>Last Company Worked:</strong>&nbsp; {{ @$cv['last_company_worked'] }}.</li>
                                     <li>
-                                        <strong>Willing to Relocate?:</strong>&nbsp; @if($cv['willing_to_relocate']) Yes @else No @endif.</li>
+                                        <strong>Willing to Relocate?:</strong>&nbsp; @if(@$cv['willing_to_relocate']) Yes @else No @endif.</li>
                                 </ul>
                             </div>
                         </div>

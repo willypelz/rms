@@ -19,15 +19,20 @@
               &nbsp;
               <a id="showCvBtn" data-toggle="modal" data-target="#cvModal"  onclick="showCvModal('{{ $cv['id'] }}',true);" >View Cv</a>
               <span class="text-muted">·</span>
-              <a href="#" data-toggle="modal" data-target="#reviewCv[data-user='{{ @$cv['id'] }}']" id="reviewBtn-{{ $cv['application_id'][0] }}">Review</a>
+              <a href="{{ route('applicant-profile', $cv['application_id'][0] ) }}">View Application</a>
               <span class="text-muted">·</span>
-              <a href="#">Assess</a>
+              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Shortlist?" data-view="{{ route('modal-shortlist') }}" data-app-id="{{ $cv['application_id'][0] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Shortlist</a>
               <span class="text-muted">·</span>
-              <a href="#">Interview</a>
+              <!-- <a href="#" data-toggle="modal" data-target="#reviewCv[data-user='{{ @$cv['id'] }}']" id="reviewBtn-{{ $cv['application_id'][0] }}">Comment</a> -->
+              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Comment" data-view="{{ route('modal-comment') }}" data-app-id="{{ $cv['application_id'][0] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Comment</a>
               <span class="text-muted">·</span>
-              <a href="#">Reject</a>
+              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Assess" data-view="{{ route('modal-assess') }}" data-app-id="{{ $cv['application_id'][0] }}" data-cv="{{ $cv['id'] }}" data-type="wide">Assess</a>
+              <span class="text-muted">·</span>
+              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview" data-view="{{ route('modal-interview') }}" data-app-id="{{ $cv['application_id'][0] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Interview</a>
+              <span class="text-muted">·</span>
+              <a data-toggle="modal" class="text-danger" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Reject?" data-view="{{ route('modal-reject') }}" data-app-id="{{ $cv['application_id'][0] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Reject</a>
 
-              <span class="pull-right">
+              <span class="pull-right hide">
                   <a class="text-muted" href="#">Background Check</a>
                   <span class="text-muted">·</span>
               </span>

@@ -123,7 +123,7 @@
                                                 {{ Form::select('marital_status', array('Single' => 'Single', 'Married' => 'Married', 'Divorced'=>'Divorced', 'Separated'=>'Separated'), 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
 
                                             </div>
-                                            <div class="col-sm-4"><label for="job-loc">date of Birth <span class="text-danger">*</span></label><input id="datepicker" name="date_of_birth"  type="text" class=" form-control"></div>
+                                            <div class="col-sm-4"><label for="job-loc">date of Birth <span class="text-danger">*</span></label><input id="datepicker2" name="date_of_birth"  type="text" class=" form-control"></div>
                                         </div>
                                     </div>
                                     
@@ -370,13 +370,17 @@
         </div>
     </section>
 
-    <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>
      <script type="text/javascript">
                                 $(document).ready(function() {
-                                    $('#datepicker').datepicker({
-                                        format:'yyyy-mm-dd',
+                                    $('#datepicker2').datepicker({
+                                           dateFormat: "yy-mm-dd",
                                         autoclose: true,
+                                        changeMonth: true,
+            changeYear: true,
+            yearRange: '-100:+0'
 
                                     });
         $('.select2').select2();

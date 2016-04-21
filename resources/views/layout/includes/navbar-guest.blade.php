@@ -17,9 +17,9 @@
                     <a class="" href="{{ url('/') }}">Home</a>
                 </li>
 
-                <li>
+                <!-- <li>
                     <a class="" href="{{ url('about') }}">About</a>
-                </li>
+                </li> -->
                 <li>
                     <a class="" href="{{ url('cv/search-results') }}">Find Resumes &nbsp;<i class="fa fa-search"> </i></a>
                 </li>

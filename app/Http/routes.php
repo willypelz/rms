@@ -313,6 +313,29 @@ Route::group(['middleware' => 'web'], function () {
     });
 
 
+    /**
+     * Route Group for modals
+     */
+
+    Route::get('modal/default', [ 'as' => 'get-modal', function () {
+            return view('applicant.messages');
+        } ]);
+    Route::get('modal/assess', [ 'as' => 'modal-assess', 'uses' => 'JobApplicationsController@modalAssess']);
+
+    Route::get('modal/comment', [ 'as' => 'modal-comment', 'uses' => 'JobApplicationsController@modalComment' ]);
+
+    Route::get('modal/shortlist', [ 'as' => 'modal-shortlist', 'uses' => 'JobApplicationsController@modalShortlist' ]);
+
+    Route::get('modal/reject', [ 'as' => 'modal-reject', 'uses' => 'JobApplicationsController@modalReject' ]);
+
+    Route::get('modal/interview', [ 'as' => 'modal-interview', 'uses' => 'JobApplicationsController@modalInterview' ]);
+
+    
+
+    Route::post('request/test', [ 'as' => 'request-test', 'uses' => 'JobApplicationsController@requestTest' ]);
+    Route::post('invite/interview', [ 'as' => 'invite-for-interview', 'uses' => 'JobApplicationsController@inviteForInterview' ]);
+    
+
     
 
 });

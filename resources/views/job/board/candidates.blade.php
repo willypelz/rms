@@ -131,6 +131,7 @@
     var filters = [];
     var status_filter = "";
     var total_candidates = "{{ $result['response']['numFound'] }}";
+    var keyword = "";
 
     String.prototype.capitalize = function() {
         return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
@@ -139,6 +140,7 @@
     function searchKeyword(){
 
             var filter = 'text' + ':"' + $(search_keyword).val() + '"';
+            var key = $(search_keyword).val();
 
             var index = $.inArray( filter, filters );
             // console.log( filter + "---" + index );
@@ -163,6 +165,7 @@
                 $('#search-filters').html(data.search_filters);
                 $('.result-label').html(data.showing);
                 $('#pagination').show();
+                $('#search_keyword').val(key);
 
                 $.each(filters, function(index,value){
                     
@@ -174,6 +177,15 @@
 
             return false;
         }
+
+
+    $('body').on('keydown', '#search_keyword',function(){
+            if(event.which == 13) 
+            {
+                searchKeyword();
+
+            }
+        });
 
         
     $(document).ready(function(){
@@ -476,6 +488,32 @@
                     // $('#reviewBtn-' + $field.data('app-id') ).trigger('click');
                     $( '#reviewCv[data-user="' + $field.data('cv') + '"]' ).modal('toggle');
                 });
+        });
+
+        $('body').on('click', '#clearAllFilters', function(){
+
+            filters = [];
+            $('.filter-div input[type=checkbox]' ).prop('checked',false);
+
+            $('#search_keyword').val("");
+
+
+            $('.search-results').html('{!! preloader() !!}');
+            scrollTo('.job-progress-xs');
+            $('.result-label').html('');
+            $('#pagination').hide();
+            $.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
+                //console.log(response);
+                // var response = JSON.parse(data);
+                // console.log(data.search_results);
+                $('.result-label').html(data.showing);
+                $('#pagination').show();
+                $('.search-results').html(data.search_results);
+                $('#search-filters').html(data.search_filters);
+
+                $(document).getShowing();
+            });
+            
         });
 
     });

@@ -20,6 +20,68 @@ $(window).scroll(function() {
 });
 
 
+if (!sh)
+    var sh = window.sh = {};
+
+sh.showModal = function(obj,title,view,data)
+{
+    $('.modal-title').text(title);
+    $('.modal-dialog').removeClass('modal').removeClass('modal-lg').addClass(data.modal_size);
+
+    window.preloader = $('.modal-body').html();
+    // $user = $(this).closest('.media');
+    var $user = obj.closest('.media').clone();
+    $user.find('input[type="checkbox"]').remove();
+    $user.find('small').remove();
+    data.badge = $user.html();
+    
+    $.get(view, data, function(response){
+        $('.modal-body').html( response);
+    });
+}
+
+
+sh.showWideModal = function()
+{
+
+}
+
+$(document).ready(function(){
+    
+    $('.modal-header .close');
+
+    $('body #modalButton').on('click', function(){
+
+        data = {
+            app_id: $(this).data('app-id') ,
+            cv_id: $(this).data('cv')
+        }
+        
+        if( $(this).data('type') == 'normal' )
+        {
+            data.modal_size = 'modal-md';
+            sh.showModal( $(this), $(this).data('title') , $(this).data('view'), data );
+        }
+        else if( $(this).data('type') == 'wide' )
+        {
+            data.modal_size = 'modal-lg';
+            sh.showModal( $(this), $(this).data('title') , $(this).data('view'), data );
+        }
+        else if( $(this).data('type') == 'small' )
+        {
+            data.modal_size = 'modal-sm';
+            sh.showModal( $(this), $(this).data('title') , $(this).data('view'), data );
+        }
+    });
+
+    $('#viewModal').on('hidden.bs.modal', function () {
+        $('.modal-title').text("Default Text");
+        $('.modal-body').html( window.preloader );
+        
+    });
+
+    // onclick="sh.showModal('Assess','')"
+});
 ////////-----function for Homepage Tabs---------////////
 
     //     $(function() {

@@ -9,6 +9,11 @@ use App\Models\JobApplication;
 use App\Models\Job;
 use App\Models\AtsRequest;
 use App\Libraries\Solr;
+use App\Models\AtsService;
+use App\Models\AtsProduct;
+use App\Models\TestRequest;
+use App\Models\Interview;
+
 
 class JobApplicationsController extends Controller
 {
@@ -126,7 +131,7 @@ class JobApplicationsController extends Controller
             $filter_text .= ".";
 
         }
-        $showing .= $filter_text;
+        $showing .= $filter_text . '<a id="clearAllFilters" href="javacript://" >Clear Filter</a>';
 
         if($request->ajax())
         {
@@ -205,11 +210,11 @@ class JobApplicationsController extends Controller
                             <tbody> 
                         <tr> 
                             <td class="text-center"><h1 class="no-margin text-bold"><a href="jos/list">'.$total_applicants.'</a></h1><small class="text-muted">Applicants</small></td> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">'.$matching.'</a></h1><small class="text-muted">Matching Candidates</small></td> 
+                            <!--td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">'.$matching.'</a></h1><small class="text-muted">Matching Candidates</small></td--> 
                         </tr> 
                         <tr> 
                             <td class="text-center"><h1 class="no-margin text-muted">'.$open_days.'</h1><small class="text-muted">Days Opended</small></td> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">'.$amount_spent.'</a></h1><small class="text-muted">Amount Spent</small></td> 
+                            <!--td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">'.$amount_spent.'</a></h1><small class="text-muted">Amount Spent</small></td--> 
                         </tr>
                         </tbody> 
                         </table>';
@@ -218,5 +223,124 @@ class JobApplicationsController extends Controller
     }
 
 
+    public function modalComment(Request $request)
+    {
+        // $appl = JobApplication::with('job', 'cv')->find( $request->app_id );
+        // echo "<pre>";
+        // var_dump($appl);
+        // echo "</pre>";
+        // $applicant_badge = $this->getApplicantBadge( $request->cv_id );
+        $applicant_badge = @$request->badge;
+        $app_id = @$request->app_id;
+        $cv_id = @$request->cv_id;
+
+        return view('modals.comment', compact('applicant_badge','app_id','cv_id'));
+    }
+
+    public function modalInterview(Request $request)
+    {
+        // $appl = JobApplication::with('job', 'cv')->find( $request->app_id );
+        // echo "<pre>";
+        // var_dump($appl);
+        // echo "</pre>";
+        // $applicant_badge = $this->getApplicantBadge( $request->cv_id );
+        $applicant_badge = @$request->badge;
+        $app_id = @$request->app_id;
+        $cv_id = @$request->cv_id;
+        $appl = JobApplication::with('job', 'cv')->find($app_id);
+
+        return view('modals.interview', compact('applicant_badge','app_id','cv_id','appl'));
+    }
+
     
+    public function modalShortlist(Request $request)
+    {
+        $applicant_badge = @$request->badge;
+        $app_id = @$request->app_id;
+        $cv_id = @$request->cv_id;
+        $appl = JobApplication::with('job', 'cv')->find($app_id);
+
+        return view('modals.shortlist', compact('applicant_badge','app_id','cv_id','appl'));
+    }
+
+    public function modalReject(Request $request)
+    {
+        $applicant_badge = @$request->badge;
+        $app_id = @$request->app_id;
+        $cv_id = @$request->cv_id;
+        $appl = JobApplication::with('job', 'cv')->find($app_id);
+
+        return view('modals.reject', compact('applicant_badge','app_id','cv_id','appl'));
+    }
+
+    
+
+    public function modalAssess(Request $request)
+    {
+        // $appl = JobApplication::with('job', 'cv')->find( $request->app_id );
+        // echo "<pre>";
+        // var_dump($appl);
+        // echo "</pre>";
+        // $applicant_badge = $this->getApplicantBadge( $request->cv_id );
+        // 
+        
+        $applicant_badge = @$request->badge;
+        $app_id = @$request->app_id;
+        $cv_id = @$request->cv_id;
+        $appl = JobApplication::with('job', 'cv')->find($app_id);
+        // $requests = $appl->requests()->with('product.provider')->where('service_type', 'background')->get();
+        $test_available = true;
+        // $services = AtsService::all()->toArray() ;
+
+        $products = AtsProduct::all(); 
+        return view('modals.assess', compact('applicant_badge','app_id','cv_id','products','appl','test_available'));
+    }
+
+    public function requestTest(Request $request)
+    {
+        
+        foreach ($request->tests as $key => $test) {
+            $data = [
+                'location' => @$request->location,
+                'start_time' => @$request->start_time,
+                'end_time' => @$request->end_time,
+                'job_application_id' => @$request->job_application_id,
+                'location' => @$request->location,
+                'test_id' => $test['id'],
+                'test_name' => $test['name'],
+                'test_owner' => $test['owner'],
+            
+            ];
+                        
+            TestRequest::create($data);
+            // var_dump($data);
+        }
+
+        JobApplication::massAction( @$request->job_id, [ @$request->cv_id ], 'ASSESSED' );
+
+    }
+
+    public function inviteForInterview(Request $request)
+    {
+            $data = [
+                'location' => @$request->location,
+                'message' => @$request->message,
+                'date' => @$request->date
+            ];
+                        
+            Interview::create($data);
+            // var_dump($data);
+        
+
+        JobApplication::massAction( @$request->job_id, [ @$request->cv_id ], 'INTERVIEWED' );
+
+    }
+    
+
+    
+    public function getApplicantBadge($cv_id)
+    {
+        return view('modals.applicant_badge')->render();
+        
+    }
 }

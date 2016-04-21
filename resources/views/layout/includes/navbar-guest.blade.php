@@ -29,7 +29,8 @@
                     <a class="btn btn-danger" href="{{ url('register') }}" >SIGN UP</a>
                 </li>
                 <li>
-                    <a class="signin" href="#" data-toggle="modal" data-target="#loginModal">LOG IN</a>
+                    <a class="signin" href="{{ url('login') }}" >LOG IN</a>
+
                 </li>
             </ul>
         </div>

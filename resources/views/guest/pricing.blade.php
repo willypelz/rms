@@ -64,11 +64,11 @@
                                             <small>For companies that post 1-3 jobs per month and hire between 5-10 candidates in a year.</small>
                                         </div>
                                         <div class="panel-body no-margin text-center text-brandon" style="
-    background: #3A5979;
-">
+                                                background: #3A5979;
+                                            ">
                                             <p class=" no-margin no-pad" style="
-    background: #3A5979;
-"><strong>₦ 30,000 / Mo</strong></p>
+                                                background: #3A5979;
+                                            "><strong>₦ 30,000 / Mo</strong></p>
                                         </div>
                                         <div class="panel-body no-margin text-center text-brandon">
                                             <p class=" no-margin no-pad"><strong>&#8358; 300,000 / Year</strong></p>
@@ -97,7 +97,7 @@
                                             <small> For companies that post more than 3 jobs per month and hire over 10 candidates in a year. </small>
                                         </div>
                                         <div class="panel-body text-center">
-                                            <p class=" no-margin text-brandon" style=" font-size: 17px;    padding: 12px;"><strong>CALL US ON 08167134495</strong></p>                                        
+                                            <p class=" no-margin text-brandon" style=" font-size: 17px;    padding: 12px;"><strong>CALL US ON 08068873719</strong></p>                                        
                                         </div>
                                         <ul class="list-group text-center">
                                             <li class="list-group-item"> Unlimited free job posting.</li>

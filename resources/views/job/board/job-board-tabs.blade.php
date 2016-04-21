@@ -32,7 +32,7 @@
                           </div>
                           <div class="btn-group" role="group">
                             <a href="{{ route('job-team', [$job->id]) }}" type="button" class="btn btn-line text-capitalize @if($active_tab == 'team') in @endif">
-                            <span class="fa-lg"><i class="fa fa-edits"></i>
+                            <span class="fa-lg"><i class="fa fa-building"></i>
                             <span class="hidden-xs"> &nbsp; Job Team</span></span>
                             <!-- <small class="text-muted hidden-xs">Resumes / CVs</small> -->
                             </a>

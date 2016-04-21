@@ -1,0 +1,249 @@
+@extends('layout.template-default')
+
+@section('content')
+
+
+  <section class="s-div homepage">
+        <div class="container">
+
+            <div class="row text-center text-brandon text-light text-white"><br>
+                <h2><i class="fa fa-check-square-o"></i> Find the Perfect Plan for your Business</h2><br>
+            </div>
+
+        </div>
+    </section>
+
+
+    <section class="white" style="">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-sm-12">
+
+                    <div class="">
+
+
+
+                      <!-- Tab panes -->
+                      <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane in active animated zoomIn" id="monthly">
+                              <div class="row" style="margin-bottom:0em">
+                                  <br>
+                                <div class="col-sm-4 text-center no-pad">
+                                  <!-- <img src="img/rope.png" width="100px" class="rope"> -->
+                                    <div class="panel panel-default panel-pricing panel-basic">
+                                        <div class="panel-heading">
+                                            <!-- <i class="fa fa-star"></i> -->
+                                            <h3 class="text-brandon">FREE</h3>
+                                            <small> For you to get a feel of the <br>seamless hiring magic.</small>
+                                        </div>
+                                        <div class="panel-body text-center text-brandon">
+                                            <p class=" no-margin"><strong>&#8358; 0 / Month</strong></p>
+                                        </div>
+                                        <ul class="list-group text-center">
+                                            <li class="list-group-item"> Free and unlimited job posting</li>
+                                            <li class="list-group-item"> Limited access to the recruitment platform</li>
+                                            <!--<li class="list-group-item"> 27/7 support</li>-->
+                                        </ul>
+                                        <div class="panel-footer">
+                                            <a class="btn btn-lg btn-line " href="{{ url('register') }}">START HERE!</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /item -->
+
+                                <!-- item -->
+                                <div class="col-sm-4 text-center no-pad">
+                                  <!-- <img src="img/rope-big.png" width="300px" class="rope big"> -->
+                                    <div class="panel panel-default panel-pricing panel-sme">
+                                        <div class="panel-heading">
+                                            <!-- <i class="fa fa-star"></i><i class="fa fa-star"></i> -->
+                                            <div class="label label-default">&nbsp; MOST POPULAR &nbsp;</div>
+                                            <h3 class="text-brandon">SME</h3>
+
+                                            <small>For companies that post 1-3 jobs per month and hire between 5-10 candidates in a year.</small>
+                                        </div>
+                                        <div class="panel-body no-margin text-center text-brandon" style="
+    background: #3A5979;
+">
+                                            <p class=" no-margin no-pad" style="
+    background: #3A5979;
+"><strong>₦ 30,000 / Mo</strong></p>
+                                        </div>
+                                        <div class="panel-body no-margin text-center text-brandon">
+                                            <p class=" no-margin no-pad"><strong>&#8358; 300,000 / Year</strong></p>
+                                            <!-- <small>20% Discount</small> -->
+                                        </div>
+                                        <ul class="list-group text-center">
+                                            <li class="list-group-item"> Free unlimited job posting.</li>
+                                            <li class="list-group-item"> <b>Unlimited</b> processing access to 3 jobs/month</li>
+                                            <!--<li class="list-group-item"><i class="fa fa-check"></i> 10 free IQ Test</li>-->
+                                        </ul>
+                                        <div class="panel-footer">
+                                            <a class="btn btn-lg btn-block btn-success " href="{{ url('register') }}">START HERE!</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /item -->
+
+
+                                <!-- item -->
+                                <div class="col-sm-4 text-center no-pad">
+                                  <!-- <img src="img/rope.png" width="100px" class="rope"> -->
+                                    <div class="panel panel-default panel-pricing panel-premium">
+                                        <div class="panel-heading">
+                                            <!-- <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> -->
+                                            <h3 class="text-brandon">ENTERPRISE</h3>
+                                            <small> For companies that post more than 3 jobs per month and hire over 10 candidates in a year. </small>
+                                        </div>
+                                        <div class="panel-body text-center">
+                                            <p class=" no-margin text-brandon" style=" font-size: 17px;    padding: 12px;"><strong>CALL US ON 08167134495</strong></p>                                        
+                                        </div>
+                                        <ul class="list-group text-center">
+                                            <li class="list-group-item"> Unlimited free job posting.</li>
+                                            <li class="list-group-item"> Unlimited processing access unlimited jobs/month.</li>
+                                            <li class="list-group-item"> 24/7 dedicated staff support</li>
+                                            <li class="list-group-item"> Free embed on your career site. </li>
+                                            <li class="list-group-item"> Discounts on value added services. </li>
+                                        </ul>
+                                        <div class="panel-footer">
+                                            <a class="btn btn-lg btn-line text-uppercase" href="#">Request a call</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /item -->
+
+                            </div>
+                        </div>
+
+
+                      </div>
+                      <!-- End of Tab panes -->
+
+
+
+                      <div id="" class="col-sm-12">
+                        <div class="text-center">
+                            <div class="col-sm-4 col-sm-offset-4">
+                            <br>
+                                <a href="{{ url('register') }}" class="btn btn-lg btn-block btn-success btn-trial">
+                                    Get Started for free
+                                </a>
+                            </div>
+                        </div>
+                      </div>
+                        <div class="clearfix"></div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="s-div homepage no-margin">
+        <div class="container">
+
+            <div class="page-trans">
+              <div class="row">
+                  <div class="col-sm-8 col-sm-offset-2 text-white ">
+                      <br>
+
+                      <i class="fa fa-question-circle fa-5em text-center block"></i>
+                      <h3 class="text-brandon text-uppercase no-margin text-center">
+                      WHY SHOULD MY COMPANY PAY <br>TO USE SEAMLESS HIRING?</h3><br>
+                      <div class="row">
+                      <div class="col-sm-4 col-sm-offset-4">
+                        <hr>
+                      </div>
+                            <div class="col-sm-12">
+                                <h4 class="text-brandon text-green-light">1. You Will Reach the Highest Number of High Quality Candidates Through SeamlessHiring.</h4>
+
+                                <p>Since you can broadcast your jobs on over 30 channels including Insidify.com, Jobberman, myjobmag, ngcareers, Newspapers (Guardian, Punch, Vanguard and TheNation), facebook, twitter and Linked-In. You will reach far more candidates than any job platform in Nigeria.</p>
+                                <p>Of course, this means you don’t need to have employer accounts everywhere.   </p>
+                            </div>
+                            <div class="col-sm-6 col-sm-offset-3"><hr class="pull-left"></div>
+                            <div class="col-sm-12">
+                                <h4 class="text-brandon text-green-light">2.  You Will be Able to Sort and Filter Through These Candidates With Ease. </h4>
+
+                                <p>Ultimately, what’s important is the quality of candidates you finally get, not the fact that a crowd applied. SeamlessHiring helps you find the best people amongst your applicants with ease. </p>
+                            </div>
+                            <div class="col-sm-6 col-sm-offset-3"><hr class="pull-left"></div>
+                            <div class="col-sm-12">
+                                <h4 class="text-brandon text-green-light">3.  You Will be Able to Track All the Stages of the Recruitment Process Seamlessly. </h4>
+
+                                <p>-  From posting the jobs, to sorting applicants, reviewing and shortlisting, online testing, scheduling & conducting interviews, to background checks and pre-employment medicals. It’s all incredibly seamless.</p>
+                            </div>
+                            <div class="col-sm-6 col-sm-offset-3"><hr class="pull-left"></div>
+                            <div class="col-sm-12">
+                                <h4 class="text-brandon text-green-light">4.  SeamlessHiring Makes the Recruitment Process  Fast and Easy </h4>
+
+                                <p>By making recruitment seamless, we will be saving you the time and hassle of posting jobs everywhere, sorting through endless piles of emails, conducting tests, background checks, medicals and a lot more. </p>
+                                <p>SeamlessHiring shortens recruitment time by over 80%.</p>
+                            </div>
+                            <div class="col-sm-6 col-sm-offset-3"><hr class="pull-left"></div>
+                            <div class="col-sm-12">
+                                <h4 class="text-brandon text-green-light">5.  SeamlessHiring Saves you Money.</h4>
+
+                                <p>Because we use very intelligent technology, we are able to deliver high value to you at a very cheap price. SeamlessHiring cuts the real value of finding great talent by over 65%. </p>
+                                
+                            </div>
+                            <div class="col-sm-6 col-sm-offset-3"><hr class="pull-left"></div>
+                      </div>
+                    <!-- <div class="row">
+                        <br>
+                        <form class="form-inline">
+                            <div class="col-sm-2">
+                                <h4>&nbsp; I NEED A</h4>
+                            </div>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control input-full" placeholder="e.g Human Resource Person">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="submit" value="Request" class="btn btn-block btn-default">
+                            </div>
+                        </form>
+
+                    </div> <br>-->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+
+    <section class="white">
+        <div class="container">
+
+            <div class="">
+              <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+                  <br>
+                  <i class="fa fa-smile-o fa-5em text-center block"></i>
+                    <p class="lead text-center">Do you need to convince your boss or your team on why you need SeamlessHiring? <br>We have put a customizable, four-page power-point presentation together for you.  
+                    </p>
+                      <form action="">
+                        <div class="form-group">
+                          <div class="col-sm-6"><input type="text" class="form-control" placeholder="Enter your company name"></div>
+                          <div class="col-sm-6"><input type="email" class="form-control" placeholder="Your email address"></div>
+                          <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-sm-6"><input type="text" class="form-control" placeholder="Your name"></div>
+                          <div class="col-sm-6"><input type="submit" class="btn btn-success btn-block" value="Download your Pitch Deck"></div>
+                          <div class="clearfix"></div>
+                        </div>
+                      </form>
+                </div>
+                </div>
+                <br>
+            </div>
+
+        </div>
+    </section>
+
+
+
+@endsection

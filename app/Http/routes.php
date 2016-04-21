@@ -121,8 +121,8 @@ Route::group(['middleware' => 'web'], function () {
 
 
     
-    Route::get('boss', function () {
-        return view('cv-sales.tobi');
+    Route::get('pricing', function () {
+        return view('guest.pricing');
     });
 
     Route::get('about', function () {

@@ -80,8 +80,6 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 .navbar {
     background: #3A5979;
-    /* border-top: 2px solid #BDFDBA; */
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     box-shadow: 0 1px 0px rgba(255, 255, 255, 0.07);
 }
 .navbar.transparent {
@@ -334,9 +332,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 .nav-tabs.nav-price>li>a,
 .nav-tabs.nav-price>li>a:focus{
-    color: #9CAD45;
+    color: #8A8A8A;
     border: 1px solid;
-    border-color: #9CAD45;
+    border-color: #C7C7C7;
     background-color: transparent;
     cursor: default;
     border-radius: 3px;
@@ -354,8 +352,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .nav-price>li.active>a:hover{
     color: #FFF;
     border: 1px solid;
-    border-color: #9CAD45;
-    background-color: #9CAD45;
+    border-color: #D9534F;
+    background-color: #D9534F;
     cursor: default;
     border-radius: 3px;
 }
@@ -422,7 +420,8 @@ section.s-div{
     /*border-bottom: 3px solid #5CB85C;*/
 }
 section.s-div.homepage{
-    min-height:450px;
+    -
+    height: 450px;
     background: #3A5979 fixed bottom url('../img/intro-bg.jpg');
     background-size:cover;
     /*border-bottom:3px solid #5CB85C;*/
@@ -2298,7 +2297,7 @@ section.grey hr{
     line-height:20px;
 }
 .option-aps li a {
-    padding: 10px 7px;
+    padding: 10px 15px;
     font-weight:bold;
     /*font-size: 12px;*/
 }
@@ -3239,13 +3238,11 @@ section.invite{
     transition:all ease-in 200ms;
 }
 section.s-blue{
-
-    background: #239FB1;
-
-    background-size: cover;
-    color: #ffffff;
-    border-bottom: 5px solid;
-    border-color: #A2B23D;
+background: #3A5979;
+background-size: cover;
+color: #ffffff;
+border-bottom: 5px solid;
+border-color: #BDFDBA;
 }
 .ret-h{
     margin: 5px 15px 0;
@@ -3356,28 +3353,30 @@ section.s-blue{
   -o-transition: all .3s ease;
   -webkit-transition: all .3s ease;
   border-radius:0;
-  border-color:#ccc;
+  border-color: #A7A7A7;
   /*box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);*/
+  margin-bottom: 20px;
 }
 .panel-pricing:hover {
   /*box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);*/
   /*margin-top:-5px;*/
 }
 .panel-sme{
-    border-width: 2px;
-    border-color: #1AACC1;
+    border-width: 3px;
+    border-color: #3A5979;
     margin-top: -21px;
     border-radius: 5px;
     /*box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);*/
 }
 .panel-free, .panel-basic{
-    border-right: 0;
+    /* border-right: 0; */
 }
 .panel-premium{
-    border-left: 0;
+    /* border-left: 0; */
 }
 .panel-pricing .panel-heading {
-  /*padding: 20px 10px;*/
+  /* padding: 20px 10px; */
+  color: #3A5979;
 }
 .panel-pricing .panel-heading .fa {
   margin-top: 10px;
@@ -3399,10 +3398,11 @@ section.s-blue{
 .panel-pricing .panel-body {
   background-color: #f0f0f0;
   font-size: 24px;
-    font-family:;
+  font-family:;
   color: #777777;
   padding: 0px;
   margin: 0px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.29);
 }
 .panel-pricing .panel-body small{
     font-size: 12px;
@@ -3410,17 +3410,21 @@ section.s-blue{
     margin-bottom: 8px;
 }
 .panel-pricing .panel-heading small{
-    font-size: 12px;
+    font-size: 13px;
     /*margin-top: -10px;*/
     margin-bottom: 8px;
+    color: #3A5979;
 }
 .panel-pricing .panel-body p{
-    color: #333 !important;
+    color: #3A5979 !important;
+    padding: 7px 0;
+    background: #EBF5FF;
 }
 .panel-pricing.panel-sme .panel-body,
 .panel-pricing.panel-sme .panel-body p{
-        background-color: #1AACC1;
+        background-color: #5CB85C;
         color: #ffffff !important;
+        padding: 6px 0;
 }
 .panel-pricing.panel-free .list-group>li:last-child{
     border-bottom: 1px solid #ddd;
@@ -3428,18 +3432,18 @@ section.s-blue{
 }
 .panel-pricing.panel-basic .list-group>li:last-child{
     border-bottom: 1px solid #ddd;
-    margin-bottom: 154px;
+    margin-bottom: 120px;
 }
 .panel-pricing.panel-sme .list-group>li:last-child{
     border-bottom: 1px solid #ddd;
-    margin-bottom: 75px;
+    margin-bottom: 9em;
 }
 .panel-pricing.panel-sme .label{
     padding: 5px 13px;
     width: 114px;
     margin: -25px auto 15px;
     display: block;
-    background-color: #1AACC1;
+    background-color: #3A5979;
 }
 .btn-trial{
     background-color: transparent;
@@ -4388,6 +4392,8 @@ a.less-link:after {
     }
 }
 @media (min-width: 768px) and (max-width: 991px) {
+
+
   .s-div .form-control {
     margin-bottom: 10px;
   }
@@ -4406,6 +4412,12 @@ a.less-link:after {
   }
 }
 @media (max-width: 768px) {
+    .btn-group-justified.btn-tabs.home-tabs>.btn-group .btn{
+            height:85px;
+        }
+    .section-tab:before{
+        margin-top: -3.75rem;
+    }
     section{
         padding:1.5em 0;
     }

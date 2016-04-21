@@ -55,6 +55,7 @@ use App\Models\JobActivity;
 			SUSPEND-JOB
 			PUBLISH-JOB
 			APPLIED
+			REVIEW
 		*/
 
 		  if (!$job_id) $job_id = NULL;

@@ -53,11 +53,11 @@
 
                                             
                                             <a title="Email Applicant" href="mailto:{{ $appl->cv->email }}" class="btn btn-line" role="button"><i class="fa fa-envelope-o no-margin"></i></a> 
+                                            
+                                            <a title="Make Comment on Applicant" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Comment" data-view="{{ route('modal-comment') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="normal" class="btn btn-line" role="button"><i class="fa fa-comment-o no-margin"></i></a> 
+                                            <a title="Enlist Applicant for an interview"  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview" data-view="{{ route('modal-interview') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="normal" class="btn btn-line" role="button"><i class="fa fa-file-text-o no-margin"></i></a> 
 
-                                            <a title="Make Comment on Applicant" href="#" class="btn btn-line" role="button"><i class="fa fa-comment-o no-margin"></i></a> 
-                                            <a title="Enlist Applicant for an interview" href="#" class="btn btn-line" role="button"><i class="fa fa-file-text-o no-margin"></i></a> 
-
-                                            <a title="Assess Applicant" href="#" class="btn btn-line" role="button"><i class="fa fa-question-circle no-margin"></i></a>
+                                            <a title="Assess Applicant"  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Assess" data-view="{{ route('modal-assess') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide" class="btn btn-line" role="button"><i class="fa fa-question-circle no-margin"></i></a>
 
                                           <div class="btn-group" role="group"> 
 
@@ -66,7 +66,7 @@
                                               <ul class="dropdown-menu">
                                                   <li><a href="#">Interview</a></li>
                                                   <li><a href="#">Assign to new Job</a></li>
-                                                  <li><a href="#">Reject</a></li>
+                                                  <li><a  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Reject" data-view="{{ route('modal-reject') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide">Reject</a></li>
                                                   <li><a href="#">Background Check</a></li>
                                                   <li><a href="#">Medicals</a></li>
                                               </ul> 

@@ -57,9 +57,13 @@
                             <li class="col-xs-12"><button class="btn btn-block btn-danger" href="_index.php">Pay Now</button></li> 
                         </ul> 
                     </li> -->
-                    <!-- <li>
-                        <a href="" class="animated">3 <i class="fa fa-shopping-basket fa-lg"></i></a>
-                    </li> -->
+                    
+
+
+                        <li>
+                            <a class="btn btn-danger" href="{{ url('pricing') }}" >Upgrade</a>
+                        </li>
+
                         <li id="fat-menu" class="dropdown"> 
                             <a class="a-user" id="drop3" href="#" class="dropdown-toggle" style="" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
                                 <img src="{{ default_picture( Auth::user(), 'user' ) }}" width="40px" class="img-profile" height="40px" alt=""> 

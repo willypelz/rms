@@ -465,30 +465,7 @@
             // console.log(cvs);
         });
 
-        $('body #writeReviewBtn').on('click', function(){
-            $field = $(this);
-            $.post("{{ route('write-review') }}", {job_id: '{{ $jobID }}',comment :  $('body textarea[data-app-id="' + $field.data('app-id') + '"]').val() ,job_app_id: $field.data('app-id') },function(data){
-                    // if(data == true)
-                    // {
-                    //   // $field.val("").hide();
-                    //   $(this).getMyFolders();
-                    //   $('#newFolder #message').html('<div class="alert alert-success">Folder added successfully</div>');
-                    //   $('#newFolder').modal('toggle');
-                      
-                    // }
-
-                    // else
-                    // {
-                    //   $field.val("").hide();
-                    //   // $field.after('<p>'+ data +'</p>');
-                    //   $('#loginModal #mssg').text(data);
-                    //   $('.signin').trigger('click');
-                    // }
-                    
-                    // $('#reviewBtn-' + $field.data('app-id') ).trigger('click');
-                    $( '#reviewCv[data-user="' + $field.data('cv') + '"]' ).modal('toggle');
-                });
-        });
+       
 
         $('body').on('click', '#clearAllFilters', function(){
 

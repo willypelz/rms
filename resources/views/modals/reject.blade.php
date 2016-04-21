@@ -1,6 +1,5 @@
-<div class="alert alert-info alert-dismissible c-alert" role="alert">
+
   {!! @$applicant_badge !!}              
-</div>
 
                                   
   <div class="pull-right">

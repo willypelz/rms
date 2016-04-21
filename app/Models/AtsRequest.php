@@ -9,6 +9,7 @@ class AtsRequest extends Model
     //
     public $guarded = [];
 
+    public $timestamps = false;
 
     public function product()
     {

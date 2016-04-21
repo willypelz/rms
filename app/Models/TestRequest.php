@@ -12,7 +12,11 @@ class TestRequest extends Model
 
     public function product()
     {
-        return $this->belongsTo('App\Models\AtsProduct', 'ats_product_id');
+        return $this->belongsTo('App\Models\AtsProduct', 'test_id');
+    }
+    public function provider()
+    {
+        return $this->belongsTo('App\Models\AtsProvider', 'test_owner');
     }
     
 }

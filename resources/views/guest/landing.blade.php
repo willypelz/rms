@@ -14,7 +14,7 @@
                        <div class="separator separator-small hidden-xs"></div>
 
                        <h1 class="fa-3x no-margin bold hidden-xs text-brandon text-light"><span class="text-green-light">Everything</span> You Need To Hire, <br>In One Place!</h1>
-                       <h1 class=" hidden-sm hidden-md hidden-lg no-margin  text-brandon text-light">About Seamless Hiring</h1>
+                       <h1 class=" hidden-sm hidden-md hidden-lg no-margin  text-brandon text-light"><span class="text-green-light">Everything</span> You Need To Hire, <br>In One Place!</h1>
 
                        <p class="p-banner text-light"><br>Broadcast jobs everywhere <span>&nbsp; &xrarr; &nbsp;</span> Collate, Filter and Sort Applicants <span>&nbsp; &xrarr; &nbsp;</span> Track the Recruitment Process <span>&nbsp; &xrarr; &nbsp;</span> Conduct Online Recruitment Tests <span>&nbsp; &xrarr; &nbsp;</span> Run background Checks <span>&nbsp; &xrarr; &nbsp;</span> Do a lot more!</p>
                        <div class="row">
@@ -46,12 +46,13 @@
                            </div>
                         <div class="col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
                               <div class="separator separator-small"></div>
+                              <!-- <p class="text-center fa-3x">&#9661;</p> -->
                               <div class="col-sm-7">
-                                <a href="" class="btn btn-block btn-line text-white"><i class="fa fa-cloud-download"></i> &nbsp; Download Brochure</a>
+                                <a href="" class=" collapse btn btn-block btn-line text-white"><i class="fa fa-cloud-download"></i> &nbsp; Download Brochure</a>
                                 <br class="hidden-sm hidden-md hidden-lg">
                               </div>
                               <div class="col-sm-5">
-                                <a href="#features" class="btn btn-block btn-line text-white"><i class="fa fa-bars"></i> &nbsp; Learn More</a>
+                                <a href="#features" class=" collapse btn btn-block btn-line text-white"><i class="fa fa-bars"></i> &nbsp; Learn More</a>
                         <span id="features" name="features"></span>
                               </div>
                               <div class="clearfix"></div>
@@ -78,7 +79,9 @@
                 <i class="fa fa-send fa-stack-1x text-green"></i>
               </span>
               </h2> <br> Broadcast Jobs everywhere.</span><br></span>
-              <i class="fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+              <i class="hidden-xs fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+
+                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-send fa-stack-1x  text-green"></i>
               </a>
             </div>
 
@@ -91,7 +94,9 @@
                 <i class="fa fa-briefcase fa-stack-1x text"></i>
               </span>
               </h2> <br> Organize, Sort & Track your Applicants</span><br></span>
-              <i class="fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+              <i class="hidden-xs fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+
+                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-briefcase fa-stack-1x  text"></i>
               </a>
             </div>
 
@@ -104,7 +109,9 @@
                 <i class="fa fa-pencil-square-o fa-stack-1x  text-orange"></i>
               </span>
               </h2> <br> Conduct Online Recruitment Tests</span><br></span>
-              <i class="fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+              <i class="hidden-xs fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+
+                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-pencil-square-o fa-stack-1x  text-orange"></i>
               </a>
             </div>
 
@@ -117,7 +124,10 @@
                 <i class="fa fa-heartbeat fa-stack-1x  text-pink"></i>
               </span>
               </h2> <br> Run Background & Health Checks</span><br></span>
-              <i class="fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+              <i class="hidden-xs fa fa-arrow-right pull-right fa-abx fa-lg"></i> 
+
+                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-heartbeat fa-stack-1x  text-pink"></i>
+
               </a>
             </div>
 
@@ -131,6 +141,8 @@
               </span>
               </h2> <br> Save & Download the Entire Process</span><br></span>
               <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
+
+                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-cloud-download fa-stack-1x  text-red"></i>
               </a>
             </div>
           </div> 
@@ -198,15 +210,18 @@
             </tbody> 
           </table>
   
+      </div>
+
+      <div class="col-sm-6 animated slideInRight">
+        <img src="img/ats-1.jpg" width="100%" alt="">
+      </div>
+
+      <div class="col-sm-12">
+  
           <p><br>
             <a href="" class="btn btn-success text-brandon"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>
             <a href="#tab-2" aria-controls="tab-2" role="tab-2" data-toggle="tab" type="button" class="pull-right btn btn-line text-capitalize">Next &nbsp; <i class="fa fa-chevron-right"></i></a>
           </p>
-  
-      </div>
-
-      <div class="col-sm-6 animated slideInRight">
-        <img src="img/screenshot-ATS.jpg" width="100%" alt="">
       </div>
 
     </div>
@@ -237,14 +252,17 @@
             <li class="lh-x"><i class="fa fa-check"></i> &nbsp; View several statistics on the recruitment process.</li>
           </ul></p>
   
+      </div>
+      <div class="col-sm-6 animated zoomIn">
+        <img src="img/ats-2.jpg" width="100%" alt="">
+      </div>
+      <div class="col-sm-12">        
+  
           <p><br>
             <a href="" class="btn btn-success"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>
             <a href="#tab-3" aria-controls="tab-3" role="tab-3" data-toggle="tab" type="button" class="pull-right btn btn-line text-capitalize">Next &nbsp; <i class="fa fa-chevron-right"></i></a>
           </p>
-  
-      </div>
-      <div class="col-sm-6 animated zoomIn">
-        <img src="img/screenshot-ATS.jpg" width="100%" alt="">
+
       </div>
     </div></div>
   </section>
@@ -272,14 +290,19 @@
   
           <p>With our e-invigilator technology, thousands of can take your tests with ease on their phones , tabs and computers anywhere in the world and you will get the results seamlessly, instantly.</p>
   
+  
+      </div>
+      <div class="col-sm-5 col-sm-offset-1 animated slideInRight">
+        <img src="img/ats-3.jpg" width="100%" alt="">
+      </div>
+
+      <div class="col-sm-12">
+        
           <p><br>
             <a href="" class="btn btn-success"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>
             <a href="#tab-4" aria-controls="tab-4" role="tab-4" data-toggle="tab" type="button" class="pull-right btn btn-line text-capitalize">Next &nbsp; <i class="fa fa-chevron-right"></i></a>
           </p>
-  
-      </div>
-      <div class="col-sm-5 col-sm-offset-1 animated slideInRight">
-        <img src="img/screenshot-ATS.jpg" width="100%" alt="">
+
       </div>
     </div></div>
   </section>
@@ -383,12 +406,12 @@
           </ul></p><br>
   
           <p><br>
-            <a href="{{ url('register') }}" class="btn btn-danger btn-lg"><i class="fa fa-play"></i> &nbsp; Great? Get Started!</a>
+            <a href="{{ url('register') }}" class="btn btn-danger btn-lg">Great? Get Started!</a>
           </p>
   
       </div>
       <div class="col-sm-6 animated slideInRight">
-        <img src="img/screenshot-ATS.jpg" width="100%" alt="">
+        <img src="img/ats-5.jpg" width="100%" alt="">
       </div>
     </div></div>
   </section>

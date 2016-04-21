@@ -32,7 +32,7 @@
                             @endif
                         @endforeach
 
-                        <div class="hide"><label class="normal"><input type="checkbox"  class="" data-field="gender" data-value="null"> unspecified {{ " (".$other_folder_name.")" }}</label> <br></div>
+                        <div class="hide"><label class="normal"><input type="checkbox"  class="" data-field="gender" data-value="null"> unspecified {{ " (".@$other_folder_name.")" }}</label> <br></div>
                     </div>
                     
                     @if($index > 4)

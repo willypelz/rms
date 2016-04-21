@@ -20,14 +20,11 @@
                 <!-- <li>
                     <a class="" href="{{ url('about') }}">About</a>
                 </li> -->
-<<<<<<< HEAD
 
                 <li>
                     <a class="" href="{{ url('pricing') }}">Pricing</a>
                 </li>
 
-=======
->>>>>>> 3067eb5300787e2eba73f6970751d73a89d01fc7
                 <li>
                     <a class="" href="{{ url('cv/search-results') }}">Find Resumes <!-- &nbsp;<i class="fa fa-search"> </i> --></a>
                 </li>

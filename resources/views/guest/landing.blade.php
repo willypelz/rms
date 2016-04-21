@@ -44,12 +44,13 @@
                            </div>
                         <div class="col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
                               <div class="separator separator-small"></div>
+                              <!-- <p class="text-center fa-3x">&#9661;</p> -->
                               <div class="col-sm-7">
-                                <a href="" class="btn btn-block btn-line text-white"><i class="fa fa-cloud-download"></i> &nbsp; Download Brochure</a>
+                                <a href="" class=" collapse btn btn-block btn-line text-white"><i class="fa fa-cloud-download"></i> &nbsp; Download Brochure</a>
                                 <br class="hidden-sm hidden-md hidden-lg">
                               </div>
                               <div class="col-sm-5">
-                                <a href="#features" class="btn btn-block btn-line text-white"><i class="fa fa-bars"></i> &nbsp; Learn More</a>
+                                <a href="#features" class=" collapse btn btn-block btn-line text-white"><i class="fa fa-bars"></i> &nbsp; Learn More</a>
                         <span id="features" name="features"></span>
                               </div>
                               <div class="clearfix"></div>
@@ -207,15 +208,18 @@
             </tbody> 
           </table>
   
+      </div>
+
+      <div class="col-sm-6 animated slideInRight">
+        <img src="img/ats-1.jpg" width="100%" alt="">
+      </div>
+
+      <div class="col-sm-12">
+  
           <p><br>
             <a href="" class="btn btn-success text-brandon"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>
             <a href="#tab-2" aria-controls="tab-2" role="tab-2" data-toggle="tab" type="button" class="pull-right btn btn-line text-capitalize">Next &nbsp; <i class="fa fa-chevron-right"></i></a>
           </p>
-  
-      </div>
-
-      <div class="col-sm-6 animated slideInRight">
-        <img src="img/screenshot-ATS.jpg" width="100%" alt="">
       </div>
 
     </div>
@@ -246,14 +250,17 @@
             <li class="lh-x"><i class="fa fa-check"></i> &nbsp; View several statistics on the recruitment process.</li>
           </ul></p>
   
+      </div>
+      <div class="col-sm-6 animated zoomIn">
+        <img src="img/ats-2.jpg" width="100%" alt="">
+      </div>
+      <div class="col-sm-12">        
+  
           <p><br>
             <a href="" class="btn btn-success"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>
             <a href="#tab-3" aria-controls="tab-3" role="tab-3" data-toggle="tab" type="button" class="pull-right btn btn-line text-capitalize">Next &nbsp; <i class="fa fa-chevron-right"></i></a>
           </p>
-  
-      </div>
-      <div class="col-sm-6 animated zoomIn">
-        <img src="img/screenshot-ATS.jpg" width="100%" alt="">
+
       </div>
     </div></div>
   </section>
@@ -281,14 +288,19 @@
   
           <p>With our e-invigilator technology, thousands of can take your tests with ease on their phones , tabs and computers anywhere in the world and you will get the results seamlessly, instantly.</p>
   
+  
+      </div>
+      <div class="col-sm-5 col-sm-offset-1 animated slideInRight">
+        <img src="img/ats-3.jpg" width="100%" alt="">
+      </div>
+
+      <div class="col-sm-12">
+        
           <p><br>
             <a href="" class="btn btn-success"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>
             <a href="#tab-4" aria-controls="tab-4" role="tab-4" data-toggle="tab" type="button" class="pull-right btn btn-line text-capitalize">Next &nbsp; <i class="fa fa-chevron-right"></i></a>
           </p>
-  
-      </div>
-      <div class="col-sm-5 col-sm-offset-1 animated slideInRight">
-        <img src="img/screenshot-ATS.jpg" width="100%" alt="">
+
       </div>
     </div></div>
   </section>
@@ -392,12 +404,12 @@
           </ul></p><br>
   
           <p><br>
-            <a href="{{ url('register') }}" class="btn btn-danger btn-lg"><i class="fa fa-play"></i> &nbsp; Great? Get Started!</a>
+            <a href="{{ url('register') }}" class="btn btn-danger btn-lg">Great? Get Started!</a>
           </p>
   
       </div>
       <div class="col-sm-6 animated slideInRight">
-        <img src="img/screenshot-ATS.jpg" width="100%" alt="">
+        <img src="img/ats-5.jpg" width="100%" alt="">
       </div>
     </div></div>
   </section>

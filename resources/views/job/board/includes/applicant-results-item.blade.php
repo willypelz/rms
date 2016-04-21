@@ -5,13 +5,13 @@
   <hr>
   <div class="comment media" data-cv="{{ $cv['id'] }}">
       <span class="col-md-2 col-sm-3">
-        <a href="{{ route('applicant-profile', $cv['application_id'][0] ) }}" target="_blank"  class="pull-left">
+        <a href="{{ route('applicant-profile', $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] ) }}" target="_blank"  class="pull-left">
             <img alt="" src="{{ default_picture( $cv ) }}" class="media-object " width="100%">
         </a>
       </span>
       <div class="media-body">
           <input type="checkbox" class="media-body-check pull-right">
-          <h4 class="media-heading text-muted"><a href="{{ route('applicant-profile', $cv['application_id'][0] ) }}" target="_blank">{{ ucwords( $cv['first_name']. " " . $cv['last_name'] ) }}</a>
+          <h4 class="media-heading text-muted"><a href="{{ route('applicant-profile', $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] ) }}" target="_blank">{{ ucwords( $cv['first_name']. " " . $cv['last_name'] ) }}</a>
           </h4>
           <p>{{ @$cv['last_position'].' at '.@$cv['last_company_worked'] }}</p>
           <small>
@@ -19,18 +19,18 @@
               &nbsp;
               <a id="showCvBtn" data-toggle="modal" data-target="#cvModal"  onclick="showCvModal('{{ $cv['id'] }}',true);" >View Cv</a>
               <span class="text-muted">·</span>
-              <a href="{{ route('applicant-profile', $cv['application_id'][0] ) }}">View Application</a>
+              <a href="{{ route('applicant-profile', $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] ) }}">View Application</a>
               <span class="text-muted">·</span>
-              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Shortlist?" data-view="{{ route('modal-shortlist') }}" data-app-id="{{ $cv['application_id'][0] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Shortlist</a>
+              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Shortlist?" data-view="{{ route('modal-shortlist') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Shortlist</a>
               <span class="text-muted">·</span>
-              <!-- <a href="#" data-toggle="modal" data-target="#reviewCv[data-user='{{ @$cv['id'] }}']" id="reviewBtn-{{ $cv['application_id'][0] }}">Comment</a> -->
-              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Comment" data-view="{{ route('modal-comment') }}" data-app-id="{{ $cv['application_id'][0] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Comment</a>
+              <!-- <a href="#" data-toggle="modal" data-target="#reviewCv[data-user='{{ @$cv['id'] }}']" id="reviewBtn-{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}">Comment</a> -->
+              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Comment" data-view="{{ route('modal-comment') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Comment</a>
               <span class="text-muted">·</span>
-              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Assess" data-view="{{ route('modal-assess') }}" data-app-id="{{ $cv['application_id'][0] }}" data-cv="{{ $cv['id'] }}" data-type="wide">Assess</a>
+              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Assess" data-view="{{ route('modal-assess') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="wide">Assess</a>
               <span class="text-muted">·</span>
-              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview" data-view="{{ route('modal-interview') }}" data-app-id="{{ $cv['application_id'][0] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Interview</a>
+              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview" data-view="{{ route('modal-interview') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Interview</a>
               <span class="text-muted">·</span>
-              <a data-toggle="modal" class="text-danger" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Reject?" data-view="{{ route('modal-reject') }}" data-app-id="{{ $cv['application_id'][0] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Reject</a>
+              <a data-toggle="modal" class="text-danger" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Reject?" data-view="{{ route('modal-reject') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Reject</a>
 
               <span class="pull-right hide">
                   <a class="text-muted" href="#">Background Check</a>
@@ -58,13 +58,13 @@
                             <div class="content rounded">
                                 <div id="message"></div>
                                 <div class="form-group">
-                                    <textarea class="form-control" id="add_folder" data-app-id="{{ $cv['application_id'][0] }}"></textarea>
+                                    <textarea class="form-control" id="add_folder" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}"></textarea>
                               
                                     
                                   </div>
                                   <div class="clearfix"></div>
                               <div class="pull-right">
-                                  <a href="javascript://" id="writeReviewBtn" data-app-id="{{ $cv['application_id'][0] }}" data-cv="{{ $cv['id'] }}" class="btn btn-success pull-right">Send</a>
+                                  <a href="javascript://" id="writeReviewBtn" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" class="btn btn-success pull-right">Send</a>
                                   <div class="separator separator-small"></div>
                               </div>
         

@@ -34,13 +34,15 @@
                         </form>
 
                            <div class="form-sm hidden-sm hidden-md hidden-lg">
+                              <form action="{{ url('cv/search') }}" class="form-group">
                              <div class="col-sm-8">
                                <div class="">
-                                <input placeholder="Find something you want" class="form-control input-lg" type="text"></div>
+                                <input placeholder="Find something you want" class="form-control input-lg" name="search_query"  type="text"></div>
                              </div>
                              <div class="col-sm-4">
                                <div class=""><a href="cv-search.php" class="no-bod-rad btn btn-lg btn-block btn-warning btn-lg no-bod-rad">Find Candidates &nbsp; <i class="fa fa-chevron-right"></i></a></div>
                              </div>
+                             </form>
                            </div>
                         <div class="col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
                               <div class="separator separator-small"></div>

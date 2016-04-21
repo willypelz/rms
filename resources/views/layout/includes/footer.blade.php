@@ -284,7 +284,7 @@
 
                             <div class="col-sm-12 text-center">
                                 <h2>Seamless Hiring</h2>
-                                <p class="text-muted">Africa's fastest growing network of professionals</p>
+                                <p class="text-muted">Everything You Need To Hire, In One Place!</p>
                             </div>
 
                             <div class="col-sm-12">
@@ -636,6 +636,8 @@
        </div>
     </div>
 
+    @include('modals.template')
+
     
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
@@ -644,11 +646,16 @@
     <script src="{{ asset('js/select2.min.js') }}"></script>
     
     <script>
+
+    var nowDate = new Date();
+    var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
     
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd',
-            defaultDate:'now',
-            autoclose: true
+            todayHighlight: true,
+            autoclose: true,
+            startDate: today 
+
         });
 
         $('.select2').select2();

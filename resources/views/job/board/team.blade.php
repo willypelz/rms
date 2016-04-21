@@ -16,7 +16,9 @@
                       
                       <div class="tab-content">
 
-                        <div class="row">                           
+
+                        <div class="row">  
+                          <p>Manage your team members for this job here.</p>                         
                         <!-- applicant -->
                         <div class="col-xs-7">
                             <h5 class="no-margin"> <!-- <i class="fa fa-lg fa-users"></i> --> Team members</h5><hr>

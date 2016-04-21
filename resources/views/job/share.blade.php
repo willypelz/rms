@@ -43,8 +43,8 @@
                             
                            <div class="col-sm-12">
                                 <div class="separator separator-small">
-                                   <h3 class="text-center">{{ $job->title }}<br>
-                                       <small>at {{ $company->name }}</small>
+                                   <h3 class="text-center"> Share this job!  <br>
+                                       <small>We want to help you find the best talent anywhere they may be.</small>
                                    </h3><hr style="width: 45%">
                                </div>
 
@@ -56,7 +56,9 @@
                                        Referal
                                    </p>
                                
-                                       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima aut magnam eum, aspernatur officia amet quibusdam nam.</p><br>
+                                       <p> <b>Use your network to attract great talent!</b><br>
+                                          Maximize the power of Referrals by sending this job to everyone on your network. 
+                                          </p><br>
                             
                             <div class="hideSendEmails"></div>
                             <div class="collapse" id="collapseWYSIWYG">
@@ -69,7 +71,7 @@
 
                                    <div class="form-group">
                                        <label for="">From: </label>
-                                       <input class="form-control" type="text" value="{{ $company->email }}" disabled>
+                                       <input class="form-control" type="text" value="{{ $company->email.', '.$company->name }}" disabled>
                                        
                                        <label for="">To: </label>
                                        <small>Separate your addresses by a comma</small>
@@ -81,12 +83,21 @@
                                        <p>Hello there, I have a job you might be interested in</p>
                                        <hr style="width: 45%">
                                               
-                                              <?php echo $job->details ?>
+                                             Trust this email meets you well. We are currently recruiting for <b>“{{ $job->title }}”</b> at <b>“{{ $company->name }}”</b>. 
+                                             <br>
+                                             Here is a link to the job http://seamless.org 
+                                              <br>
+                                              Kindly share the job opening with qualified candidates within your network.
+                                              <br><br>
+                                            
+                                              <p>Many thanks.<br>
+                                              {{ $user->name }},<br>
+                                              {{ $company->name }}</p>
+                                              <!-- Company name. -->
 
 
-                                               <a href="#">Visit this link to see Job details.</a>
+
                                            </p>
-                                           <p>Thank you.</p>
                                        </textarea>
                                        <script>
                                            // Replace the <textarea id="editor1"> with a CKEditor
@@ -137,7 +148,7 @@
                                 </script>
 
                                        <p>
-                                           <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-line"><i class="fa fa-envelope"></i> &nbsp; Refer Job to People</a>
+                                           <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-line"><i class="fa fa-envelope"></i> &nbsp; Get Referrals for this job</a>
                                        </p>
                                        <div class="separator separator-small"></div>
                                    </div>
@@ -147,9 +158,11 @@
 
                                
                                    <p class="text-brandon text-uppercase">
-                                       share your job
+                                       Cast your Social Net!
+
+
                                    </p>
-                                   <p>Share this job publishing on LinkedIn, Twitter, Facebook.</p>
+                                   <p>Share this job on your social media channels.</p>
                                
                                            <ul class="list-inline">
                                              <li>

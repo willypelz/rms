@@ -16,12 +16,12 @@
                         
                         <div class="row">
                             <div class="col-xs-12">
-                                <h5 class="text-center text-success text-brandon">45 Candidates match this job from our database</h5>
+                                <h5 class="text-center text-success text-brandon">This feauture is only available to premium users</h5>
                             </div>
                         </div>
 
 
-                        <div class="tab-content">               
+                        <div class="tab-content hide">               
                         <!-- matching -->
 
                                 <div class="row">

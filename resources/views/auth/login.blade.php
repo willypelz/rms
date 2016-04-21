@@ -19,7 +19,7 @@
 
                 <div class="col-sm-4 col-sm-offset-4 text-center text-white">
                     <h2 class="text-brandon text-light">Seamless Hiring</h2>
-                    <p class="">Africa's fastest growing network of professionals</p>
+                    <p class="">Everything You Need To Hire, In One Place!</p>
                 </div>
 
                 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">

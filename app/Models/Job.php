@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Auth;
 
 class Job extends Model
 {
@@ -27,9 +28,25 @@ class Job extends Model
         return $this->belongsToMany('App\Models\JobBoard', 'jobs_job_boards');
     }
 
+     public function specializations()
+    {
+        return $this->belongsToMany('App\Models\Specialization', 'jobs_specializations');
+    }
+
+
     public function company()
     {
         return $this->belongsTo('App\Models\Company', 'company_id');
+    }
+
+    public function activities()
+    {
+        return $this->hasMany('App\Models\JobActivity');
+    }
+
+    public static function getMyJobIds()
+    {
+        return Job::where('company_id',@Auth::user()->companies[0]->id)->get()->pluck('id')->toArray();
     }
 
 }

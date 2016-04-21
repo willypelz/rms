@@ -3,6 +3,7 @@
 namespace App\Libraries;
 
 use Auth;
+use App\Models\Job;
 
 class Solr {
 
@@ -118,8 +119,14 @@ class Solr {
 
 	static function get_all_my_cvs($data)
 	{
-		$additional = "&fq=company_folder_id:". @Auth::user()->companies[0]->id;
-		return Solr::search_resume($data,$additional);
+		// $additional = "&fq=( job_id:(5) OR company_folder_id:". @Auth::user()->companies[0]->id.' )';
+		//job_id:(15 10 12) OR company_folder_id:1
+		// $additional = "&fq=company_folder_id:". @Auth::user()->companies[0]->id;
+		
+		
+		$additional = "&fq=(job_id:(".  implode('+', Job::getMyJobIds() )  .")+OR+company_folder_id:". @Auth::user()->companies[0]->id .")";
+
+		return Solr::search_resume($data, $additional);
 	}
 	
 

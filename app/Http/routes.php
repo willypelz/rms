@@ -330,9 +330,15 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('modal/interview', [ 'as' => 'modal-interview', 'uses' => 'JobApplicationsController@modalInterview' ]);
 
+    Route::get('modal/background-check', [ 'as' => 'modal-background-check', 'uses' => 'JobApplicationsController@modalBackgroundCheck' ]);
+    Route::get('modal/medical-check', [ 'as' => 'modal-medical-check', 'uses' => 'JobApplicationsController@modalMedicalCheck' ]);
+
+    
+
     
 
     Route::post('request/test', [ 'as' => 'request-test', 'uses' => 'JobApplicationsController@requestTest' ]);
+    Route::post('request/check', [ 'as' => 'request-check', 'uses' => 'JobApplicationsController@requestCheck' ]);
     Route::post('invite/interview', [ 'as' => 'invite-for-interview', 'uses' => 'JobApplicationsController@inviteForInterview' ]);
     
 

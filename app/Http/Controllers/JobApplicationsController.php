@@ -13,6 +13,7 @@ use App\Models\AtsService;
 use App\Models\AtsProduct;
 use App\Models\TestRequest;
 use App\Models\Interview;
+use Carbon\Carbon;
 
 
 class JobApplicationsController extends Controller
@@ -33,8 +34,10 @@ class JobApplicationsController extends Controller
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
         $nav_type = 'assess';
+
+        $requests = TestRequest::where('job_application_id',$appl_id)->with('product.provider')->get();
         
-        return view('applicant.assess', compact('appl', 'nav_type'));
+        return view('applicant.assess', compact('appl', 'nav_type','requests'));
     }
 
     public function activities($appl_id){
@@ -51,7 +54,7 @@ class JobApplicationsController extends Controller
 
         $nav_type = 'medicals';
 
-        $requests = $appl->requests()->with('product.provider')->where('service_type', 'medicals')->get();
+        $requests = $appl->requests()->with('product.provider')->where('service_type', 'HEALTH')->get();
 
         
         return view('applicant.medicals', compact('appl', 'nav_type', 'requests'));
@@ -72,7 +75,7 @@ class JobApplicationsController extends Controller
 
         $nav_type = 'checks';
 
-        $requests = $appl->requests()->with('product.provider')->where('service_type', 'background')->get();
+        $requests = $appl->requests()->with('product.provider')->where('service_type', 'BACKGROUND')->get();
 
 
         return view('applicant.checks', compact('appl', 'nav_type', 'requests'));
@@ -229,9 +232,11 @@ class JobApplicationsController extends Controller
         // var_dump($appl);
         // echo "</pre>";
         // $applicant_badge = $this->getApplicantBadge( $request->cv_id );
-        $applicant_badge = @$request->badge;
+        
         $app_id = @$request->app_id;
         $cv_id = @$request->cv_id;
+        $appl = JobApplication::with('job', 'cv')->find($app_id);
+        $applicant_badge = @$this->getApplicantBadge($appl->cv);
 
         return view('modals.comment', compact('applicant_badge','app_id','cv_id'));
     }
@@ -243,10 +248,11 @@ class JobApplicationsController extends Controller
         // var_dump($appl);
         // echo "</pre>";
         // $applicant_badge = $this->getApplicantBadge( $request->cv_id );
-        $applicant_badge = @$request->badge;
+        
         $app_id = @$request->app_id;
         $cv_id = @$request->cv_id;
         $appl = JobApplication::with('job', 'cv')->find($app_id);
+        $applicant_badge = @$this->getApplicantBadge($appl->cv);
 
         return view('modals.interview', compact('applicant_badge','app_id','cv_id','appl'));
     }
@@ -254,20 +260,22 @@ class JobApplicationsController extends Controller
     
     public function modalShortlist(Request $request)
     {
-        $applicant_badge = @$request->badge;
+        
         $app_id = @$request->app_id;
         $cv_id = @$request->cv_id;
         $appl = JobApplication::with('job', 'cv')->find($app_id);
+        $applicant_badge = @$this->getApplicantBadge($appl->cv);
 
         return view('modals.shortlist', compact('applicant_badge','app_id','cv_id','appl'));
     }
 
     public function modalReject(Request $request)
     {
-        $applicant_badge = @$request->badge;
+        
         $app_id = @$request->app_id;
         $cv_id = @$request->cv_id;
         $appl = JobApplication::with('job', 'cv')->find($app_id);
+        $applicant_badge = @$this->getApplicantBadge($appl->cv);
 
         return view('modals.reject', compact('applicant_badge','app_id','cv_id','appl'));
     }
@@ -283,17 +291,69 @@ class JobApplicationsController extends Controller
         // $applicant_badge = $this->getApplicantBadge( $request->cv_id );
         // 
         
-        $applicant_badge = @$request->badge;
+        
         $app_id = @$request->app_id;
         $cv_id = @$request->cv_id;
         $appl = JobApplication::with('job', 'cv')->find($app_id);
+        $applicant_badge = @$this->getApplicantBadge($appl->cv);
         // $requests = $appl->requests()->with('product.provider')->where('service_type', 'background')->get();
         $test_available = true;
         // $services = AtsService::all()->toArray() ;
 
         $products = AtsProduct::all(); 
-        return view('modals.assess', compact('applicant_badge','app_id','cv_id','products','appl','test_available'));
+        $section = 'TEST';
+        return view('modals.assess', compact('applicant_badge','app_id','cv_id','products','appl','test_available','section'));
     }
+
+    public function modalBackgroundCheck(Request $request)
+    {
+        // $appl = JobApplication::with('job', 'cv')->find( $request->app_id );
+        // echo "<pre>";
+        // var_dump($appl);
+        // echo "</pre>";
+        // $applicant_badge = $this->getApplicantBadge( $request->cv_id );
+        // 
+        
+        
+        $app_id = @$request->app_id;
+        $cv_id = @$request->cv_id;
+        $appl = JobApplication::with('job', 'cv')->find($app_id);
+        $applicant_badge = @$this->getApplicantBadge($appl->cv);
+        // $requests = $appl->requests()->with('product.provider')->where('service_type', 'background')->get();
+        // $test_available = true;
+        // $services = AtsService::all()->toArray() ;
+
+        $products = AtsProduct::all();
+        $section = 'BACKGROUND'; 
+        return view('modals.assess', compact('applicant_badge','app_id','cv_id','products','appl','test_available','section'));
+    }
+
+
+    public function modalMedicalCheck(Request $request)
+    {
+        // $appl = JobApplication::with('job', 'cv')->find( $request->app_id );
+        // echo "<pre>";
+        // var_dump($appl);
+        // echo "</pre>";
+        // $applicant_badge = $this->getApplicantBadge( $request->cv_id );
+        // 
+        
+        
+        $app_id = @$request->app_id;
+        $cv_id = @$request->cv_id;
+        $appl = JobApplication::with('job', 'cv')->find($app_id);
+        $applicant_badge = @$this->getApplicantBadge($appl->cv);
+        // $requests = $appl->requests()->with('product.provider')->where('service_type', 'background')->get();
+        // $test_available = true;
+        // $services = AtsService::all()->toArray() ;
+
+        $products = AtsProduct::all();
+        $section = 'HEALTH'; 
+        return view('modals.assess', compact('applicant_badge','app_id','cv_id','products','appl','test_available','section'));
+    }
+
+    
+    
 
     public function requestTest(Request $request)
     {
@@ -304,7 +364,6 @@ class JobApplicationsController extends Controller
                 'start_time' => @$request->start_time,
                 'end_time' => @$request->end_time,
                 'job_application_id' => @$request->job_application_id,
-                'location' => @$request->location,
                 'test_id' => $test['id'],
                 'test_name' => $test['name'],
                 'test_owner' => $test['owner'],
@@ -318,6 +377,33 @@ class JobApplicationsController extends Controller
         JobApplication::massAction( @$request->job_id, [ @$request->cv_id ], 'ASSESSED' );
 
     }
+
+    public function requestCheck(Request $request)
+    {
+        
+        foreach ($request->checks as $key => $check) {
+            $data = [
+                'job_application_id' => @$request->job_application_id,
+                'job_id' => @$request->job_id,
+                'ats_product_id' => $check['id'],
+                'cost' => $check['cost'],
+                'service_type' => @$request->service_type,
+                'created' => Carbon::now(),
+                'modified' => Carbon::now()
+            
+            ];
+                        
+                        
+                        
+                        
+            AtsRequest::create($data);
+            // var_dump($data);
+        }
+
+        // JobApplication::massAction( @$request->job_id, [ @$request->cv_id ], 'ASSESSED' );
+
+    }
+    
 
     public function inviteForInterview(Request $request)
     {
@@ -337,9 +423,9 @@ class JobApplicationsController extends Controller
     
 
     
-    public function getApplicantBadge($cv_id)
+    public function getApplicantBadge($cv)
     {
-        return view('modals.applicant_badge')->render();
+        return view('modals.applicant_badge',compact('cv'))->render();
         
     }
 }

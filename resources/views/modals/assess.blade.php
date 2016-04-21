@@ -12,32 +12,32 @@
                         
                           @if(count($products) > 0)
                               @foreach($products as $product)
+                                @if( $product->service->type == $section )
+                                  <div class="panel-body" data-id="{{ $product->id }}">
 
-                            <div class="panel-body" data-id="{{ $product->id }}">
-
-                                <div class="row">
-                                    <div class="media small">
-                                        <div class="col-xs-9">
-                                            <div class="media-left pull-left" style="padding-right: 20px;">
-                                                <a href="#">
-                                                    <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="{{ $product->provider->logo }}" data-holder-rendered="true" style="width: 64px; height: 64px;">
-                                                </a>
+                                    <div class="row">
+                                        <div class="media small">
+                                            <div class="col-xs-9">
+                                                <div class="media-left pull-left" style="padding-right: 20px;">
+                                                    <a href="#">
+                                                        <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="{{ $product->provider->logo }}" data-holder-rendered="true" style="width: 64px; height: 64px;">
+                                                    </a>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h5 class="media-heading">{{ $product->name }}</h5>
+                                                    {{ $product->summary }} 
+                                                </div>
                                             </div>
-                                            <div class="media-body">
-                                                <h5 class="media-heading">{{ $product->name }}</h5>
-                                                {{ $product->summary }} 
+                                            <div class="col-xs-3">
+                                                <p>₦{{ $product->cost }} </p>
+                                                <button class="btn btn-sm btn-success" id="request-btn"  data-amount="{{ $product->cost }}"  data-title="{{ $product->name  }}"  data-id="{{ $product->id  }}" data-owner="{{ $product->ats_provider_id  }}">
+                                                    Request
+                                                </button>
                                             </div>
-                                        </div>
-                                        <div class="col-xs-3">
-                                            <p>₦{{ $product->cost }} </p>
-                                            <button class="btn btn-sm btn-success" id="request-btn" data-amount="{{ $product->cost }}"  data-title="{{ $product->name  }}"  data-id="{{ $product->id  }}" data-owner="{{ $product->ats_provider_id  }}">
-                                                Request
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
+                              @endif
                             @endforeach
                           @endif
                         </div>
@@ -47,9 +47,9 @@
       <div class="col-xs-5">
           <h5>Selected Applicant</h5>
          <div class="scroll-150">
-          <div class="alert alert-info alert-dismissible c-alert" role="alert">
+          
               {!! @$applicant_badge !!}  
-          </div>
+          
           
           </div>
 
@@ -80,7 +80,7 @@
                   
               </table>
               @if(!@$test_available)
-                <a class="btn btn-danger pull-right">Proceed to Checkout &nbsp;<i class="fa fa-external-link"></i></a>
+                <a class="btn btn-danger pull-right" id="request-check">Proceed to Checkout &nbsp;<i class="fa fa-external-link"></i></a>
               @endif
               <!--<a class="btn btn-sm pull-left btn-line">Clear Selection &nbsp;<i class="fa fa-refresh"></i></a>-->
               <div class="clearfix"></div>
@@ -186,6 +186,41 @@
             };
 
             $.post('{{ route("request-test") }}', data, function(){
+                $( '#viewModal' ).modal('toggle');
+            });
+
+            console.log(data);
+        });
+
+        $('#request-check').on('click', function(){
+
+            var checks = [];
+
+            $('#cart-preview tr').each(function( index ) {
+                // $.extend(tests,{
+                //     id: $(this).data('id'),
+                //     name: $(this).find('#name').text()
+                // });
+                checks.push({
+                    id: $(this).data('id'),
+                    name: $(this).find('#name').text(),
+                    owner: $(this).data('owner'),
+                    cost: $(this).find('#amount').text(),
+                });
+            });
+
+            var data = {                
+                job_application_id: "{{ $app_id }}",
+                cv_id: "{{ $cv_id }}",
+                job_id: "{{ $appl->job->id }}",
+                checks : checks,
+                service_type: "{{ $section }}"
+                // test_id: 
+                // test_name: 
+                // test_owner:
+            };
+
+            $.post('{{ route("request-check") }}', data, function(){
                 $( '#viewModal' ).modal('toggle');
             });
 

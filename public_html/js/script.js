@@ -25,18 +25,18 @@ if (!sh)
 
 sh.showModal = function(obj,title,view,data)
 {
-    $('.modal-title').text(title);
+    $('#viewModal .modal-title').text(title);
     $('.modal-dialog').removeClass('modal').removeClass('modal-lg').addClass(data.modal_size);
 
-    window.preloader = $('.modal-body').html();
+    window.preloader = $('#viewModal .modal-body').html();
     // $user = $(this).closest('.media');
-    var $user = obj.closest('.media').clone();
-    $user.find('input[type="checkbox"]').remove();
-    $user.find('small').remove();
-    data.badge = $user.html();
+    // var $user = obj.closest('.media').clone();
+    // $user.find('input[type="checkbox"]').remove();
+    // $user.find('small').remove();
+    // data.badge = $user.html();
     
     $.get(view, data, function(response){
-        $('.modal-body').html( response);
+        $('#viewModal .modal-body').html( response);
     });
 }
 

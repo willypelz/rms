@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Auth;
 
 class Job extends Model
 {
@@ -41,6 +42,11 @@ class Job extends Model
     public function activities()
     {
         return $this->hasMany('App\Models\JobActivity');
+    }
+
+    public static function getMyJobIds()
+    {
+        return Job::where('company_id',@Auth::user()->companies[0]->id)->get()->pluck('id')->toArray();
     }
 
 }

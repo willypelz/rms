@@ -40,10 +40,10 @@
 
                                       <div class="row">
                                         <div class="col-xs-6">
-                                          <a href="" class="btn btn-success btn-block" title="Send email to tosinojo23@yahoo.com">Send Message</a>
+                                          <a href="" class="btn btn-success btn-block" title="Send email to tosinojo23@yahoo.com">Download Doseir</a>
                                         </div>
                                         <div class="col-xs-6">
-                                          <a href="" class="btn btn-line btn-block" title="Enlist for Interview">Enlist</a>
+                                          <a href="" class="btn btn-line btn-block" title="Enlist for Interview">Interview Notes</a>
                                         </div>
                                       </div>
 
@@ -51,8 +51,8 @@
 
                                         <div class="btn-group btn-group-justified no-margin" role="group" aria-label="Justified button group with nested dropdown"> 
 
-                                            <a title="Share Applicant" href="#" class="btn btn-line" role="button"><i class="fa fa-share-alt no-margin"></i></a> 
-                                            <a title="Email Applicant" href="#" class="btn btn-line" role="button"><i class="fa fa-envelope-o no-margin"></i></a> 
+                                            
+                                            <a title="Email Applicant" href="mailto:{{ $appl->cv->email }}" class="btn btn-line" role="button"><i class="fa fa-envelope-o no-margin"></i></a> 
 
                                             <a title="Make Comment on Applicant" href="#" class="btn btn-line" role="button"><i class="fa fa-comment-o no-margin"></i></a> 
                                             <a title="Enlist Applicant for an interview" href="#" class="btn btn-line" role="button"><i class="fa fa-file-text-o no-margin"></i></a> 
@@ -69,9 +69,6 @@
                                                   <li><a href="#">Reject</a></li>
                                                   <li><a href="#">Background Check</a></li>
                                                   <li><a href="#">Medicals</a></li>
-                                                  <li role="separator" class="divider"></li>
-                                                  <li><a href="#">Download Dossier</a></li>
-                                                  <li><a href="#">Make Interview Notes</a></li>
                                               </ul> 
                                           </div> 
                                         </div>

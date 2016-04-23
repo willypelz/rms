@@ -139,7 +139,9 @@ class JobsController extends Controller
 
     public function Advertise($jobid, $slug= null){
 
-        $job_boards = JobBoard::where('type', 'paid')->get()->toArray();
+        $job_boards = JobBoard::where('type', 'paid')->where('avi', null)->get()->toArray();
+        $newspapers = JobBoard::where('type', 'paid')->where('avi', 1)->get();
+        // dd($newspapers->toArray());
         $c = (count($job_boards) / 2);
         $t = array_chunk($job_boards, $c);
         $board1 = $t[0];
@@ -160,7 +162,7 @@ class JobsController extends Controller
                 $ids = null;
 
 
-        return view('job.advertise', compact('board1', 'board2', 'ids', 'cart', 'count', 'price', 'jobid', 'slug'));
+        return view('job.advertise', compact('newspapers', 'board1', 'board2', 'ids', 'cart', 'count', 'price', 'jobid', 'slug'));
     }
 
     public function Share($id){
@@ -341,7 +343,7 @@ class JobsController extends Controller
                      break;
 
                      case "REVIEW":
-                    $applicant = $ac->application->cv;
+                     $applicant = $ac->application->cv;
 
                      $content .= '<li role="messaging" class="list-group-item">
                           

@@ -121,10 +121,10 @@
                                                                 }
                                                         ?>
                                                         @if($in_cart)
-                                                            <button class="btn btn-line btn-board-discard" data-count="1" data-cost="500" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                            <button class="btn btn-line btn-board-discard" data-id="{{ $b['id'] }}"  data-count="1" data-cost="{{ $b['price'] }}" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
                                                         @else
-                                                            <a href="" class="btn btn-success btn-board-buy" data-count="1" onclick="AddBoardCart({{ $b['id'] }}, {{ $b['price'] }}, '{{ $b["name"] }}')" data-cost="500"><i class="fa fa-plus"></i> Post for &#8358; {{ $b['price'] }}</a>
-                                                            <button class="btn btn-line btn-board-discard collapse" data-count="1" data-cost="500" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                            <a href="" class="btn btn-success btn-board-buy" data-count="1" onclick="AddBoardCart({{ $b['id'] }}, {{ $b['price'] }}, '{{ $b["name"] }}')" data-cost="{{ $b['price'] }}"><i class="fa fa-plus"></i> Post for &#8358; {{ $b['price'] }}</a>
+                                                            <button class="btn btn-line btn-board-discard collapse" data-id="{{ $b['id'] }}"  data-count="1" data-cost="{{ $b['price'] }}" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
                                                         @endif
                                                     </span>
 
@@ -156,10 +156,10 @@
                                                             ?>
 
                                                             @if($in_cart)
-                                                            <button class="btn btn-line btn-board-discard" data-count="1" data-cost="500" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                            <button class="btn btn-line btn-board-discard" data-id="{{ $b['id'] }}"  data-count="1" data-cost="{{ $b['price'] }}" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
                                                         @else
-                                                            <a href="" class="btn btn-success btn-board-buy" data-count="1" onclick="AddBoardCart({{ $b['id'] }}, {{ $b['price'] }}, '{{ $b["name"] }}')" data-cost="500"><i class="fa fa-plus"></i> Post for &#8358; {{ $b['price'] }}</a>
-                                                            <button class="btn btn-line btn-board-discard collapse" data-count="1" data-cost="500" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                            <a href="" class="btn btn-success btn-board-buy" data-count="1" onclick="AddBoardCart({{ $b['id'] }}, {{ $b['price'] }}, '{{ $b["name"] }}')" data-cost="{{ $b['price'] }}"><i class="fa fa-plus"></i> Post for &#8358; {{ $b['price'] }}</a>
+                                                            <button class="btn btn-line btn-board-discard collapse" data-id="{{ $b['id'] }}"  data-count="1" data-cost="{{ $b['price'] }}" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
                                                         @endif
                                                     </span>
 
@@ -168,6 +168,50 @@
                                             </div> 
                                         </div>
                                         @endforeach
+
+                                        
+                                         <h5 class="text-brandon text-uppercase">
+                                        <i class="fa fa-star"></i>&nbsp; Paid Newspaper Ads
+                                        </h5><br>
+
+                                        @foreach($newspapers as $n)
+                                         <div class="col-sm-12"> 
+                                            <div class="thumbnail">  
+                                                <div class="caption">
+                                            <img alt="" src="{{ $n->img }}" height="45px"> <hr>
+                                                    <h4 class="">{{ $n->name }}</h4>
+                                                    <p class="small">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p> 
+                                                    <p>
+
+                                                      <span class="purchase-action">
+                                                       <?php
+                                                                if($ids != null){
+                                                                  $in_cart = in_array($b['id'], $ids);
+                                                                  // dd($b['id']);
+                                                                }else{
+                                                                  $in_cart = "";
+                                                                }
+                                                            ?>
+
+                                                             @if($in_cart)
+                                                            <button class="btn btn-line btn-board-discard" data-count="1" data-id="{{ $n['id'] }}" data-cost="500" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                        @else
+                                                            <a href="" class="btn btn-success btn-board-buy" data-count="1" onclick="AddBoardCart({{ $n['id'] }}, {{ $n['price'] }}, '{{ $n["name"] }}')" data-cost="{{ $n['price'] }}"><i class="fa fa-plus"></i> Post for &#8358; {{ $n['price'] }}</a>
+                                                            <button class="btn btn-line btn-board-discard collapse" data-id="{{ $n['id'] }}" data-cost="500" onclick="DeleteBoardCart({{ $n['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                          @endif
+                                                    </span>
+
+                                                    </p> 
+                                                </div> 
+                                            </div> 
+                                        </div>
+                                        @endforeach
+                                        
+                                      
+                                        
+
+
+                                <!-- </div> -->
                                        
                                         <div class="col-sm-12"><hr><a href="{{ route('share-job', [$jobid]) }}" class="pull-right btn btn-danger btn-cart-checkout">Skip &raquo;</a></div>
                                       </div>
@@ -196,13 +240,33 @@
       </div>
     </div>
 
+     <table class="table table-condensed" >
+                  <thead>
+                  <tr>
+                      <th>Your Selection</th>
+                      <th>Cost (₦)</th>
+                      <th></th>
+                  </tr>
+                  </thead>
+                  <tbody id="cart-preview">
+                  
+                  </tbody><thead>
+                  <tr>
+                      <th>Total</th>
+                      <th id="cart-total">0</th>
+                      <th> &nbsp; </th>
+                  </tr>
+                  </thead>
+                  
+              </table>
+
 
 
 <div class="separator separator-small"></div>
 
 <script type="text/javascript">
     
-     //$(document).ready(function(){
+     // $(document).ready(function(){
 
         function AddBoardCart(id, price, name){
             console.log('Id is '+ id +' and price is '+ price);
@@ -247,6 +311,8 @@
                   data: ({ rnd : Math.random() * 100000, type:'clear', "_token":"{{ csrf_token() }}", cart_type:'jobBoards'}),
                   success: function(response){
                     console.log(response);
+                    location.reload(); 
+
                   }
               });
         }
@@ -272,6 +338,119 @@
                                       });
 
                                   });
+
+
+
+                            //--------Buy BOARD and update cart--------//
+
+    //var cv_cart = 0;
+    // var p_total = 0;
+    var cart_count = {{ \App\Libraries\Utilities::getBoardCartCount() }};
+
+    $('.btn-board-buy').on('click',function(e){
+
+        console.log('Board thuis')
+        var each_cart = ($(this).data('cost'));
+          $('#cart-preview').append('<tr data-id="' + $(this).data('id') +'" data-owner="' + $(this).data('owner') +'"><td id="name">' + $(this).data('title') +'</td><td id="amount">' + $(this).data('cost') +'</td><td class="text-right"><a href="javascript://" id="delete-request"><i class="fa fa-times-circle text-danger"></i> </a></td></tr>');
+          $(this).calculateCartTotal();
+        
+        cart_count = Number(cart_count) + 1;
+       // p_total = 1000 * cart_count;
+        
+        e.preventDefault();
+        $(this).parents('.purchase-action').find('.btn-board-discard').removeClass('collapse');
+        $(this).addClass('collapse');
+       $('#collapseWellCart').removeClass('collapse');
+       $(".btn-cart-checkout").removeClass("disabled");
+
+       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block; color:#333"><b>'+cart_count+'</b></span>');
+      // $('#price-total').html('<span class="animated zoomIn" style="display: inline-block; color:#333"><b>'+p_total+'</b></span>');
+
+    });
+
+      $.fn.calculateCartTotal = function(){
+          // var total = 0;
+        var total = {{ \App\Libraries\Utilities::getBoardCartCost() }};
+
+          $('#cart-preview #amount').each(function( index ) {
+              total += parseInt( $( this ).text() );
+          });
+
+            $('#cart-total').text(  total  );
+            $('#price-total').text(  total  );
+            console.log('This tot is'+total)
+        }
+
+    
+    var totalNew = {{ \App\Libraries\Utilities::getBoardCartCost() }};
+    // console.log('Can '+totalNew)
+    //--------Remove item from Cart--------//
+    $('.btn-board-discard').on('click',function(e){
+
+
+        var each_cart = ($(this).data('cost'));
+        var each_id = ($(this).data('id'));
+
+        console.log('each amount is '+each_cart);
+        console.log('each id is '+each_id);
+        // console.log('cart amount is '+cart_count);
+        
+        cart_count = Number(cart_count) - 1;
+        // p_total = 1000 * cart_count;
+        // console.log('total amount is '+totalNew);
+
+        // console.log('NEW total amount is '+ (total));
+        // console.log('cart count is '+cart_count);
+        
+        //console.log('New cart count is '+cv_cart+' and New cost is '+p_total);
+
+       //  //console.log(cv_cart);
+
+        e.preventDefault();
+        $(this).parents('.purchase-action').find('.btn-board-buy').removeClass('collapse');
+        $(this).addClass('collapse');
+
+       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block; color:#333"><b>'+cart_count+'</b></span>');
+       // $('#price-total').html('<span class="animated zoomIn" style="display: inline-block; color:#333"><b>'+p_total+'</b></span>');
+
+       // if(p_total == 0){
+       //      $(".btn-cart-checkout").addClass("disabled");
+
+       //      return p_total;
+       //  }
+
+    });
+
+
+
+
+    //--------Clear Cart button--------////
+
+    $('.btn-cart-clear').on('click',function(e){
+
+        cart_count = 0;
+        p_total = 0;
+        
+        e.preventDefault();
+        $('.btn-cv-buy').removeClass('collapse');
+        $('.btn-cv-discard').addClass('collapse');
+        // $(".btn-cart-checkout").addClass("disabled");
+
+       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block;"><b>'+cart_count+'</b></span>');
+       $('#price-total').html('<span class="animated zoomIn" style="display: inline-block;">'+p_total+'</span>');
+
+
+
+        if(p_total == 0){
+            $(".btn-cart-checkout").addClass("disabled");
+
+            return p_total;
+        }
+
+
+    });
+
+    //--------End CV cart--------//  
 
 
 </script>

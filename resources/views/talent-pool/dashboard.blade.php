@@ -82,7 +82,7 @@
                         <table class="table table-bordered"> 
                         <tbody> 
                         <tr> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">10</a></h1><small class="text-muted">Jobs Created</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">{{ $jobs_count }}</a></h1><small class="text-muted">Jobs Created</small></td> 
                             <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">3,281</a></h1><small class="text-muted">Talent pool</small></td> 
                         </tr> 
                         <tr> 

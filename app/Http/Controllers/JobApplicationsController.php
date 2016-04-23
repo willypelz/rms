@@ -237,8 +237,9 @@ class JobApplicationsController extends Controller
         $cv_id = @$request->cv_id;
         $appl = JobApplication::with('job', 'cv')->find($app_id);
         $applicant_badge = @$this->getApplicantBadge($appl->cv);
+        $jobID = $appl->job->id;
 
-        return view('modals.comment', compact('applicant_badge','app_id','cv_id'));
+        return view('modals.comment', compact('applicant_badge','app_id','cv_id','jobID'));
     }
 
     public function modalInterview(Request $request)

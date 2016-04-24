@@ -19,6 +19,15 @@ class Utilities {
 		return Cart::instance('JobBoard')->count(false);
 
 	}
+
+	static function getBoardCartCost(){
+		$cons = Cart::instance('JobBoard')->content();
+         $total_amount = 0;
+         foreach ($cons as $c) {
+            $total_amount += $c->price;
+         }
+         return $total_amount;
+	}
 	
 
 	

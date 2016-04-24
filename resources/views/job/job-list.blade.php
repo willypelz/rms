@@ -9,7 +9,7 @@
                 <div class="col-xs-12 no-margin">
                 <br>
                     <h3 class="text-green-light no-margin">
-                        {{ $active + $suspended }} {{ $company->name }} Jobs
+                        {{ $active + $suspended }} {{ $company->name }}  @if($active + $suspended == 1)Job @else Jobs @endif
                         &nbsp;
                         <a href="{{ route('post-job') }}" class="btn btn-success"><i class="fa fa-plus"></i> Post a New Job</a>
 
@@ -47,10 +47,11 @@
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
                           </button>
-                          <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
+                            <ul class="dropdown-menu">
+                            <li><a href="{{ route('job-candidates', [$job['id']]) }}">View Applicants</a></li>
+                            <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote this Job</a></li>
+                            <li><a href="{{ route('job-promote', [$job['id']]) }}">Get Referrals </a></li>
+                            <li><a href="{{ route('job-promote', [$job['id']]) }}">Share this job on Social Media. </a></li>
                             <li role="separator" class="divider"></li>
                             @if($job['status'] == 'SUSPENDED')
                             <li><a href="#" onclick="Activate( {{$job['id']}} ); return false">Activate Job</a></li>

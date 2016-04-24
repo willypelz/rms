@@ -36,19 +36,16 @@ class HomeController extends Controller
     public function dashbaord()
     {
 
-        // $comp = Auth::user()->companies;
-        // $comp_id = ($comp[0]->id);
-
-        // $jobs = JobActivity::with('job.company')->orderBy('created_at', 'desc')->get();
-        // dd($jobs->toArray());
-
-
+        $comp = Auth::user()->companies;
+        $comp_id = ($comp[0]->id);
+        $jobs_count = Job::where('company_id', $comp_id)->count();
+        // dd($jobs);
         $response = Curl::to('https://api.insidify.com/articles/get-posts')
                                 ->withData(array('limit'=>6))
                                 ->post();
 
         $posts = json_decode($response)->data->posts;
 
-        return view('talent-pool.dashboard', compact('posts'));
+        return view('talent-pool.dashboard', compact('posts', 'jobs_count'));
     }
 }

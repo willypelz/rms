@@ -139,7 +139,9 @@ class JobsController extends Controller
 
     public function Advertise($jobid, $slug= null){
 
-        $job_boards = JobBoard::where('type', 'paid')->get()->toArray();
+        $job_boards = JobBoard::where('type', 'paid')->where('avi', null)->get()->toArray();
+        $newspapers = JobBoard::where('type', 'paid')->where('avi', 1)->get();
+        // dd($newspapers->toArray());
         $c = (count($job_boards) / 2);
         $t = array_chunk($job_boards, $c);
         $board1 = $t[0];
@@ -160,7 +162,7 @@ class JobsController extends Controller
                 $ids = null;
 
 
-        return view('job.advertise', compact('board1', 'board2', 'ids', 'cart', 'count', 'price', 'jobid', 'slug'));
+        return view('job.advertise', compact('newspapers', 'board1', 'board2', 'ids', 'cart', 'count', 'price', 'jobid', 'slug'));
     }
 
     public function Share($id){
@@ -328,13 +330,32 @@ class JobsController extends Controller
                           
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-success"></i>
-                                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
                                   </span>
                           
                                   <h5 class="no-margin text-success">Comment</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']
-                                      </small> '. $ac->user->name .' said '.$ac->comment.' about <a href="#">'.$applicant->first_name.'</a>
+                                      </small> '. $ac->user->name .' said '.$ac->comment.' about <a href="#">'.$applicant->first_name.' '.$applicant->last_name.'</a>
+                                  </p>
+                                  
+                                </li>';
+                     break;
+
+                     case "REVIEW":
+                     $applicant = $ac->application->cv;
+
+                     $content .= '<li role="messaging" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-success"></i>
+                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-success">Review</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']
+                                      </small> '. $ac->user->name .' reviewed <a href="#">'.$applicant->first_name.' '.$applicant->last_name.'</a>
                                   </p>
                                   
                                 </li>';
@@ -594,7 +615,10 @@ class JobsController extends Controller
              foreach ($request->specializations as $e) {
                   $cv->specializations()->attach($e);
               }
-            
+              
+              
+              $appl_activities = (save_activities('APPLIED', $jobID, $appl->id, ''));
+
             // return redirect('jobs/applied/'.$jobID.'/'.$slug);
 
             return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);

@@ -11,8 +11,7 @@ use App\Models\JobActivity;
 		return $options = array('MPhil / PhD' => 'MPhil / PhD', 'MBA / MSc'=>'MBA / MSc', 'MBBS'=>'MBBS', 'Degree'=>'Degree', 'HND'=>'HND', 'OND'=>'OND', 'N.C.E'=>'N.C.E', 'Diploma'=>'Diploma', 'High School (S.S.C.E)'=>'High School (S.S.C.E)', 'Vocational'=>'Vocational', 'Others'=>'Others');
 	}
 
-	function human_time($time, $max_units = NULL)
-	{	
+	function human_time($time, $max_units = NULL){	
 		$time  = strtotime($time);
 		// $lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
 		// $units = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
@@ -55,14 +54,20 @@ use App\Models\JobActivity;
 			SUSPEND-JOB
 			PUBLISH-JOB
 			APPLIED
+			REVIEW
 		*/
+			if(!empty(Auth::user())){
+				$user_id = Auth::user()->id;
+			}else{
+				$user_id = NULL;
+			}
 
 		  if (!$job_id) $job_id = NULL;
 		  if (!$job_app_id) $job_app_id = NULL;
 		  if (!$comment) $comment = NULL;
 
 		$response =  JobActivity::firstOrCreate([
-		  	'user_id'=> Auth::user()->id,
+		  	'user_id'=> $user_id,
 		  	'activity_type'=>$activity_type,
 		  	'job_id'=>$job_id,
 		  	'job_application_id'=>$job_app_id,

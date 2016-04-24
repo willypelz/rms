@@ -34,13 +34,13 @@
                             <small class="text-muted hidden-xs">Your Talent Database</small>
                             </a>
                           </div>
-                          <div class="btn-group" role="group">
+                         <!--  <div class="btn-group" role="group">
                             <a href="#" type="button" class="btn btn-line text-capitalize text-muted">
                             <span class="fa-lg"><i class="fa fa-cogs"></i>
                             <span class="hidden-xs text-brandon text-capitalize"> Settings</span><br></span>
                             <small class="text-muted hidden-xs">Edit your settings</small>
                             </a>
-                          </div>
+                          </div> -->
                         </div>
                 </div>
 
@@ -52,7 +52,7 @@
                         <div class="row">
                         <h6 class="no-margin">
                             <span class="text-brandon text-uppercase">
-                            Your Activities: 4 new updates 
+                            Your Activities: 
                             </span> 
                             <!-- <span class="pull-right"><a href=""><i class="fa fa-cog"></i>Notification Settings</a></span> -->
                         </h6>
@@ -82,7 +82,7 @@
                         <table class="table table-bordered"> 
                         <tbody> 
                         <tr> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">10</a></h1><small class="text-muted">Jobs Created</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">{{ $jobs_count }}</a></h1><small class="text-muted">Jobs Created</small></td> 
                             <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">3,281</a></h1><small class="text-muted">Talent pool</small></td> 
                         </tr> 
                         <tr> 
@@ -93,7 +93,7 @@
                         </tbody> </table>
 
                         <!-- <p class="small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe ex voluptatem dicta, minima iste magni, eligendi deserunt repellat nesciunt repellendus dolores illo possimus voluptas sit ratione harum libero odio perferendis.</p> -->
-                        <p><a href="{{ route('job-list') }}" class="text-centre btn btn-default">See My Jobs</a></p>
+                        <p><a href="{{ route('job-list') }}" class="centre btn btn-default">See My Jobs</a></p>
 
                     </div>
                 </div>

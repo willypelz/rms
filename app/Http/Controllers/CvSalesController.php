@@ -163,9 +163,13 @@ class CvSalesController extends Controller
     /* CART TESTING */
     public function CartDetails(Request $request){
         // Cart::destroy();
-         $search = Cart::instance('JobBoard')->search(array('id' =>'4'));
+         $cons = Cart::instance('JobBoard')->content();
+         $total_amount = 0;
+         foreach ($cons as $c) {
+            $total_amount += $c->price;
+         }
          // echo $search;
-         dd($search);
+         dd($total_amount);
     }
 
     public function Output(){

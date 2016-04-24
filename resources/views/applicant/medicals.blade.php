@@ -23,7 +23,7 @@
                         <div class="row">
                           <div class="col-xs-12">
                             <h5> <span class="text-brandon">Medical Check</span>
-                            <a data-toggle="modal" data-target="#CheckModal" href="#CheckModal" class="btn btn-sm btn-line pull-right"><i class="fa fa-plus"></i>Request Medical Check</a>
+                            <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Medical Check" data-view="{{ route('modal-medical-check') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide" class="btn btn-sm btn-line pull-right"><i class="fa fa-plus"></i>Request Medical Check</a>
                               <!-- <a href="background-check" class="btn btn-line">Medicals</a> -->
                               <div class="clearfix"></div>
                             </h5>

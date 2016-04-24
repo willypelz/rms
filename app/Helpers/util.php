@@ -56,13 +56,18 @@ use App\Models\JobActivity;
 			APPLIED
 			REVIEW
 		*/
+			if(!empty(Auth::user())){
+				$user_id = Auth::user()->id;
+			}else{
+				$user_id = NULL;
+			}
 
 		  if (!$job_id) $job_id = NULL;
 		  if (!$job_app_id) $job_app_id = NULL;
 		  if (!$comment) $comment = NULL;
 
 		$response =  JobActivity::firstOrCreate([
-		  	'user_id'=> Auth::user()->id,
+		  	'user_id'=> $user_id,
 		  	'activity_type'=>$activity_type,
 		  	'job_id'=>$job_id,
 		  	'job_application_id'=>$job_app_id,

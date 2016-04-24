@@ -34,13 +34,13 @@
                             <small class="text-muted hidden-xs">Your Talent Database</small>
                             </a>
                           </div>
-                          <div class="btn-group" role="group">
+                         <!--  <div class="btn-group" role="group">
                             <a href="#" type="button" class="btn btn-line text-capitalize text-muted">
                             <span class="fa-lg"><i class="fa fa-cogs"></i>
                             <span class="hidden-xs text-brandon text-capitalize"> Settings</span><br></span>
                             <small class="text-muted hidden-xs">Edit your settings</small>
                             </a>
-                          </div>
+                          </div> -->
                         </div>
                 </div>
 

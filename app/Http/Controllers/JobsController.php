@@ -336,7 +336,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-success">Comment</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']
-                                      </small> '. $ac->user->name .' said '.$ac->comment.' about <a href="#">'.$applicant->first_name.'</a>
+                                      </small> '. $ac->user->name .' said '.$ac->comment.' about <a href="#">'.$applicant->first_name.' '.$applicant->last_name.'</a>
                                   </p>
                                   
                                 </li>';
@@ -352,10 +352,10 @@ class JobsController extends Controller
                                     <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
                                   </span>
                           
-                                  <h5 class="no-margin text-success">Comment</h5>
+                                  <h5 class="no-margin text-success">Review</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']
-                                      </small> '. $ac->user->name .' reviewed <a href="#">'.$applicant->first_name.'</a>
+                                      </small> '. $ac->user->name .' reviewed <a href="#">'.$applicant->first_name.' '.$applicant->last_name.'</a>
                                   </p>
                                   
                                 </li>';

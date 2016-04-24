@@ -52,7 +52,7 @@
                         <div class="row">
                         <h6 class="no-margin">
                             <span class="text-brandon text-uppercase">
-                            Your Activities: 4 new updates 
+                            Your Activities: 
                             </span> 
                             <!-- <span class="pull-right"><a href=""><i class="fa fa-cog"></i>Notification Settings</a></span> -->
                         </h6>
@@ -93,7 +93,7 @@
                         </tbody> </table>
 
                         <!-- <p class="small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe ex voluptatem dicta, minima iste magni, eligendi deserunt repellat nesciunt repellendus dolores illo possimus voluptas sit ratione harum libero odio perferendis.</p> -->
-                        <p><a href="{{ route('job-list') }}" class="text-centre btn btn-default">See My Jobs</a></p>
+                        <p><a href="{{ route('job-list') }}" class="centre btn btn-default">See My Jobs</a></p>
 
                     </div>
                 </div>

@@ -114,7 +114,16 @@
                                    </p>
                             </div>
 
-                                <script>
+                         
+
+                                       <p>
+                                           <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-line"><i class="fa fa-envelope"></i> &nbsp; Get Referrals for this job</a>
+                                       </p>
+                                       <div class="separator separator-small"></div>
+                                   </div>
+                               </div>
+
+                                      <script>
                                 $('#ReferEmail').click(function(){
                                     $(".hideSendEmails").html('<img src="{{ asset('img/loader-logo-32.gif') }}" width="30px" /> please wait...');
 
@@ -146,13 +155,6 @@
 
                                 })
                                 </script>
-
-                                       <p>
-                                           <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-line"><i class="fa fa-envelope"></i> &nbsp; Get Referrals for this job</a>
-                                       </p>
-                                       <div class="separator separator-small"></div>
-                                   </div>
-                               </div>
 
                                <div class="col-md-6 text-center">
 

@@ -23,7 +23,7 @@
                             <li>
                                 <strong>&nbsp;Posted:</strong>&nbsp;<?php echo date('d, M Y', strtotime($job['created_at'])) ?></li>
                             <li>
-                                <strong>&nbsp;Expires:</strong>&nbsp; 21 Jun, 2014</li>
+                                <strong>&nbsp;Expires:</strong>&nbsp; <?php echo date('d, M Y', strtotime($job['expiry_date'])) ?></li>
                         </ul>
                         
                         

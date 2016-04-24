@@ -170,10 +170,10 @@ class JobApplicationsController extends Controller
         if($request->type == 'job_view'){
             $total_applicants = ($result['response']['numFound']);
             echo $total_applicants;
-            exit;
+            // exit;
         }
-
-        echo '<div class="job-item ">
+        dd($application_statuses);
+        $stats = '<div class="job-item ">
                     <span class="number">'.$application_statuses['HIRED'].'</span><br/>Hired
                 </div>
                 <div class="job-item ">
@@ -189,7 +189,8 @@ class JobApplicationsController extends Controller
                     <span class="number text-muted">'.$result['response']['numFound'].'</span><br/>All
                 </div>';
 
-        
+        // dd($stats);
+                echo $stats;
     }
 
     public function JobViewData(Request $request){
@@ -202,7 +203,7 @@ class JobApplicationsController extends Controller
         $job = Job::find($request->job_id);
 
         $now = time(); // or your date as well
-         $your_date = strtotime($job->created_at);
+         $your_date = strtotime($job->post_date);
          $datediff = $now - $your_date;
          $open_days =  floor($datediff/(60*60*24));
 

@@ -615,7 +615,10 @@ class JobsController extends Controller
              foreach ($request->specializations as $e) {
                   $cv->specializations()->attach($e);
               }
-            
+              
+              
+              $appl_activities = (save_activities('APPLIED', $jobID, $appl->id, ''));
+
             // return redirect('jobs/applied/'.$jobID.'/'.$slug);
 
             return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);

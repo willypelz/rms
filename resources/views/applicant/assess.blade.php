@@ -31,6 +31,7 @@
                           </div>
                         </div>
 
+                    <div  id="paymentSuccess" class="alert-success"></div>
 
 
                     <div class="">

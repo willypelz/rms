@@ -27,6 +27,8 @@
 |
 */
 
+
+
 Route::group(['middleware' => ['web']], function () {
     
     Route::controller('schedule', 'ScheduleController');
@@ -45,8 +47,23 @@ Route::group(['middleware' => 'web'], function () {
     });
 
     Route::get('simple-pay', function(){
-        dd('here');
-        dd(save_activities('HIRE', '', '', 'THis is a very nice comment'));
+
+        $user = 'AYolana';
+        $email = Mail::send('emails.cv-sales.invoice', ['user' => $user], function ($message) {
+            $message->from('us@example.com', 'Laravel');
+
+            $message->to('lanaayodele@gmail.com');
+        });
+
+       if( count(Mail::failures()) > 0 ) {
+        dd(Mail::failures());
+
+} else {
+    echo "No errors, all sent successfully!";
+}
+
+        // dd('here');
+        // dd(save_activities('APPLIED', '10', '9', ''));
         //return view('payment.simplepay');
     });
 
@@ -337,6 +354,8 @@ Route::group(['middleware' => 'web'], function () {
 
     
 
+    Route::post('checkout', [ 'as' => 'checkout', 'uses' => 'JobApplicationsController@Checkout' ]);
+   
     Route::post('request/test', [ 'as' => 'request-test', 'uses' => 'JobApplicationsController@requestTest' ]);
     Route::post('request/check', [ 'as' => 'request-check', 'uses' => 'JobApplicationsController@requestCheck' ]);
     Route::post('invite/interview', [ 'as' => 'invite-for-interview', 'uses' => 'JobApplicationsController@inviteForInterview' ]);

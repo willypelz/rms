@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\JobApplication;
 use App\Models\Job;
+use App\Models\Transaction;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\AtsRequest;
 use App\Libraries\Solr;
 use App\Models\AtsService;
@@ -14,6 +17,7 @@ use App\Models\AtsProduct;
 use App\Models\TestRequest;
 use App\Models\Interview;
 use Carbon\Carbon;
+use Auth;
 
 
 class JobApplicationsController extends Controller
@@ -360,7 +364,35 @@ class JobApplicationsController extends Controller
     public function requestTest(Request $request)
     {
         
+        $comp_id = Auth::user()->companies[0]->id;
+        $invoice_no = '#'.mt_rand();
+
+
+        $order = Order::firstOrCreate([
+                        'company_id' => $comp_id,
+                        'order_date'=> date('Y-m-d H:i:s'),
+                        'total_amount'=>$request->total_amount,
+                        'invoice_no'=> $invoice_no,
+                        'type'=> $request->type
+        ]);
+
+         $transaction = Transaction::firstOrCreate([
+            'order_id' => $order->id,
+            'status'=> 'false',
+            'message'=>'Transaction Not Found'
+        ]);
+
+
         foreach ($request->tests as $key => $test) {
+            
+            $orderItems = OrderItem::firstOrCreate([
+                        'order_id' => $order->id,
+                        'itemId' => $test['id'],
+                        'type' => $request->type,
+                        'name' => $test['name'],
+                        'price' => $test['cost']
+             ]);
+
             $data = [
                 'location' => @$request->location,
                 'start_time' => @$request->start_time,
@@ -369,6 +401,7 @@ class JobApplicationsController extends Controller
                 'test_id' => $test['id'],
                 'test_name' => $test['name'],
                 'test_owner' => $test['owner'],
+                'order_id' => $order->id,
             
             ];
                         
@@ -378,12 +411,41 @@ class JobApplicationsController extends Controller
 
         JobApplication::massAction( @$request->job_id, [ @$request->cv_id ], 'ASSESSED' );
 
+        $res = array();
+        $res = ['total_amount'=>$request->total_amount, 'order_id'=>$order->id];
+        return $res;
+
     }
 
     public function requestCheck(Request $request)
     {
-        
+        $comp_id = Auth::user()->companies[0]->id;
+        $invoice_no = '#'.mt_rand();
+
+        $order = Order::firstOrCreate([
+                        'company_id' => $comp_id,
+                        'order_date'=> date('Y-m-d H:i:s'),
+                        'total_amount'=>$request->total_amount,
+                        'invoice_no'=> $invoice_no,
+                        'type'=> $request->type
+        ]);
+
+        $transaction = Transaction::firstOrCreate([
+            'order_id' => $order->id,
+            'status'=> 'false',
+            'message'=>'Transaction Not Found'
+        ]);
+
         foreach ($request->checks as $key => $check) {
+            
+            $orderItems = OrderItem::firstOrCreate([
+                        'order_id' => $order->id,
+                        'itemId' => $check['id'],
+                        'type' => $request->type,
+                        'name' => $check['name'],
+                        'price' => $check['cost']
+             ]);
+
             $data = [
                 'job_application_id' => @$request->job_application_id,
                 'job_id' => @$request->job_id,
@@ -391,21 +453,28 @@ class JobApplicationsController extends Controller
                 'cost' => $check['cost'],
                 'service_type' => @$request->service_type,
                 'created' => Carbon::now(),
-                'modified' => Carbon::now()
+                'modified' => Carbon::now(),
+                'order_id' => $order->id
             
             ];
                         
-                        
-                        
-                        
             AtsRequest::create($data);
             // var_dump($data);
+
         }
-
+            $res = array();
+            $res = ['total_amount'=>$request->total_amount, 'order_id'=>$order->id];
+            return $res;
         // JobApplication::massAction( @$request->job_id, [ @$request->cv_id ], 'ASSESSED' );
-
     }
     
+
+    public function Checkout(Request $request){
+        // dd($request->total_amount);
+       
+
+
+    }
 
     public function inviteForInterview(Request $request)
     {

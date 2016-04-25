@@ -1,7 +1,8 @@
 @extends('layout.template-default')
 
 @section('content')
-
+{{-- */ $can_purchase = true /* --}}
+{{-- */ $page = 'saved' /* --}}
 <style type="text/css">
   .see-more{display: none;}
   .see-more-shown{ display: block; }
@@ -27,7 +28,7 @@
                     <form id="form-cv-search" action="{{ url('cv/search') }}" class="form-group collapse"><br>
                        <div class="form-lg">
                          <div class="col-xs-10">
-                           <div class="row"><input placeholder="Find something you want" value="" class="form-control input-lg input-talent" type="text" name="search_query"></div>
+                           <div class="row"><input placeholder="e.g Accountant Lagos" value="" class="form-control input-lg input-talent" type="text" name="search_query"></div>
                          </div>
                          <div class="col-xs-2">
                            <div class="row">
@@ -44,7 +45,7 @@
                     </form><br>
                     <a href="#form-cv-search" data-toggle="collapse" aria-expanded="false" aria-controls="form-cv-search" class="btn btn-success pull-right"><i class="fa fa-search-plus"></i> Find New Candidate</a>
                 </div>
-                    <div class="col-xs-3"><br>
+                    <!-- <div class="col-xs-3"><br>
                       <div class="dropdown">
                         <a href="" class="btn btn-block btn-line dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cloud-upload"></i> Upload CV to Folder &nbsp; <i class="fa fa-caret-down"></i></a>
                               <ul class="dropdown-menu">
@@ -53,7 +54,7 @@
                                 <li><a href="#">Expatriate </a></li>
                               </ul>
                       </div>
-                    </div>
+                    </div> -->
             </div>
 
         </div>
@@ -67,13 +68,13 @@
 
                     <div class="content rounded ">
 
-                    <div class="row">
+                    <!-- <div class="row">
                       <div class="well well-sm pushup-sm no-shadow">       
-                      <!-- Single button -->
+
                         <div class="col-xs-6"> 
                       <span class="text-brandon"><i class="fa fa-folder"></i> Folders &nbsp;</span>                 
                             
-                              <!-- <button class="btn btn-line btn-sm"><i class="fa fa-plus"></i> Create New</button> -->
+
                         </div>
                         <div class="col-xs-6">
                         <form action="" class="form-inline pull-right">
@@ -82,7 +83,7 @@
                         </div> 
                           <div class="clearfix"></div>
                       </div>
-                    </div>
+                    </div> -->
 
         <div class="row">
 
@@ -148,13 +149,13 @@
                             </div> <!--/col-sm-3-->
                         </div>
 
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group text-right">
                                     <a data-toggle="modal" data-target="#myInvoice" href="#" target="_blank" type="submit" class="btn btn-danger disabled btn-cart-checkout">Proceed to payment &raquo;</a>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
 

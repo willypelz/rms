@@ -14,6 +14,14 @@
         <div id="collapseOne" class="panel-collapse collapse in">
           <div class="panel-body">
 
+              <p class="border-bottom-thin text-muted">Keyword search<i class="glyphicon glyphicon-user pull-right"></i></p>
+              <div class="input-group">
+                
+                <input type="text" class="form-control" id="search_keyword" placeholder="keyword">
+                <a class="btn btn-small input-group-addon" href="#" onclick="searchKeyword(); return false;" >GO</a>
+              </div>
+              <p>--</p> 
+
               @if(@$is_saved)
 
                   <p class="border-bottom-thin text-muted">Folder<i class="glyphicon glyphicon-user pull-right"></i></p>
@@ -42,13 +50,7 @@
 
               @endif
 
-              <p class="border-bottom-thin text-muted">Keyword search<i class="glyphicon glyphicon-user pull-right"></i></p>
-              <div class="input-group">
-                
-                <input type="text" class="form-control" id="search_keyword" placeholder="keyword">
-                <a class="btn btn-small input-group-addon" href="#" onclick="searchKeyword(); return false;" >GO</a>
-              </div>
-              <p>--</p> 
+              
 
 
 

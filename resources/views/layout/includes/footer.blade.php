@@ -127,34 +127,51 @@
                         </li>
                     </ul>
                 </div>
+                
+                <div class="col-sm-6">
+                    <div class="col-sm-4">
+                        <ul class="list-unstyled">
+                            <li>
+                                <h5>Employer?</h5>
+                            </li>
+                            <li><a href="{{ route('post-job') }}">Post a job</a>
+                            </li>
+                            <li><a href="{{ url('cv/search') }}">Find a talent</a>
+                            </li>
+                            <li><a href="#">About SeamlessHiring</a>
+                            </li>
+                            <li><a href="{{ url('pricing') }}">Pricing</a>
+                            </li>
+                        </ul>
+                    </div>
 
-                <div class="col-sm-3">
-                    <ul class="list-unstyled">
-                        <li>
-                            <h5>Navigation</h5>
-                        </li>
-                        <li><a href="#">About Us</a>
-                        </li>
-                        <li><a href="#">Terms & Privacy</a>
-                        </li>
-                        <li><a href="#">About Us</a>
-                        </li>
-                    </ul>
+                    <div class="col-sm-4">
+                        <ul class="list-unstyled">
+                            <li>
+                                <h5>Jobseeker?</h5>
+                            </li>
+                            <li><a href="http://insidify.com">Insidify.com</a>
+                            </li>
+                            <li><a href="http://insidify.com/page/about_us">About Insidify.com</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <ul class="list-unstyled">
+                            <li>
+                                <h5>Contact Us</h5>
+                            </li>
+                            <li><a href="#">Press</a>
+                            </li>
+                            <li><a href="#">Terms and Conditions</a>
+                            </li>
+                            <li><a href="#">Privacy Policy</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
-                <div class="col-sm-3">
-                    <ul class="list-unstyled">
-                        <li>
-                            <h5>Job Search</h5>
-                        </li>
-                        <li><a href="#">About Us</a>
-                        </li>
-                        <li><a href="#">Terms & Privacy</a>
-                        </li>
-                        <li><a href="#">About Us</a>
-                        </li>
-                    </ul>
-                </div>
 
                 <div class="col-md-3">
                    <h5>Share this job publishing on LinkedIn, Twitter, Facebook.</h5>

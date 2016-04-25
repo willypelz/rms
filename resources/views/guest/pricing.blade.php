@@ -93,7 +93,7 @@
                                     <div class="panel panel-default panel-pricing panel-premium">
                                         <div class="panel-heading">
                                             <!-- <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> -->
-                                            <h3 class="text-brandon">ENTERPRISE</h3>
+                                            <h3 class="text-brandon">PREMIUM</h3>
                                             <small> For companies that post more than 3 jobs per month and hire over 10 candidates in a year. </small>
                                         </div>
                                         <div class="panel-body text-center">

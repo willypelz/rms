@@ -172,7 +172,7 @@ class JobApplicationsController extends Controller
             echo $total_applicants;
             // exit;
         }
-        dd($application_statuses);
+        
         $stats = '<div class="job-item ">
                     <span class="number">'.$application_statuses['HIRED'].'</span><br/>Hired
                 </div>

@@ -3,13 +3,13 @@
     </li>
     <!--li><a href="javascript://" data-value="PENDING">Pending <span class="badge">{{ $application_statuses['PENDING'] }}</span></a> 
     </li-->
-    <li><a href="javascript://" data-value="SHORTLISTED">Shortlisted <span class="badge">{{ $application_statuses['SHORTLISTED'] }}</span></a>
-    <li><a href="javascript://" data-value="ASSESSED">Assessed <span class="badge">{{ $application_statuses['ASSESSED'] }}</span></a>
+    <li><a href="javascript://" data-value="SHORTLISTED">Shortlist <span class="badge">{{ $application_statuses['SHORTLISTED'] }}</span></a>
+    <li><a href="javascript://" data-value="ASSESSED">Test <span class="badge">{{ $application_statuses['ASSESSED'] }}</span></a>
     </li>
-    <li><a href="javascript://" data-value="INTERVIEWED">Interviewed <span class="badge">{{ $application_statuses['INTERVIEWED'] }}</span></a>
+    <li><a href="javascript://" data-value="INTERVIEWED">Interview <span class="badge">{{ $application_statuses['INTERVIEWED'] }}</span></a>
     </li>
-    <li><a href="javascript://" data-value="HIRED">Hired <span class="badge">{{ $application_statuses['HIRED'] }}</span></a>
+    <li><a href="javascript://" data-value="HIRED">Hire <span class="badge">{{ $application_statuses['HIRED'] }}</span></a>
     </li>
-    <li><a href="javascript://" data-value="REJECTED">Rejected <span class="badge">{{ $application_statuses['REJECTED'] }}</span></a>
+    <li><a href="javascript://" data-value="REJECTED">Reject <span class="badge">{{ $application_statuses['REJECTED'] }}</span></a>
     </li>
 </ul><br>

@@ -356,9 +356,9 @@ class Solr {
 	}
 
 
-	function update_core($core = 'jobs', $command="delta-import"){
+	function update_core($core = 'resumes', $command="delta-import"){
 
-		$url = "http://50.28.37.75:8983/solr/".$core."/dataimport?command=".$command;
+		$url = "http://50.28.104.199/solr/".$core."/dataimport?command=".$command;
 
 		try {
 			$handle = fopen($url, "r");

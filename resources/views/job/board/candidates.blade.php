@@ -38,14 +38,14 @@
                                     <small class="text-muted result-label" id="showing"></small>
 
                                    <div class="">
-                                        <label data-toggle="collapse" aria-controls="h_act-on" aria-expanded="false" data-target="#h_act-on" role="button" class="select-all pull-right">Select All
+                                        <label class="select-all pull-right">Select All
                                            <input type="checkbox">
                                        </label>
                                    </div>
                                
                                 </div>
 
-                                <div id="h_act-on" class="col-xs-12 collapse app-action">
+                                <div id="h_act-on" class="col-xs-12 app-action" style="display:none;">
                                     <div>
                                         <div class="btn-group select-action" id="mass-action">
                                             <button class="btn btn-default status-1" type="button" data-action="REJECTED">Reject All</button>
@@ -420,12 +420,38 @@
 
             if( $(this).prop('checked') )
             {
-                console.log("here");
                 $('.search-results .media-body input[type=checkbox]').prop('checked', true);
+                $('#h_act-on').fadeIn();
             }
             else
             {
                 $('.search-results .media-body input[type=checkbox]').prop('checked', false);
+                $('#h_act-on').fadeOut();
+            }
+        });
+
+        $('body .check-applicant').on('click',function(){
+
+            if( $(this).prop('checked') )
+            {
+                if( $('body .check-applicant').length == $('body .check-applicant:checked').map(function() { return this.value; }).get().length )
+                {
+                    $('.select-all input[type=checkbox]').prop('checked', true);
+                }
+                $('#h_act-on').fadeIn();
+            }
+            else
+            {
+                if( $('body .check-applicant').length != $('body .check-applicant:checked').map(function() { return this.value; }).get().length )
+                {
+                    $('.select-all input[type=checkbox]').prop('checked', false);
+                }
+
+                if( $('body .check-applicant:checked').map(function() { return this.value; }).get().length == 0 )
+                {
+                    $('#h_act-on').fadeOut();
+                }
+                
             }
         });
 

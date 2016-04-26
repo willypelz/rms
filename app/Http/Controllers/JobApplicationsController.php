@@ -120,7 +120,7 @@ class JobApplicationsController extends Controller
         $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start * $this->search_params['row'] ) : 0;
         
         
-        $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status);
+        $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status); 
 
         $end = (($start + $this->search_params['row']) > intval($result['response']['numFound']))?$result['response']['numFound']:($start + $this->search_params['row']);
         $showing = "Showing ".($start+1)." - ".$end." of ".$result['response']['numFound']." Applicants [Page ".floor($request->start + 1)."]";

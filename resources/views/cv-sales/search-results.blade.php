@@ -14,7 +14,8 @@
 {{-- dd($result) --}}
 
 {{  Session::put('url.intended', url()->full() ) }}
-
+{{-- */ $can_purchase = true /* --}}
+{{-- */ $page = 'search' /* --}}
 
             <div class="row">
                 <div class="col-md-6 hidden-sm hidden-xs">
@@ -29,7 +30,7 @@
                       
                        <div class="form-lg">
                          <div class="col-xs-10">
-                           <div class="row"><input placeholder="Find something you want" name="search_query" id="search_query" value="{{ $search_query }}" class="form-control input-lg input-talent" type="text"></div>
+                           <div class="row"><input placeholder="e.g Accountant, Lagos" name="search_query" id="search_query" value="{{ $search_query }}" class="form-control input-lg input-talent" type="text"></div>
                          </div>
                          <div class="col-xs-2">
                            <div class="row">
@@ -124,13 +125,13 @@
 
             </div>
 
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group text-right">
                         <a data-toggle="modal" data-target="#myInvoice" href="#" target="_blank" type="submit" class="btn btn-danger disabled btn-cart-checkout">Proceed to payment &raquo;</a>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
         </div>
 

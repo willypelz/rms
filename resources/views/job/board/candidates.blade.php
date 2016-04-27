@@ -38,19 +38,19 @@
                                     <small class="text-muted result-label" id="showing"></small>
 
                                    <div class="">
-                                        <label data-toggle="collapse" aria-controls="h_act-on" aria-expanded="false" data-target="#h_act-on" role="button" class="select-all pull-right">Select All
+                                        <label class="select-all pull-right">Select All
                                            <input type="checkbox">
                                        </label>
                                    </div>
                                
                                 </div>
 
-                                <div id="h_act-on" class="col-xs-12 collapse app-action">
+                                <div id="h_act-on" class="col-xs-12 app-action" style="display:none;">
                                     <div>
                                         <div class="btn-group select-action" id="mass-action">
                                             <button class="btn btn-default status-1" type="button" data-action="REJECTED">Reject All</button>
                                             <!-- <button class="btn btn-default status-1" type="button" data-action="REJECT">Message All</button> -->
-                                            <button class="btn btn-default status-1" type="button" data-action="ASSESSED">Assess All</button>
+                                            <button class="btn btn-default status-1" type="button" data-action="ASSESSED">Test All</button>
                                             <button class="btn btn-default status-1" type="button" data-action="SHORTLISTED">Shortlist All</button>
                                         </div>
                                         
@@ -368,13 +368,20 @@
 
         });
 
-        $('#status_filters').on('click', 'a', function(){
+        $('body').on('click', '#status_filters a', function(){
 
             status_filter = $(this).attr('data-value');
 
             $('#status_filters li').removeClass('active');
             $(this).closest('li').addClass('active');
 
+
+
+            $(this).reloadResult();
+            
+        });
+
+        $.fn.reloadResult = function(){
             if( status_filter == "ALL" )
             {
                 status_filter = "";
@@ -397,7 +404,7 @@
 
                 $(document).getShowing();
             });
-        });
+        }
 
         $.fn.getShowing = function(){
             count = $('.search-results .comment.media').length;
@@ -420,12 +427,38 @@
 
             if( $(this).prop('checked') )
             {
-                console.log("here");
                 $('.search-results .media-body input[type=checkbox]').prop('checked', true);
+                $('#h_act-on').fadeIn();
             }
             else
             {
                 $('.search-results .media-body input[type=checkbox]').prop('checked', false);
+                $('#h_act-on').fadeOut();
+            }
+        });
+
+        $('body').on('click','.check-applicant',function(){
+
+            if( $(this).prop('checked') )
+            {
+                if( $('body .check-applicant').length == $('body .check-applicant:checked').map(function() { return this.value; }).get().length )
+                {
+                    $('.select-all input[type=checkbox]').prop('checked', true);
+                }
+                $('#h_act-on').fadeIn();
+            }
+            else
+            {
+                if( $('body .check-applicant').length != $('body .check-applicant:checked').map(function() { return this.value; }).get().length )
+                {
+                    $('.select-all input[type=checkbox]').prop('checked', false);
+                }
+
+                if( $('body .check-applicant:checked').map(function() { return this.value; }).get().length == 0 )
+                {
+                    $('#h_act-on').fadeOut();
+                }
+                
             }
         });
 
@@ -459,12 +492,44 @@
                     //   $('.signin').trigger('click');
                     // }
                     
-                    $('#status_filters a[data-value="' + $field.data('action') + '"]').trigger('click');
+                    if(status_filter == "" || status_filter == "All")
+                    {
+
+                    }
+                    else
+                    {
+                        $('body .check-applicant:checked').map(function() { return this }).closest('.comment.media').remove();
+                    }
+                    
+                    
+                    $('.select-all input[type=checkbox]').prop('checked', false);
+                    $('.search-results .media-body input[type=checkbox]').prop('checked', false);
+                    $('#h_act-on').fadeOut();
+                    $(document).getAllStatus();
+                    console.log("You have" + $field.data('action') + " " + cv_ids.length + " applicant(s) " );
+                    //$('#status_filters a[data-value="' + $field.data('action') + '"]').trigger('click');
                 });
 
             // console.log(cvs);
         });
 
+        
+        $.fn.getAllStatus = function(){
+
+            $.get("{{ route('get-all-applicant-status') }}", {job_id: "{{ $jobID }}"},function(data){
+                //console.log(response);
+                // var response = JSON.parse(data);
+                // console.log(data.search_results);
+                // $('.result-label').html(data.showing);
+                // $('#pagination').show();
+                // $('.search-results').html(data.search_results);
+                $('body #status_filters').replaceWith(data);
+
+                // console.log(data);
+
+                // $(document).getShowing();
+            });
+        }
        
 
         $('body').on('click', '#clearAllFilters', function(){
@@ -497,7 +562,6 @@
 </script>
 
 
-
 <script type="text/javascript">
   total_candidates = "{{ $result['response']['numFound'] }}";
   $(document).ready(function(){
@@ -509,6 +573,7 @@
         totalPages: "{{ ceil( $result['response']['numFound'] / 20 ) }}",
         visiblePages: 5,
         initiateStartPageClick: false,
+        // startPage: data.page,
         onPageClick: function (event, page) {
           // console.log(page,filters);
             scrollTo('.job-progress-xs')
@@ -517,8 +582,8 @@
             $('#pagination').hide();
             $('.search-results').html('{!! preloader() !!}');
             var url = "{{ (@$is_saved) ? url('cv/saved') : url('cv/search')   }}";
-            var pagination_url = "";
-            $.get(pagination_url, {search_query: $('#search_query').val(), start: ( page - 1 ) , filter_query : filters },function(data){
+            var pagination_url = "{{ route('job-candidates', $jobID) }}";
+            $.get(pagination_url, {search_query: $('#search_query').val(), start: ( page - 1 ) , filter_query : filters,status : status_filter },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);
@@ -530,4 +595,5 @@
     });
   });
 </script>
+
 @endsection

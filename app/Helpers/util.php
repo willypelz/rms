@@ -167,18 +167,51 @@ use App\Models\JobActivity;
 	function get_application_statuses($status)
 	{
 
-		$status_array = [];
 
-		$status_array['PENDING'] = ( array_search('PENDING', $status) !== false && intval( array_search('PENDING', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('PENDING', $status) ) + 1 ] : 0;
-		$status_array['INTERVIEWED'] = ( array_search('INTERVIEWED', $status) !== false && intval( array_search('INTERVIEWED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('INTERVIEWED', $status) ) + 1 ] : 0;
-		$status_array['REJECTED'] = ( array_search('REJECTED', $status) !== false && intval( array_search('REJECTED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('REJECTED', $status) ) + 1 ] : 0;
-		$status_array['HIRED'] = ( array_search('HIRED', $status) !== false && intval( array_search('HIRED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('HIRED', $status) ) + 1 ] : 0;
-		$status_array['ASSESSED'] = ( array_search('ASSESSED', $status) !== false && intval( array_search('ASSESSED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('ASSESSED', $status) ) + 1 ] : 0;
-		$status_array['SHORTLISTED'] = ( array_search('SHORTLISTED', $status) !== false && intval( array_search('SHORTLISTED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('SHORTLISTED', $status) ) + 1 ] : 0;
+		$ret = array();
+
+		// dd($solr_arr);
+
+		for ($i=0; $i < count($status); $i = $i+2) { 
+
+
+			
+			$val = $status[$i];
+			$count = $status[$i + 1];														
+			if(empty($val))
+				$val = "Not Specified";
+
+			if(strtolower($val) == 'choose' ||
+                strtolower(preg_replace('|[^a-z]|i', '', $val)) == 'choose' ||
+                strtolower($val) == 'select')
+				$val = "Not Specified";
+			
+			if($count > 0)
+				$ret[$val] = $count;
+			
+		}
+
+		
+		$statuses = ['PENDING', 'INTERVIEWED', 'REJECTED', 'HIRED','ASSESSED','SHORTLISTED'];
+
+		$status_array = [];
+		foreach ($statuses as $val) {
+			$status_array[$val] = (isset($ret[$val]))?$ret[$val]:0;
+		}
+		
+
+
+
+		// $status_array['PENDING'] = ( array_search('PENDING', $status) !== false && intval( array_search('PENDING', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('PENDING', $status) ) + 1 ] : 0;
+		// $status_array['INTERVIEWED'] = ( array_search('INTERVIEWED', $status) !== false && intval( array_search('INTERVIEWED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('INTERVIEWED', $status) ) + 1 ] : 0;
+		// $status_array['REJECTED'] = ( array_search('REJECTED', $status) !== false && intval( array_search('REJECTED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('REJECTED', $status) ) + 1 ] : 0;
+		// $status_array['HIRED'] = ( array_search('HIRED', $status) !== false && intval( array_search('HIRED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('HIRED', $status) ) + 1 ] : 0;
+		// $status_array['ASSESSED'] = ( array_search('ASSESSED', $status) !== false && intval( array_search('ASSESSED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('ASSESSED', $status) ) + 1 ] : 0;
+		// $status_array['SHORTLISTED'] = ( array_search('SHORTLISTED', $status) !== false && intval( array_search('SHORTLISTED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('SHORTLISTED', $status) ) + 1 ] : 0;
+
 		
 		
 		// dd(array_search('PENDING', $status));
-
 		return $status_array;
 	}
 

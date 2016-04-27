@@ -28,5 +28,9 @@ class FolderContent extends Model
         return $this->where('user_id',$user_id)->get()->toArray();
     }
 
-
+    public function getFolderType()
+    {
+        
+        return $this->belongsTo('App\Models\CompanyFolder', 'company_folder_id');
+    }
 }

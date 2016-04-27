@@ -83,12 +83,12 @@
                         <tbody> 
                         <tr> 
                             <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">{{ $jobs_count }}</a></h1><small class="text-muted">Jobs Created</small></td> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">3,281</a></h1><small class="text-muted">Talent pool</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">{{ $talent_pool_count }}</a></h1><small class="text-muted">Talent pool</small></td> 
                         </tr> 
                         <tr> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">0</a></h1><small class="text-muted">Purchased Cvs</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">{{ $saved_cvs_count }}</a></h1><small class="text-muted">Purchased Cvs</small></td> 
 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">0</a></h1><small class="text-muted">Saved Cvs</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">{{ $purchased_cvs_count }}</a></h1><small class="text-muted">Saved Cvs</small></td> 
                         </tr
                         </tbody> </table>
 
@@ -112,7 +112,7 @@
                             <span class="text-brandon text-uppercase"> Discovery for Employers:</span> 4 new updates
                         </h6><br>
                     <div id="owl-posts">
-                        
+                      @if( count( @$posts ) > 0 )
                         @foreach($posts as $post)
                         <div class="owl-item col-sm-3">
                             <div class="panel-body text-left">
@@ -131,7 +131,7 @@
                             </div>
                         </div>
                         @endforeach
-
+                      @endif
                     </div>
                 </div>
             </div>

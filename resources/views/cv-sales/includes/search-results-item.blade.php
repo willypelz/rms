@@ -64,7 +64,8 @@
                       <a href="{{ url('log-in') }}" class="btn btn-line btn-sm dropdown-toggle">Save into Folder</a>
                   @endif
                     <a href="javascript://" class="btn btn-line btn-sm" id='showCvBtn' data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">Preview CV</a>
-
+                  
+                  @if(@$can_purchase)
                     <span class="purchase-action">
                           @if(@$is_saved)
                             <a href="javascript://" class="btn btn-sm btn-line pull-right" title="Delete CV" id='removeSavedCV' data-user='{{ @$cv['id'] }}'><i class="fa fa-trash no-margin"></i></a>
@@ -85,6 +86,7 @@
                           @endif
 
                   </span>
+                  @endif
 
                 </p>
               </div>
@@ -190,7 +192,18 @@
   <li class="row">
     <div class="text-center text-muted">
     <i class="fa fa-frown-o fa-3x"></i>
-      <h3>Not Found. Please Search again.</h3>
+      <h3>
+        
+        @if( $page == 'search' )
+            Not Found. Please Search again.
+        @elseif( $page == 'pool' )
+            Sorry you have no CVs in your pool
+        @elseif( $page == 'saved' )
+            Sorry you have no Saved CVs
+        @elseif( $page == 'purchased' )
+            Sorry you have not purchased any CVs
+        @endif
+      </h3>
     </div>
   </li>
 @endif

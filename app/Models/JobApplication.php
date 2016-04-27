@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Libraries\Solr;
 
 class JobApplication extends Model
 {
@@ -24,9 +25,14 @@ class JobApplication extends Model
 
     public static function massAction($job_id, $cv_ids, $status)
     {
-        return JobApplication::where('job_id',$job_id)
+
+        $app = JobApplication::where('job_id',$job_id)
                                 ->whereIn('cv_id',$cv_ids)
                                 ->update( ['status'=>$status] );
+
+        Solr::update_core();
+
+        return $app;
     }
 
 

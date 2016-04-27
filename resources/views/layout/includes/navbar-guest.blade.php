@@ -26,7 +26,7 @@
                 </li>
 
                 <li>
-                    <a class="" href="{{ url('cv/search-results') }}">Find Resumes <!-- &nbsp;<i class="fa fa-search"> </i> --></a>
+                    <a class="" href="{{ url('cv/search') }}">Find Resumes <!-- &nbsp;<i class="fa fa-search"> </i> --></a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

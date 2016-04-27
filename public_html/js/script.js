@@ -50,7 +50,7 @@ $(document).ready(function(){
     
     $('.modal-header .close');
 
-    $('body #modalButton').on('click', function(){
+    $('body').on('click','#modalButton', function(){
 
         data = {
             app_id: $(this).data('app-id') ,

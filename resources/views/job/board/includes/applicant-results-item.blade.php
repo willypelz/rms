@@ -2,15 +2,16 @@
                       
   @foreach( @$result['response']['docs'] as $cv )
   
-  <hr>
+  
   <div class="comment media" data-cv="{{ $cv['id'] }}">
+  <hr>
       <span class="col-md-2 col-sm-3">
         <a href="{{ route('applicant-profile', $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] ) }}" target="_blank"  class="pull-left">
             <img alt="" src="{{ default_picture( $cv ) }}" class="media-object " width="100%">
         </a>
       </span>
       <div class="media-body">
-          <input type="checkbox" class="media-body-check pull-right">
+          <input type="checkbox" class="media-body-check check-applicant pull-right">
           <h4 class="media-heading text-muted"><a href="{{ route('applicant-profile', $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] ) }}" target="_blank">{{ ucwords( $cv['first_name']. " " . $cv['last_name'] ) }}</a>
           </h4>
           <p>{{ @$cv['last_position'].' at '.@$cv['last_company_worked'] }}</p>
@@ -26,7 +27,7 @@
               <!-- <a href="#" data-toggle="modal" data-target="#reviewCv[data-user='{{ @$cv['id'] }}']" id="reviewBtn-{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}">Comment</a> -->
               <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Comment" data-view="{{ route('modal-comment') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Comment</a>
               <span class="text-muted">·</span>
-              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Assess" data-view="{{ route('modal-assess') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="wide">Assess</a>
+              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Assess" data-view="{{ route('modal-assess') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="wide">Test</a>
               <span class="text-muted">·</span>
               <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview" data-view="{{ route('modal-interview') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Interview</a>
               <span class="text-muted">·</span>
@@ -137,6 +138,18 @@
 </script-->
 @endforeach
 
+<script type="text/javascript">
+    
+    $(document).ready(function(){
+      // total_candidates = "{{ $result['response']['numFound'] }}";
+
+      // if($('#pagination').data("twbs-pagination")){
+      //       $('#pagination').twbsPagination('destroy');
+      //   }
+      
+    });
+
+</script>
 
 
 

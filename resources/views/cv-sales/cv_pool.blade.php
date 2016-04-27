@@ -2,7 +2,7 @@
 
 @section('content')
 {{-- Auth::user()->companies[0]->id --}}
-{{ dd($result) }}
+{{-- dd($result) --}}
 {{-- */ $page = 'pool' /* --}}
 <style type="text/css">
   .see-more{display: none;}

@@ -375,6 +375,8 @@
             $('#status_filters li').removeClass('active');
             $(this).closest('li').addClass('active');
 
+
+
             $(this).reloadResult();
             
         });
@@ -560,7 +562,6 @@
 </script>
 
 
-
 <script type="text/javascript">
   total_candidates = "{{ $result['response']['numFound'] }}";
   $(document).ready(function(){
@@ -572,6 +573,7 @@
         totalPages: "{{ ceil( $result['response']['numFound'] / 20 ) }}",
         visiblePages: 5,
         initiateStartPageClick: false,
+        // startPage: data.page,
         onPageClick: function (event, page) {
           // console.log(page,filters);
             scrollTo('.job-progress-xs')
@@ -580,8 +582,8 @@
             $('#pagination').hide();
             $('.search-results').html('{!! preloader() !!}');
             var url = "{{ (@$is_saved) ? url('cv/saved') : url('cv/search')   }}";
-            var pagination_url = "";
-            $.get(pagination_url, {search_query: $('#search_query').val(), start: ( page - 1 ) , filter_query : filters },function(data){
+            var pagination_url = "{{ route('job-candidates', $jobID) }}";
+            $.get(pagination_url, {search_query: $('#search_query').val(), start: ( page - 1 ) , filter_query : filters,status : status_filter },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);
@@ -593,4 +595,5 @@
     });
   });
 </script>
+
 @endsection

@@ -138,6 +138,18 @@
 </script-->
 @endforeach
 
+<script type="text/javascript">
+    
+    $(document).ready(function(){
+      // total_candidates = "{{ $result['response']['numFound'] }}";
+
+      // if($('#pagination').data("twbs-pagination")){
+      //       $('#pagination').twbsPagination('destroy');
+      //   }
+      
+    });
+
+</script>
 
 
 

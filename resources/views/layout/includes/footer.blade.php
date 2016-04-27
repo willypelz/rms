@@ -122,7 +122,7 @@
                 <div class="col-sm-3">
                     <ul class="list-unstyled footer-logo">
                         <li>
-                            <h4 class="text-brandon" style="text-transform: capitalize;"> Seamless Hiring</h4>
+                            <h4 class="text-brandon" style="text-transform: capitalize;"><img src="{{ url('/') }}/img/logomark2.png" alt=""></h4>
                             <small class="text-muted">&copy; 2016. All Rights Reserved.</small>
                         </li>
                     </ul>

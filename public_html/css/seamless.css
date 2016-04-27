@@ -73,7 +73,10 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: 'Montserrat', sans-serif;
     font-weight:300;
     text-transform:capitalize;
-    color:#BDFDBA;
+        background: url('../img/logomark.png') no-repeat left;
+    background-size: 100%;
+    width: 210px;
+    margin-right: 20px;
 }
 .navbar.fold > .container .navbar-brand.logo{
     background-size: 110px;

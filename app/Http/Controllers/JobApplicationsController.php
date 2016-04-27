@@ -166,6 +166,13 @@ class JobApplicationsController extends Controller
          return save_activities('REVIEW',  $request->job_id, $request->job_app_id, $request->comment );
     }
 
+    public function getAllApplicantStatus(Request $request)
+    {
+         $result = Solr::get_applicants($this->search_params, $request->job_id,@$request->status);
+        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+        return view('job.board.includes.applicant-status', compact('application_statuses','result'));
+    }
+
     public function JobListData(Request $request){
 
         $result = Solr::get_applicants($this->search_params, $request->job_id,@$request->status);

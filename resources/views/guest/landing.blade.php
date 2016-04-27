@@ -25,7 +25,7 @@
                         <br class="hidden-xs">
                            <div class="form-lg hidden-xs">
                              <div class="col-sm-8">
-                               <div class="row"><input placeholder="e.g Accountant Lagos" class="form-control input-lg input-talent" name="search_query" type="text"></div>
+                               <div class="row"><input placeholder="e.g Accountant, Lagos" class="form-control input-lg input-talent" name="search_query" type="text"></div>
                              </div>
                              <div class="col-sm-4">
                                <div class="row"><button type="submit" class="btn btn-lg btn-block btn-success btn-talent">Find Candidates &nbsp; <span class="hidden-xs"><i class="fa fa-chevron-right"></i></span></button></div>
@@ -37,7 +37,7 @@
                               <form action="{{ url('cv/search') }}" class="form-group">
                              <div class="col-sm-8">
                                <div class="">
-                                <input placeholder="e.g Accountant Lagos" class="form-control input-lg" name="search_query"  type="text"></div>
+                                <input placeholder="e.g Accountant, Lagos" class="form-control input-lg" name="search_query"  type="text"></div>
                              </div>
                              <div class="col-sm-4">
                                <div class=""><a href="cv-search.php" class="no-bod-rad btn btn-lg btn-block btn-warning btn-lg no-bod-rad">Find Candidates &nbsp; <i class="fa fa-chevron-right"></i></a></div>

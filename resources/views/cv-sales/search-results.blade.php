@@ -30,7 +30,7 @@
                       
                        <div class="form-lg">
                          <div class="col-xs-10">
-                           <div class="row"><input placeholder="e.g Accountant Lagos" name="search_query" id="search_query" value="{{ $search_query }}" class="form-control input-lg input-talent" type="text"></div>
+                           <div class="row"><input placeholder="e.g Accountant, Lagos" name="search_query" id="search_query" value="{{ $search_query }}" class="form-control input-lg input-talent" type="text"></div>
                          </div>
                          <div class="col-xs-2">
                            <div class="row">

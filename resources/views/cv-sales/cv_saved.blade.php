@@ -28,7 +28,7 @@
                     <form id="form-cv-search" action="{{ url('cv/search') }}" class="form-group collapse"><br>
                        <div class="form-lg">
                          <div class="col-xs-10">
-                           <div class="row"><input placeholder="e.g Accountant Lagos" value="" class="form-control input-lg input-talent" type="text" name="search_query"></div>
+                           <div class="row"><input placeholder="e.g Accountant, Lagos" value="" class="form-control input-lg input-talent" type="text" name="search_query"></div>
                          </div>
                          <div class="col-xs-2">
                            <div class="row">

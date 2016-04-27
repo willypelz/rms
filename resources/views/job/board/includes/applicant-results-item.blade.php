@@ -2,15 +2,16 @@
                       
   @foreach( @$result['response']['docs'] as $cv )
   
-  <hr>
+  
   <div class="comment media" data-cv="{{ $cv['id'] }}">
+  <hr>
       <span class="col-md-2 col-sm-3">
         <a href="{{ route('applicant-profile', $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] ) }}" target="_blank"  class="pull-left">
             <img alt="" src="{{ default_picture( $cv ) }}" class="media-object " width="100%">
         </a>
       </span>
       <div class="media-body">
-          <input type="checkbox" class="media-body-check pull-right">
+          <input type="checkbox" class="media-body-check check-applicant pull-right">
           <h4 class="media-heading text-muted"><a href="{{ route('applicant-profile', $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] ) }}" target="_blank">{{ ucwords( $cv['first_name']. " " . $cv['last_name'] ) }}</a>
           </h4>
           <p>{{ @$cv['last_position'].' at '.@$cv['last_company_worked'] }}</p>

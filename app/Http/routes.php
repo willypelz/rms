@@ -359,6 +359,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('modal/background-check', [ 'as' => 'modal-background-check', 'uses' => 'JobApplicationsController@modalBackgroundCheck' ]);
     Route::get('modal/medical-check', [ 'as' => 'modal-medical-check', 'uses' => 'JobApplicationsController@modalMedicalCheck' ]);
 
+    Route::get('job/get_all_applicant_status', [ 'as' => 'get-all-applicant-status', 'uses' => 'JobApplicationsController@getAllApplicantStatus' ]);
+
     
 
     

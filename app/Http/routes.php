@@ -276,6 +276,15 @@ Route::group(['middleware' => 'web'], function () {
 
     });
 
+    Route::get('/test-mail', function(){
+
+        dd(Mail::send('emails.sample', ['name' => 'Deji Lana'], function ($m){
+                $m->from('alerts@insidify.com', 'Ndidi, Insidify.com');
+
+                $m->to('deji@insidify.com', 'Deji Lana')->subject('Your Reminder!');
+            }));
+    });
+
 
     Route::get('/migrate-inf', 'TalentPoolController@MigrateInfrastructure');
     Route::get('/migrate-inf2', 'TalentPoolController@InfMigrate2');

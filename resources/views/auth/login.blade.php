@@ -1,10 +1,12 @@
+
+
 @extends('layout.template-default')
 
 @section('navbar')
     
 @show()
-
 @section('content')
+
 <style>
     
     body{
@@ -18,8 +20,8 @@
             <div class="row">
 
                 <div class="col-sm-4 col-sm-offset-4 text-center text-white">
-                    <h2 class="text-brandon text-light">Seamless Hiring</h2>
-                    <p class="">Everything You Need To Hire, In One Place!</p>
+                    <h2 class=""><img src="{{ url('/') }}/img/logomark.png" alt=""></h2><br>    
+                    <!-- <p class="">Everything You Need To Hire, In One Place!</p> -->
                 </div>
 
                 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">

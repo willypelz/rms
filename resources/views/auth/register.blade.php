@@ -43,9 +43,9 @@
         <div class="container">
             <div class="row">
 
-                <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-center text-white">
-                    <h2 class="text-brandon text-light">Seamless Hiring</h2>
-                    <p class="">Africa's fastest growing network of professionals</p><br>
+                <div class="col-sm-4 col-sm-offset-4 text-center text-white">
+                    <h2 class=""><img src="{{ url('/') }}/img/logomark.png" alt=""></h2><br>    
+                    <!-- <p class="">Everything You Need To Hire, In One Place!</p> -->
                 </div>
 
                 <div class="col-sm-8 col-sm-offset-2">

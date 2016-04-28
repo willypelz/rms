@@ -25,11 +25,13 @@
  		$( '#viewModal' ).modal('toggle');
  	});
 
+  $field = $(this);
  	$('body #shortlistBtn').on('click',function(){
  		
  		$.post("{{ route('mass-action') }}", {job_id: '{{ $appl->job->id }}',cv_ids :  ["{{ $cv_id }}"],status: 'PENDING' },function(data){
 
  				$( '#viewModal' ).modal('toggle');
+        $.growl.notice({ message: "You have returned " + $field.closest('.modal-body').find('.media-heading a').text() + " to all" });
             
         });
 

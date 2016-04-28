@@ -57,18 +57,16 @@
                                             <a title="Make Comment on Applicant" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Comment" data-view="{{ route('modal-comment') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="normal" class="btn btn-line" role="button"><i class="fa fa-comment-o no-margin"></i></a> 
                                             <a title="Enlist Applicant for an interview"  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview" data-view="{{ route('modal-interview') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="normal" class="btn btn-line" role="button"><i class="fa fa-file-text-o no-margin"></i></a> 
 
-                                            <a title="Assess Applicant"  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Assess" data-view="{{ route('modal-assess') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide" class="btn btn-line" role="button"><i class="fa fa-question-circle no-margin"></i></a>
+                                            <a title="Test Applicant"  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Test" data-view="{{ route('modal-assess') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide" class="btn btn-line" role="button"><i class="fa fa-question-circle no-margin"></i></a>
 
                                           <div class="btn-group" role="group"> 
 
                                             <a href="#" class="btn btn-line dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-caret-down"></i> </a> 
                                             
                                               <ul class="dropdown-menu">
-                                                  <li><a href="#">Interview</a></li>
-                                                  <li><a href="#">Assign to new Job</a></li>
                                                   <li><a  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Reject" data-view="{{ route('modal-reject') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide">Reject</a></li>
-                                                  <li><a href="#">Background Check</a></li>
-                                                  <li><a href="#">Medicals</a></li>
+                                                  <li><a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Background Check" data-view="{{ route('modal-background-check') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide">Background Check</a></li>
+                                                  <li><a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Medical Check" data-view="{{ route('modal-medical-check') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide">Medicals</a></li>
                                               </ul> 
                                           </div> 
                                         </div>

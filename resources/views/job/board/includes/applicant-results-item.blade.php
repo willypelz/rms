@@ -27,7 +27,7 @@
               <!-- <a href="#" data-toggle="modal" data-target="#reviewCv[data-user='{{ @$cv['id'] }}']" id="reviewBtn-{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}">Comment</a> -->
               <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Comment" data-view="{{ route('modal-comment') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Comment</a>
               <span class="text-muted">·</span>
-              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Assess" data-view="{{ route('modal-assess') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="wide">Test</a>
+              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Test" data-view="{{ route('modal-assess') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="wide">Test</a>
               <span class="text-muted">·</span>
               <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview" data-view="{{ route('modal-interview') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Interview</a>
               <span class="text-muted">·</span>
@@ -35,17 +35,6 @@
               <span class="text-muted">·</span>
               <a data-toggle="modal" class="text-danger" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Reject?" data-view="{{ route('modal-reject') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Reject</a>
               
-              <ul class="nav">
-    <li class="dropdown">
-        <a class="dropdown-toggle disabled" href="http://google.com">
-            Dropdown <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu">
-            <li><a href="#">Link 1</a></li>
-            <li><a href="#">Link 2</a></li>
-        </ul>
-    </li>
-</ul>
               <span class="pull-right hide">
                   <a class="text-muted" href="#">Background Check</a>
                   <span class="text-muted">·</span>
@@ -58,7 +47,7 @@
   </div>
 
 
-<div class="modal fade" tabindex="-1" id="reviewCv" data-user="{{ @$cv['id'] }}" role="dialog" aria-labelledby="reviewCv">
+<!-- <div class="modal fade" tabindex="-1" id="reviewCv" data-user="{{ @$cv['id'] }}" role="dialog" aria-labelledby="reviewCv">
       <div class="modal-dialog">
         <div class="modal-content">
 
@@ -89,7 +78,7 @@
          </section>
         </div>
       </div>
-    </div>
+    </div> -->
 <!--script>
     $(document).ready(function(){
 

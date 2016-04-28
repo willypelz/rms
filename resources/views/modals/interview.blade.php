@@ -45,9 +45,11 @@
  						date:  $('#interview-time').val(),
  						message:  $('#interview-message').val()
  					};
+        $field = $(this);
  		$.post("{{ route('invite-for-interview') }}", data ,function(data){
 
  				$( '#viewModal' ).modal('toggle');
+        $.growl.notice({ message: "You have scheduled " + $field.closest('.modal-body').find('.media-heading a').text() + " for an interview" });
             
         });
 

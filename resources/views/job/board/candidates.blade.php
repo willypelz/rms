@@ -506,7 +506,9 @@
                     $('.search-results .media-body input[type=checkbox]').prop('checked', false);
                     $('#h_act-on').fadeOut();
                     $(document).getAllStatus();
-                    console.log("You have" + $field.data('action') + " " + cv_ids.length + " applicant(s) " );
+
+                    $.growl.notice({ message: "You have " + $field.data('action').toLowerCase() + " " + cv_ids.length + " applicant(s) " });
+                    
                     //$('#status_filters a[data-value="' + $field.data('action') + '"]').trigger('click');
                 });
 

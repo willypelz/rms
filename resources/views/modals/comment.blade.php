@@ -21,7 +21,9 @@
             $field = $(this);
             $.post("{{ route('write-review') }}", {job_id: '{{ $jobID }}',comment :  $('body textarea[data-app-id="' + $field.data('app-id') + '"]').val() ,job_app_id: $field.data('app-id') },function(data){
                     // $('#reviewBtn-' + $field.data('app-id') ).trigger('click');
-                    $( '#reviewCv[data-user="' + $field.data('cv') + '"]' ).modal('toggle');
+                    
+                    $( '#viewModal' ).modal('toggle');
+                    $.growl.notice({ message: "You have commented on " + $field.closest('.modal-body').find('.media-heading a').text() });
                 });
         });
     });

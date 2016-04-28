@@ -40,11 +40,11 @@
                                 <input placeholder="e.g Accountant, Lagos" class="form-control input-lg" name="search_query"  type="text"></div>
                              </div>
                              <div class="col-sm-4">
-                               <div class=""><a href="cv-search.php" class="no-bod-rad btn btn-lg btn-block btn-warning btn-lg no-bod-rad">Find Candidates &nbsp; <i class="fa fa-chevron-right"></i></a></div>
+                               <div class=""><button type="submit" style="padding:10px 0" class="no-bod-rad btn btn-block btn-warning no-bod-rad">Find Candidates &nbsp; <i class="fa fa-chevron-right"></i></button></div>
                              </div>
                              </form>
                            </div>
-                        <div class="col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
+                        <div class="col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2 hidden-xs">
                               <div class="separator separator-small"></div>
                               <!-- <p class="text-center fa-3x">&#9661;</p> -->
                               <div class="col-sm-7">

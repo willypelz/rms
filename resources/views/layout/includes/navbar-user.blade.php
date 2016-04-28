@@ -8,7 +8,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ url('/') }}">Seamless Hiring</a>
+                <a class="navbar-brand" href="{{ url('/') }}" title="SeamlessHiring Homepage"></a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -43,22 +43,6 @@
                 </ul>
 
                     <ul class="nav navbar-nav navbar-right">
-
-                    <!-- <li class="dropdown">
-                        <a class="animated tada dropdown-toggle" id="dropBell" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <span class="label label-danger label-sm">3</span>
-                            <i class="fa fa-shopping-cart fa-lg"></i>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropBell"> 
-                            <li><a href="setting.php">View Cart</a></li> 
-
-                            <li role="separator" class="divider"></li> 
-
-                            <li class="col-xs-12"><button class="btn btn-block btn-danger" href="_index.php">Pay Now</button></li> 
-                        </ul> 
-                    </li> -->
-                    
-
 
                         <li>
                             <a class="btn btn-danger" href="{{ url('pricing') }}" >Upgrade</a>

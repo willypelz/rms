@@ -2,7 +2,6 @@
 
 @section('content')
 {{-- */ $can_purchase = true /* --}}
-{{-- */ $page = 'saved' /* --}}
 <style type="text/css">
   .see-more{display: none;}
   .see-more-shown{ display: block; }

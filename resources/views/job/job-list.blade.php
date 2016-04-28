@@ -73,16 +73,16 @@
                                     <span class="number">--</span><br/>Hired
                                 </div>
                                 <div class="job-item ">
-                                    <span class="number">--</span><br/>Assessed
+                                    <span class="number">--</span><br/>Tested
                                 </div>
                                 <div class="job-item ">
                                     <span class="number">--</span><br/>Interviewed
                                 </div>
                                 <div class="job-item ">
-                                    <span class="number text-muted">--</span><br/>Reviewed
+                                    <span class="number text-muted">--</span><br/>Shortlisted
                                 </div>
                                 <div class="job-item  purple">
-                                    <span class="number text-muted">--</span><br/>New
+                                    <span class="number text-muted">--</span><br/>All
                                 </div>
                                 <div class="clearfix"></div>
 

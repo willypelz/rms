@@ -3,7 +3,7 @@
 @section('content')
 {{-- Auth::user()->companies[0]->id --}}
 {{-- dd($result) --}}
-{{-- */ $page = 'pool' /* --}}
+
 <style type="text/css">
   .see-more{display: none;}
   .see-more-shown{ display: block; }
@@ -47,16 +47,12 @@
                     </form><br>
                     <a href="#form-cv-search" data-toggle="collapse" aria-expanded="false" aria-controls="form-cv-search" class="btn btn-success pull-right"><i class="fa fa-search-plus"></i> Find New Candidate</a>
                 </div>
-                    <!-- <div class="col-xs-3"><br>
+                    <div class="col-xs-3"><br>
                       <div class="dropdown">
-                        <a href="" class="btn btn-block btn-line dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cloud-upload"></i> Upload CV to Folder &nbsp; <i class="fa fa-caret-down"></i></a>
-                              <ul class="dropdown-menu">
-                                <li><a href="#">Medical</a></li>
-                                <li><a href="#">Designers</a></li>
-                                <li><a href="#">Expatriate </a></li>
-                              </ul>
+                        <a href="{{ route('add-candidates', false) }}" class="btn btn-block btn-line dropdown-toggle" ><i class="fa fa-cloud-upload"></i> Upload CV to Folder &nbsp;</a>
+                              
                       </div>
-                    </div> -->
+                    </div>
             </div>
 
         </div>
@@ -101,8 +97,9 @@
 
                     </ul>
 
-              </div> <!--/tab-content-->
 
+              </div> <!--/tab-content-->
+                  <ul id="pagination" class="pagination-sm"></ul>
             </div>
             <!-- End of col-9 -->
 

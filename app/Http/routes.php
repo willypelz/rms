@@ -352,6 +352,10 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('modal/shortlist', [ 'as' => 'modal-shortlist', 'uses' => 'JobApplicationsController@modalShortlist' ]);
 
+    Route::get('modal/return-to-all', [ 'as' => 'modal-return-to-all', 'uses' => 'JobApplicationsController@modalReturnToAll' ]);
+
+    
+
     Route::get('modal/reject', [ 'as' => 'modal-reject', 'uses' => 'JobApplicationsController@modalReject' ]);
 
     Route::get('modal/interview', [ 'as' => 'modal-interview', 'uses' => 'JobApplicationsController@modalInterview' ]);

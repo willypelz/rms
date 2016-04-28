@@ -31,8 +31,21 @@
               <span class="text-muted">·</span>
               <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview" data-view="{{ route('modal-interview') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Interview</a>
               <span class="text-muted">·</span>
+              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Do you want to return to all?" data-view="{{ route('modal-return-to-all') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Return</a>
+              <span class="text-muted">·</span>
               <a data-toggle="modal" class="text-danger" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Reject?" data-view="{{ route('modal-reject') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Reject</a>
-
+              
+              <ul class="nav">
+    <li class="dropdown">
+        <a class="dropdown-toggle disabled" href="http://google.com">
+            Dropdown <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="#">Link 1</a></li>
+            <li><a href="#">Link 2</a></li>
+        </ul>
+    </li>
+</ul>
               <span class="pull-right hide">
                   <a class="text-muted" href="#">Background Check</a>
                   <span class="text-muted">·</span>
@@ -139,16 +152,38 @@
 @endforeach
 
 <script type="text/javascript">
-    
-    $(document).ready(function(){
-      // total_candidates = "{{ $result['response']['numFound'] }}";
+  total_candidates = "{{ $result['response']['numFound'] }}";
+  
+  $(document).ready(function(){
+        if($('#pagination').data("twbs-pagination")){
+            $('#pagination').twbsPagination('destroy');
+        }
 
-      // if($('#pagination').data("twbs-pagination")){
-      //       $('#pagination').twbsPagination('destroy');
-      //   }
-      
+       $('#pagination').twbsPagination({
+        totalPages: "{{ ceil( $result['response']['numFound'] / 20 ) }}",
+        visiblePages: 5,
+        initiateStartPageClick: false,
+        startPage: parseInt( "{{ ( intval( $start / 20 ) + 1 ) }}" ),
+        onPageClick: function (event, page) {
+          // console.log(page,filters);
+            scrollTo('.job-progress-xs')
+            $('#page-content').text('Page ' + page);
+            $('.result-label').html('')
+            $('#pagination').hide();
+            $('.search-results').html('{!! preloader() !!}');
+            var url = "{{ (@$is_saved) ? url('cv/saved') : url('cv/search')   }}";
+            var pagination_url = "{{ route('job-candidates', $jobID) }}";
+            $.get(pagination_url, {search_query: $('#search_query').val(), start: ( page - 1 ) , filter_query : filters,status : status_filter },function(data){
+                //console.log(response);
+                // var response = JSON.parse(data);
+                // console.log(data.search_results);
+                $('.result-label').html(data.showing)
+                $('.search-results').html(data.search_results);
+                $('#pagination').show();
+            });
+        }
     });
-
+  });
 </script>
 
 

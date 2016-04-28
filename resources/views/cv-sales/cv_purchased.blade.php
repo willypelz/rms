@@ -2,8 +2,6 @@
 
 @section('content')
 {{ Auth::user()->companies[0]->id }}
-
-{{-- */ $page = 'purchased' /* --}}
 <style type="text/css">
   .see-more{display: none;}
   .see-more-shown{ display: block; }

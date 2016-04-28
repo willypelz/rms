@@ -41,10 +41,7 @@ class CvSalesController extends Controller
                 $this->search_params['q'] = $request->search_query;
             }
 
-            if( $request->start )
-            {
-                $this->search_params['start'] = $request->start;
-            }
+            $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start * $this->search_params['row'] ) : 0;
             
             
             $this->search_params['filter_query'] = @$request->filter_query;
@@ -63,13 +60,13 @@ class CvSalesController extends Controller
         // $in_cart = in_array('26618', $ids);
             if($request->ajax())
             {
-                $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids])->render();    
+                $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'search'])->render();    
                 $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query])->render();
                 return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters ] );
                 
             }
             else{
-                return view('cv-sales.search-results',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids ]);
+                return view('cv-sales.search-results',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'search' ]);
             }
             
     }
@@ -403,10 +400,8 @@ class CvSalesController extends Controller
     {
         $this->search_params['q'] = ( $request->search_query && trim( $request->search_query ) != '' ) ? $request->search_query : '*' ;
 
-        if( $request->start )
-        {
-            $this->search_params['start'] = $request->start;
-        }
+        $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start * $this->search_params['row'] ) : 0;
+
         
         
         $this->search_params['filter_query'] = @$request->filter_query;
@@ -428,13 +423,13 @@ class CvSalesController extends Controller
         if($request->ajax())
         {
             
-            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'is_saved' => true])->render();    
+            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'saved',  'is_saved' => true])->render();    
             $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters ] );
             
         }
         else{
-            return view('cv-sales.cv_saved',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'is_saved' => true ]);
+            return view('cv-sales.cv_saved',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'saved',  'is_saved' => true ]);
         }
         // return view('cv-sales.cv_saved');
     }
@@ -443,10 +438,7 @@ class CvSalesController extends Controller
     {
         $this->search_params['q'] = ( $request->search_query && trim( $request->search_query ) != '' ) ? $request->search_query : '*' ;
 
-        if( $request->start )
-        {
-            $this->search_params['start'] = $request->start;
-        }
+        $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start * $this->search_params['row'] ) : 0;
         
         
         $this->search_params['filter_query'] = @$request->filter_query;
@@ -468,13 +460,13 @@ class CvSalesController extends Controller
         if($request->ajax())
         {
             
-            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'is_saved' => true])->render();    
+            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'purchased',  'is_saved' => true])->render();    
             $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters ] );
             
         }
         else{
-            return view('cv-sales.cv_purchased',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'is_saved' => true ]);
+            return view('cv-sales.cv_purchased',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'purchased',  'is_saved' => true ]);
         }
         // return view('cv-sales.cv_saved');
     }
@@ -483,10 +475,7 @@ class CvSalesController extends Controller
     {
         $this->search_params['q'] = ( $request->search_query && trim( $request->search_query ) != '' ) ? $request->search_query : '*' ;
 
-        if( $request->start )
-        {
-            $this->search_params['start'] = $request->start;
-        }
+        $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start * $this->search_params['row'] ) : 0;
         
         
         $this->search_params['filter_query'] = @$request->filter_query;
@@ -508,13 +497,13 @@ class CvSalesController extends Controller
         if($request->ajax())
         {
             
-            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'is_saved' => true])->render();    
+            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true])->render();    
             $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters ] );
             
         }
         else{
-            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'is_saved' => true ]);
+            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true ]);
         }
         // return view('cv-sales.cv_saved');
     }

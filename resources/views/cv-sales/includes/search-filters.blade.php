@@ -20,7 +20,7 @@
                 <input type="text" class="form-control" id="search_keyword" placeholder="keyword">
                 <a class="btn btn-small input-group-addon" href="#" onclick="searchKeyword(); return false;" >GO</a>
               </div>
-              <p>--</p> 
+              <p></p> 
 
               @if(@$is_saved)
 
@@ -46,7 +46,7 @@
                     @if($index > 4)
                       <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
                     @endif
-                    <p>--</p>
+                    <p></p>
 
               @endif
 
@@ -76,7 +76,7 @@
               @if($index > 4)
                 <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
               @endif
-              <p>--</p>
+              <p></p>
 
             <p class="border-bottom-thin text-muted">Marital Status<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
               <div class="checkbox-inline">
@@ -100,7 +100,7 @@
               @if($index > 4)
                 <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
               @endif
-            <p>--</p>
+            <p></p>
 
             <p class="border-bottom-thin text-muted">Last Position<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
               <div class="checkbox-inline">
@@ -125,7 +125,7 @@
                 <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
               @endif
 
-            <p>--</p>
+            <p></p>
 
             <p class="border-bottom-thin text-muted">Last Company Worked<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
               <div class="checkbox-inline">
@@ -150,7 +150,7 @@
                 <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
               @endif
 
-            <p>--</p>
+            <p></p>
 
             <p class="border-bottom-thin text-muted">State of Origin<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
               <div class="checkbox-inline">

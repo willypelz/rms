@@ -15,7 +15,6 @@
 
 {{  Session::put('url.intended', url()->full() ) }}
 {{-- */ $can_purchase = true /* --}}
-{{-- */ $page = 'search' /* --}}
 
             <div class="row">
                 <div class="col-md-6 hidden-sm hidden-xs">

@@ -191,13 +191,13 @@ class JobApplicationsController extends Controller
                     <span class="number">'.$application_statuses['HIRED'].'</span><br/>Hired
                 </div>
                 <div class="job-item ">
-                    <span class="number">'.$application_statuses['ASSESSED'].'</span><br/>Assessed
+                    <span class="number">'.$application_statuses['ASSESSED'].'</span><br/>Tested
                 </div>
                 <div class="job-item ">
                     <span class="number">'.$application_statuses['INTERVIEWED'].'</span><br/>Interviewed
                 </div>
                 <div class="job-item ">
-                    <span class="number text-muted">'.$application_statuses['SHORTLISTED'].'</span><br/>Reviewed
+                    <span class="number text-muted">'.$application_statuses['SHORTLISTED'].'</span><br/>Shortlisted
                 </div>
                 <div class="job-item  purple">
                     <span class="number text-muted">'.$result['response']['numFound'].'</span><br/>All
@@ -284,6 +284,18 @@ class JobApplicationsController extends Controller
 
         return view('modals.shortlist', compact('applicant_badge','app_id','cv_id','appl'));
     }
+
+    public function modalReturnToAll(Request $request)
+    {
+        
+        $app_id = @$request->app_id;
+        $cv_id = @$request->cv_id;
+        $appl = JobApplication::with('job', 'cv')->find($app_id);
+        $applicant_badge = @$this->getApplicantBadge($appl->cv);
+
+        return view('modals.return_to_all', compact('applicant_badge','app_id','cv_id','appl'));
+    }
+
 
     public function modalReject(Request $request)
     {

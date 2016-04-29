@@ -25,12 +25,13 @@
  		$( '#viewModal' ).modal('toggle');
  	});
 
+  $field = $(this);
  	$('body #shortlistBtn').on('click',function(){
- 		$field = $(this);
- 		$.post("{{ route('mass-action') }}", {job_id: '{{ $appl->job->id }}',cv_ids :  ["{{ $cv_id }}"],status: 'SHORTLISTED' },function(data){
+ 		
+ 		$.post("{{ route('mass-action') }}", {job_id: '{{ $appl->job->id }}',cv_ids :  ["{{ $cv_id }}"],status: 'PENDING' },function(data){
 
  				$( '#viewModal' ).modal('toggle');
-        $.growl.notice({ message: "You have shorlisted " + $field.closest('.modal-body').find('.media-heading a').text() });
+        $.growl.notice({ message: "You have returned " + $field.closest('.modal-body').find('.media-heading a').text() + " to all" });
             
         });
 

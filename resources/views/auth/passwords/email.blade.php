@@ -6,6 +6,14 @@
 @show()
 
 @section('content')
+<style>
+    
+    body{
+        background:url('img/intro-bg.jpg') no-repeat fixed ;
+        background-size:cover;
+    }
+
+</style>
 
 <!-- Main Content -->
 <section>
@@ -13,7 +21,7 @@
             <div class="row">
 
                 <div class="col-sm-4 col-sm-offset-4 text-center">
-                    <h2 class="text-brandon text-light">Seamless Hiring</h2>
+                    <h2 class="text-brandon text-light"><img src="{{ url('/') }}/img/logomark.png" alt=""></h2>
                     <p class="">Your Password Reset</p>
                 </div>
 

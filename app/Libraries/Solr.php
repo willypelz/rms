@@ -124,7 +124,7 @@ class Solr {
 		// $additional = "&fq=company_folder_id:". @Auth::user()->companies[0]->id;
 		
 		
-		$additional = "&fq=(job_id:(".  implode('+', Job::getMyJobIds() )  .")+OR+company_folder_id:". @Auth::user()->companies[0]->id .")";
+		$additional = "&fq=(job_id:(".  implode('+', Job::getMyJobIds() )  .")+OR+company_folder_id:". @Auth::user()->companies[0]->id .")"."&fq=-folder_type:saved";
 
 		return Solr::search_resume($data, $additional);
 	}

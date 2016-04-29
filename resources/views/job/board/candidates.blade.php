@@ -506,7 +506,9 @@
                     $('.search-results .media-body input[type=checkbox]').prop('checked', false);
                     $('#h_act-on').fadeOut();
                     $(document).getAllStatus();
-                    console.log("You have" + $field.data('action') + " " + cv_ids.length + " applicant(s) " );
+
+                    $.growl.notice({ message: "You have " + $field.data('action').toLowerCase() + " " + cv_ids.length + " applicant(s) " });
+                    
                     //$('#status_filters a[data-value="' + $field.data('action') + '"]').trigger('click');
                 });
 
@@ -562,38 +564,6 @@
 </script>
 
 
-<script type="text/javascript">
-  total_candidates = "{{ $result['response']['numFound'] }}";
-  $(document).ready(function(){
-        if($('#pagination').data("twbs-pagination")){
-            $('#pagination').twbsPagination('destroy');
-        }
 
-       $('#pagination').twbsPagination({
-        totalPages: "{{ ceil( $result['response']['numFound'] / 20 ) }}",
-        visiblePages: 5,
-        initiateStartPageClick: false,
-        // startPage: data.page,
-        onPageClick: function (event, page) {
-          // console.log(page,filters);
-            scrollTo('.job-progress-xs')
-            $('#page-content').text('Page ' + page);
-            $('.result-label').html('')
-            $('#pagination').hide();
-            $('.search-results').html('{!! preloader() !!}');
-            var url = "{{ (@$is_saved) ? url('cv/saved') : url('cv/search')   }}";
-            var pagination_url = "{{ route('job-candidates', $jobID) }}";
-            $.get(pagination_url, {search_query: $('#search_query').val(), start: ( page - 1 ) , filter_query : filters,status : status_filter },function(data){
-                //console.log(response);
-                // var response = JSON.parse(data);
-                // console.log(data.search_results);
-                $('.result-label').html(data.showing)
-                $('.search-results').html(data.search_results);
-                $('#pagination').show();
-            });
-        }
-    });
-  });
-</script>
 
 @endsection

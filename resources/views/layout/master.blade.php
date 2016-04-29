@@ -7,6 +7,7 @@
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <script src="{{ asset('js/jquery-1.11.1.min.js') }}"></script>
+<link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.growl.css') }}" />
 
 <script type="text/javascript">
 	$(function () {

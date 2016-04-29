@@ -114,6 +114,7 @@ class JobApplicationsController extends Controller
     {
         $job = Job::find($request->jobID);
         $active_tab = 'candidates';
+        $status = '';
         $jobID = $request->jobID;
 
         $this->search_params['filter_query'] = @$request->filter_query;
@@ -121,6 +122,8 @@ class JobApplicationsController extends Controller
         
         
         $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status); 
+        if(isset($request->status))
+            $status = $request->status;
 
         $end = (($start + $this->search_params['row']) > intval($result['response']['numFound']))?$result['response']['numFound']:($start + $this->search_params['row']);
         $showing = "Showing ".($start+1)." - ".$end." of ".$result['response']['numFound']." Applicants [Page ".floor($request->start + 1)."]";
@@ -141,14 +144,14 @@ class JobApplicationsController extends Controller
 
         if($request->ajax())
         {
-            $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab','result','jobID','start'))->render();    
+            $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab', 'status', 'result','jobID','start'))->render();    
             $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing ] );
             
         }
         else{
             $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
-            return view('job.board.candidates', compact('job', 'active_tab','result','application_statuses','jobID','start'));
+            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start'));
         }
 
         

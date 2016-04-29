@@ -174,23 +174,23 @@
 
 
                 <div class="col-md-3">
-                   <h5>Share this job publishing on LinkedIn, Twitter, Facebook.</h5>
+                   <h5>Follow us on LinkedIn, Twitter, Facebook.</h5>
                
-                           <a href="" class="">
+                           <a href="http://facebook.com" class="">
                                    <span class="fa-stack fa-lg">
                                      <i class="fa fa-circle fa-stack-2x text-"></i>
                                      <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
                                    </span>
                            </a>
                
-                           <a href="" class="">
+                           <a href="http://twitter.com" class="">
                                    <span class="fa-stack fa-lg">
                                      <i class="fa fa-circle fa-stack-2x text-"></i>
                                      <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
                                    </span>
                            </a>
                
-                           <a href="" class="">
+                           <a href="http://linkedin.com" class="">
                                    <span class="fa-stack fa-lg">
                                      <i class="fa fa-circle fa-stack-2x text-"></i>
                                      <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>

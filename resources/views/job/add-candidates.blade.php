@@ -24,7 +24,7 @@
                         @if(!empty($job))   
                             Job Creation
                         @else
-                            Talent Pool
+                            Upload CVs to Your Talent Pool
                         @endif    
                     </h4><br>
                     <div class="page">
@@ -65,12 +65,12 @@
                                     <p> You can find candidates from our massive database of professionals OR from your own database.</p>
                                 @else
                                     <h4 class="text-center">Add Candidates to your Talent Pool</h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                    <!--p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p-->
 
                                 @endif    
                                 <hr>
 
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-6 @if(empty($job)) col-sm-offset-3 @endif">
                                     <p>
                                             Do you already have relevant resumes in a folder somewhere?
                                             Upload them here and add them to your pool of applicants.
@@ -138,7 +138,9 @@
                                             Importing Candidates
                                         </h5>
 
+                                        @if(!empty($job)) 
                                         <div class="col-sm-12"><hr><a href="{{ route('job-board', $jobid) }}" class="pull-right btn btn-danger btn-cart-checkout">Go to Job Dashbaord &raquo;</a></div>
+                                        @endif
                                     </div>
                                 </div>
 

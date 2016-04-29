@@ -72,8 +72,9 @@
                             <a aria-controls="AddTeamMember" aria-expanded="false" class="btn btn-warning" data-toggle="collapse" data-target="#AddTeamMember" href="#AddTeamMember"><i class="fa fa-user-plus"></i> Add New Member</a>
 
                             <div id="AddTeamMember" class="collapse">
-                               <div class="alert alert-success"><i class="fa fa-check fa-lg"></i>
-                                    &nbsp; Your mail has been sent. Refresh page to send more.</div>
+                               <!--div class="alert alert-success"><i class="fa fa-check fa-lg"></i>
+                                    &nbsp; Your mail has been sent. Refresh page to send more.
+                                </div-->
                                    <form action="">
 
                                    <div class="form-group">
@@ -89,7 +90,7 @@
                                        <textarea rows="10" cols="30" id="editor1" name="" style="visibility: hidden; display: none;">                                       
                                        &lt;p&gt;Hello,&lt;br&gt;
 
-                                       I would like you to join me on the recruitment team for “Job Title”.
+                                       I would like you to join me on the recruitment team for {{ $job->title }}.
 Just follow this link “http://seamlesshiring.com” and create a SeamlessHiring 
 Account for yourself that will lead you to the recruitment process.
 
@@ -106,7 +107,7 @@ Account for yourself that will lead you to the recruitment process.
                                    <br>
                                    <p>
                                        <!-- <a class="btn btn-line btn-sm" aria-controls="collapseWYSIWYG" aria-expanded="false" href="#collapseWYSIWYG" data-toggle="collapse" role="button"><i class="fa fa-times"></i> &nbsp; Cancel</a> -->
-                            <a aria-controls="AddTeamMember" aria-expanded="false" class="btn btn-line btn-sm" data-toggle="collapse" data-target="#AddTeamMember" href="#AddTeamMember"><i class="fa fa-user-plus"></i> Add New Member</a>
+                            <a aria-controls="AddTeamMember" aria-expanded="false" class="btn btn-line btn-sm" data-toggle="collapse" data-target="#AddTeamMember" href="#AddTeamMember"><i class="fa fa-user-plus"></i> Cancel</a>
 
                                        <a class="btn btn-success btn-sm pull-right" aria-controls="collapseWYSIWYG" aria-expanded="false" href="#collapseWYSIWYG" data-toggle="collapse" role="button">Send Mail &nbsp; <i class="fa fa-send"></i></a>
                                    </p>

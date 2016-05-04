@@ -42,7 +42,7 @@
                 </div>
 
                 <div class="col-md-3">
-                   <h5>Share this job publishing on LinkedIn, Twitter, Facebook.</h5>
+                   <h5>Find us on Social Media.</h5>
                
                            <a href="" class="">
                                    <span class="fa-stack fa-lg">

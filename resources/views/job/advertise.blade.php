@@ -49,9 +49,10 @@
                         <div>
                                 
                                 @if (Session::has('flash_message'))
-                                    <div class="col-xs-7">
-                                        <i class="fa fa-check"></i> {{ Session::get('flash_message') }} <br>
-                                    </div>
+                                        <div class="alert alert-info"><i class="fa fa-check">
+                                            <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+                                            </i> {{ Session::get('flash_message') }}
+                                        </div>
                                 @endif
 
                                 <div class="col-xs-5">
@@ -92,12 +93,14 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="clearfix"></div>
                             </div>
                                 <div>
                                   <div class="row">
+                                    
                                     <div class="col-xs-12">
-                                    <h3>You can multiply your talent flow by posting your jobs on these premium sites.</h3><br>
+                                    <h4>You can multiply your talent flow by posting your jobs on these premium sites.</h4><hr>
                                         <h5 class="text-brandon text-uppercase">
                                         <i class="fa fa-star"></i>&nbsp; Paid Job Boards
                                         </h5><br>
@@ -170,42 +173,83 @@
                                         @endforeach
 
                                         
-                                         <h5 class="text-brandon text-uppercase">
-                                        <i class="fa fa-star"></i>&nbsp; Paid Newspaper Ads
-                                        </h5><br>
+                                         <div class="col-xs-12">
+                                         <h5 class="text-brandon text-uppercase text-danger">
+                                             <i class="fa fa-star"></i>&nbsp; Paid Newspaper Ads
+                                             </h5><br>
+     
+                                             @foreach($newspapers as $n)
+                                             <div class="col-sm-12"> 
+                                                <div class="thumbnail">  
+                                                    <div class="caption">
+                                                <img alt="" src="{{ $n->img }}" height="45px"> <hr>
+                                                        <h4 class="">{{ $n->name }}</h4>
+                                                        <p class="small">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p> 
+                                                        <p>
+                                             
+                                                          <span class="purchase-action">
+                                                           <?php
+                                                                    if($ids != null){
+                                                                      $in_cart = in_array($b['id'], $ids);
+                                                                      // dd($b['id']);
+                                                                    }else{
+                                                                      $in_cart = "";
+                                                                    }
+                                                                ?>
+                                             
+                                                                 @if($in_cart)
+                                                                <button class="btn btn-line btn-board-discard" data-count="1" data-id="{{ $n['id'] }}" data-cost="500" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                            @else
+                                                                <a href="" class="btn btn-success btn-board-buy" data-count="1" onclick="AddBoardCart({{ $n['id'] }}, {{ $n['price'] }}, '{{ $n["name"] }}')" data-cost="{{ $n['price'] }}"><i class="fa fa-plus"></i> Post for &#8358; {{ $n['price'] }}</a>
+                                                                <button class="btn btn-line btn-board-discard collapse" data-id="{{ $n['id'] }}" data-cost="500" onclick="DeleteBoardCart({{ $n['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                              @endif
+                                                        </span>
+                                             
+                                                        </p> 
+                                                    </div> 
+                                                </div> 
+                                             </div>
+                                             @endforeach
 
-                                        @foreach($newspapers as $n)
-                                         <div class="col-sm-12"> 
+                                             <div class="row">
+
+                                             <div class="col-sm-6"> 
                                             <div class="thumbnail">  
                                                 <div class="caption">
-                                            <img alt="" src="{{ $n->img }}" height="45px"> <hr>
-                                                    <h4 class="">{{ $n->name }}</h4>
+                                            <img alt="" src="https://www.britishcouncil.org.ng/profiles/solas2/themes/britishcouncil/images/desktop/logo-british-council-color.png" height="45px"> <hr>
+                                                    <h4 class="">British Council Jobs</h4>
                                                     <p class="small">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p> 
                                                     <p>
 
-                                                      <span class="purchase-action">
-                                                       <?php
-                                                                if($ids != null){
-                                                                  $in_cart = in_array($b['id'], $ids);
-                                                                  // dd($b['id']);
-                                                                }else{
-                                                                  $in_cart = "";
-                                                                }
-                                                            ?>
-
-                                                             @if($in_cart)
-                                                            <button class="btn btn-line btn-board-discard" data-count="1" data-id="{{ $n['id'] }}" data-cost="500" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
-                                                        @else
-                                                            <a href="" class="btn btn-success btn-board-buy" data-count="1" onclick="AddBoardCart({{ $n['id'] }}, {{ $n['price'] }}, '{{ $n["name"] }}')" data-cost="{{ $n['price'] }}"><i class="fa fa-plus"></i> Post for &#8358; {{ $n['price'] }}</a>
-                                                            <button class="btn btn-line btn-board-discard collapse" data-id="{{ $n['id'] }}" data-cost="500" onclick="DeleteBoardCart({{ $n['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
-                                                          @endif
-                                                    </span>
+                                                      <span class="purchase-action">                                                                                                                                                                           <a href="" class="btn btn-primary btn-board-buy" data-count="1" onclick="AddBoardCart(4, 1000, 'British Council Jobs')" data-cost="1000"><i class="fa fa-plus"></i> Post for ₦ 1000</a>
+                                                    <button class="btn btn-line btn-board-discard collapse" data-id="4" data-count="1" data-cost="1000" onclick="DeleteBoardCart(4)"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                                                                            </span>
 
                                                     </p> 
                                                 </div> 
                                             </div> 
                                         </div>
-                                        @endforeach
+                                                                                <div class="col-sm-6"> 
+                                            <div class="thumbnail">  
+                                                <div class="caption">
+                                            <img alt="" src="http://www.jobberman.com/img/new/logo.png" height="45px"> <hr>
+                                                    <h4 class="">Jobberman</h4>
+                                                    <p class="small">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p> 
+                                                    <p>
+
+                                                      <span class="purchase-action">                                                                                                                                                                           <a href="" class="btn btn-primary btn-board-buy" data-count="1" onclick="AddBoardCart(5, 1000, 'Jobberman')" data-cost="1000"><i class="fa fa-plus"></i> Post for ₦ 1000</a>
+                                                            <button class="btn btn-line btn-board-discard collapse" data-id="5" data-count="1" data-cost="1000" onclick="DeleteBoardCart(5)"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                                                                            </span>
+
+                                                    </p> 
+                                                </div> 
+                                            </div> 
+                                        </div>
+                                                                               
+                                    </div>
+                                        </div>
+
+
                                         
                                       
                                         

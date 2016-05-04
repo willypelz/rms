@@ -41,7 +41,7 @@
                         
                         <div class="row">
                             
-                           <div class="col-sm-12">
+                           <div class="col-sm-8 col-sm-offset-2">
                                 <div class="separator separator-small">
                                    <h3 class="text-center"> Share this job!  <br>
                                        <small>We want to help you find the best talent anywhere they may be.</small>
@@ -59,62 +59,6 @@
                                        <p> <b>Use your network to attract great talent!</b><br>
                                           Maximize the power of Referrals by sending this job to everyone on your network. 
                                           </p><br>
-                            
-                            <div class="hideSendEmails"></div>
-                            <div class="collapse" id="collapseWYSIWYG">
-                               <div class="alert alert-success hidden"><i class="fa fa-check fa-lg"></i>
-                                    &nbsp; Your mail has been sent. Refresh page to send more.</div>
-                                   <form action="">
-
-                                        <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
-
-
-                                   <div class="form-group">
-                                       <label for="">From: </label>
-                                       <input class="form-control" type="text" value="{{ $company->email.', '.$company->name }}" disabled>
-                                       
-                                       <label for="">To: </label>
-                                       <small>Separate your addresses by a comma</small>
-                                       <input class="form-control" id="to_email" name="to_email" type="text" placeholder="email addresses here">
-                                   </div>
-
-                                   <label for="editor1">Body of Mail</label>
-                                       <textarea name="email_body"  id="editor1" cols="30" rows="10">
-                                       <p>Hello there, I have a job you might be interested in</p>
-                                       <hr style="width: 45%">
-                                              
-                                             Trust this email meets you well. We are currently recruiting for <b>“{{ $job->title }}”</b> at <b>“{{ $company->name }}”</b>. 
-                                             <br>
-                                             Here is a link to the job http://seamless.org 
-                                              <br>
-                                              Kindly share the job opening with qualified candidates within your network.
-                                              <br><br>
-                                            
-                                              <p>Many thanks.<br>
-                                              {{ $user->name }},<br>
-                                              {{ $company->name }}</p>
-                                              <!-- Company name. -->
-
-
-
-                                           </p>
-                                       </textarea>
-                                       <script>
-                                           // Replace the <textarea id="editor1"> with a CKEditor
-                                           // instance, using default configuration.
-                                           CKEDITOR.replace( 'editor1' );
-                                       </script>
-                                   </form>
-                                   <br>
-                                   <div style="color:red" id="ErrorMsg"></div>
-                                   <p>
-                                       <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-line btn-sm"><i class="fa fa-times"></i> &nbsp; Cancel</a>
-
-                                       <a role="button" id="ReferEmail" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-success btn-sm pull-right">Send Mail &nbsp; <i class="fa fa-send"></i></a>
-                                   </p>
-                            </div>
-
-                         
 
                                        <p>
                                            <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-line"><i class="fa fa-envelope"></i> &nbsp; Get Referrals for this job</a>
@@ -123,40 +67,7 @@
                                    </div>
                                </div>
 
-                                      <script>
-                                $('#ReferEmail').click(function(){
-                                    $(".hideSendEmails").html('<img src="{{ asset('img/loader-logo-32.gif') }}" width="30px" /> please wait...');
-
-                                    var to = $('#to_email').val()
-                                    var body = $('#editor1').val()
-                                    var token = $('#token').val()
-                                    var jobid = "{{ $job->id }}"
-
-                                    if (to == null || to == "") {
-                                        $('#ErrorMsg').html('Recipient name is missing')
-                                        return false;
-                                    }
-
-                                    var url = "{{ route('refer-job') }}"
-                                     $.ajax
-                                    ({
-                                        type: "POST",
-                                        url: url,
-                                        data: ({ rnd : Math.random() * 100000, _token:token, to:to, body:body, jobid:jobid }),
-                                        success: function(response){
-                                             if(response == 'sent'){
-                                                 $(".hideSendEmails").hide();
-                                                 $(".collapseWYSIWYG").show();
-
-                                             }
-                                        }
-                                    });
-
-
-                                })
-                                </script>
-
-                               <div class="col-md-6 text-center">
+                               <div class="col-md-6 text-right">
 
                                
                                    <p class="text-brandon text-uppercase">
@@ -204,6 +115,98 @@
                                            </a>
                                    </div>
                                 -->
+                                <div class="col-sm-12">
+                                  
+                                    
+                                    <div class="hideSendEmails"></div>
+                                    <div class="collapse" id="collapseWYSIWYG">
+                                       <div class="alert alert-success hidden"><i class="fa fa-check fa-lg"></i>
+                                            &nbsp; Your mail has been sent. Refresh page to send more.</div>
+                                           <form action="">
+
+                                                <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
+
+
+                                           <div class="form-group">
+                                               <label for="">From: </label>
+                                               <input class="form-control" type="text" value="{{ $company->email.', '.$company->name }}" disabled>
+                                               
+                                               <label for="">To: </label>
+                                               <small>Separate your addresses by a comma</small>
+                                               <input class="form-control" id="to_email" name="to_email" type="text" placeholder="email addresses here">
+                                           </div>
+
+                                           <label for="editor1">Body of Mail</label>
+                                               <textarea name="email_body"  id="editor1" cols="30" rows="10">
+                                               <p>Hello there, I have a job you might be interested in</p>
+                                               <hr style="width: 45%">
+                                                      
+                                                     Trust this email meets you well. We are currently recruiting for <b>“{{ $job->title }}”</b> at <b>“{{ $company->name }}”</b>. 
+                                                     <br>
+                                                     Here is a link to the job http://seamless.org 
+                                                      <br>
+                                                      Kindly share the job opening with qualified candidates within your network.
+                                                      <br><br>
+                                                    
+                                                      <p>Many thanks.<br>
+                                                      {{ $user->name }},<br>
+                                                      {{ $company->name }}</p>
+                                                      <!-- Company name. -->
+
+
+
+                                                   </p>
+                                               </textarea>
+                                               <script>
+                                                   // Replace the <textarea id="editor1"> with a CKEditor
+                                                   // instance, using default configuration.
+                                                   CKEDITOR.replace( 'editor1' );
+                                               </script>
+                                           </form>
+                                           <br>
+                                           <div style="color:red" id="ErrorMsg"></div>
+                                           <p>
+                                               <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-line btn-sm"><i class="fa fa-times"></i> &nbsp; Cancel</a>
+
+                                               <a role="button" id="ReferEmail" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-success btn-sm pull-right">Send Mail &nbsp; <i class="fa fa-send"></i></a>
+                                           </p>
+                                    </div>
+
+                                      <script>
+                                          $('#ReferEmail').click(function(){
+                                              $(".hideSendEmails").html('<img src="{{ asset('img/loader-logo-32.gif') }}" width="30px" /> please wait...');
+
+                                              var to = $('#to_email').val()
+                                              var body = $('#editor1').val()
+                                              var token = $('#token').val()
+                                              var jobid = "{{ $job->id }}"
+
+                                              if (to == null || to == "") {
+                                                  $('#ErrorMsg').html('Recipient name is missing')
+                                                  return false;
+                                              }
+
+                                              var url = "{{ route('refer-job') }}"
+                                               $.ajax
+                                              ({
+                                                  type: "POST",
+                                                  url: url,
+                                                  data: ({ rnd : Math.random() * 100000, _token:token, to:to, body:body, jobid:jobid }),
+                                                  success: function(response){
+                                                       if(response == 'sent'){
+                                                           $(".hideSendEmails").hide();
+                                                           $(".collapseWYSIWYG").show();
+
+                                                       }
+                                                  }
+                                              });
+
+
+                                          })
+                                    </script>
+
+                         
+                                </div>
                              
                                <!-- Job Embed -->
                                <!-- <div class="col-md-4">

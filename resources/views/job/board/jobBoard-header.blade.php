@@ -68,21 +68,21 @@
                         <div class="btn-group btn-group-justified" role="group">
                             <div  class="btn-group" role="group">
 
-                                <a href="{{ route('job-preview', $job['id']) }}" target="_blank" type="button" class="btn-sm btn btn-info status"><i class="fa fa-send"></i> &nbsp; Preview</a>
+                                <a href="{{ route('job-preview', $job['id']) }}" target="_blank" type="button" class="btn-sm btn btn-info status"><i class="fa fa-send"></i> &nbsp;Preview</a>
                             </div>
                             <div  class="btn-group" role="group">
-                                <a href="{{ route('edit-job', [$job['id']] ) }}" type="button" class="btn-sm btn btn-info status"><i class="fa fa-pencil"></i> &nbsp; Edit Details</a>
+                                <a href="{{ route('edit-job', [$job['id']] ) }}" type="button" class="btn-sm btn btn-info status"><i class="fa fa-pencil"></i> &nbsp;Edit Details</a>
                             </div>
                             <div class="btn-group" role="group">
                                 
                                 @if($job['status'] == 'ACTIVE')
-                                    <a href="" id="statusBtn"  type="button" class="btn-sm btn btn-danger status" onclick="UnPublish(1); return false;" ><i class="fa fa-ban"></i> &nbsp; Unpublish Job</a>
+                                    <a href="" id="statusBtn"  type="button" class="btn-sm btn btn-danger status" onclick="UnPublish(1); return false;" ><i class="fa fa-ban"></i> &nbsp;Unpublish Job</a>
                                 @elseif($job['status'] == 'DRAFT')
-                                    <a href="" id="statusBtn" type="button" class="btn-sm btn btn-success status" onclick="Publish(2); return false;" ><i class="fa fa-ban"></i> &nbsp; Publish Job</a>
+                                    <a href="" id="statusBtn" type="button" class="btn-sm btn btn-success status" onclick="Publish(2); return false;" ><i class="fa fa-ban"></i> &nbsp;Publish Job</a>
                                 @elseif($job['status'] == 'SUSPENDED')
-                                    <a href="" id="statusBtn" type="button" class="btn-sm btn btn-success status" onclick="Publish(2); return false;" ><i class="fa fa-ban"></i> &nbsp; Publish Job</a>
+                                    <a href="" id="statusBtn" type="button" class="btn-sm btn btn-success status" onclick="Publish(2); return false;" ><i class="fa fa-ban"></i> &nbsp;Publish Job</a>
                                 @else
-                                    <a disabled href="" id="statusBtn"  type="button" class="btn-sm btn btn-danger status" onclick="UnPublish(1); return false;" ><i class="fa fa-ban"></i> &nbsp; Unpublish Job</a>
+                                    <a disabled href="" id="statusBtn" type="button" class="btn-sm btn btn-danger status" onclick="UnPublish(1); return false;"><i class="fa fa-ban"></i> &nbsp;Unpublish Job</a>
                                 @endif
 
                             </div>

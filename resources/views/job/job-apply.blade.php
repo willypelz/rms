@@ -347,8 +347,9 @@
                                 <!--/tab-content-->
                                 <div class="page page-sm foot no-bod-rad">
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                                        <p>Powered by <a href="http://www.seamlesshiring.com"><i class="fa fa-skype"></i> Seamless Hiring</a> <br>
-                                        <small class="text-muted">&copy; 2016. Seamless Hiring</small></p>
+                                        <p><img src="{{ url('/') }}/img/logomark2.png" alt="" width="150px"> </p> 
+                                        <p><small class="text-muted">Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a> &nbsp;
+                                        &copy; 2016. Seamless Hiring</small></p>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>

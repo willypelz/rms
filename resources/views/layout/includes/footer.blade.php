@@ -174,7 +174,7 @@
 
 
                 <div class="col-md-3">
-                   <h5>Follow us on LinkedIn, Twitter, Facebook.</h5>
+                   <h5>Find us on Social Media.</h5>
                
                            <a href="http://facebook.com" class="">
                                    <span class="fa-stack fa-lg">

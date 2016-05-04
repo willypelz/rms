@@ -5,22 +5,13 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
 
   <div class="separator separator-small"></div>
-    <section class="s-div green about hidden">
-        <div class="container">
-
-            <div class="row pagehead text-center">
-                <h1>About Us</h1>
-            </div>
-
-        </div>
-    </section>
 
     <section class="no-pad">
         <div class="container">
             <div class="row">
 
                 <div class="col-sm-12">
-                    <h4 class="no-margin text-center text-uppercase l-sp-5">
+                    <h4 class="no-margin text-center text-brandon text-uppercase l-sp-5">
                         @if(!empty($job))   
                             Job Creation
                         @else
@@ -58,11 +49,11 @@
                             
                             <div class="col-xs-12">
                                 <div class="row tab-content ">
-                                <div class="col-sm-12 text-center">
+                                <div class="col-sm-12">
 
                                 @if(!empty($job)) 
                                     <h4 class="text-center">Bring in the Databases! </h4>
-                                    <p> You can find candidates from our massive database of professionals OR from your own database.</p>
+                                    <!-- <p class="text-center"> You can find candidates from our massive database of professionals OR from your own database.</p><hr> -->
                                 @else
                                     <h4 class="text-center">Add Candidates to your Talent Pool</h4>
 
@@ -71,21 +62,21 @@
                                 
 
 
-                                    <div class="col-sm-6 @if(empty($job)) col-sm-offset-3 @endif">
+                                    <div class="col-sm-6 col-sm-offset-3 text-center @if(empty($job)) col-sm-offset-3 @endif">
 
                                     <p>
-                                            Do you already have relevant resumes in a folder somewhere?
-                                            Upload them here and add them to your pool of applicants.
+                                        Do you already have relevant resumes in a folder somewhere?
+                                        Upload them here and add them to your pool of applicants.
 
-                                        </p>
-                                       <form action="{{ route('upload-file') }}" method="post"> 
-                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                    </p><br>
+                                       <form action="{{ route('upload-file') }}" method="post" class=""> 
+                                            <div class="form-group fileinput fileinput-new input-group" data-provides="fileinput">
                                               <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
                                               <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
                                                 <input type="file" name="cv-upload-file" placeholder="zip">
                                               </span>
                                               <a href="#" class="input-group-addon  fileinput-exists btn btn-danger" style="    background-color: #d9534f; color:white;" data-dismiss="fileinput">Remove</a>
-                                            </div>
+                                            </div><br>
 
                                             <button onclick="UploadFile(); return false;" id="UploadCvFileBtn" class="btn btn-success text-capitalize">
                                                     <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Import file</span>
@@ -99,40 +90,21 @@
 
 
                                     @if(!empty($job))     
-                                    <div class="col-sm-6">
-                                        <ul class="list-group list-notify text-left">
-                                          
+                                    <div class="col-sm-5 col-sm-offset-2 hidden">
+                                        <div class="alert alert-success text-right">
+                                            <h4>We found 6315 applicants that match your job.</h4><br>
 
-                                          <li role="candidate-notifications" class="list-group-item">
+                                        <a href="{{ route('job-board', [$jobid]) }}" type="button" class="btn btn-success text-capitalize pull-right">See CVs that Match your Job</a>
 
-                                           <span class="fa-stack fa-lg i-notify">
-                                              <i class="fa fa-circle fa-stack-2x text-warning"></i>
-                                              <i class="fa fa-users fa-stack-1x fa-inverse"></i>
-                                            </span>
-
-                                            <h5 class="no-margin text-warning">Matching CVs</h5>
-                                            <p>
-                                                <br/>
-                                                <!--small class="text-muted pull-right">[Wed 12:23pm]</small-->
-                                                We found 6315 applicants that match your job.
-                                            </p>
-                                            
-                                          </li>
-
-                                         
-
-                                        </ul>
-
-                                        <a href="{{ route('job-board', [$jobid]) }}" type="button" class="btn btn-success text-capitalize"><i class="fa fa-users-md"></i>
-                                            &nbsp; <span class="hidden-xs">See CVs that Match your Job</span>
-                                        </a><p></p>
+                                        <div class="clearfix"></div>
+                                        </div>
                                         <!--p>
                                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia suscipit, enim minus pariatur vitae eum reiciendis? Laborum quasi repudiandae ad aliquam, qui veniam ex ut at eveniet iste, facere sequi.
                                         </p-->
                                     </div>
                                     @endif
 
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-12 hidden">
                                         
 
                                         <h5 class="no-margin text-center text-success hidden">
@@ -143,7 +115,7 @@
 
                                         @if(!empty($job)) 
                                         
-                                        <div class="col-sm-12"><hr><a href="{{ route('job-board', $jobid) }}" class="pull-right btn btn-danger btn-cart-checkout">Go to Job Dashbaord &raquo;</a></div>
+                                        <div class="col-sm-12 text-center"><hr><a href="{{ route('job-board', $jobid) }}" class="btn btn-line btn-cart-checkout">Go to Job Dashboard &raquo;</a></div>
 
                                         @else
 

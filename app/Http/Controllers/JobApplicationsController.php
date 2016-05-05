@@ -282,7 +282,8 @@ class JobApplicationsController extends Controller
         $appl = JobApplication::with('job', 'cv')->find($app_id);
         $applicant_badge = @$this->getApplicantBadge($appl->cv);
 
-        $notes = InterviewNotes::where('job_application_id',$app_id)->where('interviewer_id', @Auth::user()->id);
+        $notes = InterviewNotes::where('job_application_id',$app_id)->where('interviewer_id', @Auth::user()->id)->get()->toArray(); 
+
 
         return view('modals.interview-notes', compact('applicant_badge','app_id','cv_id','appl','notes'));
     }
@@ -528,6 +529,29 @@ class JobApplicationsController extends Controller
         JobApplication::massAction( @$request->job_id, [ @$request->cv_id ], 'INTERVIEWED' );
 
     }
+
+
+    public function saveInterviewNote(Request $request)
+    {
+
+            // $data = [
+            //     'location' => @$request->location,
+            //     'message' => @$request->message,
+            //     'date' => @$request->date
+            // ];
+
+
+            $data = array_merge( @$request->texts, ( (array) json_decode( @$request->radios ) )  );
+            // var_dump( $data );
+            $data['interview_date'] = Carbon::now();
+            InterviewNotes::create($data);
+
+        
+
+        // JobApplication::massAction( @$request->job_id, [ @$request->cv_id ], 'INTERVIEWED' );
+
+    }
+    
     
 
     

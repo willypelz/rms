@@ -75,7 +75,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     text-transform:capitalize;
         background: url('../img/logomark.png') no-repeat left;
     background-size: 100%;
-    width: 210px;
+    width: 175px;
     margin-right: 20px;
     margin-left:0 !important;
 }
@@ -143,7 +143,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .btn-group-justified.btn-dash >.btn-group .btn {
     width: 100%;
     border-radius: 5px;
-    padding: 10px 0;
+    padding: 15px 0;
 }
 .btn-group-justified.btn-dash >.btn-group{
     padding-right:10px;
@@ -487,8 +487,8 @@ section.dark .row {
     left: 90%;
 }
 .page.page-sm.foot {
-    background: #ECECEC;
-    padding: 1em 1em 0.5em;
+    background: #F1F3F5;
+    padding: 1.5em 1em 0.5em;
 }
 .referal {
     border-right: 1px solid #eee;
@@ -632,7 +632,7 @@ h3.brand-title {
     background-color: #1aacc1;
 }*/
 .btn-primary {
-    border-color: #45306F;
+    border-color: #26578A;
     background-color: #3A5979;
 }
 .btn-primary:hover, .btn-primary:focus {
@@ -1428,7 +1428,7 @@ h3.blue {
     vertical-align: 1px;
 }
 .search-results h4{
-    line-height: 1.85;
+    line-height: 1.5;
     margin-top: 0;
 }
 .search-results li h4 a{
@@ -1620,11 +1620,12 @@ textarea:focus {
     height: 27em;
 }
 .btn.btn-label{
-        padding: 10px 5px 15px 20px;
+    padding: 10px 5px 15px 20px;
     margin-bottom: 6px;
     text-align: left;
     white-space:normal;
     min-height: 75px;
+    text-transform:none;
 }
 .btn.btn-label input{
     position:absolute;

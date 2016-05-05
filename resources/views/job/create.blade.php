@@ -137,10 +137,10 @@
                                         <div class="col-xs-6">
                                             <div class="">
                                               @foreach($board1 as $b)  
-                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
+                                              <label class="btn btn-line btn-sm btn-label btn-block text-left">
                                                 <input type="checkbox" class="" autocomplete="off" name="boards[]" value="{{ $b['id'] }}" checked>
-                                                <span class="col-xs-6"><img src="{{ $b['img'] }}" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b>{{ $b['name'] }}</b><br>{{ $b['url'] }}</span>
+                                                <span class="col-xs-5"><img src="{{ $b['img'] }}" width="100%" alt=""></span>
+                                                <span class="col-xs-7 text-muted" style="padding-left:0"><b>{{ $b['name'] }}</b><br>{{ $b['url'] }}</span>
                                                 <span class="clearfix"></span>
                                               </label>
                                               @endforeach
@@ -151,10 +151,10 @@
                                         <div class="col-xs-6">
                                             <div class="">
                                                 @foreach($board2 as $jb)
-                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
+                                              <label class="btn btn-line btn-sm btn-label btn-block text-left">
                                                 <input type="checkbox" class="" autocomplete="off" name="boards[]" value="{{ $jb['id'] }}"  checked>
-                                                <span class="col-xs-6"><img src="{{ $jb['img'] }}" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b>{{ $jb['name'] }}</b><br>{{ $jb['url'] }}</span>
+                                                <span class="col-xs-5"><img src="{{ $jb['img'] }}" width="100%" alt=""></span>
+                                                <span class="col-xs-7 text-muted" style="padding-left:0"><b>{{ $jb['name'] }}</b><br>{{ $jb['url'] }}</span>
                                                 <span class="clearfix"></span>
                                               </label>
                                                @endforeach

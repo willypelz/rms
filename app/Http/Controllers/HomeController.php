@@ -11,6 +11,7 @@ use App\Models\JobActivity;
 use App\Libraries\Solr;
 use Auth;
 use App\Models\FolderContent;
+use Mail;
 
 
 class HomeController extends Controller
@@ -59,5 +60,22 @@ class HomeController extends Controller
         
 
         return view('talent-pool.dashboard', compact('posts', 'jobs_count','talent_pool_count','saved_cvs_count','purchased_cvs_count'));
+    }
+
+    public function requestACall(Request $request)
+    {
+        // Mail::send('emails.welcome', $data, function($message)
+        // {
+        //     // $message->from('us@example.com', 'Laravel');
+
+        //     $message->to('foo@example.com')->cc('bar@example.com');
+
+        //     $message->attach($pathToFile);
+        // });
+
+        Mail::send('emails.guest.request-call', $request->all(), function($message){
+            $message->from('no-reply@insidify.com');
+            $message->to('deji@insidify.com', 'Seamless Hiring Call Request');
+        });
     }
 }

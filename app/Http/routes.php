@@ -142,6 +142,9 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.pricing');
     });
 
+    Route::post('request-a-call', [ 'as' => 'request-a-call', 'uses' => 'HomeController@requestACall' ]);
+
+
     Route::get('about', function () {
         return view('guest.about');
     });
@@ -343,6 +346,8 @@ Route::group(['middleware' => 'web'], function () {
      * Route Group for modals
      */
 
+    
+
     Route::get('modal/default', [ 'as' => 'get-modal', function () {
             return view('applicant.messages');
         } ]);
@@ -353,6 +358,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('modal/shortlist', [ 'as' => 'modal-shortlist', 'uses' => 'JobApplicationsController@modalShortlist' ]);
 
     Route::get('modal/return-to-all', [ 'as' => 'modal-return-to-all', 'uses' => 'JobApplicationsController@modalReturnToAll' ]);
+
 
     
 

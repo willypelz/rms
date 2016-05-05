@@ -107,7 +107,9 @@
                                             <li class="list-group-item"> Discounts on value added services. </li>
                                         </ul>
                                         <div class="panel-footer">
-                                            <a class="btn btn-lg btn-line text-uppercase" href="#">Request a call</a>
+                                            <a class="btn btn-lg btn-line text-uppercase" data-toggle="modal" data-target="#requestCall" id="modalButton" href="#requestCall" data-title="Request a call">Request a call</a>
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -244,6 +246,101 @@
         </div>
     </section>
 
+<div class="modal widemodal fade" id="requestCall" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="margin: 18px;">×</button>
+        <h4 class="modal-title" id="myModalLabel">Request a call</h4>
+      </div>
+      <div class="modal-body">
+          <form role="form" class="form-signin" method="POST" id="request-form" action="">
+                {!! csrf_field() !!}
+                
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="">Company Name</label>
+                            <input type="text" class="form-control" name="company_name" id="company_name" required>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">First Name</label>
+                            <input type="text" class="form-control" name="firstname" id="firstname" required>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Surname</label>
+                            <input type="text" class="form-control" name="surname" id="surname" required>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Phone number</label>
+                            <input type="tel" class="form-control" name="phone" id="phone" required>
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="">Your Email</label>
+                            <input type="email" class="form-control" name="email" id="email" required>
+
+                        </div>
+                    </div>
+
+              
+
+                </div>
+
+                <div class="row"><br>
+
+                    <div class="col-sm-10 col-sm-offset-1 col-md-12 col-sm-offset-0">
+                        <button type="submit" class="btn btn-success btn-block">Request &raquo;</button>
+                    </div>
+
+                    
+
+                </div>
+            </form>
+
+            <script>
+                $(document).ready(function(){
+                   $('body #request-form').on('submit', function(e){
+                        e.preventDefault();
+                        $field = $(this);
+                        params = {
+                            company_name : $('#company_name').val(),
+                            firstname : $('#firstname').val(),
+                            surname : $('#surname').val(),
+                            phone : $('#phone').val(),
+                            email : $('#email').val(),
+                        };
+                        $("body #request-form input").prop("disabled", true);
+
+                        $.post("{{ route('request-a-call') }}", params,function(data){
+                                // $('#reviewBtn-' + $field.data('app-id') ).trigger('click');
+                                
+                                $( '#requestCall' ).modal('toggle');
+
+                                $('#company_name').val("");
+                                $('#firstname').val("");
+                                $('#surname').val("");
+                                $('#phone').val("");
+                                $('#email').val("");
+                                $("body #request-form input").prop("disabled", false);
+
+                                $.growl.notice({ message: "Your request has been sent",location: 'tc', size: 'large' });
+                            });
+                    });
+                });
+              </script>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 @endsection

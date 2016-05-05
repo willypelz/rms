@@ -365,6 +365,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('modal/reject', [ 'as' => 'modal-reject', 'uses' => 'JobApplicationsController@modalReject' ]);
 
     Route::get('modal/interview', [ 'as' => 'modal-interview', 'uses' => 'JobApplicationsController@modalInterview' ]);
+    Route::get('modal/interview-notes', [ 'as' => 'modal-interview-notes', 'uses' => 'JobApplicationsController@modalInterviewNotes' ]);
+
+    
 
     Route::get('modal/background-check', [ 'as' => 'modal-background-check', 'uses' => 'JobApplicationsController@modalBackgroundCheck' ]);
     Route::get('modal/medical-check', [ 'as' => 'modal-medical-check', 'uses' => 'JobApplicationsController@modalMedicalCheck' ]);

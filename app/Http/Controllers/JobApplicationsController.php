@@ -16,6 +16,7 @@ use App\Models\AtsService;
 use App\Models\AtsProduct;
 use App\Models\TestRequest;
 use App\Models\Interview;
+use App\Models\InterviewNotes;
 use Carbon\Carbon;
 use Auth;
 
@@ -273,6 +274,20 @@ class JobApplicationsController extends Controller
         return view('modals.interview', compact('applicant_badge','app_id','cv_id','appl'));
     }
 
+    public function modalInterviewNotes(Request $request)
+    {
+        
+        $app_id = @$request->app_id;
+        $cv_id = @$request->cv_id;
+        $appl = JobApplication::with('job', 'cv')->find($app_id);
+        $applicant_badge = @$this->getApplicantBadge($appl->cv);
+
+        $notes = InterviewNotes::where('job_application_id',$app_id)->where('interviewer_id', @Auth::user()->id);
+
+        return view('modals.interview-notes', compact('applicant_badge','app_id','cv_id','appl','notes'));
+    }
+
+    
     
     public function modalShortlist(Request $request)
     {

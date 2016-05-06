@@ -23,11 +23,11 @@
                 </div>
                 
                 <div class="col-sm-5">
-                  <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_apperarance" id="general_apperarance" value="1" > 1 </label>
-                  <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_apperarance" id="general_apperarance" value="2" > 2 </label>
-                  <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_apperarance" id="general_apperarance" value="3" > 3 </label>
-                  <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_apperarance" id="general_apperarance" value="4" > 4 </label>
-                  <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_apperarance" id="general_apperarance" value="5" > 5 </label>
+                  <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="1" > 1 </label>
+                  <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="2" > 2 </label>
+                  <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="3" > 3 </label>
+                  <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="4" > 4 </label>
+                  <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="5" > 5 </label>
                 </div>
                 
             <div class="clearfix"></div>
@@ -425,7 +425,7 @@
                            
             <div class="form-group">
                 <label for="" style="font-size: 17px;">Recommendation</label>
-                <textarea  class="form-control"  name="recommendation" id="recommendation"></textarea>
+                <textarea  class="form-control"  name="recommendation" id="recommendation" required></textarea>
             </div>
            
         </div>

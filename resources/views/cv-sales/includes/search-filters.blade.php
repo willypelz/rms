@@ -22,6 +22,90 @@
               </div>
               <p></p> 
 
+          @if( @$status == 'ASSESSED' )
+                  <p class="border-bottom-thin text-muted">Test Name<i class="glyphicon glyphicon-user pull-right"></i></p>
+                    <div class="checkbox-inline">
+                        {{--*/ $other_test_name = 0  /*--}}
+                        {{--*/ $index = 0  /*--}}
+                        @foreach( $result['facet_counts']['facet_fields']['test_name'] as $key => $test_name )
+                            @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['test_name'][ $key + 1 ] != 0  )
+                              
+                              {{--*/ $index++  /*--}}
+                              <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="test_name" data-value="{{ $test_name }}" > {{ ucwords( $test_name )." (".$result['facet_counts']['facet_fields']['test_name'][ $key + 1 ].")" }}</label> <br></div>
+                            @else
+
+                              {{--*/ @$other_test_name += $result['facet_counts']['facet_fields']['test_name'][ $key + 1 ] /*--}}
+
+                            @endif
+                        @endforeach
+
+                        <div class="hide"><label class="normal"><input type="checkbox"  class="" data-field="test_name" data-value="null"> unspecified {{ " (".$other_test_name.")" }}</label> <br></div>
+                    </div>
+                    
+                    @if($index > 4)
+                      <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+                    @endif
+                    <p></p>
+
+
+                    
+                    <p class="border-bottom-thin text-muted">Test Status<i class="glyphicon glyphicon-user pull-right"></i></p>
+                      <div class="checkbox-inline">
+                          {{--*/ $other_test_status = 0  /*--}}
+                          {{--*/ $index = 0  /*--}}
+                          @foreach( $result['facet_counts']['facet_fields']['test_status'] as $key => $test_status )
+                              @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['test_status'][ $key + 1 ] != 0  )
+                                
+                                {{--*/ $index++  /*--}}
+                                <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="test_status" data-value="{{ $test_status }}" > {{ ucwords( $test_status )." (".$result['facet_counts']['facet_fields']['test_status'][ $key + 1 ].")" }}</label> <br></div>
+                              @else
+
+                                {{--*/ @$other_test_status += $result['facet_counts']['facet_fields']['test_status'][ $key + 1 ] /*--}}
+
+                              @endif
+                          @endforeach
+
+                          <div class="hide"><label class="normal"><input type="checkbox"  class="" data-field="test_status" data-value="null"> unspecified {{ " (".$other_test_status.")" }}</label> <br></div>
+                      </div>
+                      
+                      @if($index > 4)
+                        <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+                      @endif
+                      <p></p>
+                    
+
+
+
+
+                    <p class="border-bottom-thin text-muted">Test Score<i class="glyphicon glyphicon-user pull-right"></i></p>
+                      <div class="checkbox-inline">
+                          {{--*/ $other_test_score = 0  /*--}}
+                          {{--*/ $index = 0  /*--}}
+                          @foreach( $result['facet_counts']['facet_fields']['test_score'] as $key => $test_score )
+                              @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['test_score'][ $key + 1 ] != 0  )
+                                
+                                {{--*/ $index++  /*--}}
+                                <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="test_score" data-value="{{ $test_score }}" > {{ ucwords( $test_score )." (".$result['facet_counts']['facet_fields']['test_score'][ $key + 1 ].")" }}</label> <br></div>
+                              @else
+
+                                {{--*/ @$other_test_score += $result['facet_counts']['facet_fields']['test_score'][ $key + 1 ] /*--}}
+
+                              @endif
+                          @endforeach
+
+                          <div class="hide"><label class="normal"><input type="checkbox"  class="" data-field="test_score" data-value="null"> unspecified {{ " (".$other_test_score.")" }}</label> <br></div>
+                      </div>
+                      
+                      @if($index > 4)
+                        <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+                      @endif
+                      <p></p>
+
+          @else
+
+
+
+
               @if(@$is_saved)
 
                   <p class="border-bottom-thin text-muted">Folder<i class="glyphicon glyphicon-user pull-right"></i></p>
@@ -177,8 +261,8 @@
               
               <!-- <div><small class="">&nbsp; <a href="" class="">See More</a></small></div> -->
 
-
-
+      @endif 
+  <!-- end of if when it is not assessed -->
 
           </div>
         </div>

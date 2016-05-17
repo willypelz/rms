@@ -52,7 +52,7 @@ class HomeController extends Controller
 
         $posts = @json_decode($response)->data->posts;
 
-        $talent_pool_count = Solr::get_all_my_cvs($this->search_params,[1,200])['response']['numFound'];
+        $talent_pool_count = Solr::get_all_my_cvs($this->search_params)['response']['numFound'];
         $saved_cvs_count = Solr::get_saved_cvs($this->search_params)['response']['numFound'];
         $purchased_cvs_count = Solr::get_purchased_cvs($this->search_params)['response']['numFound'];
 

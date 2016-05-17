@@ -117,7 +117,7 @@ class Solr {
 		return Solr::search_resume($data,$additional);
 	}
 
-	static function get_all_my_cvs($data, $age)
+	static function get_all_my_cvs($data, $age = ['1815-05-17T12:06:060013Z','*'])
 	{
 		// $additional = "&fq=( job_id:(5) OR company_folder_id:". @Auth::user()->companies[0]->id.' )';
 		//job_id:(15 10 12) OR company_folder_id:1

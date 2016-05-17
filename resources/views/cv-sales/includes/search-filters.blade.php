@@ -133,7 +133,7 @@
                     <p></p>
 
               @endif
-
+  
               
 
 
@@ -258,8 +258,76 @@
               @if($index > 4)
                 <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
               @endif
+
+              <p></p>
+
+              <p class="border-bottom-thin text-muted">Location<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+              <div class="checkbox-inline">
+                  {{--*/ $other_state = 0  /*--}}
+                  {{--*/ $index = 0  /*--}}
+
+                  @foreach( $result['facet_counts']['facet_fields']['state'] as $key => $state )
+                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['state'][ $key + 1 ] != 0 )
+                        
+                        {{--*/ $index++  /*--}}
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="state" data-value="{{ $state }}"> {{ ucwords( $state )." (".$result['facet_counts']['facet_fields']['state'][ $key + 1 ].")" }}</label> <br></div>
+                      @else
+
+                        {{--*/ @$other_state += $result['facet_counts']['facet_fields']['state'][ $key + 1 ] /*--}}
+
+                      @endif
+                  @endforeach
+
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_state.")" }}</label> <br></div>
+              </div>
               
+              @if($index > 4)
+                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+              @endif
+
+              <p></p>
+        @if( @$age )
               <!-- <div><small class="">&nbsp; <a href="" class="">See More</a></small></div> -->
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/bootstrap-slider.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/css/bootstrap-slider.min.css" />
+      
+        <p class="border-bottom-thin text-muted">Age<i class="glyphicon glyphicon-birthday pull-right"></i></p>
+             <p class="text-center">
+                <input id="age-slider" type="text" class="span2" value="" data-slider-min="1" data-slider-max="200" data-slider-step="1" data-slider-value="{{ '['.$age[0].','.$age[1].']' }}"/> 
+                <div class="text-center">
+                  <b class="col-sm-2 pull-left" style="color: #bbb;">1</b>
+                  <b  class="col-sm-2 pull-right" style="color: #bbb;">200</b>
+                  <small id="age-range"> {{ $age[0].' - '.$age[1].' years' }} </small>
+                </div>
+               <div class="clearfix"></div>
+             </p>
+
+            <p></p>
+
+      <style type="text/css">
+        #ex1Slider .slider-selection {
+          background: #BABABA;
+        }
+      </style>      
+  
+      <script type="text/javascript">
+          $(document).ready(function(){
+              $("#age-slider").slider({
+                // formatter: function(value,a) {
+
+                //   return 'Current value: ' + value + "  ";
+                // }
+              });
+              $("#age-slider").on("slideStop", function(slideEvt) {
+                
+                age_range = slideEvt.value;
+
+                $('#age-range').html( slideEvt.value[0] + ' - ' + slideEvt.value[1] + ' years' )
+                $("#age-slider").performFilter();
+              });
+          });
+      </script>
+        @endif
 
       @endif 
   <!-- end of if when it is not assessed -->

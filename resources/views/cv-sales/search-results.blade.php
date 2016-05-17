@@ -268,7 +268,8 @@
                 filters.splice(index, 1);
             }
 
-            $('.search-results').html("Loading");
+
+            $('.search-results').html('{!! preloader() !!}');
             $.get("{{ url('cv/search') }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);

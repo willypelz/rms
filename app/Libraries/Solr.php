@@ -37,7 +37,7 @@ class Solr {
 			$search_field .= ':';
 
 		$filename = Solr::$host."q=".$search_field.$q."&rows=".$row."&start=".$start
-							."&facet=true&facet.field=gender&facet.field=marital_status&facet.field=last_position&facet.field=years_of_experience&facet.field=state_of_origin&facet.field=last_company_worked&facet.field=folder_name&facet.field=folder_type&facet.field=application_status&facet.field=test_name&facet.field=test_status&facet.field=test_score"
+							."&facet=true&facet.field=gender&facet.field=marital_status&facet.field=last_position&facet.field=years_of_experience&facet.field=state&facet.field=state_of_origin&facet.field=last_company_worked&facet.field=folder_name&facet.field=folder_type&facet.field=application_status&facet.field=test_name&facet.field=test_status&facet.field=test_score"
 							// ."&facet=true&facet.field=job_type&facet.field=company&facet.field=loc&facet.field=job_level&facet.field=site_name&facet.date=expiry_date&facet.date.start=NOW/DAY&facet.date.end=NOW/DAY%2B60DAY&facet.date.gap=%2B7DAY&wt=json"
 							."&sort=".$sort
 							.$additional
@@ -117,7 +117,7 @@ class Solr {
 		return Solr::search_resume($data,$additional);
 	}
 
-	static function get_all_my_cvs($data)
+	static function get_all_my_cvs($data, $age)
 	{
 		// $additional = "&fq=( job_id:(5) OR company_folder_id:". @Auth::user()->companies[0]->id.' )';
 		//job_id:(15 10 12) OR company_folder_id:1
@@ -126,6 +126,13 @@ class Solr {
 		
 		$additional = "&fq=(job_id:(".  implode('+', Job::getMyJobIds() )  .")+OR+company_folder_id:". @Auth::user()->companies[0]->id .")"."&fq=-folder_type:saved";
 
+		if( !is_null($age) )
+		{
+			// $additional .= "&fq=dob<=".$age[0]."&fq=dob>=".$age[1];
+			$additional .= "&fq=dob:[".$age[1]."+TO+".$age[0]."]";
+		}	
+
+		// echo "&fq=dob:[".$age[1] ."+TO+".$age[0]."]";
 		return Solr::search_resume($data, $additional);
 	}
 	

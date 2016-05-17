@@ -478,9 +478,28 @@ class CvSalesController extends Controller
         $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start * $this->search_params['row'] ) : 0;
         
         
-        $this->search_params['filter_query'] = @$request->filter_query;
+
+        
+        if( @$request->age ){
+            $date = Carbon::now();
+            //2015-09-16T00:00:00Z
+            $start_dob = str_replace('+', '', $date->subYears( @$request->age[0] )->toIso8601String() ). "Z" ; 
+            $end_dob = str_replace('+', '', $date->subYears( @$request->age[1] )->toIso8601String() ). "Z"; 
+
+            $solr_age = [ $start_dob, $end_dob ];
+            // dd($request->age, $start_dob, $end_dob);
+        }
+        else
+        {
+            $solr_age = null;
+        }
+
+        if( $request->filter_query ){
+            $this->search_params['filter_query'] = @$request->filter_query;
+        }
+        
         // $response = Solr::search_resume($this->search_params);
-        $response = Solr::get_all_my_cvs($this->search_params);
+        $response = Solr::get_all_my_cvs($this->search_params, @$solr_age);
 
 
         $cart = Cart::content();
@@ -497,13 +516,13 @@ class CvSalesController extends Controller
         if($request->ajax())
         {
             
-            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true])->render();    
-            $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query])->render();
+            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true ])->render();    
+            $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query, 'age' => @$request->age])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters ] );
             
         }
         else{
-            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true ]);
+            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 1, 200 ] ]);
         }
         // return view('cv-sales.cv_saved');
     }

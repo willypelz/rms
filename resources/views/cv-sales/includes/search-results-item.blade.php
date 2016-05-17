@@ -194,7 +194,7 @@
             $('.search-results').html('{!! preloader() !!}');
             var url = "{{ (@$is_saved) ? url('cv/saved') : url('cv/search')   }}";
             var pagination_url = "{{ $pagination_url }}";
-            $.get(pagination_url, {search_query: $('#search_query').val(), start: ( page - 1 ) , filter_query : filters },function(data){
+            $.get(pagination_url, {search_query: $('#search_query').val(), start: ( page - 1 ) , filter_query : filters , age: age_range },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);

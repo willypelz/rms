@@ -164,7 +164,7 @@
     <script type="text/javascript">
     var folders = [];
     var filters = [];
-
+    var age_range = "1, 200";
     $(document).ready(function(){
         
 
@@ -211,7 +211,6 @@
 
         $(document).on('change', '.filter-div input[type=checkbox]', function(){
             // console.log("changed");
-
             var filter = $(this).attr('data-field') + ':"' + $(this).attr('data-value') + '"';
 
             var index = $.inArray( filter, filters );
@@ -224,9 +223,15 @@
             {
                 filters.splice(index, 1);
             }
+            $(this).performFilter();
+            
+        });
 
-            $('.search-results').html("Loading");
-            $.get("{{ url('cv/talent-pool') }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
+        $.fn.performFilter = function(){
+            
+
+            $('.search-results').html('{!! preloader() !!}');
+            $.get("{{ url('cv/talent-pool') }}", {search_query: $('#search_query').val(), filter_query : filters, age: age_range },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);
@@ -240,7 +245,7 @@
                     $('.filter-div input[type=checkbox]' + '[data-field=' + arr[0] + ']' + '[data-value=' + arr[1] + ']' ).attr('checked',true);
                 });
             });
-        });
+        }
 
         $(document).on('change', '#search_query', function(){
             // console.log("changed");
@@ -343,6 +348,8 @@
                 });
 
         });
+
+
 
     });
 </script>

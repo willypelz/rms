@@ -13,7 +13,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="">
+                <li class="{{ Request::is('/') ? 'active' : '' }}">
                     <a class="" href="{{ url('/') }}">Home</a>
                 </li>
 
@@ -21,11 +21,11 @@
                     <a class="" href="{{ url('about') }}">About</a>
                 </li> -->
 
-                <li>
+                <li class="{{ Request::is('pricing') ? 'active' : '' }}">
                     <a class="" href="{{ url('pricing') }}">Pricing</a>
                 </li>
 
-                <li>
+                <li class="{{ Request::is('cv/search*') ? 'active' : '' }}">
                     <a class="" href="{{ url('cv/search') }}">Find Resumes <!-- &nbsp;<i class="fa fa-search"> </i> --></a>
                 </li>
             </ul>

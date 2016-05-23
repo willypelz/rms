@@ -13,20 +13,20 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="">
+                    <li class="{{ Request::is('dashboard*') ? 'active' : '' }}">
                         <a class="" href="{{ url('dashboard') }}">Dashboard <!-- &nbsp;<i class="fa fa-tachometer"></i> --></a>
                     </li>
 
-                    <li class="dropdown">
+                    <li class="dropdown {{ Request::is('cv/*') ? 'active' : '' }}">
                         <a class="dropdown-toggle" href="cv-search.php" data-toggle="dropdown">Candidates &nbsp; <i class="fa fa-caret-down no-margin"></i></a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ url('cv/talent-pool') }}">Talent Pool</a></li>
-                            <li><a href="{{ url('cv/saved') }}">Saved Cvs</a></li>
-                            <li><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li>
+                            <li class="{{ Request::is('cv/talent-pool') ? 'active' : '' }}"><a href="{{ url('cv/talent-pool') }}">Talent Pool</a></li>
+                            <li class="{{ Request::is('cv/saved') ? 'active' : '' }}"><a href="{{ url('cv/saved') }}">Saved Cvs</a></li>
+                            <li class="{{ Request::is('cv/purchased') ? 'active' : '' }}"><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li>
                         </ul>
                     </li>
 
-                    <li class="">
+                    <li class="{{ Request::is('my-jobs*') ? 'active' : '' }}">
                         <a class="" href="{{ url('my-jobs') }}">My Jobs <i class="fa fa-briefcase mask"></i></a>
 
                     </li>

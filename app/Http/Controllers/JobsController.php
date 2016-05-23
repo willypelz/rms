@@ -268,7 +268,7 @@ class JobsController extends Controller
                           
                                   <h5 class="no-margin text-info">Job Created</h5>
                                   <p>
-                                      <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
                                       '. $ac->user->name .' Created a new Job <strong>'.$job->title.'</strong>.
                                   </p>
                                 </li>';
@@ -285,7 +285,7 @@ class JobsController extends Controller
                           
                                   <h5 class="no-margin text-info">Job Application</h5>
                                   <p>
-                                      <small class="text-muted pull-right">['.  date('D, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
                                       '.$applicant->first_name.' '.$applicant->last_name.' applied for <strong>'.$job->title.'</strong>
                                   </p>
                                 </li>';
@@ -301,7 +301,7 @@ class JobsController extends Controller
                           
                                   <h5 class="no-margin text-info">Application</h5>
                                   <p>
-                                      <small class="text-muted pull-right">['.  date('D, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
                                       '.$applicant->first_name.' '.$applicant->last_name.' has been hired.
                                   </p>
                                 </li>';
@@ -318,7 +318,7 @@ class JobsController extends Controller
                           
                                   <h5 class="no-margin text-danger">REJECT</h5>
                                   <p>
-                                      <small class="text-muted pull-right">['.  date('D, h:i A', strtotime($ac->created_at)) .']</small>
+                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small>
                                       '.$applicant->first_name.' '.$applicant->last_name.' application was rejected by <a href=""> '.$ac->user->name.'</a>
                                   </p>
                                 </li>';
@@ -335,7 +335,7 @@ class JobsController extends Controller
                           
                                   <h5 class="no-margin text-success">Comment</h5>
                                   <p>
-                                      <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']
+                                      <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']
                                       </small> '. $ac->user->name .' said '.$ac->comment.' about <a href="#">'.$applicant->first_name.' '.$applicant->last_name.'</a>
                                   </p>
                                   
@@ -354,7 +354,7 @@ class JobsController extends Controller
                           
                                   <h5 class="no-margin text-success">Review</h5>
                                   <p>
-                                      <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']
+                                      <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']
                                       </small> '. $ac->user->name .' reviewed <a href="#">'.$applicant->first_name.' '.$applicant->last_name.'</a>
                                   </p>
                                   
@@ -371,7 +371,7 @@ class JobsController extends Controller
                           
                                   <h5 class="no-margin text-success">Suspend Job</h5>
                                   <p>
-                                      <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
                                       '. $ac->user->name .' suspended <a href="#">'.$ac->job->title .'</a> job
                                   </p>
                                   
@@ -388,7 +388,7 @@ class JobsController extends Controller
                           
                                   <h5 class="no-margin text-success">Publish Job</h5>
                                   <p>
-                                      <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
                                       '. $ac->user->name .' published <a href="#">'.$ac->job->title .'</a> job
                                   </p>
                                   
@@ -405,7 +405,7 @@ class JobsController extends Controller
                           
                                   <h5 class="no-margin text-success">Team</h5>
                                   <p>
-                                      <small class="text-muted pull-right">['. date('D, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
                                       '. $ac->user->name .' added a new Team member.
                                   </p>
                                   

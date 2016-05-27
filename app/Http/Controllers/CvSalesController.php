@@ -499,8 +499,24 @@ class CvSalesController extends Controller
         }
         
         // $response = Solr::search_resume($this->search_params);
-        $response = Solr::get_all_my_cvs($this->search_params, @$solr_age);
+        $response = $result = Solr::get_all_my_cvs($this->search_params, @$solr_age);
 
+        $end = (($start + $this->search_params['row']) > intval($result['response']['numFound']))?$result['response']['numFound']:($start + $this->search_params['row']);
+        $showing = "Showing ".($start+1)." - ".$end." of ".$result['response']['numFound']." Cvs [Page ".floor($request->start + 1)."]";
+
+        $filter_text = '';
+        if(isset($request->filter_query)){
+
+            $filter_text .= "<br/>Filtering by: ";
+            foreach ($request->filter_query as $fq) {
+                
+                $filter_text .= ucwords(str_ireplace("_", " ", $fq)).', ';
+            }
+
+            $filter_text .= ".";
+
+        }
+        $showing .= $filter_text . '<a id="clearAllFilters" href="javacript://" >Clear Filter</a>';
 
         $cart = Cart::content();
         $count = Cart::count(false); 
@@ -518,7 +534,7 @@ class CvSalesController extends Controller
             
             $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true ])->render();    
             $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query, 'age' => @$request->age])->render();
-            return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters ] );
+            return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing ] );
             
         }
         else{

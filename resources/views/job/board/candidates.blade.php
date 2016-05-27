@@ -10,11 +10,11 @@
   .see-more-shown{ display: block; }
   .pagination .page{ padding: 0px !important; }
 </style>
-
+            @if($job['status'] != 'DELETED')
             <script src="http://malsup.github.com/jquery.form.js"></script> 
 <script src="{{ asset('js/jquery.twbsPagination.min.js') }}"></script>
 <script src="{{ asset('js/jquery.jscroll.min.js') }}"></script>
-
+            
             <div class="row">
 
                 <div class="col-sm-12">
@@ -48,10 +48,12 @@
                                 <div id="h_act-on" class="col-xs-12 app-action" style="display:none;">
                                     <div>
                                         <div class="btn-group select-action" id="mass-action">
-                                            <button class="btn btn-default status-1" type="button" data-action="REJECTED">Reject All</button>
-                                            <!-- <button class="btn btn-default status-1" type="button" data-action="REJECT">Message All</button> -->
-                                            <button class="btn btn-default status-1" type="button" data-action="ASSESSED">Test All</button>
-                                            <button class="btn btn-default status-1" type="button" data-action="SHORTLISTED">Shortlist All</button>
+                                            <a class="btn btn-default status-1"  data-action="SHORTLISTED" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Shortlist?" data-view="{{ route('modal-shortlist') }}" data-app-id="" data-cv="" data-type="normal">Shortlist All</a>
+                                            <a class="btn btn-default status-1" type="button" data-action="ASSESSED">Test All</a>
+                                            <a class="btn btn-default status-1" type="button" data-action="INTERVIEWED">Interview All</a>
+                                            <a class="btn btn-default status-1" type="button" data-action="HIRED">Hire All</a>
+                                            <a class="btn btn-default status-1" type="button" data-action="REJECTED">Reject All</a>
+                                            <a class="btn btn-default status-1" type="button" data-action="PENDING">Return All</a>
                                         </div>
                                         
                                     </div>
@@ -121,6 +123,9 @@
 
                 </div>
             </div>
+            @else
+              @include('job.board.includes.job-deleted')
+            @endif
         </div>
     </section>
 
@@ -132,6 +137,7 @@
     var status_filter = "";
     var total_candidates = "{{ $result['response']['numFound'] }}";
     var keyword = "";
+    var age_range = "1, 200";
 
     String.prototype.capitalize = function() {
         return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
@@ -257,11 +263,15 @@
                 filters.splice(index, 1);
             }
 
+            $(this).performFilter();
+        });
+
+        $.fn.performFilter = function(){    
             $('.search-results').html('{!! preloader() !!}');
             scrollTo('.job-progress-xs');
             $('.result-label').html('');
             $('#pagination').hide();
-            $.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
+            $.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters,age: age_range },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);
@@ -277,7 +287,7 @@
                     $('.filter-div input[type=checkbox]' + '[data-field=' + arr[0] + ']' + '[data-value=' + arr[1] + ']' ).attr('checked',true);
                 });
             });
-        });
+        }
 
 
 
@@ -423,6 +433,32 @@
 
         $(document).getShowing();
 
+        $.fn.fixDetailsforBulkActions = function(){
+            $field = $(this);
+            var cv_ids =$(".search-results .comment.media").map(function(i,v){
+                        if( $(this).find('.media-body-check').is(':checked') )
+                        {
+                            return [ $(this).data("cv")  ];
+                        }
+                       
+
+                    }).get();
+
+            var app_ids =$(".search-results .comment.media").map(function(i,v){
+                        if( $(this).find('.media-body-check').is(':checked') )
+                        {
+                            return [ $(this).data("app-id")  ];
+                        }
+                       
+
+                    }).get();
+
+
+            
+            $('#mass-action a').attr('data-cv',cv_ids);
+            $('#mass-action a').attr('data-app-id',app_ids);
+        }
+
         $('.select-all input[type=checkbox]').on('click',function(){
 
             if( $(this).prop('checked') )
@@ -435,6 +471,8 @@
                 $('.search-results .media-body input[type=checkbox]').prop('checked', false);
                 $('#h_act-on').fadeOut();
             }
+
+            $(this).fixDetailsforBulkActions();
         });
 
         $('body').on('click','.check-applicant',function(){
@@ -460,76 +498,53 @@
                 }
                 
             }
+            $(this).fixDetailsforBulkActions();
         });
 
         $('#mass-action button').on('click',function(){
             // cvs = $('.search-results .comment.media').prop('data-cv');
             $field = $(this);
-            var cv_ids =$(".search-results .comment.media").map(function(i,v){
-                        if( $(this).find('.media-body-check').is(':checked') )
-                        {
-                            return $(this).data("cv");
-                        }
-                       
+            var cv_ids = $field.data('cv');
+            var app_ids = $field.data('app-id');
 
-                    }).get();
-
-            $.post("{{ route('mass-action') }}", {job_id: '{{ $jobID }}',cv_ids :  cv_ids,status: $field.data('action') },function(data){
-                    // if(data == true)
-                    // {
-                    //   // $field.val("").hide();
-                    //   $(this).getMyFolders();
-                    //   $('#newFolder #message').html('<div class="alert alert-success">Folder added successfully</div>');
-                    //   $('#newFolder').modal('toggle');
-                      
-                    // }
-
-                    // else
-                    // {
-                    //   $field.val("").hide();
-                    //   // $field.after('<p>'+ data +'</p>');
-                    //   $('#loginModal #mssg').text(data);
-                    //   $('.signin').trigger('click');
-                    // }
+            // $.post("{{ route('mass-action') }}", {job_id: '{{ $jobID }}',cv_ids :  cv_ids,status: $field.data('action') },function(data){
+               
                     
-                    if(status_filter == "" || status_filter == "All")
-                    {
+            //         if(status_filter == "" || status_filter == "All")
+            //         {
 
-                    }
-                    else
-                    {
-                        $('body .check-applicant:checked').map(function() { return this }).closest('.comment.media').remove();
-                    }
+            //         }
+            //         else
+            //         {
+            //             $('body .check-applicant:checked').map(function() { return this }).closest('.comment.media').remove();
+            //         }
                     
                     
-                    $('.select-all input[type=checkbox]').prop('checked', false);
-                    $('.search-results .media-body input[type=checkbox]').prop('checked', false);
-                    $('#h_act-on').fadeOut();
-                    $(document).getAllStatus();
+            //         $('.select-all input[type=checkbox]').prop('checked', false);
+            //         $('.search-results .media-body input[type=checkbox]').prop('checked', false);
+            //         $('#h_act-on').fadeOut();
+            //         $(document).getAllStatus();
 
-                    $.growl.notice({ message: "You have " + $field.data('action').toLowerCase() + " " + cv_ids.length + " applicant(s) " });
+            //         $.growl.notice({ message: "You have " + $field.data('action').toLowerCase() + " " + cv_ids.length + " applicant(s) " });
                     
-                    //$('#status_filters a[data-value="' + $field.data('action') + '"]').trigger('click');
-                });
+            //         //$('#status_filters a[data-value="' + $field.data('action') + '"]').trigger('click');
+            //     });
 
-            // console.log(cvs);
+            console.log(cv_ids,app_ids);
         });
-
+        
+        
         
         $.fn.getAllStatus = function(){
 
             $.get("{{ route('get-all-applicant-status') }}", {job_id: "{{ $jobID }}"},function(data){
-                //console.log(response);
-                // var response = JSON.parse(data);
-                // console.log(data.search_results);
-                // $('.result-label').html(data.showing);
-                // $('#pagination').show();
-                // $('.search-results').html(data.search_results);
                 $('body #status_filters').replaceWith(data);
+            });
+        }
 
-                // console.log(data);
-
-                // $(document).getShowing();
+        sh.reloadStatus = function(){
+            $.get("{{ route('get-all-applicant-status') }}", {job_id: "{{ $jobID }}"},function(data){
+                $('body #status_filters').replaceWith(data);
             });
         }
        
@@ -540,7 +555,7 @@
             $('.filter-div input[type=checkbox]' ).prop('checked',false);
 
             $('#search_keyword').val("");
-
+            age_range = "1, 200";
 
             $('.search-results').html('{!! preloader() !!}');
             scrollTo('.job-progress-xs');

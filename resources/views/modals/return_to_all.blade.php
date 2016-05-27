@@ -32,7 +32,7 @@
 
  				$( '#viewModal' ).modal('toggle');
         $.growl.notice({ message: "You have returned " + $field.closest('.modal-body').find('.media-heading a').text() + " to all" });
-            
+            sh.reloadStatus();
         });
 
  	});

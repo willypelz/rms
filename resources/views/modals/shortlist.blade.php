@@ -31,7 +31,7 @@
 
  				$( '#viewModal' ).modal('toggle');
         $.growl.notice({ message: "You have shorlisted " + $field.closest('.modal-body').find('.media-heading a').text() });
-            
+            sh.reloadStatus();
         });
 
  	});

@@ -3,7 +3,6 @@
         <section class="job-head blue" id="jobHead">
             <div class="" >
                 <div class="row">
-                
                     <div class="col-xs-7">
                 
                         <h2 class="job-title">
@@ -36,6 +35,8 @@
                         <div id="status-box"  class="label label-warning" style="">Job is in Draft</div> 
                         @elseif($job['status'] == 'SUSPENDED')
                         <div id="status-box"  class="label label-danger" style="">Job is suspended</div> 
+                        @elseif($job['status'] == 'DELETED')
+                        <div id="status-box"  class="label label-danger" style="">Job is deleted</div> 
                         @else
                         <div id="status-box" class="label label-danger" style="">Job has expired</div> <!-- <small>To change</small> -->
                         @endif
@@ -51,16 +52,43 @@
                 
                 
                         <ul class="pagination pull-right job-progress">
-                            <li><a href="#" class="active">New</a>
-                            </li>
-                            <li><a href="#">In Review</a>
-                            </li>
-                            <li><a href="#">Interview</a>
-                            </li>
-                            <li><a href="#">Assessed</a>
-                            </li>
-                            <li><a href="#">Filled</a>
-                            </li>
+                            @if( $result['response']['numFound'] > 0 )
+                                <li><a href="#" class="active">New</a>
+                                </li>
+                            @else
+                                <li><a href="#">New</a>
+                                </li>
+                            @endif
+                            <!-- <li><a href="#">In Review</a>
+                            </li> -->
+                            @if( $application_statuses['SHORTLISTED'] > 0 || $application_statuses['ASSESSED'] > 0  || $application_statuses['INTERVIEWED'] > 0  || $application_statuses['HIRED'] > 0   )
+                                <li><a href="#" class="active">Shortlist</a>
+                                </li>
+                            @else
+                                <li><a href="#">Shortlist</a>
+                                </li>
+                            @endif
+                            @if( $application_statuses['ASSESSED'] > 0  || $application_statuses['INTERVIEWED'] > 0  || $application_statuses['HIRED'] > 0   )
+                                <li><a href="#" class="active">Test</a>
+                                </li>
+                            @else
+                                <li><a href="#">Test</a>
+                                </li>
+                            @endif
+                            @if( $application_statuses['INTERVIEWED'] > 0  || $application_statuses['HIRED'] > 0   )
+                                <li><a href="#" class="active">Interview</a>
+                                </li>
+                            @else
+                                <li><a href="#">Interview</a>
+                                </li>
+                            @endif
+                            @if( $application_statuses['HIRED'] > 0   )
+                                <li><a href="#" class="active">Hire</a>
+                                </li>
+                            @else
+                                <li><a href="#">Hire</a>
+                                </li>
+                            @endif
                         </ul>
                 
                         <!-- Select Job Status -->
@@ -95,6 +123,7 @@
                     </div>
                 </div>
             </section>
+
 
 
 

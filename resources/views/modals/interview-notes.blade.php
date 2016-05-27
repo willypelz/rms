@@ -490,7 +490,7 @@
 
           $( '#viewModal' ).modal('toggle');
           $.growl.notice({ message: "You have interviewed " + $field.closest('.modal-body').find('.media-heading a').text() });
-              
+              sh.reloadStatus();
           });
         // console.log( JSON.stringify($(this).serializeObject()) );
     });

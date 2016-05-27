@@ -284,7 +284,7 @@
       </div>
     </div>
 
-     <table class="table table-condensed" >
+     <table class="table table-condensed hidden" >
                   <thead>
                   <tr>
                       <th>Your Selection</th>

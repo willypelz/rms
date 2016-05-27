@@ -37,8 +37,12 @@ sh.showModal = function(obj,title,view,data)
     
     $.get(view, data, function(response){
         $('#viewModal .modal-body').html( response);
+
     });
 }
+
+
+
 
 
 sh.showWideModal = function()

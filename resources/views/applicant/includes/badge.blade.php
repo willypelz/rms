@@ -40,7 +40,7 @@
 
                                       <div class="row">
                                         <div class="col-xs-6">
-                                          <a href="" class="btn btn-success btn-block" title="Send email to tosinojo23@yahoo.com">Download Doseir</a>
+                                          <a href="" class="btn btn-success btn-block" title="Send email to tosinojo23@yahoo.com">Download Dossier</a>
                                         </div>
                                         <div class="col-xs-6">
                                           <a href="" class="btn btn-line btn-block" title="Interview Notes" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview Note" data-view="{{ route('modal-interview-notes') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="normal">Interview Note</a>

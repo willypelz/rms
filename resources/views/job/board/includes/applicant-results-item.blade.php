@@ -3,7 +3,7 @@
   @foreach( @$result['response']['docs'] as $cv )
   
   
-  <div class="comment media" data-cv="{{ $cv['id'] }}">
+  <div class="comment media" data-cv="{{ $cv['id'] }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}">
   <hr>
       <span class="col-md-2 col-sm-3">
         <a href="{{ route('applicant-profile', $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] ) }}" target="_blank"  class="pull-left">
@@ -38,7 +38,7 @@
 
 
               @if($status != 'INTERVIEWED' && $status != 'HIRED')
-              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview" data-view="{{ route('modal-interview') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Interview</a>
+              <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Schedule an interview for" data-view="{{ route('modal-interview') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Interview</a>
               <span class="text-muted">·</span>
 
               @endif

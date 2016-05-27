@@ -137,13 +137,19 @@ class Solr {
 	}
 	
 
-	static function get_applicants($data, $job_id, $status = "")
+	static function get_applicants($data, $job_id, $status = "",$age = null)
 	{
 		$additional = "&fq=job_id:". $job_id;
 
 		if($status != "")
 		{
 			$additional .= "&fq=application_status:". $status;
+		}
+
+		if( !is_null($age) )
+		{
+			// $additional .= "&fq=dob<=".$age[0]."&fq=dob>=".$age[1];
+			$additional .= "&fq=dob:[".$age[1]."+TO+".$age[0]."]";
 		}
 
 		return Solr::search_resume($data,$additional);

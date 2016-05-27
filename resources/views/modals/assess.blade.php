@@ -300,7 +300,7 @@
                                         // window.location = "{{ url('payment_successful') }}";
                                           $( '#viewModal' ).modal('toggle');
                                           $( '#paymentSuccess' ).html('Payment Successful');
-
+                                          sh.reloadStatus();
                                         setTimeout(function(){
                                           $( '#paymentSuccess' ).html('');
                                         }, 3000);

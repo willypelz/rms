@@ -24,6 +24,7 @@
                     
                     $( '#viewModal' ).modal('toggle');
                     $.growl.notice({ message: "You have commented on " + $field.closest('.modal-body').find('.media-heading a').text() });
+                    sh.reloadStatus();
                 });
         });
     });

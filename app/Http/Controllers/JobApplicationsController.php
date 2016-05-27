@@ -121,8 +121,23 @@ class JobApplicationsController extends Controller
         $this->search_params['filter_query'] = @$request->filter_query;
         $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start * $this->search_params['row'] ) : 0;
         
+
+        if( @$request->age ){
+            $date = Carbon::now();
+            //2015-09-16T00:00:00Z
+            $start_dob = str_replace('+', '', $date->subYears( @$request->age[0] )->toIso8601String() ). "Z" ; 
+            $end_dob = str_replace('+', '', $date->subYears( @$request->age[1] )->toIso8601String() ). "Z"; 
+
+            $solr_age = [ $start_dob, $end_dob ];
+            // dd($request->age, $start_dob, $end_dob);
+        }
+        else
+        {
+            $solr_age = null;
+        }
+
         
-        $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status); 
+        $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status,@$solr_age); 
         if(isset($request->status))
             $status = $request->status;
 
@@ -146,13 +161,14 @@ class JobApplicationsController extends Controller
         if($request->ajax())
         {
             $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab', 'status', 'result','jobID','start'))->render();    
-            $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query, 'status' => $status])->render();
+            $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query, 'status' => $status, 'age' => @$request->age])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing ] );
             
         }
         else{
+            $age = [ 1, 200 ];
             $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
-            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start'));
+            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age'));
         }
 
         
@@ -231,7 +247,7 @@ class JobApplicationsController extends Controller
                             <!--td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">'.$matching.'</a></h1><small class="text-muted">Matching Candidates</small></td--> 
                         </tr> 
                         <tr> 
-                            <td class="text-center"><h1 class="no-margin text-muted">'.$open_days.'</h1><small class="text-muted">Days Opended</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-muted">'.$open_days.'</h1><small class="text-muted">Days Opened</small></td> 
                             <!--td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">'.$amount_spent.'</a></h1><small class="text-muted">Amount Spent</small></td--> 
                         </tr>
                         </tbody> 
@@ -292,11 +308,22 @@ class JobApplicationsController extends Controller
     
     public function modalShortlist(Request $request)
     {
+        if( is_array(@$request->cv_id) && is_array(@$request->app_id))
+        {
+            $applicant_badge = @$this->getMultipleApplicantBadge('Shortlist', count(@$request->cv_id) );
+        }
+        else if( !is_array(@$request->cv_id) && !is_array(@$request->app_id))
+        {
+            $app_id = @$request->app_id;
+            $cv_id = @$request->cv_id;
+            $appl = JobApplication::with('job', 'cv')->find($app_id);
+            $applicant_badge = @$this->getApplicantBadge($appl->cv);
+        }
+        else
+        {
+            return " There an error. Please contact the administrator";
+        }
         
-        $app_id = @$request->app_id;
-        $cv_id = @$request->cv_id;
-        $appl = JobApplication::with('job', 'cv')->find($app_id);
-        $applicant_badge = @$this->getApplicantBadge($appl->cv);
 
         return view('modals.shortlist', compact('applicant_badge','app_id','cv_id','appl'));
     }
@@ -553,7 +580,15 @@ class JobApplicationsController extends Controller
     }
     
     
-
+    public function getMultipleApplicantBadge($action,$count)
+    {
+        return '<div class="row" >
+      <div class="col-xs-12">
+          <h5 class="text-center text-danger text-brandon">'.$action.' '.$count.' applicants?</h5>
+      </div>
+    </div>';
+        
+    }
     
     public function getApplicantBadge($cv)
     {

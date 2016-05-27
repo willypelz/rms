@@ -110,6 +110,10 @@ class JobsController extends Controller
                                 'company_id' => $company->id
                         ]);
 
+                        //var_dump($job);
+                        //Save job creation to activity
+                        save_activities('JOB-CREATED',  $job->id );
+
                          $out_boards = array();
                         foreach ($pickd_boards as $p) {
                             if(in_array($p, $bds))
@@ -202,14 +206,25 @@ class JobsController extends Controller
         
         $active = 0;
         $suspended = 0;
+        $deleted = 0;
+
+        $active_jobs = [];
         foreach($jobs as $job){
             if ($job->status == 'ACTIVE') {
+                $active_jobs[] = $job;
                 $active++;
-            }else{
+            }
+            else if ($job->status == 'SUSPENDED') {
                 $suspended++;
             }
+            else if ($job->status == 'DELETED') {
+                $deleted++;
+            }
+            else{
+                // $suspended++;
+            }
         }
-        return view('job.job-list', compact('jobs', 'active', 'suspended', 'company'));
+        return view('job.job-list', compact('jobs', 'active', 'suspended', 'deleted', 'company', 'active_jobs'));
     }
 
     public function JobPromote($id, Request $request){
@@ -249,7 +264,7 @@ class JobsController extends Controller
           // dd($activities);
 
         }else{
-            $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_id', $request->jobid)->orderBy('created_at', 'desc')->take(20)->get();
+            $activities =  JobActivity::with('user', 'application.cv', 'job', 'job.company')->where('job_id', $request->jobid)->orderBy('created_at', 'desc')->take(20)->get();
         }
             // dd($activities);
         foreach ($activities as $ac) {
@@ -258,7 +273,7 @@ class JobsController extends Controller
             switch ($type) {
 
                 case "JOB-CREATED":
-                     $job = $ac->job;
+                     $job = $ac->job; 
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
                                  <span class="fa-stack fa-lg i-notify">
@@ -269,10 +284,9 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-info">Job Created</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
-                                      '. $ac->user->name .' Created a new Job <strong>'.$job->title.'</strong>.
+                                      '. $ac->user->name .' Created a new Job <a href="'. url(@$job->company->slug.'/job/'.$job->id.'/'.str_slug($job->title) )  .'"><strong>'.$job->title.'</strong>.
                                   </p>
-                                </li>';
-                     break;
+                                </li>';                     break;
                  case "APPLIED":
                      $applicant = $ac->application->cv;
                      $job = $ac->application->job;
@@ -336,7 +350,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-success">Comment</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']
-                                      </small> '. $ac->user->name .' said '.$ac->comment.' about <a href="#">'.$applicant->first_name.' '.$applicant->last_name.'</a>
+                                      </small> '. $ac->user->name .' said '.$ac->comment.' about <a href="'. url('applicant/messages/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a>
                                   </p>
                                   
                                 </li>';
@@ -355,7 +369,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-success">Review</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']
-                                      </small> '. $ac->user->name .' reviewed <a href="#">'.$applicant->first_name.' '.$applicant->last_name.'</a>
+                                      </small> '. @$ac->user->name .' reviewed <a href="'. url('applicant/messages/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a>
                                   </p>
                                   
                                 </li>';
@@ -432,6 +446,15 @@ class JobsController extends Controller
         // dd($act->toArray());
 
         $content .= '</ul>';
+
+        if( count( $activities ) == 0 )
+        {
+          $content = '<div class="row">
+                            <div class="col-xs-12">
+                                <h5 class="text-center text-success text-brandon">You have no activities yet</h5>
+                            </div>
+                        </div>';
+        }
 
         return $content;
     }

@@ -50,6 +50,7 @@
 
  				$( '#viewModal' ).modal('toggle');
         $.growl.notice({ message: "You have scheduled " + $field.closest('.modal-body').find('.media-heading a').text() + " for an interview" });
+        sh.reloadStatus();
             
         });
 

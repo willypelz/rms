@@ -26,9 +26,9 @@
         <div class="container">
             <div class="row">
 
-            @if( count(@$jobs) > 0 )
-                @foreach($jobs as $job)
-                <div class="col-xs-12">
+            @if( count(@$active_jobs) > 0 )
+                @foreach($active_jobs as $job)
+                <div class="col-xs-12 job-block">
                     <div class="panel panel-default b-db">
                         <div class="panel-body no-pad">
 
@@ -63,7 +63,8 @@
                             <li><a href="#" onclick="Suspend( {{$job['id']}} ); return false">Suspend Job</a></li>
                             @endif
                             <li><a href="#" onclick="DuplicateJob( {{$job['id']}} ); return false">Duplicate Job</a></li>
-
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#" id="delete-job" class="text text-danger" data-id="{{$job['id']}}" data-title="{{ $job['title'] }}">Delete Job</a></li>
                           </ul>
                         </div>    
 
@@ -104,6 +105,8 @@
                                    
                               }
                           });
+
+                          
 
                     });
 
@@ -161,6 +164,25 @@
                     }
                 </script>    
                 @endforeach
+                    
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                            $('body').on('click','#delete-job', function(){
+
+                                var this_one = $(this);
+
+                                $.post("{{ route('job-status') }}", { rnd : Math.random() * 100000,  job_id: this_one.data('id') , status:'DELETED' }, function(){
+                                    this_one.closest('.job-block').remove();
+                                    $.growl.notice({ message: "You have deleted " + this_one.data('title') });
+                                });
+                                
+                          });
+                        });
+                    </script>
+
+                @else
+
+
 
                 @endif
                

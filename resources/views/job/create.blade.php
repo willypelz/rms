@@ -44,7 +44,7 @@
                                                 <select name="job_location" id="location" class="select2" style="width: 303px;">
                                                     <option value="">--choose state--</option>
                                                     @foreach($locations as $state)
-                                                    <option value="{{ $state }}" @if (Request::old('job_location') == '{{ $state }}') selected="selected" @endif >{{ $state }}</option>
+                                                    <option value="{{ $state }}" {{ ( @Request::old('job_location') == $state) ? 'selected="selected"' : '' }}  >{{ $state }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -80,11 +80,11 @@
 
                                      <div class="form-group">
                                         <div class="row">
-                                            <div class="col-sm-6"><label for="job-title">Job Specialization <span class="text-danger">*</span></label>
+                                            <div class="col-sm-6"><label for="job-title">Job Specialization  <span class="text-danger">*</span></label>
                                                     <br><select name="specializations[]" id="" multiple="" required class="select2" style="width: 303px;">
                                                         <option value="">--choose specialization</option>
                                                         @foreach($specializations as $s)
-                                                            <option value="{{ $s->id }}">{{ $s->name }}</option>
+                                                            <option value="{{ $s->id }}"  {{ ( @in_array($s->id,Request::old('specializations')) ) ? 'selected="selected"' : '' }}>{{ $s->name }}</option>
                                                         @endforeach
                                                     </select>
                                             </div>                                            
@@ -112,7 +112,7 @@
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <label for="">Job Details <span class="text-danger">*</span></label>
-                                                <textarea name="details" id="editor1" cols="30" rows="6" class="form-control" placeholder="">{{ (Request::old('details')) ? ' value='. e(Request::old('details')) .'' : '' }}</textarea>
+                                                <textarea name="details" id="editor1" cols="30" rows="6" class="form-control" placeholder="">{{ (Request::old('details')) ? e(Request::old('details')) : '' }}</textarea>
                                             </div>
                                         </div>
                                     </div>

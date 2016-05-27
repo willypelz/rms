@@ -12,8 +12,9 @@
 
             <script src="http://malsup.github.com/jquery.form.js"></script> 
 <script src="{{ asset('js/jquery.twbsPagination.min.js') }}"></script>
+<script src="{{ asset('js/jquery.jscroll.min.js') }}"></script>
 
-    <section class="s-div dark">
+    <section class="s-div dark scroll-to">
         <div class="container">
 
             <div class="row">
@@ -49,7 +50,7 @@
                 </div>
                     <div class="col-xs-3"><br>
                       <div class="dropdown">
-                        <a href="{{ route('add-candidates', false) }}" class="btn btn-block btn-line dropdown-toggle" ><i class="fa fa-cloud-upload"></i> Upload CV to Folder &nbsp;</a>
+                        <a data-toggle="modal" data-target="#addCandidateModal" id="modalButton" href="#addCandidateModal" class="btn btn-block btn-line dropdown-toggle" ><i class="fa fa-cloud-upload"></i> Upload CV to Folder &nbsp;</a>
                               
                       </div>
                     </div>
@@ -88,10 +89,12 @@
 
 
             <div class="col-sm-8">
-
+                  <br style="clear:both" />
+                            <small class="text-muted result-label pull-left" id="showing" style="margin-bottom:20px;"></small>
+                            <br style="clear:both" />
                   <div class="" id="search-results">
 
-                    <ul class="search-results">
+                    <ul class="search-results scroll">
                             
                             @include('cv-sales.includes.search-results-item')
 
@@ -165,6 +168,48 @@
     var folders = [];
     var filters = [];
     var age_range = "1, 200";
+
+    function searchKeyword(){
+
+            var filter = 'text' + ':"' + $(search_keyword).val() + '"';
+            var key = $(search_keyword).val();
+
+            var index = $.inArray( filter, filters );
+            // console.log( filter + "---" + index );
+            if( index == -1 )
+            {
+              filters.push( filter );
+            }
+            else
+            {
+                filters.splice(index, 1);
+            }
+
+            $('.search-results').html('{!! preloader() !!}');
+            scrollTo('.job-progress-xs');
+            $('.result-label').html('');
+            $('#pagination').hide();
+            $.get("{{ url('cv/talent-pool') }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
+                //console.log(response);
+                // var response = JSON.parse(data);
+                // console.log(data.search_results);
+                $('.search-results').html(data.search_results);
+                $('#search-filters').html(data.search_filters);
+                $('.result-label').html(data.showing);
+                $('#pagination').show();
+                $('#search_keyword').val(key);
+
+                $.each(filters, function(index,value){
+                    
+                    var arr = value.split(':');
+                    
+                    $('.filter-div input[type=checkbox]' + '[data-field=' + arr[0] + ']' + '[data-value=' + arr[1] + ']' ).attr('checked',true);
+                });
+            });
+
+            return false;
+        }
+        
     $(document).ready(function(){
         
 
@@ -205,9 +250,32 @@
           });
         }
 
+        $.fn.getShowing = function(){
+            count = $('.search-results li.row').length;
+
+            // console.log( status_filter );
+            $('.result-label').text( 'Showing 1 - ' + count + ' of '+ "{{ $result['response']['numFound'] }}" + ' Cvs'  );
+        }
+
+        $('body').on('click', '#clearAllFilters', function(){
+
+            filters = [];
+            $('.filter-div input[type=checkbox]' ).prop('checked',false);
+
+            $('#search_keyword').val("");
+            $('.result-label').html('');
+            $('#pagination').hide();
+
+            age_range = null;
+
+            $(this).performFilter();
+            
+        });
+
         
 
         $(document).getMyFolders();
+        $(document).getShowing();
 
         $(document).on('change', '.filter-div input[type=checkbox]', function(){
             // console.log("changed");
@@ -231,12 +299,15 @@
             
 
             $('.search-results').html('{!! preloader() !!}');
+            $('.result-label').html('');
+            scrollTo('.scroll-to');
             $.get("{{ url('cv/talent-pool') }}", {search_query: $('#search_query').val(), filter_query : filters, age: age_range },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);
                 $('.search-results').html(data.search_results);
                 $('#search-filters').html(data.search_filters);
+                $('.result-label').html(data.showing);
                 $(document).getMyFolders();
                 $.each(filters, function(index,value){
                     
@@ -245,6 +316,7 @@
                     $('.filter-div input[type=checkbox]' + '[data-field=' + arr[0] + ']' + '[data-value=' + arr[1] + ']' ).attr('checked',true);
                 });
             });
+            $(document).getShowing();
         }
 
         $(document).on('change', '#search_query', function(){
@@ -351,6 +423,18 @@
 
 
 
+
+        $('body').on('keydown', '#search_keyword',function(){
+            if(event.which == 13) 
+            {
+                searchKeyword();
+
+            }
+        });
+
+        
+
+
     });
 </script>
 
@@ -391,4 +475,19 @@
         </div>
       </div>
     </div>
+
+
+<div class="modal widemodal fade" id="addCandidateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="margin: 18px;">×</button>
+        <h4 class="modal-title" id="myModalLabel">Upload Cvs to your talent pool</h4>
+      </div>
+      <div class="modal-body">
+          @include('job.includes.add-candidate-inc')
+      </div>
+    </div>
+  </div>
+</div>
 @endsection

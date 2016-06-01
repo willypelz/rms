@@ -134,7 +134,7 @@ class TalentPoolController extends Controller
             $j = DB::connection('mysql_far')->select('SELECT * FROM jobs WHERE id = '.$ja->job_id);
             $j = $j[0];
             $job = Job::where('title', $j->title)->first();
-            // dd($j);
+            // dd($j, $job);
 
             
             $cv = new CV;

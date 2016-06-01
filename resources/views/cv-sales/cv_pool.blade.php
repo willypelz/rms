@@ -185,10 +185,10 @@
                 filters.splice(index, 1);
             }
 
-            $('.search-results').html('{!! preloader() !!}');
-            scrollTo('.job-progress-xs');
-            $('.result-label').html('');
-            $('#pagination').hide();
+            $('.search-results').html('{!! preloader() !!}');console.log( "1" );
+            // scrollTo('.scroll-to');console.log( "2" );
+            $('.result-label').html('');console.log( "3" );
+            $('#pagination').hide();console.log( "4" );
             $.get("{{ url('cv/talent-pool') }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);

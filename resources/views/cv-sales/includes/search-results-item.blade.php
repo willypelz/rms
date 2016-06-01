@@ -63,7 +63,13 @@
                   @else
                       <a href="{{ url('log-in') }}" class="btn btn-line btn-sm dropdown-toggle">Save into Folder</a>
                   @endif
-                    <a href="javascript://" class="btn btn-line btn-sm" id='showCvBtn' data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">Preview CV</a>
+
+                    @if( $page == 'pool' )
+                        <a href="javascript://" class="btn btn-line btn-sm" id="showCvBtn" data-toggle="modal" data-target="#cvModal"  onclick="showCvModal('{{ $cv['id'] }}',true);">Preview CV</a>
+                    @else
+                        <a href="javascript://" class="btn btn-line btn-sm" id="showCvBtn" data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">Preview CV</a>
+                    @endif
+                    
                   
                   @if(@$can_purchase)
                     <span class="purchase-action">

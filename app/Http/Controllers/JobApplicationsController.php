@@ -48,9 +48,10 @@ class JobApplicationsController extends Controller
     public function activities($appl_id){
 
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
+        
         // dd($appl);
         $nav_type = 'activities';
-        return view('applicant.activities', compact('appl', 'nav_type'));
+        return view('applicant.activities', compact('appl', 'nav_type','result','application_statuses'));
     }
 
     public function medicals($appl_id){

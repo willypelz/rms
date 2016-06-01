@@ -138,6 +138,7 @@
     var total_candidates = "{{ $result['response']['numFound'] }}";
     var keyword = "";
     var age_range = "1, 200";
+    var last_text_filter = "";
 
     String.prototype.capitalize = function() {
         return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
@@ -148,16 +149,20 @@
             var filter = 'text' + ':"' + $(search_keyword).val() + '"';
             var key = $(search_keyword).val();
 
-            var index = $.inArray( filter, filters );
+            var index = $.inArray( last_text_filter, filters );
             // console.log( filter + "---" + index );
             if( index == -1 )
             {
-              filters.push( filter );
+              //Does not exist before, skip
             }
             else
             {
                 filters.splice(index, 1);
             }
+
+            last_text_filter = filter;
+
+            filters.push( filter );
 
             $('.search-results').html('{!! preloader() !!}');
             scrollTo('.job-progress-xs');

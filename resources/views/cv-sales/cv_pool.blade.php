@@ -168,27 +168,32 @@
     var folders = [];
     var filters = [];
     var age_range = "1, 200";
+    var last_text_filter = "";
 
     function searchKeyword(){
 
             var filter = 'text' + ':"' + $(search_keyword).val() + '"';
             var key = $(search_keyword).val();
 
-            var index = $.inArray( filter, filters );
+            var index = $.inArray( last_text_filter, filters );
             // console.log( filter + "---" + index );
             if( index == -1 )
             {
-              filters.push( filter );
+              //Does not exist before, skip
             }
             else
             {
                 filters.splice(index, 1);
             }
 
-            $('.search-results').html('{!! preloader() !!}');console.log( "1" );
-            // scrollTo('.scroll-to');console.log( "2" );
-            $('.result-label').html('');console.log( "3" );
-            $('#pagination').hide();console.log( "4" );
+            last_text_filter = filter;
+
+            filters.push( filter );
+
+            $('.search-results').html('{!! preloader() !!}');
+            scrollTo('.scroll-to');
+            $('.result-label').html('');
+            // $('#pagination').hide();
             $.get("{{ url('cv/talent-pool') }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);

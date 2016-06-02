@@ -28,7 +28,6 @@ sh.showModal = function(obj,title,view,data)
     $('#viewModal .modal-title').text(title);
     $('.modal-dialog').removeClass('modal').removeClass('modal-lg').addClass(data.modal_size);
 
-    window.preloader = $('#viewModal .modal-body').html();
     // $user = $(this).closest('.media');
     // var $user = obj.closest('.media').clone();
     // $user.find('input[type="checkbox"]').remove();
@@ -42,9 +41,6 @@ sh.showModal = function(obj,title,view,data)
 }
 
 
-
-
-
 sh.showWideModal = function()
 {
 
@@ -56,32 +52,32 @@ $(document).ready(function(){
 
     $('body').on('click','#modalButton', function(){
 
-        data = {
-            app_id: $(this).data('app-id') ,
-            cv_id: $(this).data('cv')
+        var data = {
+            app_id: $(this).attr('data-app-id') ,
+            cv_id: $(this).attr('data-cv')
         }
-        
-        if( $(this).data('type') == 'normal' )
+
+        if( $(this).attr('data-type') == 'normal' )
         {
             data.modal_size = 'modal-md';
-            sh.showModal( $(this), $(this).data('title') , $(this).data('view'), data );
+            sh.showModal( $(this), $(this).attr('data-title') , $(this).attr('data-view'), data );
         }
-        else if( $(this).data('type') == 'wide' )
+        else if( $(this).attr('data-type') == 'wide' )
         {
             data.modal_size = 'modal-lg';
-            sh.showModal( $(this), $(this).data('title') , $(this).data('view'), data );
+            sh.showModal( $(this), $(this).attr('data-title') , $(this).attr('data-view'), data );
         }
-        else if( $(this).data('type') == 'small' )
+        else if( $(this).attr('data-type') == 'small' )
         {
             data.modal_size = 'modal-sm';
-            sh.showModal( $(this), $(this).data('title') , $(this).data('view'), data );
+            sh.showModal( $(this), $(this).attr('data-title') , $(this).attr('data-view'), data );
         }
     });
 
     $('#viewModal').on('hidden.bs.modal', function () {
-        $('.modal-title').text("Default Text");
-        $('.modal-body').html( window.preloader );
-        
+        $('#viewModal .modal-title').text("Default Text");
+        $('#viewModal .modal-body').html( window.preloader );
+        console.log( "Modal has been closed" );
     });
 
     // onclick="sh.showModal('Assess','')"

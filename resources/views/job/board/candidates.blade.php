@@ -33,6 +33,8 @@
                                     
 
                                     @include('job.board.includes.applicant-status')
+
+                                    <br>
                                 
 
                                     <small class="text-muted result-label" id="showing"></small>
@@ -48,12 +50,12 @@
                                 <div id="h_act-on" class="col-xs-12 app-action" style="display:none;">
                                     <div>
                                         <div class="btn-group select-action" id="mass-action">
-                                            <a class="btn btn-default status-1"  data-action="SHORTLISTED" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Shortlist?" data-view="{{ route('modal-shortlist') }}" data-app-id="" data-cv="" data-type="normal">Shortlist All</a>
-                                            <a class="btn btn-default status-1" type="button" data-action="ASSESSED">Test All</a>
-                                            <a class="btn btn-default status-1" type="button" data-action="INTERVIEWED">Interview All</a>
-                                            <a class="btn btn-default status-1" type="button" data-action="HIRED">Hire All</a>
-                                            <a class="btn btn-default status-1" type="button" data-action="REJECTED">Reject All</a>
-                                            <a class="btn btn-default status-1" type="button" data-action="PENDING">Return All</a>
+                                            <a class="btn btn-default status-1" data-action="SHORTLISTED" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Shortlist?" data-view="{{ route('modal-shortlist') }}" data-app-id="" data-cv="" data-type="normal">Shortlist All</a>
+                                            <a class="btn btn-default status-1" type="button" data-action="ASSESSED"  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Test" data-view="{{ route('modal-assess') }}" data-app-id="" data-cv="" data-type="wide">Test All</a>
+                                            <a class="btn btn-default status-1" type="button" data-action="INTERVIEWED"  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Schedule an interview for" data-view="{{ route('modal-interview') }}" data-app-id="" data-cv="" data-type="normal">Interview All</a>
+                                            <a class="btn btn-default status-1" type="button" data-action="HIRED"  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Hire" data-view="{{ route('modal-hire') }}" data-app-id="" data-cv="" data-type="normal">Hire All</a>
+                                            <a class="btn btn-default status-1" type="button" data-action="REJECTED"  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Reject?" data-view="{{ route('modal-reject') }}" data-app-id="" data-cv="" data-type="normal">Reject All</a>
+                                            <a class="btn btn-default status-1" type="button" data-action="PENDING" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Do you want to return to all?" data-view="{{ route('modal-return-to-all') }}" data-app-id="" data-cv="" data-type="normal" >Return All</a>
                                         </div>
                                         
                                     </div>
@@ -459,7 +461,7 @@
                     }).get();
 
 
-            
+            console.log(  )
             $('#mass-action a').attr('data-cv',cv_ids);
             $('#mass-action a').attr('data-app-id',app_ids);
         }

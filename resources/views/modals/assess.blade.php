@@ -131,8 +131,11 @@
 
     $(document).ready(function(){
 
+        var app_ids = <?php echo json_encode($app_ids );?>  ;
+        var cv_ids = <?php echo json_encode($cv_ids );?> ;
+
         $('body #request-btn').on('click', function(){
-          $('#cart-preview').append('<tr data-id="' + $(this).data('id') +'" data-owner="' + $(this).data('owner') +'"><td id="name">' + $(this).data('title') +'</td><td id="amount">' + $(this).data('amount') +'</td><td class="text-right"><a href="javascript://" id="delete-request"><i class="fa fa-times-circle text-danger"></i> </a></td></tr>');
+          $('#cart-preview').append('<tr data-id="' + $(this).attr('data-id') +'" data-owner="' + $(this).attr('data-owner') +'"><td id="name">' + $(this).attr('data-title') +'</td><td id="amount">' + $(this).attr('data-amount') +'</td><td class="text-right"><a href="javascript://" id="delete-request"><i class="fa fa-times-circle text-danger"></i> </a></td></tr>');
           $(this).calculateCartTotal();
           $(this).closest('.panel-body').fadeOut();
         });
@@ -167,14 +170,14 @@
 
             $('#cart-preview tr').each(function( index ) {
                 // $.extend(tests,{
-                //     id: $(this).data('id'),
+                //     id: $(this).attr('data-id'),
                 //     name: $(this).find('#name').text()
                 // });
                 tot +=  Number($(this).find('#amount').text());
                 tests.push({
-                    id: $(this).data('id'),
+                    id: $(this).attr('data-id'),
                     name: $(this).find('#name').text(),
-                    owner: $(this).data('owner'),
+                    owner: $(this).attr('data-owner'),
                     cost: $(this).find('#amount').text(),
                 });
             });
@@ -183,8 +186,8 @@
                 location : $('#test-location').val(),
                 start_time : $('#test-start').val(),
                 end_time : $('#test-end').val(),
-                job_application_id: "{{ $app_id }}",
-                cv_id: "{{ $cv_id }}",
+                app_ids: app_ids,
+                cv_ids: cv_ids,
                 job_id: "{{ $appl->job->id }}",
                 total_amount: tot,
                 type: 'Test',
@@ -212,21 +215,21 @@
 
             $('#cart-preview tr').each(function( index ) {
                 // $.extend(tests,{
-                //     id: $(this).data('id'),
+                //     id: $(this).attr('data-id'),
                 //     name: $(this).find('#name').text()
                 // });
                 tot +=  Number($(this).find('#amount').text());
                 checks.push({
-                    id: $(this).data('id'),
+                    id: $(this).attr('data-id'),
                     name: $(this).find('#name').text(),
-                    owner: $(this).data('owner'),
+                    owner: $(this).attr('data-owner'),
                     cost: $(this).find('#amount').text(),
                 });
             });
 
             var data = {                
-                job_application_id: "{{ $app_id }}",
-                cv_id: "{{ $cv_id }}",
+                app_ids: app_ids,
+                cv_ids: cv_ids,
                 job_id: "{{ $appl->job->id }}",
                 checks : checks,
                 service_type: "{{ $section }}",

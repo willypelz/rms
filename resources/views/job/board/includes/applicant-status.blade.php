@@ -12,4 +12,4 @@
     </li>
     <li><a href="javascript://" data-value="REJECTED">Reject <span class="badge">{{ $application_statuses['REJECTED'] }}</span></a>
     </li>
-</ul><br>
+</ul>

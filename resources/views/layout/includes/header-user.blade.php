@@ -3,7 +3,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
     <link rel="apple-touch-icon" href="apple-touch-icon-precomposed.png">
 
     <title> @if(isset($pageTitle)){{ $pageTitle }}&middot;@endif Seamless Hiring</title>

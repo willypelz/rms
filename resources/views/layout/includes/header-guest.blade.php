@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
     <link rel="apple-touch-icon" href="apple-touch-icon-precomposed.png">
 
     <title> @if(isset($pageTitle)){{ $pageTitle }}&middot;@endif Seamless Hiring</title>

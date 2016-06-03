@@ -76,12 +76,12 @@
               <span class="hidden-xs text-brandon"> <h2>
               <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
-                <i class="fa fa-send fa-stack-1x text-green"></i>
+                <i class="fa fa-send fa-stack-1x"></i>
               </span>
               </h2> <br> Broadcast Jobs everywhere.</span><br></span>
               <i class="hidden-xs fa fa-arrow-right pull-right fa-abx fa-lg"></i>
 
-                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-send fa-stack-1x  text-green"></i>
+                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-send fa-stack-1x "></i>
               </a>
             </div>
 
@@ -106,12 +106,12 @@
               <span class="hidden-xs text-brandon"> <h2>
               <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
-                <i class="fa fa-pencil-square-o fa-stack-1x  text-orange"></i>
+                <i class="fa fa-pencil-square-o fa-stack-1x"></i>
               </span>
               </h2> <br> Conduct Online Recruitment Tests</span><br></span>
               <i class="hidden-xs fa fa-arrow-right pull-right fa-abx fa-lg"></i>
 
-                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-pencil-square-o fa-stack-1x  text-orange"></i>
+                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-pencil-square-o fa-stack-1x"></i>
               </a>
             </div>
 
@@ -121,12 +121,12 @@
               <span class="hidden-xs text-brandon"> <h2>
               <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
-                <i class="fa fa-heartbeat fa-stack-1x  text-pink"></i>
+                <i class="fa fa-heartbeat fa-stack-1x"></i>
               </span>
               </h2> <br> Run Background & Health Checks</span><br></span>
               <i class="hidden-xs fa fa-arrow-right pull-right fa-abx fa-lg"></i> 
 
-                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-heartbeat fa-stack-1x  text-pink"></i>
+                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-heartbeat fa-stack-1x"></i>
 
               </a>
             </div>
@@ -137,12 +137,12 @@
               <span class="hidden-xs text-brandon"> <h2>
               <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
-                <i class="fa fa-cloud-download fa-stack-1x  text-red"></i>
+                <i class="fa fa-cloud-download fa-stack-1x"></i>
               </span>
               </h2> <br> Save & Download the Entire Process</span><br></span>
               <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
 
-                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-cloud-download fa-stack-1x  text-red"></i>
+                <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-cloud-download fa-stack-1x "></i>
               </a>
             </div>
           </div> 

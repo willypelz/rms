@@ -50,7 +50,17 @@
               @endif
 
               <a data-toggle="modal" class="text-danger" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Reject?" data-view="{{ route('modal-reject') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Reject</a>
-              
+
+              <span class="dropdown">&nbsp; &middot; &nbsp;
+                <a id="checkDrop" type="button" data-toggle="dropdown" aria-expanded="false">Checks
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="checkDrop">
+                  <li><a href="">Background Check</a></li>
+                  <li><a href="">Medical Check</a></li>
+                </ul>
+              </span> 
+
               <span class="pull-right hide">
                   <a class="text-muted" href="#">Background Check</a>
                   <span class="text-muted">·</span>

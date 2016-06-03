@@ -20,11 +20,11 @@
 </div>
 
 <div class="form-group">
-	<input class="form-control" id="interview-message" data-app-id="{{ $app_id }}" placeholder="Message" />
+	<input class="form-control" id="interview-message" placeholder="Message" />
 </div>
                                   
   <div class="pull-right">
-      <a href="javascript://" id="sendInterviewBtn" data-app-id="{{ $app_id }}" data-cv="{{ $cv_id }}" class="btn btn-success pull-right">Interview</a>
+      <a href="javascript://" id="sendInterviewBtn" class="btn btn-success pull-right">Interview</a>
       <div class="separator separator-small"></div>
   </div>
 
@@ -34,13 +34,15 @@
 
 <script type="text/javascript">
  $(document).ready(function(){
- 	
+  
+    var app_ids = <?php echo json_encode($app_ids );?>  ;
+  var cv_ids = <?php echo json_encode($cv_ids );?> ; 	
 
  	$('body #sendInterviewBtn').on('click',function(){
  		
  		var data = {
  						job_id: '{{ $appl->job->id }}',
- 						cv_id :  "{{ $cv_id }}",
+ 						cv_ids :  cv_ids,
  						location:  $('#interview-location').val(),
  						date:  $('#interview-time').val(),
  						message:  $('#interview-message').val()

@@ -18,10 +18,12 @@ use Session;
 use Auth;
 use Mail;
 use Curl;
+use App\Libraries\Solr;
 
 
 class JobsController extends Controller
 {
+    private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'application_date+desc', 'grouped'=>FALSE ];
     /**
      * Create a new controller instance.
      *
@@ -232,8 +234,12 @@ class JobsController extends Controller
         $job = Job::find($id);
         $company = $job->company()->first();
 
+        $result = Solr::get_applicants($this->search_params, $id,''); 
+      
+        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+
         $active_tab = 'promote';
-        return view('job.board.home', compact('job', 'active_tab', 'company'));
+        return view('job.board.home', compact('job', 'active_tab', 'company','result','application_statuses'));
     }
 
     public function JobTeam($id, Request $request){
@@ -246,7 +252,11 @@ class JobsController extends Controller
         $job = Job::find($id);
         $active_tab = 'team';
 
-        return view('job.board.team', compact('job', 'active_tab', 'users'));
+        $result = Solr::get_applicants($this->search_params, $id,''); 
+      
+        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+
+        return view('job.board.team', compact('job', 'active_tab', 'users','result','application_statuses'));
     }
 
     public function ActivityContent(Request $request){
@@ -465,7 +475,11 @@ class JobsController extends Controller
         
         $active_tab = 'activities';
 
-        return view('job.board.activities', compact('job', 'active_tab', 'content'));
+        $result = Solr::get_applicants($this->search_params, $id,''); 
+      
+        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+
+        return view('job.board.activities', compact('job', 'active_tab', 'content','result','application_statuses'));
     }
 
     public function JobCandidates($id, Request $request){
@@ -480,8 +494,12 @@ class JobsController extends Controller
          $job = Job::find($id);
         $active_tab = 'matching';
 
+        $result = Solr::get_applicants($this->search_params, $id,''); 
+      
+        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
-        return view('job.board.matching', compact('job', 'active_tab'));
+
+        return view('job.board.matching', compact('job', 'active_tab','result','application_statuses'));
     }
 
 

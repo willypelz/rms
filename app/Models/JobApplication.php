@@ -25,7 +25,7 @@ class JobApplication extends Model
 
     public static function massAction($job_id, $cv_ids, $status)
     {
-
+        
         $app = JobApplication::where('job_id',$job_id)
                                 ->whereIn('cv_id',$cv_ids)
                                 ->update( ['status'=>$status] );

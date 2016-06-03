@@ -394,8 +394,8 @@
     $('.btn-board-buy').on('click',function(e){
 
         console.log('Board thuis')
-        var each_cart = ($(this).data('cost'));
-          $('#cart-preview').append('<tr data-id="' + $(this).data('id') +'" data-owner="' + $(this).data('owner') +'"><td id="name">' + $(this).data('title') +'</td><td id="amount">' + $(this).data('cost') +'</td><td class="text-right"><a href="javascript://" id="delete-request"><i class="fa fa-times-circle text-danger"></i> </a></td></tr>');
+        var each_cart = ($(this).attr('data-cost'));
+          $('#cart-preview').append('<tr data-id="' + $(this).attr('data-id') +'" data-owner="' + $(this).attr('data-owner') +'"><td id="name">' + $(this).attr('data-title') +'</td><td id="amount">' + $(this).attr('data-cost') +'</td><td class="text-right"><a href="javascript://" id="delete-request"><i class="fa fa-times-circle text-danger"></i> </a></td></tr>');
           $(this).calculateCartTotal();
         
         cart_count = Number(cart_count) + 1;
@@ -432,8 +432,8 @@
     $('.btn-board-discard').on('click',function(e){
 
 
-        var each_cart = ($(this).data('cost'));
-        var each_id = ($(this).data('id'));
+        var each_cart = ($(this).attr('data-cost'));
+        var each_id = ($(this).attr('data-id'));
 
         console.log('each amount is '+each_cart);
         console.log('each id is '+each_id);

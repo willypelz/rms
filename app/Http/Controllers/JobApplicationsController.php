@@ -48,9 +48,10 @@ class JobApplicationsController extends Controller
     public function activities($appl_id){
 
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
+        
         // dd($appl);
         $nav_type = 'activities';
-        return view('applicant.activities', compact('appl', 'nav_type'));
+        return view('applicant.activities', compact('appl', 'nav_type','result','application_statuses'));
     }
 
     public function medicals($appl_id){
@@ -178,6 +179,7 @@ class JobApplicationsController extends Controller
 
     public function massAction( Request $request )
     {
+
         JobApplication::massAction( $request->job_id, $request->cv_ids, $request->status );
     }
 
@@ -259,11 +261,6 @@ class JobApplicationsController extends Controller
 
     public function modalComment(Request $request)
     {
-        // $appl = JobApplication::with('job', 'cv')->find( $request->app_id );
-        // echo "<pre>";
-        // var_dump($appl);
-        // echo "</pre>";
-        // $applicant_badge = $this->getApplicantBadge( $request->cv_id );
         
         $app_id = @$request->app_id;
         $cv_id = @$request->cv_id;
@@ -276,18 +273,17 @@ class JobApplicationsController extends Controller
 
     public function modalInterview(Request $request)
     {
-        // $appl = JobApplication::with('job', 'cv')->find( $request->app_id );
-        // echo "<pre>";
-        // var_dump($appl);
-        // echo "</pre>";
-        // $applicant_badge = $this->getApplicantBadge( $request->cv_id );
-        
-        $app_id = @$request->app_id;
-        $cv_id = @$request->cv_id;
-        $appl = JobApplication::with('job', 'cv')->find($app_id);
-        $applicant_badge = @$this->getApplicantBadge($appl->cv);
+        $modalVars = $this->modalActions('Interview', $request->cv_id, $request->app_id);
+        if( is_array( $modalVars ) )
+        {
+            extract($modalVars);
+        }
+        else
+        {
+            return $modalVars;
+        }
 
-        return view('modals.interview', compact('applicant_badge','app_id','cv_id','appl'));
+        return view('modals.interview', compact('applicant_badge','app_ids','cv_ids','appl'));
     }
 
     public function modalInterviewNotes(Request $request)
@@ -308,115 +304,137 @@ class JobApplicationsController extends Controller
     
     public function modalShortlist(Request $request)
     {
-        if( is_array(@$request->cv_id) && is_array(@$request->app_id))
+        $modalVars = $this->modalActions('Shortlist', $request->cv_id, $request->app_id);
+        if( is_array( $modalVars ) )
         {
-            $applicant_badge = @$this->getMultipleApplicantBadge('Shortlist', count(@$request->cv_id) );
+            extract($modalVars);
         }
-        else if( !is_array(@$request->cv_id) && !is_array(@$request->app_id))
+        else
         {
-            $app_id = @$request->app_id;
-            $cv_id = @$request->cv_id;
-            $appl = JobApplication::with('job', 'cv')->find($app_id);
+            return $modalVars;
+        }
+        
+        
+
+        return view('modals.shortlist', compact('applicant_badge','app_ids','cv_ids','appl'));
+    }
+
+    public function modalReturnToAll(Request $request)
+    {
+        
+       $modalVars = $this->modalActions( 'Return', $request->cv_id, $request->app_id);
+        if( is_array( $modalVars ) )
+        {
+            extract($modalVars);
+        }
+        else
+        {
+            return $modalVars;
+        }
+        
+
+        return view('modals.return_to_all', compact('applicant_badge','app_ids','cv_ids','appl'));
+    }
+
+
+    public function modalReject(Request $request)
+    {
+        $modalVars = $this->modalActions('Reject', $request->cv_id, $request->app_id);
+        if( is_array( $modalVars ) )
+        {
+            extract($modalVars);
+        }
+        else
+        {
+            return $modalVars;
+        }
+        
+        
+
+        return view('modals.reject', compact('applicant_badge','app_ids','cv_ids','appl'));
+    }
+
+    private function modalActions($action,$cv_ids,$app_ids)
+    {
+        $app_ids = explode(',', @$app_ids);
+        $cv_ids = explode(',', @$cv_ids);
+        $appl = JobApplication::with('job', 'cv')->find($app_ids[0]);
+
+        if( count($cv_ids) > 1 && count($app_ids) > 1)
+        {
+            $applicant_badge = @$this->getMultipleApplicantBadge($action, count($cv_ids) );
+        }
+        else if( count($cv_ids) == 1 && count($app_ids) == 1)
+        {
+            
             $applicant_badge = @$this->getApplicantBadge($appl->cv);
         }
         else
         {
             return " There an error. Please contact the administrator";
         }
-        
 
-        return view('modals.shortlist', compact('applicant_badge','app_id','cv_id','appl'));
-    }
-
-    public function modalReturnToAll(Request $request)
-    {
-        
-        $app_id = @$request->app_id;
-        $cv_id = @$request->cv_id;
-        $appl = JobApplication::with('job', 'cv')->find($app_id);
-        $applicant_badge = @$this->getApplicantBadge($appl->cv);
-
-        return view('modals.return_to_all', compact('applicant_badge','app_id','cv_id','appl'));
-    }
-
-
-    public function modalReject(Request $request)
-    {
-        
-        $app_id = @$request->app_id;
-        $cv_id = @$request->cv_id;
-        $appl = JobApplication::with('job', 'cv')->find($app_id);
-        $applicant_badge = @$this->getApplicantBadge($appl->cv);
-
-        return view('modals.reject', compact('applicant_badge','app_id','cv_id','appl'));
+        return [
+             'applicant_badge' =>  $applicant_badge,
+             'app_ids' =>  $app_ids,
+             'cv_ids' =>  $cv_ids,
+             'appl' =>  $appl,
+        ];
     }
 
     
 
     public function modalAssess(Request $request)
     {
-        // $appl = JobApplication::with('job', 'cv')->find( $request->app_id );
-        // echo "<pre>";
-        // var_dump($appl);
-        // echo "</pre>";
-        // $applicant_badge = $this->getApplicantBadge( $request->cv_id );
-        // 
-        
-        
-        $app_id = @$request->app_id;
-        $cv_id = @$request->cv_id;
-        $appl = JobApplication::with('job', 'cv')->find($app_id);
-        $applicant_badge = @$this->getApplicantBadge($appl->cv);
-        // $requests = $appl->requests()->with('product.provider')->where('service_type', 'background')->get();
+        $modalVars = $this->modalActions('Test', $request->cv_id, $request->app_id);
+        if( is_array( $modalVars ) )
+        {
+            extract($modalVars);
+        }
+        else
+        {
+            return $modalVars;
+        }
+
         $test_available = true;
-        // $services = AtsService::all()->toArray() ;
 
         $products = AtsProduct::all(); 
         $section = 'TEST';
-        return view('modals.assess', compact('applicant_badge','app_id','cv_id','products','appl','test_available','section'));
+        return view('modals.assess', compact('applicant_badge','app_ids','cv_ids','products','appl','test_available','section'));
     }
 
     public function modalBackgroundCheck(Request $request)
     {
-        // $appl = JobApplication::with('job', 'cv')->find( $request->app_id );
-        // echo "<pre>";
-        // var_dump($appl);
-        // echo "</pre>";
-        // $applicant_badge = $this->getApplicantBadge( $request->cv_id );
-        // 
         
         
-        $app_id = @$request->app_id;
-        $cv_id = @$request->cv_id;
-        $appl = JobApplication::with('job', 'cv')->find($app_id);
-        $applicant_badge = @$this->getApplicantBadge($appl->cv);
-        // $requests = $appl->requests()->with('product.provider')->where('service_type', 'background')->get();
-        // $test_available = true;
-        // $services = AtsService::all()->toArray() ;
+        $modalVars = $this->modalActions('Background Check', $request->cv_id, $request->app_id);
+        if( is_array( $modalVars ) )
+        {
+            extract($modalVars);
+        }
+        else
+        {
+            return $modalVars;
+        }
 
         $products = AtsProduct::all();
         $section = 'BACKGROUND'; 
-        return view('modals.assess', compact('applicant_badge','app_id','cv_id','products','appl','test_available','section'));
+        return view('modals.assess', compact('applicant_badge','app_ids','cv_ids','products','appl','test_available','section'));
     }
 
 
     public function modalMedicalCheck(Request $request)
     {
-        // $appl = JobApplication::with('job', 'cv')->find( $request->app_id );
-        // echo "<pre>";
-        // var_dump($appl);
-        // echo "</pre>";
-        // $applicant_badge = $this->getApplicantBadge( $request->cv_id );
-        // 
         
-        
-        $app_id = @$request->app_id;
-        $cv_id = @$request->cv_id;
-        $appl = JobApplication::with('job', 'cv')->find($app_id);
-        $applicant_badge = @$this->getApplicantBadge($appl->cv);
-        // $requests = $appl->requests()->with('product.provider')->where('service_type', 'background')->get();
-        // $test_available = true;
-        // $services = AtsService::all()->toArray() ;
+        $modalVars = $this->modalActions('Health Check', $request->cv_id, $request->app_id);
+        if( is_array( $modalVars ) )
+        {
+            extract($modalVars);
+        }
+        else
+        {
+            return $modalVars;
+        }
 
         $products = AtsProduct::all();
         $section = 'HEALTH'; 
@@ -458,23 +476,26 @@ class JobApplicationsController extends Controller
                         'price' => $test['cost']
              ]);
 
-            $data = [
-                'location' => @$request->location,
-                'start_time' => @$request->start_time,
-                'end_time' => @$request->end_time,
-                'job_application_id' => @$request->job_application_id,
-                'test_id' => $test['id'],
-                'test_name' => $test['name'],
-                'test_owner' => $test['owner'],
-                'order_id' => $order->id,
+            foreach ( $request->app_ids as $key => $app_id) {
+               $data = [
+                    'location' => @$request->location,
+                    'start_time' => @$request->start_time,
+                    'end_time' => @$request->end_time,
+                    'job_application_id' => $app_id,
+                    'test_id' => $test['id'],
+                    'test_name' => $test['name'],
+                    'test_owner' => $test['owner'],
+                    'order_id' => $order->id,
+                
+                ];
+                            
+                TestRequest::create($data);
+            }
             
-            ];
-                        
-            TestRequest::create($data);
             // var_dump($data);
         }
 
-        JobApplication::massAction( @$request->job_id, [ @$request->cv_id ], 'ASSESSED' );
+        JobApplication::massAction( @$request->job_id,  @$request->cv_ids , 'ASSESSED' );
 
         $res = array();
         $res = ['total_amount'=>$request->total_amount, 'order_id'=>$order->id];
@@ -511,19 +532,26 @@ class JobApplicationsController extends Controller
                         'price' => $check['cost']
              ]);
 
-            $data = [
-                'job_application_id' => @$request->job_application_id,
-                'job_id' => @$request->job_id,
-                'ats_product_id' => $check['id'],
-                'cost' => $check['cost'],
-                'service_type' => @$request->service_type,
-                'created' => Carbon::now(),
-                'modified' => Carbon::now(),
-                'order_id' => $order->id
-            
-            ];
+           
+
+            foreach ( $request->app_ids as $key => $app_id) {
+
+                 $data = [
+                    'job_application_id' => $app_id,
+                    'job_id' => @$request->job_id,
+                    'ats_product_id' => $check['id'],
+                    'cost' => $check['cost'],
+                    'service_type' => @$request->service_type,
+                    'created' => Carbon::now(),
+                    'modified' => Carbon::now(),
+                    'order_id' => $order->id
+                
+                ];
+                            
+                AtsRequest::create($data);
+            }
                         
-            AtsRequest::create($data);
+            
             // var_dump($data);
 
         }
@@ -548,12 +576,13 @@ class JobApplicationsController extends Controller
                 'message' => @$request->message,
                 'date' => @$request->date
             ];
-                        
+                       
+
             Interview::create($data);
             // var_dump($data);
         
 
-        JobApplication::massAction( @$request->job_id, [ @$request->cv_id ], 'INTERVIEWED' );
+        JobApplication::massAction( @$request->job_id, @$request->cv_ids , 'INTERVIEWED' );
 
     }
 
@@ -584,7 +613,7 @@ class JobApplicationsController extends Controller
     {
         return '<div class="row" >
       <div class="col-xs-12">
-          <h5 class="text-center text-danger text-brandon">'.$action.' '.$count.' applicants?</h5>
+          <h5 class="text-center text-info text-brandon">'.$action.' '.$count.' applicants?</h5>
       </div>
     </div>';
         

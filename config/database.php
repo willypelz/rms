@@ -77,6 +77,18 @@ return [
             'strict'    => false,
             'engine'    => null,
         ],
+        'mysql_far' => [
+            'driver'    => 'mysql',
+            'host'      => env('DB_HOST', '50.28.104.199'),
+            'database'  => 'fareast-merchantile',
+            'username'  => env('DB_USERNAME', 'dejinsidfy'),
+            'password'  => env('DB_PASSWORD', 'd3j1ndify'),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+            'engine'    => null,
+        ],
 
         'pgsql' => [
             'driver'   => 'pgsql',

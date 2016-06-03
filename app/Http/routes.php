@@ -39,6 +39,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::auth();
 
     Route::get('/', function () {
+        
         return view('guest.landing');
     });
 
@@ -359,7 +360,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('modal/return-to-all', [ 'as' => 'modal-return-to-all', 'uses' => 'JobApplicationsController@modalReturnToAll' ]);
 
-
+    Route::get('modal/hire', [ 'as' => 'modal-hire', 'uses' => 'JobApplicationsController@modalHire' ]);
     
 
     Route::get('modal/reject', [ 'as' => 'modal-reject', 'uses' => 'JobApplicationsController@modalReject' ]);

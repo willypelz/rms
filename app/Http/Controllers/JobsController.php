@@ -19,6 +19,7 @@ use Auth;
 use Mail;
 use Curl;
 use App\Libraries\Solr;
+use Carbon\Carbon;
 
 
 class JobsController extends Controller
@@ -508,7 +509,7 @@ class JobsController extends Controller
         
     }
 
-    public function JobView($company_slug, $jobid, $job_slug, Request $request)
+    public function JobView($company_slug, $jobid, $job_slug, Request $request = null)
     {
         $company = Company::where('slug', $company_slug)->first();
         $job = Job::where('id', $jobid)->where("company_id",$company->id)->first();
@@ -739,15 +740,27 @@ class JobsController extends Controller
     }
 
     public function EditJob(Request $request, $jobid){
-
-        $job = Job::findOrFail($jobid);
+       
+        $job = Job::with('company')->findOrFail($jobid);
         $locations = locations();
         $qualifications = qualifications();
-
         if($request->isMethod('post')){
-            $job->update($request->all());
+
+           // dd( $request->all(), Carbon::createFromFormat('m/d/Y', $request->expiry_date )->format("Y-m-d H:m:s")  );
+
+          $job->title = $request->title;
+          $job->location = $request->job_location;
+          $job->job_type = $request->job_type;
+          $job->position = $request->position;
+          $job->post_date = $request->post_date;
+          $job->expiry_date = Carbon::createFromFormat('m/d/Y', $request->expiry_date )->format("Y-m-d H:m:s");
+          $job->details = $request->details;
+          $job->experience = $request->experience;
+
+          $job->save();
+           // $job->update($request->all());
         
-            return redirect()->route('job-view', ['id' => $job->id, 'slug'=>str_slug($job->title)]);
+            //return redirect($job->company->slug.'/job/'.$job->id.'/'.str_slug($job->title));
 
         }
 

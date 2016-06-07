@@ -1,3 +1,4 @@
+<?php use Carbon\Carbon; ?>
  <section class="no-pad" >
     <div class="container" >
         <section class="job-head blue" id="jobHead">
@@ -25,11 +26,13 @@
                                 <strong>&nbsp;Expires:</strong>&nbsp; <?php echo date('d, M Y', strtotime($job['expiry_date'])) ?></li>
                         </ul>
                         
-                        
+                        <?php //dd(Carbon::parse( $job['expiry_date']), Carbon::now())  ?>
 
 
-
-                        @if($job['status'] == 'ACTIVE')
+                        @if(  Carbon::now()->gt( Carbon::parse( $job['expiry_date'])  ) )
+                                <div id="status-box" class="label label-danger" style="">Job has expired</div> <!-- <small>To change</small> -->
+                            
+                        @elseif($job['status'] == 'ACTIVE')
                         <div id="status-box" class="label label-success" style="">Job is active</div>
                         @elseif($job['status'] == 'DRAFT')
                         <div id="status-box"  class="label label-warning" style="">Job is in Draft</div> 
@@ -38,7 +41,7 @@
                         @elseif($job['status'] == 'DELETED')
                         <div id="status-box"  class="label label-danger" style="">Job is deleted</div> 
                         @else
-                        <div id="status-box" class="label label-danger" style="">Job has expired</div> <!-- <small>To change</small> -->
+                           
                         @endif
                         <!-- <div class="badge badge-job badge-job-active">
                             <small class="">

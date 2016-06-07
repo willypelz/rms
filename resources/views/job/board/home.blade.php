@@ -40,13 +40,14 @@
                                               <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left disabled">
                                                 <input type="checkbox" disabled="" checked="" autocomplete="off" class="">
                                                 <span class="col-xs-6"><img width="100%" alt="" src="https://insidify.com/desktop/img/logo.png"></span>
-                                                <span class="col-xs-6"><b>Insidify Jobs</b><br>www.insidify.com</span>
+                                                <span class="col-xs-6"><b>Insidify Jobs</b><br>insidify.com</span>
                                                 <span class="clearfix"></span>
                                               </label>
+
                                               <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
                                                 <input type="checkbox" checked="" autocomplete="off" class="">
                                                 <span class="col-xs-6"><img width="100%" alt="" src="https://ngcareers.com/public/img/ngc_logo.png"></span>
-                                                <span class="col-xs-6"><b>NgCareers</b><br>www.ngcareers.com</span>
+                                                <span class="col-xs-6"><b>NgCareers</b><br>ngcareers.com</span>
                                                 <span class="clearfix"></span>
                                               </label>
                                               
@@ -58,19 +59,20 @@
                                               <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
                                                 <input type="checkbox" checked="" autocomplete="off" class="">
                                                 <span class="col-xs-6"><img width="100%" alt="" src="http://www.jobberman.com/img/new/logo.png"></span>
-                                                <span class="col-xs-6"><b>Jobberman</b><br>www.insidify.com</span>
+                                                <span class="col-xs-6"><b>Jobberman</b><br>insidify.com</span>
                                                 <span class="clearfix"></span>
                                               </label>
+
                                               <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
                                                 <input type="checkbox" checked="" autocomplete="off" class="">
                                                 <span class="col-xs-6"><img width="100%" alt="" src="http://www.hotnigerianjobs.com/images/banner2.gif"></span>
-                                                <span class="col-xs-6"><b>Hot Nigerian Jobs</b><br>www.hotnigerianjobs.com</span>
+                                                <span class="col-xs-6"><b>Hot Nigerian Jobs</b><br>hotnigerianjobs.com</span>
                                                 <span class="clearfix"></span>
                                               </label>
                                           </div>
                                         </div>
                                         <div class="col-xs-12"><br>
-                                            <a class="pull-right btn btn-success" href="">proceed</a>
+                                            <a class="pull-right btn btn-success" href="">Proceed</a>
                                         </div>
                                         <div class="clearfix"></div>
 
@@ -83,6 +85,16 @@
                             </div>
 
                             <div class="col-xs-4">
+
+                                <div class="panel panel-default">                                
+                                  <div class="panel-heading">
+                                    <h3 class="panel-title text-center">Refer this Job</h3>
+                                  </div>
+                                  <div class="panel-body">
+                                  <p class="small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab omnis ipsa, quis beatae ex nam excepturi quae sequi molestias dolorem deserunt voluptas corrupti fugit eum totam nobis dicta officiis mollitia.</p>
+                                    <a href="#modalRefer" data-toggle="modal" data-target="#modalRefer" class="btn btn-primary btn-block">Make Referals</a>
+                                  </div>
+                                </div>
 
                                 <div class="panel panel-default">
                                 
@@ -157,3 +169,57 @@
 
 <div class="separator separator-small"><br></div>
 @endsection
+
+
+
+<div class="modal fade" id="modalRefer">
+<div class="modal-dialog">
+  <div class="modal-content">
+  <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Refer people to this Job</h4>
+      </div>
+    <div class="modal-body">
+      <div class="alert alert-success"><i class="fa fa-check fa-lg"></i>
+           &nbsp; Your mail has been sent. Refresh page to send more.</div>
+          <form action="">
+      
+          <div class="form-group">
+              <label for="">From: </label>
+              <input class="form-control" type="text" value="dejilana@insidify.com" disabled>
+              
+              <label for="">To: </label>
+              <small>Separate your addresses by a comma</small>
+              <input class="form-control" type="text" placeholder="email addresses here">
+          </div>
+      
+          <label for="editor1">Body of Mail</label>
+              <textarea name="" id="editor1" cols="30" rows="10">
+              <p>Hello there, I have a job you might be interested in</p>
+              <hr style="width: 45%">
+                  <strong class="">Human Resource Administrator<br>
+                      <small>at Kingston Industries</small>
+                  </strong>
+                  <p>
+                      <a href="job-page.php">Visit this link to see Job details.</a>
+                  </p>
+                  <p>Thank you.</p>
+              </textarea>
+              <script>
+                  // Replace the <textarea id="editor1"> with a CKEditor
+                  // instance, using default configuration.
+                  CKEDITOR.replace( 'editor1' );
+              </script>
+          </form>
+          <br>
+          <p>
+              <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-line btn-sm"><i class="fa fa-times"></i> &nbsp; Cancel</a>
+      
+              <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-success btn-sm pull-right">Send Mail &nbsp; <i class="fa fa-send"></i></a>
+          </p>
+    </div>
+  </div>
+</div>
+</div>

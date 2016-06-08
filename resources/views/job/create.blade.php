@@ -1,7 +1,7 @@
 @extends('layout.template-default')
 
 @section('content')
-
+<script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
 <div class="separator separator-small"></div>
 
     <section class="no-pad">
@@ -206,7 +206,7 @@
     </section>
 
 
-    <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+    
    
 
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
@@ -251,7 +251,9 @@
 
                   
 
-
+                    $('.datepicker').datepicker({
+                        format: 'mm/dd/yyyy'
+                    });
                 
 
                 })

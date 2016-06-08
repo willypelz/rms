@@ -754,6 +754,7 @@ h3.brand-title {
     background: #fff;
     margin: 1em 0 3em;
     position: relative;
+    min-height: 350px;
 }
 .l-sp-5{
     letter-spacing:5px;
@@ -770,6 +771,7 @@ h3.brand-title {
     padding: 2em;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+    min-height: 350px;
 }
 .page.no-bod-rad{
     border-radius: 0 0 5px 5px;
@@ -2207,7 +2209,7 @@ section.grey hr{
 }
 .job-progress {
     text-transform: uppercase;
-    margin: 20px 24px 20px 0;
+    margin: 20px 0px 20px 0;
     border-width: 2px 2px 0 2px;
     border-radius: 0px;
     overflow: hidden;
@@ -2237,13 +2239,23 @@ section.grey hr{
 }
 .job-progress > li a.active {
     font-weight: bold;
-    color: #ffffff;
-    border-color: #ffffff;
+    color: #BCF9BC;
+    border-color: #BCF9BC;
     /* background: url('../img/base-arrow.png'); */
     /*background-size: 30px 30px;*/
     background-repeat: no-repeat;
     background-position: center 28px;
     /*font-weight: bold;*/
+}
+.job-progress > li a.active:after {
+    content: "";
+    background: #BCF9BC;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    border-radius: 10px;
+    bottom: -5px;
+    left: 45%;
 }
 -x-.job-progress > li a:before {
     content:"|";

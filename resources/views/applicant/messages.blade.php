@@ -4,7 +4,7 @@
 
     @include('applicant.includes.job-title-bar')
 
-    <section class="applicant">
+    <section class="applicant no-pad">
         <div class="container">
 
           @include('applicant.includes.pagination')

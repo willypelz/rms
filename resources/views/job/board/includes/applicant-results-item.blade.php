@@ -55,7 +55,7 @@
                 <a id="checkDrop" type="button" data-toggle="dropdown" aria-expanded="false">Checks
                   <span class="caret"></span>
                 </a>
-                <ul class="dropdown-menu" aria-labelledby="checkDrop">
+                <ul class="dropdown-menu" aria-labelledby="checkDrop" style="position:relative; float:right; border: 1px solid rgba(0, 0, 0, 0.03);">
                   <li><a href="">Background Check</a></li>
                   <li><a href="">Medical Check</a></li>
                 </ul>

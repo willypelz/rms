@@ -3,7 +3,7 @@
 @section('content')
 
 
-<div class="separator separator-small"></div>
+<div class="container text-brandon text-uppercase h5 separator separator-small" style=""><i class="fa fa-tachometer"></i> Your Dashboard</div>
 
     <section class="no-pad">
         <div class="container">

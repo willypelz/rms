@@ -20,11 +20,10 @@
             <div class="row">
                 <div class="col-sm-4">
                     
-                    
-                      <h4 class="text-green-light text-brandon"> <i class="fa fa-street-view"></i> 
-                        Talent Pool
-                        <small class="text-white">(All Candidates)</small>
-                      </h4>
+                      <div class=""><br>
+                        <h4 class="text-green-light text-brandon"> <i class="fa fa-street-view"></i> Talent Pool</h4>
+                        <small class="text-white"> (All Candidates)</small>
+                      </div>
                     
                 </div>
                 <div class="col-sm-5">
@@ -67,22 +66,20 @@
 
                     <div class="content rounded ">
 
-                    <!-- <div class="row">
+                    <div class="row">
                       <div class="well well-sm pushup-sm no-shadow">       
 
-                        <div class="col-xs-6"> 
-                      <span class="text-brandon"><i class="fa fa-folder"></i> Folders &nbsp;</span>                 
-                            
-
+                        <div class="col-xs-10"> 
+                          <span class="text-brandon"><i class="fa fa-folder"></i> Stats: &nbsp;</span> You have 12,345 candidates in your Talent Pool
                         </div>
-                        <div class="col-xs-6">
+                        <!-- <div class="col-xs-6">
                         <form action="" class="form-inline pull-right">
                           <input type="text" class="form-control" placeholder="Search entire saved candidates" name="search_query" id="search_query" style="width:350px">
                         </form>                      
-                        </div> 
+                        </div>  -->
                           <div class="clearfix"></div>
                       </div>
-                    </div> -->
+                    </div>
 
         <div class="row">
 

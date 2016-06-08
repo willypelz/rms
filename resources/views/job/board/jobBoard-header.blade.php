@@ -1,6 +1,8 @@
+<div class="container text-brandon text-uppercase h5 separator separator-small" style=""><i class="fa fa-compass"></i> Applicants Tracking System (ATS)</div>
+
  <section class="no-pad" >
     <div class="container" >
-        <section class="job-head blue" id="jobHead">
+        <section class="job-head blue no-margin" id="jobHead">
             <div class="" >
                 <div class="row">
                     <div class="col-xs-7">
@@ -49,7 +51,7 @@
                     </div>
                 
                     <div class="col-xs-5 job-progress-xs">
-                
+                    <div class="pull-left text-white small" style="margin-top: 24px;">Recruitment<br>Stage &nbsp; &rarr;</div>
                 
                         <ul class="pagination pull-right job-progress">
                             @if( $result['response']['numFound'] > 0 )

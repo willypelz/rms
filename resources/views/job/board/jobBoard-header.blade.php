@@ -1,4 +1,5 @@
-<div class="container text-brandon text-uppercase h5 separator separator-small" style=""><i class="fa fa-compass"></i> Applicants Tracking System (ATS)</div>
+<div class="container text-brandon text-uppercase h5 separator separator-small" style="">
+<i class="fa fa-compass"></i> Applicants Tracking System (ATS)</div>
 
  <section class="no-pad" >
     <div class="container" >

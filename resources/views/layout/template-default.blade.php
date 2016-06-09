@@ -1,4 +1,3 @@
-
 @if(Auth::check())
 
 	@include('layout.template-user')

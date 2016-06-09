@@ -5,7 +5,7 @@
         <div class="container">
 
             <div class="pagehead">
-                <h1 class="text-white">About Seamless Hiring</h1>
+                <h1 class="text-white">About SeamlessHiring</h1>
             </div>
 
         </div>

@@ -1,4 +1,5 @@
 @if( $result['response']['numFound'] > 0 )
+
   <div class="panel-group filter-div" id="accordion">
 
 
@@ -186,6 +187,31 @@
               @endif
             <p></p>
 
+            <p class="border-bottom-thin text-muted">Degree<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+              <div class="checkbox-inline">
+                  {{--*/ $other_highest_qualificationl = 0  /*--}}
+                  {{--*/ $index = 0  /*--}}
+                  @foreach( $result['facet_counts']['facet_fields']['highest_qualification'] as $key => $highest_qualification )
+                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ] != 0 &&  $highest_qualification != ''  && $highest_qualification != "0"  )
+                        
+                        {{--*/ $index++  /*--}}
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="highest_qualification" data-value="{{ $highest_qualification }}"> {{ ucwords( $highest_qualification )." (".$result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ].")" }}</label> <br></div>
+                      @else
+
+                        {{--*/ @$other_highest_qualification += $result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ] /*--}}
+
+                      @endif
+                  @endforeach
+
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_highest_qualification.")" }}</label> <br></div>
+              </div>
+              
+              @if($index > 4)
+                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+              @endif
+
+            <p></p>
+
             <p class="border-bottom-thin text-muted">Last Position<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_edu_school = 0  /*--}}
@@ -238,7 +264,7 @@
 
             <p class="border-bottom-thin text-muted">State of Origin<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
               <div class="checkbox-inline">
-                  {{--*/ $other_edu_grade = 0  /*--}}
+                  {{--*/ $other_state_of_origin = 0  /*--}}
                   {{--*/ $index = 0  /*--}}
                   @foreach( $result['facet_counts']['facet_fields']['state_of_origin'] as $key => $state_of_origin )
                       @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ] != 0 &&  $state_of_origin != ''  && $state_of_origin != "0" && $state_of_origin != "-Choose-" )
@@ -247,12 +273,12 @@
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="state_of_origin" data-value="{{ $state_of_origin }}"> {{ ucwords( $state_of_origin )." (".$result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ].")" }}</label> <br></div>
                       @else
 
-                        {{--*/ @$other_edu_grade += $result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ] /*--}}
+                        {{--*/ @$other_state_of_origin += $result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ] /*--}}
 
                       @endif
                   @endforeach
 
-                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_edu_grade.")" }}</label> <br></div>
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_state_of_origin.")" }}</label> <br></div>
               </div>
               
               @if($index > 4)
@@ -286,11 +312,90 @@
               @endif
 
               <p></p>
+
+              <p class="border-bottom-thin text-muted">Willing to Relocate<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+              <div class="checkbox-inline">
+                  {{--*/ $other_willing_to_relocate = 0  /*--}}
+                  {{--*/ $index = 0  /*--}}
+
+                  @foreach( $result['facet_counts']['facet_fields']['willing_to_relocate'] as $key => $willing_to_relocate )
+                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ] != 0 )
+                        
+                        {{--*/ $index++  /*--}}
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="willing_to_relocate" data-value="{{ $willing_to_relocate }}"> 
+                        @if( $willing_to_relocate == "true")
+                          {{  "Yes (".$result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ].")" }}
+                        @elseif( $willing_to_relocate == "false")
+                          {{  "No (".$result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ].")" }}
+                        @endif
+                        </label> <br></div>
+                      @else
+
+                        {{--*/ @$other_willing_to_relocate += $result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ] /*--}}
+
+                      @endif
+                  @endforeach
+
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_willing_to_relocate.")" }}</label> <br></div>
+              </div>
+              
+              @if($index > 4)
+                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+              @endif
+
+              <p></p>
+
         @if( @$age )
               <!-- <div><small class="">&nbsp; <a href="" class="">See More</a></small></div> -->
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/bootstrap-slider.min.js"></script>
       <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/css/bootstrap-slider.min.css" />
-      
+        
+
+
+
+
+
+
+
+      <p class="border-bottom-thin text-muted">Years of Experience<i class="glyphicon glyphicon-birthday pull-right"></i></p>
+             <p class="text-center">
+                <input id="exp_years-slider" type="text" class="span2" value="" data-slider-min="0" data-slider-max="200" data-slider-step="1" data-slider-value="{{ '['.$exp_years[0].','.$exp_years[1].']' }}"/> 
+                <div class="text-center">
+                  <b class="col-sm-2 pull-left" style="color: #bbb;">0</b>
+                  <b  class="col-sm-2 pull-right" style="color: #bbb;">200</b>
+                  <small id="exp_years-range"> {{ $exp_years[0].' - '.$exp_years[1].' years' }} </small>
+                </div>
+               <div class="clearfix"></div>
+             </p>
+
+            <p></p>
+            
+      <script type="text/javascript">
+          $(document).ready(function(){
+              $("#exp_years-slider").slider({
+                // formatter: function(value,a) {
+
+                //   return 'Current value: ' + value + "  ";
+                // }
+              });
+              $("#exp_years-slider").on("slideStop", function(slideEvt) {
+                
+                exp_years_range = slideEvt.value;
+
+                $('#exp_years-range').html( slideEvt.value[0] + ' - ' + slideEvt.value[1] + ' years' )
+                $("#exp_years-slider").performFilter();
+              });
+          });
+      </script>
+
+
+
+
+
+
+
+
+
         <p class="border-bottom-thin text-muted">Age<i class="glyphicon glyphicon-birthday pull-right"></i></p>
              <p class="text-center">
                 <input id="age-slider" type="text" class="span2" value="" data-slider-min="1" data-slider-max="200" data-slider-step="1" data-slider-value="{{ '['.$age[0].','.$age[1].']' }}"/> 
@@ -328,6 +433,8 @@
           });
       </script>
         @endif
+
+      
 
       @endif 
   <!-- end of if when it is not assessed -->

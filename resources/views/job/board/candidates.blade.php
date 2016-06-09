@@ -139,7 +139,7 @@
     var status_filter = "";
     var total_candidates = "{{ $result['response']['numFound'] }}";
     var keyword = "";
-    var age_range = "1, 200";
+    var age_range = exp_years_range = null;
     var last_text_filter = "";
 
     String.prototype.capitalize = function() {
@@ -278,7 +278,7 @@
             scrollTo('.job-progress-xs');
             $('.result-label').html('');
             $('#pagination').hide();
-            $.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters,age: age_range },function(data){
+            $.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters,age: age_range, exp_years : exp_years_range  },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);

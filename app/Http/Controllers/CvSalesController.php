@@ -491,6 +491,7 @@ class CvSalesController extends Controller
         }
         else
         {
+            $request->age = [ 1, 200 ];
             $solr_age = null;
         }
 

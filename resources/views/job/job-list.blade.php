@@ -1,4 +1,4 @@
-@extends('layout.template-default')
+@extends('layout.template-user')
 
 @section('content')
 

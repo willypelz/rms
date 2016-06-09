@@ -217,7 +217,7 @@
                         <div class="row" id="content-Area">
 
                             <div class="col-sm-12 text-center">
-                                <h2>Seamless Hiring</h2>
+                                <h2>SeamlessHiring</h2>
                                 <p class="text-muted">Everything You Need To Hire, In One Place!</p>
                             </div>
 
@@ -342,7 +342,7 @@
                 
                     <div class=""><div class="text-center">
                         
-                        <h2>Seamless Hiring</h2>
+                        <h2>SeamlessHiring</h2>
                         <p class="text-muted">Africa's fastest growing network of professionals</p>
                     </div>
                         <div class="white padbox rounded">

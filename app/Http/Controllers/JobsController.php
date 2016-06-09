@@ -448,7 +448,7 @@ class JobsController extends Controller
                                     <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
                                   </span>
                           
-                                  <h5 class="no-margin text-success">Coment</h5>
+                                  <h5 class="no-margin text-success">Comment</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']
                                       </small> '. @$ac->user->name .' commented on <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a>

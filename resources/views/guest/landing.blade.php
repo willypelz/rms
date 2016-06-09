@@ -8,7 +8,7 @@
            <div class="row">
                 <div class="col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
                     <div class="pagehead text-white text-center"> 
-                        <!-- <img src="" alt="seamless Hiring logo" width="100%"> -->
+                        <!-- <img src="" alt="SeamlessHiring logo" width="100%"> -->
                         <!-- <i class="fa fa-skype fa-inverse fa-5x hidden-sm"></i>&nbsp;  -->
                         <div class="separator separator-small"><br></div>                        
                        <div class="separator separator-small hidden-xs"></div>

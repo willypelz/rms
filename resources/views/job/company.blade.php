@@ -153,8 +153,8 @@
                                             </p>
                                         </div>
                                         <div class="col-sm-6 col-sm-offset-3 text-center hidden"><!-- <hr> -->
-                                            <p >Powered by <a href="http://www.seamlesshiring.com"><i class="fa fa-skype"></i> Seamless Hiring</a> <br>
-                                            <small class="text-muted">&copy; {{ date('Y') }}. Seamless Hiring</small></p>
+                                            <p >Powered by <a href="http://www.seamlesshiring.com"><i class="fa fa-skype"></i> SeamlessHiring</a> <br>
+                                            <small class="text-muted">&copy; {{ date('Y') }}. SeamlessHiring</small></p>
                                         </div>
                                         <div class="clearfix"></div>
 
@@ -180,7 +180,7 @@
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
                                         <p><img src="{{ url('/') }}/img/logomark2.png" alt="" width="150px"> </p> 
                                         <p><small class="text-muted">Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a> &nbsp;
-                                        &copy; 2016. Seamless Hiring</small></p>
+                                        &copy; 2016. SeamlessHiring</small></p>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>

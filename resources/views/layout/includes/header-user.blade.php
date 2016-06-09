@@ -6,7 +6,7 @@
     <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
     <link rel="apple-touch-icon" href="apple-touch-icon-precomposed.png">
 
-    <title> @if(isset($pageTitle)){{ $pageTitle }}&middot;@endif Seamless Hiring</title>
+    <title> @if(isset($pageTitle)){{ $pageTitle }}&middot;@endif SeamlessHiring</title>
 
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/seamless.css') }}" rel="stylesheet">

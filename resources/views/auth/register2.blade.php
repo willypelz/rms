@@ -103,7 +103,7 @@
 
                     </div>
                     <!--/tab-content--><div class="row"><br>
-                        <p class="text-center text-brandon">&copy; 2016. Seamless Hiring</p>
+                        <p class="text-center text-brandon">&copy; 2016. SeamlessHiring</p>
                     </div>
 
                 </div>

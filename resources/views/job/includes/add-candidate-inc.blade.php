@@ -35,7 +35,7 @@
                               <a href="#" class="input-group-addon  fileinput-exists btn btn-danger" style="    background-color: #d9534f; color:white;" data-dismiss="fileinput">Remove</a>
                               
                             </div><br>
-                            <small>*Allowed extensions are .zip,.pdf,.doc,.docx,.txt,.rtf,.pptx,.ppt</small><br>
+                            <small style="margin-top: -20px;display: block;">*Allowed extensions are .zip,.pdf,.doc,.docx,.txt,.rtf,.pptx,.ppt</small><br>
 
                             <button onclick="UploadFile(); return false;" id="UploadCvFileBtn" class="btn btn-success text-capitalize">
                                     <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Import file</span>

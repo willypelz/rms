@@ -70,7 +70,7 @@
                       <div class="well well-sm pushup-sm no-shadow">       
 
                         <div class="col-xs-10"> 
-                          <span class="text-brandon"><i class="fa fa-folder"></i> Stats: &nbsp;</span> You have 12,345 candidates in your Talent Pool
+                          <span class="text-brandon"><i class="fa fa-folder"></i> Stats: &nbsp;</span> You have <span id="top_candidate_count"><strong>{{ $result['response']['numFound'] }}</strong></span> candidates in your Talent Pool
                         </div>
                         <!-- <div class="col-xs-6">
                         <form action="" class="form-inline pull-right">
@@ -164,7 +164,7 @@
     <script type="text/javascript">
     var folders = [];
     var filters = [];
-    var age_range = "1, 200";
+    var age_range = null;
     var last_text_filter = "";
 
     function searchKeyword(){

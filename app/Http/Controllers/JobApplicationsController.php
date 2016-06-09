@@ -122,7 +122,7 @@ class JobApplicationsController extends Controller
         $this->search_params['filter_query'] = @$request->filter_query;
         $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start * $this->search_params['row'] ) : 0;
         
-
+        //If age is available
         if( @$request->age ){
             $date = Carbon::now();
             //2015-09-16T00:00:00Z
@@ -134,11 +134,26 @@ class JobApplicationsController extends Controller
         }
         else
         {
+            $request->age = [ 1, 200 ];
             $solr_age = null;
         }
 
+
+        //If years of experience is available
+        if( @$request->exp_years ){
+            //2015-09-16T00:00:00Z
+
+            $solr_exp_years = [ @$request->exp_years[0], @$request->exp_years[1] ];
+        }
+        else
+        {
+            $request->exp_years = [ 0, 200 ];
+            $solr_exp_years = null;
+        }
+
         
-        $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status,@$solr_age); 
+        
+        $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status,@$solr_age, @$solr_exp_years); 
         if(isset($request->status))
             $status = $request->status;
 
@@ -162,14 +177,15 @@ class JobApplicationsController extends Controller
         if($request->ajax())
         {
             $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab', 'status', 'result','jobID','start'))->render();    
-            $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query, 'status' => $status, 'age' => @$request->age])->render();
+            $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query, 'status' => $status, 'age' => @$request->age,'exp_years' => @$request->exp_years ])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing ] );
             
         }
         else{
             $age = [ 1, 200 ];
+            $exp_years = [ 0, 200 ];
             $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
-            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age'));
+            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years'));
         }
 
         

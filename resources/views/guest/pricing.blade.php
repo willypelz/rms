@@ -35,7 +35,7 @@
                                         <div class="panel-heading">
                                             <!-- <i class="fa fa-star"></i> -->
                                             <h3 class="text-brandon">FREE</h3>
-                                            <small> For you to get a feel of the <br>seamless hiring magic.</small>
+                                            <small> For you to get a feel of the <br>SeamlessHiring magic.</small>
                                         </div>
                                         <div class="panel-body text-center text-brandon">
                                             <p class=" no-margin"><strong>&#8358; 0 / Month</strong></p>
@@ -153,7 +153,7 @@
 
                       <i class="fa fa-question-circle fa-5em text-center block"></i>
                       <h3 class="text-brandon text-uppercase no-margin text-center">
-                      WHY SHOULD MY COMPANY PAY <br>TO USE SEAMLESS HIRING?</h3><br>
+                      WHY SHOULD MY COMPANY PAY <br>TO USE SeamlessHiring?</h3><br>
                       <div class="row">
                       <div class="col-sm-4 col-sm-offset-4">
                         <hr>

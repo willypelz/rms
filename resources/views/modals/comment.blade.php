@@ -19,7 +19,7 @@
     $(document).ready(function(){
        $('body #writeReviewBtn').on('click', function(){
             $field = $(this);
-            $.post("{{ route('write-review') }}", {job_id: '{{ $jobID }}',comment :  $('body textarea[data-app-id="' + $field.data('app-id') + '"]').val() ,job_app_id: $field.data('app-id') },function(data){
+            $.post("{{ route('write-review') }}", {job_id: '{{ $jobID }}',comment :  $('body textarea[data-app-id="' + $field.data('app-id') + '"]').val() ,job_app_id: $field.data('app-id'), app_ids: app_ids },function(data){
                     // $('#reviewBtn-' + $field.data('app-id') ).trigger('click');
                     
                     $( '#viewModal' ).modal('toggle');

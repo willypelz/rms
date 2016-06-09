@@ -181,11 +181,12 @@ class JobApplicationsController extends Controller
     {
 
         JobApplication::massAction( $request->job_id, $request->cv_ids, $request->status );
+        return save_activities($request->status,  $request->job_id, $request->app_ids );
     }
 
     public function writeReview( Request $request )
     {
-         return save_activities('REVIEW',  $request->job_id, $request->job_app_id, $request->comment );
+         return save_activities('REVIEW',  $request->job_id, $request->app_ids, $request->comment );
     }
 
     public function getAllApplicantStatus(Request $request)

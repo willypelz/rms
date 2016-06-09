@@ -55,7 +55,7 @@
                                             <a class="btn btn-default status-1" type="button" data-action="INTERVIEWED"  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Schedule an interview for" data-view="{{ route('modal-interview') }}" data-app-id="" data-cv="" data-type="normal">Interview All</a>
                                             <a class="btn btn-default status-1" type="button" data-action="HIRED"  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Hire" data-view="{{ route('modal-hire') }}" data-app-id="" data-cv="" data-type="normal">Hire All</a>
                                             <a class="btn btn-default status-1" type="button" data-action="REJECTED"  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Reject?" data-view="{{ route('modal-reject') }}" data-app-id="" data-cv="" data-type="normal">Reject All</a>
-                                            <a class="btn btn-default status-1" type="button" data-action="PENDING" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Do you want to return to all?" data-view="{{ route('modal-return-to-all') }}" data-app-id="" data-cv="" data-type="normal" >Return All</a>
+                                            <a class="btn btn-default status-1" type="button" data-action="PENDING" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Do you want to return to all?" data-view="{{ route('modal-return-to-all') }}" data-app-id="" data-cv="" data-type="normal" style="display:none;" >Return All</a>
                                         </div>
                                         
                                     </div>
@@ -398,10 +398,14 @@
             
         });
 
+        
+
         $.fn.reloadResult = function(){
             if( status_filter == "ALL" )
             {
                 status_filter = "";
+                $('#mass-action a').show();
+                $('#mass-action a[data-action="PENDING"').hide();
             }
             
             
@@ -420,6 +424,11 @@
                 $('#search-filters').html(data.search_filters);
 
                 $(document).getShowing();
+
+                $('#mass-action a').show();
+
+                $('#mass-action a[data-action="' + status_filter + '"').hide();
+                
             });
         }
 
@@ -439,6 +448,16 @@
         }
 
         $(document).getShowing();
+
+
+        if(window.location.hash) {
+            status_filter = window.location.hash.replace('#','');
+
+            $('#status_filters li').removeClass('active');
+            $('#status_filters li a[data-value="' + status_filter + '"').closest('li').addClass('active');
+
+            $('body').reloadResult();
+        } 
 
         $.fn.fixDetailsforBulkActions = function(){
             $field = $(this);

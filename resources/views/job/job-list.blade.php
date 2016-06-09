@@ -64,7 +64,7 @@
                             @endif
                             <li><a href="#" onclick="DuplicateJob( {{$job['id']}} ); return false">Duplicate Job</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#" id="delete-job" class="text text-danger" data-id="{{$job['id']}}" data-title="{{ $job['title'] }}">Delete Job</a></li>
+                            <li><a href="#" id="delete-job" class="text text-danger" data-id="{{$job['id']}}" data-title="{{ $job['title'] }}"  data-toggle="modal" data-target="#deleteJob" id="modalButton" href="#deleteJob">Delete Job</a></li>
                           </ul>
                         </div>    
 
@@ -167,17 +167,32 @@
                     
                     <script type="text/javascript">
                         $(document).ready(function(){
+                            var job_id = "";
+                            var job_title = "";
+                            var this_one = null;
                             $('body').on('click','#delete-job', function(){
+                                job_id = $(this).data('id');
+                                job_title = $(this).data('title');
+                                this_one = $(this);
+                          });
 
-                                var this_one = $(this);
+                            $('body').on('click','#delete-job-pop', function(){
+
+                                $this = $(this);
 
                                 $.post("{{ route('job-status') }}", { rnd : Math.random() * 100000,  job_id: this_one.data('id') , status:'DELETED' }, function(){
                                     this_one.closest('.job-block').remove();
-                                    $.growl.notice({ message: "You have deleted " + this_one.data('title') });
+                                    $( '#deleteJob' ).modal('toggle');
+                                    $.growl.notice({ message: "You have deleted '" + this_one.data('title') + "'" });
                                 });
                                 
                           });
+
+                            $('body #closeRejectModal').on('click',function(){
+                                $( '#deleteJob' ).modal('toggle');
+                            });
                         });
+
                     </script>
 
                 @else
@@ -194,5 +209,31 @@
         <h1></h1>
     </section>
 
+    <div class="modal widemodal fade" id="deleteJob" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="margin: 18px;">×</button>
+            <h4 class="modal-title" id="myModalLabel">Delete Job?</h4>
+          </div>
+          <div class="modal-body">
+              Are you sure you want to delete this job?
+                
+                <div class="clearfix"></div>
+              <div class="pull-right">
+                  <a href="javascript://" id="delete-job-pop" class="btn btn-success pull-right">Yes</a>
+                  <div class="separator separator-small"></div>
+              </div>
+                
+             <div class="pull-right" style="margin-right:10px;">
+                  <a href="javascript://" id="closeRejectModal" class="btn btn-danger pull-right">No</a>
+                  <div class="separator separator-small"></div>
+              </div>
+
+              <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 @endsection

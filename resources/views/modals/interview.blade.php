@@ -43,6 +43,7 @@
  		var data = {
  						job_id: '{{ $appl->job->id }}',
  						cv_ids :  cv_ids,
+            app_ids: app_ids,
  						location:  $('#interview-location').val(),
  						date:  $('#interview-time').val(),
  						message:  $('#interview-message').val()

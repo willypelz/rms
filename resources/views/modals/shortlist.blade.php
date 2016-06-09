@@ -30,7 +30,7 @@
 
  	$('body #shortlistBtn').on('click',function(){
  		$field = $(this);
- 		$.post("{{ route('mass-action') }}", {job_id: '{{ $appl->job->id }}',cv_ids :  cv_ids,status: 'SHORTLISTED' },function(data){
+ 		$.post("{{ route('mass-action') }}", {job_id: '{{ $appl->job->id }}',cv_ids :  cv_ids, app_ids: app_ids,status: 'SHORTLISTED' },function(data){
 
  				$( '#viewModal' ).modal('toggle');
         $.growl.notice({ message: "You have shorlisted " + $field.closest('.modal-body').find('.media-heading a').text() });

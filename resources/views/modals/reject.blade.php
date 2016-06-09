@@ -30,7 +30,7 @@
   $field = $(this);
  	$('body #rejectBtn').on('click',function(){
  		
- 		$.post("{{ route('mass-action') }}", {job_id: '{{ $appl->job->id }}',cv_ids :  cv_ids,status: 'REJECTED' },function(data){
+ 		$.post("{{ route('mass-action') }}", {job_id: '{{ $appl->job->id }}',cv_ids :  cv_ids, app_ids: app_ids,status: 'REJECTED' },function(data){
 
  				$( '#viewModal' ).modal('toggle');
         $.growl.notice({ message: "You have rejected " + $field.closest('.modal-body').find('.media-heading a').text() });

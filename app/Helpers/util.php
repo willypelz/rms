@@ -63,18 +63,40 @@ use App\Models\JobActivity;
 			}
 
 		  if (!$job_id) $job_id = NULL;
-		  if (!$job_app_id) $job_app_id = NULL;
+		  
 		  if (!$comment) $comment = NULL;
 
-		$response =  JobActivity::firstOrCreate([
-		  	'user_id'=> $user_id,
-		  	'activity_type'=>$activity_type,
-		  	'job_id'=>$job_id,
-		  	'job_application_id'=>$job_app_id,
-		  	'comment'=>$comment,
-		  	]);
+		  if( is_array( $job_app_id ) )
+		  {
+		  	$insert = [];
+		  	foreach ($job_app_id as $key => $app_id) {
+			  	if (!$app_id) $app_id = NULL;
+			  	$insert[] = [
+				  	'user_id'=> $user_id,
+				  	'activity_type'=>$activity_type,
+				  	'job_id'=>$job_id,
+				  	'job_application_id'=>$app_id,
+				  	'comment'=>$comment,
+			  	];
+			  	# code...
+			  }
+		  }
+		  else{
+		  	$insert = [
+			  	'user_id'=> $user_id,
+			  	'activity_type'=>$activity_type,
+			  	'job_id'=>$job_id,
+			  	'job_application_id'=>$job_app_id,
+			  	'comment'=>$comment,
+		  	];
+		  }
+		  
 
-		return $response;
+		 
+
+		$response =  JobActivity::insert( $insert );
+
+		// return $response;
 
 
 	}

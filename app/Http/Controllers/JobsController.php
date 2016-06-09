@@ -315,7 +315,78 @@ class JobsController extends Controller
                                   </p>
                                 </li>';
                      break;
-                 case "HIRE":
+                  case "SHORTLISTED":
+                 $applicant = $ac->application->cv;
+                     $content .= '<li role="candidate-application" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-info"></i>
+                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-info">Shortlist</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <a href="'. url('job/candidates/'.$ac->application->job->id.'#SHORTLISTED') .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been shortlisted.
+                                  </p>
+                                </li>';
+                     break;
+
+                  case "ASSESSED":
+                 $applicant = $ac->application->cv;
+                     $content .= '<li role="candidate-application" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-info"></i>
+                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-info">Test</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <a href="'. url('job/candidates/'.$ac->application->job->id.'#ASSESSED') .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been scheduled for test.
+                                  </p>
+                                </li>';
+                     break;
+
+
+                  case "PENDING":
+                 $applicant = $ac->application->cv;
+                     $content .= '<li role="candidate-application" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-info"></i>
+                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-info">Return to all</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <a href="'. url('job/candidates/'.$ac->application->job->id.'#PENDING') .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been returned to all.
+                                  </p>
+                                </li>';
+                     break;
+
+                    case "INTERVIEWED":
+                 $applicant = $ac->application->cv;
+                     $content .= '<li role="candidate-application" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-info"></i>
+                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-info">Interview</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <a href="'. url('job/candidates/'.$ac->application->job->id.'#INTERVIEWED') .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been interviewed.
+                                  </p>
+                                </li>';
+                     break;
+
+
+
+                 case "HIRED":
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
@@ -327,11 +398,11 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-info">Application</h5>
                                   <p>
                                       <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
-                                      '.$applicant->first_name.' '.$applicant->last_name.' has been hired.
+                                      <a href="'. url('job/candidates/'.$ac->application->job->id.'#HIRED') .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been hired.
                                   </p>
                                 </li>';
                      break;
-                 case "REJECT":
+                 case "REJECTED":
                     $applicant = $ac->application->cv;
                     // dd($ac->to);
                     $content .= '<li role="warning-notifications" class="list-group-item">
@@ -344,7 +415,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-danger">REJECT</h5>
                                   <p>
                                       <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small>
-                                      '.$applicant->first_name.' '.$applicant->last_name.' application was rejected by <a href=""> '.$ac->user->name.'</a>
+                                      <a href="'. url('job/candidates/'.$ac->application->job->id.'#REJECTED') .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> application was rejected by <a href="'. url('applicant/messages/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a>
                                   </p>
                                 </li>';
                      break;
@@ -361,7 +432,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-success">Comment</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']
-                                      </small> '. $ac->user->name .' said '.$ac->comment.' about <a href="'. url('applicant/messages/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a>
+                                      </small> '. $ac->user->name .' said '.$ac->comment.' about <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a>
                                   </p>
                                   
                                 </li>';
@@ -377,10 +448,10 @@ class JobsController extends Controller
                                     <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
                                   </span>
                           
-                                  <h5 class="no-margin text-success">Review</h5>
+                                  <h5 class="no-margin text-success">Coment</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']
-                                      </small> '. @$ac->user->name .' reviewed <a href="'. url('applicant/messages/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a>
+                                      </small> '. @$ac->user->name .' commented on <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a>
                                   </p>
                                   
                                 </li>';
@@ -445,7 +516,7 @@ class JobsController extends Controller
                                     <i class="fa fa-user-plus fa-stack-1x fa-inverse"></i>
                                   </span>
                           
-                                  <h5 class="no-margin text-success">Not Set -- '.$act->activity_type.'</h5>
+                                  <h5 class="no-margin text-success">Not Set -- '.$ac->activity_type.'</h5>
                                   <p>
                                      
                                   </p>

@@ -1,5 +1,6 @@
 <?php
 use App\Models\JobActivity;
+use App\Models\Job;
 // use Faker;
 
 	function test(){
@@ -242,5 +243,13 @@ use App\Models\JobActivity;
 
 		return '<div style="width:100%;text-align:center"><img src="'.asset('img/hourglass.svg').'"></div>';
 
+	}
+
+	function check_if_job_owner($job_id)
+	{
+		if ( !in_array($job_id, Job::getMyJobIds()) )
+		{
+			abort(404);
+		}
 	}
 ?>

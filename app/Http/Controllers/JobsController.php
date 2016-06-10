@@ -231,7 +231,8 @@ class JobsController extends Controller
     }
 
     public function JobPromote($id, Request $request){
-
+      //Check if he  is the owner of the job
+        check_if_job_owner( $id );
         $job = Job::find($id);
         $company = $job->company()->first();
 
@@ -244,7 +245,8 @@ class JobsController extends Controller
     }
 
     public function JobTeam($id, Request $request){
-        
+        //Check if he  is the owner of the job
+        check_if_job_owner( $id );
         $user = User::with('companies')->find(Auth::user()->id);
         $comp_id = ($user->companies[0]->id);
 
@@ -544,7 +546,10 @@ class JobsController extends Controller
     public function JobActivities($id, Request $request){
          $job = Job::find($id);
          // dd($job);
-        
+
+        //Check if he  is the owner of the job
+        check_if_job_owner( $id );
+
         $active_tab = 'activities';
 
         $result = Solr::get_applicants($this->search_params, $id,''); 
@@ -558,6 +563,8 @@ class JobsController extends Controller
          $job = Job::find($id);
         $active_tab = 'candidates';
 
+        //Check if he  is the owner of the job
+        check_if_job_owner( $id );
 
         return view('job.board.candidates', compact('job', 'active_tab'));
     }

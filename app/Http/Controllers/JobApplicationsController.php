@@ -113,7 +113,10 @@ class JobApplicationsController extends Controller
     }
 
     public function viewApplicants( Request $request )
-    {
+    {   
+        //Check if he  is the owner of the job
+        check_if_job_owner( $request->jobID ) ;
+        
         $job = Job::find($request->jobID);
         $active_tab = 'candidates';
         $status = '';

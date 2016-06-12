@@ -117,7 +117,7 @@ class Solr {
 		return Solr::search_resume($data,$additional);
 	}
 
-	static function get_all_my_cvs($data, $age = null)
+	static function get_all_my_cvs($data, $age = null,$exp_years=null)
 	{
 		// $additional = "&fq=( job_id:(5) OR company_folder_id:". @Auth::user()->companies[0]->id.' )';
 		//job_id:(15 10 12) OR company_folder_id:1
@@ -132,6 +132,11 @@ class Solr {
 			// $additional .= "&fq=dob<=".$age[0]."&fq=dob>=".$age[1];
 			$additional .= "&fq=dob:[".$age[1]."+TO+".$age[0]."]";
 		}	
+
+		if( !is_null($exp_years) )
+		{
+			$additional .= "&fq=years_of_experience:[".$exp_years[0]."+TO+".$exp_years[1]."]";
+		}
 
 		// echo "&fq=dob:[".$age[1] ."+TO+".$age[0]."]";
 		return Solr::search_resume($data, $additional);

@@ -495,12 +495,26 @@ class CvSalesController extends Controller
             $solr_age = null;
         }
 
+
+        //If years of experience is available
+        if( @$request->exp_years ){
+            //2015-09-16T00:00:00Z
+
+            $solr_exp_years = [ @$request->exp_years[0], @$request->exp_years[1] ];
+        }
+        else
+        {
+            $request->exp_years = [ 0, 200 ];
+            $solr_exp_years = null;
+        }
+
+
         if( $request->filter_query ){
             $this->search_params['filter_query'] = @$request->filter_query;
         }
         
         // $response = Solr::search_resume($this->search_params);
-        $response = $result = Solr::get_all_my_cvs($this->search_params, @$solr_age);
+        $response = $result = Solr::get_all_my_cvs($this->search_params, @$solr_age, @$solr_exp_years);
 
         $end = (($start + $this->search_params['row']) > intval($result['response']['numFound']))?$result['response']['numFound']:($start + $this->search_params['row']);
         $showing = "Showing ".($start+1)." - ".$end." of ".$result['response']['numFound']." Cvs [Page ".floor($request->start + 1)."]";
@@ -534,12 +548,12 @@ class CvSalesController extends Controller
         {
             
             $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true ])->render();    
-            $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query, 'age' => @$request->age])->render();
+            $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query, 'age' => @$request->age,'exp_years' => @$request->exp_years])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing ] );
             
         }
         else{
-            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 1, 200 ] ]);
+            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 1, 200 ], 'exp_years' => [ 0, 200 ] ]);
         }
         // return view('cv-sales.cv_saved');
     }

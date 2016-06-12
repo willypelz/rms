@@ -581,7 +581,8 @@
             $('.filter-div input[type=checkbox]' ).prop('checked',false);
 
             $('#search_keyword').val("");
-            age_range = "1, 200";
+            age_range = exp_years_range =  null;
+
 
             $('.search-results').html('{!! preloader() !!}');
             scrollTo('.job-progress-xs');

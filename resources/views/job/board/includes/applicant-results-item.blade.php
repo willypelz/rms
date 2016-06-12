@@ -206,8 +206,18 @@
 @else
   <li class="row">
     <div class="text-center text-muted">
-    <i class="fa fa-frown-o fa-3x"></i>
-      <h3>There are no Applicants in this Section.</h3>
+    <!-- <i class="fa fa-frown-o fa-3x"></i> -->
+      <!-- <h3>There are no Applicants in this Section.</h3> -->
+      <!-- <p class="p-empty" style=""> -->
+      <p class="" style="">
+      <i class="fa-2x fa fa-exclamation-circle"></i><br> 
+      You have no applicant for this job. To get applicants, you can  
+      <ul class="list-unstyled">
+        <li class="">a) <a href="{{ route('job-promote',  $jobID) }}" class="">Promote this job</a></li>
+        <li class="">b) <a href="{{ route('job-promote',  $jobID) }}" class="">Share on social media</a></li>
+        <li class="">c) <a href="{{ route('job-promote',  $jobID) }}" class="">Get referrals for this job</a></li>
+        <!-- <li class="">d) <a class="">Upload applicants to this job</a></li> -->
+      </ul></p>
     </div>
   </li>
 @endif

@@ -35,10 +35,11 @@
                                     @include('job.board.includes.applicant-status')
 
                                     <br>
-                                
+
+                                    
 
                                     <small class="text-muted result-label" id="showing"></small>
-
+                                       <br>
                                    <div class="">
                                         <label class="select-all pull-right">Select All
                                            <input type="checkbox">
@@ -444,7 +445,14 @@
                 status_page = status_filter.capitalize();
             }
             // console.log( status_filter );
-            $('.result-label').text( 'Showing 1 - ' + count + ' of ' + total_candidates + ' ' + status_page + ' applicants' );
+            if( total_candidates > 0 )
+            {
+                $('.result-label').text( 'Showing 1 - ' + count + ' of ' + total_candidates + ' ' + status_page + ' applicants' );
+            }
+            else
+            {
+                $('.result-label').text( '' );
+            }
         }
 
         $(document).getShowing();

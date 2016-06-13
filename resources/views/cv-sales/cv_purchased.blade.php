@@ -1,7 +1,6 @@
 @extends('layout.template-default')
 
 @section('content')
-{{ Auth::user()->companies[0]->id }}
 <style type="text/css">
   .see-more{display: none;}
   .see-more-shown{ display: block; }

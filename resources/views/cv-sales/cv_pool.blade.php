@@ -21,8 +21,7 @@
                 <div class="col-sm-4">
                     
                       <div class=""><br>
-                        <h4 class="text-green-light text-brandon"> <i class="fa fa-street-view"></i> Talent Pool</h4>
-                        <small class="text-white"> (All Candidates)</small>
+                        <h4 class="text-green-light text-brandon"> <i class="fa fa-street-view"></i> Talent Pool <small class="text-white"> (All Candidates)</small></h4>                        
                       </div>
                     
                 </div>

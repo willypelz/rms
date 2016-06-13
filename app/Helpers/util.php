@@ -187,6 +187,50 @@ use App\Models\Job;
 		
 	}
 
+	function default_color_picture($data, $type='cv')
+	{
+		if( !is_array($data) )
+		{
+			$data = $data->toArray();
+		}
+
+		switch ($type) {
+			case 'cv':
+				$string1 = $data['first_name'];
+				$string2 = $data['last_name'];
+				
+				break;
+			case 'user':
+				$data_arr = explode(' ', $data['name']);
+				$string1 = $data_arr[0];
+				$string2 = @$data_arr[1];
+				
+				break;
+			
+			default:
+				# code...
+				break;
+		}
+
+		$colors = [
+			"79DDE8",
+			"7995E8",
+			"E87979",
+			"E8CC79",
+			"E279E8",
+			"90999C",
+			"A8E879",
+			"9A79E8",
+			"EC8767",
+			"C38E7B"
+		];
+
+		$color = $colors[ array_rand($colors) ];
+
+		return [ 'color' => '#'.$color, 'image' => 'http://dummyimage.com/300x300/'.$color.'/ffffff.jpg&text='.strtoupper( substr($string1,0,1).substr($string2,0,1) ) ];
+		
+	}
+
 	function get_application_statuses($status)
 	{
 

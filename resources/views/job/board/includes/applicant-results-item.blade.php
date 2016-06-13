@@ -2,12 +2,13 @@
                       
   @foreach( @$result['response']['docs'] as $cv )
   
+  <?php  $pic = default_color_picture( $cv )  ?>
   
   <div class="comment media" data-cv="{{ $cv['id'] }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}">
   <hr>
       <span class="col-md-2 col-sm-3">
         <a href="{{ route('applicant-profile', $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] ) }}" target="_blank"  class="pull-left">
-            <img alt="" src="{{ default_picture( $cv ) }}" class="media-object " width="100%">
+            <img alt="" src="{{ $pic['image'] }}" style="background:{{ $pic['color'] }};" class="media-object " width="100%">
         </a>
       </span>
       <div class="media-body">
@@ -56,8 +57,8 @@
                   <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="checkDrop" style="position:relative; float:right; border: 1px solid rgba(0, 0, 0, 0.03);">
-                  <li><a href="">Background Check</a></li>
-                  <li><a href="">Medical Check</a></li>
+                  <li><a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Background Check" data-view="{{ route('modal-background-check') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="wide">Background Check</a></li>
+                  <li><a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Medical Check" data-view="{{ route('modal-medical-check') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="wide">Medical Check</a></li>
                 </ul>
               </span> 
 

@@ -160,7 +160,7 @@
         <div class="clearfix"></div>
         <hr class="hr-bg"><br></div>
       <div class="col-sm-6 animated slideInLeft">
-          <p class="lead text-muted">You don’t need to go from site to site to post jobs. Job posting is now Seamless! It’s simple! Create your jobs here and advertise them on all these channels, in just few clicks!</p>
+          <p class="lead text-muted">You don’t need to go from site to site to post jobs. Job posting is now Seamless! It’s simple! Create your jobs here and advertise them on all these channels, in just a few clicks!</p>
   
           <table class="table"> 
             <thead> 
@@ -219,8 +219,13 @@
       <div class="col-sm-12">
   
           <p><br>
-            <a href="" class="btn btn-success text-brandon"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>
-            <a href="#tab-2" aria-controls="tab-2" role="tab-2" data-toggle="tab" type="button" class="pull-right btn btn-line text-capitalize">Next &nbsp; <i class="fa fa-chevron-right"></i></a>
+            <div class="col-sm-6">
+              <a href="" class="btn btn-success text-brandon"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>
+            </div>
+            <div class="col-sm-6">
+              <a href="#tab-2" aria-controls="tab-2" role="tab-2" data-toggle="tab" type="button" class="pull-right btn btn-line text-capitalize">Next &nbsp; <i class="fa fa-chevron-right"></i></a>
+            </div>
+            
           </p>
       </div>
 

@@ -838,7 +838,7 @@ class JobsController extends Controller
           $job->save();
            // $job->update($request->all());
         
-            //return redirect($job->company->slug.'/job/'.$job->id.'/'.str_slug($job->title));
+            return redirect($job->company->slug.'/job/'.$job->id.'/'.str_slug($job->title));
 
         }
 

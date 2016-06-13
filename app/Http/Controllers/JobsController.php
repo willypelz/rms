@@ -291,7 +291,7 @@ class JobsController extends Controller
                           
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-info"></i>
-                                    <i class="fa fa-user-plus fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-briefcase fa-stack-1x fa-inverse"></i>
                                   </span>
                           
                                   <h5 class="no-margin text-info">Job Created</h5>

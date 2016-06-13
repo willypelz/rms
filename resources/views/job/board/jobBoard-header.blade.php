@@ -56,7 +56,7 @@
                 
                         <ul class="pagination pull-right job-progress">
                             @if( $result['response']['numFound'] > 0 )
-                                <li><a href="#" class="active">New</a>
+                                <li class="active"><a href="#">New</a>
                                 </li>
                             @else
                                 <li><a href="#">New</a>
@@ -65,28 +65,28 @@
                             <!-- <li><a href="#">In Review</a>
                             </li> -->
                             @if( $application_statuses['SHORTLISTED'] > 0 || $application_statuses['ASSESSED'] > 0  || $application_statuses['INTERVIEWED'] > 0  || $application_statuses['HIRED'] > 0   )
-                                <li><a href="#" class="active">Shortlist</a>
+                                <li class="active"><a href="#">Shortlist</a>
                                 </li>
                             @else
                                 <li><a href="#">Shortlist</a>
                                 </li>
                             @endif
                             @if( $application_statuses['ASSESSED'] > 0  || $application_statuses['INTERVIEWED'] > 0  || $application_statuses['HIRED'] > 0   )
-                                <li><a href="#" class="active">Test</a>
+                                <li class="active"><a href="#">Test</a>
                                 </li>
                             @else
                                 <li><a href="#">Test</a>
                                 </li>
                             @endif
                             @if( $application_statuses['INTERVIEWED'] > 0  || $application_statuses['HIRED'] > 0   )
-                                <li><a href="#" class="active">Interview</a>
+                                <li class="active"><a href="#">Interview</a>
                                 </li>
                             @else
                                 <li><a href="#">Interview</a>
                                 </li>
                             @endif
                             @if( $application_statuses['HIRED'] > 0   )
-                                <li><a href="#" class="active">Hire</a>
+                                <li class="active"><a href="#">Hire</a>
                                 </li>
                             @else
                                 <li><a href="#">Hire</a>

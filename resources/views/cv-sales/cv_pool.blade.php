@@ -70,7 +70,7 @@
                       <div class="well well-sm pushup-sm no-shadow">       
 
                         <div class="col-xs-10"> 
-                          <span class="text-brandon"><i class="fa fa-folder"></i> Stats: &nbsp;</span> You have <span id="top_candidate_count"><strong>{{ $result['response']['numFound'] }}</strong></span> candidates in your Talent Pool
+                          <span class="text-brandon"><i class="fa fa-folder"></i> Stats: &nbsp;</span> You have <span id="top_candidate_count"><strong>{{ $result['response']['numFound'] }}</strong></span> candidate(s) in your Talent Pool
                         </div>
                         <!-- <div class="col-xs-6">
                         <form action="" class="form-inline pull-right">
@@ -164,7 +164,7 @@
     <script type="text/javascript">
     var folders = [];
     var filters = [];
-    var age_range = null;
+    var age_range = exp_years_range = null;
     var last_text_filter = "";
 
     function searchKeyword(){
@@ -268,7 +268,7 @@
             $('.result-label').html('');
             $('#pagination').hide();
 
-            age_range = null;
+            age_range = exp_years_range = null;
 
             $(this).performFilter();
             
@@ -276,7 +276,7 @@
 
         
 
-        $(document).getMyFolders();
+        // $(document).getMyFolders();
         $(document).getShowing();
 
         $(document).on('change', '.filter-div input[type=checkbox]', function(){
@@ -303,7 +303,7 @@
             $('.search-results').html('{!! preloader() !!}');
             $('.result-label').html('');
             scrollTo('.scroll-to');
-            $.get("{{ url('cv/talent-pool') }}", {search_query: $('#search_query').val(), filter_query : filters, age: age_range },function(data){
+            $.get("{{ url('cv/talent-pool') }}", {search_query: $('#search_query').val(), filter_query : filters, age: age_range, exp_years : exp_years_range },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);

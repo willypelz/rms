@@ -86,7 +86,7 @@
                                 </li>
                             @endif
                             @if( $application_statuses['HIRED'] > 0   )
-                                <li class="active"><a href="#">Hire</a>
+                                <li class="active" ><a href="#">Hire</a>
                                 </li>
                             @else
                                 <li><a href="#">Hire</a>

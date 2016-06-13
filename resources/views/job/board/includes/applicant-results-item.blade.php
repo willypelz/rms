@@ -4,6 +4,7 @@
   
   <?php  $pic = default_color_picture( $cv )  ?>
   
+<div class="ats-abx">
   <div class="comment media" data-cv="{{ $cv['id'] }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}">
   <hr>
       <span class="col-md-2 col-sm-3">
@@ -23,7 +24,7 @@
               <span class="text-muted">·</span>
               <a href="{{ route('applicant-profile', $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] ) }}">View Application</a>
               <span class="text-muted">·</span>
-
+  
               @if($status != 'SHORTLISTED' && $status != 'ASSESSED' && $status != 'INTERVIEWED' && $status != 'HIRED')
               <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Shortlist?" data-view="{{ route('modal-shortlist') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Shortlist</a>
               <span class="text-muted">·</span>
@@ -31,27 +32,27 @@
               <!-- <a href="#" data-toggle="modal" data-target="#reviewCv[data-user='{{ @$cv['id'] }}']" id="reviewBtn-{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}">Comment</a> -->
               <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Comment" data-view="{{ route('modal-comment') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Comment</a>
               <span class="text-muted">·</span>
-
+  
               @if($status != 'ASSESSED' && $status != 'HIRED')
               <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Test" data-view="{{ route('modal-assess') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="wide">Test</a>
               <span class="text-muted">·</span>
               @endif
-
-
+  
+  
               @if($status != 'INTERVIEWED' && $status != 'HIRED')
               <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Schedule an interview for" data-view="{{ route('modal-interview') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Interview</a>
               <span class="text-muted">·</span>
-
+  
               @endif
-
-
+  
+  
               @if(!empty($status))
               <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Do you want to return to all?" data-view="{{ route('modal-return-to-all') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Return</a>
               <span class="text-muted">·</span>
               @endif
-
+  
               <a data-toggle="modal" class="text-danger" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Reject?" data-view="{{ route('modal-reject') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Reject</a>
-
+  
               <span class="dropdown">&nbsp; &middot; &nbsp;
                 <a id="checkDrop" type="button" data-toggle="dropdown" aria-expanded="false">Checks
                   <span class="caret"></span>
@@ -61,17 +62,18 @@
                   <li><a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Medical Check" data-view="{{ route('modal-medical-check') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="wide">Medical Check</a></li>
                 </ul>
               </span> 
-
+  
               <span class="pull-right hide">
                   <a class="text-muted" href="#">Background Check</a>
                   <span class="text-muted">·</span>
               </span>
           </small>
-
-
-
+  
+  
+  
       </div>
   </div>
+</div>
 
 
 <!-- <div class="modal fade" tabindex="-1" id="reviewCv" data-user="{{ @$cv['id'] }}" role="dialog" aria-labelledby="reviewCv">

@@ -47,11 +47,14 @@
                         <li>
                             <a class="btn btn-danger" href="{{ url('pricing') }}" >Upgrade</a>
                         </li>
-                        <li> {{ Auth::user()->companies[0]->name }}</li>
+                        <li> </li>
                         <li id="fat-menu" class="dropdown"> 
                             <a class="a-user" id="drop3" href="#" class="dropdown-toggle" style="" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
-                                <img src="{{ default_picture( Auth::user(), 'user' ) }}" width="40px" class="img-profile" height="40px" alt=""> 
-                                <span class="caret"></span> 
+
+                            <span class="ellipsis text-green-light comp-name"><i class="fa fa-bookmark"></i> {{ Auth::user()->companies[0]->name }}</span>
+                            
+                            <img src="{{ default_picture( Auth::user(), 'user' ) }}" width="40px" class="img-profile" height="40px" alt=""> 
+                            <span class="caret"></span> 
                             </a> 
                             <ul class="dropdown-menu" aria-labelledby="drop3"> 
                                 <!-- <li><a href="setting.php">Account Setting</a></li>  -->

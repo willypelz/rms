@@ -1498,10 +1498,10 @@ div#search-results {
 }
 .search-results img {
     padding: 15px;
-    border: 3px solid;
-    color: #eee;
+    /* border: 3px solid; */
+    /* color: #eee; */
     border-radius: 50%;
-    background:#fff;
+    /* background:#fff; */
 }
 .result-details{
     font-size: 12px;
@@ -2213,39 +2213,35 @@ section.grey hr{
     overflow: hidden;
     color: rgba(72, 162, 186, 1);
 }
-.job-progress > li a:first-child, .job-progress > li a:last-child {
+.job-progress > li a:first-child, 
+.job-progress > li a:last-child {
     border-radius: 0;
 }
-.job-progress > li a {
-    font-size: 10px;
-    border-radius: 0;
-    background-color: rgba(204, 204, 204, 0);
-    border:solid rgb(94, 143, 158);
-    border-width:0 0 1px 0;
-    color: rgb(94, 143, 158);
-    padding: 10px 15px;
-    /*background: url('../img/base-arrow.svg');*/
-    /*background-size: 30px 30px;*/
-    /*background-repeat: no-repeat;*/
-    /*background-position: 19px center;*/
-}
-.job-progress > li a:hover, .job-progress > li a:visited {
+.job-progress > li a:hover, 
+.job-progress > li a:focus {
     background: none;
     cursor: default;
     color: rgb(122, 134, 146);
-    border-color: rgb(113, 130, 133);
+    border-color: rgb(122, 134, 146);
 }
-.job-progress > li a.active {
+.job-progress > li a,
+.job-progress > li:hover a,
+.job-progress > li.active a,
+.job-progress > li.active:hover a, 
+.job-progress > li:focus a,
+.job-progress > li a:focus,
+.job-progress > li.active a:focus,
+.job-progress > li a:focus{
     font-weight: bold;
     color: #BCF9BC;
     border-color: #BCF9BC;
-    /* background: url('../img/base-arrow.png'); */
-    /*background-size: 30px 30px;*/
-    background-repeat: no-repeat;
-    background-position: center 28px;
-    /*font-weight: bold;*/
+    font-size: 10px;
+    border-radius: 0;
+    background-color: transparent;
+    border-width:0 0 1px 0;
+    padding: 10px 15px;
 }
-.job-progress > li a.active:after {
+.job-progress > li.active a:after {
     content: "";
     background: #BCF9BC;
     width: 10px;
@@ -2255,13 +2251,26 @@ section.grey hr{
     bottom: -5px;
     left: 45%;
 }
--x-.job-progress > li a:before {
-    content:"|";
-    /*background: rgba(60, 152, 177, 1);*/
-    /*border-radius: 10px;*/
-    /*width: 5px;*/
-    /*height: 5px;*/
-    /*display: inline-block;*/
+.job-progress > li.active ~ li a,
+.job-progress > li.active ~ li a:hover,
+.job-progress > li.active ~ li a:focus{
+    color: rgb(122, 134, 146);
+    border-color: rgb(122, 134, 146);
+}
+.ats-abx{
+    margin-left: -15px;
+    margin-bottom:15px;
+}
+.comp-name{
+    max-width: 150px;
+    position: relative;
+    top: 5px;
+}
+.ellipsis{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display:inline-block;
 }
 .up-space {
     margin-top: 35px;

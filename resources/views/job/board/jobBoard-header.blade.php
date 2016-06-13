@@ -53,45 +53,59 @@
                 
                     <div class="col-xs-5 job-progress-xs">
                     <div class="pull-left text-white small" style="margin-top: 24px;">Recruitment<br>Stage &nbsp; &rarr;</div>
-                
+                        <?php 
+
+                            if( $application_statuses['HIRED'] > 0 )
+                            {
+                                $stage = "HIRED";
+                            }
+
+                            else if( $application_statuses['INTERVIEWED'] > 0 )
+                            {
+                                $stage = "INTERVIEWED";
+                            }
+
+                            else if( $application_statuses['ASSESSED'] > 0 )
+                            {
+                                $stage = "ASSESSED";
+                            }
+
+                            else if( $application_statuses['SHORTLISTED'] > 0 )
+                            {
+                                $stage = "SHORTLISTED";
+                            }
+
+                            else if( $result['response']['numFound'] > 0 )
+                            {
+                                $stage = "NEW";
+                            }
+                            else
+                            {
+                                $stage = "NEW";
+                            }
+
+                        ?>
                         <ul class="pagination pull-right job-progress">
-                            @if( $result['response']['numFound'] > 0 )
-                                <li class="active"><a href="#">New</a>
+                                <li {{ ( $stage == "NEW" ) ? 'class="active"' : '' }} ><a href="#">New</a>
                                 </li>
-                            @else
-                                <li><a href="#">New</a>
-                                </li>
-                            @endif
                             <!-- <li><a href="#">In Review</a>
                             </li> -->
-                            @if( $application_statuses['SHORTLISTED'] > 0 || $application_statuses['ASSESSED'] > 0  || $application_statuses['INTERVIEWED'] > 0  || $application_statuses['HIRED'] > 0   )
-                                <li class="active"><a href="#">Shortlist</a>
+                          
+                                <li {{ ( $stage == "SHORTLISTED" ) ? 'class="active"' : '' }} ><a href="#">Shortlist</a>
                                 </li>
-                            @else
-                                <li><a href="#">Shortlist</a>
+                            
+                          
+                                <li {{ ( $stage == "ASSESSED" ) ? 'class="active"' : '' }} ><a href="#">Test</a>
                                 </li>
-                            @endif
-                            @if( $application_statuses['ASSESSED'] > 0  || $application_statuses['INTERVIEWED'] > 0  || $application_statuses['HIRED'] > 0   )
-                                <li class="active"><a href="#">Test</a>
+                            
+                            
+                                <li {{ ( $stage == "INTERVIEWED" ) ? 'class="active"' : '' }} ><a href="#">Interview</a>
                                 </li>
-                            @else
-                                <li><a href="#">Test</a>
+                            
+                            
+                                <li {{ ( $stage == "HIRED" ) ? 'class="active"' : '' }} ><a href="#">Hire</a>
                                 </li>
-                            @endif
-                            @if( $application_statuses['INTERVIEWED'] > 0  || $application_statuses['HIRED'] > 0   )
-                                <li class="active"><a href="#">Interview</a>
-                                </li>
-                            @else
-                                <li><a href="#">Interview</a>
-                                </li>
-                            @endif
-                            @if( $application_statuses['HIRED'] > 0   )
-                                <li class="active"><a href="#">Hire</a>
-                                </li>
-                            @else
-                                <li><a href="#">Hire</a>
-                                </li>
-                            @endif
+                            
                         </ul>
                 
                         <!-- Select Job Status -->

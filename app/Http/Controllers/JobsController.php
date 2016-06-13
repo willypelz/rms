@@ -307,7 +307,7 @@ class JobsController extends Controller
                           
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-info"></i>
-                                    <i class="fa fa-user-plus fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
                                   </span>
                           
                                   <h5 class="no-margin text-info">Job Application</h5>
@@ -323,7 +323,7 @@ class JobsController extends Controller
                           
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-info"></i>
-                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-filter fa-stack-1x fa-inverse"></i>
                                   </span>
                           
                                   <h5 class="no-margin text-info">Shortlist</h5>
@@ -340,7 +340,7 @@ class JobsController extends Controller
                           
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-info"></i>
-                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-question-circle-o fa-stack-1x fa-inverse"></i>
                                   </span>
                           
                                   <h5 class="no-margin text-info">Test</h5>
@@ -358,7 +358,7 @@ class JobsController extends Controller
                           
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-info"></i>
-                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-reply-all fa-stack-1x fa-inverse"></i>
                                   </span>
                           
                                   <h5 class="no-margin text-info">Return to all</h5>
@@ -375,7 +375,7 @@ class JobsController extends Controller
                           
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-info"></i>
-                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-thumbs-o-up fa-stack-1x fa-inverse"></i>
                                   </span>
                           
                                   <h5 class="no-margin text-info">Interview</h5>
@@ -394,7 +394,7 @@ class JobsController extends Controller
                           
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-info"></i>
-                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
                                   </span>
                           
                                   <h5 class="no-margin text-info">Application</h5>
@@ -411,7 +411,7 @@ class JobsController extends Controller
                           
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-danger"></i>
-                                    <i class="fa fa-exclamation fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-user-times fa-stack-1x fa-inverse"></i>
                                   </span>
                           
                                   <h5 class="no-margin text-danger">REJECT</h5>
@@ -428,7 +428,7 @@ class JobsController extends Controller
                           
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-success"></i>
-                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-commenting fa-stack-1x fa-inverse"></i>
                                   </span>
                           
                                   <h5 class="no-margin text-success">Comment</h5>
@@ -447,7 +447,7 @@ class JobsController extends Controller
                           
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-success"></i>
-                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-commenting fa-stack-1x fa-inverse"></i>
                                   </span>
                           
                                   <h5 class="no-margin text-success">Comment</h5>
@@ -481,7 +481,7 @@ class JobsController extends Controller
                           
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-success"></i>
-                                    <i class="fa fa-thumbs-o-up fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-folder-open fa-stack-1x fa-inverse"></i>
                                   </span>
                           
                                   <h5 class="no-margin text-success">Publish Job</h5>
@@ -498,7 +498,7 @@ class JobsController extends Controller
                           
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-success"></i>
-                                    <i class="fa fa-user-plus fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-users fa-stack-1x fa-inverse"></i>
                                   </span>
                           
                                   <h5 class="no-margin text-success">Team</h5>

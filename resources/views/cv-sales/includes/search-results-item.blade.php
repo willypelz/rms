@@ -2,11 +2,13 @@
                       
   @foreach( @$result['response']['docs'] as $cv )
   
+  <?php  $pic = default_color_picture( $cv )  ?>
+  
 <li class="row">
       <span class="col-md-2 col-sm-3">
           <a class="" href="my-cv.html">
 
-              <img class="media-object job-team-img" width="100%" src="{{ default_picture( $cv ) }}" alt="">
+              <img class="media-object job-team-img" width="100%" src="{{ $pic['image'] }}" style="background:{{ $pic['color'] }};" alt="">
           </a>
       </span>
 

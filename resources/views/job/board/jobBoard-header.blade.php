@@ -86,24 +86,24 @@
 
                         ?>
                         <ul class="pagination pull-right job-progress">
-                                <li {{ ( $stage == "NEW" ) ? 'class="active"' : '' }} ><a href="#">New</a>
+                                <li class="{{ ( $stage == "NEW" ) ? 'active' : '' }}" ><a href="#">New</a>
                                 </li>
                             <!-- <li><a href="#">In Review</a>
                             </li> -->
                           
-                                <li {{ ( $stage == "SHORTLISTED" ) ? 'class="active"' : '' }} ><a href="#">Shortlist</a>
+                                <li class="{{ ( $stage == "SHORTLISTED" ) ? 'active' : '' }}" ><a href="#">Shortlist</a>
                                 </li>
                             
                           
-                                <li {{ ( $stage == "ASSESSED" ) ? 'class="active"' : '' }} ><a href="#">Test</a>
+                                <li class="{{ ( $stage == "ASSESSED" ) ? 'active' : '' }}" ><a href="#">Test</a>
                                 </li>
                             
                             
-                                <li {{ ( $stage == "INTERVIEWED" ) ? 'class="active"' : '' }} ><a href="#">Interview</a>
+                                <li class="{{ ( $stage == "INTERVIEWED" ) ? 'active' : '' }}" ><a href="#">Interview</a>
                                 </li>
                             
                             
-                                <li {{ ( $stage == "HIRED" ) ? 'class="active"' : '' }} ><a href="#">Hire</a>
+                                <li class="{{ ( $stage == "HIRED" ) ? 'active' : '' }}" ><a href="#">Hire</a>
                                 </li>
                             
                         </ul>

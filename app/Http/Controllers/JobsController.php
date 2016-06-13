@@ -266,19 +266,20 @@ class JobsController extends Controller
          $content = '<ul class="list-group list-notify">';
         
         if(!empty($request->appl_id)){
-            $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('created_at', 'desc')->take(20)->get();
+            $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('created_at', 'desc');
         }elseif($request->type == 'dashboard'){
 
           $comp = Auth::user()->companies;
           $comp_id = ($comp[0]->id);
 
           $jobs = Job::where('company_id', $comp_id)->get(['id'])->toArray();
-          $activities = JobActivity::with('user', 'application.cv', 'job')->whereIn('job_id', $jobs)->orderBy('created_at', 'desc')->take(20)->get();
+          $activities = JobActivity::with('user', 'application.cv', 'job')->whereIn('job_id', $jobs)->orderBy('created_at', 'desc');
           // dd($activities);
 
         }else{
-            $activities =  JobActivity::with('user', 'application.cv', 'job', 'job.company')->where('job_id', $request->jobid)->orderBy('created_at', 'desc')->take(20)->get();
+            $activities =  JobActivity::with('user', 'application.cv', 'job', 'job.company')->where('job_id', $request->jobid)->orderBy('created_at', 'desc');
         }
+        $activities = $activities->take(20)->get();
             // dd($activities);
         foreach ($activities as $ac) {
             $type = $ac->activity_type;

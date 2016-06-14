@@ -47,7 +47,7 @@
                         <li>
                             <a class="btn btn-danger" href="{{ url('pricing') }}" >Upgrade</a>
                         </li>
-                        <li> </li>
+
                         <li id="fat-menu" class="dropdown" title="{{ Auth::user()->companies[0]->name }}"> 
                             <a class="a-user" id="drop3" href="#" class="dropdown-toggle" style="" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
 
@@ -58,6 +58,11 @@
                             </a> 
                             <ul class="dropdown-menu" aria-labelledby="drop3"> 
                                 <!-- <li><a href="setting.php">Account Setting</a></li>  -->
+                                @foreach( Auth::user()->companies as $key => $company )
+                                    <li><a href="#"> @if( $company->id == Auth::user()->companies[0]->id ) <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>
+                                @endforeach
+                                <li role="separator" class="divider"></li> 
+                                <li><a href="#"><i class="fa fa-plus"></i> Create new Company</a></li>
                                 <li role="separator" class="divider"></li> 
                                 <li><a href="{{ url('logout') }}">Logout</a></li> 
                             </ul> 

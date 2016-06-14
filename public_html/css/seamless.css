@@ -128,6 +128,13 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .navbar-toggle .icon-bar {
     background: #A2B23D;
 }
+.top-user-menu a
+{
+    margin-top: -10px !important;
+    padding-top: 10px !important;
+    margin-bottom: -10px !important;
+    padding-bottom: 10px !important;
+}
 .btn-group>.btn:first-child:not(:last-child):not(.dropdown-toggle) {
     border-right: 0;
 }

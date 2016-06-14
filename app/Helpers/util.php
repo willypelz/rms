@@ -296,4 +296,13 @@ use App\Models\Job;
 			abort(404);
 		}
 	}
+
+	function get_current_company()
+	{
+		if( Session::get('current_company_index')  )
+		{
+			return Auth::user()->companies[ Session::get('current_company_index') ];
+		}
+		return Auth::user()->companies[0];
+	}
 ?>

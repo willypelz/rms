@@ -48,21 +48,21 @@
                             <a class="btn btn-danger" href="{{ url('pricing') }}" >Upgrade</a>
                         </li>
 
-                        <li id="fat-menu" class="dropdown" title="{{ Auth::user()->companies[0]->name }}"> 
+                        <li id="fat-menu" class="dropdown" title="{{ get_current_company()->name }}"> 
                             <a class="a-user" id="drop3" href="#" class="dropdown-toggle" style="" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
 
-                            <span class="ellipsis text-green-light comp-name"><i class="fa fa-bookmark"></i> {{ Auth::user()->companies[0]->name }} &nbsp;</span>
+                            <span class="ellipsis text-green-light comp-name"><i class="fa fa-bookmark"></i> {{ get_current_company()->name }} &nbsp;</span>
 
                             <img src="{{ default_picture( Auth::user(), 'user' ) }}" width="40px" class="img-profile" height="40px" alt=""> 
                             <span class="caret"></span> 
                             </a> 
-                            <ul class="dropdown-menu" aria-labelledby="drop3"> 
+                            <ul class="dropdown-menu top-user-menu" aria-labelledby="drop3"> 
                                 <!-- <li><a href="setting.php">Account Setting</a></li>  -->
                                 @foreach( Auth::user()->companies as $key => $company )
-                                    <li><a href="#"> @if( $company->id == Auth::user()->companies[0]->id ) <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>
+                                    <li><a href="{{ route('select-company',['slug'=>$company->slug]) }}"> @if( $company->id == get_current_company()->id ) <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>
                                 @endforeach
                                 <li role="separator" class="divider"></li> 
-                                <li><a href="#"><i class="fa fa-plus"></i> Create new Company</a></li>
+                                <li><a href="{{ route('add-company') }}"><i class="fa fa-plus"></i> Create new Company</a></li>
                                 <li role="separator" class="divider"></li> 
                                 <li><a href="{{ url('logout') }}">Logout</a></li> 
                             </ul> 

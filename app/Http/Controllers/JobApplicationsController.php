@@ -467,7 +467,7 @@ class JobApplicationsController extends Controller
     public function requestTest(Request $request)
     {
         
-        $comp_id = Auth::user()->companies[0]->id;
+        $comp_id = get_current_company()->id;
         $invoice_no = '#'.mt_rand();
 
 
@@ -525,7 +525,7 @@ class JobApplicationsController extends Controller
 
     public function requestCheck(Request $request)
     {
-        $comp_id = Auth::user()->companies[0]->id;
+        $comp_id = get_current_company()->id;
         $invoice_no = '#'.mt_rand();
 
         $order = Order::firstOrCreate([

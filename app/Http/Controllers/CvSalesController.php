@@ -207,7 +207,7 @@ class CvSalesController extends Controller
         $invoice_no = '#'.mt_rand();
 
         $d = User::with('companies')->where('id', $user->id)->first();
-        $company = ($d->companies[0]);
+        $company = get_current_company();
 
         if(isset($request->cart_type)){
 
@@ -284,7 +284,7 @@ class CvSalesController extends Controller
 
     public function Payment(Request $request, $type = null){
 
-        $company = Auth::user()->companies[0];
+        $company = get_current_company();
 
 
         if($type != null){
@@ -353,7 +353,7 @@ class CvSalesController extends Controller
         if( Auth::check() )
         {
             $company_folder_obj = new CompanyFolder(); 
-            $folders = $company_folder_obj->getMyFolders( Auth::user()->companies[0]->id );
+            $folders = $company_folder_obj->getMyFolders( get_current_company()->id );
             return response()->json( ['folders' => $folders] );
 
         }
@@ -368,7 +368,7 @@ class CvSalesController extends Controller
         if( Auth::check() )
         {
             $company_folder_obj = new CompanyFolder(); 
-            $company_folder_obj::create( ['name' => $request->name, 'type' => $request->type, 'date_added' => Carbon::now(), 'company_id' => Auth::user()->companies[0]->id ] );
+            $company_folder_obj::create( ['name' => $request->name, 'type' => $request->type, 'date_added' => Carbon::now(), 'company_id' => get_current_company()->id ] );
 
             
             return response()->json( true );

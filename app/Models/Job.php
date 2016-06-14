@@ -46,7 +46,7 @@ class Job extends Model
 
     public static function getMyJobIds()
     {
-        return Job::where('company_id',@Auth::user()->companies[0]->id)->get()->pluck('id')->toArray();
+        return Job::where('company_id',@get_current_company()->id)->get()->pluck('id')->toArray();
     }
 
 }

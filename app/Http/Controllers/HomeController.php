@@ -41,8 +41,7 @@ class HomeController extends Controller
     public function dashbaord()
     {
 
-        $comp = Auth::user()->companies;
-        $comp_id = ($comp[0]->id);
+        $comp_id = get_current_company()->id;
         $jobs_count = Job::where('company_id', $comp_id)->count();
 
         // dd($jobs);

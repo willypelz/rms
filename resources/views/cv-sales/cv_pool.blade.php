@@ -1,7 +1,7 @@
 @extends('layout.template-default')
 
 @section('content')
-{{-- Auth::user()->companies[0]->id --}}
+{{-- get_current_company()->id --}}
 {{-- dd($result) --}}
 
 <style type="text/css">

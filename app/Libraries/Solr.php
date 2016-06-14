@@ -107,25 +107,37 @@ class Solr {
 
 	static function get_saved_cvs($data)
 	{
-		$additional = "&fq=company_folder_id:". @Auth::user()->companies[0]->id."&fq=folder_type:saved";
+		$additional = "&fq=company_folder_id:". @get_current_company()->id."&fq=folder_type:saved";
 		return Solr::search_resume($data,$additional);
 	}
 
 	static function get_purchased_cvs($data)
 	{
-		$additional = "&fq=company_folder_id:". @Auth::user()->companies[0]->id."&fq=folder_type:purchased";
+		$additional = "&fq=company_folder_id:". @get_current_company()->id."&fq=folder_type:purchased";
 		return Solr::search_resume($data,$additional);
 	}
 
 	static function get_all_my_cvs($data, $age = null,$exp_years=null)
 	{
-		// $additional = "&fq=( job_id:(5) OR company_folder_id:". @Auth::user()->companies[0]->id.' )';
+		// $additional = "&fq=( job_id:(5) OR company_folder_id:". @get_current_company()->id.' )';
 		//job_id:(15 10 12) OR company_folder_id:1
-		// $additional = "&fq=company_folder_id:". @Auth::user()->companies[0]->id;
+		// $additional = "&fq=company_folder_id:". @get_current_company()->id;
 		
 		
-		// $additional = "&fq=(job_id:(".  implode('+', Job::getMyJobIds() )  .")+OR+company_folder_id:". @Auth::user()->companies[0]->id .")"."&fq=-folder_type:saved";
-		$additional = "&fq=job_id:(".  implode('+', Job::getMyJobIds() )  .")+OR+(company_folder_id:". @Auth::user()->companies[0]->id ."+AND+-folder_type:saved".")" ;
+		// $additional = "&fq=(job_id:(".  implode('+', Job::getMyJobIds() )  .")+OR+company_folder_id:". @get_current_company()->id .")"."&fq=-folder_type:saved";
+		
+		
+
+		if( !empty( Job::getMyJobIds() ) )
+		{
+			$job = "job_id:(".  implode('+', Job::getMyJobIds() )  .")+OR+" ;
+		}
+		else{
+			
+			$job = "";
+		}
+
+		$additional = "&fq=". $job ."(company_folder_id:". @get_current_company()->id ."+AND+-folder_type:saved".")" ;
 
 		if( !is_null($age) )
 		{

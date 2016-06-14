@@ -20,7 +20,7 @@ use Mail;
 use Curl;
 use App\Libraries\Solr;
 use Carbon\Carbon;
-
+use DB;
 
 class JobsController extends Controller
 {
@@ -55,8 +55,7 @@ class JobsController extends Controller
         $specializations = Specialization::get();
 
         $user = Auth::user();
-        $d = User::with('companies')->where('id', $user->id)->first();
-        $company = ($d->companies[0]);
+        $company = get_current_company();
         $job_boards = JobBoard::where('type', 'free')->get()->toArray();
         $c = (count($job_boards) / 2);
         $t = array_chunk($job_boards, $c);
@@ -175,8 +174,7 @@ class JobsController extends Controller
     public function Share($id){
 
         $user = Auth::user();
-        $d = User::with('companies')->where('id', $user->id)->first();
-        $company = ($d->companies[0]);
+        $company = get_current_company();
 
         $job = Job::find($id);
         // dd($job);
@@ -204,8 +202,8 @@ class JobsController extends Controller
 
         $user = Auth::user();
         $user = User::with('companies.jobs')->where('id', $user->id)->first();
-        $jobs = ($user->companies[0]->jobs);
-        $company = $user->companies[0];
+        $jobs = get_current_company()->jobs;
+        $company = get_current_company();
         
         $active = 0;
         $suspended = 0;
@@ -247,8 +245,7 @@ class JobsController extends Controller
     public function JobTeam($id, Request $request){
         //Check if he  is the owner of the job
         check_if_job_owner( $id );
-        $user = User::with('companies')->find(Auth::user()->id);
-        $comp_id = ($user->companies[0]->id);
+        $comp_id = get_current_company();
 
         $users  = Company::with('users')->find($comp_id);
         
@@ -269,8 +266,8 @@ class JobsController extends Controller
             $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('created_at', 'desc');
         }elseif($request->type == 'dashboard'){
 
-          $comp = Auth::user()->companies;
-          $comp_id = ($comp[0]->id);
+          
+          $comp_id = get_current_company()->id;
 
           $jobs = Job::where('company_id', $comp_id)->get(['id'])->toArray();
           $activities = JobActivity::with('user', 'application.cv', 'job')->whereIn('job_id', $jobs)->orderBy('created_at', 'desc');
@@ -793,8 +790,7 @@ class JobsController extends Controller
     public function MyCompany(){
 
         $user = Auth::user();
-        $d = User::with('companies')->where('id', $user->id)->first();
-        $company = ($d->companies[0]);
+        $company = get_current_company();
 
         return redirect('/'.$company->slug);
 
@@ -982,6 +978,75 @@ class JobsController extends Controller
       if ($newJob) {
         echo true;
       }
+    }
+
+    public function addCompany(Request $request){
+
+        if ($request->isMethod('post')) {
+            // dd($request->request); 
+
+             $validator = Validator::make($request->all(), [
+                'slug' => 'unique:companies'
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+           
+            $file_name  = ($request->logo->getClientOriginalName());
+            $fi =  $request->file('logo')->getClientOriginalExtension();  
+            $logo = $request->company_name.'-'.$file_name;
+
+            // $com['name'] = $request->company_name;
+            // $com['slug'] = $request->slug;
+            // $com['phone'] = $request->phone;
+            // $com['website'] = $request->website;
+            // $com['address'] = $request->address;
+            // $com['about'] = $request->about_company;
+
+           
+
+            $comp = Company::FirstorCreate([
+                'name' => $request->company_name,
+                'email' => $request->company_email,
+                'slug' => $request->slug,
+                'phone' => $request->phone,
+                'website' => $request->website,
+                'address' => $request->address,
+                'about' => $request->about_company,
+                'logo' => $logo,
+                'date_added' => date('Y-m-d H:i:s'),
+            ]);
+
+            $assoc  = DB::table('company_users')->insert([
+                      ['user_id' => Auth::user()->id, 'company_id'=> $comp->id]
+            ]);
+
+            $upload = $request->file('logo')->move(
+                env('fileupload'), $logo
+            );
+
+
+            if($upload){      
+              return redirect('dashboard');
+            }
+            
+
+
+        }
+        return view('job.add_company');
+    }
+
+    public function selectCompany(Request $request)
+    {
+        foreach (Auth::user()->companies as $key => $company) {
+          if( $company->slug == $request->slug)
+          {
+            Session::put('current_company_index', $key );
+            return redirect('dashboard');
+          }
+        }
     }
 
 }

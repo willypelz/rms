@@ -23,23 +23,26 @@
                         <div class="col-xs-7">
                             <h5 class="no-margin"> <!-- <i class="fa fa-lg fa-users"></i> --> Team members</h5><hr>
 
-                            <ul class="list-group">
-                                @foreach($users->users as $user)
-                                <li class="list-group-item">
-                                    <div class="col-xs-2"><img width="100%" alt="" src="img/avatar.jpg" class="img-circle"></div>
-                                    <div class="col-xs-6">
-                                        <h5> {{ $user->name }}</h5>
-                                        <p>{{ $user->email }}</p>
-                                    </div>
-                                    <div class="col-xs-4 small"><br>
-                                        <span class="pull-right"><a onclick="EditAction({{ $user->id }}); return false" class="" href=""><i class="fa fa-pencil"></i> &nbsp; Edit</a> &nbsp; · &nbsp;
-                                            <a class="text-muted" href=""><i class="fa fa-close"></i> Remove</a></span>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </li>
-                                @endforeach
-                              
-                            </ul>
+                            @if( count( @$users->users ) > 0 )
+                              <ul class="list-group">
+
+                                  @foreach($users->users as $user)
+                                  <li class="list-group-item">
+                                      <div class="col-xs-2"><img width="100%" alt="" src="img/avatar.jpg" class="img-circle"></div>
+                                      <div class="col-xs-6">
+                                          <h5> {{ $user->name }}</h5>
+                                          <p>{{ $user->email }}</p>
+                                      </div>
+                                      <div class="col-xs-4 small"><br>
+                                          <span class="pull-right"><a onclick="EditAction({{ $user->id }}); return false" class="" href=""><i class="fa fa-pencil"></i> &nbsp; Edit</a> &nbsp; · &nbsp;
+                                              <a class="text-muted" href=""><i class="fa fa-close"></i> Remove</a></span>
+                                      </div>
+                                      <div class="clearfix"></div>
+                                  </li>
+                                  @endforeach
+                                
+                              </ul>
+                            @endif
 
                         </div>
 
@@ -79,7 +82,7 @@
 
                                    <div class="form-group">
                                        <label for="">From: </label>
-                                       <input type="text" disabled="" value="{{ $users->email }}" class="form-control">
+                                       <input type="text" disabled="" value="{{ get_current_company()->email }}" class="form-control">
                                        
                                        <label for="">To: </label>
                                        <small>Separate your addresses by a comma</small>
@@ -97,7 +100,7 @@ Account for yourself that will lead you to the recruitment process.
                                           
                                            &lt;/p&gt;
                                            &lt;p&gt;Regards,&lt;/p&gt;
-                                           {{ $users->name }}.
+                                           {{ @$users->name }}.
                                        </textarea>
                                        <script>
                                           

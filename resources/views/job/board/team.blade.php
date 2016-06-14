@@ -78,19 +78,19 @@
                                <!--div class="alert alert-success"><i class="fa fa-check fa-lg"></i>
                                     &nbsp; Your mail has been sent. Refresh page to send more.
                                 </div-->
-                                   <form action="">
-
+                                   <form action="{{ route('job-team-add') }}" method="post" id="JobTeamAdd">
+                                    {{!! csrf_field() !!}}
                                    <div class="form-group">
                                        <label for="">From: </label>
                                        <input type="text" disabled="" value="{{ get_current_company()->email }}" class="form-control">
                                        
                                        <label for="">To: </label>
                                        <small>Separate your addresses by a comma</small>
-                                       <input type="text" placeholder="email addresses here" class="form-control">
+                                       <input type="text" name="email_to" placeholder="email addresses here" class="form-control">
                                    </div>
 
                                    <label for="editor1">Body of Mail</label>
-                                       <textarea rows="10" cols="30" id="editor1" name="" style="visibility: hidden; display: none;">                                       
+                                       <textarea rows="10" cols="30" id="editor1" name="body_mail" style="visibility: hidden; display: none;">                                       
                                        &lt;p&gt;Hello,&lt;br&gt;
 
                                        I would like you to join me on the recruitment team for {{ $job->title }}.
@@ -106,14 +106,18 @@ Account for yourself that will lead you to the recruitment process.
                                           
                                            CKEDITOR.replace( 'editor1' );
                                        </script>
-                                   </form>
+
                                    <br>
                                    <p>
                                        <!-- <a class="btn btn-line btn-sm" aria-controls="collapseWYSIWYG" aria-expanded="false" href="#collapseWYSIWYG" data-toggle="collapse" role="button"><i class="fa fa-times"></i> &nbsp; Cancel</a> -->
                             <a aria-controls="AddTeamMember" aria-expanded="false" class="btn btn-line btn-sm" data-toggle="collapse" data-target="#AddTeamMember" href="#AddTeamMember"><i class="fa fa-user-plus"></i> Cancel</a>
 
-                                       <a class="btn btn-success btn-sm pull-right" aria-controls="collapseWYSIWYG" aria-expanded="false" href="#collapseWYSIWYG" data-toggle="collapse" role="button">Send Mail &nbsp; <i class="fa fa-send"></i></a>
+                                       <!-- <a class="btn btn-success btn-sm pull-right" aria-controls="collapseWYSIWYG" aria-expanded="false" href="#collapseWYSIWYG" data-toggle="collapse" role="button">Send Mail &nbsp; <i class="fa fa-send"></i></a> -->
+                                       <input class="btn btn-success btn-sm pull-right" type="submit" value="Send mail">
+                                       <!-- <button class="btn btn-success btn-sm pull-right" aria-controls="collapseWYSIWYG" aria-expanded="false" href="#collapseWYSIWYG" data-toggle="collapse" role="button" type="submit">Send Mail &nbsp;  <i class="fa fa-send"></i></button> -->
                                    </p>
+                                   </form>
+
                                </div>
                         </div>
                                 
@@ -132,6 +136,27 @@ Account for yourself that will lead you to the recruitment process.
             @endif
         </div>
     </section>
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+
+    <script>
+        $('#JobTeamAdd').ajaxForm({ 
+                headers: { 'X-CSRF-TOKEN': $('input[name="_token"]').val() },
+                beforeSubmit:btn,
+                success:showResponse
+        }); 
+
+                    function btn(){
+                        console.log('Logging things')
+                    }
+
+                    function showResponse(res){
+                        console.log(res)
+                       
+                        $.growl.notice({ message: "Email was sent successfully" });
+
+
+                    }
+    </script>
 
 <div class="separator separator-small"><br></div>
 @endsection

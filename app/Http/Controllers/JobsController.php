@@ -46,6 +46,15 @@ class JobsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function JobTeamAdd(Request $request)
+    {
+      # code...
+      // dd('helo');
+      dd($request->request);
+
+      echo 'Saved';
+    }
    
     public function PostJob(Request $request)
     {   

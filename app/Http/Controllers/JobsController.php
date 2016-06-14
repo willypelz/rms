@@ -1038,7 +1038,7 @@ class JobsController extends Controller
 
 
             if($upload){      
-              return redirect('dashboard');
+              return redirect('select-company/'.$request->slug);
             }
             
 

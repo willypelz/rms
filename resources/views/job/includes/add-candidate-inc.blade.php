@@ -24,7 +24,7 @@
                         Do you already have relevant resumes in a folder somewhere?
                         Upload them here and add them to your pool of applicants.
 
-                    </p><br>{{ public_path('') }}
+                    </p><br>
                        <form action="{{ route('upload-file') }}" method="post" id="uploadCandidate">
                             {!! csrf_field() !!}
                             <div class="form-group fileinput fileinput-new input-group" data-provides="fileinput">

@@ -202,7 +202,10 @@ class JobsController extends Controller
      public function UploadCVfile( Request $request ){
 
         var_dump( $request->file('cv-upload-file') );
-    
+      
+        $upload = $request->file('logo')->move(
+                public_path('uploads/'), $logo
+            );
     }
 
 

@@ -11,7 +11,8 @@
         "laravelcollective/html": "5.2.*",
         "doctrine/dbal": "^2.5",
         "guzzlehttp/guzzle": "^6.2",
-        "ixudra/curl": "^6.1"
+        "ixudra/curl": "^6.1",
+        "alchemy/zippy": "^0.3.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

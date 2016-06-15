@@ -21,6 +21,8 @@ use Curl;
 use App\Libraries\Solr;
 use Carbon\Carbon;
 use DB;
+use Alchemy\Zippy\Zippy;
+// use Zipper;
 
 class JobsController extends Controller
 {
@@ -200,12 +202,54 @@ class JobsController extends Controller
     }
 
      public function UploadCVfile( Request $request ){
+        $zippy = Zippy::load();
+        
 
-        var_dump( $request->file('cv-upload-file') );
-      
-        $upload = $request->file('logo')->move(
-                public_path('uploads/'), $logo
-            );
+          // $zipper = new Zipper;
+        ///Applications/AMPPS/www/seamlesshiring/public_html/
+        // dd( Zipper::getFileContent( '\Applications\AMPPS\www\seamlesshiring\public_html\uploads\esimakin-twbs-pagination-1.3.1-2-g4a2f5ff.zip' ) );
+        // dd( $request->all() );
+        //'Image' => 
+        $validator = Validator::make($request->all(), [
+                'cv-upload-file' => 'required|mimes:application/octet-stream,zip,pdf,doc,docx,txt,rtf,pptx,ppt'
+            ],[
+                'cv-upload-file.required' => 'Please select a file',
+                'cv-upload-file.mimes' => 'Allowed extensions are .zip, .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt',
+            ]);
+
+            if ($validator->fails()) {
+                return [ 'status' => 0, 'data' => $validator->errors()->all() ] ;
+                //return redirect()->back()->withErrors($validator)->withInput();
+            }
+            else
+            {
+
+                $filename = Auth::user()->id."_".get_current_company()->id."_".time()."_".$request->file('cv-upload-file')->getClientOriginalName();
+                
+                $mimeType = $request->file('cv-upload-file')->getMimeType(); 
+                
+                $upload = $request->file('cv-upload-file')->move(
+                        public_path('uploads/'), $filename
+                    );
+
+
+                if( $mimeType == 'application/zip')
+                {
+                  $archive = $zippy->open('uploads/'.$filename);
+                  // Iterate through members
+                  // foreach ($archive as $member) {
+                  //     echo "Archive contains $member" . PHP_EOL;
+                  // }
+                  return [ 'status' => 1 ,'data' => "We found ".count( $archive )." files. You will be notified when download is complete" ];
+                }
+                else
+                {
+                  return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
+                }
+                
+            }
+
+       
     }
 
 

@@ -18,14 +18,15 @@
                 
 
 
-                    <div class="col-sm-6 col-sm-offset-3 text-center @if(empty($job)) col-sm-offset-3 @endif">
+                    <div class="col-sm-10 col-sm-offset-1 text-center">
 
                     <p>
                         Do you already have relevant resumes in a folder somewhere?
                         Upload them here and add them to your pool of applicants.
 
-                    </p><br>
-                       <form action="{{ route('upload-file') }}" method="post" class=""> 
+                    </p><br>{{ public_path('') }}
+                       <form action="{{ route('upload-file') }}" method="post" id="uploadCandidate">
+                            {!! csrf_field() !!}
                             <div class="form-group fileinput fileinput-new input-group" data-provides="fileinput">
                               <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
 
@@ -37,7 +38,7 @@
                             </div><br>
                             <small style="margin-top: -20px;display: block;">*Allowed extensions are .zip,.pdf,.doc,.docx,.txt,.rtf,.pptx,.ppt</small><br>
 
-                            <button onclick="UploadFile(); return false;" id="UploadCvFileBtn" class="btn btn-success text-capitalize">
+                            <button type="submit" class="btn btn-success text-capitalize">
                                     <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Import file</span>
                             </button>
                         </form>
@@ -106,6 +107,24 @@
             $('#UploadCvFileBtn').text('Import from file');
             $('#funcMsg').html('Uploaded successfully');
         }
+
+         $('#uploadCandidate').ajaxForm({ 
+                headers: { 'X-CSRF-TOKEN': $('input[name="_token"]').val() },
+                beforeSubmit:btn,
+                success:showResponse
+        }); 
+
+                    function btn(){
+                        console.log('Logging things')
+                    }
+
+                    function showResponse(res){
+                        console.log(res)
+                       
+                        $.growl.notice({ message: "Email was sent successfully" });
+
+
+                    }
 
 
 </script>

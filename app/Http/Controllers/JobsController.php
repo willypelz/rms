@@ -199,8 +199,9 @@ class JobsController extends Controller
         return view ('job.add-candidates', compact('jobid', 'job'));
     }
 
-     public function UploadCVfile($id){
+     public function UploadCVfile( Request $request ){
 
+        var_dump( $request->file('cv-upload-file') );
     
     }
 
@@ -1006,14 +1007,6 @@ class JobsController extends Controller
             $file_name  = ($request->logo->getClientOriginalName());
             $fi =  $request->file('logo')->getClientOriginalExtension();  
             $logo = $request->company_name.'-'.$file_name;
-
-            // $com['name'] = $request->company_name;
-            // $com['slug'] = $request->slug;
-            // $com['phone'] = $request->phone;
-            // $com['website'] = $request->website;
-            // $com['address'] = $request->address;
-            // $com['about'] = $request->about_company;
-
            
 
             $comp = Company::FirstorCreate([
@@ -1037,9 +1030,9 @@ class JobsController extends Controller
             );
 
 
-            if($upload){      
+            // if($upload){      
               return redirect('select-company/'.$request->slug);
-            }
+            // }
             
 
 

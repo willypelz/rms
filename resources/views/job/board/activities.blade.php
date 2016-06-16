@@ -39,6 +39,12 @@
                             <!-- <a href="background-check" class="btn btn-success btn-sm pull-right"><i class="fa fa-commenting-o"></i> &nbsp; Add a Comment</a> -->
                           
                               <div class="clearfix"></div>
+
+                            <div class="row" id="showAll" style="display:none">
+                              <div class="col-sm-6 col-sm-offset-3 text-center">
+                                  <button onclick="getCon(true); $('#showAll').hide();" class="btn btn-default">See all activities</button>
+                              </div>
+                            </div>
                         </div>
                         </div>
                     <!--/tab-content-->                       
@@ -58,16 +64,16 @@
 
                           setTimeout(function(){ getCon(); }, 2000);
 
-                      function getCon(preview=false){
+                      function getCon(allActivities=false){
                          $.ajax
                         
                         ({
                             type: "POST",
                             url: url,
-                            data: ({ rnd : Math.random() * 100000, jobid:"{{ $job->id }}" }),
+                            data: ({ rnd : Math.random() * 100000, jobid:"{{ $job->id }}" , allActivities: allActivities }),
                             success: function(response){
                             $("#ActivityContent").html(response);
-
+                            $('#showAll').show();
                             }
                         });
                       }

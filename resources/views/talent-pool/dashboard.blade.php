@@ -61,6 +61,12 @@
                             <div id="ActivityContent"></div>
 
                             <div class="clearfix"></div>
+
+                            <div class="row" id="showAll" style="display:none">
+                              <div class="col-sm-6 col-sm-offset-3 text-center">
+                                  <button onclick="getCon(true); $('#showAll').hide();" class="btn btn-default" >See all activities</button>
+                              </div>
+                            </div>
                       
                         </div>
 
@@ -148,17 +154,19 @@
 
                       setTimeout(function(){ getCon(); }, 2000);
 
-                      function getCon(){
+                      function getCon(allActivities=false){
                          $.ajax
                         ({
                             type: "POST",
                             url: url,
-                            data: ({ rnd : Math.random() * 100000, type:"dashboard" }),
+                            data: ({ rnd : Math.random() * 100000, type:"dashboard", allActivities: allActivities }),
                             success: function(response){
                               $("#ActivityContent").html(response);
-
+                              $('#showAll').show();
                             }
                         });
                       }
+
+
 </script>
 @endsection

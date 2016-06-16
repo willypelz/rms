@@ -52,12 +52,13 @@
 
                 <script>
                       $("#ActivityContent").html('{!! preloader() !!}');
-                     
+                      
+
                       var url = "{{ route('get-activity-content') }}"
 
                           setTimeout(function(){ getCon(); }, 2000);
 
-                      function getCon(){
+                      function getCon(preview=false){
                          $.ajax
                         
                         ({

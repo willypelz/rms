@@ -285,7 +285,16 @@ class JobsController extends Controller
         }else{
             $activities =  JobActivity::with('user', 'application.cv', 'job', 'job.company')->where('job_id', $request->jobid)->orderBy('created_at', 'desc');
         }
-        $activities = $activities->take(20)->get();
+
+        if( @$request->allActivities )
+        {
+          $activities = $activities->get();
+        }
+        else
+        {
+            $activities = $activities->take(20)->get();
+        }
+        
             // dd($activities);
         foreach ($activities as $ac) {
             $type = $ac->activity_type;

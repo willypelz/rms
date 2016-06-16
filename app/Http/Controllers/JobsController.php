@@ -236,6 +236,8 @@ class JobsController extends Controller
                 if( $mimeType == 'application/zip')
                 {
                   $archive = $zippy->open('uploads/'.$filename);
+                  //$archive->extract('/tmp');
+                  
                   // Iterate through members
                   // foreach ($archive as $member) {
                   //     echo "Archive contains $member" . PHP_EOL;

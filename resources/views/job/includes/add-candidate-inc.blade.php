@@ -18,26 +18,31 @@
                 
 
 
-                    <div class="col-sm-6 col-sm-offset-3 text-center @if(empty($job)) col-sm-offset-3 @endif">
+                    <div class="col-sm-10 col-sm-offset-1 text-center">
 
                     <p>
                         Do you already have relevant resumes in a folder somewhere?
                         Upload them here and add them to your pool of applicants.
 
                     </p><br>
-                       <form action="{{ route('upload-file') }}" method="post" class=""> 
+                        
+                        <div id="loader"></div>
+                        <div class="alert alert-danger" style="display:none;" id="u_f"></div>
+                        <div class="alert alert-success" style="display:none;" id="u_s"></div>
+                       <form action="{{ route('upload-file') }}" method="post" enctype="multipart/form-data" id="uploadCandidate">
+                            {!! csrf_field() !!}
                             <div class="form-group fileinput fileinput-new input-group" data-provides="fileinput">
                               <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
 
                               <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
-                                <input type="file" name="cv-upload-file" placeholder="zip" accept=".zip,.pdf,.doc,.docx,.txt,.rtf,.pptx,.ppt">
+                                <input type="file" name="cv-upload-file" placeholder="zip" multiple="multiple" accept=".zip,.pdf,.doc,.docx,.txt,.rtf,.pptx,.ppt">
                               </span>
                               <a href="#" class="input-group-addon  fileinput-exists btn btn-danger" style="    background-color: #d9534f; color:white;" data-dismiss="fileinput">Remove</a>
                               
                             </div><br>
-                            <small style="margin-top: -20px;display: block;">*Allowed extensions are .zip,.pdf,.doc,.docx,.txt,.rtf,.pptx,.ppt</small><br>
+                            <small style="margin-top: -20px;display: block;">*Allowed extensions are .zip, .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt</small><br>
 
-                            <button onclick="UploadFile(); return false;" id="UploadCvFileBtn" class="btn btn-success text-capitalize">
+                            <button type="submit" class="btn btn-success text-capitalize">
                                     <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Import file</span>
                             </button>
                         </form>
@@ -95,17 +100,39 @@
         </div>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
-<script>
-    function UploadFile(){
-        // console.log('cool')
-        $('#UploadCvFileBtn').text('Please wait...')
-         setTimeout(after(), 3000);
-    }
+<script type="text/javascript">
 
-     function after(){
-            $('#UploadCvFileBtn').text('Import from file');
-            $('#funcMsg').html('Uploaded successfully');
-        }
+         $('#uploadCandidate').ajaxForm({ 
+                headers: { 'X-CSRF-TOKEN': $('input[name="_token"]').val() },
+                beforeSubmit:beforeUpload,
+                success:showResponse
+        }); 
+
+                    function beforeUpload(){
+                        $('#u_f').hide();
+                        $('#u_s').hide();
+
+                        $("#loader").html( '{!! preloader() !!}' );
+                    }
+
+                    function showResponse(response){
+
+                        $("#loader").html( '' );
+                       
+
+                        if(response.status)
+                        {
+                            
+                            $('#u_s').text( response.data ).show();
+                        }
+                        else
+                        {
+                            $('#u_f').text( response.data ).show();
+                        }
+                        // $.growl.notice({ message: "Email was sent successfully" });
+
+
+                    }
 
 
 </script>

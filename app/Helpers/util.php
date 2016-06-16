@@ -285,7 +285,7 @@ use App\Models\Job;
 
 	function preloader(){
 
-		return '<div style="width:100%;text-align:center"><img src="'.asset('img/hourglass.svg').'"></div>';
+		return '<div style="width:100%;text-align:center"><img src="'.asset('img/hourglass.svg').'" width="50"></div>';
 
 	}
 

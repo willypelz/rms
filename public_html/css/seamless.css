@@ -3515,7 +3515,7 @@ border-color: #BDFDBA;
         position: fixed;
     top: 10%;
     width: auto;
-    z-index: 1;
+    z-index: 10;
     min-width: 268px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);
     border: 2px solid #CCCCCC;

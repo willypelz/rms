@@ -30,7 +30,19 @@ class CvSalesController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('auth');
+        $this->middleware('auth', ['except' => [
+            'search',
+            'getCvPreview',
+            'saveCvPreview',
+            'Cart',
+            'CartDetails',
+            'Output',
+            'Ajax_cart',
+            'Ajax_checkout',
+            'Payment',
+            'Transactions',
+            'TestEmail'
+        ]]);
     }
 
     public function search(Request $request)

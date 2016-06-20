@@ -42,7 +42,7 @@ class HomeController extends Controller
     {
 
         $comp_id = get_current_company()->id;
-        $jobs_count = Job::where('company_id', $comp_id)->count();
+        $jobs_count = Job::where('company_id', $comp_id)->where('status','!=','DELETED')->count();
 
         // dd($jobs);
         $response = Curl::to('https://api.insidify.com/articles/get-posts')

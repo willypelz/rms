@@ -275,6 +275,7 @@ class JobsController extends Controller
                 $active++;
             }
             else if ($job->status == 'SUSPENDED') {
+                $active_jobs[] = $job;
                 $suspended++;
             }
             else if ($job->status == 'DELETED') {
@@ -379,7 +380,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-info">Job Application</h5>
                                   <p>
                                       <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
-                                      '.$applicant->first_name.' '.$applicant->last_name.' applied for <strong>'.$job->title.'</strong>
+                                      <a href="'. url('job/applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> applied for <strong><a href="'. url('job/candidates/'.$ac->application->job->id) .'" target="_blank">'.$job->title.'</a></strong>
                                   </p>
                                 </li>';
                      break;

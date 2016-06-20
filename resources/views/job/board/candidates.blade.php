@@ -579,7 +579,12 @@
         sh.reloadStatus = function(){
             $.get("{{ route('get-all-applicant-status') }}", {job_id: "{{ $jobID }}"},function(data){
                 $('body #status_filters').replaceWith(data);
+
+
+                $('#status_filters a[data-value="' + status_page.toUpperCase() + '"]').trigger('click');
+
             });
+            
         }
        
 

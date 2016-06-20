@@ -46,7 +46,12 @@ class Job extends Model
 
     public static function getMyJobIds()
     {
-        return Job::where('company_id',@get_current_company()->id)->get()->pluck('id')->toArray();
+        return Job::where('company_id',@get_current_company()->id)->where('status','!=','DELETED')->get()->pluck('id')->toArray();
+    }
+
+    public static function getMyJobs()
+    {
+        return Job::whereIn('company_id', Auth::user()->companies->pluck('id') )->where('status','!=','DELETED')->get()->toArray();
     }
 
 }

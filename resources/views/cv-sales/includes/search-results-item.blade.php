@@ -37,8 +37,57 @@
                   @if(@$is_saved)
                     <span class="details-small">
                       <!-- <span class="small text-danger no-margin pull-right">Purchased Thu 12-03-16</span> -->
-                      <span class="small text-muted" id="saved_folders_view"></span>
+                      <span class="small text-muted" id="saved_folders_view">
+                        
+                      </span>
                     </span>
+                  @endif
+
+                  @if( $page == 'pool' )
+                    <?php
+
+                      
+                      $applicant_jobs = [];
+                      
+                      foreach ($myJobs as $key => $job){
+                        if( in_array($job['id'], $cv['job_id']) ) 
+                        {
+                          $applicant_jobs[] = '<a href="'.route('job-candidates', [$job['id']]).'" target="_blank">'.ucwords( $job['title'] ).'</a>';
+                        }
+                      }
+
+                      if( count($applicant_jobs) > 0 )
+                      {
+                        $source = '<i class="fa fa-briefcase"></i> Applicant for ';
+
+
+                        if( count($applicant_jobs) > 1 )
+                        {
+                          $total_source = $source. implode(', ', $applicant_jobs);
+                          $source .= $applicant_jobs[0] ." and <a href='' id='other_applicant_jobs'>".( count( $applicant_jobs ) - 1 )." other Jobs <span id='hidden_other_applicant_jobs' style='display:none;'>".$total_source."</span> </a>";
+                        }
+                        else
+                        {
+                          $source .= $applicant_jobs[0];
+                        }
+                      }
+                      else // Check if the upload is available
+                      {
+
+                      }
+
+
+                      
+
+                      
+                    ?>
+                    <span class="details-small">
+                      <!-- <span class="small text-danger no-margin pull-right">Purchased Thu 12-03-16</span> -->
+                      <span class="small text-muted" id="saved_folders_view">
+                          {!! $source !!}
+                      </span>
+                    </span>
+                    
                   @endif
                 <p class="">
                       <!-- Single button -->

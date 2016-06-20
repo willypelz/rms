@@ -281,14 +281,19 @@ class JobApplicationsController extends Controller
 
     public function modalComment(Request $request)
     {
+        $modalVars = $this->modalActions('Interview', $request->cv_id, $request->app_id);
+        if( is_array( $modalVars ) )
+        {
+            extract($modalVars);
+        }
+        else
+        {
+            return $modalVars;
+        }
         
-        $app_id = @$request->app_id;
-        $cv_id = @$request->cv_id;
-        $appl = JobApplication::with('job', 'cv')->find($app_id);
-        $applicant_badge = @$this->getApplicantBadge($appl->cv);
         $jobID = $appl->job->id;
 
-        return view('modals.comment', compact('applicant_badge','app_id','cv_id','jobID'));
+        return view('modals.comment', compact('applicant_badge','app_ids','cv_ids','jobID','appl'));
     }
 
     public function modalInterview(Request $request)

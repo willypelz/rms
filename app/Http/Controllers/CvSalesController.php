@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Models\Order;
 use App\User;
 use App\Models\Cv;
+use App\Models\Job;
 use App\Models\Transaction;
 use App\Models\OrderItem;
 use App\Models\CompanyFolder;
@@ -544,16 +545,17 @@ class CvSalesController extends Controller
         if(empty($ids))
             $ids = null;
     // $in_cart = in_array('26618', $ids);
+
         if($request->ajax())
         {
             
-            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true ])->render();    
+            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'myJobs' => Job::getMyJobs() ])->render();    
             $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query, 'age' => @$request->age,'exp_years' => @$request->exp_years])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing ] );
             
         }
         else{
-            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 1, 200 ], 'exp_years' => [ 0, 200 ] ]);
+            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 1, 200 ], 'exp_years' => [ 0, 200 ], 'myJobs' => Job::getMyJobs() ]);
         }
         // return view('cv-sales.cv_saved');
     }

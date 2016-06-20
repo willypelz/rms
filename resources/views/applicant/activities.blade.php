@@ -48,6 +48,11 @@
                           
                             <div id="ActivityContent"></div>
                             
+                            <style type="text/css">
+
+                              #show_activity_comment{ display: inline-block !important;}
+
+                            </style>
                             <!-- <a href="background-check" class="btn btn-success btn-sm pull-right"><i class="fa fa-commenting-o"></i> &nbsp; Add a Comment</a> -->
                             <!-- <a class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Add a Comment" data-view="" data-app-id="{{ $appl->id }}" data-cv="" data-type="wide">Comment</a>  -->
               <a class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Comment" data-view="{{ route('modal-comment') }}" data-app-id="{{ $appl->id }}" data-type="normal">Comment</a>

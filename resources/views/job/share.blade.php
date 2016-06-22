@@ -33,7 +33,7 @@
                             &nbsp; <span class="hidden-xs">3. sharing</span></button>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="addCan-job.php" type="button" class="btn btn-line text-capitalize text-muted"><i class="fa fa-search-plus"></i>
+                            <a href="{{ route('add-candidates', false) }}" type="button" class="btn btn-line text-capitalize text-muted"><i class="fa fa-search-plus"></i>
                             &nbsp; <span class="hidden-xs">4. add candidates</span></a>
                           </div>
                         </div>

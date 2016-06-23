@@ -286,7 +286,7 @@
     <div class="row">
         <div class=" text-center">
         <!-- <h2 class="no-margin text-brandon">1</h2><br> -->
-        <h5 class="col-sm-12 animated fadeIn no-margin text-brandon text-uppercase l-sp-5"><span class="text-orange">Sieve the Wheat </span> from the Chaff, seamlessly!</h5>
+        <h5 class="col-sm-12 animated fadeIn no-margin text-brandon text-uppercase l-sp-5"><span class="text-orange">Sieve the Best </span> from the Rest, seamlessly!</h5>
         <div class="clearfix"></div>
         <hr class="hr-bg"><br></div>
   
@@ -301,7 +301,7 @@
             <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Upload your own Test</li>
           </ul></p><br>
   
-          <p>With our e-invigilator technology, thousands of can take your tests with ease on their phones , tabs and computers anywhere in the world and you will get the results seamlessly, instantly.</p>
+          <p>With our e-invigilator technology, thousands of candidates can take your tests with ease on their phones , tabs and computers anywhere in the world and you will get the results seamlessly, instantly.</p>
   
   
       </div>

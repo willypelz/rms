@@ -157,12 +157,13 @@ class JobsController extends Controller
     public function Advertise($jobid, $slug= null){
 
         $job_boards = JobBoard::where('type', 'paid')->where('avi', null)->get()->toArray();
+
         $newspapers = JobBoard::where('type', 'paid')->where('avi', 1)->get();
         // dd($newspapers->toArray());
-        $c = (count($job_boards) / 2);
-        $t = array_chunk($job_boards, $c);
-        $board1 = $t[0];
-        $board2 = $t[1];
+        // $c = (count($job_boards) / 2);
+        // $t = array_chunk($job_boards, $c);
+        // $board1 = $t[0];
+        // $board2 = $t[1];
         foreach ($job_boards as $s) {
             $bds[] = ($s['id']);
         }
@@ -179,7 +180,7 @@ class JobsController extends Controller
                 $ids = null;
 
 
-        return view('job.advertise', compact('newspapers', 'board1', 'board2', 'ids', 'cart', 'count', 'price', 'jobid', 'slug'));
+        return view('job.advertise', compact('newspapers', 'job_boards', 'ids', 'cart', 'count', 'price', 'jobid', 'slug'));
     }
 
     public function Share($id){
@@ -299,7 +300,36 @@ class JobsController extends Controller
         $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
         $active_tab = 'promote';
-        return view('job.board.home', compact('job', 'active_tab', 'company','result','application_statuses'));
+
+
+        $job_id = $id;
+        $job_boards = JobBoard::where('type', 'paid')->where('avi', null)->get()->toArray();
+
+        $newspapers = JobBoard::where('type', 'paid')->where('avi', 1)->get();
+        // dd($newspapers->toArray());
+        // $c = (count($job_boards) / 2);
+        // $t = array_chunk($job_boards, $c);
+        // $board1 = $t[0];
+        // $board2 = $t[1];
+        foreach ($job_boards as $s) {
+            $bds[] = ($s['id']);
+        }
+
+        $price = 0;
+        $cart = Cart::instance('JobBoard')->content();
+        $count = Cart::instance('JobBoard')->count();
+        foreach ($cart as $k) {
+                $ids[] = ($k->id);
+                $price += $k->price; 
+        }
+        // dd($price);
+            if(empty($ids))
+                $ids = null;
+
+
+        // return view('job.advertise', compact('newspapers', 'job_boards', 'ids', 'cart', 'count', 'price', 'jobid', 'slug'));
+
+        return view('job.board.home', compact('newspapers', 'job_boards', 'ids', 'cart', 'count', 'price', 'jobid','job', 'active_tab', 'company','result','application_statuses'));
     }
 
     public function JobTeam($id, Request $request){

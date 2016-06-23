@@ -32,14 +32,14 @@
               <p>{{ @$cv['last_position'].' at '.@$cv['last_company_worked'] }}</p>
 
               <div class="description">
-                  <p class="sub-box excerpt-p text-muted hidden"><i>bodied security men and women needed in a hotel. Must be smart and able to work in a corporate environment</i></p>
-                  <br>
+                  <!-- <p class="sub-box excerpt-p text-muted hidden"><i>bodied security men and women needed in a hotel. Must be smart and able to work in a corporate environment</i></p>
+                  <br> -->
                   @if(@$is_saved)
                     <span class="details-small">
                       <!-- <span class="small text-danger no-margin pull-right">Purchased Thu 12-03-16</span> -->
-                      <span class="small text-muted" id="saved_folders_view">
+                      <!-- <span class="small text-muted" id="saved_folders_view">
                         
-                      </span>
+                      </span> -->
                     </span>
                   @endif
 
@@ -91,34 +91,37 @@
                   @endif
                 <p class="">
                       <!-- Single button -->
-                  @if( Auth::check() )
-                  <div class="btn-group">
+                  @if( $page == 'saved' )
+                    @if( Auth::check()  )
+                    <div class="btn-group">
 
-                    <button type="button" class="btn btn-line btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      @if(@$is_saved)
-                        Change Folder
-                      @else
-                        Save into Folder
-                      @endif
+                      <button type="button" class="btn btn-line btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @if(@$is_saved)
+                          Change Folder
+                        @else
+                          Save into Folder
+                        @endif
 
-                       &nbsp; <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" id="folders" data-folders="{{ @implode( ':', @$cv['company_folder_id'] ) }}" data-cv="{{ @$cv['id'] }}">
-                      
+                         &nbsp; <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" id="folders" data-folders="{{ @implode( ':', @$cv['company_folder_id'] ) }}" data-cv="{{ @$cv['id'] }}">
+                        
 
-                      <li role="separator" class="divider"></li>
+                        <li role="separator" class="divider"></li>
 
-                      <li>
-                          <a href="#" id="add_folder_btn" target="_blank" data-toggle="modal" data-target="#newFolder" ><i class="fa fa-plus"></i> Create new</a>
-                      </li>
-
-
-                    </ul>
+                        <li>
+                            <a href="#" id="add_folder_btn" target="_blank" data-toggle="modal" data-target="#newFolder" ><i class="fa fa-plus"></i> Create new</a>
+                        </li>
 
 
-                  </div>
-                  @else
-                      <a href="{{ url('log-in') }}" class="btn btn-line btn-sm dropdown-toggle">Save into Folder</a>
+                      </ul>
+
+
+                    </div>
+                    @else
+                        <a href="{{ url('log-in') }}" class="btn btn-line btn-sm dropdown-toggle">Save into Folder</a>
+                    @endif
+
                   @endif
 
                     @if( $page == 'pool' )

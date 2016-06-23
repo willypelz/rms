@@ -29,7 +29,7 @@
                             <a href="{{ route('applicant-activities',  $appl->id) }}" class="btn btn-line"><i class="fa fa-bars"></i> &nbsp; Feeds</a>
                             <!-- <a href="background-check" class="btn"><i class="fa fa-commenting-o"></i> &nbsp; Comments</a> -->
                             <a href="{{ route('applicant-notes',  $appl->id) }}" class="btn"><i class="fa fa-file-text-o"></i> &nbsp; Interview Notes</a>
-                            <a href="background-check" class="btn btn-success pull-right"><i class="fa fa-file-text-o"></i> &nbsp; Add a Comment</a>
+                            <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Comment" data-view="{{ route('modal-comment') }}" data-app-id="{{ $appl->id }}" data-type="normal" class="btn btn-success pull-right"><i class="fa fa-file-text-o"></i> &nbsp; Add a Comment</a>
                             <hr>
                           </div>
                         </div>

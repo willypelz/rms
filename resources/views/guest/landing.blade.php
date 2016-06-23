@@ -16,7 +16,7 @@
                        <h1 class="fa-3x no-margin bold hidden-xs text-brandon text-light"><span class="text-green-light">Everything</span> You Need To Hire, <br>In One Place!</h1>
                        <h1 class=" hidden-sm hidden-md hidden-lg no-margin  text-brandon text-light"><span class="text-green-light">Everything</span> You Need To Hire, <br>In One Place!</h1>
 
-                       <p class="p-banner text-light"><br>Broadcast jobs everywhere <span>&nbsp; &xrarr; &nbsp;</span> Collate, Filter and Sort Applicants <span>&nbsp; &xrarr; &nbsp;</span> Track the Recruitment Process <span>&nbsp; &xrarr; &nbsp;</span> Conduct Online Recruitment Tests <span>&nbsp; &xrarr; &nbsp;</span> Run background Checks <span>&nbsp; &xrarr; &nbsp;</span> Do a lot more!</p>
+                       <!-- <p class="p-banner text-light"><br>Broadcast jobs everywhere <span>&nbsp; &xrarr; &nbsp;</span> Collate, Filter and Sort Applicants <span>&nbsp; &xrarr; &nbsp;</span> Track the Recruitment Process <span>&nbsp; &xrarr; &nbsp;</span> Conduct Online Recruitment Tests <span>&nbsp; &xrarr; &nbsp;</span> Run background Checks <span>&nbsp; &xrarr; &nbsp;</span> Do a lot more!</p> -->
                        <div class="row">
                            <!-- <div class="col-sm-12 col-md-6 col-sm-8">
                                <a href="" class="btn btn-success btn-block btn-lg text-uppercase text-bold">No Dulling. Start Now <i class="fa fa-chevron-right"></i></a>
@@ -93,7 +93,7 @@
                 <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
                 <i class="fa fa-briefcase fa-stack-1x text"></i>
               </span>
-              </h2> <br> Organize, Sort & Track your Applicants</span><br></span>
+              </h2> <br> Organize, Sort & Track Applicants</span><br></span>
               <i class="hidden-xs fa fa-arrow-right pull-right fa-abx fa-lg"></i>
 
                 <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-briefcase fa-stack-1x  text"></i>
@@ -286,7 +286,7 @@
     <div class="row">
         <div class=" text-center">
         <!-- <h2 class="no-margin text-brandon">1</h2><br> -->
-        <h5 class="col-sm-12 animated fadeIn no-margin text-brandon text-uppercase l-sp-5"><span class="text-orange">Sieve the Wheat </span> from the Chaff, seamlessly!</h5>
+        <h5 class="col-sm-12 animated fadeIn no-margin text-brandon text-uppercase l-sp-5"><span class="text-orange">Sieve the Best </span> from the Rest, seamlessly!</h5>
         <div class="clearfix"></div>
         <hr class="hr-bg"><br></div>
   
@@ -301,7 +301,7 @@
             <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Upload your own Test</li>
           </ul></p><br>
   
-          <p>With our e-invigilator technology, thousands of can take your tests with ease on their phones , tabs and computers anywhere in the world and you will get the results seamlessly, instantly.</p>
+          <p>With our e-invigilator technology, thousands of candidates can take your tests with ease on their phones , tabs and computers anywhere in the world and you will get the results seamlessly, instantly.</p>
   
   
       </div>

@@ -44,7 +44,7 @@
                            <div class="col-sm-8 col-sm-offset-2">
                                 <div class="separator separator-small">
                                    <h3 class="text-center"> Share this job!  <br>
-                                       <small>We want to help you find the best talent anywhere they may be.</small>
+                                       <small>Because we want you to find the best talents.</small>
                                    </h3><hr style="width: 45%">
                                </div>
 

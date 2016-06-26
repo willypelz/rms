@@ -272,7 +272,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="">Surname</label>
+                            <label for="">Lastname</label>
                             <input type="text" class="form-control" name="surname" id="surname" required>
 
                         </div>

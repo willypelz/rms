@@ -10,7 +10,7 @@
     </li>
     <li  @if($nav_type=='checks')class="active"@endif ><a href="{{ route('applicant-checks',  $appl->id) }}">Background Checks</a>
     </li>
-    <li  @if($nav_type=='assess')class="active"@endif ><a href="{{ route('applicant-assess',  $appl->id) }}">Assessment</a>
+    <li  @if($nav_type=='assess')class="active"@endif ><a href="{{ route('applicant-assess',  $appl->id) }}">Test</a>
     </li>
     <li  @if($nav_type=='medicals')class="active"@endif ><a href="{{ route('applicant-medicals',  $appl->id) }}">Medicals</a>
     </li>

@@ -51,7 +51,7 @@
                                 @if (Session::has('flash_message'))
                                         <div class="alert alert-info"><i class="fa fa-check">
                                             <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
-                                            </i> {{ Session::get('flash_message') }}
+                                            </i> {!! Session::get('flash_message') !!}
                                         </div>
                                 @endif
 
@@ -100,7 +100,7 @@
                                   <div class="row">
                                     
                                     <div class="col-xs-12">
-                                    <h4>You can multiply your talent flow by posting your jobs on these premium sites.</h4><hr>
+                                    <h4>Interested in multipying your talent flow?</h4><hr>
                                         <h5 class="text-brandon text-uppercase">
                                         <i class="fa fa-star"></i>&nbsp; Paid Job Boards
                                         </h5><br>

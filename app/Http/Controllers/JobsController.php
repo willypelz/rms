@@ -143,7 +143,7 @@ class JobsController extends Controller
 
                     
                         
-            Session::flash('flash_message', 'Congratulations! Your job has been posted on '.$flash_boards.'. You will begin to receive the applications for your jobs on all these job advert platforms on SeamlessHiring soon – no need to open accounts elsewhere.');
+            Session::flash('flash_message', 'Congratulations! Your job has been posted on '.$flash_boards.'. You will begin to receive applications from those job boards shortly - <i>this is definite</i>.');
             return redirect()->route('advertise', [$job->id]);
         }
 

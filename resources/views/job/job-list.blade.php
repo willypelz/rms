@@ -37,7 +37,7 @@
                                 <big><a target="_blank" href="{{ route('job-board', [$job['id']]) }}"><b>{{ $job['title'] }}</b></a></big><hr/>
                                 <small class="text-muted"><i class="glyphicon glyphicon-ban-circle "></i> @if($job['status'] == 'ACTIVE') Job Live @else  Job Suspended @endif| <a href="{{ route('job-board', [$job['id']]) }}" >View Job</a> | <a href="{{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" target="_blank">Preview Job</a></small><br/>
                                 <small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }} &nbsp;
-                                    <i class="glyphicon glyphicon-calendar"></i> Date Created : {{ date('D, M Y', strtotime($job['created_at'])) }}</small>
+                                    <i class="glyphicon glyphicon-calendar"></i> Date Created : {{ date('D. j M, Y', strtotime($job['created_at'])) }}</small>
 
                             </div>
 

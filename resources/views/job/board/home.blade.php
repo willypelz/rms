@@ -35,44 +35,66 @@
                                             <div class="col-xs-12">
                                                 <br>
                                             </div>
+                                        @foreach($free_boards as $b)
+                                        <?php $status = ( in_array($b['id'], $subscribed_boards) ) ? 'disabled checked' : '';  ?>
                                         <div class="col-xs-6">
                                             <div class="">
-                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left disabled">
-                                                <input type="checkbox" disabled="" checked="" autocomplete="off" class="">
-                                                <span class="col-xs-6"><img width="100%" alt="" src="https://insidify.com/desktop/img/logo.png"></span>
-                                                <span class="col-xs-6"><b>Insidify Jobs</b><br>insidify.com</span>
+                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left {{ $status }}">
+                                                <input type="checkbox" {{ $status }} id="sjb" data-i="{{ $b['id'] }}" data-p="{{ $b['price'] }}" data-n="{{ $b['name'] }}" autocomplete="off" class="">
+                                                <span class="col-xs-6"><img width="100%" alt="" src="{{ $b['img'] }}"></span>
+                                                <span class="col-xs-6"><b>{{ $b['name'] }}</b>{!! ( $b['about'] != '' ) ? '<br>'.$b['about'] : '' !!}{!! ( $b['price'] != '' ) ? '<br>'.'&#8358;'.$b['price'] : '' !!}</span>
                                                 <span class="clearfix"></span>
                                               </label>
 
-                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
-                                                <input type="checkbox" checked="" autocomplete="off" class="">
-                                                <span class="col-xs-6"><img width="100%" alt="" src="https://ngcareers.com/public/img/ngc_logo.png"></span>
-                                                <span class="col-xs-6"><b>NgCareers</b><br>ngcareers.com</span>
-                                                <span class="clearfix"></span>
-                                              </label>
-                                              
                                           </div>
                                         </div>
+                                        @endforeach
 
+
+                                        <div class="col-xs-12">
+                                                <br>
+                                            </div>
+                                        @foreach($job_boards as $b)
+                                        <?php $status = ( in_array($b['id'], $subscribed_boards) ) ? 'disabled checked' : '';  ?>
                                         <div class="col-xs-6">
                                             <div class="">
-                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
-                                                <input type="checkbox" checked="" autocomplete="off" class="">
-                                                <span class="col-xs-6"><img width="100%" alt="" src="http://www.jobberman.com/img/new/logo.png"></span>
-                                                <span class="col-xs-6"><b>Jobberman</b><br>insidify.com</span>
+                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left {{ $status }}">
+                                                <input type="checkbox" {{ $status }} id="sjb" data-i="{{ $b['id'] }}" data-p="{{ $b['price'] }}" data-n="{{ $b['name'] }}"  autocomplete="off" class="">
+                                                <span class="col-xs-6"><img width="100%" alt="" src="{{ $b['img'] }}"></span>
+                                                <span class="col-xs-6"><b>{{ $b['name'] }}</b>{!! ( $b['about'] != '' ) ? '<br>'.$b['about'] : '' !!}{!! ( $b['price'] != '' ) ? '<br>'.'&#8358;'.$b['price'] : '' !!}</span>
                                                 <span class="clearfix"></span>
                                               </label>
 
-                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left">
-                                                <input type="checkbox" checked="" autocomplete="off" class="">
-                                                <span class="col-xs-6"><img width="100%" alt="" src="http://www.hotnigerianjobs.com/images/banner2.gif"></span>
-                                                <span class="col-xs-6"><b>Hot Nigerian Jobs</b><br>hotnigerianjobs.com</span>
-                                                <span class="clearfix"></span>
-                                              </label>
                                           </div>
                                         </div>
+                                        @endforeach
+
+
+
+                                        <div class="col-xs-12">
+                                                <br>
+                                            </div>
+                                        @foreach($newspapers as $b)
+                                        <?php $status = ( in_array($b['id'], $subscribed_boards) ) ? 'disabled checked' : '';  ?>
+                                        <div class="col-xs-6">
+                                            <div class="">
+                                              <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left {{ $status }}">
+                                                <input type="checkbox" {{ $status }} id="sjb" data-i="{{ $b['id'] }}" data-p="{{ $b['price'] }}" data-n="{{ $b['name'] }}"  autocomplete="off" class="">
+                                                <span class="col-xs-6"><img width="100%" alt="" src="{{ $b['img'] }}"></span>
+                                                <span class="col-xs-6"><b>{{ $b['name'] }}</b>{!! ( $b['about'] != '' ) ? '<br>'.$b['about'] : '' !!}{!! ( $b['price'] != '' ) ? '<br>'.'&#8358;'.$b['price'] : '' !!}</span>
+                                                <span class="clearfix"></span>
+                                              </label>
+
+                                          </div>
+                                        </div>
+                                        @endforeach
+
+
+
+
+                                        
                                         <div class="col-xs-12"><br>
-                                            <a class="pull-right btn btn-success" href="">Proceed</a>
+                                            <a class="pull-right btn btn-success" href="{{ route('advertise',[$job->id,$job->slug]) }}">Proceed</a>
                                         </div>
                                         <div class="clearfix"></div>
 
@@ -223,3 +245,33 @@
   </div>
 </div>
 </div>
+
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+      $('#sjb').on('click', function(){
+
+          $this = $(this);
+
+          if( $this.is(':checked') )
+          {
+            type = 'add';
+          }
+          else
+          {
+            type = 'remove';
+          }
+
+            $.ajax
+            ({
+              type: "POST",
+              url: "{{ route('cart') }}",
+              data: ({ rnd : Math.random() * 100000, board_id: $this.attr('data-i'), name:$this.attr('data-n'), type:type, 'qty':1, 'price':$this.attr('data-p'), "_token":"{{ csrf_token() }}", cart_type:'jobBoards'}),
+              success: function(response){
+          
+              }
+          });
+      });
+  });
+  
+</script>

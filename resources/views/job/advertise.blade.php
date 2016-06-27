@@ -257,6 +257,7 @@
                   data: ({ rnd : Math.random() * 100000, board_id: id, name:name, type:'add', 'qty':1, 'price':price, "_token":"{{ csrf_token() }}", cart_type:'jobBoards'}),
                   success: function(response){
                     console.log(response);
+                    $(this).calculateCartTotal();
                   }
               });
         }
@@ -273,6 +274,7 @@
                   data: ({ rnd : Math.random() * 100000, board_id: id, type:'remove', "_token":"{{ csrf_token() }}", cart_type:'jobBoards'}),
                   success: function(response){
                     console.log(response);
+                    $(this).calculateCartTotal();
                   }
               });
         }
@@ -348,15 +350,22 @@
 
       $.fn.calculateCartTotal = function(){
           // var total = 0;
-        var total = {{ \App\Libraries\Utilities::getBoardCartCost() }};
+        // var total = {{ \App\Libraries\Utilities::getBoardCartCost() }};
 
-          $('#cart-preview #amount').each(function( index ) {
-              total += parseInt( $( this ).text() );
+        //   $('#cart-preview #amount').each(function( index ) {
+        //       total += parseInt( $( this ).text() );
+        //   });
+
+        
+        //     console.log('This tot is'+total)
+         cart_amounts = $('.btn-board-buy.collapse').map(function(){ return $(this).attr('data-cost') });
+
+         var total = 0;
+          $.each(cart_amounts,function() {
+              total += parseInt( this );
           });
-
-            $('#cart-total').text(  total  );
+             $('#cart-total').text(  total  );
             $('#price-total').text(  total  );
-            console.log('This tot is'+total)
         }
 
     

@@ -303,9 +303,17 @@ class JobsController extends Controller
 
 
         $job_id = $id;
+
+        $free_boards = JobBoard::where('type', 'free')->get()->toArray();
+
         $job_boards = JobBoard::where('type', 'paid')->where('avi', null)->get()->toArray();
 
         $newspapers = JobBoard::where('type', 'paid')->where('avi', 1)->get();
+
+        $subscribed_boards = $job->boards()->get()->pluck('id')->toArray();
+        
+        
+
         // dd($newspapers->toArray());
         // $c = (count($job_boards) / 2);
         // $t = array_chunk($job_boards, $c);
@@ -329,7 +337,7 @@ class JobsController extends Controller
 
         // return view('job.advertise', compact('newspapers', 'job_boards', 'ids', 'cart', 'count', 'price', 'jobid', 'slug'));
 
-        return view('job.board.home', compact('newspapers', 'job_boards', 'ids', 'cart', 'count', 'price', 'jobid','job', 'active_tab', 'company','result','application_statuses'));
+        return view('job.board.home', compact('free_boards','newspapers', 'job_boards', 'subscribed_boards', 'ids', 'cart', 'count', 'price', 'jobid','job', 'active_tab', 'company','result','application_statuses'));
     }
 
     public function JobTeam($id, Request $request){

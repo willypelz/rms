@@ -148,6 +148,9 @@
                                             <input type="text" class="form-control slug" id="" placeholder="" name="slug" value="{{ old('slug') }}" required>
                                             <span class="input-group-addon">.seamlesshiring.com</span>
                                         </div>
+
+                                            <span>e.g. http://jumia.seamlesshiring.com</span>
+
                                         @if ($errors->has('slug'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('slug') }}</strong>
@@ -286,6 +289,11 @@
                     required: true,
                     minlength: 5,
                     equalTo: "#password"
+                }
+            },
+            messages: {
+                confirm_password: {
+                    equalTo: "Passwords do not match"
                 }
             }
         });

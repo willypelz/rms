@@ -81,14 +81,14 @@
 
                 </script>
 
-                <div class="col-xs-4 col-xs-push-1">
+                <div class="col-xs-4 col-xs-push-1 well">
                     <div class="">
                         
-                        <h6 class="no-margin pull-right">
-                            <span class="text-danger text-brandon text-uppercase">Your Statistics:</span> 
+                        <h6 class="no-margin text-center">
+                            <span class="text-danger text-brandon text-uppercase"><i class="fa fa-bar-chart"></i> Your Statistics</span> 
                         </h6>
 
-                        <div class="separator separator-small"></div>
+                        <br>
 
                         <!-- <table class="table table-bordered"> 
                         <tbody> 

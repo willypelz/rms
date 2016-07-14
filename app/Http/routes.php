@@ -43,6 +43,16 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.landing');
     });
 
+     Route::get('/contact', function () {
+        
+        return view('guest.contact');
+    });
+
+     Route::get('/whoops', function () {
+        
+        return view('guest.whoops');
+    });
+
      Route::get('payment_successful', function () {
         return view('payment.payment_succes');
     });

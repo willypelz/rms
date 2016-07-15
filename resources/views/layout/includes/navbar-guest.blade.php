@@ -21,12 +21,20 @@
                     <a class="" href="{{ url('about') }}">About</a>
                 </li> -->
 
+                <li class="{{ Request::is('about') ? 'active' : '' }}">
+                    <a class="" href="{{ url('about') }}">About</a>
+                </li>
+
                 <li class="{{ Request::is('pricing') ? 'active' : '' }}">
                     <a class="" href="{{ url('pricing') }}">Pricing</a>
                 </li>
 
                 <li class="{{ Request::is('cv/search*') ? 'active' : '' }}">
                     <a class="" href="{{ url('cv/search') }}">Find Resumes <!-- &nbsp;<i class="fa fa-search"> </i> --></a>
+                </li>
+
+                <li class="{{ Request::is('contact') ? 'active' : '' }}">
+                    <a class="" href="{{ url('contact') }}">Contact</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

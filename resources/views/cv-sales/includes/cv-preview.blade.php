@@ -64,7 +64,7 @@
                     <div class="row">
                         <div class="col-xs-12 cv-name text-center">
                             <h2>
-                                @if(@$is_applicant)
+                                @if(@$is_applicant || $page == 'pool')
                                     {{ $cv['first_name'].' '.$cv['last_name'] }}
                                 @else
                                     {{ $cv['first_name'].' '.substr($cv['last_name'],0,1) }}

@@ -255,7 +255,11 @@
             count = $('.search-results li.row').length;
 
             // console.log( status_filter );
-            $('.result-label').text( 'Showing 1 - ' + count + ' of '+ "{{ $result['response']['numFound'] }}" + ' Cvs'  );
+            if( count > 0 )
+            {
+              $('.result-label').text( 'Showing 1 - ' + count + ' of '+ "{{ $result['response']['numFound'] }}" + ' Cvs'  );  
+            }
+            
         }
 
         $('body').on('click', '#clearAllFilters', function(){
@@ -270,7 +274,7 @@
             age_range = exp_years_range = null;
 
             $(this).performFilter();
-            
+
         });
 
         

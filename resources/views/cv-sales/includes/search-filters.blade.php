@@ -103,7 +103,7 @@
                       <p></p>
 
           @else
-
+    
 
 
 
@@ -162,32 +162,55 @@
                 <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
               @endif
               <p></p>
-
-            <p class="border-bottom-thin text-muted">Marital Status<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
-              <div class="checkbox-inline">
-                  {{--*/ $other_marital_status = 0  /*--}}
-                  {{--*/ $index = 0  /*--}}
-                  @foreach( $result['facet_counts']['facet_fields']['marital_status'] as $key => $marital_status )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['marital_status'][ $key + 1 ] != 0 &&  $marital_status != ''  && $marital_status != "0"  )
-
-                          {{--*/ $index++  /*--}}
-                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="marital_status" data-value="{{ $marital_status }}"> {{ ucwords( $marital_status )." (".$result['facet_counts']['facet_fields']['marital_status'][ $key + 1 ].")" }}</label> <br></div>
-                      @else
-
-                        {{--*/ @$other_marital_status += $result['facet_counts']['facet_fields']['marital_status'][ $key + 1 ] /*--}}
-
-                      @endif
-                  @endforeach
-
-                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_marital_status.")" }}</label> <br></div>
-              </div>
               
-              @if($index > 4)
-                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
-              @endif
-            <p></p>
 
-            <p class="border-bottom-thin text-muted">Degree<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+
+            @if( @$age )
+              <!-- <div><small class="">&nbsp; <a href="" class="">See More</a></small></div> -->
+              <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/bootstrap-slider.min.js"></script>
+              <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/css/bootstrap-slider.min.css" />
+                
+
+                <p class="border-bottom-thin text-muted">Age<i class="glyphicon glyphicon-birthday pull-right"></i></p>
+                     <p class="text-center">
+                        <input id="age-slider" type="text" class="span2" value="" data-slider-min="1" data-slider-max="200" data-slider-step="1" data-slider-value="{{ '['.$age[0].','.$age[1].']' }}"/> 
+                        <div class="text-center">
+                          <b class="col-sm-2 pull-left" style="color: #bbb;">1</b>
+                          <b  class="col-sm-2 pull-right" style="color: #bbb;">200</b>
+                          <small id="age-range"> {{ $age[0].' - '.$age[1].' years' }} </small>
+                        </div>
+                       <div class="clearfix"></div>
+                     </p>
+
+                    <p></p>
+
+              <style type="text/css">
+                #ex1Slider .slider-selection {
+                  background: #BABABA;
+                }
+              </style>      
+          
+              <script type="text/javascript">
+                  $(document).ready(function(){
+                      $("#age-slider").slider({
+                        // formatter: function(value,a) {
+
+                        //   return 'Current value: ' + value + "  ";
+                        // }
+                      });
+                      $("#age-slider").on("slideStop", function(slideEvt) {
+                        
+                        age_range = slideEvt.value;
+
+                        $('#age-range').html( slideEvt.value[0] + ' - ' + slideEvt.value[1] + ' years' )
+                        $("#age-slider").performFilter();
+                      });
+                  });
+              </script>
+        @endif
+            
+
+            <p class="border-bottom-thin text-muted">Highest Education<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_highest_qualificationl = 0  /*--}}
                   {{--*/ $index = 0  /*--}}
@@ -212,82 +235,7 @@
 
             <p></p>
 
-            <p class="border-bottom-thin text-muted">Last Position<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
-              <div class="checkbox-inline">
-                  {{--*/ $other_edu_school = 0  /*--}}
-                  {{--*/ $index = 0  /*--}}
-                  @foreach( $result['facet_counts']['facet_fields']['last_position'] as $key => $last_position )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['last_position'][ $key + 1 ] != 0 &&  $last_position != ''  && $last_position != "0"  )
-                        
-                        {{--*/ $index++  /*--}}
-                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="last_position" data-value="{{ $last_position }}"> {{ ucwords( $last_position )." (".$result['facet_counts']['facet_fields']['last_position'][ $key + 1 ].")" }}</label> <br></div>
-                      @else
-
-                        {{--*/ @$other_edu_school += $result['facet_counts']['facet_fields']['last_position'][ $key + 1 ] /*--}}
-
-                      @endif
-                  @endforeach
-
-                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_edu_school.")" }}</label> <br></div>
-              </div>
-              
-              @if($index > 4)
-                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
-              @endif
-
-            <p></p>
-
-            <p class="border-bottom-thin text-muted">Last Company Worked<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
-              <div class="checkbox-inline">
-                  {{--*/ $other_exp_company = 0  /*--}}
-                  {{--*/ $index = 0  /*--}}
-                  @foreach( $result['facet_counts']['facet_fields']['last_company_worked'] as $key => $last_company_worked )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ] != 0 &&  $last_company_worked != ''  && $last_company_worked != "0"  )
-                        
-                        {{--*/ $index++  /*--}}
-                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="last_company_worked" data-value="{{ $last_company_worked }}"> {{ ucwords( $last_company_worked )." (".$result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ].")" }}</label> <br></div>
-                      @else
-
-                        {{--*/ @$other_exp_company += $result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ] /*--}}
-
-                      @endif
-                  @endforeach
-
-                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_exp_company.")" }}</label> <br></div>
-              </div>
-              
-              @if($index > 4)
-                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
-              @endif
-
-            <p></p>
-
-            <p class="border-bottom-thin text-muted">State of Origin<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
-              <div class="checkbox-inline">
-                  {{--*/ $other_state_of_origin = 0  /*--}}
-                  {{--*/ $index = 0  /*--}}
-                  @foreach( $result['facet_counts']['facet_fields']['state_of_origin'] as $key => $state_of_origin )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ] != 0 &&  $state_of_origin != ''  && $state_of_origin != "0" && $state_of_origin != "-Choose-" )
-                        
-                        {{--*/ $index++  /*--}}
-                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="state_of_origin" data-value="{{ $state_of_origin }}"> {{ ucwords( $state_of_origin )." (".$result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ].")" }}</label> <br></div>
-                      @else
-
-                        {{--*/ @$other_state_of_origin += $result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ] /*--}}
-
-                      @endif
-                  @endforeach
-
-                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_state_of_origin.")" }}</label> <br></div>
-              </div>
-              
-              @if($index > 4)
-                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
-              @endif
-
-              <p></p>
-
-              <p class="border-bottom-thin text-muted">Location<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+            <p class="border-bottom-thin text-muted">Location<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_state = 0  /*--}}
                   {{--*/ $index = 0  /*--}}
@@ -313,7 +261,7 @@
 
               <p></p>
 
-              <p class="border-bottom-thin text-muted">Willing to Relocate<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+              <p class="border-bottom-thin text-muted">Willing to Relocate?<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_willing_to_relocate = 0  /*--}}
                   {{--*/ $index = 0  /*--}}
@@ -345,17 +293,110 @@
 
               <p></p>
 
+            <p class="border-bottom-thin text-muted">Last Position held<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+              <div class="checkbox-inline">
+                  {{--*/ $other_edu_school = 0  /*--}}
+                  {{--*/ $index = 0  /*--}}
+                  @foreach( $result['facet_counts']['facet_fields']['last_position'] as $key => $last_position )
+                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['last_position'][ $key + 1 ] != 0 &&  $last_position != ''  && $last_position != "0"  )
+                        
+                        {{--*/ $index++  /*--}}
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="last_position" data-value="{{ $last_position }}"> {{ ucwords( $last_position )." (".$result['facet_counts']['facet_fields']['last_position'][ $key + 1 ].")" }}</label> <br></div>
+                      @else
+
+                        {{--*/ @$other_edu_school += $result['facet_counts']['facet_fields']['last_position'][ $key + 1 ] /*--}}
+
+                      @endif
+                  @endforeach
+
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_edu_school.")" }}</label> <br></div>
+              </div>
+              
+              @if($index > 4)
+                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+              @endif
+
+            <p></p>
+
+            <p class="border-bottom-thin text-muted">Last Company Worked at<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+              <div class="checkbox-inline">
+                  {{--*/ $other_exp_company = 0  /*--}}
+                  {{--*/ $index = 0  /*--}}
+                  @foreach( $result['facet_counts']['facet_fields']['last_company_worked'] as $key => $last_company_worked )
+                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ] != 0 &&  $last_company_worked != ''  && $last_company_worked != "0"  )
+                        
+                        {{--*/ $index++  /*--}}
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="last_company_worked" data-value="{{ $last_company_worked }}"> {{ ucwords( $last_company_worked )." (".$result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ].")" }}</label> <br></div>
+                      @else
+
+                        {{--*/ @$other_exp_company += $result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ] /*--}}
+
+                      @endif
+                  @endforeach
+
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_exp_company.")" }}</label> <br></div>
+              </div>
+              
+              @if($index > 4)
+                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+              @endif
+
+            <p></p>
+
+            @if(false)
+            <p class="border-bottom-thin text-muted">Marital Status<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+              <div class="checkbox-inline">
+                  {{--*/ $other_marital_status = 0  /*--}}
+                  {{--*/ $index = 0  /*--}}
+                  @foreach( $result['facet_counts']['facet_fields']['marital_status'] as $key => $marital_status )
+                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['marital_status'][ $key + 1 ] != 0 &&  $marital_status != ''  && $marital_status != "0"  )
+
+                          {{--*/ $index++  /*--}}
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="marital_status" data-value="{{ $marital_status }}"> {{ ucwords( $marital_status )." (".$result['facet_counts']['facet_fields']['marital_status'][ $key + 1 ].")" }}</label> <br></div>
+                      @else
+
+                        {{--*/ @$other_marital_status += $result['facet_counts']['facet_fields']['marital_status'][ $key + 1 ] /*--}}
+
+                      @endif
+                  @endforeach
+
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_marital_status.")" }}</label> <br></div>
+              </div>
+              
+              @if($index > 4)
+                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+              @endif
+            <p></p>
+
+            <p class="border-bottom-thin text-muted">State of Origin<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+              <div class="checkbox-inline">
+                  {{--*/ $other_state_of_origin = 0  /*--}}
+                  {{--*/ $index = 0  /*--}}
+                  @foreach( $result['facet_counts']['facet_fields']['state_of_origin'] as $key => $state_of_origin )
+                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ] != 0 &&  $state_of_origin != ''  && $state_of_origin != "0" && $state_of_origin != "-Choose-" )
+                        
+                        {{--*/ $index++  /*--}}
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="state_of_origin" data-value="{{ $state_of_origin }}"> {{ ucwords( $state_of_origin )." (".$result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ].")" }}</label> <br></div>
+                      @else
+
+                        {{--*/ @$other_state_of_origin += $result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ] /*--}}
+
+                      @endif
+                  @endforeach
+
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_state_of_origin.")" }}</label> <br></div>
+              </div>
+              
+              @if($index > 4)
+                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+              @endif
+
+              <p></p>
+
+              @endif
+
         @if( @$age )
-              <!-- <div><small class="">&nbsp; <a href="" class="">See More</a></small></div> -->
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/bootstrap-slider.min.js"></script>
-      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/css/bootstrap-slider.min.css" />
-        
-
-
-
-
-
-
+     
 
       <p class="border-bottom-thin text-muted">Years of Experience<i class="glyphicon glyphicon-birthday pull-right"></i></p>
              <p class="text-center">
@@ -389,49 +430,6 @@
       </script>
 
 
-
-
-
-
-
-
-
-        <p class="border-bottom-thin text-muted">Age<i class="glyphicon glyphicon-birthday pull-right"></i></p>
-             <p class="text-center">
-                <input id="age-slider" type="text" class="span2" value="" data-slider-min="1" data-slider-max="200" data-slider-step="1" data-slider-value="{{ '['.$age[0].','.$age[1].']' }}"/> 
-                <div class="text-center">
-                  <b class="col-sm-2 pull-left" style="color: #bbb;">1</b>
-                  <b  class="col-sm-2 pull-right" style="color: #bbb;">200</b>
-                  <small id="age-range"> {{ $age[0].' - '.$age[1].' years' }} </small>
-                </div>
-               <div class="clearfix"></div>
-             </p>
-
-            <p></p>
-
-      <style type="text/css">
-        #ex1Slider .slider-selection {
-          background: #BABABA;
-        }
-      </style>      
-  
-      <script type="text/javascript">
-          $(document).ready(function(){
-              $("#age-slider").slider({
-                // formatter: function(value,a) {
-
-                //   return 'Current value: ' + value + "  ";
-                // }
-              });
-              $("#age-slider").on("slideStop", function(slideEvt) {
-                
-                age_range = slideEvt.value;
-
-                $('#age-range').html( slideEvt.value[0] + ' - ' + slideEvt.value[1] + ' years' )
-                $("#age-slider").performFilter();
-              });
-          });
-      </script>
         @endif
 
       

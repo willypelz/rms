@@ -530,21 +530,29 @@ class CvSalesController extends Controller
         $response = $result = Solr::get_all_my_cvs($this->search_params, @$solr_age, @$solr_exp_years);
 
         $end = (($start + $this->search_params['row']) > intval($result['response']['numFound']))?$result['response']['numFound']:($start + $this->search_params['row']);
-        $showing = "Showing ".($start+1)." - ".$end." of ".$result['response']['numFound']." Cvs [Page ".floor($request->start + 1)."]";
+        // $showing = "Showing ".($start+1)." - ".$end." of ".$result['response']['numFound']." Cvs [Page ".floor($request->start + 1)."]";
 
-        $filter_text = '';
-        if(isset($request->filter_query)){
 
-            $filter_text .= "<br/>Filtering by: ";
-            foreach ($request->filter_query as $fq) {
+
+        // $filter_text = '';
+        // if(isset($request->filter_query)){
+
+        //     $filter_text .= "<br/>Filtering by: ";
+        //     foreach ($request->filter_query as $fq) {
                 
-                $filter_text .= ucwords(str_ireplace("_", " ", $fq)).', ';
-            }
+        //         $filter_text .= ucwords(str_ireplace("_", " ", $fq)).', ';
+        //     }
 
-            $filter_text .= ".";
+        //     $filter_text .= ".";
 
-        }
-        $showing .= $filter_text . '<a id="clearAllFilters" href="javacript://" >Clear Filter</a>';
+        // }
+
+        // if( !empty($request->filter_query ) )
+        // {
+        //     $showing .= $filter_text . '<a id="clearAllFilters" href="javacript://" >Clear Filter</a>';
+        // }
+        
+        $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $result['response']['numFound'], 'type'=>'Cvs', 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();    
 
         $cart = Cart::content();
         $count = Cart::count(false); 

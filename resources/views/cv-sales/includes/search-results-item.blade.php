@@ -15,7 +15,7 @@
       <span class="col-md-10 col-sm-9">
               <h4 class="text-muted">
               <a href="javascript://" id='showCvBtn' data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">
-                @if(@$is_applicant)
+                @if(@$is_applicant || $page == 'pool')
                     {{ ucwords( $cv['first_name'].' '.$cv['last_name'] ) }}
                 @else
                     {{ ucwords( $cv['first_name'].' '.substr($cv['last_name'],0,1) ) }}
@@ -124,7 +124,7 @@
 
                   @endif
 
-                    @if( $page == 'pool' )
+                    @if( @$is_applicant || $page == 'pool' )
                         <a href="javascript://" class="btn btn-line btn-sm" id="showCvBtn" data-toggle="modal" data-target="#cvModal"  onclick="showCvModal('{{ $cv['id'] }}',true);">Preview CV</a>
                     @else
                         <a href="javascript://" class="btn btn-line btn-sm" id="showCvBtn" data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">Preview CV</a>

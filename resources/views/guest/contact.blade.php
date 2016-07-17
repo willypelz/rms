@@ -86,13 +86,13 @@
                                                 <label>What can we help you with? *</label>
                                                 <br>
                                                 <select class="form-control" name="enquiry_name">
-                                                    <option></option>
-                                                    <option></option>
-                                                    <option> </option>
-                                                    <option></option>
-                                                    <option></option>
-                                                    <option></option>
-                                                    <option></option>
+                                                    <option>Sales</option>
+                                                    <option>Support</option>
+                                                    <option>Partner Requests</option>
+                                                    <option>Press</option>
+                                                    <option>Concerns</option>
+                                                    <option>Report a Bug</option>
+                                                    <option>Other</option>
                                                 </select>
                                             </div>
 

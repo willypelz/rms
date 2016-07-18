@@ -124,7 +124,7 @@
                                                                 }
                                                         ?>
                                                         @if($in_cart)
-                                                            <button class="btn btn-line btn-board-discard" data-id="{{ $b['id'] }}"  data-count="1" data-cost="{{ $b['price'] }}" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                            <button class="btn btn-line btn-board-discard collapse" data-id="{{ $b['id'] }}"  data-count="1" data-cost="{{ $b['price'] }}" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
                                                         @else
                                                             <a href="" class="btn btn-success btn-board-buy" data-count="1" onclick="AddBoardCart({{ $b['id'] }}, {{ $b['price'] }}, '{{ $b["name"] }}')" data-cost="{{ $b['price'] }}"><i class="fa fa-plus"></i> Post for &#8358; {{ $b['price'] }}</a>
                                                             <button class="btn btn-line btn-board-discard collapse" data-id="{{ $b['id'] }}"  data-count="1" data-cost="{{ $b['price'] }}" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
@@ -191,7 +191,10 @@
 
                                 <!-- </div> -->
                                        
-                                        <div class="col-sm-12"><hr><a href="{{ route('share-job', [$jobid]) }}" class="pull-right btn btn-danger btn-cart-checkout">Skip &raquo;</a></div>
+                                        <div class="col-sm-12"><hr>
+                                        <a href="#" id="proceed-btn" target="_blank" data-toggle="modal" data-target="#myInvoice" class="pull-right btn btn-success btn-cart-checkout"> Proceed </a>
+                                        <a href="{{ route('share-job', [$jobid]) }}" id="skip-btn" class="pull-right btn btn-danger btn-cart-checkout">Skip &raquo;</a>
+                                        </div>
                                       </div>
                                 </div>
                             </div>
@@ -364,9 +367,23 @@
           $.each(cart_amounts,function() {
               total += parseInt( this );
           });
+
+          if( total > 0 )
+          {
+            $('#skip-btn').hide();
+            $('#proceed-btn').show();
+          }
+          else
+          {
+            $('#proceed-btn').hide();
+            $('#skip-btn').show();
+          }
+
              $('#cart-total').text(  total  );
             $('#price-total').text(  total  );
-        }
+      }
+
+      $(this).calculateCartTotal();
 
     
     var totalNew = {{ \App\Libraries\Utilities::getBoardCartCost() }};

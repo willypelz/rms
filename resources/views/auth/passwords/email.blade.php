@@ -22,7 +22,7 @@
 
                 <div class="col-sm-4 col-sm-offset-4 text-center">
                     <h2 class="text-brandon text-light"><img src="{{ url('/') }}/img/logomark.png" alt=""></h2>
-                    <p class="" style="color:white;">Your Password Reset</p>
+
                 </div>
 
                 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
@@ -34,7 +34,11 @@
                             {!! csrf_field() !!}
                             
                             <div class="row">
-                                <p class="text-center">Sign in with</p>
+                            <div class="col-sm-12">
+                                <p class="text-center">Forgot Password?</p>
+                                <p class="text-left"><small>Please re-enter your email address below and we’ll send you a password reset email.</small></p>
+                            </div>
+                                
                         
                             <div class="">
                             <div class="col-sm-12">

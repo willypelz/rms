@@ -181,7 +181,7 @@
                                     <div class="row">
                                     <div class="col-xs-12"><hr></div>
                                         <div class="col-xs-4">
-                                            <a href="job.php" type="submit" id="SaveDraft" class="btn btn-line"><i class="fa fa-save"></i> Save as draft</a>
+                                            <!-- <a href="job.php" type="submit" id="SaveDraft" class="btn btn-line"><i class="fa fa-save"></i> Save as draft</a> -->
 
                                         </div>
                                         <div class="col-sm-4">

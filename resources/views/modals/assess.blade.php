@@ -137,12 +137,13 @@
         $('body #request-btn').on('click', function(){
           $('#cart-preview').append('<tr data-id="' + $(this).attr('data-id') +'" data-owner="' + $(this).attr('data-owner') +'"><td id="name">' + $(this).attr('data-title') +'</td><td id="amount">' + $(this).attr('data-amount') +'</td><td class="text-right"><a href="javascript://" id="delete-request"><i class="fa fa-times-circle text-danger"></i> </a></td></tr>');
           $(this).calculateCartTotal();
-          $(this).closest('.panel-body').fadeOut();
+          // $(this).closest('.panel-body').fadeOut();
+          $(this).prop('disabled','disabled').text('Requested');
         });
         
         $('body').on('click','#delete-request',function(){
             console.log( $('.panel-body[data-id="' + $(this).closest('tr').data('id') + '"]') );
-            $('.panel-body[data-id="' + $(this).closest('tr').data('id') + '"]').fadeIn();
+            $('.panel-body[data-id="' + $(this).closest('tr').data('id') + '"] #request-btn').prop('disabled','').text('Request');
             $(this).closest('tr').remove();
             $(this).calculateCartTotal();
         });

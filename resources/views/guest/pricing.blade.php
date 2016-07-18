@@ -124,7 +124,7 @@
 
 
 
-                      <div id="" class="col-sm-12">
+                      <!-- <div id="" class="col-sm-12">
                         <div class="text-center">
                             <div class="col-sm-4 col-sm-offset-4">
                             <br>
@@ -133,7 +133,7 @@
                                 </a>
                             </div>
                         </div>
-                      </div>
+                      </div> -->
                         <div class="clearfix"></div>
 
 

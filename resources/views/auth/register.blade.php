@@ -70,6 +70,7 @@
                                                 <strong>{{ $errors->first('first_name') }}</strong>
                                             </span>
                                         @endif
+                                        <small class="text-muted">&uarr; Short descriptive text comes here.</small>
                                     </div>
                                 </div>
 
@@ -137,6 +138,8 @@
                                                 <strong>{{ $errors->first('company_name') }}</strong>
                                             </span>
                                         @endif
+                                        <small class="text-muted">&uarr; Short descriptive text comes here.</small>
+
                                     </div>
                                 </div>
 
@@ -149,7 +152,7 @@
                                             <span class="input-group-addon">.seamlesshiring.com</span>
                                         </div>
 
-                                            <span>e.g. http://jumia.seamlesshiring.com</span>
+                                            <small class="text-muted">&uarr; e.g. http://jumia.seamlesshiring.com</small>
 
                                         @if ($errors->has('slug'))
                                             <span class="help-block">
@@ -167,6 +170,8 @@
                                                 <strong>{{ $errors->first('company_email') }}</strong>
                                             </span>
                                         @endif
+                                        <small class="text-muted">&uarr; Short descriptive text comes here.</small>
+
                                     </div>
                                 </div>
 

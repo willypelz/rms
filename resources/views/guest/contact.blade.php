@@ -70,13 +70,14 @@
                                                 <label>Job Title</label>
                                                 <br>
                                                 <select class="form-control" name="enquiry_name">
-                                                    <option>Sales</option>
-                                                    <option>Support</option>
-                                                    <option>Partner Requests</option>
-                                                    <option>Press</option>
-                                                    <option>Concerns</option>
-                                                    <option>Report a Bug</option>
-                                                    <option>Other</option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
                                                 </select>
                                             </div>
                                         </span>
@@ -86,13 +87,14 @@
                                                 <label>What can we help you with? *</label>
                                                 <br>
                                                 <select class="form-control" name="enquiry_name">
-                                                    <option></option>
-                                                    <option></option>
-                                                    <option> </option>
-                                                    <option></option>
-                                                    <option></option>
-                                                    <option></option>
-                                                    <option></option>
+                                                    <option value="">Make a Selection</option>
+                                                    <option value="">Sales</option>
+                                                    <option value="">Support</option>
+                                                    <option value="">Partner Requests</option>
+                                                    <option value="">Press</option>
+                                                    <option value="">Concerns</option>
+                                                    <option value="">Report a Bug</option>
+                                                    <option value="">Other</option>
                                                 </select>
                                             </div>
 

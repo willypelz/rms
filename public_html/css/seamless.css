@@ -3528,6 +3528,10 @@ border-color: #BDFDBA;
     padding: 0px 7px;
     border-radius: 5px;
 }
+
+.well.stat-well tr td{
+    background:#fff;
+}
 .search-results li .btn{
     margin-bottom:5px;
     padding: 3px 10px;

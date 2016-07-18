@@ -575,7 +575,7 @@ class CvSalesController extends Controller
             
         }
         else{
-            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 1, 200 ], 'exp_years' => [ 0, 200 ], 'myJobs' => Job::getMyJobs() ]);
+            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query,'showing'=>$showing, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 1, 200 ], 'exp_years' => [ 0, 200 ], 'myJobs' => Job::getMyJobs() ]);
         }
         // return view('cv-sales.cv_saved');
     }

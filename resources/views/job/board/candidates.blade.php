@@ -74,7 +74,7 @@
                             </div>
 
                             <br style="clear:both" />
-                            <small class="text-muted result-label" id="showing"></small>
+                            <small class="text-muted result-label" id="showing"> {!! $showing !!} </small>
                             <br style="clear:both" />
 
                             <ul id="pagination" class="pagination-sm"></ul>
@@ -434,7 +434,7 @@
         }
 
         $.fn.getShowing = function(){
-            count = $('.search-results .comment.media').length;
+            /*count = $('.search-results .comment.media').length;
             status_page = "";
             if(status_filter == "")
             {
@@ -452,7 +452,7 @@
             else
             {
                 $('.result-label').text( '' );
-            }
+            }*/
         }
 
         $(document).getShowing();

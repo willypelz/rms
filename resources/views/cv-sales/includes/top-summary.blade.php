@@ -1,13 +1,13 @@
-<span>Showing {{ $start }} -  {{ $end }} of  {{ $total . ' ' . $type }}   [Page {{ $page }} ];</span>
+<span> <strong>Showing</strong> {{ $start }} -  {{ $end }} of  {{ $total . ' ' . $type }}   [Page {{ $page }} ]</span>
 
 @if( !empty( @$filters ) )
 <br/>Filtering by: 
 
 <span> 
-	@foreach($filters as $fq)
-		
-		{{ ucwords(str_ireplace("_", " ", $fq)).', ' }}
+	<?php $filter_string = implode(', ', $filters);  ?>
+	
+	{{ ucwords(str_ireplace("_", " ", $filter_string)) }}
 
-	@endforeach
+	
 <a id="clearAllFilters" href="javacript://" >Clear Filter</a> </span>
 @endif

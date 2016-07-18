@@ -9,7 +9,7 @@
 <style>
     
     body{
-        background:url('img/intro-bg.jpg') no-repeat fixed ;
+        background:url('../img/intro-bg.jpg') no-repeat fixed ;
         background-size:cover;
     }
 
@@ -22,7 +22,7 @@
 
                 <div class="col-sm-4 col-sm-offset-4 text-center">
                     <h2 class="text-brandon text-light"><img src="{{ url('/') }}/img/logomark.png" alt=""></h2>
-                    <p class="">Your Password Reset</p>
+                    <p class="" style="color:white;">Your Password Reset</p>
                 </div>
 
                 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">

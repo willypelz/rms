@@ -15,7 +15,7 @@
         <div id="collapseOne" class="panel-collapse collapse in">
           <div class="panel-body">
 
-              <p class="border-bottom-thin text-muted">Keyword search<i class="glyphicon glyphicon-user pull-right"></i></p>
+              <p class="border-bottom-thin text-muted">Keyword search<i class="fa fa-filter pull-right"></i></p>
               <div class="input-group">
                 
                 <input type="text" class="form-control" id="search_keyword" placeholder="keyword">
@@ -24,7 +24,7 @@
               <p></p> 
 
           @if( @$status == 'ASSESSED' )
-                  <p class="border-bottom-thin text-muted">Test Name<i class="glyphicon glyphicon-user pull-right"></i></p>
+                  <p class="border-bottom-thin text-muted">Test Name<i class="fa fa-filter pull-right"></i></p>
                     <div class="checkbox-inline">
                         {{--*/ $other_test_name = 0  /*--}}
                         {{--*/ $index = 0  /*--}}
@@ -50,7 +50,7 @@
 
 
                     
-                    <p class="border-bottom-thin text-muted">Test Status<i class="glyphicon glyphicon-user pull-right"></i></p>
+                    <p class="border-bottom-thin text-muted">Test Status<i class="fa fa-filter pull-right"></i></p>
                       <div class="checkbox-inline">
                           {{--*/ $other_test_status = 0  /*--}}
                           {{--*/ $index = 0  /*--}}
@@ -78,7 +78,7 @@
 
 
 
-                    <p class="border-bottom-thin text-muted">Test Score<i class="glyphicon glyphicon-user pull-right"></i></p>
+                    <p class="border-bottom-thin text-muted">Test Score<i class="fa fa-filter pull-right"></i></p>
                       <div class="checkbox-inline">
                           {{--*/ $other_test_score = 0  /*--}}
                           {{--*/ $index = 0  /*--}}
@@ -109,7 +109,7 @@
 
               @if(@$is_saved)
 
-                  <p class="border-bottom-thin text-muted">Folder<i class="glyphicon glyphicon-user pull-right"></i></p>
+                  <p class="border-bottom-thin text-muted">Folder<i class="fa fa-filter pull-right"></i></p>
                     <div class="checkbox-inline">
                         {{--*/ $other_gender = 0  /*--}}
                         {{--*/ $index = 0  /*--}}
@@ -139,7 +139,7 @@
 
 
 
-              <p class="border-bottom-thin text-muted">Gender<i class="glyphicon glyphicon-user pull-right"></i></p>
+              <p class="border-bottom-thin text-muted">Gender<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_gender = 0  /*--}}
                   {{--*/ $index = 0  /*--}}
@@ -210,7 +210,7 @@
         @endif
             
 
-            <p class="border-bottom-thin text-muted">Highest Education<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+            <p class="border-bottom-thin text-muted">Highest Education<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_highest_qualificationl = 0  /*--}}
                   {{--*/ $index = 0  /*--}}
@@ -235,7 +235,7 @@
 
             <p></p>
 
-            <p class="border-bottom-thin text-muted">Location<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+            <p class="border-bottom-thin text-muted">Location<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_state = 0  /*--}}
                   {{--*/ $index = 0  /*--}}
@@ -261,7 +261,7 @@
 
               <p></p>
 
-              <p class="border-bottom-thin text-muted">Willing to Relocate?<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+              <p class="border-bottom-thin text-muted">Willing to Relocate?<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_willing_to_relocate = 0  /*--}}
                   {{--*/ $index = 0  /*--}}
@@ -293,7 +293,7 @@
 
               <p></p>
 
-            <p class="border-bottom-thin text-muted">Last Position held<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+            <p class="border-bottom-thin text-muted">Last Position held<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_edu_school = 0  /*--}}
                   {{--*/ $index = 0  /*--}}
@@ -318,7 +318,7 @@
 
             <p></p>
 
-            <p class="border-bottom-thin text-muted">Last Company Worked at<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+            <p class="border-bottom-thin text-muted">Last Company Worked at<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_exp_company = 0  /*--}}
                   {{--*/ $index = 0  /*--}}
@@ -344,7 +344,7 @@
             <p></p>
 
             @if(false)
-            <p class="border-bottom-thin text-muted">Marital Status<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+            <p class="border-bottom-thin text-muted">Marital Status<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_marital_status = 0  /*--}}
                   {{--*/ $index = 0  /*--}}
@@ -368,7 +368,7 @@
               @endif
             <p></p>
 
-            <p class="border-bottom-thin text-muted">State of Origin<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
+            <p class="border-bottom-thin text-muted">State of Origin<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_state_of_origin = 0  /*--}}
                   {{--*/ $index = 0  /*--}}

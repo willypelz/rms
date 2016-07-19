@@ -161,21 +161,10 @@ class JobApplicationsController extends Controller
             $status = $request->status;
 
         $end = (($start + $this->search_params['row']) > intval($result['response']['numFound']))?$result['response']['numFound']:($start + $this->search_params['row']);
-        $showing = "Showing ".($start+1)." - ".$end." of ".$result['response']['numFound']." Applicants [Page ".floor($request->start + 1)."]";
+        // $showing = "Showing ".($start+1)." - ".$end." of ".$result['response']['numFound']." Applicants [Page ".floor($request->start + 1)."]";
 
-        $filter_text = '';
-        if(isset($request->filter_query)){
 
-            $filter_text .= "<br/>Filtering by: ";
-            foreach ($request->filter_query as $fq) {
-                
-                $filter_text .= ucwords(str_ireplace("_", " ", $fq)).', ';
-            }
-
-            $filter_text .= ".";
-
-        }
-        $showing .= $filter_text . '<a id="clearAllFilters" href="javacript://" >Clear Filter</a>';
+        $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $result['response']['numFound'], 'type'=>$request->status, 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();    
 
         if($request->ajax())
         {
@@ -188,7 +177,7 @@ class JobApplicationsController extends Controller
             $age = [ 1, 200 ];
             $exp_years = [ 0, 200 ];
             $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
-            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years'));
+            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','showing'));
         }
 
         

@@ -86,7 +86,9 @@
 
             <div class="col-sm-8">
                   <br style="clear:both" />
-                            <small class="text-muted result-label pull-left" id="showing" style="margin-bottom:20px;"></small>
+                            <small class="text-muted result-label pull-left" id="showing" style="margin-bottom:20px;">
+                              {!! $showing !!}
+                            </small>
                             <br style="clear:both" />
                   <div class="" id="search-results">
 
@@ -252,13 +254,13 @@
         }
 
         $.fn.getShowing = function(){
-            count = $('.search-results li.row').length;
+            /*count = $('.search-results li.row').length;
 
             // console.log( status_filter );
             if( count > 0 )
             {
               $('.result-label').text( 'Showing 1 - ' + count + ' of '+ "{{ $result['response']['numFound'] }}" + ' Cvs'  );  
-            }
+            }*/
             
         }
 

@@ -214,7 +214,7 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::post('save-to-folder', 'CvSalesController@saveToFolder');
 
-        Route::post('save-to-solr', 'CvSalesController@saveCvPreview');
+        Route::get('save-to-solr', 'CvSalesController@saveCvPreview');
         
         
     });

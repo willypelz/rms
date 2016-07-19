@@ -86,9 +86,9 @@
 
             <div class="col-sm-8">
                   <br style="clear:both" />
-                            <small class="text-muted result-label pull-left" id="showing" style="margin-bottom:20px;">
+                            <div class="small text-muted result-label" id="showing" style="">
                               {!! $showing !!}
-                            </small>
+                            </div>
                             <br style="clear:both" />
                   <div class="" id="search-results">
 

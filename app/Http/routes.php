@@ -374,6 +374,8 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('modal/return-to-all', [ 'as' => 'modal-return-to-all', 'uses' => 'JobApplicationsController@modalReturnToAll' ]);
 
+    Route::get('modal/add-to-waiting', [ 'as' => 'modal-add-to-waiting', 'uses' => 'JobApplicationsController@modalAddToWaiting' ]);
+
     Route::get('modal/hire', [ 'as' => 'modal-hire', 'uses' => 'JobApplicationsController@modalHire' ]);
     
 

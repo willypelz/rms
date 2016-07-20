@@ -9,6 +9,25 @@
 
 <script src="{{ asset('js/jquery.form.js') }}"></script> 
 <script src="{{ asset('js/jquery.twbsPagination.min.js') }}"></script>
+
+<script src="{{ asset('js/cart.js') }}"></script>
+
+<script type="text/javascript">
+    
+    $(document).ready(function(){
+
+        Cart.init({
+          type : 'cv-sales',
+          actionUrl: "{{ route('cart') }}",
+          cartAddText: '<i class="fa fa-plus"></i> Purchase CV for N500',
+          cartRemoveText: '<i class="fa fa-trash"></i> Remove from Cart ',
+          cartAddClass: 'btn-success',
+          cartRemoveClass: 'btn-line'
+        });
+
+    });
+
+</script>
 <section class="s-div dark">
         <div class="container">
 {{-- dd($result) --}}

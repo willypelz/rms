@@ -68,11 +68,13 @@ class JobApplicationsController extends Controller
 
     public function notes($appl_id){
 
-        $appl = JobApplication::with('job', 'cv')->find($appl_id);
+        $appl = JobApplication::with('job', 'cv','interview_notes')->find($appl_id);
 
         $nav_type = 'notes';
+
+        $interview_notes = $appl->interview_notes()->with('user')->get();
         
-        return view('applicant.notes', compact('appl', 'nav_type'));
+        return view('applicant.notes', compact('appl', 'nav_type', 'interview_notes'));
     }
 
     public function checks($appl_id){
@@ -349,6 +351,25 @@ class JobApplicationsController extends Controller
 
         return view('modals.return_to_all', compact('applicant_badge','app_ids','cv_ids','appl'));
     }
+
+    public function modalAddToWaiting(Request $request)
+    {
+        
+       $modalVars = $this->modalActions( 'Waiting List: Add', $request->cv_id, $request->app_id);
+        if( is_array( $modalVars ) )
+        {
+            extract($modalVars);
+        }
+        else
+        {
+            return $modalVars;
+        }
+        
+
+        return view('modals.add_to_waiting', compact('applicant_badge','app_ids','cv_ids','appl'));
+    }
+
+    
 
 
     public function modalReject(Request $request)

@@ -302,7 +302,7 @@
                                     }else{
                                         // $('#mssg').html("<span class='alert alert-success' > Logged in successfully. </span>")
                                         $("#SubBtn").html('Logging you in');
-                                         $("#content-Area").html('{!! preloader() !!}'));
+                                         $("#content-Area").html('{!! preloader() !!}');
 
                                         setTimeout(function(){ 
                                             window.location = "{{ url('dashboard') }}";

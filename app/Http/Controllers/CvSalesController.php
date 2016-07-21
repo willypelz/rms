@@ -130,12 +130,19 @@ class CvSalesController extends Controller
         
         $cvs = Cv::all();
 
-        foreach ($cvs as $key => $cv) {
-            
-            $filepath = public_path( 'uploads/CVs/'. $cv['cv_file'] );
-            var_dump(file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) ) );
-            break;
-        }
+        
+
+
+        Cv::chunk(100, function ($cvs) {
+            foreach ($cvs as $cv) {
+                
+                $filepath = public_path( 'uploads/CVs/'. $cv['cv_file'] );
+                $extracted_content = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );
+                $cv->update(['extracted_content' => $extracted_content]);
+
+                break;
+            }
+        });
 
         // var_dump($filepath);
 

@@ -49,7 +49,7 @@ app = Flask(__name__)
 def extract_content():
 	file_name = urllib.unquote( request.args.get('file_name') ).decode('utf8') 
 	#request.args.get('file_name')
-	
+	print file_name
 	text = textract.process(file_name)
 	return text
 

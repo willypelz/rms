@@ -58,7 +58,7 @@
                                             <a class="btn btn-line status-1" type="button" data-action="REJECTED"  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Reject?" data-view="{{ route('modal-reject') }}" data-app-id="" data-cv="" data-type="normal">Reject All</a>
                                             <a class="btn btn-line status-1" type="button" data-action="PENDING" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Do you want to return to all?" data-view="{{ route('modal-return-to-all') }}" data-app-id="" data-cv="" data-type="normal" style="display:none;" >Return to Pending</a>
                                             <div class="btn-group" role="group">
-                                                <button type="button" class="btn btn-default status-1 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <button type="button" class="btn btn-line status-1 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                   Checks
                                                   <span class="caret"></span>
                                                 </button>

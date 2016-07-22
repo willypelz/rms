@@ -20,7 +20,7 @@
                         <!-- applicant -->
 
 
-                <div class="col-xs-7">
+                <div class="col-xs-8">
 
                      <div class="" id="">
 
@@ -81,7 +81,7 @@
 
                 </script>
 
-                <div class="col-xs-4 col-xs-push-1 well stat-well">
+                <div class="col-xs-4 well stat-well">
                     <div class="">
                         
                         <h6 class="no-margin text-center">

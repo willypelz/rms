@@ -6,7 +6,7 @@
         <section class="job-head blue no-margin" id="jobHead">
             <div class="" >
                 <div class="row">
-                    <div class="col-xs-7">
+                    <div class="col-xs-6">
                 
                         <h2 class="job-title">
                             <a href="#">
@@ -51,7 +51,7 @@
                         </div> -->
                     </div>
                 
-                    <div class="col-xs-5 job-progress-xs">
+                    <div class="col-xs-6 job-progress-xs">
                     <div class="pull-left text-white small" style="margin-top: 24px;">Recruitment<br>Stage &nbsp; &rarr;</div>
                         <?php 
 
@@ -120,7 +120,7 @@
                         <div class="btn-group btn-group-justified" role="group">
                             <div  class="btn-group" role="group">
 
-                                <a href="{{ route('job-preview', $job['id']) }}" target="_blank" type="button" class="btn-sm btn btn-info status"><i class="fa fa-send"></i> &nbsp;Preview</a>
+                                <a href="{{ route('job-preview', $job['id']) }}" target="_blank" type="button" class="btn-sm btn btn-info status"><i class="fa fa-eye"></i> &nbsp;Preview</a>
                             </div>
                             <div  class="btn-group" role="group">
                                 <a href="{{ route('edit-job', [$job['id']] ) }}" type="button" class="btn-sm btn btn-info status"><i class="fa fa-pencil"></i> &nbsp;Edit Details</a>

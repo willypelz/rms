@@ -1612,6 +1612,9 @@ textarea:focus {
     border-radius: 5px;
     box-shadow: 0 2px 3px rgba(0,0,0,0.25);
 }
+.job-board.pending{
+    opacity: 0.5;
+}
 .text-wrap{
     white-space: nowrap;
     overflow: hidden;
@@ -2287,7 +2290,7 @@ section.grey hr{
     border-radius: 5px;
     /* border: rgba(245, 245, 245, 0.65) solid; */
     border-width: 5px;
-    margin-left: 60px;
+    margin-left: 45px;
     font-weight: 700;
 }
 .filter-div hr {
@@ -2333,9 +2336,9 @@ section.grey hr{
     line-height:20px;
 }
 .option-aps li a {
-    padding: 10px 15px;
-    font-weight:bold;
-    /*font-size: 12px;*/
+    padding: 10px;
+    font-weight: bold;
+    font-size: 10px;
 }
 .option-aps > li.active a {
     /*background-color: #95A245;*/
@@ -2346,6 +2349,9 @@ section.grey hr{
 }
 .option-aps > li>a>.badge {
     background-color: #CA5656;
+    padding: 4px;
+    line-height: 0.6;
+    font-weight: normal;
 }
 .option-aps > li:hover a {
     background-color: rgba(204, 204, 204, 0.38);

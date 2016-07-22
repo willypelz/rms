@@ -2476,12 +2476,8 @@ body.employer {
     margin-top:30px;
 }
 .status-1 {
-    border: 1px solid rgb(213, 213, 213);
-    background: none;
-    color: grey;
     font-size: 12px;
-    padding: 2px 6px;
-    margin: 15px 0px 0px;
+    padding: 6px 6px;
 }
 .status-2{
     border: 1px solid #666;
@@ -2564,7 +2560,7 @@ body.employer {
     color: grey;
     vertical-align: middle;
     margin-bottom: 0px;
-    margin-top: -24px;
+    margin-top: -4rem;
 }
 .select-all:hover {
     border-color: #666;

@@ -38,7 +38,7 @@
 
                                     
 
-                                    <small class="text-muted result-label" id="showing"></small>
+                                    <small class="text-muted result-label" id="showing"> {!! $showing !!} </small>
                                        <br>
                                    <div class="">
                                         <label class="select-all pull-right">Select All
@@ -57,6 +57,16 @@
                                             <a class="btn btn-default status-1" type="button" data-action="HIRED"  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Hire" data-view="{{ route('modal-hire') }}" data-app-id="" data-cv="" data-type="normal">Hire All</a>
                                             <a class="btn btn-default status-1" type="button" data-action="REJECTED"  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Reject?" data-view="{{ route('modal-reject') }}" data-app-id="" data-cv="" data-type="normal">Reject All</a>
                                             <a class="btn btn-default status-1" type="button" data-action="PENDING" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Do you want to return to all?" data-view="{{ route('modal-return-to-all') }}" data-app-id="" data-cv="" data-type="normal" style="display:none;" >Return to Pending</a>
+                                            <div class="btn-group" role="group">
+                                                <button type="button" class="btn btn-default status-1 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                  Dropdown
+                                                  <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                  <li><a href="#">Dropdown link</a></li>
+                                                  <li><a href="#">Dropdown link</a></li>
+                                                </ul>
+                                              </div>
                                         </div>
                                         
                                     </div>
@@ -177,7 +187,7 @@
                 // console.log(data.search_results);
                 $('.search-results').html(data.search_results);
                 $('#search-filters').html(data.search_filters);
-                $('.result-label').html(data.showing);
+                $('body #showing').html(data.showing);
                 $('#pagination').show();
                 $('#search_keyword').val(key);
 
@@ -285,7 +295,7 @@
                 // console.log(data.search_results);
                 $('.search-results').html(data.search_results);
                 $('#search-filters').html(data.search_filters);
-                $('.result-label').html(data.showing);
+                $('body #showing').html(data.showing);
                 $('#pagination').show();
 
                 $.each(filters, function(index,value){

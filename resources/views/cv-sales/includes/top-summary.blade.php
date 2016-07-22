@@ -21,5 +21,5 @@
 	@endif
 	
 	<div class="clearfix"></div>
-	<hr style="margin-bottom: 0; padding-bottom: 0;">
+	<!-- <hr style="margin-bottom: 0; padding-bottom: 0;"> -->
 </div>

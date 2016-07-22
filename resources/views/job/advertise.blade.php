@@ -7,17 +7,20 @@
     <section class="no-pad">
         <div class="container">
 
-                    <div class="row text-center">
-                        <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-                            <h5 class="no-margin text-uppercase l-sp-5 text-brandon">Promote your Job</h5>
-                        </div>
+                
+
+                <div class="row text-center">
+                    <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+                        <h5 class="no-margin text-uppercase l-sp-5 text-brandon">Promote your Job</h5>
                     </div>
+                </div>
 
             <div class="row">
 
                 <div class="col-sm-12">
                     <br>
                     <div class="page">
+                        
 
                         @if(empty($slug))
                         <div class="btn-group btn-group-justified text-uppercase btn-progress" role="group" aria-label="...">
@@ -46,6 +49,17 @@
                             
                             
                     <div class="col-md-10 col-md-offset-1"><br>
+                        <div class="btn-group btn-group-justified btn-progress" role="group" aria-label="...">
+                          
+                          <div class="btn-group" role="group">
+                            <button type="button" class="btn active text-capitalize"><i class="fa fa-send"></i>
+                            &nbsp; <span class="hidden-xs">Job Promotion</span></button>
+                          </div>
+                          <div class="btn-group" role="group">
+                            <a href="addCan-job.php" type="button" class="btn btn-line text-capitalize text-muted"><i class="fa fa-plus"></i>
+                            &nbsp; <span class="hidden-xs">Add candidates</span></a>
+                          </div>
+                        </div>
                         <div>
                                 
                                 @if (Session::has('flash_message'))

@@ -1612,6 +1612,9 @@ textarea:focus {
     border-radius: 5px;
     box-shadow: 0 2px 3px rgba(0,0,0,0.25);
 }
+.job-board.pending{
+    opacity: 0.5;
+}
 .text-wrap{
     white-space: nowrap;
     overflow: hidden;

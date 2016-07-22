@@ -53,6 +53,11 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.whoops');
     });
 
+     Route::get('/success', function () {
+        
+        return view('guest.success');
+    });
+
      Route::get('payment_successful', function () {
         return view('payment.payment_succes');
     });

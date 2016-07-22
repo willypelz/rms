@@ -113,7 +113,7 @@
                         <div class="btn-group btn-group-justified" role="group">
                             <div  class="btn-group" role="group">
 
-                                <a href="{{ route('job-preview', $job['id']) }}" target="_blank" type="button" class="btn-sm btn btn-info status"><i class="fa fa-send"></i> &nbsp;Preview</a>
+                                <a href="{{ route('job-preview', $job['id']) }}" target="_blank" type="button" class="btn-sm btn btn-info status"><i class="fa fa-eye"></i> &nbsp;Preview</a>
                             </div>
                             <div  class="btn-group" role="group">
                                 <a href="{{ route('edit-job', [$job['id']] ) }}" type="button" class="btn-sm btn btn-info status"><i class="fa fa-pencil"></i> &nbsp;Edit Details</a>

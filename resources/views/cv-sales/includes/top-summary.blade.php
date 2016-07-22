@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="text-uppercase col-xs-6"> 
+	<div class="text-uppercase col-xs-4"> 
 		<strong>Showing</strong> 
 		{{ $start }} -  {{ $end }} of  {{ $total . ' ' . $type }}   [Page {{ $page }} ]
 	</div>

@@ -135,7 +135,7 @@
         var cv_ids = <?php echo json_encode($cv_ids );?> ;
 
         $('body #request-btn').on('click', function(){
-          $('#cart-preview').append('<tr data-id="' + $(this).attr('data-id') +'" data-owner="' + $(this).attr('data-owner') +'"><td id="name">' + $(this).attr('data-title') +'</td><td id="amount">' + $(this).attr('data-amount') +'</td><td class="text-right"><a href="javascript://" id="delete-request"><i class="fa fa-times-circle text-danger"></i> </a></td></tr>');
+          $('#cart-preview').append('<tr data-id="' + $(this).attr('data-id') +'" data-owner="' + $(this).attr('data-owner') +'"><td id="name">' + $(this).attr('data-title') +'</td><td id="amount">' + $(this).attr('data-amount') + " x " + {{ $count }} + ' </td><td class="text-right"><a href="javascript://" id="delete-request"><i class="fa fa-times-circle text-danger"></i> </a></td></tr>');
           $(this).calculateCartTotal();
           // $(this).closest('.panel-body').fadeOut();
           $(this).prop('disabled','disabled').text('Requested');
@@ -151,7 +151,7 @@
         $.fn.calculateCartTotal = function(){
           var total = 0;
           $('#cart-preview #amount').each(function( index ) {
-              total += parseInt( $( this ).text() );
+              total += parseInt( $( this ).text() ) * parseInt( {{ $count }} );
           });
 
             $('#cart-total').text(  total  );

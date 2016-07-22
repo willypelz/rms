@@ -442,7 +442,7 @@ class JobApplicationsController extends Controller
     {
         
         
-        $modalVars = $this->modalActions('Background Check', $request->cv_id, $request->app_id);
+        $modalVars = $this->modalActions('Background Check for', $request->cv_id, $request->app_id);
         if( is_array( $modalVars ) )
         {
             extract($modalVars);
@@ -453,15 +453,17 @@ class JobApplicationsController extends Controller
         }
 
         $products = AtsProduct::all();
+        $count = count($cv_ids);
+
         $section = 'BACKGROUND'; 
-        return view('modals.assess', compact('applicant_badge','app_ids','cv_ids','products','appl','test_available','section'));
+        return view('modals.assess', compact('applicant_badge','app_ids','cv_ids','products','appl','test_available','count','section'));
     }
 
 
     public function modalMedicalCheck(Request $request)
     {
         
-        $modalVars = $this->modalActions('Health Check', $request->cv_id, $request->app_id);
+        $modalVars = $this->modalActions('Health Check for', $request->cv_id, $request->app_id);
         if( is_array( $modalVars ) )
         {
             extract($modalVars);
@@ -472,8 +474,10 @@ class JobApplicationsController extends Controller
         }
 
         $products = AtsProduct::all();
+        $count = count($cv_ids);
+
         $section = 'HEALTH'; 
-        return view('modals.assess', compact('applicant_badge','app_id','cv_id','products','appl','test_available','section'));
+        return view('modals.assess', compact('applicant_badge','app_ids','cv_ids','products','appl','test_available','count','section'));
     }
 
     

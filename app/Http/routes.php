@@ -43,6 +43,11 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.landing');
     });
 
+    route::get('error', [
+    'as' => 'errors.defaultError', function(){
+        return view('errors.500');
+    }]);
+
      Route::get('/contact', function () {
         
         return view('guest.contact');

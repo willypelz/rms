@@ -259,7 +259,7 @@ use App\Models\Job;
 		}
 
 		
-		$statuses = ['PENDING', 'INTERVIEWED', 'REJECTED', 'HIRED','ASSESSED','SHORTLISTED'];
+		$statuses = ['PENDING', 'INTERVIEWED', 'REJECTED','WAITING', 'HIRED','ASSESSED','SHORTLISTED'];
 
 		$status_array = [];
 		foreach ($statuses as $val) {

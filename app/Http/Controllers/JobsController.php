@@ -502,13 +502,31 @@ class JobsController extends Controller
                                     <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
                                   </span>
                           
-                                  <h5 class="no-margin text-info">Application</h5>
+                                  <h5 class="no-margin text-info">Hired</h5>
                                   <p>
                                       <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
                                       <a href="'. url('job/candidates/'.$ac->application->job->id.'#HIRED') .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been hired.
                                   </p>
                                 </li>';
                      break;
+
+                  case "WAITING":
+                 $applicant = $ac->application->cv;
+                     $content .= '<li role="candidate-application" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-info"></i>
+                                    <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-info">Waiting</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <a href="'. url('job/candidates/'.$ac->application->job->id.'#WAITING') .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been added to the waiting list.
+                                  </p>
+                                </li>';
+                     break;
+
                  case "REJECTED":
                     $applicant = $ac->application->cv;
                     // dd($ac->to);
@@ -519,7 +537,7 @@ class JobsController extends Controller
                                     <i class="fa fa-user-times fa-stack-1x fa-inverse"></i>
                                   </span>
                           
-                                  <h5 class="no-margin text-danger">REJECT</h5>
+                                  <h5 class="no-margin text-danger">Reject</h5>
                                   <p>
                                       <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small>
                                       <a href="'. url('job/candidates/'.$ac->application->job->id.'#REJECTED') .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> application was rejected by <a href="'. url('applicant/messages/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a>

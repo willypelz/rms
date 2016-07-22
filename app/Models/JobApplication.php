@@ -41,4 +41,10 @@ class JobApplication extends Model
         return $this->hasMany('App\Models\AtsRequest');
 
     }
+
+    public function interview_notes(){
+
+        return $this->hasMany('App\Models\InterviewNotes');
+
+    }
 }

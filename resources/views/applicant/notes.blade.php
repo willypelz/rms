@@ -29,7 +29,7 @@
                             <a href="{{ route('applicant-activities',  $appl->id) }}" class="btn"><i class="fa fa-bars"></i> &nbsp; Feeds</a>
                             <!-- <a href="background-check" class="btn"><i class="fa fa-commenting-o"></i> &nbsp; Comments</a> -->
                             <a href="{{ route('applicant-notes',  $appl->id) }}" class="btn btn-line"><i class="fa fa-file-text-o"></i> &nbsp; Interview Notes</a>
-                            <a href="background-check" class="btn btn-success pull-right"><i class="fa fa-file-text-o"></i> &nbsp; Add a Comment</a>
+
                             <hr>
                           </div>
                         </div>
@@ -55,36 +55,29 @@
                                     <i class="fa fa-commenting-o fa-stack-1x fa-inverse"></i>
                                   </span>
                           
-                                  <div class="commenter">
-                                    <p>
-                                      <a>Ernest Ojeh</a> made a note on applicant
-                                          <small class="text-muted pull-right">[Wed 12:23pm]</small>
-                                    </p>
-                                    <blockquote class="h5">
-                                      <span role="comment-body text-muted">
-                                          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, tempora assumenda fugit alias ab tempore nemo voluptatum reiciendis tenetur beatae eum exercitationem recusandae delectus dicta, accusantium soluta qui accusamus maxime. <!-- <a href="jobs/applicants">Go to job board</a> -->
-                                      </span>
-                                    </blockquote>
-                                  </div>
 
-                                  <div class="commenter">
-                                    <p>
-                                      <a>Another Team member</a> made a note on applicant
-                                          <small class="text-muted pull-right">[Wed 12:23pm]</small>
-                                    </p>
-                                    <blockquote class="h5">
-                                      <span role="comment-body text-muted">
-                                          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, tempora assumenda fugit alias ab tempore nemo voluptatum reiciendis tenetur beatae eum exercitationem recusandae delectus dicta, accusantium soluta qui accusamus maxime. <!-- <a href="jobs/applicants">Go to job board</a> -->
-                                      </span>
-                                    </blockquote>
-                                  </div>
+                                  @foreach( $interview_notes as $interview_note )
+                                      <div class="commenter">
+                                        <p>
+                                          <a>{{ $interview_note->user->name }}</a> made a note on applicant
+                                              <small class="text-muted pull-right">[{{ date('D, j-n-Y, h:i A', strtotime( $interview_note->interview_date ))  }}]</small>
+                                        </p>
+                                        <blockquote class="h5">
+                                          <span role="comment-body text-muted">
+                                              <strong>General Comments: </strong>{{ $interview_note->general_comments }} <br><br>
+                                              <strong>Recommendations: </strong>{{ $interview_note->recommendation }}
+                                              
+                                          </span>
+                                        </blockquote>
+                                      </div>
+                                  @endforeach
                                 </li>
                           
                                 
                           
                               </ul>
 
-                            <a href="background-check" class="btn btn-success btn-sm pull-right"><i class="fa fa-commenting-o"></i> &nbsp; Add Note</a>
+
                           
                               <div class="clearfix"></div>
                         </div>

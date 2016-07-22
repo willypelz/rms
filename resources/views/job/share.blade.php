@@ -174,7 +174,7 @@
 
                                       <script>
                                           $('#ReferEmail').click(function(){
-                                              $(".hideSendEmails").html('<img src="{{ asset('img/loader-logo-32.gif') }}" width="30px" /> please wait...');
+                                              $(".hideSendEmails").html('{!! preloader() !!}'));
 
                                               var to = $('#to_email').val()
                                               var body = $('#editor1').val()

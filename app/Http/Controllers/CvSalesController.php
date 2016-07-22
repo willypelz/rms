@@ -126,10 +126,29 @@ class CvSalesController extends Controller
         // $cv = $request->cv;
         // $cv_file = $cv['cv_file'];
         $cv_file = 'unlekwaatyahoocom_UCHE.pdf';
-        $filepath = public_path( 'uploads/CVs/'. $cv_file );
-        var_dump($filepath);
+        
+        
+        $cvs = Cv::all();
 
-        var_dump(file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) ) );
+        
+
+
+        Cv::chunk(100, function ($cvs) {
+            foreach ($cvs as $cv) {
+                
+                $filepath = public_path( 'uploads/CVs/'. $cv['cv_file'] );
+                $extracted_content = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );
+                $cv->update(['extracted_content' => $extracted_content]);
+
+                break;
+            }
+        });
+
+        // var_dump($filepath);
+
+
+
+        // var_dump(file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) ) );
 
         exit;
         // $cv['raw_content'] = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );

@@ -1,6 +1,6 @@
 #!/usr/bin/env /usr/local/bin/python
 
-import textract, os, sys, getopt
+import textract, os, sys, getopt, urllib
 
 
 
@@ -47,8 +47,9 @@ app = Flask(__name__)
 
 @app.route('/extract')
 def extract_content():
-	file_name = request.args.get('file_name')
-	
+	file_name = urllib.unquote( request.args.get('file_name') ).decode('utf8') 
+	#request.args.get('file_name')
+	print file_name
 	text = textract.process(file_name)
 	return text
 

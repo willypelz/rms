@@ -30,9 +30,9 @@
                         
                         
 
-
-
-                        @if($job['status'] == 'ACTIVE')
+                        @if( strtotime($job['expiry_date']) < strtotime( date('m/d/Y h:i:s a', time()) ) )
+                        <div id="status-box" class="label label-danger" style="">Job has expired</div>
+                        @elseif($job['status'] == 'ACTIVE')
                         <div id="status-box" class="label label-success" style="">Job is active</div>
                         @elseif($job['status'] == 'DRAFT')
                         <div id="status-box"  class="label label-warning" style="">Job is in Draft</div> 
@@ -58,6 +58,11 @@
                             if( $application_statuses['HIRED'] > 0 )
                             {
                                 $stage = "HIRED";
+                            }
+
+                            if( $application_statuses['WAITING'] > 0 )
+                            {
+                                $stage = "WAITING";
                             }
 
                             else if( $application_statuses['INTERVIEWED'] > 0 )
@@ -101,7 +106,9 @@
                             
                                 <li class="{{ ( $stage == "INTERVIEWED" ) ? 'active' : '' }}" ><a href="#">Interview</a>
                                 </li>
-                            
+                                
+                                <li class="{{ ( $stage == "WAITING" ) ? 'active' : '' }}" ><a href="#">Waiting</a>
+                                </li>
                             
                                 <li class="{{ ( $stage == "HIRED" ) ? 'active' : '' }}" ><a href="#">Hire</a>
                                 </li>

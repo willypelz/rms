@@ -145,10 +145,11 @@
                           ?>
                           
                           @if($in_cart)
-                            <button id="cartRemove{{ $cv['id'] }}" class="btn btn-line btn-sm btn-cv-discard" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
+                            <button id="cartRemove{{ $cv['id'] }}" class="btn btn-line btn-sm" data-count="1" data-cost="500" data-pass="{{ csrf_token() }}" data-name="{{ $cv['first_name']. " " . $cv['last_name'] }}"><i class="fa fa-trash"></i> Remove from Cart </button>
                           @else
-                            <a href="" id="cartAdd{{ $cv['id'] }}" class="btn btn-success btn-sm btn-cv-buy" data-count="1" data-cost="500"><i class="fa fa-plus"></i> Purchase CV for N500</a>
-                            <button id="cartRemove{{ $cv['id'] }}" class="btn btn-line btn-sm btn-cv-discard collapse" data-count="1" data-cost="500"><i class="fa fa-trash"></i> Remove from Cart </button>
+                            <!-- <a href="" id="cartAdd{{ $cv['id'] }}" class="btn btn-success btn-sm btn-cv-buy" data-count="1" data-cost="500" data-pass="{{ csrf_token() }}" data-name="{{ $cv['first_name']. " " . $cv['last_name'] }}"><i class="fa fa-plus"></i> Purchase CV for N500</a> -->
+                            <a href="" id="cartAdd" class="btn btn-success btn-sm " data-id="{{ $cv['id'] }}" data-count="1" data-cost="500" data-pass="{{ csrf_token() }}" data-name="{{ $cv['first_name']. " " . $cv['last_name'] }}"><i class="fa fa-plus"></i> Purchase CV for N500</a>
+                            <button id="cartRemove{{ $cv['id'] }}" class="btn btn-line btn-sm collapse" data-count="1" data-cost="500" data-pass="{{ csrf_token() }}" data-name="{{ $cv['first_name']. " " . $cv['last_name'] }}"><i class="fa fa-trash"></i> Remove from Cart </button>
                           @endif
 
                   </span>
@@ -183,6 +184,8 @@
           });
 
         });
+
+        
 
 
         $("#cartRemove"+id).click(function(){

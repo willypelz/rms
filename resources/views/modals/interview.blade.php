@@ -1,7 +1,7 @@
 
   {!! @$applicant_badge !!}              
 
-
+<script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
 <div class="form-group">
   <!--<label>Location</label>-->
   <div class="input-group">
@@ -15,7 +15,7 @@
   <!--<label>Location</label>-->
   <div class="input-group">
       <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-      <input type="datetime-local" required class="datepicker form-control" id="interview-time" aria-describedby="" placeholder="Open Date">
+      <input type="text" name="expiry_date" class="datepicker form-control" required id="interview-time" aria-describedby="" placeholder="Open Date">
   </div>
 </div>
 
@@ -34,8 +34,12 @@
 
 <script type="text/javascript">
  $(document).ready(function(){
+
+  $('.datepicker').datepicker({
+      format: 'mm/dd/yyyy'
+  });
   
-    var app_ids = <?php echo json_encode($app_ids );?>  ;
+  var app_ids = <?php echo json_encode($app_ids );?>  ;
   var cv_ids = <?php echo json_encode($cv_ids );?> ; 	
 
  	$('body #sendInterviewBtn').on('click',function(){

@@ -59,12 +59,12 @@
                                             <a class="btn btn-default status-1" type="button" data-action="PENDING" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Do you want to return to all?" data-view="{{ route('modal-return-to-all') }}" data-app-id="" data-cv="" data-type="normal" style="display:none;" >Return to Pending</a>
                                             <div class="btn-group" role="group">
                                                 <button type="button" class="btn btn-default status-1 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                  Dropdown
+                                                  Checks
                                                   <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu">
-                                                  <li><a href="#">Dropdown link</a></li>
-                                                  <li><a href="#">Dropdown link</a></li>
+                                                  <li><a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Background Check" data-view="{{ route('modal-background-check') }}" data-app-id="" data-cv="" data-type="wide">Background Check</a></li>
+                                                  <li><a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Medical Check" data-view="{{ route('modal-medical-check') }}" data-app-id="" data-cv="" data-type="wide">Medical Check</a></li>
                                                 </ul>
                                               </div>
                                         </div>

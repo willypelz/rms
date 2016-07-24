@@ -273,7 +273,7 @@
 
                             <div class="col-xs-4">
 
-                                <div class="panel panel-default">                                
+                               <!--  <div class="panel panel-default">                                
                                   <div class="panel-heading">
                                     <h3 class="panel-title text-center">Refer this Job</h3>
                                   </div>
@@ -281,7 +281,7 @@
                                   <p class="small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab omnis ipsa, quis beatae ex nam excepturi quae sequi molestias dolorem deserunt voluptas corrupti fugit eum totam nobis dicta officiis mollitia.</p>
                                     <a href="#modalRefer" data-toggle="modal" data-target="#modalRefer" class="btn btn-primary btn-block">Make Referals</a>
                                   </div>
-                                </div>
+                                </div> -->
 
                                 <div class="panel panel-default">
                                 

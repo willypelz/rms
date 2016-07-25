@@ -30,7 +30,7 @@
 
                 <div class="col-sm-5 col-sm-offset-1 text-right">
                 <h2 class="text-capitalize"> cutting-edge technologies</h2><hr>
-                   <p class="lead text-muted">Drawing from these databases, and several layers of cutting-edge technologies for finding and testing candidates, we are able to help you fillany role within your organization with the best fit, in record time.</p>
+                   <p class="lead text-muted">Drawing from these databases, and several layers of cutting-edge technologies for finding and testing candidates, we are able to help you fill any role within your organization with the best fit, in record time.</p>
                     
                 </div>
                 <div class="col-sm-5 text-center"><br>
@@ -44,7 +44,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-8 col-sm-offset-2 text-center">
-                <h2> Our Approach</h2><hr>
+                 <i class="fa fa-rocket fa-4x"></i><br> 
+                <h2>Our Approach</h2><hr>
                    <p class="lead text-muted">We understand the importance of getting it right with talent. Your people
 
 are arguably the most important resource your organization owns. Because
@@ -113,16 +114,28 @@ you.</p>
                           <a class="list-group-item">Search Closure</a>
                         </div>
                    </div>
-                   <div class="col-sm-12"><hr>
-                       <h3>The 3 month Pledge.</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="s-div text-white">
+        <div class="container">
+            <div class="row">
+                
+                   <div class="col-sm-8 col-sm-offset-2 text-center">
+                       <h3><i class="fa fa-star-o"></i>
+                       <i class="fa fa-star-o"></i>
+                       <i class="fa fa-star-o"></i><br>
+                       <br>The 3 month Pledge.</h3>
                    <p class="lead">
 
 If you have any reason to decline a candidate we sourced for you within 3
 
 months of resumption, we will replace the candidate at no cost to you.
                    </p>
+                   <br>
                    </div>
-                </div>
             </div>
         </div>
     </section>

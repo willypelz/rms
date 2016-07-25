@@ -53,6 +53,11 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.whoops');
     });
 
+     Route::get('/talentSource', function () {
+        
+        return view('guest.talentSource');
+    });
+
      Route::get('/success', function () {
         
         return view('guest.success');

@@ -272,8 +272,16 @@
                             </div>
 
                             <div class="col-xs-4">
+                               <div class="well text-center">
+                                      <p class="lead">For a wider and better reach, <br>you can promote this job on more job boards and <i>newspapers.</i></p>
+                                      <p>
+                                        <a href="" class="btn btn-primary btn-block">
+                                          <i class="fa fa-send"></i> Promote Job now
+                                        </a>
+                                      </p>
+                                    </div>
 
-                                <div class="panel panel-default">                                
+                               <!--  <div class="panel panel-default">                                
                                   <div class="panel-heading">
                                     <h3 class="panel-title text-center">Refer this Job</h3>
                                   </div>
@@ -281,7 +289,8 @@
                                   <p class="small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab omnis ipsa, quis beatae ex nam excepturi quae sequi molestias dolorem deserunt voluptas corrupti fugit eum totam nobis dicta officiis mollitia.</p>
                                     <a href="#modalRefer" data-toggle="modal" data-target="#modalRefer" class="btn btn-primary btn-block">Make Referals</a>
                                   </div>
-                                </div>
+                                </div> -->
+
 
                                 <div class="panel panel-default">
                                 
@@ -290,7 +299,7 @@
                                   </div>
                                   <div class="panel-body">
                                     <div class="text-center">
-                                   <p class="">Share this job directly on LinkedIn, Twitter, Facebook. </p><br>
+                                   <p class="">Share this job directly on LinkedIn, Twitter, Facebook. <a href="">See job page</a></p><br>
                                
                                            <ul class="list-inline">
                                                <li>

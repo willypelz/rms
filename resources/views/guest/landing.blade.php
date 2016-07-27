@@ -44,6 +44,7 @@
                              </div>
                              </form>
                            </div>
+
                         <div class="col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2 hidden-xs">
                               <div class="separator separator-small"></div>
                               <!-- <p class="text-center fa-3x">&#9661;</p> -->
@@ -53,11 +54,12 @@
                               </div>
                               <div class="col-sm-5">
                                 <a href="#features" class=" collapse btn btn-block btn-line text-white"><i class="fa fa-bars"></i> &nbsp; Learn More</a>
-                        <span id="features" name="features"></span>
+                                <span id="features" name="features"></span>
                               </div>
                               <div class="clearfix"></div>
                               <div class="separator separator-small"></div>
                         </div>
+                        
                        </div>
                     </div>
                 </div>

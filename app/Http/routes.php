@@ -58,9 +58,19 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.whoops');
     });
 
+     Route::get('/talentSource', function () {
+        
+        return view('guest.talentSource');
+    });
+
      Route::get('/success', function () {
         
         return view('guest.success');
+    });
+
+     Route::get('/company_success', function () {
+        
+        return view('guest.company_success');
     });
 
      Route::get('payment_successful', function () {

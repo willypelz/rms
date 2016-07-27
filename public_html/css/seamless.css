@@ -2067,10 +2067,12 @@ section.grey hr{
 .cover-textarea{
     height: 65px !important;
 }
+/*
 .scroll{
     height: auto;
     overflow-y:auto;
 }
+*/
 .scroll-300{
     height: 300px;
 }

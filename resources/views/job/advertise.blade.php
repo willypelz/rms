@@ -9,16 +9,17 @@
 
                 
 
+<!--
                 <div class="row text-center">
                     <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
                         <h5 class="no-margin text-uppercase l-sp-5 text-brandon">Promote your Job</h5>
                     </div>
                 </div>
+-->
 
             <div class="row">
 
                 <div class="col-sm-12">
-                    <br>
                     <div class="page">
                         
 
@@ -49,10 +50,10 @@
                             
                             
                     <div class="col-md-10 col-md-offset-1"><br>
-                        <div class="btn-group btn-group-justified btn-progress" role="group" aria-label="...">
+                        <div class="btn-group btn-group-justified" role="group" aria-label="...">
                           
                           <div class="btn-group" role="group">
-                            <button type="button" class="btn active text-capitalize"><i class="fa fa-send"></i>
+                            <button type="button" class="btn disabled text-capitalize"><i class="fa fa-send"></i>
                             &nbsp; <span class="hidden-xs">Job Promotion</span></button>
                           </div>
                           <div class="btn-group" role="group">
@@ -112,15 +113,18 @@
                             </div>
                                 <div>
                                   <div class="row">
+                                      <div class="col-xs-12 text-center">
+                                          <h4 class=""><br>Job Promotion. </h4><p>Multipying your talent flow. Post your job on more job boards</p><hr>
+                                      </div>
+
                                     
                                     <div class="col-xs-12">
-                                    <h4>Interested in multipying your talent flow?</h4><hr>
                                         <h5 class="text-brandon text-uppercase">
                                         <i class="fa fa-star"></i>&nbsp; Paid Job Boards
                                         </h5><br>
                                     </div>
                                        @foreach($job_boards as $b)
-                                        <div class="col-sm-6"> 
+                                        <div class="col-sm-4"> 
                                             <div class="thumbnail">  
                                                 <div class="caption">
                                             <img alt="" src="{{ $b['img'] }}" height="45px"> <hr>
@@ -162,10 +166,10 @@
                                              </h5><br>
      
                                              @foreach($newspapers as $n)
-                                             <div class="col-sm-6"> 
+                                             <div class="col-sm-4"> 
                                                 <div class="thumbnail">  
                                                     <div class="caption">
-                                                <img alt="" src="{{ $n->img }}" height="45px"> <hr>
+                                                <img alt="" src="{{ $n->img }}" height="45px" width="100%"> <hr>
                                                         <h4 class="">{{ $n->name }}</h4>
                                                         <p class="small">{{ $n->about }}</p> 
                                                         <p>

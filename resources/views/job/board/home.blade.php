@@ -291,7 +291,7 @@
                                   </div>
                                 </div> -->
 
-<!--
+
                                 <div class="panel panel-default">
                                 
                                   <div class="panel-heading">
@@ -299,7 +299,7 @@
                                   </div>
                                   <div class="panel-body">
                                     <div class="text-center">
-                                   <p class="">Share this job directly on LinkedIn, Twitter, Facebook. </p><br>
+                                   <p class="">Share this job directly on LinkedIn, Twitter, Facebook. <a href="">See job page</a></p><br>
                                
                                            <ul class="list-inline">
                                                <li>
@@ -332,7 +332,6 @@
                                    </div>
                                   </div>
                                 </div>
--->
                                 
                             </div>
 

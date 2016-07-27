@@ -272,6 +272,14 @@
                             </div>
 
                             <div class="col-xs-4">
+                               <div class="well text-center">
+                                      <p class="lead">For a wider and better reach, <br>you can promote this job on more job boards and <i>newspapers.</i></p>
+                                      <p>
+                                        <a href="" class="btn btn-primary btn-block">
+                                          <i class="fa fa-send"></i> Promote Job now
+                                        </a>
+                                      </p>
+                                    </div>
 
                                <!--  <div class="panel panel-default">                                
                                   <div class="panel-heading">
@@ -283,6 +291,7 @@
                                   </div>
                                 </div> -->
 
+<!--
                                 <div class="panel panel-default">
                                 
                                   <div class="panel-heading">
@@ -323,6 +332,7 @@
                                    </div>
                                   </div>
                                 </div>
+-->
                                 
                             </div>
 

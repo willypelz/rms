@@ -42,10 +42,11 @@
                               <span class="text-brandon text-uppercase">
                               Notes on Applicant 
                               </span> 
-                              <span class="pull-right"><a href=""><i class="fa fa-cog"></i>Notification Settings</a></span>
+                              <!-- <span class="pull-right"><a href=""><i class="fa fa-cog"></i>Notification Settings</a></span> -->
                           </h6>
                           <div class="clearfix"><hr></div>
-                          
+                              
+
                               <ul class="list-group list-notify">
                           
                                 <li class="list-group-item" role="candidate-comments">
@@ -55,28 +56,36 @@
                                     <i class="fa fa-commenting-o fa-stack-1x fa-inverse"></i>
                                   </span>
                           
-
-                                  @foreach( $interview_notes as $interview_note )
-                                      <div class="commenter">
-                                        <p>
-                                          <a>{{ $interview_note->user->name }}</a> made a note on applicant
-                                              <small class="text-muted pull-right">[{{ date('D, j-n-Y, h:i A', strtotime( $interview_note->interview_date ))  }}]</small>
-                                        </p>
-                                        <blockquote class="h5">
-                                          <span role="comment-body text-muted">
-                                              <strong>General Comments: </strong>{{ $interview_note->general_comments }} <br><br>
-                                              <strong>Recommendations: </strong>{{ $interview_note->recommendation }}
-                                              
-                                          </span>
-                                        </blockquote>
-                                      </div>
-                                  @endforeach
+                                  @if( count($interview_notes) > 0 )
+                                    @foreach( $interview_notes as $interview_note )
+                                        <div class="commenter">
+                                          <p>
+                                            <a>{{ $interview_note->user->name }}</a> made a note on applicant
+                                                <small class="text-muted pull-right">[{{ date('D, j-n-Y, h:i A', strtotime( $interview_note->interview_date ))  }}]</small>
+                                          </p>
+                                          <blockquote class="h5">
+                                            <span role="comment-body text-muted">
+                                                <strong>General Comments: </strong>{{ $interview_note->general_comments }} <br><br>
+                                                <strong>Recommendations: </strong>{{ $interview_note->recommendation }}
+                                                
+                                            </span>
+                                          </blockquote>
+                                        </div>
+                                    @endforeach
+                                  @else
+                                    
+                                    <div>
+                                      <span>This candidate has not been interviewed</span>
+                                    </div>
+                                    
+                                  @endif
                                 </li>
                           
                                 
                           
                               </ul>
-
+                              
+                              
 
                           
                               <div class="clearfix"></div>

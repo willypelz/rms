@@ -451,7 +451,7 @@
   <div class="container">
     <div class="row text-center">
       <div class="col-sm-12">
-        <p class="lead text-brandon text-white">Recruitment Made Unbelievably Easy. It is an easy and seamless journey.</p>
+        <p class="lead text-brandon text-white">Recruitment Made Unbelievably Easy.</p>
         <a href="{{ url('register') }}" class="btn btn-success btn-lg"> Get Started</a>
       </div>
     </div><div class="clearfix"><br></div>

@@ -498,6 +498,7 @@ section.dark .row {
 .page.page-sm.foot {
     background: #F1F3F5;
     padding: 1.5em 1em 0.5em;
+    min-height: 100px;
 }
 .referal {
     border-right: 1px solid #eee;

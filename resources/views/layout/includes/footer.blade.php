@@ -142,6 +142,8 @@
                             </li>
                             <li><a href="{{ url('pricing') }}">Pricing</a>
                             </li>
+                            <li class=""><a class="" href="{{ url('talentSource') }}">Talent Sourcing </a>
+                </li>
                         </ul>
                     </div>
 
@@ -178,21 +180,21 @@
                
                            <a href="http://facebook.com" class="">
                                    <span class="fa-stack fa-lg">
-                                     <i class="fa fa-circle fa-stack-2x text-"></i>
-                                     <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                     <i class="fa fa-circle fa-stack-2x text-"  style="color:#3b5998"></i>
+                                     <i class="fa fa-facebook fa-stack-1x fa-inverse" ></i>
                                    </span>
                            </a>
                
                            <a href="http://twitter.com" class="">
                                    <span class="fa-stack fa-lg">
-                                     <i class="fa fa-circle fa-stack-2x text-"></i>
+                                     <i class="fa fa-circle fa-stack-2x text-"  style="color:#0084b4"></i>
                                      <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
                                    </span>
                            </a>
                
                            <a href="http://linkedin.com" class="">
                                    <span class="fa-stack fa-lg">
-                                     <i class="fa fa-circle fa-stack-2x text-"></i>
+                                     <i class="fa fa-circle fa-stack-2x text-danger"></i>
                                      <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
                                    </span>
                            </a>

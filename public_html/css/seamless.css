@@ -401,6 +401,13 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .navbar-nav > li > a{
     /*color: #ffffff;*/
 }
+.span-stage{
+    font-size: 11px;
+    text-transform: capitalize;
+}
+.span-stage:before{
+    content: " → ";
+}
 section {
     padding: 5em 0;
 }

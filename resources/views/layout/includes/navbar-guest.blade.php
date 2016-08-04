@@ -1,4 +1,4 @@
-<div class="navbar navbar-fixed-top navbar-out no-margin fold transparent" role="navigation">
+<div class="navbar navbar-fixed-top navbar-out no-margin fold" role="navigation">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">

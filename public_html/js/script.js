@@ -5,14 +5,14 @@ $(window).scroll(function() {
         if ($(".navbar").offset().top > 100) {
 
         // animating navbar background
-        navbar.removeClass("transparent");
+//        navbar.removeClass("transparent");
 
         //Fix or release Cart
         $(".well-cart").addClass("fixer");
     } else {
 
         // animating navbar background
-        navbar.addClass("transparent");
+//        navbar.addClass("transparent");
 
         //Fix or release Cart
         $(".well-cart").removeClass("fixer");

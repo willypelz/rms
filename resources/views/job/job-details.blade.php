@@ -96,8 +96,8 @@
                                     <div class="row">
                                         
                                         <div class="col-sm-8">
-                                            <h6 class="text-brandon text-uppercase l-sp-5 no-margin">Job details</h6>
-                                            <br>
+<!--                                            <h6 class="text-info text-brandon text-uppercase l-sp-5 no-margin">Job details</h6>-->
+<!--                                            <br>-->
                                             <div class="row">
 
                                                 <div class="col-xs-6 col-sm-3"><small class="text-muted">Job Type</small>
@@ -115,16 +115,15 @@
                                                 <i class="fa fa-3x fa-user-md text-danger"></i>
                                                 <h5 class="text-uppercase text-brandon">{{ $job['qualification'] }}</h5>
                                                 </div>
-
-                                                <div class="col-xs-12"><hr></div>
+                                                
 
                                                 <div class="col-xs-12">
-                                                <h5>Job Description</h5>
+                                                <hr><h6 class="text-info text-brandon text-uppercase l-sp-5 no-margin">Job Description</h6><hr>
                                                     {!!html_entity_decode( ucfirst( $job['details'] ) )!!}
                                                 </div>
 
                                                 <div class="col-xs-12">
-                                                <h5>Qualifications</h5>
+                                                <hr><h6 class="text-info text-brandon text-uppercase l-sp-5 no-margin">Qualifications</h6><hr>
                                                    {!!html_entity_decode( ucfirst( $job['experience'] ) )!!}
                                                 </div>
                                             </div>

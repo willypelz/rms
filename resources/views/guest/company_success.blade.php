@@ -32,7 +32,7 @@
                           <h2><i class="fa fa-check-circle fa-2x text-success"></i></h2>
                           <p class="lead">Your Company has been succesfully created</p>
                           <hr>
-                            <a href="" class="btn btn-success"><i class="fa fa-tachometer"></i> Go to company dashboard</a>
+                            <a href="" class="btn btn-success"><i class="fa fa-tachometer"></i> Go to your company's dashboard</a>
                             <a href="" class="btn btn-line"><i class="fa fa-plus"></i> Create another company</a>
                             <div class="clearfix"></div>
                           <br>

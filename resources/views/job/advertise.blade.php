@@ -57,7 +57,7 @@
                             &nbsp; <span class="hidden-xs">Job Promotion</span></button>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="addCan-job.php" type="button" class="btn btn-line text-capitalize text-muted"><i class="fa fa-plus"></i>
+                            <a href="{{ route('add-candidates', false) }}" type="button" class="btn btn-line text-capitalize text-muted"><i class="fa fa-plus"></i>
                             &nbsp; <span class="hidden-xs">Add candidates</span></a>
                           </div>
                         </div>

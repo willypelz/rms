@@ -268,10 +268,17 @@ class JobsController extends Controller
         $active = 0;
         $suspended = 0;
         $deleted = 0;
+        $expired = 0;
 
         $active_jobs = [];
         foreach($jobs as $job){
-            if ($job->status == 'ACTIVE') {
+
+            if( strtotime($job->expiry_date) <= strtotime( date('m/d/Y h:i:s a', time()) ) ){
+                
+                $active_jobs[] = $job;
+                $expired++;
+            }
+            else if ($job->status == 'ACTIVE') {
                 $active_jobs[] = $job;
                 $active++;
             }
@@ -286,7 +293,7 @@ class JobsController extends Controller
                 // $suspended++;
             }
         }
-        return view('job.job-list', compact('jobs', 'active', 'suspended', 'deleted', 'company', 'active_jobs'));
+        return view('job.job-list', compact('jobs', 'active', 'suspended', 'deleted', 'company', 'active_jobs','expired'));
     }
 
     public function JobPromote($id, Request $request){
@@ -358,6 +365,7 @@ class JobsController extends Controller
     }
 
     public function ActivityContent(Request $request){
+
          $content = '<ul class="list-group list-notify">';
         
         if(!empty($request->appl_id)){
@@ -406,6 +414,7 @@ class JobsController extends Controller
                                   </p>
                                 </li>';                     break;
                  case "APPLIED":
+
                      $applicant = $ac->application->cv;
                      $job = $ac->application->job;
                      $content .= '<li role="candidate-application" class="list-group-item">
@@ -755,6 +764,19 @@ class JobsController extends Controller
                 'Others'
 
             ];
+        $grades = [
+
+                '1st Class',
+                'Distinction',
+                'Second Class Upper',
+                'Second Class Lower',
+                'Upper Credit',
+                'Lower Credit',
+                '3rd Class',
+                'Pass',
+                'Other',
+                'Unspecified'
+            ];
 
         $states = [
                 'Lagos',
@@ -842,6 +864,7 @@ class JobsController extends Controller
             $cv->last_position = $data['last_position'];
             $cv->last_company_worked = $data['last_company_worked'];
             $cv->years_of_experience = $data['years_of_experience'];
+            $cv->graduation_grade = $data['graduation_grade'];
             // $cv->willing_to_relocate = $data['willing_to_relocate'];
             $cv->cv_file = $data['cv_file'];
             $cv->save();
@@ -874,7 +897,7 @@ class JobsController extends Controller
         }
 
         
-        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations'));
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades'));
 
     }
 

@@ -145,11 +145,11 @@
                           ?>
                           
                           @if($in_cart)
-                            <button id="cartRemove{{ $cv['id'] }}" class="btn btn-line btn-sm" data-count="1" data-cost="500" data-pass="{{ csrf_token() }}" data-name="{{ $cv['first_name']. " " . $cv['last_name'] }}"><i class="fa fa-trash"></i> Remove from Cart </button>
+                            <button id="cartRemove" class="btn btn-line btn-sm" data-id="{{ $cv['id'] }}" data-count="1" data-cost="500" data-pass="{{ csrf_token() }}" data-name="{{ $cv['first_name']. " " . $cv['last_name'] }}"><i class="fa fa-trash"></i> Remove from Cart </button>
                           @else
                             <!-- <a href="" id="cartAdd{{ $cv['id'] }}" class="btn btn-success btn-sm btn-cv-buy" data-count="1" data-cost="500" data-pass="{{ csrf_token() }}" data-name="{{ $cv['first_name']. " " . $cv['last_name'] }}"><i class="fa fa-plus"></i> Purchase CV for N500</a> -->
-                            <a href="" id="cartAdd" class="btn btn-success btn-sm " data-id="{{ $cv['id'] }}" data-count="1" data-cost="500" data-pass="{{ csrf_token() }}" data-name="{{ $cv['first_name']. " " . $cv['last_name'] }}"><i class="fa fa-plus"></i> Purchase CV for N500</a>
-                            <button id="cartRemove{{ $cv['id'] }}" class="btn btn-line btn-sm collapse" data-count="1" data-cost="500" data-pass="{{ csrf_token() }}" data-name="{{ $cv['first_name']. " " . $cv['last_name'] }}"><i class="fa fa-trash"></i> Remove from Cart </button>
+                            <a href="" id="cartAdd" class="btn btn-success btn-sm " data-id="{{ $cv['id'] }}" data-count="1" data-cost="500" data-pass="{{ csrf_token() }}" data-name="{{ $cv['first_name']. " " . $cv['last_name'] }}"><i class="fa fa-plus"></i> Purchase CV for &#8358;500</a>
+                            <!-- <button id="cartRemove" class="btn btn-line btn-sm collapse" data-id="{{ $cv['id'] }}"  data-count="1" data-cost="500" data-pass="{{ csrf_token() }}" data-name="{{ $cv['first_name']. " " . $cv['last_name'] }}"><i class="fa fa-trash"></i> Remove from Cart </button> -->
                           @endif
 
                   </span>
@@ -204,21 +204,21 @@
 
         });
 
-        $("#clearCart").click(function(){
-            // console.log(url)
-            $.ajax
-            ({
-              type: "POST",
-              url: url,
-              data: ({ rnd : Math.random() * 100000, cv_id: id, type:'clear', "_token":"{{ csrf_token() }}"}),
-              success: function(response){
+        // $("#clearCart").click(function(){
+        //     // console.log(url)
+        //     $.ajax
+        //     ({
+        //       type: "POST",
+        //       url: url,
+        //       data: ({ rnd : Math.random() * 100000, cv_id: id, type:'clear', "_token":"{{ csrf_token() }}"}),
+        //       success: function(response){
                 
-                console.log(response);
+        //         console.log(response);
                 
-              }
-          });
+        //       }
+        //   });
 
-        });
+        // });
 
 
     })

@@ -259,7 +259,13 @@
                                                             <option value="{{ $s->id }}">{{ $s->name }}</option>
                                                         @endforeach
                                                     </select>
-                                            </div>  
+                                            </div> 
+
+                                            <div class="col-sm-6">
+                                                <label for="job-title">Graduation Grade<span class="text-danger">*</span></label>
+                                                {{ Form::select('graduation_grade', $grades, 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
+
+                                            </div> 
 
                                         </div>
                                     </div>

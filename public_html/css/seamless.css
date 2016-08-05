@@ -1,12 +1,17 @@
 
-@import url(https://fonts.googleapis.com/css?family=Lato:400,700,300);
+@import url(https://fonts.googleapis.com/css?family=Oxygen:300,400,700);
+/*@import 'https://fonts.googleapis.com/css?family=Catamaran:300,400,700';*/
 
 body{
     min-width: 1200px;
     /*background: #E0E0E0 url(../img/notebook.png) fixed;*/
     background:#dfe5e9;
     /* font-family:"Proxima", Sans-serif; */
-    font-family:"Lato", Sans-serif;
+/*    font-family:"Lato", Sans-serif;*/
+    font-family: 'Oxygen', sans-serif;
+    letter-spacing: 0.01rem;
+    color: #333;
+/*    font-family: 'Catamaran', sans-serif;*/
     padding-top: 50px;
 }
 body.dark {
@@ -100,7 +105,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .navbar .navbar-brand,
 .navbar a,.navbar.transparent{
     color:#ffffff;
-    background:transparent;
+/*    background:transparent;*/
 }
 .navbar a.btn{
     background-color: #d9534f;
@@ -396,6 +401,13 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .navbar-nav > li > a{
     /*color: #ffffff;*/
 }
+.span-stage{
+    font-size: 11px;
+    text-transform: capitalize;
+}
+.span-stage:before{
+    content: " → ";
+}
 section {
     padding: 5em 0;
 }
@@ -436,7 +448,7 @@ section.s-div{
 section.s-div.homepage{
     -
     height: 450px;
-    background: #3A5979 fixed bottom url('../img/intro-bg.jpg');
+/*    background: #3A5979 fixed bottom url('../img/intro-bg.jpg');*/
     background-size:cover;
     /*border-bottom:3px solid #5CB85C;*/
 }
@@ -2930,9 +2942,9 @@ div.baser {
     right: 1.85em;
     top: 30px;
     background: 0 0;
-    border: 2px solid #fff;
+    border: 2px solid #800000;
     border-radius: 20px;
-    color: #fff;
+    color: #800000;
     opacity: 1;
     font-weight: normal;
     font-size: 26px;

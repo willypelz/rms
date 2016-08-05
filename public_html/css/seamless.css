@@ -151,6 +151,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     bottom: 4rem;
     left: 42rem;
 }
+.btn-group-justified .btn.disabled{
+        box-shadow: inset 0px 3px 3px #969696;
+}
 .btn-group-justified.btn-dash{
     margin-bottom:15px;
 }
@@ -4232,6 +4235,9 @@ textarea.embed-code {
     color: #333;
     background-color: #fff;
     border-color: #ccc;
+}
+.btn-line:hover{
+    background-color: #eee;
 }
 .btn-line.active {
     background: #a2b23d;

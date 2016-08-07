@@ -19,6 +19,7 @@ use Auth;
 use Mail;
 use Curl;
 use App\Libraries\Solr;
+use App\Libraries\Utilities;
 use Carbon\Carbon;
 use DB;
 use Alchemy\Zippy\Zippy;
@@ -169,8 +170,10 @@ class JobsController extends Controller
         }
 
         $price = 0;
-        $cart = Cart::instance('JobBoard')->content();
-        $count = Cart::instance('JobBoard')->count();
+        
+        $cart = Utilities::getCartContent('job-boards'); 
+        $count = Utilities::getBoardCartCount('job-boards'); 
+
         foreach ($cart as $k) {
                 $ids[] = ($k->id);
                 $price += $k->price; 

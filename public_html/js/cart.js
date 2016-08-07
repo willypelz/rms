@@ -67,7 +67,7 @@ window.Cart = (function(window,document,$,undefined){
 	                
 	                el.addClass( $this.config.cartAddClass )
 			  		  .removeClass( $this.config.cartRemoveClass )
-			  		  .html( $this.config.cartAddText )
+			  		  .html( $this.config.cartAddText + data.price )
 			  		  .attr('id','cartAdd');
 
 
@@ -118,12 +118,16 @@ window.Cart = (function(window,document,$,undefined){
 	            url: $this.config.actionUrl,
 	            data: (data),
 	            success: function(response){
-	              
-	            	$('body #cartRemove')
-	            	.addClass( $this.config.cartAddClass )
-		  		  	.removeClass( $this.config.cartRemoveClass )
-		  		  	.html( $this.config.cartAddText )
-		  		  	.attr('id','cartAdd');
+	              	
+	            	$('body #cartRemove').each(function( index ){
+	            		$(this)
+		            	.addClass( $this.config.cartAddClass )
+			  		  	.removeClass( $this.config.cartRemoveClass )
+			  		  	.html( $this.config.cartAddText + $(this).data('cost') )
+			  		  	.attr('id','cartAdd');
+	            	});
+
+	            	
 
 		  		  	$('.well-cart').hide();
 	              

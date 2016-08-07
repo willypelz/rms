@@ -21,7 +21,7 @@
           actionUrl: "{{ route('cart') }}",
           getCountUrl: "{{ route('getCartCount') }}",
           checkoutUrl: "{{ route('ajax_cart') }}",
-          cartAddText: '<i class="fa fa-plus"></i> Purchase CV for &#8358;500',
+          cartAddText: '<i class="fa fa-plus"></i> Purchase CV for &#8358;',
           cartRemoveText: '<i class="fa fa-trash"></i> Remove from Cart ',
           cartAddClass: 'btn-success',
           cartRemoveClass: 'btn-line'

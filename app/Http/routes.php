@@ -39,7 +39,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::auth();
 
     Route::get('/', function () {
-        
+
         return view('guest.landing');
     });
 
@@ -422,6 +422,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('invite/interview', [ 'as' => 'invite-for-interview', 'uses' => 'JobApplicationsController@inviteForInterview' ]);
     Route::post('save-interview-note', [ 'as' => 'save-interview-note', 'uses' => 'JobApplicationsController@saveInterviewNote' ]);
     
+
+
+
+    Route::post('cart/get-count', [ 'as' => 'getCartCount', 'uses' => 'CvSalesController@getBoardCartCount' ]);
 
     
 

@@ -2,6 +2,26 @@
 
 @section('content')
 
+<script src="{{ asset('js/cart.js') }}"></script>
+
+<script type="text/javascript">
+    
+    $(document).ready(function(){
+
+        Cart.init({
+          type : 'job-boards',
+          actionUrl: "{{ route('cart') }}",
+          getCountUrl: "{{ route('getCartCount') }}",
+          checkoutUrl: "{{ route('ajax_cart') }}",
+          cartAddText: '<i class="fa fa-plus"></i> Post for &#8358;',
+          cartRemoveText: '<i class="fa fa-trash"></i> Remove from Cart ',
+          cartAddClass: 'btn-success',
+          cartRemoveClass: 'btn-line'
+        });
+
+    });
+
+</script>
 <div class="separator separator-small"></div>
 
     <section class="no-pad">
@@ -57,7 +77,7 @@
                             &nbsp; <span class="hidden-xs">Job Promotion</span></button>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="addCan-job.php" type="button" class="btn btn-line text-capitalize text-muted"><i class="fa fa-plus"></i>
+                            <a href="{{ route('add-candidates', false) }}" type="button" class="btn btn-line text-capitalize text-muted"><i class="fa fa-plus"></i>
                             &nbsp; <span class="hidden-xs">Add candidates</span></a>
                           </div>
                         </div>
@@ -93,18 +113,17 @@
                                             </div>
                                             <div class="col-md-5 col-xs-9 col-sm-9 small text-right text-muted text-light"> Cost<br>
                                                 <span class="pull-right fa-2x">
-                                                    &#8358;
                                                     @if(empty($cart))
                                                     <span id="price-total" >0</span> 
                                                     @else
-                                                    <span id="price-total" >{{ $price }}</span> 
+                                                    &#8358;<span id="price-total" >{{ $price }}</span> 
                                                     @endif
                                                 </span>
                                             </div>
                                         </div><hr>
                                         <div class="row">
-                                            <div class="col-xs-6"><a href="#" id="checkout" target="_blank" data-toggle="modal" data-target="#myInvoice" class="btn btn-block btn-danger btn-sm btn-cart-checkout"> Checkout &raquo;</a></div>
-                                            <div class="col-xs-6"><button class="btn btn-block btn-line btn-sm btn-cart-clear text-muted" onclick="ClearBoardCart()"><i class="fa fa-close"></i> Clear</button></div>
+                                            <div class="col-xs-6"><a id="checkout" href="#" target="_blank" data-toggle="modal" data-target="#myInvoice" data-pass="{{ csrf_token() }}" class="btn btn-block btn-danger btn-sm btn-cart-checkout"> Checkout &raquo;</a></div>
+                                            <div class="col-xs-6"><button id="clearCart" class="btn btn-block btn-line btn-sm btn-cart-clear text-muted" data-pass="{{ csrf_token() }}"><i class="fa fa-close"></i> Clear</button></div>
                                         </div>
                                     </div>
                                 </div>
@@ -134,6 +153,7 @@
 
                                                       <span class="purchase-action">
                                                        <?php
+
                                                                 if($ids != null){
                                                                   $in_cart = in_array($b['id'], $ids);
                                                                   // dd($b['id']);
@@ -142,11 +162,12 @@
                                                                 }
                                                         ?>
                                                         @if($in_cart)
-                                                            <button class="btn btn-line btn-board-discard collapse" data-id="{{ $b['id'] }}"  data-count="1" data-cost="{{ $b['price'] }}" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                            <button id="cartRemove" class="btn btn-line" data-id="{{ $b['id'] }}"  data-count="1" data-cost="{{ $b['price'] }}" data-pass="{{ csrf_token() }}" data-name="{{ $b['name'] }}" ><i class="fa fa-trash"></i> Remove from Cart </button>
                                                         @else
-                                                            <a href="" class="btn btn-success btn-board-buy" data-count="1" onclick="AddBoardCart({{ $b['id'] }}, {{ $b['price'] }}, '{{ $b["name"] }}')" data-cost="{{ $b['price'] }}"><i class="fa fa-plus"></i> Post for &#8358; {{ $b['price'] }}</a>
-                                                            <button class="btn btn-line btn-board-discard collapse" data-id="{{ $b['id'] }}"  data-count="1" data-cost="{{ $b['price'] }}" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                            <a id="cartAdd" class="btn btn-success " data-count="1" data-id="{{ $b['id'] }}" data-cost="{{ $b['price'] }}" data-pass="{{ csrf_token() }}" data-name="{{ $b['name'] }}"><i class="fa fa-plus"></i> Post for &#8358; {{ $b['price'] }}</a>
                                                         @endif
+
+                                                         
                                                     </span>
 
                                                     </p> 
@@ -176,19 +197,19 @@
                                              
                                                           <span class="purchase-action">
                                                            <?php
-                                                                    if($ids != null){
+                                                                    /*if($ids != null){
                                                                       $in_cart = in_array($b['id'], $ids);
                                                                       // dd($b['id']);
                                                                     }else{
                                                                       $in_cart = "";
-                                                                    }
+                                                                    }*/
                                                                 ?>
                                              
                                                                  @if($in_cart)
-                                                                <button class="btn btn-line btn-board-discard" data-count="1" data-id="{{ $n['id'] }}" data-cost="500" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                                <!-- <button class="btn btn-line " data-count="1" data-id="{{ $n['id'] }}" data-cost="500" onclick="DeleteBoardCart({{ $b['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button> -->
                                                             @else
-                                                                <a href="" class="btn btn-success btn-board-buy" data-count="1" onclick="AddBoardCart({{ $n['id'] }}, {{ $n['price'] }}, '{{ $n["name"] }}')" data-cost="{{ $n['price'] }}"><i class="fa fa-plus"></i> Post for &#8358; {{ $n['price'] }}</a>
-                                                                <button class="btn btn-line btn-board-discard collapse" data-id="{{ $n['id'] }}" data-cost="500" onclick="DeleteBoardCart({{ $n['id'] }})"><i class="fa fa-trash"></i> Remove from Cart </button>
+                                                                <!-- <a href="" class="btn btn-success " data-count="1" onclick="AddBoardCart({{ $n['id'] }}, {{ $n['price'] }}, '{{ $n["name"] }}')" data-cost="{{ $n['price'] }}"><i class="fa fa-plus"></i> Post for &#8358; {{ $n['price'] }}</a> -->
+                                                                
                                                               @endif
                                                         </span>
                                              
@@ -233,7 +254,7 @@
 
             <h3 class="text-center">Confirm your order</h3>
             
-                <div id="invoice-response">
+                <div id="invoice-res">
                 </div>
         </div>
       </div>
@@ -401,7 +422,7 @@
             $('#price-total').text(  total  );
       }
 
-      $(this).calculateCartTotal();
+      //$(this).calculateCartTotal();
 
     
     var totalNew = {{ \App\Libraries\Utilities::getBoardCartCost() }};
@@ -448,29 +469,29 @@
 
     //--------Clear Cart button--------////
 
-    $('.btn-cart-clear').on('click',function(e){
+    // $('.btn-cart-clear').on('click',function(e){
 
-        cart_count = 0;
-        p_total = 0;
+    //     cart_count = 0;
+    //     p_total = 0;
         
-        e.preventDefault();
-        $('.btn-cv-buy').removeClass('collapse');
-        $('.btn-cv-discard').addClass('collapse');
-        // $(".btn-cart-checkout").addClass("disabled");
+    //     e.preventDefault();
+    //     $('.btn-cv-buy').removeClass('collapse');
+    //     $('.btn-cv-discard').addClass('collapse');
+    //     // $(".btn-cart-checkout").addClass("disabled");
 
-       $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block;"><b>'+cart_count+'</b></span>');
-       $('#price-total').html('<span class="animated zoomIn" style="display: inline-block;">'+p_total+'</span>');
-
-
-
-        if(p_total == 0){
-            $(".btn-cart-checkout").addClass("disabled");
-
-            return p_total;
-        }
+    //    $('#item-count').html('<span class="animated zoomIn fa-2x" style="display: inline-block;"><b>'+cart_count+'</b></span>');
+    //    $('#price-total').html('<span class="animated zoomIn" style="display: inline-block;">'+p_total+'</span>');
 
 
-    });
+
+    //     if(p_total == 0){
+    //         $(".btn-cart-checkout").addClass("disabled");
+
+    //         return p_total;
+    //     }
+
+
+    // });
 
     //--------End CV cart--------//  
 

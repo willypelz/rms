@@ -19,6 +19,7 @@ use Auth;
 use Mail;
 use Curl;
 use App\Libraries\Solr;
+use App\Libraries\Utilities;
 use Carbon\Carbon;
 use DB;
 use Alchemy\Zippy\Zippy;
@@ -169,8 +170,10 @@ class JobsController extends Controller
         }
 
         $price = 0;
-        $cart = Cart::instance('JobBoard')->content();
-        $count = Cart::instance('JobBoard')->count();
+        
+        $cart = Utilities::getCartContent('job-boards'); 
+        $count = Utilities::getBoardCartCount('job-boards'); 
+
         foreach ($cart as $k) {
                 $ids[] = ($k->id);
                 $price += $k->price; 
@@ -268,10 +271,17 @@ class JobsController extends Controller
         $active = 0;
         $suspended = 0;
         $deleted = 0;
+        $expired = 0;
 
         $active_jobs = [];
         foreach($jobs as $job){
-            if ($job->status == 'ACTIVE') {
+
+            if( strtotime($job->expiry_date) <= strtotime( date('m/d/Y h:i:s a', time()) ) ){
+                
+                $active_jobs[] = $job;
+                $expired++;
+            }
+            else if ($job->status == 'ACTIVE') {
                 $active_jobs[] = $job;
                 $active++;
             }
@@ -286,7 +296,7 @@ class JobsController extends Controller
                 // $suspended++;
             }
         }
-        return view('job.job-list', compact('jobs', 'active', 'suspended', 'deleted', 'company', 'active_jobs'));
+        return view('job.job-list', compact('jobs', 'active', 'suspended', 'deleted', 'company', 'active_jobs','expired'));
     }
 
     public function JobPromote($id, Request $request){
@@ -304,40 +314,32 @@ class JobsController extends Controller
 
         $job_id = $id;
 
-        $free_boards = JobBoard::where('type', 'free')->get()->toArray();
+        // $free_boards = JobBoard::where('type', 'free')->get()->toArray();
 
-        $job_boards = JobBoard::where('type', 'paid')->where('avi', null)->get()->toArray();
+        // $job_boards = JobBoard::where('type', 'paid')->where('avi', null)->get()->toArray();
 
-        $newspapers = JobBoard::where('type', 'paid')->where('avi', 1)->get();
+        // $newspapers = JobBoard::where('type', 'paid')->where('avi', 1)->get();
 
-        $subscribed_boards = $job->boards()->get()->pluck('id')->toArray();
-        
-        
+        $subscribed_boards = $job->boards()->get()->toArray();
 
-        // dd($newspapers->toArray());
-        // $c = (count($job_boards) / 2);
-        // $t = array_chunk($job_boards, $c);
-        // $board1 = $t[0];
-        // $board2 = $t[1];
-        foreach ($job_boards as $s) {
-            $bds[] = ($s['id']);
-        }
+        $approved_count = array_filter( array_pluck( $subscribed_boards, 'url' ), function(){ 
 
-        $price = 0;
-        $cart = Cart::instance('JobBoard')->content();
-        $count = Cart::instance('JobBoard')->count();
-        foreach ($cart as $k) {
-                $ids[] = ($k->id);
-                $price += $k->price; 
-        }
-        // dd($price);
-            if(empty($ids))
-                $ids = null;
+                if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+         } );
+
+        $approved_count = count( $approved_count );
 
 
-        // return view('job.advertise', compact('newspapers', 'job_boards', 'ids', 'cart', 'count', 'price', 'jobid', 'slug'));
+        $pending_count = count($subscribed_boards) - $approved_count;
 
-        return view('job.board.home', compact('free_boards','newspapers', 'job_boards', 'subscribed_boards', 'ids', 'cart', 'count', 'price', 'jobid','job', 'active_tab', 'company','result','application_statuses'));
+        return view('job.board.home', compact('subscribed_boards', 'jobid','job', 'active_tab', 'company','result','application_statuses','approved_count', 'pending_count'));
     }
 
     public function JobTeam($id, Request $request){
@@ -358,6 +360,7 @@ class JobsController extends Controller
     }
 
     public function ActivityContent(Request $request){
+
          $content = '<ul class="list-group list-notify">';
         
         if(!empty($request->appl_id)){
@@ -406,6 +409,7 @@ class JobsController extends Controller
                                   </p>
                                 </li>';                     break;
                  case "APPLIED":
+
                      $applicant = $ac->application->cv;
                      $job = $ac->application->job;
                      $content .= '<li role="candidate-application" class="list-group-item">
@@ -755,6 +759,19 @@ class JobsController extends Controller
                 'Others'
 
             ];
+        $grades = [
+
+                '1st Class',
+                'Distinction',
+                'Second Class Upper',
+                'Second Class Lower',
+                'Upper Credit',
+                'Lower Credit',
+                '3rd Class',
+                'Pass',
+                'Other',
+                'Unspecified'
+            ];
 
         $states = [
                 'Lagos',
@@ -842,6 +859,7 @@ class JobsController extends Controller
             $cv->last_position = $data['last_position'];
             $cv->last_company_worked = $data['last_company_worked'];
             $cv->years_of_experience = $data['years_of_experience'];
+            $cv->graduation_grade = $data['graduation_grade'];
             // $cv->willing_to_relocate = $data['willing_to_relocate'];
             $cv->cv_file = $data['cv_file'];
             $cv->save();
@@ -874,7 +892,7 @@ class JobsController extends Controller
         }
 
         
-        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations'));
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades'));
 
     }
 

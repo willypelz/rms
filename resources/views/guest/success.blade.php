@@ -44,7 +44,6 @@
                             <a href="" class="btn btn-line">Upload CVs to this job</a>
                             <div class="clearfix"></div>
                           <br>
-                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis corporis quas dolorum quasi veniam, velit nam repellendus non molestias debitis at fugiat dolorem explicabo, sed odit nesciunt accusantium impedit eaque.</p>
                           <!-- <p>
                             <a href="" class="btn btn-line">Upload CVs for this job <i class="fa fa-folder"></i></a>
                           </p> -->

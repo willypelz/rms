@@ -19,7 +19,9 @@
         Cart.init({
           type : 'cv-sales',
           actionUrl: "{{ route('cart') }}",
-          cartAddText: '<i class="fa fa-plus"></i> Purchase CV for N500',
+          getCountUrl: "{{ route('getCartCount') }}",
+          checkoutUrl: "{{ route('ajax_cart') }}",
+          cartAddText: '<i class="fa fa-plus"></i> Purchase CV for &#8358;',
           cartRemoveText: '<i class="fa fa-trash"></i> Remove from Cart ',
           cartAddClass: 'btn-success',
           cartRemoveClass: 'btn-line'
@@ -130,8 +132,8 @@
                         </div>
                     </div><hr>
                     <div class="row">
-                        <div class="col-xs-6"><a id="checkout" href="#" target="_blank" data-toggle="modal" data-target="#myInvoice" class="btn btn-block btn-danger btn-sm btn-cart-checkout"> Checkout &raquo;</a></div>
-                        <div class="col-xs-6"><button id="clearCart" class="btn btn-block btn-line btn-sm btn-cart-clear text-muted"><i class="fa fa-close"></i> Clear</button></div>
+                        <div class="col-xs-6"><a id="checkout" href="#" target="_blank" data-toggle="modal" data-target="#myInvoice" data-pass="{{ csrf_token() }}" class="btn btn-block btn-danger btn-sm btn-cart-checkout"> Checkout &raquo;</a></div>
+                        <div class="col-xs-6"><button id="clearCart" class="btn btn-block btn-line btn-sm btn-cart-clear text-muted" data-pass="{{ csrf_token() }}"><i class="fa fa-close"></i> Clear</button></div>
                     </div>
                 </div>
                 <div id="search-filters">
@@ -164,70 +166,17 @@
 
 
 
-<div class="modal fade" tabindex="-1" id="myInvoice" role="dialog" aria-labelledby="myInvoice">
-  <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal fade" tabindex="-1" id="myInvoice" role="dialog" aria-labelledby="myInvoice">
+      <div class="modal-dialog">
+        <div class="modal-content">
 
-        <h3 class="text-center">Confirm your order</h3>
-
-
-              <div id="invoice-res">
-                
-              </div>
-       
-
-          <script>
-
-                           var url = "{{ route('ajax_cart') }}";
-
-                 $("#contentArea").html('<img src="{{ asset("img/wheel.gif") }}" width="100px" /> please wait...');
-                              
-                                $("#checkout").click(function(){
-                                      // console.log(url)
-                                      $.ajax
-                                      ({
-                                        type: "POST",
-                                        url: url,
-                                        data: ({ rnd : Math.random() * 100000, "_token":"{{ csrf_token() }}"}),
-                                        success: function(response){
-                                          
-                                          // console.log(response);
-                                          $('#invoice-res').html(response)
-                                          
-                                        }
-                                    });
-
-                                  });
-
-          </script>
-
-
-    <!--  <script>
-
-                       var url = "{{ route('ajax_cart') }}";
-
-                        $("#contentArea").html('<img src="{{ asset("img/wheel.gif") }}" width="100px" /> please wait...');
-                          
-                            $("#checkout").click(function(){
-                                  $.ajax
-                                  ({
-                                    type: "POST",
-                                    url: url,
-                                    data: ({ rnd : Math.random() * 100000, "_token":"{{ csrf_token() }}"}),
-                                    success: function(response){
-                                      
-                                      $('#invoice-res').html(response)
-                                      
-                                    }
-                                });
-
-                              });
-
-      </script>-->
-
+            <h3 class="text-center">Confirm your order</h3>
+            <div id="invoice-res">
+              
+            </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
 <script type="text/javascript">
     var folders = [];

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cv extends Model
 {
     //
-	protected $fillable = array('extracted_content');
+	protected $fillable = ['extracted_content'];
 
     public $timestamps = false;
 

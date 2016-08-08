@@ -3,8 +3,10 @@ window.Cart = (function(window,document,$,undefined){
 	cart = {
 
 		config: {
-			type : null,
+			action : null,
 			actionUrl: null,
+			getCountUrl: null,
+			checkoutUrl: null,
 			cartAddText: '',
 			cartRemoveText: '',
 			cartAddClass: '',
@@ -21,33 +23,118 @@ window.Cart = (function(window,document,$,undefined){
 
 		add: function(data,el)
 		{
+
 			$this = this;
-			// $.ajax
-   //          ({
-	  //             type: "POST",
-	  //             url: $this.config.actionUrl,
-	  //             data: ({ rnd : Math.random() * 100000, cv_id: cvId, type:'add', name:"{{ $cv['first_name']. " " . $cv['last_name'] }}", 'qty':1, 'price':500, "_token":"{{ csrf_token() }}"}),
-	  //             success: function(response){
+			data.type = $this.config.type;
+
+			$.ajax
+            ({
+	              type: "POST",
+	              url: $this.config.actionUrl,
+	              data: ( data ),
+	              success: function(response){
 	                
-	  //               console.log(response);
+	                el.addClass( $this.config.cartRemoveClass )
+			  		  .removeClass( $this.config.cartAddClass )
+			  		  .html( $this.config.cartRemoveText )
+			  		  .attr('id','cartRemove');
+
+			  		$('.well-cart').show();
+
+			  		response = JSON.parse(response);
+			  		$('.well-cart').find('#item-count span').text( response.count );
+			  		$('.well-cart').find('#price-total').text( response.total );
+					console.log('added to cart');
 	                
-	  //             }
-	  //         });
+	              }
+	          });
 	  		
-	  		el.addClass( $this.config.cartRemoveClass )
-	  		  .removeClass( $this.config.cartAddClass )
-	  		  .html( $this.config.cartRemoveText );
-			console.log('added to cart');
+	  		
 			return $this;
 		},
 
-		remove: function()
+		remove: function(data,el)
 		{
+			$this = this;
+			data.type = $this.config.type;
+
+			$.ajax
+            ({
+	              type: "POST",
+	              url: $this.config.actionUrl,
+	              data: ( data ),
+	              success: function(response){
+	                
+	                el.addClass( $this.config.cartAddClass )
+			  		  .removeClass( $this.config.cartRemoveClass )
+			  		  .html( $this.config.cartAddText + data.price )
+			  		  .attr('id','cartAdd');
+
+
+			  		response = JSON.parse(response);
+			  		$('.well-cart').find('#item-count span').text( response.count );
+			  		$('.well-cart').find('#price-total').text( response.total );
+
+
+			  		if( response.count == 0)
+			  		{
+			  			$('.well-cart').hide();
+			  		}
+					console.log('Removed from cart');
+	                
+	              }
+	          });
+
+			
+			return $this;
 
 		},
 
-		clear: function()
+		checkout: function(data,el)
 		{
+			$this = this; 
+			data.type = $this.config.type;
+
+			$.ajax
+	          ({
+	            type: "POST",
+	            url: $this.config.checkoutUrl,
+	            data: (data),
+	            success: function(response){
+
+	              $('body #invoice-res').html(response);
+	            }
+	        });
+		},
+
+		clear: function(data,el)
+		{
+			$this = this;
+			data.type = $this.config.type;
+
+			$.ajax
+	          ({
+	            type: "POST",
+	            url: $this.config.actionUrl,
+	            data: (data),
+	            success: function(response){
+	              	
+	            	$('body #cartRemove').each(function( index ){
+	            		$(this)
+		            	.addClass( $this.config.cartAddClass )
+			  		  	.removeClass( $this.config.cartRemoveClass )
+			  		  	.html( $this.config.cartAddText + $(this).data('cost') )
+			  		  	.attr('id','cartAdd');
+	            	});
+
+	            	
+
+		  		  	$('.well-cart').hide();
+	              
+	            }
+	        });
+
+	        
 
 		},
 
@@ -59,6 +146,17 @@ window.Cart = (function(window,document,$,undefined){
 		getCount: function()
 		{
 
+			$.ajax
+            ({
+	              type: "POST",
+	              url: $this.config.getCountUrl,
+	              data: ({ rnd : Math.random() * 100000, type: $this.config.type}),
+	              success: function(response){
+	                
+	                console.log(response);
+	                return response;
+	              }
+	          });
 		}
 
 	};
@@ -82,16 +180,49 @@ window.Cart = (function(window,document,$,undefined){
 
 
 $(document).ready(function(){
-	$('body  #cartAdd').click(function(e){
+	$('body').on('click', '#cartAdd',function(e){
 			e.preventDefault();
           	Cart.add({ 	
           				rnd : Math.random() * 100000, 
-          				cv_id: $(this).data('id'), 
-          				type:'add', 
+          				id: $(this).data('id'), 
+          				action:'add', 
           				name: $(this).data('name'), 
           				qty: $(this).data('count'), 
           				price: $(this).data('cost'), 
           				"_token": $(this).data('pass')
           			},$(this));
         });
+
+	$('body').on('click', '#cartRemove', function(e){
+			e.preventDefault();
+          	Cart.remove({ 	
+          				rnd : Math.random() * 100000, 
+          				id: $(this).data('id'), 
+          				action:'remove', 
+          				name: $(this).data('name'), 
+          				qty: $(this).data('count'), 
+          				price: $(this).data('cost'), 
+          				"_token": $(this).data('pass')
+          			},$(this));
+        });
+
+	$('body').on('click', '#checkout', function(e){
+			e.preventDefault();
+          	Cart.checkout({ 	
+          				rnd : Math.random() * 100000, 
+          				"_token": $(this).data('pass')
+          			},$(this));
+        });
+
+	$('body').on('click', '#clearCart', function(e){
+			e.preventDefault();
+          	Cart.clear({ 	
+          				rnd : Math.random() * 100000, 
+          				// id: $(this).data('id'),
+          				action:'clear',
+          				"_token": $(this).data('pass')
+          			},$(this));
+        });
+
+	
 })

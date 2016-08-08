@@ -81,4 +81,6 @@ class HomeController extends Controller
             $message->to('deji@insidify.com', 'Seamless Hiring Call Request');
         });
     }
+
+    
 }

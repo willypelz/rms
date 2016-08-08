@@ -14,6 +14,7 @@ use App\Models\FolderContent;
 use App\Models\JobApplication;
 use Illuminate\Http\Request;
 use App\Libraries\Solr;
+use App\Libraries\Utilities;
 use Cart;
 use Auth;
 use Mail;
@@ -60,8 +61,8 @@ class CvSalesController extends Controller
             $this->search_params['filter_query'] = @$request->filter_query;
             $response = Solr::search_resume($this->search_params);
 
-            $cart = Cart::content();
-            $count = Cart::count(false); 
+            $cart = Utilities::getCartContent('cv-sales'); 
+            $count = Utilities::getBoardCartCount('cv-sales'); 
 
             //to get ids of all items in cart so as to check the button to display in view
             foreach ($cart as $k) {
@@ -158,41 +159,31 @@ class CvSalesController extends Controller
 
     public function Cart(Request $request){
         
-        // dd($request);
-        if(isset($request->cart_type)){
+        // dd($request->all());
 
-            if($request->cart_type == 'jobBoards'){
-                   if($request->type == 'add'){
+                   if($request->action == 'add'){
                      // Cart::instance('JobBoard')->add('sdjk922', 'Product 2', 1, 19.95, array('size' => 'medium'));
-                    Cart::instance('JobBoard')->add(array('rowid'=>111111, 'id' => $request->board_id, 'name' => $request->name, 'qty' => 1, 'price' => $request->price));
-                    echo 'Added Successfully';
-                   }elseif ($request->type == 'remove') {
-                        $search = Cart::instance('JobBoard')->search(array('id'=>$request->board_id));
-                        Cart::instance('JobBoard')->remove($search[0]);
-                        echo 'Deleted';    
-                   }else{
+                    Cart::instance( $request->type )->add(array('rowid'=>111111, 'id' => $request->id, 'name' => $request->name, 'qty' => $request->qty, 'price' => $request->price));
+                    // echo 'Added Successfully';
+                   }
+                   elseif ($request->action == 'remove') {
+                        $search = Cart::instance( $request->type )->search(array('id'=>$request->id));
+                        Cart::instance( $request->type )->remove($search[0]);
+                        // echo 'Deleted';    
+                   }
+                   elseif ($request->action == 'clear') {
+                        Cart::instance( $request->type )->destroy();
+                    }
+                    else{
                         
-                        Cart::instance('JobBoard')->destroy();
+                        Cart::instance($request->type)->destroy();
 
                    } 
 
-            }
+                return json_encode( [ 'count' =>  Utilities::getBoardCartCount( $request->type ), 'total' => Utilities::getBoardCartCost( $request->type ) ] );
 
-        }else{
 
-            if($request->type == 'remove'){
-                $search = Cart::search(array('id' => $request->cv_id)); // Returns an array of rowid(s) of found item(s) or false on failure
-                Cart::remove($search[0]);
-
-                echo 'Deleted';
-            }elseif ($request->type == 'clear') {
-                Cart::destroy();
-            }
-            else{
-                Cart::add(array('rowid'=>111111, 'id' => $request->cv_id, 'name' => $request->name, 'qty' => 1, 'price' => 500));
-                echo 'Successfully Added';
-            }
-        }
+        
     }
 
     /* CART TESTING */
@@ -216,28 +207,17 @@ class CvSalesController extends Controller
 
     public function Ajax_cart(Request $request){
 
-        if(isset($request->cart_type)){
-
-            if($request->cart_type == 'jobBoards'){
-                $items = Cart::instance('JobBoard')->content();
-                $jobBoards = 'JOB Boards';
-
-                 $view = view('cv-sales.ajax_cart', compact('items', 'jobBoards'));
-                return $view;
-            }
-
-        }else{
-            $items = Cart::content();
+            $items = Cart::instance( $request->type )->content();
             $view = view('cv-sales.ajax_cart', compact('items'));
             return $view;
-        }
+        
     }
 
     public function Ajax_checkout(Request $request){
 
         $user = Auth::user();
 
-        if(empty($user)){
+        if(!Auth::check()){
             $view = view('auth.ajax_login');
             return $view;
         }
@@ -246,78 +226,37 @@ class CvSalesController extends Controller
 
         $d = User::with('companies')->where('id', $user->id)->first();
         $company = get_current_company();
+        $total_amount = $request->total_amount;
 
-        if(isset($request->cart_type)){
+        $items = Cart::instance( $request->type )->content();
 
-            if($request->cart_type == 'jobBoards'){
-                $items = Cart::instance('JobBoard')->content();
+        
+        $order = Order::firstOrCreate([
+                'company_id' => $company->id,
+                'order_date'=> date('Y-m-d H:i:s'),
+                'total_amount'=> $request->total_amount,
+                'invoice_no'=> $invoice_no,
+                'type'=> $request->type,
+        ]);
 
-                $total_amount = $request->total_amount;
-                
-                $order = Order::firstOrCreate([
-                        'company_id' => $company->id,
-                        'order_date'=> date('Y-m-d H:i:s'),
-                        'total_amount'=>$total_amount,
-                        'invoice_no'=> $invoice_no,
-                        'type'=> 'Job Board',
-                ]);
+        foreach ($items as $k) {
 
-                foreach ($items as $k) {
+            $orderItems = OrderItem::firstOrCreate([
+                        'order_id' => $order->id,
+                        'itemId' => $k->id,
+                        'type' => $request->type,
+                        'name' => $k->name,
+                        'price' => $k->price
+             ]);
 
-                    $orderItems = OrderItem::firstOrCreate([
-                                'order_id' => $order->id,
-                                'itemId' => $k->id,
-                                'type' => 'Job Board',
-                                'name' => $k->name,
-                                'price' => $k->price
-                     ]);
-
-                }
-
-                $order_id = $order->id;
-                $jobBoards = 'JOB Boards';
-                $view = view('cv-sales.checkout_ajax', compact('items', 'order_id', 'total_amount', 'jobBoards', 'company', 'invoice_no'));
-                return $view;
-            }
-
-        }else{
-           
-            $items = Cart::content();
-            
-            $total_amount = 0;
-            foreach ($items as $k) {
-              $total_amount += ($k->price);
-            }
-            $order = Order::firstOrCreate([
-                        'company_id' => $company->id,
-                        'order_date'=> date('Y-m-d H:i:s'),
-                        'total_amount'=>$total_amount,
-                        'invoice_no'=> $invoice_no,
-                        'type'=>'cvs',
-            ]);
-
-            foreach ($items as $k) {
-              $orderItems = OrderItem::firstOrCreate([
-                                'order_id' => $order->id,
-                                'itemId' => $k->id,
-                                'type' => 'Cv-sales',
-                                'name' => $k->name,
-                                'price' => $k->price
-                ]);
-            }
-            $order_id = $order->id;
-
-
-
-           // Mail::send('emails.cv-sales.invoice', ['user' => $user], function ($m) use ($user) {
-           //      $m->from('alerts@insidify.com', 'Your Application');
-
-           //      $m->to('lanaayodele@gmail.com', 'Ayo')->subject('Your Reminder!');
-           //  });
-           
-            $view = view('cv-sales.checkout_ajax', compact('items', 'order_id', 'total_amount', 'company'));
-            return $view;
         }
+
+        $order_id = $order->id;
+        $jobBoards = $request->type;
+        $view = view('cv-sales.checkout_ajax', compact('items', 'order_id', 'total_amount', 'jobBoards', 'company', 'invoice_no'));
+        return $view;
+
+
     }
 
     public function Payment(Request $request, $type = null){
@@ -447,8 +386,8 @@ class CvSalesController extends Controller
         $response = Solr::get_saved_cvs($this->search_params);
 
 
-        $cart = Cart::content();
-        $count = Cart::count(false); 
+        $cart = Utilities::getCartContent('saved-cvs'); 
+        $count = Utilities::getBoardCartCount('saved-cvs'); 
 
         //to get ids of all items in cart so as to check the button to display in view
         foreach ($cart as $k) {
@@ -605,5 +544,9 @@ class CvSalesController extends Controller
         // return view('cv-sales.cv_saved');
     }
 
+    public function getBoardCartCount(Request $request)
+    {
+        return Utilities::getBoardCartCount( @$request->type );
+    }
     
 }

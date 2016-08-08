@@ -314,40 +314,32 @@ class JobsController extends Controller
 
         $job_id = $id;
 
-        $free_boards = JobBoard::where('type', 'free')->get()->toArray();
+        // $free_boards = JobBoard::where('type', 'free')->get()->toArray();
 
-        $job_boards = JobBoard::where('type', 'paid')->where('avi', null)->get()->toArray();
+        // $job_boards = JobBoard::where('type', 'paid')->where('avi', null)->get()->toArray();
 
-        $newspapers = JobBoard::where('type', 'paid')->where('avi', 1)->get();
+        // $newspapers = JobBoard::where('type', 'paid')->where('avi', 1)->get();
 
-        $subscribed_boards = $job->boards()->get()->pluck('id')->toArray();
-        
-        
+        $subscribed_boards = $job->boards()->get()->toArray();
 
-        // dd($newspapers->toArray());
-        // $c = (count($job_boards) / 2);
-        // $t = array_chunk($job_boards, $c);
-        // $board1 = $t[0];
-        // $board2 = $t[1];
-        foreach ($job_boards as $s) {
-            $bds[] = ($s['id']);
-        }
+        $approved_count = array_filter( array_pluck( $subscribed_boards, 'url' ), function(){ 
 
-        $price = 0;
-        $cart = Cart::instance('JobBoard')->content();
-        $count = Cart::instance('JobBoard')->count();
-        foreach ($cart as $k) {
-                $ids[] = ($k->id);
-                $price += $k->price; 
-        }
-        // dd($price);
-            if(empty($ids))
-                $ids = null;
+                if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+         } );
+
+        $approved_count = count( $approved_count );
 
 
-        // return view('job.advertise', compact('newspapers', 'job_boards', 'ids', 'cart', 'count', 'price', 'jobid', 'slug'));
+        $pending_count = count($subscribed_boards) - $approved_count;
 
-        return view('job.board.home', compact('free_boards','newspapers', 'job_boards', 'subscribed_boards', 'ids', 'cart', 'count', 'price', 'jobid','job', 'active_tab', 'company','result','application_statuses'));
+        return view('job.board.home', compact('subscribed_boards', 'jobid','job', 'active_tab', 'company','result','application_statuses','approved_count', 'pending_count'));
     }
 
     public function JobTeam($id, Request $request){

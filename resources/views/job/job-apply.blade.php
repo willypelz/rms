@@ -67,6 +67,9 @@
                                     <div class="row">
                                         
                                         <div class="col-sm-8">
+                                            @if( strtotime($job['expiry_date']) <= strtotime( date('m/d/Y h:i:s a', time()) ) )
+                                                <p class="text-center">This application is closed.</p>
+                                            @else
                                             <p class="text-center">Please fill in the information below carefully.</p>
 
 
@@ -307,7 +310,7 @@
                                     </div>
                                 </form>
 
-                                            
+                                         @endif   
                                         </div>
                                                 
                                         <div class="col-sm-4">

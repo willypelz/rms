@@ -25,232 +25,79 @@
                                 
                                   <div class="panel-heading">
                                     <h3 class="panel-title">Advertise on Job Boards 
-                                    <span class="pull-right text-warning"><i class="fa fa-check-circle"></i> 4 approved &nbsp; &middot; &nbsp;<i class="fa fa-hourglass-half"></i> 3 Pending</span>
-                                    <!-- <a href="" class="btn-sm btn btn-danger pull-right"><i class="fa fa-send"></i> Promote Job</a> --></h3>
+                                    <span class="pull-right text-warning"><i class="fa fa-check-circle"></i> {{ $approved_count }} approved &nbsp; &middot; &nbsp;<i class="fa fa-hourglass-half"></i> {{ $pending_count }} Pending</span>
+
                                   </div>
                                   <div class="panel-body">
                                   <p class="text-muted">You can copy the link of your job or share them from here.</p>
+                                    
+
+                                    @foreach($subscribed_boards as $subscribed_board)
+                                        <?php 
+                                              // $sub_key = array_search($b['id'], array_pluck( $subscribed_boards, 'id' ) );
 
 
-                                    <div class="row job-board approved">
-                                      <div class="col-xs-3"><br>
-                                        <img src="{{ url('/') }}/img/logo-full.png" alt="insidify logo" width="90%" align="right">
-                                      </div>
-                                      <div class="col-xs-6">
-                                        <h5 title="Your Job is live on this website">Insidify.com <i class="fa fa-check-circle text-success"></i> </h5><input type="text" class="form-control" value="http://localhost/seamlesshiring/public_html/job/promote/22" readonly>
-                                        <!-- <div class="clearfix"></div>
-                                        <p class="small text-muted">&uarr; Link to job on insidify.com</p> -->
-                                      </div>
-                                      <div class="col-xs-3">
-                                      <h5>Share this link</h5>
-                                        <ul class="list-inline">
-                                               <li class="no-pad no-margin">
-                                                   <a href="" class="btn-disabled" target="_blank" >
-                                                           <span class="fa-stack fa-lg">
-                                                             <i class="fa fa-square fa-stack-2x text-"></i>
-                                                             <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                                   </a>
-                                               </li>
-                                                                              
-                                               <li class="no-pad no-margin">
-                                                   <a href="" class="btn-disabled" target="_blank" >
-                                                           <span class="fa-stack fa-lg">
-                                                             <i class="fa fa-square fa-stack-2x text-"></i>
-                                                             <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                                   </a>
-                                               </li>
-                                                                              
-                                               <li class="no-pad no-margin">
-                                                   <a href="" class="btn-disabled" target="_blank" >
-                                                           <span class="fa-stack fa-lg">
-                                                             <i class="fa fa-square fa-stack-2x text-"></i>
-                                                             <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                                   </a>
-                                               </li>
-                                           </ul>
-                                      </div>
-                                      <div class="clearfix"></div>
-                                      <hr>
-                                    </div>
+                                              if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
+                                              {
+                                                  $status = 'approved';
+                                              }
+                                              else
+                                              {
+                                                  $status = 'pending';
 
-
-                                    <div class="row job-board approved">
-                                      <div class="col-xs-3"><br>
-                                        <img src="{{ url('/') }}/img/efritin-logo.png" alt="insidify logo" width="90%" align="right">
-                                      </div>
-                                      <div class="col-xs-6">
-                                        <h5  title="Your Job is live on this website">Efritin.com Jobs <i class="fa fa-check-circle text-success"></i> </h5><input type="text" class="form-control" value="http://localhost/seamlesshiring/public_html/job/promote/22" readonly>
-                                        <!-- <div class="clearfix"></div>
-                                        <p class="small text-muted">&uarr; Link to job on insidify.com</p> -->
-                                      </div>
-                                      <div class="col-xs-3">
-                                      <h5>Share this link</h5>
-                                        <ul class="list-inline">
-                                               <li class="no-pad no-margin">
-                                                   <a href="" class="btn-disabled" target="_blank" >
-                                                           <span class="fa-stack fa-lg">
-                                                             <i class="fa fa-square fa-stack-2x text-"></i>
-                                                             <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                                   </a>
-                                               </li>
-                                                                              
-                                               <li class="no-pad no-margin">
-                                                   <a href="" class="btn-disabled" target="_blank" >
-                                                           <span class="fa-stack fa-lg">
-                                                             <i class="fa fa-square fa-stack-2x text-"></i>
-                                                             <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                                   </a>
-                                               </li>
-                                                                              
-                                               <li class="no-pad no-margin">
-                                                   <a href="" class="btn-disabled" target="_blank" >
-                                                           <span class="fa-stack fa-lg">
-                                                             <i class="fa fa-square fa-stack-2x text-"></i>
-                                                             <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                                   </a>
-                                               </li>
-                                           </ul>
-                                      </div>
-                                      <div class="clearfix"></div>
-                                      <hr>
-                                    </div>
-
-
-                                    <div class="row job-board approved">
-                                      <div class="col-xs-3"><br>
-                                        <img src="{{ url('/') }}/img/job_informant.PNG" alt="Job Informat logo" width="90%" align="right">
-                                      </div>
-                                      <div class="col-xs-6">
-                                        <h5  title="Your Job is live on this website">Job Informant <i class="fa fa-check-circle text-success"></i> </h5><input type="text" class="form-control" value="http://localhost/seamlesshiring/public_html/job/promote/22" readonly>
-                                        <!-- <div class="clearfix"></div>
-                                        <p class="small text-muted">&uarr; Link to job on insidify.com</p> -->
-                                      </div>
-                                      <div class="col-xs-3">
-                                      <h5>Share this link</h5>
-                                        <ul class="list-inline">
-                                               <li class="no-pad no-margin">
-                                                   <a href="" class="btn-disabled" target="_blank" >
-                                                           <span class="fa-stack fa-lg">
-                                                             <i class="fa fa-square fa-stack-2x text-"></i>
-                                                             <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                                   </a>
-                                               </li>
-                                                                              
-                                               <li class="no-pad no-margin">
-                                                   <a href="" class="btn-disabled" target="_blank" >
-                                                           <span class="fa-stack fa-lg">
-                                                             <i class="fa fa-square fa-stack-2x text-"></i>
-                                                             <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                                   </a>
-                                               </li>
-                                                                              
-                                               <li class="no-pad no-margin">
-                                                   <a href="" class="btn-disabled" target="_blank" >
-                                                           <span class="fa-stack fa-lg">
-                                                             <i class="fa fa-square fa-stack-2x text-"></i>
-                                                             <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                                   </a>
-                                               </li>
-                                           </ul>
-                                      </div>
-                                      <div class="clearfix"></div>
-                                      <hr>
-                                    </div>
-
-
-                                    <div class="row job-board pending">
-                                      <div class="col-xs-3">
-                                      <br>
-                                        <img src="{{ url('/') }}/img/linkedin-logo.png" alt="insidify logo" width="90%" align="right">
-                                      </div>
-                                      <div class="col-xs-6">
-                                        <h5>Linkedin<i class="fa fa-hourglass-half text-muted"></i> pending approval</h5><input type="text" class="form-control" value="your url will appear here" disabled="">
-                                        <!-- <div class="clearfix"></div>
-                                        <p class="small text-muted">&uarr; Link to job on insidify.com</p> -->
-                                      </div>
-                                      <div class="col-xs-3">
-                                      <h5>Share this link</h5>
-                                        <ul class="list-inline">
-                                               <li class="no-pad no-margin">
-                                                   
-                                                           <span class="fa-stack fa-lg">
-                                                             <i class="fa fa-square fa-stack-2x text-muted"></i>
-                                                             <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                          
-                                              </li>
-                                                                              
-                                               <li class="no-pad no-margin">
-                                                    <span class="fa-stack fa-lg">
-                                                             <i class="fa fa-square fa-stack-2x text-muted"></i>
-                                                             <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                               </li>
-                                                                              
-                                               <li class="no-pad no-margin">
-                                                   
-                                                           <span class="fa-stack fa-lg">
-                                                             <i class="fa fa-square fa-stack-2x text-muted"></i>
-                                                             <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                               </li>
-                                           </ul>
-                                      </div>
-                                      <div class="clearfix"></div>
-                                      <hr>
-                                    </div>
-
-
-                                    <div class="row job-board pending">
-                                      <div class="col-xs-3">
-                                      <br>
-                                        <img src="{{ url('/') }}/img/brws.png" alt="insidify logo" width="90%" align="right">
-                                      </div>
-                                      <div class="col-xs-6">
-                                        <h5>LoremIpsum.ng <i class="fa fa-hourglass-half text-muted"></i> pending approval</h5><input type="text" class="form-control" value="your url will appear here" disabled="">
-                                        <!-- <div class="clearfix"></div>
-                                        <p class="small text-muted">&uarr; Link to job on insidify.com</p> -->
-                                      </div>
-                                      <div class="col-xs-3">
-                                      <h5>Share this link</h5>
-                                        <ul class="list-inline">
-                                               <li class="no-pad no-margin">
-                                                   
-                                                           <span class="fa-stack fa-lg">
-                                                             <i class="fa fa-square fa-stack-2x text-muted"></i>
-                                                             <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                          
-                                              </li>
-                                                                              
-                                               <li class="no-pad no-margin">
-                                                    <span class="fa-stack fa-lg">
-                                                             <i class="fa fa-square fa-stack-2x text-muted"></i>
-                                                             <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                               </li>
-                                                                              
-                                               <li class="no-pad no-margin">
-                                                   
-                                                           <span class="fa-stack fa-lg">
-                                                             <i class="fa fa-square fa-stack-2x text-muted"></i>
-                                                             <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                               </li>
-                                           </ul>
-                                      </div>
-                                      <div class="clearfix"></div>
-                                      <hr>
-                                    </div>
+                                              }
+                                              // $status = ( in_array($b['id'], $subscribed_boards) ) ? 'disabled checked' : ''; 
+                                              // $approved = ( in_array($b['id'], $subscribed_boards) ) ? 'disabled checked' : ''; 
+                                         ?>
+                                        
+                                        <div class="row job-board {{$status}}">
+                                          <div class="col-xs-3"><br>
+                                            <img src="{{ $subscribed_board['img'] }}" alt="{{ $subscribed_board['name'] }} logo" width="90%" align="right">
+                                          </div>
+                                          <div class="col-xs-6">
+                                            @if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
+                                              <h5 title="Your Job is live on this website">{{ $subscribed_board['name'] }} <i class="fa fa-check-circle text-success"></i> </h5><input type="text" class="form-control" value="" readonly>
+                                            @else
+                                              <h5>{{ $subscribed_board['name'] }} &nbsp;&nbsp;<i class="fa fa-hourglass-half text-muted"></i>pending approval</h5><input type="text" class="form-control" value="your url will appear here" disabled="">
+                                            @endif
+                                            <!-- <div class="clearfix"></div>
+                                            <p class="small text-muted">&uarr; Link to job on insidify.com</p> -->
+                                          </div>
+                                          <div class="col-xs-3">
+                                          <h5>Share this link</h5>
+                                            <ul class="list-inline">
+                                                   <li class="no-pad no-margin">
+                                                       <a href="" class="btn-disabled" target="_blank" >
+                                                               <span class="fa-stack fa-lg">
+                                                                 <i class="fa fa-square fa-stack-2x text-"></i>
+                                                                 <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                                               </span>
+                                                       </a>
+                                                   </li>
+                                                                                  
+                                                   <li class="no-pad no-margin">
+                                                       <a href="" class="btn-disabled" target="_blank" >
+                                                               <span class="fa-stack fa-lg">
+                                                                 <i class="fa fa-square fa-stack-2x text-"></i>
+                                                                 <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                                               </span>
+                                                       </a>
+                                                   </li>
+                                                                                  
+                                                   <li class="no-pad no-margin">
+                                                       <a href="" class="btn-disabled" target="_blank" >
+                                                               <span class="fa-stack fa-lg">
+                                                                 <i class="fa fa-square fa-stack-2x text-"></i>
+                                                                 <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                                                               </span>
+                                                       </a>
+                                                   </li>
+                                               </ul>
+                                          </div>
+                                          <div class="clearfix"></div>
+                                          <hr>
+                                        </div>
+                                        @endforeach
 
 
                                     <!-- <u class="text-center"><a href=""><i class="fa fa-plus"></i> Add Job board</u></a> -->

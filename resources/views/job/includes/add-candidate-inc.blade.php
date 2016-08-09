@@ -34,7 +34,7 @@
                             <div class="form-group fileinput fileinput-new input-group" data-provides="fileinput">
                               <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
 
-                              <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                              <span class="input-group-addon btn btn-primary btn-file text-white"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
                                 <input type="file" name="cv-upload-file" placeholder="zip" multiple="multiple" accept=".zip,.pdf,.doc,.docx,.txt,.rtf,.pptx,.ppt">
                               </span>
                               <a href="#" class="input-group-addon  fileinput-exists btn btn-danger" style="    background-color: #d9534f; color:white;" data-dismiss="fileinput">Remove</a>

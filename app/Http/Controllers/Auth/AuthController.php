@@ -148,6 +148,9 @@ class AuthController extends Controller
                       ['user_id' => $user->id, 'company_id'=> $comp->id]
             ]);
 
+
+            
+
             $upload = $request->file('logo')->move(
                 env('fileupload'), $logo
             );

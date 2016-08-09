@@ -227,7 +227,15 @@ use App\Models\Job;
 
 		$color = $colors[ array_rand($colors) ];
 
-		return [ 'color' => '#'.$color, 'image' => 'http://dummyimage.com/300x300/'.$color.'/ffffff.jpg&text='.strtoupper( substr($string1,0,1).substr($string2,0,1) ) ];
+		$text = strtoupper( substr($string1,0,1).substr($string2,0,1) );
+
+		if($text == "" || $text == null)
+		{
+			$text = 'O';
+		}
+
+
+		return [ 'color' => '#'.$color, 'image' => 'http://dummyimage.com/300x300/'.$color.'/ffffff.jpg&text='.$text ];
 		
 	}
 

@@ -54,9 +54,44 @@ class JobsController extends Controller
     {
       # code...
       // dd('helo');
-      dd($request->request);
+      // dd($request->request);
 
-      echo 'Saved';
+      $validator = Validator::make($request->all(), [
+            'email_to' => 'required'
+        ],[
+            'email_to.required' => 'Email is required'
+        ]);
+
+        if ($validator->fails()) {
+            echo 'Issue dey';
+        }
+        else
+        {   
+          //Create User
+            $user = User::FirstorCreate([              
+              'email' => $request->email_to
+            ]);
+
+            //Add user to company users
+            $company = Company::find( get_current_company()->id );
+            $company->users()->attach($user->id);
+
+            //Save Invite Code
+            $user->invite_code = str_random(40);
+            
+            //Send notification mail
+            $email_from = ( Auth::user()->email ) ? Auth::user()->email : 'no-reply@insidify.com';
+            // Mail::send('emails.cv-sales.invoice', [], function($message){
+            //     $message->from($email_from);
+            //     $message->to($request->email, 'You Have Been Exclusively Invited');
+            // }); 
+            echo 'Saved';
+        }
+
+        
+      //$comp->users()->attach($user->id);
+
+      
     }
    
     public function PostJob(Request $request)
@@ -345,9 +380,11 @@ class JobsController extends Controller
     public function JobTeam($id, Request $request){
         //Check if he  is the owner of the job
         check_if_job_owner( $id );
-        $comp_id = get_current_company();
+        $comp_id = get_current_company()->id;
 
-        $users  = Company::with('users')->find($comp_id);
+        $company  = Company::with('users')->find($comp_id); 
+
+        $owner = $company->users()->first();
         
         $job = Job::find($id);
         $active_tab = 'team';
@@ -356,7 +393,7 @@ class JobsController extends Controller
       
         $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
-        return view('job.board.team', compact('job', 'active_tab', 'users','result','application_statuses'));
+        return view('job.board.team', compact('job', 'active_tab', 'company','result','application_statuses','owner'));
     }
 
     public function ActivityContent(Request $request){

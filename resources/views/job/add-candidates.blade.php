@@ -29,8 +29,8 @@
                             &nbsp; <span class="hidden-xs">Job Promotion</span></button>
                           </div>
                           <div class="btn-group" role="group">
-                            <a href="addCan-job.php" type="button" class="btn btn-primary text-capitalize disabled"><i class="fa fa-plus"></i>
-                            &nbsp; <span class="hidden-xs">Add candidates</span></a>
+                            <button class="btn disabled text-capitalize text-muted"><i class="fa fa-plus"></i>
+                            &nbsp; <span class="hidden-xs">Add candidates</span></button>
                           </div>
                         </div><hr>
                         <div> 
@@ -55,9 +55,7 @@
                           </div>
                         </div>
                         @endif
-
-        <div class="row">
-        </div>
+                        
                         @include('job.includes.add-candidate-inc')
 
                     </div>

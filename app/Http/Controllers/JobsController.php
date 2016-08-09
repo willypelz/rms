@@ -339,7 +339,7 @@ class JobsController extends Controller
 
         $pending_count = count($subscribed_boards) - $approved_count;
 
-        return view('job.board.home', compact('subscribed_boards', 'jobid','job', 'active_tab', 'company','result','application_statuses','approved_count', 'pending_count'));
+        return view('job.board.home', compact('subscribed_boards', 'job_id','job', 'active_tab', 'company','result','application_statuses','approved_count', 'pending_count'));
     }
 
     public function JobTeam($id, Request $request){

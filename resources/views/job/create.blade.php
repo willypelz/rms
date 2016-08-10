@@ -9,9 +9,9 @@
             <div class="row">
 
                 <div class="col-sm-12">
-                    <h5 class="no-margin text-center l-sp-5 text-brandon text-uppercase">Fill in your job details here.</h5><br>
                     <div class="page">
                         <div class="row">
+                    <h5 class="no-margin text-center l-sp-5 text-brandon text-uppercase">Fill in your job requirements here.</h5><hr><br>
 
                                  @if ($errors->any())
                                 <ul class="alert alert-danger">
@@ -31,11 +31,10 @@
                                         
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-sm-8"><label for="job-title">job title <span class="text-danger">*</span></label>
+                                            <div class="col-sm-12"><label for="job-title">job title <span class="text-danger">*</span></label>
                                             <input required id="job_title" type="text" name="job_title" class="form-control" {{ (Request::old('job_title')) ? ' value='. e(Request::old('job_title')) .'' : '' }}>
-                                            &nbsp;&nbsp; <small>e.g. Marketer</small>
+                                            <small>e.g. Marketer  at {{ get_current_company()->name }}</small>
                                            </div>
-                                           <div class="col-sm-4" style="margin-top: 27px;margin-left: -20px;"><small> at {{ get_current_company()->name }}</small></div>
                                         </div>
                                     </div>
 
@@ -117,13 +116,55 @@
                                             </div>
                                         </div>
                                     </div>
-                                   
-                                   
-
-                                    <div class="row">
-                                            <div class="separator separator-small"></div>
+                                    
+                                    <div class="well small">Custom Field: Years of Experience 
+                                        <span class="pull-right"><a href="" class=""><i class="fa fa-pencil"></i> EDIT</a> &nbsp; 
+                                            <a href="" class="text-muted"><i class="fa fa-times"></i> REMOVE</a>
+                                            </span>
+                                    </div>
+                                    
+                                    <div class="well small">Custom Field: Last Promotion details 
+                                        <span class="pull-right"><a href="" class=""><i class="fa fa-pencil"></i> EDIT</a> &nbsp; 
+                                            <a href="" class="text-muted"><i class="fa fa-times"></i> REMOVE</a>
+                                            </span>
+                                    </div>
+                                    
+                                    <div class="AddFieldButton">
+                                        <a href="#addField" data-toggle="collapse" class="btn btn-line btn-sm" style="background: whitesmoke; border: none; border-radius: 3px 3px 0 0;"><i class="fa fa-plus"></i> Add Custom field</a> &nbsp;
+                                       <small class="">- Use this to add a custom question or input to this form</small><br>
+                                    </div>
+                                    
+                                    <div id="addField" class="well no-shadow no-border no-bod-radius collapse">
+                                          
+                                           <a href="#addField" data-toggle="collapse" class="lead no-margin no-pad text-danger fa-2x pull-right">&times;</a>
+                                           
+                                            <div class="row"><br>
+                                                <div class="col-xs-2 col-xs-offset-2 text-uppercase small"><strong>Field <br> Label</strong></div>
+                                                <div class="col-xs-6"><input class="form-control" type="text" placeholder="Title of field"></div>
+                                            </div><hr>
+                                            <div class="row">
+                                                <div class="col-xs-2 col-xs-offset-2 text-uppercase small"><strong>Field <br> Type</strong></div>
+                                                <div class="col-xs-6">
+                                                    <select name="" id="" class="form-control">
+                                                        <option value=""></option>
+                                                    </select>
+                                                </div>
+                                            </div><hr>
+                                            <div class="row">
+                                                <div class="col-xs-2 col-xs-offset-2 text-uppercase small"><strong>Field Options</strong></div>
+                                                <div class="col-xs-6">
+                                                    <input class="form-control" type="text" placeholder="Enter options separated by comma">
+                                                </div>
+                                            </div><hr>
+                                            <div class="row">
+                                                <div class="col-xs-8 col-xs-offset-2">
+                                                    <button href="" class="btn-sm btn btn-success disabled pull-right" ><i class="fa fa-check"></i> Add field</button>
+                                                    
+<!--                                                    <button href="" class="btn-sm btn btn-line disabled pull-left" ><i class="fa fa-plus"></i> Add another field</button>-->
+                                                </div>
+                                            </div>
                                         </div>
-                                        <hr>
+                                    <hr>
                                    
 
                                     <div class="form-group">

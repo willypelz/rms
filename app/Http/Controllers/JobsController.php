@@ -81,10 +81,10 @@ class JobsController extends Controller
             
             //Send notification mail
             $email_from = ( Auth::user()->email ) ? Auth::user()->email : 'no-reply@insidify.com';
-            // Mail::send('emails.cv-sales.invoice', [], function($message){
-            //     $message->from($email_from);
-            //     $message->to($request->email, 'You Have Been Exclusively Invited');
-            // }); 
+            Mail::send('emails.e-exculsively-invited.html', [], function($message){
+                $message->from($email_from);
+                $message->to($request->email, 'You Have Been Exclusively Invited');
+            }); 
             echo 'Saved';
         }
 
@@ -392,7 +392,7 @@ class JobsController extends Controller
         $result = Solr::get_applicants($this->search_params, $id,''); 
       
         $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
-
+        // return view('emails.e-exculsively-invited');
         return view('job.board.team', compact('job', 'active_tab', 'company','result','application_statuses','owner'));
     }
 

@@ -130,7 +130,7 @@
                                     </div>
                                     
                                     <div class="AddFieldButton">
-                                        <a href="#addField" data-toggle="collapse" class="btn btn-line btn-sm" style="background: whitesmoke; border: none; border-radius: 3px 3px 0 0;"><i class="fa fa-plus"></i> Add Custom field</a> &nbsp;
+                                        <a href="#addField" data-toggle="collapse" class="btn btn-line btn-sm text-success" style="background: whitesmoke; border: none; border-radius: 3px 3px 0 0;"><i class="fa fa-plus"></i> Add Custom field</a> &nbsp;
                                        <small class="">- Use this to add a custom question or input to this form</small><br>
                                     </div>
                                     

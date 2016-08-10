@@ -41,6 +41,8 @@ class JobsController extends Controller
             'jobApply',
             'JobApplied',
             'jobApplied',
+            'getEmbed',
+            'getEmbedTest'
         ]]);
     }
 
@@ -1220,6 +1222,16 @@ class JobsController extends Controller
             return redirect('dashboard');
           }
         }
+    }
+
+    public function getEmbedTest()
+    {
+        return view('guest.embed-test');
+    }
+
+    public function getEmbed()
+    {
+        return view('guest.embed-view');
     }
 
 }

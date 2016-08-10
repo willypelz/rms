@@ -24,13 +24,13 @@
                                     <small class="text-brandon l-sp-5 text-uppercase">Career Page</small>
                             
                                     <h2 class="job-title">
-                                        {{ $company->name }}
+                                        {{ @$company->name }}
                                     </h2>
                                     <hr>
                                     <ul class="list-inline text-white">
                                         <!--<li><strong>Company:</strong>&nbsp; JobAcess</li>-->
                                         <li>
-                                            <strong>&nbsp;{{ count($company->jobs) }}</strong>&nbsp; Job Opening(s)</li>
+                                            <strong>&nbsp;{{ count(@$company->jobs) }}</strong>&nbsp; Job Opening(s)</li>
                                     </ul>
                             
                                     <!-- <div class="badge badge-job badge-job-active">
@@ -107,26 +107,27 @@
                                             <div class="" id="">
                                             
                                                     <ul class="search-results">
-                                                        @foreach($company->jobs as $job)
-                                                        <li>
-                                                            <h4><a href="{{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"  target="_blank">{{ $job->title }}</a>
-                                                            </h4>
-                                                            <div class="dt">
-                                                                <strong>Location:</strong> {{ $job->location }} .  &nbsp; 
-                                                                <strong>Posted:</strong> {{ human_time($job->post_date, 1) }}.  &nbsp; 
-                                                                <strong>Expiry:</strong>{{ human_time($job->expiry_date, 1) }}. &nbsp; 
-                                                            </div>
-                                                            <div class="description">
-                                                                <p>{{ str_limit(strip_tags($job->details), 200) }}</p>
+                                                        @if( @$company->jobs )
+                                                            @foreach(@$company->jobs as $job)
+                                                            <li>
+                                                                <h4><a href="{{ url(@$company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"  target="_blank">{{ $job->title }}</a>
+                                                                </h4>
+                                                                <div class="dt">
+                                                                    <strong>Location:</strong> {{ $job->location }} .  &nbsp; 
+                                                                    <strong>Posted:</strong> {{ human_time($job->post_date, 1) }}.  &nbsp; 
+                                                                    <strong>Expiry:</strong>{{ human_time($job->expiry_date, 1) }}. &nbsp; 
+                                                                </div>
+                                                                <div class="description">
+                                                                    <p>{{ str_limit(strip_tags($job->details), 200) }}</p>
 
-                                                                    <a href="{{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"  target="_blank"><i class="fa fa-envelope"></i> Email to a friend</a> &nbsp; - &nbsp;
-                                                                    <a href="{{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"  target="_blank"><i class="fa fa-edit"></i> View Job Details</a>
-                                                                </span>
-                                                            </div><hr>
-                                                        </li>
+                                                                        <a href="{{ url(@$company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"  target="_blank"><i class="fa fa-envelope"></i> Email to a friend</a> &nbsp; - &nbsp;
+                                                                        <a href="{{ url(@$company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"  target="_blank"><i class="fa fa-edit"></i> View Job Details</a>
+                                                                    </span>
+                                                                </div><hr>
+                                                            </li>
 
-                                                           
-                                                        @endforeach
+                                                            @endforeach
+                                                        @endif
                                                        
                                             
                                                         </ul>
@@ -140,16 +141,16 @@
                                                 
                                         <div class="col-sm-4">
                                             <h6 class="text-brandon text-uppercase l-sp-5 no-margin">company details</h6><br>
-                                            <p class="text-muted">{{ $company->name }}</p>
-                                            <p><img src="{{ asset('uploads/'.$company->logo) }}" alt="" width="60%"></p><br>
-                                            <p class="small text-muted">{{ $company->about }}</p>
-                                            <p><i class="fa fa-map-marker"></i> {{ $company->address }}</p>
+                                            <p class="text-muted">{{ @$company->name }}</p>
+                                            <p><img src="{{ asset('uploads/'.@$company->logo) }}" alt="" width="60%"></p><br>
+                                            <p class="small text-muted">{{ @$company->about }}</p>
+                                            <p><i class="fa fa-map-marker"></i> {{ @$company->address }}</p>
                                             <!--p>
                                                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4448.570052456479!2d3.3791209324273184!3d6.618898622434336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b93a899b7c9b7%3A0x8630de71dbc44ffd!2sMagodo+GRA+Phase+II%2C+Lagos!5e0!3m2!1sen!2sng!4v1457754339276" frameborder="0" width="100%" height="200px" allowfullscreen></iframe>
                                             </p-->
                                             <p>
-                                                <i class="fa fa-envelope"></i> {{ $company->email }}  <br>
-                                                <i class="fa fa-globe"></i> {{ $company->website }}
+                                                <i class="fa fa-envelope"></i> {{ @$company->email }}  <br>
+                                                <i class="fa fa-globe"></i> {{ @$company->website }}
                                             </p>
                                         </div>
                                         <div class="col-sm-6 col-sm-offset-3 text-center hidden"><!-- <hr> -->

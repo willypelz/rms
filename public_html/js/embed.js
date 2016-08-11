@@ -55,7 +55,8 @@ window.SH_Embed = (function () {
 	        
 	    };
 
-	    xmlhttp.open("POST", host + "embed-view" + parser(options) , false);
+	    // xmlhttp.open("POST", host + "embed-view" + parser(options) , false);
+        xmlhttp.open("POST", host + "embed-view" + parser(options) , false);
 	    xmlhttp.send();
 	    //alert(xmlhttp.responseText);
 	    return self.embedUI;
@@ -258,6 +259,7 @@ window.SH_Embed = (function () {
         pull: function (options){
         	var defaults = {
         			id : "",
+                    key : "",
         		    background : "",
     				headerTextColor : "",
     				headerBackground : "",

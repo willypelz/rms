@@ -78,7 +78,7 @@ Route::group(['middleware' => 'web'], function () {
     // });
 
     Route::get('embed-test', [ 'as' => 'embed', 'uses' => 'JobsController@getEmbedTest' ]);
-    Route::get('embed-view', [ 'as' => 'embed', 'uses' => 'JobsController@getEmbed' ]);
+    Route::post('embed-view', [ 'as' => 'embed', 'uses' => 'JobsController@getEmbed' ]);
     
 
      Route::get('payment_successful', function () {

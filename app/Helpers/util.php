@@ -307,10 +307,25 @@ use App\Models\Job;
 
 	function get_current_company()
 	{
+		//If a company is selected
 		if( Session::get('current_company_index')  )
 		{
 			return Auth::user()->companies[ Session::get('current_company_index') ];
 		}
+
+		// If a company is not selected, default to the first on the list
 		return Auth::user()->companies[0];
+	}
+
+	function get_form_field_types()
+	{
+		return [
+			'DROPDOWN',
+			'RADIO',
+			'CHECKBOX',
+			'TEXT',
+			'TEXTAREA',
+			'MULTIPLE_OPTION'
+		];
 	}
 ?>

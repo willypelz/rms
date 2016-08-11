@@ -23,6 +23,7 @@ use App\Libraries\Utilities;
 use Carbon\Carbon;
 use DB;
 use Alchemy\Zippy\Zippy;
+use Crypt;
 // use Zipper;
 
 class JobsController extends Controller
@@ -1226,12 +1227,36 @@ class JobsController extends Controller
 
     public function getEmbedTest()
     {
-        return view('guest.embed-test');
+        // $key = Crypt::encrypt('9~&'.'a@a.com~&'.'2016-04-10 18:38:22'.'~&6');  
+
+
+        
+        return view('guest.embed-test', compact('key'));
     }
 
-    public function getEmbed()
+    public function getEmbed(Request $request)
     {
-        return view('guest.embed-view');
+        list($id, $email, $created_at ,$company_id) = explode( '~&', Crypt::decrypt($request->key) );
+
+        // var_dump($id, $email, $created_at);
+
+        $user = User::with('companies')->whereHas('companies', function($query) use($company_id){
+                                            $query->where('company_id',$company_id);
+                                        })
+                                        ->where('id',$id)
+                                        ->where('email', $email."")
+                                        ->where('created_at',$created_at)->first();
+
+        if( $user->exists() ){
+            $company = Company::find( $company_id );
+            $jobs = $company->jobs()->get()->toArray();
+        }
+        else
+        {
+            $company = null;
+            $jobs = "Invalid Key";
+        }      
+        return view('guest.embed-view', compact('jobs','user','company'));
     }
 
 }

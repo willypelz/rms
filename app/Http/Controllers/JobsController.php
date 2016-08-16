@@ -438,7 +438,7 @@ class JobsController extends Controller
 
         if( @$request->allActivities )
         {
-          $activities = $activities->get();
+          $activities = $activities->take(100)->get();
         }
         else
         {

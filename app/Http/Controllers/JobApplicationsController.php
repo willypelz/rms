@@ -432,10 +432,11 @@ class JobApplicationsController extends Controller
         }
 
         $test_available = true;
+        $count = count($cv_ids);
 
         $products = AtsProduct::all(); 
         $section = 'TEST';
-        return view('modals.assess', compact('applicant_badge','app_ids','cv_ids','products','appl','test_available','section'));
+        return view('modals.assess', compact('applicant_badge','app_ids','cv_ids','products','appl','test_available','section','count'));
     }
 
     public function modalBackgroundCheck(Request $request)

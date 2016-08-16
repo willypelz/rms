@@ -6,7 +6,7 @@
     </li>
     <li  @if($nav_type=='activities')class="active"@endif ><a href="{{ route('applicant-activities',  $appl->id) }}">Activities</a>
     </li>
-    <li  @if($nav_type=='message')class="active"@endif ><a href="{{ route('applicant-messages',  $appl->id) }}">Message</a>
+    <li  @if($nav_type=='messages')class="active"@endif ><a href="{{ route('applicant-messages',  $appl->id) }}">Message</a>
     </li>
     <li  @if($nav_type=='checks')class="active"@endif ><a href="{{ route('applicant-checks',  $appl->id) }}">Background Checks</a>
     </li>

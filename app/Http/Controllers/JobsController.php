@@ -11,6 +11,8 @@ use App\Models\JobActivity;
 use App\Models\Cv;
 use App\Models\JobApplication;
 use App\Models\Company;
+use App\Models\FormFields;
+use App\Models\FormFieldValues;
 use App\User;
 use Validator;
 use Cart;
@@ -119,7 +121,7 @@ class JobsController extends Controller
         if ($request->isMethod('post')) {
 
                 $pickd_boards = $request->boards;
-
+                // dd( $request->all() );
            
 
             $data = [
@@ -165,6 +167,22 @@ class JobsController extends Controller
                         //var_dump($job);
                         //Save job creation to activity
                         save_activities('JOB-CREATED',  $job->id );
+
+                        //save custom fields
+                        if( isset($request->custom_names) and $request->custom_names != null )
+                        {
+                            $custom_data = [];
+                            for ($i=0; $i < count( $request->custom_names ); $i++) { 
+                                $custom_data[] = [
+                                    'name' => $request->custom_names[$i], 
+                                    'type' => $request->custom_types[$i], 
+                                    'options' => $request->custom_options[$i], 
+                                    'job_id' => $job->id,
+                                ];
+                            }
+                            FormFields::insert($custom_data);
+                        }
+                        
 
                          $out_boards = array();
                         foreach ($pickd_boards as $p) {
@@ -853,24 +871,24 @@ class JobsController extends Controller
                 'Zamfara'
             ];    
 
+        $custom_fields  = (object) $job->form_fields;
 
         if ($request->isMethod('post')) {
 
-          // dd($request->request);
 
             $data = $request->all();
 
-            if ($request->hasFile('cv_file')) {
+            // if ($request->hasFile('cv_file')) {
 
-                $filename = time().'_'.str_slug($request->email).'_'.$request->file('cv_file')->getClientOriginalName();
-                $destinationPath = env('fileupload').'/CVs';
-                // dd($destinationPath);
-                $request->file('cv_file')->move($destinationPath, $filename);
+            //     $filename = time().'_'.str_slug($request->email).'_'.$request->file('cv_file')->getClientOriginalName();
+            //     $destinationPath = env('fileupload').'/CVs';
+            //     // dd($destinationPath);
+            //     $request->file('cv_file')->move($destinationPath, $filename);
 
-                $data['cv_file'] = $filename;
+            //     $data['cv_file'] = $filename;
 
-                // dd($data);
-            }   
+            //     // dd($data);
+            // }   
 
             $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
 
@@ -921,18 +939,35 @@ class JobsController extends Controller
               
               $appl_activities = (save_activities('APPLIED', $jobID, $appl->id, ''));
 
-            // return redirect('jobs/applied/'.$jobID.'/'.$slug);
+            if( count( $custom_fields ) > 0 ){
+
+                $custom_field_values = [];
+
+                foreach ($custom_fields as $custom_field) {
+                      
+
+                    $custom_field_values[] = [
+                        'form_field_id' => $custom_field->id,
+                        'value' => $request[ 'cf_'.str_slug($custom_field->name,'_') ],
+                        'job_application_id' => @$appl->id
+                    ];
+                }
+
+                FormFieldValues::insert( $custom_field_values );
+                // dd( $request->all(), $custom_fields, $custom_field_values );
+            }
 
             return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);
-            // dd($request->all());
+
 
 
 
 
         }
 
+        // dd($custom_fields);
         
-        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades'));
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades','custom_fields'));
 
     }
 

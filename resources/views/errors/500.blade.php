@@ -8,9 +8,13 @@
             <div class="row">
 
                 <div class="col-sm-5 col-sm-offset-1">
-                <h2> Whoops! Something went wrong ...</h2><hr>
-                   <p class="lead text-muted">Looks like something went wrong. Take this <!-- <a href=""> action <i class="fa fa-refresh"></i> </a> -->. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                   consequat. </p>
+                <h2> Whoops! Looks like something went wrong ...</h2><hr>
+                   <p class="lead text-muted">Since the page you are looking for is currently unavailable, you can:
+                        <ul>
+                            <li><a  onclick="window.history.back()">Revisit the previous page</a></li>
+                            <li><a href="{{ url('/') }}">Return to home page</a></li>
+                        </ul>
+                    </p>
                     
                 </div>
                 <div class="col-sm-5">

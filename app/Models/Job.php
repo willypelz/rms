@@ -39,6 +39,13 @@ class Job extends Model
         return $this->belongsTo('App\Models\Company', 'company_id');
     }
 
+    public function form_fields()
+    {
+        return $this->hasMany('App\Models\FormFields');
+    }
+
+    
+
     public function activities()
     {
         return $this->hasMany('App\Models\JobActivity');

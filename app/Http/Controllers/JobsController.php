@@ -878,17 +878,17 @@ class JobsController extends Controller
 
             $data = $request->all();
 
-            // if ($request->hasFile('cv_file')) {
+            if ($request->hasFile('cv_file')) {
 
-            //     $filename = time().'_'.str_slug($request->email).'_'.$request->file('cv_file')->getClientOriginalName();
-            //     $destinationPath = env('fileupload').'/CVs';
-            //     // dd($destinationPath);
-            //     $request->file('cv_file')->move($destinationPath, $filename);
+                $filename = time().'_'.str_slug($request->email).'_'.$request->file('cv_file')->getClientOriginalName();
+                $destinationPath = env('fileupload').'/CVs';
+                // dd($destinationPath);
+                $request->file('cv_file')->move($destinationPath, $filename);
 
-            //     $data['cv_file'] = $filename;
+                $data['cv_file'] = $filename;
 
-            //     // dd($data);
-            // }   
+                // dd($data);
+            }   
 
             $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
 

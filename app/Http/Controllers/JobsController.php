@@ -1262,8 +1262,8 @@ class JobsController extends Controller
 
     public function getEmbedTest()
     {
-        // $key = Crypt::encrypt('9~&'.'a@a.com~&'.'2016-04-10 18:38:22'.'~&6');  
-
+        $key = Crypt::encrypt('20~&'.'atolagbemobolaji@gmail.com~&'.'2016-05-27 16:20:10'.'~&13');  
+        dd( $key );
 
         
         return view('guest.embed-test', compact('key'));

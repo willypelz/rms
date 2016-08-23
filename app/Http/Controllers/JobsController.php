@@ -1271,6 +1271,12 @@ class JobsController extends Controller
 
     public function getEmbed(Request $request)
     {
+        // allow origin
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
+        // add any additional headers you need to support here
+        header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With,X-Auth-Token, Origin');
+
         list($id, $email, $created_at ,$company_id) = explode( '~&', Crypt::decrypt($request->key) );
 
         // var_dump($id, $email, $created_at);

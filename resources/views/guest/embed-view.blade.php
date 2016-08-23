@@ -7,7 +7,7 @@
 		@if( $job['status'] == 'ACTIVE')
 			<li> 
 				<big><a target="_blank" href="{{ url($company->slug.'/job/'.$job['id'].'/'.str_slug($job['title'])) }}"><b>{{ $job['title'] }}</b></a></big>
-				small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }} &nbsp;
+				<small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }} &nbsp;
 	                                    <i class="glyphicon glyphicon-calendar"></i> Date Created : {{ date('D. j M, Y', strtotime($job['created_at'])) }}</small>
 	            <a target="_blank" href="{{ url($company->slug.'/job/'.$job['id'].'/'.str_slug($job['title'])) }}" type="button" class="btn btn-success">View Job</a>
 			</li>

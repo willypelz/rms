@@ -6,10 +6,10 @@
 	@foreach( $jobs as $job )
 		@if( $job['status'] == 'ACTIVE')
 			<li> 
-				<big><a target="_blank" href="{{ url($company->slug.'/job/'.$job['id'].'/'.str_slug($job['title'])) }}"><b>{{ $job['title'] }}</b></a></big> <br/>
+				<big><a target="_blank" href="{{ url($company->slug.'/job/'.$job['id'].'/'.str_slug($job['title'])) }}"><b>{{ ucwords( $job['title'] ) }}</b></a></big> <br/>
 				<small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }} &nbsp;
 	                                    <i class="glyphicon glyphicon-calendar"></i> Date Created : {{ date('D. j M, Y', strtotime($job['created_at'])) }}</small><br/>
-	            <a target="_blank" href="{{ url($company->slug.'/job/'.$job['id'].'/'.str_slug($job['title'])) }}" type="button" class="btn btn-success">View Job</a>
+	            <a target="_blank" href="{{ url($company->slug.'/job/'.$job['id'].'/'.str_slug($job['title'])) }}">View Job</a> <br/><br/><br/>
 			</li>
 		@endif
 	@endforeach 

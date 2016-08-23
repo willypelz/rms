@@ -114,7 +114,7 @@
                                                                 </h4>
                                                                 <div class="dt">
                                                                     <strong>Location:</strong> {{ $job->location }} .  &nbsp; 
-                                                                    <strong>Posted:</strong> {{ human_time($job->post_date, 1) }}.  &nbsp; 
+                                                                    <strong>Posted:</strong> {{ human_time($job->created_at, 1) }}.  &nbsp; 
                                                                     <strong>Expiry:</strong>{{ human_time($job->expiry_date, 1) }}. &nbsp; 
                                                                 </div>
                                                                 <div class="description">

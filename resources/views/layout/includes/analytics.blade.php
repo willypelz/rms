@@ -10,3 +10,15 @@
 </script>
 
 
+<script>
+  (function(i,s,o,g,r,a,m){i['InsidifyAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','http://localhost:5000/javascripts/analytics.js','ai');
+
+  // ai('create', 'UA-35621951-2', 'auto');
+  ai('send');
+  // an.test('VISIT');
+  // console.log( ai );
+</script>
+

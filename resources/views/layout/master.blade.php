@@ -16,6 +16,8 @@
 	    });
 
         window.preloader = '{!! preloader() !!}';
+
+
 	});
 </script>
 

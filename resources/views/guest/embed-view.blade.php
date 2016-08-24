@@ -4,7 +4,9 @@
 <!-- <iframe id="sh-joblist-widget" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" data-widget-id="600720083413962752" title="Twitter Timeline"> -->
 	<ul style="list-style-type: none;">
 	@foreach( $jobs as $job )
-		@if( $job['status'] == 'ACTIVE')
+		@if( strtotime($job['expiry_date']) <= strtotime( date('m/d/Y h:i:s a', time()) ) )
+
+		@else
 			<li> 
 				<big><a target="_blank" href="{{ url($company->slug.'/job/'.$job['id'].'/'.str_slug($job['title'])) }}"><b>{{ ucwords( $job['title'] ) }}</b></a></big> <br/>
 				<small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }} &nbsp;

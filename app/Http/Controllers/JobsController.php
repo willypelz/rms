@@ -321,7 +321,7 @@ class JobsController extends Controller
 
         $user = Auth::user();
         $user = User::with('companies.jobs')->where('id', $user->id)->first();
-        $jobs = get_current_company()->jobs;
+        $jobs = get_current_company()->jobs()->orderBy('created_at','desc')->get();
         $company = get_current_company();
         
         $active = 0;

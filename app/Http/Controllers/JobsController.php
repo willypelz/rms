@@ -1285,7 +1285,7 @@ class JobsController extends Controller
                                             $query->where('company_id',$company_id);
                                         })
                                         ->where('id',$id)
-                                        ->where('email', $email."")
+                                        // ->where('email', $email."")
                                         ->where('created_at',$created_at)->first();
 
         if( $user->exists() ){

@@ -86,13 +86,19 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     margin-right: 20px;
     margin-left:0 !important;
 }
+/*
 .navbar.fold > .container .navbar-brand.logo{
     background-size: 110px;
 }
+*/
 .navbar {
     background: #3A5979;
     box-shadow: 0 1px 0px rgba(255, 255, 255, 0.07);
     border-radius:0 0 0;
+}
+.navbar.fold{
+        background: rgba(58, 89, 121, 0.95);
+    box-shadow: 0 1px 7px rgba(0, 0, 0, 0.22);
 }
 .navbar.transparent {
     /*border-top: 10px solid transparent;*/

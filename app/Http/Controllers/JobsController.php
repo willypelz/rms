@@ -11,6 +11,8 @@ use App\Models\JobActivity;
 use App\Models\Cv;
 use App\Models\JobApplication;
 use App\Models\Company;
+use App\Models\FormFields;
+use App\Models\FormFieldValues;
 use App\User;
 use Validator;
 use Cart;
@@ -23,6 +25,7 @@ use App\Libraries\Utilities;
 use Carbon\Carbon;
 use DB;
 use Alchemy\Zippy\Zippy;
+use Crypt;
 // use Zipper;
 
 class JobsController extends Controller
@@ -41,6 +44,8 @@ class JobsController extends Controller
             'jobApply',
             'JobApplied',
             'jobApplied',
+            'getEmbed',
+            'getEmbedTest'
         ]]);
     }
 
@@ -116,7 +121,7 @@ class JobsController extends Controller
         if ($request->isMethod('post')) {
 
                 $pickd_boards = $request->boards;
-
+                // dd( $request->all() );
            
 
             $data = [
@@ -162,6 +167,22 @@ class JobsController extends Controller
                         //var_dump($job);
                         //Save job creation to activity
                         save_activities('JOB-CREATED',  $job->id );
+
+                        //save custom fields
+                        if( isset($request->custom_names) and $request->custom_names != null )
+                        {
+                            $custom_data = [];
+                            for ($i=0; $i < count( $request->custom_names ); $i++) { 
+                                $custom_data[] = [
+                                    'name' => $request->custom_names[$i], 
+                                    'type' => $request->custom_types[$i], 
+                                    'options' => $request->custom_options[$i], 
+                                    'job_id' => $job->id,
+                                ];
+                            }
+                            FormFields::insert($custom_data);
+                        }
+                        
 
                          $out_boards = array();
                         foreach ($pickd_boards as $p) {
@@ -300,7 +321,7 @@ class JobsController extends Controller
 
         $user = Auth::user();
         $user = User::with('companies.jobs')->where('id', $user->id)->first();
-        $jobs = get_current_company()->jobs;
+        $jobs = get_current_company()->jobs()->orderBy('created_at','desc')->get();
         $company = get_current_company();
         
         $active = 0;
@@ -417,7 +438,7 @@ class JobsController extends Controller
 
         if( @$request->allActivities )
         {
-          $activities = $activities->get();
+          $activities = $activities->take(20)->get();
         }
         else
         {
@@ -850,10 +871,10 @@ class JobsController extends Controller
                 'Zamfara'
             ];    
 
+        $custom_fields  = (object) $job->form_fields;
 
         if ($request->isMethod('post')) {
 
-          // dd($request->request);
 
             $data = $request->all();
 
@@ -918,18 +939,35 @@ class JobsController extends Controller
               
               $appl_activities = (save_activities('APPLIED', $jobID, $appl->id, ''));
 
-            // return redirect('jobs/applied/'.$jobID.'/'.$slug);
+            if( count( $custom_fields ) > 0 ){
+
+                $custom_field_values = [];
+
+                foreach ($custom_fields as $custom_field) {
+                      
+
+                    $custom_field_values[] = [
+                        'form_field_id' => $custom_field->id,
+                        'value' => $request[ 'cf_'.str_slug($custom_field->name,'_') ],
+                        'job_application_id' => @$appl->id
+                    ];
+                }
+
+                FormFieldValues::insert( $custom_field_values );
+                // dd( $request->all(), $custom_fields, $custom_field_values );
+            }
 
             return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);
-            // dd($request->all());
+
 
 
 
 
         }
 
+        // dd($custom_fields);
         
-        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades'));
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades','custom_fields'));
 
     }
 
@@ -1220,6 +1258,46 @@ class JobsController extends Controller
             return redirect('dashboard');
           }
         }
+    }
+
+    public function getEmbedTest()
+    {
+        $key = Crypt::encrypt('20~&'.'atolagbemobolaji@gmail.com~&'.'2016-05-27 16:20:10'.'~&13');  
+        dd( $key );
+
+        
+        return view('guest.embed-test', compact('key'));
+    }
+
+    public function getEmbed(Request $request)
+    {
+        // allow origin
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
+        // add any additional headers you need to support here
+        header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With,X-Auth-Token, Origin');
+
+        list($id, $email, $created_at ,$company_id) = explode( '~&', Crypt::decrypt($request->key) );
+
+        // var_dump($id, $email, $created_at);
+
+        $user = User::with('companies')->whereHas('companies', function($query) use($company_id){
+                                            $query->where('company_id',$company_id);
+                                        })
+                                        ->where('id',$id)
+                                        // ->where('email', $email."")
+                                        ->where('created_at',$created_at)->first();
+
+        if( $user->exists() ){
+            $company = Company::find( $company_id );
+            $jobs = $company->jobs()->get()->toArray();
+        }
+        else
+        {
+            $company = null;
+            $jobs = "Invalid Key";
+        }      
+        return view('guest.embed-view', compact('jobs','user','company'));
     }
 
 }

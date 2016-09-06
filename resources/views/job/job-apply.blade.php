@@ -208,13 +208,13 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <label for="job-title">Last Company Worked <span class="text-danger">*</span></label>
-                                                {{ Form::text('last_company_worked', null, array('class'=>'form-control')) }}
+                                                {{ Form::text('last_company_worked', null, array('class'=>'form-control', 'required' => 'required')) }}
 
                                             </div>
 
                                             <div class="col-sm-6">
                                                 <label for="job-title">Last Position <span class="text-danger">*</span></label>
-                                                {{ Form::text('last_position', null, array('class'=>'form-control')) }}
+                                                {{ Form::text('last_position', null, array('class'=>'form-control', 'required' => 'required')) }}
 
                                             </div>
 
@@ -293,6 +293,61 @@
                                     </div>
 
                                     
+                                    <div class="row">
+                                    <div class="col-xs-12"><hr></div>
+                                        
+                                        @if( count($custom_fields) > 0 )
+                                            @foreach( $custom_fields as $custom_field )
+                                                
+                                                <div class="col-sm-6">
+                                                    <label for="custom-field">{{ $custom_field->name }} <span class="text-danger">*</span></label>
+
+                                                    <?php $options = explode(',', $custom_field->options) ?>
+
+                                                    @if( $custom_field->type == 'DROPDOWN')
+                                                        <?php 
+                                                            $select_options = [];
+                                                            foreach ($options as $option) {
+                                                                $select_options[$option] = str_replace( '_', ' ',  ucfirst( $option ) ) ;
+                                                            }
+                                                         ?>
+                                                        {{ Form::select('cf_'.str_slug($custom_field->name,'_'), $select_options, null, array('class'=>'form-control', 'required' => 'required')) }}
+                                                    
+                                                    @elseif( $custom_field->type == 'RADIO' )
+                                                        @foreach( $options as $option )
+                                                            $option {{ Form::radio('cf_'.str_slug($custom_field->name,'_'), null, array('class'=>'form-control', 'required' => 'required')) }}
+                                                        @endforeach
+                                                        
+                                                    @elseif( $custom_field->type == 'CHECKBOX' )
+                                                        @foreach( $options as $option )
+                                                            $option {{ Form::checkbox('cf_'.str_slug($custom_field->name,'_'), null, array('class'=>'form-control', 'required' => 'required')) }}
+                                                        @endforeach
+                                                    
+                                                    @elseif( $custom_field->type == 'TEXT' )
+                                                        {{ Form::text('cf_'.str_slug($custom_field->name,'_'), null, array('class'=>'form-control', 'required' => 'required')) }}
+                                                    
+                                                    @elseif( $custom_field->type == 'TEXTAREA' )
+                                                        {{ Form::textarea('cf_'.str_slug($custom_field->name,'_'), null, array('class'=>'form-control', 'required' => 'required')) }}
+                                                    
+                                                    @elseif( $custom_field->type == 'MULTIPLE_OPTION' )
+                                                        <?php 
+                                                            $select_options = [];
+                                                            foreach ($options as $option) {
+                                                                $select_options[] = [ $option, str_replace( '_', ' ',  ucfirst( $option ) ) ];
+                                                            }
+                                                         ?>
+                                                        {{ Form::select('cf_'.str_slug($custom_field->name,'_'), $select_options, array('class'=>'form-control', 'required' => 'required')) }}
+                                                    @endif
+
+
+
+                                                </div> 
+                                                
+                                            @endforeach
+                                        @endif
+
+                                    </div>
+
 
                                     <div class="row">
                                     <div class="col-xs-12"><hr></div>
@@ -308,6 +363,13 @@
                                         </div>
                                         <div class="separator separator-small"></div>
                                     </div>
+
+
+                                    
+
+                                            
+                                    <!-- $job->form_fields->toArray() -->
+
                                 </form>
 
                                          @endif   

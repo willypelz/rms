@@ -73,6 +73,14 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.company_success');
     });
 
+    //  Route::get('embed-view', function(){
+    //     echo "good one";
+    // });
+
+    Route::get('embed-test', [ 'as' => 'embed', 'uses' => 'JobsController@getEmbedTest' ]);
+    Route::post('embed-view', [ 'as' => 'embed', 'uses' => 'JobsController@getEmbed' ]);
+    
+
      Route::get('payment_successful', function () {
         return view('payment.payment_succes');
     });
@@ -427,6 +435,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::post('cart/get-count', [ 'as' => 'getCartCount', 'uses' => 'CvSalesController@getBoardCartCount' ]);
 
+    
     
 
 });

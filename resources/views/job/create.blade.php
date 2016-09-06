@@ -117,20 +117,10 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="well small">Custom Field: Years of Experience 
-                                        <span class="pull-right"><a href="" class=""><i class="fa fa-pencil"></i> EDIT</a> &nbsp; 
-                                            <a href="" class="text-muted"><i class="fa fa-times"></i> REMOVE</a>
-                                            </span>
-                                    </div>
-                                    
-                                    <div class="well small">Custom Field: Last Promotion details 
-                                        <span class="pull-right"><a href="" class=""><i class="fa fa-pencil"></i> EDIT</a> &nbsp; 
-                                            <a href="" class="text-muted"><i class="fa fa-times"></i> REMOVE</a>
-                                            </span>
-                                    </div>
+                                    <div id="custom_fields"></div>
                                     
                                     <div class="AddFieldButton">
-                                        <a href="#addField" data-toggle="collapse" class="btn btn-line btn-sm text-success" style="background: whitesmoke; border: none; border-radius: 3px 3px 0 0;"><i class="fa fa-plus"></i> Add Custom field</a> &nbsp;
+                                        <a href="#addField" data-toggle="collapse" aria-controls="" class="btn btn-line btn-sm text-success" style="background: whitesmoke; border: none; border-radius: 3px 3px 0 0;"><i class="fa fa-plus"></i> Add Custom field</a> &nbsp;
                                        <small class="">- Use this to add a custom question or input to this form</small><br>
                                     </div>
                                     
@@ -140,25 +130,33 @@
                                            
                                             <div class="row"><br>
                                                 <div class="col-xs-2 col-xs-offset-2 text-uppercase small"><strong>Field <br> Label</strong></div>
-                                                <div class="col-xs-6"><input class="form-control" type="text" placeholder="Title of field"></div>
-                                            </div><hr>
+                                                <div class="col-xs-6"><input class="form-control" type="text" placeholder="Title of field" id="name-box"></div>
+                                                <div class="clearfix"></div>
+                                                <hr>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-xs-2 col-xs-offset-2 text-uppercase small"><strong>Field <br> Type</strong></div>
                                                 <div class="col-xs-6">
-                                                    <select name="" id="" class="form-control">
-                                                        <option value=""></option>
+                                                    <select name="" id="type-box" class="form-control">
+                                                        @foreach( get_form_field_types() as $field_type )
+                                                            <option value="{{ $field_type }}">{{ str_replace( '_', ' ',  ucfirst( $field_type ) ) }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
-                                            </div><hr>
-                                            <div class="row">
+                                                <div class="clearfix"></div>
+                                                <hr>
+                                            </div>
+                                            <div class="row" id="options-box">
                                                 <div class="col-xs-2 col-xs-offset-2 text-uppercase small"><strong>Field Options</strong></div>
                                                 <div class="col-xs-6">
                                                     <input class="form-control" type="text" placeholder="Enter options separated by comma">
                                                 </div>
-                                            </div><hr>
+                                                <div class="clearfix"></div>
+                                                <hr>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-xs-8 col-xs-offset-2">
-                                                    <button href="" class="btn-sm btn btn-success disabled pull-right" ><i class="fa fa-check"></i> Add field</button>
+                                                    <a href="javascript://" class="btn-sm btn btn-success pull-right" id="add-field-btn" ><i class="fa fa-check"></i> Add field</a>
                                                     
 <!--                                                    <button href="" class="btn-sm btn btn-line disabled pull-left" ><i class="fa fa-plus"></i> Add another field</button>-->
                                                 </div>
@@ -254,8 +252,8 @@
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 
 
-            <script>
-
+            <script type="text/javascript">
+                var custom_fields = [];
               $('#SaveDraft').click(function(e){
                       e.preventDefault();
                     // $("#myForm").validate();
@@ -291,12 +289,72 @@
                 // instance, using default configuration.
                 $(document).ready(function(){
 
+                    
                   
 
                     $('.datepicker').datepicker({
                         format: 'mm/dd/yyyy'
                     });
+
+                    function optionsDisplay(){
+                        if(  $.inArray( $('body #addField #type-box').val(), [ 'TEXT', 'TEXTAREA' ] )  )
+                        {
+                           $('body #addField #options-box').fadeIn();
+                        }
+                        else
+                        {
+                            $('body #addField #options-box').fadeOut();
+                        }
+                    }
+
+                    optionsDisplay();
+
+                    $('body #addField #type-box').on('change', optionsDisplay);
                 
+                    $('body #add-field-btn').on('click', function(){
+
+                        if( $('body #addField #name-box').val() == "" )
+                        {
+                            $.growl.error({ message : "Please enter custom field name." });
+                        }
+                        else if( $('body #addField #options-box input').val() == "" && $.inArray( $('body #addField #type-box').val(), [ 'TEXT', 'TEXTAREA' ] ) )
+                        {
+                            $.growl.error({ message : "Please enter custom field option." });
+                        }
+                        else{
+                            custom_fields.push( { 'name' : $('body #addField #name-box').val(), 'type' : $('body #addField #type-box').val(), 'options' : $('body #addField #options-box input').val() } );
+                            
+                            $(this).loadCustomFields();
+
+                            $.growl.notice({ message: $('body #addField #name-box').val() + " custom field created." });
+                            $('body #addField #name-box').val('');
+                            $('body #addField #options-box input').val('');
+                        }
+
+            
+                        
+
+                        // $('#addField').toggle();                        
+                    });
+
+                    $.fn.loadCustomFields = function(){
+                        $('#custom_fields').html('');
+                        $.each( custom_fields, function(key,field){
+                            $('#custom_fields').append('<div class="well small" id="custom_field_item" data-key="' + key + '">Custom Field: ' + field.name + ' <span class="pull-right"><a href="" class="hidden" data-key="' + key + '"><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field" data-key="' + key + '"><i class="fa fa-times"></i> REMOVE</a></span> <input type="text" class="hidden" name="custom_names[]" value="' + field.name + '" /> <input type="text" class="hidden" name="custom_types[]" value="' + field.type + '" /> <input type="text" class="hidden" name="custom_options[]" value="' + field.options + '" /> </div>');
+                        });
+                        // $('#custom_fields').append('<div class="well small" >Custom Field: ' + $('body #addField #name-box').val() + ' <span class="pull-right"><a href="" class=""><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field"><i class="fa fa-times"></i> REMOVE</a></span></div>');
+                    }
+
+
+                    $('body').on('click','#remove-custom-field', function(e){
+                        e.preventDefault();
+                        key = parseInt( $(this).data('key') );
+                        $.growl.notice({ message: custom_fields[ key ].name + " custom field removed." });
+
+                        custom_fields.splice( key, 1);
+                        $(this).loadCustomFields();
+
+                    });
 
                 })
                 CKEDITOR.replace( 'editor1' );

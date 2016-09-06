@@ -1,7 +1,7 @@
 @extends('layout.template-default')
 
 @section('content')
-
+<!-- <an-ins an-type="EVENT" an-data="{id:9}" an-action="PAGE_LOADED"></an-ins> -->
 <section class="s-div dark homepage">
         <div class="container">
 

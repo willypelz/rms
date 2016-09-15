@@ -52,7 +52,7 @@
                         <div class="row">
                         <h6 class="no-margin">
                             <span class="text-brandon text-uppercase">
-                            Your Activities: 
+                            All Activities: 
                             </span> 
                             <!-- <span class="pull-right"><a href=""><i class="fa fa-cog"></i>Notification Settings</a></span> -->
                         </h6>

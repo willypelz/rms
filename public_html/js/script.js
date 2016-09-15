@@ -1,18 +1,18 @@
 $(window).scroll(function() {
 
-    var navbar = $(".navbar.navbar-out");
+    var navbar = $(".navbar");
 
         if ($(".navbar").offset().top > 100) {
 
         // animating navbar background
-//        navbar.removeClass("transparent");
+        navbar.addClass("fold");
 
         //Fix or release Cart
         $(".well-cart").addClass("fixer");
     } else {
 
         // animating navbar background
-//        navbar.addClass("transparent");
+        navbar.removeClass("fold");
 
         //Fix or release Cart
         $(".well-cart").removeClass("fixer");

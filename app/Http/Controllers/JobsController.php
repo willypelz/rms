@@ -331,8 +331,10 @@ class JobsController extends Controller
 
         $active_jobs = [];
         foreach($jobs as $job){
-
-            if( strtotime($job->expiry_date) <= strtotime( date('m/d/Y h:i:s a', time()) ) ){
+            if ($job->status == 'DELETED') {
+                $deleted++;
+            }
+            else if( strtotime($job->expiry_date) <= strtotime( date('m/d/Y h:i:s a', time()) ) ){
                 
                 $active_jobs[] = $job;
                 $expired++;
@@ -344,9 +346,6 @@ class JobsController extends Controller
             else if ($job->status == 'SUSPENDED') {
                 $active_jobs[] = $job;
                 $suspended++;
-            }
-            else if ($job->status == 'DELETED') {
-                $deleted++;
             }
             else{
                 // $suspended++;

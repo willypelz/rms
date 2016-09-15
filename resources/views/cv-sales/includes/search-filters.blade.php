@@ -107,7 +107,7 @@
 
 
 
-              @if(@$is_saved)
+              @if(@$is_saved and false)
 
                   <p class="border-bottom-thin text-muted">Folder<i class="fa fa-filter pull-right"></i></p>
                     <div class="checkbox-inline">

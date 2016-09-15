@@ -29,7 +29,7 @@
                                     <ul class="list-inline text-white">
                                         <!--<li><strong>Company:</strong>&nbsp; JobAcess</li>-->
                                         <li>
-                                            <strong>&nbsp;Posted:</strong>&nbsp; <?php echo date('d, M Y', strtotime($job['post_date'])) ?></li>
+                                            <strong>&nbsp;Posted:</strong>&nbsp; {{ date('D. j M, Y', strtotime($job['created_at'])) }}</li>
                                         <li>
                                             <strong>&nbsp;Expires:</strong>&nbsp; <?php echo date('d, M Y', strtotime($job['expiry_date'])) ?></li>
                                     </ul>

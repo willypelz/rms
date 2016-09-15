@@ -49,7 +49,7 @@
                                         <a href="{{ url('job/apply/'.$job['id'].'/'.str_slug($job['title']) ) }}" class="btn btn-success btn-block"><i class="fa fa-edit"></i> Apply <span class="">for Job</span></a>
                                     </div>
 
-                                        <div class="col-sm-5">
+                                        <!-- <div class="col-sm-5">
                                                 <span style='color:red' id='saveMailboxResponse'></span>
                                                                                     
                                             <div class="btn-group btn-group-justified">
@@ -61,8 +61,8 @@
                                                 </div>
                                             </div>
                                           
-                                        </div>
-                                        <div class="col-sm-4">
+                                        </div> -->
+                                        <div class="col-sm-4 pull-right">
                                             
                                                <p class="pull-right no-margin">
                                                     Share on &nbsp;

@@ -1,7 +1,8 @@
 @extends('layout.template-user')
 
 @section('content')
-
+    <script src="http://seamlesshiring.com/js/embed.js"></script>
+    
     <section class="s-div">
         <div class="container">
             <div class="row no-pad">

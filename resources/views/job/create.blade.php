@@ -31,7 +31,7 @@
                                         
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-sm-12"><label for="job-title">job title <span class="text-danger">*</span></label>
+                                            <div class="col-sm-12"><label for="job-title">job title {{ route('post-success', [34]) }} <span class="text-danger">*</span></label>
                                             <input required id="job_title" type="text" name="job_title" class="form-control" {{ (Request::old('job_title')) ? ' value='. e(Request::old('job_title')) .'' : '' }}>
                                             <small>e.g. Marketer  at {{ get_current_company()->name }}</small>
                                            </div>
@@ -162,10 +162,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    <hr>
+
                                    
 
-                                    <div class="form-group">
+                                    <div class="form-group hidden">
                                         <div class="row">
                                             <div class="col-xs-8 col-xs-offset-2 text-center">
                                                 <label for="">Your job will be posted automatically on these free job platforms </label>

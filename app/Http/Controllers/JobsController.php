@@ -796,7 +796,7 @@ class JobsController extends Controller
     {
         $company = Company::where('slug', $company_slug)->first();
         $job = Job::where('id', $jobid)->where("company_id",$company->id)->first();
-
+        
         if(empty($job)){
             // redirect to 404 page
         }
@@ -1015,10 +1015,12 @@ class JobsController extends Controller
     public function company($c_url){
 
         $company = Company::with(['jobs'=>function($query){
-                                        $query->where('status', "ACTIVE")->where('expiry_date','>',date('Y-m-d'));
+                                        $query->where('status', "ACTIVE")
+                                        ->orderBy('created_at','desc')
+                                        ->where('expiry_date','>',date('Y-m-d'));
                                     }])->where('slug', $c_url)->first();
 
-
+        // $company->jobs()->orderBy('created_at','desc')->get()->toArray();
         // dd($company);
 
         return view('job.company', compact('company'));

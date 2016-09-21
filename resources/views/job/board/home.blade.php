@@ -123,7 +123,7 @@
 <p class="lead" style="
     height: 111px;
 ">For a wider and better reach, <br>you can promote this job on <i>newspapers.</i></p>                                      <p>
-                                        <a href="{{ url('jobs/advertise-your-job/'.$job_id.'/'.str_slug($job['title'])) }}" class="btn btn-primary btn-block" target="_blank">
+                                        <a href="#" class="btn btn-primary btn-block" target="_blank">
                                           <i class="fa fa-send"></i> Contact Us
                                         </a>
                                       </p>

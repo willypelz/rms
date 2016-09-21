@@ -174,16 +174,18 @@
                                    <form action="">
 
                                    <div class="form-group">
-                                       <label for="">From: </label>
-                                       <input class="form-control" type="text" value="dejilana@insidify.com" disabled>
+                                       <label for="">Name: </label>
+                                       <input class="form-control" type="text" value="" name="name">
+
+                                       <input class="form-control" type="hidden" name="from" value="dejilana@insidify.com" >
                                        
-                                       <label for="">To: </label>
+                                       <label for="">Email: </label>
                                        <small>Separate your addresses by a comma</small>
-                                       <input class="form-control" type="text" placeholder="email addresses here">
+                                       <input class="form-control" type="text" name="email" placeholder="email addresses here">
                                    </div>
 
-                                   <label for="editor1">Body of Mail</label>
-                                       <textarea name="" id="editor1" cols="30" rows="10">
+                                   <label for="editor1">Invite Mail</label>
+                                       <textarea name="invite_mail" id="editor1" cols="30" rows="10">
                                        <p>Hello there, I have a job you might be interested in</p>
                                        <hr style="width: 45%">
                                            <strong class="">Human Resource Administrator<br>

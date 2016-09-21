@@ -28,6 +28,7 @@
 */
 
 
+URL::forceSchema('https');
 
 Route::group(['middleware' => ['web']], function () {
     

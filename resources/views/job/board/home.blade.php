@@ -19,7 +19,7 @@
                         <div class="row">                           
                         <!-- applicant -->
 
-                            <div class="col-xs-8">
+                            <div class="col-xs-8 hidden">
 
                                 <div class="panel panel-default">
                                 
@@ -118,12 +118,13 @@
 
                             </div>
 
-                            <div class="col-xs-4">
+                            <div class="col-xs-4 col-xs-offset-2">
                                <div class="well text-center">
-                                      <p class="lead">For a wider and better reach, <br>you can promote this job on more job boards and <i>newspapers.</i></p>
-                                      <p>
-                                        <a href="{{ url('jobs/advertise-your-job/'.$job_id.'/'.str_slug($job['title'])) }}" class="btn btn-primary btn-block" target="_blank">
-                                          <i class="fa fa-send"></i> Promote Job now
+<p class="lead" style="
+    height: 111px;
+">For a wider and better reach, <br>you can promote this job on <i>newspapers.</i></p>                                      <p>
+                                        <a href="#" class="btn btn-primary btn-block" target="_blank">
+                                          <i class="fa fa-send"></i> Contact Us
                                         </a>
                                       </p>
                                     </div>
@@ -137,6 +138,8 @@
                                     <a href="#modalRefer" data-toggle="modal" data-target="#modalRefer" class="btn btn-primary btn-block">Make Referals</a>
                                   </div>
                                 </div> -->
+                                </div>
+                                <div class="col-xs-4">
 
 
                                 <div class="panel panel-default">

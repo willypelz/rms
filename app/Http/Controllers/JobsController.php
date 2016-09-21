@@ -215,10 +215,16 @@ class JobsController extends Controller
                     
                         
             Session::flash('flash_message', 'Congratulations! Your job has been posted on '.$flash_boards.'. You will begin to receive applications from those job boards shortly - <i>this is definite</i>.');
-            return redirect()->route('advertise', [$job->id]);
+            return redirect()->route('post-success', [$job->id]);
         }
 
         return view('job.create', compact('qualifications', 'specializations', 'board1', 'board2', 'locations'));
+    }
+
+
+    public function PostSuccess(Request $request){
+        $job = Job::find($request->jobID);
+        return view('job.success', compact('job'));
     }
 
     public function SaveJob(Request $request){
@@ -344,13 +350,19 @@ class JobsController extends Controller
         $expired = 0;
 
         $active_jobs = [];
+        $suspended_jobs = [];
+        $deleted_jobs = [];
+        $expired_jobs = [];
+
+
         foreach($jobs as $job){
             if ($job->status == 'DELETED') {
+                $deleted_jobs[] = $job;
                 $deleted++;
             }
             else if( strtotime($job->expiry_date) <= strtotime( date('m/d/Y h:i:s a', time()) ) ){
                 
-                $active_jobs[] = $job;
+                $expired_jobs[] = $job;
                 $expired++;
             }
             else if ($job->status == 'ACTIVE') {
@@ -358,14 +370,22 @@ class JobsController extends Controller
                 $active++;
             }
             else if ($job->status == 'SUSPENDED') {
-                $active_jobs[] = $job;
+                $suspended_jobs[] = $job;
                 $suspended++;
             }
             else{
                 // $suspended++;
             }
         }
-        return view('job.job-list', compact('jobs', 'active', 'suspended', 'deleted', 'company', 'active_jobs','expired'));
+
+        $all_jobs = [
+                        'ACTIVE' => $active_jobs,
+                        'SUSPENDED' => $suspended_jobs,
+                        'EXPIRED' => $expired_jobs,
+                        // 'DELETED' => $deleted_jobs
+                    ];
+
+        return view('job.job-list', compact('jobs', 'active', 'suspended', 'deleted', 'company', 'all_jobs','expired'));
     }
 
     public function JobPromote($id, Request $request){
@@ -790,7 +810,7 @@ class JobsController extends Controller
     {
         $company = Company::where('slug', $company_slug)->first();
         $job = Job::where('id', $jobid)->where("company_id",$company->id)->first();
-
+        
         if(empty($job)){
             // redirect to 404 page
         }
@@ -1009,10 +1029,12 @@ class JobsController extends Controller
     public function company($c_url){
 
         $company = Company::with(['jobs'=>function($query){
-                                        $query->where('status', "ACTIVE")->where('expiry_date','>',date('Y-m-d'));
+                                        $query->where('status', "ACTIVE")
+                                        ->orderBy('created_at','desc')
+                                        ->where('expiry_date','>',date('Y-m-d'));
                                     }])->where('slug', $c_url)->first();
 
-
+        // $company->jobs()->orderBy('created_at','desc')->get()->toArray();
         // dd($company);
 
         return view('job.company', compact('company'));

@@ -22,7 +22,7 @@
                     </h4><br>
 -->
                     <div class="page">
-                          <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                          <div class="btn-group btn-group-justified hidden" role="group" aria-label="...">
                           
                           <div class="btn-group" role="group">
                             <button type="button" class="btn btn-line text-capitalize"><i class="fa fa-send"></i>
@@ -32,7 +32,8 @@
                             <button class="btn disabled text-capitalize text-muted"><i class="fa fa-plus"></i>
                             &nbsp; <span class="hidden-xs">Add candidates</span></button>
                           </div>
-                        </div><hr>
+                        </div>
+                        <!-- <hr> -->
                         <div> 
                         
                         @if(!empty($job))    

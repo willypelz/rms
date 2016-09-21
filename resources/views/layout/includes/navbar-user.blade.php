@@ -22,7 +22,7 @@
                         <ul class="dropdown-menu">
                             <li class="{{ Request::is('cv/talent-pool') ? 'active' : '' }}"><a href="{{ url('cv/talent-pool') }}">Talent Pool</a></li>
                             <li class="{{ Request::is('cv/saved') ? 'active' : '' }}"><a href="{{ url('cv/saved') }}">Saved Cvs</a></li>
-                            <li class="{{ Request::is('cv/purchased') ? 'active' : '' }}"><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li>
+                            <!-- <li class="{{ Request::is('cv/purchased') ? 'active' : '' }}"><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li> -->
                         </ul>
                     </li>
 
@@ -43,10 +43,11 @@
                 </ul>
 
                     <ul class="nav navbar-nav navbar-right">
-
-                        <li>
-                            <a class="btn btn-danger" href="{{ url('pricing') }}" >Upgrade</a>
-                        </li>
+                        @if( get_current_company()->id != 13 )
+                            <li>
+                                <a class="btn btn-danger" href="{{ url('pricing') }}" >Upgrade</a>
+                            </li>
+                        @endif
 
                         <li id="fat-menu" class="dropdown" title="{{ get_current_company()->name }}"> 
                             <a class="a-user" id="drop3" href="#" class="dropdown-toggle" style="" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 

@@ -131,7 +131,7 @@
                     @endif
                     
                   
-                  @if(@$can_purchase)
+                  @if(@$can_purchase and false)
                     <span class="purchase-action">
                           @if(@$is_saved)
                             <a href="javascript://" class="btn btn-sm btn-line pull-right" title="Delete CV" id='removeSavedCV' data-user='{{ @$cv['id'] }}'><i class="fa fa-trash no-margin"></i></a>

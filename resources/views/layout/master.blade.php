@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<script type="text/javascript"> var sana = JSON.parse( '{!! Auth::user() !!}' ); </script>
 @section('header')
 
 @show()

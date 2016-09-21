@@ -19,7 +19,7 @@
                         <div class="row">                           
                         <!-- applicant -->
 
-                            <div class="col-xs-8">
+                            <div class="col-xs-8 hidden">
 
                                 <div class="panel panel-default">
                                 
@@ -120,10 +120,10 @@
 
                             <div class="col-xs-4">
                                <div class="well text-center">
-                                      <p class="lead">For a wider and better reach, <br>you can promote this job on more job boards and <i>newspapers.</i></p>
+                                      <p class="lead">For a wider and better reach, <br>you can promote this job on <i>newspapers.</i></p>
                                       <p>
                                         <a href="{{ url('jobs/advertise-your-job/'.$job_id.'/'.str_slug($job['title'])) }}" class="btn btn-primary btn-block" target="_blank">
-                                          <i class="fa fa-send"></i> Promote Job now
+                                          <i class="fa fa-send"></i> Contact Us
                                         </a>
                                       </p>
                                     </div>

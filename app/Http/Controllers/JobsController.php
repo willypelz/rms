@@ -62,9 +62,9 @@ class JobsController extends Controller
       // dd($request->request);
 
       $validator = Validator::make($request->all(), [
-            'email_to' => 'required'
+            'email' => 'required'
         ],[
-            'email_to.required' => 'Email is required'
+            'email.required' => 'Email is required'
         ]);
 
         if ($validator->fails()) {
@@ -73,23 +73,37 @@ class JobsController extends Controller
         else
         {   
           //Create User
-            $user = User::FirstorCreate([              
-              'email' => $request->email_to
-            ]);
+             $link = "dashboard";   
+            $user = User::where('email', $request->email_to)->first();
+            if(empty($user)){
+                $user = User::FirstorCreate([              
+                  'email' => $request->email,
+                  'name' => $request->name
+                ]);    
+
+                $link = "password/reset";
+            }
+
+
+            $mail_body = $request->body_mail;
+            
 
             //Add user to company users
             $company = Company::find( get_current_company()->id );
             $company->users()->attach($user->id);
+
+            $job = Job::find($request->job_id);
 
             //Save Invite Code
             $user->invite_code = str_random(40);
             
             //Send notification mail
             $email_from = ( Auth::user()->email ) ? Auth::user()->email : 'no-reply@insidify.com';
-            Mail::send('emails.e-exculsively-invited.html', [], function($message){
-                $message->from($email_from);
-                $message->to($request->email, 'You Have Been Exclusively Invited');
+            Mail::send('emails.e-exculsively-invited', ['mail_body'=>$mail_body, 'name'=>$user->name, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=>$link ], function($message) use ($user){
+                $message->from('info@seamlesshiring.com');
+                $message->to($user->email, $user->name);
             }); 
+
             echo 'Saved';
         }
 

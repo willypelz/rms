@@ -173,10 +173,10 @@
 
                 <p class="border-bottom-thin text-muted">Age<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                      <p class="text-center">
-                        <input id="age-slider" type="text" class="span2" value="" data-slider-min="1" data-slider-max="200" data-slider-step="1" data-slider-value="{{ '['.$age[0].','.$age[1].']' }}"/> 
+                        <input id="age-slider" type="text" class="span2" value="" data-slider-min="15" data-slider-max="65" data-slider-step="1" data-slider-value="{{ '['.$age[0].','.$age[1].']' }}"/> 
                         <div class="text-center">
-                          <b class="col-sm-2 pull-left" style="color: #bbb;">1</b>
-                          <b  class="col-sm-2 pull-right" style="color: #bbb;">200</b>
+                          <b class="col-sm-2 pull-left" style="color: #bbb;">15</b>
+                          <b  class="col-sm-2 pull-right" style="color: #bbb;">65</b>
                           <small id="age-range"> {{ $age[0].' - '.$age[1].' years' }} </small>
                         </div>
                        <div class="clearfix"></div>
@@ -400,10 +400,10 @@
 
       <p class="border-bottom-thin text-muted">Years of Experience<i class="glyphicon glyphicon-birthday pull-right"></i></p>
              <p class="text-center">
-                <input id="exp_years-slider" type="text" class="span2" value="" data-slider-min="0" data-slider-max="200" data-slider-step="1" data-slider-value="{{ '['.$exp_years[0].','.$exp_years[1].']' }}"/> 
+                <input id="exp_years-slider" type="text" class="span2" value="" data-slider-min="0" data-slider-max="80" data-slider-step="1" data-slider-value="{{ '['.$exp_years[0].','.$exp_years[1].']' }}"/> 
                 <div class="text-center">
                   <b class="col-sm-2 pull-left" style="color: #bbb;">0</b>
-                  <b  class="col-sm-2 pull-right" style="color: #bbb;">200</b>
+                  <b  class="col-sm-2 pull-right" style="color: #bbb;">80</b>
                   <small id="exp_years-range"> {{ $exp_years[0].' - '.$exp_years[1].' years' }} </small>
                 </div>
                <div class="clearfix"></div>

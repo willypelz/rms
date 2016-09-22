@@ -6,7 +6,7 @@
   
 <li class="row">
       <span class="col-md-2 col-sm-3">
-          <a class="" href="my-cv.html">
+          <a class="" href="javascript://" id='showCvBtn' data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">
 
               <img class="media-object job-team-img" width="100%" src="{{ $pic['image'] }}" style="background:{{ $pic['color'] }};" alt="">
           </a>

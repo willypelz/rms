@@ -100,13 +100,17 @@
         </div>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script> -->
 <script type="text/javascript">
 
-         $('#uploadCandidate').ajaxForm({ 
+    $(document).ready( function(){
+        $('#uploadCandidate').ajaxForm({ 
                 headers: { 'X-CSRF-TOKEN': $('input[name="_token"]').val() },
                 beforeSubmit:beforeUpload,
                 success:showResponse
-        }); 
+        });
+    });
+          
 
                     function beforeUpload(){
                         $('#u_f').hide();
@@ -130,10 +134,10 @@
                         //     $('#u_f').text( response.data ).show();
                         // }
                         
-                        
+
                         // $.growl.notice({ message: "The file uploaded is being parsed. You will have access to it in within 48 hours" });
 
-                        $('#u_s').text( response.data ).show();
+                        $('#u_s').text( "The file uploaded is being parsed. You will have access to it within 48 hours" ).show();
                     }
 
 

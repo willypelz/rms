@@ -1,4 +1,4 @@
-<script src="https://malsup.github.com/jquery.form.js"></script> 
+<script src="{{ secure_asset('js/jquery.form.js') }}"></script> 
 
 <script>
     $(document).ready(function(){

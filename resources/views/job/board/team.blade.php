@@ -119,14 +119,17 @@ You would be required to collaborate with your team in selecting the candidate(s
             @endif
         </div>
     </section>
-<script src="https://malsup.github.com/jquery.form.js"></script> 
+<script src="{{ secure_asset('js/jquery.form.js') }}"></script> 
 
     <script>
+    $(document).ready( function(){
         $('#JobTeamAdd').ajaxForm({ 
                 headers: { 'X-CSRF-TOKEN': $('input[name="_token"]').val() },
                 beforeSubmit:btn,
                 success:showResponse
         }); 
+    });
+        
 
                     function btn(){
                         $('#sendMail').attr('disabled','disabled').prepend('<div class="pull-right">' + '{!! preloader() !!}' + '</div>');

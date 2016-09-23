@@ -826,7 +826,7 @@ class JobsController extends Controller
 
         // $j = Cv::where('id','>',4157)->get();
 
-        Cv::whereIn('highest_qualification',[0,1,2,3,4,5,6,7,8,9])->chunk( 50, function($cvs){
+        Cv::where('highest_qualification',10)->chunk( 50, function($cvs){
 
             $qualifications = [
 

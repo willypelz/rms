@@ -1,7 +1,7 @@
 <div class="row">
-	<div class="text-uppercase col-xs-4"> 
+	<div class="text-uppercase col-xs-5"> 
 		<strong>Showing</strong> 
-		{{ $start }} -  {{ $end }} of  {{ $total . ' ' . $type }}   [Page {{ $page }} ]
+		{{ $start }} -  {{ $end }} of  {{ $total . ' ' . $type }}   [Page {{ $page }}]
 	</div>
 
 	@if( !empty( @$filters ) )

@@ -576,12 +576,98 @@
 
     
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/script.js') }}"></script>
+    <!-- <script src="{{ asset('js/script.js') }}"></script> -->
     <script src="{{ asset('js/owl.carousel.js') }}"></script>
     <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>
     <script src="{{ asset('js/jquery.growl.js') }}"></script>
     
+    <script type="text/javascript">
+        $(window).scroll(function() {
+
+        var navbar = $(".navbar");
+
+            if ($(".navbar").offset().top > 100) {
+
+            // animating navbar background
+            navbar.addClass("fold");
+
+            //Fix or release Cart
+            $(".well-cart").addClass("fixer");
+        } else {
+
+            // animating navbar background
+            navbar.removeClass("fold");
+
+            //Fix or release Cart
+            $(".well-cart").removeClass("fixer");
+        }
+    });
+
+
+    if (!sh)
+        var sh = window.sh = {};
+
+    sh.showModal = function(obj,title,view,data)
+    {
+        $('#viewModal .modal-title').text(title);
+        $('.modal-dialog').removeClass('modal').removeClass('modal-lg').addClass(data.modal_size);
+
+        // $user = $(this).closest('.media');
+        // var $user = obj.closest('.media').clone();
+        // $user.find('input[type="checkbox"]').remove();
+        // $user.find('small').remove();
+        // data.badge = $user.html();
+        
+        $.get(view, data, function(response){
+            $('#viewModal .modal-body').html( response);
+
+        });
+    }
+
+
+    sh.showWideModal = function()
+    {
+
+    }
+
+    $(document).ready(function(){
+        
+        $('.modal-header .close');
+
+        $('body').on('click','#modalButton', function(){
+
+            var data = {
+                app_id: $(this).attr('data-app-id') ,
+                cv_id: $(this).attr('data-cv')
+            }
+
+            if( $(this).attr('data-type') == 'normal' )
+            {
+                data.modal_size = 'modal-md';
+                sh.showModal( $(this), $(this).attr('data-title') , $(this).attr('data-view'), data );
+            }
+            else if( $(this).attr('data-type') == 'wide' )
+            {
+                data.modal_size = 'modal-lg';
+                sh.showModal( $(this), $(this).attr('data-title') , $(this).attr('data-view'), data );
+            }
+            else if( $(this).attr('data-type') == 'small' )
+            {
+                data.modal_size = 'modal-sm';
+                sh.showModal( $(this), $(this).attr('data-title') , $(this).attr('data-view'), data );
+            }
+        });
+
+        $('#viewModal').on('hidden.bs.modal', function () {
+            $('#viewModal .modal-title').text("Default Text");
+            $('#viewModal .modal-body').html( window.preloader );
+            console.log( "Modal has been closed" );
+        });
+
+        // onclick="sh.showModal('Assess','')"
+    });
+    </script>
 
     
     <script>

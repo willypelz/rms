@@ -152,7 +152,7 @@ class JobApplicationsController extends Controller
         }
         else
         {
-            $request->exp_years = [ 0, 80 ];
+            $request->exp_years = [ 0, 40 ];
             $solr_exp_years = null;
         }
 
@@ -177,7 +177,7 @@ class JobApplicationsController extends Controller
         }
         else{
             $age = [ 15, 65 ];
-            $exp_years = [ 0, 80 ];
+            $exp_years = [ 0, 40 ];
             $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
             return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','showing'));
         }

@@ -119,7 +119,7 @@ You would be required to collaborate with your team in selecting the candidate(s
             @endif
         </div>
     </section>
-<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script src="https://malsup.github.com/jquery.form.js"></script> 
 
     <script>
         $('#JobTeamAdd').ajaxForm({ 

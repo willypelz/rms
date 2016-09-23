@@ -120,18 +120,20 @@
                         $("#loader").html( '' );
                        
 
-                        if(response.status)
-                        {
+                        // if(response.status)
+                        // {
                             
-                            $('#u_s').text( response.data ).show();
-                        }
-                        else
-                        {
-                            $('#u_f').text( response.data ).show();
-                        }
-                        // $.growl.notice({ message: "Email was sent successfully" });
+                        //     $('#u_s').text( response.data ).show();
+                        // }
+                        // else
+                        // {
+                        //     $('#u_f').text( response.data ).show();
+                        // }
+                        
+                        
+                        // $.growl.notice({ message: "The file uploaded is being parsed. You will have access to it in within 48 hours" });
 
-
+                        $('#u_s').text( response.data ).show();
                     }
 
 

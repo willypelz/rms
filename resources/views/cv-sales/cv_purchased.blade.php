@@ -7,7 +7,7 @@
   .pagination .page{ padding: 0px !important; }
 </style>
 
-            <script src="http://malsup.github.com/jquery.form.js"></script> 
+            <script src="https://malsup.github.com/jquery.form.js"></script> 
 <script src="{{ asset('js/jquery.twbsPagination.min.js') }}"></script>
 
     <section class="s-div dark">

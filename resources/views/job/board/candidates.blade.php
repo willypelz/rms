@@ -11,7 +11,7 @@
   .pagination .page{ padding: 0px !important; }
 </style>
             @if($job['status'] != 'DELETED')
-            <script src="http://malsup.github.com/jquery.form.js"></script> 
+            <script src="https://malsup.github.com/jquery.form.js"></script> 
 <script src="{{ asset('js/jquery.twbsPagination.min.js') }}"></script>
 <script src="{{ asset('js/jquery.jscroll.min.js') }}"></script>
             

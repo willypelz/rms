@@ -72,10 +72,19 @@
                                      <a href="https://plus.google.com/share?url={{ url(get_current_company()->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" class="" target="_blank" >
                                              <span class="fa-stack fa-2x">
                                                <i class="fa fa-circle fa-stack-2x text-" style="color:#007bb6"></i>
+                                               <i class="fa fa-google fa-stack-1x fa-inverse"></i>
+                                             </span>
+                                     </a>
+                                 </li>
+                                  <li>
+                                     <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ url(get_current_company()->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" class="" target="_blank" >
+                                             <span class="fa-stack fa-2x">
+                                               <i class="fa fa-circle fa-stack-2x text-" style="color:#007bb6"></i>
                                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
                                              </span>
                                      </a>
                                  </li>
+                                 <!-- https://www.linkedin.com/shareArticle?mini=true&url=&title=&summary=&source= -->
                              </ul>
                           </div>
                             <a href="{{ url('my-jobs') }}" class="btn btn-primary">View My Jobs</a>

@@ -36,6 +36,8 @@ Route::group(['middleware' => ['web']], function () {
     
 });
 
+
+
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
 
@@ -53,6 +55,8 @@ Route::group(['middleware' => 'web'], function () {
         
         return view('guest.contact');
     });
+
+     Route::get('fixQua', [ 'uses' => 'JobsController@correctHighestQualification']);
 
      Route::get('/whoops', function () {
         
@@ -385,6 +389,7 @@ Route::group(['middleware' => 'web'], function () {
         });
 
     });
+    
 
 
     /**

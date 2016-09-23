@@ -821,7 +821,38 @@ class JobsController extends Controller
         return view('job.job-details', compact('job', 'company'));
     }
 
+    public function correctHighestQualification(){
+        
 
+        // $j = Cv::where('id','>',4157)->get();
+
+        Cv::where('id','>',4381)->chunk( 20, function($cvs){
+
+            $qualifications = [
+
+                'MPhil / PhD',
+                'MBA / MSc',
+                'MBBS',
+                'B.Sc',
+                'HND',
+                'OND',
+                'N.C.E',
+                'Diploma',
+                'High School (S.S.C.E)',
+                'Vocational',
+                'Others'
+
+            ];
+            
+            foreach ($cvs as $cv) {
+                // echo $cv->highest_qualification."<br />";
+                $cv->highest_qualification = $qualifications[ $cv->highest_qualification ];
+                $cv->save();
+            }
+        });
+       
+        // dd($j[0]->highest_qualification);
+    }
 
     public function jobApply($jobID, $slug, Request $request){
 
@@ -946,7 +977,7 @@ class JobsController extends Controller
             $cv->date_of_birth = $data['date_of_birth'];
             $cv->marital_status = $data['marital_status'];
             $cv->state = $data['location'];
-            $cv->highest_qualification = $data['highest_qualification'];
+            $cv->highest_qualification = $qualifications[ $data['highest_qualification'] ];
             $cv->last_position = $data['last_position'];
             $cv->last_company_worked = $data['last_company_worked'];
             $cv->years_of_experience = $data['years_of_experience'];

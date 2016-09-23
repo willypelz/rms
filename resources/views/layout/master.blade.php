@@ -36,7 +36,7 @@
     @section('footer')
         @include('layout.includes.footer')
     @show()
-
+    
 
 
    </body>

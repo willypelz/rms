@@ -16,7 +16,7 @@
                         
                         <div class="row">
                             <div class="col-xs-12">
-                                <h5 class="text-center text-success text-brandon">This feature is only available to premium users</h5>
+                                <h5 class="text-center text-success text-brandon">This feature is currently unavailable</h5>
                             </div>
                         </div>
 

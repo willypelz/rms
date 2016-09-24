@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<script type="text/javascript"> var sana = JSON.parse( '{!! Auth::user() !!}' ); </script>
 @section('header')
 
 @show()
@@ -37,7 +36,7 @@
     @section('footer')
         @include('layout.includes.footer')
     @show()
-
+    
 
 
    </body>

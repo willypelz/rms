@@ -1,4 +1,4 @@
-$(window).scroll(function() {
+/*$(window).scroll(function() {
 
     var navbar = $(".navbar");
 
@@ -81,7 +81,19 @@ $(document).ready(function(){
     });
 
     // onclick="sh.showModal('Assess','')"
-});
+});*/
+
+
+
+
+
+
+
+
+
+
+
+
 ////////-----function for Homepage Tabs---------////////
 
     //     $(function() {

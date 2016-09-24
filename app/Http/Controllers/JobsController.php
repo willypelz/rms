@@ -62,9 +62,9 @@ class JobsController extends Controller
       // dd($request->request);
 
       $validator = Validator::make($request->all(), [
-            'email_to' => 'required'
+            'email' => 'required'
         ],[
-            'email_to.required' => 'Email is required'
+            'email.required' => 'Email is required'
         ]);
 
         if ($validator->fails()) {
@@ -73,23 +73,37 @@ class JobsController extends Controller
         else
         {   
           //Create User
-            $user = User::FirstorCreate([              
-              'email' => $request->email_to
-            ]);
+             $link = "dashboard";   
+            $user = User::where('email', $request->email_to)->first();
+            if(empty($user)){
+                $user = User::FirstorCreate([              
+                  'email' => $request->email,
+                  'name' => $request->name
+                ]);    
+
+                $link = "password/reset";
+            }
+
+
+            $mail_body = $request->body_mail;
+            
 
             //Add user to company users
             $company = Company::find( get_current_company()->id );
             $company->users()->attach($user->id);
+
+            $job = Job::find($request->job_id);
 
             //Save Invite Code
             $user->invite_code = str_random(40);
             
             //Send notification mail
             $email_from = ( Auth::user()->email ) ? Auth::user()->email : 'no-reply@insidify.com';
-            Mail::send('emails.e-exculsively-invited.html', [], function($message){
-                $message->from($email_from);
-                $message->to($request->email, 'You Have Been Exclusively Invited');
+            Mail::send('emails.e-exculsively-invited', ['mail_body'=>$mail_body, 'name'=>$user->name, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=>$link ], function($message) use ($user){
+                $message->from('info@seamlesshiring.com');
+                $message->to($user->email, $user->name);
             }); 
+
             echo 'Saved';
         }
 
@@ -796,7 +810,7 @@ class JobsController extends Controller
     {
         $company = Company::where('slug', $company_slug)->first();
         $job = Job::where('id', $jobid)->where("company_id",$company->id)->first();
-
+        
         if(empty($job)){
             // redirect to 404 page
         }
@@ -807,7 +821,38 @@ class JobsController extends Controller
         return view('job.job-details', compact('job', 'company'));
     }
 
+    public function correctHighestQualification(){
+        
 
+        // $j = Cv::where('id','>',4157)->get();
+
+        Cv::where('highest_qualification',10)->chunk( 50, function($cvs){
+
+            $qualifications = [
+
+                'MPhil / PhD',
+                'MBA / MSc',
+                'MBBS',
+                'B.Sc',
+                'HND',
+                'OND',
+                'N.C.E',
+                'Diploma',
+                'High School (S.S.C.E)',
+                'Vocational',
+                'Others'
+
+            ];
+
+            foreach ($cvs as $cv) {
+                // echo $cv->highest_qualification."<br />";
+                $cv->highest_qualification = $qualifications[ $cv->highest_qualification ];
+                $cv->save();
+            }
+        });
+       
+        // dd($j[0]->highest_qualification);
+    }
 
     public function jobApply($jobID, $slug, Request $request){
 
@@ -932,7 +977,7 @@ class JobsController extends Controller
             $cv->date_of_birth = $data['date_of_birth'];
             $cv->marital_status = $data['marital_status'];
             $cv->state = $data['location'];
-            $cv->highest_qualification = $data['highest_qualification'];
+            $cv->highest_qualification = $qualifications[ $data['highest_qualification'] ];
             $cv->last_position = $data['last_position'];
             $cv->last_company_worked = $data['last_company_worked'];
             $cv->years_of_experience = $data['years_of_experience'];
@@ -1015,10 +1060,12 @@ class JobsController extends Controller
     public function company($c_url){
 
         $company = Company::with(['jobs'=>function($query){
-                                        $query->where('status', "ACTIVE")->where('expiry_date','>',date('Y-m-d'));
+                                        $query->where('status', "ACTIVE")
+                                        ->orderBy('created_at','desc')
+                                        ->where('expiry_date','>',date('Y-m-d'));
                                     }])->where('slug', $c_url)->first();
 
-
+        // $company->jobs()->orderBy('created_at','desc')->get()->toArray();
         // dd($company);
 
         return view('job.company', compact('company'));

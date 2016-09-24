@@ -7,7 +7,7 @@
   .pagination .page{ padding: 0px !important; }
 </style>
 
-<script src="{{ asset('js/jquery.form.js') }}"></script> 
+<script src="{{ secure_asset('js/jquery.form.js') }}"></script> 
 <script src="{{ asset('js/jquery.twbsPagination.min.js') }}"></script>
 
 <script src="{{ asset('js/cart.js') }}"></script>

@@ -58,18 +58,24 @@
                                <!--div class="alert alert-success"><i class="fa fa-check fa-lg"></i>
                                     &nbsp; Your mail has been sent. Refresh page to send more.
                                 </div-->
+                                <br/><br/>
                                    <form action="{{ route('job-team-add') }}" method="post" id="JobTeamAdd">
                                     {!! csrf_field() !!}
                                    <div class="form-group">
-                                       <label for="">From: </label>
-                                       <input type="text" disabled="" name="email_from" value="{{ get_current_company()->email }}" class="form-control">
+                                       <label for="">Name: </label>
+                                       <input type="text"  name="name" value="" class="form-control">
+                                       <small><em>The name of the team member</em></small>
+
+                                       <input type="hidden" name="email_from" value="{{ get_current_company()->email }}" class="form-control">
+                                       <input type="hidden" name="job_id" value="{{ $job->id }}" class="form-control">
                                        
-                                       <label for="">To: </label>
-                                       <small>Separate your addresses by a comma</small>
-                                       <input type="text" name="email_to" id="email_to" placeholder="email addresses here" class="form-control">
+                                       <label for="">Email: </label>
+                                       
+                                       <input type="text" name="email" id="email_to" placeholder="email addresses here" class="form-control">
+                                       <small><em>The email address of the team member</em></small>
                                    </div>
 
-                                   <label for="editor1">Body of Mail</label>
+                                   <label for="editor1">Invite Mail</label>
                                        <textarea rows="10" cols="30" id="editor1" name="body_mail" style="visibility: hidden; display: none;">                                       
                                        &lt;p&gt;Hello,&lt;br&gt;
 
@@ -113,14 +119,17 @@ You would be required to collaborate with your team in selecting the candidate(s
             @endif
         </div>
     </section>
-<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script src="{{ secure_asset('js/jquery.form.js') }}"></script> 
 
     <script>
+    $(document).ready( function(){
         $('#JobTeamAdd').ajaxForm({ 
                 headers: { 'X-CSRF-TOKEN': $('input[name="_token"]').val() },
                 beforeSubmit:btn,
                 success:showResponse
         }); 
+    });
+        
 
                     function btn(){
                         $('#sendMail').attr('disabled','disabled').prepend('<div class="pull-right">' + '{!! preloader() !!}' + '</div>');

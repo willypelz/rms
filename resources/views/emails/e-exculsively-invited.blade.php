@@ -35,17 +35,17 @@
                           <div style="color:#2d2d2d;width:100%;margin:0 auto;">
                             <h3 style="font-size: 20px;margin:0 0 5%;padding:0;"><a href="" style="font-family: Roboto,'Open Sans','Helvetica Neue',Arial,Helvetica,sans-serif;word-wrap:break-word;color: #3a5979;text-decoration:none;display:block;text-align: center;width:100%;" target="_blank">You have been Exclusively Invited</a></h3>
                             <hr style="border-width:0 0 1px">
-                            <p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.3em;">Dear [name], <br><br>Regarding the ongoing recruitment process at [...] company for the job of [...], this is to inform you that you have been invited to join the recruitment team.<br>You would be required to collaborate with your team in selecting the candidate(s) who best suit(s) the job.
+                            <p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.3em;">Dear {{ $name }}, <br><br>Regarding the ongoing recruitment process at <strong>{{ $company }}</strong> for the job of <strong>{{ $job_title }}</strong>, this is to inform you that you have been invited to join the recruitment team.<br>You would be required to collaborate with your team in selecting the candidate(s) who best suit(s) the job.
                             </p>
                             <div style="color:#2d2d2d;" align="center">
                             <p>To view the recruitment process, click the link below</p>
-                            <a href="" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color: #5cb85c;text-transform:uppercase" target="_blank">Accept</a>
+                            <a href="{{ url($link) }}" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color: #5cb85c;text-transform:uppercase" target="_blank">Accept</a>
                             </div>
                             
-                            <div style="color:#2d2d2d;" align="center">
+                           <!--  <div style="color:#2d2d2d;" align="center">
                             <p>If you would like to decline this invitation, click the link below</p>
                             <a href="" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color: #666;text-transform:uppercase" target="_blank">Decline</a>
-                            </div>
+                            </div> -->
                             <br><hr style="border-width:0 0 1px">
                             <p style="color:#666">Cheers, <br> The SeamlessHiring Team</p>
 

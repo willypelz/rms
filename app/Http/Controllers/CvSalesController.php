@@ -468,7 +468,7 @@ class CvSalesController extends Controller
         }
         else
         {
-            $request->age = [ 1, 200 ];
+            $request->age = [ 15, 65 ];
             $solr_age = null;
         }
 
@@ -481,7 +481,7 @@ class CvSalesController extends Controller
         }
         else
         {
-            $request->exp_years = [ 0, 200 ];
+            $request->exp_years = [ 0, 40 ];
             $solr_exp_years = null;
         }
 
@@ -539,7 +539,7 @@ class CvSalesController extends Controller
             
         }
         else{
-            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query,'showing'=>$showing, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 1, 200 ], 'exp_years' => [ 0, 200 ], 'myJobs' => Job::getMyJobs() ]);
+            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query,'showing'=>$showing, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 15, 65 ], 'exp_years' => [ 0, 40 ], 'myJobs' => Job::getMyJobs() ]);
         }
         // return view('cv-sales.cv_saved');
     }

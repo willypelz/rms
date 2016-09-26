@@ -1356,7 +1356,7 @@ class JobsController extends Controller
 
         if( $user->exists() ){
             $company = Company::find( $company_id );
-            $jobs = $company->jobs()->whereNot('status','DELETED')->orderBy('created_at','desc')->get()->toArray();
+            $jobs = $company->jobs()->orderBy('created_at','desc')->get()->toArray();
         }
         else
         {

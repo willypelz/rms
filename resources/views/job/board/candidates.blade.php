@@ -99,7 +99,7 @@
 
                         <!-- Filter -->
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-4 col-shift">
                             <div class="well well-cart animated slideInUp collapse fixer" id="collapseWellCart">
                                 <div class="row">
                                     <div class="col-md-3 hidden-xs hidden-sm small text-light text-muted">Cart<br>
@@ -123,6 +123,25 @@
                                     <div class="col-xs-6"><button class="btn btn-block btn-line btn-sm btn-cart-clear text-muted"><i class="fa fa-close"></i> Clear</button></div>
                                 </div>
                             </div>
+
+
+                            <p class="small text-muted"><strong>Download Spreadsheet view.</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+
+                            <a href="" class="btn btn-line btn-block" style="">
+                            
+                                <i class="fa fa-file-excel-o"></i> 
+                                &nbsp; Download Spreadsheet
+
+                            </a>
+
+                            <a href="" class="btn btn-line btn-block disabled" style="" disabled>
+
+                                <i class="fa fa-spin fa-refresh"></i> 
+                                &nbsp; Generating Spreadsheet
+
+                            </a>
+                            <br>
+
                           <div id="search-filters">
                                 @include('cv-sales.includes.search-filters')
                             </div>

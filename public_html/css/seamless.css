@@ -2309,12 +2309,16 @@ section.grey hr{
 .up-space {
     margin-top: 35px;
 }
+.col-shift{
+        width: 29%;
+    margin-left: 4%;
+}
 .filter-div {
     font-size: 12px;
     border-radius: 5px;
     /* border: rgba(245, 245, 245, 0.65) solid; */
     border-width: 5px;
-    margin-left: 45px;
+    /* margin-left: 45px; */
     font-weight: 700;
 }
 .filter-div hr {

@@ -165,7 +165,7 @@ class JobApplicationsController extends Controller
 
         $end = (($start + $this->search_params['row']) > intval($result['response']['numFound']))?$result['response']['numFound']:($start + $this->search_params['row']);
         // $showing = "Showing ".($start+1)." - ".$end." of ".$result['response']['numFound']." Applicants [Page ".floor($request->start + 1)."]";
-
+        dd($result);
 
         $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $result['response']['numFound'], 'type'=>$request->status, 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();    
 
@@ -249,7 +249,7 @@ class JobApplicationsController extends Controller
                                 "GENDER" => $value['gender'],
                                 "MARITAL STATUS" => $value['marital_status'],
                                 "DATE OF BIRTH" => substr($value['dob'], 0 ,10),
-                                "AGE" => '',
+                                // "AGE" => '',
                                 "LOCATION" => $value['state'],
                                 "EMAIL" => $value['email'],
                                 "PHONE" => $value['phone'],
@@ -258,6 +258,11 @@ class JobApplicationsController extends Controller
                                 "LAST COMPANY WORKED AT" => $value['last_company_worked'],
                                 "YEARS OF EXPERIENCE" => $value['years_of_experience'],
                                 "WILLING TO RELOCATE?" => '',
+
+
+
+
+                                
                                 // "JOB TITLE" => $job->title,
                                 
                                 // "cv_file" => "1470054202_cheidiatgmailcom_Moyosoluwa's draft.docx"

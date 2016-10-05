@@ -160,6 +160,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Ixudra\Curl\CurlServiceProvider::class,
         // Chumper\Zipper\ZipperServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 
@@ -211,6 +212,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         // 'Zipper' => Chumper\Zipper\Zipper::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
 
     ],

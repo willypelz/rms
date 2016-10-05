@@ -125,16 +125,16 @@
                             </div>
 
 
-                            <p class="small text-muted"><strong>Download Spreadsheet view.</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+                            <!-- <p class="small text-muted"><strong>Download Spreadsheet view.</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p> -->
 
-                            <a href="" class="btn btn-line btn-block" style="">
+                            <a href="javascript://" class="btn btn-line btn-block" style="" id="downSpreadsheet">
                             
                                 <i class="fa fa-file-excel-o"></i> 
                                 &nbsp; Download Spreadsheet
 
                             </a>
 
-                            <a href="" class="btn btn-line btn-block disabled" style="" disabled>
+                            <a href="javascript://" class="btn btn-line btn-block disabled" style="display:none;" disabled id="genSpreadsheet">
 
                                 <i class="fa fa-spin fa-refresh"></i> 
                                 &nbsp; Generating Spreadsheet
@@ -644,6 +644,26 @@
                 $(document).getShowing();
             });
             
+        });
+
+
+        $('body').on('click', '#downSpreadsheet', function(){
+                // $('#downSpreadsheet').hide();
+                // $('#genSpreadsheet').show(); 
+                $data = {search_query: $('#search_query').val(), filter_query : filters, status : status_filter , jobId : "{{ $jobID }}", age: age_range, exp_years : exp_years_range };
+                window.open("{{ route('download-applicant-spreadsheet') }}" + "?" + $.param( $data ), '_blank');
+                // window.open("{{ route('download-applicant-spreadsheet'," + $('#search_query').val() + "," + filters + "," + status_filter + ") }}", '_blank');
+
+                /*$.get("{{ route('download-applicant-spreadsheet') }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
+                    //console.log(response);
+                    // var response = JSON.parse(data);
+                    // console.log(data.search_results);
+                    $('#genSpreadsheet').hide();
+                    $('#downSpreadsheet').show();
+                    console.log(data); 
+                    window.open('google.com', '_blank');
+                    
+                });*/
         });
 
     });

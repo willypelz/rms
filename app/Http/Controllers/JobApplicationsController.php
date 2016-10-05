@@ -19,6 +19,9 @@ use App\Models\Interview;
 use App\Models\InterviewNotes;
 use Carbon\Carbon;
 use Auth;
+use Excel;
+use App;
+
 
 
 class JobApplicationsController extends Controller
@@ -155,8 +158,6 @@ class JobApplicationsController extends Controller
             $request->exp_years = [ 0, 40 ];
             $solr_exp_years = null;
         }
-
-        
         
         $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status,@$solr_age, @$solr_exp_years); 
         if(isset($request->status))
@@ -185,7 +186,146 @@ class JobApplicationsController extends Controller
         
     }
 
+    public function downloadApplicantSpreadsheet( Request $request ){
+        
+        //Check if you should have access to the excel
+        check_if_job_owner( $request->jobId ) ;
 
+        $job = Job::find($request->jobId);
+
+        // dd( $job );
+
+        $this->search_params['filter_query'] = @$request->filter_query;
+        $this->search_params['row'] = 2147483647;
+
+
+        //If age is available
+        if( @$request->age ){
+            $date = Carbon::now();
+            //2015-09-16T00:00:00Z
+            $start_dob = str_replace('+', '', $date->subYears( @$request->age[0] )->toIso8601String() ). "Z" ; 
+            $end_dob = str_replace('+', '', $date->subYears( @$request->age[1] )->toIso8601String() ). "Z"; 
+
+            $solr_age = [ $start_dob, $end_dob ];
+            // dd($request->age, $start_dob, $end_dob);
+        }
+        else
+        {
+            $request->age = [ 15, 65 ];
+            $solr_age = null;
+        }
+
+
+        //If years of experience is available
+        if( @$request->exp_years ){
+            //2015-09-16T00:00:00Z
+
+            $solr_exp_years = [ @$request->exp_years[0], @$request->exp_years[1] ];
+        }
+        else
+        {
+            $request->exp_years = [ 0, 40 ];
+            $solr_exp_years = null;
+        }
+
+        $result = Solr::get_applicants($this->search_params, $request->jobId,@$request->status,@$solr_age, @$solr_exp_years); 
+
+        $data = $result['response']['docs'];
+        $other_data = [
+
+                    'company' => get_current_company()->name,
+                    'user' => Auth::user()->name,
+                    'job_title' => $job->title,
+        ];
+
+        $excel_data = [];
+
+        foreach ($data as $key => $value) {
+            $excel_data[] = [
+                                "FIRSTNAME" => $value['first_name'],
+                                "LASTNAME" => $value['last_name'],
+                                "LAST POSITION HELD" => $value['last_position'],
+                                "HEADLINE" => $value['headline'][0],
+                                "GENDER" => $value['gender'],
+                                "MARITAL STATUS" => $value['marital_status'],
+                                "DATE OF BIRTH" => substr($value['dob'], 0 ,10),
+                                "AGE" => '',
+                                "LOCATION" => $value['state'],
+                                "EMAIL" => $value['email'],
+                                "PHONE" => $value['phone'],
+                                "COVER NOTE" => $value['cover_note'][0],
+                                "HIGHEST EDUCATION" => $value['highest_qualification'],
+                                "LAST COMPANY WORKED AT" => $value['last_company_worked'],
+                                "YEARS OF EXPERIENCE" => $value['years_of_experience'],
+                                "WILLING TO RELOCATE?" => '',
+                                // "JOB TITLE" => $job->title,
+                                
+                                // "cv_file" => "1470054202_cheidiatgmailcom_Moyosoluwa's draft.docx"
+                                // "display_picture" => "default-profile.png"
+                                // "rank" => 1
+                                // "id" => "5617"
+                                // "last_modified" => "2016-09-23T05:54:57Z"
+                                // "application_date" => "2016-08-01T13:23:22Z"
+                                // "application_modified" => "2016-08-01T13:23:22Z"
+                                // "application_id" => array:1 [▶]
+                                // "application_status" => array:1 [▶]
+                                // "_version_" => 1.5462453107564E+18
+                              ];
+        }
+
+        // dd($excel_data);
+
+        $excel = App::make('excel'); 
+
+        Excel::create('Applicants Report: '.$other_data['job_title'], function($excel) use($excel_data, $other_data) {
+            // Set the title
+            $excel->setTitle('Applicants Report: '.$other_data['job_title']);
+            $excel->setCreator( $other_data['user'] )->setCompany( $other_data['company'] );
+            // $excel->setDescription('report file');
+
+            $excel->sheet('Report', function($sheet) use($excel_data, $other_data) {
+           
+
+                // first row styling and writing content
+                // $sheet->mergeCells('A1:W1');
+                // $sheet->row(1, function ($row) {
+                //     $row->setFontFamily('Comic Sans MS');
+                //     $row->setFontSize(30);
+                // });
+
+                // $sheet->row(1, array('Some big header here'));
+
+                $sheet->fromArray($excel_data, null, 'A1', false, true);
+                $sheet->cells('A1:P1', function($cells) {
+                    $cells->setBackground('#eeeeee');
+
+
+
+                });
+
+                
+
+                $sheet->setColumnFormat(['G' => 'dd/mm/yyyy']);
+
+                $sheet->setStyle([
+                    'alignment' => [
+                        'vertical' => 'middle',
+                        'horizontal' => 'left'
+                    ]
+                ]);
+                // $sheet->setVerticalAlign('text-top');
+
+                // $sheet->setFitToPage(true);
+                // $sheet->setFitToHeight(true);
+                // $sheet->setFitToWidth(true);
+               
+                // $sheet->setAutoSize(true);
+
+                
+            });
+        })->download('xlsx');
+
+    }
 
     public function massAction( Request $request )
     {

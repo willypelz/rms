@@ -1008,10 +1008,12 @@ footer {
     background: #EFF2F5;
     /*#3d444d*/
     color: #b5c4c7;
+    font-size: 13px;
 }
 footer a {
     color: #666;
     font-weight: normal;
+    font-size: 13px;
 }
 footer a:hover {
     color: #3A5979;

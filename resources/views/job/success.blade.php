@@ -49,6 +49,106 @@
                            <p class="well">
                              {{ url(get_current_company()->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}
                            </p>
+
+                            <div class="col-xs-8">
+
+                                <div class="panel panel-default">
+                                
+                                  <div class="panel-heading">
+                                    <h3 class="panel-title">Advertise on Job Boards 
+                                    <span class="pull-right text-warning"><i class="fa fa-check-circle"></i> {{ $approved_count }} approved &nbsp; &middot; &nbsp;<i class="fa fa-hourglass-half"></i> {{ $pending_count }} Pending</span>
+
+                                  </div>
+                                  <div class="panel-body">
+                                  <p class="text-muted">You can copy the link of your job or share them from here.</p>
+                                    
+
+                                    @foreach($subscribed_boards as $subscribed_board)
+                                        <?php 
+                                              // $sub_key = array_search($b['id'], array_pluck( $subscribed_boards, 'id' ) );
+
+
+                                              if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
+                                              {
+                                                  $status = 'approved';
+                                              }
+                                              else
+                                              {
+                                                  $status = 'pending';
+
+                                              }
+                                              // $status = ( in_array($b['id'], $subscribed_boards) ) ? 'disabled checked' : ''; 
+                                              // $approved = ( in_array($b['id'], $subscribed_boards) ) ? 'disabled checked' : ''; 
+                                         ?>
+                                        
+                                        <div class="row job-board {{$status}}">
+                                          <div class="col-xs-3"><br>
+                                            <img src="{{ $subscribed_board['img'] }}" alt="{{ $subscribed_board['name'] }} logo" width="90%" align="right">
+                                          </div>
+                                          <div class="col-xs-6">
+                                            @if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
+                                              <h5 title="Your Job is live on this website">{{ $subscribed_board['name'] }} <i class="fa fa-check-circle text-success"></i> </h5><input type="text" class="form-control" value="" readonly>
+                                            @else
+                                              <h5>{{ $subscribed_board['name'] }} &nbsp;&nbsp;<i class="fa fa-hourglass-half text-muted"></i>pending approval</h5><input type="text" class="form-control" value="your url will appear here" disabled="">
+                                            @endif
+                                            <!-- <div class="clearfix"></div>
+                                            <p class="small text-muted">&uarr; Link to job on insidify.com</p> -->
+                                          </div>
+                                          <div class="col-xs-3">
+                                          <h5>Share this link</h5>
+                                            <ul class="list-inline">
+                                                   <li class="no-pad no-margin">
+                                                       <a href="" class="btn-disabled" target="_blank" >
+                                                               <span class="fa-stack fa-lg">
+                                                                 <i class="fa fa-square fa-stack-2x text-"></i>
+                                                                 <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                                               </span>
+                                                       </a>
+                                                   </li>
+                                                                                  
+                                                   <li class="no-pad no-margin">
+                                                       <a href="" class="btn-disabled" target="_blank" >
+                                                               <span class="fa-stack fa-lg">
+                                                                 <i class="fa fa-square fa-stack-2x text-"></i>
+                                                                 <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                                               </span>
+                                                       </a>
+                                                   </li>
+                                                                                  
+                                                   <li class="no-pad no-margin">
+                                                       <a href="" class="btn-disabled" target="_blank" >
+                                                               <span class="fa-stack fa-lg">
+                                                                 <i class="fa fa-square fa-stack-2x text-"></i>
+                                                                 <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                                                               </span>
+                                                       </a>
+                                                   </li>
+                                               </ul>
+                                          </div>
+                                          <div class="clearfix"></div>
+                                          <hr>
+                                        </div>
+                                        @endforeach
+
+
+                                    <!-- <u class="text-center"><a href=""><i class="fa fa-plus"></i> Add Job board</u></a> -->
+
+
+                                    <div class="well text-center">
+                                      <p class="lead">For a wider and better reach, <br>you can promote this job on more job boards and <i>newspapers.</i></p>
+                                      <p>
+                                        <a href="{{ url('jobs/advertise-your-job/'.$job_id.'/'.str_slug($job['title'])) }}" class="btn btn-danger btn-" target="_blank">
+                                          <i class="fa fa-send"></i> Promote Job now
+                                        </a>
+                                      </p>
+                                    </div>
+
+
+                                  </div>
+                                </div>
+
+                            </div>
+
                             <ul class="list-inline">
                                  <li>
                                      <a href="https://www.facebook.com/sharer/sharer.php?u={{ url(get_current_company()->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" class="" target="_blank" >

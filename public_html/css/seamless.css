@@ -1,5 +1,5 @@
 
-@import url(https://fonts.googleapis.com/css?family=Oxygen:300,400,700);
+@import 'https://fonts.googleapis.com/css?family=Muli';
 /*@import 'https://fonts.googleapis.com/css?family=Catamaran:300,400,700';*/
 
 body{
@@ -8,7 +8,7 @@ body{
     background:#dfe5e9;
     /* font-family:"Proxima", Sans-serif; */
 /*    font-family:"Lato", Sans-serif;*/
-    font-family: 'Oxygen', sans-serif;
+    font-family: 'Muli', sans-serif;
     letter-spacing: 0.01rem;
     color: #333;
 /*    font-family: 'Catamaran', sans-serif;*/
@@ -455,11 +455,10 @@ section.s-div{
     /*border-bottom: 3px solid #5CB85C;*/
 }
 section.s-div.homepage{
-    -
-    height: 450px;
-/*    background: #3A5979 fixed bottom url('../img/intro-bg.jpg');*/
-    background-size:cover;
-    /*border-bottom:3px solid #5CB85C;*/
+    background: #3A5979 fixed bottom url(../img/intro-bg.jpg);
+    background-size: cover;
+    padding: 8em 0 5em;
+    border-bottom: 5px solid #96b5d0;
 }
 section.dark-blue .page {
     background: #1AACC1;
@@ -1008,10 +1007,12 @@ footer {
     background: #EFF2F5;
     /*#3d444d*/
     color: #b5c4c7;
+    font-size: 13px;
 }
 footer a {
     color: #666;
     font-weight: normal;
+    font-size: 13px;
 }
 footer a:hover {
     color: #3A5979;

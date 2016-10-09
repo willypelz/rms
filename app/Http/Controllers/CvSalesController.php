@@ -57,9 +57,50 @@ class CvSalesController extends Controller
 
             $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start * $this->search_params['row'] ) : 0;
             
+            $additional = "";
+
+            if( @$request->age ){
+                $date = Carbon::now();
+                //2015-09-16T00:00:00Z
+                // $start_dob = str_replace('+', '', $date->subYears( @$request->age[0] )->toIso8601String() ). "Z" ; 
+                // $end_dob = str_replace('+', '', $date->subYears( @$request->age[1] )->toIso8601String() ). "Z";  
+                
+                $start_dob = explode(' ', $date->subYears( @$request->age[0] ) )[0] .'T23:59:59Z'; 
+                $end_dob = explode(' ', $date->subYears( @$request->age[1] ) )[0] .'T00:00:00Z';
+
+                $solr_age = [ $start_dob, $end_dob ];
+
+                $additional .= "&fq=dob:[".$solr_age[1]."+TO+".$solr_age[0]."]"; //$startdate.'T01:00:59Z' $enddate.'T23:59:59Z'
+
+            }
+            else
+            {
+                $request->age = [ 15, 65 ];
+                $solr_age = null;
+            }
+
+
+            //If years of experience is available
+            if( @$request->exp_years ){
+                //2015-09-16T00:00:00Z
+
+                $solr_exp_years = [ @$request->exp_years[0], @$request->exp_years[1] ];
+                $additional .= "&fq=years_of_experience:[".$solr_exp_years[0]."+TO+".$solr_exp_years[1]."]";
+            }
+            else
+            {
+                $request->exp_years = [ 0, 40 ];
+                $solr_exp_years = null;
+            }
+
+
+            if( $request->filter_query ){
+                $this->search_params['filter_query'] = @$request->filter_query;
+            }
             
-            $this->search_params['filter_query'] = @$request->filter_query;
-            $response = Solr::search_resume($this->search_params);
+            // $response = Solr::search_resume($this->search_params);
+
+            $result = Solr::search_resume($this->search_params, @$additional);
 
             $cart = Utilities::getCartContent('cv-sales'); 
             $count = Utilities::getBoardCartCount('cv-sales'); 
@@ -71,16 +112,21 @@ class CvSalesController extends Controller
 
             if(empty($ids))
                 $ids = null;
-        // $in_cart = in_array('26618', $ids);
+
+
+            
+            $end = (($start + $this->search_params['row']) > intval($result['response']['numFound']))?$result['response']['numFound']:($start + $this->search_params['row']);
+            $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $result['response']['numFound'], 'type'=> '', 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();    
+
             if($request->ajax())
             {
-                $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'search'])->render();    
-                $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query])->render();
-                return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters ] );
+                $search_results = view('cv-sales.includes.search-results-item',['result' => $result,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'search'])->render();    
+                $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query, 'age' => @$request->age,'exp_years' => @$request->exp_years])->render();
+                return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing' => $showing ] );
                 
             }
             else{
-                return view('cv-sales.search-results',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'search' ]);
+                return view('cv-sales.search-results',['result' => $result,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'search', 'showing' => $showing, 'age' => @$request->age,'exp_years' => @$request->exp_years ]);
             }
             
     }
@@ -460,8 +506,8 @@ class CvSalesController extends Controller
         if( @$request->age ){
             $date = Carbon::now();
             //2015-09-16T00:00:00Z
-            $start_dob = str_replace('+', '', $date->subYears( @$request->age[0] )->toIso8601String() ). "Z" ; 
-            $end_dob = str_replace('+', '', $date->subYears( @$request->age[1] )->toIso8601String() ). "Z"; 
+            $start_dob = explode(' ', $date->subYears( @$request->age[0] ) )[0] .'T23:59:59Z'; 
+            $end_dob = explode(' ', $date->subYears( @$request->age[1] ) )[0] .'T00:00:00Z';
 
             $solr_age = [ $start_dob, $end_dob ];
             // dd($request->age, $start_dob, $end_dob);

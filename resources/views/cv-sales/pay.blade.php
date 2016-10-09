@@ -1,7 +1,7 @@
 @extends('layout.template-user')
 
 @section('content')
-<script src="https://checkout.simplepay.ng/simplepay.js"></script>
+<script src="https://checkout.simplepay.ng/v2/simplepay.js"></script>
 
 
     <section class="no-pad">
@@ -95,7 +95,7 @@
                 handler.open(SimplePay.CHECKOUT, // type of payment
                 {
                    email: '{{ $company->email }}', // optional: user's email
-                   phone: '+234*', // optional: user's phone number
+                   phone: '{{ $company->phone }}', // optional: user's phone number
                    description: 'Payment for Job boards', // a description of your choosing
                    address: '{{ $company->address }}', // user's address
                    postal_code: '110001', // user's postal code

@@ -307,6 +307,7 @@
 
             $('.search-results').html('{!! preloader() !!}');
             $('.result-label').html('');
+            $('#pagination').hide();
             scrollTo('.scroll-to');
             $.get("{{ url('cv/talent-pool') }}", {search_query: $('#search_query').val(), filter_query : filters, age: age_range, exp_years : exp_years_range },function(data){
                 //console.log(response);
@@ -315,6 +316,7 @@
                 $('.search-results').html(data.search_results);
                 $('#search-filters').html(data.search_filters);
                 $('.result-label').html(data.showing);
+                $('#pagination').show();
                 $(document).getMyFolders();
                 $.each(filters, function(index,value){
                     

@@ -14,14 +14,17 @@
         </div>
         <div id="collapseOne" class="panel-collapse collapse in">
           <div class="panel-body">
-
-              <p class="border-bottom-thin text-muted">Keyword search<i class="fa fa-filter pull-right"></i></p>
+            
+            @if( $page != 'search' )
+              <p class="border-bottom-thin text-muted">Keyword search <i class="fa fa-filter pull-right"></i></p>
               <div class="input-group">
                 
                 <input type="text" class="form-control" id="search_keyword" placeholder="keyword">
                 <a class="btn btn-small input-group-addon" href="#" onclick="searchKeyword(); return false;" >GO</a>
               </div>
               <p></p> 
+
+            @endif
 
           @if( @$status == 'ASSESSED' )
                   <p class="border-bottom-thin text-muted">Test Name<i class="fa fa-filter pull-right"></i></p>

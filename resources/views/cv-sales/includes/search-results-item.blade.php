@@ -23,7 +23,7 @@
               </a>
                   <span class="small">
                   
-                  @if(@$cv['dob'])
+                  @if(@$cv['dob'] &&  $cv['dob'] != '1970-01-01T00:00:00Z')
                     . {{ \App\Libraries\Utilities::getAge($cv['dob']) }}
                   
                   @endif
@@ -131,7 +131,7 @@
                     @endif
                     
                   
-                  @if(@$can_purchase and false)
+                  @if(@$can_purchase)
                     <span class="purchase-action">
                           @if(@$is_saved)
                             <a href="javascript://" class="btn btn-sm btn-line pull-right" title="Delete CV" id='removeSavedCV' data-user='{{ @$cv['id'] }}'><i class="fa fa-trash no-margin"></i></a>
@@ -258,7 +258,8 @@
         startPage: parseInt( "{{ ( intval( $start / 20 ) + 1 ) }}" ),
         initiateStartPageClick: false,
         onPageClick: function (event, page) {
-          console.log(page,filters);
+          // console.log(page,filters);
+          $('#pagination').hide();
             $('#page-content').text('Page ' + page);
             $('.search-results').html('{!! preloader() !!}');
             var url = "{{ (@$is_saved) ? url('cv/saved') : url('cv/search')   }}";
@@ -269,6 +270,7 @@
                 // console.log(data.search_results);
                 $('#showing').html(data.showing)
                 $('.search-results').html(data.search_results);
+                $('#pagination').show();
             });
         }
     });

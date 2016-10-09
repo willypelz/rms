@@ -1174,11 +1174,12 @@ class JobsController extends Controller
         $data = array (
             'token' => $token
         );
-        $data_string = json_encode($data); 
+        $data_string = json_encode($data); var_dump( $request->all() );
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, 'https://checkout.simplepay.ng/v1/payments/verify/');
+        // curl_setopt($ch, CURLOPT_URL, 'https://checkout.simplepay.ng/v1/payments/verify/');
+        curl_setopt($ch, CURLOPT_URL, 'https://checkout.simplepay.ng/v2/payments/card/charge/');
         curl_setopt($ch, CURLOPT_USERPWD, $private_key . ':');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
@@ -1190,8 +1191,8 @@ class JobsController extends Controller
             'Content-Length: ' . strlen($data_string)                                                                       
         ));       
 
-        $curl_response = curl_exec($ch);
-        $curl_response = preg_split("/\r\n\r\n/",$curl_response);
+        $curl_response = curl_exec($ch); var_dump($curl_response); echo "<br><br><br>";
+        $curl_response = preg_split("/\r\n\r\n/",$curl_response); var_dump($curl_response); echo "<br><br><br>";
         $response_content = $curl_response[1];
         $json_response = json_decode(chop($response_content), TRUE);
 

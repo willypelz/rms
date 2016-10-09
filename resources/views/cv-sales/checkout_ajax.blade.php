@@ -1,4 +1,4 @@
-<script src="https://checkout.simplepay.ng/simplepay.js"></script>
+<script src="https://checkout.simplepay.ng/v2/simplepay.js"></script>
 
  <section class="no-pad">
                 <div class="">

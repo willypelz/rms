@@ -3,7 +3,7 @@
 
 @section('content')
 
-<script src="https://checkout.simplepay.ng/simplepay.js"></script>
+<script src="https://checkout.simplepay.ng/v2/simplepay.js"></script>
 
 <button id="btn-checkout">Checkout Simple Pay</button>
 
@@ -41,7 +41,7 @@ $('#btn-checkout').on('click', function (e) { // add the event to your "pay" but
     {
        email: 'customer@store.com', // optional: user's email
        // phone: '+234{{ $company->phone }}', // optional: user's phone number
-       description: 'Payment for Job boards', // a description of your choosing
+       description: 'Payment for Job boards -S', // a description of your choosing
        address: '{{ $company->address }}', // user's address
        postal_code: '110001', // user's postal code
        city: '{{ $company->location }}', // user's city

@@ -30,7 +30,7 @@
     });
 
 </script>
-<section class="s-div dark">
+<section class="s-div dark scroll-to">
         <div class="container">
 {{-- dd($result) --}}
 
@@ -69,7 +69,7 @@
         </div>
     </section>
 
-    <section class="no-pad">
+    <section class="no-pad  ">
         <div class="container">
             <div class="row">
 
@@ -82,7 +82,7 @@
 
 
             <div class="col-sm-8">
-
+                  <small class="text-muted result-label" id="showing"> {!! $showing !!} </small> <br/>
                   <div class="" id="search-results">
 
                     <ul class="search-results">
@@ -181,6 +181,7 @@
 <script type="text/javascript">
     var folders = [];
     var filters = [];
+    var age_range = exp_years_range = null;
 
     $(document).ready(function(){
         
@@ -237,13 +238,39 @@
             }
 
 
+            $(this).performFilter();
+        });
+
+        $('body').on('click', '#clearAllFilters', function(){
+
+            filters = [];
+            $('.filter-div input[type=checkbox]' ).prop('checked',false);
+
+            $('#search_keyword').val("");
+            $('.body #showing').html('');
+            $('#pagination').hide();
+
+            age_range = exp_years_range = null;
+
+            $(this).performFilter();
+
+        });
+
+        $.fn.performFilter = function(){
+            
+
             $('.search-results').html('{!! preloader() !!}');
-            $.get("{{ url('cv/search') }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
+            $('body #showing').html('');
+            $('#pagination').hide();
+            scrollTo('.scroll-to');
+            $.get("{{ url('cv/search') }}", {search_query: $('#search_query').val(), filter_query : filters, age: age_range, exp_years : exp_years_range  },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);
                 $('.search-results').html(data.search_results);
                 $('#search-filters').html(data.search_filters);
+                $('body #showing').html(data.showing);
+                $('#pagination').show();
 
                 $.each(filters, function(index,value){
                     
@@ -252,7 +279,8 @@
                     $('.filter-div input[type=checkbox]' + '[data-field=' + arr[0] + ']' + '[data-value=' + arr[1] + ']' ).attr('checked',true);
                 });
             });
-        });
+
+        }
 
         $(document).on('click','.read-more-show', function(){
             // console.log($(this).text() );
@@ -362,7 +390,7 @@
             scrollTo('.job-progress-xs');
             $('.result-label').html('');
             $('#pagination').hide();
-            $.get("{{ url('cv/search') }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
+            $.get("{{ url('cv/search') }}", {search_query: $('#search_query').val(), filter_query : filters, age: age_range, exp_years : exp_years_range  },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);

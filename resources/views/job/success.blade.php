@@ -137,7 +137,7 @@
                                     <div class="well text-center">
                                       <p class="lead">For a wider and better reach, <br>you can promote this job on more job boards and <i>newspapers.</i></p>
                                       <p>
-                                        <a href="{{ url('jobs/advertise-your-job/'.$job_id.'/'.str_slug($job['title'])) }}" class="btn btn-danger btn-" target="_blank">
+                                        <a href="{{ url('jobs/advertise-your-job/'.$job->id.'/'.str_slug($job['title'])) }}" class="btn btn-danger btn-" target="_blank">
                                           <i class="fa fa-send"></i> Promote Job now
                                         </a>
                                       </p>

@@ -131,6 +131,9 @@ class JobsController extends Controller
             $bds[] = ($s['id']);
         }
 
+        //Free Job boards urls
+        $insidify_url = "";
+
         // dd($job_bards);
         if ($request->isMethod('post')) {
 
@@ -166,7 +169,7 @@ class JobsController extends Controller
                         // dd('Success');
                         $pickd_boards = $request->boards;
 
-                        $job = Job::FirstorCreate([
+                        $job_data = [
                                 'title' => $request->job_title,
                                 'location' => $request->job_location,
                                 'details' => $request->details,
@@ -176,9 +179,16 @@ class JobsController extends Controller
                                 'expiry_date' => $request->expiry_date,
                                 'status' => 'ACTIVE',
                                 'company_id' => $company->id
-                        ]);
+                        ];
+                        
 
-                        //var_dump($job);
+                        $insidify_url = Curl::to("https://staging.insidify.com/ss-post-job")
+                                    ->withData( array('secret' => '1ns1d1fy', 'data' => json_encode( $job_data ) ) )
+                                    ->post();
+
+                        // dd($job_data ,$insidify_url, $bds, $pickd_boards);
+
+                        $job = Job::FirstorCreate($job_data);
                         //Save job creation to activity
                         save_activities('JOB-CREATED',  $job->id );
 
@@ -215,7 +225,7 @@ class JobsController extends Controller
                     
                         
             Session::flash('flash_message', 'Congratulations! Your job has been posted on '.$flash_boards.'. You will begin to receive applications from those job boards shortly - <i>this is definite</i>.');
-            return redirect()->route('post-success', [$job->id]);
+            return redirect()->route('post-success', ['jobID' => $job->id, 'insidify_url' => $insidify_url]);
         }
 
         return view('job.create', compact('qualifications', 'specializations', 'board1', 'board2', 'locations'));
@@ -224,7 +234,28 @@ class JobsController extends Controller
 
     public function PostSuccess(Request $request){
         $job = Job::find($request->jobID);
-        return view('job.success', compact('job'));
+        $insidify_url = $request->insidify_url;
+
+        $subscribed_boards = $job->boards()->get()->toArray();
+
+        $approved_count = array_filter( array_pluck( $subscribed_boards, 'url' ), function(){ 
+
+                if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+         } );
+
+        $approved_count = count( $approved_count );
+
+
+        $pending_count = count($subscribed_boards) - $approved_count;
+
+        return view('job.success', compact('job','insidify_url','subscribed_boards','approved_count','pending_count'));
     }
 
     public function SaveJob(Request $request){

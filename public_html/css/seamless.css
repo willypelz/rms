@@ -3502,11 +3502,11 @@ border-color: #BDFDBA;
 }
 .panel-pricing.panel-basic .list-group>li:last-child{
     border-bottom: 1px solid #ddd;
-    margin-bottom: 120px;
+    margin-bottom: 28em;
 }
 .panel-pricing.panel-sme .list-group>li:last-child{
     border-bottom: 1px solid #ddd;
-    margin-bottom: 9em;
+    margin-bottom: 27em;
 }
 .panel-pricing.panel-sme .label{
     padding: 5px 13px;

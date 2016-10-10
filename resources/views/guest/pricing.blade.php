@@ -6,8 +6,9 @@
   <section class="s-div homepage">
         <div class="container">
 
-            <div class="row text-center text-brandon text-light text-white"><br>
-                <h2><i class="fa fa-check-square-o"></i> Find the Perfect Plan for your Business</h2><br>
+            <div class="row text-center text-brandon text-light text-white">
+                <h1>Get a Free Trial Now!</h1>
+                <h4 class="text-uppercase l-sp-5"> 14 days of Unlimited Access</h4><br>
             </div>
 
         </div>
@@ -76,7 +77,7 @@
                                         </div>
                                         <ul class="list-group text-center">
                                             <li class="list-group-item"> Free unlimited job posting.</li>
-                                            <li class="list-group-item"> <b>Unlimited</b> processing access to 3 jobs/month</li>
+                                            <li class="list-group-item"> <b>Unlimited</b> processing access to 5 jobs/month. (Request a Call for more posting)</li>
                                             <!--<li class="list-group-item"><i class="fa fa-check"></i> 10 free IQ Test</li>-->
                                         </ul>
                                         <div class="panel-footer">
@@ -100,11 +101,21 @@
                                             <p class=" no-margin text-brandon" style=" font-size: 17px;    padding: 12px;"><strong>CALL US ON 08068873719</strong></p>                                        
                                         </div>
                                         <ul class="list-group text-center">
-                                            <li class="list-group-item"> Unlimited free job posting.</li>
+                                            <!-- <li class="list-group-item"> Unlimited free job posting.</li>
                                             <li class="list-group-item"> Unlimited processing access unlimited jobs/month.</li>
                                             <li class="list-group-item"> 24/7 dedicated staff support</li>
                                             <li class="list-group-item"> Free embed on your career site. </li>
-                                            <li class="list-group-item"> Discounts on value added services. </li>
+                                            <li class="list-group-item"> Discounts on value added services. </li> -->
+
+                                            <li class="list-group-item">Full access to SeamlessHiring database for candidate search</li>
+                                            <li class="list-group-item">Unlimited CV downloads and analytics reporting</li>
+                                            <li class="list-group-item"> 10% discount on all newspaper job adverts</li>
+                                            <li class="list-group-item">100 free SeamlessHiring tests per month and a 20% discount on the next 1,000 tests every month</li>
+                                            <li class="list-group-item">20 free bulk SMS per job</li>
+                                            <li class="list-group-item">Discounted rates for pre-employment background and medical checks</li>
+                                            <li class="list-group-item">Different access levels for Admin</li>
+                                            <li class="list-group-item">Training for your company in-house talent resource and periodic refresher programs on what’s new on the portal</li>
+                                            <li class="list-group-item">Dedicated Relationship Manager for 24/7 resource support </li>
                                         </ul>
                                         <div class="panel-footer">
                                             <a class="btn btn-lg btn-line text-uppercase" data-toggle="modal" data-target="#requestCall" id="modalButton" href="#requestCall" data-title="Request a call">Request a call</a>

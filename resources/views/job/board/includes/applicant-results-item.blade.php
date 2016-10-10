@@ -1,7 +1,7 @@
 @if( $result['response']['numFound'] > 0 )
                       
   @foreach( @$result['response']['docs'] as $cv )
-  
+
   <?php  $pic = default_color_picture( $cv )  ?>
   
 <div class="ats-abx">
@@ -15,7 +15,7 @@
       <div class="media-body">
           <input type="checkbox" class="media-body-check check-applicant pull-right">
           <h4 class="media-heading text-muted"><a href="{{ route('applicant-profile', $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] ) }}" target="_blank">{{ ucwords( $cv['first_name']. " " . $cv['last_name'] ) }}</a>
-          </h4>
+          <span class="span-stage">{{ $cv['application_status'][ array_search( $jobID, $cv['job_id'] ) ] }}</span></h4>
           <p>{{ @$cv['last_position'].' at '.@$cv['last_company_worked'] }}</p>
           <small>
               <span class="text-muted">{{ human_time( @$cv['application_date'], 1) }}</span>
@@ -51,7 +51,7 @@
               @endif
               
   
-              @if(!empty($status))
+              @if(!empty($status) && $status != 'PENDING')
               <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Do you want to return to pending?" data-view="{{ route('modal-return-to-all') }}" data-app-id="{{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }}" data-cv="{{ $cv['id'] }}" data-type="normal">Return to Pending</a>
               <span class="text-muted">·</span>
               @endif

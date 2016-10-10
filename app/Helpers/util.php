@@ -325,7 +325,8 @@ use App\Models\Job;
 			'CHECKBOX',
 			'TEXT',
 			'TEXTAREA',
-			'MULTIPLE_OPTION'
+			'MULTIPLE_OPTION',
+			'FILE'
 		];
 	}
 ?>

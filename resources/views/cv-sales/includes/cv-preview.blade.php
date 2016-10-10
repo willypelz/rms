@@ -112,7 +112,7 @@
                                     <li>
                                         <strong>Highest Qualification:</strong>&nbsp; {{ $cv['highest_qualification'] }}</li>
                                     <li>
-                                        <strong>Years of Experience:</strong>&nbsp; {{ $cv['years_of_experience'] }} years</li>
+                                        <strong>Years of Experience:</strong>&nbsp; {{ $cv['years_of_experience'] }} {{ ($cv['years_of_experience'] == 1 ) ? 'year' : 'years' }}</li>
                                     <li>
                                         <strong>Last Position:</strong>&nbsp; {{ $cv['last_position'] }}</li>
                                     <li>
@@ -149,22 +149,29 @@
                             <div class="col-xs-11">
                                 <h5>UPLOADED CV</h5>
                                 <!--iframe src="https://drive.google.com/gview?url=http://www.nwu.ac.za/files/images/Basic_Curriculum_Vitae_example.pdf&embedded=true" style="width:100%;padding-left: 8px;height:100%" frameborder="1"-->
-                                @if(ends_with($cv['cv_file'], 'jpg')
-                                     || ends_with($cv['cv_file'], 'jpeg')
-                                     || ends_with($cv['cv_file'], 'png')
-                                     || ends_with($cv['cv_file'], 'gif'))
-                                    
-                                    <img src="http://seamlesshiring.com/uploads/CVs/{{ $cv['cv_file'] }}" width="100%" />
-                                  
+                                @if( $cv['cv_file'] == '' )
+
+                                 <span>Sorry! No uploaded CV for this applicant.</span> 
+
                                 @else
-                                  
-                                  <iframe src="https://drive.google.com/gview?url={{ 'http://seamlesshiring.com/uploads/CVs/'.$cv['cv_file'] }}&embedded=true" style="width:100%;padding-left: 8px;height:600px" frameborder="1">  
-                                        {!! preloader() !!}
 
-                                  </iframe>
+                                    @if(ends_with($cv['cv_file'], 'jpg')
+                                         || ends_with($cv['cv_file'], 'jpeg')
+                                         || ends_with($cv['cv_file'], 'png')
+                                         || ends_with($cv['cv_file'], 'gif'))
+                                        
+                                        <img src="http://seamlesshiring.com/uploads/CVs/{{ $cv['cv_file'] }}" width="100%" />
+                                      
+                                    @else
+                                      
+                                      <iframe src="https://drive.google.com/gview?url={{ 'http://seamlesshiring.com/uploads/CVs/'.$cv['cv_file'] }}&embedded=true" style="width:100%;padding-left: 8px;height:600px" frameborder="1">  
+                                            {!! preloader() !!}
 
-                                @endif  
-                    
+                                      </iframe>
+
+                                    @endif  
+
+                                @endif
                                   
                             </div>
                         </div>

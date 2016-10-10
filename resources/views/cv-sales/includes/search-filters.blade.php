@@ -15,7 +15,7 @@
         <div id="collapseOne" class="panel-collapse collapse in">
           <div class="panel-body">
             
-            @if( $page != 'search' )
+            @if( @$page != 'search' )
               <p class="border-bottom-thin text-muted">Keyword search <i class="fa fa-filter pull-right"></i></p>
               <div class="input-group">
                 

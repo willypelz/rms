@@ -6,11 +6,17 @@
         <div class="col-sm-12 ">  
           
           <div class="alert alert-warning text-center">
-              You have already Interviewed this applicant
+              <?php 
+
+
+                // $digit = new \NumberFormatter("en", NumberFormatter::SPELLOUT); echo $digit->format(1000);
+
+              ?>
+              You have interviewed this candidate {{ count($notes) }} {{ ( count($notes) == 1) ? 'time' : 'times' }}.
           </div>
         </div>
   </div>
-@else
+@endif
 
 <form role="form" class="form-signin" method="POST" id="interview-note-form" action="" style="height: 300px;overflow: scroll;">
     {!! csrf_field() !!}
@@ -496,7 +502,7 @@
     });
  });
  </script>
-@endif       
+       
 
 
   

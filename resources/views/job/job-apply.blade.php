@@ -10,6 +10,10 @@
 @section('content')
     <link href="{{ asset('css/select2.css') }}" rel="stylesheet">
 
+    <style type="text/css">
+        .custom-field{ margin-bottom: 20px; }
+    </style>
+
     <section class="no-pad">
         <div class="container">
             <div class="row">
@@ -297,10 +301,11 @@
                                     <div class="col-xs-12"><hr></div>
                                         
                                         @if( count($custom_fields) > 0 )
+                                            {{-- */$index=0;/* --}}
                                             @foreach( $custom_fields as $custom_field )
                                                 
-                                                <div class="col-sm-6">
-                                                    <label for="custom-field">{{ $custom_field->name }} <span class="text-danger">*</span></label>
+                                                <div class="col-sm-6 custom-field">
+                                                    <label for="custom-field">{{ $custom_field->name }} <span class="text-danger">*</span></label><br>
 
                                                     <?php $options = explode(',', $custom_field->options) ?>
 
@@ -315,12 +320,13 @@
                                                     
                                                     @elseif( $custom_field->type == 'RADIO' )
                                                         @foreach( $options as $option )
-                                                            $option {{ Form::radio('cf_'.str_slug($custom_field->name,'_'), null, array('class'=>'form-control', 'required' => 'required')) }}
+                                                            {{ $option }} {{ Form::radio('cf_'.str_slug($custom_field->name,'_'), null,false, array('required' => 'required')) }}
                                                         @endforeach
                                                         
                                                     @elseif( $custom_field->type == 'CHECKBOX' )
+
                                                         @foreach( $options as $option )
-                                                            $option {{ Form::checkbox('cf_'.str_slug($custom_field->name,'_'), null, array('class'=>'form-control', 'required' => 'required')) }}
+                                                            {{ $option }} {{ Form::checkbox('cf_'.str_slug($custom_field->name,'_'), null,false, array( 'required' => 'required')) }}
                                                         @endforeach
                                                     
                                                     @elseif( $custom_field->type == 'TEXT' )
@@ -333,16 +339,30 @@
                                                         <?php 
                                                             $select_options = [];
                                                             foreach ($options as $option) {
-                                                                $select_options[] = [ $option, str_replace( '_', ' ',  ucfirst( $option ) ) ];
+                                                                $select_options[$option] = str_replace( '_', ' ',  ucfirst( $option ) ) ;
                                                             }
                                                          ?>
-                                                        {{ Form::select('cf_'.str_slug($custom_field->name,'_'), $select_options, array('class'=>'form-control', 'required' => 'required')) }}
+                                                        {{ Form::select('cf_'.str_slug($custom_field->name,'_').'[]', $select_options, array('multiple'=>'multiple','class'=>'form-control', 'required' => 'required')) }}
+
+                                                    @elseif( $custom_field->type == 'FILE' )
+                                                        <?php 
+                                                            $select_options = [];
+                                                            foreach ($options as $option) {
+                                                                $select_options[$option] = str_replace( '_', ' ',  ucfirst( $option ) ) ;
+                                                            }
+                                                         ?>
+                                                         {{ Form::file('cf_'.str_slug($custom_field->name,'_'),array('class'=>'form-control', 'required' => 'required')) }}
+
                                                     @endif
 
 
 
                                                 </div> 
-                                                
+
+                                                @if( $index % 2  )
+                                                    <div class="clearfix"></div>
+                                                @endif
+                                                {{-- */$index++;/* --}}
                                             @endforeach
                                         @endif
 

@@ -172,7 +172,13 @@
                                     @endif  
 
                                 @endif
-                                  
+
+                                @if(@$is_applicant || $page == 'pool')
+                                    <div class="pull-right">
+                                        <a href="http://seamlesshiring.com/uploads/CVs/{{ $cv['cv_file'] }}" class="btn btn-sm btn-success btn-block" title="Download Dossier">Download CV</a>
+                                    </div>
+                                @endif
+                                
                             </div>
                         </div>
                     </div>

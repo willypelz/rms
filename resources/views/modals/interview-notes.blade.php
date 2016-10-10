@@ -6,12 +6,7 @@
         <div class="col-sm-12 ">  
           
           <div class="alert alert-warning text-center">
-              <?php 
 
-
-                // $digit = new \NumberFormatter("en", NumberFormatter::SPELLOUT); echo $digit->format(1000);
-
-              ?>
               You have interviewed this candidate {{ count($notes) }} {{ ( count($notes) == 1) ? 'time' : 'times' }}.
           </div>
         </div>

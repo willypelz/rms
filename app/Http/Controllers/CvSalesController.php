@@ -173,33 +173,29 @@ class CvSalesController extends Controller
 
         // $cv = $request->cv;
         // $cv_file = $cv['cv_file'];
-        $cv_file = 'unlekwaatyahoocom_UCHE.pdf';
+        // $cv_file = 'unlekwaatyahoocom_UCHE.pdf';
         
         
-        /*$cvs = Cv::all();
-
-        
-
+        // $cvs = Cv::all();
 
         Cv::chunk(100, function ($cvs) {
             foreach ($cvs as $cv) {
-                
-                $filepath = public_path( 'uploads/CVs/'. $cv['cv_file'] );
-                $extracted_content = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );
-                $cv->update(['extracted_content' => $extracted_content]);
 
-                break;
+                //adding to jobs queue...
+                $this->dispatch(new ExtractCvContent($cv));
+
+                echo 'Queued: '.$cv->cv_file.'<br/>';
             }
-        });*/
+        });
         
-        $filepath = public_path( 'uploads/CVs/'. $cv_file );
+        /*$filepath = public_path( 'uploads/CVs/'. $cv_file );
         var_dump($filepath);
 
-        var_dump(file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) ) );
+        var_dump(file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) ) );*/
 
         // var_dump(file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) ) );
 
-        exit;
+
         // $cv['raw_content'] = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );
         // return $cv;
         // return Carbon::createFromDate(1991, 7, 19)->diff(Carbon::now())->format('%y years, %m months and %d days');

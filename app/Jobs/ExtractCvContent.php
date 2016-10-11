@@ -33,18 +33,26 @@ class ExtractCvContent extends Job implements ShouldQueue
     public function handle()
     {
         
-        $cv_file = '/home/insidify/subdomains/files/uploads/cv/'.$this->cv->cv_file;
+        // $cv_file = '/home/insidify/subdomains/files/uploads/cv/'.$this->cv->cv_file;
 
-        echo $cv_file.'\n\n';
+        // echo $cv_file.'\n\n';
         
-        $this->cv->extracted_content = Curl::to('http://localhost:5000/extract')
-                                ->withData('file_name', urlencode( $cv_file ))
-                                ->get();
+        // $this->cv->extracted_content = Curl::to('http://localhost:5000/extract')
+        //                         ->withData('file_name', urlencode( $cv_file ))
+        //                         ->get();
 
                                // file_get_contents("http://50.28.104.199:5000/extract?file_name=".urlencode( $cv_file ) );
-        echo 'done: '.$this->cv->id.': '.$cv_file.': '.$this->cv->extracted_content;                        
+        // echo 'done: '.$this->cv->id.': '.$cv_file.': '.$this->cv->extracted_content;                        
 
+        // $this->cv->save();
+
+
+        $filepath = public_path( 'uploads/CVs/'. $this->cv->cv_file );
+        $this->cv->extracted_content = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );
+
+        echo 'done: '.$this->cv->id.': '.$cv_file.': '.$this->cv->extracted_content;
         $this->cv->save();
+        // $this->cv->update(['extracted_content' => $extracted_content]);
 
 
     }

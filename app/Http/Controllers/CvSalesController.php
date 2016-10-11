@@ -169,13 +169,14 @@ class CvSalesController extends Controller
         return view('cv-sales.includes.cv-preview',compact("cv", "is_applicant", "appl", 'is_embedded'));
     }
 
-    static function saveCvPreview(Request $request){ // to solr
+    public function saveCvPreview(Request $request){ // to solr
+
         // $cv = $request->cv;
         // $cv_file = $cv['cv_file'];
         $cv_file = 'unlekwaatyahoocom_UCHE.pdf';
         
         
-        $cvs = Cv::all();
+        /*$cvs = Cv::all();
 
         
 
@@ -189,11 +190,12 @@ class CvSalesController extends Controller
 
                 break;
             }
-        });
+        });*/
+        
+        $filepath = public_path( 'uploads/CVs/'. $cv_file );
+        var_dump($filepath);
 
-        // var_dump($filepath);
-
-
+        var_dump(file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) ) );
 
         // var_dump(file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) ) );
 

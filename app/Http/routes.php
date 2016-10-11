@@ -56,6 +56,11 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.contact');
     });
 
+     Route::get('/faq', function () {
+        
+        return view('guest.faq');
+    });
+
      Route::get('fixQua', [ 'uses' => 'JobsController@correctHighestQualification']);
 
      Route::get('/whoops', function () {

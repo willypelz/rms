@@ -1,18 +1,18 @@
 <div class="panel-group">
                     <div class="panel panel-default tweak panel-dash">
                         <div class="panel-heading">
-                            <h3 class="text-brandon text-light no-margin applicant-name">{{ $appl->cv->last_name.' '.$appl->cv->first_name }}</h3>
+                            <h3 class="text-brandon text-center no-margin applicant-name">{{ $appl->cv->last_name.' '.$appl->cv->first_name }}</h3>
                         </div>
                         <div class="panel-collapse">
                             <div class="row">
                               <div class="panel-body no-padding">
                                   <div class=" border-bottom-thin">
-                                      <div class="col-xs-4">
-                                          <div class="img-fixer" style="padding-left:5px">
-                                            <img src="{{ default_picture( $appl->cv ) }}" class="img-responsive">
-                                          </div>
+                                      <div class="col-xs-12 text-center">
+                                          <div class="" style="">
+                                            <img src="{{ default_picture( $appl->cv ) }}" class="img-circle" width="30%">
+                                          </div><br>
                                       </div>
-                                      <div class="col-xs-8">
+                                      <div class="col-xs-12 text-center">
                                           <p class="text-white">
                                               <span class="fa-stack">
                                                 <i class="fa fa-phone fa-stack-1x fa-inverse"></i>
@@ -29,12 +29,14 @@
                                             <span>{{ $appl->cv->location }}</span>
                                           </p>
                                       </div>
-                                      <div class="clearfix"></div><br/>
+                                      <div class="clearfix"></div>
                                   </div>
                                   <br/>
                               
                                   <div class="col-xs-12">
                                         <p><i class="fa fa-clock-o"></i> Applied: {{ date('D. d M, Y') }}</p>
+                                        <p><i class="fa fa-cloud-upload"></i> Uploaded CV: {{ date('D. d M, Y') }}</p>
+                                        <p><i class="fa fa-shopping-cart"></i> Purchased CV: {{ date('D. d M, Y') }}</p>
 
                                       <hr class="">  
 

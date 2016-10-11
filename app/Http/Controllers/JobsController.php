@@ -973,6 +973,16 @@ class JobsController extends Controller
 
             $data = $request->all();
 
+
+
+            if( CV::where('email',$data['email'])->where('phone',$data['phone'])->first() == null )
+            {
+                // dd( " new applicant " );
+            }
+            else{
+                return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug, 'already_applied' => true]);
+            }
+
             if ($request->hasFile('cv_file')) {
 
                 $filename = time().'_'.str_slug($request->email).'_'.$request->file('cv_file')->getClientOriginalName();
@@ -984,7 +994,7 @@ class JobsController extends Controller
 
                 // dd($data);
             }   
-
+            // dd( $custom_fields[0] );
             $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
 
             // if($data['willing_to_relocate'] == 'yes')
@@ -1039,17 +1049,43 @@ class JobsController extends Controller
                 $custom_field_values = [];
 
                 foreach ($custom_fields as $custom_field) {
-                      
+                    if( $custom_field->type == 'FILE' )
+                    {
+                        continue;
+                        $name = 'cf_'.str_slug($custom_field->name,'_');
+                        if ($request->hasFile( $name ) ){
+
+                            $filename = time().'_'.str_slug($request->email).'_'.$request->file( $name )->getClientOriginalName();
+                            $destinationPath = env('fileupload').'/Others';
+                            // dd($destinationPath);
+                            $request->file( $name )->move($destinationPath, $filename);
+
+                            $value = $filename;
+                        }
+                    }
+
+                    else if( $custom_field->type == 'MULTIPLE_OPTION' ){
+                        $value = implode(',', $request[ 'cf_'.str_slug($custom_field->name,'_') ] ) ;
+                    }
+
+                    else if( $custom_field->type == 'CHECKBOX' ){
+                        $value = implode(',', $request[ 'cf_'.str_slug($custom_field->name,'_') ] ) ;
+                    }
+
+                    else
+                    {
+                        $value = $request[ 'cf_'.str_slug($custom_field->name,'_') ];
+                    }
 
                     $custom_field_values[] = [
                         'form_field_id' => $custom_field->id,
-                        'value' => $request[ 'cf_'.str_slug($custom_field->name,'_') ],
+                        'value' => $value,
                         'job_application_id' => @$appl->id
                     ];
                 }
 
                 FormFieldValues::insert( $custom_field_values );
-                // dd( $request->all(), $custom_fields, $custom_field_values );
+                dd( $request->all(), $custom_fields, $custom_field_values );
             }
 
             return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);
@@ -1070,7 +1106,7 @@ class JobsController extends Controller
     {
         $job = Job::with('company')->where('id', $jobID)->first();
         $company = $job->company;
-        
+        @$already_applied = $request->already_applied;
 
         if(empty($job)){
             // redirect to 404 page
@@ -1080,10 +1116,10 @@ class JobsController extends Controller
                                 ->withData(array('limit'=>6))
                                 ->post();
 
-        $posts = json_decode($response)->data->posts;
+        $posts = @json_decode($response)->data->posts;
 
 
-        return view('job.applied', compact('job', 'company', 'posts'));
+        return view('job.applied', compact('job', 'company', 'posts', 'already_applied'));
 
     }
 

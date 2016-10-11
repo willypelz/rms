@@ -1,0 +1,106 @@
+###a:381:{s:8:"last_tab";s:3:"seo";s:6:"layout";s:10:"full-width";s:10:"grid-width";s:0:"";s:5:"style";s:6:"simple";s:12:"button-style";s:0:"";s:17:"image-frame-style";s:7:"overlay";s:18:"image-frame-border";s:0:"";s:19:"image-frame-caption";s:0:"";s:11:"img-page-bg";s:0:"";s:16:"position-page-bg";s:22:"no-repeat;center top;;";s:11:"transparent";a:1:{s:9:"post-meta";s:1:"1";}s:11:"favicon-img";s:74:"https://estateintel.com/wp-content/uploads/2016/09/Full-Vertical-Color.png";s:16:"apple-touch-icon";s:74:"https://estateintel.com/wp-content/uploads/2016/09/Full-Vertical-Color.png";s:8:"logo-img";s:74:"https://estateintel.com/wp-content/uploads/2016/09/Full-Vertical-Color.png";s:15:"retina-logo-img";s:74:"https://estateintel.com/wp-content/uploads/2016/09/Full-Vertical-Color.png";s:15:"sticky-logo-img";s:74:"https://estateintel.com/wp-content/uploads/2016/09/Full-Vertical-Color.png";s:22:"sticky-retina-logo-img";s:74:"https://estateintel.com/wp-content/uploads/2016/09/Full-Vertical-Color.png";s:9:"logo-link";a:2:{s:9:"post-meta";s:1:"1";s:4:"link";s:4:"link";}s:9:"logo-text";s:0:"";s:10:"logo-width";s:0:"";s:11:"logo-height";s:0:"";s:21:"logo-vertical-padding";s:0:"";s:19:"logo-vertical-align";s:0:"";s:13:"logo-advanced";a:2:{s:9:"post-meta";s:1:"1";s:17:"no-sticky-padding";s:17:"no-sticky-padding";}s:19:"slider-blog-timeout";s:1:"0";s:22:"slider-clients-timeout";s:1:"0";s:20:"slider-offer-timeout";s:1:"0";s:24:"slider-portfolio-timeout";s:1:"0";s:19:"slider-shop-timeout";s:1:"0";s:21:"slider-slider-timeout";s:1:"0";s:27:"slider-testimonials-timeout";s:1:"0";s:20:"layout-boxed-padding";s:0:"";s:18:"builder-visibility";s:0:"";s:13:"display-order";s:1:"0";s:22:"content-remove-padding";s:1:"0";s:19:"google-maps-api-key";s:0:"";s:11:"table-hover";s:0:"";s:23:"math-animations-disable";s:1:"0";s:17:"post-type-disable";a:1:{s:9:"post-meta";s:1:"1";}s:13:"theme-disable";a:1:{s:9:"post-meta";s:1:"1";}s:15:"builder-storage";s:0:"";s:16:"slider-shortcode";s:0:"";s:10:"static-css";s:1:"0";s:12:"table_prefix";s:11:"base_prefix";s:8:"hook-top";s:0:"";s:19:"hook-content-before";s:0:"";s:18:"hook-content-after";s:0:"";s:11:"hook-bottom";s:0:"";s:12:"header-style";s:7:"classic";s:9:"header-fw";a:1:{s:9:"post-meta";s:1:"1";}s:17:"minimalist-header";s:1:"1";s:16:"img-subheader-bg";s:0:"";s:24:"img-subheader-attachment";s:0:"";s:13:"sticky-header";s:1:"1";s:19:"sticky-header-style";s:5:"white";s:15:"subheader-style";s:11:"both-center";s:9:"subheader";a:2:{s:9:"post-meta";s:1:"1";s:16:"hide-breadcrumbs";s:16:"hide-breadcrumbs";}s:17:"subheader-padding";s:5:"4em 0";s:19:"subheader-title-tag";s:2:"h1";s:15:"subheader-image";s:70:"https://estateintel.com/wp-content/uploads/2016/09/new2new2-01-1-4.jpg";s:18:"subheader-position";s:22:"no-repeat;center top;;";s:21:"subheader-transparent";s:3:"100";s:18:"subheader-advanced";a:1:{s:9:"post-meta";s:1:"1";}s:18:"top-bar-right-hide";s:1:"0";s:19:"header-action-title";s:0:"";s:18:"header-action-link";s:0:"";s:20:"header-action-target";a:1:{s:9:"post-meta";s:1:"1";}s:13:"header-search";s:1:"1";s:11:"header-wpml";s:0:"";s:19:"header-wpml-options";a:1:{s:9:"post-meta";s:1:"1";}s:11:"sliding-top";s:1:"0";s:16:"sliding-top-icon";s:19:"icon-down-open-mini";s:13:"header-banner";s:0:"";s:10:"menu-style";s:0:"";s:12:"menu-options";a:5:{s:9:"post-meta";s:1:"1";s:14:"submenu-active";s:14:"submenu-active";s:11:"align-right";s:11:"align-right";s:12:"hide-borders";s:12:"hide-borders";s:11:"menu-arrows";s:11:"menu-arrows";}s:21:"menu-creative-options";a:3:{s:9:"post-meta";s:1:"1";s:6:"scroll";s:6:"scroll";s:8:"dropdown";s:8:"dropdown";}s:10:"action-bar";s:1:"0";s:13:"header-slogan";s:0:"";s:12:"header-phone";s:0:"";s:14:"header-phone-2";s:0:"";s:12:"header-email";s:0:"";s:8:"sidebars";a:2:{i:0;s:5:"Posts";i:1;s:4:"eiTv";}s:13:"sidebar-width";s:2:"23";s:13:"sidebar-lines";s:0:"";s:18:"single-page-layout";s:0:"";s:19:"single-page-sidebar";s:0:"";s:20:"single-page-sidebar2";s:0:"";s:13:"single-layout";s:13:"right-sidebar";s:14:"single-sidebar";s:5:"Posts";s:15:"single-sidebar2";s:0:"";s:23:"single-portfolio-layout";s:0:"";s:24:"single-portfolio-sidebar";s:0:"";s:25:"single-portfolio-sidebar2";s:0:"";s:13:"prev-next-nav";s:1:"0";s:5:"share";s:1:"0";s:19:"pagination-show-all";s:1:"1";s:4:"love";s:1:"1";s:22:"featured-image-caption";s:0:"";s:13:"related-style";s:0:"";s:13:"title-heading";s:1:"1";s:10:"blog-posts";s:1:"4";s:11:"blog-layout";s:7:"classic";s:12:"blog-columns";s:0:"";s:15:"blog-full-width";s:1:"0";s:9:"blog-page";s:0:"";s:14:"excerpt-length";s:2:"26";s:16:"exclude-category";s:0:"";s:12:"blog-filters";s:1:"1";s:14:"blog-load-more";s:1:"0";s:9:"blog-meta";s:1:"1";s:10:"blog-title";s:1:"0";s:16:"blog-single-zoom";s:1:"1";s:11:"blog-author";s:1:"1";s:12:"blog-related";s:1:"0";s:20:"blog-related-columns";s:0:"";s:13:"blog-comments";s:1:"1";s:18:"blog-single-layout";s:0:"";s:16:"blog-single-menu";s:1:"0";s:20:"single-intro-padding";s:0:"";s:15:"portfolio-posts";s:1:"8";s:16:"portfolio-layout";s:4:"grid";s:17:"portfolio-columns";s:0:"";s:20:"portfolio-full-width";s:1:"0";s:14:"portfolio-page";s:0:"";s:17:"portfolio-orderby";s:4:"date";s:15:"portfolio-order";s:4:"DESC";s:18:"portfolio-external";s:0:"";s:21:"portfolio-hover-title";s:1:"0";s:17:"portfolio-filters";s:1:"1";s:19:"portfolio-load-more";s:1:"0";s:17:"portfolio-isotope";s:1:"1";s:17:"portfolio-related";s:1:"1";s:25:"portfolio-related-columns";s:0:"";s:18:"portfolio-comments";s:1:"0";s:23:"portfolio-single-layout";s:0:"";s:21:"portfolio-single-menu";s:1:"0";s:14:"portfolio-slug";s:14:"portfolio-item";s:13:"portfolio-tax";s:15:"portfolio-types";s:13:"shop-products";s:2:"12";s:11:"shop-layout";s:4:"grid";s:14:"shop-catalogue";s:1:"0";s:11:"shop-images";s:0:"";s:11:"shop-button";s:1:"0";s:12:"shop-excerpt";s:1:"0";s:12:"shop-sidebar";s:0:"";s:11:"shop-slider";s:0:"";s:19:"shop-product-images";s:0:"";s:18:"shop-product-style";s:0:"";s:18:"shop-product-title";s:0:"";s:12:"shop-related";s:1:"1";s:9:"shop-cart";s:11:"icon-basket";s:29:"featured-blog-portfolio-width";s:0:"";s:30:"featured-blog-portfolio-height";s:0:"";s:28:"featured-blog-portfolio-crop";s:4:"crop";s:21:"featured-single-width";s:0:"";s:22:"featured-single-height";s:0:"";s:20:"featured-single-crop";s:4:"crop";s:13:"page-comments";s:1:"0";s:13:"error404-icon";s:17:"icon-traffic-cone";s:13:"error404-page";s:0:"";s:12:"construction";s:1:"0";s:18:"construction-title";s:11:"Coming Soon";s:17:"construction-text";s:0:"";s:17:"construction-date";s:19:"12/30/2014 12:00:00";s:19:"construction-offset";s:1:"0";s:20:"construction-contact";s:0:"";s:17:"construction-page";s:0:"";s:13:"footer-layout";s:0:"";s:12:"footer-style";s:0:"";s:14:"footer-padding";s:0:"";s:13:"footer-bg-img";s:0:"";s:22:"footer-bg-img-position";s:22:"no-repeat;center top;;";s:21:"footer-call-to-action";s:0:"";s:11:"footer-copy";s:281:"<img src="https://estateintel.com/wp-content/uploads/2016/09/RICSLOGO-e1474563497283.png" style="background:none;padding: 5px;width: 120px;float:left;" /> © 2016 Real Estate Market Data, News & Research for Nigeria and other African Countries | estate intel. All Rights Reserved. ";s:11:"footer-hide";s:6:"center";s:12:"back-top-top";s:13:"sticky scroll";s:18:"popup-contact-form";s:0:"";s:23:"popup-contact-form-icon";s:14:"icon-mail-line";s:10:"responsive";s:1:"1";s:20:"font-size-responsive";s:1:"1";s:15:"responsive-zoom";s:1:"0";s:19:"mobile-menu-initial";s:0:"";s:17:"responsive-sticky";s:1:"0";s:20:"responsive-tr-header";s:1:"0";s:25:"header-menu-mobile-sticky";s:1:"0";s:16:"header-menu-text";s:0:"";s:18:"responsive-top-bar";s:4:"left";s:19:"responsive-boxed2fw";s:1:"0";s:8:"no-hover";s:0:"";s:13:"no-section-bg";s:0:"";s:19:"responsive-parallax";s:1:"0";s:19:"responsive-logo-img";s:74:"https://estateintel.com/wp-content/uploads/2016/09/Full-Vertical-Color.png";s:26:"responsive-retina-logo-img";s:74:"https://estateintel.com/wp-content/uploads/2016/09/Full-Vertical-Color.png";s:16:"google-analytics";s:431:"<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-49230160-1', 'auto');
+  ga('send', 'pageview');
+
+</script> ";s:18:"google-remarketing";s:0:"";s:7:"mfn-seo";s:1:"1";s:16:"meta-description";s:0:"";s:13:"meta-keywords";s:0:"";s:19:"mfn-seo-schema-type";s:1:"1";s:13:"social-target";s:1:"0";s:12:"social-skype";s:0:"";s:15:"social-facebook";s:0:"";s:17:"social-googleplus";s:0:"";s:14:"social-twitter";s:0:"";s:12:"social-vimeo";s:0:"";s:14:"social-youtube";s:0:"";s:13:"social-flickr";s:0:"";s:15:"social-linkedin";s:0:"";s:16:"social-pinterest";s:0:"";s:15:"social-dribbble";s:0:"";s:16:"social-instagram";s:0:"";s:14:"social-behance";s:0:"";s:13:"social-tumblr";s:0:"";s:16:"social-vkontakte";s:0:"";s:13:"social-viadeo";s:0:"";s:11:"social-xing";s:0:"";s:10:"social-rss";s:1:"0";s:8:"parallax";s:11:"translate3d";s:11:"nice-scroll";s:1:"1";s:17:"nice-scroll-speed";s:2:"40";s:19:"prettyphoto-options";a:1:{s:9:"post-meta";s:1:"1";}s:11:"prettyphoto";s:10:"pp_default";s:17:"prettyphoto-width";s:0:"";s:18:"prettyphoto-height";s:0:"";s:18:"sc-gallery-disable";s:1:"0";s:17:"retina-js-disable";s:1:"0";s:10:"plugin-rev";s:0:"";s:12:"plugin-layer";s:0:"";s:13:"plugin-visual";s:0:"";s:4:"skin";s:6:"custom";s:9:"color-one";s:7:"#2991D6";s:15:"background-html";s:7:"#FCFCFC";s:15:"background-body";s:7:"#ffffff";s:17:"background-header";s:7:"#6cbeee";s:19:"background-top-left";s:7:"#ffffff";s:21:"background-top-middle";s:7:"#e3e3e3";s:20:"background-top-right";s:7:"#f5f5f5";s:17:"color-top-right-a";s:7:"#444444";s:17:"background-search";s:7:"#09142f";s:20:"background-subheader";s:7:"#6cbeee";s:15:"color-subheader";s:7:"#ffffff";s:12:"color-menu-a";s:7:"#6d7079";s:19:"color-menu-a-active";s:7:"#09142f";s:24:"background-menu-a-active";s:7:"#1dc6bc";s:18:"background-submenu";s:7:"#F2F2F2";s:15:"color-submenu-a";s:7:"#5f5f5f";s:21:"color-submenu-a-hover";s:7:"#2e2e2e";s:25:"color-overlay-menu-button";s:7:"#2991d6";s:30:"background-overlay-menu-button";s:0:"";s:23:"background-overlay-menu";s:7:"#09142f";s:25:"background-overlay-menu-a";s:7:"#6cbeee";s:32:"background-overlay-menu-a-active";s:7:"#B1DCFB";s:17:"border-menu-plain";s:7:"#F2F2F2";s:26:"color-menu-responsive-icon";s:7:"#2991d6";s:21:"background-action-bar";s:7:"#2C2C2C";s:11:"color-theme";s:7:"#6cbeee";s:10:"color-text";s:7:"#626262";s:7:"color-a";s:7:"#6cbeee";s:13:"color-a-hover";s:7:"#14a29a";s:16:"color-fancy-link";s:7:"#656B6F";s:21:"background-fancy-link";s:7:"#6cbeee";s:22:"color-fancy-link-hover";s:7:"#6cbeee";s:27:"background-fancy-link-hover";s:7:"#14a29a";s:10:"color-note";s:7:"#a8a8a8";s:10:"color-list";s:7:"#737E86";s:20:"background-highlight";s:7:"#6cbeee";s:28:"background-highlight-section";s:7:"#6cbeee";s:8:"color-hr";s:7:"#6cbeee";s:17:"background-button";s:7:"#f7f7f7";s:12:"color-button";s:7:"#747474";s:18:"color-footer-theme";s:7:"#00cdc1";s:17:"background-footer";s:7:"#09142f";s:12:"color-footer";s:7:"#9da1ac";s:14:"color-footer-a";s:7:"#9da1ac";s:20:"color-footer-a-hover";s:7:"#bbc0ce";s:20:"color-footer-heading";s:7:"#ffffff";s:17:"color-footer-note";s:7:"#a8a8a8";s:23:"color-sliding-top-theme";s:7:"#00cdc1";s:22:"background-sliding-top";s:7:"#09142f";s:17:"color-sliding-top";s:7:"#9da1ac";s:19:"color-sliding-top-a";s:7:"#9da1ac";s:25:"color-sliding-top-a-hover";s:7:"#bbc0ce";s:25:"color-sliding-top-heading";s:7:"#ffffff";s:22:"color-sliding-top-note";s:7:"#a8a8a8";s:8:"color-h1";s:7:"#09142f";s:8:"color-h2";s:7:"#09142f";s:8:"color-h3";s:7:"#09142f";s:8:"color-h4";s:7:"#09142f";s:8:"color-h5";s:7:"#09142f";s:8:"color-h6";s:7:"#09142f";s:15:"color-tab-title";s:7:"#1dc6bc";s:16:"color-blockquote";s:7:"#444444";s:17:"color-contentlink";s:7:"#1dc6bc";s:13:"color-counter";s:7:"#1dc6bc";s:21:"background-getintouch";s:7:"#1dc6bc";s:13:"color-iconbar";s:7:"#1dc6bc";s:13:"color-iconbox";s:7:"#1dc6bc";s:26:"background-imageframe-link";s:7:"#1dc6bc";s:21:"color-imageframe-link";s:7:"#ffffff";s:15:"color-list-icon";s:7:"#1dc6bc";s:19:"color-pricing-price";s:7:"#09142f";s:27:"background-pricing-featured";s:7:"#fed061";s:22:"background-progressbar";s:7:"#1dc6bc";s:22:"color-quickfact-number";s:7:"#1dc6bc";s:27:"background-slidingbox-title";s:7:"#1dc6bc";s:27:"background-trailer-subtitle";s:7:"#1dc6bc";s:10:"color-form";s:7:"#626262";s:15:"background-form";s:7:"#FFFFFF";s:11:"border-form";s:7:"#EBEBEB";s:16:"color-form-focus";s:7:"#1982c2";s:21:"background-form-focus";s:7:"#e9f5fc";s:17:"border-form-focus";s:7:"#d5e5ee";s:16:"form-transparent";s:0:"";s:12:"font-content";s:15:"Source Sans Pro";s:9:"font-menu";s:15:"Source Sans Pro";s:10:"font-title";s:15:"Source Sans Pro";s:13:"font-headings";s:15:"Source Sans Pro";s:19:"font-headings-small";s:15:"Source Sans Pro";s:15:"font-blockquote";s:15:"Source Sans Pro";s:15:"font-decorative";s:5:"Arial";s:11:"font-weight";a:8:{s:9:"post-meta";s:1:"1";i:100;s:3:"100";i:300;s:3:"300";i:400;s:3:"400";s:9:"400italic";s:9:"400italic";i:500;s:3:"500";i:700;s:3:"700";i:900;s:3:"900";}s:11:"font-subset";s:0:"";s:17:"font-size-content";a:4:{s:4:"size";s:2:"14";s:11:"line_height";s:2:"21";s:12:"weight_style";s:3:"400";s:14:"letter_spacing";s:1:"0";}s:14:"font-size-menu";a:3:{s:4:"size";s:2:"17";s:12:"weight_style";s:3:"400";s:14:"letter_spacing";s:1:"0";}s:15:"font-size-title";a:4:{s:4:"size";s:2:"50";s:11:"line_height";s:2:"50";s:12:"weight_style";s:3:"700";s:14:"letter_spacing";s:1:"0";}s:12:"font-size-h1";a:4:{s:4:"size";s:2:"55";s:11:"line_height";s:2:"50";s:12:"weight_style";s:3:"300";s:14:"letter_spacing";s:1:"0";}s:12:"font-size-h2";a:4:{s:4:"size";s:2:"35";s:11:"line_height";s:2:"35";s:12:"weight_style";s:3:"300";s:14:"letter_spacing";s:1:"0";}s:12:"font-size-h3";a:4:{s:4:"size";s:2:"25";s:11:"line_height";s:2:"27";s:12:"weight_style";s:3:"300";s:14:"letter_spacing";s:1:"0";}s:12:"font-size-h4";a:4:{s:4:"size";s:2:"20";s:11:"line_height";s:2:"25";s:12:"weight_style";s:3:"300";s:14:"letter_spacing";s:1:"0";}s:12:"font-size-h5";a:4:{s:4:"size";s:2:"17";s:11:"line_height";s:2:"19";s:12:"weight_style";s:3:"700";s:14:"letter_spacing";s:1:"0";}s:12:"font-size-h6";a:4:{s:4:"size";s:2:"14";s:11:"line_height";s:2:"19";s:12:"weight_style";s:3:"400";s:14:"letter_spacing";s:1:"0";}s:22:"font-size-single-intro";a:4:{s:4:"size";s:2:"70";s:11:"line_height";s:2:"70";s:12:"weight_style";s:3:"400";s:14:"letter_spacing";s:1:"0";}s:11:"font-custom";s:0:"";s:16:"font-custom-woff";s:0:"";s:15:"font-custom-ttf";s:0:"";s:15:"font-custom-svg";s:0:"";s:15:"font-custom-eot";s:0:"";s:12:"font-custom2";s:0:"";s:17:"font-custom2-woff";s:0:"";s:16:"font-custom2-ttf";s:0:"";s:16:"font-custom2-svg";s:0:"";s:16:"font-custom2-eot";s:0:"";s:9:"translate";s:1:"1";s:28:"translate-search-placeholder";s:17:"Enter your search";s:24:"translate-search-results";s:18:"results found for:";s:14:"translate-home";s:4:"Home";s:14:"translate-prev";s:9:"Prev page";s:14:"translate-next";s:9:"Next page";s:19:"translate-load-more";s:9:"Load more";s:17:"translate-wpml-no";s:39:"No translations available for this page";s:16:"translate-before";s:0:"";s:15:"translate-after";s:0:"";s:14:"translate-days";s:4:"days";s:15:"translate-hours";s:5:"hours";s:17:"translate-minutes";s:7:"minutes";s:17:"translate-seconds";s:7:"seconds";s:16:"translate-filter";s:9:"Filter by";s:14:"translate-tags";s:4:"Tags";s:17:"translate-authors";s:7:"Authors";s:13:"translate-all";s:8:"Show all";s:18:"translate-item-all";s:3:"All";s:19:"translate-published";s:12:"Published by";s:12:"translate-at";s:2:"at";s:20:"translate-categories";s:10:"Categories";s:18:"translate-readmore";s:9:"Read more";s:14:"translate-like";s:15:"Do you like it?";s:17:"translate-related";s:13:"Related posts";s:16:"translate-client";s:6:"Client";s:14:"translate-date";s:4:"Date";s:17:"translate-website";s:7:"Website";s:14:"translate-view";s:12:"View website";s:14:"translate-task";s:4:"Task";s:19:"translate-404-title";s:18:"Ooops... Error 404";s:22:"translate-404-subtitle";s:62:"We are sorry, but the page you are looking for does not exist.";s:18:"translate-404-text";s:46:"Please check entered address and try again or ";s:17:"translate-404-btn";s:14:"go to homepage";s:22:"translate-search-title";s:0:"";s:25:"translate-search-subtitle";s:0:"";s:10:"custom-css";s:4105:"h2 { font-weight: 500; letter-spacing: 1px; }
+h3 { font-weight: 400; letter-spacing: 1px; }
+h5 { font-weight: 400; letter-spacing: 1px; }
+
+/* Top bar */
+#Top_bar:not(.is-sticky):after { background: url("//estateintel.com/wp-content/uploads/2015/07/home_software_topbar.png") repeat-x; content: ""; display: block; height: 21px; left: 0; position: absolute; width: 100%; z-index: 21; }
+
+/* Menu */
+#Top_bar .menu > li.color-sea > a:after { top: 0; background: #00cdc1; }
+#Top_bar .menu > li.color-pink > a:after { top: 0; background: #ed007b; }
+#Top_bar .menu > li.color-blue > a:after { top: 0; background: #0086e3; }
+#Top_bar .menu > li.color-orange > a:after { top: 0; background: #ffbd1f; }
+
+#Top_bar .menu > li > a span:not(.description) { letter-spacing: 2px; }
+
+/* Subheader */
+h2.subheader { color: #fff; font-size: 64px; font-weight: 700 !important; line-height: 64px; }
+
+/* Icon box */
+.icon_box .desc_wrapper { margin: 0 10%; }
+
+/* Footer links */
+ul.footer_links { font-size: 13px; margin-left: 7%; }
+ul.footer_links li { list-style-image: url("//estateintel.com/wp-content/uploads/2015/07/home_software_footer_links.png"); padding: 5px 0 5px 5px; }
+
+/* List */
+ul.list_check li, li.list_check { background: url(//estateintel.com/wp-content/uploads/2015/07/list_check.png) no-repeat scroll 20px 5px; }
+
+/* Lists */
+.list_item .list_right .desc { color: #adaeb3; }
+
+/* Testimonials */
+blockquote { background: none; font-size: 28px;line-height: 40px !important; margin: 0; top: 0; font-style: italic; }
+
+#home_testimonials .testimonials_slider.single-photo .testimonials_slider_ul li .bq_wrapper { margin: 0; }
+#home_testimonials .testimonials_slider.single-photo .hr_dots { display: none; }
+#home_testimonials .testimonials_slider.single-photo blockquote:after { display: none; }
+
+#home_testimonials .testimonials_slider.single-photo .slider_pagination a { background: none; border: 1px solid #fff; }
+#home_testimonials .testimonials_slider.single-photo .slider_pagination a.selected { border-radius: 50%; height: 12px; top: 0; width: 12px; background: #fff; }
+#home_testimonials .testimonials_slider.single-photo .slider_pagination a:after { display: none; }
+
+/* Pricing */
+.pricing-box { box-shadow: 0 4px 10px 5px rgba(0, 0, 0, 0.08); }
+.pricing-box .plan-header .image { padding: 30px 0; }
+.pricing-box .plan-inside { min-height: 105px; padding: 30px;  }
+
+/* Footer */
+#Footer .footer_copy { background: #21293f url(//estateintel.com/wp-content/uploads/2015/07/home_software_footer_bg.png) repeat-x left bottom; border: 0; }
+#Footer .footer_copy .one { margin-bottom: 30px; }
+#Footer .widgets_wrapper { padding: 40px 0; }
+
+/* Button */
+a.button, a.tp-button, button, input[type="submit"], input[type="reset"], input[type="button"] { border-radius: 20px; }
+a.button.button_left .button_icon { box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.06) inset; background: none; }
+a.button.button_right .button_icon { box-shadow: 1px 0 0 0 rgba(0, 0, 0, 0.06) inset; background: none; }
+
+/* eiTV */
+.utv-inner-wrapper {margin: 0 auto; display: block;}
+.utv-thumb a {cursor:pointer;}
+.the_content_wrapper { font-size:1.1em; }
+#Footer .footer_copy { background:none; }
+
+/* Multiple Columns */
+ul.multiple-column, .double-top-link .sub-menu  {
+  /* width:760px; */
+  margin-bottom:20px;
+  overflow:hidden;
+ /* border-top:1px solid #ccc; */
+}
+.multiple-column li, .double-top-link li{
+  line-height:1.5em;
+  /* border-bottom:1px solid #ccc; */
+  float:left;
+  display:inline;
+  margin-bottom: 5px;
+}
+
+.double-top-link .sub-menu { width:450px; }
+.double-top-link  li { width:50% !important; }
+.double li  { width:50%;} /* 2 col */
+.triple li  { width:33.333%; } /* 3 col */
+.quad li    { width:25%; } /* 4 col */
+.six li     { width:16.666%; } /* 6 col */
+
+/* Others */
+.share_wrapper { display:none; }
+
+@media only screen and (max-width: 767px) {
+
+	#Top_bar .top_bar_right { display: none; }
+
+	h2.subheader { font-size: 30px; line-height: 36px; }
+
+	blockquote { font-size: 20px;line-height: 28px !important; }
+
+}";s:9:"custom-js";s:0:"";s:15:"mfn-opts-backup";s:1:"1";}###

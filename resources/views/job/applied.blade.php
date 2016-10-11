@@ -132,15 +132,35 @@
                                         
                                          <div class="col-sm-8 col-sm-offset-2 text-center">
                                             <!-- <h6 class="text-brandon text-uppercase l-sp-5 no-margin">Application Report</h6> -->
+                                            
                                             <br>
-                                            <h3 class="text-brandon">Congratulations!</h3> 
-                                            <p class="lead">Your application has been submitted.</p> 
+  
+                                            @if( @$already_applied == true )
+                                              
+                                              <h3 class="text-brandon">Congratulations!</h3> 
+                                              <p class="lead">Your have previously applied for this job.</p> 
 
-                                            <p>You can <a href="https://insidify.com/register" target="_blank">Sign up</a> to <a href="https://insidify.com/" target="_blank">Insidify.com</a> to receive updates on this job and find several other jobs like this from all over the internet.</p> 
+                                              <p>You can <a href="https://insidify.com/register" target="_blank">Sign up</a> to <a href="https://insidify.com/" target="_blank">Insidify.com</a> to receive updates on this job and find several other jobs like this from all over the internet.</p> 
 
-                                            <p>
-                                                <a href="https://insidify.com/register" target="_blank" class="btn btn-success btn-lg">Sign up Here</a>
-                                            </p><br>
+                                              <p>
+                                                  <a href="https://insidify.com/register" target="_blank" class="btn btn-success btn-lg">Sign up Here</a>
+                                              </p>
+    
+
+                                            @else
+                                              <h3 class="text-brandon">Congratulations!</h3> 
+                                              <p class="lead">Your application has been submitted.</p> 
+
+                                              <p>You can <a href="https://insidify.com/register" target="_blank">Sign up</a> to <a href="https://insidify.com/" target="_blank">Insidify.com</a> to receive updates on this job and find several other jobs like this from all over the internet.</p> 
+
+                                              <p>
+                                                  <a href="https://insidify.com/register" target="_blank" class="btn btn-success btn-lg">Sign up Here</a>
+                                              </p>
+
+  
+                                            @endif
+
+                                            <br>
                                         </div>
 
                                                 
@@ -188,25 +208,26 @@
                                                 See some useful articles that can help your career
                                             </h6><br>
                     <div id="owl-posts2" class="hidden-sm">
-                       @foreach($posts as $post)
-                        <div class="owl-item col-sm-4">
-                            <div class="panel-body text-left">
-                              <p class="post-img">
-                                <a href="https://insidify.com/discovery/{{ $post->slug }}" >
-                                  <img src="https://files.insidify.com/{{ $post->picture }}" class="img-responsive" width="100%">
-                                </a>  
-                              </p>
-                              <h4 class="post-title"><a href="https://insidify.com/discovery/{{ $post->slug }}">{{ $post->title }}</a></h4>
-                              <p class="">{!! $post->summary !!} 
-                              </p>
-                              <p>
-                                  <a href="https://insidify.com/discovery/{{ $post->slug }}" class="btn btn-danger">Read</a>
-                              </p>
+                        @if( count($posts) > 0 )
+                           @foreach(@$posts as $post)
+                            <div class="owl-item col-sm-4">
+                                <div class="panel-body text-left">
+                                  <p class="post-img">
+                                    <a href="https://insidify.com/discovery/{{ $post->slug }}" >
+                                      <img src="https://files.insidify.com/{{ $post->picture }}" class="img-responsive" width="100%">
+                                    </a>  
+                                  </p>
+                                  <h4 class="post-title"><a href="https://insidify.com/discovery/{{ $post->slug }}">{{ $post->title }}</a></h4>
+                                  <p class="">{!! $post->summary !!} 
+                                  </p>
+                                  <p>
+                                      <a href="https://insidify.com/discovery/{{ $post->slug }}" class="btn btn-danger">Read</a>
+                                  </p>
+                                </div>
                             </div>
-                        </div>
-                      @endforeach  
+                          @endforeach  
 
-                        
+                        @endif
                     </div>
                                             
                                         </div>

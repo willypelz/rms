@@ -310,7 +310,7 @@
         @elseif( $page == 'saved' )
             Sorry you have no Saved CVs
         @elseif( $page == 'purchased' )
-            Sorry you have not purchased any CVs
+            Sorry you have not purchased any CV
         @endif
       </h3>
     </div>

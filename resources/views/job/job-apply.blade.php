@@ -326,7 +326,7 @@
                                                     @elseif( $custom_field->type == 'CHECKBOX' )
 
                                                         @foreach( $options as $option )
-                                                            {{ $option }} {{ Form::checkbox('cf_'.str_slug($custom_field->name,'_'), null,false, array( 'required' => 'required')) }}
+                                                            {{ $option }} {{ Form::checkbox('cf_'.str_slug($custom_field->name,'_').'[]', null,false, array( 'required' => 'required')) }}
                                                         @endforeach
                                                     
                                                     @elseif( $custom_field->type == 'TEXT' )

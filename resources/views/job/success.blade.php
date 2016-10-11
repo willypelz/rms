@@ -28,10 +28,10 @@
                     <div class="page">
 
 
-                        <div class="row >
+                        <div class="row" >
                           <div class="col-xs-10 col-xs-offset-1">
                           <h2 class="text-center"><i class="fa fa-check-circle fa-2x text-success"></i></h2>
-                          <p class="lead text-center">Your Job Title goes here when ready <br> This Job has been succesfully created.</p><hr>
+                          <p class="lead text-center">{{ ucfirst( $job->title ) }} <br> This Job has been succesfully created.</p><hr>
                           <div class="well hidden">
                           <ul class="list-inline">
                             <li><img src="{{ url('/') }}/img/linkedin-logo.png" alt="" width="100px" align="right"> &nbsp; </li>
@@ -207,8 +207,8 @@
                                     </div>
 
                                     <div class="text-center">
-                                      <a href="" class="btn btn-success"> <i class="fa fa-cloud-upload"></i> Upload CVs to this Job</a> &nbsp; 
-                                      <a href="" class="btn btn-line">Skip <i class="fa fa-arrow-right"></i></a>
+                                      <a href="#" class="btn btn-success"> <i class="fa fa-cloud-upload"></i> Upload CVs to this Job</a> &nbsp; 
+                                      <a href="#" class="btn btn-line">Skip <i class="fa fa-arrow-right"></i></a>
                                     </div>
 
                             </div>

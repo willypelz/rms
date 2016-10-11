@@ -20,6 +20,8 @@ use Auth;
 use Mail;
 use Carbon\Carbon;
 
+use App\Jobs\ExtractCvContent;
+
 
 class CvSalesController extends Controller
 {

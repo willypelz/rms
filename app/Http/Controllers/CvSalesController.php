@@ -180,7 +180,7 @@ class CvSalesController extends Controller
         
         // $cvs = Cv::all();
 
-        Cv::chunk(100, function ($cvs) {
+        Cv::where('id', '>', 5673)->chunk(100, function ($cvs) {
             foreach ($cvs as $cv) {
 
                 //adding to jobs queue...

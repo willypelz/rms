@@ -50,7 +50,7 @@ class ExtractCvContent extends Job implements ShouldQueue
         $filepath = public_path( 'uploads/CVs/'. $this->cv->cv_file );
         $this->cv->extracted_content = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );
 
-        echo 'done: '.$this->cv->id.': '.$cv_file.': '.$this->cv->extracted_content;
+        echo 'done: '.$this->cv->id.': '.$filepath.': '.$this->cv->extracted_content;
         $this->cv->save();
         // $this->cv->update(['extracted_content' => $extracted_content]);
 

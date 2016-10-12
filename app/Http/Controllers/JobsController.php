@@ -26,6 +26,7 @@ use Carbon\Carbon;
 use DB;
 use Alchemy\Zippy\Zippy;
 use Crypt;
+use CvSalesController;
 // use Zipper;
 
 class JobsController extends Controller

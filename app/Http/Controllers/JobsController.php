@@ -1027,6 +1027,9 @@ class JobsController extends Controller
             $cv->cv_file = $data['cv_file'];
             $cv->save();
 
+            $cvExt = new CvSalesController();
+            $cvExt->ExtractCv( $cv );
+
             //saving job application...
             $appl = new JobApplication;
             $appl->cover_note = $data['cover_note'];

@@ -64,7 +64,8 @@
 
                             <div class="row" id="showAll" style="display:none">
                               <div class="col-sm-6 col-sm-offset-3 text-center">
-                                  <button onclick="getCon(true); $('#showAll').hide();" class="btn btn-default" >See all activities</button>
+                                  <div id="act_loader" style="display:none">{!! preloader() !!}</div>
+                                  <button onclick="getCon(true); $('#act_loader').show(); activities_index++" class="btn btn-default" >Show more activities</button>
                               </div>
                             </div>
                       
@@ -147,26 +148,36 @@
 
 <div class="separator separator-small"></div>
 
-<script>
-                      $("#ActivityContent").html('{!! preloader() !!}');
-                     
-                      var url = "{{ route('get-activity-content') }}"
+  <script>
+      var activities_index = 1;
+      $("#ActivityContent").html('{!! preloader() !!}');
+     
+      var url = "{{ route('get-activity-content') }}"
 
-                      setTimeout(function(){ getCon(); }, 2000);
+      setTimeout(function(){ getCon(); }, 2000);
 
-                      function getCon(allActivities=false){
-                         $.ajax
-                        ({
-                            type: "POST",
-                            url: url,
-                            data: ({ rnd : Math.random() * 100000, type:"dashboard", allActivities: allActivities }),
-                            success: function(response){
-                              $("#ActivityContent").html(response);
-                              $('#showAll').show();
-                            }
-                        });
-                      }
+      function getCon(allActivities=false){
+         $.ajax
+        ({
+            type: "POST",
+            url: url,
+            data: ({ rnd : Math.random() * 100000, type:"dashboard", allActivities: allActivities , activities_index: activities_index }),
+            success: function(response){
+              if(allActivities)
+              {
+                  $("#ActivityContent").append(response);
+              }
+              else
+              {
+                  $("#ActivityContent").html(response);
+              }
+              
+              $('#showAll').show();
+              $('#act_loader').hide();
+            }
+        });
+      }
 
 
-</script>
+  </script>
 @endsection

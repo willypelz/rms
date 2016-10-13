@@ -485,6 +485,7 @@ class JobsController extends Controller
     public function ActivityContent(Request $request){
 
          $content = '<ul class="list-group list-notify">';
+
         
         if(!empty($request->appl_id)){
             $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('created_at', 'desc');
@@ -501,13 +502,15 @@ class JobsController extends Controller
             $activities =  JobActivity::with('user', 'application.cv', 'job', 'job.company')->where('job_id', $request->jobid)->orderBy('created_at', 'desc');
         }
 
-        if( @$request->allActivities )
+        if( @$request->allActivities == "true" )
         {
+
           $activities = $activities->take(20)->get();
         }
-        else
+        else if( @$request->allActivities == "false" )
         {
-            $activities = $activities->take(20)->get();
+
+            $activities = $activities->skip( 20 * intval(@$request->activities_index) )->take(20)->get();
         }
         
             // dd($activities);

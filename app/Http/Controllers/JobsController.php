@@ -26,6 +26,7 @@ use Carbon\Carbon;
 use DB;
 use Alchemy\Zippy\Zippy;
 use Crypt;
+use CvSalesController;
 // use Zipper;
 
 class JobsController extends Controller
@@ -1026,6 +1027,9 @@ class JobsController extends Controller
             // $cv->willing_to_relocate = $data['willing_to_relocate'];
             $cv->cv_file = $data['cv_file'];
             $cv->save();
+
+            $cvExt = new CvSalesController();
+            $cvExt->ExtractCv( $cv );
 
             //saving job application...
             $appl = new JobApplication;

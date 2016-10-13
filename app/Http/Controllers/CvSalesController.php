@@ -171,16 +171,10 @@ class CvSalesController extends Controller
         return view('cv-sales.includes.cv-preview',compact("cv", "is_applicant", "appl", 'is_embedded'));
     }
 
-    public function saveCvPreview(Request $request){ // to solr
+    public function saveCvPreview($cv, Request $request){ // to solr
 
-        // $cv = $request->cv;
-        // $cv_file = $cv['cv_file'];
-        // $cv_file = 'unlekwaatyahoocom_UCHE.pdf';
-        
-        
-        // $cvs = Cv::all();
 
-        Cv::chunk(100, function ($cvs) {
+        Cv::where('id', '>', 5673)->chunk(100, function ($cvs) {
             foreach ($cvs as $cv) {
 
                 //adding to jobs queue...
@@ -190,17 +184,12 @@ class CvSalesController extends Controller
             }
         });
         
-        /*$filepath = public_path( 'uploads/CVs/'. $cv_file );
-        var_dump($filepath);
 
-        var_dump(file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) ) );*/
+    }
 
-        // var_dump(file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) ) );
-
-
-        // $cv['raw_content'] = file_get_contents("http://127.0.0.1:5000/extract?file_name=".urlencode( $filepath ) );
-        // return $cv;
-        // return Carbon::createFromDate(1991, 7, 19)->diff(Carbon::now())->format('%y years, %m months and %d days');
+    public function ExtractCv($cv, Request $request){ // to solr
+        
+        $this->dispatch(new ExtractCvContent($cv));
     }
 
     public function Cart(Request $request){

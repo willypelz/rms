@@ -1,4 +1,4 @@
-@if(!@$is_embedded)
+
 
 
         <div class="">
@@ -48,18 +48,11 @@
                     </div>
                 </div>
                 <div class="clearfix"></div>
-                <div class="tab-content stack hidden" id="cv">
-                    <pre>
-                        @if(isset($cv['extracted_content'][0] )))
-                            {{ remove_cv_contact( $cv['extracted_content'][0] ) }}
-                        @endif
-                    </pre>
-                </div>
-   
+              
                 <div class="tab-content stack" id="cv">
 
 
-@endif                
+             
                     
                     <div class="row">
                         <div class="col-xs-12 cv-name text-center">
@@ -138,6 +131,16 @@
                     </div>
                     @endif
 
+                        @if(!@$is_embedded)
+                                        <div class="tab-content stack" id="cv">
+                                            <pre>
+                                                @if(isset($cv['extracted_content'][0] )))
+                                                    {{ remove_cv_contact( $cv['extracted_content'][0] ) }}
+                                                @endif
+                                            </pre>
+                                        </div>
+                           @endif 
+
 
                     @if(@$is_applicant)
 
@@ -154,7 +157,7 @@
                                  <span>Sorry! No uploaded CV for this applicant.</span> 
 
                                 @else
-
+                                    
                                     @if(ends_with($cv['cv_file'], 'jpg')
                                          || ends_with($cv['cv_file'], 'jpeg')
                                          || ends_with($cv['cv_file'], 'png')
@@ -185,7 +188,7 @@
 
                     @endif
 
-@if(!@$is_embedded)
+
 
 
                 </div>
@@ -198,4 +201,4 @@
             </div>
             </div>
 
-@endif            
+          

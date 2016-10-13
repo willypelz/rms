@@ -214,7 +214,7 @@ class JobsController extends Controller
                          $out_boards = array();
                         foreach ($pickd_boards as $p) {
                             if(in_array($p, $bds))
-                                $job->boards()->attach($p,  ['url' => $urls[$p]);
+                                $job->boards()->attach($p,  ['url' => $urls[$p]]);
                                 $out_boards[] = JobBoard::where('id', $p)->first()->name;
                         }
                         $flash_boards = implode(', ', $out_boards);

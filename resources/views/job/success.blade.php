@@ -126,7 +126,7 @@
                                               // $sub_key = array_search($b['id'], array_pluck( $subscribed_boards, 'id' ) );
 
 
-                                              if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
+                                              if(@$subscribed_board['pivot']['url'] != null && @$subscribed_board['pivot']['url'] != '')
                                               {
                                                   $status = 'approved';
                                               }
@@ -144,8 +144,8 @@
                                             <img src="{{ $subscribed_board['img'] }}" alt="{{ $subscribed_board['name'] }} logo" width="90%" align="right">
                                           </div>
                                           <div class="col-xs-6">
-                                            @if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
-                                              <h5 title="Your Job is live on this website">{{ $subscribed_board['name'] }} <i class="fa fa-check-circle text-success"></i> </h5><input type="text" class="form-control" value="" readonly>
+                                            @if(@$subscribed_board['pivot']['url'] != null && @$subscribed_board['pivot']['url'] != '')
+                                              <h5 title="Your Job is live on this website">{{ $subscribed_board['name'] }} <i class="fa fa-check-circle text-success"></i> </h5><input type="text" class="form-control" value="{{ $subscribed_board['pivot']['url'] }}" readonly>
                                             @else
                                               <h5>{{ $subscribed_board['name'] }} &nbsp;&nbsp;<i class="fa fa-hourglass-half text-muted"></i>pending approval</h5><input type="text" class="form-control" value="your url will appear here" disabled="">
                                             @endif

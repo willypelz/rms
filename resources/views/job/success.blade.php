@@ -207,8 +207,8 @@
                                     </div>
 
                                     <div class="text-center">
-                                      <a href="#" class="btn btn-success"> <i class="fa fa-cloud-upload"></i> Upload CVs to this Job</a> &nbsp; 
-                                      <a href="#" class="btn btn-line">Skip <i class="fa fa-arrow-right"></i></a>
+                                      <a href="{{ route('add-candidates', false) }}" class="btn btn-success"> <i class="fa fa-cloud-upload"></i> Upload CVs to this Job</a> &nbsp; 
+                                      <a href="{{ url('dashboard') }}" class="btn btn-line">Go to Your Dashboard <i class="fa fa-arrow-right"></i></a>
                                     </div>
 
                             </div>

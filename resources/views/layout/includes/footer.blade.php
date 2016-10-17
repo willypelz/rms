@@ -119,14 +119,33 @@
 
             <div class="row">
 
-                <div class="col-sm-3">
-                    <ul class="list-unstyled footer-logo">
-                        <li>
-                            <h4 class="text-brandon" style="text-transform: capitalize;"><img src="{{ url('/') }}/img/logomark2.png" alt=""></h4>
-                            <small class="text-muted">&copy; 2016. All Rights Reserved.</small>
-                        </li>
-                    </ul>
-                </div>
+
+                <div class="col-md-3">
+                   <h5>Find us on Social Media.</h5>
+               
+                           <a href="http://facebook.com" class="">
+                                   <span class="fa-stack fa-lg">
+                                     <i class="fa fa-circle fa-stack-2x text-"  style="color:#3b5998"></i>
+                                     <i class="fa fa-facebook fa-stack-1x fa-inverse" ></i>
+                                   </span>
+                           </a>
+               
+                           <a href="http://twitter.com" class="">
+                                   <span class="fa-stack fa-lg">
+                                     <i class="fa fa-circle fa-stack-2x text-"  style="color:#0084b4"></i>
+                                     <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                   </span>
+                           </a>
+               
+                           <a href="http://linkedin.com" class="">
+                                   <span class="fa-stack fa-lg">
+                                     <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                                     <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                                   </span>
+                           </a>
+                   </div>
+
+
                 
                 <div class="col-sm-6">
                     <div class="col-sm-4">
@@ -174,31 +193,14 @@
                     </div>
                 </div>
 
-
-                <div class="col-md-3">
-                   <h5>Find us on Social Media.</h5>
-               
-                           <a href="http://facebook.com" class="">
-                                   <span class="fa-stack fa-lg">
-                                     <i class="fa fa-circle fa-stack-2x text-"  style="color:#3b5998"></i>
-                                     <i class="fa fa-facebook fa-stack-1x fa-inverse" ></i>
-                                   </span>
-                           </a>
-               
-                           <a href="http://twitter.com" class="">
-                                   <span class="fa-stack fa-lg">
-                                     <i class="fa fa-circle fa-stack-2x text-"  style="color:#0084b4"></i>
-                                     <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                   </span>
-                           </a>
-               
-                           <a href="http://linkedin.com" class="">
-                                   <span class="fa-stack fa-lg">
-                                     <i class="fa fa-circle fa-stack-2x text-danger"></i>
-                                     <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
-                                   </span>
-                           </a>
-                   </div>
+                <div class="col-sm-3 text-right">
+                    <ul class="list-unstyled footer-logo">
+                        <li>
+                            <img src="{{ url('/') }}/img/seamlesshiring-logo.png" alt="" width="125px"><br><br>
+                            <small class="text-muted">&copy; 2016. All Rights Reserved<br> Insidify Enterprise. Insidfy.com</small>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
 

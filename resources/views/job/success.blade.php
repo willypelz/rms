@@ -126,7 +126,7 @@
                                               // $sub_key = array_search($b['id'], array_pluck( $subscribed_boards, 'id' ) );
 
 
-                                              if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
+                                              if(@$subscribed_board['pivot']['url'] != null && @$subscribed_board['pivot']['url'] != '')
                                               {
                                                   $status = 'approved';
                                               }
@@ -144,8 +144,8 @@
                                             <img src="{{ $subscribed_board['img'] }}" alt="{{ $subscribed_board['name'] }} logo" width="90%" align="right">
                                           </div>
                                           <div class="col-xs-6">
-                                            @if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
-                                              <h5 title="Your Job is live on this website">{{ $subscribed_board['name'] }} <i class="fa fa-check-circle text-success"></i> </h5><input type="text" class="form-control" value="" readonly>
+                                            @if(@$subscribed_board['pivot']['url'] != null && @$subscribed_board['pivot']['url'] != '')
+                                              <h5 title="Your Job is live on this website">{{ $subscribed_board['name'] }} <i class="fa fa-check-circle text-success"></i> </h5><input type="text" class="form-control" value="{{ $subscribed_board['pivot']['url'] }}" readonly>
                                             @else
                                               <h5>{{ $subscribed_board['name'] }} &nbsp;&nbsp;<i class="fa fa-hourglass-half text-muted"></i>pending approval</h5><input type="text" class="form-control" value="your url will appear here" disabled="">
                                             @endif
@@ -156,7 +156,7 @@
                                           <h5>Share this link</h5>
                                             <ul class="list-inline">
                                                    <li class="no-pad no-margin">
-                                                       <a href="" class="btn-disabled" target="_blank" >
+                                                       <a href="https://www.facebook.com/sharer/sharer.php?u={{ @$subscribed_board['pivot']['url'] }}" class="btn-disabled" target="_blank" >
                                                                <span class="fa-stack fa-lg">
                                                                  <i class="fa fa-square fa-stack-2x text-"></i>
                                                                  <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
@@ -165,7 +165,7 @@
                                                    </li>
                                                                                   
                                                    <li class="no-pad no-margin">
-                                                       <a href="" class="btn-disabled" target="_blank" >
+                                                       <a href="https://twitter.com/home?status={{ @$subscribed_board['pivot']['url'] }}" class="btn-disabled" target="_blank" >
                                                                <span class="fa-stack fa-lg">
                                                                  <i class="fa fa-square fa-stack-2x text-"></i>
                                                                  <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
@@ -174,7 +174,7 @@
                                                    </li>
                                                                                   
                                                    <li class="no-pad no-margin">
-                                                       <a href="" class="btn-disabled" target="_blank" >
+                                                       <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ @$subscribed_board['pivot']['url'] }}" class="btn-disabled" target="_blank" >
                                                                <span class="fa-stack fa-lg">
                                                                  <i class="fa fa-square fa-stack-2x text-"></i>
                                                                  <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
@@ -207,8 +207,8 @@
                                     </div>
 
                                     <div class="text-center">
-                                      <a href="#" class="btn btn-success"> <i class="fa fa-cloud-upload"></i> Upload CVs to this Job</a> &nbsp; 
-                                      <a href="#" class="btn btn-line">Skip <i class="fa fa-arrow-right"></i></a>
+                                      <a href="{{ route('add-candidates', false) }}" class="btn btn-success"> <i class="fa fa-cloud-upload"></i> Upload CVs to this Job</a> &nbsp; 
+                                      <a href="{{ url('dashboard') }}" class="btn btn-line">Go to Your Dashboard <i class="fa fa-arrow-right"></i></a>
                                     </div>
 
                             </div>

@@ -60,7 +60,7 @@
                           </div>
 
                           <div class="btn-group" role="group">
-                            <a href="addCan-job.php" type="button" class="btn btn-line text-capitalize"><i class="fa fa-search-plus"></i>
+                            <a href="" type="button" class="btn btn-line text-capitalize"><i class="fa fa-search-plus"></i>
                             &nbsp; <span class="hidden-xs"> add candidates </span></a>
                           </div>
                         </div>

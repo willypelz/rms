@@ -1,7 +1,7 @@
 <div class="panel-group">
                     <div class="panel panel-default tweak panel-dash">
                         <div class="panel-heading">
-                            <h3 class="text-brandon text-center no-margin applicant-name">{{ $appl->cv->last_name.' '.$appl->cv->first_name }}</h3>
+                            <h3 class="text-brandon text-center no-margin applicant-name">{{ $appl->cv->first_name.' '.$appl->cv->last_name }}</h3>
                         </div>
                         <div class="panel-collapse">
                             <div class="row">

@@ -25,7 +25,7 @@ class Job extends Model
 
     public function boards()
     {
-        return $this->belongsToMany('App\Models\JobBoard', 'jobs_job_boards');
+        return $this->belongsToMany('App\Models\JobBoard', 'jobs_job_boards')->withPivot('url', 'url');
     }
 
      public function specializations()

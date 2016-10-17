@@ -260,13 +260,13 @@ $('.datepicker').datepicker({
 format: 'mm/dd/yyyy'
 });
 function optionsDisplay(){
-if(  $.inArray( $('body #addField #type-box').val(), [ 'TEXT', 'TEXTAREA' ] )  )
+if(  $.inArray( $('body #addField #type-box').val(), [ 'TEXT', 'TEXTAREA', 'FILE' ] )  )
 {
-$('body #addField #options-box').fadeIn();
+$('body #addField #options-box').fadeOut();
 }
 else
 {
-$('body #addField #options-box').fadeOut();
+$('body #addField #options-box').fadeIn();
 }
 }
 optionsDisplay();

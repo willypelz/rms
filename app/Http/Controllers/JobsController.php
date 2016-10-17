@@ -128,8 +128,10 @@ class JobsController extends Controller
         $t = array_chunk($job_boards, $c);
         $board1 = $t[0];
         $board2 = $t[1];
+        $urls = [];
         foreach ($job_boards as $s) {
             $bds[] = ($s['id']);
+            $urls[ $s['id'] ] = "";
         }
 
         //Free Job boards urls
@@ -186,7 +188,7 @@ class JobsController extends Controller
                         $insidify_url = Curl::to("https://staging.insidify.com/ss-post-job")
                                     ->withData( array('secret' => '1ns1d1fy', 'data' => json_encode( $job_data ) ) )
                                     ->post();
-
+                        $urls[1] = $insidify_url;
                         // dd($job_data ,$insidify_url, $bds, $pickd_boards);
 
                         $job = Job::FirstorCreate($job_data);
@@ -212,7 +214,7 @@ class JobsController extends Controller
                          $out_boards = array();
                         foreach ($pickd_boards as $p) {
                             if(in_array($p, $bds))
-                                $job->boards()->attach($p);
+                                $job->boards()->attach($p,  ['url' => $urls[$p]]);
                                 $out_boards[] = JobBoard::where('id', $p)->first()->name;
                         }
                         $flash_boards = implode(', ', $out_boards);
@@ -226,7 +228,7 @@ class JobsController extends Controller
                     
                         
             Session::flash('flash_message', 'Congratulations! Your job has been posted on '.$flash_boards.'. You will begin to receive applications from those job boards shortly - <i>this is definite</i>.');
-            return redirect()->route('post-success', ['jobID' => $job->id, 'insidify_url' => $insidify_url]);
+            return redirect()->route('post-success', ['jobID' => $job->id]);
         }
 
         return view('job.create', compact('qualifications', 'specializations', 'board1', 'board2', 'locations'));
@@ -239,7 +241,7 @@ class JobsController extends Controller
 
         $subscribed_boards = $job->boards()->get()->toArray();
 
-        $approved_count = array_filter( array_pluck( $subscribed_boards, 'url' ), function(){ 
+        /*$approved_count = array_filter( array_pluck( $subscribed_boards, 'pivot.url' ), function(){ 
 
                 if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
                 {
@@ -249,12 +251,22 @@ class JobsController extends Controller
                 {
                     return false;
                 }
-         } );
+         } );*/
+        $approved_count =  $pending_count = 0;
 
-        $approved_count = count( $approved_count );
+        foreach ($subscribed_boards as $key => $board) {
+
+            if($board['pivot']['url'] != '')
+            {
+                $approved_count++;
+            }
+            else
+            {
+                $pending_count++;
+            }
+        };
 
 
-        $pending_count = count($subscribed_boards) - $approved_count;
 
         return view('job.success', compact('job','insidify_url','subscribed_boards','approved_count','pending_count'));
     }

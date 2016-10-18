@@ -469,7 +469,7 @@ section.s-div{
     /*border-bottom: 3px solid #5CB85C;*/
 }
 section.s-div.homepage{
-    background: #2889ce fixed bottom url(../img/intro-bg.jpg);
+    background: #2889ce fixed bottom url(../img/office-interior.jpg);
     background-size: cover;
     padding: 8em 0 5em;
     /* border-bottom: 5px solid #96b5d0; */
@@ -651,8 +651,8 @@ h3.brand-title {
     outline: none;
 }
 .btn {
-    padding: 6px 16px;
-    font-weight: 700;
+    /* padding: 6px 16px; */
+    /* font-weight: 700; */
     border-radius:2px;
 }
 .btn-default {
@@ -1780,6 +1780,9 @@ ul.notif > li a img {
 .cv-name {
     padding: 2em 0 1em;
 }
+.form-control{
+    background: #f9f9f9;
+}
 .padbox {
     margin: 0;
     padding: 20px;
@@ -1869,8 +1872,7 @@ ul.notif > li a img {
 
 .text-brandon{
     /* font-family: "Brandon Text"; */
-    font-family: '1882
-    serrat', sans-serif;
+    font-family: 'montserrat', sans-serif;
     /* text-transform:uppercase; */
     /* font-weight:700; */
 }

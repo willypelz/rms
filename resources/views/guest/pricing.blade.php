@@ -154,7 +154,7 @@
         </div>
     </section>
 
-    <section class="s-div homepage no-margin">
+    <section class="s-div no-margin blue dark">
         <div class="container">
 
             <div class="page-trans">
@@ -221,31 +221,30 @@
                     </div>
                 </div>
             </div>
-
+            <div class="separator separator-small"><br></div>
         </div>
     </section>
 
 
 
-    <section class="white">
+    <section class="s-div homepage">
         <div class="container">
 
             <div class="">
               <div class="row">
                 <div class="col-sm-8 col-sm-offset-2">
-                  <br>
-                  <i class="fa fa-smile-o fa-5em text-center block"></i>
-                    <p class="lead text-center">Do you need to convince your boss or your team on why you need SeamlessHiring? <br>We have put a customizable, four-page power-point presentation together for you.  
+                  <i class="fa fa-smile-o fa-5em text-center block text-white"></i>
+                    <p class="lead text-center text-white">Do you need to convince your boss or your team on why you need SeamlessHiring? We have put a customizable, four-page power-point presentation together for you.  
                     </p>
                       <form action="">
                         <div class="form-group">
-                          <div class="col-sm-6"><input type="text" class="form-control" placeholder="Enter your company name"></div>
-                          <div class="col-sm-6"><input type="email" class="form-control" placeholder="Your email address"></div>
+                          <div class="col-sm-6"><input type="text" class="form-control input-lg" placeholder="Enter your company name"></div>
+                          <div class="col-sm-6"><input type="email" class="form-control input-lg" placeholder="Your email address"></div>
                           <div class="clearfix"></div>
                         </div>
                         <div class="form-group">
-                          <div class="col-sm-6"><input type="text" class="form-control" placeholder="Your name"></div>
-                          <div class="col-sm-6"><input type="submit" class="btn btn-success btn-block" value="Download your Pitch Deck"></div>
+                          <div class="col-sm-6"><input type="text" class="form-control input-lg" placeholder="Your name"></div>
+                          <div class="col-sm-6"><input type="submit" class="btn btn-success btn-block btn-lg" value="Download your Pitch Deck"></div>
                           <div class="clearfix"></div>
                         </div>
                       </form>

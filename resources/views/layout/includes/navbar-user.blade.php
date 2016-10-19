@@ -1,4 +1,4 @@
-    <div class="navbar navbar-fixed-top no-margin" role="navigation">
+    <div class="navbar no-margin" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -53,7 +53,7 @@
                         <li id="fat-menu" class="dropdown" title="{{ get_current_company()->name }}"> 
                             <a class="a-user" id="drop3" href="#" class="dropdown-toggle" style="" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
 
-                            <span class="ellipsis text-green-light comp-name"><i class="fa fa-bookmark"></i> {{ get_current_company()->name }} &nbsp;</span>
+                            <span class="ellipsis comp-name"><i class="fa fa-bookmark"></i> {{ get_current_company()->name }} &nbsp;</span>
 
                             <img src="{{ default_picture( Auth::user(), 'user' ) }}" width="40px" class="img-profile" height="40px" alt=""> 
                             <span class="caret"></span> 

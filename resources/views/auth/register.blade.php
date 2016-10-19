@@ -44,8 +44,11 @@
             <div class="row">
 
                 <div class="col-sm-4 col-sm-offset-4 text-center text-white">
-                    <h2 class=""><img src="{{ url('/') }}/img/logomark.png" alt=""></h2><br>    
-                    <!-- <p class="">Everything You Need To Hire, In One Place!</p> -->
+                <div class="separator separator-small"><br></div>
+                    <h2 class="">Sign Up here 
+                    <!-- <img src="{{ url('/') }}/img/seamlesshiring-logo-x.png" alt=""> -->
+                    </h2> 
+                    <p class="">Kindly provide all information where necessary</p><br>
                 </div>
 
                 <div class="col-sm-8 col-sm-offset-2">
@@ -226,15 +229,15 @@
                                 </div>
                                 
                                 <div class="col-sm-12">
-                                    <div class="form-group{{ $errors->has('about_company') ? ' has-error' : '' }}">
+                                    <div class="form-group{{ $errors->has('about_company') ? ' has-error' : '' }} text-center">
                                         <label class="col-md-12" for="">Company Logo</label>
                                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                               <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
                                               <div>
-                                                <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span>
+                                                <span class="btn btn-line btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span>
                                                  <?php  echo Form::file('logo'); ?>
                                                 </span>
-                                                <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                                <a href="#" class="btn btn-line fileinput-exists" data-dismiss="fileinput">Remove</a>
                                               </div>
                                             </div>
 

@@ -147,7 +147,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .navbar-nav > li > a.a-user img{
     border-radius: 25px;
     margin-top: -20px;
-    background: #2889ce;
+    background: #10588a;
     padding: 5px;
 }
 .navbar-toggle .icon-bar {
@@ -1158,7 +1158,7 @@ footer .footer-logo {
 .owl-item .panel-body{
         background: #EFF2F5;
     border-radius: 3px;
-    height: 485px;
+    height: 485px;                                                                                                                                        
 }
 #owl-posts .owl-item, #owl-posts2 .owl-item{
     /* box-shadow:2px 2px 2px rgba(0,0,0,0.2); */
@@ -2701,6 +2701,13 @@ iframe::-webkit-scrollbar {
 }
 .company-info .nav{
     border-bottom: 1px solid #ccc;
+}
+.panel.panel-default.panel-course.category-item{
+    padding: 10px 20px;
+    margin-bottom: 20px;
+}
+img.category-icon {
+    margin-top: 15px;
 }
 /* 
 

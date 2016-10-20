@@ -464,12 +464,12 @@ section.s-div{
     padding-top: 3.5em;
     padding-bottom: 1em;
     /*background:#5A497B url(../img/2.jpg) center fixed;*/
-    background:#2889ce;
+    background: #10588a;
     background-size:cover;
     /*border-bottom: 3px solid #5CB85C;*/
 }
 section.s-div.homepage{
-    background: #2889ce fixed bottom url(../img/office-interior.jpg);
+    background: #10588a fixed bottom url(../img/office-interior.jpg);
     background-size: cover;
     padding: 8em 0 5em;
     /* border-bottom: 5px solid #96b5d0; */
@@ -1158,7 +1158,7 @@ footer .footer-logo {
 .owl-item .panel-body{
         background: #EFF2F5;
     border-radius: 3px;
-    height: 485px;                                                                                                                                        
+    height: 275px;                                                                                                                                        
 }
 #owl-posts .owl-item, #owl-posts2 .owl-item{
     /* box-shadow:2px 2px 2px rgba(0,0,0,0.2); */
@@ -2419,7 +2419,8 @@ section.grey hr{
     border-radius: 0;
 }
 .job-head.blue{
-    background: #3A5979;
+    /* background: #3A5979; */
+    background: #10588a;
 }
 .job-head.has-bg-img {
     background: url(../img/b2.png) #408eb0;

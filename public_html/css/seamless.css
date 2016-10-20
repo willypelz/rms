@@ -147,7 +147,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .navbar-nav > li > a.a-user img{
     border-radius: 25px;
     margin-top: -20px;
-    background: #2889ce;
+    background: #10588a;
     padding: 5px;
 }
 .navbar-toggle .icon-bar {
@@ -2701,6 +2701,13 @@ iframe::-webkit-scrollbar {
 }
 .company-info .nav{
     border-bottom: 1px solid #ccc;
+}
+.panel.panel-default.panel-course.category-item{
+    padding: 10px 20px;
+    margin-bottom: 20px;
+}
+img.category-icon {
+    margin-top: 15px;
 }
 /* 
 

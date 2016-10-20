@@ -133,14 +133,14 @@
                                 <div>
                                   <div class="row">
                                       <div class="col-xs-12 text-center">
-                                          <h4 class=""><br>Job Promotion. </h4><p>Multipying your talent flow. Post your job on more job boards</p><hr>
+                                          <h4 class=""><br>Promote <a href="">Job Title should come here</a>. </h4><p>Multipying your talent flow. Post your job on more job boards</p><hr>
                                       </div>
 
                                     
                                     <div class="col-xs-12">
-                                        <h5 class="text-brandon text-uppercase">
+                                        <h4 class="text-brandon text-uppercase">
                                         <i class="fa fa-star"></i>&nbsp; Paid Job Boards
-                                        </h5><br>
+                                        </h4><br>
                                     </div>
                                        @foreach($job_boards as $b)
                                         <div class="col-sm-4"> 
@@ -181,10 +181,48 @@
                                               
 
                                         
-                                         <div class="col-xs-12">
-                                         <h5 class="text-brandon text-uppercase text-danger">
+                                         <div class="col-xs-12"><hr>
+                                         <h4 class="text-brandon text-uppercase text-danger">
                                              <i class="fa fa-star"></i>&nbsp; Paid Newspaper Ads
-                                             </h5><br>
+                                             </h4><br>
+
+                                             <div class="panel-group">
+
+              <div href="#">
+                <div class="panel panel-default panel-course category-item">
+                  <div class="row category-row">
+                    <div class="col-xs-3">
+                      <img src="http://d19lga30codh7.cloudfront.net/wp-content/uploads/2013/12/vanguardlogo.png" alt="" class="category-icon" width="100%"> 
+                    </div>
+                    <div class="col-xs-6">
+                      <h4>Name of Newspaper comes here <small> &nbsp; 12 courses</small> </h4>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, esse nam. Deserunt delectus ex enim assumenda.</p>
+                    </div>
+                    <div class="col-xs-3 category-item"><br>
+                      <a class="btn btn-block btn-warning pull-right">Request slot</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div href="#">
+                <div class="panel panel-default panel-course category-item">
+                  <div class="row category-row">
+                    <div class="col-xs-3 ">
+                      <img src="http://cdn.guardian.ng/wp-content/themes/guardian2016/img/guardian_logo.png" alt="" class="category-icon" width="100%"> 
+                    </div>
+                    <div class="col-xs-6">
+                      <h4>Name of Newspaper comes here <small>&nbsp; 6 courses</small></h4>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, esse nam. Deserunt delectus ex enim assumenda.</p>
+                    </div>
+                    <div class="col-xs-3 category-item"><br>
+                      <a class="btn btn-block btn-warning pull-right">Request slot</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
      
                                              @foreach($newspapers as $n)
                                              <div class="col-sm-4"> 
@@ -230,9 +268,10 @@
 
                                 <!-- </div> -->
                                        
-                                        <div class="col-sm-12"><hr>
-                                        <a href="#" id="proceed-btn" target="_blank" data-toggle="modal" data-target="#myInvoice" class="pull-right btn btn-success btn-cart-checkout"> Proceed </a>
-                                        <a href="{{ route('share-job', [$jobid]) }}" id="skip-btn" class="pull-right btn btn-danger btn-cart-checkout">Skip &raquo;</a>
+                                        <div class="col-sm-12 text-center"><hr>
+                                        <a href="#" id="proceed-btn" target="_blank" data-toggle="modal" data-target="#myInvoice" class=" btn btn-success btn-cart-checkout"> Proceed </a>
+
+                                        <a href="{{ route('share-job', [$jobid]) }}" id="skip-btn" class=" btn btn-line btn-cart-checkout">Skip &raquo;</a>
                                         </div>
                                       </div>
                                 </div>

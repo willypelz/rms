@@ -29,10 +29,10 @@
 
 
                         <div class="row" >
-                          <div class="col-xs-10 col-xs-offset-1">
+                          <div class="col-xs-12">
                           <h2 class="text-center"><i class="fa fa-check-circle fa-2x text-success"></i></h2>
-                          <p class="lead text-center">{{ ucfirst( $job->title ) }} <br> This Job has been succesfully created.</p><hr>
-                          <div class="well hidden">
+                          <p class="lead text-center"><a href="">{{ ucfirst( $job->title ) }} </a><br> This Job has been succesfully created.</p><hr>
+                          <!-- <div class="well hidden">
                           <ul class="list-inline">
                             <li><img src="{{ url('/') }}/img/linkedin-logo.png" alt="" width="100px" align="right"> &nbsp; </li>
                             <li><img src="{{ url('/') }}/img/logo-full.png" alt="" width="100px" align="right"> &nbsp; </li>
@@ -40,13 +40,13 @@
                             <li><img src="{{ url('/') }}/img/job_informant.PNG" alt="" width="100px" align="right"> &nbsp; </li>
                           </ul>
                           <div class="clearfix"></div>
-                          </div>
+                          </div> -->
 
                           <div>
 
                             <!-- <h4 class="text-center"> Share this job!  <br> -->
                                <!-- <small>Because we want you to find the best talents.</small> -->
-                           </h4>
+                           <!-- </h4> -->
                            <!-- <hr style="width: 45%"> -->
                            <div class="col-xs-12 hidden">
                            <div class="well"> 
@@ -108,7 +108,7 @@
 
                             <div class="col-xs-12">
 
-                            <h5 class="text-center">Below are free job boards where your job will be posted.</h5>
+                            <h5 class="text-center">Below are free job boards where your job will be posted. You can copy the link of your job or share them from here. You can find this section on the <a href="{{ url('dashboard') }}">job dashboard here.</a></h5><br>
 
                                 <div class="panel panel-default">
                                 
@@ -118,7 +118,6 @@
 
                                   </div>
                                   <div class="panel-body" style="height: 520px; overflow: auto;">
-                                  <p class="small text-muted">You can copy the link of your job or share them from here.</p>
                                     
 
                                     @foreach($subscribed_boards as $subscribed_board)

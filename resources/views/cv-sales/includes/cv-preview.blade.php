@@ -132,15 +132,16 @@
                     @endif
 
                         @if(!@$is_embedded)
+                            @if(@!$is_applicant && $page != 'pool')
                                         <div class="tab-content stack" id="cv">
                                             <pre>
                                                 @if(isset($cv['extracted_content'][0] )))
-                                                    {{ remove_cv_contact( $cv['extracted_content'][0] ) }}
+                                                    {{ remove_cv_contact( $cv ) }}
                                                 @endif
                                             </pre>
                                         </div>
                            @endif 
-
+                        @endif
 
                     @if(@$is_applicant)
 

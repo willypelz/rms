@@ -12,6 +12,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use Auth;
 use DB;
+use App\ActivationService;
 
 
 class AuthController extends Controller
@@ -37,15 +38,23 @@ class AuthController extends Controller
     // protected $redirectTo = '/dashboard';
     protected $redirectTo = '/dashboard';
 
+    protected $activationService;
+
     /**
      * Create a new authentication controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('guest', ['except' => 'logout']);
+    // public function __construct()
+    // {
+    //     $this->middleware('guest', ['except' => 'logout']);
 
+    // }
+
+    public function __construct(ActivationService $activationService)
+    {
+        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+        $this->activationService = $activationService;
     }
 
     // public function redirectPath()
@@ -99,6 +108,25 @@ class AuthController extends Controller
         }else{
             echo 'Failed';
         }
+    }
+
+    public function authenticated(Request $request, $user)
+    {
+        if (!$user->activated) {
+            $this->activationService->sendActivationMail($user);
+            auth()->logout();
+            return back()->with('warning', 'You need to confirm your account. We have sent you an activation code, please check your email.');
+        }
+        return redirect()->intended($this->redirectPath());
+    }
+
+    public function activateUser($token)
+    {
+        if ($user = $this->activationService->activateUser($token)) {
+            auth()->login($user);
+            return redirect($this->redirectPath());
+        }
+        abort(404);
     }
 
     public function Registration (Request $request){
@@ -157,10 +185,14 @@ class AuthController extends Controller
 
 
             if($upload){
-                $login  = Auth::attempt(['email' => $request->email, 'password' => $request->password]);
+                $this->activationService->sendActivationMail($user);
 
-                if($login)
-                    return redirect('dashboard');
+                return redirect('/login')->with('status', 'We sent you an activation code. Check your email.');
+
+                // $login  = Auth::attempt(['email' => $request->email, 'password' => $request->password]);
+
+                // if($login)
+                //     return redirect('dashboard');
             }
             
 

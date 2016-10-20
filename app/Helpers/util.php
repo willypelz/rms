@@ -147,15 +147,23 @@ use App\Models\Job;
 	
 	}
 
-	function remove_cv_contact($string) {
+	function remove_cv_contact($cv) {
+
+		$extaracted_content = $cv['extracted_content'][0];
 	    // remove email
-	    $string = preg_replace('/([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)/','*****@****.***',$string);
+	    $extaracted_content = preg_replace('/([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)/','*****@****.***',$extaracted_content);
 
 	    // remove phone
-	    $string = preg_replace("/((\+)*\s*\(*(234|0)\)*\s*\(*(234|0|1*)\)*\s*\-*\s*\d{3}\s*\-*\s*\d{3}\s*\d{4}|(\+)*\s*\(*(234|0|1)\)*\s*\(*(234|0|1)*\)*\s*\-*\s*\d{3}\s*\-*\s*\d{4})/i",'***-***-****',$string);
+	    $extaracted_content = preg_replace("/((\+)*\s*\(*(234|0)\)*\s*\(*(234|0|1*)\)*\s*\-*\s*\d{3}\s*\-*\s*\d{3}\s*\d{4}|(\+)*\s*\(*(234|0|1)\)*\s*\(*(234|0|1)*\)*\s*\-*\s*\d{3}\s*\-*\s*\d{4})/i",'***-***-****',$extaracted_content);
 	    // '/([+]?[0-9]+[\- ]?[0-9]+)/'
 
-	    return $string;
+	    //remove Firstname
+	    $extaracted_content = preg_replace('/'.$cv['first_name'].'([ \,\.]+)/i', '', $extaracted_content);
+
+	    //remove Lastname
+	    $extaracted_content = preg_replace('/'.$cv['last_name'].'([ \,\.]+)/i', '', $extaracted_content);
+
+	    return $extaracted_content;
 	}
 
 	function default_picture($data, $type='cv')

@@ -19,9 +19,9 @@
 <section>
 <div class="container">
     <div class="row">
-    <div class="col-sm-4 col-sm-offset-4 text-center">
-                    <h2 class="text-brandon text-light"><img src="{{ url('/') }}/img/logomark.png" alt=""></h2>
-
+    <div class="col-sm-4 col-sm-offset-4 text-center text-white">
+                    <h2 class=""><img src="https://seamless.local/public_html/img/seamlesshiring-logo-x.png" width="150px" alt=""></h2><br>    
+                    <!-- <p class="">Everything You Need To Hire, In One Place!</p> -->
                 </div>
 
 

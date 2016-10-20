@@ -30,6 +30,7 @@ return [
 
     'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
 
+
     /*
     |--------------------------------------------------------------------------
     | SMTP Host Port
@@ -107,5 +108,7 @@ return [
     */
 
     'sendmail' => '/usr/sbin/sendmail -bs',
+
+    'pretend'=>false,
 
 ];

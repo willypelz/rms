@@ -27,7 +27,8 @@
                 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
 
                     <div class="white padbox rounded">
-
+                        
+                        @include('layout.alerts')
 
                         <form role="form" class="form-signin" method="POST" action="{{ url('/login') }}">
                             {!! csrf_field() !!}

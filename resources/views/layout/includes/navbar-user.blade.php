@@ -60,7 +60,8 @@
                             </a> 
                             <ul class="dropdown-menu top-user-menu" aria-labelledby="drop3"> 
                                 <!-- <li><a href="setting.php">Account Setting</a></li>  -->
-                                @foreach( Auth::user()->companies as $key => $company )
+                                <?php $companies = Auth::user()->companies->unique(); ?>
+                                @foreach( $companies as $key => $company )
                                     <li><a href="{{ route('select-company',['slug'=>$company->slug]) }}"> @if( $company->id == get_current_company()->id ) <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>
                                 @endforeach
                                 <li role="separator" class="divider"></li> 

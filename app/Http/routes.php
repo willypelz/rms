@@ -30,6 +30,8 @@
 
 URL::forceSchema('https');
 
+
+
 Route::group(['middleware' => ['web']], function () {
     
     Route::controller('schedule', 'ScheduleController');
@@ -40,7 +42,8 @@ Route::group(['middleware' => ['web']], function () {
 
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
-
+    Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
+    
     Route::get('/', function () {
 
         return view('guest.landing');

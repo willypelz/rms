@@ -225,95 +225,102 @@
 
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 <script type="text/javascript">
-var custom_fields = [];
-$('#SaveDraft').click(function(e){
-e.preventDefault();
-// $("#myForm").validate();
-var title = $('#job_title').val()
-if (title == null || title == "") {
-alert("Title must be filled out");
-return false;
-}
-var location = $('#location').val()
-if (location == null || location == "") {
-alert("location must be filled out");
-return false;
-}
-var token = $('#token').val();
-var url = "{{ route('job-draft') }}"
-$.ajax
-({
-type: "POST",
-url: url,
-data: ({ rnd : Math.random() * 100000, _token:token, title:title, location:location }),
-success: function(response){
-console.log(response)
-}
-});
-})
-// Replace the <textarea id="editor1"> with a CKEditor
-// instance, using default configuration.
-$(document).ready(function(){
+    var custom_fields = [];
+    $('#SaveDraft').click(function(e){
+        e.preventDefault();
+        // $("#myForm").validate();
+        var title = $('#job_title').val()
+        if (title == null || title == "") {
+            alert("Title must be filled out");
+            return false;
+        }
+        var location = $('#location').val()
+        if (location == null || location == "") {
+            alert("location must be filled out");
+            return false;
+        }
+        var token = $('#token').val();
+        var url = "{{ route('job-draft') }}"
+        $.ajax
+        ({
+            type: "POST",
+            url: url,
+            data: ({ rnd : Math.random() * 100000, _token:token, title:title, location:location }),
+            success: function(response){
+                console.log(response)
+            }
+        });
+    })
+    // Replace the <textarea id="editor1"> with a CKEditor
+    // instance, using default configuration.
+    $(document).ready(function(){
 
 
-$('.datepicker').datepicker({
-format: 'mm/dd/yyyy'
-});
-function optionsDisplay(){
-if(  $.inArray( $('body #addField #type-box').val(), [ 'TEXT', 'TEXTAREA', 'FILE' ] )  )
-{
-$('body #addField #options-box').fadeOut();
-}
-else
-{
-$('body #addField #options-box').fadeIn();
-}
-}
-optionsDisplay();
-$('body #addField #type-box').on('change', optionsDisplay);
-
-$('body #add-field-btn').on('click', function(){
-if( $('body #addField #name-box').val() == "" )
-{
-$.growl.error({ message : "Please enter custom field name." });
-}
-else if( $('body #addField #options-box input').val() == "" && $.inArray( $('body #addField #type-box').val(), [ 'TEXT', 'TEXTAREA' ] ) )
-{
-$.growl.error({ message : "Please enter custom field option." });
-}
-else{
-custom_fields.push( { 'name' : $('body #addField #name-box').val(), 'type' : $('body #addField #type-box').val(), 'options' : $('body #addField #options-box input').val() } );
-
-$(this).loadCustomFields();
-$.growl.notice({ message: $('body #addField #name-box').val() + " custom field created." });
-$('body #addField #name-box').val('');
-$('body #addField #options-box input').val('');
-}
+        $('.datepicker').datepicker({
+            format: 'mm/dd/yyyy'
+        });
+        function optionsDisplay(){
 
 
-// $('#addField').toggle();
-});
-$.fn.loadCustomFields = function(){
-$('#custom_fields').html('');
-$.each( custom_fields, function(key,field){
-    $('#custom_fields').append('<div class="well alert-success small text-uppercase" id="custom_field_item" data-key="' + key + '"><i class="fa fa-question-circle fa-lg"></i> <strong>' + field.name + ' *</strong><span class="pull-right"> <a href="" class="hidden" data-key="' + key + '"><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field" data-key="' + key + '"><i class="fa fa-times"></i> REMOVE</a></span> <input type="text" class="hidden" name="custom_names[]" value="' + field.name + '" /> <input type="text" class="hidden" name="custom_types[]" value="' + field.type + '" /> <input type="text" class="hidden" name="custom_options[]" value="' + field.options + '" /> </div>');
-// $('#custom_fields').append('<div class="well small" id="custom_field_item" data-key="' + key + '">Custom Field: ' + field.name + ' <span class="pull-right"><a href="" class="hidden" data-key="' + key + '"><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field" data-key="' + key + '"><i class="fa fa-times"></i> REMOVE</a></span> <input type="text" class="hidden" name="custom_names[]" value="' + field.name + '" /> <input type="text" class="hidden" name="custom_types[]" value="' + field.type + '" /> <input type="text" class="hidden" name="custom_options[]" value="' + field.options + '" /> </div>');
-});
-// $('#custom_fields').append('<div class="well small" >Custom Field: ' + $('body #addField #name-box').val() + ' <span class="pull-right"><a href="" class=""><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field"><i class="fa fa-times"></i> REMOVE</a></span></div>');
-}
+
+            var noOptions = [ 'TEXT', 'TEXTAREA', 'FILE' ];
+
+            if(  noOptions.indexOf( $('body #addField #type-box').val() ) == -1  )
+            {
+
+                $('body #addField #options-box').fadeIn();
+            }
+            else
+            {
+
+                $('body #addField #options-box').fadeOut();
+            }
+        }
+        optionsDisplay();
+        $('body #addField #type-box').on('change', optionsDisplay);
+
+        $('body #add-field-btn').on('click', function(){
+            if( $('body #addField #name-box').val() == "" )
+            {
+                $.growl.error({ message : "Please enter custom field name." });
+            }
+            else if( $('body #addField #options-box input').val() == "" && $.inArray( $('body #addField #type-box').val(), [ 'TEXT', 'TEXTAREA' ] ) )
+            {
+                $.growl.error({ message : "Please enter custom field option." });
+            }
+            else{
+                custom_fields.push( { 'name' : $('body #addField #name-box').val(), 'type' : $('body #addField #type-box').val(), 'options' : $('body #addField #options-box input').val() } );
+
+                $(this).loadCustomFields();
+                $.growl.notice({ message: $('body #addField #name-box').val() + " custom field created." });
+                $('body #addField #name-box').val('');
+                $('body #addField #options-box input').val('');
+            }
 
 
-$('body').on('click','#remove-custom-field', function(e){
-e.preventDefault();
-key = parseInt( $(this).data('key') );
-$.growl.notice({ message: custom_fields[ key ].name + " custom field removed." });
-custom_fields.splice( key, 1);
-$(this).loadCustomFields();
-});
-})
-CKEDITOR.replace( 'editor1' );
-CKEDITOR.replace( 'editor3' );
-CKEDITOR.replace( 'editor2' );
+            // $('#addField').toggle();
+        });
+        $.fn.loadCustomFields = function(){
+            $('#custom_fields').html('');
+            $.each( custom_fields, function(key,field){
+                $('#custom_fields').append('<div class="well alert-success small text-uppercase" id="custom_field_item" data-key="' + key + '"><i class="fa fa-question-circle fa-lg"></i> <strong>' + field.name + ' *</strong><span class="pull-right"> <a href="" class="hidden" data-key="' + key + '"><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field" data-key="' + key + '"><i class="fa fa-times"></i> REMOVE</a></span> <input type="text" class="hidden" name="custom_names[]" value="' + field.name + '" /> <input type="text" class="hidden" name="custom_types[]" value="' + field.type + '" /> <input type="text" class="hidden" name="custom_options[]" value="' + field.options + '" /> </div>');
+            // $('#custom_fields').append('<div class="well small" id="custom_field_item" data-key="' + key + '">Custom Field: ' + field.name + ' <span class="pull-right"><a href="" class="hidden" data-key="' + key + '"><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field" data-key="' + key + '"><i class="fa fa-times"></i> REMOVE</a></span> <input type="text" class="hidden" name="custom_names[]" value="' + field.name + '" /> <input type="text" class="hidden" name="custom_types[]" value="' + field.type + '" /> <input type="text" class="hidden" name="custom_options[]" value="' + field.options + '" /> </div>');
+            });
+            // $('#custom_fields').append('<div class="well small" >Custom Field: ' + $('body #addField #name-box').val() + ' <span class="pull-right"><a href="" class=""><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field"><i class="fa fa-times"></i> REMOVE</a></span></div>');
+        }
+
+
+        $('body').on('click','#remove-custom-field', function(e){
+            e.preventDefault();
+            key = parseInt( $(this).data('key') );
+            $.growl.notice({ message: custom_fields[ key ].name + " custom field removed." });
+            custom_fields.splice( key, 1);
+            $(this).loadCustomFields();
+        });
+    });
+    CKEDITOR.replace( 'editor1' );
+    CKEDITOR.replace( 'editor3' );
+    CKEDITOR.replace( 'editor2' );
 </script>
 
 <div class="separator separator-small"></div>

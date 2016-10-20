@@ -185,7 +185,7 @@ class JobsController extends Controller
                         ];
                         
 
-                        $insidify_url = Curl::to("https://staging.insidify.com/ss-post-job")
+                        $insidify_url = Curl::to("https://insidify.com/ss-post-job")
                                     ->withData( array('secret' => '1ns1d1fy', 'data' => json_encode( $job_data ) ) )
                                     ->post();
                         $urls[1] = $insidify_url;

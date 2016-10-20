@@ -183,7 +183,7 @@ use App\Models\Job;
 				break;
 		}
 
-		return 'http://dummyimage.com/300x300/ffffff/405465.jpg&text='.strtoupper( substr($string1,0,1).substr($string2,0,1) );
+		return 'http://dummyimage.com/300x300/10588a/ffffff.jpg&text='.strtoupper( substr($string1,0,1).substr($string2,0,1) );
 		
 	}
 

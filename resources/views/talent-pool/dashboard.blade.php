@@ -130,11 +130,11 @@
                               </p>
                               <h4 class="post-title"><a href="{{ 'https://insidify.com/discovery/'.$post->slug }}" target="_blank">
                                 {{ $post->title }}</a></h4>
-                              <p class="">{{ $post->summary }}
+                              <p class="hidden">{{ $post->summary }}
                               </p>
-                              <p>
+                              <!-- <p>
                                   <a href="{{ 'https://insidify.com/discovery/'.$post->slug }}" target="_blank" class="btn btn-line">Read</a>
-                              </p>
+                              </p> -->
                             </div>
                         </div>
                         @endforeach

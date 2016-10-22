@@ -146,7 +146,7 @@
                                         <div class="col-sm-4"> 
                                             <div class="thumbnail">  
                                                 <div class="caption">
-                                            <img alt="" src="{{ $b['img'] }}" height="45px"> <hr>
+                                            <img alt="" src="{{ $b['img'] }}" height="45px" style="max-width: 100%;"> <hr>
                                                     <h4 class="">{{ $b['name'] }}</h4>
                                                     <p class="small">{{ $b['about'] }}</p> 
                                                     <p>

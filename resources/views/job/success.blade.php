@@ -206,7 +206,7 @@
                                     </div>
 
                                     <div class="text-center">
-                                      <a href="{{ route('add-candidates', false) }}" class="btn btn-success"> <i class="fa fa-cloud-upload"></i> Upload CVs to this Job</a> &nbsp; 
+                                      <a href="{{ route('add-candidates', false) }}" class="btn btn-success"> <i class="fa fa-cloud-upload"></i> Upload CV to this Job</a> &nbsp; 
                                       <a href="{{ url('dashboard') }}" class="btn btn-line">Go to Your Dashboard <i class="fa fa-arrow-right"></i></a>
                                     </div>
 

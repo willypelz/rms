@@ -587,19 +587,19 @@
     <script type="text/javascript">
         $(window).scroll(function() {
 
-        var navbar = $(".navbar");
+        var cart = $("well-cart");
 
-            if ($(".navbar").offset().top > 100) {
+            if ($(".well-cart").offset().top > 100) {
 
             // animating navbar background
-            navbar.addClass("fold");
+            // body.addClass("fold");
 
             //Fix or release Cart
-            $(".well-cart").addClass("fixer");
+            cart.addClass("fixer");
         } else {
 
             // animating navbar background
-            navbar.removeClass("fold");
+            // body.removeClass("fold");
 
             //Fix or release Cart
             $(".well-cart").removeClass("fixer");

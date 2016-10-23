@@ -127,13 +127,13 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .navbar-nav>li>a {
     line-height: 40px;
 }
-.nav>li>a:focus, 
-.nav>li>a:hover {
+.navbar .nav>li>a:focus, 
+.navbar .nav>li>a:hover {
     text-decoration: none;
     background-color: #2889ce;
     color: #fff !important;
 }
-.nav>li.active>a {
+.navbar .nav>li.active>a {
     /* background-color: #314C67; */
     border-bottom: 2px solid;
     padding-top: 15px;
@@ -1178,6 +1178,7 @@ footer .footer-logo {
     background:#000;
     height:150px;
     overflow: hidden;
+    transition: all ease-in 0.2s;
 }
 .owl-item .post-img img{
     opacity:0.9;
@@ -1255,6 +1256,11 @@ h3.blue {
     border-top: 6px solid #000;
     border-right: 6px solid transparent;
     border-left: 6px solid transparent;
+}
+pre{
+    padding: 2em 5em;
+    font-family: 'muli', arial;
+    /* line-height: 1; */
 }
 /* SelectBox */
  .selectboxit-container {

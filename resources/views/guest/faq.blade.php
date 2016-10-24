@@ -21,9 +21,9 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2">
                 <h5 class="text-center">
-                    Click on any of the questions here; the corresponding answer will be displayed immediately below it. If you don't find the answer(s) you seek, kindly <a href="about">send us a message here</a>, we'll be happy to answer you directly.
+                    Click on any of the questions here; the corresponding answer will be displayed immediately below it. If you don't find the answer(s) you seek, kindly <a href="contact">send us a message here</a>, we'll be happy to answer you directly.
                 </h5>
-                <hr>
+                <br>
                     <span class="faq-section">
                         <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group faq-panel">
 

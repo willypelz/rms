@@ -90,7 +90,7 @@
                                         </div>
                                 @endif
 
-                                <div class="col-xs-5">
+                                <div class="col-xs-6 col-xs-offset-3"><br>
                                     
                                     @if($count == 0)
                                     <div id="collapseWellCart" class="well well-cart animated slideInUp collapse no-margin">
@@ -289,9 +289,9 @@
 
     <div class="modal fade" tabindex="-1" id="myInvoice" role="dialog" aria-labelledby="myInvoice">
       <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content"><br>
 
-            <h3 class="text-center">Confirm your order</h3>
+            <h3 class="text-center">Confirm your order</h3><hr>
             
                 <div id="invoice-res">
                 </div>

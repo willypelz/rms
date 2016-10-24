@@ -181,9 +181,11 @@
                     <div class="col-sm-4">
                         <ul class="list-unstyled">
                             <li>
-                                <h5>Contact Us</h5>
+                                <h5>Contact</h5>
                             </li>
-                            <li><a href="#">Press</a>
+                            <li><a href="contact">Contact Us</a>
+                            </li>
+                            <li><a href="faq">FAQ page</a>
                             </li>
                             <li><a href="#">Terms and Conditions</a>
                             </li>
@@ -587,9 +589,10 @@
     <script type="text/javascript">
         $(window).scroll(function() {
 
-        var cart = $("well-cart");
+        var targ = $("#target-stick");
+        var cart = $(".well-cart");
 
-            if ($(".well-cart").offset().top > 100) {
+            if (targ.offset().top > 100) {
 
             // animating navbar background
             // body.addClass("fold");
@@ -602,7 +605,7 @@
             // body.removeClass("fold");
 
             //Fix or release Cart
-            $(".well-cart").removeClass("fixer");
+            cart.removeClass("fixer");
         }
     });
 

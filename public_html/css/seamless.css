@@ -3576,6 +3576,10 @@ border-color: #BDFDBA;
 .well.stat-well tr td{
     background:#fff;
 }
+.thumb-box:hover{
+    box-shadow: 0 2px 5px #ccc;
+    cursor: pointer;
+}
 .search-results li .btn{
     margin-bottom:5px;
     padding: 3px 10px;

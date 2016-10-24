@@ -4,6 +4,7 @@
     <div class="panel-heading">
       <h3 class="text-brandon text-center no-margin applicant-name">{{ $appl->cv->first_name.' '.$appl->cv->last_name }}</h3>
     </div>
+    
     <div class="panel-collapse">
       <div class="row">
         <div class="panel-body no-padding">
@@ -40,7 +41,7 @@
             <hr class="">
             <div class="row">
               <div class="col-xs-6 ">
-                <a href="#" class="btn btn-sm btn-success btn-block" title="Download Dossier">
+                <a href="#" class="btn btn-sm btn-success btn-block" title="Download Dossier" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Download Dossier" data-view="{{ route('modal-dossier') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide">
                   Download Dossier
                 </a>
               </div>
@@ -129,3 +130,4 @@
   </div>
 
 </div>
+

@@ -199,7 +199,16 @@
                 $('.search-results').html(data.search_results);
                 $('#search-filters').html(data.search_filters);
                 $('.result-label').html(data.showing);
-                $('#pagination').show();
+                if( data.count > 0 )
+                {
+                    $('#pagination').show();
+                    $('.result-label').show();
+                }
+                else
+                {
+                    $('#pagination').hide();
+                    $('.result-label').hide();
+                }
                 $('#search_keyword').val(key);
 
                 $.each(filters, function(index,value){
@@ -316,7 +325,16 @@
                 $('.search-results').html(data.search_results);
                 $('#search-filters').html(data.search_filters);
                 $('.result-label').html(data.showing);
-                $('#pagination').show();
+                if( data.count > 0 )
+                {
+                    $('#pagination').show();
+                    $('.result-label').show();
+                }
+                else
+                {
+                    $('#pagination').hide();
+                    $('.result-label').hide();
+                }
                 $(document).getMyFolders();
                 $.each(filters, function(index,value){
                     

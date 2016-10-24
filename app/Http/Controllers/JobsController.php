@@ -27,6 +27,7 @@ use DB;
 use Alchemy\Zippy\Zippy;
 use Crypt;
 use CvSalesController;
+use File;
 // use Zipper;
 
 class JobsController extends Controller
@@ -1157,6 +1158,15 @@ class JobsController extends Controller
 
         // $company->jobs()->orderBy('created_at','desc')->get()->toArray();
         // dd($company);
+
+        if( File::exists( public_path( 'uploads/'.@$company->logo ) ) )
+        {
+            $company->logo = asset('uploads/'.@$company->logo);
+        }
+        else
+        {
+            $company->logo = asset('img/company.png');
+        }
 
         return view('job.company', compact('company'));
 

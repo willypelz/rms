@@ -142,7 +142,7 @@
                                         <div class="col-sm-4">
                                             <h6 class="text-brandon text-uppercase l-sp-5 no-margin">company details</h6><br>
                                             <p class="text-muted">{{ @$company->name }}</p>
-                                            <p><img src="{{ asset('uploads/'.@$company->logo) }}" alt="" width="60%"></p><br>
+                                            <p><img src="{{ @$company->logo }}" alt="" width="60%"></p><br>
                                             <p class="small text-muted" style="text-align: justify;">{{ @$company->about }}</p>
                                             <p><i class="fa fa-map-marker"></i> {{ @$company->address }}</p>
                                             <!--p>

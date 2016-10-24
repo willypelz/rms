@@ -43,6 +43,8 @@ class JobApplicationsController extends Controller
 
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
+        check_if_job_owner( $appl->job->id );
+
         $nav_type = 'assess';
 
         $requests = TestRequest::where('job_application_id',$appl_id)->with('product.provider')->get();
@@ -53,6 +55,8 @@ class JobApplicationsController extends Controller
     public function activities($appl_id){
 
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
+
+        check_if_job_owner( $appl->job->id );
         
         // dd($appl);
         $nav_type = 'activities';
@@ -62,6 +66,8 @@ class JobApplicationsController extends Controller
     public function medicals($appl_id){
 
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
+
+        check_if_job_owner( $appl->job->id );
 
         $nav_type = 'medicals';
 
@@ -75,6 +81,8 @@ class JobApplicationsController extends Controller
 
         $appl = JobApplication::with('job', 'cv','interview_notes')->find($appl_id);
 
+        check_if_job_owner( $appl->job->id );
+
         $nav_type = 'notes';
 
         $interview_notes = $appl->interview_notes()->with('user')->get();
@@ -85,6 +93,8 @@ class JobApplicationsController extends Controller
     public function checks($appl_id){
 
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
+
+        check_if_job_owner( $appl->job->id );
 
         $nav_type = 'checks';
 
@@ -98,6 +108,8 @@ class JobApplicationsController extends Controller
 
     	$appl = JobApplication::with('job', 'cv')->find($appl_id);
 
+        check_if_job_owner( $appl->job->id );
+
     	$nav_type = 'profile';
 
     	// dd($appl->toArray());
@@ -110,6 +122,8 @@ class JobApplicationsController extends Controller
     public function Messages($appl_id){
 
     	$appl = JobApplication::with('job', 'cv')->find($appl_id);
+
+        check_if_job_owner( $appl->job->id );
 
     	$nav_type = 'messages';
 

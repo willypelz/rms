@@ -35,9 +35,9 @@
           <br/>
           
           <div class="col-xs-12">
-            <p><i class="fa fa-clock-o"></i> Applied: {{ date('D. d M, Y') }}</p>
-            <p><i class="fa fa-cloud-upload"></i> Uploaded CV: {{ date('D. d M, Y') }}</p>
-            <p><i class="fa fa-shopping-cart"></i> Purchased CV: {{ date('D. d M, Y') }}</p>
+            <p><i class="fa fa-clock-o"></i> Applied: {{ date('D, j-n-Y', strtotime($appl->created)) }}</p>
+            <!-- <p><i class="fa fa-cloud-upload"></i> Uploaded CV: {{ date('D. d M, Y') }}</p>
+            <p><i class="fa fa-shopping-cart"></i> Purchased CV: {{ date('D. d M, Y') }}</p> -->
             <hr class="">
             <div class="row">
               <div class="col-xs-6 ">

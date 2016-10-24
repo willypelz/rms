@@ -21,24 +21,23 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2">
                 <h5 class="text-center">
-                    Click on any of the questions here; the corresponding answer will be displayed immediately below it. If you don't find the answer(s) you seek, kindly <a href="about">send us a message here</a>, we'll be happy to answer you directly.
+                    Click on any of the questions here; the corresponding answer will be displayed immediately below it. If you don't find the answer(s) you seek, kindly <a href="contact">send us a message here</a>, we'll be happy to answer you directly.
                 </h5>
-                <hr>
+                <br>
                     <span class="faq-section">
-                        <h3>About Insidify.com</h3>
                         <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group faq-panel">
 
                           <div class="panel panel-default">
                             <div id="headingOne" role="tab" class="panel-heading">
                               <h4 class="panel-title">
                                 <a aria-controls="collapseOne" aria-expanded="true" href="#collapseOne" data-parent="#accordion" data-toggle="collapse" role="button">
-                                  What is Insidify.com?
+                                  We currently use desktop folders and paper records. Can we migrate existing data?
                                 </a>
                               </h4>
                             </div>
                             <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse" id="collapseOne">
                               <div class="panel-body">
-                                Insidify.com is a job search engine. We do for jobs what Google does for the internet. Not clear? Ok. On Insidify you can find any job in Nigeria, no matter the website it is posted. If we don’t have it, then it’s not online.
+                               Yes, you can. We understand our users might need help through this migration into our easily accessible technology and we are always available to support.
                               </div>
                             </div>
                           </div>
@@ -46,13 +45,13 @@
                             <div id="headingTwo" role="tab" class="panel-heading">
                               <h4 class="panel-title">
                                 <a aria-controls="collapseTwo" aria-expanded="false" href="#collapseTwo" data-parent="#accordion" data-toggle="collapse" role="button" class="collapsed">
-                                  Is Insidify a recruitment agency?
+                                  Is SeamlessHiring really affordable?
                                 </a>
                               </h4>
                             </div>
                             <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse" id="collapseTwo">
                               <div class="panel-body">
-                                No. Insidify is not a recruitment agency. However, we have a solution called Seamless Hiring; a first-rate digital platform that allows recruiters select the best candidates easily and efficiently.
+                                Of course! In creating this recruitment solution, we also considered affordability for small and growing enterprises to large corporations. Call Us to discuss the most suitable plan for you from our “everything you need to hire” offering.
                               </div>
                             </div>
                           </div>
@@ -60,91 +59,85 @@
                             <div id="headingThree" role="tab" class="panel-heading">
                               <h4 class="panel-title">
                                 <a aria-controls="collapseThree" aria-expanded="false" href="#collapseThree" data-parent="#accordion" data-toggle="collapse" role="button" class="collapsed">
-                                  Can I advertise on Insidify?
+                                  Will I get after-sales support?
                                 </a>
                               </h4>
                             </div>
                             <div aria-labelledby="headingThree" role="tabpanel" class="panel-collapse collapse" id="collapseThree">
                               <div class="panel-body">
-                                Yes, you can. You can advertise your products and services on our website. You can also advertise job vacancies in your organization. For more info on this, reach out to contactus@insidify.com or call 01-2911091/08167134495 
+                                In addition to a consistent follow-up and feedback, a SeamlessHiring Champ is assigned you and your team and always available to address your feedback and enquiries. 
                               </div>
                             </div>
                           </div>
-                        </div>
-                    </span>
 
-
-
-                    <span class="faq-section">
-                        <h3>Insidify Accounts</h3>
-                        <div aria-multiselectable="true" role="tablist" id="accordion2" class="panel-group faq-panel">
                           <div class="panel panel-default">
                             <div id="heading1" role="tab" class="panel-heading">
                               <h4 class="panel-title">
-                                <a aria-controls="collapseOne1" aria-expanded="true" href="#collapseOne1" data-parent="#accordion2" data-toggle="collapse" role="button">
-                                  How do I create an account with Insidify?
+                                <a aria-controls="collapseOne1" aria-expanded="true" href="#collapseOne1" data-parent="#accordion" data-toggle="collapse" role="button">
+                                  How many team members can collaborate?
                                 </a>
                               </h4>
                             </div>
                             <div aria-labelledby="heading1" role="tabpanel" class="panel-collapse collapse" id="collapseOne1">
                               <div class="panel-body">
-                                You can create an account with Insidify.com by clicking the orange "Sign-up" button at the top of our homepage or just <a href="">click here</a>
+                                As many as you require to arrive at the best decision for your recruitment process. After the primary user has sent an invitation, admin creates an account for these team members which allows them to log-in and carry out various actions visible to all. Remember our technology allows all process to be tracked and downloaded.
                               </div>
                             </div>
                           </div>
                           <div class="panel panel-default">
                             <div id="heading2" role="tab" class="panel-heading">
                               <h4 class="panel-title">
-                                <a aria-controls="collapseTwo2" aria-expanded="false" href="#collapseTwo2" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed">
-                                  I can't log in to an account I just created. What should I do?
+                                <a aria-controls="collapseTwo2" aria-expanded="false" href="#collapseTwo2" data-parent="#accordion" data-toggle="collapse" role="button" class="collapsed">
+                                 What is an “Active” job?
                                 </a>
                               </h4>
                             </div>
                             <div aria-labelledby="heading2" role="tabpanel" class="panel-collapse collapse" id="collapseTwo2">
                               <div class="panel-body">
-                                If you just created an account and cannot log in, then, you probably entered an incorrect e-mail/password combination. Please check again to confirm. If you are still having issues, kindly reset your password or contact us.
+                                A job is active on SeamlessHiring (job page) when it’s live on job boards (your career page and/or newspapers), or open for applications.
                               </div>
                             </div>
                           </div>
                           <div class="panel panel-default">
                             <div id="heading3" role="tab" class="panel-heading">
                               <h4 class="panel-title">
-                                <a aria-controls="collapseThree3" aria-expanded="false" href="#collapseThree3" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed">
-                                  How do I retrieve the password to my account if I've forgotten it?
+                                <a aria-controls="collapseThree3" aria-expanded="false" href="#collapseThree3" data-parent="#accordion" data-toggle="collapse" role="button" class="collapsed">
+                                  And if I only need updates and reports instead of handling the recruitment process from beginning to end?
                                 </a>
                               </h4>
                             </div>
                             <div aria-labelledby="heading3" role="tabpanel" class="panel-collapse collapse" id="collapseThree3">
                               <div class="panel-body">
-                                Click on <a href="">'Forgot Your Password?'</a> and follow the instructions.
+                                Yes, this option is fully covered (this is only available in the Large Enterprise Plan/Premium Plan). A dedicated SeamlessHiring Champ approved by you works with you all through. Please Call Us to discuss in more detail.
                               </div>
                             </div>
                           </div>
                           <div class="panel panel-default">
                             <div id="heading4" role="tab" class="panel-heading">
                               <h4 class="panel-title">
-                                <a aria-controls="collapseThree45" aria-expanded="false" href="#collapseThree45" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed">
-                                 Can I upload and save a CV on Insidify?
+                                <a aria-controls="collapseThree45" aria-expanded="false" href="#collapseThree45" data-parent="#accordion" data-toggle="collapse" role="button" class="collapsed">
+                                 Is my selection process secure and transparent with SeamlessHiring?
                                 </a>
                               </h4>
                             </div>
                             <div aria-labelledby="heading4" role="tabpanel" class="panel-collapse collapse" id="collapseThree45">
                               <div class="panel-body">
-                                Yes, you can upload documents in either .doc, .docx or .pdf formats.
+                                We recognize integrity and transparency as cores of sustainable partnerships, hence an SSL connection that you can rely on for a complete secure data infrastructure on our cloud services.
+We have also implemented multiple layers of tracking to this effect where activities/actions on candidates are all provided.
                               </div>
                             </div>
                           </div>
                           <div class="panel panel-default">
                             <div id="heading5" role="tab" class="panel-heading">
                               <h4 class="panel-title">
-                                <a aria-controls="collapseThree12" aria-expanded="false" href="#collapseThree12" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed">
-                                 Why do I need an Insidify profile?
+                                <a aria-controls="collapseThree12" aria-expanded="false" href="#collapseThree12" data-parent="#accordion" data-toggle="collapse" role="button" class="collapsed">
+                                 Can I use SeamlessHiring without internet connection?
                                 </a>
                               </h4>
                             </div>
                             <div aria-labelledby="heading5" role="tabpanel" class="panel-collapse collapse" id="collapseThree12">
                               <div class="panel-body">
-                                Creating a profile makes you more attractive to potential employers as you will be able to highlight your skills and attach your CV which will make you stand out. You will also be able to receive job alerts.
+                                You do require internet access to fully utilize the SeamlessHiring experience.
                               </div>
                             </div>
                           </div>
@@ -152,19 +145,19 @@
                           <div class="panel panel-default">
                             <div id="heading6" role="tab" class="panel-heading">
                               <h4 class="panel-title">
-                                <a aria-controls="collapseThree77" aria-expanded="false" href="#collapseThree77" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed">
-                                 How do I edit my Insidify profile?
+                                <a aria-controls="collapseThree77" aria-expanded="false" href="#collapseThree77" data-parent="#accordion" data-toggle="collapse" role="button" class="collapsed">
+                                 Can I upgrade or downgrade my plan?
                                 </a>
                               </h4>
                             </div>
                             <div aria-labelledby="heading6" role="tabpanel" class="panel-collapse collapse" id="collapseThree77">
                               <div class="panel-body">
-                                Sign in and click on “My Brand Page”. You can edit any part of your profile here.
+                                Yes, you can upgrade a plan at any time during your subscription or downgrade when your current subscription expires.
                               </div>
                             </div>
                           </div>
                           
-                          <div class="panel panel-default">
+                          <!-- <div class="panel panel-default">
                             <div id="heading7" role="tab" class="panel-heading">
                               <h4 class="panel-title">
                                 <a aria-controls="collapseThree09" aria-expanded="false" href="#collapseThree09" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed">
@@ -177,13 +170,13 @@
                                 Your account never expires. Get used to it!
                               </div>
                             </div>
-                          </div>
+                          </div> -->
                         </div>
                     </span>
 
 
 
-                    <span class="faq-section">
+                    <span class="faq-section hidden">
                         <h3>Insidify Job Search</h3>
                         <div aria-multiselectable="true" role="tablist" id="accordion3" class="panel-group faq-panel">
                           <div class="panel panel-default">
@@ -330,7 +323,7 @@
                         </span>
 
 
-                    <span class="faq-section">
+                    <span class="faq-section hidden">
                         <h3>Insidify Alerts</h3>
                         <div aria-multiselectable="true" role="tablist" id="accordion4" class="panel-group faq-panel">
                           <div class="panel panel-default">
@@ -367,6 +360,17 @@
         </div>
     </section>
 
+
+<section class="s-div dark no-margin">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-sm-12">
+        <p class="lead text-brandon text-white">Recruitment Made Unbelievably Easy.</p>
+        <a href="{{ url('register') }}" class="btn btn-danger btn-lg"> Get started with a free trial</a>
+      </div>
+    </div><div class="clearfix"><br></div>
+  </div><br>
+</section>
 
 
 

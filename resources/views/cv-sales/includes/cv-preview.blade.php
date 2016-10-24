@@ -117,8 +117,8 @@
                     @endif
                     @if(!@$is_embedded)
                     @if(@!$is_applicant && $page != 'pool')
-                    <div class="tab-content" id="cv">
-                        <pre style="padding: 25px; font-family: 'sans-serif'; line-height: 1.5">
+                    <div class="" id="cv">
+                        <pre>
                                 @if(isset($cv['extracted_content'][0] )))
                                     {{ remove_cv_contact( $cv ) }}
                                 @endif

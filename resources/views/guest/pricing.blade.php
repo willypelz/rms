@@ -65,10 +65,10 @@
                                             <small>For companies that post 1-3 jobs per month and hire between 5-10 candidates in a year.</small>
                                         </div>
                                         <div class="panel-body no-margin text-center text-brandon" style="
-                                                background: #3A5979;
+                                                background: #2889ce;
                                             ">
                                             <p class=" no-margin no-pad" style="
-                                                background: #3A5979;
+                                                background: #2889ce;
                                             "><strong>₦ 30,000 / Mo</strong></p>
                                         </div>
                                         <div class="panel-body no-margin text-center text-brandon">

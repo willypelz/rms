@@ -127,13 +127,13 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .navbar-nav>li>a {
     line-height: 40px;
 }
-.nav>li>a:focus, 
-.nav>li>a:hover {
+.navbar .nav>li>a:focus, 
+.navbar .nav>li>a:hover {
     text-decoration: none;
     background-color: #2889ce;
     color: #fff !important;
 }
-.nav>li.active>a {
+.navbar .nav>li.active>a {
     /* background-color: #314C67; */
     border-bottom: 2px solid;
     padding-top: 15px;
@@ -464,7 +464,7 @@ section.s-div{
     padding-top: 3.5em;
     padding-bottom: 1em;
     /*background:#5A497B url(../img/2.jpg) center fixed;*/
-    background: #10588a;
+    background: #2889ce;
     background-size:cover;
     /*border-bottom: 3px solid #5CB85C;*/
 }
@@ -1178,6 +1178,7 @@ footer .footer-logo {
     background:#000;
     height:150px;
     overflow: hidden;
+    transition: all ease-in 0.2s;
 }
 .owl-item .post-img img{
     opacity:0.9;
@@ -1229,32 +1230,10 @@ h3.blue {
 }
 
 
-
-.s-div .selectboxit-container .selectboxit {
-    width: 210px !important;
-    height: 46px !important;
-}
-.s-div .s-pad .selectboxit-container .selectboxit {
-    width: 194px !important;
-}
-.s-div .selectboxit-container span, .selectboxit-container .selectboxit-options a {
-    height: 45px !important;
-    font-size: 16px;
-    line-height: 3em !important;
-}
-.s-div .selectboxit-container span.selectboxit-text {
-    max-width: 180px !important;
-    width: 180px !important;
-}
-.s-div .selectboxit .selectboxit-arrow-container .selectboxit-arrow {
-    top: 52% !important;
-}
-.s-div .selectboxit-default-arrow {
-    width: 0;
-    height: 0;
-    border-top: 6px solid #000;
-    border-right: 6px solid transparent;
-    border-left: 6px solid transparent;
+pre{
+    padding: 2em 5em;
+    font-family: 'muli', arial;
+    /* line-height: 1; */
 }
 /* SelectBox */
  .selectboxit-container {
@@ -3577,16 +3556,16 @@ border-color: #BDFDBA;
     margin: 5px 0px 8px;
 }
 .well.fixer{
-        position: fixed;
-    top: 10%;
+    position: fixed;
+    top: 2%;
     width: auto;
     z-index: 10;
-    min-width: 268px;
+    min-width: 347px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);
     border: 2px solid #CCCCCC;
     background: #F7F7F7;
     font-weight: 700;
-    right: 7.5%;
+    right: 9.5%;
 }
 .well-cart #item-count b{
     border: 2px solid rgba(144, 144, 144, 0.46);
@@ -3596,6 +3575,10 @@ border-color: #BDFDBA;
 
 .well.stat-well tr td{
     background:#fff;
+}
+.thumb-box:hover{
+    box-shadow: 0 2px 5px #ccc;
+    cursor: pointer;
 }
 .search-results li .btn{
     margin-bottom:5px;

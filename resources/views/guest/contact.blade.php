@@ -103,7 +103,7 @@
                                             <textarea placeholder="" name="msg" class="form-control" rows="12"></textarea>
 
                                             <br>
-                                            <input type="submit" value="Send Message" class="btn btn-primary">
+                                            <input type="submit" value="Send Message" class="btn btn-success">
                                         </span>
                                     </div>
                                 </div>
@@ -123,8 +123,8 @@
   <div class="container">
     <div class="row text-center">
       <div class="col-sm-12">
-        <p class="lead text-brandon text-white">Recruitment Made Unbelievably Easy. It is an easy and seamless journey.</p>
-        <a href="{{ url('register') }}" class="btn btn-success btn-lg"> Get Started</a>
+        <p class="lead text-brandon text-white">Recruitment Made Unbelievably Easy.</p>
+        <a href="{{ url('register') }}" class="btn btn-danger btn-lg"> Get Started</a>
       </div>
     </div><div class="clearfix"><br></div>
   </div>

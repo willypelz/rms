@@ -33,14 +33,9 @@ class ActivationService
         $link = route('user.activate', $token);
         $message = sprintf('Activate account <a href="%s">%s</a>', $link, $link);
 
-        // $this->mailer->raw($message, function (Message $m) use ($user) {
-        //     $m->to($user->email)->subject('Activation mail');
-        // });
-
-        Mail::send('emails.e-account-activation', compact('user','link'), function($message){
-            $message->from('no-reply@seamlesshiring.com');
-            $message->to($user->email, 'SH test email');
-        }); 
+        $this->mailer->raw($message, function (Message $m) use ($user) {
+            $m->to($user->email)->subject('Activation mail');
+        });
 
 
     }

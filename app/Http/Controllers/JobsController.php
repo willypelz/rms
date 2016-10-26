@@ -27,6 +27,7 @@ use DB;
 use Alchemy\Zippy\Zippy;
 use Crypt;
 use CvSalesController;
+use File;
 // use Zipper;
 
 class JobsController extends Controller
@@ -185,13 +186,17 @@ class JobsController extends Controller
                         ];
                         
 
-                        $insidify_url = Curl::to("https://insidify.com/ss-post-job")
-                                    ->withData( array('secret' => '1ns1d1fy', 'data' => json_encode( $job_data ) ) )
-                                    ->post();
-                        $urls[1] = $insidify_url;
+                        
                         // dd($job_data ,$insidify_url, $bds, $pickd_boards);
 
                         $job = Job::FirstorCreate($job_data);
+
+                        $insidify_url = Curl::to("https://insidify.com/ss-post-job")
+                                    ->withData( array('secret' => '1ns1d1fy', 'data' => json_encode( [ 'job' => $job_data, 'specializations' => @$request->specializations, 'company' => get_current_company(), 'action_link' => url('job/apply/'.$job->id.'/'.str_slug($job->title) ) ]  ) ) )
+                                    ->post();
+                        $urls[1] = $insidify_url;
+
+
                         //Save job creation to activity
                         save_activities('JOB-CREATED',  $job->id );
 
@@ -1153,6 +1158,15 @@ class JobsController extends Controller
 
         // $company->jobs()->orderBy('created_at','desc')->get()->toArray();
         // dd($company);
+
+        if( File::exists( public_path( 'uploads/'.@$company->logo ) ) )
+        {
+            $company->logo = asset('uploads/'.@$company->logo);
+        }
+        else
+        {
+            $company->logo = asset('img/company.png');
+        }
 
         return view('job.company', compact('company'));
 

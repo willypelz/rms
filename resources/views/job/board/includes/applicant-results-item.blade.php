@@ -219,7 +219,7 @@
       <!-- <p class="p-empty" style=""> -->
       <p class="" style="">
       <i class="fa-2x fa fa-exclamation-circle"></i><br> 
-      You have no applicant for this job. To get applicants, you can  
+      You have no applicants here. To get applicants, you can  
       <ul class="list-unstyled">
         <li class="">a) <a href="{{ route('job-promote',  $jobID) }}" class="">Promote this job</a></li>
         <li class="">b) <a href="{{ route('job-promote',  $jobID) }}" class="">Share on social media</a></li>

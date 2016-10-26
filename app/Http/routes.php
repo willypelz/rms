@@ -421,6 +421,12 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('modal/add-to-waiting', [ 'as' => 'modal-add-to-waiting', 'uses' => 'JobApplicationsController@modalAddToWaiting' ]);
 
     Route::get('modal/hire', [ 'as' => 'modal-hire', 'uses' => 'JobApplicationsController@modalHire' ]);
+
+    Route::get('modal/dossier', [ 'as' => 'modal-dossier', 'uses' => 'JobApplicationsController@modalDossier' ]);
+
+    Route::get('download/dossier', [ 'as' => 'download-dossier', 'uses' => 'JobApplicationsController@downloadDossier' ]);
+
+    
     
 
     Route::get('modal/reject', [ 'as' => 'modal-reject', 'uses' => 'JobApplicationsController@modalReject' ]);

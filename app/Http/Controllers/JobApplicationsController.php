@@ -17,10 +17,12 @@ use App\Models\AtsProduct;
 use App\Models\TestRequest;
 use App\Models\Interview;
 use App\Models\InterviewNotes;
+use App\Models\JobActivity;
 use Carbon\Carbon;
 use Auth;
 use Excel;
 use App;
+use PDF;
 
 
 
@@ -41,6 +43,8 @@ class JobApplicationsController extends Controller
 
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
+        check_if_job_owner( $appl->job->id );
+
         $nav_type = 'assess';
 
         $requests = TestRequest::where('job_application_id',$appl_id)->with('product.provider')->get();
@@ -51,6 +55,8 @@ class JobApplicationsController extends Controller
     public function activities($appl_id){
 
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
+
+        check_if_job_owner( $appl->job->id );
         
         // dd($appl);
         $nav_type = 'activities';
@@ -60,6 +66,8 @@ class JobApplicationsController extends Controller
     public function medicals($appl_id){
 
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
+
+        check_if_job_owner( $appl->job->id );
 
         $nav_type = 'medicals';
 
@@ -73,6 +81,8 @@ class JobApplicationsController extends Controller
 
         $appl = JobApplication::with('job', 'cv','interview_notes')->find($appl_id);
 
+        check_if_job_owner( $appl->job->id );
+
         $nav_type = 'notes';
 
         $interview_notes = $appl->interview_notes()->with('user')->get();
@@ -83,6 +93,8 @@ class JobApplicationsController extends Controller
     public function checks($appl_id){
 
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
+
+        check_if_job_owner( $appl->job->id );
 
         $nav_type = 'checks';
 
@@ -95,6 +107,8 @@ class JobApplicationsController extends Controller
     public function Profile($appl_id){
 
     	$appl = JobApplication::with('job', 'cv')->find($appl_id);
+
+        check_if_job_owner( $appl->job->id );
 
     	$nav_type = 'profile';
 
@@ -109,6 +123,8 @@ class JobApplicationsController extends Controller
 
     	$appl = JobApplication::with('job', 'cv')->find($appl_id);
 
+        check_if_job_owner( $appl->job->id );
+
     	$nav_type = 'messages';
 
     	// dd($appl->toArray());
@@ -120,7 +136,7 @@ class JobApplicationsController extends Controller
     public function viewApplicants( Request $request )
     {   
         //Check if he  is the owner of the job
-        check_if_job_owner( $request->jobID ) ;
+        check_if_job_owner( $request->jobID );
         
         $job = Job::find($request->jobID);
         $active_tab = 'candidates';
@@ -142,7 +158,7 @@ class JobApplicationsController extends Controller
         }
         else
         {
-            $request->age = [ 15, 65 ];
+            $request->age = [ 5, 85 ];
             $solr_age = null;
         }
 
@@ -155,7 +171,7 @@ class JobApplicationsController extends Controller
         }
         else
         {
-            $request->exp_years = [ 0, 40 ];
+            $request->exp_years = [ 0, 60 ];
             $solr_exp_years = null;
         }
         
@@ -173,12 +189,12 @@ class JobApplicationsController extends Controller
         {
             $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab', 'status', 'result','jobID','start'))->render();    
             $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query, 'status' => $status, 'age' => @$request->age,'exp_years' => @$request->exp_years ])->render();
-            return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing ] );
+            return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing, 'count' => $result['response']['numFound'] ] );
             
         }
         else{
-            $age = [ 15, 65 ];
-            $exp_years = [ 0, 40 ];
+            $age = [ 5, 85 ];
+            $exp_years = [ 0, 60 ];
             $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
             return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','showing'));
         }
@@ -432,6 +448,53 @@ class JobApplicationsController extends Controller
         return view('modals.comment', compact('applicant_badge','app_ids','cv_ids','jobID','appl'));
     }
 
+    public function modalDossier(Request $request)
+    {
+        $modalVars = $this->modalActions('Download Dossier', $request->cv_id, $request->app_id);
+        if( is_array( $modalVars ) )
+        {
+            extract($modalVars);
+        }
+        else
+        {
+            return $modalVars;
+        }
+        
+        $jobID = $appl->job->id;
+        $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type','REVIEW')->where('job_application_id',$appl->id)->get();
+        $notes = InterviewNotes::with('user')->where('job_application_id',$appl->id)->get();
+
+        return view('modals.dossier', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'));
+    }
+
+    public function downloadDossier(Request $request)
+    {
+        $modalVars = $this->modalActions('Download Dossier', $request->cv_id, $request->app_id);
+        if( is_array( $modalVars ) )
+        {
+            extract($modalVars);
+        }
+        else
+        {
+            return $modalVars;
+        }
+        
+        $jobID = $appl->job->id;
+        check_if_job_owner( $jobID );
+
+        $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type','REVIEW')->where('job_application_id',$appl->id)->get();
+        $notes = InterviewNotes::with('user')->where('job_application_id',$appl->id)->get();
+
+        // $pdf = PDF::loadView('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'));
+        // return $pdf->download('dossier.pdf');
+        // 
+        $html = view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'))->render();
+        $pdf = PDF::loadHTML($html);
+        return $pdf->stream();
+        // return view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'));
+    }
+
+
     public function modalInterview(Request $request)
     {
         $modalVars = $this->modalActions('Interview', $request->cv_id, $request->app_id);
@@ -455,10 +518,15 @@ class JobApplicationsController extends Controller
         $appl = JobApplication::with('job', 'cv')->find($app_id);
         $applicant_badge = @$this->getApplicantBadge($appl->cv);
 
-        $notes = InterviewNotes::where('job_application_id',$app_id)->where('interviewer_id', @Auth::user()->id)->get()->toArray(); 
+        $notes = InterviewNotes::where('job_application_id',$app_id)->where('interviewer_id', @Auth::user()->id)->get(); 
+
+        $note = InterviewNotes::where('job_application_id',$app_id)->where('id',@$request->interview_id)->get()->first();
 
 
-        return view('modals.interview-notes', compact('applicant_badge','app_id','cv_id','appl','notes'));
+
+        // dd($note, $request->interview_id, count($notes), count($note));
+
+        return view('modals.interview-notes', compact('applicant_badge','app_id','cv_id','appl','notes','note'));
     }
 
     

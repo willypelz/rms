@@ -69,7 +69,7 @@
             </div>
 
               <script>
-                      $("#ActivityContent").html('{!! preloader() !!}'));
+                      $("#ActivityContent").html('{!! preloader() !!}');
                      
                       var url = "{{ route('get-activity-content') }}"
 
@@ -81,7 +81,7 @@
                         ({
                             type: "POST",
                             url: url,
-                            data: ({ rnd : Math.random() * 100000, appl_id:"{{ $appl->id }}" }),
+                            data: ({ rnd : Math.random() * 100000, appl_id:"{{ $appl->id }}", allActivities: true }),
                             success: function(response){
                             $("#ActivityContent").html(response);
 

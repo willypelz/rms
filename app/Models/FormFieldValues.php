@@ -20,4 +20,9 @@ class FormFieldValues extends Model
 
     protected $table = 'form_fields_values';
 
+    public function form_field()
+    {
+        return $this->hasOne('App\Models\FormFields','id','form_field_id');
+    }
+
 }

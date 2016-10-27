@@ -33,9 +33,16 @@ class ActivationService
         $link = route('user.activate', $token);
         $message = sprintf('Activate account <a href="%s">%s</a>', $link, $link);
 
-        $this->mailer->raw($message, function (Message $m) use ($user) {
-            $m->to($user->email)->subject('Activation mail');
+        // $this->mailer->raw($message, function (Message $m) use ($user) {
+        //     $m->to($user->email)->subject('Activation mail');
+        // });
+        $this->mailer->send('emails.new.activate_account', ['user' => $user, 'link' => $link], function (Message $m) use ($user) {
+            $m->from('info@seamlesshiring.com')->to($user->email)->subject('Activate your Seamlesshiring account');
         });
+        // Mail::send('emails.cv-sales.invoice', [], function($message){
+        //     $message->from('no-reply@insidify.com');
+        //     $message->to('babatopeoni@gmail.com', 'SH test email');
+        // }); 
 
 
     }
@@ -55,6 +62,10 @@ class ActivationService
         $user->save();
 
         $this->activationRepo->deleteActivation($token);
+
+        $this->mailer->send('emails.new.onboarding.successfully_activated', ['user' => $user], function (Message $m) use ($user) {
+            $m->from('info@seamlesshiring.com')->to($user->email)->subject('Your Account has been Successfully Activated!');
+        });
 
         return $user;
 

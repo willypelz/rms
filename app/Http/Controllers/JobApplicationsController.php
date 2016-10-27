@@ -18,26 +18,31 @@ use App\Models\TestRequest;
 use App\Models\Interview;
 use App\Models\InterviewNotes;
 use App\Models\JobActivity;
+use App\Models\Cv;
 use Carbon\Carbon;
 use Auth;
 use Excel;
 use App;
 use PDF;
-
+use Illuminate\Mail\Mailer;
+use Illuminate\Mail\Message;
 
 
 class JobApplicationsController extends Controller
 {
     private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'application_date+desc', 'grouped'=>FALSE ];
 
+    protected $mailer;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Mailer $mailer)
     {
         $this->middleware('auth');
+        $this->mailer = $mailer;
     }
     public function assess($appl_id){
 
@@ -352,6 +357,27 @@ class JobApplicationsController extends Controller
     {
 
         JobApplication::massAction( $request->job_id, $request->cv_ids, $request->status );
+
+        switch ($request->status) {
+            case 'REJECTED':
+                        $appls = JobApplication::with('cv','job','job.company')->whereIn('id',$request->app_ids)->get();
+                        // dd( $appls );
+                        
+                        foreach ($appls as $key => $appl) {
+                            $cv = $appl->cv;
+                            $job = $appl->job;
+                            $this->mailer->send('emails.new.reject_email', ['cv' => $cv, 'job' => $job], function (Message $m) use ($cv) {
+                                $m->from('info@seamlesshiring.com')->to($cv->email)->subject('Interview Feedback');
+                            });
+                        }
+                        
+
+                break;
+            
+            default:
+                # code...
+                break;
+        }
         return save_activities($request->status,  $request->job_id, $request->app_ids );
     }
 
@@ -831,9 +857,23 @@ class JobApplicationsController extends Controller
             ];
                        
 
-            Interview::create($data);
-            // var_dump($data);
+        Interview::create($data);
+
         
+        $appls = JobApplication::with('cv','job','job.company')->whereIn('id',$request->app_ids)->get();
+
+                        
+        foreach ($appls as $key => $appl) {
+            $cv = $appl->cv;
+            $job = $appl->job;
+            $this->mailer->send('emails.new.interview_invitation', ['cv' => $cv, 'job' => $job,'interview' => (object) $data], function (Message $m) use ($cv) {
+                $m->from('info@seamlesshiring.com')->to($cv->email)->subject('Interview Invitation');
+            });
+        }
+                        
+
+        
+        save_activities($request->status,  $request->job_id, $request->app_ids );
 
         JobApplication::massAction( @$request->job_id, @$request->cv_ids , 'INTERVIEWED' );
 

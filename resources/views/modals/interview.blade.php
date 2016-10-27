@@ -1,7 +1,12 @@
 
   {!! @$applicant_badge !!}              
 
-<script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+<!-- <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script> -->
+
+<script src="{{ asset('js/moment.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
+<!-- <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-datetimepicker.min.css') }}"> -->
+
 <div class="form-group">
   <!--<label>Location</label>-->
   <div class="input-group">
@@ -35,9 +40,11 @@
 <script type="text/javascript">
  $(document).ready(function(){
 
-  $('.datepicker').datepicker({
+  /*$('.datepicker').datepicker({
       format: 'mm/dd/yyyy'
-  });
+  });*/
+
+  $('.datepicker').datetimepicker();
   
   var app_ids = <?php echo json_encode($app_ids );?>  ;
   var cv_ids = <?php echo json_encode($cv_ids );?> ; 	

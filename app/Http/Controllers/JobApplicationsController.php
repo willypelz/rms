@@ -857,7 +857,7 @@ class JobApplicationsController extends Controller
             ];
                        
 
-        // Interview::create($data);
+        Interview::create($data);
 
         
         $appls = JobApplication::with('cv','job','job.company')->whereIn('id',$request->app_ids)->get();
@@ -873,9 +873,9 @@ class JobApplicationsController extends Controller
                         
 
         
-        //save_activities($request->status,  $request->job_id, $request->app_ids );
+        save_activities($request->status,  $request->job_id, $request->app_ids );
 
-        // JobApplication::massAction( @$request->job_id, @$request->cv_ids , 'INTERVIEWED' );
+        JobApplication::massAction( @$request->job_id, @$request->cv_ids , 'INTERVIEWED' );
 
     }
 

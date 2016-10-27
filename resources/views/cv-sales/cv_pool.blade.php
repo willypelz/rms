@@ -46,12 +46,12 @@
                     </form><br>
                     <a href="#form-cv-search" data-toggle="collapse" aria-expanded="false" aria-controls="form-cv-search" class="btn btn-success pull-right"><i class="fa fa-search-plus"></i> Find New Candidate</a>
                 </div>
-                    <!-- <div class="col-xs-3"><br>
+                    <div class="col-xs-3"><br>
                       <div class="dropdown">
                         <a data-toggle="modal" data-target="#addCandidateModal" id="modalButton" href="#addCandidateModal" class="btn btn-block btn-line dropdown-toggle" ><i class="fa fa-cloud-upload"></i> Upload CV to Folder &nbsp;</a>
                               
                       </div>
-                    </div> -->
+                    </div>
             </div>
 
         </div>

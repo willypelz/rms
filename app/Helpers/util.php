@@ -78,6 +78,8 @@ use App\Models\Job;
 				  	'job_id'=>$job_id,
 				  	'job_application_id'=>$app_id,
 				  	'comment'=>$comment,
+				  	'created_at' => date('Y-m-d H:i:s'),
+				  	'updated_at' => date('Y-m-d H:i:s'),
 			  	];
 			  	# code...
 			  }
@@ -89,6 +91,8 @@ use App\Models\Job;
 			  	'job_id'=>$job_id,
 			  	'job_application_id'=>$job_app_id,
 			  	'comment'=>$comment,
+			  	'created_at' => date('Y-m-d H:i:s'),
+				 'updated_at' => date('Y-m-d H:i:s'),
 		  	];
 		  }
 		  

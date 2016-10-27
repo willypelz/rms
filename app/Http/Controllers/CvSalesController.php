@@ -12,6 +12,7 @@ use App\Models\OrderItem;
 use App\Models\CompanyFolder;
 use App\Models\FolderContent;
 use App\Models\JobApplication;
+use App\Models\FormFieldValues;
 use Illuminate\Http\Request;
 use App\Libraries\Solr;
 use App\Libraries\Utilities;
@@ -164,10 +165,13 @@ class CvSalesController extends Controller
         $is_applicant = $request->is_applicant;
         $is_embedded = $request->is_embedded;
         if(isset($request->appl_id)){
-            $appl = JobApplication::find($request->appl_id);    
+            $appl = JobApplication::find($request->appl_id);   
+             // dd( $appl->custom_fields );
+
+             
         }
         
-        
+        // dd( FormFieldValues::where('job_application_id') )
         return view('cv-sales.includes.cv-preview',compact("cv", "is_applicant", "appl", 'is_embedded'));
     }
 

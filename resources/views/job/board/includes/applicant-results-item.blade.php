@@ -20,7 +20,7 @@
           <small>
               <span class="text-muted">{{ human_time( @$cv['application_date'], 1) }}</span>
               &nbsp;
-              <a id="showCvBtn" data-toggle="modal" data-target="#cvModal"  onclick="showCvModal('{{ $cv['id'] }}',true);" >View Cv</a>
+              <a id="showCvBtn" data-toggle="modal" data-target="#cvModal"  onclick="showCvModal('{{ $cv['id'] }}',true, {{ $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] }});" >View Cv</a>
               <!--span class="text-muted">·</span>
               <a href="{{ route('applicant-profile', $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] ) }}">View Application</a-->
               <span class="text-muted">·</span>

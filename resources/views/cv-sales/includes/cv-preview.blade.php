@@ -103,6 +103,33 @@
                         </div>
                     </div>
                     @if(isset($appl))
+
+                    <div class="unit-box">
+                        <div class="row">
+                            
+                            <div class="col-xs-1 r-left">
+                                <span class="glyphicon glyphicon-briefcase"></span>
+                            </div>
+                            <div class="col-xs-5">
+                                <h5>ADDITIONAL INFORMATION</h5>
+                                <ul class="list-unstyled">
+
+                                    @foreach($appl->custom_fields as $key => $form)
+
+                                        <li>
+                                            <strong>{{ $form->form_field->name }}:</strong>&nbsp; {{ $form->value }}</li>
+                                        <li>
+
+                                    @endforeach
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    foreach ($appl->custom_fields as $key => $form) {
+                 echo $form->value . "----" .  $form->form_field. "<br>";
+             }
                     <div class="unit-box">
                         <div class="row">
                             <div class="col-xs-1 r-left">

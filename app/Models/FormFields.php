@@ -20,6 +20,7 @@ class FormFields extends Model
 
     protected $table = 'form_fields';
 
+    //Sorry, this was a mistake :), noticed later but too late to change
     public static function getCustomFields($job_id)
     {
     	return FormFields::where('job_id',$job_id)->get();

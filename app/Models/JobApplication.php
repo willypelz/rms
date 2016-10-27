@@ -47,4 +47,8 @@ class JobApplication extends Model
         return $this->hasMany('App\Models\InterviewNotes');
 
     }
+
+    public function custom_fields(){
+        return $this->hasMany('App\Models\FormFieldValues');
+    }
 }

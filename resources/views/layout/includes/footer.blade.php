@@ -691,7 +691,7 @@
         $('.select2').select2();
 
 
-        function showCvModal(cv_id, is_applicant){
+        function showCvModal(cv_id, is_applicant,appl_id){
 
             $("#cvModalContent").html( '{!! preloader() !!}' );
             // $("#cvModalContent").modal('show');
@@ -700,7 +700,7 @@
               ({
                   type: "POST",
                   url: "{{ route('cv-preview') }}",
-                  data: ({ rnd : Math.random() * 100000, cv_id:cv_id, is_applicant:is_applicant }),
+                  data: ({ rnd : Math.random() * 100000, cv_id:cv_id, is_applicant:is_applicant, appl_id:appl_id }),
                   success: function(response){
                     $("#cvModalContent").html(response);
                        

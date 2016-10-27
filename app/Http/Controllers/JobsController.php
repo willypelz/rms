@@ -28,17 +28,21 @@ use Alchemy\Zippy\Zippy;
 use Crypt;
 use CvSalesController;
 use File;
+use Illuminate\Mail\Mailer;
+use Illuminate\Mail\Message;
 // use Zipper;
 
 class JobsController extends Controller
 {
     private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'application_date+desc', 'grouped'=>FALSE ];
+
+    protected $mailer;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Mailer $mailer)
     {
         $this->middleware('auth', ['except' => [
             'JobView',
@@ -49,6 +53,8 @@ class JobsController extends Controller
             'getEmbed',
             'getEmbedTest'
         ]]);
+
+        $this->mailer = $mailer;
     }
 
     /**
@@ -101,10 +107,14 @@ class JobsController extends Controller
             
             //Send notification mail
             $email_from = ( Auth::user()->email ) ? Auth::user()->email : 'no-reply@insidify.com';
-            Mail::send('emails.e-exculsively-invited', ['mail_body'=>$mail_body, 'name'=>$user->name, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=>$link ], function($message) use ($user){
+            /*Mail::send('emails.e-exculsively-invited', ['mail_body'=>$mail_body, 'name'=>$user->name, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=>$link ], function($message) use ($user){
                 $message->from('info@seamlesshiring.com');
                 $message->to($user->email, $user->name);
-            }); 
+            });*/ 
+
+            $this->mailer->send('emails.new.exculsively_invited', ['user' => $user, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=> $link], function (Message $m) use ($user) {
+                $m->from('info@seamlesshiring.com')->to($user->email)->subject('You have been Exclusively Invited');
+            });
 
             echo 'Saved';
         }
@@ -113,6 +123,11 @@ class JobsController extends Controller
       //$comp->users()->attach($user->id);
 
       
+    }
+
+    public function JobTeamDecline()
+    {
+        
     }
    
     public function PostJob(Request $request)
@@ -505,18 +520,18 @@ class JobsController extends Controller
 
         
         if(!empty($request->appl_id)){
-            $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('created_at', 'desc');
+            $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('id', 'desc');
         }elseif($request->type == 'dashboard'){
 
           
           $comp_id = get_current_company()->id;
 
           $jobs = Job::where('company_id', $comp_id)->get(['id'])->toArray();
-          $activities = JobActivity::with('user', 'application.cv', 'job')->whereIn('job_id', $jobs)->orderBy('created_at', 'desc');
+          $activities = JobActivity::with('user', 'application.cv', 'job')->whereIn('job_id', $jobs)->orderBy('id', 'desc');
           // dd($activities);
 
         }else{
-            $activities =  JobActivity::with('user', 'application.cv', 'job', 'job.company')->where('job_id', $request->jobid)->orderBy('created_at', 'desc');
+            $activities =  JobActivity::with('user', 'application.cv', 'job', 'job.company')->where('job_id', $request->jobid)->orderBy('id', 'desc');
         }
 
         if( @$request->allActivities == "true" )
@@ -869,6 +884,14 @@ class JobsController extends Controller
 
         //increment job views
 
+        if( File::exists( public_path( 'uploads/'.@$company->logo ) ) )
+        {
+            $company->logo = asset('uploads/'.@$company->logo);
+        }
+        else
+        {
+            $company->logo = asset('img/company.png');
+        }
 
         return view('job.job-details', compact('job', 'company'));
     }
@@ -1121,6 +1144,15 @@ class JobsController extends Controller
         }
 
         // dd($custom_fields);
+        
+        if( File::exists( public_path( 'uploads/'.@$company->logo ) ) )
+        {
+            $company->logo = asset('uploads/'.@$company->logo);
+        }
+        else
+        {
+            $company->logo = asset('img/company.png');
+        }
         
         return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades','custom_fields'));
 

@@ -13,47 +13,43 @@
     <section class="s-div dark">
         <div class="container">
 
-            <div class="row">
-                <div class="col-sm-4">
-                    
-                    
-                      <div class=""><br>
-                        <h4 class="text-green-light text-brandon"> <i class="fa fa-folder-o"></i> Purchased Candidates</h4>
-                      </div>
-                    
-                </div>
-                <div class="col-sm-5">
-                    <form id="form-cv-search" action="{{ url('cv/search') }}" class="form-group collapse"><br>
-                       <div class="form-lg">
-                         <div class="col-xs-10">
-                           <div class="row"><input placeholder="e.g Accountant, Lagos" value="" class="form-control input-lg input-talent" type="text" name="search_query"></div>
-                         </div>
-                         <div class="col-xs-2">
-                           <div class="row">
-                               <button type="submit" class="btn btn-lg btn-block btn-success btn-talent">
-                               <!-- Find <span class="hidden-sm hidden-xs">Candidates</span>  -->
-                               <i class="fa fa-search fa-lg"></i>
-                               </button>
-                           </div>
-                         </div>
-                       </div>
 
-                    <a href="#form-cv-search" data-toggle="collapse" aria-expanded="false" aria-controls="form-cv-search" class="pull-right" style=""><i class="fa fa-close fa-inverse"></i></a>
+    <div class="row">
+        
+        <div class="col-xs-8"><br>
+          <span class="h4 text-green-light text-brandon"> <i class="fa fa-folder"></i> Purchased CV <span class="text-white"> ({{ $result['response']['numFound'] }} Candidates)</span></span>
 
-                    </form><br>
-                    <a href="#form-cv-search" data-toggle="collapse" aria-expanded="false" aria-controls="form-cv-search" class="btn btn-success pull-right"><i class="fa fa-search-plus"></i> Find New Candidate</a>
-                </div>
-                    <!-- <div class="col-xs-3"><br>
-                      <div class="dropdown">
-                        <a href="" class="btn btn-block btn-line dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cloud-upload"></i> Upload CV to Folder &nbsp; <i class="fa fa-caret-down"></i></a>
-                              <ul class="dropdown-menu">
-                                <li><a href="#">Medical</a></li>
-                                <li><a href="#">Designers</a></li>
-                                <li><a href="#">Expatriate </a></li>
-                              </ul>
-                      </div>
-                    </div> -->
+          &nbsp;
+
+          <!-- <a data-toggle="modal" data-target="#addCandidateModal" id="modalButton" href="#addCandidateModal" class="btn btn-line" ><i class="fa fa-plus"></i> Buy new CV &nbsp;</a> -->
+
+          <div class="clearfix"></div>
+
+        </div>
+        
+
+      <div class="col-xs-4 ">
+        <form id="form-cv-search" action="{{ url('cv/search') }}" class="form-group collapse"><br>
+          <div class="form-lg">
+            <div class="col-xs-10">
+              <div class="row"><input placeholder="e.g Accountant, Lagos" value="" class="form-control input-lg input-talent" type="text" name="search_query"></div>
             </div>
+            <div class="col-xs-2">
+              <div class="row">
+                <button type="submit" class="btn btn-lg btn-block btn-success btn-talent">
+                <!-- Find <span class="hidden-sm hidden-xs">Candidates</span>  -->
+                <i class="fa fa-search fa-lg"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <a href="#form-cv-search" data-toggle="collapse" aria-expanded="false" aria-controls="form-cv-search" class="pull-right" style=""><i class="fa fa-close fa-inverse"></i></a>
+        </form><br>
+        <a href="#form-cv-search" data-toggle="collapse" aria-expanded="false" aria-controls="form-cv-search" class="btn btn-success pull-right"><i class="fa fa-search-plus"></i> Find New Candidate</a>
+      </div>
+
+    </div>
+
 
         </div>
     </section>

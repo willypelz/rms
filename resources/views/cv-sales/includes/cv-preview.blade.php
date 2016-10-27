@@ -1,12 +1,12 @@
 <div class="">
     <div class="container">
         <div class="row">
-            <div class="col-xs-10 col-xs-offset-1 view">
+            <div class="col-sm-10 col-sm-offset-1 view">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
                 <br>
                 
                 <div class="row">
-                    <div class="col-xs-5 ">
+                    <div class="col-sm-5 ">
                         
                         <p class="hide">
                             <!-- Single button -->
@@ -28,12 +28,12 @@
                             </span>
                         </p>
                     </div>
-                    <div class="col-xs-2 hidden">
+                    <div class="col-sm-2 hidden">
                         <div class="text-center cv-portrait">
                             <img src="{{ default_picture( $cv ) }}" class="img-circle">
                         </div>
                     </div>
-                    <div class="col-xs-5">
+                    <div class="col-sm-5">
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -42,7 +42,7 @@
                     
                     
                     <div class="row">
-                        <div class="col-xs-12 cv-name text-center">
+                        <div class="col-sm-12 cv-name text-center">
                             <h2>
                             @if(@$is_applicant || $page == 'pool')
                             {{ $cv['first_name'].' '.$cv['last_name'] }}
@@ -57,10 +57,10 @@
                     </div>
                     <div class="unit-box">
                         <div class="row">
-                            <div class="col-xs-1 r-left">
+                            <div class="col-sm-1 r-left">
                                 <span class="glyphicon glyphicon-file"></span>
                             </div>
-                            <div class="col-xs-5">
+                            <div class="col-sm-5">
                                 <h5>PERSONAL DETAILS</h5>
                                 <p class="text-muted">{{-- @$cv['headline'] --}}</p>
                                 <ul class="list-unstyled">
@@ -81,10 +81,10 @@
                                     <li><strong>Location:</strong>&nbsp; {{ @$cv['state'] }}.</li>
                                 </ul>
                             </div>
-                            <div class="col-xs-1 r-left">
+                            <div class="col-sm-1 r-left">
                                 <span class="glyphicon glyphicon-briefcase"></span>
                             </div>
-                            <div class="col-xs-5">
+                            <div class="col-sm-5">
                                 <h5>CAREER SUMMARY</h5>
                                 <p class="text-muted">{{-- @$cv['headline'] --}}</p>
                                 <ul class="list-unstyled">
@@ -105,10 +105,10 @@
                     @if(isset($appl))
                     <div class="unit-box">
                         <div class="row">
-                            <div class="col-xs-1 r-left">
+                            <div class="col-sm-1 r-left">
                                 <span class="fa fa-pencil-square-o"></span>
                             </div>
-                            <div class="col-xs-11">
+                            <div class="col-sm-11">
                                 <h5>Cover Letter</h5>
                                 <p class="text-muted">{{ $appl->cover_note }}</p>
                             </div>
@@ -129,10 +129,10 @@
                     @if(@$is_applicant)
                     <div class="unit-box">
                         <div class="row">
-                            <div class="col-xs-1 r-left">
+                            <div class="col-sm-1 r-left">
                                 <span class="glyphicon glyphicon-link"></span>
                             </div>
-                            <div class="col-xs-11">
+                            <div class="col-sm-11">
                                 <h5>UPLOADED CV</h5>
                                 <!--iframe src="https://drive.google.com/gview?url=http://www.nwu.ac.za/files/images/Basic_Curriculum_Vitae_example.pdf&embedded=true" style="width:100%;padding-left: 8px;height:100%" frameborder="1"-->
                                 @if( $cv['cv_file'] == '' )

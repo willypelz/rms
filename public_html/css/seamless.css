@@ -841,6 +841,7 @@ h3.brand-title {
 .pagehead h1 {
     margin-bottom: 1em;
     font-weight: lighter;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.42);
 }
 .pagehead-fix{
     padding-bottom: 0;

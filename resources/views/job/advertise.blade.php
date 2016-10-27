@@ -169,15 +169,15 @@ cartRemoveClass: 'btn-line'
                                 <p>Select the Newspaper where you want you job to appear and click forward request and we will reach you shortly.</p><hr>
 
                                 
-                                @foreach($newspapers as $n)
+                                @foreach($newspapers as $k => $n)
                                 <div class="col-sm-4">
-                                <label for="fl-box">
+                                <label for="fl-box-{{ $k }}">
                                   <div class="thumbnail thumb-box">
                                     <div class="caption">
                                       <img alt="" src="{{ $n->img }}" height="45px" width="100%"> <hr>
                                       <h4 class="">{{ $n->name }}</h4>
                                       <p class="small">{{ $n->about }}</p>
-                                      <input type="checkbox" class="fl-box" name="" id="fl-box">
+                                      <input type="checkbox" class="fl-box" name="" id="fl-box-{{ $k }}">
                                       <p>
                                         
                                         <span class="purchase-action">

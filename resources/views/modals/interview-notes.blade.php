@@ -12,7 +12,12 @@
         </div>
   </div>
 @endif
-
+<style type="text/css">
+  .br-theme-bars-movie .br-widget .br-current-rating{ width: auto; }
+  .form-group {
+    margin-bottom: 30px;
+}
+</style>
 <form role="form" class="form-signin" method="POST" id="interview-note-form" action="" style="height: 300px;overflow: scroll;">
     {!! csrf_field() !!}
     
@@ -25,11 +30,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="general_appearance" id="general_appearance">
-                    <option value="1" @if( @$note->general_appearance == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->general_appearance == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->general_appearance == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->general_appearance == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->general_appearance == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->general_appearance == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->general_appearance == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->general_appearance == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->general_appearance == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->general_appearance == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="2" > 2 </label>
@@ -49,11 +54,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="educational_background" id="educational_background">
-                    <option value="1" @if( @$note->educational_background == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->educational_background == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->educational_background == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->educational_background == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->educational_background == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->educational_background == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->educational_background == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->educational_background == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->educational_background == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->educational_background == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="educational_background" id="educational_background" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="educational_background" id="educational_background" value="2" > 2 </label>
@@ -73,11 +78,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="prior_work_experience" id="prior_work_experience">
-                    <option value="1" @if( @$note->prior_work_experience == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->prior_work_experience == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->prior_work_experience == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->prior_work_experience == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->prior_work_experience == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->prior_work_experience == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->prior_work_experience == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->prior_work_experience == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->prior_work_experience == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->prior_work_experience == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="prior_work_experience" id="prior_work_experience" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="prior_work_experience" id="prior_work_experience" value="2" > 2 </label>
@@ -98,11 +103,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="professional_qualifications" id="professional_qualifications">
-                    <option value="1" @if( @$note->professional_qualifications == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->professional_qualifications == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->professional_qualifications == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->professional_qualifications == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->professional_qualifications == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->professional_qualifications == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->professional_qualifications == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->professional_qualifications == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->professional_qualifications == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->professional_qualifications == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="professional_qualifications" id="professional_qualifications" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="professional_qualifications" id="professional_qualifications" value="2" > 2 </label>
@@ -122,11 +127,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="verbal_communication" id="verbal_communication">
-                    <option value="1" @if( @$note->verbal_communication == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->verbal_communication == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->verbal_communication == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->verbal_communication == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->verbal_communication == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->verbal_communication == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->verbal_communication == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->verbal_communication == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->verbal_communication == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->verbal_communication == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="verbal_communication" id="verbal_communication" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="verbal_communication" id="verbal_communication" value="2" > 2 </label>
@@ -146,11 +151,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="candidate_enthusiasm" id="candidate_enthusiasm">
-                    <option value="1" @if( @$note->candidate_enthusiasm == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->candidate_enthusiasm == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->candidate_enthusiasm == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->candidate_enthusiasm == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->candidate_enthusiasm == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->candidate_enthusiasm == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->candidate_enthusiasm == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->candidate_enthusiasm == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->candidate_enthusiasm == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->candidate_enthusiasm == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="candidate_enthusiasm" id="candidate_enthusiasm" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="candidate_enthusiasm" id="candidate_enthusiasm" value="2" > 2 </label>
@@ -170,11 +175,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="relevant_experience" id="relevant_experience">
-                    <option value="1" @if( @$note->relevant_experience == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->relevant_experience == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->relevant_experience == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->relevant_experience == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->relevant_experience == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->relevant_experience == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->relevant_experience == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->relevant_experience == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->relevant_experience == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->relevant_experience == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="relevant_experience" id="relevant_experience" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="relevant_experience" id="relevant_experience" value="2" > 2 </label>
@@ -194,11 +199,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="career_progression" id="career_progression">
-                    <option value="1" @if( @$note->career_progression == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->career_progression == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->career_progression == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->career_progression == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->career_progression == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->career_progression == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->career_progression == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->career_progression == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->career_progression == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->career_progression == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="career_progression" id="career_progression" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="career_progression" id="career_progression" value="2" > 2 </label>
@@ -218,11 +223,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="initiative" id="initiative">
-                    <option value="1" @if( @$note->initiative == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->initiative == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->initiative == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->initiative == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->initiative == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->initiative == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->initiative == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->initiative == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->initiative == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->initiative == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="initiative" id="initiative" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="initiative" id="initiative" value="2" > 2 </label>
@@ -242,11 +247,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="time_management" id="time_management">
-                    <option value="1" @if( @$note->time_management == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->time_management == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->time_management == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->time_management == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->time_management == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->time_management == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->time_management == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->time_management == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->time_management == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->time_management == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="time_management" id="time_management" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="time_management" id="time_management" value="2" > 2 </label>
@@ -266,11 +271,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="customer_service_orientation" id="customer_service_orientation">
-                    <option value="1" @if( @$note->customer_service_orientation == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->customer_service_orientation == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->customer_service_orientation == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->customer_service_orientation == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->customer_service_orientation == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->customer_service_orientation == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->customer_service_orientation == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->customer_service_orientation == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->customer_service_orientation == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->customer_service_orientation == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="customer_service_orientation" id="customer_service_orientation" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="customer_service_orientation" id="customer_service_orientation" value="2" > 2 </label>
@@ -290,11 +295,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="technology_enablement" id="technology_enablement">
-                    <option value="1" @if( @$note->technology_enablement == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->technology_enablement == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->technology_enablement == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->technology_enablement == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->technology_enablement == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->technology_enablement == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->technology_enablement == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->technology_enablement == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->technology_enablement == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->technology_enablement == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="technology_enablement" id="technology_enablement" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="technology_enablement" id="technology_enablement" value="2" > 2 </label>
@@ -314,11 +319,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="brand_projection" id="brand_projection">
-                    <option value="1" @if( @$note->brand_projection == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->brand_projection == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->brand_projection == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->brand_projection == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->brand_projection == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->brand_projection == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->brand_projection == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->brand_projection == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->brand_projection == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->brand_projection == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="brand_projection" id="brand_projection" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="brand_projection" id="brand_projection" value="2" > 2 </label>
@@ -338,11 +343,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="intellectual_capacity" id="intellectual_capacity">
-                    <option value="1" @if( @$note->intellectual_capacity == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->intellectual_capacity == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->intellectual_capacity == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->intellectual_capacity == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->intellectual_capacity == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->intellectual_capacity == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->intellectual_capacity == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->intellectual_capacity == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->intellectual_capacity == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->intellectual_capacity == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="intellectual_capacity" id="intellectual_capacity" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="intellectual_capacity" id="intellectual_capacity" value="2" > 2 </label>
@@ -362,11 +367,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="reasoning" id="reasoning">
-                    <option value="1" @if( @$note->reasoning == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->reasoning == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->reasoning == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->reasoning == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->reasoning == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->reasoning == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->reasoning == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->reasoning == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->reasoning == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->reasoning == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="reasoning" id="reasoning" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="reasoning" id="reasoning" value="2" > 2 </label>
@@ -386,11 +391,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="general_knowledge" id="general_knowledge">
-                    <option value="1" @if( @$note->general_knowledge == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->general_knowledge == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->general_knowledge == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->general_knowledge == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->general_knowledge == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->general_knowledge == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->general_knowledge == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->general_knowledge == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->general_knowledge == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->general_knowledge == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_knowledge" id="general_knowledge" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_knowledge" id="general_knowledge" value="2" > 2 </label>
@@ -410,11 +415,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="knowledge_of_industry" id="knowledge_of_industry">
-                    <option value="1" @if( @$note->knowledge_of_industry == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->knowledge_of_industry == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->knowledge_of_industry == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->knowledge_of_industry == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->knowledge_of_industry == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->knowledge_of_industry == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->knowledge_of_industry == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->knowledge_of_industry == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->knowledge_of_industry == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->knowledge_of_industry == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="knowledge_of_industry" id="knowledge_of_industry" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="knowledge_of_industry" id="knowledge_of_industry" value="2" > 2 </label>
@@ -434,11 +439,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="quantitative_capacity" id="quantitative_capacity">
-                    <option value="1" @if( @$note->quantitative_capacity == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->quantitative_capacity == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->quantitative_capacity == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->quantitative_capacity == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->quantitative_capacity == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->quantitative_capacity == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->quantitative_capacity == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->quantitative_capacity == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->quantitative_capacity == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->quantitative_capacity == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="quantitative_capacity" id="quantitative_capacity" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="quantitative_capacity" id="quantitative_capacity" value="2" > 2 </label>
@@ -458,11 +463,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="attitude_to_issues" id="attitude_to_issues">
-                    <option value="1" @if( @$note->attitude_to_issues == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->attitude_to_issues == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->attitude_to_issues == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->attitude_to_issues == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->attitude_to_issues == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->attitude_to_issues == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->attitude_to_issues == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->attitude_to_issues == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->attitude_to_issues == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->attitude_to_issues == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="attitude_to_issues" id="attitude_to_issues" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="attitude_to_issues" id="attitude_to_issues" value="2" > 2 </label>
@@ -482,11 +487,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="predesposition_to_training" id="predesposition_to_training">
-                    <option value="1" @if( @$note->predesposition_to_training == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->predesposition_to_training == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->predesposition_to_training == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->predesposition_to_training == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->predesposition_to_training == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->predesposition_to_training == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->predesposition_to_training == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->predesposition_to_training == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->predesposition_to_training == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->predesposition_to_training == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="predesposition_to_training" id="predesposition_to_training" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="predesposition_to_training" id="predesposition_to_training" value="2" > 2 </label>
@@ -506,11 +511,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="learning_skills" id="learning_skills">
-                    <option value="1" @if( @$note->learning_skills == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->learning_skills == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->learning_skills == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->learning_skills == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->learning_skills == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->learning_skills == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->learning_skills == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->learning_skills == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->learning_skills == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->learning_skills == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="learning_skills" id="learning_skills" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="learning_skills" id="learning_skills" value="2" > 2 </label>
@@ -530,11 +535,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="verbal_skills" id="verbal_skills">
-                    <option value="1" @if( @$note->verbal_skills == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->verbal_skills == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->verbal_skills == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->verbal_skills == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->verbal_skills == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->verbal_skills == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->verbal_skills == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->verbal_skills == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->verbal_skills == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->verbal_skills == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="verbal_skills" id="verbal_skills" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="verbal_skills" id="verbal_skills" value="2" > 2 </label>
@@ -554,11 +559,11 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="career_focus" id="career_focus">
-                    <option value="1" @if( @$note->career_focus == 1) selected="selected" @endif>1</option>
-                    <option value="2" @if( @$note->career_focus == 2) selected="selected" @endif>2</option>
-                    <option value="3" @if( @$note->career_focus == 3) selected="selected" @endif>3</option>
-                    <option value="4" @if( @$note->career_focus == 4) selected="selected" @endif>4</option>
-                    <option value="5" @if( @$note->career_focus == 5) selected="selected" @endif>5</option>
+                    <option value="1" @if( @$note->career_focus == 1) selected="selected" @endif>Very Poor</option>
+                    <option value="2" @if( @$note->career_focus == 2) selected="selected" @endif>Poor</option>
+                    <option value="3" @if( @$note->career_focus == 3) selected="selected" @endif>Fair</option>
+                    <option value="4" @if( @$note->career_focus == 4) selected="selected" @endif>Good</option>
+                    <option value="5" @if( @$note->career_focus == 5) selected="selected" @endif>Very Good</option>
                   </select>
                   <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="career_focus" id="career_focus" value="1" > 1 </label>
                   <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="career_focus" id="career_focus" value="2" > 2 </label>
@@ -623,13 +628,13 @@
 <div class="clearfix"></div>
 
 <script src="{{ asset('js/jquery.barrating.min.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('css/rating-themes/bars-1to10.css') }}">
+<link rel="stylesheet" href="{{ asset('css/rating-themes/bars-movie.css') }}">
 
 @if( count($note) > 0 )
   <script type="text/javascript">
    $(function() {
       $('body #rating').barrating({
-        theme: 'bars-1to10',
+        theme: 'bars-movie',
         readonly:true
       });
    });
@@ -638,7 +643,7 @@
   <script type="text/javascript">
    $(function() {
       $('body #rating').barrating({
-        theme: 'bars-1to10'
+        theme: 'bars-movie'
       });
    });
 </script>

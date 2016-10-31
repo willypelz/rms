@@ -65,7 +65,7 @@
                                           </p>
                                           <blockquote class="h5">
                                             <div class="pull-right">
-                                                <button class="btn btn-success btn-block" title="Interview Note by {{ $interview_note->user->name }}" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview Note by {{ $interview_note->user->name }}" data-view="{{ route('modal-interview-notes',['interview_id'=>$interview_note]) }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="normal" >View Note</button>
+                                                <button class="btn btn-success btn-block" title="Interview Note by {{ $interview_note->user->name }}" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview Note by {{ $interview_note->user->name }}" data-view="{{ route('modal-interview-notes',['interview_id'=>$interview_note]) }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide" >View Note</button>
                                             </div>
                                             <span role="comment-body text-muted">
                                                 <strong>General Comments: </strong>{{ $interview_note->general_comments }} <br><br>

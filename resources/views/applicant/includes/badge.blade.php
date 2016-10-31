@@ -46,7 +46,7 @@
                 </a>
               </div>
               <div class="col-xs-6">
-                <a href="" class="btn btn-sm btn-line btn-block" title="Interview Notes" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview Note" data-view="{{ route('modal-interview-notes') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="normal">Interview Note</a>
+                <a href="" class="btn btn-sm btn-line btn-block" title="Interview Notes" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview Note" data-view="{{ route('modal-interview-notes') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide">Interview Note</a>
               </div>
             </div>
             <hr class="">

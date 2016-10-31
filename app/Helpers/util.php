@@ -179,11 +179,12 @@ use App\Models\Job;
 
 		switch ($type) {
 			case 'cv':
-				$string1 = $data['first_name'];
-				$string2 = $data['last_name'];
+				$string1 = trim( $data['first_name'] );
+				$string2 = trim(  $data['last_name'] );
 				
 				break;
 			case 'user':
+				$data['name'] = str_replace('  ', '', $data['name']);
 				$data_arr = explode(' ', $data['name']);
 				$string1 = $data_arr[0];
 				$string2 = @$data_arr[1];

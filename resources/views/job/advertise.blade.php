@@ -73,8 +73,8 @@ cartRemoveClass: 'btn-line'
                           <div class="alert alert-info"><i class="fa fa-check">
                             <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
                             </i> {!! Session::get('flash_message') !!}
-                          @endif
                           </div>
+                          @endif
                           <div class="col-xs-6 col-xs-offset-3"><br>
                             
                             @if($count == 0)

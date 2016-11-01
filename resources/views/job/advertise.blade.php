@@ -50,8 +50,8 @@ cartRemoveClass: 'btn-line'
                     <a href="" type="button" class="btn btn-line text-capitalize"><i class="fa fa-search-plus"></i>
                       &nbsp; <span class="hidden-xs"> add candidates </span></a>
                     </div>
-                  </div>
-                  @endif
+          </div>
+          @endif
                   <div class="row">
                     
                     
@@ -119,49 +119,68 @@ cartRemoveClass: 'btn-line'
                               <div class="col-xs-12 text-center">
                                 <h4 class=""><br>Promote <a href="">Job Title should come here</a>. </h4><p>Multipying your talent flow. Post your job on more job boards</p><hr>
                               </div>
+
                               
-                              <div class="col-xs-12">
-                                <h4 class="text-brandon text-uppercase">
-                                <i class="fa fa-star"></i>&nbsp; Paid Job Boards
-                                </h4><br>
-                              </div>
-                              @foreach($job_boards as $b)
-                              <div class="col-sm-4">
-                                <div class="thumbnail thumb-box">
-                                  <div class="caption">
-                                    <img alt="" src="{{ $b['img'] }}" height="45px"> <hr>
-                                    <h4 class="">{{ $b['name'] }}</h4>
-                                    <p class="small">{{ $b['about'] }}</p>
-                                    <p>
-                                      <span class="purchase-action">
-                                        <?php
-                                        if($ids != null){
-                                        $in_cart = in_array($b['id'], $ids);
-                                        // dd($b['id']);
-                                        }else{
-                                        $in_cart = "";
-                                        }
-                                        ?>
-                                        @if($in_cart)
-                                        <button id="cartRemove" class="btn btn-line" data-id="{{ $b['id'] }}"  data-count="1" data-cost="{{ $b['price'] }}" data-pass="{{ csrf_token() }}" data-name="{{ $b['name'] }}" ><i class="fa fa-trash"></i> Remove from Cart </button>
-                                        @else
-                                        <a id="cartAdd" class="btn btn-success " data-count="1" data-id="{{ $b['id'] }}" data-cost="{{ $b['price'] }}" data-pass="{{ csrf_token() }}" data-name="{{ $b['name'] }}"><i class="fa fa-plus"></i> Post for &#8358; {{ $b['price'] }}</a>
-                                        @endif
-                                        
-                                      </span>
-                                    </p>
+                                  <div class="col-xs-12">
+                              <div class="alert alert-info">
+                                    <h4 class="text-brandon text-center text-uppercase">
+                                    <i class="fa fa-star"></i>&nbsp; Paid Job Boards
+                                    </h4><br>
+
+
+                                  @foreach($job_boards as $b)
+                                  <div class="col-sm-4">
+                                    <div class="thumbnail thumb-box">
+                                      <div class="caption">
+                                        <img alt="" src="{{ $b['img'] }}" height="45px"> <hr>
+                                        <h4 class="">{{ $b['name'] }}</h4>
+                                        <p class="small">{{ $b['about'] }}</p>
+                                        <p>
+                                          <span class="purchase-action">
+                                            <?php
+                                            if($ids != null){
+                                            $in_cart = in_array($b['id'], $ids);
+                                            // dd($b['id']);
+                                            }else{
+                                            $in_cart = "";
+                                            }
+                                            ?>
+                                            @if($in_cart)
+                                            <button id="cartRemove" class="btn btn-line" data-id="{{ $b['id'] }}"  data-count="1" data-cost="{{ $b['price'] }}" data-pass="{{ csrf_token() }}" data-name="{{ $b['name'] }}" ><i class="fa fa-trash"></i> Remove from Cart </button>
+                                            @else
+                                            <a id="cartAdd" class="btn btn-success " data-count="1" data-id="{{ $b['id'] }}" data-cost="{{ $b['price'] }}" data-pass="{{ csrf_token() }}" data-name="{{ $b['name'] }}"><i class="fa fa-plus"></i> Post for &#8358; {{ $b['price'] }}</a>
+                                            @endif
+                                            
+                                          </span>
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  @endforeach
+                                  <div class="clearfix"></div>
+
+
+                                <div class="row hidden">
+                                  <div class="col-xs-6 col-xs-offset-3"><hr>
+                                  <i class="fa fa-spin fa-circle-o-notch fa-2x"></i>
+                                  <p class="">
+                                    <i class="fa fa-check"></i> Your request has been sent. You will be contacted shortly. Thank you.
+                                  </p>
+                                    <a href="" class="btn btn-danger btn-block">Forward Request</a>
                                   </div>
                                 </div>
+                                  <div class="clearfix"></div>
+
                               </div>
-                              @endforeach
-                              
+                                  </div>
                             </div>
+
                             <div class="row">
                               
                               
                               <div class="col-xs-12"><hr>
                                 
-                                <div class="panel-group well text-center">
+                                <div class="well text-center">
 
                                 <h4 class="text-brandon text-uppercase text-danger">
                                 <i class="fa fa-star"></i>&nbsp; Paid Newspaper Ads
@@ -241,7 +260,7 @@ cartRemoveClass: 'btn-line'
                                   </div>
 
 
-                                <div class="row">
+                                <div class="row hidden">
                                   <div class="col-xs-6 col-xs-offset-3"><hr>
                                   <i class="fa fa-spin fa-circle-o-notch fa-2x"></i>
                                   <p class="">
@@ -249,8 +268,8 @@ cartRemoveClass: 'btn-line'
                                   </p>
                                     <a href="" class="btn btn-danger btn-block">Forward Request</a>
                                   </div>
-                                  <div class="clearfix"></div>
                                 </div>
+                                  <div class="clearfix"></div>
 
                                 </div>
                                 
@@ -261,8 +280,8 @@ cartRemoveClass: 'btn-line'
                               <!-- </div> -->
                               
                               <div class="col-sm-12 text-center"><hr>
-                                <a href="#" id="proceed-btn" target="_blank" data-toggle="modal" data-target="#myInvoice" class=" btn btn-success btn-cart-checkout"> Proceed </a>
-                                <a href="{{ route('share-job', [$jobid]) }}" id="skip-btn" class=" btn btn-line btn-cart-checkout">Skip &raquo;</a>
+                                <a href="#" id="proceed-btn" target="_blank" data-toggle="modal" data-target="#myInvoice" class=" btn btn-danger btn-lg btn-cart-checkout"> Forward Request </a>
+                                <a href="{{ route('share-job', [$jobid]) }}" id="skip-btn" class="btn-lg btn btn-line btn-cart-checkout">Cancel &raquo;</a>
                               </div>
                             </div>
                           </div>

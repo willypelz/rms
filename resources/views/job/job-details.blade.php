@@ -1,5 +1,7 @@
 @extends('layout.template-guest')
 
+<link rel="stylesheet" type="text/css" href="{{ asset('font/flaticon.css') }}">
+
 @section('navbar')    
 <!-- Schema.org markup for Google+ -->
 <meta itemprop="name" content="{{ $job['title'] }}">
@@ -126,19 +128,24 @@
 <!--                                            <br>-->
                                             <div class="row">
 
-                                                <div class="col-xs-6 col-sm-3"><small class="text-muted">Job Type</small>
+                                                <div class="col-xs-6 col-sm-3">
+                                                <small class="text-muted">Job Type</small>
                                                 <br>
-                                                <i class="fa fa-3x fa-clock-o text-info"></i>
+                                                <i class="flaticon-online-job-search"></i>
                                                 <h5 class="text-uppercase text-brandon">{{ $job['job_type'] }}</h5>
                                                 </div>
-                                                <div class="col-xs-6 col-sm-4"><small class="text-muted">Salary Range</small>
+
+                                                <div class="col-xs-6 col-sm-4">
+                                                <small class="text-muted">Salary Range</small>
                                                 <br>
-                                                <i class="fa fa-3x fa-money text-success"></i>
+                                                <i class="flaticon-money"></i>
                                                 <h5 class="text-uppercase text-brandon">Not Specified</h5>
                                                 </div>
-                                                <div class="col-xs-12 col-sm-5"><small class="text-muted">Minimum Qualification</small>
+
+                                                <div class="col-xs-12 col-sm-5">
+                                                <small class="text-muted">Minimum Qualification</small>
                                                 <br>
-                                                <i class="fa fa-3x fa-user-md text-danger"></i>
+                                                <i class="flaticon-diploma-1"></i>
                                                 <h5 class="text-uppercase text-brandon">{{ $job['qualification'] }}</h5>
                                                 </div>
                                                 

@@ -1,13 +1,12 @@
-<div class="row">
-	<div class="text-uppercase col-xs-12"> 
-		<strong class="text-warning">Showing
-		{{ $start }} -  {{ $end }} of  {{ $total . ' ' . $type }}   [Page {{ $page }}]
-		</strong> 
-	</div>
+
+	<strong class="text-warning">Showing
+	{{ $start }} -  {{ $end }} of  {{ $total . ' ' . $type }}   [Page {{ $page }}]
+	</strong> 
+
+
+	<div class=" text-uppercase">
 
 	@if( !empty( @$filters ) )
-
-	<div class=" text-uppercase col-xs-10">
 		
 		<i class="fa fa-filter"></i> Filtering by: 
 
@@ -18,9 +17,11 @@
 
 			<a id="clearAllFilters" href="javacript://" > &nbsp; <i class="fa fa-times" class="text-danger"></i>Clear Filter</a> 
 		</span>
-	</div>
 	@endif
+	</div>
+	<!-- <div class="col-xs-2">
+		<a href="" class="btn select-all text-uppercase">Download</a>
+	</div> -->
 	
 	<div class="clearfix"></div>
 	<!-- <hr style="margin-bottom: 0; padding-bottom: 0;"> -->
-</div>

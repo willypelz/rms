@@ -1631,6 +1631,7 @@ textarea:focus {
     padding:7px 15px;
     display:inline-block;
     border-radius:50px;
+    box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.28), 0 1px 0px rgba(255, 255, 255, 0.28);
 }
 .img-job{
     padding: 10px;
@@ -1702,7 +1703,8 @@ textarea:focus {
     padding: 3em;
     margin-top: 30px;
     border-radius:5px 5px 0 0;
-    border-bottom:3px solid #83A2C1;
+    border-bottom:3px solid #83b5d9;
+    /* padding: 1.5em; */
 }
 .job-head hr {
     border-color: rgba(255, 255, 255, 0.1);
@@ -1849,7 +1851,10 @@ ul.notif > li a img {
 .comment small a {
     font-weight: normal;
 }
-
+.tooltip{
+    font-family: 'Muli', sans-serif;
+    font-size: 11px;
+}
 
 
 
@@ -2361,7 +2366,7 @@ section.grey hr{
 }
 .option-aps {
     padding: 0;
-    margin: 0;
+    margin: 0 0 15px;
     background: #EBEFEA;
     /* border: 3px solid rgba(110, 219, 185, 0.19); */
     border-radius: 3px;
@@ -2369,6 +2374,7 @@ section.grey hr{
     overflow:hidden;
     font-size: 11px;
     line-height:20px;
+    margin-top: -20px;
 }
 .option-aps li a {
     padding: 10px;
@@ -2410,7 +2416,7 @@ section.grey hr{
     /*margin:0;*/
     /*font-weight: normal;*/
     /*line-height: 1.2;*/
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.31);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
     font-size: 21px;
     font-family: montserrat;
 }
@@ -2418,7 +2424,8 @@ section.grey hr{
     margin-top:140px
 }
 .job-title a {
-    color: #BCF9BC;
+    /* color: #BCF9BC; */
+    color: #fff;
     font-size: 24px;
     font-weight: normal;
     display: block;
@@ -2589,15 +2596,16 @@ body.employer {
     /*display: block;*/
 }
 .select-all {
-        border: 1px solid #ccc;
-    padding: 3px 3px 3px 5px;
+     border: 1px solid #ccc;
+    padding: 7px 5px 7px 6px;
     border-radius: 3px;
     font-weight: normal;
     font-size: 10px;
     color: grey;
     vertical-align: middle;
     margin-bottom: 0px;
-    margin-top: -4rem;
+    z-index: 10;
+    width: 100%;
 }
 .select-all:hover {
     border-color: #666;
@@ -2606,7 +2614,9 @@ body.employer {
     margin: 0 0 0 3px;
     float: right;
 }
-
+.app-action{
+    margin-top: 10px;
+}
 .job-search-by ul{
     height: 350px;
     overflow-y: auto;
@@ -4545,7 +4555,7 @@ button.close {
     float:none !important;
 }
 .job-head {
-    padding: 1.5em;
+    
     }
   h3, .h3 {
     font-size: 18px;

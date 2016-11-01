@@ -13,7 +13,7 @@
   </div>
 @endif
 <style type="text/css">
-  .br-theme-bars-movie .br-widget .br-current-rating{ width: auto; }
+  .br-theme-bars-movie .br-widget .br-current-rating{ width: 100% !important; }
   .form-group {
     margin-bottom: 30px;
 }

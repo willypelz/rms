@@ -342,7 +342,9 @@ class JobsController extends Controller
             $job = Job::find($jobid);
         }
 
-        return view ('job.add-candidates', compact('jobid', 'job'));
+        $jobs = Job::where('company_id',get_current_company()->id)->get();
+
+        return view ('job.add-candidates', compact('jobid', 'job', 'jobs'));
     }
 
      public function UploadCVfile( Request $request ){

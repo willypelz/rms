@@ -31,6 +31,24 @@
                         <div class="alert alert-success" style="display:none;" id="u_s"></div>
                        <form action="{{ route('upload-file') }}" method="post" enctype="multipart/form-data" id="uploadCandidate">
                             {!! csrf_field() !!}
+
+                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                <select>
+                                    <option value=""></option>
+
+                                    @foreach( $jobs as $job )
+                                        <option value="{{ $job->id }}">{{ $job->title }}</option>
+                                    @endforeach
+                                </select>
+                                <input type="email" class="form-control" id="" placeholder="" name="email" value="{{ old('email') }}">
+
+                                @if ($errors->has('email'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
                             <div class="form-group fileinput fileinput-new input-group" data-provides="fileinput">
                               <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
 

@@ -33,15 +33,14 @@
                             {!! csrf_field() !!}
 
                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <select>
+                                <select class="form-control">
                                     <option value=""></option>
 
-                                    @foreach( $jobs as $job )
-                                        <option value="{{ $job->id }}">{{ $job->title }}</option>
+                                    @foreach( $myJobs as $job )
+                                        <option value="{{ $job['id'] }}">{{ $job['title'] }}</option>
                                     @endforeach
                                 </select>
-                                <input type="email" class="form-control" id="" placeholder="" name="email" value="{{ old('email') }}">
-
+                                
                                 @if ($errors->has('email'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
@@ -76,7 +75,7 @@
                         <div class="alert alert-success text-right">
                             <h4>We found 6315 applicants that match your job.</h4><br>
 
-                        <a href="{{ route('job-board', [$jobid]) }}" type="button" class="btn btn-success text-capitalize pull-right">See CVs that Match your Job</a>
+                        <a href="{{ route('job-board', [@$jobid]) }}" type="button" class="btn btn-success text-capitalize pull-right">See CVs that Match your Job</a>
 
                         <div class="clearfix"></div>
                         </div>
@@ -97,7 +96,7 @@
 
                         @if(!empty($job)) 
                         
-                        <div class="col-sm-12 text-center"><hr><a href="{{ route('job-board', $jobid) }}" class="btn btn-line btn-cart-checkout">Go to Job Dashboard &raquo;</a></div>
+                        <div class="col-sm-12 text-center"><hr><a href="{{ route('job-board', @$jobid) }}" class="btn btn-line btn-cart-checkout">Go to Job Dashboard &raquo;</a></div>
 
                         @else
 

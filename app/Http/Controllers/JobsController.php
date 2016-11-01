@@ -342,7 +342,7 @@ class JobsController extends Controller
             $job = Job::find($jobid);
         }
 
-        $jobs = Job::where('company_id',get_current_company()->id)->get();
+        $myJobs = Job::getMyJobs();
 
         return view ('job.add-candidates', compact('jobid', 'job', 'jobs'));
     }

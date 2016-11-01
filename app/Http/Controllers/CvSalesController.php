@@ -569,6 +569,7 @@ class CvSalesController extends Controller
             $ids = null;
     // $in_cart = in_array('26618', $ids);
 
+        $jobs = Job::where('company_id',get_current_company()->id)->get();
         if($request->ajax())
         {
             

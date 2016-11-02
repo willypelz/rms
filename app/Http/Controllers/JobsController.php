@@ -355,20 +355,27 @@ class JobsController extends Controller
         ///Applications/AMPPS/www/seamlesshiring/public_html/
         // dd( Zipper::getFileContent( '\Applications\AMPPS\www\seamlesshiring\public_html\uploads\esimakin-twbs-pagination-1.3.1-2-g4a2f5ff.zip' ) );
         // dd( $request->all() );
+
+        /*array:4 [
+          "_token" => "oblmiKczvYoGWh5mhEr5PMIR1SekBtXofdc4qmFF"
+          "options" => "upToJob"
+          "job" => "90"
+          "cv-upload-file" => ""
+        ]*/
         //'Image' => 
         $validator = Validator::make($request->all(), [
-                'cv-upload-file' => 'required|mimes:application/octet-stream,zip,pdf,doc,docx,txt,rtf,pptx,ppt'
+                'cv-upload-file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt' //application/octet-stream,
             ],[
                 'cv-upload-file.required' => 'Please select a file',
                 'cv-upload-file.mimes' => 'Allowed extensions are .zip, .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt',
             ]);
 
             if ($validator->fails()) {
-                return [ 'status' => 0, 'data' => $validator->errors()->all() ] ;
+                return [ 'status' => 0, 'data' => implode(', ', $validator->errors()->all())  ] ;
                 //return redirect()->back()->withErrors($validator)->withInput();
             }
             else
-            {
+            {dd("stop here");
 
                 $filename = Auth::user()->id."_".get_current_company()->id."_".time()."_".$request->file('cv-upload-file')->getClientOriginalName();
                 

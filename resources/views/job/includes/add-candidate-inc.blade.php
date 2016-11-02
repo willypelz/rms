@@ -39,16 +39,16 @@
                             <div class="btn-group" data-toggle="buttons">
 
                               <label class="btn btn-line">
-                                <input type="radio" name="options" id="option2" autocomplete="off"> Upload to Folder
+                                <input type="radio" name="options" id="upToFolder" autocomplete="off" value="upToFolder"> Upload to Folder
                               </label>
 
                               <label class="btn btn-line">
-                                <input type="radio" name="options" id="option3" autocomplete="off"> Upload to a Job
+                                <input type="radio" name="options" id="upToJob" autocomplete="off" value="upToJob"> Upload to a Job
                               </label>
                             </div>
                             <br><br>
                                 
-                                <select class="form-control job-opt collapse">
+                                <select class="form-control job-opt collapse" name="job">
                                     <option value="">Select Job</option>
 
                                     @foreach( $myJobs as $job )
@@ -153,6 +153,37 @@
                 beforeSubmit:beforeUpload,
                 success:showResponse
         });
+
+        /*$('#upToFolder').on('click', function(){
+            $('.job-opt').hide();
+            $('.folder-opt').show();
+
+            console.log( "Show Folder", $('.job-opt'), $('.folder-opt') );
+        });
+
+        $('#upToJob').on('click', function(){
+            $('.folder-opt').hide();
+            $('.job-opt').show();
+            console.log( "Show Job", $('.job-opt'), $('.folder-opt') );
+        });
+*/
+        $('input[name="options"]').on('change', function(){
+            console.log( $(this).val() );
+            if( $(this).val() == 'upToFolder' )
+            {
+                $('.job-opt').hide();
+                $('.folder-opt').show();
+            }
+
+            if( $(this).val() == 'upToJob' )
+            {
+                $('.folder-opt').hide();
+                $('.job-opt').show();
+            }
+
+            $('#inputer-opt').show();
+                
+        });
     });
           
 
@@ -168,20 +199,20 @@
                         $("#loader").html( '' );
                        
 
-                        // if(response.status)
-                        // {
+                        if(response.status)
+                        {
                             
-                        //     $('#u_s').text( response.data ).show();
-                        // }
-                        // else
-                        // {
-                        //     $('#u_f').text( response.data ).show();
-                        // }
+                            $('#u_s').text( response.data ).show();
+                        }
+                        else
+                        {
+                            $('#u_f').text( response.data ).show();
+                        }
                         
 
                         // $.growl.notice({ message: "The file uploaded is being parsed. You will have access to it in within 48 hours" });
 
-                        $('#u_s').text( "The file uploaded is being parsed. You will have access to it within 48 hours" ).show();
+                        // $('#u_s').text( "You will receive email notification once successfully uploaded" ).show();
                     }
 
 

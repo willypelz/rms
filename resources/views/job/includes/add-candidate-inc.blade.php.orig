@@ -35,6 +35,9 @@
                             {!! csrf_field() !!}
 
                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+<<<<<<< HEAD
+                                <select class="form-control">
+=======
 
                             <div class="btn-group" data-toggle="buttons">
 
@@ -51,6 +54,7 @@
                                 <select class="form-control job-opt collapse">
                                     <option value="">Select Job</option>
 
+>>>>>>> 16b601dd1f4a425dd52e22aab40af17ae417a220
                                     @foreach( $myJobs as $job )
                                         <option value="{{ $job['id'] }}">{{ $job['title'] }}</option>
                                     @endforeach

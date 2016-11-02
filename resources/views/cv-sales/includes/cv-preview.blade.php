@@ -127,9 +127,7 @@
                         </div>
                     </div>
 
-                    foreach ($appl->custom_fields as $key => $form) {
-                 echo $form->value . "----" .  $form->form_field. "<br>";
-             }
+                    
                     <div class="unit-box">
                         <div class="row">
                             <div class="col-sm-1 r-left">

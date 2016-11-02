@@ -51,8 +51,8 @@
                                 <select class="form-control job-opt collapse" name="job">
                                     <option value="">Select Job</option>
 
-                                    @foreach( $myJobs as $job )
-                                        <option value="{{ $job['id'] }}">{{ $job['title'] }}</option>
+                                    @foreach( $myJobs as $myJob )
+                                        <option value="{{ $myJob['id'] }}" @if( @$job->id == $myJob['id'] ) selected="selected" @endif>{{ $myJob['title'] }}</option>
                                     @endforeach
                                 </select>
 
@@ -77,7 +77,7 @@
                                   <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
 
                                   <span class="input-group-addon btn btn-primary btn-file text-white"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
-                                    <input type="file" name="cv-upload-file" placeholder="zip" multiple="multiple" accept=".zip,.pdf,.doc,.docx,.txt,.rtf,.pptx,.ppt">
+                                    <input type="file" name="cv-upload-file" placeholder="zip"  accept=".zip,.pdf,.doc,.docx,.txt,.rtf,.pptx,.ppt">
                                   </span>
                                   <a href="#" class="input-group-addon  fileinput-exists btn btn-danger" style="    background-color: #d9534f; color:white;" data-dismiss="fileinput">Remove</a>
                                   
@@ -102,7 +102,7 @@
                         <div class="alert alert-success text-right">
                             <h4>We found 6315 applicants that match your job.</h4><br>
 
-                        <a href="{{ route('job-board', [@$jobid]) }}" type="button" class="btn btn-success text-capitalize pull-right">See CVs that Match your Job</a>
+                        <a href="{{ route('job-board', [@$job->id]) }}" type="button" class="btn btn-success text-capitalize pull-right">See CVs that Match your Job</a>
 
                         <div class="clearfix"></div>
                         </div>
@@ -123,7 +123,7 @@
 
                         @if(!empty($job)) 
                         
-                        <div class="col-sm-12 text-center"><hr><a href="{{ route('job-board', @$jobid) }}" class="btn btn-line btn-cart-checkout">Go to Job Dashboard &raquo;</a></div>
+                        <div class="col-sm-12 text-center"><hr><a href="{{ route('job-board', @$job->id) }}" class="btn btn-line btn-cart-checkout">Go to Job Dashboard &raquo;</a></div>
 
                         @else
 

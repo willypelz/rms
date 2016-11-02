@@ -24,12 +24,13 @@ use App\Libraries\Solr;
 use App\Libraries\Utilities;
 use Carbon\Carbon;
 use DB;
-use Alchemy\Zippy\Zippy;
 use Crypt;
 use CvSalesController;
 use File;
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
+use App\Jobs\UploadZipCv;
+use Alchemy\Zippy\Zippy;
 // use Zipper;
 
 class JobsController extends Controller
@@ -348,7 +349,7 @@ class JobsController extends Controller
     }
 
      public function UploadCVfile( Request $request ){
-        $zippy = Zippy::load();
+        
         
 
           // $zipper = new Zipper;
@@ -375,33 +376,73 @@ class JobsController extends Controller
                 //return redirect()->back()->withErrors($validator)->withInput();
             }
             else
-            {dd("stop here");
-
-                $filename = Auth::user()->id."_".get_current_company()->id."_".time()."_".$request->file('cv-upload-file')->getClientOriginalName();
+            {
+                $randomName = Auth::user()->id."_".get_current_company()->id."_".time()."_";
+                $filename = $randomName.$request->file('cv-upload-file')->getClientOriginalName();
                 
                 $mimeType = $request->file('cv-upload-file')->getMimeType(); 
                 
                 $upload = $request->file('cv-upload-file')->move(
-                        public_path('uploads/'), $filename
+                        public_path('uploads/CVs/'), $filename
                     );
 
 
                 if( $mimeType == 'application/zip')
                 {
-                  $archive = $zippy->open('uploads/'.$filename);
-                  //$archive->extract('/tmp');
-                  
-                  // Iterate through members
-                  // foreach ($archive as $member) {
-                  //     echo "Archive contains $member" . PHP_EOL;
-                  // }
-                  return [ 'status' => 1 ,'data' => "We found ".count( $archive )." files. You will be notified when download is complete" ];
+                    // $this->dispatch(new UploadZipCv($filename, $randomName));
+                    // 
+                    
+                    $zippy = Zippy::load();
+        
+                    //Open File
+                      $archive = $zippy->open( public_path('uploads/CVs/') .$filename);
+
+                      //Create temporary directory
+                      $tempDir = public_path('uploads/CVs/').$randomName. '/';
+                      mkdir( $tempDir );
+
+                      //Extract zip contents to temporary directory
+                      $archive->extract( $tempDir );
+
+                      //Delete Zip file
+                      unlink(public_path('uploads/CVs/') .$filename);
+
+                      //Instantiate Cv files array
+                      $cvs = [];
+
+                      $files = scandir($tempDir);
+                    foreach($files as $key => $file) {
+                       if(is_file( $tempDir . $file ))
+                       {
+                            $cv = $key."_".$randomName.$file;
+                            $cvs[] = $cv;
+                            // move_uploaded_file($tempDir . $file, $cv);
+                            rename($tempDir . $file, public_path('uploads/CVs/').$cv);
+                            echo $tempDir . $file. " is a file <br/>";
+                       }
+                       else
+                       {
+                        echo $tempDir . $file." is not a file <br/>";
+                       }
+                    }
+
+                    //Delete Temporary directory
+                    rrmdir($tempDir);
+
+                    
+
+                  // return [ 'status' => 1 ,'data' => "You will receive email notification once successfully uploaded" ];
                 }
                 else
                 {
-                  return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
+                    $cvs = [$filename]
+                    return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
                 }
+
+                //Save CVs to user
                 
+                
+                return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
             }
 
        

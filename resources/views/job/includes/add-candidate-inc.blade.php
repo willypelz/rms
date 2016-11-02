@@ -8,10 +8,12 @@
                 <div class="col-sm-12">
 
                 @if(!empty($job)) 
+                    <h1 class="text-center"><i class="fa fa-database"></i></h1>
                     <h4 class="text-center">Bring in the Databases! </h4>
                     <!-- <p class="text-center"> You can find candidates from our massive database of professionals OR from your own database.</p><hr> -->
                 @else
-                    <h4 class="text-center">Add Candidates to your Talent Pool</h4>
+                    <h1 class="text-center"><i class="fa fa-user-plus"></i></h1>
+                    <h4 class="text-center text-green strong">Add Candidates to your Talent Pool</h4>
 
 
                 @endif    
@@ -33,12 +35,33 @@
                             {!! csrf_field() !!}
 
                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <select class="form-control">
-                                    <option value=""></option>
+
+                            <div class="btn-group" data-toggle="buttons">
+
+                              <label class="btn btn-line">
+                                <input type="radio" name="options" id="option2" autocomplete="off"> Upload to Folder
+                              </label>
+
+                              <label class="btn btn-line">
+                                <input type="radio" name="options" id="option3" autocomplete="off"> Upload to a Job
+                              </label>
+                            </div>
+                            <br><br>
+                                
+                                <select class="form-control job-opt collapse">
+                                    <option value="">Select Job</option>
 
                                     @foreach( $myJobs as $job )
                                         <option value="{{ $job['id'] }}">{{ $job['title'] }}</option>
                                     @endforeach
+                                </select>
+
+                                <select class="form-control folder-opt collapse">
+                                    <option value="">Select Folder</option>
+
+                                    <!-- @foreach( $myJobs as $job )
+                                        <option value="{{ $job['id'] }}">{{ $job['title'] }}</option>
+                                    @endforeach -->
                                 </select>
                                 
                                 @if ($errors->has('email'))
@@ -47,21 +70,25 @@
                                     </span>
                                 @endif
                             </div>
+                            
+                            <div id="inputer-opt" class="collapse">
 
-                            <div class="form-group fileinput fileinput-new input-group" data-provides="fileinput">
-                              <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                <div class="form-group fileinput fileinput-new input-group" data-provides="fileinput">
+                                  <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
 
-                              <span class="input-group-addon btn btn-primary btn-file text-white"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
-                                <input type="file" name="cv-upload-file" placeholder="zip" multiple="multiple" accept=".zip,.pdf,.doc,.docx,.txt,.rtf,.pptx,.ppt">
-                              </span>
-                              <a href="#" class="input-group-addon  fileinput-exists btn btn-danger" style="    background-color: #d9534f; color:white;" data-dismiss="fileinput">Remove</a>
-                              
-                            </div><br>
-                            <small style="margin-top: -20px;display: block;">*Allowed extensions are .zip, .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt</small><br>
+                                  <span class="input-group-addon btn btn-primary btn-file text-white"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                                    <input type="file" name="cv-upload-file" placeholder="zip" multiple="multiple" accept=".zip,.pdf,.doc,.docx,.txt,.rtf,.pptx,.ppt">
+                                  </span>
+                                  <a href="#" class="input-group-addon  fileinput-exists btn btn-danger" style="    background-color: #d9534f; color:white;" data-dismiss="fileinput">Remove</a>
+                                  
+                                </div><br>
+                                <small style="margin-top: -20px;display: block;">*Allowed extensions are .zip, .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt</small><br>
 
-                            <button type="submit" class="btn btn-success text-capitalize">
-                                    <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Import file</span>
-                            </button>
+                                <button type="submit" class="btn btn-success text-capitalize">
+                                        <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Import file</span>
+                                </button>
+
+                            </div>
                         </form>
 
                         <div id="funcMsg" class="text text-successs"></div>

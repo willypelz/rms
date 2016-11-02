@@ -39,11 +39,10 @@
                                         <span class="caret"></span>
                                       </button>
                                       <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                        <li><a href="#">Anything downloadable</a></li>
-                                        <li><a href="#">Another action</a></li>
-                                        <li><a href="#">Something else here</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="#">Separated link</a></li>
+                                        <li><a href="javscript://" id="downSpreadsheet">Spreadsheet</a></li>
+                                        <li><a href="javscript://">CVs</a></li>
+                                        <!-- <li role="separator" class="divider"></li>
+                                        <li><a href="#">Separated link</a></li> -->
                                       </ul>
                                     </div>
                                 </div>
@@ -122,11 +121,25 @@
                             </div>
                         </div>
                         <!-- <p class="small text-muted"><strong>Download Spreadsheet view.</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p> -->
-                        <a href="javascript://" class="btn btn-line btn-block" style="" id="downSpreadsheet">
+                        <a data-toggle="modal" data-target="#addCandidateModal" id="modalButton" href="#addCandidateModal" class="btn btn-line btn-block"  >
                             
                             <i class="fa fa-cloud-upload"></i>
                             &nbsp; Upload CV to this Job
                         </a>
+
+                        <div class="modal widemodal fade" id="addCandidateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+                          <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="margin: 18px;">×</button>
+                                <h4 class="modal-title" id="myModalLabel">Upload Cvs to your talent pool</h4>
+                              </div>
+                              <div class="modal-body">
+                                @include('job.includes.add-candidate-inc')
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                         <a href="javascript://" class="btn btn-line btn-block disabled" style="display:none;" disabled id="genSpreadsheet">
                             <i class="fa fa-spin fa-refresh"></i>
                             &nbsp; Generating Spreadsheet

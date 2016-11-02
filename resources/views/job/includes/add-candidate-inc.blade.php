@@ -34,8 +34,6 @@
 
                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                 <select class="form-control">
-                                    <option value=""></option>
-
                                     @foreach( $myJobs as $job )
                                         <option value="{{ $job['id'] }}">{{ $job['title'] }}</option>
                                     @endforeach

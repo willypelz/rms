@@ -189,10 +189,11 @@ class JobApplicationsController extends Controller
         // dd($result);
 
         $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $result['response']['numFound'], 'type'=>$request->status, 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();    
+        $myJobs = Job::getMyJobs();
 
         if($request->ajax())
         {
-            $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab', 'status', 'result','jobID','start'))->render();    
+            $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab', 'status', 'result','jobID','start','myJobs'))->render();    
             $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query, 'status' => $status, 'age' => @$request->age,'exp_years' => @$request->exp_years ])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing, 'count' => $result['response']['numFound'] ] );
             
@@ -201,7 +202,7 @@ class JobApplicationsController extends Controller
             $age = [ 5, 85 ];
             $exp_years = [ 0, 60 ];
             $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
-            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','showing'));
+            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','showing','myJobs'));
         }
 
         

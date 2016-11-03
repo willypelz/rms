@@ -435,7 +435,7 @@ class JobsController extends Controller
                 }
                 else
                 {
-                    $cvs = [$filename]
+                    $cvs = [$filename];
                     return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
                 }
 

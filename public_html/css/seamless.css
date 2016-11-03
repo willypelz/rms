@@ -860,8 +860,11 @@ h3.brand-title {
     font-size: 14px;
 }
 .panel-title a, .panel-title a:hover {
-    color: #5CB85C;
+    /* color: #5CB85C;
+    text-decoration: none; */
+    color: #10588a;
     text-decoration: none;
+    font-size: 15px;
 }
 .panel-heading {
     padding: 15px;

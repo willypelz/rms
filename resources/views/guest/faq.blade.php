@@ -9,7 +9,7 @@
 
             <div class="text-center text-white">
                 <i class="fa fa-4x fa-question-circle"></i>
-                <h2>Your Question Answered</h2>
+                <h2>Your Question(s) Answered</h2>
             </div>
 
         </div>
@@ -21,7 +21,8 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2">
                 <h5 class="text-center">
-                    Click on any of the questions here; the corresponding answer will be displayed immediately below it. If you don't find the answer(s) you seek, kindly <a href="contact">send us a message here</a>, we'll be happy to answer you directly.
+                    Click on any of the following questions. The corresponding answer will be displayed immediately below it.
+If you however don’t find the answers you seek, kindly <a href="contact">send us a message here</a>. We’ll be happy to answer you directly.
                 </h5>
                 <br>
                     <span class="faq-section">

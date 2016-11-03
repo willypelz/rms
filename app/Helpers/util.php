@@ -154,7 +154,7 @@ use App\Models\Job;
 	function remove_cv_contact($cv) {
 
 		$states = array('Abia','Abuja','Anambra','Adamawa','Akwa Ibom','Bauchi','Bayelsa','Benue','Borno','Cross River','Delta','Edo','Ekiti','Ebonyi','Enugu','Gombe','Imo','Kano','Lagos','Nassarawa','Jigawa','Kebbi','Kaduna','Kogi','Katsina','Kwara','Niger','Ogun','Ondo','Osun','Oyo','Plateau','Rivers','Sokoto','Taraba','Yobe','Zamfara');
-		$states = array_merge($states, ["Avenue", "Close", "Estate", "District", "Post Office", "Crescent", "Street"] )
+		$states = array_merge($states, ["Avenue", "Close", "Estate", "District", "Post Office", "Crescent", "Street"] );
 		$extaracted_content = $cv['extracted_content'][0];
 	    // remove email
 	    $extaracted_content = preg_replace('/([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)/','*****@****.***',$extaracted_content);

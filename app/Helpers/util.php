@@ -153,6 +153,8 @@ use App\Models\Job;
 
 	function remove_cv_contact($cv) {
 
+		$states = array('Abia','Abuja','Anambra','Adamawa','Akwa Ibom','Bauchi','Bayelsa','Benue','Borno','Cross River','Delta','Edo','Ekiti','Ebonyi','Enugu','Gombe','Imo','Kano','Lagos','Nassarawa','Jigawa','Kebbi','Kaduna','Kogi','Katsina','Kwara','Niger','Ogun','Ondo','Osun','Oyo','Plateau','Rivers','Sokoto','Taraba','Yobe','Zamfara');
+
 		$extaracted_content = $cv['extracted_content'][0];
 	    // remove email
 	    $extaracted_content = preg_replace('/([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)/','*****@****.***',$extaracted_content);
@@ -162,10 +164,15 @@ use App\Models\Job;
 	    // '/([+]?[0-9]+[\- ]?[0-9]+)/'
 
 	    //remove Firstname
-	    $extaracted_content = preg_replace('/'.$cv['first_name'].'([ \,\.]+)/i', '', $extaracted_content);
+	    // $extaracted_content = preg_replace('/'.$cv['first_name'].'([ \,\.]+)/i', '', $extaracted_content);
+
+	    $extaracted_content = preg_replace('/^.*' . '(?:' . preg_replace('/\s/', '|', $cv['first_name']) . ')' .'.*$(?:\r\n|\n)?/im', '', $extaracted_content);
 
 	    //remove Lastname
-	    $extaracted_content = preg_replace('/'.$cv['last_name'].'([ \,\.]+)/i', '', $extaracted_content);
+	    $extaracted_content = preg_replace('/^.*' . '(?:' . preg_replace('/\s/', '|', $cv['last_name']) . ')' .'.*$(?:\r\n|\n)?/im', '', $extaracted_content);
+
+	    //Remove address
+	    $extaracted_content = preg_replace('/^.*' . '(?:' . implode('|', $states) . ')' .'.*$(?:\r\n|\n)?/im', '', $extaracted_content);
 
 	    return $extaracted_content;
 	}

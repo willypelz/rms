@@ -30,6 +30,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="general_appearance" id="general_appearance">
+                    <option value></option>
                     <option value="1" @if( @$note->general_appearance == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->general_appearance == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->general_appearance == 3) selected="selected" @endif>Fair</option>
@@ -54,6 +55,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="educational_background" id="educational_background">
+                    <option value></option>
                     <option value="1" @if( @$note->educational_background == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->educational_background == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->educational_background == 3) selected="selected" @endif>Fair</option>
@@ -78,6 +80,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="prior_work_experience" id="prior_work_experience">
+                    <option value></option>
                     <option value="1" @if( @$note->prior_work_experience == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->prior_work_experience == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->prior_work_experience == 3) selected="selected" @endif>Fair</option>
@@ -103,6 +106,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="professional_qualifications" id="professional_qualifications">
+                    <option value></option>
                     <option value="1" @if( @$note->professional_qualifications == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->professional_qualifications == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->professional_qualifications == 3) selected="selected" @endif>Fair</option>
@@ -127,6 +131,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="verbal_communication" id="verbal_communication">
+                    <option value></option>
                     <option value="1" @if( @$note->verbal_communication == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->verbal_communication == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->verbal_communication == 3) selected="selected" @endif>Fair</option>
@@ -151,6 +156,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="candidate_enthusiasm" id="candidate_enthusiasm">
+                    <option value></option>
                     <option value="1" @if( @$note->candidate_enthusiasm == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->candidate_enthusiasm == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->candidate_enthusiasm == 3) selected="selected" @endif>Fair</option>
@@ -175,6 +181,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="relevant_experience" id="relevant_experience">
+                    <option value></option>
                     <option value="1" @if( @$note->relevant_experience == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->relevant_experience == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->relevant_experience == 3) selected="selected" @endif>Fair</option>
@@ -199,6 +206,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="career_progression" id="career_progression">
+                    <option value></option>
                     <option value="1" @if( @$note->career_progression == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->career_progression == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->career_progression == 3) selected="selected" @endif>Fair</option>
@@ -223,6 +231,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="initiative" id="initiative">
+                    <option value></option>
                     <option value="1" @if( @$note->initiative == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->initiative == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->initiative == 3) selected="selected" @endif>Fair</option>
@@ -247,6 +256,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="time_management" id="time_management">
+                    <option value></option>
                     <option value="1" @if( @$note->time_management == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->time_management == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->time_management == 3) selected="selected" @endif>Fair</option>
@@ -271,6 +281,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="customer_service_orientation" id="customer_service_orientation">
+                    <option value></option>
                     <option value="1" @if( @$note->customer_service_orientation == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->customer_service_orientation == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->customer_service_orientation == 3) selected="selected" @endif>Fair</option>
@@ -295,6 +306,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="technology_enablement" id="technology_enablement">
+                    <option value></option>
                     <option value="1" @if( @$note->technology_enablement == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->technology_enablement == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->technology_enablement == 3) selected="selected" @endif>Fair</option>
@@ -319,6 +331,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="brand_projection" id="brand_projection">
+                    <option value></option>
                     <option value="1" @if( @$note->brand_projection == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->brand_projection == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->brand_projection == 3) selected="selected" @endif>Fair</option>
@@ -343,6 +356,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="intellectual_capacity" id="intellectual_capacity">
+                    <option value></option>
                     <option value="1" @if( @$note->intellectual_capacity == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->intellectual_capacity == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->intellectual_capacity == 3) selected="selected" @endif>Fair</option>
@@ -367,6 +381,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="reasoning" id="reasoning">
+                    <option value></option>
                     <option value="1" @if( @$note->reasoning == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->reasoning == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->reasoning == 3) selected="selected" @endif>Fair</option>
@@ -391,6 +406,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="general_knowledge" id="general_knowledge">
+                    <option value></option>
                     <option value="1" @if( @$note->general_knowledge == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->general_knowledge == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->general_knowledge == 3) selected="selected" @endif>Fair</option>
@@ -415,6 +431,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="knowledge_of_industry" id="knowledge_of_industry">
+                    <option value></option>
                     <option value="1" @if( @$note->knowledge_of_industry == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->knowledge_of_industry == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->knowledge_of_industry == 3) selected="selected" @endif>Fair</option>
@@ -439,6 +456,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="quantitative_capacity" id="quantitative_capacity">
+                    <option value></option>
                     <option value="1" @if( @$note->quantitative_capacity == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->quantitative_capacity == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->quantitative_capacity == 3) selected="selected" @endif>Fair</option>
@@ -463,6 +481,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="attitude_to_issues" id="attitude_to_issues">
+                    <option value></option>
                     <option value="1" @if( @$note->attitude_to_issues == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->attitude_to_issues == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->attitude_to_issues == 3) selected="selected" @endif>Fair</option>
@@ -487,6 +506,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="predesposition_to_training" id="predesposition_to_training">
+                    <option value></option>
                     <option value="1" @if( @$note->predesposition_to_training == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->predesposition_to_training == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->predesposition_to_training == 3) selected="selected" @endif>Fair</option>
@@ -511,6 +531,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="learning_skills" id="learning_skills">
+                    <option value></option>
                     <option value="1" @if( @$note->learning_skills == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->learning_skills == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->learning_skills == 3) selected="selected" @endif>Fair</option>
@@ -535,6 +556,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="verbal_skills" id="verbal_skills">
+                    <option value></option>
                     <option value="1" @if( @$note->verbal_skills == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->verbal_skills == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->verbal_skills == 3) selected="selected" @endif>Fair</option>
@@ -559,6 +581,7 @@
                 
                 <div class="col-sm-5">
                   <select id="rating" name="career_focus" id="career_focus">
+                    <option value></option>
                     <option value="1" @if( @$note->career_focus == 1) selected="selected" @endif>Very Poor</option>
                     <option value="2" @if( @$note->career_focus == 2) selected="selected" @endif>Poor</option>
                     <option value="3" @if( @$note->career_focus == 3) selected="selected" @endif>Fair</option>

@@ -165,6 +165,42 @@
                 <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
               @endif
               <p></p>
+
+
+              @if( @$page != 'search' )
+
+
+
+
+               <p class="border-bottom-thin text-muted">Cv Source<i class="fa fa-filter pull-right"></i></p>
+              <div class="checkbox-inline">
+                  {{--*/ $other_highest_qualificationl = 0  /*--}}
+                  {{--*/ $index = 0  /*--}}
+                  @foreach( $result['facet_counts']['facet_fields']['cv_source'] as $key => $cv_source )
+                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ] != 0 &&  $cv_source != ''  && $cv_source != "0"  )
+                        
+                        {{--*/ $index++  /*--}}
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="cv_source" data-value="{{ $cv_source }}"> {{ ucwords( $cv_source )." (".$result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ].")" }}</label> <br></div>
+                      @else
+
+                        {{--*/ @$other_highest_qualification += $result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ] /*--}}
+
+                      @endif
+                  @endforeach
+
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_highest_qualification.")" }}</label> <br></div>
+              </div>
+              
+              @if($index > 4)
+                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+              @endif
+
+            <p></p>
+
+
+
+
+              @endif
               
 
 

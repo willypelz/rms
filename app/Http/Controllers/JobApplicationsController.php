@@ -26,6 +26,7 @@ use App;
 use PDF;
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
+use Alchemy\Zippy\Zippy;
 
 
 class JobApplicationsController extends Controller
@@ -352,6 +353,77 @@ class JobApplicationsController extends Controller
             });
         })->download('xlsx');
 
+    }
+
+    public function downloadApplicantCv(Request $request)
+    {
+        //Check if you should have access to the excel
+        check_if_job_owner( $request->jobId ) ;
+
+        $job = Job::find($request->jobId);
+
+        // dd( $job );
+
+        $this->search_params['filter_query'] = @$request->filter_query;
+        $this->search_params['row'] = 2147483647;
+
+
+        //If age is available
+        if( @$request->age ){
+            $date = Carbon::now();
+            //2015-09-16T00:00:00Z
+             $start_dob = explode(' ', $date->subYears( @$request->age[0] ) )[0] .'T23:59:59Z'; 
+            $end_dob = explode(' ', $date->subYears( @$request->age[1] ) )[0] .'T00:00:00Z';
+
+            $solr_age = [ $start_dob, $end_dob ];
+            // dd($request->age, $start_dob, $end_dob);
+        }
+        else
+        {
+            $request->age = [ 15, 65 ];
+            $solr_age = null;
+        }
+
+
+        //If years of experience is available
+        if( @$request->exp_years ){
+            //2015-09-16T00:00:00Z
+
+            $solr_exp_years = [ @$request->exp_years[0], @$request->exp_years[1] ];
+        }
+        else
+        {
+            $request->exp_years = [ 0, 40 ];
+            $solr_exp_years = null;
+        }
+
+        $result = Solr::get_applicants($this->search_params, $request->jobId,@$request->status,@$solr_age, @$solr_exp_years); 
+
+        $data = $result['response']['docs'];
+        $other_data = [
+
+                    'company' => get_current_company()->name,
+                    'user' => Auth::user()->name,
+                    'job_title' => $job->title,
+        ];
+
+        $zippy = Zippy::load();
+        $path = public_path('uploads/CVs/');
+        // $archive = $zippy->create(  $path.'archive.zip');
+        $cvs = array_pluck($data ,'cv_file');
+
+
+        array_map(function($cv){
+            return  public_path('uploads/CVs/').$cv;
+        }, $cvs);
+        // $archive->addMembers(array(
+        //         '/path/to/file',
+        //         '/path/to/file2',
+        //         '/path/to/dir'
+        //     ),
+        //     $recursive = false
+        // );
+        dd($cvs,$cvs2);
     }
 
     public function massAction( Request $request )

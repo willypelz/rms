@@ -408,22 +408,26 @@ class JobApplicationsController extends Controller
                     'job_title' => $job->title,
         ];
 
-        $zippy = Zippy::load();
-        // $zippy = ZipExtensionAdapter::newInstance();
-        $path = public_path('uploads/CVs/');
+        // $zippy = Zippy::load();
+
+        $path = public_path('uploads/tmp/');
 
         $filename = Auth::user()->id."_".get_current_company()->id."_".time().".zip";
-        $archive = $zippy->create(  $path.$filename);
+        //$archive = $zippy->create(  $path.$filename );
 
         $cvs = array_pluck($data ,'cv_file');
 
 
         $cvs = array_map(function($cv){
-            return  public_path('uploads/CVs/').$cv;
+            return  public_path('uploads/tmp/').$cv;
         }, $cvs);
 
-        $archive->addMembers($cvs, $recursive = false );
+        //$archive->addMembers($cvs, $recursive = false );
 
+        $zipper = new \Chumper\Zipper\Zipper;
+        $zipper->make( $path.$filename )->add($cvs);
+
+        return Response::download($path.$filename, 'Cv.zip', ['Content-Type' => 'application/octet-stream']);
 
     }
 

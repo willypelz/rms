@@ -419,7 +419,7 @@ class JobApplicationsController extends Controller
 
 
         $cvs = array_map(function($cv){
-            return  public_path('uploads/tmp/').$cv;
+            return  public_path('uploads/CVs/').$cv;
         }, $cvs);
 
         //$archive->addMembers($cvs, $recursive = false );

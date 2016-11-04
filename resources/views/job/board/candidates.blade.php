@@ -40,7 +40,7 @@
                                       </button>
                                       <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                         <li><a href="javscript://" id="downSpreadsheet">Spreadsheet</a></li>
-                                        <li><a href="javscript://">CVs</a></li>
+                                        <li><a href="javscript://" id="downCv">CVs</a></li>
                                         <!-- <li role="separator" class="divider"></li>
                                         <li><a href="#">Separated link</a></li> -->
                                       </ul>
@@ -583,23 +583,41 @@ $(document).getShowing();
 });
 
 });
-$('body').on('click', '#downSpreadsheet', function(){
-// $('#downSpreadsheet').hide();
-// $('#genSpreadsheet').show();
-$data = {search_query: $('#search_query').val(), filter_query : filters, status : status_filter , jobId : "{{ $jobID }}", age: age_range, exp_years : exp_years_range };
-window.open("{{ route('download-applicant-spreadsheet') }}" + "?" + $.param( $data ), '_blank');
-// window.open("{{ route('download-applicant-spreadsheet'," + $('#search_query').val() + "," + filters + "," + status_filter + ") }}", '_blank');
-/*$.get("{{ route('download-applicant-spreadsheet') }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
-//console.log(response);
-// var response = JSON.parse(data);
-// console.log(data.search_results);
-$('#genSpreadsheet').hide();
-$('#downSpreadsheet').show();
-console.log(data);
-window.open('google.com', '_blank');
+    $('body').on('click', '#downSpreadsheet', function(){
+        // $('#downSpreadsheet').hide();
+        // $('#genSpreadsheet').show();
+        $data = {search_query: $('#search_query').val(), filter_query : filters, status : status_filter , jobId : "{{ $jobID }}", age: age_range, exp_years : exp_years_range };
+        window.open("{{ route('download-applicant-spreadsheet') }}" + "?" + $.param( $data ), '_blank');
+        // window.open("{{ route('download-applicant-spreadsheet'," + $('#search_query').val() + "," + filters + "," + status_filter + ") }}", '_blank');
+        /*$.get("{{ route('download-applicant-spreadsheet') }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
+        //console.log(response);
+        // var response = JSON.parse(data);
+        // console.log(data.search_results);
+        $('#genSpreadsheet').hide();
+        $('#downSpreadsheet').show();
+        console.log(data);
+        window.open('google.com', '_blank');
 
-});*/
-});
+        });*/
+    });
+
+    $('body').on('click', '#downCv', function(){
+        // $('#downSpreadsheet').hide();
+        // $('#genSpreadsheet').show();
+        $data = {search_query: $('#search_query').val(), filter_query : filters, status : status_filter , jobId : "{{ $jobID }}", age: age_range, exp_years : exp_years_range };
+        window.open("{{ route('download-applicant-cv') }}" + "?" + $.param( $data ), '_blank');
+        // window.open("{{ route('download-applicant-spreadsheet'," + $('#search_query').val() + "," + filters + "," + status_filter + ") }}", '_blank');
+        /*$.get("{{ route('download-applicant-spreadsheet') }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
+        //console.log(response);
+        // var response = JSON.parse(data);
+        // console.log(data.search_results);
+        $('#genSpreadsheet').hide();
+        $('#downSpreadsheet').show();
+        console.log(data);
+        window.open('google.com', '_blank');
+
+        });*/
+    });
 });
 </script>
 @endsection

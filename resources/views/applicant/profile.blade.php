@@ -5,7 +5,7 @@
     <style type="text/css">
         #cv-content .container{ width: 100% !important; }
         #cv-content .view, #cv-content .row{ width: 100% !important; padding: 0 !important; margin: 0px !important; }
-        .close{ display: none; }
+        #cv-content .close{ display: none; }
     </style>
 
     @include('applicant.includes.job-title-bar')

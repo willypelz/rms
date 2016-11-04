@@ -175,7 +175,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
         box-shadow: inset 0px 3px 3px #969696;
 }
 .btn-group-justified.btn-dash{
-    margin-bottom:15px;
+    margin:0 0 5px;
 }
 .btn-group-justified.btn-dash >.btn-group .btn {
     width: 100%;
@@ -2778,7 +2778,7 @@ label.normal{
     /* box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.33); */
 }
 .tweak .border-bottom-thin img{
-    border: 3px solid #F1F1F1;
+    border: 10px solid #10588a;
 }
 .tweak.panel-default > .panel-heading {
     background: #839aa9;

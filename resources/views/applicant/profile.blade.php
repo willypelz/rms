@@ -28,11 +28,8 @@
                     
                     @include('applicant.includes.nav')
 
-                     
 
-
-
-                    <div class="tab-content" id="cv-content">
+                    <div class="tab-content no-pad" id="cv-content">
 
                     {!! preloader() !!}
                         

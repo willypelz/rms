@@ -1,7 +1,7 @@
 <style>
     .container{}
 </style>
-<ul class="nav nav-tabs ">
+<ul class="nav nav-tabs">
     <li  @if($nav_type=='profile')class="active"@endif ><a href="{{ route('applicant-profile',  $appl->id) }}">CV</a>
     </li>
     <li  @if($nav_type=='activities')class="active"@endif ><a href="{{ route('applicant-activities',  $appl->id) }}">Activities</a>

@@ -26,6 +26,8 @@ use App;
 use PDF;
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
+use Alchemy\Zippy\Zippy;
+use Alchemy\Zippy\Adapter\ZipExtensionAdapter;
 
 
 class JobApplicationsController extends Controller
@@ -351,6 +353,81 @@ class JobApplicationsController extends Controller
                 
             });
         })->download('xlsx');
+
+    }
+
+    public function downloadApplicantCv(Request $request)
+    {
+        //Check if you should have access to the excel
+        check_if_job_owner( $request->jobId ) ;
+
+        $job = Job::find($request->jobId);
+
+        // dd( $job );
+
+        $this->search_params['filter_query'] = @$request->filter_query;
+        $this->search_params['row'] = 2147483647;
+
+
+        //If age is available
+        if( @$request->age ){
+            $date = Carbon::now();
+            //2015-09-16T00:00:00Z
+             $start_dob = explode(' ', $date->subYears( @$request->age[0] ) )[0] .'T23:59:59Z'; 
+            $end_dob = explode(' ', $date->subYears( @$request->age[1] ) )[0] .'T00:00:00Z';
+
+            $solr_age = [ $start_dob, $end_dob ];
+            // dd($request->age, $start_dob, $end_dob);
+        }
+        else
+        {
+            $request->age = [ 15, 65 ];
+            $solr_age = null;
+        }
+
+
+        //If years of experience is available
+        if( @$request->exp_years ){
+            //2015-09-16T00:00:00Z
+
+            $solr_exp_years = [ @$request->exp_years[0], @$request->exp_years[1] ];
+        }
+        else
+        {
+            $request->exp_years = [ 0, 40 ];
+            $solr_exp_years = null;
+        }
+
+        $result = Solr::get_applicants($this->search_params, $request->jobId,@$request->status,@$solr_age, @$solr_exp_years); 
+
+        $data = $result['response']['docs'];
+        $other_data = [
+
+                    'company' => get_current_company()->name,
+                    'user' => Auth::user()->name,
+                    'job_title' => $job->title,
+        ];
+
+        // $zippy = Zippy::load();
+
+        $path = public_path('uploads/tmp/');
+
+        $filename = Auth::user()->id."_".get_current_company()->id."_".time().".zip";
+        //$archive = $zippy->create(  $path.$filename );
+
+        $cvs = array_pluck($data ,'cv_file');
+
+
+        $cvs = array_map(function($cv){
+            return  public_path('uploads/CVs/').$cv;
+        }, $cvs);
+
+        //$archive->addMembers($cvs, $recursive = false );
+
+        $zipper = new \Chumper\Zipper\Zipper;
+        $zipper->make( $path.$filename )->add($cvs);
+
+        return Response::download($path.$filename, 'Cv.zip', ['Content-Type' => 'application/octet-stream']);
 
     }
 

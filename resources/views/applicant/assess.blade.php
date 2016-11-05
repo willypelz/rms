@@ -41,7 +41,7 @@
                                 <h3 class="panel-title">Requested Assesment(s)</h3>
                             </div>
                             @else
-                                <em>No Assesments has been requested for {{ $appl->cv->first_name }}.</em>
+                                <div class="alert alert-warning">No Assesments has been requested for {{ $appl->cv->first_name }}. <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Test" data-view="{{ route('modal-assess') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide">Assess Candidate</a></div>
                             @endif
 
                             @foreach($requests as $req)

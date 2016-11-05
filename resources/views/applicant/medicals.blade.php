@@ -41,7 +41,7 @@
                                 <h3 class="panel-title">Requested Medical Check(s)</h3>
                             </div>
                             @else
-                                <em>No Medical checks has been requested for {{ $appl->cv->first_name }}.</em>
+                                <div class="alert alert-warning">No Medical checks has been requested for {{ $appl->cv->first_name }}. <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Medical Check" data-view="{{ route('modal-medical-check') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide"><i class="fa fa-plus"></i> Request Medical Check</a></div>
                             @endif
 
                             @foreach($requests as $req)

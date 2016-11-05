@@ -44,7 +44,7 @@
                                 <h3 class="panel-title">Requested Background Check(s)</h3>
                             </div>
                             @else
-                                <em>No Background checks has been requested for {{ $appl->cv->first_name }}.</em>
+                                <div class="alert alert-warning">No Background checks has been requested for {{ $appl->cv->first_name }}. <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Background Check" data-view="{{ route('modal-background-check') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide"> <i class="fa fa-plus"></i> Request Now</a></div>
                             @endif
 
                             @foreach($requests as $req)

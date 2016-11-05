@@ -48,7 +48,7 @@
 																		<hr style="border-width:0 0 1px">
 																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">Getting Started
 																		<br>
-																		What woould you like to do first?
+																		What would you like to do first?
 																		</p>
 																		<hr style="border-width:0 0 1px">
 																		<div style="color:#2d2d2d;padding-bottom:25px;border-bottom-color:#cecece;border-bottom-width:1px;border-bottom-style:none">

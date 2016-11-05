@@ -393,6 +393,7 @@ class JobsController extends Controller
                     // 
                     
                     $zippy = Zippy::load();
+                    
         
                     //Open File
                       $archive = $zippy->open( public_path('uploads/CVs/') .$filename);

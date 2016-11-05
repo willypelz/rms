@@ -3,19 +3,19 @@
 @section('content')
 
 
-<div class="container text-brandon text-uppercase h5 separator separator-small" style=""><i class="fa fa-tachometer"></i> Your Dashboard</div>
+<!-- <div class="container text-brandon text-uppercase h5 separator separator-small" style=""><i class="fa fa-tachometer"></i> Your Dashboard</div> -->
 
-    <section class="no-pad">
-        <div class="container">
-            <div class="row">
-
-                <div class="col-sm-12 ">
+<section class="s-div">
+  <div class="container">
+    <div class="row">
+      
+                <div class="col-sm-12 "><br>
 
                         <div class=" btn-group-justified btn-dash" role="group" aria-label="...">
                           <div class="btn-group" role="group">
                             <a href="{{ route('post-job') }}" type="button" class="btn btn-success text-capitalize in">
 
-                            <span class="fa-lg"><i class="fa fa-tachometer"></i>
+                            <span class="fa-lg"><i class="fa fa-briefcase"></i>
                             <span class="hidden-xs text-brandon"> Post a Job</span><br></span>
                             <small class="text-white hidden-xs">Broadcast Jobs everywhere</small>
                             </a>
@@ -43,6 +43,14 @@
                           </div> -->
                         </div>
                 </div>
+                <div class="clearfix"></div>
+    </div>
+  </div>
+</section>
+<br>
+    <section class="no-pad">
+        <div class="container">
+            <div class="row">
 
                 <div class="col-xs-8">
 

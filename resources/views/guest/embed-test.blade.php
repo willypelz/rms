@@ -1,4 +1,4 @@
-<script src="{{ asset('js/embed.js') }}"></script>
+<!-- <script src="{{ asset('js/embed.js') }}"></script>
 <div id="SH_Embed"></div>
 
 
@@ -13,5 +13,8 @@
 
 
 	// container2.html(content);
-</script>
+</script> -->
 <!-- Embed page -->
+<div id="SH_Embed"></div>
+<script src="https://seamlesshiring.com/js/embed.js"></script> 
+<script type="text/javascript"> document.getElementById('SH_Embed').innerHTML = SH_Embed.pull({ key : 'eyJpdiI6IjRDc1wvT3hxK2NCY1RuR3dmc1JFXC9DZz09IiwidmFsdWUiOiIzT1k1ME43RXIwZDBNbHlWXC81bkZlZFNOdDdVN3RNVm1iYXpUbTFVdFhVSnRFWk9NUUNmZlNESlhjQ2pQbFpNTlhlVHJ1akxrcTA3NkdCaWZlSlRMMHc9PSIsIm1hYyI6Ijk5YzAyNTdjZjkyMTdkNDM4YjA1MzVkNzliZDU5MmVmMmQyMjFiMzkyMTM2MDNlOGRiYmMzMDZiZDYxMGEzYjcifQ==' });; </script>

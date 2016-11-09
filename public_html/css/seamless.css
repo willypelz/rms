@@ -434,6 +434,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 section {
     padding: 5em 0;
 }
+section.min{
+    padding: 2em 0 3.5em;
+}
 section.white, .white {
     background: #fff;
 }
@@ -473,6 +476,9 @@ section.s-div.homepage{
     background-size: cover;
     padding: 8em 0 5em;
     /* border-bottom: 5px solid #96b5d0; */
+}
+section.s-div.homepage.pricing{
+    padding: 5em 0 1em;
 }
 section.dark-blue .page {
     background: #1AACC1;
@@ -3018,7 +3024,7 @@ div.baser {
     color: #666;
 }
 .b-db{
-    border-bottom: 3px solid #ccc;
+    /* border-bottom: 3px solid #ccc; */
 }
 .b-db:hover{
     border-bottom: 3px solid #ccc;

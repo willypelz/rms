@@ -42,6 +42,7 @@
             <div class="row">
                 <div class="col-md-10 col-md-offset-1 col-sm-12">
                     <div class="">
+                    <div class="separator separator-small"></div>
                         <section class="job-head blue no-margin">
                         <div class="">
                             <div class="row">
@@ -196,9 +197,9 @@
                                 <!--/tab-content-->
                                 <div class="page page-sm foot no-bod-rad">
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                                        <p><img src="{{ url('/') }}/img/logomark2.png" alt="" width="150px"> </p> 
-                                        <p><small class="text-muted">Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a> &nbsp;
-                                        &copy; 2016. SeamlessHiring</small></p>
+                                        <p><img src="{{ url('/') }}/img/seamlesshiring-logo.png" alt="" width="120px"> </p> 
+                                        <p><small class="text-muted"> &nbsp;
+                                        &copy; 2016. Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a></small></p>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>

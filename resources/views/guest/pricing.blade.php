@@ -3,19 +3,19 @@
 @section('content')
 
 
-  <section class="s-div homepage">
+  <section class="s-div homepage pricing">
         <div class="container">
 
             <div class="row text-center text-brandon text-light text-white">
                 <h1>Get a Free Trial Now!</h1>
-                <h4 class="text-uppercase l-sp-5"> 14 days of Unlimited Access</h4><br>
+                <h5 class="text-uppercase l-sp-5"> 14 days of free and unlimited Access on all plan</h5><br>
             </div>
 
         </div>
     </section>
 
 
-    <section class="white" style="">
+    <section class="white min" style="">
         <div class="container">
             <div class="row">
 
@@ -47,7 +47,7 @@
                                             <!--<li class="list-group-item"> 27/7 support</li>-->
                                         </ul>
                                         <div class="panel-footer">
-                                            <a class="btn btn-lg btn-line " href="{{ url('register') }}">START HERE!</a>
+                                            <a class="btn btn-lg btn-line " href="{{ url('register') }}">BEGIN TRIAL</a>
                                         </div>
                                     </div>
                                 </div>

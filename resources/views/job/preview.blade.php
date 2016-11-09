@@ -153,10 +153,6 @@
                                                 <i class="fa fa-globe"></i> www.britishcouncil.ng
                                             </p>
                                         </div>
-                                        <div class="col-sm-6 col-sm-offset-3 text-center hidden"><!-- <hr> -->
-                                            <p >Powered by <a href="http://www.seamlesshiring.com"><i class="fa fa-skype"></i> SeamlessHiring</a> <br>
-                                            <small class="text-muted">&copy; 2016. SeamlessHiring</small></p>
-                                        </div>
                                         <div class="clearfix"></div>
 
                                     </div>
@@ -179,9 +175,9 @@
                                 <!--/tab-content-->
                                 <div class="page page-sm foot no-bod-rad">
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                                        <p><img src="{{ url('/') }}/img/logomark2.png" alt="" width="150px"> </p> 
-                                        <p><small class="text-muted">Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a> &nbsp;
-                                        &copy; 2016. SeamlessHiring</small></p>
+                                        <p><img src="{{ url('/') }}/img/seamlesshiring-logo.png" alt="" width="120px"> </p> 
+                                        <p><small class="text-muted"> &nbsp;
+                                        &copy; 2016. Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a></small></p>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>

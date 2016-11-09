@@ -27,6 +27,7 @@ use PDF;
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
 use Alchemy\Zippy\Zippy;
+use Alchemy\Zippy\Adapter\ZipExtensionAdapter;
 
 
 class JobApplicationsController extends Controller
@@ -407,23 +408,27 @@ class JobApplicationsController extends Controller
                     'job_title' => $job->title,
         ];
 
-        $zippy = Zippy::load();
-        $path = public_path('uploads/CVs/');
-        // $archive = $zippy->create(  $path.'archive.zip');
+        // $zippy = Zippy::load();
+
+        $path = public_path('uploads/tmp/');
+
+        $filename = Auth::user()->id."_".get_current_company()->id."_".time().".zip";
+        //$archive = $zippy->create(  $path.$filename );
+
         $cvs = array_pluck($data ,'cv_file');
 
 
-        array_map(function($cv){
+        $cvs = array_map(function($cv){
             return  public_path('uploads/CVs/').$cv;
         }, $cvs);
-        // $archive->addMembers(array(
-        //         '/path/to/file',
-        //         '/path/to/file2',
-        //         '/path/to/dir'
-        //     ),
-        //     $recursive = false
-        // );
-        dd($cvs,$cvs2);
+
+        //$archive->addMembers($cvs, $recursive = false );
+
+        $zipper = new \Chumper\Zipper\Zipper;
+        $zipper->make( $path.$filename )->add($cvs);
+
+        return Response::download($path.$filename, 'Cv.zip', ['Content-Type' => 'application/octet-stream']);
+
     }
 
     public function massAction( Request $request )

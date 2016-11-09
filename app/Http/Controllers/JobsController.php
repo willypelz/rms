@@ -393,6 +393,7 @@ class JobsController extends Controller
                     // 
                     
                     $zippy = Zippy::load();
+                    
         
                     //Open File
                       $archive = $zippy->open( public_path('uploads/CVs/') .$filename);
@@ -1512,7 +1513,7 @@ class JobsController extends Controller
     public function getEmbedTest()
     {
         $key = Crypt::encrypt('20~&'.'atolagbemobolaji@gmail.com~&'.'2016-05-27 16:20:10'.'~&13');  
-        dd( $key );
+        // dd( $key );
 
         
         return view('guest.embed-test', compact('key'));

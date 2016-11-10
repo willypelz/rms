@@ -56,19 +56,49 @@
                                     @endforeach
                                 </select>
 
-                                <select class="form-control folder-opt collapse">
-                                    <option value="">Select Folder</option>
+                                <select class="form-control hidden folder-opt-select" name="folder">
+                                    <option value="0">Select Folder</option>
+                                    
 
-                                    <!-- @foreach( $myJobs as $job )
-                                        <option value="{{ $job['id'] }}">{{ $job['title'] }}</option>
-                                    @endforeach -->
+                                    @foreach( $myFolders as $folder )
+                                        <option value="{{ $folder }}">{{ $folder }}</option>
+                                    @endforeach
                                 </select>
+
+                                <div class="btn-group folder-opt" style="display:none;">
+
+                                  <button type="button" class="btn btn-line btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Select Folder
+
+                                     &nbsp; <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu" id="folders" data-folders="{{ @implode( ':', @$cv['company_folder_id'] ) }}" data-cv="{{ @$cv['id'] }}">
+                                    
+
+                                    <li role="separator" class="divider"></li>
+
+                                    <li>
+                                        <a href="javascript://"  onclick="$('#add-folder').show();$('#add-folder').focus();" ><i class="fa fa-plus"></i> Create new</a>
+                                    </li>
+
+
+                                  </ul>
+
+                                    <br><br>
+                                </div> 
                                 
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
+                                <div class="form-group" id="add-folder" style="display:none;">
+                                    <div class="col-xs-6 col-xs-offset-2">
+                                        <input type="text" class="form-control" id="add-folder-field" />
+                                    </div>
+                                    
+                                    <div class="col-xs-2">
+                                        <button class="form-control" id="add-folder-btn" >Add</button>
+                                    </div>
+                                    <br><br>
+                                </div>
+                                
+                                
                             </div>
                             
                             <div id="inputer-opt" class="collapse">
@@ -173,16 +203,51 @@
             {
                 $('.job-opt').hide();
                 $('.folder-opt').show();
+                // $('#add-folder').show();
             }
 
             if( $(this).val() == 'upToJob' )
             {
                 $('.folder-opt').hide();
+                $('#add-folder').hide();
                 $('.job-opt').show();
             }
 
-            $('#inputer-opt').show();
+            
                 
+        });
+
+        $('.job-opt').on('change', function(){
+            if( $(this).val() != '' ){
+                $('#inputer-opt').show();
+            }
+            else
+            {
+                $('#inputer-opt').hide();
+            }
+
+        });
+
+        $('#folders').on('click', 'a#folder-item', function(){
+
+            $('body #folder-selector-mark').remove();
+            $(this).prepend('<i id="folder-selector-mark" class="fa fa-check"></i>');
+            $('.folder-opt-select').val( $(this).text() );
+            $('#inputer-opt').show();
+
+        });
+
+        $('#add-folder-btn').on('click', function(e){
+            e.preventDefault();
+            if( $('#add-folder-field').val() != '' )
+            {
+                // $('#add-folder-btn').val();
+                $('.folder-opt-select').append( '<option selected="selected" value="' + $('#add-folder-field').val() + '">' + $('#add-folder-field').val() + '</option>' );
+                $('#folders').prepend( '<li><a id="folder-item" href="javascript://" >' + $('#add-folder-field').val() + '</a></li>' );
+                $('#add-folder-field').val('');
+                $('#add-folder').hide();
+            }
+            
         });
     });
           

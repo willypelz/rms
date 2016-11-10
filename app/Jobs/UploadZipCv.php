@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
 
 use Alchemy\Zippy\Zippy;
+use App\Models\Settings;
 
 class UploadZipCv extends Job implements SelfHandling, ShouldQueue
 {
@@ -18,15 +19,18 @@ class UploadZipCv extends Job implements SelfHandling, ShouldQueue
 
     private $randomName;
 
+    private $additional_data;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($filename,$randomName)
+    public function __construct($filename, $randomName, $additional_data)
     {
         $this->filename = $filename;
         $this->randomName = $randomName;
+        $this->additional_data = $additional_data;
     }
 
     /**
@@ -36,8 +40,8 @@ class UploadZipCv extends Job implements SelfHandling, ShouldQueue
      */
     public function handle()
     {   
-        dd("fam");
-        /*$zippy = Zippy::load();
+
+        $zippy = Zippy::load();
         
         //Open File
           $archive = $zippy->open( public_path('uploads/CVs/') .$this->filename);
@@ -55,13 +59,19 @@ class UploadZipCv extends Job implements SelfHandling, ShouldQueue
           //Instantiate Cv files array
           $cvs = [];
 
+          $settings = new Settings();
+          $last_cv_upload_index = intval( $settings->getValue('LAST_CV_UPLOAD_INDEX') );
+          
+
           $files = scandir($tempDir);
         foreach($files as $key => $file) {
            if(is_file( $tempDir . $file ))
            {
+                $last_cv_upload_index++;
                 $cv = $key."_".$this->randomName.$file;
                 $cvs[] = $cv;
-                // move_uploaded_file($tempDir . $file, $cv);
+                // $cvs[] = [ 'first_name' => 'Cv ' . $last_cv_upload_index, 'cv_file' => $cv ] ;
+
                 rename($tempDir . $file, public_path('uploads/CVs/').$cv);
                 echo $tempDir . $file. " is a file <br/>";
            }
@@ -73,9 +83,11 @@ class UploadZipCv extends Job implements SelfHandling, ShouldQueue
 
         //Delete Temporary directory
         rrmdir($tempDir);
-         var_dump($event->exception);
-        var_dump($event->data);
-        dd($cvs);*/
+
+        $jobs = new JobsController();
+        $jobs->saveCompanyUploadedCv($cvs, $this->additional_data);
+
+
 
     }
 }

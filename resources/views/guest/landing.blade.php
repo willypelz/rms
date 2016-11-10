@@ -125,7 +125,7 @@
                 <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
                 <i class="fa fa-heartbeat fa-stack-1x"></i>
               </span>
-              </h2> <br> Run Background & Health Checks</span><br></span>
+              </h2> <br> Run Background & Medical Checks</span><br></span>
               <i class="hidden-xs fa fa-arrow-right pull-right fa-abx fa-lg"></i> 
 
                 <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-heartbeat fa-stack-1x"></i>
@@ -334,10 +334,10 @@
     <div class="row">
         <div class="col-sm-12 animated fadeIn text-center">
         <!-- <h2 class="no-margin text-brandon">1</h2><br> -->
-        <h5 class="no-margin text-brandon text-uppercase l-sp-5"><span class="text-orange">Run Background and Health Checks</h5>
+        <h5 class="no-margin text-brandon text-uppercase l-sp-5"><span class="text-orange">Run Background and Medical Checks</h5>
         <div class="clearfix"></div>
         <hr class="hr-bg">
-          <p class="lead text-muted">We have partnered with Background Check International and Mecure Healthcare to seamlessly provide you background and health checks just with a few clicks. After you order for these checks, our partners will fulfill the entire process and all you’ll get is results – in record time!</p>
+          <p class="lead text-muted">We have partnered with Background Check International and Mecure Healthcare to seamlessly provide you background and medical checks just with a few clicks. After you order for these checks, our partners will fulfill the entire process and all you’ll get is results – in record time!</p>
   
         <hr class="hr-bg">
         </div>
@@ -365,7 +365,7 @@
   
       <div class="col-sm-4 animated zoomIn">
   
-          <p class="text-brandon text-danger">Health Checks</p>
+          <p class="text-brandon text-danger">Medical Checks</p>
   
           <p class=""><ul class="list-unstyled">
             <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Full Medical History</li>

@@ -570,16 +570,22 @@ class CvSalesController extends Controller
     // $in_cart = in_array('26618', $ids);
 
         $jobs = Job::where('company_id',get_current_company()->id)->get();
+
+        $myFolders = array_unique( array_pluck( $response ,'cv_source') );
+
+        if(($key = array_search('Direct Application', $myFolders)) !== false) {
+            unset($myFolders[$key]);
+        }
         if($request->ajax())
         {
             
-            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'myJobs' => Job::getMyJobs() ])->render();    
+            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'myJobs' => Job::getMyJobs(), 'myFolders' => $myFolders ])->render();    
             $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query, 'age' => @$request->age,'exp_years' => @$request->exp_years])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing, 'count' => $result['response']['numFound'] ] );
             
         }
         else{
-            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query,'showing'=>$showing, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 5, 85 ], 'exp_years' => [ 0, 60 ], 'myJobs' => Job::getMyJobs() ]);
+            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query,'showing'=>$showing, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 5, 85 ], 'exp_years' => [ 0, 60 ], 'myJobs' => Job::getMyJobs(), 'myFolders' => $myFolders ]);
         }
         // return view('cv-sales.cv_saved');
     }

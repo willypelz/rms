@@ -934,14 +934,7 @@ class JobApplicationsController extends Controller
 
     public function inviteForInterview(Request $request)
     {
-            $data = [
-                'location' => @$request->location,
-                'message' => @$request->message,
-                'date' => @$request->date
-            ];
-                       
-
-        Interview::create($data);
+            
 
         
         $appls = JobApplication::with('cv','job','job.company')->whereIn('id',$request->app_ids)->get();
@@ -950,6 +943,17 @@ class JobApplicationsController extends Controller
         foreach ($appls as $key => $appl) {
             $cv = $appl->cv;
             $job = $appl->job;
+
+            $data = [
+                'location' => @$request->location,
+                'message' => @$request->message,
+                'date' => @$request->date,
+                'job_application_id' => $appl->id
+            ];
+                       
+
+            Interview::create($data);
+
             $this->mailer->send('emails.new.interview_invitation', ['cv' => $cv, 'job' => $job,'interview' => (object) $data], function (Message $m) use ($cv) {
                 $m->from('info@seamlesshiring.com')->to($cv->email)->subject('Interview Invitation');
             });

@@ -1119,8 +1119,9 @@ class JobsController extends Controller
             $data = $request->all();
 
 
+            $has_applied = CV::where('email',$data['email'])->where('phone',$data['phone'])->first();
 
-            if( CV::where('email',$data['email'])->where('phone',$data['phone'])->first() == null )
+            if( JobApplication::where('cv_id', $has_applied->id)->where('job_id',$jobID)  == null )
             {
                 // dd( " new applicant " );
             }

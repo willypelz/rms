@@ -191,7 +191,7 @@ class CvSalesController extends Controller
 
     }
 
-    public function ExtractCv($cv, Request $request){ // to solr
+    public function ExtractCv($cv, Request $request = null){ // to solr
         
         $this->dispatch(new ExtractCvContent($cv));
     }

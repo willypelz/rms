@@ -26,7 +26,7 @@ use App\Libraries\Utilities;
 use Carbon\Carbon;
 use DB;
 use Crypt;
-use CvSalesController;
+use  App\Http\Controllers\CvSalesController;
 use File;
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
@@ -1121,13 +1121,18 @@ class JobsController extends Controller
 
             $has_applied = CV::where('email',$data['email'])->where('phone',$data['phone'])->first();
 
-            if( JobApplication::where('cv_id', $has_applied->id)->where('job_id',$jobID)  == null )
+            if( $has_applied )
             {
-                // dd( " new applicant " );
+                if( JobApplication::where('cv_id', $has_applied->id)->where('job_id',$jobID)  == null )
+                {
+                    // dd( " new applicant " );
+                }
+                else{
+                    return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug, 'already_applied' => true]);
+                }
             }
-            else{
-                return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug, 'already_applied' => true]);
-            }
+
+            
 
             if ($request->hasFile('cv_file')) {
 

@@ -1121,7 +1121,7 @@ class JobsController extends Controller
 
             $has_applied = CV::where('email',$data['email'])->where('phone',$data['phone'])->first();
 
-            if( $has_applied != null )
+            /*if( $has_applied != null )
             {
                 if( JobApplication::where('cv_id', $has_applied->id)->where('job_id',$jobID)  == null )
                 {
@@ -1130,7 +1130,7 @@ class JobsController extends Controller
                 else{
                     return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug, 'already_applied' => true]);
                 }
-            }
+            }*/
 
             
 

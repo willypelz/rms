@@ -1137,14 +1137,12 @@ class JobsController extends Controller
             if ($request->hasFile('cv_file')) {
 
                 $filename = time().'_'.str_slug($request->email).'_'.$request->file('cv_file')->getClientOriginalName();
-                $destinationPath = env('fileupload').'/CVs';
-                // dd($destinationPath);
-                $request->file('cv_file')->move($destinationPath, $filename);
-
+  
                 $data['cv_file'] = $filename;
-
-                // dd($data);
-            }   
+            } 
+            else{
+                $data['cv_file'] = null;
+            }  
             // dd( $custom_fields[0] );
             $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
 
@@ -1239,8 +1237,16 @@ class JobsController extends Controller
                 }
 
                 FormFieldValues::insert( $custom_field_values );
-                dd( $request->all(), $custom_fields, $custom_field_values );
+                // dd( $request->all(), $custom_fields, $custom_field_values );
             }
+
+            if ($request->hasFile('cv_file')) {
+
+                $destinationPath = env('fileupload').'/CVs';
+                // dd($destinationPath);
+                $request->file('cv_file')->move($destinationPath, $data['cv_file']);
+
+            } 
 
             return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);
 

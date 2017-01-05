@@ -13,6 +13,8 @@ use App\Models\JobApplication;
 use App\Models\Company;
 use App\Models\FormFields;
 use App\Models\FormFieldValues;
+use App\Models\VideoApplicationOptions;
+use App\Models\VideoApplicationValues;
 use App\Models\Settings;
 use App\User;
 use Validator;
@@ -51,7 +53,7 @@ class JobsController extends Controller
             'company',
             'jobApply',
             'JobApplied',
-            'jobApplied',
+            'JobVideoApplication',
             'getEmbed',
             'getEmbedTest'
         ]]);
@@ -1038,7 +1040,7 @@ class JobsController extends Controller
         
 
         if(empty($job)){
-            // redirect to 404 page
+            abort(404);
         }
 
 
@@ -1114,8 +1116,7 @@ class JobsController extends Controller
         $custom_fields  = (object) $job->form_fields;
 
         if ($request->isMethod('post')) {
-
-
+                
             $data = $request->all();
 
 
@@ -1248,6 +1249,13 @@ class JobsController extends Controller
 
             } 
 
+
+            if( $job->video_posting_enabled )
+            {
+                return redirect()->route('job-video-application', ['jobid' => $jobID, 'slug'=>$slug, 'appl_id' => $appl->id]);
+
+            }
+
             return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);
 
 
@@ -1258,17 +1266,41 @@ class JobsController extends Controller
 
         // dd($custom_fields);
         
-        if( File::exists( public_path( 'uploads/'.@$company->logo ) ) )
-        {
-            $company->logo = asset('uploads/'.@$company->logo);
-        }
-        else
-        {
-            $company->logo = asset('img/company.png');
-        }
+        $company->logo = get_company_logo($company->logo);
+        
         
         return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades','custom_fields'));
 
+    }
+
+    public function JobVideoApplication($jobID, $job_slug, $appl_id, Request $request)
+    {
+        $job = Job::with('company')->where('id', $jobID)->first();
+        $company = $job->company;
+        $company->logo = get_company_logo($company->logo);
+
+        $video_options = VideoApplicationOptions::where('job_id',$jobID)->get();
+
+        if( $request->isMethod('post') )
+        {
+
+            $video_application_values = [];
+            foreach ($video_options as $key => $option) {
+                //$request->all()
+
+                    $video_application_values[] = [
+                        'form_field_id' => $option->id,
+                        'value' => $request['vo_'.$option->name],
+                        'job_application_id' => @$appl_id
+                    ];
+            }
+
+            VideoApplicationValues::insert( $video_application_values );
+
+            return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);
+        }
+
+        return view('job.video-application', compact('job', 'company','video_options'));
     }
 
     public function JobApplied($jobID, $job_slug, Request $request)

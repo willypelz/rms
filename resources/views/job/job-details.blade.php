@@ -161,10 +161,14 @@
                                                 </div>
                                             </div>
 
-                                            <!--div class="alert alert-warning transparent">
-                                                <h6 class="no-margin">Additional Information <i class="fa fa-alert-o pull-right"></i></h6><br class="hr-xs">
-                                                <p class="small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum itaque, sint impedit recusandae sunt vel quod optio voluptas laudantium doloremque aspernatur deleniti autem delectus expedita veritatis explicabo quidem perspiciatis, sapiente!</p>
-                                            </div-->
+                                            <div class="row">
+                                                <div class="col-xs-12"><hr></div>
+
+                                                <div class="col-sm-4">
+                                                    <a href="{{ url('job/apply/'.$job['id'].'/'.str_slug($job['title']) ) }}" class="btn btn-success btn-block"><i class="fa fa-edit"></i> Apply <span class="">for Job</span></a>
+                                                </div>
+                                                <div class="separator separator-small"></div>
+                                            </div>
                                         </div>
                                                 
                                        <div class="col-sm-4">

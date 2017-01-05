@@ -12,6 +12,7 @@
 
     <style type="text/css">
         .custom-field{ margin-bottom: 20px; }
+        .custom-field input[type='radio'], .custom-field input[type='checkbox']{ margin-left: 10px; }
     </style>
 
     <section class="no-pad">
@@ -320,13 +321,13 @@
                                                     
                                                     @elseif( $custom_field->type == 'RADIO' )
                                                         @foreach( $options as $option )
-                                                            {{ $option }} {{ Form::radio('cf_'.str_slug($custom_field->name,'_'), null,false, array('required' => 'required')) }}
+                                                            {{ Form::radio('cf_'.str_slug($custom_field->name,'_'), $option,false, array('required' => 'required')) }} {{ $option }}
                                                         @endforeach
                                                         
                                                     @elseif( $custom_field->type == 'CHECKBOX' )
 
                                                         @foreach( $options as $option )
-                                                            {{ $option }} {{ Form::checkbox('cf_'.str_slug($custom_field->name,'_').'[]', null,false, array( 'required' => 'required')) }}
+                                                            {{ Form::checkbox('cf_'.str_slug($custom_field->name,'_').'[]', $option,false, array( 'required' => 'required')) }} {{ $option }}
                                                         @endforeach
                                                     
                                                     @elseif( $custom_field->type == 'TEXT' )
@@ -378,8 +379,12 @@
                                             <!--a href="job.php" target="_blank" type="submit" class="btn pull-right">Preview Job</a-->
                                         </div>
 
-                                        <div class="col-sm-4">
-                                        <button type="submit" class="btn btn-success btn-block">Apply &raquo;</button>
+                                        <div class="col-sm-4"> 
+                                            @if( $job['video_posting_enabled'] )
+                                                <button type="submit" class="btn btn-success btn-block">Next &raquo;</button>
+                                            @else
+                                                <button type="submit" class="btn btn-success btn-block">Apply &raquo;</button>
+                                            @endif
                                         </div>
                                         <div class="separator separator-small"></div>
                                     </div>

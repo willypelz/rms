@@ -1029,31 +1029,29 @@ h3.faq-section {
 #followers .thumbnail img {
     width: 194px;
 }
+
 footer {
-    padding: 2em 0 1.25em;
-    background: #EFF2F5;
-    /*#3d444d*/
-    color: #b5c4c7;
-    font-size: 13px;
+    /*margin-top: 45px;*/
+    padding: 25px 0 15px;
+/*    background: #525252;*/
+    background: rgb(56, 74, 86);
+/*    color: #666;*/
+    color: #eee;
 }
-footer a {
-    color: #666;
-    font-weight: normal;
-    font-size: 13px;
+footer h5{
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-size: 16px;
 }
-footer a:hover {
-    color: #3A5979;
-    font-weight: normal;
+footer a{
+    color:  rgb(140, 171, 193);
+}
+footer a:hover{
+    color:  rgb(255, 255, 255);
     text-decoration: none;
 }
-footer h5 {
-    color: #636D80;
-    font-size: 16px;
-    font-weight: 700;
-}
-footer .footer-logo {
-    color: #636d80;
-    /* line-height: 2; */
+footer hr{
+    border-color:  rgba(140, 171, 193, 0.45);
 }
 
 .fresh-jobs {

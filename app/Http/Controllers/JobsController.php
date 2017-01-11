@@ -13,6 +13,9 @@ use App\Models\JobApplication;
 use App\Models\Company;
 use App\Models\FormFields;
 use App\Models\FormFieldValues;
+use App\Models\VideoApplicationOptions;
+use App\Models\VideoApplicationValues;
+use App\Models\Settings;
 use App\User;
 use Validator;
 use Cart;
@@ -25,7 +28,7 @@ use App\Libraries\Utilities;
 use Carbon\Carbon;
 use DB;
 use Crypt;
-use CvSalesController;
+use  App\Http\Controllers\CvSalesController;
 use File;
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
@@ -50,7 +53,7 @@ class JobsController extends Controller
             'company',
             'jobApply',
             'JobApplied',
-            'jobApplied',
+            'JobVideoApplication',
             'getEmbed',
             'getEmbedTest'
         ]]);
@@ -344,8 +347,14 @@ class JobsController extends Controller
         }
 
         $myJobs = Job::getMyJobs();
+        $myFolders = array_unique( array_pluck( Solr::get_all_my_cvs($this->search_params, null, null)['response']['docs'] ,'cv_source') );
 
-        return view ('job.add-candidates', compact('jobid', 'job', 'jobs'));
+        if(($key = array_search('Direct Application', $myFolders)) !== false) {
+            unset($myFolders[$key]);
+        }
+
+
+        return view ('job.add-candidates', compact('jobid', 'job', 'myJobs', 'myFolders'));
     }
 
      public function UploadCVfile( Request $request ){
@@ -355,7 +364,7 @@ class JobsController extends Controller
           // $zipper = new Zipper;
         ///Applications/AMPPS/www/seamlesshiring/public_html/
         // dd( Zipper::getFileContent( '\Applications\AMPPS\www\seamlesshiring\public_html\uploads\esimakin-twbs-pagination-1.3.1-2-g4a2f5ff.zip' ) );
-        // dd( $request->all() );
+
 
         /*array:4 [
           "_token" => "oblmiKczvYoGWh5mhEr5PMIR1SekBtXofdc4qmFF"
@@ -385,14 +394,14 @@ class JobsController extends Controller
                 $upload = $request->file('cv-upload-file')->move(
                         public_path('uploads/CVs/'), $filename
                     );
-
+                $additional_data = [ 'job_id' => @$request->job, 'folder' => @$request->folder, 'options' => $request->options ];
 
                 if( $mimeType == 'application/zip')
                 {
-                    // $this->dispatch(new UploadZipCv($filename, $randomName));
+                    $this->dispatch(new UploadZipCv($filename, $randomName, $additional_data));
                     // 
                     
-                    $zippy = Zippy::load();
+                    /*$zippy = Zippy::load();
                     
         
                     //Open File
@@ -428,25 +437,68 @@ class JobsController extends Controller
                     }
 
                     //Delete Temporary directory
-                    rrmdir($tempDir);
+                    rrmdir($tempDir);*/
 
                     
 
-                  // return [ 'status' => 1 ,'data' => "You will receive email notification once successfully uploaded" ];
+                  return [ 'status' => 1 ,'data' => "You will receive email notification once successfully uploaded" ];
                 }
                 else
                 {
-                    $cvs = [$filename];
+                    $cvs = [  $filename ];
+                    $this->saveCompanyUploadedCv($cvs, $additional_data);
                     return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
                 }
 
-                //Save CVs to user
+
                 
                 
-                return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
+
             }
 
        
+    }
+
+    public function saveCompanyUploadedCv($cvs, $additional_data)
+    {
+        $settings = new Settings();
+        extract($additional_data);
+        $last_cv_upload_index = intval( $settings->getValue('LAST_CV_UPLOAD_INDEX') );
+        // $new_cvs = [];
+        $cv_source = "";
+        
+
+        
+
+        switch ($options) {
+            case 'upToJob':
+                $cv_source = "Uploaded Candidate";
+                break;
+            case 'upToFolder':
+                $cv_source = $folder;
+                break;
+            default:
+                # code...
+                break;
+        }
+
+
+        foreach ($cvs as $key => $cv) {
+            $last_cv_upload_index++;
+
+
+            $last_cv = Cv::insertGetId([ 'first_name' => 'Cv ' . $last_cv_upload_index, 'cv_file' => $cv , 'cv_source' => $cv_source ]);
+            
+            if($options == 'upToJob'){
+                JobApplication::insert([
+                        'cv_id' => $last_cv,
+                        'job_id' => $job_id,
+                        'created' => date('Y-m-d H:i:s'),
+                        'status' => 'PENDING',
+                    ]);
+            }
+        }
+
     }
 
 
@@ -988,7 +1040,7 @@ class JobsController extends Controller
         
 
         if(empty($job)){
-            // redirect to 404 page
+            abort(404);
         }
 
 
@@ -1064,31 +1116,34 @@ class JobsController extends Controller
         $custom_fields  = (object) $job->form_fields;
 
         if ($request->isMethod('post')) {
-
-
+                
             $data = $request->all();
 
 
+            $has_applied = CV::where('email',$data['email'])->where('phone',$data['phone'])->first();
 
-            if( CV::where('email',$data['email'])->where('phone',$data['phone'])->first() == null )
+            /*if( $has_applied != null )
             {
-                // dd( " new applicant " );
-            }
-            else{
-                return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug, 'already_applied' => true]);
-            }
+                if( JobApplication::where('cv_id', $has_applied->id)->where('job_id',$jobID)  == null )
+                {
+                    // dd( " new applicant " );
+                }
+                else{
+                    return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug, 'already_applied' => true]);
+                }
+            }*/
+
+            
 
             if ($request->hasFile('cv_file')) {
 
                 $filename = time().'_'.str_slug($request->email).'_'.$request->file('cv_file')->getClientOriginalName();
-                $destinationPath = env('fileupload').'/CVs';
-                // dd($destinationPath);
-                $request->file('cv_file')->move($destinationPath, $filename);
-
+  
                 $data['cv_file'] = $filename;
-
-                // dd($data);
-            }   
+            } 
+            else{
+                $data['cv_file'] = null;
+            }  
             // dd( $custom_fields[0] );
             $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
 
@@ -1183,7 +1238,22 @@ class JobsController extends Controller
                 }
 
                 FormFieldValues::insert( $custom_field_values );
-                dd( $request->all(), $custom_fields, $custom_field_values );
+                // dd( $request->all(), $custom_fields, $custom_field_values );
+            }
+
+            if ($request->hasFile('cv_file')) {
+
+                $destinationPath = env('fileupload').'/CVs';
+                // dd($destinationPath);
+                $request->file('cv_file')->move($destinationPath, $data['cv_file']);
+
+            } 
+
+
+            if( $job->video_posting_enabled )
+            {
+                return redirect()->route('job-video-application', ['jobid' => $jobID, 'slug'=>$slug, 'appl_id' => $appl->id]);
+
             }
 
             return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);
@@ -1196,17 +1266,41 @@ class JobsController extends Controller
 
         // dd($custom_fields);
         
-        if( File::exists( public_path( 'uploads/'.@$company->logo ) ) )
-        {
-            $company->logo = asset('uploads/'.@$company->logo);
-        }
-        else
-        {
-            $company->logo = asset('img/company.png');
-        }
+        $company->logo = get_company_logo($company->logo);
+        
         
         return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades','custom_fields'));
 
+    }
+
+    public function JobVideoApplication($jobID, $job_slug, $appl_id, Request $request)
+    {
+        $job = Job::with('company')->where('id', $jobID)->first();
+        $company = $job->company;
+        $company->logo = get_company_logo($company->logo);
+
+        $video_options = VideoApplicationOptions::where('job_id',$jobID)->get();
+
+        if( $request->isMethod('post') )
+        {
+
+            $video_application_values = [];
+            foreach ($video_options as $key => $option) {
+                //$request->all()
+
+                    $video_application_values[] = [
+                        'form_field_id' => $option->id,
+                        'value' => $request['vo_'.$option->name],
+                        'job_application_id' => @$appl_id
+                    ];
+            }
+
+            VideoApplicationValues::insert( $video_application_values );
+
+            return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);
+        }
+
+        return view('job.video-application', compact('job', 'company','video_options'));
     }
 
     public function JobApplied($jobID, $job_slug, Request $request)
@@ -1463,9 +1557,19 @@ class JobsController extends Controller
             }
 
            
-            $file_name  = ($request->logo->getClientOriginalName());
-            $fi =  $request->file('logo')->getClientOriginalExtension();  
-            $logo = $request->company_name.'-'.$file_name;
+            if( isset( $request->logo ) )
+            {
+                $file_name  = ($request->logo->getClientOriginalName());                                            
+                $fi =  $request->file('logo')->getClientOriginalExtension();
+                $logo = $request->company_name.'-'.$file_name;
+                $upload = $request->file('logo')->move(
+                    env('fileupload'), $logo
+                );
+            }
+            else
+            {
+                $logo = "";
+            }
            
 
             $comp = Company::FirstorCreate([
@@ -1484,9 +1588,6 @@ class JobsController extends Controller
                       ['user_id' => Auth::user()->id, 'company_id'=> $comp->id]
             ]);
 
-            $upload = $request->file('logo')->move(
-                env('fileupload'), $logo
-            );
 
 
             // if($upload){      

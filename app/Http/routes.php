@@ -179,6 +179,8 @@ Route::group(['middleware' => 'web'], function () {
     // Route::match(['get', 'post'], 'job/dashboard/{jobID}', ['uses' => 'JobsController@JobDashboard', 'as' => 'job-view']);
     Route::match(['get', 'post'], 'job/apply/{jobID}/{slug}', ['uses' => 'JobsController@jobApply', 'as' => 'job-apply']);
     Route::match(['get', 'post'], 'job/applied/{jobID}/{slug}', ['uses' => 'JobsController@JobApplied', 'as' => 'job-applied']);
+    Route::match(['get', 'post'], 'job/video-application/{jobID}/{slug}/{appl_id}', ['uses' => 'JobsController@JobVideoApplication', 'as' => 'job-video-application']);
+    
     Route::match(['get', 'post'], 'job-status', ['uses' => 'JobsController@JobStatus', 'as' => 'job-status']);
 	
     // Route::any('log-in', function () {

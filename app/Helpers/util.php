@@ -473,5 +473,16 @@ use App\Models\Job;
 	     reset($objects); 
 	     rmdir($dir); 
 	   } 
-	 } 
+	 }
+
+	function get_company_logo($logo){
+		if( File::exists( public_path( 'uploads/'.@$logo ) ) )
+        {
+            return asset('uploads/'.@$logo);
+        }
+        else
+        {
+            return asset('img/company.png');
+        }
+	}
 ?>

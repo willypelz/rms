@@ -34,6 +34,7 @@ use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
 use App\Jobs\UploadZipCv;
 use Alchemy\Zippy\Zippy;
+use Charts;
 // use Zipper;
 
 class JobsController extends Controller
@@ -945,7 +946,26 @@ class JobsController extends Controller
       
         $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
-        return view('job.board.activities', compact('job', 'active_tab', 'content','result','application_statuses'));
+        $applications = JobApplication::where('job_id',$id)->select("created", DB::raw("DATE_FORMAT(created, '%d-%c-%Y') as created"))->get()->groupBy('created')->toArray();
+        //"cust.*", DB::raw("DATE_FORMAT(cust.cust_dob, '%d-%b-%Y') as formatted_dob")
+
+        $applications = array_map(function($value){
+            return count($value);
+        }, $applications);
+
+
+        $applications_per_day_chart = Charts::create('line', 'highcharts')
+            // ->view('custom.line.chart.view') // Use this if you want to use your own template
+            ->title(' ')
+            ->elementLabel("Applicants")
+            ->labels( array_keys($applications) )
+            // ->labels( array_map(function($value){ return date('D. d M Y', strtotime( $value ) ); },  array_keys($applications) ) )
+            ->values( array_values($applications) )
+            ->dimensions(1000,500)
+            ->credits(false)
+            ->responsive(true);
+
+        return view('job.board.activities', compact('job', 'active_tab', 'content','result','application_statuses','applications_per_day_chart'));
     }
 
     public function JobCandidates($id, Request $request){

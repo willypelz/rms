@@ -38,9 +38,9 @@
 
                             <div class="btn-group" data-toggle="buttons">
 
-                              <label class="btn btn-line">
+                              <!-- <label class="btn btn-line">
                                 <input type="radio" name="options" id="upToFolder" autocomplete="off" value="upToFolder"> Upload to Folder
-                              </label>
+                              </label> -->
 
                               <label class="btn btn-line">
                                 <input type="radio" name="options" id="upToJob" autocomplete="off" value="upToJob"> Upload to a Job
@@ -48,7 +48,7 @@
                             </div>
                             <br><br>
                                 
-                                <select class="form-control job-opt collapse" name="job">
+                                <select class="form-control job-opt " name="job">
                                     <option value="">Select Job</option>
 
                                     @foreach( $myJobs as $myJob )

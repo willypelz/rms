@@ -167,7 +167,7 @@
               <p></p>
 
 
-              @if( @$page != 'search' )
+              @if( @$page != 'search' and Auth::check())
 
 
 

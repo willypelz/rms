@@ -123,7 +123,7 @@ class CvSalesController extends Controller
 
             if($request->ajax())
             {
-                $search_results = view('cv-sales.includes.search-results-item',['result' => $result,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'search'])->render();    
+                $search_results = view('cv-sales.includes.search-results-item',['result' => $result,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'search', 'can_purchase' => true])->render();    
                 $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query, 'age' => @$request->age,'exp_years' => @$request->exp_years])->render();
                 return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing' => $showing, 'count' => $result['response']['numFound'] ] );
                 

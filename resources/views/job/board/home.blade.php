@@ -19,16 +19,16 @@
                         <div class="row">                           
                         <!-- applicant -->
 
-                            <div class="col-xs-8 hidden">
+                            <div class="col-xs-8 ">
 
-                                <div class="panel panel-default">
+                                <div class="panel panel-default" ">
                                 
                                   <div class="panel-heading">
                                     <h3 class="panel-title">Advertise on Job Boards 
                                     <span class="pull-right text-warning"><i class="fa fa-check-circle"></i> {{ $approved_count }} approved &nbsp; &middot; &nbsp;<i class="fa fa-hourglass-half"></i> {{ $pending_count }} Pending</span>
 
                                   </div>
-                                  <div class="panel-body">
+                                  <div class="panel-body" style="height: 720px; overflow: auto;>
                                   <p class="text-muted">You can copy the link of your job or share them from here.</p>
                                     
 
@@ -100,48 +100,42 @@
                                         @endforeach
 
 
-                                    <!-- <u class="text-center"><a href=""><i class="fa fa-plus"></i> Add Job board</u></a> -->
-
-
-                                    <div class="well text-center">
-                                      <p class="lead">For a wider and better reach, <br>you can promote this job on more job boards and <i>newspapers.</i></p>
-                                      <p>
-                                        <a href="{{ url('jobs/advertise-your-job/'.$job_id.'/'.str_slug($job['title'])) }}" class="btn btn-danger btn-" target="_blank">
-                                          <i class="fa fa-send"></i> Promote Job now
-                                        </a>
-                                      </p>
-                                    </div>
-
 
                                   </div>
                                 </div>
 
                             </div>
 
-                            <div class="col-xs-4 col-xs-offset-2">
-                               <div class="well text-center">
-<p class="lead" style="
-    height: 111px;
-">For a wider and better reach, <br>you can promote this job on <i>newspapers.</i></p>                                      <p>
-                                        <a href="#" class="btn btn-primary btn-block" target="_blank">
-                                          <i class="fa fa-send"></i> Contact Us
-                                        </a>
-                                      </p>
-                                    </div>
-
-                               <!--  <div class="panel panel-default">                                
-                                  <div class="panel-heading">
-                                    <h3 class="panel-title text-center">Refer this Job</h3>
-                                  </div>
-                                  <div class="panel-body">
-                                  <p class="small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab omnis ipsa, quis beatae ex nam excepturi quae sequi molestias dolorem deserunt voluptas corrupti fugit eum totam nobis dicta officiis mollitia.</p>
-                                    <a href="#modalRefer" data-toggle="modal" data-target="#modalRefer" class="btn btn-primary btn-block">Make Referals</a>
-                                  </div>
-                                </div> -->
+                            <div class="col-xs-4">
+                          
+                          <div class="well text-center">
+                            <h1 class="no-margin"><i class="fa-2x fa fa-send"></i></h1><br>
+                            <p class="h4">For a wider and better reach, you can promote this job on more job boards and <i>newspapers.</i></p>
+                            <p>
+                              </p><hr>
+                              <!--  <a href="https://localhost/seamlesshiring/public_html/jobs/advertise-your-job/22/technical-executives-at-cell-phone-repairs-stores" class="btn btn-primary btn-block" target="_blank" data-toggle="modal" data-target="#myModal">
+                                Promote Job Now
+                              </a> -->
+                              <a href="#" class="btn btn-primary btn-block" target="_blank" data-toggle="modal" data-target="#promoteJob">
+                                Promote Job Now
+                              </a>
+                            <p></p>
+                          </div>
+                          <p class="text-center"></p>
+                          <div class="well text-center">
+                            <h1 class="no-margin"><i class="fa-2x fa fa-cloud-upload"></i></h1><br>
+                            <p class="h4">You can choose to start with uploading candidates' CVs to this job</p>
+                            <p>
+                              </p><hr>
+                              
+                              <a href="#" class="btn btn-success btn-block" data-toggle="modal" data-target="#uploadCV">  Upload CV to this Job</a>
+                            <p></p>
+                          </div>
+                          <div class="text-center">
+                            &nbsp;
+                          </div>
+                        
                                 
-                                </div>
-                                <div class="col-xs-4">
-
 
                                 <div class="panel panel-default">
                                 
@@ -183,6 +177,9 @@
                                    </div>
                                   </div>
                                 </div>
+                                </div>
+                                <div class="col-xs-4">
+
                                 
                             </div>
 

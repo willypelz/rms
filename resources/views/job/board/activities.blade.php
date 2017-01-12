@@ -1,7 +1,7 @@
 @extends('layout.template-user')
 
 @section('content')
-
+{!! Charts::assets() !!}
                     @include('job.board.jobBoard-header')
             
       @if($job['status'] != 'DELETED')
@@ -104,7 +104,7 @@
                         </table> -->
 
                         <div id="job_view_stats_table"></div>
-
+                        {!! $applications_per_day_chart->render() !!}
                         
 
                     </div>

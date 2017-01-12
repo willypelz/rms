@@ -179,7 +179,7 @@
                         <div class="col-xs-4">
                           
                           <div class="well text-center">
-                            <h1 class="no-margin"><i class="fa-2x fa fa-send"></i></h1><br>
+                            <h1 class=""><i class="fa-lg fa text-muted fa-send"></i></h1><br>
                             <p class="h4">For a wider and better reach, you can promote this job on more job boards and <i>newspapers.</i></p>
                             <p>
                               <hr>
@@ -193,7 +193,7 @@
                           </div>
                           <p class="text-center">- OR -</p>
                           <div class="well text-center">
-                            <h1 class="no-margin"><i class="fa-2x fa fa-cloud-upload"></i></h1><br>
+                            <h1 class=""><i class="fa-lg fa text-muted fa-cloud-upload"></i></h1><br>
                             <p class="h4">You can choose to start with uploading candidates' CVs to this job</p>
                             <p>
                               <hr>
@@ -237,7 +237,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="myModalLabel">Promote <span class="text-warning">Title of Job comes right here please</span></h4>
+              <h4 class="modal-title bold text-bold" id="myModalLabel">Promote <span class="text-warning">Title of Job comes right here please</span></h4>
             </div>
             <div class="modal-body">
               <div class="row">

@@ -65,7 +65,7 @@
                                     @endforeach
                                 </select>
 
-                                <div class="btn-group folder-opt" style="display:none;">
+                                <!-- <div class="btn-group folder-opt" style="display:none;">
 
                                   <button type="button" class="btn btn-line btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Select Folder
@@ -85,7 +85,7 @@
                                   </ul>
 
                                     <br><br>
-                                </div> 
+                                </div>  -->
                                 
                                 <div class="form-group" id="add-folder" style="display:none;">
                                     <div class="col-xs-6 col-xs-offset-2">

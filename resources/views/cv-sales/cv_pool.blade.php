@@ -1,13 +1,12 @@
 @extends('layout.template-default')
-
 @section('content')
-
+{{-- get_current_company()->id --}}
+{{-- dd($result) --}}
 <style type="text/css">
 .see-more{display: none;}
 .see-more-shown{ display: block; }
 .pagination .page{ padding: 0px !important; }
 </style>
-
 <script src="{{ secure_asset('js/jquery.form.js') }}"></script>
 <script src="{{ asset('js/jquery.twbsPagination.min.js') }}"></script>
 <script src="{{ asset('js/jquery.jscroll.min.js') }}"></script>

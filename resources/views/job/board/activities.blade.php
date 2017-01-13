@@ -84,8 +84,8 @@
                 <div class="col-xs-4 well stat-well">
                     <div class="">
                         
-                        <h6 class="no-margin text-center">
-                            <span class="text-danger text-brandon text-uppercase"><i class="fa fa-bar-chart"></i> Your Statistics</span> 
+                        <h6 class="no-margin text-center" id="your-statistics" style="display:none;">
+                            <span class="text-danger text-brandon text-uppercase"><i class="fa fa-bar-chart"></i> Overview</span> 
                         </h6>
 
                         <br>
@@ -104,8 +104,22 @@
                         </table> -->
 
                         <div id="job_view_stats_table"></div>
-                        {!! $applications_per_day_chart->render() !!}
                         
+
+                    </div><br><br>
+
+                    <div class="">
+                        
+                        <h6 class="no-margin text-center">
+                            <span class="text-danger text-brandon text-uppercase"><i class="fa fa-bar-chart"></i> Applications per day</span> 
+                        </h6>
+
+                        <br>
+
+
+                        <div id="job_view_stats_table"></div>
+                        {!! $applications_per_day_chart->render() !!}
+
 
                     </div>
                 </div>
@@ -139,6 +153,7 @@
                               url: "{{ route('job-view-data') }}",
                               data: ({ rnd : Math.random() * 100000, job_id:{{$job->id }}  }),
                               success: function(response){
+                                $('#your-statistics').show();
                                 $("#job_view_stats_table").html(response);
                                 // console.log(response);
                                    

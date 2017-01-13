@@ -21,9 +21,14 @@ class Settings extends Model
      */
     protected $fillable = ['key', 'value'];
 
-    public function getValue($key)
+    public function get($key)
     {
         return $this->where('key', $key)->select('value');
+    }
+
+    public function set($key,$value)
+    {
+        return $this->where('key', $key)->update([ $key => $value ]);
     }
 
 

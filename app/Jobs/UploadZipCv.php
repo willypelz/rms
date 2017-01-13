@@ -60,7 +60,7 @@ class UploadZipCv extends Job implements SelfHandling, ShouldQueue
           $cvs = [];
 
           $settings = new Settings();
-          $last_cv_upload_index = intval( $settings->getValue('LAST_CV_UPLOAD_INDEX') );
+          $last_cv_upload_index = intval( $settings->get('LAST_CV_UPLOAD_INDEX') );
           
 
           $files = scandir($tempDir);

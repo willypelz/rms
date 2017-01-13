@@ -432,7 +432,7 @@ class JobApplicationsController extends Controller
         //$archive->addMembers($cvs, $recursive = false );
 
         $zipper = new \Chumper\Zipper\Zipper;
-        $zipper->make( $path.$filename )->add($cvs)->close();
+        @$zipper->make( $path.$filename )->add($cvs)->close();
 
         return Response::download($path.$filename, 'Cv.zip', ['Content-Type' => 'application/octet-stream']);
 

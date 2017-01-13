@@ -23,7 +23,7 @@ class Settings extends Model
 
     public function get($key)
     {
-        return $this->where('key', $key)->select('value');
+        return $this->where('key', $key)->first()->pluck('value')[0];
     }
 
     public function set($key,$value)

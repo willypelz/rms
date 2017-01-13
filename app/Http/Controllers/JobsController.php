@@ -113,12 +113,12 @@ class JobsController extends Controller
             //Send notification mail
             $email_from = ( Auth::user()->email ) ? Auth::user()->email : 'no-reply@insidify.com';
             /*Mail::send('emails.e-exculsively-invited', ['mail_body'=>$mail_body, 'name'=>$user->name, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=>$link ], function($message) use ($user){
-                $message->from('info@seamlesshiring.com');
+                $message->from('support@seamlesshiring.com');
                 $message->to($user->email, $user->name);
             });*/ 
 
             $this->mailer->send('emails.new.exculsively_invited', ['user' => $user, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=> $link], function (Message $m) use ($user) {
-                $m->from('info@seamlesshiring.com')->to($user->email)->subject('You have been Exclusively Invited');
+                $m->from('support@seamlesshiring.com')->to($user->email)->subject('You have been Exclusively Invited');
             });
 
             echo 'Saved';
@@ -374,7 +374,7 @@ class JobsController extends Controller
           "cv-upload-file" => ""
         ]*/
         //'Image' => 
-        $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), [
                 'cv-upload-file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt' //application/octet-stream,
             ],[
                 'cv-upload-file.required' => 'Please select a file',
@@ -464,7 +464,7 @@ class JobsController extends Controller
     {
         $settings = new Settings();
         extract($additional_data);
-        $last_cv_upload_index = intval( $settings->getValue('LAST_CV_UPLOAD_INDEX') );
+        $last_cv_upload_index = intval( $settings->get('LAST_CV_UPLOAD_INDEX') );
         // $new_cvs = [];
         $cv_source = "";
         
@@ -500,6 +500,11 @@ class JobsController extends Controller
             }
         }
 
+        $settings->set('LAST_CV_UPLOAD_INDEX',$last_cv_upload_index);
+
+        $this->mailer->send('emails.new.cv_upload_successful', ['user' => Auth::user(), 'link'=> url('cv/talent-pool') ], function (Message $m) use ($user) {
+                $m->from('support@seamlesshiring.com')->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
+            });
     }
 
 
@@ -961,8 +966,10 @@ class JobsController extends Controller
             ->labels( array_keys($applications) )
             // ->labels( array_map(function($value){ return date('D. d M Y', strtotime( $value ) ); },  array_keys($applications) ) )
             ->values( array_values($applications) )
-            ->dimensions(1000,500)
+            // ->dimensions(1000,500)
+            // ->width('100%')
             ->credits(false)
+            // ->legend({ 'enabled' : false })
             ->responsive(true);
 
         return view('job.board.activities', compact('job', 'active_tab', 'content','result','application_statuses','applications_per_day_chart'));

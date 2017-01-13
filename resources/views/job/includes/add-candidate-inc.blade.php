@@ -72,13 +72,13 @@
 
                                      &nbsp; <span class="caret"></span>
                                   </button>
-                                  <ul class="dropdown-menu" id="folders" data-folders="{{ @implode( ':', @$cv['company_folder_id'] ) }}" data-cv="{{ @$cv['id'] }}">
+                                  <ul class="dropdown-menu" id="folders" data-folders="{{-- @implode( ':', @$cv['company_folder_id'] ) --}}" data-cv="{{-- @$cv['id'] --}}">
                                     
 
                                     <li role="separator" class="divider"></li>
 
                                     <li>
-                                        <a href="javascript://"  onclick="$('#add-folder').show();$('#add-folder').focus();" ><i class="fa fa-plus"></i> Create new</a>
+                                        <a href="javascript://"  onclick="//$('#add-folder').show();$('#add-folder').focus();" ><i class="fa fa-plus"></i> Create new</a>
                                     </li>
 
 

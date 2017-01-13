@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'info@seamlesshiring.com', 'name' => 'Seamless Hiring'],
+    'from' => ['address' => 'support@seamlesshiring.com', 'name' => 'Seamless Hiring'],
 
     /*
     |--------------------------------------------------------------------------

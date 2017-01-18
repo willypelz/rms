@@ -468,6 +468,7 @@ class JobsController extends Controller
         // $new_cvs = [];
         $cv_source = "";
         
+        $options = ( is_null( $options ) ) ? 'upToJob' : $options;
 
         
 

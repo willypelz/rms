@@ -28,7 +28,7 @@ class Settings extends Model
 
     public function set($key,$value)
     {
-        return $this->where('key', $key)->update([ $key => $value ]);
+        return $this->where('key', $key)->update([ 'value' => $value ]);
     }
 
 

@@ -16,9 +16,9 @@
               <h4 class="text-muted">
               <a href="javascript://" id='showCvBtn' data-toggle="modal" data-target="#showCv[data-user='{{ @$cv['id'] }}']">
                 @if(@$is_applicant || $page == 'pool')
-                    {{ ucwords( $cv['first_name'].' '.$cv['last_name'] ) }}
+                    {{ ucwords( @$cv['first_name'].' '.@$cv['last_name'] ) }}
                 @else
-                    {{ ucwords( $cv['first_name'].' '.substr($cv['last_name'],0,1) ) }}
+                    {{ ucwords( @$cv['first_name'].' '.substr(@$cv['last_name'],0,1) ) }}
                 @endif
               </a>
                   <span class="small">

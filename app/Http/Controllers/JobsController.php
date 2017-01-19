@@ -496,6 +496,7 @@ class JobsController extends Controller
                         'cv_id' => $last_cv,
                         'job_id' => $job_id,
                         'created' => date('Y-m-d H:i:s'),
+                        'action_date' => date('Y-m-d H:i:s'),
                         'status' => 'PENDING',
                     ]);
             }

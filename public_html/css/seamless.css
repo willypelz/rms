@@ -49,9 +49,9 @@ form{
     margin:0;
 }
 button.close{
-    font-size: 4em;
-    right: 0;
-    top: -20px;
+    font-size: 2.5em;
+    /* right: 0; */
+    /* top: -20px; */
     z-index: 100;
 }
 h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
@@ -466,7 +466,6 @@ section.s-div{
     margin-top: -50px;    
     padding-top: 3.5em;
     padding-bottom: 1em;
-    /*background:#5A497B url(../img/2.jpg) center fixed;*/
     background: #2889ce;
     background-size:cover;
     /*border-bottom: 3px solid #5CB85C;*/
@@ -476,6 +475,10 @@ section.s-div.homepage{
     background-size: cover;
     padding: 8em 0 5em;
     /* border-bottom: 5px solid #96b5d0; */
+}
+section.s-div.dashboard{
+    background: #2889ce url(../img/2.jpg) center fixed;
+    background-size:cover;
 }
 section.s-div.homepage.pricing{
     padding: 5em 0 1em;

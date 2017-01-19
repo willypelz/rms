@@ -5,11 +5,12 @@
 
 <!-- <div class="container text-brandon text-uppercase h5 separator separator-small" style=""><i class="fa fa-tachometer"></i> Your Dashboard</div> -->
 
-<section class="s-div">
+<section class="s-div dashboard">
   <div class="container">
     <div class="row">
       
                 <div class="col-sm-12 "><br>
+                <h4 class="text-white">Welcome Admin, <span class="small pull-right text-white"><i class="fa fa-calendar"></i> <?php echo date("l, d/m/Y") . "<br>"; ?></span></h4>
 
                         <div class=" btn-group-justified btn-dash" role="group" aria-label="...">
                           <div class="btn-group" role="group">
@@ -30,7 +31,7 @@
                           <div class="btn-group" role="group">
                             <a href="{{ url('cv/talent-pool') }}" type="button" class="btn btn-line text-capitalize">
                             <span class="fa-lg"><i class="fa fa-bar-chart"></i>
-                            <span class="hidden-xs text-brandon text-capitalize"> View Talent Pool</span><br></span>
+                            <span class="hidden-xs text-brandon text-capitalize"> Explore Talent Pool</span><br></span>
                             <small class="text-muted hidden-xs">Your Talent Database</small>
                             </a>
                           </div>
@@ -42,6 +43,7 @@
                             </a>
                           </div> -->
                         </div>
+                        <br>
                 </div>
                 <div class="clearfix"></div>
     </div>

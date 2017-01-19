@@ -198,8 +198,8 @@
                 <div class="col-sm-3 text-right">
                     <ul class="list-unstyled footer-logo">
                         <li>
-                            <img src="{{ url('/') }}/img/seamlesshiring-logo.png" alt="" width="125px"><br><br>
-                            <small class="text-muted">&copy; 2016. All Rights Reserved<br> Insidify Enterprise. Insidfy.com</small>
+                            <img src="{{ url('/') }}/img/seamlesshiring-logo-x.png" alt="" width="125px"><br><br>
+                            <small class="text-white">&copy; 2016. All Rights Reserved<br> Insidify Enterprise. Insidfy.com</small>
                         </li>
                     </ul>
                 </div>

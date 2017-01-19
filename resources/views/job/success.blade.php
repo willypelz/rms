@@ -501,7 +501,148 @@
               <h4 class="modal-title" id="myModalLabel">Upload CVs to this Job</h4>
             </div>
             <div class="modal-body">
-              ...
+              <div class="col-xs-12">
+                <div class="row tab-content ">
+                <div class="col-sm-12">
+
+                                    <h1 class="text-center"><i class="fa fa-user-plus"></i></h1>
+                    <h4 class="text-center text-green strong">Add Candidates to your Talent Pool</h4>
+
+
+                    
+                
+
+
+                    <div class="col-sm-10 col-sm-offset-1 text-center">
+
+                    <p>
+                        Do you already have relevant resumes in a folder somewhere?
+                        Upload them here and add them to your pool of applicants.
+
+                    </p><br>
+                        
+                        <div id="loader"></div>
+                        <div class="alert alert-danger" style="display:none;" id="u_f"></div>
+                        <div class="alert alert-success" style="display:none;" id="u_s"></div>
+                       <form action="https://localhost/seamlesshiring/public_html/job/import-cv-file" method="post" enctype="multipart/form-data" id="uploadCandidate">
+                            <input type="hidden" name="_token" value="p1au5UXt3AEjM6t41vp4R5Q2LXx5HWFyCAB6eFcg">
+
+                            <div class="form-group">
+
+                            <div class="btn-group" data-toggle="buttons">
+
+                              <!-- <label class="btn btn-line">
+                                <input type="radio" name="options" id="upToFolder" autocomplete="off" value="upToFolder"> Upload to Folder
+                              </label> -->
+
+                              <label class="btn btn-line">
+                                <input type="radio" name="options" id="upToJob" autocomplete="off" value="upToJob"> Upload to a Job
+                              </label>
+                            </div>
+                            <br><br>
+                                
+                                <select class="form-control job-opt " name="job">
+                                    <option value="">Select Job</option>
+
+                                                                            <option value="22">Technical Executives at Cell Phone Repairs Stores</option>
+                                                                            <option value="92">Human Resource Managers at Nachitech Oilfield Supplies and Services Limited</option>
+                                                                            <option value="111">Salesperson/Customer Service at Cell Phone Repair</option>
+                                                                            <option value="115">Head of Learning and Development</option>
+                                                                            <option value="118">My Job</option>
+                                                                    </select>
+
+                                <select class="form-control hidden folder-opt-select" name="folder">
+                                    <option value="0">Select Folder</option>
+                                    
+
+                                                                    </select>
+
+                                <div class="btn-group folder-opt" style="display:none;">
+
+                                  <button type="button" class="btn btn-line btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Select Folder
+
+                                     &nbsp; <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu" id="folders" data-folders="" data-cv="">
+                                    
+
+                                    <li role="separator" class="divider"></li>
+
+                                    <li>
+                                        <a href="javascript://" onclick="//$('#add-folder').show();$('#add-folder').focus();"><i class="fa fa-plus"></i> Create new</a>
+                                    </li>
+
+
+                                  </ul>
+
+                                    <br><br>
+                                </div> 
+                                
+                                <div class="form-group" id="add-folder" style="display:none;">
+                                    <div class="col-xs-6 col-xs-offset-2">
+                                        <input type="text" class="form-control" id="add-folder-field">
+                                    </div>
+                                    
+                                    <div class="col-xs-2">
+                                        <button class="form-control" id="add-folder-btn">Add</button>
+                                    </div>
+                                    <br><br>
+                                </div>
+                                
+                                
+                            </div>
+                            
+                            <div id="inputer-opt" class="collapse">
+
+                                <div class="form-group fileinput fileinput-new input-group" data-provides="fileinput">
+                                  <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+
+                                  <span class="input-group-addon btn btn-primary btn-file text-white"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                                    <input type="file" name="cv-upload-file" placeholder="zip" accept=".zip,.pdf,.doc,.docx,.txt,.rtf,.pptx,.ppt">
+                                  </span>
+                                  <a href="#" class="input-group-addon  fileinput-exists btn btn-danger" style="    background-color: #d9534f; color:white;" data-dismiss="fileinput">Remove</a>
+                                  
+                                </div><br>
+                                <small style="margin-top: -20px;display: block;">*Allowed extensions are .zip, .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt</small><br>
+
+                                <button type="submit" class="btn btn-success text-capitalize">
+                                        <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Import file</span>
+                                </button>
+
+                            </div>
+                        </form>
+
+                        <div id="funcMsg" class="text text-successs"></div>
+
+                        
+                    </div>
+
+
+                    
+                    <div class="col-sm-12 hidden">
+                        
+
+                        <h5 class="no-margin text-center text-success hidden">
+                            <i class="fa fa-spinner fa-pulse"></i> &nbsp;
+                            Importing Candidates
+                        </h5>
+
+
+                        
+                        <div class="col-sm-12"><hr><a href="https://localhost/seamlesshiring/public_html/cv/talent-pool" class="pull-right btn btn-danger btn-cart-checkout">Go to Talent Pool »</a></div>
+
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+
+    </div>
+            </div>
+            <div class="clearfix"></div>
             </div>
           </div>
         </div>

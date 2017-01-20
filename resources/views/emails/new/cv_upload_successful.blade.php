@@ -52,7 +52,7 @@
 
 																		</p>
 																		<div style="color:#2d2d2d;" align="center">
-																			To view new upload, please <a href="{{ $link }}" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color: #4BB779;text-transform:uppercase" target="_blank">Click here</a>
+																			<p> To view new upload, please</p> <a href="{{ $link }}" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color: #4BB779;text-transform:uppercase" target="_blank">Click here</a>
 																		</div>
 																		<p style="font-family:Arial,Helvetica,sans-serif; font-size:15px;line-height:1.3em;color:#afafaf">If clicking the link above does not work, kindly copy and paste it to your browser.</p>
 																		<hr style="border-width:0 0 1px">

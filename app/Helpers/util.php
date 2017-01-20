@@ -216,8 +216,8 @@ use App\Models\Job;
 
 		switch ($type) {
 			case 'cv':
-				$string1 = $data['first_name'];
-				$string2 = $data['last_name'];
+				$string1 = @$data['first_name'];
+				$string2 = @$data['last_name'];
 				
 				break;
 			case 'user':

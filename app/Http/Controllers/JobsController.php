@@ -503,10 +503,11 @@ class JobsController extends Controller
         }
 
         $settings->set('LAST_CV_UPLOAD_INDEX',$last_cv_upload_index);
-
-        $this->mailer->send('emails.new.cv_upload_successful', ['user' => Auth::user(), 'link'=> url('cv/talent-pool') ], function (Message $m) use ($user) {
+        $user = Auth::user();
+        $this->mailer->send('emails.new.cv_upload_successful', ['user' => $user, 'link'=> url('cv/talent-pool') ], function (Message $m) use ($user) {
                 $m->from('support@seamlesshiring.com')->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
             });
+        return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
     }
 
 

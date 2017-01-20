@@ -14,6 +14,8 @@ class Settings extends Model
      */
     protected $table = 'settings';
 
+    public $timestamps = false;
+
     /**
      * Attributes that should be mass-assignable.
      *
@@ -28,7 +30,7 @@ class Settings extends Model
 
     public function set($key,$value)
     {
-        return $this->where('key', $key)->update([ $key => $value ]);
+        return $this->where('key', $key)->update([ 'value' => $value ]);
     }
 
 

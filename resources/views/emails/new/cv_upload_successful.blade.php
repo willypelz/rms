@@ -20,7 +20,7 @@
 												<tr>
 													<td valign="top" style="font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;color:#2a3744;line-height:200%;padding: 30px 18px 0px;">
 														<div style="color:#2d2d2d;display:block;width:100%;margin: 0 auto 5px;" align="center">
-															<a href="http://seamlesshiring.com" style="font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2" target="_blank"><img src="img/seamless%20hiring.png" width="50%" height="" style="outline:none;text-decoration:none;display:block;min-height:31px;margin:0 auto;border:0;" class="CToWUd" alt="Insidify Discovery"></a>
+															<a href="http://seamlesshiring.com" style="font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2" target="_blank"><img src="{{ asset('img/seamlesshiring-logo.png') }}" width="50%" height="" style="outline:none;text-decoration:none;display:block;min-height:31px;margin:0 auto;border:0;" class="CToWUd" alt="Seamlesshiring"></a>
 														</div>
 
 
@@ -52,7 +52,7 @@
 
 																		</p>
 																		<div style="color:#2d2d2d;" align="center">
-																			To view new upload, please <a href="{{ $link }}" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color: #4BB779;text-transform:uppercase" target="_blank">Click here</a>
+																			<p> To view new upload, please</p> <a href="{{ $link }}" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color: #4BB779;text-transform:uppercase" target="_blank">Click here</a>
 																		</div>
 																		<p style="font-family:Arial,Helvetica,sans-serif; font-size:15px;line-height:1.3em;color:#afafaf">If clicking the link above does not work, kindly copy and paste it to your browser.</p>
 																		<hr style="border-width:0 0 1px">

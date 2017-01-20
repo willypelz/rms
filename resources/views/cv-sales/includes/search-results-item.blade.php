@@ -29,7 +29,7 @@
                   @endif
                   <!--<span class="label label-primary">INSIDIFY</span>-->
               </h4>
-              <p>{{ @$cv['last_position'] }} @if( $cv['last_company_worked'] != '' ) {{ ' at '.@$cv['last_company_worked'] }}  @endif</p>
+              <p>{{ @$cv['last_position'] }} @if( @$cv['last_company_worked'] != '' ) {{ ' at '.@$cv['last_company_worked'] }}  @endif</p>
 
               <div class="description">
                   <!-- <p class="sub-box excerpt-p text-muted hidden"><i>bodied security men and women needed in a hotel. Must be smart and able to work in a corporate environment</i></p>

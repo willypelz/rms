@@ -161,7 +161,7 @@ class CvSalesController extends Controller
     public function getCvPreview(Request $request)
     {
         $cv = Cv::find($request->cv_id)->toArray();
-        $cv['dob'] = $cv['date_of_birth'];
+        $cv['dob'] = @$cv['date_of_birth'];
         $is_applicant = $request->is_applicant;
         $is_embedded = $request->is_embedded;
         if(isset($request->appl_id)){

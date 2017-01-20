@@ -16,7 +16,8 @@
           <input type="checkbox" class="media-body-check check-applicant pull-right">
           <h4 class="media-heading text-muted"><a href="{{ route('applicant-profile', $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] ) }}" target="_blank">{{ ucwords( @$cv['first_name']. " " . @$cv['last_name'] ) }}</a>
           <span class="span-stage">{{ $cv['application_status'][ array_search( $jobID, $cv['job_id'] ) ] }}</span></h4>
-          <p>{{ @$cv['last_position'].' at '.@$cv['last_company_worked'] }}</p>
+          <p>{{ @$cv['last_position'] }} @if( @$cv['last_company_worked'] != '' ) {{ ' at '.@$cv['last_company_worked'] }}  @endif</p>
+          
           <small>
               <span class="text-muted">{{ human_time( @$cv['application_date'], 1) }}</span>
               &nbsp;
@@ -125,7 +126,7 @@
             ({
               type: "POST",
               url: url,
-              data: ({ rnd : Math.random() * 100000, cv_id: id, type:'add', name:"{{ $cv['first_name']. " " . $cv['last_name'] }}", 'qty':1, 'price':500, "_token":"{{ csrf_token() }}"}),
+              data: ({ rnd : Math.random() * 100000, cv_id: id, type:'add', name:"{{ $cv['first_name']. " " . @$cv['last_name'] }}", 'qty':1, 'price':500, "_token":"{{ csrf_token() }}"}),
               success: function(response){
                 
                 console.log(response);

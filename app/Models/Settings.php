@@ -14,6 +14,8 @@ class Settings extends Model
      */
     protected $table = 'settings';
 
+    public $timestamps = false;
+
     /**
      * Attributes that should be mass-assignable.
      *

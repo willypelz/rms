@@ -237,7 +237,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title bold text-bold" id="myModalLabel">Promote <span class="text-warning">Title of Job comes right here please</span></h4>
+              <h4 class="modal-title bold text-bold" id="myModalLabel">Promote <span class="text-warning">{{ ucfirst( $job->title ) }} </span></h4>
             </div>
             <div class="modal-body">
               <div class="row">
@@ -245,12 +245,11 @@
                 </div> -->
                 
                 <div class="col-xs-12">
-                                <p class="text-">Select the Job-board and Newspaper where you want your job to appear and click done to forward your request and we will reach you shortly.</p>
-
+                  <p class="text-">Select the Job-board and Newspaper where you want your job to appear and click done to forward your request and we will reach you shortly.</p>
                   <div class="well">
                     <h4 class="text-brandon text-uppercase text-danger text-center">
-                                <i class="fa fa-star"></i>&nbsp; Paid Job Boards
-                                </h4><hr>
+                    <i class="fa fa-star"></i>&nbsp; Paid Job Boards
+                    </h4><hr>
                     <!-- <h4>Promote <a href="">Job Title should come here</a>. </h4> -->
                     <!-- <p>Multipying your talent flow. Post your job on more job boards</p> -->
                     <div class="col-sm-4">
@@ -340,148 +339,141 @@
                     </div>
                     <div class="clearfix"></div>
                   </div>
-
                   <div class="well text-center">
-
-                                <h4 class="text-brandon text-uppercase text-danger">
-                                <i class="fa fa-star"></i>&nbsp; Paid Newspaper Ads
-                                </h4>
-
+                    <h4 class="text-brandon text-uppercase text-danger">
+                    <i class="fa fa-star"></i>&nbsp; Paid Newspaper Ads
+                    </h4>
+                    <br>
+                    
+                    <div class="col-sm-4">
+                      <label for="fl-box-0">
+                        <div class="thumbnail thumb-box">
+                          <div class="caption">
+                            <img alt="" src="http://cdn.guardian.ng/wp-content/themes/guardian2016/img/guardian_logo.png" height="45px" width="100%"> <hr>
+                            <h4 class="">TheGuardian</h4>
+                            <p class="small"></p>
+                            <input type="checkbox" class="fl-box" name="" id="fl-box-0">
+                            <p>
+                              
+                              <span class="purchase-action">
                                 
-                                                                <div class="col-sm-4">
-                                <label for="fl-box-0">
-                                  <div class="thumbnail thumb-box">
-                                    <div class="caption">
-                                      <img alt="" src="http://cdn.guardian.ng/wp-content/themes/guardian2016/img/guardian_logo.png" height="45px" width="100%"> <hr>
-                                      <h4 class="">TheGuardian</h4>
-                                      <p class="small"></p>
-                                      <input type="checkbox" class="fl-box" name="" id="fl-box-0">
-                                      <p>
-                                        
-                                        <span class="purchase-action">
-                                                                                    
-                                                                                    <!-- <a href="" class="btn btn-success " data-count="1" onclick="AddBoardCart(7, 1000, 'TheGuardian')" data-cost="1000"><i class="fa fa-plus"></i> Post for &#8358; 1000</a> -->
-                                          
-                                                                                  </span>
-                                        
-                                      </p>
-                                    </div>
-                                  </div>
-                                </label>
-                                </div>
-                                                                <div class="col-sm-4">
-                                <label for="fl-box-1">
-                                  <div class="thumbnail thumb-box">
-                                    <div class="caption">
-                                      <img alt="" src="http://d1phczbdxyh8yo.cloudfront.net/wp-content/uploads/2016/03/21234614/Punch-Logo1-300x89.png" height="45px" width="100%"> <hr>
-                                      <h4 class="">Punch</h4>
-                                      <p class="small"></p>
-                                      <input type="checkbox" class="fl-box" name="" id="fl-box-1">
-                                      <p>
-                                        
-                                        <span class="purchase-action">
-                                                                                    
-                                                                                    <!-- <a href="" class="btn btn-success " data-count="1" onclick="AddBoardCart(9, 1500, 'Punch')" data-cost="1500"><i class="fa fa-plus"></i> Post for &#8358; 1500</a> -->
-                                          
-                                                                                  </span>
-                                        
-                                      </p>
-                                    </div>
-                                  </div>
-                                </label>
-                                </div>
-                                                                <div class="col-sm-4">
-                                <label for="fl-box-2">
-                                  <div class="thumbnail thumb-box">
-                                    <div class="caption">
-                                      <img alt="" src="http://thenationonlineng.net/wp-content/uploads/2015/07/logo1.png" height="45px" width="100%"> <hr>
-                                      <h4 class="">TheNation</h4>
-                                      <p class="small"></p>
-                                      <input type="checkbox" class="fl-box" name="" id="fl-box-2">
-                                      <p>
-                                        
-                                        <span class="purchase-action">
-                                                                                    
-                                                                                    <!-- <a href="" class="btn btn-success " data-count="1" onclick="AddBoardCart(10, 1200, 'TheNation')" data-cost="1200"><i class="fa fa-plus"></i> Post for &#8358; 1200</a> -->
-                                          
-                                                                                  </span>
-                                        
-                                      </p>
-                                    </div>
-                                  </div>
-                                </label>
-                                </div>
-                                                                <div class="col-sm-4">
-                                <label for="fl-box-3">
-                                  <div class="thumbnail thumb-box">
-                                    <div class="caption">
-                                      <img alt="" src="http://d19lga30codh7.cloudfront.net/wp-content/uploads/2013/12/vanguardlogo.png" height="45px" width="100%"> <hr>
-                                      <h4 class="">Vanguard</h4>
-                                      <p class="small"></p>
-                                      <input type="checkbox" class="fl-box" name="" id="fl-box-3">
-                                      <p>
-                                        
-                                        <span class="purchase-action">
-                                                                                    
-                                                                                    <!-- <a href="" class="btn btn-success " data-count="1" onclick="AddBoardCart(11, 1300, 'Vanguard')" data-cost="1300"><i class="fa fa-plus"></i> Post for &#8358; 1300</a> -->
-                                          
-                                                                                  </span>
-                                        
-                                      </p>
-                                    </div>
-                                  </div>
-                                </label>
-                                </div>
+                                <!-- <a href="" class="btn btn-success " data-count="1" onclick="AddBoardCart(7, 1000, 'TheGuardian')" data-cost="1000"><i class="fa fa-plus"></i> Post for &#8358; 1000</a> -->
                                 
-
-                                  <div class="hidden" href="#">
-                                    <div class="panel panel-default panel-course category-item">
-                                      <div class="row category-row">
-                                        <div class="col-xs-3">
-                                          <img src="http://d19lga30codh7.cloudfront.net/wp-content/uploads/2013/12/vanguardlogo.png" alt="" class="category-icon" width="100%">
-                                        </div>
-                                        <div class="col-xs-6">
-                                          <h4>Name of Newspaper comes here <small></small> </h4>
-                                          <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, esse nam. Deserunt delectus ex enim assumenda.</p> -->
-                                        </div>
-                                        <div class="col-xs-3 category-item"><br>
-                                          <a class="btn btn-block btn-warning pull-right">Request slot</a>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  
-                                  <div class="hidden" href="#">
-                                    <div class="panel panel-default panel-course category-item">
-                                      <div class="row category-row">
-                                        <div class="col-xs-3 ">
-                                          <img src="http://cdn.guardian.ng/wp-content/themes/guardian2016/img/guardian_logo.png" alt="" class="category-icon" width="100%">
-                                        </div>
-                                        <div class="col-xs-6">
-                                          <h4>Name of Newspaper comes here <small></small></h4>
-                                          <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, esse nam. Deserunt delectus ex enim assumenda.</p> -->
-                                        </div>
-                                        <div class="col-xs-3 category-item"><br>
-                                          <a class="btn btn-block btn-warning pull-right">Request slot</a>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-
-
-                                <div class="row hidden">
-                                  <div class="col-xs-6 col-xs-offset-3"><hr>
-                                  <i class="fa fa-spin fa-circle-o-notch fa-2x"></i>
-                                  <p class="">
-                                    <i class="fa fa-check"></i> Your request has been sent. You will be contacted shortly. Thank you.
-                                  </p>
-                                    <a href="" class="btn btn-danger btn-block">Forward Request</a>
-                                  </div>
-                                </div>
-                                  <div class="clearfix"></div>
-
-                                </div>
-
+                              </span>
+                              
+                            </p>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                    <div class="col-sm-4">
+                      <label for="fl-box-1">
+                        <div class="thumbnail thumb-box">
+                          <div class="caption">
+                            <img alt="" src="http://d1phczbdxyh8yo.cloudfront.net/wp-content/uploads/2016/03/21234614/Punch-Logo1-300x89.png" height="45px" width="100%"> <hr>
+                            <h4 class="">Punch</h4>
+                            <p class="small"></p>
+                            <input type="checkbox" class="fl-box" name="" id="fl-box-1">
+                            <p>
+                              
+                              <span class="purchase-action">
+                                
+                                <!-- <a href="" class="btn btn-success " data-count="1" onclick="AddBoardCart(9, 1500, 'Punch')" data-cost="1500"><i class="fa fa-plus"></i> Post for &#8358; 1500</a> -->
+                                
+                              </span>
+                              
+                            </p>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                    <div class="col-sm-4">
+                      <label for="fl-box-2">
+                        <div class="thumbnail thumb-box">
+                          <div class="caption">
+                            <img alt="" src="http://thenationonlineng.net/wp-content/uploads/2015/07/logo1.png" height="45px" width="100%"> <hr>
+                            <h4 class="">TheNation</h4>
+                            <p class="small"></p>
+                            <input type="checkbox" class="fl-box" name="" id="fl-box-2">
+                            <p>
+                              
+                              <span class="purchase-action">
+                                
+                                <!-- <a href="" class="btn btn-success " data-count="1" onclick="AddBoardCart(10, 1200, 'TheNation')" data-cost="1200"><i class="fa fa-plus"></i> Post for &#8358; 1200</a> -->
+                                
+                              </span>
+                              
+                            </p>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                    <div class="col-sm-4">
+                      <label for="fl-box-3">
+                        <div class="thumbnail thumb-box">
+                          <div class="caption">
+                            <img alt="" src="http://d19lga30codh7.cloudfront.net/wp-content/uploads/2013/12/vanguardlogo.png" height="45px" width="100%"> <hr>
+                            <h4 class="">Vanguard</h4>
+                            <p class="small"></p>
+                            <input type="checkbox" class="fl-box" name="" id="fl-box-3">
+                            <p>
+                              
+                              <span class="purchase-action">
+                                
+                                <!-- <a href="" class="btn btn-success " data-count="1" onclick="AddBoardCart(11, 1300, 'Vanguard')" data-cost="1300"><i class="fa fa-plus"></i> Post for &#8358; 1300</a> -->
+                                
+                              </span>
+                              
+                            </p>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                    
+                    <div class="hidden" href="#">
+                      <div class="panel panel-default panel-course category-item">
+                        <div class="row category-row">
+                          <div class="col-xs-3">
+                            <img src="http://d19lga30codh7.cloudfront.net/wp-content/uploads/2013/12/vanguardlogo.png" alt="" class="category-icon" width="100%">
+                          </div>
+                          <div class="col-xs-6">
+                            <h4>Name of Newspaper comes here <small></small> </h4>
+                            <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, esse nam. Deserunt delectus ex enim assumenda.</p> -->
+                          </div>
+                          <div class="col-xs-3 category-item"><br>
+                            <a class="btn btn-block btn-warning pull-right">Request slot</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="hidden" href="#">
+                      <div class="panel panel-default panel-course category-item">
+                        <div class="row category-row">
+                          <div class="col-xs-3 ">
+                            <img src="http://cdn.guardian.ng/wp-content/themes/guardian2016/img/guardian_logo.png" alt="" class="category-icon" width="100%">
+                          </div>
+                          <div class="col-xs-6">
+                            <h4>Name of Newspaper comes here <small></small></h4>
+                            <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, esse nam. Deserunt delectus ex enim assumenda.</p> -->
+                          </div>
+                          <div class="col-xs-3 category-item"><br>
+                            <a class="btn btn-block btn-warning pull-right">Request slot</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row hidden">
+                      <div class="col-xs-6 col-xs-offset-3"><hr>
+                        <i class="fa fa-spin fa-circle-o-notch fa-2x"></i>
+                        <p class="">
+                          <i class="fa fa-check"></i> Your request has been sent. You will be contacted shortly. Thank you.
+                        </p>
+                        <a href="" class="btn btn-danger btn-block">Forward Request</a>
+                      </div>
+                    </div>
+                    <div class="clearfix"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -503,148 +495,111 @@
             <div class="modal-body">
               <div class="col-xs-12">
                 <div class="row tab-content ">
-                <div class="col-sm-12">
-
-                                    <h1 class="text-center"><i class="fa fa-user-plus"></i></h1>
+                  <div class="col-sm-12">
+                    <h1 class="text-center"><i class="fa fa-user-plus"></i></h1>
                     <h4 class="text-center text-green strong">Add Candidates to your Talent Pool</h4>
-
-
                     
-                
-
-
+                    
                     <div class="col-sm-10 col-sm-offset-1 text-center">
-
-                    <p>
+                      <p>
                         Do you already have relevant resumes in a folder somewhere?
                         Upload them here and add them to your pool of applicants.
-
-                    </p><br>
-                        
-                        <div id="loader"></div>
-                        <div class="alert alert-danger" style="display:none;" id="u_f"></div>
-                        <div class="alert alert-success" style="display:none;" id="u_s"></div>
-                       <form action="https://localhost/seamlesshiring/public_html/job/import-cv-file" method="post" enctype="multipart/form-data" id="uploadCandidate">
-                            <input type="hidden" name="_token" value="p1au5UXt3AEjM6t41vp4R5Q2LXx5HWFyCAB6eFcg">
-
-                            <div class="form-group">
-
-                            <div class="btn-group" data-toggle="buttons">
-
-                              <!-- <label class="btn btn-line">
-                                <input type="radio" name="options" id="upToFolder" autocomplete="off" value="upToFolder"> Upload to Folder
-                              </label> -->
-
-                              <label class="btn btn-line">
-                                <input type="radio" name="options" id="upToJob" autocomplete="off" value="upToJob"> Upload to a Job
-                              </label>
-                            </div>
+                      </p><br>
+                      
+                      <div id="loader"></div>
+                      <div class="alert alert-danger" style="display:none;" id="u_f"></div>
+                      <div class="alert alert-success" style="display:none;" id="u_s"></div>
+                      <form action="https://localhost/seamlesshiring/public_html/job/import-cv-file" method="post" enctype="multipart/form-data" id="uploadCandidate">
+                        <input type="hidden" name="_token" value="p1au5UXt3AEjM6t41vp4R5Q2LXx5HWFyCAB6eFcg">
+                        <div class="form-group">
+                          <div class="btn-group" data-toggle="buttons">
+                            <!-- <label class="btn btn-line">
+                              <input type="radio" name="options" id="upToFolder" autocomplete="off" value="upToFolder"> Upload to Folder
+                            </label> -->
+                            <label class="btn btn-line">
+                              <input type="radio" name="options" id="upToJob" autocomplete="off" value="upToJob"> Upload to a Job
+                            </label>
+                          </div>
+                          <br><br>
+                          
+                          <select class="form-control job-opt " name="job">
+                            <option value="">Select Job</option>
+                            <option value="22">Technical Executives at Cell Phone Repairs Stores</option>
+                            <option value="92">Human Resource Managers at Nachitech Oilfield Supplies and Services Limited</option>
+                            <option value="111">Salesperson/Customer Service at Cell Phone Repair</option>
+                            <option value="115">Head of Learning and Development</option>
+                            <option value="118">My Job</option>
+                          </select>
+                          <select class="form-control hidden folder-opt-select" name="folder">
+                            <option value="0">Select Folder</option>
+                            
+                          </select>
+                          <div class="btn-group folder-opt" style="display:none;">
+                            <button type="button" class="btn btn-line btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Select Folder
+                            &nbsp; <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" id="folders" data-folders="" data-cv="">
+                              
+                              <li role="separator" class="divider"></li>
+                              <li>
+                                <a href="javascript://" onclick="//$('#add-folder').show();$('#add-folder').focus();"><i class="fa fa-plus"></i> Create new</a>
+                              </li>
+                            </ul>
                             <br><br>
-                                
-                                <select class="form-control job-opt " name="job">
-                                    <option value="">Select Job</option>
-
-                                                                            <option value="22">Technical Executives at Cell Phone Repairs Stores</option>
-                                                                            <option value="92">Human Resource Managers at Nachitech Oilfield Supplies and Services Limited</option>
-                                                                            <option value="111">Salesperson/Customer Service at Cell Phone Repair</option>
-                                                                            <option value="115">Head of Learning and Development</option>
-                                                                            <option value="118">My Job</option>
-                                                                    </select>
-
-                                <select class="form-control hidden folder-opt-select" name="folder">
-                                    <option value="0">Select Folder</option>
-                                    
-
-                                                                    </select>
-
-                                <div class="btn-group folder-opt" style="display:none;">
-
-                                  <button type="button" class="btn btn-line btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Select Folder
-
-                                     &nbsp; <span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu" id="folders" data-folders="" data-cv="">
-                                    
-
-                                    <li role="separator" class="divider"></li>
-
-                                    <li>
-                                        <a href="javascript://" onclick="//$('#add-folder').show();$('#add-folder').focus();"><i class="fa fa-plus"></i> Create new</a>
-                                    </li>
-
-
-                                  </ul>
-
-                                    <br><br>
-                                </div> 
-                                
-                                <div class="form-group" id="add-folder" style="display:none;">
-                                    <div class="col-xs-6 col-xs-offset-2">
-                                        <input type="text" class="form-control" id="add-folder-field">
-                                    </div>
-                                    
-                                    <div class="col-xs-2">
-                                        <button class="form-control" id="add-folder-btn">Add</button>
-                                    </div>
-                                    <br><br>
-                                </div>
-                                
-                                
+                          </div>
+                          
+                          <div class="form-group" id="add-folder" style="display:none;">
+                            <div class="col-xs-6 col-xs-offset-2">
+                              <input type="text" class="form-control" id="add-folder-field">
                             </div>
                             
-                            <div id="inputer-opt" class="collapse">
-
-                                <div class="form-group fileinput fileinput-new input-group" data-provides="fileinput">
-                                  <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
-
-                                  <span class="input-group-addon btn btn-primary btn-file text-white"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
-                                    <input type="file" name="cv-upload-file" placeholder="zip" accept=".zip,.pdf,.doc,.docx,.txt,.rtf,.pptx,.ppt">
-                                  </span>
-                                  <a href="#" class="input-group-addon  fileinput-exists btn btn-danger" style="    background-color: #d9534f; color:white;" data-dismiss="fileinput">Remove</a>
-                                  
-                                </div><br>
-                                <small style="margin-top: -20px;display: block;">*Allowed extensions are .zip, .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt</small><br>
-
-                                <button type="submit" class="btn btn-success text-capitalize">
-                                        <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Import file</span>
-                                </button>
-
+                            <div class="col-xs-2">
+                              <button class="form-control" id="add-folder-btn">Add</button>
                             </div>
-                        </form>
-
-                        <div id="funcMsg" class="text text-successs"></div>
-
+                            <br><br>
+                          </div>
+                          
+                          
+                        </div>
                         
-                    </div>
-
-
+                        <div id="inputer-opt" class="collapse">
+                          <div class="form-group fileinput fileinput-new input-group" data-provides="fileinput">
+                            <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                            <span class="input-group-addon btn btn-primary btn-file text-white"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                            <input type="file" name="cv-upload-file" placeholder="zip" accept=".zip,.pdf,.doc,.docx,.txt,.rtf,.pptx,.ppt">
+                          </span>
+                          <a href="#" class="input-group-addon  fileinput-exists btn btn-danger" style="    background-color: #d9534f; color:white;" data-dismiss="fileinput">Remove</a>
+                          
+                        </div><br>
+                        <small style="margin-top: -20px;display: block;">*Allowed extensions are .zip, .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt</small><br>
+                        <button type="submit" class="btn btn-success text-capitalize">
+                        <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Import file</span>
+                        </button>
+                      </div>
+                    </form>
+                    <div id="funcMsg" class="text text-successs"></div>
                     
-                    <div class="col-sm-12 hidden">
-                        
-
-                        <h5 class="no-margin text-center text-success hidden">
-                            <i class="fa fa-spinner fa-pulse"></i> &nbsp;
-                            Importing Candidates
-                        </h5>
-
-
-                        
-                        <div class="col-sm-12"><hr><a href="https://localhost/seamlesshiring/public_html/cv/talent-pool" class="pull-right btn btn-danger btn-cart-checkout">Go to Talent Pool »</a></div>
-
-                        
-                        
-
-                    </div>
+                  </div>
+                  
+                  <div class="col-sm-12 hidden">
+                    
+                    <h5 class="no-margin text-center text-success hidden">
+                    <i class="fa fa-spinner fa-pulse"></i> &nbsp;
+                    Importing Candidates
+                    </h5>
+                    
+                    <div class="col-sm-12"><hr><a href="https://localhost/seamlesshiring/public_html/cv/talent-pool" class="pull-right btn btn-danger btn-cart-checkout">Go to Talent Pool »</a></div>
+                    
+                    
+                  </div>
                 </div>
-
                 
-
-    </div>
+              </div>
             </div>
             <div class="clearfix"></div>
-            </div>
           </div>
         </div>
       </div>
-      @endsection
+    </div>
+    @endsection

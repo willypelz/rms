@@ -142,4 +142,21 @@
 @endforeach
 
 
+@else
+  <br>
+    <div class="alert text-center alert-warning">
+      <p class="lead" style="">
+      <i class="fa-2x fa fa-exclamation-circle"></i><br> 
+      @if($page == 'pool')
+        No CV found
+      @elseif($page == 'search')
+        No results found
+      @elseif($page == 'saved')
+        No saved CV found
+
+      @endif
+  
+      </p>
+    </div>
+
 @endif

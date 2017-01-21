@@ -176,7 +176,7 @@
 @endforeach
 
 <script type="text/javascript">
-  total_candidates = "{{ $result['response']['numFound'] }}";
+  total_candidates = "{{ $application_statuses['ALL'] }}";
   
   $(document).ready(function(){
         if($('#pagination').data("twbs-pagination")){
@@ -184,7 +184,7 @@
         }
 
        $('#pagination').twbsPagination({
-        totalPages: "{{ ceil( $result['response']['numFound'] / 20 ) }}",
+        totalPages: "{{ ceil( $application_statuses['ALL'] / 20 ) }}",
         visiblePages: 5,
         initiateStartPageClick: false,
         startPage: parseInt( "{{ ( intval( $start / 20 ) + 1 ) }}" ),

@@ -184,14 +184,16 @@ class JobApplicationsController extends Controller
         }
         
         $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status,@$solr_age, @$solr_exp_years); 
+        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+
         if(isset($request->status))
             $status = $request->status;
 
-        $end = (($start + $this->search_params['row']) > intval($result['response']['numFound']))?$result['response']['numFound']:($start + $this->search_params['row']);
+        $end = (($start + $this->search_params['row']) > intval($application_statuses['ALL']))?$application_statuses['ALL']:($start + $this->search_params['row']);
         // $showing = "Showing ".($start+1)." - ".$end." of ".$result['response']['numFound']." Applicants [Page ".floor($request->start + 1)."]";
         // dd($result);
 
-        $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $result['response']['numFound'], 'type'=>$request->status, 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();    
+        $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $application_statuses['ALL'], 'type'=>$request->status, 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();    
         $myJobs = Job::getMyJobs();
 
         $myFolders = array_unique( array_pluck( Solr::get_all_my_cvs($this->search_params, null, null)['response']['docs'] ,'cv_source') );
@@ -202,16 +204,16 @@ class JobApplicationsController extends Controller
 
         if($request->ajax())
         {
-            $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab', 'status', 'result','jobID','start','myJobs', 'myFolders'))->render();    
+            $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab', 'status', 'result','jobID','start','myJobs', 'myFolders', 'application_statuses' ))->render();    
             $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query, 'status' => $status, 'age' => @$request->age,'exp_years' => @$request->exp_years ])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing, 'count' => $result['response']['numFound'] ] );
             
         }
         else{
             $age = [ 5, 85 ];
-            $exp_years = [ 0, 60 ];
-            $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
-            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','showing','myJobs','myFolders'));
+            $exp_years = [ 0, 60 ]; 
+            
+            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','showing','myJobs','myFolders', 'application_statuses'));
         }
 
         

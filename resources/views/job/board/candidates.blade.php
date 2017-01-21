@@ -167,7 +167,7 @@
 var folders = [];
 var filters = [];
 var status_filter = "";
-var total_candidates = "{{ $result['response']['numFound'] }}";
+var total_candidates = "{{ $application_statuses['ALL'] }}";
 var keyword = "";
 var age_range = exp_years_range = null;
 var last_text_filter = "";

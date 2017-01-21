@@ -15,7 +15,7 @@
     <div class="row">
         
         <div class="col-xs-8"><br>
-          <span class="h4 text-green-light text-brandon"> <i class="fa fa-street-view"></i> Talent Pool <span class="text-white"> ({{ $result['response']['numFound'] }} Candidates)</span></span>
+          <span class="h4 text-green-light text-brandon"> <i class="fa fa-street-view"></i> Talent Pool <span class="text-white"> ({{ $application_statuses['ALL'] }} Candidates)</span></span>
 
           &nbsp;
 
@@ -157,18 +157,19 @@
         $('.search-results').html('{!! preloader() !!}');
         scrollTo('.scroll-to');
         $('.result-label').html('');
-        // $('#pagination').hide();
+        $('#pagination').hide();
         $.get("{{ url('cv/talent-pool') }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
             //console.log(response);
             // var response = JSON.parse(data);
             // console.log(data.search_results);
             $('.search-results').html(data.search_results);
-            $('#search-filters').html(data.search_filters);
+            
             $('.result-label').html(data.showing);
             if( data.count > 0 )
             {
                 $('#pagination').show();
                 $('.result-label').show();
+                $('#search-filters').html(data.search_filters);
             }
             else
             {

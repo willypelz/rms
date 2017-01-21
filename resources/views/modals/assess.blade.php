@@ -20,7 +20,7 @@
                                             <div class="col-xs-9">
                                                 <div class="media-left pull-left" style="padding-right: 20px;">
                                                     <a href="#">
-                                                        <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="{{ $product->provider->logo }}" data-holder-rendered="true" style="width: 64px; height: 64px;">
+                                                        <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="{{ $product->provider->logo }}" data-holder-rendered="true" style="width: 100px; ">
                                                     </a>
                                                 </div>
                                                 <div class="media-body">

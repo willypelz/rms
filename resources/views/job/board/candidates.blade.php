@@ -171,6 +171,10 @@ var total_candidates = "{{ $result['response']['numFound'] }}";
 var keyword = "";
 var age_range = exp_years_range = null;
 var last_text_filter = "";
+
+var cv_ids = [];
+var app_ids = [];
+
 String.prototype.capitalize = function() {
 return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
 }
@@ -465,14 +469,14 @@ $('body').reloadResult();
 }
 $.fn.fixDetailsforBulkActions = function(){
 $field = $(this);
-var cv_ids =$(".search-results .comment.media").map(function(i,v){
+cv_ids =$(".search-results .comment.media").map(function(i,v){
 if( $(this).find('.media-body-check').is(':checked') )
 {
 return [ $(this).data("cv")  ];
 }
 
 }).get();
-var app_ids =$(".search-results .comment.media").map(function(i,v){
+app_ids =$(".search-results .comment.media").map(function(i,v){
 if( $(this).find('.media-body-check').is(':checked') )
 {
 return [ $(this).data("app-id")  ];
@@ -522,8 +526,8 @@ $(this).fixDetailsforBulkActions();
 $('#mass-action button').on('click',function(){
 // cvs = $('.search-results .comment.media').prop('data-cv');
 $field = $(this);
-var cv_ids = $field.data('cv');
-var app_ids = $field.data('app-id');
+cv_ids = $field.data('cv');
+app_ids = $field.data('app-id');
 // $.post("{{ route('mass-action') }}", {job_id: '{{ $jobID }}',cv_ids :  cv_ids,status: $field.data('action') },function(data){
 
 
@@ -586,7 +590,7 @@ $(document).getShowing();
     $('body').on('click', '#downSpreadsheet', function(){
         // $('#downSpreadsheet').hide();
         // $('#genSpreadsheet').show();
-        $data = {search_query: $('#search_query').val(), filter_query : filters, status : status_filter , jobId : "{{ $jobID }}", age: age_range, exp_years : exp_years_range };
+        $data = {search_query: $('#search_query').val(), filter_query : filters, status : status_filter , jobId : "{{ $jobID }}", age: age_range, exp_years : exp_years_range, cv_ids : cv_ids, app_ids : app_ids };
         window.open("{{ route('download-applicant-spreadsheet') }}" + "?" + $.param( $data ), '_blank');
         // window.open("{{ route('download-applicant-spreadsheet'," + $('#search_query').val() + "," + filters + "," + status_filter + ") }}", '_blank');
         /*$.get("{{ route('download-applicant-spreadsheet') }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
@@ -604,7 +608,7 @@ $(document).getShowing();
     $('body').on('click', '#downCv', function(){
         // $('#downSpreadsheet').hide();
         // $('#genSpreadsheet').show();
-        $data = {search_query: $('#search_query').val(), filter_query : filters, status : status_filter , jobId : "{{ $jobID }}", age: age_range, exp_years : exp_years_range };
+        $data = {search_query: $('#search_query').val(), filter_query : filters, status : status_filter , jobId : "{{ $jobID }}", age: age_range, exp_years : exp_years_range, cv_ids : cv_ids, app_ids : app_ids };
         window.open("{{ route('download-applicant-cv') }}" + "?" + $.param( $data ), '_blank');
         // window.open("{{ route('download-applicant-spreadsheet'," + $('#search_query').val() + "," + filters + "," + status_filter + ") }}", '_blank');
         /*$.get("{{ route('download-applicant-spreadsheet') }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){

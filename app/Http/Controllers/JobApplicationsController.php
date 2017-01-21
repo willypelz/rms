@@ -272,22 +272,26 @@ class JobApplicationsController extends Controller
         $excel_data = [];
 
         foreach ($data as $key => $value) {
+            if( !empty( $request->cv_ids ) && !in_array($value['id'], $request->cv_ids )  )
+            {
+                continue;
+            }
             $excel_data[] = [
                                 "FIRSTNAME" => $value['first_name'],
-                                "LASTNAME" => $value['last_name'],
-                                "LAST POSITION HELD" => $value['last_position'],
-                                "HEADLINE" => $value['headline'][0],
-                                "GENDER" => $value['gender'],
-                                "MARITAL STATUS" => $value['marital_status'],
-                                "DATE OF BIRTH" => substr($value['dob'], 0 ,10),
+                                "LASTNAME" => @$value['last_name'],
+                                "LAST POSITION HELD" => @$value['last_position'],
+                                "HEADLINE" => @$value['headline'][0],
+                                "GENDER" => @$value['gender'],
+                                "MARITAL STATUS" => @$value['marital_status'],
+                                "DATE OF BIRTH" => substr(@$value['dob'], 0 ,10),
                                 // "AGE" => '',
-                                "LOCATION" => $value['state'],
-                                "EMAIL" => $value['email'],
-                                "PHONE" => $value['phone'],
-                                "COVER NOTE" => $value['cover_note'][0],
-                                "HIGHEST EDUCATION" => $value['highest_qualification'],
-                                "LAST COMPANY WORKED AT" => $value['last_company_worked'],
-                                "YEARS OF EXPERIENCE" => $value['years_of_experience'],
+                                "LOCATION" => @$value['state'],
+                                "EMAIL" => @$value['email'],
+                                "PHONE" => @$value['phone'],
+                                "COVER NOTE" => @$value['cover_note'][0],
+                                "HIGHEST EDUCATION" => @$value['highest_qualification'],
+                                "LAST COMPANY WORKED AT" => @$value['last_company_worked'],
+                                "YEARS OF EXPERIENCE" => @$value['years_of_experience'],
                                 "WILLING TO RELOCATE?" => '',
 
 
@@ -422,13 +426,25 @@ class JobApplicationsController extends Controller
         $filename = Auth::user()->id."_".get_current_company()->id."_".time().".zip";
         //$archive = $zippy->create(  $path.$filename );
 
+   
+
         $cvs = array_pluck($data ,'cv_file');
-
-
-        $cvs = array_map(function($cv){
+        $ids = array_pluck($data ,'id');
+        
+        
+        //Check for selected cvs to download and append path to it
+        $cvs = array_map(function($cv, $id) use($request){
+            
+            if( !empty( $request->cv_ids ) && !in_array($id, $request->cv_ids )  )
+            {
+                return null;
+            }
             return  public_path('uploads/CVs/').$cv;
-        }, $cvs);
+        }, $cvs, $ids);
 
+        //Remove nulls
+        $cvs = array_filter($cvs, function($var){return !is_null($var);} );
+        
         //$archive->addMembers($cvs, $recursive = false );
 
         $zipper = new \Chumper\Zipper\Zipper;

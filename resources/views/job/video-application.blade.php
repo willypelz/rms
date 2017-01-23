@@ -155,7 +155,7 @@
 
                                                     
                                                     <div class="col-xs-12">
-                                                        <small>Some description for this if available</small>
+                                                        <small>Watch this video above carefully. You will be asked some questions based on it on the next page. Click next when you are done.</small>
                                                     </div> 
                                                         <div class="col-xs-4">
                                                             <!--a href="job.php" target="_blank" type="submit" class="btn btn-line"><i class="fa fa-save"></i> Save as draft</a-->
@@ -176,7 +176,7 @@
                                                 <form  method="post">
                                                     <div class="row " >
                                                         <div class="col-xs-12">
-                                                                <small>May this part needs descriptions?</small>
+                                                                <small>Answer these questions below based on the Video you just watched. It is part of the Job Application process.</small>
                                                          </div> <br><br>
                                                         @if( count($video_options) > 0 )
                                                             {{-- */$index=0;/* --}}

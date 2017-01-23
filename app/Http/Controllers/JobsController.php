@@ -1327,7 +1327,7 @@ class JobsController extends Controller
 
             VideoApplicationValues::insert( $video_application_values );
 
-            return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);
+            return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$job_slug]);
         }
 
         return view('job.video-application', compact('job', 'company','video_options'));

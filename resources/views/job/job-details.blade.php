@@ -156,10 +156,10 @@
                                                     {!!html_entity_decode( ucfirst( $job['details'] ) )!!}
                                                 </div>
 
-                                                <div class="col-xs-12">
+                                                <!-- <div class="col-xs-12">
                                                 <hr><h6 class="text-info text-brandon text-uppercase l-sp-5 no-margin">Qualifications</h6><hr>
                                                    {!!html_entity_decode( ucfirst( $job['experience'] ) )!!}
-                                                </div>
+                                                </div> -->
                                             </div>
 
                                             <div class="row">
@@ -203,7 +203,7 @@
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
                                         <p><img src="{{ url('/') }}/img/seamlesshiring-logo.png" alt="" width="120px"> </p> 
                                         <p><small class="text-muted"> &nbsp;
-                                        &copy; 2016. Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a></small></p>
+                                        &copy; {{ date('Y') }}. Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a></small></p>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>

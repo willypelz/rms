@@ -177,7 +177,7 @@
                                                     <div class="row " >
                                                         <div class="col-xs-12">
                                                                 <small>Answer these questions below based on the Video you just watched. It is part of the Job Application process.</small>
-                                                         </div> <br><br>
+                                                         </div> <br><br><br><br><br><br>
                                                         @if( count($video_options) > 0 )
                                                             {{-- */$index=0;/* --}}
                                                             @foreach( $video_options as $video_option )
@@ -312,7 +312,7 @@
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
                                         <p><img src="{{ url('/') }}/img/logomark2.png" alt="" width="150px"> </p> 
                                         <p><small class="text-muted">Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a> &nbsp;
-                                        &copy; 2016. SeamlessHiring</small></p>
+                                        &copy; {{ date('Y') }}. SeamlessHiring</small></p>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>

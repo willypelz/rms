@@ -204,13 +204,13 @@
                                                                     
                                                                     @elseif( $video_option->type == 'RADIO' )
                                                                         @foreach( $options as $key => $option )
-                                                                           <span style="margin-right:-10px;margin-left:10px;">{{ $alphabeths[$key]."." }}</span> {{ Form::radio('vo_'.$video_option->id, $option,false, array('required' => 'required')) }} {{ $option }}
+                                                                           <span style="margin-right:-10px;margin-left:10px;">{{ $alphabeths[$key]."." }}</span> {{ Form::radio('vo_'.$video_option->id, $option,false, array('required' => 'required')) }} {{ $option }} <div style="margin-top:3px;" class="clearfix"></div>
                                                                         @endforeach
                                                                         
                                                                     @elseif( $video_option->type == 'CHECKBOX' )
 
                                                                         @foreach( $options as $option )
-                                                                            <span style="margin-right:-10px;margin-left:10px;">{{ $alphabeths[$key]."." }}</span> {{ Form::checkbox('vo_'.$video_option->id.'[]', $option,false, array( 'required' => 'required')) }} {{ $option }}
+                                                                            <span style="margin-right:-10px;margin-left:10px;">{{ $alphabeths[$key]."." }}</span> {{ Form::checkbox('vo_'.$video_option->id.'[]', $option,false, array( 'required' => 'required')) }} {{ $option }} <div style="margin-top:3px;" class="clearfix"></div>
                                                                         @endforeach
                                                                     
                                                                     @elseif( $video_option->type == 'TEXT' )
@@ -240,19 +240,20 @@
                                                                     @endif
 
 
-
+                                                                <hr style="margin-botttom:0px;">
                                                                 </div> 
 
                                                                 @if( $index % 2  )
                                                                     <div class="clearfix"></div>
                                                                 @endif
                                                                 {{-- */$index++;/* --}}
+
                                                             @endforeach
                                                         @endif
                                                     </div>
 
                                                     <div class="row">
-                                                        <div class="col-xs-12"><hr></div>
+                                                        <!-- <div class="col-xs-12"><hr></div> -->
 
                                                             <div class="col-xs-4">
                                                                 <!--a href="job.php" target="_blank" type="submit" class="btn btn-line"><i class="fa fa-save"></i> Save as draft</a-->

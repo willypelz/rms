@@ -182,8 +182,22 @@ class JobApplicationsController extends Controller
             $request->exp_years = [ 0, 60 ];
             $solr_exp_years = null;
         }
+
+        //If video application score is available
+        if( @$request->video_application_score ){
+            //2015-09-16T00:00:00Z
+
+            $solr_video_application_score = [ @$request->video_application_score[0], @$request->video_application_score[1] ];
+        }
+        else
+        {
+            $request->video_application_score = [ 0, 100 ];
+            $solr_video_application_score = null;
+        }
+
+
         
-        $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status,@$solr_age, @$solr_exp_years); 
+        $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status,@$solr_age, @$solr_exp_years, @$solr_video_application_score); 
         $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
         if(isset($request->status))
@@ -205,15 +219,16 @@ class JobApplicationsController extends Controller
         if($request->ajax())
         {
             $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab', 'status', 'result','jobID','start','myJobs', 'myFolders', 'application_statuses' ))->render();    
-            $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query, 'status' => $status, 'age' => @$request->age,'exp_years' => @$request->exp_years ])->render();
+            $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query, 'status' => $status, 'age' => @$request->age,'exp_years' => @$request->exp_years, 'job' => $job, 'video_application_score' => @$request->video_application_score ])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing, 'count' => $result['response']['numFound'] ] );
             
         }
         else{
             $age = [ 5, 85 ];
             $exp_years = [ 0, 60 ]; 
+            $video_application_score = [0,100];
             
-            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','showing','myJobs','myFolders', 'application_statuses'));
+            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','showing','myJobs','myFolders', 'application_statuses', 'job', 'video_application_score'));
         }
 
         

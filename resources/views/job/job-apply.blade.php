@@ -443,7 +443,7 @@
                                 <!--/tab-content-->
                                 <div class="page page-sm foot no-bod-rad">
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                                        <p><img src="{{ url('/') }}/img/logomark2.png" alt="" width="150px"> </p> 
+                                        <p><img src="{{ url('/') }}/img/seamlesshiring-logo.png" alt="" width="150px"> </p> 
                                         <p><small class="text-muted">Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a> &nbsp;
                                         &copy; {{ date('Y') }}. SeamlessHiring</small></p>
                                     </div>

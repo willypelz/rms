@@ -85,11 +85,14 @@
 
                                                 <video controls style="width:100%; height:100%;">
                                                     <!-- MP4 for Safari, IE9, iPhone, iPad, Android, and Windows Phone 7 -->
-                                                    <source type="video/mp4" src="{{ asset('uploads/videos/video.mp4') }}" />
+                                                    <!-- <source type="video/mp4" src="{{ asset('uploads/videos/video.mp4') }}" /> -->
+                                                    <source type="video/mp4" src="{{ asset('uploads/videos/'.$job['video_posting_url']) }}" />
                                                     <!-- WebM/VP8 for Firefox4, Opera, and Chrome -->
-                                                    <source type="video/webm" src="{{ asset('uploads/videos/video.webm') }}" />
+                                                    <!-- <source type="video/webm" src="{{ asset('uploads/videos/video.webm') }}" /> -->
+                                                    <source type="video/webm" src="{{ asset('uploads/videos/'.$job['video_posting_url']) }}" />
                                                     <!-- Ogg/Vorbis for older Firefox and Opera versions -->
-                                                    <source type="video/ogg" src="{{ asset('uploads/videos/video.ogv') }}" />
+                                                    <!-- <source type="video/ogg" src="{{ asset('uploads/videos/video.ogv') }}" /> -->
+                                                    <source type="video/ogg" src="{{ asset('uploads/videos/'.$job['video_posting_url']) }}" />
                                                     <!-- Optional: Add subtitles for each language -->
                                                     <track kind="subtitles" src="subtitles.srt" srclang="en" />
                                                     <!-- Optional: Add chapters -->
@@ -177,13 +180,16 @@
                                                     <div class="row " >
                                                         <div class="col-xs-12">
                                                                 <small>Answer these questions below based on the Video you just watched. It is part of the Job Application process.</small>
-                                                         </div> <br><br><br><br><br><br>
+                                                         </div> <br><br><br><br>
                                                         @if( count($video_options) > 0 )
                                                             {{-- */$index=0;/* --}}
-                                                            @foreach( $video_options as $video_option )
+                                                            {{-- */$alphabeths=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];/* --}}
+                                                            {{-- */$alphabeths_cap=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];/* --}}
+                                                            
+                                                            @foreach( $video_options as $key => $video_option )
                                                                 
                                                                 <div class="col-sm-12 video-option">
-                                                                    <label for="video-option">{{ $video_option->name }} <span class="text-danger">*</span></label><br>
+                                                                    <label for="video-option">{{ ($key + 1 ). ". ". $video_option->name }} <span class="text-danger">*</span></label><br>
 
                                                                     <?php $options = explode(',', $video_option->options) ?>
 
@@ -194,24 +200,24 @@
                                                                                 $select_options[$option] = str_replace( '_', ' ',  ucfirst( $option ) ) ;
                                                                             }
                                                                          ?>
-                                                                        {{ Form::select('vo_'.str_slug($video_option->name,'_'), $select_options, null, array('class'=>'form-control', 'required' => 'required')) }}
+                                                                        {{ Form::select('vo_'.$video_option->id, $select_options, null, array('class'=>'form-control', 'required' => 'required')) }}
                                                                     
                                                                     @elseif( $video_option->type == 'RADIO' )
-                                                                        @foreach( $options as $option )
-                                                                            {{ Form::radio('vo_'.str_slug($video_option->name,'_'), $option,false, array('required' => 'required')) }} {{ $option }}
+                                                                        @foreach( $options as $key => $option )
+                                                                           <span style="margin-right:-10px;margin-left:10px;">{{ $alphabeths[$key]."." }}</span> {{ Form::radio('vo_'.$video_option->id, $option,false, array('required' => 'required')) }} {{ $option }}
                                                                         @endforeach
                                                                         
                                                                     @elseif( $video_option->type == 'CHECKBOX' )
 
                                                                         @foreach( $options as $option )
-                                                                            {{ Form::checkbox('vo_'.str_slug($video_option->name,'_').'[]', $option,false, array( 'required' => 'required')) }} {{ $option }}
+                                                                            <span style="margin-right:-10px;margin-left:10px;">{{ $alphabeths[$key]."." }}</span> {{ Form::checkbox('vo_'.$video_option->id.'[]', $option,false, array( 'required' => 'required')) }} {{ $option }}
                                                                         @endforeach
                                                                     
                                                                     @elseif( $video_option->type == 'TEXT' )
-                                                                        {{ Form::text('vo_'.str_slug($video_option->name,'_'), null, array('class'=>'form-control', 'required' => 'required')) }}
+                                                                        {{ Form::text('vo_'.$video_option->id, null, array('class'=>'form-control', 'required' => 'required')) }}
                                                                     
                                                                     @elseif( $video_option->type == 'TEXTAREA' )
-                                                                        {{ Form::textarea('vo_'.str_slug($video_option->name,'_'), null, array('class'=>'form-control', 'required' => 'required')) }}
+                                                                        {{ Form::textarea('vo_'.$video_option->id, null, array('class'=>'form-control', 'required' => 'required')) }}
                                                                     
                                                                     @elseif( $video_option->type == 'MULTIPLE_OPTION' )
                                                                         <?php 
@@ -220,7 +226,7 @@
                                                                                 $select_options[$option] = str_replace( '_', ' ',  ucfirst( $option ) ) ;
                                                                             }
                                                                          ?>
-                                                                        {{ Form::select('vo_'.str_slug($video_option->name,'_').'[]', $select_options, array('multiple'=>'multiple','class'=>'form-control', 'required' => 'required')) }}
+                                                                        {{ Form::select('vo_'.$video_option->id.'[]', $select_options, array('multiple'=>'multiple','class'=>'form-control', 'required' => 'required')) }}
 
                                                                     @elseif( $video_option->type == 'FILE' )
                                                                         <?php 
@@ -229,7 +235,7 @@
                                                                                 $select_options[$option] = str_replace( '_', ' ',  ucfirst( $option ) ) ;
                                                                             }
                                                                          ?>
-                                                                         {{ Form::file('vo_'.str_slug($video_option->name,'_'),array('class'=>'form-control', 'required' => 'required')) }}
+                                                                         {{ Form::file('vo_'.$video_option->id,array('class'=>'form-control', 'required' => 'required')) }}
 
                                                                     @endif
 
@@ -310,7 +316,7 @@
                                 <!--/tab-content-->
                                 <div class="page page-sm foot no-bod-rad">
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                                        <p><img src="{{ url('/') }}/img/logomark2.png" alt="" width="150px"> </p> 
+                                        <p><img src="{{ url('/') }}/img/seamlesshiring-logo.png" alt="" width="150px"> </p> 
                                         <p><small class="text-muted">Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a> &nbsp;
                                         &copy; {{ date('Y') }}. SeamlessHiring</small></p>
                                     </div>

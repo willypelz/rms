@@ -746,8 +746,9 @@ class JobApplicationsController extends Controller
         return view('modals.reject', compact('applicant_badge','app_ids','cv_ids','appl'));
     }
 
-    private function modalActions($action,$cv_ids,$app_ids)
+    private function modalActions($action, $cv_ids, $app_ids)
     {
+        
         $app_ids = explode(',', @$app_ids);
         $cv_ids = explode(',', @$cv_ids);
         $appl = JobApplication::with('job', 'cv')->find($app_ids[0]);
@@ -772,6 +773,7 @@ class JobApplicationsController extends Controller
              'cv_ids' =>  $cv_ids,
              'appl' =>  $appl,
         ];
+        
     }
 
     

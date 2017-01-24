@@ -277,7 +277,7 @@
                     <!--/tab-content-->
 
                     <div class="separator separator-small text-center text-muted">
-                        <p class="small">&copy; 2016. SeamlessHiring. All Rights Reserved</p>
+                        <p class="small">&copy; {{ date('Y') }}. SeamlessHiring. All Rights Reserved</p>
                     </div>
 
                 </div>

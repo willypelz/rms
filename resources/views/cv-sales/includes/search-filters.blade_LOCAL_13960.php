@@ -81,49 +81,7 @@
 
 
 
-                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/bootstrap-slider.min.js"></script>
-              <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/css/bootstrap-slider.min.css" />
-                
-
-                <p class="border-bottom-thin text-muted">Completed Test Score<i class="glyphicon glyphicon-birthday pull-right"></i></p>
-                     <p class="text-center">
-                        <input id="score-slider" type="text" class="span2" value="" data-slider-min="50" data-slider-max="150" data-slider-step="5" data-slider-value="[75,125]"/> 
-                        <div class="text-center">
-                          <b class="col-sm-2 pull-left" style="color: #bbb;">50</b>
-                          <b  class="col-sm-2 pull-right" style="color: #bbb;">150</b>
-                          <small id="score-range"> 75 - 125 </small>
-                        </div>
-                       <div class="clearfix"></div>
-                     </p>
-
-                    <p></p>
-
-              <style type="text/css">
-                #ex1Slider .slider-selection {
-                  background: #BABABA;
-                }
-              </style>      
-          
-              <script type="text/javascript">
-                  $(document).ready(function(){
-                      $("#score-slider").slider({
-                        // formatter: function(value,a) {
-
-                        //   return 'Current value: ' + value + "  ";
-                        // }
-                      });
-                      $("#score-slider").on("slideStop", function(slideEvt) {
-                        
-                        age_range = slideEvt.value;
-
-                        $('#score-range').html( slideEvt.value[0] + ' - ' + slideEvt.value[1] + ' years' )
-                        $("#score-slider").performFilter();
-                      });
-                  });
-              </script>
-
-
-             <!--  <p class="border-bottom-thin text-muted">Test Score<i class="fa fa-filter pull-right"></i></p>
+                    <p class="border-bottom-thin text-muted">Test Score<i class="fa fa-filter pull-right"></i></p>
                       <div class="checkbox-inline">
                           {{--*/ $other_test_score = 0  /*--}}
                           {{--*/ $index = 0  /*--}}
@@ -145,7 +103,7 @@
                       @if($index > 4)
                         <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
                       @endif
-                      <p></p> -->
+                      <p></p>
 
           @else
     

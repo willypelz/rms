@@ -15,7 +15,7 @@
     <div class="row">
         
         <div class="col-xs-8"><br>
-          <span class="h4 text-green-light text-brandon"> <i class="fa fa-street-view"></i> Talent Pool <span class="text-white"> ({{ $result['response']['numFound'] }} Candidates)</span></span>
+          <span class="h4 text-green-light text-brandon"> <i class="fa fa-street-view"></i> Talent Pool <span class="text-white"> ({{ $application_statuses['ALL'] }} Candidates)</span></span>
 
           &nbsp;
 
@@ -137,73 +137,76 @@
     var filters = [];
     var age_range = exp_years_range = null;
     var last_text_filter = "";
+
     function searchKeyword(){
-    var filter = 'text' + ':"' + $(search_keyword).val() + '"';
-    var key = $(search_keyword).val();
-    var index = $.inArray( last_text_filter, filters );
-    // console.log( filter + "---" + index );
-    if( index == -1 )
-    {
-    //Does not exist before, skip
-    }
-    else
-    {
-    filters.splice(index, 1);
-    }
-    last_text_filter = filter;
-    filters.push( filter );
-    $('.search-results').html('{!! preloader() !!}');
-    scrollTo('.scroll-to');
-    $('.result-label').html('');
-    // $('#pagination').hide();
-    $.get("{{ url('cv/talent-pool') }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
-    //console.log(response);
-    // var response = JSON.parse(data);
-    // console.log(data.search_results);
-    $('.search-results').html(data.search_results);
-    $('#search-filters').html(data.search_filters);
-    $('.result-label').html(data.showing);
-    if( data.count > 0 )
-    {
-    $('#pagination').show();
-    $('.result-label').show();
-    }
-    else
-    {
-    $('#pagination').hide();
-    $('.result-label').hide();
-    }
-    $('#search_keyword').val(key);
-    $.each(filters, function(index,value){
-    
-    var arr = value.split(':');
-    
-    $('.filter-div input[type=checkbox]' + '[data-field=' + arr[0] + ']' + '[data-value=' + arr[1] + ']' ).attr('checked',true);
-    });
-    });
-    return false;
+        var filter = 'text' + ':"' + $(search_keyword).val() + '"';
+        var key = $(search_keyword).val();
+        var index = $.inArray( last_text_filter, filters );
+        // console.log( filter + "---" + index );
+        
+        if( index == -1 )
+        {
+            //Does not exist before, skip
+        }
+        else
+        {
+            filters.splice(index, 1);
+        }
+        last_text_filter = filter;
+        filters.push( filter );
+        $('.search-results').html('{!! preloader() !!}');
+        scrollTo('.scroll-to');
+        $('.result-label').html('');
+        $('#pagination').hide();
+        $.get("{{ url('cv/talent-pool') }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
+            //console.log(response);
+            // var response = JSON.parse(data);
+            // console.log(data.search_results);
+            $('.search-results').html(data.search_results);
+            
+            $('.result-label').html(data.showing);
+            if( data.count > 0 )
+            {
+                $('#pagination').show();
+                $('.result-label').show();
+                $('#search-filters').html(data.search_filters);
+            }
+            else
+            {
+                $('#pagination').hide();
+                $('.result-label').hide();
+            }
+            $('#search_keyword').val(key);
+            $.each(filters, function(index,value){
+            
+                var arr = value.split(':');
+                
+                $('.filter-div input[type=checkbox]' + '[data-field=' + arr[0] + ']' + '[data-value=' + arr[1] + ']' ).attr('checked',true);
+            });
+        });
+        return false;
     }
     
     $(document).ready(function(){
     
-    $.fn.setMyFolders = function(cv_folders)
-    {
-    var html = "" ;
-    var names = [];
-    $.each(folders,function(index,value){
-    if(cv_folders.indexOf( value.id.toString() ) >= 0)
-    {
-    active = ' &nbsp; <i class="fa fa-check"></i> ';
-    names.push( value.name );
-    }
-    else
-    {
-    active = "";
-    }
-    html += '<li id="folder-item" data-ref="' + value.id + '" ><a href="#"><i class="fa fa-folder-o"></i> ' + value.name + active + '</a></li>';
-    });
-    return { 'html' : html , 'names' : names.join(', ') };
-    }
+        $.fn.setMyFolders = function(cv_folders)
+        {
+            var html = "" ;
+            var names = [];
+            $.each(folders,function(index,value){
+                if(cv_folders.indexOf( value.id.toString() ) >= 0)
+                {
+                    active = ' &nbsp; <i class="fa fa-check"></i> ';
+                    names.push( value.name );
+                }
+                else
+                {
+                    active = "";
+                }
+                html += '<li id="folder-item" data-ref="' + value.id + '" ><a href="#"><i class="fa fa-folder-o"></i> ' + value.name + active + '</a></li>';
+            });
+            return { 'html' : html , 'names' : names.join(', ') };
+        }
     $.fn.getMyFolders = function()
     {
     $.post("{{ url('cv/get-my-folders') }}",function(data){
@@ -267,12 +270,13 @@
     // var response = JSON.parse(data);
     // console.log(data.search_results);
     $('.search-results').html(data.search_results);
-    $('#search-filters').html(data.search_filters);
+    
     $('.result-label').html(data.showing);
     if( data.count > 0 )
     {
     $('#pagination').show();
     $('.result-label').show();
+    $('#search-filters').html(data.search_filters);
     }
     else
     {

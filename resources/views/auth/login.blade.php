@@ -81,7 +81,7 @@
 
                     </div><br>
 
-                        <p class="text-center"><small class="text-white">&copy; 2016. All Rights Reserved. SeamlessHiring <br> Insidify Enterprise by Insidify.com</small></p>
+                        <p class="text-center"><small class="text-white">&copy; {{ date('Y') }}. All Rights Reserved. SeamlessHiring <br> Insidify Enterprise by Insidify.com</small></p>
                     <!--/tab-content-->
 
                 </div>

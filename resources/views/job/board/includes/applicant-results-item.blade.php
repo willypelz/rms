@@ -16,7 +16,20 @@
           <input type="checkbox" class="media-body-check check-applicant pull-right">
           <h4 class="media-heading text-muted"><a href="{{ route('applicant-profile', $cv['application_id'][ array_search( $jobID, $cv['job_id'] ) ] ) }}" target="_blank">{{ ucwords( @$cv['first_name']. " " . @$cv['last_name'] ) }}</a>
           <span class="span-stage">{{ $cv['application_status'][ array_search( $jobID, $cv['job_id'] ) ] }}</span></h4>
-          <p>{{ @$cv['last_position'].' at '.@$cv['last_company_worked'] }}</p>
+          <p>{{ @$cv['last_position'] }} @if( @$cv['last_company_worked'] != '' ) {{ ' at '.@$cv['last_company_worked'] }}  @endif</p>
+          <hr/>
+
+          <?php $appl_status = $cv['application_status'][ array_search( $jobID, $cv['job_id'] )]; ?>
+          @if( $appl_status == 'ASSESSED')
+
+            @for($i = 0; $i < count(@$cv['test_name']); $i++)
+              
+              <p> {{ @$cv['test_name'][$i] }} <span class="span-stage">@if(!empty($cv['test_score'])){{ number_format(@$cv['test_score'][$i]) }} @endif [{{ $cv['test_status'][$i] }}]</span> </p>
+            @endfor
+
+          @endif
+
+          
           <small>
               <span class="text-muted">{{ human_time( @$cv['application_date'], 1) }}</span>
               &nbsp;
@@ -125,7 +138,7 @@
             ({
               type: "POST",
               url: url,
-              data: ({ rnd : Math.random() * 100000, cv_id: id, type:'add', name:"{{ $cv['first_name']. " " . $cv['last_name'] }}", 'qty':1, 'price':500, "_token":"{{ csrf_token() }}"}),
+              data: ({ rnd : Math.random() * 100000, cv_id: id, type:'add', name:"{{ $cv['first_name']. " " . @$cv['last_name'] }}", 'qty':1, 'price':500, "_token":"{{ csrf_token() }}"}),
               success: function(response){
                 
                 console.log(response);
@@ -175,7 +188,7 @@
 @endforeach
 
 <script type="text/javascript">
-  total_candidates = "{{ $result['response']['numFound'] }}";
+  total_candidates = "{{ $application_statuses['ALL'] }}";
   
   $(document).ready(function(){
         if($('#pagination').data("twbs-pagination")){
@@ -183,7 +196,7 @@
         }
 
        $('#pagination').twbsPagination({
-        totalPages: "{{ ceil( $result['response']['numFound'] / 20 ) }}",
+        totalPages: "{{ ceil( $application_statuses['ALL'] / 20 ) }}",
         visiblePages: 5,
         initiateStartPageClick: false,
         startPage: parseInt( "{{ ( intval( $start / 20 ) + 1 ) }}" ),

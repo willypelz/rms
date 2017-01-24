@@ -1,5 +1,5 @@
 <ul class="nav nav-pills nav-justified option-aps" id="status_filters" style="overflow:visible">
-    <li class="active"><a href="javascript://" data-value="ALL" data-toggle="tooltip" data-placement="top" title="List of all the applicants for this job.">All <span class="badge">{{ $result['response']['numFound'] }}</span></a>
+    <li class="active"><a href="javascript://" data-value="ALL" data-toggle="tooltip" data-placement="top" title="List of all the applicants for this job.">All <span class="badge">{{ $application_statuses['ALL'] }}</span></a>
     </li>
     <li><a href="javascript://" data-value="PENDING" data-toggle="tooltip" data-placement="top" title="All applicants are listed here until at least a recruitment action is taken.">Pending <span class="badge">{{ $application_statuses['PENDING'] }}</span></a> 
     </li>

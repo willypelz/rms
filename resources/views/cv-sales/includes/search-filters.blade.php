@@ -81,7 +81,49 @@
 
 
 
-                    <p class="border-bottom-thin text-muted">Test Score<i class="fa fa-filter pull-right"></i></p>
+                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/bootstrap-slider.min.js"></script>
+              <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/css/bootstrap-slider.min.css" />
+                
+
+                <p class="border-bottom-thin text-muted">Completed Test Score<i class="glyphicon glyphicon-birthday pull-right"></i></p>
+                     <p class="text-center">
+                        <input id="score-slider" type="text" class="span2" value="" data-slider-min="50" data-slider-max="150" data-slider-step="5" data-slider-value="[75,125]"/> 
+                        <div class="text-center">
+                          <b class="col-sm-2 pull-left" style="color: #bbb;">50</b>
+                          <b  class="col-sm-2 pull-right" style="color: #bbb;">150</b>
+                          <small id="score-range"> 75 - 125 </small>
+                        </div>
+                       <div class="clearfix"></div>
+                     </p>
+
+                    <p></p>
+
+              <style type="text/css">
+                #ex1Slider .slider-selection {
+                  background: #BABABA;
+                }
+              </style>      
+          
+              <script type="text/javascript">
+                  $(document).ready(function(){
+                      $("#score-slider").slider({
+                        // formatter: function(value,a) {
+
+                        //   return 'Current value: ' + value + "  ";
+                        // }
+                      });
+                      $("#score-slider").on("slideStop", function(slideEvt) {
+                        
+                        age_range = slideEvt.value;
+
+                        $('#score-range').html( slideEvt.value[0] + ' - ' + slideEvt.value[1] + ' years' )
+                        $("#score-slider").performFilter();
+                      });
+                  });
+              </script>
+
+
+             <!--  <p class="border-bottom-thin text-muted">Test Score<i class="fa fa-filter pull-right"></i></p>
                       <div class="checkbox-inline">
                           {{--*/ $other_test_score = 0  /*--}}
                           {{--*/ $index = 0  /*--}}
@@ -103,7 +145,7 @@
                       @if($index > 4)
                         <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
                       @endif
-                      <p></p>
+                      <p></p> -->
 
           @else
     
@@ -247,7 +289,77 @@
                   });
               </script>
         @endif
-            
+
+
+        @if( @$age )
+     
+
+          <p class="border-bottom-thin text-muted">Years of Experience<i class="glyphicon glyphicon-birthday pull-right"></i></p>
+                 <p class="text-center">
+                    <input id="exp_years-slider" type="text" class="span2" value="" data-slider-min="0" data-slider-max="60" data-slider-step="1" data-slider-value="{{ '['.$exp_years[0].','.$exp_years[1].']' }}"/> 
+                    <div class="text-center">
+                      <b class="col-sm-2 pull-left" style="color: #bbb;">0</b>
+                      <b  class="col-sm-2 pull-right" style="color: #bbb;">60</b>
+                      <small id="exp_years-range"> {{ $exp_years[0].' - '.$exp_years[1].' years' }} </small>
+                    </div>
+                   <div class="clearfix"></div>
+                 </p>
+
+                <p></p>
+                
+          <script type="text/javascript">
+              $(document).ready(function(){
+                  $("#exp_years-slider").slider({
+                    // formatter: function(value,a) {
+
+                    //   return 'Current value: ' + value + "  ";
+                    // }
+                  });
+                  $("#exp_years-slider").on("slideStop", function(slideEvt) {
+                    
+                    exp_years_range = slideEvt.value;
+
+                    $('#exp_years-range').html( slideEvt.value[0] + ' - ' + slideEvt.value[1] + ' years' )
+                    $("#exp_years-slider").performFilter();
+                  });
+              });
+          </script>
+
+
+        @endif
+
+            @if( @$job['video_posting_enabled'] )
+            <p class="border-bottom-thin text-muted">Video Application Score<i class="glyphicon glyphicon-birthday pull-right"></i></p>
+                 <p class="text-center">
+                    <input id="video_application_score-slider" type="text" class="span2" value="" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="{{ '['.$video_application_score[0].','.$video_application_score[1].']' }}"/> 
+                    <div class="text-center">
+                      <b class="col-sm-2 pull-left" style="color: #bbb;">0%</b>
+                      <b  class="col-sm-2 pull-right" style="color: #bbb;">100%</b>
+                      <small id="video_application_score-range"> {{ $video_application_score[0].' - '.$video_application_score[1].' %' }} </small>
+                    </div>
+                   <div class="clearfix"></div>
+                 </p>
+
+                <p></p>
+                
+              <script type="text/javascript">
+                  $(document).ready(function(){
+                      $("#video_application_score-slider").slider({
+                        // formatter: function(value,a) {
+
+                        //   return 'Current value: ' + value + "  ";
+                        // }
+                      });
+                      $("#video_application_score-slider").on("slideStop", function(slideEvt) {
+                        
+                        video_application_score_range = slideEvt.value;
+
+                        $('#video_application_score-range').html( slideEvt.value[0] + ' - ' + slideEvt.value[1] + ' %' )
+                        $("#video_application_score-slider").performFilter();
+                      });
+                  });
+              </script>
+          @endif
 
             <p class="border-bottom-thin text-muted">Highest Education<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
@@ -434,42 +546,7 @@
 
               @endif
 
-        @if( @$age )
-     
-
-      <p class="border-bottom-thin text-muted">Years of Experience<i class="glyphicon glyphicon-birthday pull-right"></i></p>
-             <p class="text-center">
-                <input id="exp_years-slider" type="text" class="span2" value="" data-slider-min="0" data-slider-max="60" data-slider-step="1" data-slider-value="{{ '['.$exp_years[0].','.$exp_years[1].']' }}"/> 
-                <div class="text-center">
-                  <b class="col-sm-2 pull-left" style="color: #bbb;">0</b>
-                  <b  class="col-sm-2 pull-right" style="color: #bbb;">60</b>
-                  <small id="exp_years-range"> {{ $exp_years[0].' - '.$exp_years[1].' years' }} </small>
-                </div>
-               <div class="clearfix"></div>
-             </p>
-
-            <p></p>
-            
-      <script type="text/javascript">
-          $(document).ready(function(){
-              $("#exp_years-slider").slider({
-                // formatter: function(value,a) {
-
-                //   return 'Current value: ' + value + "  ";
-                // }
-              });
-              $("#exp_years-slider").on("slideStop", function(slideEvt) {
-                
-                exp_years_range = slideEvt.value;
-
-                $('#exp_years-range').html( slideEvt.value[0] + ' - ' + slideEvt.value[1] + ' years' )
-                $("#exp_years-slider").performFilter();
-              });
-          });
-      </script>
-
-
-        @endif
+        
 
       
 

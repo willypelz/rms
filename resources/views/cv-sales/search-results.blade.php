@@ -268,12 +268,13 @@
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);
                 $('.search-results').html(data.search_results);
-                $('#search-filters').html(data.search_filters);
+                
                 $('body #showing').html(data.showing);
                 if( data.count > 0 )
                 {
                     $('#pagination').show();
                     $('.result-label').show();
+                    $('#search-filters').html(data.search_filters);
                 }
                 else
                 {

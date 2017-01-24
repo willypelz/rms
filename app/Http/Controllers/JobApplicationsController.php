@@ -182,16 +182,32 @@ class JobApplicationsController extends Controller
             $request->exp_years = [ 0, 60 ];
             $solr_exp_years = null;
         }
+
+        //If video application score is available
+        if( @$request->video_application_score ){
+            //2015-09-16T00:00:00Z
+
+            $solr_video_application_score = [ @$request->video_application_score[0], @$request->video_application_score[1] ];
+        }
+        else
+        {
+            $request->video_application_score = [ 0, 100 ];
+            $solr_video_application_score = null;
+        }
+
+
         
-        $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status,@$solr_age, @$solr_exp_years); 
+        $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status,@$solr_age, @$solr_exp_years, @$solr_video_application_score); 
+        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+
         if(isset($request->status))
             $status = $request->status;
 
-        $end = (($start + $this->search_params['row']) > intval($result['response']['numFound']))?$result['response']['numFound']:($start + $this->search_params['row']);
+        $end = (($start + $this->search_params['row']) > intval($application_statuses['ALL']))?$application_statuses['ALL']:($start + $this->search_params['row']);
         // $showing = "Showing ".($start+1)." - ".$end." of ".$result['response']['numFound']." Applicants [Page ".floor($request->start + 1)."]";
         // dd($result);
 
-        $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $result['response']['numFound'], 'type'=>$request->status, 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();    
+        $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $application_statuses['ALL'], 'type'=>$request->status, 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();    
         $myJobs = Job::getMyJobs();
 
         $myFolders = array_unique( array_pluck( Solr::get_all_my_cvs($this->search_params, null, null)['response']['docs'] ,'cv_source') );
@@ -202,16 +218,17 @@ class JobApplicationsController extends Controller
 
         if($request->ajax())
         {
-            $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab', 'status', 'result','jobID','start','myJobs', 'myFolders'))->render();    
-            $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query, 'status' => $status, 'age' => @$request->age,'exp_years' => @$request->exp_years ])->render();
+            $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab', 'status', 'result','jobID','start','myJobs', 'myFolders', 'application_statuses' ))->render();    
+            $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query, 'status' => $status, 'age' => @$request->age,'exp_years' => @$request->exp_years, 'job' => $job, 'video_application_score' => @$request->video_application_score ])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing, 'count' => $result['response']['numFound'] ] );
             
         }
         else{
             $age = [ 5, 85 ];
-            $exp_years = [ 0, 60 ];
-            $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
-            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','showing','myJobs','myFolders'));
+            $exp_years = [ 0, 60 ]; 
+            $video_application_score = [0,100];
+            
+            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','showing','myJobs','myFolders', 'application_statuses', 'job', 'video_application_score'));
         }
 
         
@@ -272,22 +289,26 @@ class JobApplicationsController extends Controller
         $excel_data = [];
 
         foreach ($data as $key => $value) {
+            if( !empty( $request->cv_ids ) && !in_array($value['id'], $request->cv_ids )  )
+            {
+                continue;
+            }
             $excel_data[] = [
                                 "FIRSTNAME" => $value['first_name'],
-                                "LASTNAME" => $value['last_name'],
-                                "LAST POSITION HELD" => $value['last_position'],
-                                "HEADLINE" => $value['headline'][0],
-                                "GENDER" => $value['gender'],
-                                "MARITAL STATUS" => $value['marital_status'],
-                                "DATE OF BIRTH" => substr($value['dob'], 0 ,10),
+                                "LASTNAME" => @$value['last_name'],
+                                "LAST POSITION HELD" => @$value['last_position'],
+                                "HEADLINE" => @$value['headline'][0],
+                                "GENDER" => @$value['gender'],
+                                "MARITAL STATUS" => @$value['marital_status'],
+                                "DATE OF BIRTH" => substr(@$value['dob'], 0 ,10),
                                 // "AGE" => '',
-                                "LOCATION" => $value['state'],
-                                "EMAIL" => $value['email'],
-                                "PHONE" => $value['phone'],
-                                "COVER NOTE" => $value['cover_note'][0],
-                                "HIGHEST EDUCATION" => $value['highest_qualification'],
-                                "LAST COMPANY WORKED AT" => $value['last_company_worked'],
-                                "YEARS OF EXPERIENCE" => $value['years_of_experience'],
+                                "LOCATION" => @$value['state'],
+                                "EMAIL" => @$value['email'],
+                                "PHONE" => @$value['phone'],
+                                "COVER NOTE" => @$value['cover_note'][0],
+                                "HIGHEST EDUCATION" => @$value['highest_qualification'],
+                                "LAST COMPANY WORKED AT" => @$value['last_company_worked'],
+                                "YEARS OF EXPERIENCE" => @$value['years_of_experience'],
                                 "WILLING TO RELOCATE?" => '',
 
 
@@ -422,13 +443,25 @@ class JobApplicationsController extends Controller
         $filename = Auth::user()->id."_".get_current_company()->id."_".time().".zip";
         //$archive = $zippy->create(  $path.$filename );
 
+   
+
         $cvs = array_pluck($data ,'cv_file');
-
-
-        $cvs = array_map(function($cv){
+        $ids = array_pluck($data ,'id');
+        
+        
+        //Check for selected cvs to download and append path to it
+        $cvs = array_map(function($cv, $id) use($request){
+            
+            if( !empty( $request->cv_ids ) && !in_array($id, $request->cv_ids )  )
+            {
+                return null;
+            }
             return  public_path('uploads/CVs/').$cv;
-        }, $cvs);
+        }, $cvs, $ids);
 
+        //Remove nulls
+        $cvs = array_filter($cvs, function($var){return !is_null($var);} );
+        
         //$archive->addMembers($cvs, $recursive = false );
 
         $zipper = new \Chumper\Zipper\Zipper;
@@ -713,8 +746,9 @@ class JobApplicationsController extends Controller
         return view('modals.reject', compact('applicant_badge','app_ids','cv_ids','appl'));
     }
 
-    private function modalActions($action,$cv_ids,$app_ids)
+    private function modalActions($action, $cv_ids, $app_ids)
     {
+        
         $app_ids = explode(',', @$app_ids);
         $cv_ids = explode(',', @$cv_ids);
         $appl = JobApplication::with('job', 'cv')->find($app_ids[0]);
@@ -739,6 +773,7 @@ class JobApplicationsController extends Controller
              'cv_ids' =>  $cv_ids,
              'appl' =>  $appl,
         ];
+        
     }
 
     

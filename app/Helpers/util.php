@@ -259,12 +259,14 @@ use App\Models\Job;
 		
 	}
 
+
+
 	function get_application_statuses($status)
 	{
 
 
 		$ret = array();
-
+		$all = 0; //total number of results
 		// dd($solr_arr);
 
 		for ($i=0; $i < count($status); $i = $i+2) { 
@@ -287,14 +289,15 @@ use App\Models\Job;
 		}
 
 		
-		$statuses = ['PENDING', 'INTERVIEWED', 'REJECTED','WAITING', 'HIRED','ASSESSED','SHORTLISTED'];
+		$statuses = ['ALL','PENDING', 'INTERVIEWED', 'REJECTED','WAITING', 'HIRED','ASSESSED','SHORTLISTED'];
 
 		$status_array = [];
 		foreach ($statuses as $val) {
 			$status_array[$val] = (isset($ret[$val]))?$ret[$val]:0;
+			$all += $status_array[$val];
 		}
 		
-
+		$status_array['ALL'] = $all;
 
 
 		// $status_array['PENDING'] = ( array_search('PENDING', $status) !== false && intval( array_search('PENDING', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('PENDING', $status) ) + 1 ] : 0;

@@ -1315,19 +1315,35 @@ class JobsController extends Controller
         {
 
             $video_application_values = [];
+            $score = 0;
+            $correct_count = 0;
             foreach ($video_options as $key => $option) {
                 //$request->all()
 
-                    $video_application_values[] = [
-                        'form_field_id' => $option->id,
-                        'value' => $request['vo_'.$option->name],
-                        'job_application_id' => @$appl_id
-                    ];
+                $video_application_values[] = [
+                    'form_field_id' => $option->id,
+                    'value' => $request['vo_'.$option->id],
+                    'job_application_id' => @$appl_id
+                ];
+
+                if( $option->correct_option == $request['vo_'.$option->id] )
+                {
+                    $correct_count++;
+                }
+
             }
+
+            $score = ( $correct_count / count($video_options) ) * 100;
 
             VideoApplicationValues::insert( $video_application_values );
 
-            return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);
+
+
+            $app = JobApplication::find($appl_id);
+            $app->video_application_score = $score;
+            $app->save();
+
+            return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$job_slug]);
         }
 
         return view('job.video-application', compact('job', 'company','video_options'));

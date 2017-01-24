@@ -15,8 +15,9 @@
                             @include('job.board.job-board-tabs')
                         
                         <div class="row">
-                            <div class="col-xs-12">
-                                <h5 class="text-center text-success text-brandon">This feature is currently unavailable</h5>
+                            <div class="col-xs-12 text-center"><br>
+                              <p class="lead">Here is the pool of matching CVs for this job from our database</p>
+                                <p class=" text-success">Matching CVs will be available in 24hours</p>
                             </div>
                         </div>
 

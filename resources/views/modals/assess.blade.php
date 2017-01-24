@@ -95,7 +95,7 @@
                   <!--<label>Location</label>-->
                   <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
-                      <input type="text" required class="form-control" id="test-location" aria-describedby="" placeholder="Location">
+                      <input type="text" required class="form-control" value="Online" id="test-location" aria-describedby="" placeholder="Location">
                   </div>
                   <!--<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>-->
                   <!--<span id="inputGroupSuccess1Status" class="sr-only">(success)</span>-->
@@ -104,14 +104,14 @@
                   <!--<label>Location</label>-->
                   <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                      <input type="date" required class="datepicker form-control" id="test-start" aria-describedby="" placeholder="Open Date">
+                      <input type="date" required class="datepicker form-control" value="{{ date('D, d/m/Y', strtotime('+ 1 day')) }}" id="test-start" aria-describedby="" placeholder="Open Date">
                   </div>
               </div>
               <div class="form-group">
                   <!--<label>Location</label>-->
                   <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                      <input type="date" required class="datepicker form-control" id="test-end" aria-describedby="" placeholder="Close Date">
+                      <input type="date" required class="datepicker form-control" value="{{ date('D, d/m/Y', strtotime('+ 1 week')) }}" id="test-end" aria-describedby="" placeholder="Close Date">
                   </div>
               </div>
               <input type="submit" class="btn btn-success pull-right" id="request-test" value="Request Test">
@@ -321,22 +321,9 @@
         } 
 
 
-         
-
-
-
-
-
-
-
-
-
-
-
-
 
     });
 
   </script>
 
-  <!-- <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script> -->
+  <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>

@@ -179,7 +179,7 @@
                                                 <form  method="post">
                                                     <div class="row " >
                                                         <div class="col-xs-12">
-                                                                <small>Answer these questions below based on the Video you just watched. It is part of the Job Application process.</small>
+                                                                <p>Answer these questions below based on the Video you just watched. It is part of the Job Application process.</p>
                                                          </div> <br><br><br><br>
                                                         @if( count($video_options) > 0 )
                                                             {{-- */$index=0;/* --}}

@@ -19,7 +19,6 @@
                     <div class="row">                           
                         <!-- applicant -->
 
-
                 <div class="col-xs-8">
 
                      <div class="" id="">

@@ -1671,17 +1671,39 @@ textarea:focus {
     height: 27em;
 }
 .btn.btn-label{
-    padding: 10px 5px 15px 20px;
+    padding: 10px 5px 15px 30px;
     margin-bottom: 6px;
     text-align: left;
-    white-space:normal;
+    white-space: normal;
     min-height: 75px;
-    text-transform:none;
+    text-transform: none;
+    height: 100px;
+    overflow: hidden;
+        /* background: rgba(189, 189, 189, 0.2); */
+    /* border: 1px solid; */
+}
+.btn.btn-label .col-xs-6{
+    padding-left: 0;
+}
+.btn.btn-label .badge{
+    margin-top: 5px;
+}
+.btn.btn-label.paid{
+        background: rgba(189, 189, 189, 0.2);
+    border: 2px solid #ccc;
+}
+.btn.btn-label.paid:hover{
+        background: #eee;
+    border: 2px solid #ccc;
 }
 .btn.btn-label input{
     position:absolute;
     left:25px;
 
+}
+.btn.btn-label .name{
+    font-size: 15px;
+    color: #92660f;
 }
 /* [data-toggle=buttons]>.btn input[type=checkbox], [data-toggle=buttons]>.btn input[type=radio], [data-toggle=buttons]>.btn-group>.btn input[type=checkbox], [data-toggle=buttons]>.btn-group>.btn input[type=radio] {
     position: absolute;

@@ -19,7 +19,7 @@ class Company extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'logo', 'email', 'phone', 'address', 'website', 'slug', 'about', 'location_id'];
+    protected $fillable = ['name', 'logo', 'email', 'phone', 'address', 'website', 'slug', 'about', 'location_id','date_added'];
 
     public $timestamps = false;
 

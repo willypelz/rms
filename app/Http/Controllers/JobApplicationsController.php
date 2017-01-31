@@ -25,6 +25,7 @@ use Auth;
 use Excel;
 use App;
 use PDF;
+use Curl;
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
 use Alchemy\Zippy\Zippy;

@@ -927,7 +927,7 @@ class JobApplicationsController extends Controller
 
             if ($validator->fails())
             {                
-                 dd( $validator->errrors() );
+                 dd( $validator->messages() );
             }
             else{
                 

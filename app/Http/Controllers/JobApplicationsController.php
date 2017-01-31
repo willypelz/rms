@@ -894,7 +894,7 @@ class JobApplicationsController extends Controller
                             
                 $test_id = TestRequest::create($data);
 
-                $app = JobApplication::with('cv')->find($appl_id);
+                $app = JobApplication::with('cv')->find($app_id);
 
                 $response = Curl::to('http://seamlesstesting.com/test-request')
                                 ->withData( [ 'test_id' => $test_id, 'job_application_id' => $app_id, 'applicant_name' => ucwords( @$app->cv->first_name. " " . @$app->cv->last_name ), 'applicant_email' => $app->cv->email, 'employer_name' => get_current_company()->name, 'employer_email' => get_current_company()->email , 'start_time' => $data['start_time'], 'end_time' => $data['end_time'] ] )

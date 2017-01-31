@@ -66,7 +66,7 @@ class ActivationService
         $this->mailer->send('emails.new.onboarding.successfully_activated', ['user' => $user], function (Message $m) use ($user) {
             $m->from('support@seamlesshiring.com')->to($user->email)->subject('Your Account has been Successfully Activated!');
         });
-
+        
         return $user;
 
     }

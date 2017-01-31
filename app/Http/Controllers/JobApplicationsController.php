@@ -29,6 +29,7 @@ use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
 use Alchemy\Zippy\Zippy;
 use Alchemy\Zippy\Adapter\ZipExtensionAdapter;
+use Validator;
 
 
 class JobApplicationsController extends Controller
@@ -887,8 +888,17 @@ class JobApplicationsController extends Controller
                     'order_id' => $order->id,
                 
                 ];
+
+
+
                             
-                TestRequest::create($data);
+                $test_id = TestRequest::create($data);
+
+                $app = JobApplication::with('cv')->find($app_id);
+
+                $response = Curl::to('http://seamlesstesting.com/test-request')
+                                ->withData( [ 'test_id' => $test_id, 'job_application_id' => $app_id, 'applicant_name' => ucwords( @$app->cv->first_name. " " . @$app->cv->last_name ), 'applicant_email' => $app->cv->email, 'employer_name' => get_current_company()->name, 'employer_email' => get_current_company()->email , 'start_time' => $data['start_time'], 'end_time' => $data['end_time'] ] )
+                                ->post();
             }
             
             // var_dump($data);
@@ -900,6 +910,41 @@ class JobApplicationsController extends Controller
         $res = ['total_amount'=>$request->total_amount, 'order_id'=>$order->id];
         return $res;
 
+    }
+
+    public function saveTestResult(Request $request)
+    {
+        if($request->isMethod('post'))
+        {
+            $validator  = Validator::make($request->all(), [
+                    'job_application_id' => 'required',
+                    'test_id' => 'required',
+                    'actual_start_time' => 'required',
+                    'actual_end_time' => 'required',
+                    'score' => 'required'
+
+                ]);
+
+            if ($validator->fails())
+            {                
+                 dd( $validator->messages() );
+            }
+            else{
+                
+                TestRequest::where( 'job_application_id' , $request->job_application_id )
+                            ->where( 'test_id', $request->test_id )
+                            ->update( ['actual_start_time' => $request->actual_start_time,
+                                        'actual_end_time' => $request->actual_end_time,
+                                        'score' => $request->score,
+                                        'result_comment' => @$request->result_comment] );
+
+            }
+
+
+            
+        }
+
+        Solr::update_core();
     }
 
     public function requestCheck(Request $request)

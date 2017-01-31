@@ -2,16 +2,31 @@
 
 @section('content')
 
+<style>
+.trial-over{
+    opacity: 0.35;
+}
+</style>
 
   <section class="s-div homepage pricing">
         <div class="container">
 
             <div class="row text-center text-brandon text-light text-white">
+               <br>
                 <h1>Get a Free Trial Now!</h1>
-                <h5 class="text-uppercase l-sp-5"> 14 days of free and unlimited Access on all plan</h5><br>
+                <h5 class="text-uppercase l-sp-5"> 14 days of free and unlimited Access on all plans</h5><br>
+            </div>
+               
+            <div class="row text-center text-brandon text-light text-white">
+               <br>
+                <h1>Hey! We bet you did <br>enjoy your 14 days experience!</h1>
+                <div class="col-xs-2 col-xs-offset-5"><hr></div>
+                <div class="clearfix"></div>
+                <h5 class="text-uppercase l-sp-5"> Choose a plan below that will best suit your needs</h5><br>
             </div>
 
         </div>
+        
     </section>
 
 
@@ -32,19 +47,34 @@
                                   <br>
                                 <div class="col-sm-4 text-center no-pad">
                                   <!-- <img src="img/rope.png" width="100px" class="rope"> -->
-                                    <div class="panel panel-default panel-pricing panel-basic">
+                                    <div class="panel panel-default panel-pricing panel-basic trial-over">
                                         <div class="panel-heading">
                                             <!-- <i class="fa fa-star"></i> -->
                                             <h3 class="text-brandon">FREE</h3>
                                             <small> For you to get a feel of the <br>SeamlessHiring magic.</small>
                                         </div>
                                         <div class="panel-body text-center text-brandon">
-                                            <p class=" no-margin"><strong>&#8358; 0 / Month</strong></p>
+                                            <p class=" no-margin"><strong>14-days Access <br> to All Features:</strong></p>
                                         </div>
                                         <ul class="list-group text-center">
-                                            <li class="list-group-item"> Free and unlimited job posting</li>
-                                            <li class="list-group-item"> Limited access to the recruitment platform</li>
-                                            <!--<li class="list-group-item"> 27/7 support</li>-->
+                                                   <li class="list-group-item">Applicant Tracking System</li>
+
+                                                   <li class="list-group-item">Team Member Collaboration</li>
+
+                                                   <li class="list-group-item">Background Check</li>
+
+                                                   <li class="list-group-item">Online Tests</li>
+
+                                                   <li class="list-group-item">Video Job Posting</li>
+
+                                                   <li class="list-group-item">Extensive Job Broadcast</li>
+
+                                                   <li class="list-group-item">Medical Check</li>
+
+                                                   <li class="list-group-item">Dossier</li>
+
+                                                   <li class="list-group-item">Customer Support</li>
+
                                         </ul>
                                         <div class="panel-footer">
                                             <a class="btn btn-lg btn-line " href="{{ url('register') }}">BEGIN TRIAL</a>
@@ -69,16 +99,21 @@
                                             ">
                                             <p class=" no-margin no-pad" style="
                                                 background: #2889ce;
-                                            "><strong>₦ 30,000 / Mo</strong></p>
+                                            "><strong>3Months - &#8358;90,000</strong></p>
                                         </div>
                                         <div class="panel-body no-margin text-center text-brandon">
-                                            <p class=" no-margin no-pad"><strong>&#8358; 300,000 / Year</strong></p>
+                                            <p class=" no-margin no-pad"><strong>1 year - &#8358;330,000</strong></p>
                                             <!-- <small>20% Discount</small> -->
                                         </div>
                                         <ul class="list-group text-center">
-                                            <li class="list-group-item"> Free unlimited job posting.</li>
-                                            <li class="list-group-item"> <b>Unlimited</b> processing access to 5 jobs/month. (Request a Call for more posting)</li>
-                                            <!--<li class="list-group-item"><i class="fa fa-check"></i> 10 free IQ Test</li>-->
+                                            <li class="list-group-item"> Full access to SeamlessHiring database for candidate search</li>
+                                            <li class="list-group-item"> 5% off Video Job Posting</li>
+                                            <li class="list-group-item">3 Team Members</li>                                            
+                                            <li class="list-group-item">Unlimited Job Posting on Free Job Boards</li>
+                                            <li class="list-group-item">5% off Online Tests, Background & Medical Checks, Discount on Newspaper Ads</li>
+                                            <li class="list-group-item">Dedicated Relationship Manager for Resource Support</li>
+<!--                                            <li class="list-group-item">3 Team Members</li>-->
+
                                         </ul>
                                         <div class="panel-footer">
                                             <a class="btn btn-lg btn-block btn-success " href="{{ url('register') }}">START HERE!</a>
@@ -108,14 +143,14 @@
                                             <li class="list-group-item"> Discounts on value added services. </li> -->
 
                                             <li class="list-group-item">Full access to SeamlessHiring database for candidate search</li>
-                                            <li class="list-group-item">Unlimited CV downloads and analytics reporting</li>
-                                            <li class="list-group-item"> 10% discount on all newspaper job adverts</li>
-                                            <li class="list-group-item">100 free SeamlessHiring tests per month and a 20% discount on the next 1,000 tests every month</li>
-                                            <li class="list-group-item">20 free bulk SMS per job</li>
-                                            <li class="list-group-item">Discounted rates for pre-employment background and medical checks</li>
-                                            <li class="list-group-item">Different access levels for Admin</li>
-                                            <li class="list-group-item">Training for your company in-house talent resource and periodic refresher programs on what’s new on the portal</li>
-                                            <li class="list-group-item">Dedicated Relationship Manager for 24/7 resource support </li>
+                                            <li class="list-group-item">20% off Video Job Posting </li>
+                                            <li class="list-group-item"> Analytics Reporting</li>
+                                            <li class="list-group-item">Different Access Levels for Admin</li>
+                                            <li class="list-group-item">Unlimited Team Collaboration</li>
+                                            <li class="list-group-item">Unlimited Job Posting on Paid/Free Job Boards</li>
+                                            <li class="list-group-item">10% off Online Tests, Background & Medical Checks, Discount on Newspaper Ads </li>
+                                            <li class="list-group-item">Company In-House Talent Resource  and Periodic Refresher Training on Portal Updates</li>
+                                            <li class="list-group-item">Dedicated  Relationship Manager for 24/7 Resource Support </li>
                                         </ul>
                                         <div class="panel-footer">
                                             <a class="btn btn-lg btn-line text-uppercase" data-toggle="modal" data-target="#requestCall" id="modalButton" href="#requestCall" data-title="Request a call">Request a call</a>
@@ -152,8 +187,35 @@
                 </div>
             </div>
         </div>
+        
+        <div class="container hidden">
+          <hr>
+           <div class="row">
+               <div class="col-xs-12"><h4 class="text-center">All Plans include all of these features:</h4> <br></div>
+               <div class="col-xs-4 col-xs-offset-2">
+                   <ul class="list-unstyled">
+                       <li>Applicant Tracking System</li>
+                       <li>Team Member Collaboration</li>
+                       <li>Background Check</li>
+                       <li>Online Tests</li>
+                       <li>Video Job Posting</li>
+                       <li>Extensive Job Broadcast</li>
+                       <li>Medical Check</li>
+                       <li>Dossier</li>
+                       <li>Customer Support</li>
+                   </ul>
+               </div>
+           </div>
+       </div>
     </section>
 
+<!--
+   <section>
+
+   </section>
+-->
+   
+   
     <section class="s-div no-margin blue dark">
         <div class="container">
 

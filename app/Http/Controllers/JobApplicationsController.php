@@ -935,7 +935,7 @@ class JobApplicationsController extends Controller
                             ->where( 'test_id', $request->test_id )
                             ->update( ['actual_start_time' => $request->actual_start_time,
                                         'actual_end_time' => $request->actual_end_time,
-                                        'score' => $request->score
+                                        'score' => $request->score,
                                         'result_comment' => @$request->result_comment] );
 
             }

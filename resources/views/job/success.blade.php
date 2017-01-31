@@ -36,7 +36,7 @@
                               <div class="job-brd">
                                 <label class="btn btn-line btn-sm btn-label btn-block text-capitalize text-left disabled">
                                   <input type="checkbox" class="" autocomplete="off" checked="" disabled="">
-                                  <span class="col-xs-6"><img src="img/logo.png" width="100%" alt=""></span>
+                                  <span class="col-xs-6"><img src="{{ asset('img/insidify-logo.png') }}" width="100%" alt=""></span>
                                   <span class="col-xs-6"><b class="name">Insidify Jobs</b><br>www.insidify.com</span>
                                   <span class="clearfix"></span>
                                 </label>

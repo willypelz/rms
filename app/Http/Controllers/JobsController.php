@@ -293,7 +293,7 @@ class JobsController extends Controller
 
 
 
-        return view('job.success', compact('job','insidify_url','subscribed_boards','approved_count','pending_count'));
+        return view('job.success-old', compact('job','insidify_url','subscribed_boards','approved_count','pending_count'));
     }
 
     public function SaveJob(Request $request){

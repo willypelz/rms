@@ -29,6 +29,7 @@ use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
 use Alchemy\Zippy\Zippy;
 use Alchemy\Zippy\Adapter\ZipExtensionAdapter;
+use Validator;
 
 
 class JobApplicationsController extends Controller
@@ -909,6 +910,38 @@ class JobApplicationsController extends Controller
         $res = ['total_amount'=>$request->total_amount, 'order_id'=>$order->id];
         return $res;
 
+    }
+
+    public function saveTestResult(Request $request)
+    {
+        if($request->isMethod('post'))
+        {
+            $validator  = Validator::make($request->all(), [
+                    'job_application_id' => 'required',
+                    'test_id' => 'required',
+                    'actual_start_time' => 'required',
+                    'actual_end_time' => 'required',
+                    'score' => 'required',
+
+                ]);
+
+            if ($validator->fails())
+            {                
+                 dd( $validator->errrors() );
+            }
+            else{
+                
+                TestRequest::where( 'job_application_id' , $request->job_application_id )
+                            ->where( 'test_id', $request->test_id )
+                            ->update( ['actual_start_time' => $request->actual_start_time,
+                                        'actual_end_time' => $request->actual_end_time,
+                                        'score' => $request->score] );
+
+            }
+
+
+            
+        }
     }
 
     public function requestCheck(Request $request)

@@ -452,6 +452,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('checkout', [ 'as' => 'checkout', 'uses' => 'JobApplicationsController@Checkout' ]);
    
     Route::post('request/test', [ 'as' => 'request-test', 'uses' => 'JobApplicationsController@requestTest' ]);
+    Route::post('save/test-result', [ 'as' => 'save-test-result', 'uses' => 'JobApplicationsController@saveTestResult' ]);
     Route::post('request/check', [ 'as' => 'request-check', 'uses' => 'JobApplicationsController@requestCheck' ]);
     Route::post('invite/interview', [ 'as' => 'invite-for-interview', 'uses' => 'JobApplicationsController@inviteForInterview' ]);
     Route::post('save-interview-note', [ 'as' => 'save-interview-note', 'uses' => 'JobApplicationsController@saveInterviewNote' ]);

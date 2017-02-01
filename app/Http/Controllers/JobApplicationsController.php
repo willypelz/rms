@@ -458,6 +458,13 @@ class JobApplicationsController extends Controller
             {
                 return null;
             }
+
+
+            if( !file_exists(public_path('uploads/CVs/').$cv) )
+            {
+                return null;
+            }
+
             return  public_path('uploads/CVs/').$cv;
         }, $cvs, $ids);
 

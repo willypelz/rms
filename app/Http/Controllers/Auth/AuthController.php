@@ -136,7 +136,9 @@ class AuthController extends Controller
             // dd($request->request); 
 
              $validator = Validator::make($request->all(), [
-                'slug' => 'unique:companies'
+                'slug' => 'unique:companies',
+                'logo' => 'required|mimes:jpeg,bmp,png,gif|image',
+                'name' => 'required'
             ]);
 
             if ($validator->fails()) {

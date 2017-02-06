@@ -137,8 +137,7 @@ class AuthController extends Controller
 
              $validator = Validator::make($request->all(), [
                 'slug' => 'unique:companies',
-                'logo' => 'required|mimes:jpeg,bmp,png,gif|image',
-                'name' => 'required'
+
             ]);
 
             if ($validator->fails()) {
@@ -147,7 +146,7 @@ class AuthController extends Controller
 
            
             $file_name  = (@$request->logo->getClientOriginalName());
-            $fi =  $request->file('logo')->getClientOriginalExtension();  
+            $fi =  @$request->file('logo')->getClientOriginalExtension();  
             $logo = $request->company_name.'-'.$file_name;
 
             $com['name'] = $request->company_name;

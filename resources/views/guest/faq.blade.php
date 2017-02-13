@@ -158,6 +158,52 @@ We have also implemented multiple layers of tracking to this effect where activi
                             </div>
                           </div>
                           
+                          <div class="panel panel-default">
+                            <div id="heading7" role="tab" class="panel-heading">
+                              <h4 class="panel-title">
+                                <a aria-controls="collapseThree717" aria-expanded="false" href="#collapseThree717" data-parent="#accordion" data-toggle="collapse" role="button" class="collapsed">
+                                 What exactly is Video Job Posting?
+                                </a>
+                              </h4>
+                            </div>
+                            <div aria-labelledby="heading7" role="tabpanel" class="panel-collapse collapse" id="collapseThree717">
+                              <div class="panel-body">
+                                As the name suggests, video job posting is a feature that allows you exclusively introduce your company, workplace culture, role details and expectations, as well as other valuable information to job seekers through a video.
+                              </div>
+                            </div>
+                          </div>
+                          
+                          
+                          <div class="panel panel-default">
+                            <div id="heading8" role="tab" class="panel-heading">
+                              <h4 class="panel-title">
+                                <a aria-controls="collapseThree727" aria-expanded="false" href="#collapseThree727" data-parent="#accordion" data-toggle="collapse" role="button" class="collapsed">
+                                 How does video job posting work, in relation to my hiring process?
+                                </a>
+                              </h4>
+                            </div>
+                            <div aria-labelledby="heading8" role="tabpanel" class="panel-collapse collapse" id="collapseThree727">
+                              <div class="panel-body">
+                                Following the video post, a pre-set test with questions from the video will be taken by candidates. SeamlessHiring then allows you to sort successful applicants based on their test performance.
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="panel panel-default">
+                            <div id="heading9" role="tab" class="panel-heading">
+                              <h4 class="panel-title">
+                                <a aria-controls="collapseThree737" aria-expanded="false" href="#collapseThree737" data-parent="#accordion" data-toggle="collapse" role="button" class="collapsed">
+                                 Will I have to pay more to use the video job posting feature?
+                                </a>
+                              </h4>
+                            </div>
+                            <div aria-labelledby="heading9" role="tabpanel" class="panel-collapse collapse" id="collapseThree737">
+                              <div class="panel-body">
+                                For any inquiry about the pricing details, kindly contact our support team here.
+                              </div>
+                            </div>
+                          </div>
+                          
                           <!-- <div class="panel panel-default">
                             <div id="heading7" role="tab" class="panel-heading">
                               <h4 class="panel-title">

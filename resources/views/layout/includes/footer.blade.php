@@ -139,8 +139,8 @@
                
                            <a href="http://linkedin.com" class="">
                                    <span class="fa-stack fa-lg">
-                                     <i class="fa fa-circle fa-stack-2x text-danger"></i>
-                                     <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                                     <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                                     <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
                                    </span>
                            </a>
                    </div>
@@ -185,11 +185,11 @@
                             </li>
                             <li><a href="contact">Contact Us</a>
                             </li>
-                            <li><a href="faq">FAQ page</a>
+                            <li><a href="{{ url('faq') }}">FAQ page</a>
                             </li>
-                            <li><a href="#">Terms and Conditions</a>
+                            <li><a href="{{ url('terms') }}">Terms and Conditions</a>
                             </li>
-                            <li><a href="#">Privacy Policy</a>
+                            <li><a href="{{ url('privacy') }}">Privacy Policy</a>
                             </li>
                         </ul>
                     </div>

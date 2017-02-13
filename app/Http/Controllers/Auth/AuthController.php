@@ -136,17 +136,28 @@ class AuthController extends Controller
             // dd($request->request); 
 
              $validator = Validator::make($request->all(), [
-                'slug' => 'unique:companies'
+                'slug' => 'unique:companies',
+
             ]);
 
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
+            if( $request->hasFile('logo') )
+            {
+                $file_name  = (@$request->logo->getClientOriginalName());
+                $fi =  @$request->file('logo')->getClientOriginalExtension(); 
+                $logo = $request->company_name.'-'.$file_name;
+            }
+            else
+            {
+                $logo = '';
+            }
            
-            $file_name  = (@$request->logo->getClientOriginalName());
-            $fi =  $request->file('logo')->getClientOriginalExtension();  
-            $logo = $request->company_name.'-'.$file_name;
+            
+             
+            
 
             $com['name'] = $request->company_name;
             $com['slug'] = $request->slug;
@@ -179,13 +190,17 @@ class AuthController extends Controller
 
 
             
+            if( $request->hasFile('logo') )
+            {
+                $upload = $request->file('logo')->move(
+                    env('fileupload'), $logo
+                );
+            }
 
-            $upload = $request->file('logo')->move(
-                env('fileupload'), $logo
-            );
+            
 
 
-            if($upload){
+            // if($upload){
                 $this->activationService->sendActivationMail($user);
 
                 return redirect('/login')->with('status', 'We sent you an activation code. Check your email.');
@@ -194,7 +209,7 @@ class AuthController extends Controller
 
                 // if($login)
                 //     return redirect('dashboard');
-            }
+            // }
             
 
 

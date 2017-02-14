@@ -114,7 +114,7 @@
                       <input type="date" required class="datepicker form-control" value="{{ date('D, d/m/Y', strtotime('+ 1 week')) }}" id="test-end" aria-describedby="" placeholder="Close Date">
                   </div>
               </div>
-              <input type="submit" class="btn btn-success pull-right" id="request-test" value="Request Test">
+              <input type="submit" class="btn btn-success pull-right" id="request-test" disabled="disabled" value="Request Test">
               <div class="clearfix"></div>
           </form>
           <!--<hr>-->
@@ -133,12 +133,18 @@
 
         var app_ids = <?php echo json_encode($app_ids );?>  ;
         var cv_ids = <?php echo json_encode($cv_ids );?> ;
+        var type = '';
+
+        var tests = [];
 
         $('body #request-btn').on('click', function(){
           $('#cart-preview').append('<tr data-id="' + $(this).attr('data-id') +'" data-owner="' + $(this).attr('data-owner') +'"><td id="name">' + $(this).attr('data-title') +'</td><td ><span id="amount">' + $(this).attr('data-amount') + "</span> x " + {{ $count }} + ' </td><td class="text-right"><a href="javascript://" id="delete-request"><i class="fa fa-times-circle text-danger"></i> </a></td></tr>');
           $(this).calculateCartTotal();
           // $(this).closest('.panel-body').fadeOut();
           $(this).prop('disabled','disabled').text('Requested');
+
+          $('#request-test').removeAttr('disabled');
+
         });
         
         $('body').on('click','#delete-request',function(){
@@ -165,9 +171,11 @@
 
           event.preventDefault(); 
 
-            var tests = [];
+            $(this).attr('disabled','disabled');
+
 
            var tot = 0;
+           type = "Tests";
 
             $('#cart-preview tr').each(function( index ) {
                 // $.extend(tests,{
@@ -201,10 +209,11 @@
             $.post('{{ route("request-test") }}', data, function(res){
                 // $( '#viewModal' ).modal('toggle');
                  // console.log(res);
-                loadSimplePay(res.total_amount, res.order_id)
+                 $('.modal-body').html('{!! preloader() !!}');
+                loadSimplePay(res.total_amount, res.order_id);
             });
 
-            console.log(data);
+
         });
 
         $('#request-check').on('click', function(){
@@ -212,6 +221,7 @@
             var checks = [];
             
            var tot = 0;
+           type = 'Checks';
            // console.log(tot);
 
             $('#cart-preview tr').each(function( index ) {
@@ -242,6 +252,7 @@
             };
 
             $.post('{{ route("request-check") }}', data, function(res){
+
               //  $.post('{{ route("checkout") }}', data, function(){
                   console.log(res);
                   loadSimplePay(res.total_amount, res.order_id)
@@ -261,14 +272,14 @@
            var handler = SimplePay.configure({
                  token: processPayment, // callback function to be called after token is received
                  key: 'test_pu_6afdbcd91aa446ecb7f79a2f29c2b530', // place your api key. Demo: test_pu_*. Live: pu_*
-                 image: 'http://' // optional: an url to an image of your choice
+                 // image: 'https://seamlesshiring.com/img/seamlesshiring-logo.png' // optional: an url to an image of your choice
               });
 
           handler.open(SimplePay.CHECKOUT, // type of payment
               {
                  email: 'me@ayolana.com', // optional: user's email
                  phone: '+2348038953794',
-                 description: 'Payment for Background Checks', // a description of your choosing
+                 description: 'Payment for ' + type, // a description of your choosing
                  // address: '', // user's address
                  // postal_code: '110001', // user's postal code
                  // city: '', // user's city
@@ -278,19 +289,33 @@
               });
 
 
-              function processPayment (token) {
+              function processPayment (token, paid) {
 
-                console.log('Token is '+token+' and order_id is '+order_id);
+                console.log('Token is '+token+' and order_id is '+order_id + ' paid -' + paid);
+
+              
+
                 var url ="{{ route('simplepay') }}"
                   $.ajax
                     ({
                         type: "POST",
                         url: url,
-                        data: ({ rnd : Math.random() * 100000, token:token }),
+                        data: ({ rnd : Math.random() * 100000, token:token, status: paid, amount: SimplePay.amountToLower( total_amount ), currency : 'NGN', app_ids:app_ids, tests:tests  }),
                         success: function(response){
-                             console.log(response)
+                            sh.reloadStatus();
+                            $( '#viewModal' ).modal('toggle');
+                            if( response == "true" )
+                            {
+                              $.growl.notice({ message: "Payment Successful " });
+                            }
+                            else
+                            {
+                              $.growl.error({ message: "Payment Unsuccessful " });
+                            }
 
-                             if(response != null){
+
+
+                             /*if(response != null){
                                  var oldurl = "{{ route('transactions') }}";
 
                                  $.ajax
@@ -299,19 +324,18 @@
                                       url: oldurl,
                                       data: ({ jsonres:response, order_id:order_id, status:true, message:'Transaction Successful', "_token":"{{ csrf_token() }}"}),
                                       success: function(response){
-                                        console.log(response);
-                                        // $("#paymemt-success").html('Payment Successful');
-                                        // window.location = "{{ url('payment_successful') }}";
-                                          $( '#viewModal' ).modal('toggle');
-                                          $( '#paymentSuccess' ).html('Payment Successful');
+                                        console.log(2,response);
+
+                                          // $( '#viewModal' ).modal('toggle');
+                                          // $( '#paymentSuccess' ).html('Payment Successful');
                                           sh.reloadStatus();
                                         setTimeout(function(){
-                                          $( '#paymentSuccess' ).html('');
-                                        }, 3000);
+                                          $.growl.notice({ message: "Payment Successful " });
+                                        }, 1000);
 
                                       }
                                   });
-                             }
+                             }*/
                         }
                     });
 

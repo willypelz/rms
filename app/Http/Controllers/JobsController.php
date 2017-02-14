@@ -16,6 +16,7 @@ use App\Models\FormFieldValues;
 use App\Models\VideoApplicationOptions;
 use App\Models\VideoApplicationValues;
 use App\Models\Settings;
+use App\Models\TestRequest;
 use App\User;
 use Validator;
 use Cart;
@@ -1492,12 +1493,18 @@ class JobsController extends Controller
         // Retrieve data returned in payment gateway callback
         // $token = $_POST["token"];
         $token = $request->token;
-        // $transaction_id = $_POST["transaction_id"]; // we don't really need this here, is just an example
+        $amount = $request->amount;
+        $amount_currency = $request->currency;
+        $sp_status = $request->status;
+        $transaction_id = $request->rnd; // we don't really need this here, is just an example
+
 
         $data = array (
-            'token' => $token
+            'token' => $token,
+            'amount' => $amount,
+            'amount_currency' => $amount_currency
         );
-        $data_string = json_encode($data); var_dump( $request->all() );
+        $data_string = json_encode($data); //var_dump( $request->all() );
 
         $ch = curl_init();
 
@@ -1514,8 +1521,8 @@ class JobsController extends Controller
             'Content-Length: ' . strlen($data_string)                                                                       
         ));       
 
-        $curl_response = curl_exec($ch); var_dump($curl_response); echo "<br><br><br>";
-        $curl_response = preg_split("/\r\n\r\n/",$curl_response); var_dump($curl_response); echo "<br><br><br>";
+        $curl_response = curl_exec($ch); //var_dump($curl_response); echo "<br><br><br>";
+        $curl_response = preg_split("/\r\n\r\n/",$curl_response); //var_dump($curl_response); echo "<br><br><br>";
         $response_content = $curl_response[1];
         $json_response = json_decode(chop($response_content), TRUE);
 
@@ -1523,7 +1530,7 @@ class JobsController extends Controller
 
         curl_close($ch);
 
-        if ($response_code == '200') {
+        /*if ($response_code == '200') {
             // even is http status code is 200 we still need to check transaction had issues or not
             if ($json_response['response_code'] == '20000'){
                 // header('Location: success.html');
@@ -1531,14 +1538,68 @@ class JobsController extends Controller
                 return $json_response;
             }else{
                 // header('Location: failed.html');
-                dd('Failed');
+                dd('Failed still');
             }
         } else {
             // header('Location: failed.html');
             dd('Failed');
         }
+*/
+
+        if ($response_code == '200') {
+            // even is http status code is 200 we still need to check transaction had issues or not
+            if ($json_response['response_code'] == '20000') {
+                $this->approveTest( $request->tests, $request->app_ids );
+                return "true";
+            } else {
+                // failed to charge the card
+                return "false";
+            }
+        } else if ($sp_status == 'true') {
+            // even though it failed the call to card charge, card payment was already processed
+            $this->approveTest( $request->tests, $request->app_ids );
+            return "true";
+        } else {
+            // failed to charge the card
+            return "false";
+        }
 
 
+    }
+
+    private function approveTest($tests, $app_ids){
+
+            foreach ($tests as $key => $test) {
+                
+
+                foreach ( $app_ids as $key => $app_id) {
+                   $data = [
+                        'status'=> 'PENDING'        
+                    ];
+
+
+
+                                
+                    $query = TestRequest::where('job_application_id',$app_id)
+                                ->where('test_id',$test['id']);
+
+                    $test = $query->get()->first()->toArray();
+
+                    $query->update($data);
+
+
+
+                    $app = JobApplication::with('cv')->find($app_id);
+
+
+
+                    $response = Curl::to('http://seamlesstesting.com/test-request')
+                                    ->withData( [ 'test_id' => $test['id'], 'job_application_id' => $app_id, 'applicant_name' => ucwords( @$app->cv->first_name. " " . @$app->cv->last_name ), 'applicant_email' => $app->cv->email, 'employer_name' => get_current_company()->name, 'employer_email' => get_current_company()->email , 'start_time' => $test['start_time'], 'end_time' => $test['end_time'] ] )
+                                    ->post();
+                }
+                
+                // var_dump($data);
+            }
     }
 
     public function SendJob(Request $request){

@@ -865,6 +865,7 @@ class JobApplicationsController extends Controller
                         'total_amount'=>$request->total_amount,
                         'invoice_no'=> $invoice_no,
                         'type'=> $request->type
+
         ]);
 
          $transaction = Transaction::firstOrCreate([
@@ -894,6 +895,7 @@ class JobApplicationsController extends Controller
                     'test_name' => $test['name'],
                     'test_owner' => $test['owner'],
                     'order_id' => $order->id,
+                    'status'=> 'ORDER'
                 
                 ];
 
@@ -904,9 +906,9 @@ class JobApplicationsController extends Controller
 
                 $app = JobApplication::with('cv')->find($app_id);
 
-                $response = Curl::to('http://seamlesstesting.com/test-request')
-                                ->withData( [ 'test_id' => $test_id, 'job_application_id' => $app_id, 'applicant_name' => ucwords( @$app->cv->first_name. " " . @$app->cv->last_name ), 'applicant_email' => $app->cv->email, 'employer_name' => get_current_company()->name, 'employer_email' => get_current_company()->email , 'start_time' => $data['start_time'], 'end_time' => $data['end_time'] ] )
-                                ->post();
+                // $response = Curl::to('http://seamlesstesting.com/test-request')
+                //                 ->withData( [ 'test_id' => $test_id, 'job_application_id' => $app_id, 'applicant_name' => ucwords( @$app->cv->first_name. " " . @$app->cv->last_name ), 'applicant_email' => $app->cv->email, 'employer_name' => get_current_company()->name, 'employer_email' => get_current_company()->email , 'start_time' => $data['start_time'], 'end_time' => $data['end_time'] ] )
+                //                 ->post();
             }
             
             // var_dump($data);

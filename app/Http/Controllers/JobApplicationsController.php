@@ -46,7 +46,10 @@ class JobApplicationsController extends Controller
      */
     public function __construct(Mailer $mailer)
     {
-        $this->middleware('auth');
+
+        $this->middleware('auth', ['except' => [
+            'saveTestResult'
+        ]]);
         $this->mailer = $mailer;
     }
     public function assess($appl_id){

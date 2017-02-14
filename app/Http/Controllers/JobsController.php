@@ -1594,7 +1594,7 @@ class JobsController extends Controller
 
 
                     $response = Curl::to('http://seamlesstesting.com/test-request')
-                                    ->withData( [ 'test_id' => $test['id'], 'job_application_id' => $app_id, 'applicant_name' => ucwords( @$app->cv->first_name. " " . @$app->cv->last_name ), 'applicant_email' => $app->cv->email, 'employer_name' => get_current_company()->name, 'employer_email' => get_current_company()->email , 'start_time' => $test['start_time'], 'end_time' => $test['end_time'] ] )
+                                    ->withData( [ 'test_id' => $test['test_id'], 'job_application_id' => $app_id, 'applicant_name' => ucwords( @$app->cv->first_name. " " . @$app->cv->last_name ), 'applicant_email' => $app->cv->email, 'employer_name' => get_current_company()->name, 'employer_email' => get_current_company()->email , 'start_time' => $test['start_time'], 'end_time' => $test['end_time'] ] )
                                     ->post();
                 }
                 

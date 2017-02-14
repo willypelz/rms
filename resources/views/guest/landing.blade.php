@@ -222,7 +222,7 @@
   
           <p><br>
             <div class="col-sm-6">
-              <a href="" class="btn btn-success text-brandon"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>
+<!--              <a href="" class="btn btn-success text-brandon"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>-->
             </div>
             <div class="col-sm-6">
               <a href="#tab-2" aria-controls="tab-2" role="tab-2" data-toggle="tab" type="button" class="pull-right btn btn-line text-capitalize">Next &nbsp; <i class="fa fa-chevron-right"></i></a>
@@ -267,7 +267,7 @@
   
           <p><br>
             <div class="col-sm-6">
-              <a href="" class="btn btn-success"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>
+<!--              <a href="" class="btn btn-success"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>-->
             </div>
             <div class="col-sm-6">
               <a href="#tab-1" aria-controls="tab-1" role="tab-1" data-toggle="tab" type="button" class=" btn btn-line text-capitalize"><i class="fa fa-chevron-left"></i> &nbsp; Previous</a>
@@ -315,7 +315,7 @@
         
           <p><br>
             <div class="col-sm-6">
-              <a href="" class="btn btn-success"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>
+<!--              <a href="" class="btn btn-success"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>-->
             </div>
             <div class="col-sm-6">
               <a href="#tab-2" aria-controls="tab-2" role="tab-2" data-toggle="tab" type="button" class=" btn btn-line text-capitalize"><i class="fa fa-chevron-left"></i> &nbsp; Previous</a>
@@ -390,7 +390,7 @@
   
           <p><br>
             <div class="col-sm-6">
-              <a href="" class="btn btn-success"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>
+<!--              <a href="" class="btn btn-success"><i class="fa fa-play"></i> &nbsp; See a Video Demonstration</a>-->
             </div>
             <div class="col-sm-6">
               <a href="#tab-3" aria-controls="tab-3" role="tab-3" data-toggle="tab" type="button" class=" btn btn-line text-capitalize"><i class="fa fa-chevron-left"></i> &nbsp; Previous</a>

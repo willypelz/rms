@@ -29,7 +29,7 @@
                                     <p>We look forward to your - enquiries, questions or suggestions. <!-- Visit our FAQs to browse popular support topics --></p>
                                     <hr>
                                     <p class="">
-                                        <!-- <i class="fa fa-envelope"></i> --> Mail Address: <b>contactus@seamlesshiring.com</b>
+                                        <!-- <i class="fa fa-envelope"></i> --> Mail Address: <b>support@seamlesshiring.com</b>
                                     </p>
                                     <hr>
                                     <p>

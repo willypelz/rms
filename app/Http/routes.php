@@ -210,6 +210,14 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('about', function () {
         return view('guest.about');
     });
+    
+    Route::get('terms', function () {
+        return view('guest.terms');
+    });
+
+    Route::get('privacy', function () {
+        return view('guest.privacy');
+    });
 
     Route::get('register2', function () {
         return view('auth.register2');

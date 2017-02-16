@@ -1,5 +1,17 @@
+
+
 @extends('layout.template-default')
 @section('content')
+
+<style>
+    .btn.btn-label.checked{
+        border: 3px solid #4bb779;
+        background: #e8fbf0;
+    }
+    .btn.btn-label.checked:hover{
+        background: #e8fbf0;
+    }
+</style>
 <div class="separator separator-small"></div>
 <section class="no-pad">
   <div class="container">
@@ -22,204 +34,162 @@
               <div class="row" >
                 <div class="col-xs-12">
                   <h2 class="text-center"><i class="fa fa-check-circle fa-2x text-success"></i></h2>
-                  <p class="lead text-center"><a href="">{{ ucfirst( $job->title ) }} </a><br> This Job has been succesfully created.</p><hr>
+                  <p class="lead text-center"><a href="">{{ ucfirst( $job->title ) }} </a><br> This Job has been succesfully created! One more step to finish...</p><hr>
                   <div class="col-xs-8 col-xs-offset-2">
-                    <h5 class="text-center">Below are free job boards where your job will be posted. You can copy the link of your job or share them from here. You can find this section on the <a href="{{ url('dashboard') }}">job dashboard here.</a></h5><br></div>
-                    <!-- <div class="well hidden">
-                      <ul class="list-inline">
-                        <li><img src="{{ url('/') }}/img/linkedin-logo.png" alt="" width="100px" align="right"> &nbsp; </li>
-                        <li><img src="{{ url('/') }}/img/logo-full.png" alt="" width="100px" align="right"> &nbsp; </li>
-                        <li><img src="{{ url('/') }}/img/efritin-logo.png" alt="" width="100px" align="right"> &nbsp; </li>
-                        <li><img src="{{ url('/') }}/img/job_informant.PNG" alt="" width="100px" align="right"> &nbsp; </li>
-                      </ul>
-                      <div class="clearfix"></div>
-                    </div> -->
+                    <h5 class="text-center">Now, below are free job boards where your job will be posted. Edit your preferences</h5><br></div>
+                    
                     <div>
-                      <!-- <h4 class="text-center"> Share this job!  <br> -->
-                      <!-- <small>Because we want you to find the best talents.</small> -->
-                      <!-- </h4> -->
-                      <!-- <hr style="width: 45%"> -->
-                      <div class="col-xs-12 hidden">
-                        <div class="well">
-                          <div class="row">
-                            <div class="col-xs-7 small">
-                              <h5>Job Url</h5>
-                              <a href="{{ url(get_current_company()->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}">{{ url(get_current_company()->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}</a>
-                            </div>
-                            <div class="col-xs-5">
-                              <h5>Social Media sharing</h5>
-                              
-                              <ul class="list-inline">
-                                <li>
-                                  <a href="https://www.facebook.com/sharer/sharer.php?u={{ url(get_current_company()->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" class="" target="_blank" >
-                                    <span class="fa-stack fa-lg">
-                                      <i class="fa fa-circle fa-stack-2x text-" style="color:#3b5998"></i>
-                                      <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                  </a>
-                                </li>
-                                
-                                <li>
-                                  <a href="https://twitter.com/home?status={{ url(get_current_company()->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" class="" target="_blank" >
-                                    <span class="fa-stack fa-lg">
-                                      <i class="fa fa-circle fa-stack-2x text-" style="color:#0084b4"></i>
-                                      <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                  </a>
-                                </li>
-                                
-                                <li>
-                                  <a href="https://plus.google.com/share?url={{ url(get_current_company()->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" class="" target="_blank" >
-                                    <span class="fa-stack fa-lg">
-                                      <i class="fa fa-circle fa-stack-2x text-danger" style="color:#007bb6"></i>
-                                      <i class="fa fa-google fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                  </a>
-                                </li>
-                                <li>
-                                  <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ url(get_current_company()->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" class="" target="_blank" >
-                                    <span class="fa-stack fa-lg">
-                                      <i class="fa fa-circle fa-stack-2x text-" style="color:#007bb6"></i>
-                                      <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                  </a>
-                                </li>
-                                <!-- https://www.linkedin.com/shareArticle?mini=true&url=&title=&summary=&source= -->
-                              </ul>
-                            </div>
-                            <div class="clearfix"></div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div class="row">
-                        <div class="col-xs-8">
-                          <!-- <h5 class="text-center">Below are free job boards where your job will be posted. You can copy the link of your job or share them from here. You can find this section on the <a href="{{ url('dashboard') }}">job dashboard here.</a></h5><br> -->
-                          <div class="">
-                            <div class="panel panel-default">
-                              
-                              <div class="panel-heading">
-                                <h3 class="panel-title "><span class="text-uppercase text-black"><b>Free Job Boards</b></span>
-                                <span class="pull-right text-warning"><i class="fa fa-check-circle"></i> {{ $approved_count }} approved &nbsp; &middot; &nbsp;<i class="fa fa-hourglass-half"></i> {{ $pending_count }} Pending</span>
-                              </div>
-                              <div class="panel-body" style="height: 520px; overflow: auto;">
-                                
-                                @foreach($subscribed_boards as $subscribed_board)
-                                <?php
-                                // $sub_key = array_search($b['id'], array_pluck( $subscribed_boards, 'id' ) );
-                                if(@$subscribed_board['pivot']['url'] != null && @$subscribed_board['pivot']['url'] != '')
-                                {
-                                $status = 'approved';
-                                }
-                                else
-                                {
-                                $status = 'pending';
-                                }
-                                // $status = ( in_array($b['id'], $subscribed_boards) ) ? 'disabled checked' : '';
-                                // $approved = ( in_array($b['id'], $subscribed_boards) ) ? 'disabled checked' : '';
-                                ?>
-                                
-                                <div class="row job-board {{$status}}">
-                                  <div class="col-xs-3"><br>
-                                    <img src="{{ $subscribed_board['img'] }}" alt="{{ $subscribed_board['name'] }} logo" width="90%" align="right">
-                                  </div>
-                                  <div class="col-xs-6">
-                                    @if(@$subscribed_board['pivot']['url'] != null && @$subscribed_board['pivot']['url'] != '')
-                                    <h5 title="Your Job is live on this website">{{ $subscribed_board['name'] }} <i class="fa fa-check-circle text-success"></i> </h5><input type="text" class="form-control" value="{{ $subscribed_board['pivot']['url'] }}" readonly>
-                                    @else
-                                    <h5>{{ $subscribed_board['name'] }} &nbsp;&nbsp;<i class="fa fa-hourglass-half text-muted"></i>pending approval</h5><input type="text" class="form-control" value="your url will appear here" disabled="">
-                                    @endif
-                                    <!-- <div class="clearfix"></div>
-                                    <p class="small text-muted">&uarr; Link to job on insidify.com</p> -->
-                                  </div>
-                                  <div class="col-xs-3">
-                                    <h5>Share this link</h5>
-                                    <ul class="list-inline">
-                                      <li class="no-pad no-margin">
-                                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ @$subscribed_board['pivot']['url'] }}" class="btn-disabled" target="_blank" >
-                                          <span class="fa-stack fa-lg">
-                                            <i class="fa fa-square fa-stack-2x text-"></i>
-                                            <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                          </span>
-                                        </a>
-                                      </li>
-                                      
-                                      <li class="no-pad no-margin">
-                                        <a href="https://twitter.com/home?status={{ @$subscribed_board['pivot']['url'] }}" class="btn-disabled" target="_blank" >
-                                          <span class="fa-stack fa-lg">
-                                            <i class="fa fa-square fa-stack-2x text-"></i>
-                                            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                          </span>
-                                        </a>
-                                      </li>
-                                      
-                                      <li class="no-pad no-margin">
-                                        <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ @$subscribed_board['pivot']['url'] }}" class="btn-disabled" target="_blank" >
-                                          <span class="fa-stack fa-lg">
-                                            <i class="fa fa-square fa-stack-2x text-"></i>
-                                            <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
-                                          </span>
-                                        </a>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                  <div class="clearfix"></div>
-                                  <hr>
-                                </div>
-                                @endforeach
-                                <!-- <u class="text-center"><a href=""><i class="fa fa-plus"></i> Add Job board</u></a> -->
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <!-- Paid Boards -->
-                        <!-- <div class="col-xs-5"> -->
-                        <!-- <h5 class="text-center">Below are free job boards where your job will be posted. You can copy the link of your job or share them from here. You can find this section on the <a href="{{ url('dashboard') }}">job dashboard here.</a></h5><br> -->
-                        
-                        <!-- </div> -->
-                        <div class="col-xs-4">
-                          
-                          <div class="well text-center">
-                            <h1 class=""><i class="fa-lg fa text-muted fa-send"></i></h1><br>
-                            <p class="h4">For a wider and better reach, you can promote this job on more job boards and <i>newspapers.</i></p>
-                            <p>
-                              <hr>
-                              <!--  <a href="{{ url('jobs/advertise-your-job/'.$job->id.'/'.str_slug($job['title'])) }}" class="btn btn-primary btn-block" target="_blank" data-toggle="modal" data-target="#myModal">
-                                Promote Job Now
-                              </a> -->
-                              <a href="#" class="btn btn-primary btn-block" target="_blank" data-toggle="modal" data-target="#promoteJob">
-                                Promote Job Now
-                              </a>
-                            </p>
-                          </div>
-                          <p class="text-center">- OR -</p>
-                          <div class="well text-center">
-                            <h1 class=""><i class="fa-lg fa text-muted fa-cloud-upload"></i></h1><br>
-                            <p class="h4">You can choose to start with uploading candidates' CVs to this job</p>
-                            <p>
-                              <hr>
-                              
-                              <a href="#" class="btn btn-success btn-block" data-toggle="modal" data-target="#uploadCV">  Upload CV to this Job</a>
-                            </p>
-                          </div>
-                          <div class="text-center">
-                            &nbsp;
-                          </div>
-                        </div>
-                        <div class="col-xs-12 text-center">
-                          <hr>
-                          <a href="{{ url('dashboard') }}" class="btn btn-line">Go to Job Dashboard <i class="fa fa-arrow-right"></i></a>
-                        </div>
-                      </div>
                     </div>
-                    <!-- <a href="{{ url('my-jobs') }}" class="btn btn-primary">View My Jobs</a> -->
-                    <!-- <a href="" class="btn btn-primary">Promote job on more job boards</a>
-                    <a href="" class="btn btn-line">Upload CVs to this job</a> -->
-                    <!-- <div class="clearfix"></div> -->
+                    <div class="row">
+                          <div class="col-xs-12">
+                              <br>
+                          </div>
+                          <div class="col-xs-4 col-xs-offset-2">
+                              <div class="job-brd">
+                                <label class="btn btn-line btn-sm btn-label btn-block checked text-capitalize text-left disabled">
+                                  <input type="checkbox" class="" autocomplete="off" checked="" disabled="">
+                                  <span class="col-xs-6"><img src="{{ asset('img/insidify-logo.png') }}" width="100%" alt=""></span>
+                                  <span class="col-xs-6"><b class="name">Insidify Jobs</b><br>www.insidify.com</span>
+                                  <span class="clearfix"></span>
+                                </label>
+                                <label class="btn btn-line btn-sm btn-label btn-block checked text-capitalize text-left">
+                                  <input type="checkbox" class="" autocomplete="off" checked="">
+                                  <span class="col-xs-6"><img src="https://www.britishcouncil.org.ng/profiles/solas2/themes/britishcouncil/images/desktop/logo-british-council-color.png" width="100%" alt=""></span>
+                                  <span class="col-xs-6"><b class="name">Guargian Jobs</b><br>www.insidify.com</span>
+                                  <span class="clearfix"></span>
+                                </label>
+                                <label class="btn btn-line btn-sm btn-label btn-block checked text-capitalize text-left">
+                                  <input type="checkbox" class="" autocomplete="off" checked="">
+                                  <span class="col-xs-6"><img src="http://www.jobberman.com/img/new/logo.png" width="100%" alt=""></span>
+                                  <span class="col-xs-6"><b class="name">Punch Jobs</b><br>www.insidify.com</span>
+                                  <span class="clearfix"></span>
+                                </label>
+                            </div>
+                          </div>
+
+                          <div class="col-xs-4">
+                              <div class="job-brd">
+                                <label class="btn btn-line btn-sm btn-label btn-block checked text-capitalize text-left">
+                                  <input type="checkbox" class="" autocomplete="off" checked="">
+                                  <span class="col-xs-6"><img src="http://www.jobimu.com/wp-content/uploads/2014/07/cropped-jobimu-logo.jpg" width="100%" alt=""></span>
+                                  <span class="col-xs-6"><b class="name">Naij Jobs</b><br>www.insidify.com</span>
+                                  <span class="clearfix"></span>
+                                </label>
+                                <label class="btn btn-line btn-sm btn-label btn-block checked text-capitalize text-left">
+                                  <input type="checkbox" class="" autocomplete="off" checked="">
+                                  <span class="col-xs-6"><img src="http://www.myjobmag.com/pics/logo6.png" width="100%" alt=""></span>
+                                  <span class="col-xs-6"><b class="name">My Job Mag</b><br>www.insidify.com</span>
+                                  <span class="clearfix"></span>
+                                </label>
+                                <label class="btn btn-line btn-sm btn-label btn-block checked text-capitalize text-left">
+                                  <input type="checkbox" class="" autocomplete="off" checked="">
+                                  <span class="col-xs-6"><img src="http://www.hotnigerianjobs.com/images/banner2.gif" width="100%" alt=""></span>
+                                  <span class="col-xs-6"><b class="name">Hot Nigerian Jobs</b><br>www.insidify.com</span>
+                                  <span class="clearfix"></span>
+                                </label>
+                            </div>
+                          </div>
+                          
+                          <div id="paidJobBoards" class="collapse">
+                          <div class="col-xs-8 col-xs-offset-2"><hr></div>
+                          <div class="clearfix"></div>
+                            <h4 class="text-center text-capitalize">Paid Job boards & Newspapers</h4><br>
+                            <div class="col-xs-4 col-xs-offset-2">
+                                            <div class="job-brd">
+                                            <h5>Job Boards</h5>
+                                              <label class="btn btn-line btn-sm btn-label btn-block paid text-capitalize text-left">
+                                                <input type="checkbox" class="" autocomplete="off"  >
+                                                <span class="col-xs-6"><img src="https://www.britishcouncil.org.ng/profiles/solas2/themes/britishcouncil/images/desktop/logo-british-council-color.png" width="100%" alt=""></span>
+                                                <span class="col-xs-6"><b class="name">Guargian Jobs</b><br>www.insidify.com <br>
+                                                <span class="badge badge-danger">N 1500</span></span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                              <label class="btn btn-line btn-sm btn-label btn-block paid text-capitalize text-left">
+                                                <input type="checkbox" class="" autocomplete="off"  >
+                                                <span class="col-xs-6"><img src="http://www.jobberman.com/img/new/logo.png" width="100%" alt=""></span>
+                                                <span class="col-xs-6"><b class="name">Punch Jobs</b><br>www.insidify.com<br>
+                                                <span class="badge badge-danger">N 1500</span></span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                              <label class="btn btn-line btn-sm btn-label btn-block paid text-capitalize text-left">
+                                                <input type="checkbox" class="" autocomplete="off" >
+                                                <span class="col-xs-6"><img src="https://www.britishcouncil.org.ng/profiles/solas2/themes/britishcouncil/images/desktop/logo-british-council-color.png" width="100%" alt=""></span>
+                                                <span class="col-xs-6"><b class="name">Guargian Jobs</b><br>www.insidify.com<br>
+                                                <span class="badge badge-danger">N 1500</span></span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                              <label class="btn btn-line btn-sm btn-label btn-block paid text-capitalize text-left">
+                                                <input type="checkbox" class="" autocomplete="off" >
+                                                <span class="col-xs-6"><img src="http://www.jobberman.com/img/new/logo.png" width="100%" alt=""></span>
+                                                <span class="col-xs-6"><b class="name">Punch Jobs</b><br>www.insidify.com<br>
+                                                <span class="badge badge-danger">N 1500</span></span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                          </div>
+                                        </div>
+
+                                        <div class="col-xs-4">
+                                            <div class="job-brd">
+                                            <h5>Newspapers</h5>
+                                              <label class="btn btn-line btn-sm btn-label btn-block paid text-capitalize text-left">
+                                                <input type="checkbox" class="" autocomplete="off" >
+                                                <span class="col-xs-6"><img src="http://www.jobimu.com/wp-content/uploads/2014/07/cropped-jobimu-logo.jpg" width="100%" alt=""></span>
+                                                <span class="col-xs-6"><b class="name">Punch Jobs</b><br>www.insidify.com<br>
+<!--                                                <span class="badge badge-danger">N 1500</span>-->
+                                                </span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                              <label class="btn btn-line btn-sm btn-label btn-block paid text-capitalize text-left">
+                                                <input type="checkbox" class="" autocomplete="off" >
+                                                <span class="col-xs-6"><img src="http://www.jobimu.com/wp-content/uploads/2014/07/cropped-jobimu-logo.jpg" width="100%" alt=""></span>
+                                                <span class="col-xs-6"><b class="name">Guardian Jobs</b><br>www.insidify.com<br>
+<!--                                                <span class="badge badge-danger">N 1500</span>-->
+                                                </span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                              <label class="btn btn-line btn-sm btn-label btn-block paid text-capitalize text-left">
+                                                <input type="checkbox" class="" autocomplete="off" >
+                                                <span class="col-xs-6"><img src="http://www.jobimu.com/wp-content/uploads/2014/07/cropped-jobimu-logo.jpg" width="100%" alt=""></span>
+                                                <span class="col-xs-6"><b class="name">ThisDay Jobs</b><br>www.insidify.com<br>
+<!--                                                <span class="badge badge-danger">N 1500</span>-->
+                                                </span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                          </div>
+                                        </div>
+                          </div>
+
+                          <div class="col-xs-6 col-xs-offset-3 text-center">
+                            <hr>
+                            
+                            <p class="hidify">For a wider reach, you can <a class="open-more " data-toggle="collapse" data-target="#paidJobBoards" aria-expanded="false" aria-controls="paidJobBoards">advertise this job on more paid job board</a>. If not, just hit the 'Proceed' button below</p>
+                            <br>
+                            
+                          <a class="open-more btn btn-lg btn-line hidify" data-toggle="collapse" data-target="#paidJobBoards" aria-expanded="false" aria-controls="paidJobBoards">Advertise on more job boards</a>
+                          
+                          <span class="hidify">&nbsp; or &nbsp; </span>
+                          <a href="#" data-toggle="modal" data-target="#success" class="btn btn-lg btn-success"><i class="fa fa-check"></i> &nbsp;PROCEED &raquo;</a>
+                            <hr>
+                            <!-- <a href="{{ url('dashboard') }}" class="btn btn-lg btn-success">Post my Job</i></a> -->
+                          </div>
+
+                         
+                         
+                          <!-- <div class="col-xs-12"><br><p class="text-center">Post this job to see more available job boards</p></div> -->
+
+                              <div class="col-xs-6 hidden">
+                                  <div class="well no-border no-shadow">
+                                      <label for=""><i class="fa fa-folder"></i> Create Job Folder</label> &nbsp;
+                                      <!-- <textarea name="" id="" cols="30" rows="4" class="form-control" placeholder=""></textarea> -->
+                                      <input type="text" class="form-control" placeholder="e.g lawyer2-02-2016"> 
+                                      <small>(This folder will contain all Resumes / CVs and other materials submitted by candidates that apply for the Job. )</small>
+                                  </div>
+                              </div>
+
+                          </div>
+
+
                     <br>
-                    <!-- <p>
-                      <a href="" class="btn btn-line">Upload CVs for this job <i class="fa fa-folder"></i></a>
-                    </p> -->
                   </div>
                 </div>
                 
@@ -233,254 +203,100 @@
       <div class="separator separator-small"></div>
       
       <!-- Modal Promote Job -->
-      <div class="modal fade" id="promoteJob" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal fade" id="success" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <!-- <div class="modal-header">
               <h4 class="modal-title bold text-bold" id="myModalLabel">Promote <span class="text-warning">{{ ucfirst( $job->title ) }} </span></h4>
-            </div>
+            </div> -->
             <div class="modal-body">
               <div class="row">
-                <!-- <div class="col-xs-12 text-center">
-                </div> -->
-                
-                <div class="col-xs-12">
-                  <p class="text-">Select the Job-board and Newspaper where you want your job to appear and click done to forward your request and we will reach you shortly.</p>
-                  <div class="well">
-                    <h4 class="text-brandon text-uppercase text-danger text-center">
-                    <i class="fa fa-star"></i>&nbsp; Paid Job Boards
-                    </h4><hr>
-                    <!-- <h4>Promote <a href="">Job Title should come here</a>. </h4> -->
-                    <!-- <p>Multipying your talent flow. Post your job on more job boards</p> -->
-                    <div class="col-sm-4">
-                      <div class="thumbnail thumb-box">
-                        <div class="caption">
-                          <img alt="" src="https://ngcareers.com/public/img/ngc_logo.png" height="45px" style="max-width:100%;"> <hr>
-                          <h4 class="">Ngcareers</h4>
-                          <p class="small"></p>
-                          <p>
-                            <span class="purchase-action">
-                              <a id="cartAdd" class="btn btn-success " data-count="1" data-id="4" data-cost="1000" data-pass="yf0OPNLMnW8mMFat6DsDzCN9xXCTbjRiGo8vVPz5" data-name="Ngcareers"><i class="fa fa-plus"></i> Post for ₦ 1000</a>
-                              
-                            </span>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <div class="thumbnail thumb-box">
-                        <div class="caption">
-                          <img alt="" src="http://www.jobberman.com/img/new/logo.png" height="45px" style="max-width:100%;"> <hr>
-                          <h4 class="">Jobberman.com</h4>
-                          <p class="small"></p>
-                          <p>
-                            <span class="purchase-action">
-                              <a id="cartAdd" class="btn btn-success " data-count="1" data-id="5" data-cost="1000" data-pass="yf0OPNLMnW8mMFat6DsDzCN9xXCTbjRiGo8vVPz5" data-name="Jobberman.com"><i class="fa fa-plus"></i> Post for ₦ 1000</a>
-                              
-                            </span>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <div class="thumbnail thumb-box">
-                        <div class="caption">
-                          <img alt="" src="http://1.bp.blogspot.com/-vWFnB2I50PI/T65u315lAHI/AAAAAAAAALY/24h3emm6Z0c/s461/DD1.jpg" height="45px" style="max-width:100%;"> <hr>
-                          <h4 class="">Nairacareer.com</h4>
-                          <p class="small"></p>
-                          <p>
-                            <span class="purchase-action">
-                              <a id="cartAdd" class="btn btn-success " data-count="1" data-id="6" data-cost="1000" data-pass="yf0OPNLMnW8mMFat6DsDzCN9xXCTbjRiGo8vVPz5" data-name="Nairacareer.com"><i class="fa fa-plus"></i> Post for ₦ 1000</a>
-                              
-                            </span>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <div class="thumbnail thumb-box">
-                        <div class="caption">
-                          <img alt="" src="http://seamlesshiring.com/img/efritin-logo.png" height="45px" style="max-width:100%;"> <hr>
-                          <h4 class="">Efritin.com</h4>
-                          <p class="small"></p>
-                          <p>
-                            <span class="purchase-action">
-                              <a id="cartAdd" class="btn btn-success " data-count="1" data-id="16" data-cost="1000" data-pass="yf0OPNLMnW8mMFat6DsDzCN9xXCTbjRiGo8vVPz5" data-name="Efritin.com"><i class="fa fa-plus"></i> Post for ₦ 1000</a>
-                              
-                            </span>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <div class="thumbnail thumb-box">
-                        <div class="caption">
-                          <img alt="" src="http://www.hotnigerianjobs.com/images/banner2.gif" height="45px" style="max-width:100%;"> <hr>
-                          <h4 class="">HotNigerianjobs.com</h4>
-                          <p class="small"></p>
-                          <p>
-                            <span class="purchase-action">
-                              <a id="cartAdd" class="btn btn-success " data-count="1" data-id="17" data-cost="1000" data-pass="yf0OPNLMnW8mMFat6DsDzCN9xXCTbjRiGo8vVPz5" data-name="HotNigerianjobs.com"><i class="fa fa-plus"></i> Post for ₦ 1000</a>
-                              
-                            </span>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="row hidden">
-                      <div class="col-xs-6 col-xs-offset-3"><hr>
-                        <i class="fa fa-spin fa-circle-o-notch fa-2x"></i>
-                        <p class="">
-                          <i class="fa fa-check"></i> Your request has been sent. You will be contacted shortly. Thank you.
-                        </p>
-                        <a href="" class="btn btn-danger btn-block">Forward Request</a>
-                      </div>
-                    </div>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="well text-center">
-                    <h4 class="text-brandon text-uppercase text-danger">
-                    <i class="fa fa-star"></i>&nbsp; Paid Newspaper Ads
-                    </h4>
-                    <br>
-                    
-                    <div class="col-sm-4">
-                      <label for="fl-box-0">
-                        <div class="thumbnail thumb-box">
-                          <div class="caption">
-                            <img alt="" src="http://cdn.guardian.ng/wp-content/themes/guardian2016/img/guardian_logo.png" height="45px" width="100%"> <hr>
-                            <h4 class="">TheGuardian</h4>
-                            <p class="small"></p>
-                            <input type="checkbox" class="fl-box" name="" id="fl-box-0">
-                            <p>
-                              
-                              <span class="purchase-action">
-                                
-                                <!-- <a href="" class="btn btn-success " data-count="1" onclick="AddBoardCart(7, 1000, 'TheGuardian')" data-cost="1000"><i class="fa fa-plus"></i> Post for &#8358; 1000</a> -->
-                                
-                              </span>
-                              
-                            </p>
+              <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                <p class="text-center lead"><br>
+                 <i class="fa fa-check text-success"></i> 
+                  <span class="text-success">Congrats! Your Job is has been posted on the free Job boards! </span>
+                  <br> Kindly make payments for the channels below...
+                </p>
+
+                <div id="" class="">
+                          <div class="col-xs-12"><hr></div>
+                          <div class="clearfix"></div>
+                            <!-- <h4 class="text-center text-capitalize">Paid Job boards & Newspapers</h4><br> -->
+                            <div class="col-xs-4 col-xs-offset-2">
+                                            <div class="job-brd">
+                                            <h5>Job Boards</h5>
+                                              <label class="btn btn-line checked btn-sm btn-label btn-block paid text-capitalize text-left">
+                                                <input type="checkbox" class="" checked autocomplete="off"  >
+                                                <span class="col-xs-6"><img src="https://www.britishcouncil.org.ng/profiles/solas2/themes/britishcouncil/images/desktop/logo-british-council-color.png" width="100%" alt=""></span>
+                                                <span class="col-xs-6"><b class="name">Guargian Jobs</b><br>www.insidify.com <br>
+                                                <span class="badge badge-danger">N 1500</span></span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                              <label class="btn btn-line checked btn-sm btn-label btn-block paid text-capitalize text-left">
+                                                <input type="checkbox" class="" checked autocomplete="off"  >
+                                                <span class="col-xs-6"><img src="http://www.jobberman.com/img/new/logo.png" width="100%" alt=""></span>
+                                                <span class="col-xs-6"><b class="name">Punch Jobs</b><br>www.insidify.com<br>
+                                                <span class="badge badge-danger">N 1500</span></span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                              <label class="btn btn-line checked btn-sm btn-label btn-block paid text-capitalize text-left">
+                                                <input type="checkbox" class="" checked autocomplete="off" >
+                                                <span class="col-xs-6"><img src="https://www.britishcouncil.org.ng/profiles/solas2/themes/britishcouncil/images/desktop/logo-british-council-color.png" width="100%" alt=""></span>
+                                                <span class="col-xs-6"><b class="name">Guargian Jobs</b><br>www.insidify.com<br>
+                                                <span class="badge badge-danger">N 1500</span></span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                              <label class="btn btn-line checked btn-sm btn-label btn-block paid text-capitalize text-left">
+                                                <input type="checkbox" class="" checked autocomplete="off" >
+                                                <span class="col-xs-6"><img src="http://www.jobberman.com/img/new/logo.png" width="100%" alt=""></span>
+                                                <span class="col-xs-6"><b class="name">Punch Jobs</b><br>www.insidify.com<br>
+                                                <span class="badge badge-danger">N 1500</span></span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                          </div>
+                                        </div>
+
+                                        <div class="col-xs-4">
+                                            <div class="job-brd">
+                                            <h5>Newspapers</h5>
+                                              <label class="btn btn-line checked btn-sm btn-label btn-block paid text-capitalize text-left">
+                                                <input type="checkbox" class="" checked autocomplete="off" >
+                                                <span class="col-xs-6"><img src="http://www.jobimu.com/wp-content/uploads/2014/07/cropped-jobimu-logo.jpg" width="100%" alt=""></span>
+                                                <span class="col-xs-6"><b class="name">Punch Jobs</b><br>www.insidify.com<br>
+                                                </span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                              <label class="btn btn-line checked btn-sm btn-label btn-block paid text-capitalize text-left">
+                                                <input type="checkbox" class="" checked autocomplete="off" >
+                                                <span class="col-xs-6"><img src="http://www.jobimu.com/wp-content/uploads/2014/07/cropped-jobimu-logo.jpg" width="100%" alt=""></span>
+                                                <span class="col-xs-6"><b class="name">Guardian Jobs</b><br>www.insidify.com<br>
+                                                </span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                              <label class="btn btn-line checked btn-sm btn-label btn-block paid text-capitalize text-left">
+                                                <input type="checkbox" class="" checked autocomplete="off" >
+                                                <span class="col-xs-6"><img src="http://www.jobimu.com/wp-content/uploads/2014/07/cropped-jobimu-logo.jpg" width="100%" alt=""></span>
+                                                <span class="col-xs-6"><b class="name">ThisDay Jobs</b><br>www.insidify.com<br>
+                                                </span>
+                                                <span class="clearfix"></span>
+                                              </label>
+                                          </div>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                        <hr>
+                                        <p class="text-center">
+                                         Please note that you will be contacted shortly as regards your posting on Newspaper <br><br>
+                                          <a href="" class="btn btn-lg btn-danger">Total: N10,000 &middot; PAY NOW <i class="fa fa-arrow-right"></i></a>
+                                        </p>
                           </div>
-                        </div>
-                      </label>
-                    </div>
-                    <div class="col-sm-4">
-                      <label for="fl-box-1">
-                        <div class="thumbnail thumb-box">
-                          <div class="caption">
-                            <img alt="" src="http://d1phczbdxyh8yo.cloudfront.net/wp-content/uploads/2016/03/21234614/Punch-Logo1-300x89.png" height="45px" width="100%"> <hr>
-                            <h4 class="">Punch</h4>
-                            <p class="small"></p>
-                            <input type="checkbox" class="fl-box" name="" id="fl-box-1">
-                            <p>
-                              
-                              <span class="purchase-action">
-                                
-                                <!-- <a href="" class="btn btn-success " data-count="1" onclick="AddBoardCart(9, 1500, 'Punch')" data-cost="1500"><i class="fa fa-plus"></i> Post for &#8358; 1500</a> -->
-                                
-                              </span>
-                              
-                            </p>
-                          </div>
-                        </div>
-                      </label>
-                    </div>
-                    <div class="col-sm-4">
-                      <label for="fl-box-2">
-                        <div class="thumbnail thumb-box">
-                          <div class="caption">
-                            <img alt="" src="http://thenationonlineng.net/wp-content/uploads/2015/07/logo1.png" height="45px" width="100%"> <hr>
-                            <h4 class="">TheNation</h4>
-                            <p class="small"></p>
-                            <input type="checkbox" class="fl-box" name="" id="fl-box-2">
-                            <p>
-                              
-                              <span class="purchase-action">
-                                
-                                <!-- <a href="" class="btn btn-success " data-count="1" onclick="AddBoardCart(10, 1200, 'TheNation')" data-cost="1200"><i class="fa fa-plus"></i> Post for &#8358; 1200</a> -->
-                                
-                              </span>
-                              
-                            </p>
-                          </div>
-                        </div>
-                      </label>
-                    </div>
-                    <div class="col-sm-4">
-                      <label for="fl-box-3">
-                        <div class="thumbnail thumb-box">
-                          <div class="caption">
-                            <img alt="" src="http://d19lga30codh7.cloudfront.net/wp-content/uploads/2013/12/vanguardlogo.png" height="45px" width="100%"> <hr>
-                            <h4 class="">Vanguard</h4>
-                            <p class="small"></p>
-                            <input type="checkbox" class="fl-box" name="" id="fl-box-3">
-                            <p>
-                              
-                              <span class="purchase-action">
-                                
-                                <!-- <a href="" class="btn btn-success " data-count="1" onclick="AddBoardCart(11, 1300, 'Vanguard')" data-cost="1300"><i class="fa fa-plus"></i> Post for &#8358; 1300</a> -->
-                                
-                              </span>
-                              
-                            </p>
-                          </div>
-                        </div>
-                      </label>
-                    </div>
-                    
-                    <div class="hidden" href="#">
-                      <div class="panel panel-default panel-course category-item">
-                        <div class="row category-row">
-                          <div class="col-xs-3">
-                            <img src="http://d19lga30codh7.cloudfront.net/wp-content/uploads/2013/12/vanguardlogo.png" alt="" class="category-icon" width="100%">
-                          </div>
-                          <div class="col-xs-6">
-                            <h4>Name of Newspaper comes here <small></small> </h4>
-                            <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, esse nam. Deserunt delectus ex enim assumenda.</p> -->
-                          </div>
-                          <div class="col-xs-3 category-item"><br>
-                            <a class="btn btn-block btn-warning pull-right">Request slot</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div class="hidden" href="#">
-                      <div class="panel panel-default panel-course category-item">
-                        <div class="row category-row">
-                          <div class="col-xs-3 ">
-                            <img src="http://cdn.guardian.ng/wp-content/themes/guardian2016/img/guardian_logo.png" alt="" class="category-icon" width="100%">
-                          </div>
-                          <div class="col-xs-6">
-                            <h4>Name of Newspaper comes here <small></small></h4>
-                            <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, esse nam. Deserunt delectus ex enim assumenda.</p> -->
-                          </div>
-                          <div class="col-xs-3 category-item"><br>
-                            <a class="btn btn-block btn-warning pull-right">Request slot</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row hidden">
-                      <div class="col-xs-6 col-xs-offset-3"><hr>
-                        <i class="fa fa-spin fa-circle-o-notch fa-2x"></i>
-                        <p class="">
-                          <i class="fa fa-check"></i> Your request has been sent. You will be contacted shortly. Thank you.
-                        </p>
-                        <a href="" class="btn btn-danger btn-block">Forward Request</a>
-                      </div>
-                    </div>
-                    <div class="clearfix"></div>
-                  </div>
-                </div>
+
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-line" data-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-primary">Done</button>
+<!--              <button type="button" class="btn btn-line pull-left" data-dismiss="modal">Cancel</button>-->
+              <button type="button" class="btn btn-primary">Proceed to dashboard</button>
             </div>
           </div>
         </div>
@@ -603,4 +419,30 @@
         </div>
       </div>
     </div>
+    
+    <script>
+        
+        
+        
+        $('.open-more').click(function(){
+            $('.hidify').fadeOut();
+        });
+        
+        
+        var elem = $('.btn.btn-label > input[type=checkbox]');
+        var btn = $('.btn.btn-label');
+        
+        
+        btn.on('click',function(){
+                        
+            if ( $( this ).children(elem).prop( "checked" ) ){
+                
+                $(this).addClass('checked');
+                
+            }else{
+                $(this).removeClass('checked');
+            }
+        });
+        
+</script>
     @endsection

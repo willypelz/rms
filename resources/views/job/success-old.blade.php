@@ -93,7 +93,8 @@
                           <div id="paidJobBoards" class="collapse">
                           <div class="col-xs-8 col-xs-offset-2"><hr></div>
                           <div class="clearfix"></div>
-                            <h4 class="text-center text-capitalize">Paid Job boards & Newspapers</h4><br>
+                            <h4 class="text-center text-capitalize">Paid Job boards & Newspapers</h4>
+                            <p class="text-center text-muted">Kindly, make selections from below</p><br>
                             <div class="col-xs-4 col-xs-offset-2">
                                             <div class="job-brd">
                                             <h5>Job Boards</h5>
@@ -162,7 +163,7 @@
                           <div class="col-xs-6 col-xs-offset-3 text-center">
                             <hr>
                             
-                            <p class="hidify">For a wider reach, you can <a class="open-more " data-toggle="collapse" data-target="#paidJobBoards" aria-expanded="false" aria-controls="paidJobBoards">advertise this job on more paid job board</a>. If not, just hit the 'Proceed' button below</p>
+                            <p class="hidify">For a wider reach, you can <a class="open-more " data-toggle="collapse" data-target="#paidJobBoards" aria-expanded="false" aria-controls="paidJobBoards">advertise this job on more paid job board</a></p>
                             <br>
                             
                           <a class="open-more btn btn-lg btn-line hidify" data-toggle="collapse" data-target="#paidJobBoards" aria-expanded="false" aria-controls="paidJobBoards">Advertise on more job boards</a>

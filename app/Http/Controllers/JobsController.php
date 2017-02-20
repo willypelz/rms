@@ -1075,6 +1075,10 @@ class JobsController extends Controller
         }
 
 
+        // $owned_cvs = CV::where('email','babatopeoni@gmail.com')->orWhere('phone','+2348050328510')->pluck('id');
+        // $owned_applicataions = JobApplication::whereIn( 'cv_id', $owned_cvs );
+        // dd( $owned_applicataions );
+
         $qualifications = [
 
                 'MPhil / PhD',
@@ -1151,7 +1155,9 @@ class JobsController extends Controller
             $data = $request->all();
 
 
-            $has_applied = CV::where('email',$data['email'])->where('phone',$data['phone'])->first();
+            $has_applied = CV::where('email',$data['email'])->orWhere('phone',$data['phone'])->first();
+
+            // dd($has_applied);
 
             /*if( $has_applied != null )
             {

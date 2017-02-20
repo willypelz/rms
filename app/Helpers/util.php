@@ -187,7 +187,7 @@ use App\Models\Job;
 		switch ($type) {
 			case 'cv':
 				$string1 = trim( $data['first_name'] );
-				$string2 = trim(  $data['last_name'] );
+				$string2 = trim(  @$data['last_name'] );
 				
 				break;
 			case 'user':

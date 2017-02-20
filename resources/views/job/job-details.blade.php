@@ -136,18 +136,23 @@
                                                 <h5 class="text-uppercase text-brandon">{{ $job['job_type'] }}</h5>
                                                 </div>
 
-                                                <div class="col-xs-6 col-sm-4">
+                                                <!-- <div class="col-xs-6 col-sm-4">
                                                 <small class="text-muted">Salary Range</small>
                                                 <br>
                                                 <i class="flaticon-money"></i>
                                                 <h5 class="text-uppercase text-brandon">Not Specified</h5>
-                                                </div>
+                                                </div> -->
 
-                                                <div class="col-xs-12 col-sm-5">
-                                                <small class="text-muted">Minimum Qualification</small>
+                                                <div class="col-xs-12 col-sm-9">
+                                                <small class="text-muted">Specialization(s)</small>
                                                 <br>
                                                 <i class="flaticon-diploma-1"></i>
-                                                <h5 class="text-uppercase text-brandon">{{ $job['qualification'] }}</h5>
+                                                <h5 class="text-uppercase text-brandon">
+                                                    <?php $specs = array_pluck( $job->specializations->toArray(), 'name' ); ?>
+                                                    {{ implode( ',', $specs ) }}
+
+
+                                                </h5>
                                                 </div>
                                                 
 

@@ -26,6 +26,15 @@
                         <div class="row">
 
                         <div class="col-xs-12">
+                          
+                          <h6 class="no-margin " id="your-statistics" style="display:none;">
+                            <span class="text-brandon text-uppercase"> Applications per day</span> 
+                          </h6>
+                          <div class="clearfix"><hr></div>
+
+
+
+                          {!! $applications_per_day_chart->render() !!} <br>
                           <h6 class="no-margin">
                               <span class="text-brandon text-uppercase">
                               Job Activities 
@@ -83,7 +92,7 @@
                 <div class="col-xs-4 well stat-well">
                     <div class="">
                         
-                        <h6 class="no-margin text-center" id="your-statistics" style="display:none;">
+                        <h6 class="no-margin text-center" id="your-statistics" style="">
                             <span class="text-danger text-brandon text-uppercase"><i class="fa fa-bar-chart"></i> Overview</span> 
                         </h6>
 
@@ -107,7 +116,7 @@
 
                     </div><br><br>
 
-                    <div class="">
+                    <!-- <div class="">
                         
                         <h6 class="no-margin text-center">
                             <span class="text-danger text-brandon text-uppercase"><i class="fa fa-bar-chart"></i> Applications per day</span> 
@@ -117,10 +126,10 @@
 
 
                         <div id="job_view_stats_table"></div>
-                        {!! $applications_per_day_chart->render() !!}
+                        
 
 
-                    </div>
+                    </div> -->
                 </div>
 
                                 

@@ -254,10 +254,10 @@
 
                 <p class="border-bottom-thin text-muted">Age<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                      <p class="text-center">
-                        <input id="age-slider" type="text" class="span2" value="" data-slider-min="5" data-slider-max="85" data-slider-step="1" data-slider-value="{{ '['.$age[0].','.$age[1].']' }}"/> 
+                        <input id="age-slider" type="text" class="span2" value="" data-slider-min="{{ env('AGE_START') }}" data-slider-max="{{ env('AGE_END') }}" data-slider-step="1" data-slider-value="{{ '['.$age[0].','.$age[1].']' }}"/> 
                         <div class="text-center">
-                          <b class="col-sm-2 pull-left" style="color: #bbb;">5</b>
-                          <b  class="col-sm-2 pull-right" style="color: #bbb;">85</b>
+                          <b class="col-sm-2 pull-left" style="color: #bbb;">{{ env('AGE_START') }}</b>
+                          <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ env('AGE_END') }}</b>
                           <small id="age-range"> {{ $age[0].' - '.$age[1].' years' }} </small>
                         </div>
                        <div class="clearfix"></div>
@@ -296,10 +296,10 @@
 
           <p class="border-bottom-thin text-muted">Years of Experience<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                  <p class="text-center">
-                    <input id="exp_years-slider" type="text" class="span2" value="" data-slider-min="0" data-slider-max="60" data-slider-step="1" data-slider-value="{{ '['.$exp_years[0].','.$exp_years[1].']' }}"/> 
+                    <input id="exp_years-slider" type="text" class="span2" value="" data-slider-min="{{ env('EXPERIENCE_START') }}" data-slider-max="{{ env('EXPERIENCE_END') }}" data-slider-step="1" data-slider-value="{{ '['.$exp_years[0].','.$exp_years[1].']' }}"/> 
                     <div class="text-center">
-                      <b class="col-sm-2 pull-left" style="color: #bbb;">0</b>
-                      <b  class="col-sm-2 pull-right" style="color: #bbb;">60</b>
+                      <b class="col-sm-2 pull-left" style="color: #bbb;">{{ env('EXPERIENCE_START') }}</b>
+                      <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ env('EXPERIENCE_END') }}</b>
                       <small id="exp_years-range"> {{ $exp_years[0].' - '.$exp_years[1].' years' }} </small>
                     </div>
                    <div class="clearfix"></div>
@@ -331,10 +331,10 @@
             @if( @$job['video_posting_enabled'] )
             <p class="border-bottom-thin text-muted">Video Application Score<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                  <p class="text-center">
-                    <input id="video_application_score-slider" type="text" class="span2" value="" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="{{ '['.$video_application_score[0].','.$video_application_score[1].']' }}"/> 
+                    <input id="video_application_score-slider" type="text" class="span2" value="" data-slider-min="{{ env('VIDEO_APPLICATION_START') }}" data-slider-max="{{ env('VIDEO_APPLICATION_END') }}" data-slider-step="1" data-slider-value="{{ '['.$video_application_score[0].','.$video_application_score[1].']' }}"/> 
                     <div class="text-center">
-                      <b class="col-sm-2 pull-left" style="color: #bbb;">0%</b>
-                      <b  class="col-sm-2 pull-right" style="color: #bbb;">100%</b>
+                      <b class="col-sm-2 pull-left" style="color: #bbb;">{{ env('VIDEO_APPLICATION_START') }}%</b>
+                      <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ env('VIDEO_APPLICATION_END') }}%</b>
                       <small id="video_application_score-range"> {{ $video_application_score[0].' - '.$video_application_score[1].' %' }} </small>
                     </div>
                    <div class="clearfix"></div>

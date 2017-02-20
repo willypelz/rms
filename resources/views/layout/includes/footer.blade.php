@@ -123,21 +123,21 @@
                 <div class="col-md-3">
                    <h5>Find us on Social Media.</h5>
                
-                           <a href="http://facebook.com" class="">
+                           <a href="https://www.facebook.com/insidifyhq?ref=hl&ref_type=bookmark" class="">
                                    <span class="fa-stack fa-lg">
                                      <i class="fa fa-circle fa-stack-2x text-"  style="color:#3b5998"></i>
                                      <i class="fa fa-facebook fa-stack-1x fa-inverse" ></i>
                                    </span>
                            </a>
                
-                           <a href="http://twitter.com" class="">
+                           <a href="https://twitter.com/insidifyhq" class="">
                                    <span class="fa-stack fa-lg">
                                      <i class="fa fa-circle fa-stack-2x text-"  style="color:#0084b4"></i>
                                      <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
                                    </span>
                            </a>
                
-                           <a href="http://linkedin.com" class="">
+                           <a href="https://www.linkedin.com/company/insidify-com?trk=biz-companies-cym" class="">
                                    <span class="fa-stack fa-lg">
                                      <i class="fa fa-circle fa-stack-2x text-primary"></i>
                                      <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
@@ -157,7 +157,7 @@
                             </li>
                             <li><a href="{{ url('cv/search') }}">Find a talent</a>
                             </li>
-                            <li><a href="#">About SeamlessHiring</a>
+                            <li><a href="{{ url('about') }}">About SeamlessHiring</a>
                             </li>
                             <li><a href="{{ url('pricing') }}">Pricing</a>
                             </li>
@@ -173,7 +173,7 @@
                             </li>
                             <li><a href="http://insidify.com">Insidify.com</a>
                             </li>
-                            <li><a href="http://insidify.com/page/about_us">About Insidify.com</a>
+                            <li><a href="http://insidify.com/about_us">About Insidify.com</a>
                             </li>
                         </ul>
                     </div>
@@ -183,7 +183,7 @@
                             <li>
                                 <h5>Contact</h5>
                             </li>
-                            <li><a href="contact">Contact Us</a>
+                            <li><a href="{{ url('contact') }}">Contact Us</a>
                             </li>
                             <li><a href="{{ url('faq') }}">FAQ page</a>
                             </li>

@@ -117,7 +117,7 @@
                                 Promote Job Now
                               </a> -->
                               <a href="#" class="btn btn-primary btn-block" target="_blank" data-toggle="modal" data-target="#promoteJob">
-                                Promote Job Now
+                                Expand Job Reach Now
                               </a>
                             <p></p>
                           </div>

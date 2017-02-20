@@ -1074,11 +1074,6 @@ class JobsController extends Controller
             abort(404);
         }
 
-
-        // $owned_cvs = CV::where('email','babatopeoni@gmail.com')->orWhere('phone','+2348050328510')->pluck('id');
-        // $owned_applicataions = JobApplication::whereIn( 'cv_id', $owned_cvs );
-        // dd( $owned_applicataions );
-
         $qualifications = [
 
                 'MPhil / PhD',
@@ -1156,19 +1151,15 @@ class JobsController extends Controller
 
 
             $has_applied = CV::where('email',$data['email'])->orWhere('phone',$data['phone'])->first();
+            $owned_cvs = CV::where('email','babatopeoni@gmail.com')->orWhere('phone','+2348050328510')->pluck('id');
+            $owned_applicataions_count = JobApplication::whereIn( 'cv_id', $owned_cvs )->where('job_id',$jobID)->get()->count();
 
-            // dd($has_applied);
 
-            /*if( $has_applied != null )
+
+            if( $owned_applicataions_count > 0 )
             {
-                if( JobApplication::where('cv_id', $has_applied->id)->where('job_id',$jobID)  == null )
-                {
-                    // dd( " new applicant " );
-                }
-                else{
-                    return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug, 'already_applied' => true]);
-                }
-            }*/
+                return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug, 'already_applied' => true]);
+            }
 
             
 

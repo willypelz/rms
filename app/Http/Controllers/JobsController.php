@@ -212,11 +212,14 @@ class JobsController extends Controller
 
                         $job = Job::FirstorCreate($job_data);
 
-                        $insidify_url = Curl::to("https://insidify.com/ss-post-job")
-                                    ->withData( array('secret' => '1ns1d1fy', 'data' => json_encode( [ 'job' => $job_data, 'specializations' => @$request->specializations, 'company' => get_current_company(), 'action_link' => url('job/apply/'.$job->id.'/'.str_slug($job->title) ) ]  ) ) )
-                                    ->post();
-                        $urls[1] = $insidify_url;
-
+                        // $insidify_url = Curl::to("https://insidify.com/ss-post-job")
+                        //             ->withData(  [ 'secret' => '1ns1d1fy', 'data' =>  [ 'job' => $job_data, 'specializations' => @$request->specializations, 'company' => get_current_company()->toArray(), 'action_link' => url('job/apply/'.$job->id.'/'.str_slug($job->title) ) ]  ]  )
+                        //             // ->asJson()
+                        //             ->post();
+                        // $urls[1] = $insidify_url;
+                        // 
+                        $urls[1] = "";
+                        // dd( [ 'job' => $job_data, 'specializations' => $request->specializations, 'insidify_url' => $insidify_url, 'company' => get_current_company()->toArray(), 'action_link' => url('job/apply/'.$job->id.'/'.str_slug($job->title) ) ] );
 
                         //Save job creation to activity
                         save_activities('JOB-CREATED',  $job->id );

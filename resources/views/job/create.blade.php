@@ -16,7 +16,7 @@
                             @endforeach
                         </ul>
                         @endif
-                        
+
                         <div class="col-md-8 col-md-offset-2">
                             <!-- <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio voluptatibus magni officiis id error numquam.</p> -->
                             <form class="job-details" id="myForm" role="job-details" method="post" action="{{ route('post-job') }}">

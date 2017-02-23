@@ -44,7 +44,44 @@
                           <div class="col-xs-12">
                               <br>
                           </div>
-                          <div class="col-xs-4 col-xs-offset-2">
+                          
+                          @foreach($subscribed_boards as $key => $subscribed_board)
+                                <?php
+                                // $sub_key = array_search($b['id'], array_pluck( $subscribed_boards, 'id' ) );
+                                if(@$subscribed_board['pivot']['url'] != null && @$subscribed_board['pivot']['url'] != '')
+                                {
+                                $status = 'approved';
+                                }
+                                else
+                                {
+                                $status = 'pending';
+                                }
+                                // $status = ( in_array($b['id'], $subscribed_boards) ) ? 'disabled checked' : '';
+                                // $approved = ( in_array($b['id'], $subscribed_boards) ) ? 'disabled checked' : '';
+                                
+                                $offest = ( $key % 2 ) ? 0 : 2;
+
+                                ?>  
+
+
+                                <div class="col-xs-4 col-xs-offset-{{ $offest }}">
+                                        @if(@$subscribed_board['pivot']['url'] != null && @$subscribed_board['pivot']['url'] != '')
+                                          <label class="btn btn-line btn-sm btn-label btn-block checked text-capitalize text-left disabled">
+                                            <input type="checkbox" class="" autocomplete="off" checked="checked" disabled="disabled">
+                                          @else
+                                          <label class="btn btn-line btn-sm btn-label btn-block checked text-capitalize text-left">
+                                            <input type="checkbox" class="" autocomplete="off" >
+                                          @endif
+                                        <span class="col-xs-6"><img src="{{ $subscribed_board['img'] }}" width="100%" alt=""></span>
+                                        <span class="col-xs-6"><b class="name">{{ $subscribed_board['name'] }}</b></span>
+                                        <span class="clearfix"></span>
+                                      </label>
+                                </div>
+
+
+                            @endforeach
+                          
+                          <!-- <div class="col-xs-4 col-xs-offset-2">
                               <div class="job-brd">
                                 <label class="btn btn-line btn-sm btn-label btn-block checked text-capitalize text-left disabled">
                                   <input type="checkbox" class="" autocomplete="off" checked="" disabled="">
@@ -88,7 +125,7 @@
                                   <span class="clearfix"></span>
                                 </label>
                             </div>
-                          </div>
+                          </div> -->
                           
                           <div id="paidJobBoards" class="collapse">
                           <div class="col-xs-8 col-xs-offset-2"><hr></div>

@@ -254,7 +254,7 @@
                             <div class="row">
                                 <span class="hidden-xs"><br></span>
                                 <div class="col-sm-6 text-muted">
-                                    By clicking "Sign Up", you agree with our <a href="{{ url('terms') }}">Terms & Conditions</a>
+                                    By clicking "Sign Up", you agree with our <a href="{{ url('terms') }}" target="_blank">Terms & Conditions</a>
                                 <span class="visible-xs"><br></span>
                                 </div>
 

@@ -136,14 +136,14 @@
                                                 <h5 class="text-uppercase text-brandon">{{ $job['job_type'] }}</h5>
                                                 </div>
 
-                                                <!-- <div class="col-xs-6 col-sm-4">
-                                                <small class="text-muted">Salary Range</small>
+                                                <div class="col-xs-6 col-sm-4">
+                                                <small class="text-muted">Location</small>
                                                 <br>
                                                 <i class="flaticon-money"></i>
-                                                <h5 class="text-uppercase text-brandon">Not Specified</h5>
-                                                </div> -->
+                                                <h5 class="text-uppercase text-brandon">{{ $job['location'] }}</h5>
+                                                </div>
 
-                                                <div class="col-xs-12 col-sm-9">
+                                                <div class="col-xs-12 col-sm-5">
                                                 <small class="text-muted">Specialization(s)</small>
                                                 <br>
                                                 <i class="flaticon-diploma-1"></i>

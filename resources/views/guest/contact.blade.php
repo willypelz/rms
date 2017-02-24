@@ -69,7 +69,7 @@
                                             <div class="form-group">
                                                 <label>Job Title</label>
                                                 <br>
-                                                <select class="form-control" name="enquiry_name">
+                                                <select class="form-control" name="job_title">
                                                     <option value="CEO">CEO</option>
                                                     <option value="COO">COO</option>
                                                     <option value="CTO">CTO</option>
@@ -95,7 +95,7 @@
                                             <div class="form-group">
                                                 <label>What can we help you with? *</label>
                                                 <br>
-                                                <select class="form-control" name="enquiry_name">
+                                                <select class="form-control" name="enquiry_type">
                                                     <option value="">Make a Selection</option>
                                                     <option value="">Sales</option>
                                                     <option value="">Support</option>

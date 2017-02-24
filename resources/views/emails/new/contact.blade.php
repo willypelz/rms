@@ -46,17 +46,14 @@
 																	<div style="color:#2d2d2d;width:100%;margin:0 auto;">
 																		<h3 style="font-size: 20px;margin:0 0 5%;padding:0;"><a href="" style="font-family: Roboto,'Open Sans','Helvetica Neue',Arial,Helvetica,sans-serif;word-wrap:break-word;color: #3a5979;text-decoration:none;display:block;text-align: center;width:100%;" target="_blank">Talent Pool :: File(s) Upload Successful</a></h3>
 																		<hr style="border-width:0 0 1px">
-																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">New Job Posted
+																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">Contact
 																		<br><br>
-																			A job was posted by {{ $company->name}}({{ $company->email. ', '. $company->phone }}. 
-
-																			<br><br>Job boards are<br>
-
-																			@foreach( $boards as $board )
-
-																				{{ $board->name }}<br>
-
-																			@end
+																			<strong>Name: </strong> {{ @$data->name }} <br>
+																			<strong>Email: </strong> {{ @$data->email }} <br>
+																			<strong>Phone: </strong> {{ @$data->contact_phone }} <br>
+																			<strong>Job Title: </strong> {{ @$data->job_title }} <br>
+																			<strong>Enquiry Type: </strong> {{ @$data->enquiry_type }} <br>
+																			<strong>Message: </strong> {{ @$data->msg }} <br>
 
 																		</p>
 																		<!-- <div style="color:#2d2d2d;" align="center">

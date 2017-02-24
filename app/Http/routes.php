@@ -1,5 +1,5 @@
 <?php
-
+use Mail;
 /*
 |--------------------------------------------------------------------------
 | Routes File
@@ -55,9 +55,24 @@ Route::group(['middleware' => 'web'], function () {
     }]);
 
      Route::get('/contact', function () {
+
+
         
         return view('guest.contact');
     });
+
+     Route::post('/contact', function () {
+        $data = $request->all();
+        $mail = Mail::queue('emails.new.contact', [ $data => $data ], function ($m)  use($data) {
+                            $m->from($data->email, 'New Job Paid');
+                            // $m->to('babatopeoni@gnmail.com')->subject('Contact');
+                            $m->to('support@seamlesshiring.com')->subject('Contact');
+                        });
+        
+        return view('guest.contact');
+    });
+
+     
 
      Route::get('/faq', function () {
         

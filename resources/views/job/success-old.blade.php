@@ -12,6 +12,9 @@
         background: #e8fbf0;
     }
 </style>
+
+<script src="https://checkout.simplepay.ng/v2/simplepay.js"></script>
+
 <div class="separator separator-small"></div>
 <section class="no-pad">
   <div class="container">
@@ -44,11 +47,13 @@
                           <div class="col-xs-12">
                               <br>
                           </div>
-                          
-                          @foreach($subscribed_boards as $key => $subscribed_board)
+                          <?php $index = 0; ?>
+                          @foreach($all_job_boards as $key => $board)
+                            @if( $board['type'] == 'free' )
                                 <?php
-                                // $sub_key = array_search($b['id'], array_pluck( $subscribed_boards, 'id' ) );
-                                if(@$subscribed_board['pivot']['url'] != null && @$subscribed_board['pivot']['url'] != '')
+                                // $sub_key = array_search($b['id'], array_pluck( $boards, 'id' ) );
+                                $index++;
+                                if(@$board['pivot']['url'] != null && @$board['pivot']['url'] != '')
                                 {
                                 $status = 'approved';
                                 }
@@ -56,30 +61,32 @@
                                 {
                                 $status = 'pending';
                                 }
-                                // $status = ( in_array($b['id'], $subscribed_boards) ) ? 'disabled checked' : '';
-                                // $approved = ( in_array($b['id'], $subscribed_boards) ) ? 'disabled checked' : '';
+                                // $status = ( in_array($b['id'], $boards) ) ? 'disabled checked' : '';
+                                // $approved = ( in_array($b['id'], $boards) ) ? 'disabled checked' : '';
                                 
-                                $offest = ( $key % 2 ) ? 0 : 2;
+                                $offest = ( $index % 2 ) ? 2 : 0;
 
                                 ?>  
 
 
                                 <div class="col-xs-4 col-xs-offset-{{ $offest }}">
-                                        @if(@$subscribed_board['pivot']['url'] != null && @$subscribed_board['pivot']['url'] != '')
+                                        @if(in_array($board['id'], $subscribed_boards_id))
                                           <label class="btn btn-line btn-sm btn-label btn-block checked text-capitalize text-left disabled">
                                             <input type="checkbox" class="" autocomplete="off" checked="checked" disabled="disabled">
                                           @else
                                           <label class="btn btn-line btn-sm btn-label btn-block checked text-capitalize text-left">
                                             <input type="checkbox" class="" autocomplete="off" >
                                           @endif
-                                        <span class="col-xs-6"><img src="{{ $subscribed_board['img'] }}" width="100%" alt=""></span>
-                                        <span class="col-xs-6"><b class="name">{{ $subscribed_board['name'] }}</b></span>
+                                        <span class="col-xs-6"><img src="{{ $board['img'] }}" width="100%" alt=""></span>
+                                        <span class="col-xs-6"><b class="name">{{ $board['name'] }}</b></span>
                                         <span class="clearfix"></span>
                                       </label>
                                 </div>
 
-
+                              @endif
                             @endforeach
+                          
+                          
                           
                           <!-- <div class="col-xs-4 col-xs-offset-2">
                               <div class="job-brd">
@@ -132,69 +139,99 @@
                           <div class="clearfix"></div>
                             <h4 class="text-center text-capitalize">Paid Job boards & Newspapers</h4>
                             <p class="text-center text-muted">Kindly, make selections from below</p><br>
-                            <div class="col-xs-4 col-xs-offset-2">
-                                            <div class="job-brd">
-                                            <h5>Job Boards</h5>
-                                              <label class="btn btn-line btn-sm btn-label btn-block paid text-capitalize text-left">
-                                                <input type="checkbox" class="" autocomplete="off"  >
-                                                <span class="col-xs-6"><img src="https://www.britishcouncil.org.ng/profiles/solas2/themes/britishcouncil/images/desktop/logo-british-council-color.png" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b class="name">Guargian Jobs</b><br>www.insidify.com <br>
-                                                <span class="badge badge-danger">N 1500</span></span>
-                                                <span class="clearfix"></span>
-                                              </label>
-                                              <label class="btn btn-line btn-sm btn-label btn-block paid text-capitalize text-left">
-                                                <input type="checkbox" class="" autocomplete="off"  >
-                                                <span class="col-xs-6"><img src="http://www.jobberman.com/img/new/logo.png" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b class="name">Punch Jobs</b><br>www.insidify.com<br>
-                                                <span class="badge badge-danger">N 1500</span></span>
-                                                <span class="clearfix"></span>
-                                              </label>
-                                              <label class="btn btn-line btn-sm btn-label btn-block paid text-capitalize text-left">
-                                                <input type="checkbox" class="" autocomplete="off" >
-                                                <span class="col-xs-6"><img src="https://www.britishcouncil.org.ng/profiles/solas2/themes/britishcouncil/images/desktop/logo-british-council-color.png" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b class="name">Guargian Jobs</b><br>www.insidify.com<br>
-                                                <span class="badge badge-danger">N 1500</span></span>
-                                                <span class="clearfix"></span>
-                                              </label>
-                                              <label class="btn btn-line btn-sm btn-label btn-block paid text-capitalize text-left">
-                                                <input type="checkbox" class="" autocomplete="off" >
-                                                <span class="col-xs-6"><img src="http://www.jobberman.com/img/new/logo.png" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b class="name">Punch Jobs</b><br>www.insidify.com<br>
-                                                <span class="badge badge-danger">N 1500</span></span>
-                                                <span class="clearfix"></span>
-                                              </label>
-                                          </div>
-                                        </div>
+                            <div id="copyFrom">
+                              <h5 class="col-xs-4 col-xs-offset-2">Job Boards</h5><div class="clearfix"></div>
 
-                                        <div class="col-xs-4">
-                                            <div class="job-brd">
-                                            <h5>Newspapers</h5>
-                                              <label class="btn btn-line btn-sm btn-label btn-block paid text-capitalize text-left">
-                                                <input type="checkbox" class="" autocomplete="off" >
-                                                <span class="col-xs-6"><img src="http://www.jobimu.com/wp-content/uploads/2014/07/cropped-jobimu-logo.jpg" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b class="name">Punch Jobs</b><br>www.insidify.com<br>
-<!--                                                <span class="badge badge-danger">N 1500</span>-->
-                                                </span>
-                                                <span class="clearfix"></span>
-                                              </label>
-                                              <label class="btn btn-line btn-sm btn-label btn-block paid text-capitalize text-left">
-                                                <input type="checkbox" class="" autocomplete="off" >
-                                                <span class="col-xs-6"><img src="http://www.jobimu.com/wp-content/uploads/2014/07/cropped-jobimu-logo.jpg" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b class="name">Guardian Jobs</b><br>www.insidify.com<br>
-<!--                                                <span class="badge badge-danger">N 1500</span>-->
-                                                </span>
-                                                <span class="clearfix"></span>
-                                              </label>
-                                              <label class="btn btn-line btn-sm btn-label btn-block paid text-capitalize text-left">
-                                                <input type="checkbox" class="" autocomplete="off" >
-                                                <span class="col-xs-6"><img src="http://www.jobimu.com/wp-content/uploads/2014/07/cropped-jobimu-logo.jpg" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b class="name">ThisDay Jobs</b><br>www.insidify.com<br>
-<!--                                                <span class="badge badge-danger">N 1500</span>-->
-                                                </span>
-                                                <span class="clearfix"></span>
-                                              </label>
+                              <div id="fromJob">
+                                <?php $index = 0; ?>
+                                @foreach($all_job_boards as $key => $board)
+                                  @if( $board['type'] == 'paid' && $board['avi'] == 0 )
+                                      <?php
+                                      // $sub_key = array_search($b['id'], array_pluck( $boards, 'id' ) );
+                                      $index++;
+                                      if(@$board['pivot']['url'] != null && @$board['pivot']['url'] != '')
+                                      {
+                                      $status = 'approved';
+                                      }
+                                      else
+                                      {
+                                      $status = 'pending';
+                                      }
+                                      // $status = ( in_array($b['id'], $boards) ) ? 'disabled checked' : '';
+                                      // $approved = ( in_array($b['id'], $boards) ) ? 'disabled checked' : '';
+                                      
+                                      $offest = ( $index % 2 ) ? 2 : 0;
+
+                                      ?>  
+
+
+                                      <div class="col-xs-4 col-xs-offset-{{ $offest }}">
+                                              @if(in_array($board['id'], $subscribed_boards_id))
+                                                <label data-id="{{ $board['id'] }}" class="btn paid btn-line btn-sm btn-label btn-block checked text-capitalize text-left disabled">
+                                                  <input data-id="{{ $board['id'] }}" type="checkbox" class="" autocomplete="off" checked="checked" disabled="disabled">
+                                                @else
+                                                <label data-id="{{ $board['id'] }}" class="btn paid btn-line btn-sm btn-label btn-block checked text-capitalize text-left">
+                                                  <input data-id="{{ $board['id'] }}" type="checkbox" class="" autocomplete="off" >
+                                                @endif
+                                              <span class="col-xs-6"><img src="{{ $board['img'] }}" width="100%" alt=""></span>
+                                              <span class="col-xs-6"><b class="name">{{ $board['name'] }}</b><br>
+                                              <span class="badge badge-danger">&#8358;<span>{{ $board['price'] }}</span></span></span>
+                                              <span class="clearfix"></span>
+                                            </label>
+                                      </div>
+
+                                    @endif
+                                  @endforeach
+                              </div>
+                              
+                                <div class="clearfix"></div><br>
+
+                                <h5 class="col-xs-4 col-xs-offset-2">Job Newspapers</h5><div class="clearfix"></div>
+                                <div id="fromNews">
+                                    <?php $index = 0; ?>
+                                    @foreach($all_job_boards as $key => $board)
+                                      @if( $board['type'] == 'paid' && $board['avi'] == 1)
+                                          <?php
+                                          // $sub_key = array_search($b['id'], array_pluck( $boards, 'id' ) );
+                                          $index++;
+                                          if(@$board['pivot']['url'] != null && @$board['pivot']['url'] != '')
+                                          {
+                                          $status = 'approved';
+                                          }
+                                          else
+                                          {
+                                          $status = 'pending';
+                                          }
+                                          // $status = ( in_array($b['id'], $boards) ) ? 'disabled checked' : '';
+                                          // $approved = ( in_array($b['id'], $boards) ) ? 'disabled checked' : '';
+                                          
+                                          $offest = ( $index % 2 ) ? 2 : 0;
+
+                                          ?>  
+
+
+                                          <div class="col-xs-4 col-xs-offset-{{ $offest }}">
+                                                  @if(in_array($board['id'], $subscribed_boards_id))
+                                                    <label data-id="{{ $board['id'] }}" class="btn paid btn-line btn-sm btn-label btn-block checked text-capitalize text-left disabled">
+                                                      <input data-id="{{ $board['id'] }}" type="checkbox" class="" autocomplete="off" checked="checked" disabled="disabled">
+                                                    @else
+                                                    <label data-id="{{ $board['id'] }}" class="btn paid btn-line btn-sm btn-label btn-block checked text-capitalize text-left">
+                                                      <input data-id="{{ $board['id'] }}" type="checkbox" class="" autocomplete="off" >
+                                                    @endif
+                                                  <span class="col-xs-6"><img src="{{ $board['img'] }}" width="100%" alt=""></span>
+                                                  <span class="col-xs-6"><b class="name">{{ $board['name'] }}</b><br>
+                                                  <span class="badge badge-danger">&#8358;<span>{{ $board['price'] }}</span></span></span>
+                                                  <span class="clearfix"></span>
+                                                </label>
                                           </div>
-                                        </div>
+
+                                        @endif
+                                      @endforeach
+                                </div>
+                              
+                            </div>
+                            
+
                           </div>
 
                           <div class="col-xs-6 col-xs-offset-3 text-center">
@@ -206,7 +243,7 @@
                           <a class="open-more btn btn-lg btn-line hidify" data-toggle="collapse" data-target="#paidJobBoards" aria-expanded="false" aria-controls="paidJobBoards">Advertise on more job boards</a>
                           
                           <span class="hidify">&nbsp; or &nbsp; </span>
-                          <a href="#" data-toggle="modal" data-target="#success" class="btn btn-lg btn-success"><i class="fa fa-check"></i> &nbsp;PROCEED &raquo;</a>
+                          <a href="#" data-toggle="modal" data-target="#success" id="showPreview" class="btn btn-lg btn-success"><i class="fa fa-check"></i> &nbsp;PROCEED &raquo;</a>
                             <hr>
                             <!-- <a href="{{ url('dashboard') }}" class="btn btn-lg btn-success">Post my Job</i></a> -->
                           </div>
@@ -261,72 +298,30 @@
                           <div class="col-xs-12"><hr></div>
                           <div class="clearfix"></div>
                             <!-- <h4 class="text-center text-capitalize">Paid Job boards & Newspapers</h4><br> -->
-                            <div class="col-xs-4 col-xs-offset-2">
-                                            <div class="job-brd">
-                                            <h5>Job Boards</h5>
-                                              <label class="btn btn-line checked btn-sm btn-label btn-block paid text-capitalize text-left">
-                                                <input type="checkbox" class="" checked autocomplete="off"  >
-                                                <span class="col-xs-6"><img src="https://www.britishcouncil.org.ng/profiles/solas2/themes/britishcouncil/images/desktop/logo-british-council-color.png" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b class="name">Guargian Jobs</b><br>www.insidify.com <br>
-                                                <span class="badge badge-danger">N 1500</span></span>
-                                                <span class="clearfix"></span>
-                                              </label>
-                                              <label class="btn btn-line checked btn-sm btn-label btn-block paid text-capitalize text-left">
-                                                <input type="checkbox" class="" checked autocomplete="off"  >
-                                                <span class="col-xs-6"><img src="http://www.jobberman.com/img/new/logo.png" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b class="name">Punch Jobs</b><br>www.insidify.com<br>
-                                                <span class="badge badge-danger">N 1500</span></span>
-                                                <span class="clearfix"></span>
-                                              </label>
-                                              <label class="btn btn-line checked btn-sm btn-label btn-block paid text-capitalize text-left">
-                                                <input type="checkbox" class="" checked autocomplete="off" >
-                                                <span class="col-xs-6"><img src="https://www.britishcouncil.org.ng/profiles/solas2/themes/britishcouncil/images/desktop/logo-british-council-color.png" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b class="name">Guargian Jobs</b><br>www.insidify.com<br>
-                                                <span class="badge badge-danger">N 1500</span></span>
-                                                <span class="clearfix"></span>
-                                              </label>
-                                              <label class="btn btn-line checked btn-sm btn-label btn-block paid text-capitalize text-left">
-                                                <input type="checkbox" class="" checked autocomplete="off" >
-                                                <span class="col-xs-6"><img src="http://www.jobberman.com/img/new/logo.png" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b class="name">Punch Jobs</b><br>www.insidify.com<br>
-                                                <span class="badge badge-danger">N 1500</span></span>
-                                                <span class="clearfix"></span>
-                                              </label>
-                                          </div>
-                                        </div>
+                            <div id="preview">
+                              <div class="col-xs-5 col-xs-offset-1 pull-left">
 
-                                        <div class="col-xs-4">
-                                            <div class="job-brd">
-                                            <h5>Newspapers</h5>
-                                              <label class="btn btn-line checked btn-sm btn-label btn-block paid text-capitalize text-left">
-                                                <input type="checkbox" class="" checked autocomplete="off" >
-                                                <span class="col-xs-6"><img src="http://www.jobimu.com/wp-content/uploads/2014/07/cropped-jobimu-logo.jpg" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b class="name">Punch Jobs</b><br>www.insidify.com<br>
-                                                </span>
-                                                <span class="clearfix"></span>
-                                              </label>
-                                              <label class="btn btn-line checked btn-sm btn-label btn-block paid text-capitalize text-left">
-                                                <input type="checkbox" class="" checked autocomplete="off" >
-                                                <span class="col-xs-6"><img src="http://www.jobimu.com/wp-content/uploads/2014/07/cropped-jobimu-logo.jpg" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b class="name">Guardian Jobs</b><br>www.insidify.com<br>
-                                                </span>
-                                                <span class="clearfix"></span>
-                                              </label>
-                                              <label class="btn btn-line checked btn-sm btn-label btn-block paid text-capitalize text-left">
-                                                <input type="checkbox" class="" checked autocomplete="off" >
-                                                <span class="col-xs-6"><img src="http://www.jobimu.com/wp-content/uploads/2014/07/cropped-jobimu-logo.jpg" width="100%" alt=""></span>
-                                                <span class="col-xs-6"><b class="name">ThisDay Jobs</b><br>www.insidify.com<br>
-                                                </span>
-                                                <span class="clearfix"></span>
-                                              </label>
-                                          </div>
-                                        </div>
+                                <h5 class="col-xs-12">Job Boards</h5><div class="clearfix"></div>
+                                <div id="job" class="col-xs-12"></div>
+                                
+                              </div>
+                              
+
+                              <!-- <div class="clearfix"></div><br> -->
+                                <div class="col-xs-5 pull-left">
+                                    <h5 class="col-xs-12">Job Newspapers</h5><div class="clearfix"></div>
+
+                                    <div id="news" class="col-xs-12"></div>
+                                </div>
+                                
+
+                            </div>
 
                                         <div class="clearfix"></div>
                                         <hr>
                                         <p class="text-center">
                                          Please note that you will be contacted shortly as regards your posting on Newspaper <br><br>
-                                          <a href="" class="btn btn-lg btn-danger">Total: N10,000 &middot; PAY NOW <i class="fa fa-arrow-right"></i></a>
+                                          <a href="#" class="btn btn-lg btn-danger" id="pay">Total: N<span id="total"></span> &middot; PAY NOW <i class="fa fa-arrow-right"></i></a>
                                         </p>
                           </div>
 
@@ -334,7 +329,7 @@
             </div>
             <div class="modal-footer">
 <!--              <button type="button" class="btn btn-line pull-left" data-dismiss="modal">Cancel</button>-->
-              <button type="button" class="btn btn-primary">Proceed to dashboard</button>
+              <a href="{{ route('job-candidates', [$job->id]) }}" class="btn btn-primary" id="dashboard">Proceed to dashboard</a>
             </div>
           </div>
         </div>
@@ -460,19 +455,23 @@
     
     <script>
         
-        
+        var total = 0;
+        var job_id = "{{ $job->id }}";
         
         $('.open-more').click(function(){
             $('.hidify').fadeOut();
+
+            copyFrom
         });
         
         
         var elem = $('.btn.btn-label > input[type=checkbox]');
         var btn = $('.btn.btn-label');
+        var paid = $('#fromJob .btn.btn-label.paid, #fromNews .btn.btn-label.paid');
         
         
         btn.on('click',function(){
-                        
+
             if ( $( this ).children(elem).prop( "checked" ) ){
                 
                 $(this).addClass('checked');
@@ -481,6 +480,148 @@
                 $(this).removeClass('checked');
             }
         });
+
+        var index = 0;
+        paid.on('click',function(e){
+            e.stopPropagation();
+
+            index++;
+
+            if( index == 2 )
+            {
+              index = 0;
+              
+
+              if ( $( this ).children(elem).prop( "checked" ) ){
+                  
+                total +=  parseInt( $(this).find('.badge-danger span').text() );
+                  
+              }else{
+                total -=  parseInt( $(this).find('.badge-danger span').text() );
+                  $(this).removeClass('checked');
+              }
+
+
+
+              console.log( " New total is " + total , e);
+              $('#total').text( total );
+
+            
+            }
+            
+
+            
+        });
         
+        var boards = [];
+
+        $('#showPreview').on('click', function(){
+
+          $('#preview #job').html('');
+          $('#preview #news').html('');
+          boards = [];
+          $('#copyFrom #fromJob .btn.btn-label.paid').each( function(i,el){
+            
+            if ( $( this ).children(elem).prop( "checked" ) ){ 
+                boards.push( $(this).data( 'id' ) );
+                $('#preview #job').append( $(this).clone() );
+                  
+              }
+          });
+
+          $('#copyFrom #fromNews .btn.btn-label.paid').each( function(i,el){
+            
+            if ( $( this ).children(elem).prop( "checked" ) ){
+                  boards.push( $(this).data( 'id' ) );
+
+                $('#preview #news').append( $(this).clone() );
+                  
+              }
+          });
+// 
+        });
+
+
+        $('#pay').on('click', function(){
+          loadSimplePay();
+        });
+
+        function loadSimplePay(){
+           var handler = SimplePay.configure({
+                 token: processPayment, // callback function to be called after token is received
+                 key: 'test_pu_6afdbcd91aa446ecb7f79a2f29c2b530', // place your api key. Demo: test_pu_*. Live: pu_*
+                 // image: 'https://seamlesshiring.com/img/seamlesshiring-logo.png' // optional: an url to an image of your choice
+              });
+
+          handler.open(SimplePay.CHECKOUT, // type of payment
+              {
+                 email: 'me@ayolana.com', // optional: user's email
+                 phone: '+2348038953794',
+                 description: 'Payment for Job Boards' , // a description of your choosing
+                 // address: '', // user's address
+                 // postal_code: '110001', // user's postal code
+                 // city: '', // user's city
+                 country: 'NG', // user's country
+                 amount: total+'00', // value of the purchase, ₦ 1100
+                 currency: 'NGN' // currency of the transaction
+              });
+
+
+              function processPayment (token, paid) {
+
+
+
+              
+
+                var url ="{{ route('simplepay', ['JOB_BOARD']) }}"
+                  $.ajax
+                    ({
+                        type: "POST",
+                        url: url,
+                        data: ({ rnd : Math.random() * 100000, token:token, status: paid, amount: SimplePay.amountToLower( total ), currency : 'NGN', boards: boards, job_id: job_id }),
+                        success: function(response){
+
+                            $('#pay').hide();
+                            if( response == "true" )
+                            {
+                              $.growl.notice({ message: "Payment Successful " });
+
+                              setTimeout( function(){ location.href = "{{ route('job-candidates', [$job->id]) }}"; }, 3000 );
+                            }
+                            else
+                            {
+                              $.growl.error({ message: "Payment Unsuccessful " });
+                            }
+
+
+
+                             /*if(response != null){
+                                 var oldurl = "{{ route('transactions') }}";
+
+                                 $.ajax
+                                  ({
+                                      type: "POST",
+                                      url: oldurl,
+                                      data: ({ jsonres:response, order_id:order_id, status:true, message:'Transaction Successful', "_token":"{{ csrf_token() }}"}),
+                                      success: function(response){
+                                        console.log(2,response);
+
+                                          // $( '#viewModal' ).modal('toggle');
+                                          // $( '#paymentSuccess' ).html('Payment Successful');
+                                          sh.reloadStatus();
+                                        setTimeout(function(){
+                                          $.growl.notice({ message: "Payment Successful " });
+                                        }, 1000);
+
+                                      }
+                                  });
+                             }*/
+                        }
+                    });
+
+              }
+
+
+        } 
 </script>
     @endsection

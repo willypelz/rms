@@ -141,7 +141,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'ajax_checkout', ['uses' => 'CvSalesController@Ajax_checkout', 'as' => 'ajax_checkout']);
     Route::match(['get', 'post'], 'payment/{type?}', ['uses' => 'CvSalesController@Payment', 'as' => 'payment']);
     
-    Route::match(['get', 'post'], 'simplepay', ['uses' => 'JobsController@SimplePay', 'as' => 'simplepay']);
+    Route::match(['get', 'post'], 'simplepay/{type?}', ['uses' => 'JobsController@SimplePay', 'as' => 'simplepay']);
     
     Route::match(['get', 'post'], 'transactions', ['uses' => 'CvSalesController@Transactions', 'as' => 'transactions']);
     Route::match(['get', 'post'], 'emails-test', ['uses' => 'CvSalesController@TestEmail', 'as' => 'emails']);

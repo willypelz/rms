@@ -162,7 +162,7 @@ class JobsController extends Controller
         // dd($job_bards);
         if ($request->isMethod('post')) {
 
-                $pickd_boards = $request->boards;
+                $pickd_boards = [ 1 ];
                 // dd( $request->all() );
            
 
@@ -192,7 +192,7 @@ class JobsController extends Controller
                           ->withInput();
                     }else{
                         // dd('Success');
-                        $pickd_boards = $request->boards;
+                        $pickd_boards = [ 1 ];
 
                         $job_data = [
                                 'title' => $request->job_title,
@@ -294,10 +294,13 @@ class JobsController extends Controller
                 $pending_count++;
             }
         };
+        $subscribed_boards_id = array_pluck($subscribed_boards, 'id' );
+
+        // $all_job_boards = JobBoard::where('type', 'free')->get()->toArray();
+        $all_job_boards = JobBoard::all()->toArray();
 
 
-
-        return view('job.success-old', compact('job','insidify_url','subscribed_boards','approved_count','pending_count'));
+        return view('job.success-old', compact('job','insidify_url','subscribed_boards','approved_count','pending_count','all_job_boards','subscribed_boards_id'));
     }
 
     public function SaveJob(Request $request){
@@ -1487,6 +1490,13 @@ class JobsController extends Controller
     }
 
     public function SimplePay(Request $request){
+        $job = Job::find($request->job_id);
+        $company = get_current_company();
+        $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company) {
+                            $m->from($company->email, 'New Job initiated');
+
+                            $m->to($to)->subject('New Job initiated');
+                        });
         
         $private_key = 'test_pr_bbe9d51b272e4a718b01d5c8eb7d2c1f';
 
@@ -1549,7 +1559,34 @@ class JobsController extends Controller
         if ($response_code == '200') {
             // even is http status code is 200 we still need to check transaction had issues or not
             if ($json_response['response_code'] == '20000') {
-                $this->approveTest( $request->tests, $request->app_ids );
+                if( $request->type == 'JOB_BOARD' )
+                {
+                    
+
+
+
+                    foreach ($request->boards as $key => $board) {
+                        // $b = JobBoard::where('id',$board)->get();
+                        $job->boards()->attach($board,  ['url' => '']);
+
+                        // job_board_id,url
+                    }
+
+
+                    $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company) {
+                            $m->from($company->email, 'New Job Paid');
+
+                            $m->to('funmilola@insidify.com')->subject('New Job Paid');
+                        });
+
+                    
+                       // $request->boards
+                }
+                else
+                {
+                    $this->approveTest( $request->tests, $request->app_ids );    
+                }
+                
                 return "true";
             } else {
                 // failed to charge the card
@@ -1557,7 +1594,29 @@ class JobsController extends Controller
             }
         } else if ($sp_status == 'true') {
             // even though it failed the call to card charge, card payment was already processed
-            $this->approveTest( $request->tests, $request->app_ids );
+            if( $request->type == 'JOB_BOARD' )
+                {
+
+
+
+                    foreach ($request->boards as $key => $board) {
+                        // $b = JobBoard::where('id',$board)->get();
+                        $job->boards()->attach($board,  ['url' => '']);
+
+                        
+                    }
+
+
+                    $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company) {
+                            $m->from($company->email, 'New Job Paid ');
+
+                            $m->to('funmilola@insidify.com')->subject('New Job Paid');
+                        });
+                }
+                else
+                {
+                    $this->approveTest( $request->tests, $request->app_ids );    
+                }
             return "true";
         } else {
             // failed to charge the card

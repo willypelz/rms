@@ -934,7 +934,8 @@ class JobApplicationsController extends Controller
                     'test_id' => 'required',
                     'actual_start_time' => 'required',
                     'actual_end_time' => 'required',
-                    'score' => 'required'
+                    'score' => 'required',
+                    'status' => 'required'
 
                 ]);
 
@@ -949,7 +950,9 @@ class JobApplicationsController extends Controller
                             ->update( ['actual_start_time' => $request->actual_start_time,
                                         'actual_end_time' => $request->actual_end_time,
                                         'score' => $request->score,
-                                        'result_comment' => @$request->result_comment] );
+                                        'result_comment' => @$request->result_comment,
+                                        'status' => @$request->status
+                                            ] );
 
             }
 

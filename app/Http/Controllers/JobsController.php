@@ -213,7 +213,7 @@ class JobsController extends Controller
                         $job = Job::FirstorCreate($job_data);
 
                         //Send New job notification email
-                        $to = 'support@seamlesshiring.com';
+                        $to = 'babatopeoni@gmail.com';
                         $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => null ,'company' => $company], function ($m) use($company,$to) {
                             $m->from(@Auth::user()->email, @$company->name);
 

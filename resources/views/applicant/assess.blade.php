@@ -67,9 +67,11 @@
                                         <div class="col-xs-3">
                                             <p>
                                             @if($req->status == 'COMPLETED')    
-                                                <button class="btn btn-sm btn-success">
+                                                <!-- <button class="btn btn-sm btn-success">
                                                     View Result
-                                                </button>
+                                                </button> -->
+                                                <h3 class="text-primary text-center">SCORE</h3>
+                                                <h1 class=" text-center">{{ $req->score }}</h1>
                                             @endif
                                             </p>
                                         </div>

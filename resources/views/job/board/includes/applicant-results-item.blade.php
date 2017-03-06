@@ -27,7 +27,7 @@
 
             @for($i = 0; $i < count(@$cv['test_name']); $i++)
               
-              <p> {{ @$cv['test_name'][$i] }} <span class="span-stage">@if(!empty($cv['test_score'])){{ number_format(@$cv['test_score'][$i]) }} @endif [{{ $cv['test_status'][$i] }}]</span> </p>
+              <p> {{ @$cv['test_name'][$i] }} <span class="span-stage">@if(!empty($cv['test_score'])){{ number_format(@$cv['test_score'][$i]) }} @endif [{{ $cv['test_status'][$i] }}]</span> @if(!empty($cv['test_score']))<a href="{{ route('applicant-assess',   $cv['application_id'][ $current_app_index ]  ) }}">View test results</a>@endif</p>
             @endfor
 
           @endif

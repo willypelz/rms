@@ -212,6 +212,14 @@ class JobsController extends Controller
 
                         $job = Job::FirstorCreate($job_data);
 
+                        //Send New job notification email
+                        $to = 'support@seamlesshiring.com';
+                        $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => null ,'company' => $company], function ($m) use($company,$to) {
+                            $m->from(@Auth::user()->email, @$company->name);
+
+                            $m->to($to)->subject('New Job initiated');
+                        });
+
                         // $insidify_url = Curl::to("https://insidify.com/ss-post-job")
                         //             ->withData(  [ 'secret' => '1ns1d1fy', 'data' =>  [ 'job' => $job_data, 'specializations' => @$request->specializations, 'company' => get_current_company()->toArray(), 'action_link' => url('job/apply/'.$job->id.'/'.str_slug($job->title) ) ]  ]  )
                         //             // ->asJson()
@@ -1492,11 +1500,17 @@ class JobsController extends Controller
     public function SimplePay(Request $request){
         $job = Job::find($request->job_id);
         $company = get_current_company();
-        $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company) {
-                            $m->from($company->email, 'New Job initiated');
+        $to = 'support@seamlesshiring.com';
+
+        if( $request->type == 'JOB_BOARD' )
+        {
+           $mail = Mail::send('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company,$to) {
+                            $m->from(@Auth::user()->email, @$company->name);
 
                             $m->to($to)->subject('New Job initiated');
                         });
+        }
+        
         
         $private_key = 'test_pr_bbe9d51b272e4a718b01d5c8eb7d2c1f';
 
@@ -1573,10 +1587,10 @@ class JobsController extends Controller
                     }
 
 
-                    $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company) {
-                            $m->from($company->email, 'New Job Paid');
+                    $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company,$to) {
+                            $m->from(@Auth::user()->email, @$company->name);
 
-                            $m->to('funmilola@insidify.com')->subject('New Job Paid');
+                            $m->to($to)->subject('New Job Paid');
                         });
 
                     
@@ -1610,7 +1624,7 @@ class JobsController extends Controller
                     $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company) {
                             $m->from($company->email, 'New Job Paid ');
 
-                            $m->to('funmilola@insidify.com')->subject('New Job Paid');
+                            $m->to($to)->subject('New Job Paid');
                         });
                 }
                 else

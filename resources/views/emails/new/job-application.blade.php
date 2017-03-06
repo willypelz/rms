@@ -44,23 +44,28 @@
 
 																<div style="color:#5d5d5d;background-color: #fbfbfb;padding:5% 7% 7%;border: 1px dotted #cecece;border-radius: 4px;">
 																	<div style="color:#2d2d2d;width:100%;margin:0 auto;">
-																		<h3 style="font-size: 20px;margin:0 0 5%;padding:0;"><a href="" style="font-family: Roboto,'Open Sans','Helvetica Neue',Arial,Helvetica,sans-serif;word-wrap:break-word;color: #3a5979;text-decoration:none;display:block;text-align: center;width:100%;" target="_blank">Talent Pool :: File(s) Upload Successful</a></h3>
+																		<h3 style="font-size: 20px;margin:0 0 5%;padding:0;"><a href="" style="font-family: Roboto,'Open Sans','Helvetica Neue',Arial,Helvetica,sans-serif;word-wrap:break-word;color: #3a5979;text-decoration:none;display:block;text-align: center;width:100%;" target="_blank">New Job Posted</a></h3>
 																		<hr style="border-width:0 0 1px">
 																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">New Job Posted
 																		<br><br>
 																			A job was posted by {{ $company->name}}({{ $company->email. ', '. $company->phone }}. 
+																			
+																			@if( !is_null( $boards ) )
 
-																			<br><br>Job boards are<br>
+																				<br><br>Job boards are<br>
 
-																			@foreach( $boards as $board )
+																				@foreach( $boards as $board )
 
-																				{{ $board->name }}<br>
+																					{{ @$board->name }}<br>
 
-																			@end
+																				@endforeach
+
+																			@endif
+																			
 
 																		</p>
 																		<!-- <div style="color:#2d2d2d;" align="center">
-																			<p> To view new upload, please</p> <a href="{{ $link }}" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color: #4BB779;text-transform:uppercase" target="_blank">Click here</a>
+																			<p> To view new upload, please</p> <a href="{{-- $link --}}" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color: #4BB779;text-transform:uppercase" target="_blank">Click here</a>
 																		</div>
 																		<p style="font-family:Arial,Helvetica,sans-serif; font-size:15px;line-height:1.3em;color:#afafaf">If clicking the link above does not work, kindly copy and paste it to your browser.</p>
 																		<hr style="border-width:0 0 1px">

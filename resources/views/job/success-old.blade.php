@@ -321,7 +321,7 @@
                                         <hr>
                                         <p class="text-center">
                                          Please note that you will be contacted shortly as regards your posting on Newspaper <br><br>
-                                          <a href="#" class="btn btn-lg btn-danger" id="pay">Total: N<span id="total"></span> &middot; PAY NOW <i class="fa fa-arrow-right"></i></a>
+                                          <a href="#" class="btn btn-lg btn-danger" id="pay">Total: N<span id="total">0</span> &middot; PAY NOW <i class="fa fa-arrow-right"></i></a>
                                         </p>
                           </div>
 

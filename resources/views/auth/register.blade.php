@@ -207,7 +207,7 @@
                                  <div class="col-sm-12">
                                     <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
                                         <label for="">Address</label>
-                                        <textarea name="address" class="form-control" id="" cols="30" rows="10" required>   {{ old('address') }} </textarea>
+                                        <textarea name="address" class="form-control" id="" cols="30" rows="10" required>{{ old('address') }}</textarea>
                                         @if ($errors->has('address'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('address') }}</strong>

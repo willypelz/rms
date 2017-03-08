@@ -158,7 +158,9 @@
 
                                                     
                                                     <div class="col-xs-12">
-                                                        <small>Watch this video above carefully. You will be asked some questions based on it on the next page. Click next when you are done.</small>
+                                                        <small>Watch this video above carefully. 
+You will be asked some questions based on it on the next page. Click Next when you are done (you will not be able to return to this page once you click Next).
+</small>
                                                     </div> 
                                                         <div class="col-xs-4">
                                                             <!--a href="job.php" target="_blank" type="submit" class="btn btn-line"><i class="fa fa-save"></i> Save as draft</a-->

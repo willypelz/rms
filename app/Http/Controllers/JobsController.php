@@ -1176,8 +1176,8 @@ class JobsController extends Controller
             $data = $request->all();
 
 
-            $has_applied = CV::where('email',$data['email'])->orWhere('phone',$data['phone'])->first();
-            $owned_cvs = CV::where('email','babatopeoni@gmail.com')->orWhere('phone','+2348050328510')->pluck('id');
+            // $has_applied = CV::where('email',$data['email'])->orWhere('phone',$data['phone'])->first();
+            $owned_cvs = CV::where('email',$data['email'])->orWhere('phone',$data['phone'])->pluck('id');
             $owned_applicataions_count = JobApplication::whereIn( 'cv_id', $owned_cvs )->where('job_id',$jobID)->get()->count();
 
 

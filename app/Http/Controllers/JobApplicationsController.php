@@ -468,6 +468,11 @@ class JobApplicationsController extends Controller
                 return null;
             }
 
+            if( is_null($cv) or $cv == "" )
+            {
+                return null;
+            }
+
             return  public_path('uploads/CVs/').$cv;
         }, $cvs, $ids);
 

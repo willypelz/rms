@@ -89,17 +89,18 @@ class JobsController extends Controller
           //Create User
              $link = "dashboard";   
             $user = User::where('email', $request->email_to)->first();
+            $company = Company::find( get_current_company()->id );
             if(empty($user)){
                 $user = User::FirstorCreate([              
                   'email' => $request->email,
                   'name' => $request->name
                 ]);    
 
-                $link = "password/reset";
+                $link = url("password/reset");
             }
             else
             {
-                $link = "login";
+                $link = route('select-company',['slug'=>$company->slug]);
             }
 
 
@@ -107,7 +108,7 @@ class JobsController extends Controller
             
 
             //Add user to company users
-            $company = Company::find( get_current_company()->id );
+            
             $company->users()->attach($user->id);
 
             $job = Job::find($request->job_id);

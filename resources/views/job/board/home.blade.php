@@ -21,14 +21,14 @@
 
                             <div class="col-xs-8 ">
 
-                                <div class="panel panel-default" ">
+                                <div class="panel panel-default">
                                 
                                   <div class="panel-heading">
-                                    <h3 class="panel-title">Advertise on Job Boards 
+                                    <h3 class="panel-title">Job Board Status 
                                     <span class="pull-right text-warning"><i class="fa fa-check-circle"></i> {{ $approved_count }} approved &nbsp; &middot; &nbsp;<i class="fa fa-hourglass-half"></i> {{ $pending_count }} Pending</span>
 
                                   </div>
-                                  <div class="panel-body" style="height: 720px; overflow: auto;>
+                                  <div class="panel-body" style="height: 720px; overflow: auto;">
                                   <p class="text-muted">You can copy the link of your job or share them from here.</p>
                                     
 
@@ -37,7 +37,7 @@
                                               // $sub_key = array_search($b['id'], array_pluck( $subscribed_boards, 'id' ) );
 
 
-                                              if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
+                                              if(@$subscribed_board['pivot']['url'] != null && @$subscribed_board['pivot']['url'] != '')
                                               {
                                                   $status = 'approved';
                                               }
@@ -55,8 +55,8 @@
                                             <img src="{{ $subscribed_board['img'] }}" alt="{{ $subscribed_board['name'] }} logo" width="90%" align="right">
                                           </div>
                                           <div class="col-xs-6">
-                                            @if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
-                                              <h5 title="Your Job is live on this website">{{ $subscribed_board['name'] }} <i class="fa fa-check-circle text-success"></i> </h5><input type="text" class="form-control" value="" readonly>
+                                            @if(@$subscribed_board['pivot']['url'] != null && @$subscribed_board['pivot']['url'] != '')
+                                              <h5 title="Your Job is live on this website">{{ $subscribed_board['name'] }} <i class="fa fa-check-circle text-success"></i> </h5><input type="text" class="form-control" value="{{ $subscribed_board['pivot']['url'] }}" readonly>
                                             @else
                                               <h5>{{ $subscribed_board['name'] }} &nbsp;&nbsp;<i class="fa fa-hourglass-half text-muted"></i>pending approval</h5><input type="text" class="form-control" value="your url will appear here" disabled="">
                                             @endif
@@ -67,7 +67,7 @@
                                           <h5>Share this link</h5>
                                             <ul class="list-inline">
                                                    <li class="no-pad no-margin">
-                                                       <a href="" class="btn-disabled" target="_blank" >
+                                                       <a href="https://www.facebook.com/sharer/sharer.php?u={{ $subscribed_board['pivot']['url'] }}" class="btn-disabled" target="_blank" >
                                                                <span class="fa-stack fa-lg">
                                                                  <i class="fa fa-square fa-stack-2x text-"></i>
                                                                  <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
@@ -76,7 +76,7 @@
                                                    </li>
                                                                                   
                                                    <li class="no-pad no-margin">
-                                                       <a href="" class="btn-disabled" target="_blank" >
+                                                       <a href="https://twitter.com/home?status={{ $subscribed_board['pivot']['url'] }}" class="btn-disabled" target="_blank" >
                                                                <span class="fa-stack fa-lg">
                                                                  <i class="fa fa-square fa-stack-2x text-"></i>
                                                                  <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
@@ -85,7 +85,7 @@
                                                    </li>
                                                                                   
                                                    <li class="no-pad no-margin">
-                                                       <a href="" class="btn-disabled" target="_blank" >
+                                                       <a href="https://plus.google.com/share?url={{ $subscribed_board['pivot']['url'] }}" class="btn-disabled" target="_blank" >
                                                                <span class="fa-stack fa-lg">
                                                                  <i class="fa fa-square fa-stack-2x text-"></i>
                                                                  <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
@@ -116,7 +116,7 @@
                               <!--  <a href="https://localhost/seamlesshiring/public_html/jobs/advertise-your-job/22/technical-executives-at-cell-phone-repairs-stores" class="btn btn-primary btn-block" target="_blank" data-toggle="modal" data-target="#myModal">
                                 Promote Job Now
                               </a> -->
-                              <a href="#" class="btn btn-primary btn-block" target="_blank" data-toggle="modal" data-target="#promoteJob">
+                              <a href="{{ route('post-success', ['jobID' => $job->id]) }}" class="btn btn-primary btn-block" target="_blank" data-toggle="modal" data-target="#promoteJob">
                                 Expand Job Reach Now
                               </a>
                             <p></p>
@@ -128,7 +128,22 @@
                             <p>
                               </p><hr>
                               
-                              <a href="#" class="btn btn-success btn-block" data-toggle="modal" data-target="#uploadCV">  Upload CV to this Job</a>
+                              <a href="#" class="btn btn-success btn-block" data-toggle="modal" data-target="#addCandidateModal" id="modalButton" href="#addCandidateModal">  Upload CV to this Job</a>
+
+
+                        <div class="modal widemodal fade" id="addCandidateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+                          <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title" id="myModalLabel">Upload Cvs to your talent pool</h4>
+                              </div>
+                              <div class="modal-body">
+                                @include('job.includes.add-candidate-inc')
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                             <p></p>
                           </div>
                           <div class="text-center">
@@ -144,7 +159,7 @@
                                   </div>
                                   <div class="panel-body">
                                     <div class="text-center">
-                                   <p class="">Share this job directly on LinkedIn, Twitter, Facebook. <a href="{{ route('job-preview', $job['id']) }}" target="_blank" >See job page</a></p><br>
+                                   <p class="">Share this job directly on LinkedIn, Twitter, Facebook. <a href="{{ route('job-preview', $job['id']) }}" target="_blank" >Preview job</a></p><br>
                                
                                            <ul class="list-inline">
                                                <li>

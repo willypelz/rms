@@ -97,6 +97,10 @@ class JobsController extends Controller
 
                 $link = "password/reset";
             }
+            else
+            {
+                $link = "login";
+            }
 
 
             $mail_body = $request->body_mail;
@@ -118,7 +122,7 @@ class JobsController extends Controller
                 $message->to($user->email, $user->name);
             });*/ 
 
-            $this->mailer->send('emails.new.exculsively_invited', ['user' => $user, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=> $link], function (Message $m) use ($user) {
+            $this->mailer->send('emails.new.exclusively_invited', ['user' => $user, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=> $link], function (Message $m) use ($user) {
                 $m->from('support@seamlesshiring.com')->to($user->email)->subject('You have been Exclusively Invited');
             });
 
@@ -129,6 +133,13 @@ class JobsController extends Controller
       //$comp->users()->attach($user->id);
 
       
+    }
+
+    public function removeJobTeamMember( Request $request )
+    {
+        $company = Company::find( $request->comp );
+        $company->users()->detach($request->ref);
+        
     }
 
     public function JobTeamDecline()
@@ -602,24 +613,24 @@ class JobsController extends Controller
 
         $subscribed_boards = $job->boards()->get()->toArray();
 
-        $approved_count = array_filter( array_pluck( $subscribed_boards, 'url' ), function(){ 
+         $approved_count =  $pending_count = 0;
 
-                if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-         } );
+        foreach ($subscribed_boards as $key => $board) {
 
-        $approved_count = count( $approved_count );
+            if($board['pivot']['url'] != '')
+            {
+                $approved_count++;
+            }
+            else
+            {
+                $pending_count++;
+            }
+        };
 
+        $myJobs = Job::getMyJobs();
+        $myFolders = array_unique( array_pluck( Solr::get_all_my_cvs($this->search_params, null, null)['response']['docs'] ,'cv_source') );
 
-        $pending_count = count($subscribed_boards) - $approved_count;
-
-        return view('job.board.home', compact('subscribed_boards', 'job_id','job', 'active_tab', 'company','result','application_statuses','approved_count', 'pending_count'));
+        return view('job.board.home', compact('subscribed_boards', 'job_id','job', 'active_tab', 'company','result','application_statuses','approved_count', 'pending_count','myJobs','myFolders'));
     }
 
     public function JobTeam($id, Request $request){

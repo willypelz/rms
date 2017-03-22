@@ -333,7 +333,10 @@ use App\Models\Job;
 		//If a company is selected
 		if( Session::get('current_company_index')  )
 		{
-			return Auth::user()->companies[ Session::get('current_company_index') ];
+			if( isset( Auth::user()->companies[ Session::get('current_company_index') ] ) )
+				return Auth::user()->companies[ Session::get('current_company_index') ];
+			else
+				return Auth::user()->companies[0];
 		}
 
 		// If a company is not selected, default to the first on the list

@@ -90,7 +90,7 @@ class JobsController extends Controller
              $link = "dashboard";   
             $user = User::where('email', $request->email_to)->first();
             $company = Company::find( get_current_company()->id );
-            if(empty($user)){
+            if(empty($user) or is_null($user)){
                 $user = User::FirstorCreate([              
                   'email' => $request->email,
                   'name' => $request->name

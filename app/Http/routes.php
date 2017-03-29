@@ -49,6 +49,18 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.landing');
     });
 
+    Route::get('invoice/{invoice_id}', function(){
+        return view('invoice.default');
+    });
+
+    Route::get('/invoices', function(){
+        
+    });
+
+    Route::post('/invoice-pop', [ 'as' => 'show-invoice-pop', 'uses' => 'PaymentController@createInvoice' ]);
+
+    
+
     route::get('error', [
     'as' => 'errors.defaultError', function(){
         return view('errors.500');
@@ -221,6 +233,7 @@ Route::group(['middleware' => 'web'], function () {
 
     
     Route::get('pricing', function () {
+        
         return view('guest.pricing');
     });
 

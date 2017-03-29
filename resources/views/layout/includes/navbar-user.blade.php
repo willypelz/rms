@@ -45,12 +45,30 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         @if( get_current_company()->id != 13 )
-                            <!-- <li>
-                                <a title="Upgrade now to avoid termination of service" class="btn btn-danger" href="{{ url('pricing') }}" >3 Days left</a>
-                                    
-                                    <div class="pricey-callout animated zoomInDown">Your trial period ends in <span>3</span> days. Upgrade now to avoid termination of service <a class="closer">&times;</a></div>
-                                
-                            </li> -->
+                            @if( $account->status == 'TRIAL')
+                                @if( $account->has_expired )
+
+                                    <li>
+                                        <a title="Upgrade now to avoid termination of service" class="btn btn-danger" href="{{ url('pricing') }}" >{{ $account->trial_time }} Days left</a>
+                                            
+                                            <div class="pricey-callout animated zoomInDown">Your trial period has ended <a class="closer">&times;</a></div>
+                                        
+                                    </li>
+
+                                @else
+
+                                    <li>
+                                        <a title="Upgrade now to avoid termination of service" class="btn btn-danger" href="{{ url('pricing') }}" >{{ $account->trial_time }} Days left</a>
+                                            
+                                            <div class="pricey-callout animated zoomInDown">Your trial period ends in <span>{{ $account->trial_time }}</span> days. Upgrade now to avoid termination of service <a class="closer">&times;</a></div>
+                                        
+                                    </li>
+
+
+                                @endif
+                            
+                            @endif
+
                         @endif
 
                         <li id="fat-menu" class="dropdown" title="{{ get_current_company()->name }}"> 

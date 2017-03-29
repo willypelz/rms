@@ -70,9 +70,13 @@
 
 
                                 <div class="col-xs-4 col-xs-offset-{{ $offest }}">
-                                        @if(in_array($board['id'], $subscribed_boards_id))
-                                          <label class="btn btn-line btn-sm btn-label btn-block checked text-capitalize text-left disabled">
+                                        @if(empty( $subscribed_boards_id ))
+                                          <label class="btn btn-line btn-sm btn-label btn-block checked text-capitalize text-left">
+                                            <input type="checkbox" class="" autocomplete="off" checked="checked">
+                                          @elseif( in_array($board['id'], $subscribed_boards_id) )
+                                            <label class="btn btn-line btn-sm btn-label btn-block checked text-capitalize text-left disabled">
                                             <input type="checkbox" class="" autocomplete="off" checked="checked" disabled="disabled">
+
                                           @else
                                           <label class="btn btn-line btn-sm btn-label btn-block checked text-capitalize text-left">
                                             <input type="checkbox" class="" autocomplete="off" >
@@ -170,7 +174,7 @@
                                                 <label data-id="{{ $board['id'] }}" class="btn paid btn-line btn-sm btn-label btn-block checked text-capitalize text-left disabled">
                                                   <input data-id="{{ $board['id'] }}" type="checkbox" class="" autocomplete="off" checked="checked" disabled="disabled">
                                                 @else
-                                                <label data-id="{{ $board['id'] }}" class="btn paid btn-line btn-sm btn-label btn-block checked text-capitalize text-left">
+                                                <label data-id="{{ $board['id'] }}" class="btn paid btn-line btn-sm btn-label btn-block  text-capitalize text-left">
                                                   <input data-id="{{ $board['id'] }}" type="checkbox" class="" autocomplete="off" >
                                                 @endif
                                               <span class="col-xs-6"><img src="{{ $board['img'] }}" width="100%" alt=""></span>
@@ -215,7 +219,7 @@
                                                     <label data-id="{{ $board['id'] }}" class="btn paid btn-line btn-sm btn-label btn-block checked text-capitalize text-left disabled">
                                                       <input data-id="{{ $board['id'] }}" type="checkbox" class="" autocomplete="off" checked="checked" disabled="disabled">
                                                     @else
-                                                    <label data-id="{{ $board['id'] }}" class="btn paid btn-line btn-sm btn-label btn-block checked text-capitalize text-left">
+                                                    <label data-id="{{ $board['id'] }}" class="btn paid btn-line btn-sm btn-label btn-block  text-capitalize text-left">
                                                       <input data-id="{{ $board['id'] }}" type="checkbox" class="" autocomplete="off" >
                                                     @endif
                                                   <span class="col-xs-6"><img src="{{ $board['img'] }}" width="100%" alt=""></span>
@@ -237,13 +241,14 @@
                           <div class="col-xs-6 col-xs-offset-3 text-center">
                             <hr>
                             
-                            <p class="hidify">For a wider reach, you can <a class="open-more " data-toggle="collapse" data-target="#paidJobBoards" aria-expanded="false" aria-controls="paidJobBoards">advertise this job on more paid job board</a></p>
+                            <!-- <p class="hidify">For a wider reach, you can <a class="open-more " data-toggle="collapse" data-target="#paidJobBoards" aria-expanded="false" aria-controls="paidJobBoards">advertise this job on more paid job board</a></p> -->
                             <br>
                             
-                          <a class="open-more btn btn-lg btn-line hidify" data-toggle="collapse" data-target="#paidJobBoards" aria-expanded="false" aria-controls="paidJobBoards">Advertise on more job boards</a>
+                          <!-- <a class="open-more btn btn-lg btn-line hidify" data-toggle="collapse" data-target="#paidJobBoards" aria-expanded="false" aria-controls="paidJobBoards">Advertise on more job boards</a> -->
                           
-                          <span class="hidify">&nbsp; or &nbsp; </span>
-                          <a href="#" data-toggle="modal" data-target="#success" id="showPreview" class="btn btn-lg btn-success"><i class="fa fa-check"></i> &nbsp;PROCEED &raquo;</a>
+                          <!-- <span class="hidify">&nbsp; or &nbsp; </span> -->
+                          <!-- <a href="{{ route('job-candidates', [$job->id]) }}" data-toggle="modal" data-target="#success" id="showPreview" class="btn btn-lg btn-success"><i class="fa fa-check"></i> &nbsp;PROCEED &raquo;</a> -->
+                          <a href="{{ route('job-candidates', [$job->id]) }}"  id="showPreview" class="btn btn-lg btn-success"><i class="fa fa-check"></i> &nbsp;PROCEED &raquo;</a>
                             <hr>
                             <!-- <a href="{{ url('dashboard') }}" class="btn btn-lg btn-success">Post my Job</i></a> -->
                           </div>
@@ -286,7 +291,7 @@
             </div> -->
             <div class="modal-body">
               <div class="row">
-              <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
 
                 <p class="text-center lead"><br>
                  <i class="fa fa-check text-success"></i> 
@@ -295,10 +300,13 @@
                 </p>
 
                 <div id="" class="">
+
                           <div class="col-xs-12"><hr></div>
+
+                          <p class="text-center">For a wider reach, you can advertise this job on more paid job board</p>
                           <div class="clearfix"></div>
                             <!-- <h4 class="text-center text-capitalize">Paid Job boards & Newspapers</h4><br> -->
-                            <div id="preview">
+                            <!-- <div id="preview">
                               <div class="col-xs-5 col-xs-offset-1 pull-left">
 
                                 <h5 class="col-xs-12">Job Boards</h5><div class="clearfix"></div>
@@ -307,7 +315,7 @@
                               </div>
                               
 
-                              <!-- <div class="clearfix"></div><br> -->
+
                                 <div class="col-xs-5 pull-left">
                                     <h5 class="col-xs-12">Job Newspapers</h5><div class="clearfix"></div>
 
@@ -315,13 +323,115 @@
                                 </div>
                                 
 
-                            </div>
+                            </div> -->
+                            <div id="paidJobBoards">
+                          <div class="col-xs-8 col-xs-offset-2"><hr></div>
+                          <div class="clearfix"></div>
+                            <h4 class="text-center text-capitalize">Paid Job boards & Newspapers</h4>
+                            <p class="text-center text-muted">Kindly, make selections from below</p><br>
+                            <div id="copyFrom">
+                              <h5 class="col-xs-5 col-xs-offset-1">Job Boards</h5><div class="clearfix"></div>
 
+                              <div id="fromJob">
+                                <?php $index = 0; ?>
+                                @foreach($all_job_boards as $key => $board)
+                                  @if( $board['type'] == 'paid' && $board['avi'] == 0 )
+                                      <?php
+                                      // $sub_key = array_search($b['id'], array_pluck( $boards, 'id' ) );
+                                      $index++;
+                                      if(@$board['pivot']['url'] != null && @$board['pivot']['url'] != '')
+                                      {
+                                      $status = 'approved';
+                                      }
+                                      else
+                                      {
+                                      $status = 'pending';
+                                      }
+                                      // $status = ( in_array($b['id'], $boards) ) ? 'disabled checked' : '';
+                                      // $approved = ( in_array($b['id'], $boards) ) ? 'disabled checked' : '';
+                                      
+                                      $offest = ( $index % 2 ) ? 1 : 0;
+
+                                      ?>  
+
+
+                                      <div class="col-xs-5 col-xs-offset-{{ $offest }}">
+                                              @if(in_array($board['id'], $subscribed_boards_id))
+                                                <label data-id="{{ $board['id'] }}" class="btn paid btn-line btn-sm btn-label btn-block checked text-capitalize text-left disabled">
+                                                  <input data-id="{{ $board['id'] }}" type="checkbox" class="" autocomplete="off" checked="checked" disabled="disabled">
+                                                @else
+                                                <label data-id="{{ $board['id'] }}" class="btn paid btn-line btn-sm btn-label btn-block  text-capitalize text-left">
+                                                  <input data-id="{{ $board['id'] }}" type="checkbox" class="" autocomplete="off" >
+                                                @endif
+                                              <span class="col-xs-6"><img src="{{ $board['img'] }}" width="100%" alt=""></span>
+                                              <span class="col-xs-6"><b class="name">{{ $board['name'] }}</b><br>
+                                              <span class="badge badge-danger">&#8358;<span>{{ $board['price'] }}</span></span></span>
+                                              <span class="clearfix"></span>
+                                            </label>
+                                      </div>
+
+                                    @endif
+                                  @endforeach
+                              </div>
+                              
+                                <div class="clearfix"></div><br>
+
+                                <h5 class="col-xs-5 col-xs-offset-1">Job Newspapers</h5><div class="clearfix"></div>
+                                <div id="fromNews">
+                                    <?php $index = 0; ?>
+                                    @foreach($all_job_boards as $key => $board)
+                                      @if( $board['type'] == 'paid' && $board['avi'] == 1)
+                                          <?php
+                                          // $sub_key = array_search($b['id'], array_pluck( $boards, 'id' ) );
+                                          $index++;
+                                          if(@$board['pivot']['url'] != null && @$board['pivot']['url'] != '')
+                                          {
+                                          $status = 'approved';
+                                          }
+                                          else
+                                          {
+                                          $status = 'pending';
+                                          }
+                                          // $status = ( in_array($b['id'], $boards) ) ? 'disabled checked' : '';
+                                          // $approved = ( in_array($b['id'], $boards) ) ? 'disabled checked' : '';
+                                          
+                                          $offest = ( $index % 2 ) ? 1 : 0;
+
+                                          ?>  
+
+
+                                          <div class="col-xs-5 col-xs-offset-{{ $offest }}">
+                                                  @if(in_array($board['id'], $subscribed_boards_id))
+                                                    <label data-id="{{ $board['id'] }}" class="btn paid btn-line btn-sm btn-label btn-block checked text-capitalize text-left disabled">
+                                                      <input data-id="{{ $board['id'] }}" type="checkbox" class="" autocomplete="off" checked="checked" disabled="disabled">
+                                                    @else
+                                                    <label data-id="{{ $board['id'] }}" class="btn paid btn-line btn-sm btn-label btn-block  text-capitalize text-left">
+                                                      <input data-id="{{ $board['id'] }}" type="checkbox" class="" autocomplete="off" >
+                                                    @endif
+                                                  <span class="col-xs-6"><img src="{{ $board['img'] }}" width="100%" alt=""></span>
+                                                  <span class="col-xs-6"><b class="name">{{ $board['name'] }}</b><br>
+                                                  <!-- <span class="badge badge-danger">&#8358;<span>{{ $board['price'] }}</span></span></span> -->
+                                                  <span class="clearfix"></span>
+                                                </label>
+                                          </div>
+
+                                        @endif
+                                      @endforeach
+                                </div>
+                              
+                            </div>
+                            
+
+                          </div>
+
+                                        <div class="clearfix"></div>
+                                        <hr>
+                                        <h3 class="text-center">Total: ₦<span id="total">0</span></h3>
                                         <div class="clearfix"></div>
                                         <hr>
                                         <p class="text-center">
                                          Please note that you will be contacted shortly as regards your posting on Newspaper <br><br>
-                                          <a href="#" class="btn btn-lg btn-danger" id="pay">Total: N<span id="total">0</span> &middot; PAY NOW <i class="fa fa-arrow-right"></i></a>
+                                          
                                         </p>
                           </div>
 
@@ -329,7 +439,9 @@
             </div>
             <div class="modal-footer">
 <!--              <button type="button" class="btn btn-line pull-left" data-dismiss="modal">Cancel</button>-->
-              <a href="{{ route('job-candidates', [$job->id]) }}" class="btn btn-primary" id="dashboard">Proceed to dashboard</a>
+
+              <a href="{{ route('job-candidates', [$job->id]) }}" class="btn btn-line" id="dashboard">SKIP</a>
+              <a href="#" class="btn btn-primary" id="pay" disabled="disabled"><span class="text"> PROCEED </span><i class="fa fa-arrow-right"></i></a>
             </div>
           </div>
         </div>
@@ -457,11 +569,13 @@
         
         var total = 0;
         var job_id = "{{ $job->id }}";
-        
+        var has_invoice = false;
+        var selected_jobs = 0;
+
         $('.open-more').click(function(){
             $('.hidify').fadeOut();
 
-            copyFrom
+            
         });
         
         
@@ -493,17 +607,34 @@
               
 
               if ( $( this ).children(elem).prop( "checked" ) ){
-                  
-                total +=  parseInt( $(this).find('.badge-danger span').text() );
+                  selected_jobs++;
+                  if( $(this).find('.badge-danger span').text() )
+                  {
+                    total +=  parseInt( $(this).find('.badge-danger span').text() ); 
+                  }
+                
                   
               }else{
-                total -=  parseInt( $(this).find('.badge-danger span').text() );
-                  $(this).removeClass('checked');
+                  selected_jobs--;
+                  if($(this).find('.badge-danger span').text())
+                  {
+                    total -=  parseInt( $(this).find('.badge-danger span').text() );
+                    $(this).removeClass('checked');
+                    
+                  }
+                
               }
 
 
 
-              console.log( " New total is " + total , e);
+              if( selected_jobs > 0 )
+              {
+                $('#pay').removeAttr('disabled');
+              }
+              else
+              {
+                $('#pay').attr('disabled','disabled');
+              }
               $('#total').text( total );
 
             
@@ -515,35 +646,87 @@
         
         var boards = [];
 
-        $('#showPreview').on('click', function(){
+        $('#showPreview').on('click', function(e){
+          e.preventDefault();
+            $('#success').modal('show');
+          // if( total == 0 )
+          // {
 
-          $('#preview #job').html('');
-          $('#preview #news').html('');
-          boards = [];
-          $('#copyFrom #fromJob .btn.btn-label.paid').each( function(i,el){
+          // }
+          // else
+          // {
+          //   e.preventDefault();
+          //   $('#success').modal('show');
+          // }
+
+          // $('#preview #job').html('');
+          // $('#preview #news').html('');
+          // boards = [];
+          // $('#copyFrom #fromJob .btn.btn-label.paid').each( function(i,el){
             
-            if ( $( this ).children(elem).prop( "checked" ) ){ 
-                boards.push( $(this).data( 'id' ) );
-                $('#preview #job').append( $(this).clone() );
+          //   if ( $( this ).children(elem).prop( "checked" ) ){ 
+          //       boards.push( $(this).data( 'id' ) );
+          //       $('#preview #job').append( $(this).clone() );
                   
-              }
-          });
+          //     }
+          // });
 
-          $('#copyFrom #fromNews .btn.btn-label.paid').each( function(i,el){
+          // $('#copyFrom #fromNews .btn.btn-label.paid').each( function(i,el){
             
-            if ( $( this ).children(elem).prop( "checked" ) ){
-                  boards.push( $(this).data( 'id' ) );
+          //   if ( $( this ).children(elem).prop( "checked" ) ){
+          //         boards.push( $(this).data( 'id' ) );
 
-                $('#preview #news').append( $(this).clone() );
+          //       $('#preview #news').append( $(this).clone() );
                   
-              }
-          });
+          //     }
+          // });
 // 
         });
 
 
         $('#pay').on('click', function(){
-          loadSimplePay();
+          $this = $(this);
+
+          if(has_invoice)
+          {
+            loadSimplePay();  
+          }
+          else
+          {
+            boards = [];
+
+            paid.children('input[type=checkbox]:checked').each(function(key,el){ 
+              boards.push( $(this).data('id') ); 
+            });
+
+            $.ajax
+                    ({
+                        type: "POST",
+                        url: "{{ route('show-invoice-pop') }}",
+                        data: ({ rnd : Math.random() * 100000 ,type_ids: boards, job_id: job_id, type : 'JOB_BOARD', status : 'ORDER' }),
+                        success: function(response){
+
+                          $( '#success .modal-body' ).html( response );
+                          has_invoice = true;
+                          $this.find('.text').text( 'PAY NOW' );
+                          $('#dashboard').text( 'Go to Dashboard' );
+
+                          
+                            // if( response == "true" )
+                            // {
+                            //   $.growl.notice({ message: "Payment Successful " });
+
+                            //   setTimeout( function(){ location.href = "{{ route('job-candidates', [$job->id]) }}"; }, 3000 );
+                            // }
+                            // else
+                            // {
+                            //   $.growl.error({ message: "Payment Unsuccessful " });
+                            // }
+                        }
+                    });
+
+          }
+          
         });
 
         function loadSimplePay(){
@@ -573,7 +756,7 @@
 
               
 
-                var url ="{{ route('simplepay', ['JOB_BOARD']) }}"
+                var url ="{{ route('simplepay', ['JOB_BOARD']) }}";
                   $.ajax
                     ({
                         type: "POST",
@@ -592,30 +775,6 @@
                             {
                               $.growl.error({ message: "Payment Unsuccessful " });
                             }
-
-
-
-                             /*if(response != null){
-                                 var oldurl = "{{ route('transactions') }}";
-
-                                 $.ajax
-                                  ({
-                                      type: "POST",
-                                      url: oldurl,
-                                      data: ({ jsonres:response, order_id:order_id, status:true, message:'Transaction Successful', "_token":"{{ csrf_token() }}"}),
-                                      success: function(response){
-                                        console.log(2,response);
-
-                                          // $( '#viewModal' ).modal('toggle');
-                                          // $( '#paymentSuccess' ).html('Payment Successful');
-                                          sh.reloadStatus();
-                                        setTimeout(function(){
-                                          $.growl.notice({ message: "Payment Successful " });
-                                        }, 1000);
-
-                                      }
-                                  });
-                             }*/
                         }
                     });
 

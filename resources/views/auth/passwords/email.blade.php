@@ -21,7 +21,7 @@
             <div class="row">
 
                 <div class="col-sm-4 col-sm-offset-4 text-center text-white">
-                    <h2 class=""><img src="https://seamless.local/public_html/img/seamlesshiring-logo-x.png" width="150px" alt=""></h2><br>    
+                    <h2 class=""><img src="{{ url('/') }}/img/seamlesshiring-logo-x.png" width="150px" alt=""></h2><br>    
                     <!-- <p class="">Everything You Need To Hire, In One Place!</p> -->
                 </div>
                 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">

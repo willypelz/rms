@@ -1,9 +1,21 @@
+
+
 @extends('layout.template-default')
 
+@section('navbar')
+    
+@show()
 @section('content')
-	<div class="row">
-		<div class="container">
-			@include('invoice.includes.inner')
-		</div>
-	</div>
+
+<style>
+	.navbar,.footer{
+		display: none;
+		opacity: 0;
+	}
+</style>
+
 @endsection
+
+@section('footer')
+    
+@show()

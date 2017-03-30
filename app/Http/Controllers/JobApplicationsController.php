@@ -812,7 +812,8 @@ class JobApplicationsController extends Controller
 
         $products = AtsProduct::all(); 
         $section = 'TEST';
-        return view('modals.assess', compact('applicant_badge','app_ids','cv_ids','products','appl','test_available','section','count'));
+        $type = "TEST";
+        return view('modals.assess', compact('applicant_badge','app_ids','cv_ids','products','appl','test_available','section','count','type'));
     }
 
     public function modalBackgroundCheck(Request $request)
@@ -833,7 +834,8 @@ class JobApplicationsController extends Controller
         $count = count($cv_ids);
 
         $section = 'BACKGROUND'; 
-        return view('modals.assess', compact('applicant_badge','app_ids','cv_ids','products','appl','test_available','count','section'));
+        $type = "BACKGROUND_CHECK";
+        return view('modals.assess', compact('applicant_badge','app_ids','cv_ids','products','appl','test_available','count','section','type'));
     }
 
 
@@ -854,7 +856,8 @@ class JobApplicationsController extends Controller
         $count = count($cv_ids);
 
         $section = 'HEALTH'; 
-        return view('modals.assess', compact('applicant_badge','app_ids','cv_ids','products','appl','test_available','count','section'));
+        $type = "MEDICAL_CHECK";
+        return view('modals.assess', compact('applicant_badge','app_ids','cv_ids','products','appl','test_available','count','section','type'));
     }
 
     
@@ -865,6 +868,8 @@ class JobApplicationsController extends Controller
         
         $comp_id = get_current_company()->id;
         $invoice_no = '#'.mt_rand();
+
+        $test_ids = [];
 
 
         $order = Order::firstOrCreate([
@@ -910,12 +915,13 @@ class JobApplicationsController extends Controller
 
 
                             
-                $test_id = TestRequest::create($data);
+                $test = TestRequest::create($data);
+                $test_ids[] = $test->id;
 
                 $app = JobApplication::with('cv')->find($app_id);
 
                 // $response = Curl::to('http://seamlesstesting.com/test-request')
-                //                 ->withData( [ 'test_id' => $test_id, 'job_application_id' => $app_id, 'applicant_name' => ucwords( @$app->cv->first_name. " " . @$app->cv->last_name ), 'applicant_email' => $app->cv->email, 'employer_name' => get_current_company()->name, 'employer_email' => get_current_company()->email , 'start_time' => $data['start_time'], 'end_time' => $data['end_time'] ] )
+                //                 ->withData( [ 'test_id' => $test->id, 'job_application_id' => $app_id, 'applicant_name' => ucwords( @$app->cv->first_name. " " . @$app->cv->last_name ), 'applicant_email' => $app->cv->email, 'employer_name' => get_current_company()->name, 'employer_email' => get_current_company()->email , 'start_time' => $data['start_time'], 'end_time' => $data['end_time'] ] )
                 //                 ->post();
             }
             
@@ -925,7 +931,7 @@ class JobApplicationsController extends Controller
         JobApplication::massAction( @$request->job_id,  @$request->cv_ids , 'ASSESSED' );
 
         $res = array();
-        $res = ['total_amount'=>$request->total_amount, 'order_id'=>$order->id];
+        $res = ['total_amount'=>$request->total_amount, 'order_id'=>$order->id, 'type_ids' => $test_ids];
         return $res;
 
     }
@@ -972,6 +978,7 @@ class JobApplicationsController extends Controller
     {
         $comp_id = get_current_company()->id;
         $invoice_no = '#'.mt_rand();
+        $check_ids = [];
 
         $order = Order::firstOrCreate([
                         'company_id' => $comp_id,
@@ -1013,7 +1020,8 @@ class JobApplicationsController extends Controller
                 
                 ];
                             
-                AtsRequest::create($data);
+                $check = AtsRequest::create($data);
+                $check_ids[] = $check->id;
             }
                         
             
@@ -1021,7 +1029,7 @@ class JobApplicationsController extends Controller
 
         }
             $res = array();
-            $res = ['total_amount'=>$request->total_amount, 'order_id'=>$order->id];
+            $res = ['total_amount'=>$request->total_amount, 'order_id'=>$order->id, 'type_ids' => $check_ids];
             return $res;
         // JobApplication::massAction( @$request->job_id, [ @$request->cv_id ], 'ASSESSED' );
     }

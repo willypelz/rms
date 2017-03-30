@@ -693,12 +693,13 @@
           }
           else
           {
+            
             boards = [];
 
             paid.children('input[type=checkbox]:checked').each(function(key,el){ 
               boards.push( $(this).data('id') ); 
             });
-
+            $('#success .modal-body').html('{!! preloader() !!}');
             $.ajax
                     ({
                         type: "POST",

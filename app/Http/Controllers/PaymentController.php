@@ -14,6 +14,8 @@ use App\Models\FolderContent;
 use App\Models\Invoices;
 use App\Models\InvoiceItems;
 use App\Models\JobBoard;
+use App\Models\AtsRequest;
+use App\Models\TestRequest;
 use Mail;
 
 
@@ -45,7 +47,7 @@ class PaymentController extends Controller
         
 
 
-        $invoice = Invoices::with('items')->where('id',$invoiceDB->id)->get()->first();
+        
 
         switch ($request->type) {
             case 'JOB_BOARD':
@@ -81,6 +83,69 @@ class PaymentController extends Controller
                 }
 
                 $invoice_type = "JOB BOARDS";
+
+                break;
+
+            case 'BACKGROUND_CHECK':
+
+                foreach ($request->type_ids as $key => $type_id) {
+
+                    $check = AtsRequest::with('product.provider')->where('id',$type_id)->get()->first();
+
+                    InvoiceItems::create( [
+                        'invoice_id' => $invoiceDB->id,
+                        'type' => $request->type,
+                        'type_id' => $type_id,
+                        'image' => $board->img,
+                        'title' => $check->product->provider->logo,
+                        'amount' => $check->product->cost
+                    ]);
+                    
+                }
+
+                $invoice_type = "BACKGROUND CHECKS";
+
+                break;
+
+            case 'MEDICAL_CHECK':
+
+                foreach ($request->type_ids as $key => $type_id) {
+
+                    $check = AtsRequest::with('product.provider')->where('id',$type_id)->get()->first();
+
+                    InvoiceItems::create( [
+                        'invoice_id' => $invoiceDB->id,
+                        'type' => $request->type,
+                        'type_id' => $type_id,
+                        'image' => $check->product->provider->logo,
+                        'title' => $check->product->name,
+                        'amount' => $check->product->cost
+                    ]);
+                    
+                }
+
+                $invoice_type = "MEDICAL CHECKS";
+
+                break;
+
+            case 'TEST':
+
+                foreach ($request->type_ids as $key => $type_id) {
+
+                    $test = TestRequest::with('product.provider')->where('id',$type_id)->get()->first();
+
+                    InvoiceItems::create( [
+                        'invoice_id' => $invoiceDB->id,
+                        'type' => $request->type,
+                        'type_id' => $type_id,
+                        'image' => $test->product->provider->logo,
+                        'title' => $test->product->name,
+                        'amount' => $test->product->cost
+                    ]);
+                    
+                }
+
+                $invoice_type = "TESTS";
 
                 break;
             

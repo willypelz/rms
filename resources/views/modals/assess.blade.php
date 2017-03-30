@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" id="cont">
       <div class="col-xs-7 scroll-450">
           <div class="">
               
@@ -80,7 +80,7 @@
                   
               </table>
               @if(!@$test_available)
-                <a class="btn btn-danger pull-right" id="request-check">Proceed to Checkout &nbsp;<i class="fa fa-external-link"></i></a>
+                <a class="btn btn-danger pull-right" id="request-check" disabled="disabled">Proceed to Checkout &nbsp;<i class="fa fa-external-link"></i></a>
               @endif
               <!--<a class="btn btn-sm pull-left btn-line">Clear Selection &nbsp;<i class="fa fa-refresh"></i></a>-->
               <div class="clearfix"></div>
@@ -123,6 +123,9 @@
       </div>
   </div>
 
+  <input type="button" class="btn btn-danger pull-right" id="pay"  value="PAY NOW" style="display:none;">
+  <div class="clearfix"></div>
+
 
 <script src="https://checkout.simplepay.ng/v2/simplepay.js"></script>
 
@@ -133,9 +136,13 @@
 
         var app_ids = <?php echo json_encode($app_ids );?>  ;
         var cv_ids = <?php echo json_encode($cv_ids );?> ;
-        var type = '';
+        var type = "{{ $type }}";
+        var has_invoice = false;
 
         var tests = [];
+        var checks = [];
+
+        var total_amount, order_id,type_ids;
 
         $('body #request-btn').on('click', function(){
           $('#cart-preview').append('<tr data-id="' + $(this).attr('data-id') +'" data-owner="' + $(this).attr('data-owner') +'"><td id="name">' + $(this).attr('data-title') +'</td><td ><span id="amount">' + $(this).attr('data-amount') + "</span> x " + {{ $count }} + ' </td><td class="text-right"><a href="javascript://" id="delete-request"><i class="fa fa-times-circle text-danger"></i> </a></td></tr>');
@@ -144,6 +151,8 @@
           $(this).prop('disabled','disabled').text('Requested');
 
           $('#request-test').removeAttr('disabled');
+          $('#request-check').removeAttr('disabled');
+
 
         });
         
@@ -163,6 +172,11 @@
             $('#cart-total').text(  total  );
 
 
+            if( total == 0 )
+            {
+              $('#request-test').prop('disabled','disabled');
+              $('#request-check').prop('disabled','disabled');
+            }
 
             
         }
@@ -175,7 +189,7 @@
 
 
            var tot = 0;
-           type = "Tests";
+
 
             $('#cart-preview tr').each(function( index ) {
                 // $.extend(tests,{
@@ -199,7 +213,7 @@
                 cv_ids: cv_ids,
                 job_id: "{{ $appl->job->id }}",
                 total_amount: tot,
-                type: 'Test',
+                type: type,
                 tests : tests
                 // test_id: 
                 // test_name: 
@@ -209,19 +223,24 @@
             $.post('{{ route("request-test") }}', data, function(res){
                 // $( '#viewModal' ).modal('toggle');
                  // console.log(res);
-                 $('.modal-body').html('{!! preloader() !!}');
-                loadSimplePay(res.total_amount, res.order_id);
+                // $('.modal-body').html('{!! preloader() !!}');
+                total_amount = res.total_amount;
+                order_id = res.order_id;
+                type_ids = res.type_ids;
+                doPayment(res.total_amount, res.order_id, res.type_ids);
             });
 
 
         });
 
-        $('#request-check').on('click', function(){
+        $('#request-check').on('click', function(event){
+            event.preventDefault(); 
 
-            var checks = [];
+            $(this).attr('disabled','disabled');
+            
             
            var tot = 0;
-           type = 'Checks';
+
            // console.log(tot);
 
             $('#cart-preview tr').each(function( index ) {
@@ -245,7 +264,7 @@
                 checks : checks,
                 service_type: "{{ $section }}",
                 total_amount: tot,
-                type: 'Background Check'
+                type: type
                 // test_id: 
                 // test_name: 
                 // test_owner:
@@ -254,8 +273,11 @@
             $.post('{{ route("request-check") }}', data, function(res){
 
               //  $.post('{{ route("checkout") }}', data, function(){
-                  console.log(res);
-                  loadSimplePay(res.total_amount, res.order_id)
+                // $('.modal-body').html('{!! preloader() !!}');
+                total_amount = res.total_amount;
+                order_id = res.order_id;
+                type_ids = res.type_ids;
+                doPayment(res.total_amount, res.order_id, res.type_ids);
               // });
                       $("#viewModal").html('{!! preloader() !!}');
             });
@@ -263,6 +285,39 @@
            
 
             console.log(data);
+        });
+
+        function doPayment(total_amount, order_id,type_ids)
+        {
+          if(has_invoice)
+          {
+            loadSimplePay(total_amount, order_id);  
+          }
+          else
+          {
+
+            $.ajax
+                    ({
+                        type: "POST",
+                        url: "{{ route('show-invoice-pop') }}",
+                        data: ({ rnd : Math.random() * 100000 ,type_ids: type_ids, job_id: "{{ $appl->job->id }}", type : type, status : 'ORDER' }),
+                        success: function(response){
+
+                          $( '#cont' ).html( response );
+                          $('#pay').show();
+                          has_invoice = true;
+                          $("#viewModal .close").hide();
+                          $("#viewModal .modal-title").text('Invoice');
+                          // $this.find('.text').text( 'PAY NOW' );
+                          // $('#dashboard').text( 'Go to Dashboard' );
+                        }
+                    });
+
+          }
+        }
+
+        $('#pay').on('click', function(){
+            doPayment(total_amount, order_id,type_ids);
         });
 
 
@@ -304,6 +359,7 @@
                         success: function(response){
                             sh.reloadStatus();
                             $( '#viewModal' ).modal('toggle');
+                            $("#viewModal .close").show();
                             if( response == "true" )
                             {
                               $.growl.notice({ message: "Payment Successful " });

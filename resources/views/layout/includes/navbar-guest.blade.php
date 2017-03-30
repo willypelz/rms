@@ -1,3 +1,13 @@
+<style>
+  body{
+    font-weight: 300;
+
+  }
+  p{
+        font-size: 110%;
+        /* color: #666; */
+    }
+</style>
 <div id="target-stick" style="position: fixed;"></div>
 <div class="navbar navbar-out no-margin" role="navigation">
     <div class="container">

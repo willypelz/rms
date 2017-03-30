@@ -20,7 +20,7 @@
 <div class="container">
     <div class="row">
     <div class="col-sm-4 col-sm-offset-4 text-center text-white">
-                    <h2 class=""><img src="{{ url('/') }}/img/seamlesshiring-logo-x.png" width="150px" alt=""></h2><br>    
+                    <h2 class=""><img src="https://cdn.insidify.com/dist/img/logos/seamlesshiring-white.svg"" width="190px" alt=""></h2><br>    
                     <!-- <p class="">Everything You Need To Hire, In One Place!</p> -->
                 </div>
 

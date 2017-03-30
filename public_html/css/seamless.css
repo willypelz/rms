@@ -1691,8 +1691,8 @@ textarea:focus {
     margin-top: 5px;
 }
 .btn.btn-label.paid{
-        background: rgba(189, 189, 189, 0.2);
-    border: 2px solid #ccc;
+        /*background: rgba(189, 189, 189, 0.2);
+    border: 2px solid #ccc;*/
 }
 .btn.btn-label.paid:hover{
         background: #eee;

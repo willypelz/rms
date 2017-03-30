@@ -171,7 +171,7 @@ class JobApplicationsController extends Controller
         }
         else
         {
-            $request->age = [ 5, 85 ];
+            $request->age = [ env('AGE_START'), env('AGE_END') ];
             $solr_age = null;
         }
 
@@ -184,7 +184,7 @@ class JobApplicationsController extends Controller
         }
         else
         {
-            $request->exp_years = [ 0, 60 ];
+            $request->exp_years = [ env('EXPERIENCE_START'), env('EXPERIENCE_END') ];
             $solr_exp_years = null;
         }
 
@@ -196,7 +196,7 @@ class JobApplicationsController extends Controller
         }
         else
         {
-            $request->video_application_score = [ 0, 100 ];
+            $request->video_application_score = [ env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END') ];
             $solr_video_application_score = null;
         }
 
@@ -229,9 +229,9 @@ class JobApplicationsController extends Controller
             
         }
         else{
-            $age = [ 5, 85 ];
-            $exp_years = [ 0, 60 ]; 
-            $video_application_score = [0,100];
+            $age = [ env('AGE_START'), env('AGE_END') ];
+            $exp_years = [ env('EXPERIENCE_START'), env('EXPERIENCE_END') ]; 
+            $video_application_score = [ env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END') ];
             
             return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','showing','myJobs','myFolders', 'application_statuses', 'job', 'video_application_score'));
         }
@@ -468,6 +468,11 @@ class JobApplicationsController extends Controller
                 return null;
             }
 
+            if( is_null($cv) or $cv == "" )
+            {
+                return null;
+            }
+
             return  public_path('uploads/CVs/').$cv;
         }, $cvs, $ids);
 
@@ -573,7 +578,7 @@ class JobApplicationsController extends Controller
            $stats =      '<table class="table table-bordered"> 
                             <tbody> 
                         <tr> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="jos/list">'.$total_applicants.'</a></h1><small class="text-muted">Applicants</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="'.route('job-candidates', [$job->id]).' ">'.$total_applicants.'</a></h1><small class="text-muted">Applicants</small></td> 
                             <!--td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">'.$matching.'</a></h1><small class="text-muted">Matching Candidates</small></td--> 
                         </tr> 
                         <tr> 
@@ -934,7 +939,8 @@ class JobApplicationsController extends Controller
                     'test_id' => 'required',
                     'actual_start_time' => 'required',
                     'actual_end_time' => 'required',
-                    'score' => 'required'
+                    'score' => 'required',
+                    'status' => 'required'
 
                 ]);
 
@@ -949,7 +955,9 @@ class JobApplicationsController extends Controller
                             ->update( ['actual_start_time' => $request->actual_start_time,
                                         'actual_end_time' => $request->actual_end_time,
                                         'score' => $request->score,
-                                        'result_comment' => @$request->result_comment] );
+                                        'result_comment' => @$request->result_comment,
+                                        'status' => @$request->status
+                                            ] );
 
             }
 

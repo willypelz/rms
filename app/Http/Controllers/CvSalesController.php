@@ -78,7 +78,7 @@ class CvSalesController extends Controller
             }
             else
             {
-                $request->age = [ 5, 85 ];
+                $request->age = [ env('AGE_START'), env('AGE_END')];
                 $solr_age = null;
             }
 
@@ -92,7 +92,7 @@ class CvSalesController extends Controller
             }
             else
             {
-                $request->exp_years = [ 0, 60 ];
+                $request->exp_years = [ env('EXPERIENCE_START'), env('EXPERIENCE_END') ];
                 $solr_exp_years = null;
             }
 

@@ -49,15 +49,46 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.landing');
     });
 
+    Route::get('invoice/{invoice_id}', function(){
+        return view('invoice.default');
+    });
+
+    Route::get('/invoices', function(){
+        
+    });
+
+    Route::post('/invoice-pop', [ 'as' => 'show-invoice-pop', 'uses' => 'PaymentController@createInvoice' ]);
+
+    
+
     route::get('error', [
     'as' => 'errors.defaultError', function(){
         return view('errors.500');
     }]);
 
      Route::get('/contact', function () {
+
+
         
         return view('guest.contact');
     });
+
+     Route::post('/contact', function () {
+        $data = $request->all();
+
+
+        $mail = Mail::queue('emails.new.contact', [ $data => $data ], function ($m) use($data) {
+                            $m->from($data->email, 'New Job Paid');
+                            // $m->to('babatopeoni@gnmail.com')->subject('Contact');
+                            $m->to('support@seamlesshiring.com')->subject('Contact');
+                        });
+        
+        $request->session()->flash('flash_message', 'You have exceeded your daily Provide Help limit.');
+                return redirect()->back();
+
+    });
+
+     
 
      Route::get('/faq', function () {
         
@@ -141,7 +172,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'ajax_checkout', ['uses' => 'CvSalesController@Ajax_checkout', 'as' => 'ajax_checkout']);
     Route::match(['get', 'post'], 'payment/{type?}', ['uses' => 'CvSalesController@Payment', 'as' => 'payment']);
     
-    Route::match(['get', 'post'], 'simplepay', ['uses' => 'JobsController@SimplePay', 'as' => 'simplepay']);
+    Route::match(['get', 'post'], 'simplepay/{type?}', ['uses' => 'JobsController@SimplePay', 'as' => 'simplepay']);
     
     Route::match(['get', 'post'], 'transactions', ['uses' => 'CvSalesController@Transactions', 'as' => 'transactions']);
     Route::match(['get', 'post'], 'emails-test', ['uses' => 'CvSalesController@TestEmail', 'as' => 'emails']);
@@ -172,6 +203,7 @@ Route::group(['middleware' => 'web'], function () {
     
     Route::match(['get', 'post'], 'job/team/{jobID}', ['uses' => 'JobsController@JobTeam', 'as' => 'job-team']);
     Route::match(['get', 'post'], 'job/teams/add', ['uses' => 'JobsController@JobTeamAdd', 'as' => 'job-team-add']);
+    Route::post('job/teams/remove', ['uses' => 'JobsController@removeJobTeamMember', 'as' => 'remove-job-team-member']);
     Route::match(['get', 'post'], 'job/matching/{jobID}', ['uses' => 'JobsController@JobMatching', 'as' => 'job-matching']);
     
     Route::match(['get', 'post'], 'jobs/teamedit', ['uses' => 'JobsController@Ajax', 'as' => 'ajax-edit-team']);
@@ -201,6 +233,7 @@ Route::group(['middleware' => 'web'], function () {
 
     
     Route::get('pricing', function () {
+        
         return view('guest.pricing');
     });
 

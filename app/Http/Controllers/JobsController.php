@@ -89,13 +89,18 @@ class JobsController extends Controller
           //Create User
              $link = "dashboard";   
             $user = User::where('email', $request->email_to)->first();
-            if(empty($user)){
+            $company = Company::find( get_current_company()->id );
+            if(empty($user) or is_null($user)){
                 $user = User::FirstorCreate([              
                   'email' => $request->email,
                   'name' => $request->name
                 ]);    
 
-                $link = "password/reset";
+                $link = url("password/reset");
+            }
+            else
+            {
+                $link = route('select-company',['slug'=>$company->slug]);
             }
 
 
@@ -103,7 +108,7 @@ class JobsController extends Controller
             
 
             //Add user to company users
-            $company = Company::find( get_current_company()->id );
+            
             $company->users()->attach($user->id);
 
             $job = Job::find($request->job_id);
@@ -118,7 +123,7 @@ class JobsController extends Controller
                 $message->to($user->email, $user->name);
             });*/ 
 
-            $this->mailer->send('emails.new.exculsively_invited', ['user' => $user, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=> $link], function (Message $m) use ($user) {
+            $this->mailer->send('emails.new.exclusively_invited', ['user' => $user, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=> $link], function (Message $m) use ($user) {
                 $m->from('support@seamlesshiring.com')->to($user->email)->subject('You have been Exclusively Invited');
             });
 
@@ -129,6 +134,13 @@ class JobsController extends Controller
       //$comp->users()->attach($user->id);
 
       
+    }
+
+    public function removeJobTeamMember( Request $request )
+    {
+        $company = Company::find( $request->comp );
+        $company->users()->detach($request->ref);
+        
     }
 
     public function JobTeamDecline()
@@ -162,7 +174,7 @@ class JobsController extends Controller
         // dd($job_bards);
         if ($request->isMethod('post')) {
 
-                $pickd_boards = $request->boards;
+                $pickd_boards = [ 1 ];
                 // dd( $request->all() );
            
 
@@ -192,7 +204,7 @@ class JobsController extends Controller
                           ->withInput();
                     }else{
                         // dd('Success');
-                        $pickd_boards = $request->boards;
+                        $pickd_boards = [ 1 ];
 
                         $job_data = [
                                 'title' => $request->job_title,
@@ -212,11 +224,22 @@ class JobsController extends Controller
 
                         $job = Job::FirstorCreate($job_data);
 
-                        $insidify_url = Curl::to("https://insidify.com/ss-post-job")
-                                    ->withData( array('secret' => '1ns1d1fy', 'data' => json_encode( [ 'job' => $job_data, 'specializations' => @$request->specializations, 'company' => get_current_company(), 'action_link' => url('job/apply/'.$job->id.'/'.str_slug($job->title) ) ]  ) ) )
-                                    ->post();
-                        $urls[1] = $insidify_url;
+                        //Send New job notification email
+                        $to = 'babatopeoni@gmail.com';
+                        $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => null ,'company' => $company], function ($m) use($company,$to) {
+                            $m->from(@Auth::user()->email, @$company->name);
 
+                            $m->to($to)->subject('New Job initiated');
+                        });
+
+                        // $insidify_url = Curl::to("https://insidify.com/ss-post-job")
+                        //             ->withData(  [ 'secret' => '1ns1d1fy', 'data' =>  [ 'job' => $job_data, 'specializations' => @$request->specializations, 'company' => get_current_company()->toArray(), 'action_link' => url('job/apply/'.$job->id.'/'.str_slug($job->title) ) ]  ]  )
+                        //             // ->asJson()
+                        //             ->post();
+                        // $urls[1] = $insidify_url;
+                        // 
+                        $urls[1] = "";
+                        // dd( [ 'job' => $job_data, 'specializations' => $request->specializations, 'insidify_url' => $insidify_url, 'company' => get_current_company()->toArray(), 'action_link' => url('job/apply/'.$job->id.'/'.str_slug($job->title) ) ] );
 
                         //Save job creation to activity
                         save_activities('JOB-CREATED',  $job->id );
@@ -291,10 +314,13 @@ class JobsController extends Controller
                 $pending_count++;
             }
         };
+        $subscribed_boards_id = array_pluck($subscribed_boards, 'id' );
+
+        // $all_job_boards = JobBoard::where('type', 'free')->get()->toArray();
+        $all_job_boards = JobBoard::all()->toArray();
 
 
-
-        return view('job.success-old', compact('job','insidify_url','subscribed_boards','approved_count','pending_count'));
+        return view('job.success-old', compact('job','insidify_url','subscribed_boards','approved_count','pending_count','all_job_boards','subscribed_boards_id'));
     }
 
     public function SaveJob(Request $request){
@@ -588,24 +614,24 @@ class JobsController extends Controller
 
         $subscribed_boards = $job->boards()->get()->toArray();
 
-        $approved_count = array_filter( array_pluck( $subscribed_boards, 'url' ), function(){ 
+         $approved_count =  $pending_count = 0;
 
-                if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-         } );
+        foreach ($subscribed_boards as $key => $board) {
 
-        $approved_count = count( $approved_count );
+            if($board['pivot']['url'] != '')
+            {
+                $approved_count++;
+            }
+            else
+            {
+                $pending_count++;
+            }
+        };
 
+        $myJobs = Job::getMyJobs();
+        $myFolders = array_unique( array_pluck( Solr::get_all_my_cvs($this->search_params, null, null)['response']['docs'] ,'cv_source') );
 
-        $pending_count = count($subscribed_boards) - $approved_count;
-
-        return view('job.board.home', compact('subscribed_boards', 'job_id','job', 'active_tab', 'company','result','application_statuses','approved_count', 'pending_count'));
+        return view('job.board.home', compact('subscribed_boards', 'job_id','job', 'active_tab', 'company','result','application_statuses','approved_count', 'pending_count','myJobs','myFolders'));
     }
 
     public function JobTeam($id, Request $request){
@@ -1074,7 +1100,6 @@ class JobsController extends Controller
             abort(404);
         }
 
-
         $qualifications = [
 
                 'MPhil / PhD',
@@ -1151,18 +1176,16 @@ class JobsController extends Controller
             $data = $request->all();
 
 
-            $has_applied = CV::where('email',$data['email'])->where('phone',$data['phone'])->first();
+            // $has_applied = CV::where('email',$data['email'])->orWhere('phone',$data['phone'])->first();
+            $owned_cvs = CV::where('email',$data['email'])->orWhere('phone',$data['phone'])->pluck('id');
+            $owned_applicataions_count = JobApplication::whereIn( 'cv_id', $owned_cvs )->where('job_id',$jobID)->get()->count();
 
-            /*if( $has_applied != null )
+
+
+            if( $owned_applicataions_count > 0 )
             {
-                if( JobApplication::where('cv_id', $has_applied->id)->where('job_id',$jobID)  == null )
-                {
-                    // dd( " new applicant " );
-                }
-                else{
-                    return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug, 'already_applied' => true]);
-                }
-            }*/
+                return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug, 'already_applied' => true]);
+            }
 
             
 
@@ -1487,6 +1510,19 @@ class JobsController extends Controller
     }
 
     public function SimplePay(Request $request){
+        $job = Job::find($request->job_id);
+        $company = get_current_company();
+        $to = 'support@seamlesshiring.com';
+
+        if( $request->type == 'JOB_BOARD' )
+        {
+           $mail = Mail::send('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company,$to) {
+                            $m->from(@Auth::user()->email, @$company->name);
+
+                            $m->to($to)->subject('New Job initiated');
+                        });
+        }
+        
         
         $private_key = 'test_pr_bbe9d51b272e4a718b01d5c8eb7d2c1f';
 
@@ -1549,7 +1585,34 @@ class JobsController extends Controller
         if ($response_code == '200') {
             // even is http status code is 200 we still need to check transaction had issues or not
             if ($json_response['response_code'] == '20000') {
-                $this->approveTest( $request->tests, $request->app_ids );
+                if( $request->type == 'JOB_BOARD' )
+                {
+                    
+
+
+
+                    foreach ($request->boards as $key => $board) {
+                        // $b = JobBoard::where('id',$board)->get();
+                        $job->boards()->attach($board,  ['url' => '']);
+
+                        // job_board_id,url
+                    }
+
+
+                    $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company,$to) {
+                            $m->from(@Auth::user()->email, @$company->name);
+
+                            $m->to($to)->subject('New Job Paid');
+                        });
+
+                    
+                       // $request->boards
+                }
+                else
+                {
+                    $this->approveTest( $request->tests, $request->app_ids );    
+                }
+                
                 return "true";
             } else {
                 // failed to charge the card
@@ -1557,7 +1620,29 @@ class JobsController extends Controller
             }
         } else if ($sp_status == 'true') {
             // even though it failed the call to card charge, card payment was already processed
-            $this->approveTest( $request->tests, $request->app_ids );
+            if( $request->type == 'JOB_BOARD' )
+                {
+
+
+
+                    foreach ($request->boards as $key => $board) {
+                        // $b = JobBoard::where('id',$board)->get();
+                        $job->boards()->attach($board,  ['url' => '']);
+
+                        
+                    }
+
+
+                    $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company) {
+                            $m->from($company->email, 'New Job Paid ');
+
+                            $m->to($to)->subject('New Job Paid');
+                        });
+                }
+                else
+                {
+                    $this->approveTest( $request->tests, $request->app_ids );    
+                }
             return "true";
         } else {
             // failed to charge the card

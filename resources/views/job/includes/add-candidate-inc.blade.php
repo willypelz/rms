@@ -42,9 +42,9 @@
                                 <input type="radio" name="options" id="upToFolder" autocomplete="off" value="upToFolder"> Upload to Folder
                               </label> -->
 
-                              <label class="btn btn-line">
+                              <!-- <label class="btn btn-line">
                                 <input type="radio" name="options" id="upToJob" autocomplete="off" value="upToJob"> Upload to a Job
-                              </label>
+                              </label> -->
                             </div>
                             <br><br>
                                 
@@ -101,7 +101,7 @@
                                 
                             </div>
                             
-                            <div id="inputer-opt" class="collapse">
+                            <div id="inputer-opt" class="">
 
                                 <div class="form-group fileinput fileinput-new input-group" data-provides="fileinput">
                                   <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>

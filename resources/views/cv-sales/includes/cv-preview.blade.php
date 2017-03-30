@@ -45,9 +45,9 @@
                         <div class="col-sm-12 cv-name text-center">
                             <h2>
                             @if(@$is_applicant || $page == 'pool')
-                            {{ $cv['first_name'].' '.$cv['last_name'] }}
+                            {{ $cv['first_name'].' '.@$cv['last_name'] }}
                             @else
-                            {{ $cv['first_name'].' '.substr($cv['last_name'],0,1) }}
+                            {{ $cv['first_name'].' '.substr(@$cv['last_name'],0,1) }}
                             @endif
                             </h2>
                             <p class="text-muted">{{ @$cv['last_position'] }} at <strong>{{ @$cv['last_company_worked'] }}  </strong>
@@ -65,16 +65,16 @@
                                 <p class="text-muted">{{-- @$cv['headline'] --}}</p>
                                 <ul class="list-unstyled">
                                     <li>
-                                    <strong>Sex:</strong>&nbsp; {{ $cv['gender'] }}</li>
+                                    <strong>Sex:</strong>&nbsp; {{ @$cv['gender'] }}</li>
                                     @if(@$is_applicant)
                                     <li>
-                                    <strong>Email:</strong>&nbsp; {{ $cv['email'] }}</li>
+                                    <strong>Email:</strong>&nbsp; {{ @$cv['email'] }}</li>
                                     <li>
-                                    <strong>Phone:</strong>&nbsp; {{ $cv['phone'] }}</li>
+                                    <strong>Phone:</strong>&nbsp; {{ @$cv['phone'] }}</li>
                                     @endif
                                     <li>
-                                        <strong>Age:</strong>&nbsp; {{ str_replace('ago', 'old', human_time($cv['dob'], 1)) }}
-                                        <span class="text-muted">({{ date('M d, Y', strtotime($cv['dob'])) }})</span>
+                                        <strong>Age:</strong>&nbsp; {{ str_replace('ago', 'old', human_time(@$cv['dob'], 1)) }}
+                                        <span class="text-muted">({{ date('M d, Y', strtotime(@$cv['dob'])) }})</span>
                                     </li>
                                     <li><strong>Marital Status:</strong>&nbsp; {{ @$cv['marital_status'] }}.</li>
                                     <li><strong>State of Origin:</strong>&nbsp; {{ @$cv['state_of_origin'] }}.</li>
@@ -89,11 +89,11 @@
                                 <p class="text-muted">{{-- @$cv['headline'] --}}</p>
                                 <ul class="list-unstyled">
                                     <li>
-                                    <strong>Highest Qualification:</strong>&nbsp; {{ $cv['highest_qualification'] }}</li>
+                                    <strong>Highest Qualification:</strong>&nbsp; {{ @$cv['highest_qualification'] }}</li>
                                     <li>
-                                    <strong>Years of Experience:</strong>&nbsp; {{ $cv['years_of_experience'] }} {{ ($cv['years_of_experience'] == 1 ) ? 'year' : 'years' }}</li>
+                                    <strong>Years of Experience:</strong>&nbsp; {{ @$cv['years_of_experience'] }} {{ (@$cv['years_of_experience'] == 1 ) ? 'year' : 'years' }}</li>
                                     <li>
-                                    <strong>Last Position:</strong>&nbsp; {{ $cv['last_position'] }}</li>
+                                    <strong>Last Position:</strong>&nbsp; {{ @$cv['last_position'] }}</li>
                                     <li>
                                     <strong>Last Company Worked:</strong>&nbsp; {{ @$cv['last_company_worked'] }}.</li>
                                     <li>

@@ -10,20 +10,38 @@
 
   <section class="s-div homepage pricing">
         <div class="container">
-
+          @if( !Auth::check() )
             <div class="row text-center text-brandon text-light text-white">
                <br>
                 <h1>Get a Free Trial Now!</h1>
                 <h5 class="text-uppercase l-sp-5"> 14 days of free and unlimited Access on all plans</h5><br>
             </div>
-               
-            <div class="row text-center text-brandon text-light text-white">
-               <br>
-                <h1>Hey! We bet you did <br>enjoy your 14 days experience!</h1>
-                <div class="col-xs-2 col-xs-offset-5"><hr></div>
-                <div class="clearfix"></div>
-                <h5 class="text-uppercase l-sp-5"> Choose a plan below that will best suit your needs</h5><br>
-            </div>
+          @endif
+          
+          @if(  @$account->status == 'TRIAL')
+
+            @if( @$account->has_expired == true )
+              <div class="row text-center text-brandon text-light text-white">
+                 <br>
+                  <h1>Hey! We bet you did <br>enjoy your 14 days experience!</h1>
+                  <div class="col-xs-2 col-xs-offset-5"><hr></div>
+                  <div class="clearfix"></div>
+                  <h5 class="text-uppercase l-sp-5"> Choose a plan below that will best suit your needs</h5><br>
+              </div>
+
+            @else
+
+              <div class="row text-center text-brandon text-light text-white">
+                 <br>
+                  <h1>Keep <br>enjoying your 14 days experience!</h1>
+                  <div class="col-xs-2 col-xs-offset-5"><hr></div>
+                  <div class="clearfix"></div>
+                  <h5 class="text-uppercase l-sp-5"> Choose a plan below that will best suit your needs</h5><br>
+              </div>
+
+
+            @endif
+          @endif
 
         </div>
         
@@ -47,7 +65,12 @@
                                   <br>
                                 <div class="col-sm-4 text-center no-pad">
                                   <!-- <img src="img/rope.png" width="100px" class="rope"> -->
-                                    <div class="panel panel-default panel-pricing panel-basic trial-over">
+                                    @if( @@$account->has_expired == true or @$account->status == 'TRIAL')
+                                      <div class="panel panel-default panel-pricing panel-basic trial-over">
+                                    @else
+                                      <div class="panel panel-default panel-pricing panel-basic">
+                                    @endif
+                                    
                                         <div class="panel-heading">
                                             <!-- <i class="fa fa-star"></i> -->
                                             <h3 class="text-brandon">FREE</h3>
@@ -77,7 +100,12 @@
 
                                         </ul>
                                         <div class="panel-footer">
-                                            <a class="btn btn-lg btn-line " href="{{ url('register') }}">BEGIN TRIAL</a>
+                                            @if( @@$account->has_expired == true or @$account->status == 'TRIAL')
+                                              <a class="btn btn-lg btn-line " href="{{ url('register') }}" disabled>BEGIN TRIAL</a>
+                                            @else
+                                              <a class="btn btn-lg btn-line " href="{{ url('register') }}">BEGIN TRIAL</a>
+                                            @endif
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -112,6 +140,7 @@
                                             <li class="list-group-item">Unlimited Job Posting on Free Job Boards</li>
                                             <li class="list-group-item">5% off Online Tests, Background & Medical Checks, Discount on Newspaper Ads</li>
                                             <li class="list-group-item">Dedicated Relationship Manager for Resource Support</li>
+
 <!--                                            <li class="list-group-item">3 Team Members</li>-->
 
                                         </ul>

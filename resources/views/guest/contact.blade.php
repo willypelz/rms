@@ -69,15 +69,24 @@
                                             <div class="form-group">
                                                 <label>Job Title</label>
                                                 <br>
-                                                <select class="form-control" name="enquiry_name">
-                                                    <option value=""></option>
-                                                    <option value=""></option>
-                                                    <option value=""></option>
-                                                    <option value=""></option>
-                                                    <option value=""></option>
-                                                    <option value=""></option>
-                                                    <option value=""></option>
-                                                    <option value=""></option>
+                                                <select class="form-control" name="job_title">
+                                                    <option value="CEO">CEO</option>
+                                                    <option value="COO">COO</option>
+                                                    <option value="CTO">CTO</option>
+                                                    <option value="CHRO">CHRO</option>
+                                                    <option value="Executive – Other">Executive – Others</option>
+                                                    <option value="VP – Human Resource">VP – Human Resource</option>
+                                                    <option value="VP – Recruiting/Talent Acquisition">VP – Recruiting/Talent Acquisition</option>
+                                                    <option value="VP – Other">VP – Othesr</option>
+                                                    <option value="Director – Human Resources">Director – Human Resources</option>
+                                                    <option value="Director – Recruiting/Talent Acquisition">Director – Recruiting/Talent Acquisition</option>
+                                                    <option value="Director – Other">Director – Others</option>
+                                                    <option value="Manager – Human Resources">Manager – Human Resources</option>
+                                                    <option value="">Manager – Recruiting/Talent Acquisition</option>
+                                                    <option value="">Manage – Others</option>
+                                                    <option value="">Associate</option>
+                                                    <option value="">Assistant</option>
+                                                    <option value="">Others</option>
                                                 </select>
                                             </div>
                                         </span>
@@ -86,7 +95,7 @@
                                             <div class="form-group">
                                                 <label>What can we help you with? *</label>
                                                 <br>
-                                                <select class="form-control" name="enquiry_name">
+                                                <select class="form-control" name="enquiry_type">
                                                     <option value="">Make a Selection</option>
                                                     <option value="">Sales</option>
                                                     <option value="">Support</option>

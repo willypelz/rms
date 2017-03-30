@@ -448,7 +448,7 @@
 
             <div class="form-group">
                 <div class="col-sm-7">
-                  <label for="" style="font-size: 17px;">Predesposition to Training</label>
+                  <label for="" style="font-size: 17px;">Predisposition to Training</label>
                 </div>
                 
                 <div class="col-sm-5">

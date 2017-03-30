@@ -49,9 +49,7 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.landing');
     });
 
-    Route::get('invoice/{invoice_id}', function(){
-        return view('invoice.default');
-    });
+    Route::get('invoice/{invoice_id}', [ 'as' => 'show-invoice', 'uses' => 'PaymentController@showInvoice' ]);
 
     Route::get('/invoices', function(){
         

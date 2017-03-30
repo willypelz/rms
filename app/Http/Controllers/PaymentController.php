@@ -105,27 +105,44 @@ class PaymentController extends Controller
         return view('invoice.includes.inner',compact('invoice','invoice_type'));
    }
 
-   public function showInvoce(Request $request)
+   public function showInvoice(Request $request)
    {
-    $invoice = Invoices::with('items')->where('id',$invoiceDB->id)->get()->first();
+    $invoice = Invoices::with('items')->where('id',$request->invoice_id)->get()->first();
 
         switch ($invoice->type) {
             case 'JOB_BOARD':
-                $items = new \stdClass;
-                $items->type = 'JOB BOARDS';
 
-                $board_ids = array_pluck( $invoice->items, 'type_id' );
+                foreach ($invoice->items as $key => $item) {
 
-                $boards = JobBoard::whereIn('id',$board_ids)->where('avi', NULL)->get();
-                
+                    $board = JobBoard::where('id',$item->type_id)->get()->first();
 
-                foreach ($boards as $key => $board) {
-                    $items->data[] = (object) [
-                        'image' => $board->img,
-                        'title' => $board->name,
-                        'amount' => $board->price
-                    ];
+                    if( $board->avi == NULL )
+                    {
+                        InvoiceItems::create( [
+                            'invoice_id' => $invoice->id,
+                            'type' => $invoice->type,
+                            'type_id' => $item->type_id,
+                            'image' => $board->img,
+                            'title' => $board->name,
+                            'amount' => $board->price
+                        ]);
+                    }
+                    else
+                    {
+                        InvoiceItems::create( [
+                            'invoice_id' => $invoice->id,
+                            'type' => $invoice->type,
+                            'type_id' => $item->type_id,
+                            'image' => $board->img,
+                            'title' => $board->name,
+                            'amount' => NULL
+                        ]);
+                    }
+
+                    
                 }
+
+                $invoice_type = "JOB BOARDS";
 
                 break;
             
@@ -135,6 +152,8 @@ class PaymentController extends Controller
                 $items->date = null;
                 break;
         }
+
+        return view('invoice.default',compact('invoice','invoice_type'));
    }
 
     

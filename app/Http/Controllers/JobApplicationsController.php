@@ -817,6 +817,22 @@ class JobApplicationsController extends Controller
         return view('modals.assess', compact('applicant_badge','app_ids','cv_ids','products','appl','test_available','section','count','type'));
     }
 
+    public function modalTestResult(Request $request)
+    {
+        $modalVars = $this->modalActions('Test Result', $request->cv_id, $request->app_id);
+        if( is_array( $modalVars ) )
+        {
+            extract($modalVars);
+        }
+        else
+        {
+            return $modalVars;
+        }
+
+        $section = 'TEST RESULT';
+        return view('modals.test-result', compact('app_ids','cv_ids') );
+    }
+
     public function modalBackgroundCheck(Request $request)
     {
         

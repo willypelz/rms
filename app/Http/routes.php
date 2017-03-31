@@ -468,7 +468,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('download/dossier', [ 'as' => 'download-dossier', 'uses' => 'JobApplicationsController@downloadDossier' ]);
 
-    
+    Route::get('modal/test-result', [ 'as' => 'modal-test-result', 'uses' => 'JobApplicationsController@modalTestResult']);
     
 
     Route::get('modal/reject', [ 'as' => 'modal-reject', 'uses' => 'JobApplicationsController@modalReject' ]);

@@ -170,7 +170,7 @@
           });
 
             $('#cart-total').text(  total  );
-
+            console.log(total);
 
             if( total == 0 )
             {
@@ -185,13 +185,20 @@
 
           event.preventDefault(); 
 
-            $(this).attr('disabled','disabled');
+            
 
 
            var tot = 0;
 
+           if( $('#test-start').val() == "" || $('#test-end').val() == "" )
+           {
+              $.growl.error({ message: "Select Date" });
+           }
+           else
+           {
+              $(this).attr('disabled','disabled');
 
-            $('#cart-preview tr').each(function( index ) {
+              $('#cart-preview tr').each(function( index ) {
                 // $.extend(tests,{
                 //     id: $(this).attr('data-id'),
                 //     name: $(this).find('#name').text()
@@ -229,6 +236,11 @@
                 type_ids = res.type_ids;
                 doPayment(res.total_amount, res.order_id, res.type_ids);
             });
+
+           }
+
+
+            
 
 
         });
@@ -279,12 +291,12 @@
                 type_ids = res.type_ids;
                 doPayment(res.total_amount, res.order_id, res.type_ids);
               // });
-                      $("#viewModal").html('{!! preloader() !!}');
+                      // $("#viewModal").html('{!! preloader() !!}');
             });
 
            
 
-            console.log(data);
+
         });
 
         function doPayment(total_amount, order_id,type_ids)
@@ -300,7 +312,7 @@
                     ({
                         type: "POST",
                         url: "{{ route('show-invoice-pop') }}",
-                        data: ({ rnd : Math.random() * 100000 ,type_ids: type_ids, job_id: "{{ $appl->job->id }}", type : type, status : 'ORDER' }),
+                        data: ({ rnd : Math.random() * 100000 ,type_ids: type_ids, job_id: "{{ $appl->job->id }}", type : type, status : 'ORDER' , count: {{ $count }} }),
                         success: function(response){
 
                           $( '#cont' ).html( response );

@@ -202,6 +202,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'job/team/{jobID}', ['uses' => 'JobsController@JobTeam', 'as' => 'job-team']);
     Route::match(['get', 'post'], 'job/teams/add', ['uses' => 'JobsController@JobTeamAdd', 'as' => 'job-team-add']);
     Route::post('job/teams/remove', ['uses' => 'JobsController@removeJobTeamMember', 'as' => 'remove-job-team-member']);
+    Route::get('job/teams/decline', ['uses' => 'JobsController@JobTeamDecline', 'as' => 'job-team-decline']);
     Route::match(['get', 'post'], 'job/matching/{jobID}', ['uses' => 'JobsController@JobMatching', 'as' => 'job-matching']);
     
     Route::match(['get', 'post'], 'jobs/teamedit', ['uses' => 'JobsController@Ajax', 'as' => 'ajax-edit-team']);

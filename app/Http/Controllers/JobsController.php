@@ -104,8 +104,11 @@ class JobsController extends Controller
             }
 
 
+            $decline = route('job-team-decline', [ 'ref' => encrypt(  $user->id."_".$company->id) ]);
+
             $mail_body = $request->body_mail;
             
+
 
             //Add user to company users
             
@@ -143,9 +146,16 @@ class JobsController extends Controller
         
     }
 
-    public function JobTeamDecline()
+    public function JobTeamDecline( Request $request )
     {
-        
+        $val = decrypt( @$request->ref );
+        list($user_id,$company_id) = explode('_', $val);
+
+        $company = Company::find( $company_id );
+        $company->users()->detach($user_id);
+
+        Session::flash('status', 'You have been removed from '.$company->name.'\'s job team');
+        return redirect()->to('login');
     }
    
     public function PostJob(Request $request)
@@ -704,7 +714,8 @@ class JobsController extends Controller
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
                                       '. $ac->user->name .' Created a new Job <a href="'. url(@$job->company->slug.'/job/'.$job->id.'/'.str_slug($job->title) )  .'"><strong>'.$job->title.'</strong>.
                                   </p>
-                                </li>';                     break;
+                                </li>';                     
+                    break;
                  case "APPLIED":
 
                      $applicant = $ac->application->cv;
@@ -757,6 +768,39 @@ class JobsController extends Controller
                                 </li>';
                      break;
 
+                    case "TEST_ORDER":
+                 $applicant = $ac->application->cv;
+                     $content .= '<li role="candidate-application" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-info"></i>
+                                    <i class="fa fa-question-circle-o fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-info">Test</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      A test as been ordered <a href="'. url('job/candidates/'.$ac->application->job->id.'#ASSESSED') .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a>.
+                                  </p>
+                                </li>';
+                     break;
+
+                     case "TEST_RESULT":
+                 $applicant = $ac->application->cv;
+                     $content .= '<li role="candidate-application" class="list-group-item">
+                          
+                                 <span class="fa-stack fa-lg i-notify">
+                                    <i class="fa fa-circle fa-stack-2x text-info"></i>
+                                    <i class="fa fa-question-circle-o fa-stack-1x fa-inverse"></i>
+                                  </span>
+                          
+                                  <h5 class="no-margin text-info">Test</h5>
+                                  <p>
+                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <a href="'. url('job/candidates/'.$ac->application->job->id.'#ASSESSED') .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a>\'s test result has been sent.
+                                  </p>
+                                </li>';
+                     break;
 
                   case "PENDING":
                  $applicant = $ac->application->cv;
@@ -1608,7 +1652,8 @@ class JobsController extends Controller
                     
                        // $request->boards
                 }
-                else
+
+                if( $request->type == 'TEST' )
                 {
                     $this->approveTest( $request->tests, $request->app_ids );    
                 }
@@ -1663,7 +1708,6 @@ class JobsController extends Controller
                     ];
 
 
-
                                 
                     $query = TestRequest::where('job_application_id',$app_id)
                                 ->where('test_id',$test['id']);
@@ -1672,11 +1716,9 @@ class JobsController extends Controller
 
                     $query->update($data);
 
+                    $app = JobApplication::with('cv','job')->find($app_id);
 
-
-                    $app = JobApplication::with('cv')->find($app_id);
-
-
+                    JobApplication::massAction( @$request->job_id,  @$request->cv_ids , 'ASSESSED' );
 
                     $response = Curl::to('http://seamlesstesting.com/test-request')
                                     ->withData( [ 'test_id' => $test['test_id'], 'job_application_id' => $app_id, 'applicant_name' => ucwords( @$app->cv->first_name. " " . @$app->cv->last_name ), 'applicant_email' => $app->cv->email, 'employer_name' => get_current_company()->name, 'employer_email' => get_current_company()->email , 'start_time' => $test['start_time'], 'end_time' => $test['end_time'] ] )

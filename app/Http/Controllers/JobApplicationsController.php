@@ -813,6 +813,7 @@ class JobApplicationsController extends Controller
         $products = AtsProduct::all(); 
         $section = 'TEST';
         $type = "TEST";
+        $done_test = TestRequest::whereIn('job_application_id',$request->app_id)->get()->toArray()->pluck('id');
         return view('modals.assess', compact('applicant_badge','app_ids','cv_ids','products','appl','test_available','section','count','type'));
     }
 
@@ -889,7 +890,7 @@ class JobApplicationsController extends Controller
 
 
         foreach ($request->tests as $key => $test) {
-            
+
             $orderItems = OrderItem::firstOrCreate([
                         'order_id' => $order->id,
                         'itemId' => $test['id'],
@@ -898,7 +899,7 @@ class JobApplicationsController extends Controller
                         'price' => $test['cost']
              ]);
 
-            foreach ( $request->app_ids as $key => $app_id) {
+            foreach ( $request->app_ids as $key3 => $app_id) {
                $data = [
                     'location' => @$request->location,
                     'start_time' => @$request->start_time,
@@ -912,11 +913,11 @@ class JobApplicationsController extends Controller
                 
                 ];
 
-
+                save_activities('TEST_ORDER', @$request->job_id, $request->app_ids );
 
                             
-                $test = TestRequest::create($data);
-                $test_ids[] = $test->id;
+                $test_request = TestRequest::create($data);
+                $test_ids[] = $test_request->id;
 
                 $app = JobApplication::with('cv')->find($app_id);
 
@@ -928,7 +929,6 @@ class JobApplicationsController extends Controller
             // var_dump($data);
         }
 
-        JobApplication::massAction( @$request->job_id,  @$request->cv_ids , 'ASSESSED' );
 
         $res = array();
         $res = ['total_amount'=>$request->total_amount, 'order_id'=>$order->id, 'type_ids' => $test_ids];
@@ -955,7 +955,10 @@ class JobApplicationsController extends Controller
                  dd( $validator->messages() );
             }
             else{
-                
+                $app = JobApplication::with('job')->where( 'id', $request->job_application_id )->first();
+
+                save_activities('TEST_RESULT', @$app->job->id, $request->job_application_id );
+
                 TestRequest::where( 'job_application_id' , $request->job_application_id )
                             ->where( 'test_id', $request->test_id )
                             ->update( ['actual_start_time' => $request->actual_start_time,

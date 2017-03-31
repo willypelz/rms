@@ -96,8 +96,8 @@ class PaymentController extends Controller
                         'invoice_id' => $invoiceDB->id,
                         'type' => $request->type,
                         'type_id' => $type_id,
-                        'image' => $board->img,
-                        'title' => $check->product->provider->logo,
+                        'image' => $check->product->provider->logo,
+                        'title' => $check->product->name,
                         'amount' => $check->product->cost
                     ]);
                     
@@ -133,14 +133,14 @@ class PaymentController extends Controller
                 foreach ($request->type_ids as $key => $type_id) {
 
                     $test = TestRequest::with('product.provider')->where('id',$type_id)->get()->first();
-
+                    // dump( $type_id, $test->product->provider, $test->product->provider->logo );
                     InvoiceItems::create( [
                         'invoice_id' => $invoiceDB->id,
                         'type' => $request->type,
                         'type_id' => $type_id,
-                        'image' => $test->product->provider->logo,
-                        'title' => $test->product->name,
-                        'amount' => $test->product->cost
+                        'image' => @$test->product->provider->logo,
+                        'title' => @$test->product->name,
+                        'amount' => @$test->product->cost
                     ]);
                     
                 }
@@ -157,6 +157,17 @@ class PaymentController extends Controller
         }
 
         $invoice = Invoices::with('items')->where('id',$invoiceDB->id)->get()->first();
+        if( @$request->count )
+        {
+            $total_multiplier = intval( @$request->count );
+            $count = ' x ' .@$request->count;
+
+        }
+        else
+        {
+            $total_multiplier = 1;
+            $count = '';
+        }
         // $mail = Mail::queue('emails.new.invoice', ['job' => $job], function ($m) use($invoice,$invoice_type) {
         //             $m->from('no-reply@seamlesshiring.com', 'Seamlesshiring');
 
@@ -167,7 +178,7 @@ class PaymentController extends Controller
 
 
 
-        return view('invoice.includes.inner',compact('invoice','invoice_type'));
+        return view('invoice.includes.inner',compact('invoice','invoice_type','count','total_multiplier'));
    }
 
    public function showInvoice(Request $request)

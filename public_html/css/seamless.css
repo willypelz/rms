@@ -202,21 +202,29 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     background: #FBFCFD;
 }
 .btn-group-justified.btn-tabs.home-tabs>.btn-group .btn{
-    white-space:normal;
-    padding: 0 35px 35px;
-    height:125px;
-    font-size:12px;
+    white-space: normal;
+    padding: 12px 35px;
+    height: 150px;
+    font-size: 18px;
     border-width: 0;
-    color: #3A5979;
-    background: #EFF2F5;
+    color: #eff2f5;
+    background: rgba(5, 19, 33, 0.7);
+}
+.btn-group-justified.btn-tabs.home-tabs>.btn-group .btn:hover{
+    background:rgba(5, 19, 33, 0.44);
 }
 .btn-group-justified.btn-tabs.home-tabs>.btn-group .btn .fa-stack{
-    margin-top:-7rem;
+    margin-top: -3.3rem;
+    margin-bottom: -17px;
+    z-index: 0;
 }
 .btn-group-justified.btn-tabs.home-tabs>.btn-group .btn .fa-circle{
     font-size: 2.3em;
     margin-top: -4px;
-    color: #EFF2F5;
+    color: transparent;
+}
+.navitude{
+    margin-top: 4.5em;
 }
 .text-orange {
     color: #D49220;
@@ -228,7 +236,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     color: #C13330 !important;
 }
 .text-blue {
-    color: #568FCA;
+    color: #2889ce;
 }
 .fa-abx{
     position: absolute;
@@ -473,9 +481,9 @@ section.s-div{
     /*border-bottom: 3px solid #5CB85C;*/
 }
 section.s-div.homepage{
-    /* background: #10588a fixed bottom url(../img/office-interior.jpg); */
+    background: #10588a fixed bottom url(../img/intro-bg-new.jpg);
     background-size: cover;
-    padding: 8em 0 5em;
+    padding: 8em 0 0em;
     /* border-bottom: 5px solid #96b5d0; */
 }
 section.s-div.dashboard{
@@ -514,16 +522,16 @@ section.dark .row {
     margin-bottom: 0;
 }
 .section-tab:before {
-    content:'';
+    content: '';
     width: 0;
     height: 0;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-    border-bottom: 20px solid #ffffff;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-bottom: 30px solid #ffffff;
     position: absolute;
-    margin-top: -8.75rem;
-    margin-left: -20px;
-    z-index:10000;
+    margin-top: -8.5rem;
+    margin-left: -32px;
+    z-index: 10000;
 }
 .section-tab#tab-1:before {
     left: 10%;
@@ -1001,7 +1009,7 @@ h3.faq-section {
     font-weight: lighter;
 }
 .home{
-    background: rgba(226, 226, 226, 0) !important;
+    background: rgba(226, 226, 226, 0) url('../img/intro-bg-new.jpg') !important;
     border-left: 1px solid #eee;
     padding: 30px 10px 29px;
     font-size: 19px;
@@ -2015,7 +2023,7 @@ ul.notif > li a img {
 }
 
 section.blue{
-    background: #3A5979 url('../img/intro-bg2.jpg') center bottom fixed;
+    background: #2889ce url('../img/intro-bg2.jpg') center bottom fixed;
     background-size: cover;
     color: #ffffff;
 }
@@ -3098,7 +3106,7 @@ div.baser {
     border-top:1px solid rgba(175, 25, 59, 0.51);
 }
 .job-item.blue{
-    border-top:1px solid rgba(64, 142, 176, 0.52);
+    border-top:1px solid #2889ce;
 }
 .job-item.green{
     border-top:1px solid rgba(74, 191, 116, 0.54);
@@ -3289,7 +3297,7 @@ section.invite{
     color: rgba(120, 139, 43, 1);
 }
 .color-blue{
-    color:#239fb1;
+    color: #2889ce;
 }
 .color-cream{
     color: rgba(241, 255, 182, 1);
@@ -3406,7 +3414,7 @@ border-color: #BDFDBA;
     margin-bottom: -25px;
 }
 .panel-default.panel-blue{
-    background-color: #6C899E;
+    background-color: #2889ce;
     color: #fff;
     margin-bottom: 25px;
 }
@@ -3739,7 +3747,7 @@ div.callout {
     border: 1em solid transparent;
     position: absolute;
     left: 45%;
-    top: -22px;
+    top: -25px;
     border-bottom: 10px solid #d9534f;
 }
 .pricey-callout .closer,
@@ -4376,6 +4384,9 @@ textarea.embed-code {
     width: 24%;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.06);
 }
+.blue-bg{
+        background-color: #2889ce;
+}
 .cta {
     padding: 0.7em 2.5em;
     border-radius: 30px;
@@ -4590,6 +4601,11 @@ a.less-link:after {
   }
 }
 @media (max-width: 768px) {
+    .navbar a.navbar-brand {
+    margin-top: 0px;
+    margin-right: 20px;
+    margin-left: 15px !important;
+}
     .btn-group-justified.btn-tabs.home-tabs>.btn-group .btn{
             height:85px;
         }

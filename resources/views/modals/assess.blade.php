@@ -231,7 +231,7 @@
                 // $( '#viewModal' ).modal('toggle');
                  // console.log(res);
                 // $('.modal-body').html('{!! preloader() !!}');
-                total_amount = res.total_amount;
+                total_amount = ( parseInt( res.total_amount ) * 0.05 ) + parseInt( res.total_amount );
                 order_id = res.order_id;
                 type_ids = res.type_ids;
                 doPayment(total_amount, order_id, type_ids);
@@ -286,7 +286,7 @@
 
               //  $.post('{{ route("checkout") }}', data, function(){
                 // $('.modal-body').html('{!! preloader() !!}');
-                total_amount = res.total_amount;
+                total_amount = ( parseInt( res.total_amount ) * 0.05 ) + parseInt( res.total_amount );
                 order_id = res.order_id;
                 type_ids = res.type_ids;
                 doPayment(total_amount, order_id, type_ids);
@@ -307,7 +307,7 @@
           }
           else
           {
-
+            console.log('First total ' + total_amount);
             $.ajax
                     ({
                         type: "POST",
@@ -352,10 +352,10 @@
                  // postal_code: '110001', // user's postal code
                  // city: '', // user's city
                  country: 'NG', // user's country
-                 amount: total_amount+'00', // value of the purchase, ₦ 1100
+                 amount: total_amount * 100, // value of the purchase, ₦ 1100
                  currency: 'NGN' // currency of the transaction
               });
-
+            console.log( total_amount , total_amount * 100 );
 
               function processPayment (token, paid) {
 

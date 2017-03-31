@@ -78,7 +78,7 @@
 @if( $invoice->status == 'UNPAID' )
 <div>
 <p style="font-weight: bold;padding: 20px;background: #FBEEEB;text-align: center;">If you choose to make payment directly to our bank account by visiting a bank physically or via online transfer, do ensure to
-send a mail to billing@insidify.com stating the details of your payment.
+send a mail to support@seamlesshiring.com stating the details of your payment.
 </p>
 </div>
 @endif
@@ -218,12 +218,12 @@ Invoice Date: {{ date('D. j M, Y', strtotime( $invoice->created_at ) ) }}<br>
 		    @if( $invoice->type = 'JOB_BOARDS' )
 				
 				@if( !is_null( $data->amount ) )
-					₦{{ $data->amount }}
+					₦{{ number_format( $data->amount, 2 ) }}
 				@else
 					Your request is being processed, you will be contacted.
 				@endif
 			@else
-				₦{{ $data->amount }}
+				₦{{ number_format( $data->amount, 2) }}
 			@endif</td>
 			
 		</tr>
@@ -272,9 +272,9 @@ Invoice Date: {{ date('D. j M, Y', strtotime( $invoice->created_at ) ) }}<br>
     border-left: 0;
     text-align:;
     font-size:15px;
-    ">₦{{ $total }}</td>
+    ">₦{{ number_format( $total, 2 ) }}</td>
     </tr>
-        <!-- <tr style="
+        <tr style="
     font-size: 16px;
     font-weight: bold;">
         <td style="
@@ -298,8 +298,8 @@ Invoice Date: {{ date('D. j M, Y', strtotime( $invoice->created_at ) ) }}<br>
     border-left: 0;
     text-align:;
     font-size:15px;
-    " width ="50%" class="textcenter">N257.14</td>
-    </tr> -->
+    " width ="50%" class="textcenter">₦{{ number_format( $total * 0.05, 2 ) }}</td>
+    </tr>
             <!-- <tr style="
     font-size: 16px;
     font-weight: bold;">
@@ -350,7 +350,7 @@ Invoice Date: {{ date('D. j M, Y', strtotime( $invoice->created_at ) ) }}<br>
     border-left: 0;
     text-align:;
     font-size:15px;
-    " width="50%" class="textcenter">₦{{ $total }}</td>
+    " width="50%" class="textcenter">₦{{ number_format( ( $total * 0.05 ) + $total, 2 ) }}</td>
     </tr>
 </tbody></table>
 

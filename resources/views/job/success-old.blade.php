@@ -734,6 +734,7 @@
         });
 
         function loadSimplePay(){
+          total = ( total * 0.05 ) + total;
            var handler = SimplePay.configure({
                  token: processPayment, // callback function to be called after token is received
                  key: 'test_pu_6afdbcd91aa446ecb7f79a2f29c2b530', // place your api key. Demo: test_pu_*. Live: pu_*
@@ -749,7 +750,7 @@
                  // postal_code: '110001', // user's postal code
                  // city: '', // user's city
                  country: 'NG', // user's country
-                 amount: total+'00', // value of the purchase, ₦ 1100
+                 amount: total * 100, // value of the purchase, ₦ 1100
                  currency: 'NGN' // currency of the transaction
               });
 

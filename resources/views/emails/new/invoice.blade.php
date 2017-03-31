@@ -52,12 +52,12 @@
 																	    	<b>@if( $invoice->type = 'JOB_BOARDS' )
 																					
 																					@if( !is_null( $data->amount ) )
-																						₦{{ $data->amount }}
+																						₦{{ number_format( $data->amount, 2) }}
 																					@else
 																						Your request is being processed, you will be contacted.
 																					@endif
 																				@else
-																					₦{{ $data->amount }}
+																					₦{{ number_format( $data->amount, 2) }}
 																				@endif</b>
 																	    	</p>
 																	    	
@@ -65,7 +65,7 @@
 																		<hr style="border-color: #eee;border-width: 1px 0 0">
 
 																		
-																		<b>Total:₦{{ $total }}</b>
+																		<b>Total:₦{{ number_format( $total,2 ) }}</b>
 																		<hr style="border-color: #eee;border-width: 1px 0 0">
 
 																		<br>

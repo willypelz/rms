@@ -35,7 +35,7 @@
 																	
 																	<!--																CONTENTS SECTION-->
 																	<div style="color:#2d2d2d;width:100%;margin:0 auto;">
-																		<a style="text-decoration:none"><h3 style="font-size: 20px; font-family: Roboto,'Open Sans','Helvetica Neue',Arial,Helvetica,sans-serif;word-wrap:break-word;color:#2889ce;text-decoration:none;display:block;text-align: center;text-transform:capitalize;width:100%;margin:0 0 5%;padding:0;">Successful Payment of ₦{{$amount}} (Invoice #{{ $invoice->id }})</h3></a>
+																		<a style="text-decoration:none"><h3 style="font-size: 20px; font-family: Roboto,'Open Sans','Helvetica Neue',Arial,Helvetica,sans-serif;word-wrap:break-word;color:#2889ce;text-decoration:none;display:block;text-align: center;text-transform:capitalize;width:100%;margin:0 0 5%;padding:0;">Successful Payment of ₦{{ number_format( $amount, 2) }} (Invoice #{{ $invoice->id }})</h3></a>
 																		<hr style="border-width:0 0 1px">
 																		<!--																		Paste New template here-->
 																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.3em;">Dear {{ $user->name }}, <br>
@@ -45,7 +45,7 @@
 																		<p style="font-weight: bold">
 																			Status: Approved by Financial Institution. <br>
 																			Amount Paid: ₦{{ number_format( $amount ) }}  <br>
-																			Transaction Ref No: {{ encrypt( $invoice->id ) }} <br>
+																			<!-- Transaction Ref No: {{ encrypt( $invoice->id ) }} <br> -->
 																			Date: {{ date('D. j M, Y', strtotime( $invoice->updated_at ) ) }} <br>
 																		</p>
 																		<p>If you have any issues with this transaction, do not hesitate to send us a mail at support@seamlesshiring.com stating the transaction reference number.
@@ -74,7 +74,7 @@
 												</tr>
 												<tr>
 													<td style="background-color: #28323c; font-family:Arial,Helvetica,sans-serif;padding:0 7% 7%">
-														<div style="color:#2d2d2d;width:100%;float:none;clear:both;text-align:center;padding:0 0 5%" align="center">
+														<!-- <div style="color:#2d2d2d;width:100%;float:none;clear:both;text-align:center;padding:0 0 5%" align="center">
 															<p style="font-family:Arial,Helvetica,sans-serif;color:#fff;font-size:12px;font-weight:700;text-transform:uppercase;margin:5% 0;padding:0;letter-spacing:2px">Follow Insidify</p>
 															<table border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;width:100%!important;max-width:290px;margin:0 auto;">
 																<tbody>
@@ -102,7 +102,7 @@
 																		</td>
 																	</tr>
 																</tbody>
-															</table>
+															</table> -->
 														</div>
 														<div style="color:#fff;width:100%;text-align:center;margin:0;padding:0" align="center">
 															<p style="font-family:Arial,Helvetica,sans-serif;color: #ddd;font-size:12px;line-height:1.42em;text-align:center;margin:0 10px;padding:0;" align="center">

@@ -233,5 +233,12 @@ $mail = Mail::send('emails.new.invoice', compact('invoice','invoice_type','user'
         return view('invoice.includes.inner',compact('invoice','invoice_type','count','total_multiplier'));
    }
 
+   public function allInvoices(Request $request)
+   {
+        $invoices = Invoices::with('items')->where('company_id', get_current_company()->id)->paginate(10);
+
+        return view('invoice.listing', compact('invoices'));
+   }
+
     
 }

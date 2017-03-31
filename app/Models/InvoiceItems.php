@@ -15,7 +15,7 @@ class InvoiceItems extends Model
      *
      * @var array
      */
-    protected $fillable = ['invoice_id', 'type_id', 'type','image','title','amount', 'created_at','updated_at'];
+    protected $fillable = ['invoice_id', 'type_id', 'type','image','title','amount', 'created_at','updated_at','count'];
 
     protected $table = 'invoice_items';
 }

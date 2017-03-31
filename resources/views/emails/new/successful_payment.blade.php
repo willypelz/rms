@@ -35,55 +35,33 @@
 																	
 																	<!--																CONTENTS SECTION-->
 																	<div style="color:#2d2d2d;width:100%;margin:0 auto;">
-																		<a href="" style="text-decoration:none"><h3 style="font-size: 20px; font-family: Roboto,'Open Sans','Helvetica Neue',Arial,Helvetica,sans-serif;word-wrap:break-word;color:#2889ce;text-decoration:none;display:block;text-align: center;text-transform:capitalize;width:100%;margin:0 0 5%;padding:0;">{{ 'Customer Invoice: #'.$invoice->id }}</h3></a>
+																		<a style="text-decoration:none"><h3 style="font-size: 20px; font-family: Roboto,'Open Sans','Helvetica Neue',Arial,Helvetica,sans-serif;word-wrap:break-word;color:#2889ce;text-decoration:none;display:block;text-align: center;text-transform:capitalize;width:100%;margin:0 0 5%;padding:0;">Successful Payment of ₦{{$amount}} (Invoice #{{ $invoice->id }})</h3></a>
 																		<hr style="border-width:0 0 1px">
 																		<!--																		Paste New template here-->
-																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.3em;">Dear {{ Auth::user()->first_name.' '.Auth::user()->last_name }}, <br>
-																		<br>This is a notice that an invoice #{{ $invoice->id }} has been generated on {{ date('D. j M, Y', strtotime( $invoice->created_at ) ) }}, based on your interest to pay for {{ strtolower( $invoice_type ) }}:</p><br>
-																		<hr style="border-color: #eee;border-width: 1px 0 0">
+																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.3em;">Dear {{ $user->name }}, <br>
+																		<br>You have just made a successful payment for the invoice #{{ $invoice->id }}.</p>
+																		<p>Find the details below.</p>
 
-																		<p style="font-weight: bold">{{ $invoice_type }}:</p>
+																		<p style="font-weight: bold">
+																			Status: Approved by Financial Institution. <br>
+																			Amount Paid: ₦{{ number_format( $amount ) }}  <br>
+																			Transaction Ref No: {{ encrypt( $invoice->id ) }} <br>
+																			Date: {{ date('D. j M, Y', strtotime( $invoice->updated_at ) ) }} <br>
+																		</p>
+																		<p>If you have any issues with this transaction, do not hesitate to send us a mail at support@seamlesshiring.com stating the transaction reference number.
+																			 Note: This email will serve as an official receipt for this payment. 
+																			</p>
 
-																		<?php $total = 0; ?>
-																	    @foreach($invoice->items as $data)
-																	    	<?php $total += intval($data->amount); ?>
-																	    	<p style="font-weight: normal">
-																	    	{{ $data->title }} *
-																	    	<b>@if( $invoice->type = 'JOB_BOARDS' )
-																					
-																					@if( !is_null( $data->amount ) )
-																						₦{{ $data->amount }}
-																					@else
-																						Your request is being processed, you will be contacted.
-																					@endif
-																				@else
-																					₦{{ $data->amount }}
-																				@endif</b>
-																	    	</p>
-																	    	
-																		@endforeach
-																		<hr style="border-color: #eee;border-width: 1px 0 0">
-
-																		
-																		<b>Total:₦{{ $total }}</b>
-																		<hr style="border-color: #eee;border-width: 1px 0 0">
-
-																		<br>
-																		<p style="font-weight: bold">How to Pay</p>
-																		<p>You may make your payments to: <br>
-																			Account Name: ******************  <br>
-																			Account No: ********************  <br>
-																			Bank: ************************** <br><br>
-																			OR visit {{ route('show-invoice',['invoice_id'=>$invoice->id])  }} to make payment through your debit card. <br></p>
-																		<p>Please find attached the full invoice details.</p>
 																		<div style="color:#2d2d2d;" align="center">
-																			<a href="" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color: #4bb779;text-transform:uppercase" target="_blank">pay now</a>
+																			<a href="" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:auto;padding:0px 15px;background-color: #4bb779;text-transform:uppercase" target="_blank">proceed to your dashboard</a>
 																		</div>
+
+																		<p>	Best, <br>
+																			The SeamlessHiring Team
+																		</p>																		
 																		
-																		
-																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.3em;">Best.</p>
 																		<hr style="border-width:0 0 1px">
-																		</div>
+																	</div>
 																	<!--END OF CONTENTS SECTION -->
 																	
 																	<small style="color:#afafaf">You are receiving this mail because the recruiter for this job is registered on SeamlessHiring. If you did not attempt to apply on www.seamlesshiring.com, kindly ignore this mail.</small>
@@ -96,7 +74,7 @@
 												</tr>
 												<tr>
 													<td style="background-color: #28323c; font-family:Arial,Helvetica,sans-serif;padding:0 7% 7%">
-														<div style="color:#2d2d2d;width:100%;float:none;clear:both;text-align:center;padding:0 0 5% display:none;" align="center">
+														<div style="color:#2d2d2d;width:100%;float:none;clear:both;text-align:center;padding:0 0 5%" align="center">
 															<p style="font-family:Arial,Helvetica,sans-serif;color:#fff;font-size:12px;font-weight:700;text-transform:uppercase;margin:5% 0;padding:0;letter-spacing:2px">Follow Insidify</p>
 															<table border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;width:100%!important;max-width:290px;margin:0 auto;">
 																<tbody>

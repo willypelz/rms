@@ -571,6 +571,7 @@
         var job_id = "{{ $job->id }}";
         var has_invoice = false;
         var selected_jobs = 0;
+        var invoice_no;
 
         $('.open-more').click(function(){
             $('.hidify').fadeOut();
@@ -704,10 +705,12 @@
                     ({
                         type: "POST",
                         url: "{{ route('show-invoice-pop') }}",
-                        data: ({ rnd : Math.random() * 100000 ,type_ids: boards, job_id: job_id, type : 'JOB_BOARD', status : 'ORDER' }),
+                        data: ({ rnd : Math.random() * 100000 ,type_ids: boards, job_id: job_id, type : 'JOB_BOARD', status : 'UNPAID' }),
                         success: function(response){
 
-                          $( '#success .modal-body' ).html( response );
+                          $( '#success .modal-body' ).html( response.html );
+
+                          invoice_no = response.invoice_no; 
                           has_invoice = true;
                           $this.find('.text').text( 'PAY NOW' );
                           $('#dashboard').text( 'Go to Dashboard' );
@@ -757,12 +760,12 @@
 
               
 
-                var url ="{{ route('simplepay', ['JOB_BOARD']) }}";
+                var url ="{{ route('simplepay') }}";
                   $.ajax
                     ({
                         type: "POST",
                         url: url,
-                        data: ({ rnd : Math.random() * 100000, token:token, status: paid, amount: SimplePay.amountToLower( total ), currency : 'NGN', boards: boards, job_id: job_id }),
+                        data: ({ rnd : Math.random() * 100000, token:token, status: paid, type : 'JOB_BOARD', amount: SimplePay.amountToLower( total ), currency : 'NGN', boards: boards, job_id: job_id, invoice_no:invoice_no }),
                         success: function(response){
 
                             $('#pay').hide();

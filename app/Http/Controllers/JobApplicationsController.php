@@ -813,7 +813,7 @@ class JobApplicationsController extends Controller
         $products = AtsProduct::all(); 
         $section = 'TEST';
         $type = "TEST";
-        $done_test = TestRequest::whereIn('job_application_id',$request->app_id)->get()->toArray()->pluck('id');
+        $done_test = array_pluck( TestRequest::whereIn('job_application_id',$app_ids)->get()->toArray(), 'id');
         return view('modals.assess', compact('applicant_badge','app_ids','cv_ids','products','appl','test_available','section','count','type'));
     }
 

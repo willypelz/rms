@@ -24,7 +24,7 @@
                                                     </a>
                                                 </div>
                                                 <div class="media-body">
-                                                    <h5 class="media-heading">{{ $product->name }}</h5>
+                                                    <h5 class="media-heading"><strong>{{ $product->name }}</strong></h5>
                                                     {{ $product->summary }} 
                                                 </div>
                                             </div>
@@ -142,7 +142,7 @@
         var tests = [];
         var checks = [];
 
-        var total_amount, order_id,type_ids;
+        var total_amount, order_id,type_ids,invoice_no;
 
         $('body #request-btn').on('click', function(){
           $('#cart-preview').append('<tr data-id="' + $(this).attr('data-id') +'" data-owner="' + $(this).attr('data-owner') +'"><td id="name">' + $(this).attr('data-title') +'</td><td ><span id="amount">' + $(this).attr('data-amount') + "</span> x " + {{ $count }} + ' </td><td class="text-right"><a href="javascript://" id="delete-request"><i class="fa fa-times-circle text-danger"></i> </a></td></tr>');
@@ -170,7 +170,7 @@
           });
 
             $('#cart-total').text(  total  );
-            console.log(total);
+
 
             if( total == 0 )
             {
@@ -219,7 +219,7 @@
                 app_ids: app_ids,
                 cv_ids: cv_ids,
                 job_id: "{{ $appl->job->id }}",
-                total_amount: tot,
+                total_amount: tot * parseInt( {{ $count }} ),
                 type: type,
                 tests : tests
                 // test_id: 
@@ -234,7 +234,7 @@
                 total_amount = res.total_amount;
                 order_id = res.order_id;
                 type_ids = res.type_ids;
-                doPayment(res.total_amount, res.order_id, res.type_ids);
+                doPayment(total_amount, order_id, type_ids);
             });
 
            }
@@ -275,7 +275,7 @@
                 job_id: "{{ $appl->job->id }}",
                 checks : checks,
                 service_type: "{{ $section }}",
-                total_amount: tot,
+                total_amount: tot * parseInt( {{ $count }} ),
                 type: type
                 // test_id: 
                 // test_name: 
@@ -289,7 +289,7 @@
                 total_amount = res.total_amount;
                 order_id = res.order_id;
                 type_ids = res.type_ids;
-                doPayment(res.total_amount, res.order_id, res.type_ids);
+                doPayment(total_amount, order_id, type_ids);
               // });
                       // $("#viewModal").html('{!! preloader() !!}');
             });
@@ -312,12 +312,13 @@
                     ({
                         type: "POST",
                         url: "{{ route('show-invoice-pop') }}",
-                        data: ({ rnd : Math.random() * 100000 ,type_ids: type_ids, job_id: "{{ $appl->job->id }}", type : type, status : 'ORDER' , count: {{ $count }} }),
+                        data: ({ rnd : Math.random() * 100000 ,type_ids: type_ids, job_id: "{{ $appl->job->id }}", type : type, status : 'UNPAID' , count: {{ $count }} }),
                         success: function(response){
 
-                          $( '#cont' ).html( response );
+                          $( '#cont' ).html( response.html );
                           $('#pay').show();
                           has_invoice = true;
+                          invoice_no = response.invoice_no; 
                           $("#viewModal .close").hide();
                           $("#viewModal .modal-title").text('Invoice');
                           // $this.find('.text').text( 'PAY NOW' );
@@ -346,7 +347,7 @@
               {
                  email: 'me@ayolana.com', // optional: user's email
                  phone: '+2348038953794',
-                 description: 'Payment for ' + type, // a description of your choosing
+                 description: 'Payment for ' + type.replace("_", " "), // a description of your choosing
                  // address: '', // user's address
                  // postal_code: '110001', // user's postal code
                  // city: '', // user's city
@@ -358,7 +359,7 @@
 
               function processPayment (token, paid) {
 
-                console.log('Token is '+token+' and order_id is '+order_id + ' paid -' + paid);
+                console.log(token, paid, type);
 
               
 
@@ -367,7 +368,7 @@
                     ({
                         type: "POST",
                         url: url,
-                        data: ({ rnd : Math.random() * 100000, token:token, status: paid, amount: SimplePay.amountToLower( total_amount ), currency : 'NGN', app_ids:app_ids, tests:tests  }),
+                        data: ({ rnd : Math.random() * 100000, token:token, status: paid, amount: SimplePay.amountToLower( total_amount ), currency : 'NGN', app_ids:app_ids, tests:tests, invoice_no:invoice_no, type:type  }),
                         success: function(response){
                             sh.reloadStatus();
                             $( '#viewModal' ).modal('toggle');

@@ -90,9 +90,9 @@
 
           @if(@$test_available)
           <form>
-              <h5>Test Details</h5>
+              <h4 class="text-center"><strong>Test Details</strong></h4>
               <div class="form-group">
-                  <!--<label>Location</label>-->
+                  <label>Location</label>
                   <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
                       <input type="text" required class="form-control" value="Online" id="test-location" aria-describedby="" placeholder="Location">
@@ -101,14 +101,14 @@
                   <!--<span id="inputGroupSuccess1Status" class="sr-only">(success)</span>-->
               </div>
               <div class="form-group">
-                  <!--<label>Location</label>-->
+                  <label>Tests Available From</label>
                   <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                       <input type="date" required class="datepicker form-control" value="{{ date('D, d/m/Y', strtotime('+ 1 day')) }}" id="test-start" aria-describedby="" placeholder="Open Date">
                   </div>
               </div>
               <div class="form-group">
-                  <!--<label>Location</label>-->
+                  <label>Tests Available Till</label>
                   <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                       <input type="date" required class="datepicker form-control" value="{{ date('D, d/m/Y', strtotime('+ 1 week')) }}" id="test-end" aria-describedby="" placeholder="Close Date">

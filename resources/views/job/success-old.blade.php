@@ -571,6 +571,7 @@
         var job_id = "{{ $job->id }}";
         var has_invoice = false;
         var selected_jobs = 0;
+        var invoice_no;
 
         $('.open-more').click(function(){
             $('.hidify').fadeOut();
@@ -704,10 +705,12 @@
                     ({
                         type: "POST",
                         url: "{{ route('show-invoice-pop') }}",
-                        data: ({ rnd : Math.random() * 100000 ,type_ids: boards, job_id: job_id, type : 'JOB_BOARD', status : 'ORDER' }),
+                        data: ({ rnd : Math.random() * 100000 ,type_ids: boards, job_id: job_id, type : 'JOB_BOARD', status : 'UNPAID' }),
                         success: function(response){
 
-                          $( '#success .modal-body' ).html( response );
+                          $( '#success .modal-body' ).html( response.html );
+
+                          invoice_no = response.invoice_no; 
                           has_invoice = true;
                           $this.find('.text').text( 'PAY NOW' );
                           $('#dashboard').text( 'Go to Dashboard' );
@@ -731,6 +734,7 @@
         });
 
         function loadSimplePay(){
+          total = ( total * 0.05 ) + total;
            var handler = SimplePay.configure({
                  token: processPayment, // callback function to be called after token is received
                  key: 'test_pu_6afdbcd91aa446ecb7f79a2f29c2b530', // place your api key. Demo: test_pu_*. Live: pu_*
@@ -746,7 +750,7 @@
                  // postal_code: '110001', // user's postal code
                  // city: '', // user's city
                  country: 'NG', // user's country
-                 amount: total+'00', // value of the purchase, ₦ 1100
+                 amount: total * 100, // value of the purchase, ₦ 1100
                  currency: 'NGN' // currency of the transaction
               });
 
@@ -757,12 +761,12 @@
 
               
 
-                var url ="{{ route('simplepay', ['JOB_BOARD']) }}";
+                var url ="{{ route('simplepay') }}";
                   $.ajax
                     ({
                         type: "POST",
                         url: url,
-                        data: ({ rnd : Math.random() * 100000, token:token, status: paid, amount: SimplePay.amountToLower( total ), currency : 'NGN', boards: boards, job_id: job_id }),
+                        data: ({ rnd : Math.random() * 100000, token:token, status: paid, type : 'JOB_BOARD', amount: SimplePay.amountToLower( total ), currency : 'NGN', boards: boards, job_id: job_id, invoice_no:invoice_no }),
                         success: function(response){
 
                             $('#pay').hide();

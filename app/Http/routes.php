@@ -51,9 +51,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('invoice/{invoice_id}', [ 'as' => 'show-invoice', 'uses' => 'PaymentController@showInvoice' ]);
 
-    Route::get('/invoices', function(){
-        
-    });
+    Route::get('/invoices', [ 'as' => 'invoice-list', 'uses' => 'PaymentController@allInvoices' ]);
 
     Route::post('/invoice-pop', [ 'as' => 'show-invoice-pop', 'uses' => 'PaymentController@createInvoice' ]);
 
@@ -470,7 +468,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('download/dossier', [ 'as' => 'download-dossier', 'uses' => 'JobApplicationsController@downloadDossier' ]);
 
-    
+    Route::get('modal/test-result', [ 'as' => 'modal-test-result', 'uses' => 'JobApplicationsController@modalTestResult']);
     
 
     Route::get('modal/reject', [ 'as' => 'modal-reject', 'uses' => 'JobApplicationsController@modalReject' ]);

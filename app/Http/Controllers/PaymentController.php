@@ -44,10 +44,14 @@ class PaymentController extends Controller
             ]);
 
 
-        
-
-
-        
+        if( @$request->count )
+        {
+            $count = intval( @$request->count );
+        }
+        else
+        {
+            $count = 1;
+        }    
 
         switch ($request->type) {
             case 'JOB_BOARD':
@@ -60,6 +64,7 @@ class PaymentController extends Controller
                     {
                         InvoiceItems::create( [
                             'invoice_id' => $invoiceDB->id,
+                            'count' => $count,
                             'type' => $request->type,
                             'type_id' => $type_id,
                             'image' => $board->img,
@@ -71,6 +76,7 @@ class PaymentController extends Controller
                     {
                         InvoiceItems::create( [
                             'invoice_id' => $invoiceDB->id,
+                            'count' => $count,
                             'type' => $request->type,
                             'type_id' => $type_id,
                             'image' => $board->img,
@@ -94,6 +100,7 @@ class PaymentController extends Controller
 
                     InvoiceItems::create( [
                         'invoice_id' => $invoiceDB->id,
+                        'count' => $count,
                         'type' => $request->type,
                         'type_id' => $type_id,
                         'image' => $check->product->provider->logo,
@@ -115,6 +122,7 @@ class PaymentController extends Controller
 
                     InvoiceItems::create( [
                         'invoice_id' => $invoiceDB->id,
+                        'count' => $count,
                         'type' => $request->type,
                         'type_id' => $type_id,
                         'image' => $check->product->provider->logo,
@@ -136,6 +144,7 @@ class PaymentController extends Controller
                     // dump( $type_id, $test->product->provider, $test->product->provider->logo );
                     InvoiceItems::create( [
                         'invoice_id' => $invoiceDB->id,
+                        'count' => $count,
                         'type' => $request->type,
                         'type_id' => $type_id,
                         'image' => @$test->product->provider->logo,
@@ -156,69 +165,61 @@ class PaymentController extends Controller
                 break;
         }
 
-        $invoice = Invoices::with('items')->where('id',$invoiceDB->id)->get()->first();
-        if( @$request->count )
-        {
-            $total_multiplier = intval( @$request->count );
-            $count = ' x ' .@$request->count;
+        $invoice = Invoices::with('items')->where('id',$invoiceDB->id)->first();
 
-        }
-        else
-        {
-            $total_multiplier = 1;
-            $count = '';
-        }
-        // $mail = Mail::queue('emails.new.invoice', ['job' => $job], function ($m) use($invoice,$invoice_type) {
-        //             $m->from('no-reply@seamlesshiring.com', 'Seamlesshiring');
+        $user = Auth::user();
+$mail = Mail::send('emails.new.invoice', compact('invoice','invoice_type','user'), function ($m) use($invoice,$invoice_type) {
+                    $m->from('no-reply@seamlesshiring.com', 'Seamlesshiring');
 
-        //             $m->to('support@seamlesshiring.com')->subject('Customer Invoice: #'.$invoice->id);
-        //     });
+                    // $m->to('support@seamlesshiring.com')->subject('Customer Invoice: #'.$invoice->id);
+                    $m->to(Auth::user()->email)->subject('Customer Invoice: #'.$invoice->id);
+            });
 
         
 
 
 
-        return view('invoice.includes.inner',compact('invoice','invoice_type','count','total_multiplier'));
+        return response()->json([
+                'html' => view('invoice.includes.inner',compact('invoice','invoice_type','count','total_multiplier'))->render(),
+                'invoice_no' => $invoiceDB->id
+            ]);
    }
 
    public function showInvoice(Request $request)
    {
-    $invoice = Invoices::with('items')->where('id',$request->invoice_id)->get()->first();
+        $invoice = Invoices::with('items')->where('id',$request->invoice_id)->first();
+
+        if( $invoice->items[0]->count )
+        {
+            $count = intval( $invoice->items[0]->count );
+        }
+        else
+        {
+            $count = 1;
+        } 
 
         switch ($invoice->type) {
             case 'JOB_BOARD':
 
-                foreach ($invoice->items as $key => $item) {
-
-                    $board = JobBoard::where('id',$item->type_id)->get()->first();
-
-                    if( $board->avi == NULL )
-                    {
-                        InvoiceItems::create( [
-                            'invoice_id' => $invoice->id,
-                            'type' => $invoice->type,
-                            'type_id' => $item->type_id,
-                            'image' => $board->img,
-                            'title' => $board->name,
-                            'amount' => $board->price
-                        ]);
-                    }
-                    else
-                    {
-                        InvoiceItems::create( [
-                            'invoice_id' => $invoice->id,
-                            'type' => $invoice->type,
-                            'type_id' => $item->type_id,
-                            'image' => $board->img,
-                            'title' => $board->name,
-                            'amount' => NULL
-                        ]);
-                    }
-
-                    
-                }
-
                 $invoice_type = "JOB BOARDS";
+
+                break;
+
+            case 'BACKGROUND_CHECK':
+
+                $invoice_type = "BACKGROUND CHECKS";
+
+                break;
+
+            case 'MEDICAL_CHECK':
+
+                $invoice_type = "MEDICAL CHECKS";
+
+                break;
+
+            case 'TEST':
+
+                $invoice_type = "TESTS";
 
                 break;
             
@@ -229,7 +230,14 @@ class PaymentController extends Controller
                 break;
         }
 
-        return view('invoice.default',compact('invoice','invoice_type'));
+        return view('invoice.includes.inner',compact('invoice','invoice_type','count','total_multiplier'));
+   }
+
+   public function allInvoices(Request $request)
+   {
+        $invoices = Invoices::with('items')->where('company_id', get_current_company()->id)->paginate(10);
+
+        return view('invoice.listing', compact('invoices'));
    }
 
     

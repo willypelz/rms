@@ -17,6 +17,7 @@ use App\Models\VideoApplicationOptions;
 use App\Models\VideoApplicationValues;
 use App\Models\Settings;
 use App\Models\TestRequest;
+use App\Models\Invoices;
 use App\User;
 use Validator;
 use Cart;
@@ -1629,11 +1630,40 @@ class JobsController extends Controller
         if ($response_code == '200') {
             // even is http status code is 200 we still need to check transaction had issues or not
             if ($json_response['response_code'] == '20000') {
+                Invoices::where( 'id', @$request->invoice_no )->update(['status'=>'PAID']);
+                $invoice = Invoices::with('items')->where('id',@$request->invoice_no)->first();
+
+                switch ($request->type) {
+                    case 'JOB_BOARD':
+                        $invoice_type = "JOB BOARDS";
+                        break;
+
+                    case 'BACKGROUND_CHECK':
+                        $invoice_type = "BACKGROUND CHECKS";
+                        break;
+
+                    case 'MEDICAL_CHECK':
+                        $invoice_type = "MEDICAL CHECKS";
+                        break;
+
+                    case 'TEST':
+                        $invoice_type = "TESTS";
+                        break;
+                    
+                    default:
+                        break;
+                }
+
+                
+                $user = Auth::user();
+                $mail = Mail::send('emails.new.successful_payment', compact('invoice','invoice_type','user','amount'), function ($m) use($invoice,$invoice_type) {
+                                    $m->from('no-reply@seamlesshiring.com', 'Seamlesshiring');
+
+                                    // $m->to('support@seamlesshiring.com')->subject('Customer Invoice: #'.$invoice->id);
+                                    $m->to(Auth::user()->email)->subject('Customer Invoice: #'.$invoice->id);
+                            });
                 if( $request->type == 'JOB_BOARD' )
                 {
-                    
-
-
 
                     foreach ($request->boards as $key => $board) {
                         // $b = JobBoard::where('id',$board)->get();
@@ -1665,26 +1695,29 @@ class JobsController extends Controller
             }
         } else if ($sp_status == 'true') {
             // even though it failed the call to card charge, card payment was already processed
+            Invoices::where( 'id', @$request->invoice_no )->update(['status'=>'PAID']);
             if( $request->type == 'JOB_BOARD' )
                 {
-
-
 
                     foreach ($request->boards as $key => $board) {
                         // $b = JobBoard::where('id',$board)->get();
                         $job->boards()->attach($board,  ['url' => '']);
 
-                        
+                        // job_board_id,url
                     }
 
 
-                    $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company) {
-                            $m->from($company->email, 'New Job Paid ');
+                    $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company,$to) {
+                            $m->from(@Auth::user()->email, @$company->name);
 
                             $m->to($to)->subject('New Job Paid');
                         });
+
+                    
+                       // $request->boards
                 }
-                else
+
+                if( $request->type == 'TEST' )
                 {
                     $this->approveTest( $request->tests, $request->app_ids );    
                 }
@@ -1721,7 +1754,7 @@ class JobsController extends Controller
                     JobApplication::massAction( @$request->job_id,  @$request->cv_ids , 'ASSESSED' );
 
                     $response = Curl::to('http://seamlesstesting.com/test-request')
-                                    ->withData( [ 'test_id' => $test['test_id'], 'job_application_id' => $app_id, 'applicant_name' => ucwords( @$app->cv->first_name. " " . @$app->cv->last_name ), 'applicant_email' => $app->cv->email, 'employer_name' => get_current_company()->name, 'employer_email' => get_current_company()->email , 'start_time' => $test['start_time'], 'end_time' => $test['end_time'] ] )
+                                    ->withData( [ 'job_title' => $app->job->title, 'test_id' => $test['test_id'], 'job_application_id' => $app_id, 'applicant_name' => ucwords( @$app->cv->first_name. " " . @$app->cv->last_name ), 'applicant_email' => $app->cv->email, 'employer_name' => get_current_company()->name, 'employer_email' => get_current_company()->email , 'start_time' => $test['start_time'], 'end_time' => $test['end_time'] ] )
                                     ->post();
                 }
                 

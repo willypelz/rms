@@ -88,6 +88,8 @@
                                 <li role="separator" class="divider"></li> 
                                 <li><a href="{{ route('add-company') }}"><i class="fa fa-plus"></i> Create new Company</a></li>
                                 <li role="separator" class="divider"></li> 
+                                <li><a href="{{ route('invoice-list') }}"><i class="fa fa-file"></i> Invoices</a></li>
+                                <li role="separator" class="divider"></li> 
                                 <li><a href="{{ url('logout') }}">Logout</a></li> 
                             </ul> 
                         </li>

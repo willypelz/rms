@@ -65,11 +65,11 @@
                                             </div>
                                         </div>
                                         <div class="col-xs-3">
-                                            <p>
+                                            <p class="text-center">
                                             @if($req->status == 'COMPLETED')    
-                                                <!-- <button class="btn btn-sm btn-success">
+                                                <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Test Result" data-view="{{ route('modal-test-result') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide">
                                                     View Result
-                                                </button> -->
+                                                </button>
                                                 <h3 class="text-primary text-center">SCORE</h3>
                                                 <h1 class=" text-center">{{ $req->score }}</h1>
                                             @endif

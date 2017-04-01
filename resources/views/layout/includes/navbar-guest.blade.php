@@ -54,7 +54,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a class="btn btn-danger" href="{{ url('register') }}" >SIGN UP</a>
+                    <a class="btn btn-primary" href="{{ url('register') }}" >SIGN UP</a>
                 </li>
                 <li>
                     <a class="signin" href="{{ url('login') }}" >LOG IN</a>

@@ -119,7 +119,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 /*    background:transparent;*/
 }
 .navbar a.btn{
-    background-color: #d9534f;
+    /* background-color: #d9534f; */
     padding: 1px 20px;
     margin-top: 15px;
     font-weight: 700;
@@ -4605,6 +4605,9 @@ a.less-link:after {
     margin-top: 0px;
     margin-right: 20px;
     margin-left: 15px !important;
+}
+.navitude {
+    margin-top: 0em;
 }
     .btn-group-justified.btn-tabs.home-tabs>.btn-group .btn{
             height:85px;

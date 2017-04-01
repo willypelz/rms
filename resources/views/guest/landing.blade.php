@@ -31,9 +31,9 @@ padding: 20px 25px;
     </div>
   </div>
 <!-- <div class="visible-xs navituder"></div> -->
-<div  class="no-pad navitude navituder hidden-xs">
+<div  class="no-pad navitude navituder">
 
-          <div class="btn-group btn-group-justified btn-tabs home-tabs no-pad no-margin" role="tab-list" aria-label="...">
+          <div class="btn-group hidden-xs btn-group-justified btn-tabs home-tabs no-pad no-margin" role="tab-list" aria-label="...">
 
             <div class="btn-group" role="group">
               <a href="#tab-1" aria-controls="tab-1" role="tab-1" data-toggle="tab" type="button" class="btn btn-line text-capitalize">
@@ -131,6 +131,7 @@ padding: 20px 25px;
               </div>
 
             <div class="col-sm-5 animated slideInLeft">
+            <div class="separator separator-small hidden-xs"><br><br></div>
               <p class="lead text-muted">You don’t need to go from site to site to post jobs. Job posting is now seamless and simple! Create your jobs here and advertise them on various distribution channels, in just a few clicks!</p>
               
               <table class="table hidden">
@@ -180,36 +181,36 @@ padding: 20px 25px;
                   </tr>
                 </tbody>
               </table>
-              <p>Job Sites</p>
+              <p class="hidden">Job Sites</p>
               <ul class="list-inline">
                 <li><img src="" alt=""></li>
                 <li><img src="" alt=""></li>
                 <li><img src="" alt=""></li>
               </ul>
-              <p>Newspapers</p>
+              <p class="hidden">Newspapers</p>
               <ul class="list-inline">
                 <li><img src="" alt=""></li>
                 <li><img src="" alt=""></li>
                 <li><img src="" alt=""></li>
               </ul>
-              <p>Social Media</p>
-              <ul class="list-inline">
+              <p class="hidden">Social Media</p>
+              <ul class="list-inline hidden">
                  <li href="https://www.facebook.com/insidifyhq?ref=hl&ref_type=bookmark" class="">
-                         <span class="fa-stack fa-lg">
+                         <span class="fa-stack fa-2x">
                            <i class="fa fa-circle fa-stack-2x text-"  style="color:#3b5998"></i>
                            <i class="fa fa-facebook fa-stack-1x fa-inverse" ></i>
                          </span>
                  </li>
      
                  <li href="https://twitter.com/insidifyhq" class="">
-                         <span class="fa-stack fa-lg">
+                         <span class="fa-stack fa-2x">
                            <i class="fa fa-circle fa-stack-2x text-"  style="color:#0084b4"></i>
                            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
                          </span>
                  </li>
      
                  <li href="https://www.linkedin.com/company/insidify-com?trk=biz-companies-cym" class="">
-                         <span class="fa-stack fa-lg">
+                         <span class="fa-stack fa-2x">
                            <i class="fa fa-circle fa-stack-2x text-primary"></i>
                            <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
                          </span>
@@ -246,6 +247,8 @@ padding: 20px 25px;
               </div>
             
             <div class="col-sm-6 animated slideInLeft">
+            <div class="separator separator-small hidden-xs"><br><br></div>
+            
               <p class="lead text-muted">You will see that the ease and speed with which you’ll be able to find the best candidates and run through the entire recruitment process is almost magical!</p>
               
               <p class=""><ul class="list-unstyled">

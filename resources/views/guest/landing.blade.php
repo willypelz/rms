@@ -131,7 +131,7 @@ padding: 20px 25px;
               </div>
 
             <div class="col-sm-5 animated slideInLeft">
-            <div class="separator separator-small hidden-xs"><br><br></div>
+            <!-- <div class="separator separator-small hidden-xs"><br><br></div> -->
               <p class="lead text-muted">You don’t need to go from site to site to post jobs. Job posting is now seamless and simple! Create your jobs here and advertise them on various distribution channels, in just a few clicks!</p>
               
               <table class="table hidden">
@@ -181,11 +181,14 @@ padding: 20px 25px;
                   </tr>
                 </tbody>
               </table>
-              <p class="hidden">Job Sites</p>
+              <p class="">Job Sites</p>
               <ul class="list-inline">
-                <li><img src="" alt=""></li>
-                <li><img src="" alt=""></li>
-                <li><img src="" alt=""></li>
+                <li><img width="175px" src="img/newlogo.png" alt=""></li>
+                <li><img width="175px" src="img/justjobs.png" alt=""></li>
+                <!-- <li><img src="img/jobzilla.jpeg" alt=""></li> -->
+                <li><img width="175px" src="img/logo6.png" alt=""></li>
+                <li><img width="175px" src="img/jobzilla.jpg" alt=""></li>
+                <li><img width="75px" src="img/careers24.jpeg" alt=""></li>
               </ul>
               <p class="hidden">Newspapers</p>
               <ul class="list-inline">
@@ -248,7 +251,7 @@ padding: 20px 25px;
             
             <div class="col-sm-6 animated slideInLeft">
             <div class="separator separator-small hidden-xs"><br><br></div>
-            
+
               <p class="lead text-muted">You will see that the ease and speed with which you’ll be able to find the best candidates and run through the entire recruitment process is almost magical!</p>
               
               <p class=""><ul class="list-unstyled">

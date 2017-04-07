@@ -16,7 +16,8 @@
         "maatwebsite/excel": "~2.1.0",
         "barryvdh/laravel-dompdf": "^0.7.0",
         "chumper/zipper": "0.6.x",
-        "consoletvs/charts": "3.*"
+        "consoletvs/charts": "3.*",
+        "jenssegers/agent": "^2.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

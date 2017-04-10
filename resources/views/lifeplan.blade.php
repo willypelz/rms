@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="{{ env('CDN_PATH') }}css/animate.css">
         <link rel="stylesheet" href="{{ env('CDN_PATH') }}css/owl.carousel.min.css">
         <link rel="stylesheet" href="{{ env('CDN_PATH') }}css/owl.theme.default.min.css">
-        <link rel="shortcut icon" href="favicon.png">
+        <link rel="shortcut icon" href="img/favicon.png">
     </head>
     <body class="body-bc body-jobs fixed-header" data-gr-c-s-loaded="true">
         <style>

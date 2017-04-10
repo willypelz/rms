@@ -8,6 +8,7 @@ use Auth;
 
 class Plans
 {
+    
     /**
      * Handle an incoming request.
      *

@@ -39,6 +39,13 @@ Route::group(['middleware' => ['web']], function () {
 });
 
 
+Route::get('hospital-project', function() {
+    $agent = new \Jenssegers\Agent\Agent();
+    return view ('lifeplan', compact('agent'));
+});
+
+
+
 
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
@@ -501,3 +508,7 @@ Route::group(['middleware' => 'web'], function () {
     
 
 });
+
+
+
+

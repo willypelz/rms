@@ -25,7 +25,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -80,6 +80,11 @@ class HomeController extends Controller
             $message->from('no-reply@insidify.com');
             $message->to('deji@insidify.com', 'Seamless Hiring Call Request');
         });
+    }
+
+    public function pricing( Request $request )
+    {
+        return view('guest.pricing');
     }
 
     

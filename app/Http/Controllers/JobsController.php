@@ -58,7 +58,7 @@ class JobsController extends Controller
             'JobApplied',
             'JobVideoApplication',
             'getEmbed',
-            'getEmbedTest'
+            'getEmbedTest',
         ]]);
 
         $this->mailer = $mailer;

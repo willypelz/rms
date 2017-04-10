@@ -229,10 +229,7 @@ Route::group(['middleware' => 'web'], function () {
 
 
     
-    Route::get('pricing', function () {
-        
-        return view('guest.pricing');
-    });
+    Route::get('/pricing', [ 'as' => 'pricing', 'uses' => 'HomeController@pricing' ]);
 
     Route::post('request-a-call', [ 'as' => 'request-a-call', 'uses' => 'HomeController@requestACall' ]);
 

@@ -55,7 +55,18 @@ Route::group(['middleware' => 'web'], function () {
 
         return view('guest.landing');
     });
+    
+    Route::get('/test', function () {
+        
+        $jobs = \App\Models\Job::where('company_id',50)->where('status','ACTIVE')->orderBy('title','ASC')->get();
+        
+        foreach( $jobs as $job )
+        {
+            echo $job->title . '<a href="' . url('job/apply/'.$job->id.'/'.str_slug($job->title)).'" > Apply </a><br>';
+        }
 
+    });
+    
     Route::get('invoice/{invoice_id}', [ 'as' => 'show-invoice', 'uses' => 'PaymentController@showInvoice' ]);
 
     Route::get('/invoices', [ 'as' => 'invoice-list', 'uses' => 'PaymentController@allInvoices' ]);
@@ -218,10 +229,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'job/video-application/{jobID}/{slug}/{appl_id}', ['uses' => 'JobsController@JobVideoApplication', 'as' => 'job-video-application']);
     
     Route::match(['get', 'post'], 'job-status', ['uses' => 'JobsController@JobStatus', 'as' => 'job-status']);
-	
+    
     // Route::any('log-in', function () {
-	//     return view('auth.login');
-	// });
+    //     return view('auth.login');
+    // });
 
 
     Route::match(['get', 'post'], 'job/candidates/{jobID}', ['uses' => 'JobApplicationsController@viewApplicants', 'as' => 'job-candidates']);

@@ -15,7 +15,7 @@ class Plans
      */
     protected $except = [
         'login',
-        'logout'
+        'logout',
     ];
 
     /**

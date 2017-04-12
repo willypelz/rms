@@ -469,6 +469,35 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="panel panel-default no-box-shadow no-border  no-border-radius">
+                                        <div class="panel-heading" role="tab" id="headingFour">
+                                            <h4 class="panel-title">
+                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="true" aria-controls="collapse4">
+                                                <i class="fa fa-stethoscope"></i> &nbsp; <b>Managerial and Administrative</b>
+                                                <hr><p class="h5 text-light p-sm">We are looking for the dedicated and experienced managers and administrators to build the systems and structures our hospital will run on. If you are interested in being part of the team that will pioneer the future of healthcare in Nigeria, if you are keen on making sure that we deliver world-class healthcare in an enabling and supportive environment and you have the skills and required experience, then come along. Apply, below, we will love to meet you.</p>
+                                                <br>
+                                                <p>
+                                                    <button class="btn btn-success btn-lg">See openings</button>
+                                                    
+                                                </p>
+                                            </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapse4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                                            <div class="panel-body">
+                                                <ul class="list-group ht-min">
+
+                                                    <li class="list-group-item">Human Resource Manager <a href="https://seamlesshiring.com/a-leading-hospital/job/293/human-resource-manager" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+
+                                                    <li class="list-group-item">Assistant Human Resource Manager <a href="https://seamlesshiring.com/a-leading-hospital/job/294/assistant-human-resource-manager" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+                                                    
+                                                    <li class="list-group-item">IT Manager <a href="https://seamlesshiring.com/a-leading-hospital/job/295/it-manager" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="panel panel-default no-box-shadow  no-border no-border-radius">
                                         <div class="panel-heading" role="tab" id="headingThree">
                                             <h4 class="panel-title">
@@ -495,12 +524,6 @@
                                                      <li class="list-group-item grey-lt4-bg text-uppercase">
                                                         Allied Healthcare Workers <!-- <i class="fa pull-right fa-arrow-down"></i> -->
                                                     </li>
-                                                    
-                                                    <li class="list-group-item">Human Resource Manager <a href="https://seamlesshiring.com/a-leading-hospital/job/293/human-resource-manager" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
-
-                                                    <li class="list-group-item">Assistant Human Resource Manager <a href="https://seamlesshiring.com/a-leading-hospital/job/294/assistant-human-resource-manager" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
-                                                    
-                                                    <li class="list-group-item">IT Manager <a href="https://seamlesshiring.com/a-leading-hospital/job/295/it-manager" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
                                                     <li class="list-group-item">Lab technicians <a href="https://seamlesshiring.com/job/apply/280/lab-technicians" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 

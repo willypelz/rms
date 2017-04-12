@@ -488,6 +488,8 @@
                                             <div class="panel-body">
                                                 <ul class="list-group ht-min">
 
+                                                    <li class="list-group-item">Financial Controller / Manager <a href="https://seamlesshiring.com/a-leading-hospital/job/298/financial-controller-manager" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+
                                                     <li class="list-group-item">Human Resource Manager <a href="https://seamlesshiring.com/a-leading-hospital/job/293/human-resource-manager" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
                                                     <li class="list-group-item">Assistant Human Resource Manager <a href="https://seamlesshiring.com/a-leading-hospital/job/294/assistant-human-resource-manager" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>

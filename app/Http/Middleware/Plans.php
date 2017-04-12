@@ -8,7 +8,16 @@ use Auth;
 
 class Plans
 {
-    
+    /**
+     * The URIs that should be excluded from CSRF verification.
+     *
+     * @var array
+     */
+    protected $except = [
+        'login',
+        'logout'
+    ];
+
     /**
      * Handle an incoming request.
      *

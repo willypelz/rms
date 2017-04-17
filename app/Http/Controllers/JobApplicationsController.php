@@ -709,6 +709,25 @@ class JobApplicationsController extends Controller
         return view('modals.shortlist', compact('applicant_badge','app_ids','cv_ids','appl'));
     }
 
+    public function modalHire(Request $request)
+    {
+        $modalVars = $this->modalActions('Hire', $request->cv_id, $request->app_id);
+        if( is_array( $modalVars ) )
+        {
+            extract($modalVars);
+        }
+        else
+        {
+            return $modalVars;
+        }
+        
+        
+
+        return view('modals.hire', compact('applicant_badge','app_ids','cv_ids','appl'));
+    }
+
+    
+
     public function modalReturnToAll(Request $request)
     {
         

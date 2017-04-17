@@ -555,7 +555,14 @@ class JobsController extends Controller
 
         $user = Auth::user();
         $user = User::with('companies.jobs')->where('id', $user->id)->first();
-        $jobs = get_current_company()->jobs()->orderBy('created_at','desc')->get();
+        $jobs = get_current_company()->jobs()->orderBy('created_at','desc');
+
+        if( isset($request->q) )
+        {
+            $jobs = $jobs->where('title','LIKE','%'. $request->q .'%');
+        }
+
+        $jobs = $jobs->get();
         $company = get_current_company();
         
         $active = 0;
@@ -598,8 +605,8 @@ class JobsController extends Controller
                         'EXPIRED' => $expired_jobs,
                         // 'DELETED' => $deleted_jobs
                     ];
-
-        return view('job.job-list', compact('jobs', 'active', 'suspended', 'deleted', 'company', 'all_jobs','expired'));
+        @$q = @$request->q;
+        return view('job.job-list', compact('jobs', 'active', 'suspended', 'deleted', 'company', 'all_jobs','expired','q'));
     }
 
     public function JobPromote($id, Request $request){

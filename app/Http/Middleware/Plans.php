@@ -65,24 +65,31 @@ class Plans
 
                 $additional_request["trial_time"] = $trial_time;
 
-                view()->share('account', (object) $additional_request);
+
                 
                 // $request->merge( $additional_request );
 
-                return $next($request);
+
+            }
+            else if( $current_company->license_type == 'PREMIUM')
+            {
+                $additional_request["has_expired"] = false;
+                $additional_request["trial_time"] = 0;
             }
             else
             {
-                return $next($request);
+                $additional_request["has_expired"] = true;
+                $additional_request["trial_time"] = 0;
             }
-
+            view()->share('account', (object) $additional_request);
         }
         else
         {
-            return $next($request);
+            
         }
         
-
+        
+        return $next($request);
         
         
     }

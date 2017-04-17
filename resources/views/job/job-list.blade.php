@@ -27,6 +27,33 @@
         <div class="container">
             <div class="row">
 
+            <div class="col-md-4 col-sm-12 pull-right" style="margin-top: -40px;margin-bottom: 20px;">
+                    <form action="" class="form-group"><br>
+                      
+                       <div class="form-lg">
+                         <div class="col-xs-10">
+                           <div class="row"><input placeholder="Search" name="q" id="q" value="{{ @$q }}" class="form-control input-lg" type="text"></div>
+                         </div>
+                         <div class="col-xs-2">
+                           <div class="row">
+                               <button type="submit" class="btn btn-lg btn-block btn-success ">
+                               <!-- Find <span class="hidden-sm hidden-xs">Candidates</span>  -->
+                               <i class="fa fa-search fa-lg"></i>
+                               </button>
+                           </div>
+                         </div>
+                       </div>
+                    </form>
+
+                </div>
+                <div class="clearfix"></div>
+              
+              @if( @$q !== null && count( $jobs ) == 0 )
+                  
+                  <h2 class="text-center">No Jobs with "{{ @$q }}" Found</h2>
+
+              @endif
+
               @foreach( $all_jobs as  $jobs)
                   @if( count(@$jobs) > 0 )
                     @foreach($jobs as $job)

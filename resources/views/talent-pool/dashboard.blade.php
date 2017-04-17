@@ -103,9 +103,9 @@
                             <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ url('cv/talent-pool') }}">{{ $talent_pool_count }}</a></h1><small class="text-muted">Talent pool</small></td> 
                         </tr> 
                         <tr> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ url('cv/purchased') }}">{{ $saved_cvs_count }}</a></h1><small class="text-muted">Purchased Cvs</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="#">{{ $saved_cvs_count }}</a></h1><small class="text-muted">Purchased Cvs</small></td> 
 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">{{ $purchased_cvs_count }}</a></h1><small class="text-muted">Saved Cvs</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="#">{{ $purchased_cvs_count }}</a></h1><small class="text-muted">Saved Cvs</small></td> 
                         </tr
                         </tbody> </table>
 

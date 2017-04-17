@@ -88,45 +88,7 @@
 														</div>
 													</td>
 												</tr>
-												<tr>
-													<td style="font-family:Arial,Helvetica,sans-serif;padding:0 7% 7%">
-
-
-
-														<div style="color:#2d2d2d;width:100%;float:none;clear:both;text-align:center;padding:0 0 7%" align="center">
-															<p style="font-family:Arial,Helvetica,sans-serif;color:#135056;font-size:11px;font-weight:700;text-transform:uppercase;margin:2% 0;padding:0">Follow Insidify</p>
-															<table border="0" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;width:100%!important;max-width:290px;margin:0 auto">
-																<tbody>
-																	<tr>
-																		<td style="font-family:Arial,Helvetica,sans-serif;text-align:right" align="right">
-																			<div style="color:#2d2d2d;margin-right:1.75%">
-																				<a href="" style="font-family:Arial;word-wrap:break-word;color:#fff;border-radius:5px;display:inline-block;font-size:11px;font-weight:700;line-height:26px;text-align:center;text-decoration:none;width: 82px;text-transform:uppercase;background-color:#4c66a4" target="_blank">Facebook</a>
-																			</div>
-																		</td>
-																		<td style="font-family:Arial,Helvetica,sans-serif;text-align:center" align="center">
-																			<div style="color:#2d2d2d;margin-right:1.75%">
-																				<a href="" style="font-family:Arial;word-wrap:break-word;color:#fff;border-radius:5px;display:inline-block;font-size:11px;font-weight:700;line-height:26px;text-align:center;text-decoration:none;width:80px;text-transform:uppercase;background-color:#55acee" target="_blank">twitter</a>
-																			</div>
-																		</td>
-																		<td style="font-family:Arial,Helvetica,sans-serif;text-align:left" align="left">
-																			<div style="color:#2d2d2d">
-
-																			</div>
-																		</td>
-																		<td style="font-family:Arial,Helvetica,sans-serif;text-align:left" align="left">
-																			<div style="color:#2d2d2d">
-																				<a href="" style="font-family:Arial;word-wrap:break-word;color:#fff;border-radius:5px;display:inline-block;font-size:11px;font-weight:700;line-height:26px;text-align:center;text-decoration:none;width: 82px;text-transform:uppercase;background-color: #2E678E;" target="_blank">Linkedin</a>
-																			</div>
-																		</td>
-																	</tr>
-																</tbody>
-															</table>
-														</div>
-
-
-
-													</td>
-												</tr>
+												
 											</tbody>
 										</table>
 

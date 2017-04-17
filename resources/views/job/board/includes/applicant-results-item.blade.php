@@ -1,3 +1,4 @@
+{{ dump ( @$result )  }}
 @if( $result['response']['numFound'] > 0 )
                       
   @foreach( @$result['response']['docs'] as $cv )

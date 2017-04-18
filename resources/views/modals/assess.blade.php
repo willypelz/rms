@@ -242,13 +242,17 @@
             };
 
             $.post('{{ route("request-test") }}', data, function(res){
-                // $( '#viewModal' ).modal('toggle');
-                 // console.log(res);
-                // $('.modal-body').html('{!! preloader() !!}');
-                total_amount = ( parseInt( res.total_amount ) * 0.05 ) + parseInt( res.total_amount );
-                order_id = res.order_id;
-                type_ids = res.type_ids;
-                doPayment(total_amount, order_id, type_ids);
+               
+                // total_amount = ( parseInt( res.total_amount ) * 0.05 ) + parseInt( res.total_amount );
+                // order_id = res.order_id;
+                // type_ids = res.type_ids;
+                // doPayment(total_amount, order_id, type_ids);
+                // 
+                
+                  $( '#viewModal' ).modal('toggle');
+                $.growl.notice({ message: " Test requested" });
+                sh.reloadStatus();
+
             });
 
            }

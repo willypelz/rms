@@ -943,15 +943,17 @@ class JobApplicationsController extends Controller
                     'test_id' => $test['id'],
                     'test_name' => $test['name'],
                     'test_owner' => $test['owner'],
-                    'order_id' => $order->id,
+                    // 'order_id' => $order->id,
+                    'order_id' => NULL,
                     'status'=> 'ORDER'
                 
                 ];
 
                 save_activities('TEST_ORDER', @$request->job_id, $request->app_ids );
 
+                $mustBeUnique = ['job_application_id' => $app_id,'test_id' => $test['id']];
                             
-                $test_request = TestRequest::create($data);
+                $test_request = TestRequest::updateOrCreate($mustBeUnique,$data);
                 $test_ids[] = $test_request->id;
 
                 $app = JobApplication::with('cv')->find($app_id);

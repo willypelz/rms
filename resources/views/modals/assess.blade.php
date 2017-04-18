@@ -1,3 +1,8 @@
+<style type="text/css">
+  .bootstrap-datetimepicker-widget.dropdown-menu {
+    width: auto !important;
+}
+</style>
 <div class="row" id="cont">
       <div class="col-xs-7 scroll-450">
           <div class="">
@@ -29,8 +34,8 @@
                                                 </div>
                                             </div>
                                             <div class="col-xs-3">
-                                                <p>₦{{ $product->cost }} </p>
-                                                <button class="btn btn-sm btn-success" id="request-btn"  data-amount="{{ $product->cost }}"  data-title="{{ $product->name  }}"  data-id="{{ $product->id  }}" data-owner="{{ $product->ats_provider_id  }}">
+                                                <!-- <p>₦{{-- $product->cost --}} </p> -->
+                                                <button class="btn btn-sm btn-success" id="request-btn"  data-amount="{{ $product->cost }}"  data-title="{{ $product->name  }}"  data-id="{{ $product->ats_service_id  }}" data-owner="{{ $product->ats_provider_id  }}">
                                                     Request
                                                 </button>
                                             </div>
@@ -64,17 +69,17 @@
                   <thead>
                   <tr>
                       <th>Your Selection</th>
-                      <th>Cost (₦)</th>
-                      <th></th>
+                      <!-- <th>Cost (₦)</th> -->
+                      <!-- <th></th> -->
                   </tr>
                   </thead>
                   <tbody id="cart-preview">
                   
                   </tbody><thead>
                   <tr>
-                      <th>Total</th>
-                      <th id="cart-total">0</th>
-                      <th> &nbsp; </th>
+                      <!-- <th>Total</th> -->
+                      <th id="cart-total" style="display:none;" >0</th>
+                      <!-- <th> &nbsp; </th> -->
                   </tr>
                   </thead>
                   
@@ -102,16 +107,16 @@
               </div>
               <div class="form-group">
                   <label>Tests Available From</label>
-                  <div class="input-group">
+                  <div class="input-group date" id='datetimepicker1'>
                       <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                      <input type="date" required class="datepicker form-control" value="{{ date('D, d/m/Y', strtotime('+ 1 day')) }}" id="test-start" aria-describedby="" placeholder="Open Date">
+                      <input type="text" required class="form-control" value="{{ date('D, d/m/Y', strtotime('+ 1 day')) }}" id="test-start" aria-describedby="" placeholder="Open Date">
                   </div>
               </div>
               <div class="form-group">
                   <label>Tests Available Till</label>
-                  <div class="input-group">
+                  <div class="input-group date" id='datetimepicker2'>
                       <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                      <input type="date" required class="datepicker form-control" value="{{ date('D, d/m/Y', strtotime('+ 1 week')) }}" id="test-end" aria-describedby="" placeholder="Close Date">
+                      <input type="text" required class=" form-control" value="{{ date('D, d/m/Y', strtotime('+ 1 week')) }}" id="test-end" aria-describedby="" placeholder="Close Date">
                   </div>
               </div>
               <input type="submit" class="btn btn-success pull-right" id="request-test" disabled="disabled" value="Request Test">
@@ -128,7 +133,15 @@
 
 
 <script src="https://checkout.simplepay.ng/v2/simplepay.js"></script>
-
+<script type="text/javascript" src=" {{ asset('js/moment.min.js') }} "></script>
+<script type="text/javascript" src=" {{ asset('js/bootstrap-datetimepicker.min.js') }} "></script>
+<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-datetimepicker.min.css') }} ">
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker({ format: 'YYYY-MM-DD HH:mm:ss' });
+        $('#datetimepicker2').datetimepicker({ format: 'YYYY-MM-DD HH:mm:ss' });
+    });
+</script>
 
   <script type="text/javascript">
 
@@ -145,7 +158,8 @@
         var total_amount, order_id,type_ids,invoice_no;
 
         $('body #request-btn').on('click', function(){
-          $('#cart-preview').append('<tr data-id="' + $(this).attr('data-id') +'" data-owner="' + $(this).attr('data-owner') +'"><td id="name">' + $(this).attr('data-title') +'</td><td ><span id="amount">' + $(this).attr('data-amount') + "</span> x " + {{ $count }} + ' </td><td class="text-right"><a href="javascript://" id="delete-request"><i class="fa fa-times-circle text-danger"></i> </a></td></tr>');
+          $('#cart-preview').append('<tr data-id="' + $(this).attr('data-id') +'" data-owner="' + $(this).attr('data-owner') +'"><td id="name">' + $(this).attr('data-title') +'</td><td ><span id="amount">' + "</span> " + ' </td><td class="text-right"><a href="javascript://" id="delete-request"><i class="fa fa-times-circle text-danger"></i> </a></td></tr>');
+          // $('#cart-preview').append('<tr data-id="' + $(this).attr('data-id') +'" data-owner="' + $(this).attr('data-owner') +'"><td id="name">' + $(this).attr('data-title') +'</td><td ><span id="amount">' + $(this).attr('data-amount') + "</span> x " + {{ $count }} + ' </td><td class="text-right"><a href="javascript://" id="delete-request"><i class="fa fa-times-circle text-danger"></i> </a></td></tr>');
           $(this).calculateCartTotal();
           // $(this).closest('.panel-body').fadeOut();
           $(this).prop('disabled','disabled').text('Requested');

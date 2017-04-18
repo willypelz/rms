@@ -34,7 +34,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-xs-3">
-                                                <!-- <p>₦{{-- $product->cost --}} </p> -->
+                                                <p style="display:none;">₦{{ $product->cost }} </p>
                                                 <button class="btn btn-sm btn-success" id="request-btn"  data-amount="{{ $product->cost }}"  data-title="{{ $product->name  }}"  data-id="{{ $product->ats_service_id  }}" data-owner="{{ $product->ats_provider_id  }}">
                                                     Request
                                                 </button>

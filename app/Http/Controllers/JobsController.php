@@ -92,6 +92,7 @@ class JobsController extends Controller
             $user = User::where('email', $request->email_to)->first();
             $company = Company::find( get_current_company()->id );
             if(empty($user) or is_null($user)){
+                dd("new user");
                 $user = User::FirstorCreate([              
                   'email' => $request->email,
                   'name' => $request->name
@@ -101,6 +102,7 @@ class JobsController extends Controller
             }
             else
             {
+                dd("old user");
                 $link = route('select-company',['slug'=>$company->slug]);
             }
 

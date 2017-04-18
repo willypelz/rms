@@ -169,7 +169,7 @@ class PaymentController extends Controller
 
         $user = Auth::user();
 $mail = Mail::send('emails.new.invoice', compact('invoice','invoice_type','user'), function ($m) use($invoice,$invoice_type) {
-                    $m->from('no-reply@seamlesshiring.com', 'Seamlesshiring');
+                    $m->from('support@seamlesshiring.com', 'Seamlesshiring');
 
                     // $m->to('support@seamlesshiring.com')->subject('Customer Invoice: #'.$invoice->id);
                     $m->to(Auth::user()->email)->subject('Customer Invoice: #'.$invoice->id);

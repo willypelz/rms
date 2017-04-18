@@ -1666,7 +1666,7 @@ class JobsController extends Controller
                 
                 $user = Auth::user();
                 $mail = Mail::send('emails.new.successful_payment', compact('invoice','invoice_type','user','amount'), function ($m) use($invoice,$invoice_type) {
-                                    $m->from('no-reply@seamlesshiring.com', 'Seamlesshiring');
+                                    $m->from('support@seamlesshiring.com', 'Seamlesshiring');
 
                                     // $m->to('support@seamlesshiring.com')->subject('Customer Invoice: #'.$invoice->id);
                                     $m->to(Auth::user()->email)->subject('Customer Invoice: #'.$invoice->id);

@@ -240,7 +240,7 @@ class JobsController extends Controller
                         //Send New job notification email
                         $to = 'support@seamlesshiring.com';
                         $mail = Mail::send('emails.new.job-application', ['job' => $job ,'boards' => null ,'company' => $company], function ($m) use($company,$to) {
-                            $m->from(@Auth::user()->email, @$company->name);
+                            $m->from($to, @$company->name);
 
                             $m->to($to)->subject('New Job initiated');
                         });
@@ -1573,7 +1573,7 @@ class JobsController extends Controller
         if( $request->type == 'JOB_BOARD' )
         {
            $mail = Mail::send('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company,$to) {
-                            $m->from(@Auth::user()->email, @$company->name);
+                            $m->from($to, @$company->name);
 
                             $m->to($to)->subject('New Job initiated');
                         });
@@ -1685,7 +1685,7 @@ class JobsController extends Controller
 
 
                     $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company,$to) {
-                            $m->from(@Auth::user()->email, @$company->name);
+                            $m->from($to, @$company->name);
 
                             $m->to($to)->subject('New Job Paid');
                         });
@@ -1719,7 +1719,7 @@ class JobsController extends Controller
 
 
                     $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company,$to) {
-                            $m->from(@Auth::user()->email, @$company->name);
+                            $m->from($to, @$company->name);
 
                             $m->to($to)->subject('New Job Paid');
                         });

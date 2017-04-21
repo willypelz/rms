@@ -72,7 +72,7 @@
                                     <div class="row">
                                         
                                         <div class="col-sm-8">
-                                            @if( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) )
+                                            @if( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 )
                                                 <p class="text-center">This application is closed.</p>
                                             @else
                                             <p class="text-center">Please fill in the information below carefully.</p>

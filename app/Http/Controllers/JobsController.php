@@ -578,12 +578,14 @@ class JobsController extends Controller
         $expired_jobs = [];
 
 
+
         foreach($jobs as $job){
+
             if ($job->status == 'DELETED') {
                 $deleted_jobs[] = $job;
                 $deleted++;
             }
-            else if( strtotime($job->expiry_date) <= strtotime( date('m/d/Y h:i:s a', time()) ) ){
+            else if( Carbon::now()->diffInDays( Carbon::parse($job->expiry_date) ) > 0 ){
                 
                 $expired_jobs[] = $job;
                 $expired++;

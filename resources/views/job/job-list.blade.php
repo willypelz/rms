@@ -65,7 +65,7 @@
 
                                     <big><a target="_blank" href="{{ route('job-board', [$job['id']]) }}"><b>{{ $job['title'] }}</b></a></big><hr/>
                                     <small class="text-muted">
-                                    @if( strtotime($job['expiry_date']) <= strtotime( date('m/d/Y h:i:s a', time()) ) )<span class="text-danger"><i class="glyphicon glyphicon-remove "></i> Job Expired </span> 
+                                    @if( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date) ) )<span class="text-danger"><i class="glyphicon glyphicon-remove "></i> Job Expired </span> 
                                     @elseif($job['status'] == 'ACTIVE')<span class="text-success"><i class="glyphicon glyphicon-ok "></i> Job Active </span>
                                     @elseif($job['status'] == 'DRAFT') Job Draft 
                                     @elseif($job['status'] == 'SUSPENDED')<i class="glyphicon glyphicon-ban-circle "></i> Job Suspended 

@@ -48,7 +48,8 @@
 																		<hr style="border-width:0 0 1px">
 																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">New Job Posted
 																		<br><br>
-																			A job was posted by {{ $company->name}}({{ $company->email. ', '. $company->phone }}. 
+																			A job was posted by {{ $company->name}}({{ $company->email. ', '. $company->phone }}. <br>
+																			<span><strong>LINK:</strong> <a href="{{ url('job/apply/'.$job->id.'/'.str_slug($job->title)) }}">{{ $job->title }}</a> </span>
 																			
 																			@if( !is_null( $boards ) )
 

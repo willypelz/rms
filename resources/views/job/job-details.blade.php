@@ -75,7 +75,8 @@
                                     <div class="row">
                                     <div class=" job-cta">
                                     <div class="col-sm-3">
-                                        <a href="{{ url('job/apply/'.$job['id'].'/'.str_slug($job['title']) ) }}" class="btn btn-success btn-block"><i class="fa fa-edit"></i> Apply <span class="">for Job</span></a>
+                                        <a href="{{ url('job/apply/'.$job['id'].'/'.str_slug($job['title']) ) }}" class="btn btn-success btn-block">Apply for Job
+                                        </a>
                                     </div>
 
                                         <!-- <div class="col-sm-5">
@@ -170,8 +171,8 @@
                                             <div class="row">
                                                 <div class="col-xs-12"><hr></div>
 
-                                                <div class="col-sm-4">
-                                                    <a href="{{ url('job/apply/'.$job['id'].'/'.str_slug($job['title']) ) }}" class="btn btn-success btn-block"><i class="fa fa-edit"></i> Apply <span class="">for Job</span></a>
+                                                <div class="col-sm-5">
+                                                    <a href="{{ url('job/apply/'.$job['id'].'/'.str_slug($job['title']) ) }}" class="btn btn-success">Apply for Job</a>
                                                 </div>
                                                 <div class="separator separator-small"></div>
                                             </div>
@@ -206,7 +207,7 @@
                                 <!--/tab-content-->
                                 <div class="page page-sm foot no-bod-rad">
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                                        <p><img src="{{ url('/') }}/img/seamlesshiring-logo.png" alt="" width="120px"> </p> 
+                                        <p><img src="http://cdn.insidify.com/dist/img/logos/seamlesshiring.svg" alt="" width="120px"> </p> 
                                         <p><small class="text-muted"> &nbsp;
                                         &copy; {{ date('Y') }}. Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a></small></p>
                                     </div>

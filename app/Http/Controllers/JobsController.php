@@ -1515,7 +1515,7 @@ class JobsController extends Controller
           $job->location = $request->job_location;
           $job->job_type = $request->job_type;
           $job->position = $request->position;
-          $job->post_date = $request->post_date;
+          // $job->post_date = $request->post_date;
           $job->expiry_date = Carbon::createFromFormat('m/d/Y', $request->expiry_date )->format("Y-m-d H:m:s");
           $job->details = $request->details;
           $job->experience = $request->experience;

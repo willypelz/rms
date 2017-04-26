@@ -69,10 +69,10 @@
                                                     
                                                     <select name="job_type" id="job_level" required type="text" class="form-control">
                                                             <option value=""> --Choose-- </option>
-                                                            <option value="full-time"  {{ ( $joblevel == 'full-time' )  ? "selected" : "" }} >Full-Time</option>
-                                                            <option value="part-time" {{ ( $joblevel == 'part-time' )  ? "selected" : "" }} >Part-Time</option>
-                                                            <option value="contract" {{ ( $joblevel == 'contract' )  ? "selected" : "" }} >Contract</option>
-                                                            <option value="intern" {{ ( $joblevel == 'intern' )  ? "selected" : "" }} >Internship</option>
+                                                            <option value="full-time"  {{ ( $joblevel == 'full-time' )  ? "selected" : "selected" }} >Full-Time</option>
+                                                            <option value="part-time" {{ ( $joblevel == 'part-time' )  ? "selected" : "selected" }} >Part-Time</option>
+                                                            <option value="contract" {{ ( $joblevel == 'contract' )  ? "selected" : "selected" }} >Contract</option>
+                                                            <option value="intern" {{ ( $joblevel == 'intern' )  ? "selected" : "selected" }} >Internship</option>
                                                     </select>
                                             </div>
                                         </div>

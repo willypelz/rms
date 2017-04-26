@@ -207,7 +207,7 @@
                                 <!--/tab-content-->
                                 <div class="page page-sm foot no-bod-rad">
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                                        <p><img src="http://cdn.insidify.com/dist/img/logos/seamlesshiring.svg" alt="" width="120px"> </p> 
+                                        <p><img src="http://cdn.insidify.com/dist/img/logos/seamlesshiring.svg" alt="" width="200px"> </p> 
                                         <p><small class="text-muted"> &nbsp;
                                         &copy; {{ date('Y') }}. Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a></small></p>
                                     </div>

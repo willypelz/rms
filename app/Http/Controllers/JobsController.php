@@ -1257,8 +1257,8 @@ class JobsController extends Controller
             // dd( $custom_fields[0] );
             $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
 
-            // if($data['willing_to_relocate'] == 'yes')
-            //     $data['willing_to_relocate'] = true;
+            if($data['willing_to_relocate'] == 'yes')
+                $data['willing_to_relocate'] = true;
 
             $data['state_of_origin'] = $states[$data['state_of_origin']];
             $data['location'] = $states[$data['location']];

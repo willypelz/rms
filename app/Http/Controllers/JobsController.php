@@ -1283,7 +1283,7 @@ class JobsController extends Controller
             $cv->last_company_worked = $data['last_company_worked'];
             $cv->years_of_experience = $data['years_of_experience'];
             $cv->graduation_grade = $data['graduation_grade'];
-            // $cv->willing_to_relocate = $data['willing_to_relocate'];
+            $cv->willing_to_relocate = $data['willing_to_relocate'];
             $cv->cv_file = $data['cv_file'];
             $cv->save();
 

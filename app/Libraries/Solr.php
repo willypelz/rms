@@ -9,7 +9,7 @@ class Solr {
 
 	static $host = "http://139.162.243.206:8983/solr/resumes/select?";
 
-	static $default_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'application_date+desc', 'grouped'=>FALSE ];
+	static $default_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'last_modified+desc', 'grouped'=>FALSE ];
 	
 
 

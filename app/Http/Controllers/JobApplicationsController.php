@@ -61,6 +61,8 @@ class JobApplicationsController extends Controller
         $nav_type = 'assess';
 
         $requests = TestRequest::where('job_application_id',$appl_id)->with('product.provider')->get();
+
+        // dd($appl->toArray());
         
         return view('applicant.assess', compact('appl', 'nav_type','requests'));
     }

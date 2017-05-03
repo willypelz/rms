@@ -30,7 +30,7 @@
                         
                         
 
-                        @if( strtotime($job['expiry_date']) <= strtotime( date('m/d/Y h:i:s a', time()) ) )
+                        @if( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 )
                         <div id="status-box" class="label label-danger" style="">Job has expired</div>
                         @elseif($job['status'] == 'ACTIVE')
                         <div id="status-box" class="label label-success" style="">Job is active</div>

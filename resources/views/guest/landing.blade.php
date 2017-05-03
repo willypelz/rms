@@ -188,7 +188,7 @@ padding: 20px 25px;
                 <!-- <li><img src="img/jobzilla.jpeg" alt=""></li> -->
                 <li><img width="175px" src="img/logo6.png" alt=""></li>
                 <li><img width="175px" src="img/jobzilla.jpg" alt=""></li>
-                <li><img width="75px" src="img/careers24.jpeg" alt=""></li>
+                <!-- <li><img width="75px" src="img/careers24.jpeg" alt=""></li> -->
               </ul>
               <p class="hidden">Newspapers</p>
               <ul class="list-inline">

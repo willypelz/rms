@@ -238,9 +238,9 @@ class JobsController extends Controller
                         $job = Job::FirstorCreate($job_data);
 
                         //Send New job notification email
-                        $to = 'babatopeoni@gmail.com';
-                        $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => null ,'company' => $company], function ($m) use($company,$to) {
-                            $m->from(@Auth::user()->email, @$company->name);
+                        $to = 'support@seamlesshiring.com';
+                        $mail = Mail::send('emails.new.job-application', ['job' => $job ,'boards' => null ,'company' => $company], function ($m) use($company,$to) {
+                            $m->from($to, @$company->name);
 
                             $m->to($to)->subject('New Job initiated');
                         });
@@ -578,12 +578,14 @@ class JobsController extends Controller
         $expired_jobs = [];
 
 
+
         foreach($jobs as $job){
+
             if ($job->status == 'DELETED') {
                 $deleted_jobs[] = $job;
                 $deleted++;
             }
-            else if( strtotime($job->expiry_date) <= strtotime( date('m/d/Y h:i:s a', time()) ) ){
+            else if( Carbon::now()->diffInDays( Carbon::parse($job->expiry_date), false ) < 0 ){
                 
                 $expired_jobs[] = $job;
                 $expired++;
@@ -1255,8 +1257,8 @@ class JobsController extends Controller
             // dd( $custom_fields[0] );
             $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
 
-            // if($data['willing_to_relocate'] == 'yes')
-            //     $data['willing_to_relocate'] = true;
+            if($data['willing_to_relocate'] == 'yes')
+                $data['willing_to_relocate'] = true;
 
             $data['state_of_origin'] = $states[$data['state_of_origin']];
             $data['location'] = $states[$data['location']];
@@ -1281,7 +1283,7 @@ class JobsController extends Controller
             $cv->last_company_worked = $data['last_company_worked'];
             $cv->years_of_experience = $data['years_of_experience'];
             $cv->graduation_grade = $data['graduation_grade'];
-            // $cv->willing_to_relocate = $data['willing_to_relocate'];
+            $cv->willing_to_relocate = $data['willing_to_relocate'];
             $cv->cv_file = $data['cv_file'];
             $cv->save();
 
@@ -1513,7 +1515,7 @@ class JobsController extends Controller
           $job->location = $request->job_location;
           $job->job_type = $request->job_type;
           $job->position = $request->position;
-          $job->post_date = $request->post_date;
+          // $job->post_date = $request->post_date;
           $job->expiry_date = Carbon::createFromFormat('m/d/Y', $request->expiry_date )->format("Y-m-d H:m:s");
           $job->details = $request->details;
           $job->experience = $request->experience;
@@ -1571,7 +1573,7 @@ class JobsController extends Controller
         if( $request->type == 'JOB_BOARD' )
         {
            $mail = Mail::send('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company,$to) {
-                            $m->from(@Auth::user()->email, @$company->name);
+                            $m->from($to, @$company->name);
 
                             $m->to($to)->subject('New Job initiated');
                         });
@@ -1683,7 +1685,7 @@ class JobsController extends Controller
 
 
                     $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company,$to) {
-                            $m->from(@Auth::user()->email, @$company->name);
+                            $m->from($to, @$company->name);
 
                             $m->to($to)->subject('New Job Paid');
                         });
@@ -1717,7 +1719,7 @@ class JobsController extends Controller
 
 
                     $mail = Mail::queue('emails.new.job-application', ['job' => $job ,'boards' => $request->boards ,'company' => $company], function ($m) use($company,$to) {
-                            $m->from(@Auth::user()->email, @$company->name);
+                            $m->from($to, @$company->name);
 
                             $m->to($to)->subject('New Job Paid');
                         });

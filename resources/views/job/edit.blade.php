@@ -94,7 +94,7 @@
                                         <div class="row">
                                             <div class="col-sm-6"><label for="job-title">Post Date <span class="text-danger">*</span></label>
                                                     <input type="text" class="datepicker form-control" value="{{ $job->post_date }}" disabled>
-                                                <!-- {!! Form::text('post', null, ['class' => 'form-control', 'required']) !!} -->
+
 
                                             </div>                                            
 

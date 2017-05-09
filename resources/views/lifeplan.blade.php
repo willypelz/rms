@@ -464,6 +464,10 @@
 <li class="list-group-item">Cath. Lab Nurse Technician <a href="https://seamlesshiring.com/a-leading-hospital/job/276/cath-lab-nurse-technician" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
 <li class="list-group-item">Nursing Assistants <a href="https://seamlesshiring.com/a-leading-hospital/job/277/nursing-assistants" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+
+<li class="list-group-item">ECHO Technician Nurse <a href="https://seamlesshiring.com/a-leading-hospital/job/319/echo-technician-nurse" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+
+
                                                 </ul>
                                             
                                             </div>
@@ -542,6 +546,13 @@
 <li class="list-group-item">Social Workers <a href="https://seamlesshiring.com/a-leading-hospital/job/286/social-workers" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
 <li class="list-group-item">Ambulance Drivers <a href="https://seamlesshiring.com/a-leading-hospital/job/287/ambulance-drivers" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+
+<li class="list-group-item">Mammography Technician <a href="https://seamlesshiring.com/a-leading-hospital/job/318/mammography-technician" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+
+<li class="list-group-item">Radiology Technician <a href="https://seamlesshiring.com/a-leading-hospital/job/317/radiology-technician" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+
+<li class="list-group-item">MRI / CT Technologist <a href="https://seamlesshiring.com/a-leading-hospital/job/316/mri-ct-technologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+
                                                 </ul>
                                             </div>
                                         </div>

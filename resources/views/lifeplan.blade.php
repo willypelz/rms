@@ -416,7 +416,7 @@
                                         <div class="panel-heading" role="tab" id="headingTwo">
                                             <h4 class="panel-title">
                                             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                <i class="fa fa-stethoscope"></i> &nbsp; <b>Nurses</b> <span class="pull-right">16 Roles</span>
+                                                <i class="fa fa-stethoscope"></i> &nbsp; <b>Nurses</b> <span class="pull-right">17 Roles</span>
                                                 <hr><p class="h5 text-light p-sm">Nurses are centerpiece of patient care and experience. We are particularly keen to build a first class nursing team. Empathy, professionalism, requisite experience, emphasis on uncompromising quality and a deep rooted culture of putting patients first will be the hallmarks of our Nurses. We will be investing heavily in continuous Nursing training and development, helping our Nurses to continue to grow and sustain an impeccably high quality of care delivery. If you are interested and qualified, please apply here.</p>
                                                 <br>
                                                 <p>
@@ -508,7 +508,7 @@
                                         <div class="panel-heading" role="tab" id="headingThree">
                                             <h4 class="panel-title">
                                             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                <i class="fa fa-stethoscope"></i> &nbsp; <b>Other Health Professionals</b> <span class="pull-right">10 Roles</span>
+                                                <i class="fa fa-stethoscope"></i> &nbsp; <b>Other Health Professionals</b> <span class="pull-right">13 Roles</span>
                                                 <hr><p class="h5 text-light p-sm">Different people contribute different skills to ensuring our patients get the best possible care. We want to transform healthcare in Nigeria for good. We need the best Pharmacists, Scientists, Technicians and Radiographers to join the team. These professionals will be benefiting hugely from the support of competent colleagues, extensive and continuous training and exchange opportunities across our international network, while earning a very competitive compensation. Interested? Apply below.</p>
                                                 <br>
                                                 <p>

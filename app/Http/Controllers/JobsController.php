@@ -129,7 +129,7 @@ class JobsController extends Controller
                 $message->to($user->email, $user->name);
             });*/ 
 
-            $this->mailer->send('emails.new.exclusively_invited', ['user' => $user, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=> $link], function (Message $m) use ($user) {
+            $this->mailer->send('emails.new.exclusively_invited', ['user' => $user, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=> $link, 'decline' => $decline], function (Message $m) use ($user) {
                 $m->from('support@seamlesshiring.com')->to($user->email)->subject('You have been Exclusively Invited');
             });
 

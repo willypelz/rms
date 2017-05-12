@@ -356,7 +356,7 @@ class CvSalesController extends Controller
         $user = Auth::user();
         // dd($user);
        $emailer =  Mail::send('emails.cv-sales.invoice', ['user' => $user], function ($m) use ($user) {
-            $m->from('alerts@insidify.com', 'Your Application');
+            $m->from('support@seamlesshiring.com', 'Your Application');
 
             $m->to('babatopeoni@gmail.com', 'Ayo')->subject('Your Reminder!');
         });

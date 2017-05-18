@@ -140,10 +140,10 @@
                                               <h3 class="text-brandon">Congratulations!</h3> 
                                               <p class="lead">Your have previously applied for this job.</p> 
 
-                                              <p>You can <a href="https://insidify.com/register" target="_blank">Sign up</a> to <a href="https://insidify.com/" target="_blank">Insidify.com</a> to receive updates on this job and find several other jobs like this from all over the internet.</p> 
+                                              <p>You can <a href="https://insidify.com/register" target="_blank">sign up</a> to <a href="https://insidify.com/" target="_blank">Insidify.com</a> to find several other jobs like this from all over the internet.</p> 
 
                                               <p>
-                                                  <a href="https://insidify.com/register" target="_blank" class="btn btn-success btn-lg">Sign up Here</a>
+                                                  <a href="https://insidify.com/register" target="_blank" class="btn btn-success btn-lg">Sign Up Here</a>
                                               </p>
     
 
@@ -253,16 +253,6 @@
 
                                     </div>
                         
-                                    <!--<div class="panel panel-default">-->
-                                    <!--<div class="panel-heading">-->
-                                    <!--<h4 class="panel-title">Friends who work <p>Medical Doctor, Valuepreneur, Doer... </p></h4>-->
-                                    <!--</div>-->
-                                    <!--<div class="panel-collapse skill">-->
-                                    <!--<div class="panel-body">-->
-                                    <!--<a href="#" class="btn btn-info" role="button">CSS</a> <a href="#" class="btn btn-info" role="button">HTML</a> <a href="#" class="btn btn-info" role="button">jQuery</a>-->
-                                    <!--</div>-->
-                                    <!--</div>-->
-                                    <!--</div>-->
                         
                                 </div>
                                     </div>
@@ -271,23 +261,15 @@
                                 <!--/tab-content-->
                                 <div class="page page-sm foot no-bod-rad">
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                                        <p>Powered by <a href="http://www.seamlesshiring.com"><i class="fa fa-skype"></i> SeamlessHiring</a> <br>
-                                        <small class="text-muted">&copy; 2016. SeamlessHiring</small></p>
+                                        <p>Powered by <a href="http://www.seamlesshiring.com"><img src="http://cdn.insidify.com/dist/img/logos/seamlesshiring.svg" width="85px" alt=""></a> <br>
+                                        <small class="text-muted">&copy; 2016. www.seamlessHiring.com</small></p>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
                         
                             </div>
                             <div class="clearfix"></div>
-                            <div class="separator separator-small hidden">
-                                <br>
-                                    <div class="col-sm-3 col-sm-offset-3">
-                                        <a class="btn btn-line btn-block" href="create-job.php">Edit this Job</a>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <a class="btn btn-danger btn-block" href="create-job.php">Unpublish this Job</a>
-                                    </div>
-                            </div>
+                           
                         </div>
                     </div>
                 </div>

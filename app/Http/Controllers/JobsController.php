@@ -129,7 +129,7 @@ class JobsController extends Controller
                 $message->to($user->email, $user->name);
             });*/ 
 
-            $this->mailer->send('emails.new.exclusively_invited', ['user' => $user, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=> $link], function (Message $m) use ($user) {
+            $this->mailer->send('emails.new.exclusively_invited', ['user' => $user, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=> $link, 'decline' => $decline], function (Message $m) use ($user) {
                 $m->from('support@seamlesshiring.com')->to($user->email)->subject('You have been Exclusively Invited');
             });
 
@@ -1257,8 +1257,8 @@ class JobsController extends Controller
             // dd( $custom_fields[0] );
             $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
 
-            // if($data['willing_to_relocate'] == 'yes')
-            //     $data['willing_to_relocate'] = true;
+            if($data['willing_to_relocate'] == 'yes')
+                $data['willing_to_relocate'] = true;
 
             $data['state_of_origin'] = $states[$data['state_of_origin']];
             $data['location'] = $states[$data['location']];
@@ -1283,7 +1283,7 @@ class JobsController extends Controller
             $cv->last_company_worked = $data['last_company_worked'];
             $cv->years_of_experience = $data['years_of_experience'];
             $cv->graduation_grade = $data['graduation_grade'];
-            // $cv->willing_to_relocate = $data['willing_to_relocate'];
+            $cv->willing_to_relocate = $data['willing_to_relocate'];
             $cv->cv_file = $data['cv_file'];
             $cv->save();
 

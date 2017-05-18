@@ -32,6 +32,7 @@
                         </div>
 
                     <div  id="paymentSuccess" class="alert-success"></div>
+                    <?php // dump($requests->toArray()); ?>
 
 
                     <div class="">
@@ -46,7 +47,7 @@
 
                             @foreach($requests as $req)
 
-                                <?php  //dump($requests->toArray()); ?>
+                                
                             
                             <div class="panel-body">
 
@@ -55,15 +56,14 @@
                                         <div class="col-xs-9">
                                             <div class="media-left pull-left" style="padding-right: 20px;">
                                                 <a href="#">
-                                                   <!--  <img class="media-object" alt="64x64" src="{{ $req->product->provider->logo }}" style="width: 64px; height: 64px;"> -->
+                                                   
                                                     <img class="media-object" alt="64x64" src="https://cdn.insidify.com/dist/img/logos/seamlesstesting.svg" style="width: 100px;">
 
                                                 </a>
                                             </div>
                                              <div class="media-body">
                                                 <h5 class="media-heading">{{ $req->test_name }}</h5>
-                                                <!-- {{ $req->product->summary }}     -->
-                                                 <!-- <a href="#">...more</a><br/> -->
+                                                
                                                  <span class="label label-info label-large" >{{ $req->status }}</span> | 
                                                  Requested: {{ human_time($req->created_at, 1) }}
                                             </div>
@@ -71,7 +71,7 @@
                                         <div class="col-xs-3">
                                             <p class="text-center">
                                             @if($req->status == 'COMPLETED')    
-                                                <!-- <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Test Result" data-view="{{ route('modal-test-result') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide"> -->
+                                                
                                                 <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Test Result" data-view="{{ route('modal-test-result') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $req->test_id }}" data-type="wide">
                                                     View Result
                                                 </button>

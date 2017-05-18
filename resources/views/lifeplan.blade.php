@@ -298,9 +298,9 @@
                                             <div class="panel-body">
                                                 <ul class="list-group ht-min">
 
-                                                    <li class="list-group-item">Medical Officers <a href="https://seamlesshiring.com/job/apply/260/medical-officers" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+                                                    <li class="list-group-item">Medical Officers <a href="https://seamlesshiring.com/a-leading-hospital/job/260/medical-officers" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-                                                    <li class="list-group-item">Emergency Medical Officers <a href="https://seamlesshiring.com/job/apply/261/emergency-medical-officers" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+                                                    <li class="list-group-item">Emergency Medical Officers <a href="https://seamlesshiring.com/a-leading-hospital/job/261/emergency-medical-officers" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -321,91 +321,91 @@
                                         <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                             <div class="panel-body">
                                                 <ul class="list-group ht-min">
-                                                    <li class="list-group-item">Anaesthesiologist <a href="https://seamlesshiring.com/job/apply/218/anaesthesiologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+                                                    <li class="list-group-item">Anaesthesiologist <a href="https://seamlesshiring.com/a-leading-hospital/job/218/anaesthesiologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Cardio-Thoracic Surgeon <a href="https://seamlesshiring.com/job/apply/249/cardio-thoracic-surgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Cardio-Thoracic Surgeon <a href="https://seamlesshiring.com/a-leading-hospital/job/249/cardio-thoracic-surgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Cardiologist <a href="https://seamlesshiring.com/job/apply/221/cardiologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Cardiologist <a href="https://seamlesshiring.com/a-leading-hospital/job/221/cardiologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Dentist <a href="https://seamlesshiring.com/job/apply/258/dentist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Dentist <a href="https://seamlesshiring.com/a-leading-hospital/job/258/dentist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Dermatologist <a href="https://seamlesshiring.com/job/apply/227/dermatologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Dermatologist <a href="https://seamlesshiring.com/a-leading-hospital/job/227/dermatologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Endocrinologist <a href="https://seamlesshiring.com/job/apply/228/endocrinologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Endocrinologist <a href="https://seamlesshiring.com/a-leading-hospital/job/228/endocrinologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">ENT Surgeon <a href="https://seamlesshiring.com/job/apply/248/ent-surgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">ENT Surgeon <a href="https://seamlesshiring.com/a-leading-hospital/job/248/ent-surgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Family Physician <a href="https://seamlesshiring.com/job/apply/259/family-physician" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Family Physician <a href="https://seamlesshiring.com/a-leading-hospital/job/259/family-physician" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Gastroenterologist <a href="https://seamlesshiring.com/job/apply/224/gastroenterologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Gastroenterologist <a href="https://seamlesshiring.com/a-leading-hospital/job/224/gastroenterologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">General Surgeon <a href="https://seamlesshiring.com/job/apply/243/general-surgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">General Surgeon <a href="https://seamlesshiring.com/a-leading-hospital/job/243/general-surgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Gynaecological Oncologist <a href="https://seamlesshiring.com/job/apply/234/gynaecological-oncologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Gynaecological Oncologist <a href="https://seamlesshiring.com/a-leading-hospital/job/234/gynaecological-oncologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Haematologist <a href="https://seamlesshiring.com/job/apply/230/haematologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Haematologist <a href="https://seamlesshiring.com/a-leading-hospital/job/230/haematologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Intensivist / Critical Care <a href="https://seamlesshiring.com/job/apply/219/intensivist-critical-care" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Intensivist / Critical Care <a href="https://seamlesshiring.com/a-leading-hospital/job/219/intensivist-critical-care" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Internal  and Preventive Medicine <a href="https://seamlesshiring.com/job/apply/220/internal-and-preventive-medicine" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Internal  and Preventive Medicine <a href="https://seamlesshiring.com/a-leading-hospital/job/220/internal-and-preventive-medicine" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
 <li class="list-group-item">Interventional Cardiologist <a href="https://seamlesshiring.com/a-leading-hospital/job/288/interventional-cardiologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Interventional Radiologist <a href="https://seamlesshiring.com/job/apply/253/interventional-radiologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Interventional Radiologist <a href="https://seamlesshiring.com/a-leading-hospital/job/253/interventional-radiologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Laparoscopic Surgeon <a href="https://seamlesshiring.com/job/apply/244/laparoscopic-surgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Laparoscopic Surgeon <a href="https://seamlesshiring.com/a-leading-hospital/job/244/laparoscopic-surgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Maxillo-facial Surgeon <a href="https://seamlesshiring.com/job/apply/256/maxillo-facial-surgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Maxillo-facial Surgeon <a href="https://seamlesshiring.com/a-leading-hospital/job/256/maxillo-facial-surgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Medical Oncologist <a href="https://seamlesshiring.com/job/apply/225/medical-oncologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Medical Oncologist <a href="https://seamlesshiring.com/a-leading-hospital/job/225/medical-oncologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Neonatal Intensivist <a href="https://seamlesshiring.com/job/apply/239/neonatal-intensivist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Neonatal Intensivist <a href="https://seamlesshiring.com/a-leading-hospital/job/239/neonatal-intensivist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Neonatologist <a href="https://seamlesshiring.com/job/apply/237/neonatologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Neonatologist <a href="https://seamlesshiring.com/a-leading-hospital/job/237/neonatologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Nephrologist <a href="https://seamlesshiring.com/job/apply/223/nephrologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Nephrologist <a href="https://seamlesshiring.com/a-leading-hospital/job/223/nephrologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Neurologist <a href="https://seamlesshiring.com/job/apply/222/neurologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Neurologist <a href="https://seamlesshiring.com/a-leading-hospital/job/222/neurologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Neurosurgeon <a href="https://seamlesshiring.com/job/apply/246/neurosurgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Neurosurgeon <a href="https://seamlesshiring.com/a-leading-hospital/job/246/neurosurgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
 <li class="list-group-item">Nuclear Medicine <a href="https://seamlesshiring.com/a-leading-hospital/job/289/nuclear-medicine" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Obstetrician &amp; Gynaecologist <a href="https://seamlesshiring.com/job/apply/233/obstetrician-gynaecologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Obstetrician &amp; Gynaecologist <a href="https://seamlesshiring.com/a-leading-hospital/job/233/obstetrician-gynaecologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Opthalmologist <a href="https://seamlesshiring.com/job/apply/255/opthalmologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Opthalmologist <a href="https://seamlesshiring.com/a-leading-hospital/job/255/opthalmologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Orthopaedic Surgeon <a href="https://seamlesshiring.com/job/apply/245/orthopaedic-surgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Orthopaedic Surgeon <a href="https://seamlesshiring.com/a-leading-hospital/job/245/orthopaedic-surgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Paediatric Cardiologist <a href="https://seamlesshiring.com/job/apply/241/paediatric-cardiologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Paediatric Cardiologist <a href="https://seamlesshiring.com/a-leading-hospital/job/241/paediatric-cardiologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Paediatric Intensivist <a href="https://seamlesshiring.com/job/apply/238/paediatric-intensivist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Paediatric Intensivist <a href="https://seamlesshiring.com/a-leading-hospital/job/238/paediatric-intensivist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Paediatric Oncologist <a href="https://seamlesshiring.com/job/apply/242/paediatric-oncologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Paediatric Oncologist <a href="https://seamlesshiring.com/a-leading-hospital/job/242/paediatric-oncologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Paediatric Pulmonologist <a href="https://seamlesshiring.com/job/apply/240/paediatric-pulmonologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Paediatric Pulmonologist <a href="https://seamlesshiring.com/a-leading-hospital/job/240/paediatric-pulmonologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Paediatric Surgeon <a href="https://seamlesshiring.com/job/apply/251/paediatric-surgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Paediatric Surgeon <a href="https://seamlesshiring.com/a-leading-hospital/job/251/paediatric-surgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Paediatrician <a href="https://seamlesshiring.com/job/apply/236/paediatrician" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Paediatrician <a href="https://seamlesshiring.com/a-leading-hospital/job/236/paediatrician" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Pathologist <a href="https://seamlesshiring.com/job/apply/226/pathologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Pathologist <a href="https://seamlesshiring.com/a-leading-hospital/job/226/pathologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Plastic Reconstructive Surgeon <a href="https://seamlesshiring.com/job/apply/257/plastic-reconstructive-surgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Plastic Reconstructive Surgeon <a href="https://seamlesshiring.com/a-leading-hospital/job/257/plastic-reconstructive-surgeon" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Psychiatrist <a href="https://seamlesshiring.com/job/apply/232/psychiatrist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Psychiatrist <a href="https://seamlesshiring.com/a-leading-hospital/job/232/psychiatrist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Radiologist <a href="https://seamlesshiring.com/job/apply/252/radiologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Radiologist <a href="https://seamlesshiring.com/a-leading-hospital/job/252/radiologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Respiratory Pysician <a href="https://seamlesshiring.com/job/apply/229/respiratory-pysician" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Respiratory Pysician <a href="https://seamlesshiring.com/a-leading-hospital/job/229/respiratory-pysician" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Rheumatologist <a href="https://seamlesshiring.com/job/apply/231/rheumatologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Rheumatologist <a href="https://seamlesshiring.com/a-leading-hospital/job/231/rheumatologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Surgical Oncologist <a href="https://seamlesshiring.com/job/apply/254/surgical-oncologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Surgical Oncologist <a href="https://seamlesshiring.com/a-leading-hospital/job/254/surgical-oncologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Urologist <a href="https://seamlesshiring.com/job/apply/247/urologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Urologist <a href="https://seamlesshiring.com/a-leading-hospital/job/247/urologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Vascular Surgery <a href="https://seamlesshiring.com/job/apply/250/vascular-surgery" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Vascular Surgery <a href="https://seamlesshiring.com/a-leading-hospital/job/250/vascular-surgery" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
 
                                                 </ul>
@@ -416,7 +416,7 @@
                                         <div class="panel-heading" role="tab" id="headingTwo">
                                             <h4 class="panel-title">
                                             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                <i class="fa fa-stethoscope"></i> &nbsp; <b>Nurses</b> <span class="pull-right">16 Roles</span>
+                                                <i class="fa fa-stethoscope"></i> &nbsp; <b>Nurses</b> <span class="pull-right">17 Roles</span>
                                                 <hr><p class="h5 text-light p-sm">Nurses are centerpiece of patient care and experience. We are particularly keen to build a first class nursing team. Empathy, professionalism, requisite experience, emphasis on uncompromising quality and a deep rooted culture of putting patients first will be the hallmarks of our Nurses. We will be investing heavily in continuous Nursing training and development, helping our Nurses to continue to grow and sustain an impeccably high quality of care delivery. If you are interested and qualified, please apply here.</p>
                                                 <br>
                                                 <p>
@@ -428,42 +428,46 @@
                                         <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                                             <div class="panel-body">
                                                   <ul class="list-group ht-min">
-                                                    <li class="list-group-item">Chief Nursing Officer <a href="https://seamlesshiring.com/job/apply/262/chief-nursing-officer" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+                                                    <li class="list-group-item">Chief Nursing Officer <a href="https://seamlesshiring.com/a-leading-hospital/job/262/chief-nursing-officer" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 <li class="list-group-item">Nursing Supervisor Endoscopy <a href="https://seamlesshiring.com/a-leading-hospital/job/291/nursing-supervisor-endoscopy" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
 <li class="list-group-item">Nursing Supervisor Dialysis <a href="https://seamlesshiring.com/a-leading-hospital/job/290/nursing-supervisor-dialysis" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Nursing Supervisor Theatre <a href="https://seamlesshiring.com/job/apply/263/nursing-supervisor-theatre" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Nursing Supervisor Theatre <a href="https://seamlesshiring.com/a-leading-hospital/job/263/nursing-supervisor-theatre" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
 <li class="list-group-item">Nursing Supervisor Oncology <a href="https://seamlesshiring.com/a-leading-hospital/job/292/nursing-supervisor-oncology" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Nursing Supervisor OPD <a href="https://seamlesshiring.com/job/apply/264/nursing-supervisor-opd" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Nursing Supervisor OPD <a href="https://seamlesshiring.com/a-leading-hospital/job/264/nursing-supervisor-opd" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Nursing Supervisor ICU <a href="https://seamlesshiring.com/job/apply/265/nursing-supervisor-icu" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Nursing Supervisor ICU <a href="https://seamlesshiring.com/a-leading-hospital/job/265/nursing-supervisor-icu" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Nursing Supervisor Adult Wards <a href="https://seamlesshiring.com/job/apply/266/nursing-supervisor-adult-wards" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Nursing Supervisor Adult Wards <a href="https://seamlesshiring.com/a-leading-hospital/job/266/nursing-supervisor-adult-wards" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Nursing Supervisor A&amp;E <a href="https://seamlesshiring.com/job/apply/267/nursing-supervisor-ae" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Nursing Supervisor A&amp;E <a href="https://seamlesshiring.com/a-leading-hospital/job/267/nursing-supervisor-ae" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Nursing Supervisor Paediatrics <a href="https://seamlesshiring.com/job/apply/268/nursing-supervisor-paediatrics" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Nursing Supervisor Paediatrics <a href="https://seamlesshiring.com/a-leading-hospital/job/268/nursing-supervisor-paediatrics" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Staff Nurse- O.T <a href="https://seamlesshiring.com/job/apply/269/staff-nurse-ot" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Staff Nurse- O.T <a href="https://seamlesshiring.com/a-leading-hospital/job/269/staff-nurse-ot" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Staff Nurse - Critical Care <a href="https://seamlesshiring.com/job/apply/270/staff-nurse-critical-care" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Staff Nurse - Critical Care <a href="https://seamlesshiring.com/a-leading-hospital/job/270/staff-nurse-critical-care" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Oncology Nurse <a href="https://seamlesshiring.com/job/apply/271/oncology-nurse" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Oncology Nurse <a href="https://seamlesshiring.com/a-leading-hospital/job/271/oncology-nurse" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Staff Nurse - Emergency <a href="https://seamlesshiring.com/job/apply/272/staff-nurse-emergency" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Staff Nurse - Emergency <a href="https://seamlesshiring.com/a-leading-hospital/job/272/staff-nurse-emergency" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Staff Nurse - Wards and OPD <a href="https://seamlesshiring.com/job/apply/273/staff-nurse-wards-and-opd" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Staff Nurse - Wards and OPD <a href="https://seamlesshiring.com/a-leading-hospital/job/273/staff-nurse-wards-and-opd" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Dialysis Nurse <a href="https://seamlesshiring.com/job/apply/274/dialysis-nurse" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Dialysis Nurse <a href="https://seamlesshiring.com/a-leading-hospital/job/274/dialysis-nurse" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Endoscopy Nurse <a href="https://seamlesshiring.com/job/apply/275/endoscopy-nurse" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Endoscopy Nurse <a href="https://seamlesshiring.com/a-leading-hospital/job/275/endoscopy-nurse" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Cath. Lab Nurse Technician <a href="https://seamlesshiring.com/job/apply/276/cath-lab-nurse-technician" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Cath. Lab Nurse Technician <a href="https://seamlesshiring.com/a-leading-hospital/job/276/cath-lab-nurse-technician" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Nursing Assistants <a href="https://seamlesshiring.com/job/apply/277/nursing-assistants" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Nursing Assistants <a href="https://seamlesshiring.com/a-leading-hospital/job/277/nursing-assistants" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+
+<li class="list-group-item">ECHO Technician Nurse <a href="https://seamlesshiring.com/a-leading-hospital/job/319/echo-technician-nurse" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+
+
                                                 </ul>
                                             
                                             </div>
@@ -504,7 +508,7 @@
                                         <div class="panel-heading" role="tab" id="headingThree">
                                             <h4 class="panel-title">
                                             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                <i class="fa fa-stethoscope"></i> &nbsp; <b>Other Health Professionals</b> <span class="pull-right">10 Roles</span>
+                                                <i class="fa fa-stethoscope"></i> &nbsp; <b>Other Health Professionals</b> <span class="pull-right">13 Roles</span>
                                                 <hr><p class="h5 text-light p-sm">Different people contribute different skills to ensuring our patients get the best possible care. We want to transform healthcare in Nigeria for good. We need the best Pharmacists, Scientists, Technicians and Radiographers to join the team. These professionals will be benefiting hugely from the support of competent colleagues, extensive and continuous training and exchange opportunities across our international network, while earning a very competitive compensation. Interested? Apply below.</p>
                                                 <br>
                                                 <p>
@@ -520,28 +524,35 @@
                                                     <li class="list-group-item grey-lt4-bg text-uppercase">
                                                         Pharmacists <!-- <i class="fa pull-right fa-arrow-down"></i> -->
                                                     </li>
-                                                    <li class="list-group-item">Chief Pharmacist  <a href="https://seamlesshiring.com/job/apply/278/chief-pharmacist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+                                                    <li class="list-group-item">Chief Pharmacist  <a href="https://seamlesshiring.com/a-leading-hospital/job/278/chief-pharmacist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-                                                    <li class="list-group-item">Pharmacists <a href="https://seamlesshiring.com/job/apply/279/pharmacists" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+                                                    <li class="list-group-item">Pharmacists <a href="https://seamlesshiring.com/a-leading-hospital/job/279/pharmacists" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
                                                      <li class="list-group-item grey-lt4-bg text-uppercase">
                                                         Allied Healthcare Workers <!-- <i class="fa pull-right fa-arrow-down"></i> -->
                                                     </li>
 
-                                                    <li class="list-group-item">Lab technicians <a href="https://seamlesshiring.com/job/apply/280/lab-technicians" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+                                                    <li class="list-group-item">Lab technicians <a href="https://seamlesshiring.com/a-leading-hospital/job/280/lab-technicians" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Radiographers <a href="https://seamlesshiring.com/job/apply/281/radiographers" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Radiographers <a href="https://seamlesshiring.com/a-leading-hospital/job/281/radiographers" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Physiotherapists <a href="https://seamlesshiring.com/job/apply/282/physiotherapists" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Physiotherapists <a href="https://seamlesshiring.com/a-leading-hospital/job/282/physiotherapists" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Respiratory therapists <a href="https://seamlesshiring.com/job/apply/283/respiratory-therapists" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Respiratory therapists <a href="https://seamlesshiring.com/a-leading-hospital/job/283/respiratory-therapists" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Psychologist <a href="https://seamlesshiring.com/job/apply/284/psychologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Psychologist <a href="https://seamlesshiring.com/a-leading-hospital/job/284/psychologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Nutritionists <a href="https://seamlesshiring.com/job/apply/285/nutritionists" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Nutritionists <a href="https://seamlesshiring.com/a-leading-hospital/job/285/nutritionists" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Social Workers <a href="https://seamlesshiring.com/job/apply/286/social-workers" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Social Workers <a href="https://seamlesshiring.com/a-leading-hospital/job/286/social-workers" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
 
-<li class="list-group-item">Ambulance Drivers <a href="https://seamlesshiring.com/job/apply/287/ambulance-drivers" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+<li class="list-group-item">Ambulance Drivers <a href="https://seamlesshiring.com/a-leading-hospital/job/287/ambulance-drivers" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+
+<li class="list-group-item">Mammography Technician <a href="https://seamlesshiring.com/a-leading-hospital/job/318/mammography-technician" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+
+<li class="list-group-item">Radiology Technician <a href="https://seamlesshiring.com/a-leading-hospital/job/317/radiology-technician" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+
+<li class="list-group-item">MRI / CT Technologist <a href="https://seamlesshiring.com/a-leading-hospital/job/316/mri-ct-technologist" class="btn btn-apply btn-sm btn-danger pull-right">Apply <i class="fa fa-chevron-right"></i></a></li>
+
                                                 </ul>
                                             </div>
                                         </div>

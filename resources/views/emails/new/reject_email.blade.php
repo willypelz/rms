@@ -49,7 +49,7 @@
 																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">Dear {{ $cv->first_name.' '.$cv->last_name }},
 																		<br><br>
 																		With reference to your application for the {{ $job->title }} position at {{ $job->company->name }}. Having found other candidates with matching requirements, we regret to inform you that your application has been dismissed from the recruitment process at this time.
-																		<br>You have our best wishes for success in locating the career opportunity that you deserve.
+																		<br><br>You have our best wishes for success in locating the career opportunity that you deserve.
 																		</p>
 																		
 																		

@@ -247,15 +247,15 @@
                                     </div-->
 
 
-                                   <!--  <div class="form-group">
+                                    <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <label for="">Do you reside in Abuja or are you willing to relocate to Abuja?<span class="text-danger">*</span></label><br/>
+                                                <label for="">Are you willing to relocate?<span class="text-danger">*</span></label><br/>
                                                 <label>{{ Form::radio('willing_to_relocate', 'yes',  false, ['required']) }} Yes</label>
                                                 <label>{{ Form::radio('willing_to_relocate', 'no',  false, ['required']) }} No </label>
                                             </div>
                                         </div>
-                                    </div> -->
+                                    </div>
                                     
                                     <div class="form-group">
                                         <div class="row">

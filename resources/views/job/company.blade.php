@@ -181,7 +181,7 @@
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
                                         <p><img src="{{ url('/') }}/img/seamlesshiring-logo.png" alt="" width="150px"> </p> 
                                         <p><small class="text-muted">Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a> &nbsp;
-                                        &copy; 2016. SeamlessHiring</small></p>
+                                        &copy; <?php echo date('Y') ?>. SeamlessHiring</small></p>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>

@@ -2,7 +2,7 @@
 @section('content')
 @include('job.board.jobBoard-header')
 
-{{-- dd($result) --}}
+{{ dd($job,$result) }}
 <style type="text/css">
 .see-more{display: none;}
 .see-more-shown{ display: block; }

@@ -27,7 +27,13 @@
     @section('navbar')
 
     @show()
-    
+    <?php $agent = new \Jenssegers\Agent\Agent(); ?>
+
+    @if( $agent->isMobile() )
+        <div class="alert alert-info text-center">
+            <strong>View this site on a desktop browser to get the best experience</strong>
+        </div>
+    @endif
 
     
     @yield('content')

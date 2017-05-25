@@ -153,7 +153,7 @@ class JobApplicationsController extends Controller
         //Check if he  is the owner of the job
         check_if_job_owner( $request->jobID );
         
-        $job = Job::find($request->jobID);
+        $job = Job::with('form_fields')->find($request->jobID);
         $active_tab = 'candidates';
         $status = '';
         $jobID = $request->jobID;

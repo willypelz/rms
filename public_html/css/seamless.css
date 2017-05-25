@@ -1911,6 +1911,9 @@ ul.notif > li a img {
 .text-light{
     font-weight: lighter;
 }
+.text-normal{
+    font-weight: normal;
+}
 .text-green{
     color:#4bb779;
 }
@@ -2450,6 +2453,7 @@ section.grey hr{
     /* background: #10588a; */
     background: #2889ce;
 }
+
 .job-head.has-bg-img {
     background: url(../img/b2.png) #408eb0;
 }
@@ -5714,6 +5718,43 @@ form.form-search .input-s{
 
 #pagination .disabled{
     display: none;
+}
+
+.companies img{
+    -webkit-filter: grayscale(100%);
+}
+.companies h4{
+    color: #778899;
+    font-size: 1.2em;
+    font-weight: 700;
+    transition: 1s;
+}
+
+
+.pad-v-xs{
+    min-height: 1px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.pad-v-sm{
+    min-height: 1px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+.pad-v-md{
+    min-height: 1px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+.pad-v-lg{
+    min-height: 1px;
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+.email-v h1{
+    font-size: 3em;
+    font-weight: 700;
 }
 
 

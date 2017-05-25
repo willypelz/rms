@@ -28,6 +28,13 @@
 */
 
 
+//Temporary Routes
+Route::get('/invitation-accept', function () {
+
+  return view('job.invitation-accept');
+});
+
+
 URL::forceSchema('https');
 
 
@@ -221,6 +228,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('job/teams/decline', ['uses' => 'JobsController@JobTeamDecline', 'as' => 'job-team-decline']);
 
     Route::get('accept-invite/{c_url}', 'JobsController@acceptInvite');
+    Route::get('decline-invite/{c_url}', 'JobsController@declineInvite');
+    Route::get('account-expired/{c_url}', 'JobsController@accountExpired');
 
     Route::match(['get', 'post'], 'job/matching/{jobID}', ['uses' => 'JobsController@JobMatching', 'as' => 'job-matching']);
     

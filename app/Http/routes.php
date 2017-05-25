@@ -28,13 +28,6 @@
 */
 
 
-//Temporary Routes
-Route::get('/invitation-accept', function () {
-
-  return view('job.invitation-accept');
-});
-
-
 URL::forceSchema('https');
 
 

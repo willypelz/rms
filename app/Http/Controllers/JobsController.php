@@ -1499,7 +1499,56 @@ class JobsController extends Controller
 
     }
 
-    
+    public function declineInvite($c_url){
+
+        $company = Company::with(['jobs'=>function($query){
+                                        $query->where('status', "ACTIVE")
+                                        ->orderBy('created_at','desc')
+                                        ->where('expiry_date','>',date('Y-m-d'));
+                                    }])->where('slug', $c_url)->first();
+
+        // $company->jobs()->orderBy('created_at','desc')->get()->toArray();
+        // dd($company);
+
+        if( File::exists( public_path( 'uploads/'.@$company->logo ) ) )
+        {
+            $company->logo = asset('uploads/'.@$company->logo);
+        }
+        else
+        {
+            $company->logo = asset('img/company.png');
+        }
+
+        return view('job.decline-invite', compact('company'));
+
+    }
+
+
+    public function accountExpired($c_url){
+
+        $company = Company::with(['jobs'=>function($query){
+                                        $query->where('status', "ACTIVE")
+                                        ->orderBy('created_at','desc')
+                                        ->where('expiry_date','>',date('Y-m-d'));
+                                    }])->where('slug', $c_url)->first();
+
+        // $company->jobs()->orderBy('created_at','desc')->get()->toArray();
+        // dd($company);
+
+        if( File::exists( public_path( 'uploads/'.@$company->logo ) ) )
+        {
+            $company->logo = asset('uploads/'.@$company->logo);
+        }
+        else
+        {
+            $company->logo = asset('img/company.png');
+        }
+
+        return view('job.account-expired', compact('company'));
+
+    }
+
+
 
     public function MyCompany(){
 

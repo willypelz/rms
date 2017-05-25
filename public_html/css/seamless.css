@@ -1911,6 +1911,9 @@ ul.notif > li a img {
 .text-light{
     font-weight: lighter;
 }
+.text-normal{
+    font-weight: normal;
+}
 .text-green{
     color:#4bb779;
 }
@@ -2450,6 +2453,7 @@ section.grey hr{
     /* background: #10588a; */
     background: #2889ce;
 }
+
 .job-head.has-bg-img {
     background: url(../img/b2.png) #408eb0;
 }

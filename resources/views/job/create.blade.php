@@ -115,15 +115,15 @@
         <div id="custom_fields"></div>
 
 
-        <!-- <div class="AddFieldButton">
+        <div class="AddFieldButton">
             <a href="#addField" data-toggle="collapse" aria-controls="" class="btn btn-line btn-sm text-success" style="background: whitesmoke; border: none; border-radius: 3px 3px 0 0;"><i class="fa fa-plus"></i> Add Custom field</a> &nbsp;
             <small class="">- Use this to add a custom question or input to this form</small><br>
-        </div> -->
+        </div>
         
-        <div class="AddFieldButton">
+        <!-- <div class="AddFieldButton">
             <a href="#" id="addCustomField" data-toggle="modal" data-target="#Cust_modal" aria-controls="" class="btn btn-line btn-sm text-success"><i class="fa fa-plus"></i> Add Custom field</a> &nbsp;
             <small class="">- Use this to add a custom question or input to this form</small><br>
-        </div>
+        </div> -->
         <div id="Cust_modal" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog " role="document">
                 <div class="modal-content">

@@ -177,7 +177,7 @@ class CvSalesController extends Controller
         return view('cv-sales.includes.cv-preview',compact("cv", "is_applicant", "appl", 'is_embedded'));
     }
 
-    public function saveCvPreview($cv, Request $request){ // to solr
+    public function saveCvPreview(){ // to solr
 
 
         Cv::where('id', '>', 5673)->chunk(100, function ($cvs) {

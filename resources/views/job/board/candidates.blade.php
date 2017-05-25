@@ -204,15 +204,15 @@ $.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query')
 $('.search-results').html(data.search_results);
 $('#search-filters').html(data.search_filters);
 $('body #showing').html(data.showing);
+$('.result-label').show();
 if( data.count > 0 )
 {
 $('#pagination').show();
-$('.result-label').show();
 }
 else
 {
 $('#pagination').hide();
-$('.result-label').hide();
+
 }
 $('#search_keyword').val(key);
 $.each(filters, function(index,value){
@@ -304,16 +304,17 @@ $.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query')
 $('.search-results').html(data.search_results);
 
 $('body #showing').html(data.showing);
+$('.result-label').show();
 if( data.count > 0 )
 {
 $('#pagination').show();
-$('.result-label').show();
+// $('.result-label').show();
 $('#search-filters').html(data.search_filters);
 }
 else
 {
 $('#pagination').hide();
-$('.result-label').hide();
+// $('.result-label').hide();
 }
 
 $.each(filters, function(index,value){
@@ -421,15 +422,16 @@ $.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query')
 // var response = JSON.parse(data);
 // console.log(data.search_results);
 $('.result-label').html(data.showing);
+$('.result-label').show();
 if( data.count > 0 )
 {
 $('#pagination').show();
-$('.result-label').show();
+
 }
 else
 {
 $('#pagination').hide();
-$('.result-label').hide();
+
 }
 
 $('.search-results').html(data.search_results);

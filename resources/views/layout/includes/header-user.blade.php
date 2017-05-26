@@ -13,8 +13,12 @@
     <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-social.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/owl.carousel.css') }}" rel="stylesheet">
-    
+    {{--<link href="{{ asset('css/owl.carousel.css') }}" rel="stylesheet">--}}
+    {{--<link href="{{ asset('css/owl.theme.css') }}" rel="stylesheet">--}}
+
+    <link href="https://cdn.insidify.com/dist/css/owl.carousel.min.css" rel="stylesheet">
+    <link href="https://cdn.insidify.com/dist/css/owl.theme.default.min.css" rel="stylesheet">
+
     <link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/select2.css') }}" rel="stylesheet">
     

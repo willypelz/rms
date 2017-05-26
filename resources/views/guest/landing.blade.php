@@ -529,23 +529,26 @@
   </section>
   <section class="grey">
     <div class="container-fluid text-center">
-      <h4 class="text-muted">Join Top Companies using SeamlessHiring</h4>
-      <div class="row companies text-bold">
-        <div class="col-md-3 tib">
-          <h1 class="text-center"><img src="{{asset('img/tib-logo.png')}}" height="40px" alt=""></h1>
-          <h4>The Infrastructure Bank PLC</h4>
-        </div>
-        <div class="col-md-3 cpr">
-          <h1 class="text-center"><img src="{{asset('img/cpr-logo.png')}}" height="40px" alt=""></h1>
-          <h4>Cell Phone Repair Africa</h4>
-        </div>
-        <div class="col-md-3 fcml">
-          <h1 class="text-center"><img src="{{asset('img/fmcl-logo.png')}}" height="40px" alt=""></h1>
-          <h4>Fareast Mercantile Co. Ltd</h4>
-        </div>
-        <div class="col-md-3 vla">
-          <h1 class="text-center"><img src="{{asset('img/vla-logo.png')}}" height="40px" alt=""></h1>
-          <h4>Vic Lawrence and Associates</h4>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1 text-center">
+          <h1 class="text-brandon no-top-margin"><i class="text-blue fa fa-building"></i> &nbsp;They Trust us</h1>
+          <p class="text-uppercase l-sp-5">Join Top Companies using SeamlessHiring</p>
+          <div class="col-xs-4 col-xs-offset-4"><hr></div>
+          <div class="clearfix"></div>
+          <div id="brandSlider" class="owl-carousel owl-theme companies">
+            <div class="item">
+              <h1 class="text-center no-bottom-margin"><img src="{{asset('img/tib-logo.png')}}" alt="" height="auto" width="auto"></h1>
+            </div>
+            <div class="item">
+              <h1 class="text-center no-bottom-margin"><img src="{{asset('img/cpr-logo.png')}}" alt="" height="auto" width="auto"></h1>
+            </div>
+            <div class="item">
+              <h1 class="text-center no-bottom-margin"><img src="{{asset('img/fmcl-logo.png')}}" alt="" height="auto" width="auto"></h1>
+            </div>
+            <div class="item">
+              <h1 class="text-center no-bottom-margin"><img src="{{asset('img/vla-logo.png')}}" alt="" height="auto" width="auto"></h1>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -568,5 +571,18 @@
                   scrollTop: $(".navituder").offset().top},
               'slow');
       });
+  </script>
+  <script>
+    $(document).ready(function() {
+       $('#brandSlider').owlCarousel({
+           items:3,
+           dots: false,
+           loop:true,
+           margin:40,
+           autoplay:true,
+           autoplayTimeout:2000,
+           autoplayHover: false
+       });
+    });
   </script>
 @endsection

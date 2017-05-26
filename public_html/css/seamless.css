@@ -5721,7 +5721,8 @@ form.form-search .input-s{
 }
 
 .companies img{
-    /*-webkit-filter: grayscale(100%);*/
+    height: 70px;
+    width: auto !important;
 }
 .companies h4{
     color: #778899;

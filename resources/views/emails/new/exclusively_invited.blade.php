@@ -46,20 +46,20 @@
 																	<div style="color:#2d2d2d;width:100%;margin:0 auto;">
 																		<h3 style="font-size: 20px;margin:0 0 5%;padding:0;"><a href="" style="font-family: Roboto,'Open Sans','Helvetica Neue',Arial,Helvetica,sans-serif;word-wrap:break-word;color: #3a5979;text-decoration:none;display:block;text-align: center;width:100%;" target="_blank">You Have Been Exclusively Invited</a></h3>
 																		<hr style="border-width:0 0 1px">
-																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">Dear {{ ucwords( $user->name ) }},
+																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">Dear {{ ucwords( $data->name ) }},
 																		<br><br>
 																		Regarding the ongoing recruitment process at {{ $company }} company for the job of {{ $job_title }}, this is to inform you that you have been invited to join the recruitment team.
 																		<br><br>You would be required to collaborate with your team in selecting the candidate(s) who best suit(s) the job.
 																		<br><br>To view the recruitment process, click the link below,
 																		</p>
 																		<div style="color:#2d2d2d;" align="center">
-																			<a href="{{ $link }}" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color: #4BB779;text-transform:uppercase" target="_blank">Accept</a>
+																			<a href="{{ $accept_link }}" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color: #4BB779;text-transform:uppercase" target="_blank">Accept</a>
 																		</div>
 																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">
 																		If you would like to decline this invitation, click the link below,
 																		</p>
 																		<div style="color:#2d2d2d;" align="center">
-																			<a href="{{ $decline }}" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color:#aaa;text-transform:uppercase" target="_blank">Decline</a>
+																			<a href="{{ $decline_link }}" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color:#aaa;text-transform:uppercase" target="_blank">Decline</a>
 																		</div>
 																		<p style="font-family:Arial,Helvetica,sans-serif; font-size:15px;line-height:1.3em;color:#afafaf">If clicking the link above does not work, kindly copy and paste it to your browser.</p>
 																		<hr style="border-width:0 0 1px">
@@ -93,7 +93,7 @@
 
 
 										<div style="color:#777;width:94%;text-align:center;margin:7% auto 0;padding:0" align="center">
-											<p style="font-family:Arial,Helvetica,sans-serif;color: #6b6b6b;font-size:12px;line-height:1.42em;text-align:center;margin:16px 0 8%;padding:0;" align="center">This notification was sent to <a href="mailto:{{ $user->email }}" target="_blank">{{ $user->email }}</a>
+											<p style="font-family:Arial,Helvetica,sans-serif;color: #6b6b6b;font-size:12px;line-height:1.42em;text-align:center;margin:16px 0 8%;padding:0;" align="center">This notification was sent to <a href="mailto:{{ $data->email }}" target="_blank">{{ $data->email }}</a>
 												<br> because you registered on seamlesshiring.com
 												<br>
 												<br> If you no longer wish to receive <i>any</i> notifications when an activity is carried out <a href="" style="font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2" target="_blank">unsubscribe</a>.

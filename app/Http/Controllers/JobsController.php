@@ -37,6 +37,7 @@ use Illuminate\Mail\Message;
 use App\Jobs\UploadZipCv;
 use Alchemy\Zippy\Zippy;
 use Charts;
+use App\Models\JobTeamInvite;
 // use Zipper;
 
 class JobsController extends Controller
@@ -59,6 +60,8 @@ class JobsController extends Controller
             'JobVideoApplication',
             'getEmbed',
             'getEmbedTest',
+            'acceptInvite',
+            'declineInvite',
         ]]);
 
         $this->mailer = $mailer;
@@ -70,7 +73,7 @@ class JobsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function JobTeamAdd(Request $request)
+    /*public function JobTeamAdd(Request $request)
     {
       # code...
       // dd('helo');
@@ -124,10 +127,7 @@ class JobsController extends Controller
             
             //Send notification mail
             $email_from = ( Auth::user()->email ) ? Auth::user()->email : 'no-reply@insidify.com';
-            /*Mail::send('emails.e-exculsively-invited', ['mail_body'=>$mail_body, 'name'=>$user->name, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=>$link ], function($message) use ($user){
-                $message->from('support@seamlesshiring.com');
-                $message->to($user->email, $user->name);
-            });*/ 
+
 
             $this->mailer->send('emails.new.exclusively_invited', ['user' => $user, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=> $link, 'decline' => $decline], function (Message $m) use ($user) {
                 $m->from('support@seamlesshiring.com')->to($user->email)->subject('You have been Exclusively Invited');
@@ -140,13 +140,142 @@ class JobsController extends Controller
       //$comp->users()->attach($user->id);
 
       
+    }*/
+
+    public function JobTeamAdd(Request $request)
+    {
+      # code...
+      // dd('helo');
+      // dd($request->request);
+
+      $validator = Validator::make($request->all(), [
+            'email' => 'required',
+            'name' => 'required'
+        ],[
+            'email.required' => 'Email is required',
+            'name.required' => 'Name is required'
+        ]);
+
+        if ($validator->fails()) {
+            echo 'Issue dey';
+        }
+        else
+        {   
+          //Create User
+
+            $data = [
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'job_id' => $request->job_id,
+
+                ];
+
+            if( JobTeamInvite::where('job_id',$data['job_id'])->where('email',$data['email'])->count() )
+            {
+                return json_encode( ['status' => false, 'message' => $data['name'].' has been invited already'] );
+            }
+
+            $job_team_invite = JobTeamInvite::create($data);
+            $company = Company::find( get_current_company()->id ); 
+
+
+            $accept_link = route('accept-invite', ['id' => $job_team_invite->id]);
+            $decline_link = route('decline-invite', ['id' => $job_team_invite->id]);
+
+            $mail_body = $request->body_mail;
+            
+
+            $job = Job::find($request->job_id);
+            $data = (object) $data;
+            
+            //Send notification mail
+            $email_from = ( Auth::user()->email ) ? Auth::user()->email : 'no-reply@insidify.com';
+         
+            $this->mailer->send('emails.new.exclusively_invited', ['data' => $data, 'job_title'=>$job->title, 'company'=>$company->name, 'accept_link'=> $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
+                $m->from('support@seamlesshiring.com')->to($data->email)->subject('You have been Exclusively Invited');
+            });
+
+            return json_encode( ['status' => true, 'message' => 'Email was sent successfully'] );
+        }
+
+        
+      //$comp->users()->attach($user->id);
+
+      
     }
+    
 
     public function removeJobTeamMember( Request $request )
     {
         $company = Company::find( $request->comp );
         $company->users()->detach($request->ref);
         
+    }
+
+     public function acceptInvite($id, Request $request){
+        $job_team_invite = JobTeamInvite::find($id);
+        $job = Job::with('company')->find( $job_team_invite->job_id );
+        $company = Company::find( $job->company->id );
+
+
+        if( $job_team_invite->is_accepted )
+        {
+            $status = true;
+        }
+        elseif( $job_team_invite->is_declined )
+        {
+            $status = false;
+        }
+        else
+        {
+            // $user = User::where('email', $job_team_invite->email)->first();
+
+            // if(empty($user) or is_null($user)){
+
+            //     $user = User::FirstorCreate([              
+            //       'email' => $job_team_invite->email,
+            //       'name' => $job_team_invite->name
+            //     ]);    
+
+
+            // }
+            // $company->users()->attach($user->id);
+
+            // $job_team_invite->is_accepted = true;
+            // $job_team_invite->save();
+
+        }
+
+        if ($request->isMethod('post')) {
+
+        }
+
+        return view('job.accept-invite', compact('job_team_invite', 'job','status'));
+
+    }
+
+    public function declineInvite($id){
+
+        $company = Company::with(['jobs'=>function($query){
+                                        $query->where('status', "ACTIVE")
+                                        ->orderBy('created_at','desc')
+                                        ->where('expiry_date','>',date('Y-m-d'));
+                                    }])->where('slug', $c_url)->first();
+
+        // $company->jobs()->orderBy('created_at','desc')->get()->toArray();
+        // dd($company);
+
+        if( File::exists( public_path( 'uploads/'.@$company->logo ) ) )
+        {
+            $company->logo = asset('uploads/'.@$company->logo);
+        }
+        else
+        {
+            $company->logo = asset('img/company.png');
+        }
+
+        return view('job.decline-invite', compact('company'));
+
     }
 
     public function JobTeamDecline( Request $request )
@@ -672,7 +801,8 @@ class JobsController extends Controller
       
         $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
         // return view('emails.e-exculsively-invited');
-        return view('job.board.team', compact('job', 'active_tab', 'company','result','application_statuses','owner'));
+        $job_team_invites = JobTeamInvite::where('job_id', $job->id)->where('is_accepted',0)->where('is_declined',0)->get();
+        return view('job.board.team', compact('job', 'active_tab', 'company','result','application_statuses','owner','job_team_invites'));
     }
 
     public function ActivityContent(Request $request){
@@ -1475,53 +1605,7 @@ class JobsController extends Controller
 
     }
 
-    public function acceptInvite($c_url){
-
-        $company = Company::with(['jobs'=>function($query){
-                                        $query->where('status', "ACTIVE")
-                                        ->orderBy('created_at','desc')
-                                        ->where('expiry_date','>',date('Y-m-d'));
-                                    }])->where('slug', $c_url)->first();
-
-        // $company->jobs()->orderBy('created_at','desc')->get()->toArray();
-        // dd($company);
-
-        if( File::exists( public_path( 'uploads/'.@$company->logo ) ) )
-        {
-            $company->logo = asset('uploads/'.@$company->logo);
-        }
-        else
-        {
-            $company->logo = asset('img/company.png');
-        }
-
-        return view('job.accept-invite', compact('company'));
-
-    }
-
-    public function declineInvite($c_url){
-
-        $company = Company::with(['jobs'=>function($query){
-                                        $query->where('status', "ACTIVE")
-                                        ->orderBy('created_at','desc')
-                                        ->where('expiry_date','>',date('Y-m-d'));
-                                    }])->where('slug', $c_url)->first();
-
-        // $company->jobs()->orderBy('created_at','desc')->get()->toArray();
-        // dd($company);
-
-        if( File::exists( public_path( 'uploads/'.@$company->logo ) ) )
-        {
-            $company->logo = asset('uploads/'.@$company->logo);
-        }
-        else
-        {
-            $company->logo = asset('img/company.png');
-        }
-
-        return view('job.decline-invite', compact('company'));
-
-    }
+   
 
 
     public function accountExpired($c_url){

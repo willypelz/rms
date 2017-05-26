@@ -27,10 +27,17 @@
                         Upload them here and add them to your pool of applicants.
 
                     </p><br>
-                        
+                    
+                        <div class="progress" style="margin-bottom:0px;display:none;">
+                          <div class="progress-bar progress-bar-striped active" role="progressbar"
+                          aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                            Uploading
+                          </div>
+                        </div>
                         <div id="loader"></div>
                         <div class="alert alert-danger" style="display:none;" id="u_f"></div>
                         <div class="alert alert-success" style="display:none;" id="u_s"></div>
+                        
                        <form action="{{ route('upload-file') }}" method="post" enctype="multipart/form-data" id="uploadCandidate">
                             {!! csrf_field() !!}
 
@@ -257,6 +264,8 @@
                         $('#u_s').hide();
 
                         $("#loader").html( '{!! preloader() !!}' );
+                        $(".progress").show();
+                        
                     }
 
                     function showResponse(response){
@@ -273,6 +282,8 @@
                         {
                             $('#u_f').text( response.data ).show();
                         }
+
+                        $(".progress").hide();
                         
 
                         // $.growl.notice({ message: "The file uploaded is being parsed. You will have access to it in within 48 hours" });

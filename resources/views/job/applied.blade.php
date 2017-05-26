@@ -207,10 +207,10 @@
                                             <h6 class="text-brandon">
                                                 See some useful articles that can help your career
                                             </h6><br>
-                    <div id="owl-posts2" class="hidden-sm">
+                    <div id="owlPosts2" class="owl-carousel owl-theme hidden-sm">
                         @if( count($posts) > 0 )
                            @foreach(@$posts as $post)
-                            <div class="owl-item col-sm-4">
+                            <div class="item col-sm-4">
                                 <div class="panel-body text-left">
                                   <p class="post-img">
                                     <a href="https://insidify.com/discovery/{{ $post->slug }}" >
@@ -261,8 +261,8 @@
                                 <!--/tab-content-->
                                 <div class="page page-sm foot no-bod-rad">
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                                        <p>Powered by <a href="http://www.seamlesshiring.com"><img src="http://cdn.insidify.com/dist/img/logos/seamlesshiring.svg" width="85px" alt=""></a> <br>
-                                        <small class="text-muted">&copy; 2016. www.seamlessHiring.com</small></p>
+                                        <p>Powered by <a href="http://www.seamlesshiring.com"><img src="http://cdn.insidify.com/dist/img/logos/seamlesshiring.svg" width="100px" alt=""></a> <br>
+                                        <small class="hidden text-muted">&copy; 2016. www.seamlessHiring.com</small></p>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
@@ -279,5 +279,18 @@
 
 <div class="separator separator-small"><br></div>
 
+
+<script>
+    $(document).ready(function() {
+        $('#owlPosts2').owlCarousel({
+            nav:true,
+            items:3,
+            loop:true,
+            margin:10,
+            autoplay:true,
+//           autoplayTimeout:1000,
+        });
+    });
+</script>
 
 @endsection

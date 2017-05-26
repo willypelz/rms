@@ -78,7 +78,7 @@ class HomeController extends Controller
 
         Mail::send('emails.guest.request-call', $request->all(), function($message){
             $message->from('no-reply@insidify.com');
-            $message->to('deji@insidify.com', 'Seamless Hiring Call Request');
+            $message->to('support@seamlesshiring.com', 'Seamless Hiring Call Request');
         });
     }
 

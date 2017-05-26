@@ -235,7 +235,11 @@
       <!-- <p class="p-empty" style=""> -->
       <p class="lead" style="">
       <i class="fa-2x fa fa-exclamation-circle"></i><br> 
-      You have no applicants here.  
+      @if($request->ajax())
+        You have no applicants here.  
+      @else
+        No candidate matches your search, please <a id="clearAllFilters" href="javacript://" > &nbsp; <i class="fa fa-times" class="text-danger"></i>Clear Filters</a>
+      @endif
       <!-- <ul class="list-unstyled">
         <li class="">a) <a href="{{ route('job-promote',  $jobID) }}" class="">Promote this job</a></li>
         <li class="">b) <a href="{{ route('job-promote',  $jobID) }}" class="">Share on social media</a></li>

@@ -220,9 +220,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('job/teams/remove', ['uses' => 'JobsController@removeJobTeamMember', 'as' => 'remove-job-team-member']);
     Route::get('job/teams/decline', ['uses' => 'JobsController@JobTeamDecline', 'as' => 'job-team-decline']);
 
-    Route::get('accept-invite/{id}', ['uses' => 'JobsController@acceptInvite' , 'as' => 'accept-invite' ] );
-    Route::get('decline-invite/{id}', ['uses' => 'JobsController@declineInvite' , 'as' => 'decline-invite' ] );
-    Route::get('account-expired/{c_url}', 'JobsController@accountExpired');
+    Route::match(['get', 'post'], 'accept-invite/{id}', ['uses' => 'JobsController@acceptInvite' , 'as' => 'accept-invite' ] );
+    Route::match(['get', 'post'], 'decline-invite/{id}', ['uses' => 'JobsController@declineInvite' , 'as' => 'decline-invite' ] );
+    Route::match(['get', 'post'], 'account-expired/{c_url}', 'JobsController@accountExpired');
 
     Route::match(['get', 'post'], 'job/matching/{jobID}', ['uses' => 'JobsController@JobMatching', 'as' => 'job-matching']);
     

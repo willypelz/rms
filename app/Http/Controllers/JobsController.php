@@ -217,6 +217,79 @@ class JobsController extends Controller
         $job = Job::with('company')->find( $job_team_invite->job_id );
         $company = Company::find( $job->company->id );
 
+        $is_new_user = true;
+
+        if ($request->isMethod('post')) {
+
+            // $validator = Validator::make($request->all(), [
+            //     'password' => 'required|confirmed|min:6',
+            // ],[
+            //     'password.confirmed' => 'Passwords do not match',
+            // ]);
+
+            // if ($validator->fails()) {
+            //     return redirect()->back()
+            //               ->withErrors($validator)
+            //               ->withInput();
+            // }
+            // else
+            // {
+                $user = User::find( @$request->ref );
+                $user->password = bcrypt( $request->password );
+                $user->save();
+
+                Auth::attempt(['email' => $user->email, 'password' => $request->password]);
+                return redirect()->route('select-company',['slug'=>$job->company->slug]);
+
+            // }
+            
+        }
+        else
+        {
+            if( $job_team_invite->is_accepted )
+            {
+                $status = true;
+            }
+            elseif( $job_team_invite->is_declined )
+            {
+                $status = false;
+            }
+            else
+            {
+                $user = User::where('email', $job_team_invite->email)->first();
+
+                if(empty($user) or is_null($user)){
+
+                    $user = User::FirstorCreate([              
+                      'email' => $job_team_invite->email,
+                      'name' => $job_team_invite->name
+                    ]);    
+                    
+
+                }
+                else
+                {
+                    $is_new_user = false;
+                }
+                // $company->users()->attach($user->id);
+                $company->users()->sync([$user->id], false);
+
+                $job_team_invite->is_accepted = true;
+                $job_team_invite->save();
+
+            }
+        }
+
+        return view('job.accept-invite', compact('job_team_invite', 'job','status','is_new_user','user'));
+
+    }
+
+    public function declineInvite($id){
+
+        $job_team_invite = JobTeamInvite::find($id);
+        $job = Job::with('company')->find( $job_team_invite->job_id );
+        $company = Company::find( $job->company->id );
+
 
         if( $job_team_invite->is_accepted )
         {
@@ -228,53 +301,14 @@ class JobsController extends Controller
         }
         else
         {
-            // $user = User::where('email', $job_team_invite->email)->first();
-
-            // if(empty($user) or is_null($user)){
-
-            //     $user = User::FirstorCreate([              
-            //       'email' => $job_team_invite->email,
-            //       'name' => $job_team_invite->name
-            //     ]);    
-
-
-            // }
-            // $company->users()->attach($user->id);
-
-            // $job_team_invite->is_accepted = true;
-            // $job_team_invite->save();
+            $status = false;
+            $job_team_invite->is_declined = true;
+            $job_team_invite->save();
 
         }
 
-        if ($request->isMethod('post')) {
 
-        }
-
-        return view('job.accept-invite', compact('job_team_invite', 'job','status'));
-
-    }
-
-    public function declineInvite($id){
-
-        $company = Company::with(['jobs'=>function($query){
-                                        $query->where('status', "ACTIVE")
-                                        ->orderBy('created_at','desc')
-                                        ->where('expiry_date','>',date('Y-m-d'));
-                                    }])->where('slug', $c_url)->first();
-
-        // $company->jobs()->orderBy('created_at','desc')->get()->toArray();
-        // dd($company);
-
-        if( File::exists( public_path( 'uploads/'.@$company->logo ) ) )
-        {
-            $company->logo = asset('uploads/'.@$company->logo);
-        }
-        else
-        {
-            $company->logo = asset('img/company.png');
-        }
-
-        return view('job.decline-invite', compact('company'));
+        return view('job.decline-invite', compact('company','job','status'));
 
     }
 

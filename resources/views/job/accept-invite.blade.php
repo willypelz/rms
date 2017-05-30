@@ -63,15 +63,19 @@
                 @if(is_null( @$status ))
                 <div class="row">
                   <hr>
-                  <div class="col-sm-3 col-sm-offset-3">
-                    Click here if you already have an account
+
+                  @if( !$is_new_user )
+                  <div class="col-sm-4 col-sm-offset-4">
+                    <!-- Click here if you already have an account -->
                     <a href="{{ route('select-company',['slug'=>$job->company->slug]) }}" class="btn btn-success btn-block">Login</a>
                   </div>
+                  @else
                   
-                  <div class="col-sm-3">
-                    CLick here to activate your account
+                  <div class="col-sm-4 col-sm-offset-4">
+                    <!-- Click here to activate your account -->
                     <a role="button" data-toggle="collapse" href="#loginForm" class="btn btn-primary btn-block"> Activate</a>
                   </div>
+                  @endif
                   <div class="clearfix"></div>
                   <hr style="margin-bottom: 0">
                 </div>
@@ -82,14 +86,15 @@
                         <label for="">Email</label>
                         <input type="email" value="{{ $job_team_invite->email }}" disabled="disabled" class="form-control" placeholder="Enter Email">
                       </div>
+                      <input type="hidden" name="ref" value="{{ $user->id }}" />
                       <div class="form-group">
                         <label for="">Password</label>
-                        <input type="password" class="form-control" placeholder="Enter password" required>
+                        <input type="password" class="form-control" placeholder="Enter password" name="password" id="password" required>
                       </div>
-                      <div class="form-group">
+                      <!-- <div class="form-group">
                         <label for="">Retype Password</label>
-                        <input type="password" class="form-control" placeholder="Re-Enter password" required>
-                      </div>
+                        <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Re-Enter password" required>
+                      </div> -->
                       <div class="form-group">
                         <button class="btn btn-success pull-right">Submit</button>
                         <div class="clearfix"></div>

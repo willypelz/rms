@@ -28,7 +28,7 @@
 */
 
 
-// URL::forceSchema('https');
+URL::forceSchema('https');
 
 
 

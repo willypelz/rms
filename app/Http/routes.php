@@ -421,6 +421,12 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('/{c_url}', 'JobsController@company');
 
+    /**
+     * Onbarding routes
+     */
+    Route::get('onboard/noAction1', [ 'as' => 'onboard-no-action-1', 'uses' => 'OnboardingController@noAction1' ]);
+    Route::get('onboard/noAction2', [ 'as' => 'onboard-no-action-2', 'uses' => 'OnboardingController@noAction2' ]);
+    Route::get('onboard/noAction3', [ 'as' => 'onboard-no-action-3', 'uses' => 'OnboardingController@noAction3' ]);
     
 
 

@@ -96,7 +96,7 @@
 
 
 										<div style="color:#777;width:94%;text-align:center;margin:7% auto 0;padding:0" align="center">
-											<p style="font-family:Arial,Helvetica,sans-serif;color: #6b6b6b;font-size:12px;line-height:1.42em;text-align:center;margin:16px 0 8%;padding:0;" align="center">This notification was sent to <a href="mailto:familonitobi@gmail.com" target="_blank">familonitobi@gmail.com</a>
+											<p style="font-family:Arial,Helvetica,sans-serif;color: #6b6b6b;font-size:12px;line-height:1.42em;text-align:center;margin:16px 0 8%;padding:0;" align="center">This notification was sent to <a href="mailto:{{ $email }}" target="_blank">{{ $email }}</a>
 												<br> because you registered on seamlesshiring.com
 												<br>
 												<br> If you no longer wish to receive <i>any</i> notifications when an activity is carried out <a href="" style="font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2" target="_blank">unsubscribe</a>.

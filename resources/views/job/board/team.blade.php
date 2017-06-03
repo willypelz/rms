@@ -34,7 +34,7 @@
                                           <p>{{ $user->email }}</p>
                                       </div>
 
-                                      @if( $user->id != Auth::user()->id or $owner->id == $user->id )
+                                      @if( $user->id != Auth::user()->id && $owner->id == $user->id )
                                       <div class="col-xs-4 small"><br>
                                           <a class="text-muted" id="removeTeamMember" style="cursor:pointer;" data-id="{{ $user->id }}" data-comp="{{ get_current_company()->id }}"><i class="fa fa-close"></i> Remove</a></span>
                                       </div>

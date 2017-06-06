@@ -26,7 +26,7 @@
         </div>
         
 
-      <div class="col-xs-4 ">
+      <!-- <div class="col-xs-4 ">
         <form id="form-cv-search" action="{{ url('cv/search') }}" class="form-group collapse"><br>
           <div class="form-lg">
             <div class="col-xs-10">
@@ -35,7 +35,7 @@
             <div class="col-xs-2">
               <div class="row">
                 <button type="submit" class="btn btn-lg btn-block btn-success btn-talent">
-                <!-- Find <span class="hidden-sm hidden-xs">Candidates</span>  -->
+
                 <i class="fa fa-search fa-lg"></i>
                 </button>
               </div>
@@ -44,7 +44,7 @@
           <a href="#form-cv-search" data-toggle="collapse" aria-expanded="false" aria-controls="form-cv-search" class="pull-right" style=""><i class="fa fa-close fa-inverse"></i></a>
         </form><br>
         <a href="#form-cv-search" data-toggle="collapse" aria-expanded="false" aria-controls="form-cv-search" class="btn btn-success pull-right"><i class="fa fa-search-plus"></i> Find New Candidate</a>
-      </div>
+      </div> -->
 
     </div>
   </div>

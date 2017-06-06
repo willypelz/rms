@@ -297,7 +297,7 @@ $('.search-results').html('{!! preloader() !!}');
 scrollTo('.job-progress-xs');
 $('.result-label').html('');
 $('#pagination').hide();
-$.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters,age: age_range, exp_years : exp_years_range, video_application_score : video_application_score_range   },function(data){
+$.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters,age: age_range, exp_years : exp_years_range, video_application_score : video_application_score_range, status : status_filter   },function(data){
 //console.log(response);
 // var response = JSON.parse(data);
 // console.log(data.search_results);

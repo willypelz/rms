@@ -30,7 +30,7 @@
     <?php $agent = new \Jenssegers\Agent\Agent(); ?>
 
     @if( $agent->isMobile() )
-        <div class="alert alert-info text-center">
+        <div class="alert alert-danger text-center">
             <strong>View this site on a desktop browser to get the best experience</strong>
         </div>
     @endif

@@ -531,7 +531,7 @@
     <div class="container-fluid text-center">
       <div class="row">
         <div class="col-md-10 col-md-offset-1 text-center">
-          <h1 class="text-brandon no-top-margin"><i class="text-blue fa fa-building"></i> &nbsp;They Trust us</h1>
+          <h1 class="text-brandon no-top-margin"><i class="text-blue fa fa-building"></i> &nbsp;They Trust Us</h1>
           <p class="text-uppercase l-sp-5">Join Top Companies using SeamlessHiring</p>
           <div class="col-xs-4 col-xs-offset-4"><hr></div>
           <div class="clearfix"></div>

@@ -136,6 +136,7 @@ class AuthController extends Controller
             // dd($request->request); 
 
              $validator = Validator::make($request->all(), [
+                'name' => 'unique:companies',
                 'slug' => 'unique:companies',
                 'email' => 'unique:users',
 

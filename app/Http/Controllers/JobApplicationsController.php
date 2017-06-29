@@ -225,7 +225,7 @@ class JobApplicationsController extends Controller
 
         if($request->ajax())
         {
-            $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab', 'status', 'result','jobID','start','myJobs', 'myFolders', 'application_statuses' ))->render();    
+            $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab', 'status', 'result','jobID','start','myJobs', 'myFolders', 'application_statuses', 'request'))->render();    
             $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query, 'status' => $status, 'age' => @$request->age,'exp_years' => @$request->exp_years, 'job' => $job, 'video_application_score' => @$request->video_application_score ])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing, 'count' => $result['response']['numFound'] ] );
             
@@ -235,7 +235,7 @@ class JobApplicationsController extends Controller
             $exp_years = [ env('EXPERIENCE_START'), env('EXPERIENCE_END') ]; 
             $video_application_score = [ env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END') ];
             
-            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','showing','myJobs','myFolders', 'application_statuses', 'job', 'video_application_score'));
+            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','showing','myJobs','myFolders', 'application_statuses', 'job', 'video_application_score','request'));
         }
 
         

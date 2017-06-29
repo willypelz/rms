@@ -22,6 +22,9 @@
                         <a class="dropdown-toggle" href="#" data-toggle="dropdown">Candidates &nbsp; <i class="fa fa-caret-down no-margin"></i></a>
                         <ul class="dropdown-menu">
                             <li class="{{ Request::is('cv/talent-pool') ? 'active' : '' }}"><a href="{{ url('cv/talent-pool') }}">Talent Pool</a></li>
+                            <li class="{{ Request::is('talentSource') ? 'active' : '' }}">
+                                <a class="" href="{{ url('talentSource') }}">Talent Sourcing</a>
+                            </li>
                             <!-- <li class="{{ Request::is('cv/purchased') ? 'active' : '' }}"><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li> -->
                             <!-- <li class="{{ Request::is('cv/saved') ? 'active' : '' }}"><a href="{{ url('cv/saved') }}">Saved Cvs</a></li> -->
                             <!-- <li class="{{ Request::is('cv/purchased') ? 'active' : '' }}"><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li> -->
@@ -45,11 +48,11 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         @if( get_current_company()->id != 13 )
-                            @if( $account->status == 'TRIAL')
-                                @if( $account->has_expired )
+                            @if( @$account->status == 'TRIAL')
+                                @if( @$account->has_expired )
 
                                     <li>
-                                        <a title="Upgrade now to avoid termination of service" class="btn btn-danger" href="{{ url('pricing') }}" >{{ $account->trial_time }} Days left</a>
+                                        <a title="Upgrade now to avoid termination of service" class="btn btn-danger" href="{{ url('pricing') }}" >{{ @$account->trial_time }} Days left</a>
                                             
                                             <div class="pricey-callout animated zoomInDown">Your trial period has ended <a class="closer">&times;</a></div>
                                         
@@ -58,9 +61,9 @@
                                 @else
 
                                     <li>
-                                        <a title="Upgrade now to avoid termination of service" class="btn btn-danger" href="{{ url('pricing') }}" >{{ $account->trial_time }} Days left</a>
+                                        <a title="Upgrade now to avoid termination of service" class="btn btn-danger" href="{{ url('pricing') }}" >{{ @$account->trial_time }} Days left</a>
                                             
-                                            <div class="pricey-callout animated zoomInDown">Your trial period ends in <span>{{ $account->trial_time }}</span> days. Upgrade now to avoid termination of service <a class="closer">&times;</a></div>
+                                            <div class="pricey-callout animated zoomInDown">Your trial period ends in <span>{{ @$account->trial_time }}</span> days. Upgrade now to avoid termination of service <a class="closer">&times;</a></div>
                                         
                                     </li>
 

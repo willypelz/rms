@@ -581,7 +581,8 @@
     
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <!-- <script src="{{ asset('js/script.js') }}"></script> -->
-    <script src="{{ asset('js/owl.carousel.js') }}"></script>
+    {{--<script src="{{ asset('js/owl.carousel.js') }}"></script>--}}
+    <script src="https://cdn.insidify.com/dist/js/owl.carousel.min.js"></script>
     <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>
     <script src="{{ asset('js/jquery.growl.js') }}"></script>

@@ -219,6 +219,11 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'job/teams/add', ['uses' => 'JobsController@JobTeamAdd', 'as' => 'job-team-add']);
     Route::post('job/teams/remove', ['uses' => 'JobsController@removeJobTeamMember', 'as' => 'remove-job-team-member']);
     Route::get('job/teams/decline', ['uses' => 'JobsController@JobTeamDecline', 'as' => 'job-team-decline']);
+
+    Route::match(['get', 'post'], 'accept-invite/{id}', ['uses' => 'JobsController@acceptInvite' , 'as' => 'accept-invite' ] );
+    Route::match(['get', 'post'], 'decline-invite/{id}', ['uses' => 'JobsController@declineInvite' , 'as' => 'decline-invite' ] );
+    Route::match(['get', 'post'], 'account-expired/{c_url}', 'JobsController@accountExpired');
+
     Route::match(['get', 'post'], 'job/matching/{jobID}', ['uses' => 'JobsController@JobMatching', 'as' => 'job-matching']);
     
     Route::match(['get', 'post'], 'jobs/teamedit', ['uses' => 'JobsController@Ajax', 'as' => 'ajax-edit-team']);
@@ -416,6 +421,12 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('/{c_url}', 'JobsController@company');
 
+    /**
+     * Onbarding routes
+     */
+    Route::get('onboard/noAction1', [ 'as' => 'onboard-no-action-1', 'uses' => 'OnboardingController@noAction1' ]);
+    Route::get('onboard/noAction2', [ 'as' => 'onboard-no-action-2', 'uses' => 'OnboardingController@noAction2' ]);
+    Route::get('onboard/noAction3', [ 'as' => 'onboard-no-action-3', 'uses' => 'OnboardingController@noAction3' ]);
     
 
 

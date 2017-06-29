@@ -26,7 +26,8 @@ use App\Jobs\ExtractCvContent;
 
 class CvSalesController extends Controller
 {
-    private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'score+asc', 'grouped'=>FALSE ];
+    // private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'score+asc', 'grouped'=>FALSE ];
+    private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'application_date+desc', 'grouped'=>FALSE ];
     /**
      * Create a new controller instance.
      *
@@ -176,7 +177,7 @@ class CvSalesController extends Controller
         return view('cv-sales.includes.cv-preview',compact("cv", "is_applicant", "appl", 'is_embedded'));
     }
 
-    public function saveCvPreview($cv, Request $request){ // to solr
+    public function saveCvPreview(){ // to solr
 
 
         Cv::where('id', '>', 5673)->chunk(100, function ($cvs) {

@@ -2,7 +2,7 @@
 @section('content')
 @include('job.board.jobBoard-header')
 
-{{-- dd($result) --}}
+{{-- dd($job,$result) --}}
 <style type="text/css">
 .see-more{display: none;}
 .see-more-shown{ display: block; }
@@ -204,15 +204,15 @@ $.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query')
 $('.search-results').html(data.search_results);
 $('#search-filters').html(data.search_filters);
 $('body #showing').html(data.showing);
+$('.result-label').show();
 if( data.count > 0 )
 {
 $('#pagination').show();
-$('.result-label').show();
 }
 else
 {
 $('#pagination').hide();
-$('.result-label').hide();
+
 }
 $('#search_keyword').val(key);
 $.each(filters, function(index,value){
@@ -297,23 +297,24 @@ $('.search-results').html('{!! preloader() !!}');
 scrollTo('.job-progress-xs');
 $('.result-label').html('');
 $('#pagination').hide();
-$.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters,age: age_range, exp_years : exp_years_range, video_application_score : video_application_score_range   },function(data){
+$.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters,age: age_range, exp_years : exp_years_range, video_application_score : video_application_score_range, status : status_filter   },function(data){
 //console.log(response);
 // var response = JSON.parse(data);
 // console.log(data.search_results);
 $('.search-results').html(data.search_results);
 
 $('body #showing').html(data.showing);
+$('.result-label').show();
 if( data.count > 0 )
 {
 $('#pagination').show();
-$('.result-label').show();
+// $('.result-label').show();
 $('#search-filters').html(data.search_filters);
 }
 else
 {
 $('#pagination').hide();
-$('.result-label').hide();
+// $('.result-label').hide();
 }
 
 $.each(filters, function(index,value){
@@ -421,15 +422,16 @@ $.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query')
 // var response = JSON.parse(data);
 // console.log(data.search_results);
 $('.result-label').html(data.showing);
+$('.result-label').show();
 if( data.count > 0 )
 {
 $('#pagination').show();
-$('.result-label').show();
+
 }
 else
 {
 $('#pagination').hide();
-$('.result-label').hide();
+
 }
 
 $('.search-results').html(data.search_results);

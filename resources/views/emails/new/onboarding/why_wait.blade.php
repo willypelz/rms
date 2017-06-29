@@ -46,7 +46,7 @@
 																	<div style="color:#2d2d2d;width:100%;margin:0 auto;">
 																		<h3 style="font-size: 20px;margin:0 0 5%;padding:0;"><a href="" style="font-family: Roboto,'Open Sans','Helvetica Neue',Arial,Helvetica,sans-serif;word-wrap:break-word;color: #3a5979;text-decoration:none;display:block;text-align: center;width:100%;" target="_blank">Why wait? Let's get you started.</a></h3>
 																		<hr style="border-width:0 0 1px">
-																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">Hi Loki,
+																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">Hi {{ $name }},
 																		<br><br>
 																		Here’s what happens next!
 																		<br>You don’t have to go through a rigorous hiring process ever again.
@@ -56,7 +56,7 @@
 																		<hr style="border-width:0 0 1px;margin-bottom:5px;">
 																		<div style="color:#2d2d2d;" align="center">
 									<a href="http://youtube.com" target="_blank" style="border-radius: 3px;display:block;">
-										<img src="http://demo.olufemioye.com/images/e-office.jpg" alt="video demonstration" width="100%" style="border-radius:5px">
+										<img src="https://seamlesshiring.com/img/ats-2.jpg" alt="video demonstration" width="100%" style="border-radius:5px">
 									</a>
 										
 									</div>
@@ -92,7 +92,7 @@
 
 
 										<div style="color:#777;width:94%;text-align:center;margin:7% auto 0;padding:0" align="center">
-											<p style="font-family:Arial,Helvetica,sans-serif;color: #6b6b6b;font-size:12px;line-height:1.42em;text-align:center;margin:16px 0 8%;padding:0;" align="center">This notification was sent to <a href="mailto:familonitobi@gmail.com" target="_blank">familonitobi@gmail.com</a>
+											<p style="font-family:Arial,Helvetica,sans-serif;color: #6b6b6b;font-size:12px;line-height:1.42em;text-align:center;margin:16px 0 8%;padding:0;" align="center">This notification was sent to <a href="mailto:{{ $email }}" target="_blank">{{ $email }}</a>
 												<br> because you registered on seamlesshiring.com
 												<br>
 												<br> If you no longer wish to receive <i>any</i> notifications when an activity is carried out <a href="" style="font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2" target="_blank">unsubscribe</a>.

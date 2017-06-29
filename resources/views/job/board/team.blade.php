@@ -34,7 +34,7 @@
                                           <p>{{ $user->email }}</p>
                                       </div>
 
-                                      @if( $user->id != Auth::user()->id or $owner->id == $user->id )
+                                      @if( $user->id != Auth::user()->id && $owner->id == $user->id )
                                       <div class="col-xs-4 small"><br>
                                           <a class="text-muted" id="removeTeamMember" style="cursor:pointer;" data-id="{{ $user->id }}" data-comp="{{ get_current_company()->id }}"><i class="fa fa-close"></i> Remove</a></span>
                                       </div>
@@ -45,6 +45,32 @@
                                 
                               </ul>
                             @endif
+
+                            <br><br>
+                            <h5 class="no-margin"> <!-- <i class="fa fa-lg fa-users"></i> --> Invites</h5><hr>
+                            @if( count( @$job_team_invites ) > 0 )
+                              <ul class="list-group">
+
+                                  @foreach($job_team_invites as $job_team_invite)
+                                  <li class="list-group-item">
+                                      <div class="col-xs-2"><img width="100%" alt="" src="{{ default_picture( @$user, 'user' ) }}" class="img-circle"></div>
+                                      <div class="col-xs-6">
+                                          <h5> {{ $job_team_invite->name }}</h5>
+                                          <p>{{ $job_team_invite->email }}</p>
+                                      </div>
+
+
+                                      <div class="col-xs-4 small"><br>
+                                          <i class="fa fa-hourglass"></i> Pending</span>
+                                      </div>
+
+                                      <div class="clearfix"></div>
+                                  </li>
+                                  @endforeach
+                                
+                              </ul>
+                            @endif
+                            
 
                         </div>
 
@@ -63,7 +89,7 @@
                                     {!! csrf_field() !!}
                                    <div class="form-group">
                                        <label for="">Name: </label>
-                                       <input type="text"  name="name" value="" class="form-control">
+                                       <input type="text" id="name" name="name" value="" class="form-control" required>
                                        <small><em>The name of the team member</em></small>
 
                                        <input type="hidden" name="email_from" value="{{ get_current_company()->email }}" class="form-control">
@@ -71,7 +97,7 @@
                                        
                                        <label for="">Email: </label>
                                        
-                                       <input type="text" name="email" id="email_to" placeholder="email addresses here" class="form-control">
+                                       <input type="text" name="email" id="email_to" placeholder="email addresses here" class="form-control" required>
                                        <small><em>The email address of the team member</em></small>
                                    </div>
 
@@ -146,13 +172,22 @@ You would be required to collaborate with your team in selecting the candidate(s
                     }
 
                     function showResponse(res){
-                        console.log(res)
+                        res = JSON.parse( res );
                         
                         $('#sendMail').removeAttr('disabled');
                         $('#AddTeamMember').removeClass('in');
                         $('#email_to').val('');
+                        $('#name').val('');
 
-                        $.growl.notice({ message: "Email was sent successfully" });
+                        if( res.status == true )
+                        {
+                          $.growl.notice({ message: res.message });
+                        }
+                        else
+                        {
+                          $.growl.error({ message: res.message });
+                        }
+                        
 
 
                     }

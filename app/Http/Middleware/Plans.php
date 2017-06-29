@@ -13,9 +13,11 @@ class Plans
      *
      * @var array
      */
-    protected $except = [
+    protected $exceptRoutes = [
         'login',
         'logout',
+        'select-company',
+        'add-company',
     ];
 
     /**
@@ -27,6 +29,13 @@ class Plans
      */
     public function handle($request, Closure $next)
     {
+        foreach($this->exceptRoutes as $route) {
+
+          if ( $request->route()->getName() == $route ) {
+            return $next($request);
+          }
+        }
+
         if( Auth::check() )
         {
             $current_company = get_current_company();

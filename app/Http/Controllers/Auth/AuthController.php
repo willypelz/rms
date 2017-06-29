@@ -136,6 +136,7 @@ class AuthController extends Controller
             // dd($request->request); 
 
              $validator = Validator::make($request->all(), [
+                'name' => 'unique:companies',
                 'slug' => 'unique:companies',
                 'email' => 'unique:users',
 
@@ -198,7 +199,13 @@ class AuthController extends Controller
                 );
             }
 
-            
+            //Send New user notification email
+            /*$to = 'support@seamlesshiring.com';
+            $mail = Mail::send('emails.new.sign-up', ['user' => $user ,'company' => $comp], function ($m) use($comp,$user,$to) {
+                $m->from($to, @$comp->name);
+
+                $m->to($to)->subject('New Sign Up');
+            });*/
 
 
             // if($upload){

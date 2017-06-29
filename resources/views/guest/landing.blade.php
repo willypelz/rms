@@ -8,26 +8,98 @@
   }
 </style>
 @section('content')
-  <!-- <an-ins an-type="EVENT" an-data="{id:9}" an-action="PAGE_LOADED"></an-ins> -->
-  <section class="s-div dark homepage">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-8 col-sm-offset-2 text-center">
-          <div class="pagehead text-white">
-            <!-- <img src="" alt="SeamlessHiring logo" width="100%"> -->
-            <!-- <i class="fa fa-skype fa-inverse fa-5x hidden-sm"></i>&nbsp;  -->
-            <div class="separator separator-small"><br></div>
-            <h1 class="fa-3x bold text-brandon text-light no-margin"><span class="">Everything</span> You Need To Hire, In One Place!</h1>
-            <div class="col-xs-4 col-xs-offset-4">
-              <hr>
-            </div>
-            <div class="clearfix"></div>
-            <p class="lead text-light no-margin">Cut cost, shorten recruitment time and increase the quality of hires drastically with the compact, easy-to-use recruitment solution.</p>
-            <br><br>
-            <p><a href="register" class="btn btn-lg btn-success">Get Started for Free &nbsp; <i class="fa fa-chevron-right"></i></a></p>
 
+<!-- <an-ins an-type="EVENT" an-data="{id:9}" an-action="PAGE_LOADED"></an-ins> -->
+<section class="s-div dark homepage">
+  <div class="">
+    <div class="">
+      <div class="col-sm-12 text-center">
+
+        <!-- Slider -->
+        <div id="carousel-example-generic" class="carousel slide home-carousel" data-ride="carousel">
+          <!-- Indicators -->
+          <ol class="carousel-indicators">
+            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+          </ol>
+
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner" role="listbox">
+            <div class="item active">
+              <div class="carousel-caption">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <div class="pagehead text-white">
+                      <div class="separator separator-small"><br></div>
+                      <h1 class="fa-3x bold text-brandon text-light no-margin"><span class="">Everything</span> You Need To Hire, In One Place!</h1>
+                      <div class="col-xs-4 col-xs-offset-4">
+                        <hr>
+                      </div>
+                      <div class="clearfix"></div>
+                      <p class="lead text-light no-margin">Cut cost, shorten recruitment time and increase the quality of hires drastically with the compact, easy-to-use recruitment solution.</p>
+                      <br><br>
+                      <p>
+                        <a href="register" class="btn btn-lg btn-success">Get Started for Free &nbsp; <i class="fa fa-chevron-right"></i></a>
+                      </p>
+                      
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="carousel-caption">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <div class="pagehead text-white">
+                      <div class="separator separator-small"><br></div>
+                      <h1 class="fa-3x bold text-brandon text-light no-margin"><span class="">Somethning on Seamless</span><br> Talent Sourcing!</h1>
+                      <div class="col-xs-4 col-xs-offset-4">
+                        <hr>
+                      </div>
+                      <div class="clearfix"></div>
+                      <p class="lead text-light no-margin">We sit on one of the largest talent databases in the country, with the combination of SeamlessHiring.com and Insidify.com.</p>
+                      <br><br>
+                      <p>
+                        <a href="talentSource" class="btn btn-lg btn-primary">Start Sourcing &nbsp; <i class="fa fa-chevron-right"></i></a>
+                      </p>
+                      
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="carousel-caption">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <div class="pagehead text-white">
+                      <div class="separator separator-small"><br></div>
+                      <h1 class="fa-3x bold text-brandon text-light no-margin"> Something on Video Editing <br> comes here</h1>
+                      <div class="col-xs-4 col-xs-offset-4">
+                        <hr>
+                      </div>
+                      <div class="clearfix"></div>
+                      <p class="lead text-light no-margin">Cut cost, shorten recruitment time and increase the quality of hires drastically with the compact, easy-to-use recruitment solution.</p>
+                      <br><br>
+                      <p>
+                        <a href="register" class="btn btn-lg btn-success">CTA Here &nbsp; <i class="fa fa-chevron-right"></i></a>
+                      </p>
+                      
+                    </div>
+                </div>
+              </div>
+            </div>
+            
           </div>
+
+          <!-- Controls -->
+          <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
         </div>
+        <!-- End of slider -->
       </div>
     </div>
     <!-- <div class="visible-xs navituder"></div> -->
@@ -475,6 +547,160 @@
                 <div class="well well-lg h4"><i class="fa text-blue fa-2x fa-street-view pull-left"></i> &nbsp; To choose from a pool of successful candidates who already love your brand.</div>
               </div>
 
+<<<<<<< HEAD
+              <section class="alert no-pad white hidden">
+              <div class="well wellSource well-lg no-margin" id="" style="" data-spy="affix" data-offset-top="1550" data-offset-bottom="0">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h2 class=" text-brandon fa-inverse title">Talent Sourcing</h2>
+                        <div class="visible-xs"><br></div>
+                      </div>
+                      <div class="col-sm-6">
+                        <p class="fa-inverse">Our specialized alternative recruitment solution- if you want to fill that position FAST and still ensure QUALITY talents. We do the recruiting for you!</p>
+                        <div class="visible-xs"><br></div>
+                      </div>
+                      <div class="col-sm-3">
+                        <a href="talentSource#talentForm" target="_blank" class="btn btn-primary btn-block btn-lg">Start Sourcing &nbsp; <i class="fa fa-chevron-right"></i></a>
+                      </div>
+                      <a class="close fa-2x fa-inverse" data-dismiss="alert" aria-label="Close">&times;</a>
+                    </div>
+                  </div>
+                </div>
+              </section>
+                      
+                      <section id="sec-seamless" class="grey">
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-md-10 col-md-offset-1 text-center">
+                              <h1 class=" text- text-brandon"><i class="fa text-blue fa-play-circle"></i> &nbsp;Video Job Posting</h1>
+                              <p class="l-sp-5">SELL YOUR BRAND TO APPLICANTS EXCLUSIVELY!</p>
+                              <div class="col-xs-4 col-xs-offset-4"><hr></div>
+                              <div class="clearfix"></div>
+                              <p class="lead" data-wow-duration="1s">Our 1st-in-Africa SeamlessHiring video job posting feature provides you with a personal, more human way to introduce your company, role details, expectations and other valuable information to job seekers. Now, you can exclusively sell your brand and workplace culture to prospective applicants.</p>
+                              <br>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="pad pad-xs"><br></div>
+                            <div class="">
+                              <!-- <div class="col-md-6"><br>
+                                <img src="https://seamlesshiring.com/img/ats-2.jpg" width="100%" alt="" class="wow fadeInLeft">
+                              </div> -->
+                              <div class="col-md-12">
+                                <div class="well blue-bg text-dark well-lg  fadeInRight wow fadeInRight animated">
+
+                                    <h4 class="text-uppercase text-center l-sp-5 text-white">This way you get:</h4><br>
+                                    
+                                    
+                                      <div class="col-sm-6">
+                                        <div class="well well-lg h4"><i class="fa text-blue fa-2x fa-heart pull-left"></i> &nbsp; Applicants to know a lot more about your brand and actually fall in love with it.</div>
+                                      </div>
+
+                                      <div class="col-sm-6">
+                                        <div class="well well-lg h4"><i class="fa text-blue fa-2x fa-lightbulb-o pull-left"></i> &nbsp; A chance to test the comprehension and mental prowess of your applicants through the video.</div>
+                                      </div>
+
+                                      <div class="col-sm-6">
+                                        <div class="well well-lg h4"><i class="fa text-blue fa-2x fa-sort-amount-asc pull-left"></i> &nbsp; To sort applicants based on their performance following a test.</div>
+                                      </div>
+
+                                      <div class="col-sm-6">
+                                        <div class="well well-lg h4"><i class="fa text-blue fa-2x fa-street-view pull-left"></i> &nbsp; To choose from a pool of successful candidates who already love your brand.</div>
+                                      </div>
+
+                                  <!-- <div class="col-md-12 text-center">
+                                    <img src="img/screen-vid.png" width="75%" alt="">
+                                  </div> -->
+                                    
+                                  <div class="clearfix"></div><br>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="pad pad-xs"></div>
+                            <div class="col-xs-12">
+                              <br>
+                              <p class="text-center lsp3 text-lighter wow fadeInUp"><a href="{{ url('register') }}" class=" btn btn-success btn-lg">Start Posting </a></p>
+                            </div>
+                          </div>
+                        </div>
+                      </section>
+
+                      <section class="white">
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-md-10 col-md-offset-1 text-center">
+                              <h1 class=" text-brandon"><i class="fa text-green fa-users"></i> &nbsp;Team Recruitment</h1>
+                              <p class="l-sp-5">HIRE COLLABORATIVELY WITH YOUR TEAM </p>
+                              <div class="col-xs-4 col-xs-offset-4"><hr></div>
+                              <div class="clearfix"></div>
+                              <p class="lead" data-wow-duration="1s">There is no limit to the number of team members you can invite to join you in hiring the best. Every team member has their own dedicated account and login access to view and track applicants and carry out other specified functions within the recruitment process.</p>
+                              <br>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="pad pad-xs"><br></div>
+                            <div class="col-md-8 col-md-offset-2 text-center">
+                              <div class="row">
+                                <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/001-avatar-2.png" alt=""></div>
+                                <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/008-social-5.png" alt=""></div>
+                                <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/005-social-8.png" alt=""></div>
+                                <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/004-avatar.png" alt=""></div>
+                              </div>
+                              <div class="clearfix"></div>
+                              <div class="separator separator-small hidden-xs"><br></div>
+                              <div class="row">
+                                <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/002-avatar-1.png" alt=""></div>
+                                <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/016-people.png" alt=""></div>
+                                <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/010-social-3.png" alt=""></div>
+                                <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/add-circular-button.png" alt=""></div>
+                              </div>
+                              <div class="row">
+                                
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </section>
+
+                      <section class="s-div dark no-margin">
+                        <div class="container">
+                          <br>
+                          <div class="row text-center">
+                            <div class="col-sm-12">
+                              <p class="lead text-brandon text-white">Recruitment Made Unbelievably Easy.</p>
+                              <a href="{{ url('register') }}" class="btn btn-success btn-lg"> Get Started for Free! &nbsp; <i class="fa fa-chevron-right"></i></a>
+                            </div>
+                            </div><div class="clearfix"><br></div>
+                            <br>
+                          </div>
+                        </section>
+                        <script>
+                          $("a[data-toggle='tab']").click(function() {
+                              $('html,body').animate({
+                                  scrollTop: $(".navituder").offset().top},
+                                  'slow');
+                          });
+
+                          // Fix talentSourcing to top
+                          // $(window).scroll(function() {
+                          //   if ($(".wellSource").offset().top == 0) {
+                          //       $(".wellSource").addClass("attach");
+                          //   } else {
+                          //       $(".wellSource").removeClass("attach");
+                          //   }
+                          // });]
+
+                          // $('.wellSource').affix({
+                          //     offset: {
+                          //       top: 100,
+                          //       bottom: function () {
+                          //         return (this.bottom = $('.footer').outerHeight(true))
+                          //       }
+                          //     }
+                          //   })
+                        </script>
+                        @endsection
+=======
               <!-- <div class="col-md-12 text-center">
                 <img src="img/screen-vid.png" width="75%" alt="">
               </div> -->
@@ -586,3 +812,4 @@
     });
   </script>
 @endsection
+>>>>>>> fab16578ecf5d27fa1438ea08607e134f5f9942e

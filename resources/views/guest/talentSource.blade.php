@@ -119,11 +119,51 @@ you.</p>
         </div>
     </section>
     
-    <section class="s-div text-white">
+    <section class="s-div text-white" id="talentForm">
         <div class="container">
             <div class="row">
                 
                    <div class="col-sm-8 col-sm-offset-2 text-center">
+
+                      <div class="well transparent">
+                        <div class="">
+                          <h2 class="text-center text-brandon">
+                            Start Sourcing
+                          </h2>
+                          <p>Kindly provide all details below. We shall reach you within 24hrs</p><br>
+                          
+                          <form action="">
+                            <div class="form-group col-md-6">
+                              <label for="name" class="fa-inverse">Name</label>
+                              <input type="text" class="form-control">
+                            </div>
+                            <div class="form-group col-md-6">
+                              <label for="name" class="fa-inverse">Company Name</label>
+                              <input type="text" class="form-control">
+                            </div>
+                            <div class="form-group col-md-6">
+                              <label for="name" class="fa-inverse">Role</label>
+                              <input type="text" class="form-control">
+                            </div>
+                            <div class="form-group col-md-6">
+                              <label for="name" class="fa-inverse">Phone Number</label>
+                              <input type="number" class="form-control">
+                            </div>
+                            <div class="form-group col-md-12">
+                              <label for="name" class="fa-inverse">Email</label>
+                              <input type="email" class="form-control">
+                            </div>
+                            <div class="form-group col-md-12">
+                              <label for="name" class="fa-inverse">Vacant Position</label>
+                              <textarea placeholder="separate each vacany with a comma ( , )" class="form-control" rows="3"></textarea>
+                            </div>
+                            <div class="form-group col-md-12">
+                              <input type="submit" class="btn btn-lg btn-success" value="Submit">
+                            </div>
+                          </form>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
                        <h3><i class="fa fa-star-o"></i>
                        <i class="fa fa-star-o"></i>
                        <i class="fa fa-star-o"></i><br>

@@ -25,7 +25,9 @@
 </div>
 
 <div class="form-group">
-	<input class="form-control" id="interview-message" placeholder="Message" />
+  <br>
+  <label><strong>ADDITIONAL NOTE: </strong></label>
+  <textarea class="form-control" id="interview-message" placeholder="Message"> </textarea>
 </div>
                                   
   <div class="pull-right">

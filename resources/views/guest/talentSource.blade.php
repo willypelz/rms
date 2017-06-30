@@ -3,20 +3,20 @@
 @section('content')
 
 
-  <section class="s-div homepage">
+  <section class="s-div homepage" style="background: #10588a fixed bottom url(img/office-interior.jpg);">
          <div class="container">
 
             <div class="row text-center text-light text-white">
 
-                <div class="col-sm-8 col-sm-offset-2">
+                <div class="col-sm-10 col-sm-offset-1">
                 <div class="separator separator-small"></div>
-               <img src="{{ url('/') }}/img/talent.png" width="250px" class="" alt="">
+               <img src="{{ url('/') }}/img/talent.png" width="250px" class="" alt=""><hr>
                     <h1 class=" text-brandon "> 
                     
-                    Seamless Talent Sourcing</h1>
+                    Seamless Talent Sourcing</h1><hr>
 <!--                    <hr>-->
                     <p class="lead">We sit on one of the largest talent databases in the country, with the combination of SeamlessHiring.com and Insidify.com.</p>
-                    <br>
+                    <br><br>
                 </div>
             </div>
 

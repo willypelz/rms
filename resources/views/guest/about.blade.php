@@ -3,7 +3,7 @@
 @section('content')
 
 
-  <section class="s-div homepage">
+  <section class="s-div homepage" style="background: #10588a fixed top url(img/home-bg1.jpg);">
         <div class="container">
 
             <div class="row text-center text-brandon text-light text-white"><br>

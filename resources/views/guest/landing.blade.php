@@ -51,12 +51,12 @@
                 <div class="col-lg-10 col-lg-offset-1">
                     <div class="pagehead text-white">
                       <div class="separator separator-small"><br></div>
-                      <h1 class="fa-3x bold text-brandon text-light no-margin"><span class="">Somethning on Seamless</span><br> Talent Sourcing!</h1>
+                      <h1 class="fa-3x bold text-capitalize text-brandon text-light no-margin"><span class="">Talent sourcing made unbelievably easy!</h1>
                       <div class="col-xs-4 col-xs-offset-4">
                         <hr>
                       </div>
                       <div class="clearfix"></div>
-                      <p class="lead text-light no-margin">We sit on one of the largest talent databases in the country, with the combination of SeamlessHiring.com and Insidify.com.</p>
+                      <p class="lead text-light no-margin">You can entrust your talent search to us. We will help you fill any role within your organisation with the best fit, in record time!</p>
                       <br><br>
                       <p>
                         <a href="talentSource" class="btn btn-lg btn-primary">Start Sourcing &nbsp; <i class="fa fa-chevron-right"></i></a>
@@ -71,15 +71,15 @@
                 <div class="col-lg-10 col-lg-offset-1">
                     <div class="pagehead text-white">
                       <div class="separator separator-small"><br></div>
-                      <h1 class="fa-3x bold text-brandon text-light no-margin"> Something on Video Editing <br> comes here</h1>
+                      <h1 class="fa-3x bold text-brandon text-light no-margin text-capitalize"> Sell your brand to applicants exclusively!</h1>
                       <div class="col-xs-4 col-xs-offset-4">
                         <hr>
                       </div>
                       <div class="clearfix"></div>
-                      <p class="lead text-light no-margin">Cut cost, shorten recruitment time and increase the quality of hires drastically with the compact, easy-to-use recruitment solution.</p>
+                      <p class="lead text-light no-margin">Introduce your brand and workplace culture exclusively to prospective applicants with our 1st-in-Africa video job posting feature.</p>
                       <br><br>
                       <p>
-                        <a href="register" class="btn btn-lg btn-success">CTA Here &nbsp; <i class="fa fa-chevron-right"></i></a>
+                        <a href="#videoPosting" class="btn btn-lg btn-success">Learn more &nbsp; <i class="fa fa-chevron-right"></i></a>
                       </p>
                       
                     </div>
@@ -509,7 +509,7 @@
 
   </section>
 
-  <section id="sec-seamless" class="grey">
+  <section id="videoPosting" class="grey">
     <div class="container">
       <div class="row">
         <div class="col-md-10 col-md-offset-1 text-center">

@@ -52,7 +52,7 @@
 																		<br><br>We received your application for the job {{ $job->title }} at {{ $job->company->name }} company.
 																		<br><br>Kindly acknowledge if you will be available for an interview on {{ date('D, j-n-Y, h:i A', strtotime($interview->date))  }}. The interview is scheduled to hold at {{ $interview->location }}.
 																		<br><br>Please ensure to come along with the necessary credentials.
-																		@if( $interview->message != "" )
+																		@if( $interview->message != "" && !is_null( $interview->message ) )
 																			<br><br>PLEASE NOTE:  {{ $interview->message }}
 																		@endif
 																		</p>

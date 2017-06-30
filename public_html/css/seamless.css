@@ -234,7 +234,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     color: transparent;
 }
 .navitude {
-    margin-top: 4.5em;
+    margin-top: 3.5em;
 }
 .text-orange {
     color: #D49220;
@@ -254,6 +254,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     top: 45%;
     /* color: #ccc;
     */
+}
+.pad-ft{
+    padding: 40px 50px 30px
 }
 .hr-bg {
     margin-top: 20px;
@@ -5527,7 +5530,7 @@ text-shadow: {
 }
 .carousel {
     height: 30em;
-    margin-bottom: 30px;
+    margin-bottom: 0px;
     /* background: url(../img/home-bg2.jpg) bottom fixed; */
     background-size: cover;
 }

@@ -13,22 +13,22 @@
 <section class="s-div dark homepage">
   <div class="">
     <div class="">
-      <div class="col-sm-12 text-center">
+      <div class="col-lg-12 text-center">
 
         <!-- Slider -->
         <div id="carousel-example-generic" class="carousel slide home-carousel" data-ride="carousel">
           <!-- Indicators -->
-          <!-- <ol class="carousel-indicators">
+          <ol class="carousel-indicators">
             <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
             <li data-target="#carousel-example-generic" data-slide-to="1"></li>
             <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-          </ol> -->
+          </ol>
 
           <!-- Wrapper for slides -->
           <div class="carousel-inner" role="listbox">
             <div class="item active">
               <div class="carousel-caption">
-                <div class="col-sm-10 col-sm-offset-1">
+                <div class="col-lg-10 col-lg-offset-1">
                     <div class="pagehead text-white">
                       <div class="separator separator-small"><br></div>
                       <h1 class="fa-3x bold text-brandon text-light no-margin"><span class="">Everything</span> You Need To Hire, In One Place!</h1>
@@ -46,9 +46,9 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="item">
+            <div class="item">
               <div class="carousel-caption">
-                <div class="col-sm-10 col-sm-offset-1">
+                <div class="col-lg-10 col-lg-offset-1">
                     <div class="pagehead text-white">
                       <div class="separator separator-small"><br></div>
                       <h1 class="fa-3x bold text-brandon text-light no-margin"><span class="">Somethning on Seamless</span><br> Talent Sourcing!</h1>
@@ -68,7 +68,7 @@
             </div>
             <div class="item">
               <div class="carousel-caption">
-                <div class="col-sm-10 col-sm-offset-1">
+                <div class="col-lg-10 col-lg-offset-1">
                     <div class="pagehead text-white">
                       <div class="separator separator-small"><br></div>
                       <h1 class="fa-3x bold text-brandon text-light no-margin"> Something on Video Editing <br> comes here</h1>
@@ -85,7 +85,7 @@
                     </div>
                 </div>
               </div>
-            </div> -->
+            </div>
             
           </div>
 
@@ -101,6 +101,7 @@
         </div>
         <!-- End of slider -->
       </div>
+      <div class="clearfix"></div>
     </div>
     <!-- <div class="visible-xs navituder"></div> -->
     <div  class="no-pad navitude navituder">
@@ -561,11 +562,38 @@
     </div>
   </section>
 
-  <section class="white">
+  <div id="sec-talentSource no-padding" class="white">
+    <div class="">
+      <div class="">
+        <div class="col-lg-6 no-pad">
+          <img src="img/mentorship.jpg" width="100%" alt="">
+        </div>
+        <div class="col-lg-6 pad-ft">
+          <h2 class=" text- text-brandon"><!-- <i class="fa text-blue fa-user-plus pull-right"></i>  -->Talent Sourcing</h2>
+          <!-- <p class="l-sp-5">SELL YOUR BRAND TO APPLICANTS EXCLUSIVELY!</p> -->
+          <!-- <div class="col-xs-4"><hr></div> --> <br>
+          <div class="clearfix"></div>
+          <p class="lead" data-wow-duration="1s">Choose this specialized alternative recruitment solution if you want to fill that position FAST and still ensure QUALITY talents. We will do the recruiting for you!</p>
+          
+          
+          <p class="text-lighter wow fadeInUp"><a href="talentSource" class=" btn btn-primary btn-lg">Learn more </a></p>
+
+        </div>
+        <div class="clearfix"></div>
+        <!-- <div class="pad pad-xs"><br></div> -->
+        <div class="">
+        </div>
+        <div class="clearfix"></div>
+        <!-- <div class="pad pad-xs"></div> -->
+      </div>
+    </div>
+  </div>
+
+  <section class="grey">
     <div class="container">
       <div class="row">
         <div class="col-md-10 col-md-offset-1 text-center">
-          <h1 class=" text-brandon"><i class="fa text-green fa-users"></i> &nbsp;Team Recruitment</h1>
+          <h2 class=" text-brandon"><!-- <i class="fa text-green fa-users"></i> &nbsp; -->Team Recruitment</h2>
           <p class="l-sp-5">HIRE COLLABORATIVELY WITH YOUR TEAM </p>
           <div class="col-xs-4 col-xs-offset-4"><hr></div>
           <div class="clearfix"></div>
@@ -577,16 +605,16 @@
         <div class="col-md-8 col-md-offset-2 text-center">
           <div class="row">
             <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/001-avatar-2.png" alt=""></div>
-            <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/008-social-5.png" alt=""></div>
-            <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/005-social-8.png" alt=""></div>
+            <div class="hidden-xs col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/008-social-5.png" alt=""></div>
+            <div class="hidden-xs col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/005-social-8.png" alt=""></div>
             <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/004-avatar.png" alt=""></div>
           </div>
           <div class="clearfix"></div>
           <div class="separator separator-small hidden-xs"><br></div>
           <div class="row">
             <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/002-avatar-1.png" alt=""></div>
-            <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/016-people.png" alt=""></div>
-            <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/010-social-3.png" alt=""></div>
+            <div class="hidden-xs col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/016-people.png" alt=""></div>
+            <div class="hidden-xs col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/010-social-3.png" alt=""></div>
             <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/add-circular-button.png" alt=""></div>
           </div>
           <div class="row">
@@ -596,11 +624,11 @@
       </div>
     </div>
   </section>
-  <section class="grey">
+  <section class="white">
     <div class="container-fluid text-center">
       <div class="row">
         <div class="col-md-10 col-md-offset-1 text-center">
-          <h1 class="text-brandon no-top-margin"><i class="text-blue fa fa-building"></i> &nbsp;They Trust Us</h1>
+          <h2 class="text-brandon no-top-margin"><i class="text-blue fa fa-heart"></i> &nbsp; They Trust Us</h2>
           <p class="text-uppercase l-sp-5">Join Top Companies using SeamlessHiring</p>
           <div class="col-xs-4 col-xs-offset-4"><hr></div>
           <div class="clearfix"></div>
@@ -634,11 +662,13 @@
       <br>
     </div>
   </section>
+
+
+  <!-- Scripts -->
   <script>
       $("a[data-toggle='tab']").click(function() {
           $('html,body').animate({
-                  scrollTop: $(".navituder").offset().top},
-              'slow');
+              scrollTop: $(".navituder").offset().top},'slow');
       });
   </script>
   <script>

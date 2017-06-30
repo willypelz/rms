@@ -25,6 +25,8 @@
 </div>
 
 <div class="form-group">
+  <br>
+  <label><strong>ADDITIONAL NOTE: </strong></label>
   <textarea class="form-control" id="interview-message" placeholder="Message"> </textarea>
 </div>
                                   

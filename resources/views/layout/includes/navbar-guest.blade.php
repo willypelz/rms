@@ -40,9 +40,9 @@
                     <a class="" href="{{ url('pricing') }}">Pricing</a>
                 </li>
 
-                <li class="{{ Request::is('cv/search*') ? 'active' : '' }}">
-                    <a class="" href="{{ url('cv/search') }}">Find Resumes <!-- &nbsp;<i class="fa fa-search"> </i> --></a>
-                </li>
+                <!-- <li class="{{ Request::is('cv/search*') ? 'active' : '' }}">
+                    <a class="" href="{{ url('cv/search') }}">Find Resumes</a>
+                </li> -->
 
                 <li class="{{ Request::is('talentSource') ? 'active' : '' }}">
                     <a class="" href="{{ url('talentSource') }}">Talent Sourcing <!-- &nbsp;<i class="fa fa-search"> </i> --></a>

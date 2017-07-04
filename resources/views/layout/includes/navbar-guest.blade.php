@@ -44,8 +44,8 @@
                     <a class="" href="{{ url('cv/search') }}">Find Resumes</a>
                 </li> -->
 
-                <li class="{{ Request::is('talentSource') ? 'active' : '' }}">
-                    <a class="" href="{{ url('talentSource') }}">Talent Sourcing <!-- &nbsp;<i class="fa fa-search"> </i> --></a>
+                <li class="{{ Request::is('talent-source') ? 'active' : '' }}">
+                    <a class="" href="{{ route('talent-source') }}">Talent Sourcing <!-- &nbsp;<i class="fa fa-search"> </i> --></a>
                 </li>
 
                 <li class="{{ Request::is('contact') ? 'active' : '' }}">

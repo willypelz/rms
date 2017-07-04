@@ -65,6 +65,28 @@ class HomeController extends Controller
         return view('talent-pool.dashboard', compact('posts', 'jobs_count','talent_pool_count','saved_cvs_count','purchased_cvs_count'));
     }
 
+    public function viewTalentSource(Request $request)
+    {
+        if( $request->isMethod('post') )
+        {
+            $mail = Mail::send('emails.guest.talent-sourcing', $request->all(), function($message){
+                $message->from('support@seamlesshiring.com');
+                $message->to('support@seamlesshiring.com', 'Seamless Hiring Talent Sourcing Request');
+            });
+
+            if( $mail )
+            {
+                return response()->json( json_encode( [ 'status' => true ] ) );
+            }
+            else
+            {
+                return response()->json( json_encode( [ 'status' => false ] ) );
+            }
+        }
+
+        return view('guest.talentSource');
+    }
+
     public function requestACall(Request $request)
     {
         // Mail::send('emails.welcome', $data, function($message)
@@ -77,7 +99,7 @@ class HomeController extends Controller
         // });
 
         Mail::send('emails.guest.request-call', $request->all(), function($message){
-            $message->from('no-reply@insidify.com');
+            $message->from('support@seamlesshiring.com');
             $message->to('support@seamlesshiring.com', 'Seamless Hiring Call Request');
         });
     }

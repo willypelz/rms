@@ -861,13 +861,13 @@ class JobsController extends Controller
 
         if( @$request->allActivities == "true" )
         {
-
-          $activities = $activities->take(20)->get();
+            $take =  $activities->count() - 20 ;
+          $activities = $activities->skip(20)->take( $take )->get();
         }
         else if( @$request->allActivities == "false" )
         {
-
-            $activities = $activities->skip( 20 * intval(@$request->activities_index) )->take(20)->get();
+            $activities = $activities->take(20)->get();
+            // $activities = $activities->skip( 20 * intval(@$request->activities_index) )->take(20)->get();
         }
         
             // dd($activities);

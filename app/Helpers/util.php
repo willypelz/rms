@@ -487,6 +487,11 @@ use App\Models\Job;
 	 }
 
 	function get_company_logo($logo){
+		if($logo == "" or is_null($logo))
+		{
+			return asset('img/company.png');
+		}
+		
 		if( File::exists( public_path( 'uploads/'.@$logo ) ) )
         {
             return asset('uploads/'.@$logo);

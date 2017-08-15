@@ -132,33 +132,38 @@ you.</p>
                           </h2>
                           <p>Kindly provide all details below. We shall reach you within 24hrs</p><br>
                           
-                          <form action="">
+                          <form action="" method="post" name="talent-source-form" id="talent-source-form">
+                            @include('layout.alerts')
                             <div class="form-group col-md-6">
                               <label for="name" class="fa-inverse">Name</label>
-                              <input type="text" class="form-control">
+                              <input type="text" class="form-control" name="name" id="name" required>
                             </div>
                             <div class="form-group col-md-6">
                               <label for="name" class="fa-inverse">Company Name</label>
-                              <input type="text" class="form-control">
+                              <input type="text" class="form-control" name="company_name" id="company_name" required>
                             </div>
                             <div class="form-group col-md-6">
                               <label for="name" class="fa-inverse">Role</label>
-                              <input type="text" class="form-control">
+                              <input type="text" class="form-control" name="role" id="role" required>
                             </div>
                             <div class="form-group col-md-6">
                               <label for="name" class="fa-inverse">Phone Number</label>
-                              <input type="number" class="form-control">
+                              <input type="number" class="form-control" name="phone_number" id="phone_number" required>
                             </div>
                             <div class="form-group col-md-12">
                               <label for="name" class="fa-inverse">Email</label>
-                              <input type="email" class="form-control">
+                              <input type="email" class="form-control" name="email" id="email" required>
                             </div>
                             <div class="form-group col-md-12">
                               <label for="name" class="fa-inverse">Vacant Position</label>
-                              <textarea placeholder="separate each vacany with a comma ( , )" class="form-control" rows="3"></textarea>
+                              <textarea placeholder="separate each vacany with a comma ( , )" name="vacant_position" id="vacant_position" class="form-control" rows="3" required></textarea>
                             </div>
                             <div class="form-group col-md-12">
-                              <input type="submit" class="btn btn-lg btn-success" value="Submit">
+                             @include('layout.alerts')
+                            </div>
+                            
+                            <div class="form-group col-md-12">
+                              <input type="button" id="talent-sourcing-btn" class="btn btn-lg btn-success" value="Submit">
                             </div>
                           </form>
                         </div>
@@ -179,6 +184,44 @@ months of resumption, we will replace the candidate at no cost to you.
             </div>
         </div>
     </section>
+
+
+    <script type="text/javascript">
+      $(document).ready( function(){
+
+          $('#talent-sourcing-btn').on('click', function(){
+              $this = $(this);
+              var data = {
+                'name' : $('#name').val(),
+                'company_name' : $('#company_name').val(),
+                'role' : $('#role').val(),
+                'phone_number' : $('#phone_number').val(),
+                'email' : $('#email').val(),
+                'vacant_position' : $('#vacant_position').val(),
+              }
+
+              $this.attr('disabled','disabled');
+              $.post('{{ route("talent-source") }}', data, function(response){
+                  response = JSON.parse( response );
+                  $this.removeAttr('disabled');
+                  if( response.status )
+                  {
+                    $('body #success').html('Request Sent Sucessfully').fadeIn();
+                    setTimeout( "$('body #success').html('').fadeOut()"  ,5000);
+                  }
+                  else
+                  {
+                    $('body #error').html('Request could not be sent, Please try again later').fadeIn();
+                    setTimeout( "$('body #error').html('').fadeOut()"  ,5000);
+                  }
+
+              }); 
+
+          });
+
+          
+      });
+    </script>
 
 
 @endsection

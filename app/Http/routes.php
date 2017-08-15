@@ -116,10 +116,8 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.whoops');
     });
 
-     Route::get('/talentSource', function () {
-        
-        return view('guest.talentSource');
-    });
+
+     Route::match(['get', 'post'], 'talent-source', [ 'uses' => 'HomeController@viewTalentSource', 'as' => 'talent-source']);
 
      Route::get('/success', function () {
         

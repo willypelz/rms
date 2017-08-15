@@ -8,3 +8,10 @@
         {{ session('warning') }}
     </div>
 @endif
+
+
+<!-- For Ajax Requests -->
+<div class="alert alert-success" id="success" style="display:none"></div>
+
+
+<div class="alert alert-warning" id="error" style="display:none"></div>

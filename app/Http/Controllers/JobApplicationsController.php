@@ -46,11 +46,18 @@ class JobApplicationsController extends Controller
      */
     public function __construct(Mailer $mailer)
     {
-
         $this->middleware('auth', ['except' => [
             'saveTestResult'
         ]]);
         $this->mailer = $mailer;
+
+
+        /*$cv = (object) [ "first_name" => "Emmanuel", "last_name" => "Okeleji", "email" => "emmanuel@insidify.com" ];
+
+        $job = (object) [ "title" => "CEO", "company" => (object) [ "name" => "Insidify" ] ];
+        $this->mailer->send('emails.new.reject_email', ['cv' => $cv, 'job' => $job], function (Message $m) use ($cv) {
+                                $m->from('support@seamlesshiring.com')->to($cv->email)->subject('Feedback');
+                            });*/
     }
     public function assess($appl_id){
 

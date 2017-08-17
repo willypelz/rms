@@ -504,7 +504,7 @@ class JobApplicationsController extends Controller
                             $cv = $appl->cv;
                             $job = $appl->job;
                             $this->mailer->send('emails.new.reject_email', ['cv' => $cv, 'job' => $job], function (Message $m) use ($cv) {
-                                $m->from('support@seamlesshiring.com')->to($cv->email)->subject('Interview Feedback');
+                                $m->from('support@seamlesshiring.com')->to($cv->email)->subject('Feedback');
                             });
                         }
                         

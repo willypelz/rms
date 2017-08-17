@@ -861,8 +861,17 @@ class JobsController extends Controller
 
         if( @$request->allActivities == "true" )
         {
-            $take =  $activities->count() - 20 ;
-          $activities = $activities->skip(20)->take( $take )->get();
+            if( $activities->count() > 20 )
+            {
+                $take =  $activities->count() - 20 ; 
+                $activities = $activities->skip(20)->take( $take )->get();   
+            }
+            else
+            {
+                return "";
+            }
+            
+          
         }
         else if( @$request->allActivities == "false" )
         {

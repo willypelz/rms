@@ -386,6 +386,31 @@
 
             <p></p>
 
+           <p class="border-bottom-thin text-muted">Grade<i class="fa fa-filter pull-right"></i></p>
+              <div class="checkbox-inline">
+                  {{--*/ $other_grade = 0  /*--}}
+                  {{--*/ $index = 0  /*--}}
+                  @foreach( $result['facet_counts']['facet_fields']['grade'] as $key => $grade )
+                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['grade'][ $key + 1 ] != 0 &&  $grade != ''  && $grade != "0"  )
+                        
+                        {{--*/ $index++  /*--}}
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="grade" data-value="{{ $grade }}"> {{ ucwords( getGrade( $grade ) )." (".$result['facet_counts']['facet_fields']['grade'][ $key + 1 ].")" }}</label> <br></div>
+                      @else
+
+                        {{--*/ @$other_grade += $result['facet_counts']['facet_fields']['grade'][ $key + 1 ] /*--}}
+
+                      @endif
+                  @endforeach
+
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_grade.")" }}</label> <br></div>
+              </div>
+              
+              @if($index > 4)
+                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+              @endif
+
+            <p></p>
+
             <p class="border-bottom-thin text-muted">Location<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
                   {{--*/ $other_state = 0  /*--}}

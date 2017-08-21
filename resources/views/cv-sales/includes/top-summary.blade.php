@@ -11,7 +11,19 @@
 		<i class="fa fa-filter"></i> Filtering by: 
 
 		<span class="text-uppercase text-warning"> 
-			<?php $filter_string = implode(', ', $filters);  ?>
+			<?php 
+				$filter_string = implode(', ', $filters);  
+				preg_match('/(grade:"[0-9]+")/',$filter_string, $matches);
+    			if( !empty( $matches ) )
+				{
+					$grade_index = str_replace( '"', '', str_replace( 'grade:', '', $matches[0] ) ); 
+					$grade = getGrade( $grade_index );
+
+					$filter_string = str_replace('grade:"'.$grade_index, 'grade:"'.$grade, $filter_string);
+				}
+				
+
+				?>
 			
 			{{ ucwords(str_ireplace("_", " ", $filter_string)) }}
 

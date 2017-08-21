@@ -64,6 +64,22 @@ class JobsController extends Controller
             'declineInvite',
         ]]);
 
+        $this->qualifications = [
+
+                'MPhil / PhD',
+                'MBA / MSc',
+                'MBBS',
+                'B.Sc',
+                'HND',
+                'OND',
+                'N.C.E',
+                'Diploma',
+                'High School (S.S.C.E)',
+                'Vocational',
+                'Others'
+
+            ];
+
         $this->mailer = $mailer;
     }
 
@@ -1293,21 +1309,7 @@ class JobsController extends Controller
 
         Cv::where('highest_qualification',10)->chunk( 50, function($cvs){
 
-            $qualifications = [
-
-                'MPhil / PhD',
-                'MBA / MSc',
-                'MBBS',
-                'B.Sc',
-                'HND',
-                'OND',
-                'N.C.E',
-                'Diploma',
-                'High School (S.S.C.E)',
-                'Vocational',
-                'Others'
-
-            ];
+            $qualifications = $this->qualifications;
 
             foreach ($cvs as $cv) {
                 // echo $cv->highest_qualification."<br />";
@@ -1330,34 +1332,8 @@ class JobsController extends Controller
             abort(404);
         }
 
-        $qualifications = [
-
-                'MPhil / PhD',
-                'MBA / MSc',
-                'MBBS',
-                'B.Sc',
-                'HND',
-                'OND',
-                'N.C.E',
-                'Diploma',
-                'High School (S.S.C.E)',
-                'Vocational',
-                'Others'
-
-            ];
-        $grades = [
-
-                '1st Class',
-                'Distinction',
-                'Second Class Upper',
-                'Second Class Lower',
-                'Upper Credit',
-                'Lower Credit',
-                '3rd Class',
-                'Pass',
-                'Other',
-                'Unspecified'
-            ];
+        $qualifications = $this->qualifications;
+        $grades = grades();
 
         $states = [
                 'Lagos',

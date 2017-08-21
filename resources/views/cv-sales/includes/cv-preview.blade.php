@@ -91,6 +91,9 @@
                                     <li>
                                     <strong>Highest Qualification:</strong>&nbsp; {{ @$cv['highest_qualification'] }}</li>
                                     <li>
+                                    <li>
+                                    <strong>Grade:</strong>&nbsp; {{ @getGrade( $cv['graduation_grade'] ) }}</li>
+                                    <li>
                                     <strong>Years of Experience:</strong>&nbsp; {{ @$cv['years_of_experience'] }} {{ (@$cv['years_of_experience'] == 1 ) ? 'year' : 'years' }}</li>
                                     <li>
                                     <strong>Last Position:</strong>&nbsp; {{ @$cv['last_position'] }}</li>

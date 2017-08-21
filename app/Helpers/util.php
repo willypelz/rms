@@ -12,6 +12,26 @@ use App\Models\Job;
 		return $options = array('MPhil / PhD' => 'MPhil / PhD', 'MBA / MSc'=>'MBA / MSc', 'MBBS'=>'MBBS', 'Degree'=>'Degree', 'HND'=>'HND', 'OND'=>'OND', 'N.C.E'=>'N.C.E', 'Diploma'=>'Diploma', 'High School (S.S.C.E)'=>'High School (S.S.C.E)', 'Vocational'=>'Vocational', 'Others'=>'Others');
 	}
 
+	function grades(){
+		return [
+
+                '1st Class',
+                'Distinction',
+                'Second Class Upper',
+                'Second Class Lower',
+                'Upper Credit',
+                'Lower Credit',
+                '3rd Class',
+                'Pass',
+                'Other',
+                'Unspecified'
+            ];
+	}
+
+	function getGrade($index){
+		return grades()[$index];
+	}
+
 	function human_time($time, $max_units = NULL){	
 		$time  = strtotime($time);
 		// $lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);

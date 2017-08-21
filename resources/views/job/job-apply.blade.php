@@ -131,7 +131,7 @@
                                                 {{ Form::select('marital_status', array('Single' => 'Single', 'Married' => 'Married', 'Divorced'=>'Divorced', 'Separated'=>'Separated'), 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
 
                                             </div>
-                                            <div class="col-sm-4"><label for="job-loc">date of Birth <span class="text-danger">*</span></label><input id="datepicker2" required name="date_of_birth"  type="text" class=" form-control"></div>
+                                            <div class="col-sm-4"><label for="job-loc">date of Birth <span class="text-danger">*</span></label><input id="datepicker2" required name="date_of_birth"  type="text" class=" form-control" required></div>
                                         </div>
                                     </div>
                                     

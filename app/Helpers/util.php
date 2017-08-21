@@ -14,13 +14,13 @@ use App\Models\Job;
 
 	function grades(){
 		return [
-                '1st Class',
+                'First Class',
                 'Distinction',
                 'Second Class Upper',
                 'Second Class Lower',
                 'Upper Credit',
                 'Lower Credit',
-                '3rd Class',
+                'Third Class',
                 'Pass',
                 'Other',
                 'Unspecified'

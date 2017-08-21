@@ -14,7 +14,6 @@ use App\Models\Job;
 
 	function grades(){
 		return [
-
                 '1st Class',
                 'Distinction',
                 'Second Class Upper',

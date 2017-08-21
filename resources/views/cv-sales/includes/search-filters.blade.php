@@ -391,7 +391,7 @@
                   {{--*/ $other_grade = 0  /*--}}
                   {{--*/ $index = 0  /*--}}
                   @foreach( $result['facet_counts']['facet_fields']['grade'] as $key => $grade )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['grade'][ $key + 1 ] != 0 &&  $grade != ''  && $grade != "0"  )
+                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['grade'][ $key + 1 ] != 0 &&  $grade != ''   )
                         
                         {{--*/ $index++  /*--}}
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="grade" data-value="{{ $grade }}"> {{ ucwords( getGrade( $grade ) )." (".$result['facet_counts']['facet_fields']['grade'][ $key + 1 ].")" }}</label> <br></div>

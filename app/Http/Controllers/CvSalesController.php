@@ -178,9 +178,23 @@ class CvSalesController extends Controller
     }
 
     public function saveCvPreview(){ // to solr
+        
+        /*$jobs = [218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,298,316,317,318,319];
+        
+        dd( JobApplication::with('cv')->where('cv_id', '>', '33790')->whereIn('job_id', $jobs)->count() );
+        JobApplication::with('cv')->where('cv_id', '>', '28581')->whereIn('job_id', $jobs)->chunk(100, function ($apps) {
+            foreach ($apps as $app) {
 
+                //adding to jobs queue...
+                $this->dispatch(new ExtractCvContent($app->cv));
 
-        Cv::where('id', '>', 5673)->chunk(100, function ($cvs) {
+                echo 'Queued: '.$app->cv->cv_file.'<br/>';
+            }
+        });*/
+//  dump( implode(',',  Job::where('company_id',50)->where('status','ACTIVE')->get()->pluck('id')->toArray() ) );
+
+/*
+        Cv::where('id', '=', 5673)->chunk(100, function ($cvs) {
             foreach ($cvs as $cv) {
 
                 //adding to jobs queue...
@@ -189,6 +203,7 @@ class CvSalesController extends Controller
                 echo 'Queued: '.$cv->cv_file.'<br/>';
             }
         });
+*/
         
 
     }

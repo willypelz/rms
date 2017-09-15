@@ -877,6 +877,7 @@ class JobsController extends Controller
 
         if( @$request->allActivities == "true" )
         {
+            // echo "activity count - " .$activities->count();
             if( $activities->count() > 20 )
             {
                 $take =  $activities->count() - 20 ; 
@@ -884,7 +885,7 @@ class JobsController extends Controller
             }
             else
             {
-                return "";
+                $activities = $activities->get(); 
             }
             
           
@@ -913,7 +914,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-info">Job Created</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
-                                      '. $ac->user->name .' Created a new Job <a href="'. url(@$job->company->slug.'/job/'.$job->id.'/'.str_slug($job->title) )  .'"><strong>'.$job->title.'</strong>.
+                                      <strong>'. $ac->user->name .'</strong> Created a new Job <a href="'. url(@$job->company->slug.'/job/'.$job->id.'/'.str_slug($job->title) )  .'"><strong>'.$job->title.'</strong>.
                                   </p>
                                 </li>';                     
                     break;
@@ -947,7 +948,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-info">Shortlist</h5>
                                   <p>
                                       <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
-                                      <a href="'. url('applicant/activities/'.$ac->application->id) /*url('job/candidates/'.$ac->application->job->id.'#SHORTLISTED')*/ .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been shortlisted.
+                                      <a href="'. url('applicant/activities/'.$ac->application->id) /*url('job/candidates/'.$ac->application->job->id.'#SHORTLISTED')*/ .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been shortlisted by <strong>'.$ac->user->name.'</strong>.
                                   </p>
                                 </li>';
                      break;
@@ -964,7 +965,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-info">Test</h5>
                                   <p>
                                       <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
-                                      <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been scheduled for test.
+                                      <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been scheduled for test by <strong>'.$ac->user->name.'</strong>.
                                   </p>
                                 </li>';
                      break;
@@ -1015,7 +1016,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-info">Return to all</h5>
                                   <p>
                                       <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
-                                      <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been returned to all.
+                                      <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been returned to all by <strong>'.$ac->user->name.'</strong>.
                                   </p>
                                 </li>';
                      break;
@@ -1032,7 +1033,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-info">Interview</h5>
                                   <p>
                                       <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
-                                      <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been interviewed.
+                                      <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been interviewed by <strong>'.$ac->user->name.'</strong>.
                                   </p>
                                 </li>';
                      break;
@@ -1051,7 +1052,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-info">Hired</h5>
                                   <p>
                                       <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
-                                      <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been hired.
+                                      <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been hired by <strong>'.$ac->user->name.'</strong>.
                                   </p>
                                 </li>';
                      break;
@@ -1068,7 +1069,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-info">Waiting</h5>
                                   <p>
                                       <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
-                                      <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been added to the waiting list.
+                                      <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been added to the waiting list by <strong>'.$ac->user->name.'</strong>.
                                   </p>
                                 </li>';
                      break;
@@ -1086,7 +1087,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-danger">Reject</h5>
                                   <p>
                                       <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small>
-                                      <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> application was rejected by <a href="'. url('applicant/messages/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a>
+                                      <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> application was rejected by <a href="'. url('applicant/messages/'.$ac->application->id) .'" target="_blank"><strong>'.$ac->user->name.'</strong></a>
                                   </p>
                                 </li>';
                      break;
@@ -1103,7 +1104,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-success">Comment</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']
-                                      </small> '. $ac->user->name .' said '.$ac->comment.' about <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a>
+                                      </small> '. $ac->user->name .' said '.$ac->comment.' about <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank"><strong>'.$ac->user->name.'</strong></a>
                                   </p>
                                   
                                 </li>';
@@ -1123,7 +1124,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-success">Comment</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']
-                                      </small> '. @$ac->user->name .' commented <span style="display:none;" id="show_activity_comment">"'.$ac->comment.'"</span> on <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a>
+                                      </small> '. @$ac->user->name .' commented <span style="display:none;" id="show_activity_comment">"'.$ac->comment.'"</span> on <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank"><strong>'.$ac->user->name.'</strong></a>
                                   </p>
                                   
                                 </li>';
@@ -1140,7 +1141,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-success">Suspend Job</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
-                                      '. $ac->user->name .' suspended <a href="#">'.$ac->job->title .'</a> job
+                                      <strong>'.$ac->user->name.'</strong> suspended <a href="#">'.$ac->job->title .'</a> job
                                   </p>
                                   
                                 </li>';
@@ -1157,7 +1158,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-success">Publish Job</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
-                                      '. $ac->user->name .' published <a href="#">'.$ac->job->title .'</a> job
+                                      <strong>'.$ac->user->name.'</strong> published <a href="#">'.$ac->job->title .'</a> job
                                   </p>
                                   
                                 </li>';
@@ -1174,7 +1175,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-success">Team</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
-                                      '. $ac->user->name .' added a new Team member.
+                                      <strong>'.$ac->user->name.'</strong> added a new Team member.
                                   </p>
                                   
                                 </li>';

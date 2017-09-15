@@ -164,467 +164,483 @@
 </section>
 <div class="separator separator-small"><br></div>
 <script type="text/javascript">
-var folders = [];
-var filters = [];
-var status_filter = "";
-var total_candidates = "{{ $application_statuses['ALL'] }}";
-var keyword = "";
-var age_range = exp_years_range = video_application_score_range = null;
-var last_text_filter = "";
+    var folders = [];
+    var filters = [];
+    var status_filter = "";
+    var total_candidates = "{{ $application_statuses['ALL'] }}";
+    var keyword = "";
+    var age_range = exp_years_range = video_application_score_range = null;
+    var last_text_filter = "";
 
-var cv_ids = [];
-var app_ids = [];
+    var cv_ids = [];
+    var app_ids = [];
 
-String.prototype.capitalize = function() {
-return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
-}
-function searchKeyword(){
-var filter = 'text' + ':"' + $(search_keyword).val() + '"';
-var key = $(search_keyword).val();
-var index = $.inArray( last_text_filter, filters );
-// console.log( filter + "---" + index );
-if( index == -1 )
-{
-//Does not exist before, skip
-}
-else
-{
-filters.splice(index, 1);
-}
-last_text_filter = filter;
-filters.push( filter );
-$('.search-results').html('{!! preloader() !!}');
-scrollTo('.job-progress-xs');
-$('.result-label').html('');
-$('#pagination').hide();
-$.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
-//console.log(response);
-// var response = JSON.parse(data);
-// console.log(data.search_results);
-$('.search-results').html(data.search_results);
-$('#search-filters').html(data.search_filters);
-$('body #showing').html(data.showing);
-$('.result-label').show();
-if( data.count > 0 )
-{
-$('#pagination').show();
-}
-else
-{
-$('#pagination').hide();
+    String.prototype.capitalize = function () {
+        return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
+    }
 
-}
-$('#search_keyword').val(key);
-$.each(filters, function(index,value){
+    function searchKeyword() {
+        var filter = 'text' + ':"' + $(search_keyword).val() + '"';
+        var key = $(search_keyword).val();
+        var index = $.inArray(last_text_filter, filters);
+        // console.log( filter + "---" + index );
+        if (index == -1) {
+            //Does not exist before, skip
+        } else {
+            filters.splice(index, 1);
+        }
+        last_text_filter = filter;
+        filters.push(filter);
+        $('.search-results').html('{!! preloader() !!}');
+        scrollTo('.job-progress-xs');
+        $('.result-label').html('');
+        $('#pagination').hide();
+        $.get("{{ route('job-candidates', $jobID) }}", {
+            search_query: $('#search_query').val(),
+            filter_query: filters
+        }, function (data) {
+            //console.log(response);
+            // var response = JSON.parse(data);
+            // console.log(data.search_results);
+            $('.search-results').html(data.search_results);
+            $('#search-filters').html(data.search_filters);
+            $('body #showing').html(data.showing);
+            $('.result-label').show();
+            if (data.count > 0) {
+                $('#pagination').show();
+            } else {
+                $('#pagination').hide();
 
-var arr = value.split(':');
+            }
+            $('#search_keyword').val(key);
+            $.each(filters, function (index, value) {
 
-$('.filter-div input[type=checkbox]' + '[data-field=' + arr[0] + ']' + '[data-value=' + arr[1] + ']' ).attr('checked',true);
-});
-});
-return false;
-}
-$('body').on('keydown', '#search_keyword',function(){
-if(event.which == 13)
-{
-searchKeyword();
-}
-});
+                var arr = value.split(':');
 
-$(document).ready(function(){
-
-// $('.infinite-scroll').jscroll({
-//     loadingHtml: 'Loading...',
-//     padding: 20,
-//     nextSelector: 'a.jscroll-next:last',
-//     contentSelector: 'li'
-// });
-
-// $(".scroll").jscroll({
-//     nextSelector: ".nextPageLoad",
-//     callback: function(){
-//         console.log("shit");
-//     }
-// });
-$.fn.setMyFolders = function(cv_folders)
-{
-var html = "" ;
-$.each(folders,function(index,value){
-if(cv_folders.indexOf( value.id.toString() ) >= 0)
-{
-active = ' &nbsp; <i class="fa fa-check"></i> ';
-}
-else
-{
-active = "";
-}
-html += '<li id="folder-item" data-ref="' + value.id + '" ><a href="#"><i class="fa fa-folder-o"></i> ' + value.name + active + '</a></li>';
-});
-return html;
-}
-$.fn.getMyFolders = function()
-{
-$.post("{{ url('cv/get-my-folders') }}",function(data){
-// console.log(data);
-folders = data.folders;
-$('body #folder-item').remove();
-$('body #folders').each(function(index,value){
-cv_folders = $(this).attr('data-folders').split(':');
-$(this).prepend($(this).setMyFolders(cv_folders));
-})
-});
-}
-
-// $(document).getMyFolders();
-
-$(document).on('change', '.filter-div input[type=checkbox]', function(){
-// console.log("changed");
-var filter = $(this).attr('data-field') + ':"' + $(this).attr('data-value') + '"';
-var index = $.inArray( filter, filters );
-// console.log( filter + "---" + index );
-if( index == -1 )
-{
-filters.push( filter );
-}
-else
-{
-filters.splice(index, 1);
-}
-$(this).performFilter();
-});
-$.fn.performFilter = function(){
-$('.search-results').html('{!! preloader() !!}');
-scrollTo('.job-progress-xs');
-$('.result-label').html('');
-$('#pagination').hide();
-$.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters,age: age_range, exp_years : exp_years_range, video_application_score : video_application_score_range, status : status_filter   },function(data){
-//console.log(response);
-// var response = JSON.parse(data);
-// console.log(data.search_results);
-$('.search-results').html(data.search_results);
-
-$('body #showing').html(data.showing);
-$('.result-label').show();
-if( data.count > 0 )
-{
-$('#pagination').show();
-// $('.result-label').show();
-$('#search-filters').html(data.search_filters);
-}
-else
-{
-$('#pagination').hide();
-// $('.result-label').hide();
-}
-
-$.each(filters, function(index,value){
-
-var arr = value.split(':');
-
-$('.filter-div input[type=checkbox]' + '[data-field=' + arr[0] + ']' + '[data-value=' + arr[1] + ']' ).attr('checked',true);
-});
-});
-}
-$(document).on('click','.read-more-show', function(){
-// console.log($(this).text() );
-// $(this).prev().find('.see-more').show();
-$(this).closest('div').prev().find('.see-more').toggleClass('see-more-shown');
-var text = ( $(this).text() == 'See More' ) ? 'See Less' : 'See More';
-$(this).text(text);
-});
-// $(document).on('click', '#showCvBtn', function(){
-//   var this_one = $(this);
-//     $.post("{{ url('cv/get_cv_preview') }}",function(data){
-//        $( this_one.attr('data-target') ).html(data);
-//     });
-// });
-/*$('body').on('click', '#add_folder_btn',function(){
-var input = $(this).parent().parent().parent().find('#add_folder');
-input.show();
-});*/
-
-$('#newFolder').on('shown.bs.modal', function () {
-$('#add_folder').focus();
-})
-$('body').on('keydown', '#add_folder',function(){
-if(event.which == 13)
-{
-$(this).createFolder();
-}
-});
-$('body #createFolderBtn').click(function(){
-$(this).createFolder();
-});
-$.fn.createFolder = function()
-{
-$field = $('body #add_folder');
-$field.attr('disabled','disabled');
-$('#newFolder #message').html('<div class”text-center”>Creating...</div>');
-$.post("{{ url('cv/add-folder') }}", {name: $field.val(),type: 'saved' },function(data){
-if(data == true)
-{
-// $field.val("").hide();
-$(this).getMyFolders();
-$('#newFolder #message').html('<div class="alert alert-success">Folder added successfully</div>');
-$('#newFolder').modal('toggle');
-
-}
-else
-{
-$field.val("").hide();
-// $field.after('<p>'+ data +'</p>');
-$('#loginModal #mssg').text(data);
-$('.signin').trigger('click');
-}
-
-});
-}
-$('body').on('click','#folder-item',function(){
-$field = $(this);
-
-$.post("{{ url('cv/save-to-folder') }}", {folder_id: $field.attr( 'data-ref' ),cv_id: $(this).closest('#folders').attr('data-cv') },function(data){
-if(data == true)
-{
-$field.addClass( 'active' );
-$field.closest('.description').append('<div id="notification"><div class="clearfix"></div><div class="alert alert-success">Added to folder successfully</div></div>');
-window.setTimeout(function() {
-$field.closest('.description').find('#notification').fadeTo(500, 0).slideUp(500, function(){
-$(this).remove();
-});
-}, 5000);
-}
-
-});
-});
-$('body').on('click', '#status_filters a', function(){
-status_filter = $(this).attr('data-value');
-$('#status_filters li').removeClass('active');
-$(this).closest('li').addClass('active');
-$(this).reloadResult();
-
-});
-
-$.fn.reloadResult = function(){
-if( status_filter == "ALL" )
-{
-status_filter = "";
-$('#mass-action a').show();
-$('#mass-action a[data-action="PENDING"').hide();
-}
-
-
-$('.search-results').html('{!! preloader() !!}');
-scrollTo('.job-progress-xs');
-$('.result-label').html('');
-$('#pagination').hide();
-$.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
-//console.log(response);
-// var response = JSON.parse(data);
-// console.log(data.search_results);
-$('.result-label').html(data.showing);
-$('.result-label').show();
-if( data.count > 0 )
-{
-$('#pagination').show();
-
-}
-else
-{
-$('#pagination').hide();
-
-}
-
-$('.search-results').html(data.search_results);
-$('#search-filters').html(data.search_filters);
-$(document).getShowing();
-$('#mass-action a').show();
-$('#mass-action a[data-action="' + status_filter + '"').hide();
-
-});
-}
-$.fn.getShowing = function(){
-/*count = $('.search-results .comment.media').length;
-status_page = "";
-if(status_filter == "")
-{
-status_page = 'All';
-}
-else
-{
-status_page = status_filter.capitalize();
-}
-// console.log( status_filter );
-if( total_candidates > 0 )
-{
-$('.result-label').text( 'Showing 1 - ' + count + ' of ' + total_candidates + ' ' + status_page + ' applicants' );
-}
-else
-{
-$('.result-label').text( '' );
-}*/
-}
-$(document).getShowing();
-if(window.location.hash) {
-status_filter = window.location.hash.replace('#','');
-$('#status_filters li').removeClass('active');
-$('#status_filters li a[data-value="' + status_filter + '"').closest('li').addClass('active');
-$('body').reloadResult();
-}
-$.fn.fixDetailsforBulkActions = function(){
-$field = $(this);
-cv_ids =$(".search-results .comment.media").map(function(i,v){
-if( $(this).find('.media-body-check').is(':checked') )
-{
-return [ $(this).data("cv")  ];
-}
-
-}).get();
-app_ids =$(".search-results .comment.media").map(function(i,v){
-if( $(this).find('.media-body-check').is(':checked') )
-{
-return [ $(this).data("app-id")  ];
-}
-
-}).get();
-console.log(  )
-$('#mass-action a').attr('data-cv',cv_ids);
-$('#mass-action a').attr('data-app-id',app_ids);
-}
-$('.select-all input[type=checkbox]').on('click',function(){
-if( $(this).prop('checked') )
-{
-$('.search-results .media-body input[type=checkbox]').prop('checked', true);
-$('#h_act-on').fadeIn();
-}
-else
-{
-$('.search-results .media-body input[type=checkbox]').prop('checked', false);
-$('#h_act-on').fadeOut();
-}
-$(this).fixDetailsforBulkActions();
-});
-$('body').on('click','.check-applicant',function(){
-if( $(this).prop('checked') )
-{
-if( $('body .check-applicant').length == $('body .check-applicant:checked').map(function() { return this.value; }).get().length )
-{
-$('.select-all input[type=checkbox]').prop('checked', true);
-}
-$('#h_act-on').fadeIn();
-}
-else
-{
-if( $('body .check-applicant').length != $('body .check-applicant:checked').map(function() { return this.value; }).get().length )
-{
-$('.select-all input[type=checkbox]').prop('checked', false);
-}
-if( $('body .check-applicant:checked').map(function() { return this.value; }).get().length == 0 )
-{
-$('#h_act-on').fadeOut();
-}
-
-}
-$(this).fixDetailsforBulkActions();
-});
-$('#mass-action button').on('click',function(){
-// cvs = $('.search-results .comment.media').prop('data-cv');
-$field = $(this);
-cv_ids = $field.data('cv');
-app_ids = $field.data('app-id');
-// $.post("{{ route('mass-action') }}", {job_id: '{{ $jobID }}',cv_ids :  cv_ids,status: $field.data('action') },function(data){
-
-
-//         if(status_filter == "" || status_filter == "All")
-//         {
-//         }
-//         else
-//         {
-//             $('body .check-applicant:checked').map(function() { return this }).closest('.comment.media').remove();
-//         }
-
-
-//         $('.select-all input[type=checkbox]').prop('checked', false);
-//         $('.search-results .media-body input[type=checkbox]').prop('checked', false);
-//         $('#h_act-on').fadeOut();
-//         $(document).getAllStatus();
-//         $.growl.notice({ message: "You have " + $field.data('action').toLowerCase() + " " + cv_ids.length + " applicant(s) " });
-
-//         //$('#status_filters a[data-value="' + $field.data('action') + '"]').trigger('click');
-//     });
-console.log(cv_ids,app_ids);
-});
-
-
-
-$.fn.getAllStatus = function(){
-$.get("{{ route('get-all-applicant-status') }}", {job_id: "{{ $jobID }}"},function(data){
-$('body #status_filters').replaceWith(data);
-});
-}
-sh.reloadStatus = function(){
-$.get("{{ route('get-all-applicant-status') }}", {job_id: "{{ $jobID }}"},function(data){
-$('body #status_filters').replaceWith(data);
-$('#status_filters a[data-value="' + status_page.toUpperCase() + '"]').trigger('click');
-});
-
-}
-
-$('body').on('click', '#clearAllFilters', function(){
-filters = [];
-$('.filter-div input[type=checkbox]' ).prop('checked',false);
-$('#search_keyword').val("");
-age_range = exp_years_range = video_application_score_range =  null;
-$('.search-results').html('{!! preloader() !!}');
-scrollTo('.job-progress-xs');
-$('.result-label').html('');
-$('#pagination').hide();
-$.get("{{ route('job-candidates', $jobID) }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
-//console.log(response);
-// var response = JSON.parse(data);
-// console.log(data.search_results);
-$('.result-label').html(data.showing);
-$('#pagination').show();
-$('.search-results').html(data.search_results);
-$('#search-filters').html(data.search_filters);
-$(document).getShowing();
-});
-
-});
-    $('body').on('click', '#downSpreadsheet', function(){
-        // $('#downSpreadsheet').hide();
-        // $('#genSpreadsheet').show();
-        $data = {search_query: $('#search_query').val(), filter_query : filters, status : status_filter , jobId : "{{ $jobID }}", age: age_range, exp_years : exp_years_range, video_application_score : video_application_score_range, cv_ids : cv_ids, app_ids : app_ids };
-        window.open("{{ route('download-applicant-spreadsheet') }}" + "?" + $.param( $data ), '_blank');
-        // window.open("{{ route('download-applicant-spreadsheet'," + $('#search_query').val() + "," + filters + "," + status_filter + ") }}", '_blank');
-        /*$.get("{{ route('download-applicant-spreadsheet') }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
-        //console.log(response);
-        // var response = JSON.parse(data);
-        // console.log(data.search_results);
-        $('#genSpreadsheet').hide();
-        $('#downSpreadsheet').show();
-        console.log(data);
-        window.open('google.com', '_blank');
-
-        });*/
+                $('.filter-div input[type=checkbox]' + '[data-field=' + arr[0] + ']' + '[data-value=' + arr[1] + ']').attr('checked', true);
+            });
+        });
+        return false;
+    }
+    $('body').on('keydown', '#search_keyword', function () {
+        if (event.which == 13) {
+            searchKeyword();
+        }
     });
 
-    $('body').on('click', '#downCv', function(){
-        // $('#downSpreadsheet').hide();
-        // $('#genSpreadsheet').show();
-        $data = {search_query: $('#search_query').val(), filter_query : filters, status : status_filter , jobId : "{{ $jobID }}", age: age_range, exp_years : exp_years_range, video_application_score: video_application_score_range,cv_ids : cv_ids, app_ids : app_ids };
-        window.open("{{ route('download-applicant-cv') }}" + "?" + $.param( $data ), '_blank');
-        // window.open("{{ route('download-applicant-spreadsheet'," + $('#search_query').val() + "," + filters + "," + status_filter + ") }}", '_blank');
-        /*$.get("{{ route('download-applicant-spreadsheet') }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
-        //console.log(response);
-        // var response = JSON.parse(data);
-        // console.log(data.search_results);
-        $('#genSpreadsheet').hide();
-        $('#downSpreadsheet').show();
-        console.log(data);
-        window.open('google.com', '_blank');
+    $(document).ready(function () {
 
+        // $('.infinite-scroll').jscroll({
+        //     loadingHtml: 'Loading...',
+        //     padding: 20,
+        //     nextSelector: 'a.jscroll-next:last',
+        //     contentSelector: 'li'
+        // });
+
+        // $(".scroll").jscroll({
+        //     nextSelector: ".nextPageLoad",
+        //     callback: function(){
+        //         console.log("shit");
+        //     }
+        // });
+        $.fn.setMyFolders = function (cv_folders) {
+            var html = "";
+            $.each(folders, function (index, value) {
+                if (cv_folders.indexOf(value.id.toString()) >= 0) {
+                    active = ' &nbsp; <i class="fa fa-check"></i> ';
+                } else {
+                    active = "";
+                }
+                html += '<li id="folder-item" data-ref="' + value.id + '" ><a href="#"><i class="fa fa-folder-o"></i> ' + value.name + active + '</a></li>';
+            });
+            return html;
+        }
+        $.fn.getMyFolders = function () {
+            $.post("{{ url('cv/get-my-folders') }}", function (data) {
+                // console.log(data);
+                folders = data.folders;
+                $('body #folder-item').remove();
+                $('body #folders').each(function (index, value) {
+                    cv_folders = $(this).attr('data-folders').split(':');
+                    $(this).prepend($(this).setMyFolders(cv_folders));
+                })
+            });
+        }
+
+        // $(document).getMyFolders();
+
+        $(document).on('change', '.filter-div input[type=checkbox]', function () {
+            // console.log("changed");
+            var filter = $(this).attr('data-field') + ':"' + $(this).attr('data-value') + '"';
+            var index = $.inArray(filter, filters);
+            // console.log( filter + "---" + index );
+            if (index == -1) {
+                filters.push(filter);
+            } else {
+                filters.splice(index, 1);
+            }
+            $(this).performFilter();
+        });
+        $.fn.performFilter = function () {
+            $('.search-results').html('{!! preloader() !!}');
+            scrollTo('.job-progress-xs');
+            $('.result-label').html('');
+            $('#pagination').hide();
+            $.get("{{ route('job-candidates', $jobID) }}", {
+                search_query: $('#search_query').val(),
+                filter_query: filters,
+                age: age_range,
+                exp_years: exp_years_range,
+                video_application_score: video_application_score_range,
+                status: status_filter
+            }, function (data) {
+                //console.log(response);
+                // var response = JSON.parse(data);
+                // console.log(data.search_results);
+                $('.search-results').html(data.search_results);
+
+                $('body #showing').html(data.showing);
+                $('.result-label').show();
+                if (data.count > 0) {
+                    $('#pagination').show();
+                    // $('.result-label').show();
+                    $('#search-filters').html(data.search_filters);
+                } else {
+                    $('#pagination').hide();
+                    // $('.result-label').hide();
+                }
+
+                $.each(filters, function (index, value) {
+
+                    var arr = value.split(':');
+
+                    $('.filter-div input[type=checkbox]' + '[data-field=' + arr[0] + ']' + '[data-value=' + arr[1] + ']').attr('checked', true);
+                });
+            });
+        }
+        $(document).on('click', '.read-more-show', function () {
+            // console.log($(this).text() );
+            // $(this).prev().find('.see-more').show();
+            $(this).closest('div').prev().find('.see-more').toggleClass('see-more-shown');
+            var text = ($(this).text() == 'See More') ? 'See Less' : 'See More';
+            $(this).text(text);
+        });
+        // $(document).on('click', '#showCvBtn', function(){
+        //   var this_one = $(this);
+        //     $.post("{{ url('cv/get_cv_preview') }}",function(data){
+        //        $( this_one.attr('data-target') ).html(data);
+        //     });
+        // });
+        /*$('body').on('click', '#add_folder_btn',function(){
+        var input = $(this).parent().parent().parent().find('#add_folder');
+        input.show();
         });*/
+
+        $('#newFolder').on('shown.bs.modal', function () {
+            $('#add_folder').focus();
+        })
+        $('body').on('keydown', '#add_folder', function () {
+            if (event.which == 13) {
+                $(this).createFolder();
+            }
+        });
+        $('body #createFolderBtn').click(function () {
+            $(this).createFolder();
+        });
+        $.fn.createFolder = function () {
+            $field = $('body #add_folder');
+            $field.attr('disabled', 'disabled');
+            $('#newFolder #message').html('<div class”text-center”>Creating...</div>');
+            $.post("{{ url('cv/add-folder') }}", {
+                name: $field.val(),
+                type: 'saved'
+            }, function (data) {
+                if (data == true) {
+                    // $field.val("").hide();
+                    $(this).getMyFolders();
+                    $('#newFolder #message').html('<div class="alert alert-success">Folder added successfully</div>');
+                    $('#newFolder').modal('toggle');
+
+                } else {
+                    $field.val("").hide();
+                    // $field.after('<p>'+ data +'</p>');
+                    $('#loginModal #mssg').text(data);
+                    $('.signin').trigger('click');
+                }
+
+            });
+        }
+        $('body').on('click', '#folder-item', function () {
+            $field = $(this);
+
+            $.post("{{ url('cv/save-to-folder') }}", {
+                folder_id: $field.attr('data-ref'),
+                cv_id: $(this).closest('#folders').attr('data-cv')
+            }, function (data) {
+                if (data == true) {
+                    $field.addClass('active');
+                    $field.closest('.description').append('<div id="notification"><div class="clearfix"></div><div class="alert alert-success">Added to folder successfully</div></div>');
+                    window.setTimeout(function () {
+                        $field.closest('.description').find('#notification').fadeTo(500, 0).slideUp(500, function () {
+                            $(this).remove();
+                        });
+                    }, 5000);
+                }
+
+            });
+        });
+        $('body').on('click', '#status_filters a', function () {
+            status_filter = $(this).attr('data-value');
+            $('#status_filters li').removeClass('active');
+            $(this).closest('li').addClass('active');
+            $(this).reloadResult();
+
+        });
+
+        $.fn.reloadResult = function () {
+            if (status_filter == "ALL") {
+                status_filter = "";
+                $('#mass-action a').show();
+                $('#mass-action a[data-action="PENDING"').hide();
+            }
+
+
+            $('.search-results').html('{!! preloader() !!}');
+            scrollTo('.job-progress-xs');
+            $('.result-label').html('');
+            $('#pagination').hide();
+            $.get("{{ route('job-candidates', $jobID) }}", {
+                search_query: $('#search_query').val(),
+                filter_query: filters,
+                status: status_filter
+            }, function (data) {
+                //console.log(response);
+                // var response = JSON.parse(data);
+                // console.log(data.search_results);
+                $('.result-label').html(data.showing);
+                $('.result-label').show();
+                if (data.count > 0) {
+                    $('#pagination').show();
+
+                } else {
+                    $('#pagination').hide();
+
+                }
+
+                $('.search-results').html(data.search_results);
+                $('#search-filters').html(data.search_filters);
+                $(document).getShowing();
+                $('#mass-action a').show();
+                $('#mass-action a[data-action="' + status_filter + '"').hide();
+
+            });
+        }
+        $.fn.getShowing = function () {
+            /*count = $('.search-results .comment.media').length;
+            status_page = "";
+            if(status_filter == "")
+            {
+            status_page = 'All';
+            }
+            else
+            {
+            status_page = status_filter.capitalize();
+            }
+            // console.log( status_filter );
+            if( total_candidates > 0 )
+            {
+            $('.result-label').text( 'Showing 1 - ' + count + ' of ' + total_candidates + ' ' + status_page + ' applicants' );
+            }
+            else
+            {
+            $('.result-label').text( '' );
+            }*/
+        }
+        $(document).getShowing();
+        if (window.location.hash) {
+            status_filter = window.location.hash.replace('#', '');
+            $('#status_filters li').removeClass('active');
+            $('#status_filters li a[data-value="' + status_filter + '"').closest('li').addClass('active');
+            $('body').reloadResult();
+        }
+        $.fn.fixDetailsforBulkActions = function () {
+            $field = $(this);
+            cv_ids = $(".search-results .comment.media").map(function (i, v) {
+                if ($(this).find('.media-body-check').is(':checked')) {
+                    return [$(this).data("cv")];
+                }
+
+            }).get();
+            app_ids = $(".search-results .comment.media").map(function (i, v) {
+                if ($(this).find('.media-body-check').is(':checked')) {
+                    return [$(this).data("app-id")];
+                }
+
+            }).get();
+            console.log()
+            $('#mass-action a').attr('data-cv', cv_ids);
+            $('#mass-action a').attr('data-app-id', app_ids);
+        }
+        $('.select-all input[type=checkbox]').on('click', function () {
+            if ($(this).prop('checked')) {
+                $('.search-results .media-body input[type=checkbox]').prop('checked', true);
+                $('#h_act-on').fadeIn();
+            } else {
+                $('.search-results .media-body input[type=checkbox]').prop('checked', false);
+                $('#h_act-on').fadeOut();
+            }
+            $(this).fixDetailsforBulkActions();
+        });
+        $('body').on('click', '.check-applicant', function () {
+            if ($(this).prop('checked')) {
+                if ($('body .check-applicant').length == $('body .check-applicant:checked').map(function () {
+                        return this.value;
+                    }).get().length) {
+                    $('.select-all input[type=checkbox]').prop('checked', true);
+                }
+                $('#h_act-on').fadeIn();
+            } else {
+                if ($('body .check-applicant').length != $('body .check-applicant:checked').map(function () {
+                        return this.value;
+                    }).get().length) {
+                    $('.select-all input[type=checkbox]').prop('checked', false);
+                }
+                if ($('body .check-applicant:checked').map(function () {
+                        return this.value;
+                    }).get().length == 0) {
+                    $('#h_act-on').fadeOut();
+                }
+
+            }
+            $(this).fixDetailsforBulkActions();
+        });
+        $('#mass-action button').on('click', function () {
+            // cvs = $('.search-results .comment.media').prop('data-cv');
+            $field = $(this);
+            cv_ids = $field.data('cv');
+            app_ids = $field.data('app-id');
+            // $.post("{{ route('mass-action') }}", {job_id: '{{ $jobID }}',cv_ids :  cv_ids,status: $field.data('action') },function(data){
+
+
+            //         if(status_filter == "" || status_filter == "All")
+            //         {
+            //         }
+            //         else
+            //         {
+            //             $('body .check-applicant:checked').map(function() { return this }).closest('.comment.media').remove();
+            //         }
+
+
+            //         $('.select-all input[type=checkbox]').prop('checked', false);
+            //         $('.search-results .media-body input[type=checkbox]').prop('checked', false);
+            //         $('#h_act-on').fadeOut();
+            //         $(document).getAllStatus();
+            //         $.growl.notice({ message: "You have " + $field.data('action').toLowerCase() + " " + cv_ids.length + " applicant(s) " });
+
+            //         //$('#status_filters a[data-value="' + $field.data('action') + '"]').trigger('click');
+            //     });
+            console.log(cv_ids, app_ids);
+        });
+
+
+
+        $.fn.getAllStatus = function () {
+            $.get("{{ route('get-all-applicant-status') }}", {
+                job_id: "{{ $jobID }}"
+            }, function (data) {
+                $('body #status_filters').replaceWith(data);
+            });
+        }
+        sh.reloadStatus = function () {
+            $.get("{{ route('get-all-applicant-status') }}", {
+                job_id: "{{ $jobID }}"
+            }, function (data) {
+                $('body #status_filters').replaceWith(data);
+                $('#status_filters a[data-value="' + status_page.toUpperCase() + '"]').trigger('click');
+            });
+
+        }
+
+        $('body').on('click', '#clearAllFilters', function () {
+            filters = [];
+            $('.filter-div input[type=checkbox]').prop('checked', false);
+            $('#search_keyword').val("");
+            age_range = exp_years_range = video_application_score_range = null;
+            $('.search-results').html('{!! preloader() !!}');
+            scrollTo('.job-progress-xs');
+            $('.result-label').html('');
+            $('#pagination').hide();
+            $.get("{{ route('job-candidates', $jobID) }}", {
+                search_query: $('#search_query').val(),
+                filter_query: filters,
+                status: status_filter
+            }, function (data) {
+                //console.log(response);
+                // var response = JSON.parse(data);
+                // console.log(data.search_results);
+                $('.result-label').html(data.showing);
+                $('#pagination').show();
+                $('.search-results').html(data.search_results);
+                $('#search-filters').html(data.search_filters);
+                $(document).getShowing();
+            });
+
+        });
+        $('body').on('click', '#downSpreadsheet', function () {
+            // $('#downSpreadsheet').hide();
+            // $('#genSpreadsheet').show();
+            $data = {
+                search_query: $('#search_query').val(),
+                filter_query: filters,
+                status: status_filter,
+                jobId: "{{ $jobID }}",
+                age: age_range,
+                exp_years: exp_years_range,
+                video_application_score: video_application_score_range,
+                cv_ids: cv_ids,
+                app_ids: app_ids
+            };
+            window.open("{{ route('download-applicant-spreadsheet') }}" + "?" + $.param($data), '_blank');
+            // window.open("{{ route('download-applicant-spreadsheet'," + $('#search_query').val() + "," + filters + "," + status_filter + ") }}", '_blank');
+            /*$.get("{{ route('download-applicant-spreadsheet') }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
+            //console.log(response);
+            // var response = JSON.parse(data);
+            // console.log(data.search_results);
+            $('#genSpreadsheet').hide();
+            $('#downSpreadsheet').show();
+            console.log(data);
+            window.open('google.com', '_blank');
+
+            });*/
+        });
+
+        $('body').on('click', '#downCv', function () {
+            // $('#downSpreadsheet').hide();
+            // $('#genSpreadsheet').show();
+            $data = {
+                search_query: $('#search_query').val(),
+                filter_query: filters,
+                status: status_filter,
+                jobId: "{{ $jobID }}",
+                age: age_range,
+                exp_years: exp_years_range,
+                video_application_score: video_application_score_range,
+                cv_ids: cv_ids,
+                app_ids: app_ids
+            };
+            window.open("{{ route('download-applicant-cv') }}" + "?" + $.param($data), '_blank');
+            // window.open("{{ route('download-applicant-spreadsheet'," + $('#search_query').val() + "," + filters + "," + status_filter + ") }}", '_blank');
+            /*$.get("{{ route('download-applicant-spreadsheet') }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
+            //console.log(response);
+            // var response = JSON.parse(data);
+            // console.log(data.search_results);
+            $('#genSpreadsheet').hide();
+            $('#downSpreadsheet').show();
+            console.log(data);
+            window.open('google.com', '_blank');
+
+            });*/
+        });
     });
-});
 </script>
 @endsection

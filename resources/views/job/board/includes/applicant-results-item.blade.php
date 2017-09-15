@@ -212,13 +212,15 @@
             $('.search-results').html('{!! preloader() !!}');
             var url = "{{ (@$is_saved) ? url('cv/saved') : url('cv/search')   }}";
             var pagination_url = "{{ route('job-candidates', $jobID) }}";
-            $.get(pagination_url, {search_query: $('#search_query').val(), start: ( page - 1 ) , filter_query : filters,status : status_filter },function(data){
+            
+            $.get(pagination_url, {search_query: $('#search_query').val(), start: ( page - 1 ) , filter_query : filters,status : status_filter,exp_years: exp_years_range, age: age_range,, video_application_score: video_application_score_range },function(data){
                 //console.log(response);
                 // var response = JSON.parse(data);
                 // console.log(data.search_results);
                 $('.result-label').html(data.showing)
                 $('.search-results').html(data.search_results);
                 $('#pagination').show();
+
             });
         }
     });

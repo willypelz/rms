@@ -3,6 +3,7 @@
     width: auto !important;
 }
 </style>
+
 <div class="row" id="cont">
       <div class="col-xs-7 scroll-450">
           <div class="">

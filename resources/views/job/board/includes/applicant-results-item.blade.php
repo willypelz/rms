@@ -204,6 +204,7 @@
         initiateStartPageClick: false,
         startPage: parseInt( "{{ ( intval( $start / 20 ) + 1 ) }}" ),
         onPageClick: function (event, page) {
+          $('.select-all input[type=checkbox]').prop('checked', false);
           // console.log(page,filters);
             scrollTo('.job-progress-xs')
             $('#page-content').text('Page ' + page);

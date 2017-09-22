@@ -62,6 +62,7 @@
 																			<a href="{{ $decline_link }}" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color:#aaa;text-transform:uppercase" target="_blank">Decline</a>
 																		</div>
 																		<p style="font-family:Arial,Helvetica,sans-serif; font-size:15px;line-height:1.3em;color:#afafaf">If clicking the link above does not work, kindly copy and paste it to your browser.</p>
+																		<p> <a href="{{ $accept_link }}" target="_blank">{{ $accept_link }}</a> </p>
 																		<hr style="border-width:0 0 1px">
 																		<p style="color:#666">Best,
 																			<br> The SeamlessHiring Team</p>

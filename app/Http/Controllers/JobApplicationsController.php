@@ -209,9 +209,10 @@ class JobApplicationsController extends Controller
             $solr_video_application_score = null;
         }
 
-
+        
         
         $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status,@$solr_age, @$solr_exp_years, @$solr_video_application_score); 
+
         $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
         if(isset($request->status))

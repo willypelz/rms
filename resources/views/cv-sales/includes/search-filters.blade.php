@@ -87,11 +87,11 @@
 
                 <p class="border-bottom-thin text-muted">Completed Test Score<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                      <p class="text-center">
-                        <input id="score-slider" type="text" class="span2" value="" data-slider-min="50" data-slider-max="150" data-slider-step="5" data-slider-value="[75,125]"/> 
+                        <input id="score-slider" type="text" class="span2" value="" data-slider-min="40" data-slider-max="160" data-slider-step="5" data-slider-value="{{ '['.$test_score[0].','.$test_score[1].']' }}"/> 
                         <div class="text-center">
-                          <b class="col-sm-2 pull-left" style="color: #bbb;">50</b>
-                          <b  class="col-sm-2 pull-right" style="color: #bbb;">150</b>
-                          <small id="score-range"> 75 - 125 </small>
+                          <b class="col-sm-2 pull-left" style="color: #bbb;">40</b>
+                          <b  class="col-sm-2 pull-right" style="color: #bbb;">160</b>
+                          <small id="score-range"> {{ $test_score[0].' - '.$test_score[1] }} </small>
                         </div>
                        <div class="clearfix"></div>
                      </p>
@@ -114,14 +114,50 @@
                       });
                       $("#score-slider").on("slideStop", function(slideEvt) {
                         
-                        age_range = slideEvt.value;
+                        test_score_range = slideEvt.value;
 
-                        $('#score-range').html( slideEvt.value[0] + ' - ' + slideEvt.value[1] + ' years' )
+                        $('#score-range').html( slideEvt.value[0] + ' - ' + slideEvt.value[1] );
                         $("#score-slider").performFilter();
                       });
                   });
               </script>
 
+          <p class="border-bottom-thin text-muted">Age<i class="glyphicon glyphicon-birthday pull-right"></i></p>
+                     <p class="text-center">
+                        <input id="age-slider" type="text" class="span2" value="" data-slider-min="{{ env('AGE_START') }}" data-slider-max="{{ env('AGE_END') }}" data-slider-step="1" data-slider-value="{{ '['.$age[0].','.$age[1].']' }}"/> 
+                        <div class="text-center">
+                          <b class="col-sm-2 pull-left" style="color: #bbb;">{{ env('AGE_START') }}</b>
+                          <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ env('AGE_END') }}</b>
+                          <small id="age-range"> {{ $age[0].' - '.$age[1].' years' }} </small>
+                        </div>
+                       <div class="clearfix"></div>
+                     </p>
+
+                    <p></p>
+
+              <style type="text/css">
+                #ex1Slider .slider-selection {
+                  background: #BABABA;
+                }
+              </style>      
+          
+              <script type="text/javascript">
+                  $(document).ready(function(){
+                      $("#age-slider").slider({
+                        // formatter: function(value,a) {
+
+                        //   return 'Current value: ' + value + "  ";
+                        // }
+                      });
+                      $("#age-slider").on("slideStop", function(slideEvt) {
+                        
+                        age_range = slideEvt.value;
+
+                        $('#age-range').html( slideEvt.value[0] + ' - ' + slideEvt.value[1] + ' years' )
+                        $("#age-slider").performFilter();
+                      });
+                  });
+              </script>
 
              <!--  <p class="border-bottom-thin text-muted">Test Score<i class="fa fa-filter pull-right"></i></p>
                       <div class="checkbox-inline">
@@ -244,9 +280,9 @@
 
               @endif
               
+              @if( @$age )
 
 
-            @if( @$age )
               <!-- <div><small class="">&nbsp; <a href="" class="">See More</a></small></div> -->
               <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/bootstrap-slider.min.js"></script>
               <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/css/bootstrap-slider.min.css" />
@@ -288,10 +324,10 @@
                       });
                   });
               </script>
-        @endif
 
 
-        @if( @$age )
+
+        
      
 
           <p class="border-bottom-thin text-muted">Years of Experience<i class="glyphicon glyphicon-birthday pull-right"></i></p>

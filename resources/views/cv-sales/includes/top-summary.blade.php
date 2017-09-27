@@ -1,4 +1,6 @@
-
+	<?php 
+		$type = ( $type == 'ASSESSED' ) ? 'TEST' : $type;
+	?>
 	<strong class="text-warning">Showing
 	{{ $start }} -  {{ $end }} of  {{ $total . ' ' . $type }}   [Page {{ $page }}]
 	</strong> 

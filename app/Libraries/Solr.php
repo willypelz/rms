@@ -150,12 +150,14 @@ class Solr {
 			$additional .= "&fq=years_of_experience:[".$exp_years[0]."+TO+".$exp_years[1]."]";
 		}
 
+
+
 		// echo "&fq=dob:[".$age[1] ."+TO+".$age[0]."]";
 		return Solr::search_resume($data, $additional);
 	}
 	
 
-	static function get_applicants($data, $job_id, $status = "",$age = null,$exp_years=null,$video_application_score=null)
+	static function get_applicants($data, $job_id, $status = "",$age = null,$exp_years=null,$video_application_score=null,$test_score=null)
 	{
 		$additional = "&fq=job_id:". $job_id;
 
@@ -178,6 +180,11 @@ class Solr {
 		if( !is_null($video_application_score) )
 		{
 			$additional .= "&fq=video_application_score:[".$video_application_score[0]."+TO+".$video_application_score[1]."]";
+		}
+
+		if( !is_null($test_score) )
+		{
+			$additional .= "&fq=test_score:[".$test_score[0]."+TO+".$test_score[1]."]";
 		}
 
 		return Solr::search_resume($data,$additional);

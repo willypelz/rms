@@ -169,7 +169,7 @@
     var status_filter = "";
     var total_candidates = "{{ $application_statuses['ALL'] }}";
     var keyword = "";
-    var age_range = exp_years_range = video_application_score_range = null;
+    var age_range = test_score_range = exp_years_range = video_application_score_range = null;
     var last_text_filter = "";
 
     var cv_ids = [];
@@ -290,6 +290,7 @@
                 search_query: $('#search_query').val(),
                 filter_query: filters,
                 age: age_range,
+                test_score: test_score_range,
                 exp_years: exp_years_range,
                 video_application_score: video_application_score_range,
                 status: status_filter
@@ -565,7 +566,7 @@
             filters = [];
             $('.filter-div input[type=checkbox]').prop('checked', false);
             $('#search_keyword').val("");
-            age_range = exp_years_range = video_application_score_range = null;
+            age_range = exp_years_range = test_score_range = video_application_score_range = null;
             $('.search-results').html('{!! preloader() !!}');
             scrollTo('.job-progress-xs');
             $('.result-label').html('');
@@ -595,6 +596,7 @@
                 status: status_filter,
                 jobId: "{{ $jobID }}",
                 age: age_range,
+                test_score: test_score_range,
                 exp_years: exp_years_range,
                 video_application_score: video_application_score_range,
                 cv_ids: cv_ids,
@@ -623,6 +625,7 @@
                 status: status_filter,
                 jobId: "{{ $jobID }}",
                 age: age_range,
+                test_score: test_score_range,
                 exp_years: exp_years_range,
                 video_application_score: video_application_score_range,
                 cv_ids: cv_ids,

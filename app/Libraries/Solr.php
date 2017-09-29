@@ -7,7 +7,7 @@ use App\Models\Job;
 
 class Solr {
 
-	static $host = "http://172.104.132.164:8983/solr/resumes/select?";
+	static $host = "http://139.162.243.206:8983/solr/resumes/select?";
 
 	static $default_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'last_modified+desc', 'grouped'=>FALSE ];
 	
@@ -406,7 +406,7 @@ class Solr {
 
 	static function update_core($core = 'resumes', $command="delta-import"){
 
-		$url = "http://172.104.132.164:8983/solr/".$core."/dataimport?command=".$command;
+		$url = "http://139.162.243.206:8983/solr/".$core."/dataimport?command=".$command;
 
 		try {
 			$handle = fopen($url, "r");

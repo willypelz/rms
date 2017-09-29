@@ -330,7 +330,9 @@ class JobApplicationsController extends Controller
 
 
         
-        $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status,@$solr_age, @$solr_exp_years, @$solr_video_application_score,@$solr_test_score); 
+        $result = Solr::get_applicants($this->search_params, $request->jobId,@$request->status,@$solr_age, @$solr_exp_years, @$solr_video_application_score,@$solr_test_score); 
+
+
 
         $data = $result['response']['docs'];
         $other_data = [
@@ -506,7 +508,7 @@ class JobApplicationsController extends Controller
 
 
         
-        $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status,@$solr_age, @$solr_exp_years, @$solr_video_application_score,@$solr_test_score); 
+        $result = Solr::get_applicants($this->search_params, $request->jobId,@$request->status,@$solr_age, @$solr_exp_years, @$solr_video_application_score,@$solr_test_score); 
 
         $data = $result['response']['docs'];
         $other_data = [

@@ -304,7 +304,33 @@ class JobApplicationsController extends Controller
             $solr_exp_years = null;
         }
 
-        $result = Solr::get_applicants($this->search_params, $request->jobId,@$request->status,@$solr_age, @$solr_exp_years); 
+         //If test score is available
+         if( @$request->test_score ){
+            //2015-09-16T00:00:00Z
+
+            $solr_test_score = [ @$request->test_score[0], @$request->test_score[1] ];
+        }
+        else
+        {
+            $request->test_score = [ 40, 160 ];
+            $solr_test_score = null;
+        }
+
+        //If video application score is available
+        if( @$request->video_application_score ){
+            //2015-09-16T00:00:00Z
+
+            $solr_video_application_score = [ @$request->video_application_score[0], @$request->video_application_score[1] ];
+        }
+        else
+        {
+            $request->video_application_score = [ env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END') ];
+            $solr_video_application_score = null;
+        }
+
+
+        
+        $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status,@$solr_age, @$solr_exp_years, @$solr_video_application_score,@$solr_test_score); 
 
         $data = $result['response']['docs'];
         $other_data = [
@@ -454,7 +480,33 @@ class JobApplicationsController extends Controller
             $solr_exp_years = null;
         }
 
-        $result = Solr::get_applicants($this->search_params, $request->jobId,@$request->status,@$solr_age, @$solr_exp_years); 
+        //If test score is available
+        if( @$request->test_score ){
+            //2015-09-16T00:00:00Z
+
+            $solr_test_score = [ @$request->test_score[0], @$request->test_score[1] ];
+        }
+        else
+        {
+            $request->test_score = [ 40, 160 ];
+            $solr_test_score = null;
+        }
+
+        //If video application score is available
+        if( @$request->video_application_score ){
+            //2015-09-16T00:00:00Z
+
+            $solr_video_application_score = [ @$request->video_application_score[0], @$request->video_application_score[1] ];
+        }
+        else
+        {
+            $request->video_application_score = [ env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END') ];
+            $solr_video_application_score = null;
+        }
+
+
+        
+        $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status,@$solr_age, @$solr_exp_years, @$solr_video_application_score,@$solr_test_score); 
 
         $data = $result['response']['docs'];
         $other_data = [

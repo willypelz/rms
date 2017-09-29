@@ -432,7 +432,12 @@
                 $('#search-filters').html(data.search_filters);
                 $(document).getShowing();
                 $('#mass-action a').show();
-                $('#mass-action a[data-action="' + status_filter + '"').hide();
+
+                if( status_filter != "ASSESSED")
+                {
+                    $('#mass-action a[data-action="' + status_filter + '"').hide();
+                }
+                
 
             });
         }

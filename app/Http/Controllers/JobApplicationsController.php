@@ -727,8 +727,9 @@ class JobApplicationsController extends Controller
         // return $pdf->download('dossier.pdf');
         // 
         $html = view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'))->render();
-        $pdf = PDF::loadHTML($html);
-        return $pdf->stream();
+        // $pdf = PDF::loadHTML($html);
+        // return $pdf->stream();
+        echo $html;
         // return view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'));
     }
 

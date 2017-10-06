@@ -44,7 +44,7 @@
                 <!-- <a href="#" class="btn btn-sm btn-success btn-block" title="Download Dossier" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Download Dossier" data-view="{{ route('modal-dossier') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide">
                   Download Dossier
                 </a> -->
-                <a href="#" class="btn btn-sm btn-success btn-block" title="Download Dossier" href="{{ route('download-dossier',['app_id' => $appl->id,'cv_id' => $appl->cv->id ]) }}" target="_blank">
+                <a  class="btn btn-sm btn-success btn-block" title="Download Dossier" href="{{ route('download-dossier',['app_id' => $appl->id,'cv_id' => $appl->cv->id ]) }}" target="_blank">
                   Download Dossier
                 </a>
                 

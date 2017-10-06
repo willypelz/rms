@@ -476,6 +476,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('modal/default', [ 'as' => 'get-modal', function () {
             return view('applicant.messages');
         } ]);
+        
+    Route::get('cron/delete-temp-files', [ 'as' => 'delete-temp-files', 'uses' => 'JobApplicationsController@deleteTmpFiles']);
     Route::get('modal/assess', [ 'as' => 'modal-assess', 'uses' => 'JobApplicationsController@modalAssess']);
 
     Route::get('modal/comment', [ 'as' => 'modal-comment', 'uses' => 'JobApplicationsController@modalComment' ]);

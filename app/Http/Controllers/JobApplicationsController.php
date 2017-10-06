@@ -706,6 +706,12 @@ class JobApplicationsController extends Controller
         return view('modals.dossier', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'));
     }
 
+    public function deleteTmpFiles()
+    {
+        $path = public_path('uploads/tmp/');
+        File::deleteDirectory($path, true);
+    }
+
     public function downloadDossier(Request $request)
     {
         $modalVars = $this->modalActions('Download Dossier', $request->cv_id, $request->app_id);
@@ -768,14 +774,15 @@ class JobApplicationsController extends Controller
 
 
         $files_to_archive[] = $test_local_file;
+        $timestamp = " ".time()." ";
         
         $zipper = new \Chumper\Zipper\Zipper;
-        @$zipper->make( $path.$filename )->add( $files_to_archive )->close();
+        @$zipper->make( $path.$timestamp.$filename )->add( $files_to_archive )->close();
 
 
         File::delete( $files_to_archive );
-        dd( file_exists(public_path('uploads/CVs/').$appl->cv->cv_file),public_path('uploads/CVs/').$appl->cv->cv_file, $appl->cv->cv_file );
-        // return Response::download($path.$filename, $filename, ['Content-Type' => 'application/octet-stream']);
+
+        return Response::download($path.$timestamp.$filename, $filename, ['Content-Type' => 'application/octet-stream']);
         
 
         // $pdf = PDF::loadView('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'));

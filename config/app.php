@@ -164,6 +164,7 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
         ConsoleTVs\Charts\ChartsServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
+        Barryvdh\Snappy\ServiceProvider::class,
         
 
     ],
@@ -217,7 +218,9 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Zipper' => Chumper\Zipper\Zipper::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class,
+        // 'PDF' => Barryvdh\DomPDF\Facade::class,
+        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
         'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
 

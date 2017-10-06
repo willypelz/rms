@@ -31,6 +31,7 @@ use Illuminate\Mail\Message;
 use Alchemy\Zippy\Zippy;
 use Alchemy\Zippy\Adapter\ZipExtensionAdapter;
 use Validator;
+use File;
 
 
 class JobApplicationsController extends Controller
@@ -723,14 +724,58 @@ class JobApplicationsController extends Controller
         $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type','REVIEW')->where('job_application_id',$appl->id)->get();
         $notes = InterviewNotes::with('user')->where('job_application_id',$appl->id)->get();
 
-        $snappy = App::make('snappy.pdf');
         //To file
         $html = view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'))->render();
-        
+        $path = public_path('uploads/tmp/');
+
         $pdf = App::make('snappy.pdf.wrapper');
         $pdf->loadHTML(  view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'))->render() );
-        $pdf->setTemporaryFolder(storage_path('/tmp'));
-        return $pdf->download('dossier.pdf');
+        $pdf->setTemporaryFolder( $path ); 
+        $pdf->save( $path . $appl->cv->first_name.' '.$appl->cv->last_name. ' dossier.pdf');
+                
+        
+        $filename = $appl->cv->first_name.' '.$appl->cv->last_name.".zip";
+        $dossier_local_file = $path.$appl->cv->first_name.' '.$appl->cv->last_name. ' dossier.pdf';
+        $cv_local_file = @$path.$appl->cv->first_name.' '.$appl->cv->last_name.' cv - ' .$appl->cv->cv_file;
+
+        $files_to_archive = [$dossier_local_file];
+        //get cv
+        if( !file_exists(public_path('uploads/CVs/').$appl->cv->cv_file) )
+        {
+            $cv = null;
+        }
+
+        else if( is_null( $appl->cv->cv_file ) or $appl->cv->cv_file == "" )
+        {
+            $cv = null;
+        }
+
+        else
+        {
+           $cv = $appl->cv->cv_file;
+           $cv_file =  public_path('uploads/CVs/').$cv;
+           copy($cv_file,  $cv_local_file);
+           $files_to_archive[] = $cv_local_file;
+        }
+        
+        // dump( $appl->cv->cv_file );
+        
+        $test_path = "http://testing.insidifyenterprise.com/test/combined/pdf/".$appl->id;
+        $test_local_file = $path.$appl->cv->first_name.' '.$appl->cv->last_name. ' tests.pdf';
+        // Response::download($test_path, $appl->cv->first_name.' '.$appl->cv->last_name. ' tests.pdf');
+
+        copy($test_path,  $test_local_file);
+
+
+        $files_to_archive[] = $test_local_file;
+        
+        $zipper = new \Chumper\Zipper\Zipper;
+        @$zipper->make( $path.$filename )->add( $files_to_archive )->close();
+
+
+        File::delete( $files_to_archive );
+        dd( file_exists(public_path('uploads/CVs/').$appl->cv->cv_file),public_path('uploads/CVs/').$appl->cv->cv_file, $appl->cv->cv_file );
+        // return Response::download($path.$filename, $filename, ['Content-Type' => 'application/octet-stream']);
         
 
         // $pdf = PDF::loadView('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'));

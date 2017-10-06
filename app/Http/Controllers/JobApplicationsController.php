@@ -723,13 +723,25 @@ class JobApplicationsController extends Controller
         $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type','REVIEW')->where('job_application_id',$appl->id)->get();
         $notes = InterviewNotes::with('user')->where('job_application_id',$appl->id)->get();
 
+        $snappy = App::make('snappy.pdf');
+        //To file
+        $html = view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'))->render();
+        
+        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf->loadHTML(  view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'))->render() );
+        $pdf->setTemporaryFolder(storage_path('/tmp'));
+        return $pdf->download('dossier.pdf');
+        
+
         // $pdf = PDF::loadView('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'));
         // return $pdf->download('dossier.pdf');
         // 
-        $html = view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'))->render();
+        // $html = view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'))->render();
         // $pdf = PDF::loadHTML($html);
+
+        // // return $pdf->download('dossier.pdf');
         // return $pdf->stream();
-        echo $html;
+        // // echo $html;
         // return view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'));
     }
 

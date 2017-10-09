@@ -773,7 +773,7 @@ class JobApplicationsController extends Controller
         @copy($test_path,  $test_local_file);
 
 
-        $files_to_archive[] = $test_local_file;
+        //$files_to_archive[] = $test_local_file;
         $timestamp = " ".time()." ";
         
         $zipper = new \Chumper\Zipper\Zipper;

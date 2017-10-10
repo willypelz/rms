@@ -768,12 +768,12 @@ class JobApplicationsController extends Controller
         
         $test_path = "http://testing.insidifyenterprise.com/test/combined/pdf/".$appl->id;
         $test_local_file = $path.$appl->cv->first_name.' '.$appl->cv->last_name. ' tests.pdf';
-        // Response::download($test_path, $appl->cv->first_name.' '.$appl->cv->last_name. ' tests.pdf');
+        Response::download($test_path, $appl->cv->first_name.' '.$appl->cv->last_name. ' tests.pdf');
 
         @copy($test_path,  $test_local_file);
 
 
-        //$files_to_archive[] = $test_local_file;
+        $files_to_archive[] = $test_local_file;
         $timestamp = " ".time()." ";
         
         $zipper = new \Chumper\Zipper\Zipper;

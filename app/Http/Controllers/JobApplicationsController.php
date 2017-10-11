@@ -1247,10 +1247,20 @@ class JobApplicationsController extends Controller
                        
 
             Interview::create($data);
-
-            $this->mailer->send('emails.new.interview_invitation', ['cv' => $cv, 'job' => $job,'interview' => (object) $data], function (Message $m) use ($cv) {
-                $m->from('support@seamlesshiring.com')->to($cv->email)->subject('Interview Invitation');
-            });
+            
+            if( $appl->job->company->id == 80)
+            {
+                $this->mailer->send('emails.new.interview_invitation_ibfc', ['cv' => $cv, 'job' => $job,'interview' => (object) $data], function (Message $m) use ($cv) {
+                    $m->from('support@seamlesshiring.com')->to($cv->email)->subject('Interview Invitation');
+                });
+            }
+            else
+            {
+                $this->mailer->send('emails.new.interview_invitation', ['cv' => $cv, 'job' => $job,'interview' => (object) $data], function (Message $m) use ($cv) {
+                    $m->from('support@seamlesshiring.com')->to($cv->email)->subject('Interview Invitation');
+                });
+            }
+            
         }
                         
 

@@ -225,7 +225,7 @@ class JobApplicationsController extends Controller
 
         
         $result = Solr::get_applicants($this->search_params, $request->jobID,@$request->status,@$solr_age, @$solr_exp_years, @$solr_video_application_score,@$solr_test_score); 
-
+        // dd( $result['response']['docs'] );
         $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
         if(isset($request->status))
@@ -350,6 +350,19 @@ class JobApplicationsController extends Controller
             {
                 continue;
             }
+            $tests = "";
+
+            if( @$value['test_status'] )
+            {
+                foreach (@$value['test_status'] as $key2 => $test_status) {
+                    
+                    if( $test_status == 'COMPLETED' )
+                    {
+                        $tests .= @$value['test_name'][$key2] .": ".@$value['test_score'][$key2].'/n';
+                    }
+                }
+            }
+            
             $excel_data[] = [
                                 "FIRSTNAME" => $value['first_name'],
                                 "LASTNAME" => @$value['last_name'],
@@ -367,7 +380,9 @@ class JobApplicationsController extends Controller
                                 "LAST COMPANY WORKED AT" => @$value['last_company_worked'],
                                 "YEARS OF EXPERIENCE" => @$value['years_of_experience'],
                                 "WILLING TO RELOCATE?" => '',
+                                "TESTS" => $tests,
 
+                                
 
 
 
@@ -385,6 +400,8 @@ class JobApplicationsController extends Controller
                                 // "application_status" => array:1 [▶]
                                 // "_version_" => 1.5462453107564E+18
                               ];
+
+                              
         }
 
         // dd($excel_data);

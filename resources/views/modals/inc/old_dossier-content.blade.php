@@ -127,6 +127,67 @@
            </div>
        </div>
 
+       <div class="unit-box hidden" style="margin: 0em 0 3em 1em;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;position: relative;display: inline-block;width: 100%;">
+           <div class="row" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin-left: -15px;margin-right: -15px;">
+
+
+               <div class="col-xs-11" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;width: 91.66666667%;float: left;position: relative;min-height: 1px;padding-left: 15px;padding-right: 15px;">
+                   <h5 style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-weight: 600;font-size: 15px;">SKILLS</h5>
+                   <p class="text-muted" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;color: #999;">
+                       <!--a href="http://insidify.com/cv/search/Information technology"-->
+                       Information technology,<!--/a-->                                                                              <!--a href="http://insidify.com/cv/search/ BlackBerry"-->
+                       BlackBerry,<!--/a-->                                                                              <!--a href="http://insidify.com/cv/search/ Project Management"-->
+                       Project Management,<!--/a-->                                                                              <!--a href="http://insidify.com/cv/search/ Ability to learn Fast"-->
+                       Ability to learn Fast,<!--/a-->                                                                              <!--a href="http://insidify.com/cv/search/ Ability to adapt with new environment"-->
+                       Ability to adapt with new environment,<!--/a-->                                                                           </p>
+               </div>
+           </div>
+       </div>
+
+       <div class="unit-box hidden" style="margin: 0em 0 3em 1em;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;position: relative;display: inline-block;width: 100%;">
+           <div class="row" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin-left: -15px;margin-right: -15px;">
+
+               <div class="col-xs-11" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;width: 91.66666667%;float: left;position: relative;min-height: 1px;padding-left: 15px;padding-right: 15px;">
+                   <h5 style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-weight: 600;font-size: 15px;">WORK EXPERIENCE</h5>
+
+                   <div class="sub-box" style="margin: 2.5em 0 0 1em;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;padding-left: 2em;border-left: 1px solid #ccc;">
+                       <p class="text-muted" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;color: #999;">
+                           Jul 2014                                            till present                                        </p>
+                       <h5 style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-weight: 600;font-size: 15px;">IT analyst atTranter IT infrastructure services                                        </h5>
+                       <p style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Lagos</p>
+                   </div>
+
+                   <div class="sub-box" style="margin: 2.5em 0 0 1em;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;padding-left: 2em;border-left: 1px solid #ccc;">
+                       <p class="text-muted" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;color: #999;">
+                           Aug 2013                                             - Jun 2014                                        </p>
+                       <h5 style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-weight: 600;font-size: 15px;">co-founder/sales rep atHouse of Spice                                        </h5>
+                       <p style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">abeokuta</p>
+                   </div>
+
+
+
+               </div>
+           </div>
+       </div>
+
+       <div class="unit-box hidden" style="margin: 0em 0 3em 1em;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;position: relative;display: inline-block;width: 100%;">
+           <div class="row" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin-left: -15px;margin-right: -15px;">
+
+               <div class="col-xs-11" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;width: 91.66666667%;float: left;position: relative;min-height: 1px;padding-left: 15px;padding-right: 15px;">
+                   <h5 style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-weight: 600;font-size: 15px;">EDUCATION</h5>
+
+                   <div class="sub-box" style="margin: 2.5em 0 0 1em;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;padding-left: 2em;border-left: 1px solid #ccc;">
+                       <p class="text-muted" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;color: #999;">
+                           Sept 2006                                          - Dec 2011                                        </p>
+                       <h5 style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-weight: 600;font-size: 15px;">computer science at Ladoke Akintola University of Technology <br style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"></h5>
+                       <p style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Bachelor of Technology, <span style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Second class Upper</span></p>
+                   </div>
+
+
+
+               </div>
+           </div>
+       </div>
 
 
    </div>

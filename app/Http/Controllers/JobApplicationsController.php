@@ -350,7 +350,7 @@ class JobApplicationsController extends Controller
             {
                 continue;
             }
-            $tests = [];
+            $tests = "";
 
             if( @$value['test_status'] )
             {
@@ -358,7 +358,7 @@ class JobApplicationsController extends Controller
                     
                     if( $test_status == 'COMPLETED' )
                     {
-                        $tests[@$value['test_name'][$key2]] =  @$value['test_score'][$key2];
+                        $tests .= @$value['test_name'][$key2] ."(".@$value['test_score'][$key2].') ';
                     }
                 }
             }
@@ -399,7 +399,7 @@ class JobApplicationsController extends Controller
                                 // "application_id" => array:1 [▶]
                                 // "application_status" => array:1 [▶]
                                 // "_version_" => 1.5462453107564E+18
-                              ] + $tests;
+                              ];
 
                               
         }

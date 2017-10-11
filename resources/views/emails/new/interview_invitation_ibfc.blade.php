@@ -52,12 +52,12 @@
 																		<br><br>
 																		Please find details below:
 																		<br><br>
-																		Date: {{ date('D, j-n-Y', strtotime($interview->date))  }}
+																		<strong>Date:</strong> {{ date('D, j-n-Y', strtotime($interview->date))  }}
 																		<br>
-																		Venue: {{ $interview->location }}
+																		<strong>Venue:</strong> {{ $interview->location }}
 																		<br>
-																		Time: {{ date('h:i A', strtotime($interview->date))  }}
-																		<br>
+																		<strong>Time:</strong> {{ date('h:i A', strtotime($interview->date))  }}
+																		<br><br>
 																		For further information kindly contact Oluseyi Fagbuyiro on 08093967732 or 08034220029.
 																		
 																		@if( $interview->message != "" && !is_null( $interview->message ) )

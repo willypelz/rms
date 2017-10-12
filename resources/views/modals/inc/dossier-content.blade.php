@@ -533,13 +533,10 @@
                </div>
            </div>
 
-           <div class="col-xs-12 hidden" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;width: 100%;float: left;position: relative;min-height: 1px;padding-left: 15px;padding-right: 15px;">
+           <!-- <div class="col-xs-12 hidden" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;width: 100%;float: left;position: relative;min-height: 1px;padding-left: 15px;padding-right: 15px;">
                <hr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: content-box;box-sizing: content-box;margin-top: 20px;margin-bottom: 20px;border: 0;border-top: 1px solid #eee;height: 0;">
                <div class="" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
-                   <!--<h4 class="text-center text-uppercase">-->
-                       <!--<i class="fa fa-file-word-o"></i>&nbsp;-->
-                       <!--Interview Report-->
-                   <!--</h4><br>-->
+                   
                    <h4 style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-size: 18px;"><i class="fa fa-question-circle" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"></i> Listening Skills</h4>
                    <p style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">To build a career where I can use my skills to improve customer satisfaction and retention rates, improve earning capacity and add to the growth of any organisation I belong to</p><br style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
 
@@ -594,7 +591,7 @@
                        </div>
                    </div>
                </div>
-           </div>
+           </div> -->
 
 
 

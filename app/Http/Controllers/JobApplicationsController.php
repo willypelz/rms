@@ -1330,10 +1330,14 @@ class JobApplicationsController extends Controller
 
         $interview_note_options = $this->getInterviewNoteOption( $appl->job->id );
 
-        if(  $request->readonly )
+        if(  @$request->readonly )
         {
-            $readonly = $request->readonly;
+            $readonly = true;
             $interview_note = InterviewNoteValues::with('interviewer')->where('job_application_id',$appl->id)->where('interviewed_by',$request->interviewed_by)->get()->pluck('value','interview_note_option_id');
+        }
+        else
+        {
+            $readonly = false;
         }
 
         if( $request->isMethod('post') )

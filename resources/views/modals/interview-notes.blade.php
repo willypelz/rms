@@ -28,7 +28,7 @@
               <div class="clearfix"></div>
               </div>
 
-          @foreach( $interview_note_options as $option )
+          @foreach( @$interview_note_options as $option )
 
             @if( $option->type == "rating" )
               <div class="form-group">
@@ -75,7 +75,7 @@
 
             </div>
 
-            @foreach( $interview_note_options as $option )
+            @foreach( @$interview_note_options as $option )
 
             @if( $option->type == "text" )
               <div class="form-group">
@@ -131,7 +131,7 @@
 <script src="{{ asset('js/jquery.barrating.min.js') }}"></script>
 <link rel="stylesheet" href="{{ asset('css/rating-themes/bars-movie.css') }}">
 
-@if( $interview_note )
+@if( @$interview_note )
   <script type="text/javascript">
    $(function() {
       $('body #rating').barrating({

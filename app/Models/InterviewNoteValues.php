@@ -20,9 +20,14 @@ class InterviewNoteValues extends Model
 
     protected $table = 'interview_note_values';
 
-    public function video_option()
+    public function interview_note_option()
     {
-        return $this->hasOne('App\Models\VideoApplicationOptions','id','form_field_id');
+        return $this->hasOne('App\Models\InterviewNoteOptions','id','interview_note_option_id');
+    }
+
+    public function interviewer()
+    {
+        return $this->hasOne('App\User','id','interviewed_by');
     }
 
 }

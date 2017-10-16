@@ -112,7 +112,8 @@ class JobApplicationsController extends Controller
         $nav_type = 'notes';
 
         // $interview_notes = $appl->interview_notes()->with('user')->get();
-        $interview_notes = InterviewNoteValues::where('job_application_id',$appl->id)->groupBy('interviewed_by');
+        $interview_notes = InterviewNoteValues::with('interviewer')->where('job_application_id',$appl->id)->groupBy('interviewed_by')->get();
+
         return view('applicant.notes', compact('appl', 'nav_type', 'interview_notes'));
     }
 
@@ -1328,7 +1329,11 @@ class JobApplicationsController extends Controller
 
         $interview_note_options = $this->getInterviewNoteOption( $appl->job->id );
 
-
+        if(  $request->readonly )
+        {
+            $readonly = $request->readonly;
+            $interview_note = InterviewNoteValues::with('interviewer')->where('job_application_id',$appl->id)->where('interviewed_by',$request->interviewed_by)->get()->pluck('value','interview_note_option_id');
+        }
 
         if( $request->isMethod('post') )
         {
@@ -1338,13 +1343,13 @@ class JobApplicationsController extends Controller
             $score = 0;
             $correct_count = 0;
             foreach ($interview_note_options as $key => $option) {
-                //$request->all()
 
                 $interview_note_values[] = [
                     'interview_note_option_id' => $option->id,
                     'value' => $data['option_'.$option->id],
                     'job_application_id' => $appl->id,
                     'interviewed_by' => @Auth::user()->id,
+                    'created_at' => Carbon::now(),
                 ];
 
 
@@ -1355,7 +1360,7 @@ class JobApplicationsController extends Controller
 
         }
 
-        return view('modals.interview-notes', compact('applicant_badge','app_id','cv_id','appl','interview_note_options'));
+        return view('modals.interview-notes', compact('applicant_badge','app_id','cv_id','appl','interview_note_options','interview_note','readonly'));
 
     }
 

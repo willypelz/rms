@@ -58,23 +58,25 @@
 
                                   @if( count($interview_notes) > 0 )
                                     @foreach( $interview_notes as $interview_note )
+
+                                    
                                         <div class="commenter">
                                           <p>
-                                            <a>{{ $interview_note->user->name }}</a> made a note on candidate
-                                                <small class="text-muted pull-right">[{{ date('D, j-n-Y, h:i A', strtotime( $interview_note->interview_date ))  }}]</small>
+                                            <a>{{ $interview_note->interviewer->name }}</a> made a note on candidate
+                                                <small class="text-muted pull-right">[{{ date('D, j-n-Y, h:i A', strtotime( $interview_note->created_at ))  }}]</small>
                                           </p>
                                           <blockquote class="h5">
                                             <div class="pull-right">
-                                                <button class="btn btn-success btn-block" title="Interview Note by {{ $interview_note->user->name }}" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview Note by {{ $interview_note->user->name }}" data-view="{{ route('modal-interview-notes',['interview_id'=>$interview_note]) }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide" >View Note</button>
+                                                <button class="btn btn-success btn-block" title="Interview Note by {{ $interview_note->interviewer->name }}" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview Note by {{ $interview_note->interviewer->name }}" data-view="{{ route('modal-interview-notes',['interview_id'=>$interview_note, 'readonly'=>true , 'interviewed_by' => $interview_note->interviewed_by]) }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide" >View Note</button>
                                             </div>
-                                            <span role="comment-body text-muted">
-                                                <strong>General Comments: </strong>{{ $interview_note->general_comments }} <br><br>
-                                                <strong>Recommendations: </strong>{{ $interview_note->recommendation }}
+                                            <!-- <span role="comment-body text-muted">
+                                                <strong>General Comments: </strong>{{ @$interview_note->general_comments }} <br><br>
+                                                <strong>Recommendations: </strong>{{ @$interview_note->recommendation }}
                                                 
-                                            </span>
+                                            </span> -->
                                           </blockquote>
 
-                                          
+                                          <div class="clearfix"></div><br>
                                         </div>
                                     @endforeach
                                   @else

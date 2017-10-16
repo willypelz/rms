@@ -35,7 +35,7 @@
                   <div class="col-sm-5">
                     <label for="" style="font-size: 17px;">{{ $option->name }} <span class="text-danger">*</span></label>
                     <p>
-                    <small>{!! $option->description !!}</small>
+                      {!! $option->description !!}
                     </p>
                   </div>
 
@@ -48,11 +48,11 @@
                   <div class="col-sm-5">
                     <select id="rating" name="option_{{ $option->id }}" id="option_{{ $option->id }}" required>
                       <option value></option>
-                      <option value="1" @if( @$note->general_appearance == 1) selected="selected" @endif>Very Poor</option>
-                      <option value="2" @if( @$note->general_appearance == 2) selected="selected" @endif>Poor</option>
-                      <option value="3" @if( @$note->general_appearance == 3) selected="selected" @endif>Fair</option>
-                      <option value="4" @if( @$note->general_appearance == 4) selected="selected" @endif>Good</option>
-                      <option value="5" @if( @$note->general_appearance == 5) selected="selected" @endif>Very Good</option>
+                      <option value="1" @if( @$interview_note[$option->id] == 1) selected="selected" @endif>Very Poor</option>
+                      <option value="2" @if( @$interview_note[$option->id] == 2) selected="selected" @endif>Poor</option>
+                      <option value="3" @if( @$interview_note[$option->id] == 3) selected="selected" @endif>Fair</option>
+                      <option value="4" @if( @$interview_note[$option->id] == 4) selected="selected" @endif>Good</option>
+                      <option value="5" @if( @$interview_note[$option->id] == 5) selected="selected" @endif>Very Good</option>
                     </select>
                     <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="1" > 1 </label>
                     <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="2" > 2 </label>
@@ -86,13 +86,13 @@
                     
                     <label for="" style="font-size: 17px;">{!! $option->name !!} <span class="text-danger">*</span></label>
                     <p>
-                    <small>{!! $option->description !!}</small>
+                    {!! $option->description !!}
                     </p>
                   </div>
 
                   
                   <div class="col-sm-12">
-                    <textarea  class="form-control"  name="option_{{ $option->id }}" id="option_{{ $option->id }}"></textarea>
+                    <textarea  class="form-control"  name="option_{{ $option->id }}" id="option_{{ $option->id }}" @if($readonly) "disabled" = "disabled" readonly @endif>{{ @$interview_note[$option->id] }}</textarea>
                   </div>
                   
               <div class="clearfix"></div>
@@ -113,7 +113,7 @@
 
     <div class="row"><br>
         
-        @if( count(@$note) > 0 )
+        @if( $readonly )
 
         @else
           <div class="col-sm-10 col-sm-offset-1 col-md-12 col-sm-offset-0">
@@ -131,7 +131,7 @@
 <script src="{{ asset('js/jquery.barrating.min.js') }}"></script>
 <link rel="stylesheet" href="{{ asset('css/rating-themes/bars-movie.css') }}">
 
-@if( count(@$note) > 0 )
+@if( $interview_note )
   <script type="text/javascript">
    $(function() {
       $('body #rating').barrating({

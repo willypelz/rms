@@ -32,6 +32,9 @@ use Alchemy\Zippy\Zippy;
 use Alchemy\Zippy\Adapter\ZipExtensionAdapter;
 use Validator;
 use File;
+use App\Models\InterviewNoteOptions;
+use App\Models\InterviewNoteValues;
+
 
 
 class JobApplicationsController extends Controller
@@ -102,14 +105,14 @@ class JobApplicationsController extends Controller
 
     public function notes($appl_id){
 
-        $appl = JobApplication::with('job', 'cv','interview_notes')->find($appl_id);
+        $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
         check_if_job_owner( $appl->job->id );
 
         $nav_type = 'notes';
 
-        $interview_notes = $appl->interview_notes()->with('user')->get();
-        
+        // $interview_notes = $appl->interview_notes()->with('user')->get();
+        $interview_notes = InterviewNoteValues::where('job_application_id',$appl->id)->groupBy('interviewed_by');
         return view('applicant.notes', compact('appl', 'nav_type', 'interview_notes'));
     }
 
@@ -1292,21 +1295,10 @@ class JobApplicationsController extends Controller
     public function saveInterviewNote(Request $request)
     {
 
-            // $data = [
-            //     'location' => @$request->location,
-            //     'message' => @$request->message,
-            //     'date' => @$request->date
-            // ];
-
-
             $data = array_merge( @$request->texts, ( (array) json_decode( @$request->radios ) )  );
             // var_dump( $data );
             $data['interview_date'] = Carbon::now();
             InterviewNotes::create($data);
-
-        
-
-        // JobApplication::massAction( @$request->job_id, [ @$request->cv_id ], 'INTERVIEWED' );
 
     }
     
@@ -1325,5 +1317,59 @@ class JobApplicationsController extends Controller
     {
         return view('modals.applicant_badge',compact('cv'))->render();
         
+    }
+
+    public function takeInterviewNote(Request $request)
+    {
+        $app_id = @$request->app_id;
+        $cv_id = @$request->cv_id;
+        $appl = JobApplication::with('job', 'cv')->find($app_id);
+        $applicant_badge = @$this->getApplicantBadge($appl->cv);
+
+        $interview_note_options = $this->getInterviewNoteOption( $appl->job->id );
+
+
+
+        if( $request->isMethod('post') )
+        {
+            $data = array_merge( json_decode( $request->radios,true ), json_decode( $request->texts ,true) );
+
+            $interview_note_values = [];
+            $score = 0;
+            $correct_count = 0;
+            foreach ($interview_note_options as $key => $option) {
+                //$request->all()
+
+                $interview_note_values[] = [
+                    'interview_note_option_id' => $option->id,
+                    'value' => $data['option_'.$option->id],
+                    'job_application_id' => $appl->id,
+                    'interviewed_by' => @Auth::user()->id,
+                ];
+
+
+            }
+
+            InterviewNoteValues::insert( $interview_note_values );
+
+
+        }
+
+        return view('modals.interview-notes', compact('applicant_badge','app_id','cv_id','appl','interview_note_options'));
+
+    }
+
+
+    private function getInterviewNoteOption( $jobID )
+    {   
+
+        $interview_note_options = InterviewNoteOptions::where('job_id',$jobID)->get();
+
+        if( empty($interview_note_options->toArray() ) )
+        {
+            $interview_note_options = InterviewNoteOptions::where('job_id',NULL)->get();
+        }
+
+        return $interview_note_options;
     }
 }

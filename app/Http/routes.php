@@ -500,7 +500,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('modal/reject', [ 'as' => 'modal-reject', 'uses' => 'JobApplicationsController@modalReject' ]);
 
     Route::get('modal/interview', [ 'as' => 'modal-interview', 'uses' => 'JobApplicationsController@modalInterview' ]);
-    Route::get('modal/interview-notes', [ 'as' => 'modal-interview-notes', 'uses' => 'JobApplicationsController@modalInterviewNotes' ]);
+    // Route::get('modal/interview-notes', [ 'as' => 'modal-interview-notes', 'uses' => 'JobApplicationsController@modalInterviewNotes' ]);
+    
+    Route::get('modal/interview-notes', [ 'as' => 'modal-interview-notes', 'uses' => 'JobApplicationsController@takeInterviewNote' ]);
 
     
 
@@ -519,7 +521,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('save/test-result', [ 'as' => 'save-test-result', 'uses' => 'JobApplicationsController@saveTestResult' ]);
     Route::post('request/check', [ 'as' => 'request-check', 'uses' => 'JobApplicationsController@requestCheck' ]);
     Route::post('invite/interview', [ 'as' => 'invite-for-interview', 'uses' => 'JobApplicationsController@inviteForInterview' ]);
-    Route::post('save-interview-note', [ 'as' => 'save-interview-note', 'uses' => 'JobApplicationsController@saveInterviewNote' ]);
+    Route::post('save-interview-note', [ 'as' => 'save-interview-note', 'uses' => 'JobApplicationsController@takeInterviewNote' ]);
     
 
 

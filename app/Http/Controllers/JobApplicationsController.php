@@ -750,13 +750,14 @@ class JobApplicationsController extends Controller
 
         $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type','REVIEW')->where('job_application_id',$appl->id)->get();
         $notes = InterviewNotes::with('user')->where('job_application_id',$appl->id)->get();
-
+        $interview_notes = InterviewNoteValues::with('interviewer','interview_note_option')->where('job_application_id',$appl->id)->get()->groupBy('interviewed_by');
+// dd( $interview_notes );
         //To file
-        $html = view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'))->render();
+        // $html = view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','interview_notes'))->render();
         $path = public_path('uploads/tmp/');
 
         $pdf = App::make('snappy.pdf.wrapper');
-        $pdf->loadHTML(  view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'))->render() );
+        $pdf->loadHTML(  view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','interview_notes'))->render() );
         $pdf->setTemporaryFolder( $path ); 
         $pdf->save( $path . $appl->cv->first_name.' '.$appl->cv->last_name. ' dossier.pdf');
                 

@@ -116,7 +116,10 @@
                               <!--  <a href="https://localhost/seamlesshiring/public_html/jobs/advertise-your-job/22/technical-executives-at-cell-phone-repairs-stores" class="btn btn-primary btn-block" target="_blank" data-toggle="modal" data-target="#myModal">
                                 Promote Job Now
                               </a> -->
-                              <a href="{{ route('post-success', ['jobID' => $job->id]) }}" class="btn btn-primary btn-block" target="_blank" data-toggle="modal" data-target="#promoteJob">
+                              <!-- <a href="{{ route('post-success', ['jobID' => $job->id]) }}" class="btn btn-primary btn-block" target="_blank" data-toggle="modal" data-target="#promoteJob">
+                                Expand Job Reach Now
+                              </a> -->
+                              <a href="{{ route('post-success', ['jobID' => $job->id]) }}" class="btn btn-primary btn-block" target="_blank" >
                                 Expand Job Reach Now
                               </a>
                             <p></p>

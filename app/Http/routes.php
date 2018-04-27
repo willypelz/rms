@@ -58,12 +58,32 @@ Route::group(['middleware' => 'web'], function () {
     
     Route::get('/test', function () {
         
-        $jobs = \App\Models\Job::where('company_id',50)->where('status','ACTIVE')->orderBy('title','ASC')->get();
+        /* $jobs = \App\Models\Job::where('company_id',50)->where('status','ACTIVE')->orderBy('title','ASC')->get();
         
         foreach( $jobs as $job )
         {
             echo $job->title . '<a href="' . url('job/apply/'.$job->id.'/'.str_slug($job->title)).'" > Apply </a><br>';
-        }
+        } */
+
+        // $applications = \App\Models\JobApplication::whereHas('job', function($query){
+        //     $query->whereNotIn('company_id',[12,50]);
+        // })->skip(1000)->take(10000)->chunk(100, function($apps){
+        //     foreach ($apps as $key => $app) {
+        //         $app = $app->toArray();
+        //         $app['job_id'] = 434;
+        //         unset( $app['id'] );
+
+        //         \App\Models\JobApplication::create($app);
+        //     }
+        // });
+
+        //  $applications = \App\Models\JobApplication::whereHas('job', function($query){
+        //     $query->where('company_id',129);
+        // })->where('status','!=','PENDING')->count();
+
+        // dump( $applications );
+
+        
 
     });
     

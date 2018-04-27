@@ -22,8 +22,8 @@
                         <a class="dropdown-toggle" href="#" data-toggle="dropdown">Candidates &nbsp; <i class="fa fa-caret-down no-margin"></i></a>
                         <ul class="dropdown-menu">
                             <li class="{{ Request::is('cv/talent-pool') ? 'active' : '' }}"><a href="{{ url('cv/talent-pool') }}">Talent Pool</a></li>
-                            <li class="{{ Request::is('talentSource') ? 'active' : '' }}">
-                                <a class="" href="{{ url('talentSource') }}">Talent Sourcing</a>
+                            <li class="{{ Request::is('talent-source') ? 'active' : '' }}">
+                                <a class="" href="{{ route('talent-source') }}">Talent Sourcing</a>
                             </li>
                             <!-- <li class="{{ Request::is('cv/purchased') ? 'active' : '' }}"><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li> -->
                             <!-- <li class="{{ Request::is('cv/saved') ? 'active' : '' }}"><a href="{{ url('cv/saved') }}">Saved Cvs</a></li> -->

@@ -64,13 +64,13 @@ class CvSalesController extends Controller
             $additional = "";
 
             if( @$request->age ){
-                $date = Carbon::now();
+
                 //2015-09-16T00:00:00Z
                 // $start_dob = str_replace('+', '', $date->subYears( @$request->age[0] )->toIso8601String() ). "Z" ; 
                 // $end_dob = str_replace('+', '', $date->subYears( @$request->age[1] )->toIso8601String() ). "Z";  
                 
-                $start_dob = explode(' ', $date->subYears( @$request->age[0] ) )[0] .'T23:59:59Z'; 
-                $end_dob = explode(' ', $date->subYears( @$request->age[1] ) )[0] .'T00:00:00Z';
+                $start_dob = explode(' ', Carbon::now()->subYears( @$request->age[0] ) )[0] .'T23:59:59Z'; 
+                $end_dob = explode(' ', Carbon::now()->subYears( @$request->age[1] ) )[0] .'T00:00:00Z';
 
                 $solr_age = [ $start_dob, $end_dob ];
 
@@ -514,10 +514,10 @@ class CvSalesController extends Controller
 
         
         if( @$request->age ){
-            $date = Carbon::now();
+
             //2015-09-16T00:00:00Z
-            $start_dob = explode(' ', $date->subYears( @$request->age[0] ) )[0] .'T23:59:59Z'; 
-            $end_dob = explode(' ', $date->subYears( @$request->age[1] ) )[0] .'T00:00:00Z';
+            $start_dob = explode(' ', Carbon::now()->subYears( @$request->age[0] ) )[0] .'T23:59:59Z'; 
+            $end_dob = explode(' ', Carbon::now()->subYears( @$request->age[1] ) )[0] .'T00:00:00Z';
 
             $solr_age = [ $start_dob, $end_dob ];
             // dd($request->age, $start_dob, $end_dob);

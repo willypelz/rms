@@ -35,7 +35,7 @@
             </div>
         </div>
     </div> -->
-    
+	<div>
 	@foreach( $jobs as $job )
 		@if( strtotime($job['expiry_date']) <= strtotime( date('m/d/Y h:i:s a', time()) ) )
 
@@ -90,6 +90,8 @@
 		    </div>
 		@endif
 	@endforeach 
+
+	</div>
 
 <!-- </iframe> -->
 

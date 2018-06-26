@@ -1,21 +1,96 @@
-<!-- <script src="{{ asset('js/embed.js') }}"></script> -->
+<script src="{{ asset('js/embed.js') }}"></script> -->
 
 
 <!-- <iframe id="sh-joblist-widget" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" data-widget-id="600720083413962752" title="Twitter Timeline"> -->
-	<ul style="list-style-type: none;">
+	<!-- <div class="bg-light border rounded mb-3">
+        <div class="card-body py-2 pr-2">
+            <div class="d-flex small text-secondary align-items-center justify-content-between">
+                <div class="text-uppercase lsp-3">
+                    Showing 10 Jobs · 1 of 2 pages
+                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination m-0 justify-content-end">
+                        <li class="page-item">
+                            <a class="page-link" href="#">
+                                «
+                            </a>
+                        </li>
+                        <li class="page-item active">
+                            <a class="page-link" href="#">
+                                1
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">
+                                2
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">
+                                »
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div> -->
+    
 	@foreach( $jobs as $job )
 		@if( strtotime($job['expiry_date']) <= strtotime( date('m/d/Y h:i:s a', time()) ) )
 
 		@else
-			<li> 
-				<big><a target="_blank" href="{{ url($company->slug.'/job/'.$job['id'].'/'.str_slug($job['title'])) }}"><b>{{ ucwords( $job['title'] ) }}</b></a></big> <br/>
-				<small class="text-muted"><i class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }} &nbsp;
-	                                    <i class="glyphicon glyphicon-calendar"></i> Date Created : {{ date('D. j M, Y', strtotime($job['created_at'])) }}</small><br/>
-	            <a target="_blank" href="{{ url($company->slug.'/job/'.$job['id'].'/'.str_slug($job['title'])) }}">View Job</a> <br/><br/><br/>
-			</li>
+
+			<div class="card job-card mb-3">
+		        <div class="card-body">
+		            <div class="job-card-heading d-flex">
+		                <div>
+		                    <a class="job-title font-weight-bold text-dark h5" href="{{ url($company->slug.'/job/'.$job['id'].'/'.str_slug($job['title'])) }}">
+		                        {{ ucwords( $job['title'] ) }}
+		                    </a>
+		                </div>
+		                <div>
+		                </div>
+		            </div>
+		            <hr>
+		                <div class="job-card-excerpt">
+		                    <!-- <p>
+		                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae assumenda temporibus doloremque quas eos reprehenderit accusamus ex quo quibusdam ullam officia fuga mollitia molestiae nisi, corporis rerum sequi, illum eaque.
+		                    </p> -->
+		                </div>
+		                <div class="job-card-meta pt-2">
+		                    <div class="card border-0 bg-light">
+		                        <div class="card-body p-2">
+		                            <div class="d-flex small align-items-center text-secondary">
+		                                <div class="d-flex">
+		                                    <div class="mr-4">
+		                                        <i class="fas fa-calendar mr-2">
+		                                        </i>
+		                                        Posted: {{ date('D. j M, Y', strtotime($job['created_at'])) }}
+		                                    </div>
+		                                    <div>
+		                                        <i class="fas fa-map-marker mr-2">
+		                                        </i>
+		                                        {{ $job['location'] }}
+		                                    </div>
+		                                </div>
+		                                <div class="ml-auto">
+		                                    <a class="btn btn-sm btn-primary" href="{{ url($company->slug.'/job/'.$job['id'].'/'.str_slug($job['title'])) }}">
+		                                        View Details
+		                                        <i class="fas fa-chevron-right ml-2">
+		                                        </i>
+		                                    </a>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </hr>
+		        </div>
+		    </div>
 		@endif
 	@endforeach 
-	</ul>
+
 <!-- </iframe> -->
 
 <!-- <script type="text/javascript">
@@ -30,4 +105,4 @@
 
 </script> -->
 
-<!-- $('iframe')[0].contentDocument.write("<h1>Injected from parent frame</h1>") -->
+<!-- $('iframe')[0].contentDocument.write("<h1>Injected from parent frame</h1>")

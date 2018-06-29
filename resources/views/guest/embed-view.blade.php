@@ -1,4 +1,4 @@
-<script src="{{ asset('js/embed.js') }}"></script> -->
+<script src="{{ asset('js/embed.js') }}"></script>
 
 
 <!-- <iframe id="sh-joblist-widget" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" data-widget-id="600720083413962752" title="Twitter Timeline"> -->
@@ -45,7 +45,7 @@
 		        <div class="card-body">
 		            <div class="job-card-heading d-flex">
 		                <div>
-		                    <a class="job-title font-weight-bold text-dark h5" href="{{ url($company->slug.'/job/'.$job['id'].'/'.str_slug($job['title'])) }}">
+		                    <a class="job-title font-weight-bold text-dark h5" href="{{ url($company->slug.'/job/'.$job['id'].'/'.str_slug($job['title'])) }}" target="_blank">
 		                        {{ ucwords( $job['title'] ) }}
 		                    </a>
 		                </div>
@@ -75,7 +75,7 @@
 		                                    </div>
 		                                </div>
 		                                <div class="ml-auto">
-		                                    <a class="btn btn-sm btn-primary" href="{{ url($company->slug.'/job/'.$job['id'].'/'.str_slug($job['title'])) }}">
+		                                    <a class="btn btn-sm btn-primary" href="{{ url($company->slug.'/job/'.$job['id'].'/'.str_slug($job['title'])) }}"  target="_blank">
 		                                        View Details
 		                                        <i class="fas fa-chevron-right ml-2">
 		                                        </i>

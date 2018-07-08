@@ -28,6 +28,6 @@ class User extends Authenticatable
 
     public function companies()
     {
-        return $this->belongsToMany('App\Models\Company', 'company_users');
+        return $this->belongsToMany('App\Models\Company', 'company_users')->withPivot('role');
     }
 }

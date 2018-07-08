@@ -173,7 +173,7 @@ class JobsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            echo 'Issue dey';
+            echo 'Some fields are missing';
         }
         else
         {   
@@ -182,9 +182,10 @@ class JobsController extends Controller
             $data = [
                     'name' => $request->name,
                     'email' => $request->email,
-                    'job_id' => $request->job_id,
+                    'job_id' => ( $request->access == "company" ) ? null : $request->job_id,
 
                 ];
+
 
             if( JobTeamInvite::where('job_id',$data['job_id'])->where('email',$data['email'])->count() )
             {
@@ -287,8 +288,19 @@ class JobsController extends Controller
                 {
                     $is_new_user = false;
                 }
-                // $company->users()->attach($user->id);
-                $company->users()->sync([$user->id], false);
+
+                if( is_null ( $job_team_invite->job_id ) )
+                {
+                    $role = 1;
+                }
+                else
+                {
+                    $role = 0;
+                    $job->users()->sync([$user->id], false);
+                }
+
+                $company->users()->sync([$user->id => ['role' => $role] ], false);
+                
 
                 $job_team_invite->is_accepted = true;
                 $job_team_invite->save();
@@ -734,17 +746,31 @@ class JobsController extends Controller
     
     public function JobList(Request $request){
 
-        $user = Auth::user();
-        $user = User::with('companies.jobs')->where('id', $user->id)->first();
-        $jobs = get_current_company()->jobs()->orderBy('created_at','desc');
+        $user = User::with('companies.jobs')->where('id', Auth::user()->id)->first();
+        $company = get_current_company();
+        $jobs = $company->jobs()->orderBy('created_at','desc');
+
+
+
+        $job_access = Job::where('company_id',$company->id)->whereHas('users',function($q) use($user){
+            $q->where('user_id',$user->id);
+        })->get()->pluck('id')->toArray();
+
+        $company_role = $company->users()->wherePivot('user_id', $user->id )->first()->pivot->role;
 
         if( isset($request->q) )
         {
             $jobs = $jobs->where('title','LIKE','%'. $request->q .'%');
         }
 
+        if(!$company_role)
+        {
+            $jobs = $jobs->whereIn('id',$job_access);
+        }
+
+
         $jobs = $jobs->get();
-        $company = get_current_company();
+
         
         $active = 0;
         $suspended = 0;
@@ -848,6 +874,7 @@ class JobsController extends Controller
         $active_tab = 'team';
 
         $result = Solr::get_applicants($this->search_params, $id,''); 
+
       
         $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
         // return view('emails.e-exculsively-invited');

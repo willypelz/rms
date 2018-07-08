@@ -341,10 +341,25 @@ use App\Models\Job;
 
 	function check_if_job_owner($job_id)
 	{
-		if ( !in_array($job_id, Job::getMyJobIds()) )
-		{
-			abort(404);
-		}
+		$user =  Auth::user();
+		$job_access = Job::where('id',$job_id)->whereHas('users',function($q) use($user){
+            $q->where('user_id',$user->id);
+        })->get()->pluck('id')->toArray();
+
+        $company_role = get_current_company()->users()->wherePivot('user_id', $user->id )->first()->pivot->role;
+
+
+
+        if(!$company_role)
+        {
+
+            if ( !in_array($job_id, $job_access) )
+			{
+				abort(404);
+			}
+        }
+
+		
 	}
 
 	function get_current_company()

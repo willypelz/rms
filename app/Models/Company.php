@@ -29,7 +29,7 @@ class Company extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\User', 'company_users');
+        return $this->belongsToMany('App\User', 'company_users')->withPivot('role');
     }
 
 }

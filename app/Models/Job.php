@@ -61,4 +61,9 @@ class Job extends Model
         return Job::whereIn('company_id', Auth::user()->companies->pluck('id') )->where('status','!=','DELETED')->get()->toArray();
     }
 
+    public function users()
+    {
+        return $this->belongsToMany('App\User', 'job_users')->withPivot('role');
+    }
+
 }

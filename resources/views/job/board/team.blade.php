@@ -34,7 +34,7 @@
                                           <p>{{ $user->email }}</p>
                                       </div>
 
-                                      @if( $user->id != Auth::user()->id && $owner->id == $user->id )
+                                      @if( Auth::user()->id == $owner->id &&  $user->id != Auth::user()->id )
                                       <div class="col-xs-4 small"><br>
                                           <a class="text-muted" id="removeTeamMember" style="cursor:pointer;" data-id="{{ $user->id }}" data-comp="{{ get_current_company()->id }}"><i class="fa fa-close"></i> Remove</a></span>
                                       </div>
@@ -90,7 +90,7 @@
                                    <div class="form-group">
                                        <label for="">Name: </label>
                                        <input type="text" id="name" name="name" value="" class="form-control" required>
-                                       <small><em>The name of the team member</em></small>
+                                       <small><em>The name of the team member</em></small><br><br>
 
                                        <input type="hidden" name="email_from" value="{{ get_current_company()->email }}" class="form-control">
                                        <input type="hidden" name="job_id" value="{{ $job->id }}" class="form-control">
@@ -98,7 +98,16 @@
                                        <label for="">Email: </label>
                                        
                                        <input type="text" name="email" id="email_to" placeholder="email addresses here" class="form-control" required>
-                                       <small><em>The email address of the team member</em></small>
+                                       <small><em>The email address of the team member</em></small><br><br>
+
+
+                                       <label for="">Access: </label>
+                                       
+                                       <select name="access" id="access" class="form-control" required>
+                                         <option value="job">"{{ $job->title }}" only</option>
+                                         <option value="company">All Jobs</option>
+                                       </select>
+
                                    </div>
 
                                    <label for="editor1">Invite Mail</label>

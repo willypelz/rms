@@ -119,7 +119,8 @@
                        
 
             </div>
-
+            
+            @if( isset($posts) )
             <div class="row">
                 <div class="separator separator-small"><br></div>
 
@@ -129,29 +130,35 @@
                             <span class="text-brandon text-uppercase"> Discovery for Employers:</span> 4 new updates
                         </h6><br>
                     <div id="owl-posts">
-                      @if( count( @$posts ) > 0 )
-                        @foreach($posts as $post)
-                        <div class="owl-item col-sm-3">
-                            <div class="panel-body text-left">
-                              <p class="post-img">
-                                <a href="{{ 'https://insidify.com/discovery/'.$post->slug }}" target="_blank" >
-                                  <img src="https://files.insidify.com/{{ $post->picture }}" class="img-responsive" width="100%">
-                                </a>
-                              </p>
-                              <h4 class="post-title"><a href="{{ 'https://insidify.com/discovery/'.$post->slug }}" target="_blank">
-                                {{ $post->title }}</a></h4>
-                              <p class="hidden">{{ $post->summary }}
-                              </p>
-                              <!-- <p>
-                                  <a href="{{ 'https://insidify.com/discovery/'.$post->slug }}" target="_blank" class="btn btn-line">Read</a>
-                              </p> -->
-                            </div>
-                        </div>
-                        @endforeach
-                      @endif
+                      
+                        @if( count( @$posts ) > 0 )
+                          @foreach($posts as $post)
+                          <div class="owl-item col-sm-3">
+                              <div class="panel-body text-left">
+                                <p class="post-img">
+                                  <a href="{{ 'https://insidify.com/discovery/'.$post->slug }}" target="_blank" >
+                                    <img src="https://files.insidify.com/{{ $post->picture }}" class="img-responsive" width="100%">
+                                  </a>
+                                </p>
+                                <h4 class="post-title"><a href="{{ 'https://insidify.com/discovery/'.$post->slug }}" target="_blank">
+                                  {{ $post->title }}</a></h4>
+                                <p class="hidden">{{ $post->summary }}
+                                </p>
+                                <!-- <p>
+                                    <a href="{{ 'https://insidify.com/discovery/'.$post->slug }}" target="_blank" class="btn btn-line">Read</a>
+                                </p> -->
+                              </div>
+                          </div>
+                          @endforeach
+                        @endif
+                      
                     </div>
                 </div>
             </div>
+
+            @endif
+
+
 
         </div>
     </section>

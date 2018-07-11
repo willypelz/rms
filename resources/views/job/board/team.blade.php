@@ -36,7 +36,7 @@
 
                                       @if( Auth::user()->id == $owner->id &&  $user->id != Auth::user()->id )
                                       <div class="col-xs-4 small"><br>
-                                          <a class="text-muted" id="removeTeamMember" style="cursor:pointer;" data-id="{{ $user->id }}" data-comp="{{ get_current_company()->id }}"><i class="fa fa-close"></i> Remove</a></span>
+                                          <a class="text-muted" id="removeTeamMember" style="cursor:pointer;" data-id="{{ $user->id }}" data-comp="{{ get_current_company()->id }}" data-job="{{ $job['id'] }}"><i class="fa fa-close"></i> Remove</a></span>
                                       </div>
                                       @endif
                                       <div class="clearfix"></div>
@@ -167,9 +167,10 @@ You would be required to collaborate with your team in selecting the candidate(s
         $('body #removeTeamMember').on('click', function(){
             $comp = $(this).data('comp');
             $id = $(this).data('id');
+            $job = $(this).data('job');
             $(this).closest('.list-group-item').remove();
 
-            $.post("{{ route('remove-job-team-member') }}",{ ref: $id, comp: $comp }, function(response){
+            $.post("{{ route('remove-job-team-member') }}",{ ref: $id, comp: $comp, job: $job }, function(response){
 
             });
         });

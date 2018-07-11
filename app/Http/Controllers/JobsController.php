@@ -81,6 +81,8 @@ class JobsController extends Controller
             ];
 
         $this->mailer = $mailer;
+
+
     }
 
     /**
@@ -225,7 +227,11 @@ class JobsController extends Controller
     public function removeJobTeamMember( Request $request )
     {
         $company = Company::find( $request->comp );
-        $company->users()->detach($request->ref);
+        $job = Job::find( $request->job );
+
+        $company->users()->sync([$request->ref => ['role' => 0] ], false);
+
+        $job->users()->detach($request->ref);
         
     }
 

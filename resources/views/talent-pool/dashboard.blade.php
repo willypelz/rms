@@ -99,14 +99,14 @@
                         <table class="table table-bordered"> 
                         <tbody> 
                         <tr> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">{{ $jobs_count }}</a></h1><small class="text-muted">Jobs</small></td> 
-                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ url('cv/talent-pool') }}">{{ $talent_pool_count }}</a></h1><small class="text-muted">Talent pool</small></td> 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ route('job-list') }}">{{ $jobs_count }}</a></h1><small class="text-muted">Jobs</small></td> <!-- 
+                            <td class="text-center"><h1 class="no-margin text-bold"><a href="{{ url('cv/talent-pool') }}">{{ $talent_pool_count }}</a></h1><small class="text-muted">Talent pool</small></td>  -->
                         </tr> 
-                        <tr> 
+                        <!-- <tr> 
                             <td class="text-center"><h1 class="no-margin text-bold"><a href="#">{{ $saved_cvs_count }}</a></h1><small class="text-muted">Purchased Cvs</small></td> 
 
                             <td class="text-center"><h1 class="no-margin text-bold"><a href="#">{{ $purchased_cvs_count }}</a></h1><small class="text-muted">Saved Cvs</small></td> 
-                        </tr
+                        </tr> -->
                         </tbody> </table>
 
                         <!-- <p class="small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe ex voluptatem dicta, minima iste magni, eligendi deserunt repellat nesciunt repellendus dolores illo possimus voluptas sit ratione harum libero odio perferendis.</p> -->

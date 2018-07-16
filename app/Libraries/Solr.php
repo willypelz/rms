@@ -7,7 +7,7 @@ use App\Models\Job;
 
 class Solr {
 
-	static $host = "http://172.104.132.164:8983/solr/resumes/select?";
+	static $host = "http://34.240.11.68:8983/solr/resumes/select?";
 
 	static $default_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'last_modified+desc', 'grouped'=>FALSE ];
 	

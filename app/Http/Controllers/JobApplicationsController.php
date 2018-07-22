@@ -757,9 +757,10 @@ class JobApplicationsController extends Controller
         $path = public_path('uploads/tmp/');
 
         $pdf = App::make('snappy.pdf.wrapper');
-        @$pdf->loadHTML(  view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','interview_notes'))->render() );
-        @$pdf->setTemporaryFolder( $path ); 
-        @$pdf->save( $path . $appl->cv->first_name.' '.$appl->cv->last_name. ' dossier.pdf');
+        $pdf->loadHTML(  view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','interview_notes'))->render() );
+        $pdf->setTemporaryFolder( $path ); 
+        $pdf->save( $path . $appl->cv->first_name.' '.$appl->cv->last_name. ' dossier.pdf');
+        sleep(10000);
                 
         
         $filename = $appl->cv->first_name.' '.$appl->cv->last_name.".zip";

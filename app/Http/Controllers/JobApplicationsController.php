@@ -133,30 +133,30 @@ class JobApplicationsController extends Controller
 
     public function Profile($appl_id){
 
-    	$appl = JobApplication::with('job', 'cv')->find($appl_id);
+        $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
         check_if_job_owner( $appl->job->id );
 
-    	$nav_type = 'profile';
+        $nav_type = 'profile';
 
-    	// dd($appl->toArray());
+        // dd($appl->toArray());
 
-    	return view('applicant.profile', compact('appl', 'nav_type'));
+        return view('applicant.profile', compact('appl', 'nav_type'));
 
     }
 
 
     public function Messages($appl_id){
 
-    	$appl = JobApplication::with('job', 'cv')->find($appl_id);
+        $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
         check_if_job_owner( $appl->job->id );
 
-    	$nav_type = 'messages';
+        $nav_type = 'messages';
 
-    	// dd($appl->toArray());
+        // dd($appl->toArray());
 
-    	return view('applicant.messages', compact('appl', 'nav_type'));
+        return view('applicant.messages', compact('appl', 'nav_type'));
 
     }
 
@@ -793,17 +793,22 @@ class JobApplicationsController extends Controller
         $test_local_file = $path.$appl->cv->first_name.' '.$appl->cv->last_name. ' tests.pdf';
         // Response::download($test_path, $appl->cv->first_name.' '.$appl->cv->last_name. ' tests.pdf');
 
-        @copy($test_path,  $test_local_file);
 
+        if( @copy($test_path,  $test_local_file) ){
+            //if test exists
+            if( $test_local_file )
+            {
+                $files_to_archive[] = $test_local_file;             
+            }
 
-        $files_to_archive[] = $test_local_file;
+        }
         $timestamp = " ".time()." ";
         
         $zipper = new \Chumper\Zipper\Zipper;
         @$zipper->make( $path.$timestamp.$filename )->add( $files_to_archive )->close();
 
 
-        File::delete( $files_to_archive );
+//         File::delete( $files_to_archive );
 
         return Response::download($path.$timestamp.$filename, $filename, ['Content-Type' => 'application/octet-stream']);
         

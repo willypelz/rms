@@ -55,6 +55,7 @@
                             </div>
                             <br><br>
                                 
+                                <label class="pull-left">Select Job</label>
                                 <select class="form-control job-opt " name="job">
                                     <option value="">Select Job</option>
 
@@ -62,6 +63,7 @@
                                         <option value="{{ $myJob['id'] }}" @if( @$job->id == $myJob['id'] ) selected="selected" @endif>{{ $myJob['title'] }}</option>
                                     @endforeach
                                 </select>
+
 
                                 <select class="form-control hidden folder-opt-select" name="folder">
                                     <option value="0">Select Folder</option>
@@ -108,7 +110,45 @@
                                 
                             </div>
                             
-                            <div id="inputer-opt" class="">
+                            <div id="inputer-opt" class="well">
+
+                                <ul class="nav nav-tabs">
+                                  <li class="active"><a data-toggle="tab" href="#single">Single Upload</a></li>
+                                  <li><a data-toggle="tab" href="#bulk">Bulk Upload</a></li>
+                                </ul>
+
+                                <div class="tab-content">
+                                  <div id="single" class="tab-pane fade in active">
+                                    <p class="alert alert-warning">
+                                        Allowed extensions are .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt
+                                    </p>
+
+                                    <div class="form-group">
+                                        <label for="cv-name" class="pull-left">Name</label>
+                                        <input type="text" name="cv-name" id=cv-name"" class="form-control" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="cv-name" class="pull-left">Email</label>
+                                        <input type="email" name="cv-email" id=cv-email"" class="form-control" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="cv-name" class="pull-left">Phone</label>
+                                        <input type="text" name="cv-phone" id=cv-phone"" class="form-control" />
+                                    </div>
+
+                                  </div>
+                                  <div id="bulk" class="tab-pane fade">
+                                    <p class="">
+                                        Please name each file in the archive the candidate's name
+                                    </p>
+                                    <p class="alert alert-warning">
+                                        Allowed extensions are .zip
+                                    </p>
+
+                                  </div>
+                                </div><br>
 
                                 <div class="form-group fileinput fileinput-new input-group" data-provides="fileinput">
                                   <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
@@ -119,7 +159,6 @@
                                   <a href="#" class="input-group-addon  fileinput-exists btn btn-danger" style="    background-color: #d9534f; color:white;" data-dismiss="fileinput">Remove</a>
                                   
                                 </div><br>
-                                <small style="margin-top: -20px;display: block;">*Allowed extensions are .zip, .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt</small><br>
 
                                 <button type="submit" class="btn btn-success text-capitalize">
                                         <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Import file</span>

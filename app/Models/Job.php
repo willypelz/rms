@@ -58,7 +58,7 @@ class Job extends Model
 
     public static function getMyJobs()
     {
-        return Job::whereIn('company_id', Auth::user()->companies->pluck('id') )->where('status','!=','DELETED')->get()->toArray();
+        return Job::where('company_id',@get_current_company()->id)->where('status','!=','DELETED')->get()->toArray();
     }
 
     public function users()

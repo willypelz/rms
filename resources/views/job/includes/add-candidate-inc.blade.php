@@ -161,6 +161,10 @@
                                         {{ Form::select('highest_qualification', $qualifications, 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
                                     </div>
 
+                                    <div class="form-group col-xs-6">
+                                        <label for="graduation_grade" class="pull-left">Graduation Grade</label>
+                                        {{ Form::select('graduation_grade', $grades, 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
+                                    </div>
 
                                     <div class="form-group col-xs-6">
                                         <label for="years_of_experience" class="pull-left">Years of experience</label>

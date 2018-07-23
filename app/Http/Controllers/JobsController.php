@@ -633,8 +633,9 @@ class JobsController extends Controller
 
         $states = $this->states;
         $qualifications = $this->qualifications;
+        $grades = grades();
 
-        return view ('job.add-candidates', compact('jobid', 'job', 'myJobs', 'myFolders','states','qualifications'));
+        return view ('job.add-candidates', compact('jobid', 'job', 'myJobs', 'myFolders','states','qualifications','grades'));
     }
 
      public function UploadCVfile( Request $request ){
@@ -670,12 +671,14 @@ class JobsController extends Controller
                 $validation_fields['cv_email'] = 'required';
                 $validation_fields['cv_phone'] = 'required';
                 $validation_fields['gender'] = 'required';
-                $validation_fields['state'] = 'required';
+                $validation_fields['location'] = 'required';
                 $validation_fields['highest_qualification'] = 'required';
                 $validation_fields['years_of_experience'] = 'required';
                 $validation_fields['last_company_worked'] = 'required';
                 $validation_fields['last_position'] = 'required';
                 $validation_fields['willing_to_relocate'] = 'required';
+                $validation_fields['graduation_grade'] = 'required';
+                
 
 
                 $validation_fields_copy['cv_first_name.required'] = 'Firstname is required';
@@ -801,12 +804,13 @@ class JobsController extends Controller
                          'email' => $request->cv_email, 
                          'phone' => $request->cv_phone, 
                          'gender' => $request->gender,
-                         'location' => $request->location,
+                         'state' => $request->location,
                          'highest_qualification' => $request->highest_qualification,
                          'years_of_experience' => $request->years_of_experience,
                          'last_company_worked' => $request->last_company_worked,
                          'last_position' => $request->last_position,
                          'willing_to_relocate' => $request->willing_to_relocate,
+                         'graduation_grade' => $request->graduation_grade,
                          'cv_file' => $cv , 
                          'cv_source' => $cv_source 
                      ]);

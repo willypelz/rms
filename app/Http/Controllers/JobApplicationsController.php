@@ -305,6 +305,7 @@ class JobApplicationsController extends Controller
 
         $states = $this->states; 
         $qualifications = $this->qualifications;
+        $grades = grades();
 
         if($request->ajax())
         {
@@ -319,7 +320,7 @@ class JobApplicationsController extends Controller
             $video_application_score = [ env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END') ];
             $test_score =[40,160];
             
-            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','test_score','showing','myJobs','myFolders', 'application_statuses', 'job', 'video_application_score','request','states','qualifications'));
+            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','test_score','showing','myJobs','myFolders', 'application_statuses', 'job', 'video_application_score','request','states','qualifications','grades'));
         }
 
         

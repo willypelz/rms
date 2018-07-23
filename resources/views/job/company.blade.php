@@ -50,6 +50,7 @@
 
                                         clipboard.on('success', function(e) {
                                             $.growl.notice({ message: "Embed copied to clipboard" });
+                                            alert("Embed copied to clipboard");
                                         });
                                     </script>
                                     

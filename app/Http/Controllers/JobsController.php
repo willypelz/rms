@@ -623,12 +623,14 @@ class JobsController extends Controller
             {
                 $validation_fields['cv_first_name'] = 'required';
                 $validation_fields['cv_last_name'] = 'required';
-                $validation_fields['email'] = 'required';
-                $validation_fields['phone'] = 'required';
+                $validation_fields['cv_email'] = 'required';
+                $validation_fields['cv_phone'] = 'required';
 
 
                 $validation_fields_copy['cv_first_name.required'] = 'Firstname is required';
                 $validation_fields_copy['cv_last_name.required'] = 'Lastname is required';
+                $validation_fields_copy['cv_email.required'] = 'Email is required';
+                $validation_fields_copy['cv_phone.required'] = 'Phone number is required';
             }
 
             $validator = Validator::make($request->all(), $validation_fields,$validation_fields_copy);

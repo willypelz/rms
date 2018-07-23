@@ -32,26 +32,30 @@
                                         <li>
                                             <strong>&nbsp;{{ count(@$company->jobs) }}</strong>&nbsp; Job Opening(s)</li>
                                     </ul>
+
+                                    @if( Auth::check() )
                             
-                                    <button class="btn btn-success pull-right" id="get-embed" data-clipboard-text="{{ $embed }}">
-                                        <small class="">
-                                            <span class="glyphicon glyphicons-embed-close"></span>
-                                            &nbsp; < /> &nbsp; Get Embed
-                                        </small>
-                                    </button>
+                                        <button class="btn btn-success pull-right" id="get-embed" data-clipboard-text="{{ $embed }}">
+                                            <small class="">
+                                                <span class="glyphicon glyphicons-embed-close"></span>
+                                                &nbsp; < /> &nbsp; Get Embed
+                                            </small>
+                                        </button>
 
 
-                                    <div class="clearfix"></div>
-                                    <script src="{{ asset('js/jquery.growl.js') }}"></script>
-                                    <link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.growl.css') }}" />
+                                        <div class="clearfix"></div>
+                                        <script src="{{ asset('js/jquery.growl.js') }}"></script>
+                                        <link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.growl.css') }}" />
 
-                                    <script type="text/javascript">
-                                        var clipboard = new ClipboardJS('#get-embed');
+                                        <script type="text/javascript">
+                                            var clipboard = new ClipboardJS('#get-embed');
 
-                                        clipboard.on('success', function(e) {
-                                            $.growl.notice({ message: "Embed copied to clipboard" });
-                                        });
-                                    </script>
+                                            clipboard.on('success', function(e) {
+                                                $.growl.notice({ message: "Embed copied to clipboard" });
+                                            });
+                                        </script>
+
+                                    @endif
                                     
                                 </div>
                                 <div class="clearfix"></div>

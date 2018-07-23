@@ -163,7 +163,7 @@
 
 
                                     <div class="form-group col-xs-6">
-                                        <label for="years_of_experience" class="pull-left">Highest Qualification</label>
+                                        <label for="years_of_experience" class="pull-left">Years of experience</label>
                                         <select name="years_of_experience" class="form-control">
                                             @for($i = 1; $i <= 50; $i++)
                                                 <option value="{{ $i }}">{{ $i }}</option>

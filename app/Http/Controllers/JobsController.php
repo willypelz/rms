@@ -1655,7 +1655,10 @@ class JobsController extends Controller
             $company->logo = asset('img/company.png');
         }
 
-        return view('job.company', compact('company'));
+        $embed = "<div id='SH_Embed'></div><script src='http://seamlesshiring.com/js/embed.js'></script><script type='text/javascript'>document.getElementById('SH_Embed').innerHTML = SH_Embed.pull({key : '".Crypt::encrypt(Auth::user()->id."~&".Auth::user()->email."~&".Auth::user()->created_at."~&".$company->id)."'});</script>";
+
+
+        return view('job.company', compact('company','embed'));
 
     }
 
@@ -2141,5 +2144,7 @@ class JobsController extends Controller
         }      
         return view('guest.embed-view', compact('jobs','user','company'));
     }
+
+
 
 }

@@ -8,7 +8,7 @@
 
 @section('content')
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
 
 
     <section class="no-pad">
@@ -33,12 +33,26 @@
                                             <strong>&nbsp;{{ count(@$company->jobs) }}</strong>&nbsp; Job Opening(s)</li>
                                     </ul>
                             
-                                    <!-- <div class="badge badge-job badge-job-active">
+                                    <button class="btn btn-success pull-right" id="get-embed" data-clipboard-text="{{ $embed }}">
                                         <small class="">
-                                            <span class="glyphicon glyphicon-ok"></span>
-                                            &nbsp; Job is active
+                                            <span class="glyphicon glyphicons-embed-close"></span>
+                                            &nbsp; < /> &nbsp; Get Embed
                                         </small>
-                                    </div> -->
+                                    </button>
+
+
+                                    <div class="clearfix"></div>
+                                    <script src="{{ asset('js/jquery-1.11.1.min.js') }}"></script>
+                                    <link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.growl.css') }}" />
+
+                                    <script type="text/javascript">
+                                        var clipboard = new ClipboardJS('#get-embed');
+
+                                        clipboard.on('success', function(e) {
+                                            $.growl.notice({ message: "Embed copied to clipboard" });
+                                        });
+                                    </script>
+                                    
                                 </div>
                                 <div class="clearfix"></div>
                                 

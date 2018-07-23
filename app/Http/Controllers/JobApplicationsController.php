@@ -1307,7 +1307,55 @@ class JobApplicationsController extends Controller
             // var_dump( $data );
             $data['interview_date'] = Carbon::now();
             InterviewNotes::create($data);
+    }
 
+    public function viewInterviewNoteOptions( Request $request )
+    {
+
+        $interview_note_options = InterviewNoteOptions::where('company_id',get_current_company()->id )->get();
+        return view('job.interview-note-options', compact('interview_note_options'));
+    }
+
+    public function editInterviewNoteOptions( Request $request )
+    {
+        
+
+        if($request->isMethod('post')){
+            InterviewNoteOptions::where('id',$request->id)->where('company_id',get_current_company()->id )->update([
+                'name' => $request->name,
+                'description' => $request->description,
+                'type' => $request->type,
+                'weight' => $request->weight,
+            ]);
+
+            \Session::flash('status', 'Updated Successfully');
+        }
+
+        $interview_note_option = InterviewNoteOptions::where('id',$request->id)->where('company_id',get_current_company()->id )->first();
+
+        return view('job.interview-note-option-edit', compact('interview_note_option'));
+    }
+
+
+    public function createInterviewNoteOptions( Request $request )
+    {
+        // $interview_note_options = InterviewNoteOptions::where('company_id',get_current_company()->id )->get();
+        
+
+        if($request->isMethod('post')){
+            InterviewNoteOptions::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'type' => $request->type,
+                'weight' => $request->weight,
+                'company_id' => get_current_company()->id
+            ]);
+
+            \Session::flash('status', 'Create Successfully');
+        }
+
+        
+        return view('job.interview-note-option-create', compact('interview_note_option'));
     }
     
     
@@ -1323,6 +1371,7 @@ class JobApplicationsController extends Controller
     
     public function getApplicantBadge($cv)
     {
+
         return view('modals.applicant_badge',compact('cv'))->render();
         
     }

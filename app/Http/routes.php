@@ -524,6 +524,13 @@ Route::group(['middleware' => 'web'], function () {
     
     Route::get('modal/interview-notes', [ 'as' => 'modal-interview-notes', 'uses' => 'JobApplicationsController@takeInterviewNote' ]);
 
+    Route::get('settings/interview-notes/options', [ 'as' => 'interview-note-options', 'uses' => 'JobApplicationsController@viewInterviewNoteOptions' ]);
+
+    Route::match(['get','post'],'settings/interview-notes/options/edit/{id}', [ 'as' => 'interview-note-option-edit', 'uses' => 'JobApplicationsController@editInterviewNoteOptions' ]);
+
+    Route::match(['get','post'],'settings/interview-notes/options/create', [ 'as' => 'interview-note-option-create', 'uses' => 'JobApplicationsController@createInterviewNoteOptions' ]);
+
+    
     
 
     Route::get('modal/background-check', [ 'as' => 'modal-background-check', 'uses' => 'JobApplicationsController@modalBackgroundCheck' ]);

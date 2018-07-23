@@ -45,6 +45,46 @@ class JobsController extends Controller
     private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'application_date+desc', 'grouped'=>FALSE ];
 
     protected $mailer;
+
+    private $states = [
+                'Lagos',
+                'Abia',
+                'Abuja',
+                'Adamawa',
+                'Akwa Ibom',
+                'Anambra',
+                'Bauchi',
+                'Bayelsa',
+                'Benue',
+                'Borno',
+                'Cross river',
+                'Delta',
+                'Edo',
+                'Ebonyi',
+                'Ekiti',
+                'Enugu',
+                'Gombe',
+                'Imo',
+                'Jigawa',
+                'Kaduna',
+                'Kano',
+                'Katsina',
+                'Kebbi',
+                'Kogi',
+                'Kwara',
+                'Niger',
+                'Ogun',
+                'Ondo',
+                'Osun',
+                'Oyo',
+                'Nassarawa',
+                'Plateau',
+                'Rivers',
+                'Sokoto',
+                'Taraba',
+                'Yobe',
+                'Zamfara'
+            ]; 
     /**
      * Create a new controller instance.
      *
@@ -591,8 +631,10 @@ class JobsController extends Controller
             unset($myFolders[$key]);
         }
 
+        $states = $this->states;
+        $qualifications = $this->qualifications;
 
-        return view ('job.add-candidates', compact('jobid', 'job', 'myJobs', 'myFolders'));
+        return view ('job.add-candidates', compact('jobid', 'job', 'myJobs', 'myFolders','states','qualifications'));
     }
 
      public function UploadCVfile( Request $request ){
@@ -610,6 +652,8 @@ class JobsController extends Controller
           "cv-upload-file" => ""
         ]*/
         //'Image' => 
+        //
+        // highest qualification, sex, location, years of experience
             $validation_fields = [
                 'cv-upload-file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt' //application/octet-stream,
             ];
@@ -625,6 +669,13 @@ class JobsController extends Controller
                 $validation_fields['cv_last_name'] = 'required';
                 $validation_fields['cv_email'] = 'required';
                 $validation_fields['cv_phone'] = 'required';
+                $validation_fields['gender'] = 'required';
+                $validation_fields['location'] = 'required';
+                $validation_fields['highest_qualification'] = 'required';
+                $validation_fields['years_of_experience'] = 'required';
+                $validation_fields['last_company_worked'] = 'required';
+                $validation_fields['last_position'] = 'required';
+                $validation_fields['willing_to_relocate'] = 'required';
 
 
                 $validation_fields_copy['cv_first_name.required'] = 'Firstname is required';
@@ -744,7 +795,21 @@ class JobsController extends Controller
 
             switch ( $request->type ) {
                 case 'single':
-                    $last_cv = Cv::insertGetId([ 'first_name' => $request->cv_first_name, 'last_name' => $request->cv_last_name, 'email' => $request->email, 'phone' => $request->phone, 'cv_file' => $cv , 'cv_source' => $cv_source ]);
+                    $last_cv = Cv::insertGetId([
+                         'first_name' => $request->cv_first_name, 
+                         'last_name' => $request->cv_last_name, 
+                         'email' => $request->cv_email, 
+                         'phone' => $request->cv_phone, 
+                         'gender' => $request->gender,
+                         'location' => $request->location,
+                         'highest_qualification' => $request->highest_qualification,
+                         'years_of_experience' => $request->years_of_experience,
+                         'last_company_worked' => $request->last_company_worked,
+                         'last_position' => $request->last_position,
+                         'willing_to_relocate' => $request->willing_to_relocate,
+                         'cv_file' => $cv , 
+                         'cv_source' => $cv_source 
+                     ]);
                     break;
 
                 case 'bulk':
@@ -1402,45 +1467,7 @@ class JobsController extends Controller
         $qualifications = $this->qualifications;
         $grades = grades();
 
-        $states = [
-                'Lagos',
-                'Abia',
-                'Abuja',
-                'Adamawa',
-                'Akwa Ibom',
-                'Anambra',
-                'Bauchi',
-                'Bayelsa',
-                'Benue',
-                'Borno',
-                'Cross river',
-                'Delta',
-                'Edo',
-                'Ebonyi',
-                'Ekiti',
-                'Enugu',
-                'Gombe',
-                'Imo',
-                'Jigawa',
-                'Kaduna',
-                'Kano',
-                'Katsina',
-                'Kebbi',
-                'Kogi',
-                'Kwara',
-                'Niger',
-                'Ogun',
-                'Ondo',
-                'Osun',
-                'Oyo',
-                'Nassarawa',
-                'Plateau',
-                'Rivers',
-                'Sokoto',
-                'Taraba',
-                'Yobe',
-                'Zamfara'
-            ];    
+        $states = $this->states;   
 
         $custom_fields  = (object) $job->form_fields;
 

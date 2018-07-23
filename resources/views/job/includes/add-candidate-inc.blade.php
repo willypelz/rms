@@ -123,27 +123,75 @@
                                         Allowed extensions are .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt
                                     </p>
 
-                                    <div class="form-group">
+                                    <div class="form-group col-xs-6">
                                         <label for="cv-name" class="pull-left">Firstname</label>
                                         <input type="text" name="cv_first_name" id=cv-name"" class="form-control" />
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group col-xs-6">
                                         <label for="cv-name" class="pull-left">Lastname</label>
                                         <input type="text" name="cv_last_name" id=cv-name"" class="form-control" />
                                     </div>
 
                                     
 
-                                    <div class="form-group">
+                                    <div class="form-group col-xs-6">
                                         <label for="cv-name" class="pull-left">Email</label>
                                         <input type="email" name="cv_email" id=cv-email"" class="form-control" />
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group col-xs-6">
                                         <label for="cv-name" class="pull-left">Phone</label>
                                         <input type="text" name="cv_phone" id=cv-phone"" class="form-control" />
                                     </div>
+
+                                    <div class="form-group col-xs-6">
+                                        <label for="gender" class="pull-left">Gender</label>
+                                        {{ Form::select('gender', array('Male' => 'Male', 'Female' => 'Female'), 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
+                                    </div>
+
+
+                                    <div class="form-group col-xs-6">
+                                        <label for="location" class="pull-left">Current Location</label>
+                                        {{ Form::select('location', $states, 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
+                                    </div>
+
+                                    <div class="form-group col-xs-6">
+                                        <label for="highest_qualification" class="pull-left">Highest Qualification</label>
+                                        {{ Form::select('highest_qualification', $qualifications, 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
+                                    </div>
+
+
+                                    <div class="form-group col-xs-6">
+                                        <label for="years_of_experience" class="pull-left">Highest Qualification</label>
+                                        <select name="years_of_experience" class="form-control">
+                                            @for($i = 1; $i <= 50; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-group col-xs-6">
+                                        <label for="last_company_worked" class="pull-left">Last Company Worked</label>
+                                        {{ Form::text('last_company_worked', null, array('class'=>'form-control', 'required' => 'required')) }}
+                                    </div>
+
+
+                                    <div class="form-group col-xs-6">
+                                        <label for="last_position" class="pull-left">Last Position</label>
+                                        {{ Form::text('last_position', null, array('class'=>'form-control', 'required' => 'required')) }}
+                                    </div>
+
+                                    <div class="form-group text-left col-xs-6">
+                                        <label for="willing_to_relocate">Willing to relocate?</label><br/>
+                                        <label>{{ Form::radio('willing_to_relocate', 'yes',  false, ['required']) }} Yes</label>
+                                        <label>{{ Form::radio('willing_to_relocate', 'no',  false, ['required']) }} No </label>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    
+
+                                    
 
                                   </div>
                                   <div id="bulk" class="tab-pane fade">

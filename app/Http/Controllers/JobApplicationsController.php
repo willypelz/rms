@@ -41,6 +41,61 @@ class JobApplicationsController extends Controller
 {
     private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'application_date+desc', 'grouped'=>FALSE ];
 
+    private $states = [
+                'Lagos',
+                'Abia',
+                'Abuja',
+                'Adamawa',
+                'Akwa Ibom',
+                'Anambra',
+                'Bauchi',
+                'Bayelsa',
+                'Benue',
+                'Borno',
+                'Cross river',
+                'Delta',
+                'Edo',
+                'Ebonyi',
+                'Ekiti',
+                'Enugu',
+                'Gombe',
+                'Imo',
+                'Jigawa',
+                'Kaduna',
+                'Kano',
+                'Katsina',
+                'Kebbi',
+                'Kogi',
+                'Kwara',
+                'Niger',
+                'Ogun',
+                'Ondo',
+                'Osun',
+                'Oyo',
+                'Nassarawa',
+                'Plateau',
+                'Rivers',
+                'Sokoto',
+                'Taraba',
+                'Yobe',
+                'Zamfara'
+            ]; 
+    private $qualifications = [
+
+                'MPhil / PhD',
+                'MBA / MSc',
+                'MBBS',
+                'B.Sc',
+                'HND',
+                'OND',
+                'N.C.E',
+                'Diploma',
+                'High School (S.S.C.E)',
+                'Vocational',
+                'Others'
+
+            ];
+
     protected $mailer;
 
     /**
@@ -248,6 +303,9 @@ class JobApplicationsController extends Controller
             unset($myFolders[$key]);
         }
 
+        $states = $this->states; 
+        $qualifications = $this->qualifications;
+
         if($request->ajax())
         {
             $search_results = view('job.board.includes.applicant-results-item', compact('job', 'active_tab', 'status', 'result','jobID','start','myJobs', 'myFolders', 'application_statuses', 'request'))->render();    
@@ -261,7 +319,7 @@ class JobApplicationsController extends Controller
             $video_application_score = [ env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END') ];
             $test_score =[40,160];
             
-            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','test_score','showing','myJobs','myFolders', 'application_statuses', 'job', 'video_application_score','request'));
+            return view('job.board.candidates', compact('job', 'active_tab', 'status', 'result','application_statuses','jobID','start','age','exp_years','test_score','showing','myJobs','myFolders', 'application_statuses', 'job', 'video_application_score','request','states','qualifications'));
         }
 
         

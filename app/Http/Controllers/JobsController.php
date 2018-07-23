@@ -670,7 +670,7 @@ class JobsController extends Controller
                 $validation_fields['cv_email'] = 'required';
                 $validation_fields['cv_phone'] = 'required';
                 $validation_fields['gender'] = 'required';
-                $validation_fields['location'] = 'required';
+                $validation_fields['state'] = 'required';
                 $validation_fields['highest_qualification'] = 'required';
                 $validation_fields['years_of_experience'] = 'required';
                 $validation_fields['last_company_worked'] = 'required';

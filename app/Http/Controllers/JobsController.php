@@ -771,8 +771,9 @@ class JobsController extends Controller
             }
         }
 
-        $settings->set('LAST_CV_UPLOAD_INDEX',$last_cv_upload_index);
+        // $settings->set('LAST_CV_UPLOAD_INDEX',$last_cv_upload_index);
         $user = Auth::user();
+        Solr::update_core();
         $this->mailer->send('emails.new.cv_upload_successful', ['user' => $user, 'link'=> url('cv/talent-pool') ], function (Message $m) use ($user) {
                 $m->from('support@seamlesshiring.com')->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
             });

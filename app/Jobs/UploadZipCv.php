@@ -21,16 +21,19 @@ class UploadZipCv extends Job implements SelfHandling, ShouldQueue
 
     private $additional_data;
 
+    private $request;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($filename, $randomName, $additional_data)
+    public function __construct($filename, $randomName, $additional_data, $request)
     {
         $this->filename = $filename;
         $this->randomName = $randomName;
         $this->additional_data = $additional_data;
+        $this->request = $request;
     }
 
     /**
@@ -67,9 +70,9 @@ class UploadZipCv extends Job implements SelfHandling, ShouldQueue
         foreach($files as $key => $file) {
            if(is_file( $tempDir . $file ))
            {
-                $last_cv_upload_index++;
+                // $last_cv_upload_index++;
                 $cv = $key."_".$this->randomName.$file;
-                $cvs[] = $cv;
+                $cvs[ $file ] = $cv;
                 // $cvs[] = [ 'first_name' => 'Cv ' . $last_cv_upload_index, 'cv_file' => $cv ] ;
 
                 rename($tempDir . $file, public_path('uploads/CVs/').$cv);
@@ -85,7 +88,7 @@ class UploadZipCv extends Job implements SelfHandling, ShouldQueue
         rrmdir($tempDir);
 
         $jobs = new JobsController();
-        $jobs->saveCompanyUploadedCv($cvs, $this->additional_data);
+        $jobs->saveCompanyUploadedCv($cvs, $this->additional_data, $this->request);
 
 
 

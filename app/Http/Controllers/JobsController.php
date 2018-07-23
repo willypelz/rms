@@ -597,7 +597,6 @@ class JobsController extends Controller
 
      public function UploadCVfile( Request $request ){
         
-        
 
           // $zipper = new Zipper;
         ///Applications/AMPPS/www/seamlesshiring/public_html/
@@ -611,12 +610,28 @@ class JobsController extends Controller
           "cv-upload-file" => ""
         ]*/
         //'Image' => 
-            $validator = Validator::make($request->all(), [
+            $validation_fields = [
                 'cv-upload-file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt' //application/octet-stream,
-            ],[
+            ];
+
+            $validation_fields_copy = [
                 'cv-upload-file.required' => 'Please select a file',
                 'cv-upload-file.mimes' => 'Allowed extensions are .zip, .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt',
-            ]);
+            ];
+
+            if( $request->type == "single" )
+            {
+                $validation_fields['cv_first_name'] = 'required';
+                $validation_fields['cv_last_name'] = 'required';
+                $validation_fields['email'] = 'required';
+                $validation_fields['phone'] = 'required';
+
+
+                $validation_fields_copy['cv_first_name.required'] = 'Firstname is required';
+                $validation_fields_copy['cv_last_name.required'] = 'Lastname is required';
+            }
+
+            $validator = Validator::make($request->all(), $validation_fields,$validation_fields_copy);
 
             if ($validator->fails()) {
                 return [ 'status' => 0, 'data' => implode(', ', $validator->errors()->all())  ] ;
@@ -636,7 +651,7 @@ class JobsController extends Controller
 
                 if( $mimeType == 'application/zip')
                 {
-                    $this->dispatch(new UploadZipCv($filename, $randomName, $additional_data));
+                    $this->dispatch(new UploadZipCv($filename, $randomName, $additional_data, $request));
                     // 
                     
                     /*$zippy = Zippy::load();
@@ -684,7 +699,7 @@ class JobsController extends Controller
                 else
                 {
                     $cvs = [  $filename ];
-                    $this->saveCompanyUploadedCv($cvs, $additional_data);
+                    $this->saveCompanyUploadedCv($cvs, $additional_data, $request);
                     return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
                 }
 
@@ -697,7 +712,7 @@ class JobsController extends Controller
        
     }
 
-    public function saveCompanyUploadedCv($cvs, $additional_data)
+    public function saveCompanyUploadedCv($cvs, $additional_data, $request)
     {
         $settings = new Settings();
         extract($additional_data);
@@ -723,10 +738,25 @@ class JobsController extends Controller
 
 
         foreach ($cvs as $key => $cv) {
-            $last_cv_upload_index++;
+            
+
+            switch ( $request->type ) {
+                case 'single':
+                    $last_cv = Cv::insertGetId([ 'first_name' => $request->cv_first_name, 'last_name' => $request->cv_last_name, 'email' => $request->email, 'phone' => $request->phone, 'cv_file' => $cv , 'cv_source' => $cv_source ]);
+                    break;
+
+                case 'bulk':
+                    // $last_cv_upload_index++;
+                    $last_cv = Cv::insertGetId([ 'first_name' => $key, 'cv_file' => $cv , 'cv_source' => $cv_source ]);
+                    break;
+                
+                default:
+                    continue;
+                    break;
+            }
 
 
-            $last_cv = Cv::insertGetId([ 'first_name' => 'Cv ' . $last_cv_upload_index, 'cv_file' => $cv , 'cv_source' => $cv_source ]);
+            // $last_cv = Cv::insertGetId([ 'first_name' => 'Cv ' . $last_cv_upload_index, 'cv_file' => $cv , 'cv_source' => $cv_source ]);
             
             if($options == 'upToJob'){
                 JobApplication::insert([

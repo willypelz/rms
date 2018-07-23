@@ -112,9 +112,9 @@
                             
                             <div id="inputer-opt" class="well">
 
-                                <ul class="nav nav-tabs">
-                                  <li class="active"><a data-toggle="tab" href="#single">Single Upload</a></li>
-                                  <li><a data-toggle="tab" href="#bulk">Bulk Upload</a></li>
+                                <ul class="nav nav-tabs select-type">
+                                  <li class="active"><a data-toggle="tab" href="#single" data-value="single">Single Upload</a></li>
+                                  <li><a data-toggle="tab" href="#bulk" data-value="bulk">Bulk Upload</a></li>
                                 </ul>
 
                                 <div class="tab-content">
@@ -124,18 +124,25 @@
                                     </p>
 
                                     <div class="form-group">
-                                        <label for="cv-name" class="pull-left">Name</label>
-                                        <input type="text" name="cv-name" id=cv-name"" class="form-control" />
+                                        <label for="cv-name" class="pull-left">Firstname</label>
+                                        <input type="text" name="cv_first_name" id=cv-name"" class="form-control" />
                                     </div>
 
                                     <div class="form-group">
+                                        <label for="cv-name" class="pull-left">Lastname</label>
+                                        <input type="text" name="cv_last_name" id=cv-name"" class="form-control" />
+                                    </div>
+
+                                    
+
+                                    <div class="form-group">
                                         <label for="cv-name" class="pull-left">Email</label>
-                                        <input type="email" name="cv-email" id=cv-email"" class="form-control" />
+                                        <input type="email" name="cv_email" id=cv-email"" class="form-control" />
                                     </div>
 
                                     <div class="form-group">
                                         <label for="cv-name" class="pull-left">Phone</label>
-                                        <input type="text" name="cv-phone" id=cv-phone"" class="form-control" />
+                                        <input type="text" name="cv_phone" id=cv-phone"" class="form-control" />
                                     </div>
 
                                   </div>
@@ -149,6 +156,8 @@
 
                                   </div>
                                 </div><br>
+
+                                <input type="hidden" name="type" id="type" value="single" >
 
                                 <div class="form-group fileinput fileinput-new input-group" data-provides="fileinput">
                                   <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
@@ -224,6 +233,10 @@
 <script type="text/javascript">
 
     $(document).ready( function(){
+
+        $('.select-type a').on('click',function(){
+            $('#type').val( $(this).data('value') );
+        });
         $('#uploadCandidate').ajaxForm({ 
                 headers: { 'X-CSRF-TOKEN': $('input[name="_token"]').val() },
                 beforeSubmit:beforeUpload,

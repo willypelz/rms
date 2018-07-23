@@ -1379,7 +1379,7 @@ class JobApplicationsController extends Controller
     private function getInterviewNoteOption( $jobID )
     {   
 
-        $interview_note_options = InterviewNoteOptions::where('job_id',$jobID)->get();
+        $interview_note_options = InterviewNoteOptions::where('company_id',get_current_company()->id )->get();
 
         if( empty($interview_note_options->toArray() ) )
         {

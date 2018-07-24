@@ -147,23 +147,23 @@
 
                                     <div class="form-group col-xs-6">
                                         <label for="gender" class="pull-left">Gender</label>
-                                        {{ Form::select('gender', array('Male' => 'Male', 'Female' => 'Female'), 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
+                                        {{ Form::select('gender', array('Male' => 'Male', 'Female' => 'Female'), 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
                                     </div>
 
 
                                     <div class="form-group col-xs-6">
                                         <label for="location" class="pull-left">Current Location</label>
-                                        {{ Form::select('location', $states, 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
+                                        {{ Form::select('location', $states, 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
                                     </div>
 
                                     <div class="form-group col-xs-6">
                                         <label for="highest_qualification" class="pull-left">Highest Qualification</label>
-                                        {{ Form::select('highest_qualification', $qualifications, 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
+                                        {{ Form::select('highest_qualification', $qualifications, 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
                                     </div>
 
                                     <div class="form-group col-xs-6">
                                         <label for="graduation_grade" class="pull-left">Graduation Grade</label>
-                                        {{ Form::select('graduation_grade', $grades, 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
+                                        {{ Form::select('graduation_grade', $grades, 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
                                     </div>
 
                                     <div class="form-group col-xs-6">
@@ -178,19 +178,19 @@
 
                                     <div class="form-group col-xs-6">
                                         <label for="last_company_worked" class="pull-left">Last Company Worked</label>
-                                        {{ Form::text('last_company_worked', null, array('class'=>'form-control', 'required' => 'required')) }}
+                                        {{ Form::text('last_company_worked', null, array('class'=>'form-control')) }}
                                     </div>
 
 
                                     <div class="form-group col-xs-6">
                                         <label for="last_position" class="pull-left">Last Position</label>
-                                        {{ Form::text('last_position', null, array('class'=>'form-control', 'required' => 'required')) }}
+                                        {{ Form::text('last_position', null, array('class'=>'form-control')) }}
                                     </div>
 
                                     <div class="form-group text-left col-xs-6">
                                         <label for="willing_to_relocate">Willing to relocate?</label><br/>
-                                        <label>{{ Form::radio('willing_to_relocate', 'yes',  false, ['required']) }} Yes</label>
-                                        <label>{{ Form::radio('willing_to_relocate', 'no',  false, ['required']) }} No </label>
+                                        <label>{{ Form::radio('willing_to_relocate', 'yes',  false) }} Yes</label>
+                                        <label>{{ Form::radio('willing_to_relocate', 'no',  false) }} No </label>
                                     </div>
                                     <div class="clearfix"></div>
                                     

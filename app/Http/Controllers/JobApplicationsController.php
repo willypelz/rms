@@ -34,6 +34,7 @@ use Validator;
 use File;
 use App\Models\InterviewNoteOptions;
 use App\Models\InterviewNoteValues;
+use App\Models\InterviewNoteTemplates;
 
 
 
@@ -1368,10 +1369,55 @@ class JobApplicationsController extends Controller
             InterviewNotes::create($data);
     }
 
+    public function viewInterviewNoteTemplates( Request $request )
+    {
+
+        $interview_note_templates = InterviewNoteTemplates::where('company_id',get_current_company()->id )->get();
+        return view('job.interview-note-templates', compact('interview_note_templates'));
+    }
+
+    public function editInterviewNoteTemplate( Request $request )
+    {
+        
+
+        if($request->isMethod('post')){
+            InterviewNoteTemplates::where('id',$request->id)->where('company_id',get_current_company()->id )->update([
+                'name' => $request->name,
+                'description' => $request->description,
+            ]);
+
+            \Session::flash('status', 'Updated Successfully');
+        }
+
+        $interview_note_template = InterviewNoteTemplates::where('id',$request->id)->where('company_id',get_current_company()->id )->first();
+
+        return view('job.interview-note-template-edit', compact('interview_note_template'));
+    }
+
+
+    public function createInterviewNoteTemplate( Request $request )
+    {
+        // $interview_note_options = InterviewNoteOptions::where('company_id',get_current_company()->id )->get();
+        
+
+        if($request->isMethod('post')){
+            InterviewNoteTemplates::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'company_id' => get_current_company()->id
+            ]);
+
+            \Session::flash('status', 'Create Successfully');
+        }
+
+        
+        return view('job.interview-note-template-create', compact('interview_note_option'));
+    }
+
     public function viewInterviewNoteOptions( Request $request )
     {
 
-        $interview_note_options = InterviewNoteOptions::where('company_id',get_current_company()->id )->get();
+        $interview_note_options = InterviewNoteOptions::where('company_id',get_current_company()->id )->where('interview_template_id',$request->interview_template_id)->get();
         return view('job.interview-note-options', compact('interview_note_options'));
     }
 
@@ -1407,7 +1453,8 @@ class JobApplicationsController extends Controller
                 'description' => $request->description,
                 'type' => $request->type,
                 'weight' => $request->weight,
-                'company_id' => get_current_company()->id
+                'company_id' => get_current_company()->id,
+                'interview_template_id' => $request->interview_template_id
             ]);
 
             \Session::flash('status', 'Create Successfully');

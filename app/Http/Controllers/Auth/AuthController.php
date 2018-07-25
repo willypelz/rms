@@ -187,7 +187,7 @@ class AuthController extends Controller
             ]);
 
             $assoc  = DB::table('company_users')->insert([
-                      ['user_id' => $user->id, 'company_id'=> $comp->id]
+                      ['user_id' => $user->id, 'company_id'=> $comp->id, 'role' => 1]
             ]);
 
 

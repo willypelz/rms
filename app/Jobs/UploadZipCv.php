@@ -28,12 +28,12 @@ class UploadZipCv extends Job implements SelfHandling, ShouldQueue
      *
      * @return void
      */
-    public function __construct($filename, $randomName, $additional_data, $request)
+    public function __construct($filename, $randomName, $additional_data, $request_data)
     {
         $this->filename = $filename;
         $this->randomName = $randomName;
         $this->additional_data = $additional_data;
-        $this->request = $request;
+        $this->request = json_decode( $request_data );
     }
 
     /**
@@ -43,7 +43,7 @@ class UploadZipCv extends Job implements SelfHandling, ShouldQueue
      */
     public function handle()
     {   
-
+dd("whty");
         $zippy = Zippy::load();
         
         //Open File
@@ -83,6 +83,7 @@ class UploadZipCv extends Job implements SelfHandling, ShouldQueue
             echo $tempDir . $file." is not a file <br/>";
            }
         }
+        
 
         //Delete Temporary directory
         rrmdir($tempDir);

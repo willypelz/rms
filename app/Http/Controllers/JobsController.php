@@ -706,8 +706,10 @@ class JobsController extends Controller
                 $additional_data = [ 'job_id' => @$request->job, 'folder' => @$request->folder, 'options' => $request->options ];
 
                 if( $mimeType == 'application/zip')
-                {
-                    $this->dispatch(new UploadZipCv($filename, $randomName, $additional_data, $request));
+                { 
+                    $request_data = json_encode( $request->all() );
+                    // $request_data = collect( $request->all() );
+                    $this->dispatch(new UploadZipCv($filename, $randomName, $additional_data, $request_data ));
                     // 
                     
                     /*$zippy = Zippy::load();

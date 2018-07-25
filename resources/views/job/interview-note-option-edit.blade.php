@@ -10,8 +10,9 @@
         <div class="container">
             <div class="row">
 
-                <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-center">
-                    <h3>Edit {{ ucwords( $interview_note_option->name ) }}</h3>
+                <div class="col-sm-8 col-sm-offset-2 text-center">
+                    <a href="{{ route('interview-note-options', ['interview_template_id' => $interview_template_id]) }}" class="btn btn-info pull-left">Back</a>
+                    <h3><b>{{ $interview_template->name }}:</b> Edit {{ ucwords( $interview_note_option->name ) }}</h3>
                     <!-- <p class="text-muted">Africa's fastest growing network of professionals</p> -->
 
                     @include('layout.alerts')
@@ -20,7 +21,7 @@
                 <div class="col-sm-8 col-sm-offset-2">
 
                     <div class=" white padbox rounded">
-                        <form action="{{ route('interview-note-option-edit', ['id' => $interview_note_option->id ]) }}" method="POST">
+                        <form action="{{ route('interview-note-option-edit', ['interview_template_id' => $interview_template_id,'id' => $interview_note_option->id ]) }}" method="POST">
                             <div class="form-group">
                                 <label for="name">Name</label>
                                 <input type="text" name="name" class="form-control" value="{{ @$interview_note_option->name }}" required>

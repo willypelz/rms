@@ -10,7 +10,8 @@
         <div class="container">
             <div class="row">
 
-                <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-center">
+                <div class="col-sm-8 col-sm-offset-2 text-center">
+                    <a href="{{ route('interview-note-templates') }}" class="btn btn-info pull-left">Back</a>
                     <h3>Edit {{ ucwords( $interview_note_template->name ) }}</h3>
                     <!-- <p class="text-muted">Africa's fastest growing network of professionals</p> -->
 

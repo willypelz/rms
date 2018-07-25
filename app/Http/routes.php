@@ -533,11 +533,11 @@ Route::group(['middleware' => 'web'], function () {
 
 
 
-    Route::get('settings/interview-notes/options/{id}', [ 'as' => 'interview-note-options', 'uses' => 'JobApplicationsController@viewInterviewNoteOptions' ]);
+    Route::get('settings/interview-notes/options/{interview_template_id}', [ 'as' => 'interview-note-options', 'uses' => 'JobApplicationsController@viewInterviewNoteOptions' ]);
 
-    Route::match(['get','post'],'settings/interview-notes/options/edit/{id}', [ 'as' => 'interview-note-option-edit', 'uses' => 'JobApplicationsController@editInterviewNoteOptions' ]);
+    Route::match(['get','post'],'settings/interview-notes/options/edit/{interview_template_id}/{id}', [ 'as' => 'interview-note-option-edit', 'uses' => 'JobApplicationsController@editInterviewNoteOptions' ]);
 
-    Route::match(['get','post'],'settings/interview-notes/options/create', [ 'as' => 'interview-note-option-create', 'uses' => 'JobApplicationsController@createInterviewNoteOptions' ]);
+    Route::match(['get','post'],'settings/interview-notes/options/create/{interview_template_id}', [ 'as' => 'interview-note-option-create', 'uses' => 'JobApplicationsController@createInterviewNoteOptions' ]);
 
     
     

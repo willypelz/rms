@@ -10,8 +10,8 @@
             <div class="row">
 
                 <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-center">
-                    <h3>Interview Note Options</h3>
-                    <a href="{{ route('interview-note-option-create') }}" class="btn btn-info">Add new</a><br><br>
+                    <h3><b>{{ $interview_template->name }}:</b> Options</h3>
+                    <a href="{{ route('interview-note-option-create', ['interview_template_id' => $interview_template_id]) }}" class="btn btn-info">Add new</a><br><br>
                     <!-- <p class="text-muted">Africa's fastest growing network of professionals</p> -->
                 </div>
 
@@ -24,9 +24,9 @@
 
                                 <div class="title-job pull-left" style="width:100%">
 
-                                    <big><a target="_blank" href="#!"><b>{{ $interview_note_option->name }}</b> <span class="label label-warning">{{ $interview_note_option->type }}</span></a></big>
+                                    <big><a target="_blank" href="#!"><b>{{ $interview_note_option->name }}</b></a><span class="label label-warning" style="margin-left: 10px;">{{ $interview_note_option->type }}</span></big>
 
-                                    <a href="{{ route('interview-note-option-edit', ['id' => $interview_note_option->id ]) }}" class="pull-right btn btn-success" style="margin-top: -10px;">Edit</a>
+                                    <a href="{{ route('interview-note-option-edit', ['interview_template_id' => $interview_template_id,'id' => $interview_note_option->id ]) }}" class="pull-right btn btn-success" style="margin-top: -10px;">Edit</a>
                                     <hr>
                                     <small class="text-muted">
                                         {!! $interview_note_option->description !!}

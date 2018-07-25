@@ -535,4 +535,10 @@ use App\Models\Job;
             return asset('img/company.png');
         }
 	}
+
+	function get_interview_note_templates()
+	{
+		return \App\Models\InterviewNoteTemplates::where('company_id',get_current_company()->id )->get();
+
+	}
 ?>

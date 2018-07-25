@@ -1416,15 +1416,18 @@ class JobApplicationsController extends Controller
 
     public function viewInterviewNoteOptions( Request $request )
     {
+        $interview_template = InterviewNoteTemplates::where('id',$request->interview_template_id)->where('company_id',get_current_company()->id )->first();
 
         $interview_note_options = InterviewNoteOptions::where('company_id',get_current_company()->id )->where('interview_template_id',$request->interview_template_id)->get();
-        return view('job.interview-note-options', compact('interview_note_options'));
+
+        $interview_template_id = $request->interview_template_id;
+        return view('job.interview-note-options', compact('interview_note_options','interview_template_id','interview_template'));
     }
 
     public function editInterviewNoteOptions( Request $request )
     {
-        
-
+        $interview_template = InterviewNoteTemplates::where('id',$request->interview_template_id)->where('company_id',get_current_company()->id )->first();
+        $interview_template_id = $request->interview_template_id;
         if($request->isMethod('post')){
             InterviewNoteOptions::where('id',$request->id)->where('company_id',get_current_company()->id )->update([
                 'name' => $request->name,
@@ -1438,7 +1441,7 @@ class JobApplicationsController extends Controller
 
         $interview_note_option = InterviewNoteOptions::where('id',$request->id)->where('company_id',get_current_company()->id )->first();
 
-        return view('job.interview-note-option-edit', compact('interview_note_option'));
+        return view('job.interview-note-option-edit', compact('interview_note_option','interview_template_id','interview_template'));
     }
 
 
@@ -1446,6 +1449,8 @@ class JobApplicationsController extends Controller
     {
         // $interview_note_options = InterviewNoteOptions::where('company_id',get_current_company()->id )->get();
         
+        $interview_template = InterviewNoteTemplates::where('id',$request->interview_template_id)->where('company_id',get_current_company()->id )->first();
+        $interview_template_id = $request->interview_template_id;
 
         if($request->isMethod('post')){
             InterviewNoteOptions::create([
@@ -1461,7 +1466,7 @@ class JobApplicationsController extends Controller
         }
 
         
-        return view('job.interview-note-option-create', compact('interview_note_option'));
+        return view('job.interview-note-option-create', compact('interview_note_option','interview_template_id','interview_template'));
     }
     
     
@@ -1489,7 +1494,7 @@ class JobApplicationsController extends Controller
         $appl = JobApplication::with('job', 'cv')->find($app_id);
         $applicant_badge = @$this->getApplicantBadge($appl->cv);
 
-        $interview_note_options = $this->getInterviewNoteOption( $appl->job->id );
+        $interview_note_options = $this->getInterviewNoteOption( $appl->job->id, $request->id );
 
         if(  @$request->readonly )
         {
@@ -1531,10 +1536,10 @@ class JobApplicationsController extends Controller
     }
 
 
-    private function getInterviewNoteOption( $jobID )
+    private function getInterviewNoteOption( $jobID, $interview_template_id )
     {   
 
-        $interview_note_options = InterviewNoteOptions::where('company_id',get_current_company()->id )->get();
+        $interview_note_options = InterviewNoteOptions::where('company_id',get_current_company()->id )->where('interview_template_id',$interview_template_id)->get();
 
         if( empty($interview_note_options->toArray() ) )
         {

@@ -28,6 +28,46 @@ class CvSalesController extends Controller
 {
     // private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'score+asc', 'grouped'=>FALSE ];
     private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'application_date+desc', 'grouped'=>FALSE ];
+
+    private $states = [
+                'Lagos',
+                'Abia',
+                'Abuja',
+                'Adamawa',
+                'Akwa Ibom',
+                'Anambra',
+                'Bauchi',
+                'Bayelsa',
+                'Benue',
+                'Borno',
+                'Cross river',
+                'Delta',
+                'Edo',
+                'Ebonyi',
+                'Ekiti',
+                'Enugu',
+                'Gombe',
+                'Imo',
+                'Jigawa',
+                'Kaduna',
+                'Kano',
+                'Katsina',
+                'Kebbi',
+                'Kogi',
+                'Kwara',
+                'Niger',
+                'Ogun',
+                'Ondo',
+                'Osun',
+                'Oyo',
+                'Nassarawa',
+                'Plateau',
+                'Rivers',
+                'Sokoto',
+                'Taraba',
+                'Yobe',
+                'Zamfara'
+            ]; 
     /**
      * Create a new controller instance.
      *
@@ -594,6 +634,11 @@ class CvSalesController extends Controller
         if(($key = array_search('Direct Application', $myFolders)) !== false) {
             unset($myFolders[$key]);
         }
+
+        $states = $this->states; 
+        $qualifications = qualifications();
+        $grades = grades();
+
         if($request->ajax())
         {
             
@@ -603,8 +648,9 @@ class CvSalesController extends Controller
             
         }
         else{
-            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query,'showing'=>$showing, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 5, 85 ], 'exp_years' => [ 0, 60 ], 'myJobs' => Job::getMyJobs(), 'myFolders' => $myFolders, 'application_statuses' => $application_statuses ]);
+            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query,'showing'=>$showing, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 5, 85 ], 'exp_years' => [ 0, 60 ], 'myJobs' => Job::getMyJobs(), 'myFolders' => $myFolders, 'application_statuses' => $application_statuses, 'states' => $states, 'qualifications' => $qualifications, 'grades' => $grades ]);
         }
+
         // return view('cv-sales.cv_saved');
     }
 

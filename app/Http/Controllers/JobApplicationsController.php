@@ -1496,6 +1496,8 @@ class JobApplicationsController extends Controller
 
         $interview_note_options = $this->getInterviewNoteOption( $appl->job->id, $request->id );
 
+        $interview_template_id = $request->id;
+
         if(  @$request->readonly )
         {
             $readonly = true;
@@ -1512,7 +1514,7 @@ class JobApplicationsController extends Controller
 
             $interview_note_values = [];
             $score = 0;
-            $correct_count = 0;
+            $correct_count = 0; 
             foreach ($interview_note_options as $key => $option) {
 
                 $interview_note_values[] = [
@@ -1531,7 +1533,7 @@ class JobApplicationsController extends Controller
 
         }
 
-        return view('modals.interview-notes', compact('applicant_badge','app_id','cv_id','appl','interview_note_options','interview_note','readonly'));
+        return view('modals.interview-notes', compact('applicant_badge','app_id','cv_id','appl','interview_note_options','interview_note','interview_template_id','readonly'));
 
     }
 

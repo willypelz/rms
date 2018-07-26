@@ -8,6 +8,7 @@
 <form role="form" class="form-signin" method="POST" id="interview-note-form" action="" style="height: 300px;overflow: scroll;">
     {!! csrf_field() !!}
     
+    <input type="hidden" name="id" id="id" value="{{ $interview_template_id }}">
     <div class="row">
         <div class="col-sm-12">  
 
@@ -183,8 +184,9 @@
           radios = JSON.stringify($('body  #interview-note-form select').serializeObject());
           texts = JSON.stringify($('body  #interview-note-form textarea').serializeObject());
           app_id = {{ $app_id }};
+          interview_template_id = {{ $interview_template_id }};
           interviewer_id ={{ Auth::user()->id }};
-      $.post("{{ route('save-interview-note') }}", { radios : radios, texts : texts, app_id:app_id,interviewer_id:interviewer_id } ,function(data){
+      $.post("{{ route('save-interview-note') }}", { radios : radios, texts : texts, app_id:app_id,interviewer_id:interviewer_id, id : interview_template_id } ,function(data){
 
           $( '#viewModal' ).modal('toggle');
           $.growl.notice({ message: "You have interviewed " + $field.closest('.modal-body').find('.media-heading a').text() });

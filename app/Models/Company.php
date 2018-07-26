@@ -32,4 +32,9 @@ class Company extends Model
         return $this->belongsToMany('App\User', 'company_users')->withPivot('role');
     }
 
+    public function tests()
+    {
+        return $this->belongsToMany('App\\Models\AtsProduct', 'company_tests');
+    }
+
 }

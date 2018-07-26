@@ -1058,8 +1058,8 @@ class JobApplicationsController extends Controller
 
         $test_available = true;
         $count = count($cv_ids);
-
-        $products = AtsProduct::where('company_id', get_current_company()->id)->get(); 
+        $products = get_current_company()->tests;
+        // $products = AtsProduct::where('company_id', get_current_company()->tests)->get(); 
         $section = 'TEST';
         $type = "TEST";
         $done_test = array_pluck( TestRequest::whereIn('job_application_id',$app_ids)->get()->toArray(), 'id');

@@ -45,6 +45,11 @@
                                 </div>
                               @endif
                             @endforeach
+                          @else
+
+                            <div class="text text-danger" style="padding: 20px;">
+                              You have no {{ strtolower( $section ) }} in your account 
+                            </div>
                           @endif
                         </div>
                   

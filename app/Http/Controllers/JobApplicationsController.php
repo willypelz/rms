@@ -1353,7 +1353,7 @@ class JobApplicationsController extends Controller
                         
 
         
-        save_activities($request->status,  $request->job_id, $request->app_ids );
+        save_activities('INTERVIEWED',  $request->job_id, $request->app_ids );
 
         JobApplication::massAction( @$request->job_id, @$request->cv_ids , 'INTERVIEWED' );
 

@@ -2156,6 +2156,13 @@ class JobsController extends Controller
                       ['user_id' => Auth::user()->id, 'company_id'=> $comp->id]
             ]);
 
+            $tests  = DB::table('company_tests')->insert([
+                      ['ats_product_id' => 23, 'company_id'=> $comp->id],
+                      ['ats_product_id' => 24, 'company_id'=> $comp->id],
+                      ['ats_product_id' => 25, 'company_id'=> $comp->id],
+                      ['ats_product_id' => 27, 'company_id'=> $comp->id]
+            ]);
+
 
 
             // if($upload){      

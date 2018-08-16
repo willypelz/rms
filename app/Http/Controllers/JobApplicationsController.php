@@ -665,7 +665,10 @@ class JobApplicationsController extends Controller
                             $cv = $appl->cv;
                             $job = $appl->job;
                             $this->mailer->send('emails.new.reject_email', ['cv' => $cv, 'job' => $job], function (Message $m) use ($cv) {
-                                $m->from($this->sender)->to($cv->email)->subject('Feedback');
+                                $m->from('support@seamlesshiring.com', get_current_company()->name)
+                                    ->replyTo($this->sender, get_current_company()->name)
+                                    ->to($cv->email)
+                                    ->subject('Feedback');
                             });
                         }
                         
@@ -1349,7 +1352,10 @@ class JobApplicationsController extends Controller
             else
             {
                 $this->mailer->send('emails.new.interview_invitation', ['cv' => $cv, 'job' => $job,'interview' => (object) $data], function (Message $m) use ($cv) {
-                    $m->from($this->sender)->to($cv->email)->subject('Interview Invitation');
+                    $m->from('support@seamlesshiring.com', get_current_company()->name)
+                                    ->replyTo($this->sender, get_current_company()->name)
+                                    ->to($cv->email)
+                                    ->subject('Interview Invitation');
                 });
             }
             

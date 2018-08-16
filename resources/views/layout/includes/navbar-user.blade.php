@@ -90,6 +90,7 @@
                                 @endforeach
                                 <li role="separator" class="divider"></li> 
                                 <li><a href="{{ route('add-company') }}"><i class="fa fa-plus"></i> Create new Company</a></li>
+                                <!-- <li><a href="{{-- route('edit-company', ['id' => get_current_company()->id ]) --}}">Edit <strong>{{ get_current_company()->name }}</strong> </a></li> -->
                                 <li role="separator" class="divider"></li> 
                                 <li><a href="{{ route('interview-note-templates') }}"><i class="fa fa-file"></i> Interview Note Templates</a></li>
                                 <li role="separator" class="divider"></li> 

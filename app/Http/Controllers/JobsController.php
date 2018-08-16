@@ -2172,7 +2172,76 @@ class JobsController extends Controller
 
 
         }
-        return view('job.add_company');
+        return view('company.add');
+    }
+
+    public function editCompany(Request $request){
+            
+            dd( get_current_company() );
+
+        if ($request->isMethod('post')) {
+            // dd($request->request); 
+
+             $validator = Validator::make($request->all(), [
+                'slug' => 'unique:companies'
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+           
+            if( isset( $request->logo ) )
+            {
+                $file_name  = ($request->logo->getClientOriginalName());                                            
+                $fi =  $request->file('logo')->getClientOriginalExtension();
+                $logo = $request->company_name.'-'.$file_name;
+                $upload = $request->file('logo')->move(
+                    env('fileupload'), $logo
+                );
+            }
+            else
+            {
+                $logo = "";
+            }
+           
+
+            $comp = Company::FirstorCreate([
+                'name' => $request->company_name,
+                'email' => $request->company_email,
+                'slug' => $request->slug,
+                'phone' => $request->phone,
+                'website' => $request->website,
+                'address' => $request->address,
+                'about' => $request->about_company,
+                'logo' => $logo,
+                'date_added' => date('Y-m-d H:i:s'),
+            ]);
+
+            $assoc  = DB::table('company_users')->insert([
+                      ['user_id' => Auth::user()->id, 'company_id'=> $comp->id]
+            ]);
+
+            $tests  = DB::table('company_tests')->insert([
+                      ['ats_product_id' => 23, 'company_id'=> $comp->id],
+                      ['ats_product_id' => 24, 'company_id'=> $comp->id],
+                      ['ats_product_id' => 25, 'company_id'=> $comp->id],
+                      ['ats_product_id' => 27, 'company_id'=> $comp->id]
+            ]);
+
+
+
+            // if($upload){      
+              return redirect('select-company/'.$request->slug);
+            // }
+            
+
+
+        }
+
+        $company = Company::find( $request->id );
+
+        return view('company.edit',compact('company'));
     }
 
     public function selectCompany(Request $request)

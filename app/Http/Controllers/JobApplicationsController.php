@@ -99,6 +99,8 @@ class JobApplicationsController extends Controller
 
     protected $mailer;
 
+    private $sender;
+
     /**
      * Create a new controller instance.
      *
@@ -110,6 +112,8 @@ class JobApplicationsController extends Controller
             'saveTestResult'
         ]]);
         $this->mailer = $mailer;
+
+        $this->sender = ( get_current_company()->email ) ? get_current_company()->email : 'support@seamlesshiring.com';
 
 
         /*$cv = (object) [ "first_name" => "Emmanuel", "last_name" => "Okeleji", "email" => "emmanuel@insidify.com" ];
@@ -661,7 +665,7 @@ class JobApplicationsController extends Controller
                             $cv = $appl->cv;
                             $job = $appl->job;
                             $this->mailer->send('emails.new.reject_email', ['cv' => $cv, 'job' => $job], function (Message $m) use ($cv) {
-                                $m->from('support@seamlesshiring.com')->to($cv->email)->subject('Feedback');
+                                $m->from($this->sender)->to($cv->email)->subject('Feedback');
                             });
                         }
                         
@@ -1345,7 +1349,7 @@ class JobApplicationsController extends Controller
             else
             {
                 $this->mailer->send('emails.new.interview_invitation', ['cv' => $cv, 'job' => $job,'interview' => (object) $data], function (Message $m) use ($cv) {
-                    $m->from('support@seamlesshiring.com')->to($cv->email)->subject('Interview Invitation');
+                    $m->from($this->sender)->to($cv->email)->subject('Interview Invitation');
                 });
             }
             

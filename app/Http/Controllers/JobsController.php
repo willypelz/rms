@@ -188,7 +188,7 @@ class JobsController extends Controller
 
 
             $this->mailer->send('emails.new.exclusively_invited', ['user' => $user, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=> $link, 'decline' => $decline], function (Message $m) use ($user) {
-                $m->from('support@seamlesshiring.com')->to($user->email)->subject('You have been Exclusively Invited');
+                $m->from('support@seamlesshr.com')->to($user->email)->subject('You have been Exclusively Invited');
             });
 
             echo 'Saved';
@@ -251,7 +251,7 @@ class JobsController extends Controller
             $email_from = ( Auth::user()->email ) ? Auth::user()->email : 'no-reply@insidify.com';
          
             $this->mailer->send('emails.new.exclusively_invited', ['data' => $data, 'job_title'=>$job->title, 'company'=>$company->name, 'accept_link'=> $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
-                $m->from('support@seamlesshiring.com')->to($data->email)->subject('You Have Been Exclusively Invited');
+                $m->from('support@seamlesshr.com')->to($data->email)->subject('You Have Been Exclusively Invited');
             });
 
             return json_encode( ['status' => true, 'message' => 'Email was sent successfully'] );
@@ -475,7 +475,7 @@ class JobsController extends Controller
                         $job = Job::FirstorCreate($job_data);
 
                         //Send New job notification email
-                        $to = 'support@seamlesshiring.com';
+                        $to = 'support@seamlesshr.com';
                         $mail = Mail::send('emails.new.job-application', ['job' => $job ,'boards' => null ,'company' => $company], function ($m) use($company,$to) {
                             $m->from($to, @$company->name);
 
@@ -846,7 +846,7 @@ class JobsController extends Controller
         $user = Auth::user();
         Solr::update_core();
         $this->mailer->send('emails.new.cv_upload_successful', ['user' => $user, 'link'=> url('cv/talent-pool') ], function (Message $m) use ($user) {
-                $m->from('support@seamlesshiring.com')->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
+                $m->from('support@seamlesshr.com')->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
             });
         return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
     }
@@ -1858,7 +1858,7 @@ class JobsController extends Controller
     public function SimplePay(Request $request){
         $job = Job::find($request->job_id);
         $company = get_current_company();
-        $to = 'support@seamlesshiring.com';
+        $to = 'support@seamlesshr.com';
 
         if( $request->type == 'JOB_BOARD' )
         {
@@ -1958,9 +1958,9 @@ class JobsController extends Controller
                 
                 $user = Auth::user();
                 $mail = Mail::send('emails.new.successful_payment', compact('invoice','invoice_type','user','amount'), function ($m) use($invoice,$invoice_type) {
-                                    $m->from('support@seamlesshiring.com', 'Seamlesshiring');
+                                    $m->from('support@seamlesshr.com', 'Seamlesshiring');
 
-                                    // $m->to('support@seamlesshiring.com')->subject('Customer Invoice: #'.$invoice->id);
+                                    // $m->to('support@seamlesshr.com')->subject('Customer Invoice: #'.$invoice->id);
                                     $m->to(Auth::user()->email)->subject('Customer Invoice: #'.$invoice->id);
                             });
                 if( $request->type == 'JOB_BOARD' )

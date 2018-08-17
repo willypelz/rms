@@ -115,15 +115,15 @@ class JobApplicationsController extends Controller
         ]]);
         $this->mailer = $mailer;
 
-        $this->sender = ( get_current_company()->slug != "" && get_current_company()->slug ) ? get_current_company()->slug.'@seamlesshiring.com' : 'support@seamlesshiring.com';
-        $this->replyTo = ( get_current_company()->email ) ? get_current_company()->email : 'support@seamlesshiring.com';
+        $this->sender = ( get_current_company()->slug != "" && get_current_company()->slug ) ? get_current_company()->slug.'@seamlesshr.com' : 'support@seamlesshr.com';
+        $this->replyTo = ( get_current_company()->email ) ? get_current_company()->email : 'support@seamlesshr.com';
 
 
         /*$cv = (object) [ "first_name" => "Emmanuel", "last_name" => "Okeleji", "email" => "emmanuel@insidify.com" ];
 
         $job = (object) [ "title" => "CEO", "company" => (object) [ "name" => "Insidify" ] ];
         $this->mailer->send('emails.new.reject_email', ['cv' => $cv, 'job' => $job], function (Message $m) use ($cv) {
-                                $m->from('support@seamlesshiring.com')->to($cv->email)->subject('Feedback');
+                                $m->from('support@seamlesshr.com')->to($cv->email)->subject('Feedback');
                             });*/
     }
     public function assess($appl_id){
@@ -668,7 +668,7 @@ class JobApplicationsController extends Controller
                             $cv = $appl->cv;
                             $job = $appl->job;
                             $this->mailer->send('emails.new.reject_email', ['cv' => $cv, 'job' => $job], function (Message $m) use ($cv) {
-                                $m->from('support@seamlesshiring.com', get_current_company()->name)
+                                $m->from($this->sender, get_current_company()->name)
                                     ->replyTo($this->replyTo, get_current_company()->name)
                                     ->to($cv->email)
                                     ->subject('Feedback');
@@ -1349,13 +1349,13 @@ class JobApplicationsController extends Controller
             if( $appl->job->company->id == 96)
             {
                 $this->mailer->send('emails.new.interview_invitation_ibfc', ['cv' => $cv, 'job' => $job,'interview' => (object) $data], function (Message $m) use ($cv) {
-                    $m->from('support@seamlesshiring.com')->to($cv->email)->subject('Interview Invitation');
+                    $m->from('support@seamlesshr.com')->to($cv->email)->subject('Interview Invitation');
                 });
             }
             else
             {
                 $this->mailer->send('emails.new.interview_invitation', ['cv' => $cv, 'job' => $job,'interview' => (object) $data], function (Message $m) use ($cv) {
-                    $m->from('support@seamlesshiring.com', get_current_company()->name)
+                    $m->from($this->sender, get_current_company()->name)
                                     ->replyTo($this->replyTo, get_current_company()->name)
                                     ->to($cv->email)
                                     ->subject('Interview Invitation');

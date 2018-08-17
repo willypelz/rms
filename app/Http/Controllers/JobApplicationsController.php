@@ -101,6 +101,8 @@ class JobApplicationsController extends Controller
 
     private $sender;
 
+    private $replyTo;
+
     /**
      * Create a new controller instance.
      *
@@ -113,7 +115,8 @@ class JobApplicationsController extends Controller
         ]]);
         $this->mailer = $mailer;
 
-        $this->sender = ( get_current_company()->email ) ? get_current_company()->email : 'support@seamlesshiring.com';
+        $this->sender = ( get_current_company()->slug != "" && get_current_company()->slug ) ? get_current_company()->slug.'@seamlesshiring.com' : 'support@seamlesshiring.com';
+        $this->replyTo = ( get_current_company()->email ) ? get_current_company()->email : 'support@seamlesshiring.com';
 
 
         /*$cv = (object) [ "first_name" => "Emmanuel", "last_name" => "Okeleji", "email" => "emmanuel@insidify.com" ];
@@ -666,7 +669,7 @@ class JobApplicationsController extends Controller
                             $job = $appl->job;
                             $this->mailer->send('emails.new.reject_email', ['cv' => $cv, 'job' => $job], function (Message $m) use ($cv) {
                                 $m->from('support@seamlesshiring.com', get_current_company()->name)
-                                    ->replyTo($this->sender, get_current_company()->name)
+                                    ->replyTo($this->replyTo, get_current_company()->name)
                                     ->to($cv->email)
                                     ->subject('Feedback');
                             });
@@ -1353,7 +1356,7 @@ class JobApplicationsController extends Controller
             {
                 $this->mailer->send('emails.new.interview_invitation', ['cv' => $cv, 'job' => $job,'interview' => (object) $data], function (Message $m) use ($cv) {
                     $m->from('support@seamlesshiring.com', get_current_company()->name)
-                                    ->replyTo($this->sender, get_current_company()->name)
+                                    ->replyTo($this->replyTo, get_current_company()->name)
                                     ->to($cv->email)
                                     ->subject('Interview Invitation');
                 });

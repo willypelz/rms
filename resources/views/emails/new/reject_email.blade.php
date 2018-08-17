@@ -48,13 +48,14 @@
 																		<hr style="border-width:0 0 1px">
 																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">Dear {{ $cv->first_name.' '.$cv->last_name }},
 																		<br><br>
-																		With reference to your application for the {{ $job->title }} position at {{ $job->company->name }}. Having found other candidates with matching requirements, we regret to inform you that your application has been dismissed from the recruitment process at this time.
-																		<br><br>You have our best wishes for success in locating the career opportunity that you deserve.
+																		We refer to your application for the {{ $job->title }} position at {{ $job->company->name }}.
+																		Following a review within our broad criteria, we regret to inform you that you were not selected.
+																		<br><br>We wish you well and thank you for your interest in {{ $job->company->name }}.
 																		</p>
 																		
 																		
 																		<hr style="border-width:0 0 1px">
-																		<p style="color:#666">Best,
+																		<p style="color:#666">Sincerely,
 																			<br> {{ get_current_company()->name }} Team</p>
 
 																	</div>

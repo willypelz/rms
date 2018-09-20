@@ -1255,6 +1255,7 @@ class JobApplicationsController extends Controller
                                         'result_comment' => @$request->result_comment,
                                         'status' => @$request->status
                                             ] );
+                Solr::update_core();
 
             }
 
@@ -1262,7 +1263,7 @@ class JobApplicationsController extends Controller
             
         }
 
-        Solr::update_core();
+        
     }
 
     public function requestCheck(Request $request)

@@ -115,8 +115,17 @@ class JobApplicationsController extends Controller
         ]]);
         $this->mailer = $mailer;
 
-        $this->sender = ( get_current_company()->slug != "" && get_current_company()->slug ) ? get_current_company()->slug.'@seamlesshr.com' : 'support@seamlesshr.com';
-        $this->replyTo = ( get_current_company()->email ) ? get_current_company()->email : 'support@seamlesshr.com';
+        if( Auth::check() )
+        {
+            $this->sender = ( get_current_company()->slug != "" && get_current_company()->slug ) ? get_current_company()->slug.'@seamlesshr.com' : 'support@seamlesshr.com';
+            $this->replyTo = ( get_current_company()->email ) ? get_current_company()->email : 'support@seamlesshr.com';
+        }
+        else
+        {
+            $this->sender = 'support@seamlesshr.com';
+            $this->replyTo = 'support@seamlesshr.com';
+        }
+        
 
 
         /*$cv = (object) [ "first_name" => "Emmanuel", "last_name" => "Okeleji", "email" => "emmanuel@insidify.com" ];

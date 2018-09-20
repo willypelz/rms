@@ -2054,7 +2054,7 @@ class JobsController extends Controller
 
                     JobApplication::massAction( @$request->job_id,  @$request->cv_ids , 'ASSESSED' );
 
-                     $response = Curl::to('https://testing.insidifyenterprise.com/test-request')
+                     $response = Curl::to('https://seamlesstesting.com/test-request')
                                 ->withData( [ 'job_title' => $app->job->title, 'test_id' => $data['test_id'], 'job_application_id' => $app_id, 'applicant_name' => ucwords( @$app->cv->first_name. " " . @$app->cv->last_name ), 'applicant_email' => $app->cv->email, 'employer_name' => get_current_company()->name, 'employer_email' => get_current_company()->email , 'start_time' => $data['start_time'], 'end_time' => $data['end_time'] ] )
                                     ->post();
                 }

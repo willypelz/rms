@@ -6,7 +6,7 @@ use Auth;
 use App\Models\Job;
 
 class Solr {
-
+private $url = "http://34.240.11.68:8983/solr/";
 	static $host = "http://34.240.11.68:8983/solr/resumes/select?";
 
 	static $default_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'last_modified+desc', 'grouped'=>FALSE ];
@@ -314,7 +314,7 @@ class Solr {
 		
 		$sort = 'score+desc';
 		
-		$filename = 'http://34.240.11.68:8983/solr/resumes/select?q={!q.op=AND}'.$q.'&rows='.$row.'&start='.$start.'&facet=true&facet.field=exp_company&facet.field=state&facet.field=gender&facet.field=experience&facet.field=edu_end_year&facet.field=edu_school&facet.field=edu_grade&facet.field=marital_status&facet.field=religion&facet.date=dob&facet.date.start=NOW/DAY-60YEAR&facet.date.end=NOW/DAY-10YEAR&facet.date.gap=%2B1YEAR&wt=json&sort=rank+desc';
+		$filename = $this->url.'resumes/select?q={!q.op=AND}'.$q.'&rows='.$row.'&start='.$start.'&facet=true&facet.field=exp_company&facet.field=state&facet.field=gender&facet.field=experience&facet.field=edu_end_year&facet.field=edu_school&facet.field=edu_grade&facet.field=marital_status&facet.field=religion&facet.date=dob&facet.date.start=NOW/DAY-60YEAR&facet.date.end=NOW/DAY-10YEAR&facet.date.gap=%2B1YEAR&wt=json&sort=rank+desc';
 
 		// echo $filename.'<br/>';
 			
@@ -356,7 +356,7 @@ class Solr {
 
 
 		
-		$link = 'http://34.240.11.68:8983/solr/applications/select?q='.$q.'&rows='.$row.'&start='.$start
+		$link = $this->url.'applications/select?q='.$q.'&rows='.$row.'&start='.$start
 					.'&facet=true&facet.field=exp_company&facet.field=state&facet.field=gender&facet.field=experience'
 					.'&facet.field=edu_end_year&facet.field=edu_school&facet.field=edu_grade&facet.field=marital_status&facet.field=religion&facet.field=test_name&facet.field=tr_status&facet.field=score&facet.date=dob&facet.date.start=NOW/DAY-60YEAR&facet.date.end=NOW'
 					.'/DAY-10YEAR&facet.date.gap=%2B1YEAR&wt=json&sort=created+desc';
@@ -385,7 +385,7 @@ class Solr {
 
 	function update_applications($command="full-import"){
 
-		$url = "http://34.240.11.68:8983/solr/applications/dataimport?command=".$command;
+		$url = $this->url."applications/dataimport?command=".$command;
 
 		try {
 		 	$handle = fopen($url, "r");
@@ -406,7 +406,7 @@ class Solr {
 
 	static function update_core($core = 'resumes', $command="delta-import"){
 
-		$url = "http://34.240.11.68:8983/solr/".$core."/dataimport?command=".$command;
+		$url = $this->url."".$core."/dataimport?command=".$command;
 
 		try {
 			$handle = fopen($url, "r");
@@ -433,7 +433,7 @@ class Solr {
 		
 		$sort = 'score+desc';
 		
-		$filename = 'http://34.240.11.68:8983/solr/resumes/select?q='.$q.'&rows='.$row.'&start='.$start.'&wt=json&sort=rank+desc';
+		$filename = $this->url.'resumes/select?q='.$q.'&rows='.$row.'&start='.$start.'&wt=json&sort=rank+desc';
 			
 		// echo $filename;
 
@@ -522,7 +522,7 @@ class Solr {
 			$sort = 'post_date+desc';
 		else
 			$sort = 'score+desc';
-		$filename = "http://34.240.11.68:8983/solr/resumes/select?q=".$type.":".trim($q).$dq."&fq=-personal_url:[*+TO+*]&rows=".$row."&start=".$start
+		$filename = $this->url."resumes/select?q=".$type.":".trim($q).$dq."&fq=-personal_url:[*+TO+*]&rows=".$row."&start=".$start
 							."&fq=".$sign."userId:(".$followers.")&facet=false&wt=json";
 							
 		// echo $filename.'<br/>---<br/><br/>';
@@ -556,7 +556,7 @@ class Solr {
 		if(empty($q))
 			return array();
 
-		$filename = "http://34.240.11.68:8983/solr/connection/select?q=".$type.":".trim($q)."&rows=".$row."&start=".$start
+		$filename = $this->url."connection/select?q=".$type.":".trim($q)."&rows=".$row."&start=".$start
 							."&fq=connected_user_id:(".$friends.")&facet=false&wt=json";
 							
 		try {

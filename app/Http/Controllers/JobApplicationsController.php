@@ -859,7 +859,7 @@ class JobApplicationsController extends Controller
         
         // dump( $appl->cv->cv_file );
         
-        $test_path = "http://testing.insidifyenterprise.com/test/combined/pdf/".$appl->id;
+        $test_path = "http://seamlesstesting.com/test/combined/pdf/".$appl->id;
         $test_local_file = $path.$appl->cv->first_name.' '.$appl->cv->last_name. ' tests.pdf';
         // Response::download($test_path, $appl->cv->first_name.' '.$appl->cv->last_name. ' tests.pdf');
 
@@ -1200,7 +1200,7 @@ class JobApplicationsController extends Controller
                 $app = JobApplication::with('cv')->find($app_id);
 
                 JobApplication::massAction( @$request->job_id,  @$request->cv_ids , 'ASSESSED' );
-                 $response = Curl::to('https://testing.insidifyenterprise.com/test-request')
+                 $response = Curl::to('https://seamlesstesting.com/test-request')
                                 ->withData( [ 'job_title' => $app->job->title, 'test_id' => $data['test_id'], 'job_application_id' => $app_id, 'applicant_name' => ucwords( @$app->cv->first_name. " " . @$app->cv->last_name ), 'applicant_email' => $app->cv->email, 'employer_name' => get_current_company()->name, 'employer_email' => get_current_company()->email , 'start_time' => $data['start_time'], 'end_time' => $data['end_time'] ] )
                                     ->post(); dump( $response );
             }

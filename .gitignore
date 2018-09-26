@@ -7,4 +7,5 @@ Homestead.yaml
 Homestead.json
 .env
 /.idea
+/.vscode
 /public_html/uploads

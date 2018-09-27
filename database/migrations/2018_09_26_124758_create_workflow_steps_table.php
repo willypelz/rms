@@ -17,10 +17,11 @@ class CreateWorkflowStepsTable extends Migration
             $table->increments('id');
             $table->bigInteger('workflow_id')->unsigned();
             $table->string('name');
+            $table->text('description')->nullable();
             $table->integer('rank')->default(0);
             $table->boolean('requires_approval')->default(false);
             $table->boolean('is_approved')->default(false);
-            $table->boolean('show_to_applicant')->default(false);
+            $table->boolean('visible_to_applicant')->default(false);
             $table->longText('message_template')->nullable();
 
             $table->softDeletes();

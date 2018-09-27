@@ -4,7 +4,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCustomWorkflowsTable extends Migration
+class CreateWorkflowsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,6 +16,7 @@ class CreateCustomWorkflowsTable extends Migration
         Schema::create('workflows', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->text('description')->nullable();
             $table->bigInteger('company_id')->unsigned();
 
             $table->softDeletes();

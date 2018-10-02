@@ -15,6 +15,8 @@
     <section>
         <div class="container">
 
+            @include('layout.alerts')
+
             <div class="row">
 
                 <div class="col-md-6">
@@ -40,6 +42,26 @@
                                             - {{ $workflowStep->rank }} -
                                         </div>
                                     </div>
+
+                                    <div class="pull-right">
+                                        <a href="{{ route('step-edit', ['id' => $workflowStep->id]) }}"
+                                           class="btn btn-primary btn-sm">
+                                            <i class="fa fa-pencil fa-fw"></i>
+                                            Edit
+                                        </a>
+
+                                        <form action="{{ route('step-delete', ['id' => $workflowStep->id]) }}"
+                                              method="post"
+                                              class="delete-spoof">
+                                            {{ csrf_field() }}
+
+                                            <input type="hidden" name="_method" value="delete">
+
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fa fa-times-circle fa-fw"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         @endforeach
@@ -57,8 +79,6 @@
                     <h4>Create Steps</h4>
                     <div class="panel panel-default">
                         <div class="panel-body">
-
-                            @include('layout.alerts')
 
                             <form action="{{ route('workflow-steps-store', ['id' => $workflow->id]) }}" method="post">
 
@@ -97,6 +117,21 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="approvalUsers">Approval Users</label>
+                                    <select class="select2"
+                                            name="approval_users[]"
+                                            id="approvalUsers"
+                                            multiple
+                                            style="width: 100%;">
+                                        @foreach($currentCompanyUsers as $currentCompanyUser)
+                                            <option value="{{ $currentCompanyUser->id }}">
+                                                {{ $currentCompanyUser->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
                                     <input type="checkbox"
                                            name="visible_to_applicant"
                                            id="visibleToApplicant"
@@ -118,7 +153,7 @@
                                     <textarea name="message_template"
                                               id="messageTemplate"
                                               placeholder="... ... .."
-                                              class="form-control">{{ old('messageTemplate') }}</textarea>
+                                              class="form-control">{{ old('message_template') }}</textarea>
                                 </div>
 
                                 <div class="form-group">

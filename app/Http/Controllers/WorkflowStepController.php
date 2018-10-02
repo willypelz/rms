@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Workflow;
 use App\Models\WorkflowStep;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
 
 class WorkflowStepController extends Controller
 {
@@ -20,15 +19,18 @@ class WorkflowStepController extends Controller
             return redirect()->route('workflow');
         }
 
+        $currentCompanyUsers = Company::with('users')->find(get_current_company()->id)->users;
+
         return view('workflow.step.create')
-            ->with([
-                'workflow' => $workflow,
-            ]);
+            ->with(compact([
+                'workflow',
+                'currentCompanyUsers'
+            ]));
     }
 
     public function store(Request $request, $id)
     {
-        if (!$workflow = Workflow::find($id)) {
+        if (!$workflow = Workflow::with('workflowSteps')->find($id)) {
             return redirect()->route('workflow');
         }
 
@@ -37,7 +39,14 @@ class WorkflowStepController extends Controller
             'rank' => 'required|integer',
         ]);
 
-        if ($workflow->workflowSteps()->create($request->all())) {
+        if ($newWorkflowStep = $workflow->workflowSteps()->create($request->all())) {
+
+            // attach users that can approval steps
+            if ($approval_users = $request->input('approval_users')) {
+                $newWorkflowStep->approvals()
+                    ->attach($approval_users);
+            }
+
             return redirect()
                 ->back()
                 ->with('success', 'Step added successfully');

@@ -10,6 +10,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -35,5 +36,20 @@ class WorkflowStep extends Model
     public function workflow()
     {
         return $this->belongsTo(Workflow::class);
+    }
+
+    /**
+     * Approvals refer to Users to approve a step
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function approvals()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'approval_workflow_step',
+            'workflow_step_id',
+            'user_id'
+        );
     }
 }

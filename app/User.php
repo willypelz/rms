@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\WorkflowStep;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
@@ -13,7 +14,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','invite_code'
+        'name',
+        'email',
+        'password',
+        'invite_code'
     ];
 
     /**
@@ -22,12 +26,23 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
 
     ];
 
     public function companies()
     {
         return $this->belongsToMany('App\Models\Company', 'company_users')->withPivot('role');
+    }
+
+    public function workflowSteps()
+    {
+        return $this->belongsToMany(
+            WorkflowStep::class,
+            'approval_workflow_step',
+            'user_id',
+            'workflow_step_id'
+        );
     }
 }

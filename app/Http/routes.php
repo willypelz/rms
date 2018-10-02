@@ -32,8 +32,6 @@ use Illuminate\Support\Facades\Route;
 
 URL::forceSchema('https');
 
-
-
 Route::group(['middleware' => ['web']], function () {
 
     Route::controller('schedule', 'ScheduleController');
@@ -571,16 +569,22 @@ Route::group(['middleware' => 'web'], function () {
         Route::group([
             'prefix' => '/workflow'
         ], function () {
+            // Workflow
             Route::get('/{id}/view', 'WorkflowController@show')->name('workflow-show');
-            Route::get('/create', 'WorkflowController@create')->name('workflow-create');
+            Route::get('/create', 'WorkfelowController@create')->name('workflow-create');
             Route::get('/{id}/edit', 'WorkflowController@editView')->name('workflow-edit');
             Route::match(['put', 'patch'], '/{id}/edit', 'WorkflowController@update')->name('workflow-update');
             Route::delete('/{id}', 'WorkflowController@destroy')->name('workflow-delete');
 
-            // Workflow Steps
+            // Workflow <-> Steps
             Route::get('/{id}/steps/add', 'WorkflowStepController@create')->name('workflow-steps-add');
             Route::post('/{id}/steps/add', 'WorkflowStepController@store')->name('workflow-steps-store');
         });
+
+        // Steps
+        Route::get('/step/{id}/edit', 'StepController@edit')->name('step-edit');
+        Route::match(['put', 'patch'], '/step/{id}/edit', 'StepController@update');
+        Route::delete('/step/{id}', 'StepController@destroy')->name('step-delete');
 
     });
 

@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Auth;
 use DB;
 use App\ActivationService;
+use Illuminate\Support\Facades\Hash;
 
 
 class AuthController extends Controller
@@ -108,6 +109,26 @@ class AuthController extends Controller
         }else{
             echo 'Failed';
         }
+    }
+
+    public function autoLogin(Request $request)
+    {
+        $email = "demo@demo.com";
+        $password = "password";
+        $generated_code = $email."%&&%".$password;
+
+        if( Hash::check($generated_code,$request->code) ) {
+            if (Auth::attempt(['email' => $email, 'password' => $password])) {
+                return redirect('/dashboard');
+            }else{
+                echo 'Not Authenticated';
+            }
+        }
+        else
+        {
+            echo 'Not Authenticated';
+        }
+
     }
 
     public function authenticated(Request $request, $user)

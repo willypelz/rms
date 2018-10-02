@@ -34,7 +34,7 @@
 <table style="margin: 0 0 15px 0;
     width: 100%;"><tbody><tr><td width="25%" nowrap="">
 
-<p><img src="https://cdn.insidify.com/dist/img/logos/seamlesshiring.svg" title="seamlesshiring"></p>
+<p><img src="http://seamlesshiring.com/img/seamlesshiring-logo.png" title="seamlesshiring"></p>
 </td><td width="50%" align="center">
 
 <!-- <font style="font-size: 16px;

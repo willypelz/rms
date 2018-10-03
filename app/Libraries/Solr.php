@@ -6,8 +6,17 @@ use Auth;
 use App\Models\Job;
 
 class Solr {
-static $url = "http://34.240.11.68:8983/solr/";
-	static $host = "http://34.240.11.68:8983/solr/resumes/select?";
+	static $url;
+	static $host;
+	static $core;
+
+	static function init()
+	{
+		Solr::$url = env("SOLR_URL");
+		Solr::$core = env("SOLR_CORE");
+		Solr::$host = env("SOLR_URL").Solr::$core."/select?";
+		
+	}
 
 	static $default_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'last_modified+desc', 'grouped'=>FALSE ];
 	
@@ -314,7 +323,7 @@ static $url = "http://34.240.11.68:8983/solr/";
 		
 		$sort = 'score+desc';
 		
-		$filename = Solr::$url.'resumes/select?q={!q.op=AND}'.$q.'&rows='.$row.'&start='.$start.'&facet=true&facet.field=exp_company&facet.field=state&facet.field=gender&facet.field=experience&facet.field=edu_end_year&facet.field=edu_school&facet.field=edu_grade&facet.field=marital_status&facet.field=religion&facet.date=dob&facet.date.start=NOW/DAY-60YEAR&facet.date.end=NOW/DAY-10YEAR&facet.date.gap=%2B1YEAR&wt=json&sort=rank+desc';
+		$filename = Solr::$url.Solr::$core.'/select?q={!q.op=AND}'.$q.'&rows='.$row.'&start='.$start.'&facet=true&facet.field=exp_company&facet.field=state&facet.field=gender&facet.field=experience&facet.field=edu_end_year&facet.field=edu_school&facet.field=edu_grade&facet.field=marital_status&facet.field=religion&facet.date=dob&facet.date.start=NOW/DAY-60YEAR&facet.date.end=NOW/DAY-10YEAR&facet.date.gap=%2B1YEAR&wt=json&sort=rank+desc';
 
 		// echo $filename.'<br/>';
 			
@@ -404,8 +413,12 @@ static $url = "http://34.240.11.68:8983/solr/";
 	}
 
 
-	static function update_core($core = 'resumes', $command="delta-import"){
+	static function update_core($core = null, $command="delta-import"){
 
+		if( is_null( $core ) )
+		{
+			$core = Solr::$core;
+		}
 		$url = Solr::$url."".$core."/dataimport?command=".$command;
 
 		try {
@@ -433,7 +446,7 @@ static $url = "http://34.240.11.68:8983/solr/";
 		
 		$sort = 'score+desc';
 		
-		$filename = Solr::$url.'resumes/select?q='.$q.'&rows='.$row.'&start='.$start.'&wt=json&sort=rank+desc';
+		$filename = Solr::$url.Solr::$core.'/select?q='.$q.'&rows='.$row.'&start='.$start.'&wt=json&sort=rank+desc';
 			
 		// echo $filename;
 
@@ -522,7 +535,7 @@ static $url = "http://34.240.11.68:8983/solr/";
 			$sort = 'post_date+desc';
 		else
 			$sort = 'score+desc';
-		$filename = Solr::$url."resumes/select?q=".$type.":".trim($q).$dq."&fq=-personal_url:[*+TO+*]&rows=".$row."&start=".$start
+		$filename = Solr::$url.Solr::$core."/select?q=".$type.":".trim($q).$dq."&fq=-personal_url:[*+TO+*]&rows=".$row."&start=".$start
 							."&fq=".$sign."userId:(".$followers.")&facet=false&wt=json";
 							
 		// echo $filename.'<br/>---<br/><br/>';
@@ -575,5 +588,7 @@ static $url = "http://34.240.11.68:8983/solr/";
 	}*/
 	
 }
+
+Solr::init();
 
 /* End of file Sms.php */

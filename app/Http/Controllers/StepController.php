@@ -13,8 +13,6 @@ class StepController extends Controller
             return redirect()->back();
         }
 
-        // dd($workflowStep);
-
         return view('workflow.step.edit')
             ->with('workflowStep', $workflowStep);
     }
@@ -24,8 +22,6 @@ class StepController extends Controller
         if (!$workflowStep = WorkflowStep::with('workflow')->find($id)) {
             return redirect()->route('workflow');
         }
-
-//        dd($workflowStep->workflow->id);
 
         $this->validate($request, [
             'name' => 'required',

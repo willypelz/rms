@@ -35,4 +35,6 @@
             width: 1140px;
         }
     </style>
+
+    <link rel="stylesheet" href="{{ secure_asset('css/update-2018.css')  }}">
 </head>

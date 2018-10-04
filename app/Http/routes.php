@@ -183,6 +183,8 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::post('log-in', 'Auth\AuthController@login');
 
+    Route::get('/auto-login/{code}', 'Auth\AuthController@autoLogin');
+
     // Route::get('sign-up', 'Auth\AuthController@showRegistrationForm');
 
     // Route::post('sign-up', 'Auth\AuthController@register');

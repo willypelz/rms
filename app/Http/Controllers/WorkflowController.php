@@ -5,9 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Workflow;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use Illuminate\Support\Facades\Auth;
-
 class WorkflowController extends Controller
 {
     public function index(Request $request)

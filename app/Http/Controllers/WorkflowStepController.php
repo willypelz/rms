@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\Workflow;
-use App\Models\WorkflowStep;
 use Illuminate\Http\Request;
 
 class WorkflowStepController extends Controller

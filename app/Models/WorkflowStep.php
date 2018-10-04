@@ -36,7 +36,7 @@ class WorkflowStep extends Model
 
     public function setSlugAttribute($value)
     {
-        $this->slug = str_slug($value) . '-' . substr(md5($value . time()), 0, 6);
+        $this->attributes['slug'] = str_slug($value);
     }
 
     public function workflow()

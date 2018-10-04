@@ -38,7 +38,7 @@ class WorkflowStepController extends Controller
             'rank' => 'required|integer',
         ]);
 
-        if ($newWorkflowStep = $workflow->workflowSteps()->create($request->all())) {
+        if ($newWorkflowStep = $workflow->workflowSteps()->create($request->all() + ['slug' => $request->name])) {
 
             // attach users that can approval steps
             if ($approval_users = $request->input('approval_users')) {

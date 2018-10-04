@@ -20,7 +20,20 @@ class Job extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'details', 'company_id', 'location', 'status', 'post_date', 'expiry_date', 'job_level', 'position', 'published', 'experience'];
+    protected $fillable = [
+        'title',
+        'details',
+        'company_id',
+        'workflow_id',
+        'location',
+        'status',
+        'post_date',
+        'expiry_date',
+        'job_level',
+        'position',
+        'published',
+        'experience'
+    ];
 
 
     public function boards()
@@ -44,8 +57,6 @@ class Job extends Model
         return $this->hasMany('App\Models\FormFields');
     }
 
-    
-
     public function activities()
     {
         return $this->hasMany('App\Models\JobActivity');
@@ -66,4 +77,8 @@ class Job extends Model
         return $this->belongsToMany('App\User', 'job_users')->withPivot('role');
     }
 
+    public function workflow()
+    {
+        return $this->belongsTo(WorkflowStep::class);
+    }
 }

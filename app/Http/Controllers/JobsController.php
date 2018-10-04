@@ -1493,6 +1493,8 @@ class JobsController extends Controller
                 return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug, 'already_applied' => true]);
             }
 
+
+
             if ($request->hasFile('cv_file')) {
 
                 $filename = time().'_'.str_slug($request->email).'_'.$request->file('cv_file')->getClientOriginalName();

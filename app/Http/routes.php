@@ -158,21 +158,21 @@ Route::group(['middleware' => 'web'], function () {
         return view('payment.payment_succes');
     });
 
-    Route::get('simple-pay', function(){
+    Route::get('simple-pay', function () {
 
-        $user = 'AYolana';
+        $user  = 'AYolana';
         $email = Mail::send('emails.cv-sales.invoice', ['user' => $user], function ($message) {
             $message->from('us@example.com', 'Laravel');
 
             $message->to('lanaayodele@gmail.com');
         });
 
-       if( count(Mail::failures()) > 0 ) {
+        if (count(Mail::failures()) > 0) {
 //        dd(Mail::failures());
 
-} else {
-    echo "No errors, all sent successfully!";
-}
+        } else {
+            echo "No errors, all sent successfully!";
+        }
 
         // dd('here');
         // dd(save_activities('APPLIED', '10', '9', ''));
@@ -588,6 +588,17 @@ Route::group(['middleware' => 'web'], function () {
         Route::match(['put', 'patch'], '/step/{id}/edit', 'StepController@update');
         Route::delete('/step/{id}', 'StepController@destroy')->name('step-delete');
 
+    });
+
+    // Administrators
+    Route::get('/admin', function (){
+        return view('Admin.Layouts.default');
+    });
+    Route::group([
+        'prefix' => '/admin',
+        'middleware' => 'admin'
+    ], function () {
+        //
     });
 
 

@@ -24,6 +24,7 @@ class WorkflowStep extends Model
 
     protected $fillable = [
         'name',
+        'slug',
         'rank',
         'description',
         'workflow_id',
@@ -32,6 +33,11 @@ class WorkflowStep extends Model
         'visible_to_applicant',
         'message_template',
     ];
+
+    public function setSlugAttribute($value)
+    {
+        $this->slug = str_slug($value) . '-' . substr(md5($value . time()), 0, 6);
+    }
 
     public function workflow()
     {

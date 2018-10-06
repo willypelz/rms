@@ -41,6 +41,11 @@ return [
             'provider' => 'users',
         ],
 
+        'candidate' => [
+            'driver' => 'session',
+            'provider' => 'candidate',
+        ],
+
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
@@ -68,6 +73,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
+        ],
+
+        'candidate' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Cv::class,
         ],
 
         // 'users' => [

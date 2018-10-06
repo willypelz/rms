@@ -43,6 +43,7 @@ Route::get('hospital-project', function() {
     return view ('lifeplan', compact('agent'));
 });
 
+
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
     Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
@@ -50,6 +51,16 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/', function () {
 
         return view('guest.landing');
+    });
+    // Candidate
+    Route::group(['prefix'=>'candidate'], function(){
+
+        Route::match(['get','post'],'/login', 'CandidateController@login')->name('candidate-login');
+
+        Route::match(['get','post'],'/logout', 'CandidateController@logout')->name('candidate-logout');
+
+        Route::match(['get','post'],'/dashboard', 'CandidateController@dashboard')->name('candidate-dashboard');
+
     });
 
     Route::get('/test', function () {
@@ -182,6 +193,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('log-in', 'Auth\AuthController@showLoginForm');
 
     Route::post('log-in', 'Auth\AuthController@login');
+
+    
+    
 
     // Route::get('sign-up', 'Auth\AuthController@showRegistrationForm');
 

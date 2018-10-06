@@ -1460,7 +1460,14 @@ class JobsController extends Controller
     }
 
     public function jobApply($jobID, $slug, Request $request){
+            
+        if( !Auth::guard('candidate')->check() )
+        {
+            return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
+        }
 
+        
+        // dd( Auth::guard('candidate')->attempt() );
         $job = Job::with('company')->where('id', $jobID)->first();
         $company = $job->company;
         $specializations = Specialization::get();
@@ -1628,8 +1635,9 @@ class JobsController extends Controller
         
         $company->logo = get_company_logo($company->logo);
         
+        $candidate = Auth::guard('candidate')->user();
         
-        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades','custom_fields'));
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades','custom_fields', 'candidate'));
 
     }
 

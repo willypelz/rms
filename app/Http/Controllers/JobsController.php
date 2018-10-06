@@ -524,8 +524,6 @@ class JobsController extends Controller
 
                     }
 
-
-
             Session::flash('flash_message', 'Congratulations! Your job has been posted on '.$flash_boards.'. You will begin to receive applications from those job boards shortly - <i>this is definite</i>.');
             return redirect()->route('post-success', ['jobID' => $job->id]);
         }

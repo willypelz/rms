@@ -26,17 +26,19 @@ class WorkflowStep extends Model
         'name',
         'slug',
         'rank',
+        'type',
         'description',
         'workflow_id',
         'requires_approval',
         'is_approved',
         'visible_to_applicant',
         'message_template',
+        'is_readonly',
     ];
 
     public function setSlugAttribute($value)
     {
-        $this->attributes['slug'] = str_slug($value);
+        $this->attributes['slug'] = strtoupper(str_slug($value));
     }
 
     public function workflow()

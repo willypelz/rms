@@ -20,10 +20,35 @@ class WorkflowController extends Controller
             'name' => 'required',
         ]);
 
-        if (Workflow::create($request->all() + ['company_id' => get_current_company()->id])) {
+        if ($workflow = Workflow::create($request->all() + ['company_id' => get_current_company()->id])) {
+            $msg = '';
+            // Create default readonly step
+            if ($workflow->workflowSteps()->createMany([
+                [
+                    'name' => 'All',
+                    'slug' => 'all',
+                    'rank' => '1',
+                    'type' => 'normal',
+                    'is_readonly' => true,
+                    'description' => 'List of all the applicants for this job.',
+                ],
+                [
+                    'name' => 'Pending',
+                    'slug' => 'pending',
+                    'rank' => '1',
+                    'type' => 'normal',
+                    'is_readonly' => true,
+                    'description' => 'All applicants are listed here until at least a recruitment action is taken.',
+                ],
+            ])) {
+                $msg = 'Workflow created successfully';
+            } else {
+                $msg = 'Error creating default Workflow Steps, while Workflow created successfully';
+            }
+
             return redirect()
                 ->back()
-                ->with('success', 'Workflow created successfully');
+                ->with('success', $msg);
         }
 
         return redirect()
@@ -61,14 +86,14 @@ class WorkflowController extends Controller
             ->back()
             ->with('error', 'Can not update Workflow, try again!!');
     }
-    
+
     public function destroy(Request $request, $id)
     {
         if (!$workflow = Workflow::find($id)) {
             return redirect()->route('workflow');
         }
 
-        if($workflow->delete()){
+        if ($workflow->delete()) {
             return redirect()
                 ->back()
                 ->with('success', 'Workflow deleted successfully');

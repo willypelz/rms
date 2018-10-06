@@ -53,9 +53,10 @@
                 
                     <div class="col-xs-6 job-progress-xs">
                     <div class="pull-left text-white small" style="margin-top: 24px;">Recruitment<br>Stage &nbsp; &rarr;</div>
-                        <?php 
+                        <?php
 
-                            if( $application_statuses['HIRED'] > 0 )
+
+                            /*if( $application_statuses['HIRED'] > 0 )
                             {
                                 $stage = "HIRED";
                             }
@@ -87,33 +88,38 @@
                             else
                             {
                                 $stage = "NEW";
-                            }
+                            }*/
 
                         ?>
-                        <ul class="pagination pull-right job-progress">
+                        {{--<ul class="pagination pull-right job-progress">
                                 <li class="{{ ( $stage == "NEW" ) ? 'active' : '' }}" ><a href="#">New</a>
                                 </li>
                             <!-- <li><a href="#">In Review</a>
                             </li> -->
                           
-                                <li class="{{ ( $stage == "SHORTLISTED" ) ? 'active' : '' }}" ><a href="#">Shortlist</a>
+                                <li class="{{ ( $stage == "SHORTLISTED" ) ? 'active' : '' }}">
+                                    <a href="#">Shortlist</a>
                                 </li>
                             
                           
-                                <li class="{{ ( $stage == "ASSESSED" ) ? 'active' : '' }}" ><a href="#">Test</a>
+                                <li class="{{ ( $stage == "ASSESSED" ) ? 'active' : '' }}">
+                                    <a href="#">Test</a>
                                 </li>
                             
                             
-                                <li class="{{ ( $stage == "INTERVIEWED" ) ? 'active' : '' }}" ><a href="#">Interview</a>
+                                <li class="{{ ( $stage == "INTERVIEWED" ) ? 'active' : '' }}">
+                                    <a href="#">Interview</a>
                                 </li>
                                 
-                                <li class="{{ ( $stage == "WAITING" ) ? 'active' : '' }}" ><a href="#">Waiting</a>
+                                <li class="{{ ( $stage == "WAITING" ) ? 'active' : '' }}">
+                                    <a href="#">Waiting</a>
                                 </li>
                             
-                                <li class="{{ ( $stage == "HIRED" ) ? 'active' : '' }}" ><a href="#">Hire</a>
+                                <li class="{{ ( $stage == "HIRED" ) ? 'active' : '' }}">
+                                    <a href="#">Hire</a>
                                 </li>
                             
-                        </ul>
+                        </ul>--}}
                 
                         <!-- Select Job Status -->
                 

@@ -21,11 +21,12 @@
                 <div class="tab-content">
                     <div class="row">
 
-                     <div class="col-xs-12">@include('job.board.includes.applicant-status')</div>
+                     <div class="col-xs-12">
+                         @include('job.board.includes.applicant-status')
+                     </div>
 
                         <!-- applicant -->
                         <div class="col-xs-8 ">
-
 
                             <div class="row">
 

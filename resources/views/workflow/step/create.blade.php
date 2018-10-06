@@ -21,7 +21,11 @@
 
                 <div class="col-md-6">
                     <h4>
-                        {{ $workflow->name }} <span class="text-muted">-> Workflow</span>
+                        {{ $workflow->name }}
+                        <span class="text-muted">
+                            <->
+                            <a href="{{ route('workflow') }}" class="text-muted">Workflow</a>
+                        </span>
                     </h4>
 
                     @if($workflow->workflowSteps()->exists())
@@ -39,29 +43,34 @@
                                             {{ ($workflowStep->visible_to_applicant) ? 'Yes' : 'No' }}
                                         </p>
                                         <div class="">
-                                            - {{ $workflowStep->rank }} -
+                                            - {{ $workflowStep->rank }}
+                                            - {!! $workflowStep->is_readonly
+                                            ? '<span class="text-warning">Readonly</span>'
+                                            : '<span class="text-info">Writable</span>' !!}
                                         </div>
                                     </div>
 
-                                    <div class="pull-right">
-                                        <a href="{{ route('step-edit', ['id' => $workflowStep->id]) }}"
-                                           class="btn btn-primary btn-sm">
-                                            <i class="fa fa-pencil fa-fw"></i>
-                                            Edit
-                                        </a>
+                                    @if(!$workflowStep->is_readonly)
+                                        <div class="pull-right">
+                                            <a href="{{ route('step-edit', ['id' => $workflowStep->id]) }}"
+                                               class="btn btn-primary btn-sm">
+                                                <i class="fa fa-pencil fa-fw"></i>
+                                                Edit
+                                            </a>
 
-                                        <form action="{{ route('step-delete', ['id' => $workflowStep->id]) }}"
-                                              method="post"
-                                              class="delete-spoof">
-                                            {{ csrf_field() }}
+                                            <form action="{{ route('step-delete', ['id' => $workflowStep->id]) }}"
+                                                  method="post"
+                                                  class="delete-spoof">
+                                                {{ csrf_field() }}
 
-                                            <input type="hidden" name="_method" value="delete">
+                                                <input type="hidden" name="_method" value="delete">
 
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fa fa-times-circle fa-fw"></i>
-                                            </button>
-                                        </form>
-                                    </div>
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fa fa-times-circle fa-fw"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         @endforeach
@@ -94,16 +103,34 @@
                                            class="form-control">
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="rank">Rank/Priority</label>
-                                    <input type="number"
-                                           min="0"
-                                           step="1"
-                                           name="rank"
-                                           id="rank"
-                                           value="{{ old('rank') }}"
-                                           placeholder="10"
-                                           class="form-control">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="rank">Rank/Priority</label>
+                                            <input type="number"
+                                                   min="1"
+                                                   step="1"
+                                                   name="rank"
+                                                   id="rank"
+                                                   value="{{ old('rank') }}"
+                                                   placeholder="10"
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="type">Type</label>
+                                            <select name="type"
+                                                    id="type"
+                                                    class="select2"
+                                                    style="width: 100%;">
+                                                <option value="">- select -</option>
+                                                @foreach(config('workflowStepTypes') as $stepSlug => $stepLabel)
+                                                    <option value="{{ $stepSlug }}">{{ $stepLabel }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">

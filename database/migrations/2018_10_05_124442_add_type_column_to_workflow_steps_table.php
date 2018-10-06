@@ -4,7 +4,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 
-class AddWorkflowIdColumnToJobsTable extends Migration
+class AddTypeColumnToWorkflowStepsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddWorkflowIdColumnToJobsTable extends Migration
      */
     public function up()
     {
-        Schema::table('jobs', function (Blueprint $table) {
-            $table->integer('workflow_id')->after('description');
+        Schema::table('workflow_steps', function (Blueprint $table) {
+            $table->string('type')->after('rank');
         });
     }
 
@@ -25,8 +25,8 @@ class AddWorkflowIdColumnToJobsTable extends Migration
      */
     public function down()
     {
-        Schema::table('jobs', function (Blueprint $table) {
-            $table->dropColumn('workflow_id');
+        Schema::table('workflow_steps', function (Blueprint $table) {
+            $table->dropColumn('type');
         });
     }
 }

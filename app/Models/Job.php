@@ -79,6 +79,6 @@ class Job extends Model
 
     public function workflow()
     {
-        return $this->belongsTo(WorkflowStep::class);
+        return $this->belongsTo(Workflow::class);
     }
 }

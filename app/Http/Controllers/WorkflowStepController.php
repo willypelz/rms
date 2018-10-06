@@ -35,7 +35,8 @@ class WorkflowStepController extends Controller
 
         $this->validate($request, [
             'name' => 'required',
-            'rank' => 'required|integer',
+            'rank' => 'required|integer|min:1',
+            'type' => 'required',
         ]);
 
         if ($newWorkflowStep = $workflow->workflowSteps()->create($request->all() + ['slug' => $request->name])) {

@@ -620,7 +620,6 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::get('modal/step-action/{step}/{stepSlug}', 'JobApplicationsController@modalStepAction')->name('modal-step-action');
 
-
     });
 
     // Administrators

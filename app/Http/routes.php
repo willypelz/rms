@@ -63,9 +63,16 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::match(['get','post'],'/{application_id}/messages', 'CandidateController@messages')->name('candidate-messages');
 
+        Route::match(['get','post'],'/messages/send', 'CandidateController@sendMessage')->name('candidate-send-message');
+
+         
+        
+
         
 
     });
+
+
 
     Route::get('/test', function () {
 
@@ -489,9 +496,13 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::group(['prefix' => 'applicant'], function () {
 
+
         Route::get('profile/{appl_id}', ['uses' => 'JobApplicationsController@Profile', 'as' => 'applicant-profile']);
+
         Route::get('messages/{appl_id}',
             ['uses' => 'JobApplicationsController@Messages', 'as' => 'applicant-messages']);
+        Route::match(['get','post'],'/messages/send', 'JobApplicationsController@sendMessage')->name('admin-send-message');
+
         Route::get('activities/{appl_id}',
             ['uses' => 'JobApplicationsController@activities', 'as' => 'applicant-activities']);
         Route::get('checks/{appl_id}', ['uses' => 'JobApplicationsController@checks', 'as' => 'applicant-checks']);

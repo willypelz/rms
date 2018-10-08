@@ -35,7 +35,7 @@ use File;
 use App\Models\InterviewNoteOptions;
 use App\Models\InterviewNoteValues;
 use App\Models\InterviewNoteTemplates;
-
+use App\Models\Message as CandidateMessage;
 
 
 class JobApplicationsController extends Controller
@@ -226,9 +226,39 @@ class JobApplicationsController extends Controller
 
         $nav_type = 'messages';
 
-        // dd($appl->toArray());
+        $messages = CandidateMessage::where( 'job_application_id', $appl->id )->get();
+        return view('applicant.messages', compact('appl', 'nav_type','messages'));
 
-        return view('applicant.messages', compact('appl', 'nav_type'));
+    }
+
+
+    public function sendMessage(Request $request)
+    {
+
+        if( $request->hasFile('attachment') )
+        {
+            $file_name  = (@$request->attachment->getClientOriginalName());
+            $fi =  @$request->file('attachment')->getClientOriginalExtension(); 
+            $attachment = $request->application_id.'-'.time().'-'.$file_name;
+
+            $upload = $request->file('attachment')->move(
+                env('fileupload'), $attachment
+            );
+        }
+        else
+        {
+            $attachment = '';
+        }
+
+        CandidateMessage::create([
+            'job_application_id' => $request->application_id,
+            'message' => $request->message,
+            'attachment'=> $attachment,
+            'user_id' => Auth::user()->id
+        ]);
+        $application_id = $request->application_id;
+
+        return redirect()->route('applicant-messages', ['appl_id' => $application_id]); 
 
     }
 

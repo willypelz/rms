@@ -13,19 +13,21 @@ use App\Models\JobApplication;
 use App\Libraries\Solr;
 use Auth;
 use App\Models\FolderContent;
+use App\Models\Message;
 use Mail;
 
 
 class CandidateController extends Controller
 {
+ 
+
     public function login(Request $request)
     {
-
-        $redirect_to = $request->redirect_to;
         if( Auth::guard('candidate')->check() )
         {
-            // return redirect()->route('candidate-dashboard');
+            return redirect()->route('candidate-dashboard');
         }
+        $redirect_to = $request->redirect_to;
 
         if( $request->isMethod('post') )
         {
@@ -57,6 +59,7 @@ class CandidateController extends Controller
 
     public function register(Request $request)
     {
+
         $redirect_to = $request->redirect_to;
 
         
@@ -96,6 +99,7 @@ class CandidateController extends Controller
 
     public function forgot(Request $request)
     {
+
         $redirect_to = $request->redirect_to;
         return view('candidate.forgot', compact('redirect_to'));
     }
@@ -110,11 +114,21 @@ class CandidateController extends Controller
 
     public function dashboard(Request $request)
     {
+        if( !Auth::guard('candidate')->check() )
+        {
+            return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
+        }
+
         return view('candidate.dashboard');
     }
 
     public function activities(Request $request)
     {
+        if( !Auth::guard('candidate')->check() )
+        {
+            return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
+        }
+
         $application_id = $request->application_id;
         $ignore_list = [
             'JOB-CREATED'
@@ -127,6 +141,42 @@ class CandidateController extends Controller
 
     public function messages(Request $request)
     {
-        return view('candidate.messages');
+        if( !Auth::guard('candidate')->check() )
+        {
+            return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
+        }
+
+        $application_id = $request->application_id;
+        $messages = Message::where( 'job_application_id', $request->application_id )->get();
+        return view('candidate.messages', compact('messages','application_id'));
+    }
+
+    public function sendMessage(Request $request)
+    {
+
+        if( $request->hasFile('attachment') )
+        {
+            $file_name  = (@$request->attachment->getClientOriginalName());
+            $fi =  @$request->file('attachment')->getClientOriginalExtension(); 
+            $attachment = $request->application_id.'-'.time().'-'.$file_name;
+
+            $upload = $request->file('attachment')->move(
+                env('fileupload'), $attachment
+            );
+        }
+        else
+        {
+            $attachment = '';
+        }
+
+        Message::create([
+            'job_application_id' => $request->application_id,
+            'message' => $request->message,
+            'attachment'=> $attachment,
+        ]);
+        $application_id = $request->application_id;
+
+        return redirect()->route('candidate-messages', ['application_id' => $application_id]); 
+
     }
 }

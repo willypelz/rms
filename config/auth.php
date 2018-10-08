@@ -77,7 +77,7 @@ return [
 
         'candidate' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Cv::class,
+            'model' => App\Models\Candidate::class,
         ],
 
         // 'users' => [

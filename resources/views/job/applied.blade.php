@@ -138,27 +138,18 @@
                                             @if( @$already_applied == true )
                                               
                                               <h3 class="text-brandon">Congratulations!</h3> 
-                                              <p class="lead">Your have previously applied for this job.</p> 
-
-                                              <p>You can <a href="https://insidify.com/register" target="_blank">sign up</a> to <a href="https://insidify.com/" target="_blank">Insidify.com</a> to find several other jobs like this from all over the internet.</p> 
-
-                                              <p>
-                                                  <a href="https://insidify.com/register" target="_blank" class="btn btn-success btn-lg">Sign Up Here</a>
-                                              </p>
-    
-
+                                              <p class="lead">Your have previously applied for this job.</p>     
                                             @else
                                               <h3 class="text-brandon">Congratulations!</h3> 
                                               <p class="lead">Your application has been submitted.</p> 
-
-                                              <p>You can <a href="https://insidify.com/register" target="_blank">Sign up</a> to <a href="https://insidify.com/" target="_blank">Insidify.com</a> to receive updates on this job and find several other jobs like this from all over the internet.</p> 
-
-                                              <p>
-                                                  <a href="https://insidify.com/register" target="_blank" class="btn btn-success btn-lg">Sign up Here</a>
-                                              </p>
-
   
                                             @endif
+
+                                            <p>You can track your progress on your dashboard</p> 
+
+                                              <p>
+                                                  <a href="{{ route('candidate-dashboard') }}" class="btn btn-success btn-lg">Go to dashboard</a>
+                                              </p>
 
                                             <br>
                                         </div>
@@ -200,15 +191,15 @@
                                         </div>
 
 
-                                        <div class="col-sm-12"><hr></div>
 
 
-                                        <div class="col-sm-12">
+
+                                        <div class="col-sm-12 hidden">
                                             <h6 class="text-brandon">
                                                 See some useful articles that can help your career
                                             </h6><br>
                     <div id="owlPosts2" class="owl-carousel owl-theme hidden-sm">
-                        @if( count($posts) > 0 )
+                       {{--  @if( count($posts) > 0 )
                            @foreach(@$posts as $post)
                             <div class="item col-sm-4">
                                 <div class="panel-body text-left">
@@ -227,15 +218,15 @@
                             </div>
                           @endforeach  
 
-                        @endif
+                        @endif --}}
                     </div>
                                             
                                         </div>
 
 
-                                        <div class="col-sm-12"><hr></div>
 
-                                        <div class="col-sm-8 col-sm-offset-2 text-center">
+
+                                        <div class="col-sm-8 col-sm-offset-2 text-center hidden">
                                             <!-- <h6 class="text-brandon text-uppercase l-sp-5 no-margin">Application Report</h6> -->
                                             <Br/><Br/>
 
@@ -261,7 +252,7 @@
                                 <!--/tab-content-->
                                 <div class="page page-sm foot no-bod-rad">
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                                        <p>Powered by <a href="http://www.seamlesshiring.com"><img src="http://cdn.insidify.com/dist/img/logos/seamlesshiring.svg" width="100px" alt=""></a> <br>
+                                        <p>Powered by <a href="http://www.seamlesshiring.com"><img src="http://www.seamlesshiring.com/img/seamlesshiring-logo.png" width="100px" alt=""></a> <br>
                                         <small class="hidden text-muted">&copy; 2016. www.seamlessHiring.com</small></p>
                                     </div>
                                     <div class="clearfix"></div>

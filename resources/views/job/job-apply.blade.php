@@ -13,6 +13,11 @@
     <style type="text/css">
         .custom-field{ margin-bottom: 20px; }
         .custom-field input[type='radio'], .custom-field input[type='checkbox']{ margin-left: 10px; }
+        .candidate{     
+            padding: 15px 20px;
+            background: #eee;
+            border: 2px solid #ddd; 
+        }
     </style>
 
     <section class="no-pad">
@@ -62,7 +67,7 @@
                                     <div class=" job-cta">
                                     <div class="col-sm-12">
                                         <h3 class="pull-left">Job Application</h3>
-                                        <a class="pull-right" href="route('candidate-dashboard')"> {{ $candidate->first_name . " " . $candidate->last_name }} </a>
+                                        <a class="pull-right candidate" href="route('candidate-dashboard')"> {{ $candidate->first_name . " " . $candidate->last_name }} </a>
                                     </div>
                                         
                                         <div class="clearfix"></div>
@@ -87,19 +92,19 @@
                                         </div>
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-sm-6"><label for="job-title">first name <span class="text-danger">*</span></label><input id="job-title" name='first_name' value="{{ @$candidate->first_name }}" required type="text" class="form-control"></div>
-                                            <div class="col-sm-6"><label for="job-loc">last name <span class="text-danger">*</span></label><input id="job-loc" name="last_name" required value="{{ @$candidate->last_name }}" type="text" class="form-control"></div>
+                                            <div class="col-sm-6"><label for="job-title">first name <span class="text-danger">*</span></label><input id="job-title" name='first_name' value="{{ $candidate->first_name }}" required type="text" class="form-control"></div>
+                                            <div class="col-sm-6"><label for="job-loc">last name <span class="text-danger">*</span></label><input id="job-loc" name="last_name" required value="{{ $candidate->last_name }}" type="text" class="form-control"></div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <label for="job-title">email <span class="text-danger">*</span></label>
-                                                <input id="job-title" name='email' value="{{ @$candidate->email }}" required type="email" class="form-control">
+                                                <input id="job-title" name='email' value="{{ $candidate->email }}" required type="email" class="form-control">
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="job-loc">Phone <span class="text-danger">*</span></label>
-                                                <input id="job-loc" name="phone" value="{{ @$candidate->phone }}" required type="text" class="form-control">
+                                                <input id="job-loc" name="phone" value="{{ @$last_cv->phone }}" required type="text" class="form-control">
                                             </div>
                                         </div>
                                     </div>
@@ -107,13 +112,13 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <label for="job-title">State of Origin <span class="text-danger">*</span></label>
-                                                {{ Form::select('state_of_origin', $states, @$candidate->state_of_origin, array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
+                                                {{ Form::select('state_of_origin', $states, @$last_cv->state_of_origin, array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
 
                                             </div>
 
                                             <div class="col-sm-6">
                                                 <label for="job-title">Current Location <span class="text-danger">*</span></label>
-                                                {{ Form::select('location', $states, @$candidate->location, array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
+                                                {{ Form::select('location', $states, @$last_cv->location, array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
 
                                             </div>
 
@@ -124,15 +129,15 @@
                                         <div class="row">
                                             <div class="col-sm-4">
                                                 <label for="job-title">gender <span class="text-danger">*</span></label>
-                                                {{ Form::select('gender', array('Male' => 'Male', 'Female' => 'Female'), @$candidate->gender, array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
+                                                {{ Form::select('gender', array('Male' => 'Male', 'Female' => 'Female'), @$last_cv->gender, array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
 
                                             </div>
                                             <div class="col-sm-4">
                                                 <label for="job-title">marital status <span class="text-danger">*</span></label>
-                                                {{ Form::select('marital_status', array('Single' => 'Single', 'Married' => 'Married', 'Divorced'=>'Divorced', 'Separated'=>'Separated'), @$candidate->marital_status, array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
+                                                {{ Form::select('marital_status', array('Single' => 'Single', 'Married' => 'Married', 'Divorced'=>'Divorced', 'Separated'=>'Separated'), @$last_cv->marital_status, array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
 
                                             </div>
-                                            <div class="col-sm-4"><label for="job-loc">date of Birth <span class="text-danger">*</span></label><input id="datepicker2" required name="date_of_birth" value="{{ @$candidate->date_of_birth }}"  type="text" class=" form-control" required></div>
+                                            <div class="col-sm-4"><label for="job-loc">date of Birth <span class="text-danger">*</span></label><input id="datepicker2" required name="date_of_birth" value="{{ @$last_cv->date_of_birth }}"  type="text" class=" form-control" required></div>
                                         </div>
                                     </div>
                                     
@@ -144,7 +149,7 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <label for="job-title">Highest Qualifications<span class="text-danger">*</span></label>
-                                                {{ Form::select('highest_qualification', $qualifications, @$candidate->highest_qualification, array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
+                                                {{ Form::select('highest_qualification', $qualifications, @$last_cv->highest_qualification, array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
 
                                             </div>
 
@@ -153,7 +158,7 @@
                                 <select class="form-control" name="years_of_experience" required>
                                             <option>choose one</option>
                                                 @for( $i = 1; $i <= 50; $i ++ )
-                                                <option value="{{ $i }}" @if( @$candidate->years_of_experience == $i ) selected="selected" @endif >{{ $i }}</option>
+                                                <option value="{{ $i }}" @if( @$last_cv->years_of_experience == $i ) selected="selected" @endif >{{ $i }}</option>
                                                 @endfor
                                                 
                                         </select>
@@ -168,13 +173,13 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <label for="job-title">Last Company Worked <span class="text-danger">*</span></label>
-                                                {{ Form::text('last_company_worked', @$candidate->last_company_worked, array('class'=>'form-control', 'required' => 'required')) }}
+                                                {{ Form::text('last_company_worked', @$last_cv->last_company_worked, array('class'=>'form-control', 'required' => 'required')) }}
 
                                             </div>
 
                                             <div class="col-sm-6">
                                                 <label for="job-title">Last Position <span class="text-danger">*</span></label>
-                                                {{ Form::text('last_position', @$candidate->last_position, array('class'=>'form-control', 'required' => 'required')) }}
+                                                {{ Form::text('last_position', @$last_cv->last_position, array('class'=>'form-control', 'required' => 'required')) }}
 
                                             </div>
 
@@ -187,13 +192,13 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <label for="job-title">State of Origin <span class="text-danger">*</span></label>
-                                                {{ Form::select('state_of_origin', array('Lagos' => 'Lagos', 'Abuja' => 'Abuja'), @$candidate->state_of_origin, array('placeholder'=>'choose', 'class'=>'form-control')) }}
+                                                {{ Form::select('state_of_origin', array('Lagos' => 'Lagos', 'Abuja' => 'Abuja'), @$last_cv->state_of_origin, array('placeholder'=>'choose', 'class'=>'form-control')) }}
 
                                             </div>
 
                                             <div class="col-sm-6">
                                                 <label for="job-title">Current Location <span class="text-danger">*</span></label>
-                                                {{ Form::select('location', array('Lagos' => 'Lagos', 'Abuja' => 'Abuja'), @$candidate->location, array('placeholder'=>'choose', 'class'=>'form-control')) }}
+                                                {{ Form::select('location', array('Lagos' => 'Lagos', 'Abuja' => 'Abuja'), @$last_cv->location, array('placeholder'=>'choose', 'class'=>'form-control')) }}
 
                                             </div>
 
@@ -206,8 +211,8 @@
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <label for="">Are you willing to relocate?<span class="text-danger">*</span></label><br/>
-                                                <label>{{ Form::radio('willing_to_relocate', 'yes',  @$candidate->willing_to_relocate, ['required']) }} Yes</label>
-                                                <label>{{ Form::radio('willing_to_relocate', 'no', @!$candidate->willing_to_relocate, ['required']) }} No </label>
+                                                <label>{{ Form::radio('willing_to_relocate', 'yes',  @$last_cv->willing_to_relocate, ['required']) }} Yes</label>
+                                                <label>{{ Form::radio('willing_to_relocate', 'no', @!$last_cv->willing_to_relocate, ['required']) }} No </label>
                                             </div>
                                         </div>
                                     </div>
@@ -226,7 +231,7 @@
 
                                             <div class="col-sm-6">
                                                 <label for="job-title">Graduation Grade<span class="text-danger">*</span></label>
-                                                {{ Form::select('graduation_grade', $grades, @$candidate->graduation_grade, array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
+                                                {{ Form::select('graduation_grade', $grades, @$last_cv->graduation_grade, array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
 
                                             </div> 
 
@@ -238,7 +243,7 @@
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <label for="">Cover Letter (Optional)</label>
-                                                <textarea name="cover_note" id="" cols="30" rows="4" class="form-control" placeholder="">{{ @$candidate->cover_note }}</textarea>
+                                                <textarea name="cover_note" id="" cols="30" rows="4" class="form-control" placeholder="">{{ @$last_cv->cover_note }}</textarea>
                                             </div>
                                         </div>
                                     </div>

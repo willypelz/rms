@@ -38,7 +38,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                     <label for="">Your Email</label>
-                                    <input type="email" class="form-control" id="" placeholder="" name="email" value="{{ old('email') }}">
+                                    <input type="email" class="form-control" id="" placeholder="" name="email" value="{{ old('email') }}" required>
 
                                     @if ($errors->has('email'))
                                         <span class="help-block">
@@ -51,7 +51,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                                     <label for="">Your Password</label>
-                                    <input type="password" class="form-control" id="" placeholder="" name="password">
+                                    <input type="password" class="form-control" id="" placeholder="" name="password" required>
                                     @if ($errors->has('password'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('password') }}</strong>
@@ -69,11 +69,11 @@
                                 </div>
 
                                 <div class="col-sm-6"><br>
-                                    <p class="small text-left"><a href="{{ url('password/reset') }}">:( I can't remember my password!</a></p>
+                                    <p class="small text-left"><a href="{{ route('candidate-forgot', ['redirect_to' => $redirect_to]) }}">:( I can't remember my password!</a></p>
                                 </div>
 
                                 <div class="col-sm-6"><br>
-                                    <p class="small text-right">Not registered? <a href="{{ url('sign-up') }}">Sign Up Here</a></p>
+                                    <p class="small text-right">Not registered? <a href="{{ route('candidate-register', ['redirect_to' => $redirect_to]) }}">Sign Up Here</a></p>
                                 </div>
 
                             </div>

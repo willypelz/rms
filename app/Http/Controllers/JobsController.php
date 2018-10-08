@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Models\Workflow;
 use Illuminate\Http\Request;
 use App\Models\JobBoard;
 use App\Models\Job;
@@ -84,7 +85,7 @@ class JobsController extends Controller
                 'Taraba',
                 'Yobe',
                 'Zamfara'
-            ]; 
+            ];
     /**
      * Create a new controller instance.
      *
@@ -218,7 +219,7 @@ class JobsController extends Controller
             echo 'Some fields are missing';
         }
         else
-        {   
+        {
           //Create User
 
             $data = [
@@ -235,21 +236,21 @@ class JobsController extends Controller
             }
 
             $job_team_invite = JobTeamInvite::create($data);
-            $company = Company::find( get_current_company()->id ); 
+            $company = Company::find( get_current_company()->id );
 
 
             $accept_link = route('accept-invite', ['id' => $job_team_invite->id]);
             $decline_link = route('decline-invite', ['id' => $job_team_invite->id]);
 
             $mail_body = $request->body_mail;
-            
+
 
             $job = Job::find($request->job_id);
             $data = (object) $data;
-            
+
             //Send notification mail
             $email_from = ( Auth::user()->email ) ? Auth::user()->email : 'no-reply@insidify.com';
-         
+
             $this->mailer->send('emails.new.exclusively_invited', ['data' => $data, 'job_title'=>$job->title, 'company'=>$company->name, 'accept_link'=> $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
                 $m->from('support@seamlesshr.com')->to($data->email)->subject('You Have Been Exclusively Invited');
             });
@@ -257,12 +258,12 @@ class JobsController extends Controller
             return json_encode( ['status' => true, 'message' => 'Email was sent successfully'] );
         }
 
-        
+
       //$comp->users()->attach($user->id);
 
-      
+
     }
-    
+
 
     public function removeJobTeamMember( Request $request )
     {
@@ -272,7 +273,7 @@ class JobsController extends Controller
         $company->users()->sync([$request->ref => ['role' => 0] ], false);
 
         $job->users()->detach($request->ref);
-        
+
     }
 
      public function acceptInvite($id, Request $request){
@@ -305,7 +306,7 @@ class JobsController extends Controller
                 return redirect()->route('select-company',['slug'=>$job->company->slug]);
 
             // }
-            
+
         }
         else
         {
@@ -323,11 +324,11 @@ class JobsController extends Controller
 
                 if(empty($user) or is_null($user)){
 
-                    $user = User::FirstorCreate([              
+                    $user = User::FirstorCreate([
                       'email' => $job_team_invite->email,
                       'name' => $job_team_invite->name
-                    ]);    
-                    
+                    ]);
+
 
                 }
                 else
@@ -346,7 +347,7 @@ class JobsController extends Controller
                 }
 
                 $company->users()->sync([$user->id => ['role' => $role] ], false);
-                
+
 
                 $job_team_invite->is_accepted = true;
                 $job_team_invite->save();
@@ -397,9 +398,9 @@ class JobsController extends Controller
         Session::flash('status', 'You have been removed from '.$company->name.'\'s job team');
         return redirect()->to('login');
     }
-   
+
     public function PostJob(Request $request)
-    {   
+    {
 
         $qualifications = qualifications();
         $locations = locations();
@@ -426,7 +427,7 @@ class JobsController extends Controller
 
                 $pickd_boards = [ 1 ];
                 // dd( $request->all() );
-           
+
 
             $data = [
                 'job_title' => $request->job_title,
@@ -435,7 +436,8 @@ class JobsController extends Controller
                 'job_type' => $request->job_type,
                 'position' => $request->position,
                 // 'post_date' => $request->post_date,
-                'expiry_date' => $request->expiry_date
+                'expiry_date' => $request->expiry_date,
+                'workflow_id' => $request->workflow_id
             ];
 
 
@@ -445,7 +447,8 @@ class JobsController extends Controller
                         'details' => 'required',
                         'job_type' => 'required',
                         'position' => 'required',
-                        'expiry_date' => 'required'
+                        'expiry_date' => 'required',
+                        'workflow_id' => 'required|integer'
                 ]);
 
             if($validator->fails()){
@@ -465,12 +468,9 @@ class JobsController extends Controller
                                 'post_date' => date('Y-m-d'),
                                 'expiry_date' => $request->expiry_date,
                                 'status' => 'ACTIVE',
-                                'company_id' => $company->id
+                                'company_id' => $company->id,
+                                'workflow_id' => $request->workflow_id
                         ];
-                        
-
-                        
-                        // dd($job_data ,$insidify_url, $bds, $pickd_boards);
 
                         $job = Job::FirstorCreate($job_data);
 
@@ -487,7 +487,7 @@ class JobsController extends Controller
                         //             // ->asJson()
                         //             ->post();
                         // $urls[1] = $insidify_url;
-                        // 
+                        //
                         $urls[1] = "";
                         // dd( [ 'job' => $job_data, 'specializations' => $request->specializations, 'insidify_url' => $insidify_url, 'company' => get_current_company()->toArray(), 'action_link' => url('job/apply/'.$job->id.'/'.str_slug($job->title) ) ] );
 
@@ -498,17 +498,17 @@ class JobsController extends Controller
                         if( isset($request->custom_names) and $request->custom_names != null )
                         {
                             $custom_data = [];
-                            for ($i=0; $i < count( $request->custom_names ); $i++) { 
+                            for ($i=0; $i < count( $request->custom_names ); $i++) {
                                 $custom_data[] = [
-                                    'name' => $request->custom_names[$i], 
-                                    'type' => $request->custom_types[$i], 
-                                    'options' => $request->custom_options[$i], 
+                                    'name' => $request->custom_names[$i],
+                                    'type' => $request->custom_types[$i],
+                                    'options' => $request->custom_options[$i],
                                     'job_id' => $job->id,
                                 ];
                             }
                             FormFields::insert($custom_data);
                         }
-                        
+
 
                          $out_boards = array();
                         foreach ($pickd_boards as $p) {
@@ -524,13 +524,20 @@ class JobsController extends Controller
 
                     }
 
-                    
-                        
             Session::flash('flash_message', 'Congratulations! Your job has been posted on '.$flash_boards.'. You will begin to receive applications from those job boards shortly - <i>this is definite</i>.');
             return redirect()->route('post-success', ['jobID' => $job->id]);
         }
 
-        return view('job.create', compact('qualifications', 'specializations', 'board1', 'board2', 'locations'));
+        $workflows = Workflow::whereCompanyId(get_current_company()->id)->get();
+
+        return view('job.create', compact(
+            'qualifications',
+            'specializations',
+            'board1',
+            'board2',
+            'locations',
+            'workflows'
+        ));
     }
 
 
@@ -592,13 +599,13 @@ class JobsController extends Controller
         }
 
         $price = 0;
-        
-        $cart = Utilities::getCartContent('job-boards'); 
-        $count = Utilities::getBoardCartCount('job-boards'); 
+
+        $cart = Utilities::getCartContent('job-boards');
+        $count = Utilities::getBoardCartCount('job-boards');
 
         foreach ($cart as $k) {
                 $ids[] = ($k->id);
-                $price += $k->price; 
+                $price += $k->price;
         }
         // dd($price);
             if(empty($ids))
@@ -639,7 +646,7 @@ class JobsController extends Controller
     }
 
      public function UploadCVfile( Request $request ){
-        
+
 
           // $zipper = new Zipper;
         ///Applications/AMPPS/www/seamlesshiring/public_html/
@@ -678,7 +685,7 @@ class JobsController extends Controller
                 $validation_fields['last_position'] = 'required';
                 $validation_fields['willing_to_relocate'] = 'required';
                 $validation_fields['graduation_grade'] = 'required';
-                
+
 
 
                 $validation_fields_copy['cv_first_name.required'] = 'Firstname is required';
@@ -697,24 +704,24 @@ class JobsController extends Controller
             {
                 $randomName = Auth::user()->id."_".get_current_company()->id."_".time()."_";
                 $filename = $randomName.$request->file('cv-upload-file')->getClientOriginalName();
-                
-                $mimeType = $request->file('cv-upload-file')->getMimeType(); 
-                
+
+                $mimeType = $request->file('cv-upload-file')->getMimeType();
+
                 $upload = $request->file('cv-upload-file')->move(
                         public_path('uploads/CVs/'), $filename
                     );
                 $additional_data = [ 'job_id' => @$request->job, 'folder' => @$request->folder, 'options' => $request->options ];
 
                 if( $mimeType == 'application/zip')
-                { 
+                {
                     $request_data = json_encode( $request->all() );
                     // $request_data = collect( $request->all() );
                     $this->dispatch(new UploadZipCv($filename, $randomName, $additional_data, $request_data ));
-                    // 
-                    
+                    //
+
                     /*$zippy = Zippy::load();
-                    
-        
+
+
                     //Open File
                       $archive = $zippy->open( public_path('uploads/CVs/') .$filename);
 
@@ -750,7 +757,7 @@ class JobsController extends Controller
                     //Delete Temporary directory
                     rrmdir($tempDir);*/
 
-                    
+
 
                   return [ 'status' => 1 ,'data' => "You will receive email notification once successfully uploaded" ];
                 }
@@ -762,12 +769,12 @@ class JobsController extends Controller
                 }
 
 
-                
-                
+
+
 
             }
 
-       
+
     }
 
     public function saveCompanyUploadedCv($cvs, $additional_data, $request)
@@ -777,10 +784,10 @@ class JobsController extends Controller
         $last_cv_upload_index = intval( $settings->get('LAST_CV_UPLOAD_INDEX') );
         // $new_cvs = [];
         $cv_source = "";
-        
+
         $options = ( is_null( $options ) ) ? 'upToJob' : $options;
 
-        
+
 
         switch ($options) {
             case 'upToJob':
@@ -796,15 +803,15 @@ class JobsController extends Controller
 
 
         foreach ($cvs as $key => $cv) {
-            
+
 
             switch ( $request->type ) {
                 case 'single':
                     $last_cv = Cv::insertGetId([
-                         'first_name' => $request->cv_first_name, 
-                         'last_name' => $request->cv_last_name, 
-                         'email' => $request->cv_email, 
-                         'phone' => $request->cv_phone, 
+                         'first_name' => $request->cv_first_name,
+                         'last_name' => $request->cv_last_name,
+                         'email' => $request->cv_email,
+                         'phone' => $request->cv_phone,
                          'gender' => $request->gender,
                          'state' => $request->location,
                          'highest_qualification' => $request->highest_qualification,
@@ -813,8 +820,8 @@ class JobsController extends Controller
                          'last_position' => $request->last_position,
                          'willing_to_relocate' => $request->willing_to_relocate,
                          'graduation_grade' => $request->graduation_grade,
-                         'cv_file' => $cv , 
-                         'cv_source' => $cv_source 
+                         'cv_file' => $cv ,
+                         'cv_source' => $cv_source
                      ]);
                     break;
 
@@ -822,7 +829,7 @@ class JobsController extends Controller
                     // $last_cv_upload_index++;
                     $last_cv = Cv::insertGetId([ 'first_name' => $key, 'cv_file' => $cv , 'cv_source' => $cv_source ]);
                     break;
-                
+
                 default:
                     continue;
                     break;
@@ -830,7 +837,7 @@ class JobsController extends Controller
 
 
             // $last_cv = Cv::insertGetId([ 'first_name' => 'Cv ' . $last_cv_upload_index, 'cv_file' => $cv , 'cv_source' => $cv_source ]);
-            
+
             if($options == 'upToJob'){
                 JobApplication::insert([
                         'cv_id' => $last_cv,
@@ -852,8 +859,8 @@ class JobsController extends Controller
     }
 
 
-    
-    
+
+
     public function JobList(Request $request){
 
         $user = User::with('companies.jobs')->where('id', Auth::user()->id)->first();
@@ -881,7 +888,7 @@ class JobsController extends Controller
 
         $jobs = $jobs->get();
 
-        
+
         $active = 0;
         $suspended = 0;
         $deleted = 0;
@@ -901,7 +908,7 @@ class JobsController extends Controller
                 $deleted++;
             }
             else if( Carbon::now()->diffInDays( Carbon::parse($job->expiry_date), false ) < 0 ){
-                
+
                 $expired_jobs[] = $job;
                 $expired++;
             }
@@ -934,8 +941,8 @@ class JobsController extends Controller
         $job = Job::find($id);
         $company = $job->company()->first();
 
-        $result = Solr::get_applicants($this->search_params, $id,''); 
-      
+        $result = Solr::get_applicants($this->search_params, $id,'');
+
         $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
         $active_tab = 'promote';
@@ -976,16 +983,16 @@ class JobsController extends Controller
         check_if_job_owner( $id );
         $comp_id = get_current_company()->id;
 
-        $company  = Company::with('users')->find($comp_id); 
+        $company  = Company::with('users')->find($comp_id);
 
         $owner = $company->users()->first();
-        
+
         $job = Job::find($id);
         $active_tab = 'team';
 
-        $result = Solr::get_applicants($this->search_params, $id,''); 
+        $result = Solr::get_applicants($this->search_params, $id,'');
 
-      
+
         $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
         // return view('emails.e-exculsively-invited');
         $job_team_invites = JobTeamInvite::where('job_id', $job->id)->where('is_accepted',0)->where('is_declined',0)->get();
@@ -996,12 +1003,12 @@ class JobsController extends Controller
 
          $content = '<ul class="list-group list-notify">';
 
-        
+
         if(!empty($request->appl_id)){
             $activities =  JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('id', 'desc');
         }elseif($request->type == 'dashboard'){
 
-          
+
           $comp_id = get_current_company()->id;
 
           $jobs = Job::where('company_id', $comp_id)->get(['id'])->toArray();
@@ -1017,22 +1024,22 @@ class JobsController extends Controller
             // echo "activity count - " .$activities->count();
             if( $activities->count() > 20 )
             {
-                $take =  $activities->count() - 20 ; 
-                $activities = $activities->skip(20)->take( $take )->get();   
+                $take =  $activities->count() - 20 ;
+                $activities = $activities->skip(20)->take( $take )->get();
             }
             else
             {
-                $activities = $activities->get(); 
+                $activities = $activities->get();
             }
-            
-          
+
+
         }
         else if( @$request->allActivities == "false" )
         {
             $activities = $activities->take(20)->get();
             // $activities = $activities->skip( 20 * intval(@$request->activities_index) )->take(20)->get();
         }
-        
+
             // dd($activities);
         foreach ($activities as $ac) {
             $type = $ac->activity_type;
@@ -1040,7 +1047,7 @@ class JobsController extends Controller
             switch ($type) {
 
                 case "JOB-CREATED":
-                     $job = $ac->job; 
+                     $job = $ac->job;
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
                                  <span class="fa-stack fa-lg i-notify">
@@ -1053,7 +1060,7 @@ class JobsController extends Controller
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
                                       <strong>'. ( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ) .'</strong> Created a new Job <a href="'. url(@$job->company->slug.'/job/'.$job->id.'/'.str_slug($job->title) )  .'"><strong>'.$job->title.'</strong>.
                                   </p>
-                                </li>';                     
+                                </li>';
                     break;
                  case "APPLIED":
 
@@ -1249,7 +1256,7 @@ class JobsController extends Controller
 
                      case "REVIEW":
                      $applicant = $ac->application->cv;
-                     
+
 
                      $content .= '<li role="messaging" class="list-group-item">
                           
@@ -1360,8 +1367,8 @@ class JobsController extends Controller
 
         $active_tab = 'activities';
 
-        $result = Solr::get_applicants($this->search_params, $id,''); 
-      
+        $result = Solr::get_applicants($this->search_params, $id,'');
+
         $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
         $applications = JobApplication::where('job_id',$id)->select("created", DB::raw("DATE_FORMAT(created, '%d-%c-%Y') as created"))->get()->groupBy('created')->toArray();
@@ -1402,8 +1409,8 @@ class JobsController extends Controller
          $job = Job::find($id);
         $active_tab = 'matching';
 
-        $result = Solr::get_applicants($this->search_params, $id,''); 
-      
+        $result = Solr::get_applicants($this->search_params, $id,'');
+
         $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
 
@@ -1413,14 +1420,14 @@ class JobsController extends Controller
 
     public function saveCVPreview($cv)
     {
-        
+
     }
 
     public function JobView($company_slug, $jobid, $job_slug, Request $request = null)
     {
         $company = Company::where('slug', $company_slug)->first();
         $job = Job::where('id', $jobid)->where("company_id",$company->id)->first();
-        
+
         if(empty($job)){
             // redirect to 404 page
         }
@@ -1436,12 +1443,12 @@ class JobsController extends Controller
             $company->logo = asset('img/company.png');
         }*/
         $company->logo = get_company_logo($company->logo);
-        
+
         return view('job.job-details', compact('job', 'company'));
     }
 
     public function correctHighestQualification(){
-        
+
 
         // $j = Cv::where('id','>',4157)->get();
 
@@ -1455,7 +1462,7 @@ class JobsController extends Controller
                 $cv->save();
             }
         });
-       
+
         // dd($j[0]->highest_qualification);
     }
 
@@ -1471,7 +1478,7 @@ class JobsController extends Controller
         $job = Job::with('company')->where('id', $jobID)->first();
         $company = $job->company;
         $specializations = Specialization::get();
-        
+
 
         if(empty($job)){
             abort(404);
@@ -1480,12 +1487,12 @@ class JobsController extends Controller
         $qualifications = $this->qualifications;
         $grades = grades();
 
-        $states = $this->states;   
+        $states = $this->states;
 
         $custom_fields  = (object) $job->form_fields;
 
         if ($request->isMethod('post')) {
-                
+
             $data = $request->all();
 
 
@@ -1500,17 +1507,17 @@ class JobsController extends Controller
                 return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug, 'already_applied' => true]);
             }
 
-            
+
 
             if ($request->hasFile('cv_file')) {
 
                 $filename = time().'_'.str_slug($request->email).'_'.$request->file('cv_file')->getClientOriginalName();
-  
+
                 $data['cv_file'] = $filename;
-            } 
+            }
             else{
                 $data['cv_file'] = null;
-            }  
+            }
             // dd( $custom_fields[0] );
             $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
 
@@ -1524,7 +1531,7 @@ class JobsController extends Controller
 
 
 
-            //saving cv...  
+            //saving cv...
             $cv = new Cv;
             $cv->first_name = $data['first_name'];
             $cv->last_name = $data['last_name'];
@@ -1562,8 +1569,8 @@ class JobsController extends Controller
              foreach ($request->specializations as $e) {
                   $cv->specializations()->attach($e);
               }
-              
-              
+
+
               $appl_activities = (save_activities('APPLIED', $jobID, $appl->id, ''));
 
             if( count( $custom_fields ) > 0 ){
@@ -1616,7 +1623,7 @@ class JobsController extends Controller
                 // dd($destinationPath);
                 $request->file('cv_file')->move($destinationPath, $data['cv_file']);
 
-            } 
+            }
 
 
             if( $job->video_posting_enabled )
@@ -1634,8 +1641,9 @@ class JobsController extends Controller
         }
 
         // dd($custom_fields);
-        
+
         $company->logo = get_company_logo($company->logo);
+
         $last_cv = Cv::where('candidate_id',$candidate->id);
         if( $last_cv->count() )
         {
@@ -1643,6 +1651,7 @@ class JobsController extends Controller
         }
         
         return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades','custom_fields', 'candidate','last_cv'));
+
 
     }
 
@@ -1742,14 +1751,14 @@ class JobsController extends Controller
         {
             $embed = "";
         }
-        
+
 
 
         return view('job.company', compact('company','embed'));
 
     }
 
-   
+
 
 
     public function accountExpired($c_url){
@@ -1796,7 +1805,7 @@ class JobsController extends Controller
 
 
     }
-    
+
     public function Ajax(Request $request){
 
         $user = User::find($request->user_id);
@@ -1806,7 +1815,7 @@ class JobsController extends Controller
     }
 
     public function EditJob(Request $request, $jobid){
-       
+
         $job = Job::with('company')->findOrFail($jobid);
         $locations = locations();
         $qualifications = qualifications();
@@ -1825,7 +1834,7 @@ class JobsController extends Controller
 
           $job->save();
            // $job->update($request->all());
-        
+
             return redirect($job->company->slug.'/job/'.$job->id.'/'.str_slug($job->title));
 
         }
@@ -1881,8 +1890,8 @@ class JobsController extends Controller
                             $m->to($to)->subject('New Job initiated');
                         });
         }
-        
-        
+
+
         $private_key = 'test_pr_bbe9d51b272e4a718b01d5c8eb7d2c1f';
 
         // Retrieve data returned in payment gateway callback
@@ -1911,10 +1920,10 @@ class JobsController extends Controller
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-            'Content-Type: application/json',                                                                                
-            'Content-Length: ' . strlen($data_string)                                                                       
-        ));       
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($data_string)
+        ));
 
         $curl_response = curl_exec($ch); //var_dump($curl_response); echo "<br><br><br>";
         $curl_response = preg_split("/\r\n\r\n/",$curl_response); //var_dump($curl_response); echo "<br><br><br>";
@@ -1963,12 +1972,12 @@ class JobsController extends Controller
                     case 'TEST':
                         $invoice_type = "TESTS";
                         break;
-                    
+
                     default:
                         break;
                 }
 
-                
+
                 $user = Auth::user();
                 $mail = Mail::send('emails.new.successful_payment', compact('invoice','invoice_type','user','amount'), function ($m) use($invoice,$invoice_type) {
                                     $m->from('support@seamlesshr.com', 'Seamlesshiring');
@@ -1993,15 +2002,15 @@ class JobsController extends Controller
                             $m->to($to)->subject('New Job Paid');
                         });
 
-                    
+
                        // $request->boards
                 }
 
                 if( $request->type == 'TEST' )
                 {
-                    $this->approveTest( $request->tests, $request->app_ids );    
+                    $this->approveTest( $request->tests, $request->app_ids );
                 }
-                
+
                 return "true";
             } else {
                 // failed to charge the card
@@ -2027,13 +2036,13 @@ class JobsController extends Controller
                             $m->to($to)->subject('New Job Paid');
                         });
 
-                    
+
                        // $request->boards
                 }
 
                 if( $request->type == 'TEST' )
                 {
-                    $this->approveTest( $request->tests, $request->app_ids );    
+                    $this->approveTest( $request->tests, $request->app_ids );
                 }
             return "true";
         } else {
@@ -2047,15 +2056,15 @@ class JobsController extends Controller
     private function approveTest($tests, $app_ids){
 
             foreach ($tests as $key => $test) {
-                
+
 
                 foreach ( $app_ids as $key => $app_id) {
                    $data = [
-                        'status'=> 'PENDING'        
+                        'status'=> 'PENDING'
                     ];
 
 
-                                
+
                     $query = TestRequest::where('job_application_id',$app_id)
                                 ->where('test_id',$test['id']);
 
@@ -2071,7 +2080,7 @@ class JobsController extends Controller
                                 ->withData( [ 'job_title' => $app->job->title, 'test_id' => $data['test_id'], 'job_application_id' => $app_id, 'applicant_name' => ucwords( @$app->cv->first_name. " " . @$app->cv->last_name ), 'applicant_email' => $app->cv->email, 'employer_name' => get_current_company()->name, 'employer_email' => get_current_company()->email , 'start_time' => $data['start_time'], 'end_time' => $data['end_time'] ] )
                                     ->post();
                 }
-                
+
                 // var_dump($data);
             }
     }
@@ -2096,7 +2105,7 @@ class JobsController extends Controller
     }
 
     public function SavetoMailbox(Request $request){
-        
+
         $user = Auth::user();
         $job = Job::find($request->jobid);
         $to = $user->email;
@@ -2118,7 +2127,7 @@ class JobsController extends Controller
     public function DuplicateJob (Request $request){
 
       $newJob = Job::find($request->job_id)->replicate()->save();
-      
+
       if ($newJob) {
         echo true;
       }
@@ -2137,10 +2146,10 @@ class JobsController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
-           
+
             if( isset( $request->logo ) )
             {
-                $file_name  = ($request->logo->getClientOriginalName());                                            
+                $file_name  = ($request->logo->getClientOriginalName());
                 $fi =  $request->file('logo')->getClientOriginalExtension();
                 $logo = $request->company_name.'-'.$file_name;
                 $upload = $request->file('logo')->move(
@@ -2151,7 +2160,7 @@ class JobsController extends Controller
             {
                 $logo = "";
             }
-           
+
 
             $comp = Company::FirstorCreate([
                 'name' => $request->company_name,
@@ -2178,10 +2187,10 @@ class JobsController extends Controller
 
 
 
-            // if($upload){      
+            // if($upload){
               return redirect('select-company/'.$request->slug);
             // }
-            
+
 
 
         }
@@ -2189,7 +2198,7 @@ class JobsController extends Controller
     }
 
     public function editCompany(Request $request){
-            
+
             dd( get_current_company() );
 
         if ($request->isMethod('post')) {
@@ -2203,10 +2212,10 @@ class JobsController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
-           
+
             if( isset( $request->logo ) )
             {
-                $file_name  = ($request->logo->getClientOriginalName());                                            
+                $file_name  = ($request->logo->getClientOriginalName());
                 $fi =  $request->file('logo')->getClientOriginalExtension();
                 $logo = $request->company_name.'-'.$file_name;
                 $upload = $request->file('logo')->move(
@@ -2217,7 +2226,7 @@ class JobsController extends Controller
             {
                 $logo = "";
             }
-           
+
 
             $comp = Company::FirstorCreate([
                 'name' => $request->company_name,
@@ -2244,10 +2253,10 @@ class JobsController extends Controller
 
 
 
-            // if($upload){      
+            // if($upload){
               return redirect('select-company/'.$request->slug);
             // }
-            
+
 
 
         }
@@ -2270,10 +2279,10 @@ class JobsController extends Controller
 
     public function getEmbedTest()
     {
-        $key = Crypt::encrypt('20~&'.'atolagbemobolaji@gmail.com~&'.'2016-05-27 16:20:10'.'~&13');  
+        $key = Crypt::encrypt('20~&'.'atolagbemobolaji@gmail.com~&'.'2016-05-27 16:20:10'.'~&13');
         // dd( $key );
 
-        
+
         return view('guest.embed-test', compact('key'));
     }
 
@@ -2304,7 +2313,7 @@ class JobsController extends Controller
         {
             $company = null;
             $jobs = "Invalid Key";
-        }      
+        }
         return view('guest.embed-view', compact('jobs','user','company'));
     }
 

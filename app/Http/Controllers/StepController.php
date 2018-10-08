@@ -28,7 +28,7 @@ class StepController extends Controller
             'rank' => 'required|integer',
         ]);
 
-        if ($workflowStep->update($request->all())) {
+        if ($workflowStep->update($request->all() + ['slug' => $request->name])) {
             return redirect()
                 ->route('workflow-steps-add', ['id' => $workflowStep->workflow->id])
                 ->with('success', 'Step updated successfully');
@@ -45,7 +45,7 @@ class StepController extends Controller
             return redirect()->route('workflow');
         }
 
-        if($workflowStep->delete()){
+        if ($workflowStep->delete()) {
             return redirect()
                 ->route('workflow-steps-add', ['id' => $workflowStep->workflow->id])
                 ->with('success', 'Step deleted successfully');

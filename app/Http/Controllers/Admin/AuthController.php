@@ -1,20 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin\Auth;
 
 use App\User;
-use App\Models\Company;
-use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
-use App\Http\Requests;
 use Illuminate\Http\Request;
-use Auth;
-use DB;
-use App\ActivationService;
-use Illuminate\Support\Facades\Hash;
-
 
 class AuthController extends Controller
 {
@@ -37,20 +29,7 @@ class AuthController extends Controller
      * @var string
      */
     // protected $redirectTo = '/dashboard';
-    protected $redirectTo = '/dashboard';
-
-    protected $activationService;
-
-    /**
-     * Create a new authentication controller instance.
-     *
-     * @return void
-     */
-    // public function __construct()
-    // {
-    //     $this->middleware('guest', ['except' => 'logout']);
-
-    // }
+    protected $redirectTo = '/admin/dashboard';
 
     public function __construct(ActivationService $activationService)
     {

@@ -40,6 +40,7 @@ Route::get('hospital-project', function () {
     return view('lifeplan', compact('agent'));
 });
 
+
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
     Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
@@ -47,6 +48,23 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/', function () {
 
         return view('guest.landing');
+    });
+    // Candidate
+    Route::group(['prefix'=>'candidate'], function(){
+
+        Route::match(['get','post'],'/login', 'CandidateController@login')->name('candidate-login');
+        Route::match(['get','post'],'/logout', 'CandidateController@logout')->name('candidate-logout');
+        Route::match(['get','post'],'/register', 'CandidateController@register')->name('candidate-register');
+        Route::match(['get','post'],'/forgot', 'CandidateController@forgot')->name('candidate-forgot');
+        Route::match(['get','post'],'/reset', 'CandidateController@reset')->name('candidate-reset');
+
+        Route::match(['get','post'],'/dashboard', 'CandidateController@dashboard')->name('candidate-dashboard');
+        Route::match(['get','post'],'/{application_id}/activities', 'CandidateController@activities')->name('candidate-activities');
+
+        Route::match(['get','post'],'/{application_id}/messages', 'CandidateController@messages')->name('candidate-messages');
+
+        
+
     });
 
     Route::get('/test', function () {
@@ -178,6 +196,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('log-in', 'Auth\AuthController@login');
 
     Route::get('/auto-login/{code}', 'Auth\AuthController@autoLogin');
+
 
     // Route::get('sign-up', 'Auth\AuthController@showRegistrationForm');
 

@@ -1467,7 +1467,14 @@ class JobsController extends Controller
     }
 
     public function jobApply($jobID, $slug, Request $request){
-
+            
+        if( !Auth::guard('candidate')->check() )
+        {
+            return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
+        }
+        $candidate = Auth::guard('candidate')->user();
+        
+        // dd( Auth::guard('candidate')->attempt() );
         $job = Job::with('company')->where('id', $jobID)->first();
         $company = $job->company;
         $specializations = Specialization::get();
@@ -1542,6 +1549,7 @@ class JobsController extends Controller
             $cv->graduation_grade = $data['graduation_grade'];
             $cv->willing_to_relocate = $data['willing_to_relocate'];
             $cv->cv_file = $data['cv_file'];
+            $cv->candidate_id = $candidate->id;
             $cv->save();
 
             $cvExt = new CvSalesController();
@@ -1555,6 +1563,7 @@ class JobsController extends Controller
             $appl->status = 'PENDING';
             $appl->created = $data['created'];
             $appl->action_date = $data['action_date'];
+            $appl->candidate_id = $candidate->id;
             $appl->save();
 
              foreach ($request->specializations as $e) {
@@ -1635,8 +1644,14 @@ class JobsController extends Controller
 
         $company->logo = get_company_logo($company->logo);
 
+        $last_cv = Cv::where('candidate_id',$candidate->id);
+        if( $last_cv->count() )
+        {
+            $last_cv = $last_cv->lastest();
+        }
+        
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades','custom_fields', 'candidate','last_cv'));
 
-        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades','custom_fields'));
 
     }
 

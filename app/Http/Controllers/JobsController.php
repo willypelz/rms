@@ -509,8 +509,7 @@ class JobsController extends Controller
                             FormFields::insert($custom_data);
                         }
 
-
-                         $out_boards = array();
+                        $out_boards = array();
                         foreach ($pickd_boards as $p) {
                             if(in_array($p, $bds))
                                 $job->boards()->attach($p,  ['url' => $urls[$p]]);

@@ -606,7 +606,7 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/create', 'WorkfelowController@create')->name('workflow-create');
             Route::get('/{id}/edit', 'WorkflowController@editView')->name('workflow-edit');
             Route::match(['put', 'patch'], '/{id}/edit', 'WorkflowController@update')->name('workflow-update');
-            Route::delete('/{id}', 'WorkflowController@desctroy')->name('workflow-delete');
+            Route::delete('/{id}', 'WorkflowController@destroy')->name('workflow-delete');
 
             // Workflow <-> Steps
             Route::get('/{id}/steps/add', 'WorkflowStepController@create')->name('workflow-steps-add');

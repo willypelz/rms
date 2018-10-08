@@ -232,19 +232,24 @@ class JobApplicationsController extends Controller
 
     }
 
-    public function viewApplicants( Request $request )
+    public function viewApplicants(Request $request)
     {
         //Check if he  is the owner of the job
-        check_if_job_owner( $request->jobID );
+        check_if_job_owner($request->jobID);
 
-        $job = Job::with(['form_fields', 'workflow.workflowSteps'])->find($request->jobID);
+        $job = Job::with([
+            'form_fields',
+            'workflow.workflowSteps' => function ($q) {
+                return $q->orderBy('rank', 'asc');
+            }
+        ])->find($request->jobID);
 
         $active_tab = 'candidates';
-        $status = '';
-        $jobID = $request->jobID;
+        $status     = '';
+        $jobID      = $request->jobID;
 
         $this->search_params['filter_query'] = @$request->filter_query;
-        $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start * $this->search_params['row'] ) : 0;
+        $this->search_params['start']        = $start = ($request->start) ? ($request->start * $this->search_params['row']) : 0;
 
         //If age is available
         if( @$request->age ){

@@ -143,7 +143,7 @@
                                     Requires Approval
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" id="approvalUsersBlock">
                                     <label for="approvalUsers">Approval Users</label>
                                     <select class="select2"
                                             name="approval_users[]"
@@ -181,6 +181,7 @@
                                               id="messageTemplate"
                                               placeholder="... ... .."
                                               class="form-control">{{ old('message_template') }}</textarea>
+                                    <input type="button" value="[email]" />
                                 </div>
 
                                 <div class="form-group">

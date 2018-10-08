@@ -280,7 +280,7 @@ use App\Models\Job;
 
 
 
-	function get_application_statuses($status)
+	function get_application_statuses($status, $statuses = [])
 	{
 
 
@@ -290,8 +290,6 @@ use App\Models\Job;
 
 		for ($i=0; $i < count($status); $i = $i+2) { 
 
-
-			
 			$val = $status[$i];
 			$count = $status[$i + 1];														
 			if(empty($val))
@@ -306,9 +304,6 @@ use App\Models\Job;
 				$ret[$val] = $count;
 			
 		}
-
-		
-		$statuses = ['ALL','PENDING', 'INTERVIEWED', 'REJECTED','WAITING', 'HIRED','ASSESSED','SHORTLISTED'];
 
 		$status_array = [];
 		foreach ($statuses as $val) {

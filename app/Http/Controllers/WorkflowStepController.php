@@ -35,10 +35,11 @@ class WorkflowStepController extends Controller
 
         $this->validate($request, [
             'name' => 'required',
-            'rank' => 'required|integer',
+            'rank' => 'required|integer|min:1',
+            'type' => 'required',
         ]);
 
-        if ($newWorkflowStep = $workflow->workflowSteps()->create($request->all())) {
+        if ($newWorkflowStep = $workflow->workflowSteps()->create($request->all() + ['slug' => $request->name])) {
 
             // attach users that can approval steps
             if ($approval_users = $request->input('approval_users')) {

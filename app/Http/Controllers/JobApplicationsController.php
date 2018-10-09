@@ -603,8 +603,6 @@ class JobApplicationsController extends Controller
                     $sheet->fromArray($excel_data, null, 'A1', false, true);
                     $sheet->cells('A1:P1', function ($cells) {
                         $cells->setBackground('#eeeeee');
-
-
                     });
 
 
@@ -1165,7 +1163,7 @@ class JobApplicationsController extends Controller
             'applicant_badge' => $applicant_badge,
             'app_ids' => $app_ids,
             'cv_ids' => $cv_ids,
-            'appl' => $appl,na
+            'appl' => $appl,
         ];
 
     }

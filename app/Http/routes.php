@@ -618,7 +618,9 @@ Route::group(['middleware' => 'web'], function () {
         Route::match(['put', 'patch'], '/step/{id}/edit', 'StepController@update');
         Route::delete('/step/{id}', 'StepController@destroy')->name('step-delete');
 
-        Route::get('modal/step-action/{step}/{stepSlug}', 'JobApplicationsController@modalStepAction')->name('modal-step-action');
+        Route::get('modal/step-action/{step}/{stepSlug}/{stepId}', 'JobApplicationsController@modalStepAction')->name('modal-step-action');
+
+        Route::match(['get', 'post'] ,'modal/approve', 'JobApplicationsController@modalApprove')->name('modal-approve');
 
     });
 

@@ -79,7 +79,10 @@
                                                            data-target="#viewModal"
                                                            id="modalButton"
                                                            data-title="Move to {{ $workflowStep->name }}?"
-                                                           data-view="{{ route('modal-step-action', ['step' => $workflowStep->name, 'stepSlug' => $workflowStep->slug]) }}"
+                                                           data-view="{{ route('modal-step-action', [
+                                                           'step' => $workflowStep->name,
+                                                           'stepSlug' => $workflowStep->slug,
+                                                           'stepId'=>$workflowStep->id]) }}"
                                                            data-app-id=""
                                                            data-cv=""
                                                            data-type="normal">{{ $workflowStep->name }} All</a>
@@ -129,18 +132,24 @@
                                                             <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu">
-                                                            <li><a data-toggle="modal" data-target="#viewModal"
+                                                            <li>
+                                                                <a data-toggle="modal" data-target="#viewModal"
                                                                    id="modalButton" href="#viewModal"
                                                                    data-title="Background Check"
                                                                    data-view="{{ route('modal-background-check') }}"
-                                                                   data-app-id="" data-cv="" data-type="wide">Background
-                                                                    Check</a></li>
-                                                            <li><a data-toggle="modal" data-target="#viewModal"
+                                                                   data-app-id="" data-cv="" data-type="wide">
+                                                                    Background Check
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a data-toggle="modal" data-target="#viewModal"
                                                                    id="modalButton" href="#viewModal"
                                                                    data-title="Medical Check"
                                                                    data-view="{{ route('modal-medical-check') }}"
-                                                                   data-app-id="" data-cv="" data-type="wide">Medical
-                                                                    Check</a></li>
+                                                                   data-app-id="" data-cv="" data-type="wide">
+                                                                    Medical Check
+                                                                </a>
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </div>

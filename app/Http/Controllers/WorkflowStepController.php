@@ -37,6 +37,7 @@ class WorkflowStepController extends Controller
             'name' => 'required',
             'rank' => 'required|integer|min:1',
             'type' => 'required',
+            'approval_users' => 'required_if:requires_approval,1',
         ]);
 
         if ($newWorkflowStep = $workflow->workflowSteps()->create($request->all() + ['slug' => $request->name])) {

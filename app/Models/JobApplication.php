@@ -23,12 +23,21 @@ class JobApplication extends Model
         return $this->belongsTo('App\Models\Cv', 'cv_id');
     }
 
-    public static function massAction($job_id, $cv_ids, $status)
+    public static function massAction($job_id, $cv_ids, $status, $step_id)
     {
-        
-        $app = JobApplication::where('job_id',$job_id)
-                                ->whereIn('cv_id',$cv_ids)
-                                ->update( ['status'=>$status] );
+        $step = WorkflowStep::with('approvals')->find($step_id);
+
+        $data = [];
+
+        $is_approved = true;
+        if ($step->requires_approval) {
+            $is_approved = false;
+        }
+        $data += ['is_approved' => $is_approved];
+
+        $app = JobApplication::where('job_id', $job_id)
+            ->whereIn('cv_id', $cv_ids)
+            ->update($data + ['status' => $status]);
 
         Solr::update_core();
 
@@ -36,19 +45,22 @@ class JobApplication extends Model
     }
 
 
-    public function requests(){
+    public function requests()
+    {
 
         return $this->hasMany('App\Models\AtsRequest');
 
     }
 
-    public function interview_notes(){
+    public function interview_notes()
+    {
 
         return $this->hasMany('App\Models\InterviewNotes');
 
     }
 
-    public function custom_fields(){
+    public function custom_fields()
+    {
         return $this->hasMany('App\Models\FormFieldValues');
     }
 }

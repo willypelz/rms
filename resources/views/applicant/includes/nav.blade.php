@@ -1,5 +1,8 @@
 <style>
     .container{}
+    .nav-tabs > li > a{
+        font-size: 12px;
+    }
 </style>
 <ul class="nav nav-tabs">
     <li  @if($nav_type=='profile')class="active"@endif ><a href="{{ route('applicant-profile',  $appl->id) }}">CV</a>
@@ -13,6 +16,9 @@
     <li  @if($nav_type=='assess')class="active"@endif ><a href="{{ route('applicant-assess',  $appl->id) }}">Test</a>
     </li>
     <li  @if($nav_type=='medicals')class="active"@endif ><a href="{{ route('applicant-medicals',  $appl->id) }}">Medicals</a>
+    </li>
+
+    <li  @if($nav_type=='documents')class="active"@endif ><a href="{{ route('applicant-documents',  $appl->id) }}">Documents</a>
     </li>
     <!-- <li class="dropdown">
         <a href="#" class="dropdown-toggle" type="button" id="dropOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">&nbsp;<i class="fa fa-caret-down"></i></a>

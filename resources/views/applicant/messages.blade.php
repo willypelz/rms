@@ -28,28 +28,54 @@
                 </div>
               </div>
 
+              @if( count( $messages ) )
+                @foreach( $messages as $message )
+                  @if( is_null($message->user_id ) )
+                    @php 
+                      $media_position = "left"; 
+                      $title = $appl->cv->first_name . " " . $appl->cv->last_name; 
+                      $user = $appl->cv;  
+                    @endphp
+                  @else
+                    @php 
+                      $media_position = "right"; 
+                      $title = "Admin";
+                      $user = ['first_name' => 'A', 'last_name' => 'D'];
+                    @endphp
+                  @endif
+                  <div class="media"> 
 
-              <div class="media hidden"> 
-                <div class="media-left"> <a href="#"> <img alt="64x64" class="media-object" data-src="holder.js/64x64" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTdiZDdhZjY1ZiB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1N2JkN2FmNjVmIj48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxMy40Njg3NSIgeT0iMzYuNDM5MDYyNSI+NjR4NjQ8L3RleHQ+PC9nPjwvZz48L3N2Zz4=" data-holder-rendered="true" width="64px" height=" 64px"> </a> </div> 
-                <div class="media-body"> 
+                    <div class="media-left pull-{{ $media_position }}"> <a href="#">
+                    <img src="{{ default_picture($user, 'cv') }}" class="media-object" width="64px" height="64px">  </a> </div> 
+                    <div class="media-body"> 
 
-                <h4 class="media-heading">Media heading</h4> Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus. 
+                    <h4 class="media-heading text-{{ $media_position }}">{{ $title }}</h4> 
+                    <p class="text-{{ $media_position }}">{{ $message->message }}</p>
+                    @if( $message->attachment != "" )
+                      <a class="pull-{{ $media_position }}" href="{{ asset('uploads/'.$message->attachment) }}" target="_blank" > <i class="fa fa-paperclip"></i> Download Attachment</a>
+                    @endif
+                    <div class="clearfix"></div>
+                    <div>
+                      <small class="date pull-{{ $media_position }}">{{ date('D. j M, Y', strtotime( $message->created_at)) }}</small>
+                    </div>
+                    
+                    </div> 
+                  </div>
+                  <br>
 
-                <div class="media"> 
-                <div class="media-left"> <a href="#"> <img alt="64x64" class="media-object" data-src="holder.js/64x64" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTdiZDdiMDk3YyB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1N2JkN2IwOTdjIj48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxMy40Njg3NSIgeT0iMzYuNDM5MDYyNSI+NjR4NjQ8L3RleHQ+PC9nPjwvZz48L3N2Zz4=" data-holder-rendered="true" width="64px" height=" 64px"> </a> </div> 
-
-                <div class="media-body"> 
-                  <h4 class="media-heading">Nested media heading</h4> Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus. 
-                </div> 
-                </div> 
-                </div> 
-              </div>
+                @endforeach
+              @endif
               
-              <form class="form-horizontal" role="form">
+              <form class="form-horizontal" role="form" method="post" action="{{ route('admin-send-message') }}" enctype='multipart/form-data'>
                 <div class="form-group">
-                  <label for="msg" class="col-xs-12">Reply to {{ $appl->cv->first_name.' '.$appl->cv->last_name }}:</label>
+
                   <div class="col-xs-12">
-                    <textarea class="form-control short" id="msg" rows="3"></textarea>
+                    <input type="hidden" name="application_id" value="{{ $appl->id }}">
+                    <textarea class="form-control short" id="message" name="message" rows="3" required></textarea>
+                  </div>
+                  <div class="col-xs-12"><br>
+                    <small>Attachement (Optional)</small>
+                    <input type="file" name="attachment" name="attachment">
                   </div>
                 </div>
                 <div class="form-group">

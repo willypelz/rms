@@ -60,6 +60,12 @@
                                 Interview Note Templates
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ route('settings-embed') }}">
+                                <i class="fa fa-code fa-fw"></i>
+                                Embed
+                            </a>
+                        </li>
                     <!-- <li class="{{ Request::is('cv/purchased') ? 'active' : '' }}"><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li> -->
                     <!-- <li class="{{ Request::is('cv/saved') ? 'active' : '' }}"><a href="{{ url('cv/saved') }}">Saved Cvs</a></li> -->
                     <!-- <li class="{{ Request::is('cv/purchased') ? 'active' : '' }}"><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li> -->
@@ -132,6 +138,7 @@
                         @endforeach
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ route('add-company') }}"><i class="fa fa-plus fa-fw"></i> Create new Company</a>
+
                         </li>
                     <!-- <li><a href="{{-- route('edit-company', ['id' => get_current_company()->id ]) --}}">Edit <strong>{{ get_current_company()->name }}</strong> </a></li> -->
                         <li role="separator" class="divider"></li>

@@ -35,7 +35,7 @@ use File;
 use App\Models\InterviewNoteOptions;
 use App\Models\InterviewNoteValues;
 use App\Models\InterviewNoteTemplates;
-
+use App\Models\Message as CandidateMessage;
 
 class JobApplicationsController extends Controller
 {
@@ -185,9 +185,25 @@ class JobApplicationsController extends Controller
         return view('applicant.medicals', compact('appl', 'nav_type', 'requests'));
     }
 
-    public function notes($appl_id)
-    {
 
+    public function documents($appl_id){
+
+        $appl = JobApplication::with('job', 'cv')->find($appl_id);
+
+        check_if_job_owner( $appl->job->id );
+
+        $nav_type = 'documents';
+
+        $documents = CandidateMessage::where( 'job_application_id', $appl->id )
+                            ->where('attachment', '!=', '' )
+                            ->where('user_id', null )
+                            ->get();
+
+
+        return view('applicant.documents', compact('appl', 'nav_type','documents'));
+    }
+
+    public function notes($appl_id){
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
         check_if_job_owner($appl->job->id);
@@ -241,9 +257,39 @@ class JobApplicationsController extends Controller
 
         $nav_type = 'messages';
 
-        // dd($appl->toArray());
+        $messages = CandidateMessage::where( 'job_application_id', $appl->id )->get();
+        return view('applicant.messages', compact('appl', 'nav_type','messages'));
 
-        return view('applicant.messages', compact('appl', 'nav_type'));
+    }
+
+
+    public function sendMessage(Request $request)
+    {
+
+        if( $request->hasFile('attachment') )
+        {
+            $file_name  = (@$request->attachment->getClientOriginalName());
+            $fi =  @$request->file('attachment')->getClientOriginalExtension(); 
+            $attachment = $request->application_id.'-'.time().'-'.$file_name;
+
+            $upload = $request->file('attachment')->move(
+                env('fileupload'), $attachment
+            );
+        }
+        else
+        {
+            $attachment = '';
+        }
+
+        CandidateMessage::create([
+            'job_application_id' => $request->application_id,
+            'message' => $request->message,
+            'attachment'=> $attachment,
+            'user_id' => Auth::user()->id
+        ]);
+        $application_id = $request->application_id;
+
+        return redirect()->route('applicant-messages', ['appl_id' => $application_id]); 
 
     }
 
@@ -1119,7 +1165,7 @@ class JobApplicationsController extends Controller
             'applicant_badge' => $applicant_badge,
             'app_ids' => $app_ids,
             'cv_ids' => $cv_ids,
-            'appl' => $appl,
+            'appl' => $appl,na
         ];
 
     }

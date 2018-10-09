@@ -401,7 +401,7 @@ class JobsController extends Controller
 
     public function PostJob(Request $request)
     {
-
+        $application_fields = config('constants.application_fields');
         $qualifications = qualifications();
         $locations = locations();
         $specializations = Specialization::get();
@@ -424,7 +424,7 @@ class JobsController extends Controller
 
         // dd($job_bards);
         if ($request->isMethod('post')) {
-
+                
                 $pickd_boards = [ 1 ];
                 // dd( $request->all() );
 
@@ -459,6 +459,16 @@ class JobsController extends Controller
                         // dd('Success');
                         $pickd_boards = [ 1 ];
 
+                        //get field visibilities
+                        $fields = [];
+
+                        foreach ($application_fields as $key => $application_field) {
+                            $fields[$key] = [
+                                    'is_required' => ( isset( $request->is_required[$key] ) ) ? 1 : 0,
+                                    'is_visible' => ( isset( $request->is_visible[$key] ) ) ? 1 : 0,
+                            ];
+                        }
+
                         $job_data = [
                                 'title' => $request->job_title,
                                 'location' => $request->job_location,
@@ -469,7 +479,8 @@ class JobsController extends Controller
                                 'expiry_date' => $request->expiry_date,
                                 'status' => 'ACTIVE',
                                 'company_id' => $company->id,
-                                'workflow_id' => $request->workflow_id
+                                'workflow_id' => $request->workflow_id,
+                                'fields' => json_encode($fields),
                         ];
 
                         $job = Job::FirstorCreate($job_data);
@@ -503,6 +514,8 @@ class JobsController extends Controller
                                     'name' => $request->custom_names[$i],
                                     'type' => $request->custom_types[$i],
                                     'options' => $request->custom_options[$i],
+                                    'is_required' => $request->custom_required[$i],
+                                    'is_visible' => $request->custom_visible[$i],
                                     'job_id' => $job->id,
                                 ];
                             }
@@ -535,7 +548,8 @@ class JobsController extends Controller
             'board1',
             'board2',
             'locations',
-            'workflows'
+            'workflows',
+            'application_fields'
         ));
     }
 
@@ -1463,7 +1477,14 @@ class JobsController extends Controller
     }
 
     public function jobApply($jobID, $slug, Request $request){
-
+            
+        if( !Auth::guard('candidate')->check() )
+        {
+            return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
+        }
+        $candidate = Auth::guard('candidate')->user();
+        
+        // dd( Auth::guard('candidate')->attempt() );
         $job = Job::with('company')->where('id', $jobID)->first();
         $company = $job->company;
         $specializations = Specialization::get();
@@ -1478,7 +1499,8 @@ class JobsController extends Controller
 
         $states = $this->states;
 
-        $custom_fields  = (object) $job->form_fields;
+        $custom_fields  = (object) $job->form_fields()->where('is_visible',1)->get();
+        $fields = json_decode($job->fields);
 
         if ($request->isMethod('post')) {
 
@@ -1508,13 +1530,32 @@ class JobsController extends Controller
                 $data['cv_file'] = null;
             }
             // dd( $custom_fields[0] );
-            $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
+            
+            if( $fields->date_of_birth->is_visible )
+            {
+                $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
+            }
+            
+            if( $fields->willing_to_relocate->is_visible )
+            {
+                if($data['willing_to_relocate'] == 'yes')
+                {
+                    $data['willing_to_relocate'] = true;
+                }
+            }
 
-            if($data['willing_to_relocate'] == 'yes')
-                $data['willing_to_relocate'] = true;
+            
+            if( $fields->state_of_origin->is_visible )
+            {
+                $data['state_of_origin'] = $states[$data['state_of_origin']];   
+            }
 
-            $data['state_of_origin'] = $states[$data['state_of_origin']];
-            $data['location'] = $states[$data['location']];
+            if( $fields->location->is_visible )
+            {
+                $data['location'] = $states[$data['location']]; 
+            }
+            
+            
             $data['created'] = date('Y-m-d H:i:s');
             $data['action_date'] = date('Y-m-d H:i:s');
 
@@ -1522,22 +1563,72 @@ class JobsController extends Controller
 
             //saving cv...
             $cv = new Cv;
-            $cv->first_name = $data['first_name'];
-            $cv->last_name = $data['last_name'];
-            $cv->headline = $data['cover_note'];
-            $cv->email = $data['email'];
-            $cv->phone = $data['phone'];
-            $cv->gender = $data['gender'];
-            $cv->date_of_birth = $data['date_of_birth'];
-            $cv->marital_status = $data['marital_status'];
-            $cv->state = $data['location'];
-            $cv->highest_qualification = $qualifications[ $data['highest_qualification'] ];
-            $cv->last_position = $data['last_position'];
-            $cv->last_company_worked = $data['last_company_worked'];
-            $cv->years_of_experience = $data['years_of_experience'];
-            $cv->graduation_grade = $data['graduation_grade'];
-            $cv->willing_to_relocate = $data['willing_to_relocate'];
-            $cv->cv_file = $data['cv_file'];
+            if( $fields->first_name->is_visible )
+            {
+                $cv->first_name = $data['first_name'];
+            }
+            if( $fields->last_name->is_visible )
+            {
+                $cv->last_name = $data['last_name'];
+            }
+            if( $fields->cover_note->is_visible )
+            {
+                $cv->headline = $data['cover_note'];
+            }
+            if( $fields->email->is_visible )
+            {
+                $cv->email = $data['email'];
+            }
+            if( $fields->phone->is_visible )
+            {
+                $cv->phone = $data['phone'];
+            }
+            if( $fields->gender->is_visible )
+            {
+                $cv->gender = $data['gender'];
+            }
+            if( $fields->date_of_birth->is_visible )
+            {
+                $cv->date_of_birth = $data['date_of_birth'];
+            }
+            if( $fields->marital_status->is_visible )
+            {
+                $cv->marital_status = $data['marital_status'];    
+            }
+            if( $fields->location->is_visible )
+            {
+                $cv->state = $data['location'];
+            }
+            if( $fields->highest_qualification->is_visible )
+            {
+                $cv->highest_qualification = $qualifications[ $data['highest_qualification'] ];
+            }
+            if( $fields->last_position->is_visible )
+            {
+                $cv->last_position = $data['last_position'];
+            }
+            if( $fields->last_company_worked->is_visible )
+            {
+                $cv->last_company_worked = $data['last_company_worked'];
+            }
+            if( $fields->years_of_experience->is_visible )
+            {
+                $cv->years_of_experience = $data['years_of_experience'];
+            }
+            if( $fields->graduation_grade->is_visible )
+            {
+                $cv->graduation_grade = $data['graduation_grade'];
+            }
+            if( $fields->willing_to_relocate->is_visible )
+            {
+                $cv->willing_to_relocate = $data['willing_to_relocate'];
+            }
+            if( $fields->cv_file->is_visible )
+            {
+                $cv->cv_file = $data['cv_file'];
+            }
+
+            $cv->candidate_id = $candidate->id;
             $cv->save();
 
             $cvExt = new CvSalesController();
@@ -1545,12 +1636,18 @@ class JobsController extends Controller
 
             //saving job application...
             $appl = new JobApplication;
-            $appl->cover_note = $data['cover_note'];
+
+            if( $fields->cover_note->is_visible )
+            {
+                $appl->cover_note = $data['cover_note'];
+            }
+            
             $appl->cv_id = $cv->id;
             $appl->job_id = $job->id;
             $appl->status = 'PENDING';
             $appl->created = $data['created'];
             $appl->action_date = $data['action_date'];
+            $appl->candidate_id = $candidate->id;
             $appl->save();
 
              foreach ($request->specializations as $e) {
@@ -1631,8 +1728,19 @@ class JobsController extends Controller
 
         $company->logo = get_company_logo($company->logo);
 
+        $last_cv = Cv::where('candidate_id',$candidate->id);
+        if( $last_cv->count() )
+        {
+            $last_cv = $last_cv->orderBy('id','DSC')->first();
+        }
+        else{
+            $last_cv = [];
+        }
 
-        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades','custom_fields'));
+        
+        
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades','custom_fields', 'candidate','last_cv','fields'));
+
 
     }
 
@@ -2256,6 +2364,16 @@ class JobsController extends Controller
             return redirect('dashboard');
           }
         }
+    }
+
+    public function embed()
+    {
+        $user = get_current_company()->users()->first();
+        $key = Crypt::encrypt( $user->id.'~&'.$user->email.'~&'.$user->created_at.'~&'.get_current_company()->id);
+
+        $embed_code = "<div id='SH_Embed'></div><script src='http://seamlesshiring.com/js/embed.js'></script><script type='text/javascript'>document.getElementById('SH_Embed').innerHTML=SH_Embed.pull({key : '".$key."'});</script>";
+
+        return view('settings.embed', compact('embed_code') );
     }
 
     public function getEmbedTest()

@@ -32,7 +32,8 @@ class Job extends Model
         'job_level',
         'position',
         'published',
-        'experience'
+        'experience',
+        'fields'
     ];
 
 

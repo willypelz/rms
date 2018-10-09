@@ -41,6 +41,11 @@ return [
             'provider' => 'users',
         ],
 
+        'candidate' => [
+            'driver' => 'session',
+            'provider' => 'candidate',
+        ],
+
         'admin' => [
             'driver' => 'session',
             'provider' => 'admins',
@@ -75,6 +80,12 @@ return [
             'model' => App\User::class,
         ],
 
+
+        'candidate' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Candidate::class,
+        ],
+        
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin\Admin::class,

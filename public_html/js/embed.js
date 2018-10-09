@@ -26,7 +26,7 @@ window.SH_Embed = (function () {
 
     function getEmbed(options) {
 	    var xmlhttp;
-	    // var host = "http://localhost/seamlesshiring/public_html/";
+	    // var host = "https://localhost/seamlesshiring/public_html/";
 	    var host = "https://seamlesshiring.com/";
 	    var self = this;	   
 	    

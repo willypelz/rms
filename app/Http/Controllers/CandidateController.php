@@ -130,13 +130,32 @@ class CandidateController extends Controller
         }
 
         $application_id = $request->application_id;
+        $current_application = JobApplication::with('cv','job.company')->where('id',$application_id)->first();
         $ignore_list = [
             'JOB-CREATED'
         ];
         $show_messages_tab = true;
         $activities = JobActivity::where('job_application_id',$application_id)->get();
 
-        return view('candidate.activities', compact('application_id','ignore_list','show_messages_tab','activities'));
+        return view('candidate.activities', compact('application_id','ignore_list','show_messages_tab','activities','current_application'));
+    }
+
+    public function jobs(Request $request)
+    {
+        if( !Auth::guard('candidate')->check() )
+        {
+            return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
+        }
+
+        //Get All jobs applied to
+        $job_ids = Auth::guard('candidate')->user()->applications->unique('job_id')->pluck('job_id')->toArray();
+
+        
+        $company_ids = Job::whereIn('id',$job_ids)->get()->unique('company_id')->pluck('company_id')->toArray();
+
+        $jobs = Job::with('company')->whereIn('company_id',$company_ids)->get();
+
+        return view('candidate.job-list', compact('application_id','ignore_list','jobs'));
     }
 
     public function messages(Request $request)
@@ -147,8 +166,28 @@ class CandidateController extends Controller
         }
 
         $application_id = $request->application_id;
+        $current_application = JobApplication::with('cv','job.company')->where('id',$application_id)->first();
         $messages = Message::where( 'job_application_id', $request->application_id )->get();
-        return view('candidate.messages', compact('messages','application_id'));
+        return view('candidate.messages', compact('messages','application_id','current_application'));
+    }
+
+    public function documents(Request $request)
+    {
+        if( !Auth::guard('candidate')->check() )
+        {
+            return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
+        }
+
+        $application_id = $request->application_id;
+        $current_application = JobApplication::with('cv','job.company')->where('id',$application_id)->first();
+        
+
+        $documents = Message::where( 'job_application_id', $application_id )
+                            ->where('attachment', '!=', '' )
+                            ->where('user_id', null )
+                            ->get();
+
+        return view('candidate.documents', compact('documents','application_id','current_application'));
     }
 
     public function sendMessage(Request $request)

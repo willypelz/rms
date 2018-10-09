@@ -49,6 +49,11 @@ Route::group(['middleware' => 'web'], function () {
 
         return view('guest.landing');
     });
+
+    Route::get('embed-test', ['as' => 'embed', 'uses' => 'JobsController@getEmbedTest']);
+    Route::get('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
+    Route::post('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
+    
     // Candidate
     Route::group(['prefix'=>'candidate'], function(){
 
@@ -60,6 +65,11 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::match(['get','post'],'/dashboard', 'CandidateController@dashboard')->name('candidate-dashboard');
         Route::match(['get','post'],'/{application_id}/activities', 'CandidateController@activities')->name('candidate-activities');
+        Route::match(['get','post'],'/jobs', 'CandidateController@jobs')->name('candidate-jobs');
+        Route::match(['get','post'],'/{application_id}/documents', 'CandidateController@documents')->name('candidate-documents');
+        
+
+        
 
         Route::match(['get','post'],'/{application_id}/messages', 'CandidateController@messages')->name('candidate-messages');
 
@@ -168,9 +178,7 @@ Route::group(['middleware' => 'web'], function () {
     //     echo "good one";
     // });
 
-    Route::get('embed-test', ['as' => 'embed', 'uses' => 'JobsController@getEmbedTest']);
-    Route::get('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
-    Route::post('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
+    
 
 
     Route::get('payment_successful', function () {
@@ -511,6 +519,9 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('medicals/{appl_id}',
             ['uses' => 'JobApplicationsController@medicals', 'as' => 'applicant-medicals']);
 
+        Route::get('documents/{appl_id}',
+            ['uses' => 'JobApplicationsController@documents', 'as' => 'applicant-documents']);
+
 
         Route::get('profile', function () {
             return view('applicant.profile');
@@ -546,6 +557,9 @@ Route::group(['middleware' => 'web'], function () {
             return view('applicant.messages');
         }
     ]);
+
+     Route::get('settings/embed',
+        ['as' => 'settings-embed', 'uses' => 'JobsController@embed']);
 
     Route::get('cron/delete-temp-files',
         ['as' => 'delete-temp-files', 'uses' => 'JobApplicationsController@deleteTmpFiles']);

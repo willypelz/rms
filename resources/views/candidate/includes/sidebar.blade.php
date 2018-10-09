@@ -31,16 +31,15 @@
                     
                     <div class="col-xs-12">
                         <div class="list-group">
-                            <a href="{{ route('candidate-dashboard') }}" class=" list-group-item">
-                                Track your applications
+                            <a href="{{ route('candidate-dashboard') }}" class=" @if( Route::currentRouteName() == "candidate-dashboard" ) active @endif list-group-item">
+                                My applications
                                 <span class="pull-right"><i class="fa fa-random"></i></span>
                             </a>
-                            @if( @$show_messages_tab )
-                                <a href="{{ route('candidate-messages', ['application_id' => $application_id]) }}" class=" list-group-item">
-                                    Messages
-                                    <span class="pull-right"><i class="fa fa-comments"></i></span>
-                                </a>
-                            @endif
+
+                            <a href="{{ route('candidate-jobs') }}" class=" @if( Route::currentRouteName() == "candidate-jobs" ) active @endif list-group-item">
+                                Jobs
+                                <span class="pull-right"><i class="fa fa-briefcase"></i></span>
+                            </a>
                             {{-- <a role="presentation" href="#sec-notifications" aria-controls="sec-notifications" role="tab" data-toggle="tab" class="list-group-item">
                                 Notifications &nbsp;
 

@@ -175,6 +175,23 @@ class JobApplicationsController extends Controller
         return view('applicant.medicals', compact('appl', 'nav_type', 'requests'));
     }
 
+    public function documents($appl_id){
+
+        $appl = JobApplication::with('job', 'cv')->find($appl_id);
+
+        check_if_job_owner( $appl->job->id );
+
+        $nav_type = 'documents';
+
+        $documents = CandidateMessage::where( 'job_application_id', $appl->id )
+                            ->where('attachment', '!=', '' )
+                            ->where('user_id', null )
+                            ->get();
+
+
+        return view('applicant.documents', compact('appl', 'nav_type','documents'));
+    }
+
     public function notes($appl_id){
 
         $appl = JobApplication::with('job', 'cv')->find($appl_id);

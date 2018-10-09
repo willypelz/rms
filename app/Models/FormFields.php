@@ -14,7 +14,7 @@ class FormFields extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'type', 'options', 'job_id', 'created_at', 'updated_at'];
+    protected $fillable = ['name', 'type', 'options', 'job_id','is_required', 'is_visible', 'created_at', 'updated_at'];
 
     // public $timestamps = false;
 

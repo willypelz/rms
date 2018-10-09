@@ -24,32 +24,13 @@
 
 
 
-                            <section class="job-head no-margin">
-                              <div class="">
-                                <div class="row">
-                                  <div class="col-sm-8 col-sm-offset-2 text-center">
-                                    
-                                    <h3 class="text-white no-margin">
-                                      @php $current_application =  Auth::guard('candidate')->user()->applications()->where('id',$application_id)->first();   @endphp
-                                    {{ $current_application->job->title }}
-                                    
-                                    </h3>
-                                    <hr>
-                                    <ul class="list-inline text-white">
-                                      <li>Activities</li>
-                                      {{-- <li>&middot;</li>
-                                      <li>3 New</li> --}}
-                                    </ul>
-                                  </div>
-                                  <div class="clearfix"></div>
-                                  
-                                </div>
-                              </div>
-                            </section>
+                            @include('candidate.includes.header')
+
                             <div class="row">
                               <div class="col-sm-12">
                                 <div class="page no-bod-rad">
                                   <br>
+
                                   <ul class="list-group list-notify ">
                                     @foreach( $activities as $activity )
                                       @if( !in_array($activity->activity_type, $ignore_list) )

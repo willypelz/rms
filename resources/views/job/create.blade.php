@@ -113,7 +113,7 @@
                                                 <label for="job-title">Expiry Date <span class="text-danger">*</span>
                                                 </label>
                                                 <input type="text" name="expiry_date" class="datepicker form-control"
-                                                       value="{{ Request::old('expiry_date')}}">
+                                                       value="{{ Request::old('expiry_date')}}" autocomplete="off">
 
                                             </div>
                                         </div>
@@ -159,6 +159,29 @@
                                         </div>
                                     </div>
 
+                                    <hr>
+                                    <br>
+                                    <h3>Job Application Fields</h3>
+                                    <br>
+
+
+                                    @foreach( $application_fields as $key => $application_field )
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-xs-4">
+                                                    <label for=""> {{ $application_field }}</label>
+
+                                                </div>
+                                                <div class="col-xs-3">
+                                                    <input type="checkbox" name="is_required[{{ $key }}][]" class=" " style="margin:10px"> Is required
+                                                </div>
+                                                <div class="col-xs-3">
+                                                    <input type="checkbox" name="is_visible[{{ $key }}][]" class="" style="margin:10px" checked="checked"> Is visible
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                    <br>
                                     <div id="custom_fields"></div>
 
 
@@ -167,7 +190,7 @@
                                            class="btn btn-line btn-sm text-success"
                                            style="background: whitesmoke; border: none; border-radius: 3px 3px 0 0;"><i
                                                     class="fa fa-plus"></i> Add Custom field</a> &nbsp;
-                                        <small class="">- Use this to add a custom question or input to this form
+                                        <small class="">- Use this to add a custom question or input to the application form
                                         </small>
                                         <br>
                                     </div>
@@ -389,6 +412,25 @@
                                             <div class="clearfix"></div>
                                             <hr>
                                         </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-2 col-xs-offset-2 text-uppercase small"><strong>Required? </strong></div>
+                                            <div class="col-xs-6">
+                                                <input name="" id="required-box" type="checkbox" />
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <hr>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-2 col-xs-offset-2 text-uppercase small"><strong>Visible? </strong></div>
+                                            <div class="col-xs-6">
+                                                <input name="" id="visible-box" type="checkbox" checked="checked" />
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <hr>
+                                        </div>
+
                                         <div class="row">
                                             <div class="col-xs-8 col-xs-offset-2">
                                                 <a href="javascript://" class="btn-sm btn btn-success pull-right"
@@ -543,7 +585,9 @@
                     custom_fields.push({
                         'name': $('body #addField #name-box').val(),
                         'type': $('body #addField #type-box').val(),
-                        'options': $('body #addField #options-box input').val()
+                        'options': $('body #addField #options-box input').val(),
+                        'required': $('body #addField #required-box:checked').length,
+                        'visible': $('body #addField #visible-box:checked').length,
                     });
                     $(this).loadCustomFields();
                     $.growl.notice({message: $('body #addField #name-box').val() + " custom field created."});
@@ -555,7 +599,7 @@
             $.fn.loadCustomFields = function () {
                 $('#custom_fields').html('');
                 $.each(custom_fields, function (key, field) {
-                    $('#custom_fields').append('<div class="well alert-success small text-uppercase" id="custom_field_item" data-key="' + key + '"><i class="fa fa-question-circle fa-lg"></i> <strong>' + field.name + ' *</strong><span class="pull-right"> <a href="" class="hidden" data-key="' + key + '"><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field" data-key="' + key + '"><i class="fa fa-times"></i> REMOVE</a></span> <input type="text" class="hidden" name="custom_names[]" value="' + field.name + '" /> <input type="text" class="hidden" name="custom_types[]" value="' + field.type + '" /> <input type="text" class="hidden" name="custom_options[]" value="' + field.options + '" /> </div>');
+                    $('#custom_fields').append('<div class="well alert-success small text-uppercase" id="custom_field_item" data-key="' + key + '"><i class="fa fa-question-circle fa-lg"></i> <strong>' + field.name + ' *</strong><span class="pull-right"> <a href="" class="hidden" data-key="' + key + '"><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field" data-key="' + key + '"><i class="fa fa-times"></i> REMOVE</a></span> <input type="text" class="hidden" name="custom_names[]" value="' + field.name + '" /> <input type="text" class="hidden" name="custom_types[]" value="' + field.type + '" /> <input type="text" class="hidden" name="custom_options[]" value="' + field.options + '" /><input type="text" class="hidden" name="custom_required[]" value="' + field.required + '" /><input type="text" class="hidden" name="custom_visible[]" value="' + field.visible + '" /> </div>');
 // $('#custom_fields').append('<div class="well small" id="custom_field_item" data-key="' + key + '">Custom Field: ' + field.name + ' <span class="pull-right"><a href="" class="hidden" data-key="' + key + '"><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field" data-key="' + key + '"><i class="fa fa-times"></i> REMOVE</a></span> <input type="text" class="hidden" name="custom_names[]" value="' + field.name + '" /> <input type="text" class="hidden" name="custom_types[]" value="' + field.type + '" /> <input type="text" class="hidden" name="custom_options[]" value="' + field.options + '" /> </div>');
                 });
 // $('#custom_fields').append('<div class="well small" >Custom Field: ' + $('body #addField #name-box').val() + ' <span class="pull-right"><a href="" class=""><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field"><i class="fa fa-times"></i> REMOVE</a></span></div>');

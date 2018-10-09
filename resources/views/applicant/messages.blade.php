@@ -52,7 +52,7 @@
                     <h4 class="media-heading text-{{ $media_position }}">{{ $title }}</h4> 
                     <p class="text-{{ $media_position }}">{{ $message->message }}</p>
                     @if( $message->attachment != "" )
-                      <a class="pull-{{ $media_position }}" href="{{ asset('uploads/'.$message->attachment) }}" target="_blank" > <i class="fa fa-paperclip"></i> Download Attachement</a>
+                      <a class="pull-{{ $media_position }}" href="{{ asset('uploads/'.$message->attachment) }}" target="_blank" > <i class="fa fa-paperclip"></i> Download Attachment</a>
                     @endif
                     <div class="clearfix"></div>
                     <div>

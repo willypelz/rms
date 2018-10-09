@@ -60,6 +60,11 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::match(['get','post'],'/dashboard', 'CandidateController@dashboard')->name('candidate-dashboard');
         Route::match(['get','post'],'/{application_id}/activities', 'CandidateController@activities')->name('candidate-activities');
+        Route::match(['get','post'],'/jobs', 'CandidateController@jobs')->name('candidate-jobs');
+        Route::match(['get','post'],'/{application_id}/documents', 'CandidateController@documents')->name('candidate-documents');
+        
+
+        
 
         Route::match(['get','post'],'/{application_id}/messages', 'CandidateController@messages')->name('candidate-messages');
 
@@ -510,6 +515,9 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('assess/{appl_id}', ['uses' => 'JobApplicationsController@assess', 'as' => 'applicant-assess']);
         Route::get('medicals/{appl_id}',
             ['uses' => 'JobApplicationsController@medicals', 'as' => 'applicant-medicals']);
+
+        Route::get('documents/{appl_id}',
+            ['uses' => 'JobApplicationsController@documents', 'as' => 'applicant-documents']);
 
 
         Route::get('profile', function () {

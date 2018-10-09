@@ -401,7 +401,7 @@ class JobsController extends Controller
 
     public function PostJob(Request $request)
     {
-
+        $application_fields = config('constants.application_fields');
         $qualifications = qualifications();
         $locations = locations();
         $specializations = Specialization::get();
@@ -424,7 +424,7 @@ class JobsController extends Controller
 
         // dd($job_bards);
         if ($request->isMethod('post')) {
-
+                
                 $pickd_boards = [ 1 ];
                 // dd( $request->all() );
 
@@ -459,6 +459,16 @@ class JobsController extends Controller
                         // dd('Success');
                         $pickd_boards = [ 1 ];
 
+                        //get field visibilities
+                        $fields = [];
+
+                        foreach ($application_fields as $key => $application_field) {
+                            $fields[$key] = [
+                                    'is_required' => ( isset( $request->is_required[$key] ) ) ? 1 : 0,
+                                    'is_visible' => ( isset( $request->is_visible[$key] ) ) ? 1 : 0,
+                            ];
+                        }
+
                         $job_data = [
                                 'title' => $request->job_title,
                                 'location' => $request->job_location,
@@ -469,7 +479,8 @@ class JobsController extends Controller
                                 'expiry_date' => $request->expiry_date,
                                 'status' => 'ACTIVE',
                                 'company_id' => $company->id,
-                                'workflow_id' => $request->workflow_id
+                                'workflow_id' => $request->workflow_id,
+                                'fields' => json_encode($fields),
                         ];
 
                         $job = Job::FirstorCreate($job_data);
@@ -503,6 +514,8 @@ class JobsController extends Controller
                                     'name' => $request->custom_names[$i],
                                     'type' => $request->custom_types[$i],
                                     'options' => $request->custom_options[$i],
+                                    'is_required' => $request->custom_required[$i],
+                                    'is_visible' => $request->custom_visible[$i],
                                     'job_id' => $job->id,
                                 ];
                             }
@@ -536,7 +549,8 @@ class JobsController extends Controller
             'board1',
             'board2',
             'locations',
-            'workflows'
+            'workflows',
+            'application_fields'
         ));
     }
 
@@ -1489,7 +1503,8 @@ class JobsController extends Controller
 
         $states = $this->states;
 
-        $custom_fields  = (object) $job->form_fields;
+        $custom_fields  = (object) $job->form_fields()->where('is_visible',1)->get();
+        $fields = json_decode($job->fields);
 
         if ($request->isMethod('post')) {
 
@@ -1519,13 +1534,32 @@ class JobsController extends Controller
                 $data['cv_file'] = null;
             }
             // dd( $custom_fields[0] );
-            $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
+            
+            if( $fields->date_of_birth->is_visible )
+            {
+                $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
+            }
+            
+            if( $fields->willing_to_relocate->is_visible )
+            {
+                if($data['willing_to_relocate'] == 'yes')
+                {
+                    $data['willing_to_relocate'] = true;
+                }
+            }
 
-            if($data['willing_to_relocate'] == 'yes')
-                $data['willing_to_relocate'] = true;
+            
+            if( $fields->state_of_origin->is_visible )
+            {
+                $data['state_of_origin'] = $states[$data['state_of_origin']];   
+            }
 
-            $data['state_of_origin'] = $states[$data['state_of_origin']];
-            $data['location'] = $states[$data['location']];
+            if( $fields->location->is_visible )
+            {
+                $data['location'] = $states[$data['location']]; 
+            }
+            
+            
             $data['created'] = date('Y-m-d H:i:s');
             $data['action_date'] = date('Y-m-d H:i:s');
 
@@ -1647,10 +1681,15 @@ class JobsController extends Controller
         $last_cv = Cv::where('candidate_id',$candidate->id);
         if( $last_cv->count() )
         {
-            $last_cv = $last_cv->lastest();
+            $last_cv = $last_cv->orderBy('id','DSC')->first();
         }
+        else{
+            $last_cv = [];
+        }
+
         
-        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades','custom_fields', 'candidate','last_cv'));
+        
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades','custom_fields', 'candidate','last_cv','fields'));
 
 
     }

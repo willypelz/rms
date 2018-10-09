@@ -76,57 +76,6 @@
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
-<script>
-    
-
-    $(document).ready(function() { 
-
-
-
-        /*$('#logInBtn').on('click', function(e){
-            e.preventDefault();
-            $('#loader').show();
-
-            setTimeout(function() {
-                $('#loader').hide();
-                $('.logged-out').hide();
-                $('.logged-in').show();
-
-                $('#loginToApply').html('Apply for Job').removeAttr('disabled');
-            }, 3000);
-        });*/
-
-        
-        
-        $('#SendJob').ajaxForm({
-                beforeSubmit: genPreSubmit,
-                success: function(response){
-                // console.log(response);
-                $("#SendEmailBtn").html('Send Email');
-                $("#responseData").html(response);
-
-                    setTimeout(alertFunc, 1500);
-                    function alertFunc() {
-                        $('#myModal').modal('hide')
-                        $("#responseData").html('');
-                        $("#inputemail").val('');
-                    }
-
-                },
-                reset: true
-        }); 
-
-        function genPreSubmit(){
-        console.log("We are here....");
-        $("#SendEmailBtn").html('please wait...');
-
-        }
-    });
-</script>
-
-
-
 <div class="separator separator-small"><br></div>
 
 

@@ -89,7 +89,8 @@
 
                                                     @endforeach
 
-                                                    <a data-toggle="modal"
+                                                    <a  class="btn btn-line status-1"
+                                                        data-toggle="modal"
                                                        data-target="#viewModal"
                                                        id="modalButton"
                                                        data-title="Approve"

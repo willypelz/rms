@@ -2316,6 +2316,16 @@ class JobsController extends Controller
         }
     }
 
+    public function embed()
+    {
+        $user = get_current_company()->users()->first();
+        $key = Crypt::encrypt( $user->id.'~&'.$user->email.'~&'.$user->created_at.'~&'.get_current_company()->id);
+
+        $embed_code = "<div id='SH_Embed'></div><script src='http://seamlesshiring.com/js/embed.js'></script><script type='text/javascript'>document.getElementById('SH_Embed').innerHTML=SH_Embed.pull({key : '".$key."'});</script>";
+
+        return view('settings.embed', compact('embed_code') );
+    }
+
     public function getEmbedTest()
     {
         $key = Crypt::encrypt('20~&'.'atolagbemobolaji@gmail.com~&'.'2016-05-27 16:20:10'.'~&13');

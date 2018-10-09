@@ -96,6 +96,9 @@
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{{ route('interview-note-templates') }}"><i class="fa fa-file fa-fw"></i> Interview Note Templates</a></li>
                                 <li role="separator" class="divider"></li> 
+                                <li><a href="{{ route('settings-embed') }}"><i class="fa fa-code fa-fw"></i> Embed</a></li>
+                                
+                                <li role="separator" class="divider"></li> 
                                 <li><a href="{{ url('logout') }}">Logout</a></li> 
                             </ul> 
                         </li>

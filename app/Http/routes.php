@@ -49,6 +49,11 @@ Route::group(['middleware' => 'web'], function () {
 
         return view('guest.landing');
     });
+
+    Route::get('embed-test', ['as' => 'embed', 'uses' => 'JobsController@getEmbedTest']);
+    Route::get('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
+    Route::post('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
+    
     // Candidate
     Route::group(['prefix'=>'candidate'], function(){
 
@@ -173,9 +178,7 @@ Route::group(['middleware' => 'web'], function () {
     //     echo "good one";
     // });
 
-    Route::get('embed-test', ['as' => 'embed', 'uses' => 'JobsController@getEmbedTest']);
-    Route::get('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
-    Route::post('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
+    
 
 
     Route::get('payment_successful', function () {
@@ -554,6 +557,9 @@ Route::group(['middleware' => 'web'], function () {
             return view('applicant.messages');
         }
     ]);
+
+     Route::get('settings/embed',
+        ['as' => 'settings-embed', 'uses' => 'JobsController@embed']);
 
     Route::get('cron/delete-temp-files',
         ['as' => 'delete-temp-files', 'uses' => 'JobApplicationsController@deleteTmpFiles']);

@@ -727,5 +727,5 @@
 
     </script>
 
-<script src="{{ secure_asset('public_html/js/update-october-2018.js') }}"></script>
+<script src="{{ secure_asset('js/update-october-2018.js') }}"></script>
 

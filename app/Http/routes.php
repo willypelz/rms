@@ -650,7 +650,7 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('/create', 'WorkfelowController@create')->name('workflow-create');
             Route::get('/{id}/edit', 'WorkflowController@editView')->name('workflow-edit');
             Route::match(['put', 'patch'], '/{id}/edit', 'WorkflowController@update')->name('workflow-update');
-            Route::delete('/{id}', 'WorkflowController@desctroy')->name('workflow-delete');
+            Route::delete('/{id}', 'WorkflowController@destroy')->name('workflow-delete');
 
             // Workflow <-> Steps
             Route::get('/{id}/steps/add', 'WorkflowStepController@create')->name('workflow-steps-add');
@@ -662,7 +662,9 @@ Route::group(['middleware' => 'web'], function () {
         Route::match(['put', 'patch'], '/step/{id}/edit', 'StepController@update');
         Route::delete('/step/{id}', 'StepController@destroy')->name('step-delete');
 
-        Route::get('modal/step-action/{step}/{stepSlug}', 'JobApplicationsController@modalStepAction')->name('modal-step-action');
+        Route::get('modal/step-action/{step}/{stepSlug}/{stepId}', 'JobApplicationsController@modalStepAction')->name('modal-step-action');
+
+        Route::match(['get', 'post'] ,'modal/approve', 'JobApplicationsController@modalApprove')->name('modal-approve');
 
     });
 

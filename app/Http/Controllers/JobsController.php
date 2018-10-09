@@ -522,8 +522,7 @@ class JobsController extends Controller
                             FormFields::insert($custom_data);
                         }
 
-
-                         $out_boards = array();
+                        $out_boards = array();
                         foreach ($pickd_boards as $p) {
                             if(in_array($p, $bds))
                                 $job->boards()->attach($p,  ['url' => $urls[$p]]);
@@ -872,16 +871,16 @@ class JobsController extends Controller
         return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
     }
 
-
-
-
     public function JobList(Request $request){
 
-        $user = User::with('companies.jobs')->where('id', Auth::user()->id)->first();
+        $user = User::with(['companies.jobs'])
+            ->where('id', Auth::user()->id)
+            ->first();
         $company = get_current_company();
-        $jobs = $company->jobs()->orderBy('created_at','desc');
 
-
+        $jobs = $company->jobs()->with(['workflow.workflowSteps'=> function ($q) {
+            return $q->orderBy('rank', 'asc');
+        }])->orderBy('created_at','desc');
 
         $job_access = Job::where('company_id',$company->id)->whereHas('users',function($q) use($user){
             $q->where('user_id',$user->id);
@@ -899,9 +898,7 @@ class JobsController extends Controller
             $jobs = $jobs->whereIn('id',$job_access);
         }
 
-
         $jobs = $jobs->get();
-
 
         $active = 0;
         $suspended = 0;
@@ -912,8 +909,6 @@ class JobsController extends Controller
         $suspended_jobs = [];
         $deleted_jobs = [];
         $expired_jobs = [];
-
-
 
         foreach($jobs as $job){
 
@@ -945,6 +940,7 @@ class JobsController extends Controller
                         'EXPIRED' => $expired_jobs,
                         // 'DELETED' => $deleted_jobs
                     ];
+
         @$q = @$request->q;
         return view('job.job-list', compact('jobs', 'active', 'suspended', 'deleted', 'company', 'all_jobs','expired','q'));
     }

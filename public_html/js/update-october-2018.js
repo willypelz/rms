@@ -7,4 +7,23 @@
  * @date        2018-10-06
  */
 
-console.log('I am a boy!');
+$(function () {
+    var approvalUsers = $('#approvalUsersBlock');
+    approvalUsers.hide();
+    $('#requireApproval').change(function () {
+        if ($(this).prop('checked')) {
+            approvalUsers.show();
+        } else {
+            approvalUsers.hide();
+        }
+    });
+
+    if ($('#messageTemplate').length) {
+        CKEDITOR.replace('messageTemplate');
+
+        $(".templateBtn").on('click', function () {
+            CKEDITOR.instances.messageTemplate.insertText($(this).val());
+        });
+    }
+
+});

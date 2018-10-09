@@ -14,3 +14,13 @@
 .delete-spoof {
     display: inline-block;
 }
+
+span.dropdown {
+    /*display: inline-block;*/
+}
+
+.job-items {
+    border-top: solid 1px #ccc;
+    overflow-x: auto;
+    white-space: nowrap;
+}

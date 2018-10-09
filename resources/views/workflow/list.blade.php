@@ -19,6 +19,7 @@
                                     <div class="pull-left">
                                         <h5>{{ $workflow->name }}</h5>
                                         <p class="text-muted">{{ $workflow->description }}</p>
+                                        <p class="text-info">{{ $workflow->workflowSteps()->count() }} Steps</p>
                                     </div>
 
                                     <div class="pull-right">

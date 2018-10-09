@@ -30,7 +30,8 @@
                 job_id: '{{ $appl->job->id }}',
                 cv_ids: cv_ids,
                 app_ids: app_ids,
-                status: '{{ $stepSlug }}'
+                status: '{{ $stepSlug }}',
+                step_id: '{{ $stepId }}'
             }, function (data) {
 
                 $('#viewModal').modal('toggle');

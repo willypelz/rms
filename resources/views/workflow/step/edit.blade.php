@@ -96,6 +96,11 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <a href="#" class="btn btn-warning"
+                                       onclick="history.back()">
+                                        <i class="fa fa-arrow-left fa-fw"></i>
+                                        Cancel
+                                    </a>
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fa fa-refresh fa-fw"></i>
                                         Update

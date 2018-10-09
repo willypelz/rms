@@ -143,7 +143,7 @@
                                     Requires Approval
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" id="approvalUsersBlock">
                                     <label for="approvalUsers">Approval Users</label>
                                     <select class="select2"
                                             name="approval_users[]"
@@ -181,6 +181,27 @@
                                               id="messageTemplate"
                                               placeholder="... ... .."
                                               class="form-control">{{ old('message_template') }}</textarea>
+
+                                    <div class="msg-template-placeholders" style="margin: 10px auto;">
+                                        <button type="button" class="btn btn-sm btn-secondary templateBtn"
+                                                value="{applicant_name}">
+                                            Applicant Name
+                                        </button>
+                                        |
+                                        <button type="button" class="btn btn-sm btn-secondary templateBtn"
+                                                value="{company_name}">
+                                            Company Name
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-secondary templateBtn"
+                                                value="{job_detail}">
+                                            Job Detail
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-secondary templateBtn"
+                                                value="{job_title}">
+                                            Job Title
+                                        </button>
+                                    </div>
+
                                 </div>
 
                                 <div class="form-group">

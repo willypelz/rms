@@ -1567,22 +1567,71 @@ class JobsController extends Controller
 
             //saving cv...
             $cv = new Cv;
-            $cv->first_name = $data['first_name'];
-            $cv->last_name = $data['last_name'];
-            $cv->headline = $data['cover_note'];
-            $cv->email = $data['email'];
-            $cv->phone = $data['phone'];
-            $cv->gender = $data['gender'];
-            $cv->date_of_birth = $data['date_of_birth'];
-            $cv->marital_status = $data['marital_status'];
-            $cv->state = $data['location'];
-            $cv->highest_qualification = $qualifications[ $data['highest_qualification'] ];
-            $cv->last_position = $data['last_position'];
-            $cv->last_company_worked = $data['last_company_worked'];
-            $cv->years_of_experience = $data['years_of_experience'];
-            $cv->graduation_grade = $data['graduation_grade'];
-            $cv->willing_to_relocate = $data['willing_to_relocate'];
-            $cv->cv_file = $data['cv_file'];
+            if( $fields->first_name->is_visible )
+            {
+                $cv->first_name = $data['first_name'];
+            }
+            if( $fields->last_name->is_visible )
+            {
+                $cv->last_name = $data['last_name'];
+            }
+            if( $fields->cover_note->is_visible )
+            {
+                $cv->headline = $data['cover_note'];
+            }
+            if( $fields->email->is_visible )
+            {
+                $cv->email = $data['email'];
+            }
+            if( $fields->phone->is_visible )
+            {
+                $cv->phone = $data['phone'];
+            }
+            if( $fields->gender->is_visible )
+            {
+                $cv->gender = $data['gender'];
+            }
+            if( $fields->date_of_birth->is_visible )
+            {
+                $cv->date_of_birth = $data['date_of_birth'];
+            }
+            if( $fields->marital_status->is_visible )
+            {
+                $cv->marital_status = $data['marital_status'];    
+            }
+            if( $fields->location->is_visible )
+            {
+                $cv->state = $data['location'];
+            }
+            if( $fields->highest_qualification->is_visible )
+            {
+                $cv->highest_qualification = $qualifications[ $data['highest_qualification'] ];
+            }
+            if( $fields->last_position->is_visible )
+            {
+                $cv->last_position = $data['last_position'];
+            }
+            if( $fields->last_company_worked->is_visible )
+            {
+                $cv->last_company_worked = $data['last_company_worked'];
+            }
+            if( $fields->years_of_experience->is_visible )
+            {
+                $cv->years_of_experience = $data['years_of_experience'];
+            }
+            if( $fields->graduation_grade->is_visible )
+            {
+                $cv->graduation_grade = $data['graduation_grade'];
+            }
+            if( $fields->willing_to_relocate->is_visible )
+            {
+                $cv->willing_to_relocate = $data['willing_to_relocate'];
+            }
+            if( $fields->cv_file->is_visible )
+            {
+                $cv->cv_file = $data['cv_file'];
+            }
+
             $cv->candidate_id = $candidate->id;
             $cv->save();
 
@@ -1591,7 +1640,12 @@ class JobsController extends Controller
 
             //saving job application...
             $appl = new JobApplication;
-            $appl->cover_note = $data['cover_note'];
+
+            if( $fields->cover_note->is_visible )
+            {
+                $appl->cover_note = $data['cover_note'];
+            }
+            
             $appl->cv_id = $cv->id;
             $appl->job_id = $job->id;
             $appl->status = 'PENDING';

@@ -105,7 +105,6 @@
                                                         Approve
                                                     </a>
 
-
                                                     {{--<a class="btn btn-line status-1" data-action="SHORTLISTED"
                                                        data-toggle="modal" data-target="#viewModal" id="modalButton"
                                                        href="#viewModal" data-title="Shortlist?"

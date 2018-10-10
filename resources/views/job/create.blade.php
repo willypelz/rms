@@ -164,6 +164,8 @@
                                     <h3>Job Application Fields</h3>
                                     <br>
 
+                                    <h4>Default Fields</h4>
+                                    <hr>
 
                                     @foreach( $application_fields as $key => $application_field )
                                         <div class="form-group">
@@ -182,6 +184,10 @@
                                         </div>
                                     @endforeach
                                     <br>
+
+
+                                    <h4>Custom Fields</h4>
+                                    <hr>
                                     <div id="custom_fields"></div>
 
 
@@ -578,7 +584,9 @@
                 if ($('body #addField #name-box').val() == "") {
                     $.growl.error({message: "Please enter custom field name."});
                 }
-                else if ($('body #addField #options-box input').val() == "" && $.inArray($('body #addField #type-box').val(), ['TEXT', 'TEXTAREA'])) {
+                else if ($('body #addField #options-box input').val() == "" && ["TEXT", "TEXTAREA","FILE"].indexOf( $('body #addField #type-box').val() ) == -1 ) 
+
+                {
                     $.growl.error({message: "Please enter custom field option."});
                 }
                 else {

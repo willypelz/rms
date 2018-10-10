@@ -119,7 +119,10 @@ class CandidateController extends Controller
             return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
         }
 
-        return view('candidate.dashboard');
+        $applicant_id = $this->generateApplicationId( Auth::guard('candidate')->user() );
+
+
+        return view('candidate.dashboard', compact('applicant_id'));
     }
 
     public function activities(Request $request)
@@ -217,5 +220,18 @@ class CandidateController extends Controller
 
         return redirect()->route('candidate-messages', ['application_id' => $application_id]); 
 
+    }
+
+    private function generateApplicationId($candidate)
+    {
+        $id = "";
+        $string = "goood";
+
+        for($i=0; $i<strlen( $candidate->email ); $i++) {
+         $id .= ord( $candidate->email[$i] );
+        }
+
+        $id .= $candidate->id;
+        return $id;
     }
 }

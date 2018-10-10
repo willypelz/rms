@@ -24,8 +24,9 @@
   <div class="col-sm-12">
     <div class="page no-bod-rad">
       <br>
+      <h5 style="margin: 5px 20px;">APPLICANT ID: {{ $applicant_id }}</h5>
       <ul class="list-group list-notify list-track">
-
+        
         @foreach( Auth::guard('candidate')->user()->applications as $application )
           <li role="candidate-application" class="list-group-item">
             

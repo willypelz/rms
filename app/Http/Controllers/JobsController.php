@@ -1090,7 +1090,7 @@ class JobsController extends Controller
                                   </p>
                                 </li>';
                      break;
-                  case "SHORTLISTED":
+                  /*case "SHORTLISTED":
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
@@ -1102,12 +1102,12 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-info">Shortlist</h5>
                                   <p>
                                       <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
-                                      <a href="'. url('applicant/activities/'.$ac->application->id) /*url('job/candidates/'.$ac->application->job->id.'#SHORTLISTED')*/ .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been shortlisted by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
+                                      <a href="'. url('applicant/activities/'.$ac->application->id)  .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been shortlisted by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                   </p>
                                 </li>';
-                     break;
+                     break;*/
 
-                  case "ASSESSED":
+                  /*case "ASSESSED":
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
@@ -1122,7 +1122,7 @@ class JobsController extends Controller
                                       <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been scheduled for test by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                   </p>
                                 </li>';
-                     break;
+                     break;*/
 
                     case "TEST_ORDER":
                  $applicant = $ac->application->cv;
@@ -1175,7 +1175,7 @@ class JobsController extends Controller
                                 </li>';
                      break;
 
-                    case "INTERVIEWED":
+                    /*case "INTERVIEWED":
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
@@ -1190,11 +1190,11 @@ class JobsController extends Controller
                                       <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been interviewed by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                   </p>
                                 </li>';
-                     break;
+                     break;*/
 
 
 
-                 case "HIRED":
+                 /*case "HIRED":
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
@@ -1209,9 +1209,9 @@ class JobsController extends Controller
                                       <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been hired by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                   </p>
                                 </li>';
-                     break;
+                     break;*/
 
-                  case "WAITING":
+                  /*case "WAITING":
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
@@ -1226,9 +1226,9 @@ class JobsController extends Controller
                                       <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been added to the waiting list by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                   </p>
                                 </li>';
-                     break;
+                     break;*/
 
-                 case "REJECTED":
+                 /*case "REJECTED":
                     $applicant = $ac->application->cv;
                     // dd($ac->to);
                     $content .= '<li role="warning-notifications" class="list-group-item">
@@ -1244,7 +1244,7 @@ class JobsController extends Controller
                                       <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> application was rejected by <a href="'. url('applicant/messages/'.$ac->application->id) .'" target="_blank"><strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong></a>
                                   </p>
                                 </li>';
-                     break;
+                     break;*/
                  case "COMMENT":
                  $applicant = $ac->application->cv;
 
@@ -1336,18 +1336,20 @@ class JobsController extends Controller
                      break;
 
                  default:
-                     $content .= '<li role="messaging" class="list-group-item">
+
+                     $applicant = $ac->application->cv;
+                     $content .= '<li role="candidate-application" class="list-group-item">
                           
                                  <span class="fa-stack fa-lg i-notify">
-                                    <i class="fa fa-circle fa-stack-2x text-success"></i>
-                                    <i class="fa fa-user-plus fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-circle fa-stack-2x text-info"></i>
+                                    <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
                                   </span>
                           
-                                  <h5 class="no-margin text-success">Not Set -- '.$ac->activity_type.'</h5>
+                                  <h5 class="no-margin text-info">Hired</h5>
                                   <p>
-                                     
+                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been moved to <strong>'.$ac->application->status.'</strong> by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                   </p>
-                                  
                                 </li>';
             }
 

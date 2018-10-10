@@ -89,6 +89,23 @@
 
                                                     @endforeach
 
+                                                    <a  class="btn btn-line status-1"
+                                                        data-toggle="modal"
+                                                       data-target="#viewModal"
+                                                       id="modalButton"
+                                                       data-title="Approve"
+                                                       data-view="{{ route('modal-approve', [
+                                                       'stepSlug' => $workflowStep->slug,
+                                                       'stepId' => $workflowStep->id
+                                                       ]) }}"
+                                                       data-app-id=""
+                                                       data-cv=""
+                                                       data-type="normal"
+                                                       class="text-success">
+                                                        Approve
+                                                    </a>
+
+
                                                     {{--<a class="btn btn-line status-1" data-action="SHORTLISTED"
                                                        data-toggle="modal" data-target="#viewModal" id="modalButton"
                                                        href="#viewModal" data-title="Shortlist?"

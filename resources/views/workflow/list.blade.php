@@ -30,11 +30,11 @@
                                         </a>
 
                                         <a href="{{ route('workflow-edit', ['id' => $workflow->id]) }}"
-                                           class="btn btn-primary btn-sm">
+                                           class="btn btn-warning btn-sm">
                                             <i class="fa fa-pencil fa-fw"></i>
                                             Edit
                                         </a>
-
+                                        {{--
                                         <form action="{{ route('workflow-delete', ['id' => $workflow->id]) }}"
                                               method="post"
                                               class="delete-spoof">
@@ -46,6 +46,7 @@
                                                 <i class="fa fa-times-circle fa-fw"></i>
                                             </button>
                                         </form>
+                                        --}}
                                     </div>
                                 <!--
                                     <a href="{{ route('workflow-show', ['id' => $workflow->id]) }}"

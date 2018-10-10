@@ -104,6 +104,40 @@
                                 @endforeach
                             </ul>
                         </span>
+
+                            <span class="text-muted"> &middot; </span>
+                            <span class="dropdown">
+                            <a id="checkDrop" type="button" data-toggle="dropdown" aria-expanded="false">
+                                Check
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="checkDrop"
+                                style="position:relative; float:right; border: 1px solid rgba(0, 0, 0, 0.03);">
+                                <li>
+                                    <a data-toggle="modal"
+                                       data-target="#viewModal"
+                                       id="modalButton"
+                                       href="#viewModal"
+                                       data-title="Background Check"
+                                       data-view="{{ route('modal-background-check') }}"
+                                       data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
+                                       data-cv="{{ $cv['id'] }}"
+                                       data-type="wide">Background Check</a>
+                                </li>
+                                <li>
+                                    <a data-toggle="modal"
+                                       data-target="#viewModal"
+                                       id="modalButton"
+                                       href="#viewModal"
+                                       data-title="Medical Check"
+                                       data-view="{{ route('modal-medical-check') }}"
+                                       data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
+                                       data-cv="{{ $cv['id'] }}"
+                                       data-type="wide">Medical Check</a>
+                                </li>
+                            </ul>
+                        </span>
+
                         @else
                         <!-- // Approval Button -->
                             <a data-toggle="modal"
@@ -279,39 +313,6 @@
                            data-title="Comment" data-view="{{ route('modal-comment') }}"
                            data-app-id="{{ $cv['application_id'][ $current_app_index ] }}" data-cv="{{ $cv['id'] }}"
                            data-type="normal">Comment</a>
-
-                        <span class="text-muted">&nbsp; &middot; </span>
-                        <span class="dropdown">
-                            <a id="checkDrop" type="button" data-toggle="dropdown" aria-expanded="false">
-                                Checks
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="checkDrop"
-                                style="position:relative; float:right; border: 1px solid rgba(0, 0, 0, 0.03);">
-                                <li>
-                                    <a data-toggle="modal"
-                                       data-target="#viewModal"
-                                       id="modalButton"
-                                       href="#viewModal"
-                                       data-title="Background Check"
-                                       data-view="{{ route('modal-background-check') }}"
-                                       data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
-                                       data-cv="{{ $cv['id'] }}"
-                                       data-type="wide">Background Check</a>
-                                </li>
-                                <li>
-                                    <a data-toggle="modal"
-                                       data-target="#viewModal"
-                                       id="modalButton"
-                                       href="#viewModal"
-                                       data-title="Medical Check"
-                                       data-view="{{ route('modal-medical-check') }}"
-                                       data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
-                                       data-cv="{{ $cv['id'] }}"
-                                       data-type="wide">Medical Check</a>
-                                </li>
-                            </ul>
-                        </span>
 
                         <span class="pull-right hide">
                               <a class="text-muted" href="#">Background Check</a>

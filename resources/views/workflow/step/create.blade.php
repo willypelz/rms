@@ -45,8 +45,8 @@
                                         <div class="">
                                             - {{ $workflowStep->rank }}
                                             - {!! $workflowStep->is_readonly
-                                            ? '<span class="text-warning">Readonly</span>'
-                                            : '<span class="text-info">Writable</span>' !!}
+                                            ? '<span class="text-warning">System Generated</span>'
+                                            : '' !!}
                                         </div>
                                     </div>
 

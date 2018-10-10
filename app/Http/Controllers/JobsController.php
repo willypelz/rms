@@ -1258,7 +1258,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-success">Comment</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']
-                                      </small> '. ( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ) .' said '.$ac->comment.' about <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank"><strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong></a>
+                                      </small> '. ( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ) .' said '.$ac->comment.' about <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank"><strong>'.$applicant->first_name.' '.$applicant->last_name.'</strong></a>
                                   </p>
                                   
                                 </li>';
@@ -1278,7 +1278,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-success">Comment</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']
-                                      </small> '. ( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ) .' commented <span style="display:none;" id="show_activity_comment">"'.$ac->comment.'"</span> on <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank"><strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong></a>
+                                      </small> '. ( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ) .' commented <span style="display:none;" id="show_activity_comment">"'.$ac->comment.'"</span> on <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank"><strong>'.$applicant->first_name.' '.$applicant->last_name.'</strong></a>
                                   </p>
                                   
                                 </li>';

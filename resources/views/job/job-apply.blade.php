@@ -242,8 +242,8 @@
                                             @if( $fields->willing_to_relocate->is_visible )
                                             <div class="col-xs-12">
                                                 <label for="">Are you willing to relocate? @if( $fields->willing_to_relocate->is_required )<span class="text-danger">*</span>@endif</label><br/>
-                                                <label>{{ Form::radio('willing_to_relocate', 'yes',  @$last_cv->willing_to_relocate, [( $fields->willing_to_relocate->is_required ) ? "required" : ""]) }} Yes</label>
-                                                <label>{{ Form::radio('willing_to_relocate', 'no', @!$last_cv->willing_to_relocate, [( $fields->willing_to_relocate->is_required ) ? "required" : ""]) }} No </label>
+                                                <label>{{ Form::radio('willing_to_relocate', 'yes',  @$last_cv->willing_to_relocate, ( $fields->willing_to_relocate->is_required ) ? ["required"] : null) }} Yes</label>
+                                                <label>{{ Form::radio('willing_to_relocate', 'no', @!$last_cv->willing_to_relocate, ( $fields->willing_to_relocate->is_required ) ? ["required"] : null) }} No </label>
                                             </div>
                                             @endif
                                         </div>
@@ -293,7 +293,7 @@
 
                                                 <label for="">Attach your CV @if( $fields->cv_file->is_required )<span class="text-danger">*</span>@endif</label>
 
-                                                {{ Form::file('cv_file', [( $fields->cv_file->is_required ) ? ["required"] : ""] ) }}
+                                                {{ Form::file('cv_file', ( $fields->cv_file->is_required ) ? ["required"] : null ) }}
                                             </div>
                                             @endif
                                         </div>

@@ -119,6 +119,7 @@ class CandidateController extends Controller
             return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
         }
 
+        
         $applicant_id = $this->generateApplicationId( Auth::guard('candidate')->user() );
 
 

@@ -1549,12 +1549,20 @@ class JobsController extends Controller
             
             if( $fields->state_of_origin->is_visible )
             {
-                $data['state_of_origin'] = $states[$data['state_of_origin']];   
+                if( $data['state_of_origin'] != "" )
+                {
+                    $data['state_of_origin'] = $states[$data['state_of_origin']];
+                }
+                
             }
 
             if( $fields->location->is_visible )
             {
-                $data['location'] = $states[$data['location']]; 
+                if( $data['location'] != "" ){
+                    $data['location'] = $states[$data['location']];
+                }
+                
+
             }
             
             
@@ -1603,7 +1611,11 @@ class JobsController extends Controller
             }
             if( $fields->highest_qualification->is_visible )
             {
-                $cv->highest_qualification = $qualifications[ $data['highest_qualification'] ];
+                if( $data['highest_qualification'] != "" )
+                {
+                    $cv->highest_qualification = $qualifications[ $data['highest_qualification'] ];
+                }
+                
             }
             if( $fields->last_position->is_visible )
             {
@@ -1652,9 +1664,13 @@ class JobsController extends Controller
             $appl->candidate_id = $candidate->id;
             $appl->save();
 
-             foreach ($request->specializations as $e) {
-                  $cv->specializations()->attach($e);
-              }
+            if( $request->specializations )
+            {
+                foreach ($request->specializations as $e) {
+                      $cv->specializations()->attach($e);
+                  }
+            }
+             
 
 
               $appl_activities = (save_activities('APPLIED', $jobID, $appl->id, ''));

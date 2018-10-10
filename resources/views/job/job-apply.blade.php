@@ -158,7 +158,7 @@
                                             @endif
 
                                             @if( $fields->date_of_birth->is_visible )
-                                            <div class="col-sm-4"><label for="job-loc">date of Birth @if( $fields->date_of_birth->is_required )<span class="text-danger">*</span>@endif</label><input id="datepicker2" required name="date_of_birth" value="{{ @$last_cv->date_of_birth }}"  type="text" class=" form-control" @if( $fields->date_of_birth->is_required ) required @endif></div>
+                                            <div class="col-sm-4"><label for="job-loc">date of Birth @if( $fields->date_of_birth->is_required )<span class="text-danger">*</span>@endif</label><input id="datepicker2" name="date_of_birth" value="{{ @$last_cv->date_of_birth }}"  type="text" class=" form-control" @if( $fields->date_of_birth->is_required ) required @endif></div>
                                             @endif
                                         </div>
                                     </div>
@@ -200,7 +200,7 @@
                                             @if( $fields->last_company_worked->is_visible )
                                             <div class="col-sm-6">
                                                 <label for="job-title">Last Company Worked @if( $fields->last_company_worked->is_required )<span class="text-danger">*</span>@endif</label>
-                                                {{ Form::text('last_company_worked', @$last_cv->last_company_worked, array('class'=>'form-control', 'required' => ( $fields->last_company_worked->is_required ) ? "required" : "" )) }}
+                                                {{ Form::text('last_company_worked', @$last_cv->last_company_worked, array('class'=>'form-control',  ( $fields->last_company_worked->is_required ) ? "required" : "" )) }}
 
                                             </div>
                                             @endif

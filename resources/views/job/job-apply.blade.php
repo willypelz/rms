@@ -242,8 +242,8 @@
                                             @if( $fields->willing_to_relocate->is_visible )
                                             <div class="col-xs-12">
                                                 <label for="">Are you willing to relocate? @if( $fields->willing_to_relocate->is_required )<span class="text-danger">*</span>@endif</label><br/>
-                                                <label>{{ Form::radio('willing_to_relocate', 'yes',  @$last_cv->willing_to_relocate, ( $fields->willing_to_relocate->is_required ) ? "required" : "") }} Yes</label>
-                                                <label>{{ Form::radio('willing_to_relocate', 'no', @!$last_cv->willing_to_relocate, ( $fields->willing_to_relocate->is_required ) ? "required" : "") }} No </label>
+                                                <label>{{ Form::radio('willing_to_relocate', 'yes',  @$last_cv->willing_to_relocate, [( $fields->willing_to_relocate->is_required ) ? "required" : ""]) }} Yes</label>
+                                                <label>{{ Form::radio('willing_to_relocate', 'no', @!$last_cv->willing_to_relocate, [( $fields->willing_to_relocate->is_required ) ? "required" : ""]) }} No </label>
                                             </div>
                                             @endif
                                         </div>
@@ -293,7 +293,7 @@
 
                                                 <label for="">Attach your CV @if( $fields->cv_file->is_required )<span class="text-danger">*</span>@endif</label>
 
-                                                {{ Form::file('cv_file', ( $fields->cv_file->is_required ) ? ["required"] : "" ) }}
+                                                {{ Form::file('cv_file', [( $fields->cv_file->is_required ) ? ["required"] : ""] ) }}
                                             </div>
                                             @endif
                                         </div>
@@ -320,6 +320,8 @@
                                                             }
                                                          ?>
                                                         {{ Form::select('cf_'.str_slug($custom_field->name,'_'), $select_options, null, array('class'=>'form-control', ( $custom_field->is_required ) ? "required" : "")) }}
+
+
                                                     
                                                     @elseif( $custom_field->type == 'RADIO' )
                                                         @foreach( $options as $option )

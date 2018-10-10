@@ -959,6 +959,9 @@ class JobsController extends Controller
 
 
         $job_id = $id;
+        $states = $this->states;
+        $qualifications = $this->qualifications;
+        $grades = grades();
 
         // $free_boards = JobBoard::where('type', 'free')->get()->toArray();
 
@@ -985,7 +988,7 @@ class JobsController extends Controller
         $myJobs = Job::getMyJobs();
         $myFolders = array_unique( array_pluck( Solr::get_all_my_cvs($this->search_params, null, null)['response']['docs'] ,'cv_source') );
 
-        return view('job.board.home', compact('subscribed_boards', 'job_id','job', 'active_tab', 'company','result','application_statuses','approved_count', 'pending_count','myJobs','myFolders'));
+        return view('job.board.home', compact('subscribed_boards', 'job_id','job', 'active_tab', 'company','result','application_statuses','approved_count', 'pending_count','myJobs','myFolders','states','qualifications','grades'));
     }
 
     public function JobTeam($id, Request $request){

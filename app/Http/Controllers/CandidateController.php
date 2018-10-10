@@ -119,7 +119,7 @@ class CandidateController extends Controller
             return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
         }
 
-        
+
         $applicant_id = $this->generateApplicationId( Auth::guard('candidate')->user() );
 
 
@@ -226,10 +226,10 @@ class CandidateController extends Controller
     private function generateApplicationId($candidate)
     {
         $id = "";
-        $string = "goood";
+        $string = explode("@", $candidate->email)[0];
 
-        for($i=0; $i<strlen( $candidate->email ); $i++) {
-         $id .= ord( $candidate->email[$i] );
+        for($i=0; $i<strlen( $string ); $i++) {
+         $id .= ord( $string[$i] );
         }
 
         $id .= $candidate->id;

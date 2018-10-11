@@ -33,12 +33,6 @@
 
                                   <div class="message-content ">
                                     
-                                    <div class="msg-box">
-                                      <div class="date">{{ date('M d, Y') }}</div>
-                                      <div class="">
-                                        <h3>Conversation</h5>
-                                      </div>
-                                    </div>
                                     @if( count( $messages ) )
                                       @foreach( $messages as $message )
                                         @if( is_null($message->user_id ) )

@@ -19,15 +19,6 @@
           </div>
           <div class="row">
             <div class="message-content">
-              
-              <div class="msg-box">
-                <div class="date">{{ date('M d, Y') }}</div>
-                <div class="">
-                  <h5>{{ $appl->cv->first_name.' '.$appl->cv->last_name }} <em>{{ ( $appl->cv->tagline != "" ) ? ($appl->cv->tagline) : '' }}</em></h5>
-                  <p>{{ $appl->cover_note }}</p>
-                </div>
-              </div>
-
 
               {{-- Get application cv --}}
 

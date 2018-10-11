@@ -164,6 +164,8 @@
                                     <h3>Job Application Fields</h3>
                                     <br>
 
+                                    <h4>Default Fields</h4>
+                                    <hr>
 
                                     @foreach( $application_fields as $key => $application_field )
                                         <div class="form-group">
@@ -182,6 +184,10 @@
                                         </div>
                                     @endforeach
                                     <br>
+
+
+                                    <h4>Custom Fields</h4>
+                                    <hr>
                                     <div id="custom_fields"></div>
 
 
@@ -578,7 +584,9 @@
                 if ($('body #addField #name-box').val() == "") {
                     $.growl.error({message: "Please enter custom field name."});
                 }
-                else if ($('body #addField #options-box input').val() == "" && $.inArray($('body #addField #type-box').val(), ['TEXT', 'TEXTAREA'])) {
+                else if ($('body #addField #options-box input').val() == "" && ["TEXT", "TEXTAREA","FILE"].indexOf( $('body #addField #type-box').val() ) == -1 ) 
+
+                {
                     $.growl.error({message: "Please enter custom field option."});
                 }
                 else {
@@ -599,7 +607,7 @@
             $.fn.loadCustomFields = function () {
                 $('#custom_fields').html('');
                 $.each(custom_fields, function (key, field) {
-                    $('#custom_fields').append('<div class="well alert-success small text-uppercase" id="custom_field_item" data-key="' + key + '"><i class="fa fa-question-circle fa-lg"></i> <strong>' + field.name + ' *</strong><span class="pull-right"> <a href="" class="hidden" data-key="' + key + '"><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field" data-key="' + key + '"><i class="fa fa-times"></i> REMOVE</a></span> <input type="text" class="hidden" name="custom_names[]" value="' + field.name + '" /> <input type="text" class="hidden" name="custom_types[]" value="' + field.type + '" /> <input type="text" class="hidden" name="custom_options[]" value="' + field.options + '" /><input type="text" class="hidden" name="custom_required[]" value="' + field.required + '" /><input type="text" class="hidden" name="custom_visible[]" value="' + field.visible + '" /> </div>');
+                    $('#custom_fields').append('<div class="well alert-success small text-uppercase" id="custom_field_item" data-key="' + key + '"><i class="fa fa-question-circle fa-lg"></i> <strong>' + field.name + ' *</strong><span class="pull-right"> <a href="" class="hidden" data-key="' + key + '"><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field" data-key="' + key + '"><i class="fa fa-times"></i> REMOVE</a></span><input type="text" class="hidden" name="custom_names[]" value="' + field.name + '" /> <input type="text" class="hidden" name="custom_types[]" value="' + field.type + '" /> <input type="text" class="hidden" name="custom_options[]" value="' + field.options + '" /><input type="text" class="hidden" name="custom_required[]" value="' + field.required + '" /><input type="text" class="hidden" name="custom_visible[]" value="' + field.visible + '" /> </div>');
 // $('#custom_fields').append('<div class="well small" id="custom_field_item" data-key="' + key + '">Custom Field: ' + field.name + ' <span class="pull-right"><a href="" class="hidden" data-key="' + key + '"><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field" data-key="' + key + '"><i class="fa fa-times"></i> REMOVE</a></span> <input type="text" class="hidden" name="custom_names[]" value="' + field.name + '" /> <input type="text" class="hidden" name="custom_types[]" value="' + field.type + '" /> <input type="text" class="hidden" name="custom_options[]" value="' + field.options + '" /> </div>');
                 });
 // $('#custom_fields').append('<div class="well small" >Custom Field: ' + $('body #addField #name-box').val() + ' <span class="pull-right"><a href="" class=""><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field"><i class="fa fa-times"></i> REMOVE</a></span></div>');

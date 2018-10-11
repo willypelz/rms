@@ -158,7 +158,7 @@
                                             @endif
 
                                             @if( $fields->date_of_birth->is_visible )
-                                            <div class="col-sm-4"><label for="job-loc">date of Birth @if( $fields->date_of_birth->is_required )<span class="text-danger">*</span>@endif</label><input id="datepicker2" required name="date_of_birth" value="{{ @$last_cv->date_of_birth }}"  type="text" class=" form-control" @if( $fields->date_of_birth->is_required ) required @endif></div>
+                                            <div class="col-sm-4"><label for="job-loc">date of Birth @if( $fields->date_of_birth->is_required )<span class="text-danger">*</span>@endif</label><input id="datepicker2" name="date_of_birth" value="{{ @$last_cv->date_of_birth }}"  type="text" class=" form-control" @if( $fields->date_of_birth->is_required ) required @endif></div>
                                             @endif
                                         </div>
                                     </div>
@@ -200,7 +200,7 @@
                                             @if( $fields->last_company_worked->is_visible )
                                             <div class="col-sm-6">
                                                 <label for="job-title">Last Company Worked @if( $fields->last_company_worked->is_required )<span class="text-danger">*</span>@endif</label>
-                                                {{ Form::text('last_company_worked', @$last_cv->last_company_worked, array('class'=>'form-control', 'required' => ( $fields->last_company_worked->is_required ) ? "required" : "" )) }}
+                                                {{ Form::text('last_company_worked', @$last_cv->last_company_worked, array('class'=>'form-control',  ( $fields->last_company_worked->is_required ) ? "required" : "" )) }}
 
                                             </div>
                                             @endif
@@ -242,8 +242,8 @@
                                             @if( $fields->willing_to_relocate->is_visible )
                                             <div class="col-xs-12">
                                                 <label for="">Are you willing to relocate? @if( $fields->willing_to_relocate->is_required )<span class="text-danger">*</span>@endif</label><br/>
-                                                <label>{{ Form::radio('willing_to_relocate', 'yes',  @$last_cv->willing_to_relocate, [( $fields->willing_to_relocate->is_required ) ? "required" : ""]) }} Yes</label>
-                                                <label>{{ Form::radio('willing_to_relocate', 'no', @!$last_cv->willing_to_relocate, [( $fields->willing_to_relocate->is_required ) ? "required" : ""]) }} No </label>
+                                                <label>{{ Form::radio('willing_to_relocate', 'yes',  @$last_cv->willing_to_relocate, ( $fields->willing_to_relocate->is_required ) ? ["required"] : null) }} Yes</label>
+                                                <label>{{ Form::radio('willing_to_relocate', 'no', @!$last_cv->willing_to_relocate, ( $fields->willing_to_relocate->is_required ) ? ["required"] : null) }} No </label>
                                             </div>
                                             @endif
                                         </div>
@@ -293,7 +293,7 @@
 
                                                 <label for="">Attach your CV @if( $fields->cv_file->is_required )<span class="text-danger">*</span>@endif</label>
 
-                                                {{ Form::file('cv_file', [( $fields->cv_file->is_required ) ? ["required"] : ""] ) }}
+                                                {{ Form::file('cv_file', ( $fields->cv_file->is_required ) ? ["required"] : null ) }}
                                             </div>
                                             @endif
                                         </div>

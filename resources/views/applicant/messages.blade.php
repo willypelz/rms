@@ -20,13 +20,6 @@
           <div class="row">
             <div class="message-content">
               
-              <div class="msg-box">
-                <div class="date">{{ date('M d, Y') }}</div>
-                <div class="">
-                  <h5>{{ $appl->cv->first_name.' '.$appl->cv->last_name }} <em>{{ ( $appl->cv->tagline != "" ) ? ($appl->cv->tagline) : '' }}</em></h5>
-                  <p>{{ $appl->cover_note }}</p>
-                </div>
-              </div>
 
               @if( count( $messages ) )
                 @foreach( $messages as $message )
@@ -50,7 +43,7 @@
                     <div class="media-body"> 
 
                     <h4 class="media-heading text-{{ $media_position }}">{{ $title }}</h4> 
-                    <p class="text-{{ $media_position }}">{{ $message->message }}</p>
+                    <p class="text-{{ $media_position }} ">{{ $message->message }}</p>
                     @if( $message->attachment != "" )
                       <a class="pull-{{ $media_position }}" href="{{ asset('uploads/'.$message->attachment) }}" target="_blank" > <i class="fa fa-paperclip"></i> Download Attachment</a>
                     @endif

@@ -24,8 +24,9 @@
   <div class="col-sm-12">
     <div class="page no-bod-rad">
       <br>
+      <h5 style="margin: 5px 20px;">APPLICANT ID: {{ $applicant_id }}</h5>
       <ul class="list-group list-notify list-track">
-
+        
         @foreach( Auth::guard('candidate')->user()->applications as $application )
           <li role="candidate-application" class="list-group-item">
             
@@ -38,7 +39,8 @@
             <p class="text-uppercase">at <span>{{ $application->job->company->name }}</span></p>
             <div class="hr-xs"></div>
             <p>
-              <label class="label label-lg label-info pull-right">{{ $application->status }}</label>
+              <a href="{{ url($application->job->company->slug.'/job/'.$application->job->id.'/'.str_slug($application->job->title)) }}" target="_blank" style="margin-right: 10px;"> View Job</a>
+              <label class="label label-lg label-info pull-right"> {{ $application->status }}</label>
               <b>Applied</b>: {{ date('D. j M, Y', strtotime( $application->job->created_at)) }}
             </p>
           </li>

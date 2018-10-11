@@ -959,6 +959,9 @@ class JobsController extends Controller
 
 
         $job_id = $id;
+        $states = $this->states;
+        $qualifications = $this->qualifications;
+        $grades = grades();
 
         // $free_boards = JobBoard::where('type', 'free')->get()->toArray();
 
@@ -985,7 +988,7 @@ class JobsController extends Controller
         $myJobs = Job::getMyJobs();
         $myFolders = array_unique( array_pluck( Solr::get_all_my_cvs($this->search_params, null, null)['response']['docs'] ,'cv_source') );
 
-        return view('job.board.home', compact('subscribed_boards', 'job_id','job', 'active_tab', 'company','result','application_statuses','approved_count', 'pending_count','myJobs','myFolders'));
+        return view('job.board.home', compact('subscribed_boards', 'job_id','job', 'active_tab', 'company','result','application_statuses','approved_count', 'pending_count','myJobs','myFolders','states','qualifications','grades'));
     }
 
     public function JobTeam($id, Request $request){
@@ -1090,7 +1093,7 @@ class JobsController extends Controller
                                   </p>
                                 </li>';
                      break;
-                  case "SHORTLISTED":
+                  /*case "SHORTLISTED":
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
@@ -1102,12 +1105,12 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-info">Shortlist</h5>
                                   <p>
                                       <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
-                                      <a href="'. url('applicant/activities/'.$ac->application->id) /*url('job/candidates/'.$ac->application->job->id.'#SHORTLISTED')*/ .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been shortlisted by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
+                                      <a href="'. url('applicant/activities/'.$ac->application->id)  .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been shortlisted by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                   </p>
                                 </li>';
-                     break;
+                     break;*/
 
-                  case "ASSESSED":
+                  /*case "ASSESSED":
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
@@ -1122,7 +1125,7 @@ class JobsController extends Controller
                                       <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been scheduled for test by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                   </p>
                                 </li>';
-                     break;
+                     break;*/
 
                     case "TEST_ORDER":
                  $applicant = $ac->application->cv;
@@ -1175,7 +1178,7 @@ class JobsController extends Controller
                                 </li>';
                      break;
 
-                    case "INTERVIEWED":
+                    /*case "INTERVIEWED":
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
@@ -1190,11 +1193,11 @@ class JobsController extends Controller
                                       <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been interviewed by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                   </p>
                                 </li>';
-                     break;
+                     break;*/
 
 
 
-                 case "HIRED":
+                 /*case "HIRED":
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
@@ -1209,9 +1212,9 @@ class JobsController extends Controller
                                       <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been hired by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                   </p>
                                 </li>';
-                     break;
+                     break;*/
 
-                  case "WAITING":
+                  /*case "WAITING":
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
@@ -1226,9 +1229,9 @@ class JobsController extends Controller
                                       <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been added to the waiting list by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                   </p>
                                 </li>';
-                     break;
+                     break;*/
 
-                 case "REJECTED":
+                 /*case "REJECTED":
                     $applicant = $ac->application->cv;
                     // dd($ac->to);
                     $content .= '<li role="warning-notifications" class="list-group-item">
@@ -1244,7 +1247,7 @@ class JobsController extends Controller
                                       <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> application was rejected by <a href="'. url('applicant/messages/'.$ac->application->id) .'" target="_blank"><strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong></a>
                                   </p>
                                 </li>';
-                     break;
+                     break;*/
                  case "COMMENT":
                  $applicant = $ac->application->cv;
 
@@ -1258,7 +1261,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-success">Comment</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']
-                                      </small> '. ( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ) .' said '.$ac->comment.' about <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank"><strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong></a>
+                                      </small> '. ( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ) .' said '.$ac->comment.' about <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank"><strong>'.$applicant->first_name.' '.$applicant->last_name.'</strong></a>
                                   </p>
                                   
                                 </li>';
@@ -1278,7 +1281,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-success">Comment</h5>
                                   <p>
                                       <small class="text-muted pull-right">['. date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']
-                                      </small> '. ( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ) .' commented <span style="display:none;" id="show_activity_comment">"'.$ac->comment.'"</span> on <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank"><strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong></a>
+                                      </small> '. ( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ) .' commented <span style="display:none;" id="show_activity_comment">"'.$ac->comment.'"</span> on <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank"><strong>'.$applicant->first_name.' '.$applicant->last_name.'</strong></a>
                                   </p>
                                   
                                 </li>';
@@ -1336,18 +1339,20 @@ class JobsController extends Controller
                      break;
 
                  default:
-                     $content .= '<li role="messaging" class="list-group-item">
+
+                     $applicant = $ac->application->cv;
+                     $content .= '<li role="candidate-application" class="list-group-item">
                           
                                  <span class="fa-stack fa-lg i-notify">
-                                    <i class="fa fa-circle fa-stack-2x text-success"></i>
-                                    <i class="fa fa-user-plus fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-circle fa-stack-2x text-info"></i>
+                                    <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
                                   </span>
                           
-                                  <h5 class="no-margin text-success">Not Set -- '.$ac->activity_type.'</h5>
+                                  <h5 class="no-margin text-info">Hired</h5>
                                   <p>
-                                     
+                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been moved to <strong>'.$ac->application->status.'</strong> by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                   </p>
-                                  
                                 </li>';
             }
 
@@ -1564,12 +1569,15 @@ class JobsController extends Controller
 
             if( $fields->state_of_origin->is_visible )
             {
-                $data['state_of_origin'] = $states[$data['state_of_origin']];
+                if( $data['state_of_origin'] != "" )
+                {$data['state_of_origin'] = $states[$data['state_of_origin']];}
+
             }
 
             if( $fields->location->is_visible )
             {
-                $data['location'] = $states[$data['location']];
+                if( $data['location'] != "" ){$data['location'] = $states[$data['location']];}
+
             }
 
 
@@ -1618,7 +1626,11 @@ class JobsController extends Controller
             }
             if( $fields->highest_qualification->is_visible )
             {
-                $cv->highest_qualification = $qualifications[ $data['highest_qualification'] ];
+                if( $data['highest_qualification'] != "" )
+                {
+                    $cv->highest_qualification = $qualifications[ $data['highest_qualification'] ];
+                }
+
             }
             if( $fields->last_position->is_visible )
             {
@@ -1667,9 +1679,13 @@ class JobsController extends Controller
             $appl->candidate_id = $candidate->id;
             $appl->save();
 
-             foreach ($request->specializations as $e) {
-                  $cv->specializations()->attach($e);
-              }
+            if( $request->specializations )
+            {
+                foreach ($request->specializations as $e) {
+                      $cv->specializations()->attach($e);
+                  }
+            }
+
 
 
               $appl_activities = (save_activities('APPLIED', $jobID, $appl->id, ''));

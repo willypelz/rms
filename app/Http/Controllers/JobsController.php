@@ -424,7 +424,7 @@ class JobsController extends Controller
 
         // dd($job_bards);
         if ($request->isMethod('post')) {
-                
+
                 $pickd_boards = [ 1 ];
                 // dd( $request->all() );
 
@@ -1374,8 +1374,9 @@ class JobsController extends Controller
     }
 
     public function JobActivities($id, Request $request){
-         $job = Job::find($id);
-         // dd($job);
+         $job = Job::with(['workflow.workflowSteps' => function($q){
+             return $q->orderBy('rank', 'asc');
+         }])->find($id);
 
         //Check if he  is the owner of the job
         check_if_job_owner( $id );
@@ -1384,7 +1385,7 @@ class JobsController extends Controller
 
         $result = Solr::get_applicants($this->search_params, $id,'');
 
-        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $job->workflow->workflowSteps()->pluck('slug'));
 
         $applications = JobApplication::where('job_id',$id)->select("created", DB::raw("DATE_FORMAT(created, '%d-%c-%Y') as created"))->get()->groupBy('created')->toArray();
         //"cust.*", DB::raw("DATE_FORMAT(cust.cust_dob, '%d-%b-%Y') as formatted_dob")
@@ -1393,10 +1394,25 @@ class JobsController extends Controller
             return count($value);
         }, $applications);
 
+        // dd($application_statuses);
 
         $applications_per_day_chart = Charts::create('line', 'highcharts')
             // ->view('custom.line.chart.view') // Use this if you want to use your own template
             ->title(' ')
+            ->elementLabel("Applicants")
+            ->labels( array_keys($applications) )
+            // ->labels( array_map(function($value){ return date('D. d M Y', strtotime( $value ) ); },  array_keys($applications) ) )
+            ->values( array_values($applications))
+            // ->dimensions(1000,500)
+            // ->width('100%')
+            ->credits(false)
+            // ->legend({ 'enabled' : false })
+            ->responsive(true);
+
+        /* TODO: Fix this section of generating application funnel is not working yet. */
+        $applicantsFunnelChart = Charts::create('funnel', 'highcharts')
+            // ->view('custom.line.chart.view') // Use this if you want to use your own template
+            ->title('Applicant Funnel')
             ->elementLabel("Applicants")
             ->labels( array_keys($applications) )
             // ->labels( array_map(function($value){ return date('D. d M Y', strtotime( $value ) ); },  array_keys($applications) ) )
@@ -1406,8 +1422,9 @@ class JobsController extends Controller
             ->credits(false)
             // ->legend({ 'enabled' : false })
             ->responsive(true);
+        /* Block to fix ends here */
 
-        return view('job.board.activities', compact('job', 'active_tab', 'content','result','application_statuses','applications_per_day_chart'));
+        return view('job.board.activities', compact('job', 'active_tab', 'content','result','application_statuses','applications_per_day_chart', 'applicantsFunnelChart'));
     }
 
     public function JobCandidates($id, Request $request){
@@ -1482,13 +1499,13 @@ class JobsController extends Controller
     }
 
     public function jobApply($jobID, $slug, Request $request){
-            
+
         if( !Auth::guard('candidate')->check() )
         {
             return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
         }
         $candidate = Auth::guard('candidate')->user();
-        
+
         // dd( Auth::guard('candidate')->attempt() );
         $job = Job::with('company')->where('id', $jobID)->first();
         $company = $job->company;
@@ -1535,12 +1552,12 @@ class JobsController extends Controller
                 $data['cv_file'] = null;
             }
             // dd( $custom_fields[0] );
-            
+
             if( $fields->date_of_birth->is_visible )
             {
                 $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
             }
-            
+
             if( $fields->willing_to_relocate->is_visible )
             {
                 if($data['willing_to_relocate'] == 'yes')
@@ -1549,26 +1566,21 @@ class JobsController extends Controller
                 }
             }
 
-            
+
             if( $fields->state_of_origin->is_visible )
             {
                 if( $data['state_of_origin'] != "" )
-                {
-                    $data['state_of_origin'] = $states[$data['state_of_origin']];
-                }
-                
+                {$data['state_of_origin'] = $states[$data['state_of_origin']];}
+
             }
 
             if( $fields->location->is_visible )
             {
-                if( $data['location'] != "" ){
-                    $data['location'] = $states[$data['location']];
-                }
-                
+                if( $data['location'] != "" ){$data['location'] = $states[$data['location']];}
 
             }
-            
-            
+
+
             $data['created'] = date('Y-m-d H:i:s');
             $data['action_date'] = date('Y-m-d H:i:s');
 
@@ -1606,7 +1618,7 @@ class JobsController extends Controller
             }
             if( $fields->marital_status->is_visible )
             {
-                $cv->marital_status = $data['marital_status'];    
+                $cv->marital_status = $data['marital_status'];
             }
             if( $fields->location->is_visible )
             {
@@ -1618,7 +1630,7 @@ class JobsController extends Controller
                 {
                     $cv->highest_qualification = $qualifications[ $data['highest_qualification'] ];
                 }
-                
+
             }
             if( $fields->last_position->is_visible )
             {
@@ -1658,7 +1670,7 @@ class JobsController extends Controller
             {
                 $appl->cover_note = $data['cover_note'];
             }
-            
+
             $appl->cv_id = $cv->id;
             $appl->job_id = $job->id;
             $appl->status = 'PENDING';
@@ -1673,7 +1685,7 @@ class JobsController extends Controller
                       $cv->specializations()->attach($e);
                   }
             }
-             
+
 
 
               $appl_activities = (save_activities('APPLIED', $jobID, $appl->id, ''));
@@ -1758,8 +1770,8 @@ class JobsController extends Controller
             $last_cv = [];
         }
 
-        
-        
+
+
         return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades','custom_fields', 'candidate','last_cv','fields'));
 
 

@@ -89,7 +89,7 @@
 
                                                     @endforeach
 
-                                                    <a  class="btn btn-line status-1"
+                                                    <a  class="btn btn-line status-1 text-success"
                                                         data-toggle="modal"
                                                        data-target="#viewModal"
                                                        id="modalButton"
@@ -100,11 +100,9 @@
                                                        ]) }}"
                                                        data-app-id=""
                                                        data-cv=""
-                                                       data-type="normal"
-                                                       class="text-success">
+                                                       data-type="normal">
                                                         Approve
                                                     </a>
-
 
                                                     {{--<a class="btn btn-line status-1" data-action="SHORTLISTED"
                                                        data-toggle="modal" data-target="#viewModal" id="modalButton"

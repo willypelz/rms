@@ -12,12 +12,14 @@
                  data-app-id="{{ $cv['application_id'][ $current_app_index ] }}">
                 <hr>
                 <span class="col-md-2 col-sm-3">
-        <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}" target="_blank"
-           class="pull-left">
-            <img alt="" src="{{ $pic['image'] }}" style="background:{{ $pic['color'] }};" class="media-object "
-                 width="100%">
-        </a>
-      </span>
+                    <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}"
+                       target="_blank"
+                       class="pull-left">
+                        <img alt="" src="{{ $pic['image'] }}" style="background:{{ $pic['color'] }};"
+                             class="media-object "
+                             width="100%">
+                    </a>
+              </span>
                 <div class="media-body">
                     <input type="checkbox" class="media-body-check check-applicant pull-right">
                     <h4 class="media-heading text-muted">
@@ -27,8 +29,8 @@
                         @foreach($job->workflow->workflowSteps as $workflowStep)
                             @if($workflowStep->slug == $current_status && !$cv['is_approved'] && $workflowStep->requires_approval)
                                 <span class="span-stage text-info">
-                                (Requires Approval)
-                            </span>
+                                    (Requires Approval)
+                                </span>
                             @endif
                         @endforeach
                     </h4>
@@ -61,7 +63,11 @@
                         &nbsp;
                         <a id="showCvBtn" data-toggle="modal" data-target="#cvModal"
                            onclick="showCvModal('{{ $cv['id'] }}',true, {{ $cv['application_id'][ $current_app_index ] }});">
-                            View Cv
+                            View CV
+                        </a>
+                        <span class="text-muted">&middot;</span>
+                        <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}">
+                            View Application
                         </a>
                     <!--span class="text-muted">·</span>
               <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}">View Application</a-->
@@ -108,7 +114,7 @@
                             <span class="text-muted"> &middot; </span>
                             <span class="dropdown">
                             <a id="checkDrop" type="button" data-toggle="dropdown" aria-expanded="false">
-                                Check
+                                Checks
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="checkDrop"

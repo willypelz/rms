@@ -43,7 +43,7 @@
                                             {{ ($workflowStep->visible_to_applicant) ? 'Yes' : 'No' }}
                                         </p>
                                         <div class="">
-                                            - {{ $workflowStep->rank }}
+                                            - {{ $workflowStep->order }}
                                             - {!! $workflowStep->is_readonly
                                             ? '<span class="text-warning">System Generated</span>'
                                             : '' !!}
@@ -106,13 +106,13 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="rank">Rank/Priority</label>
+                                            <label for="order">Order</label>
                                             <input type="number"
                                                    min="1"
                                                    step="1"
-                                                   name="rank"
-                                                   id="rank"
-                                                   value="{{ old('rank') }}"
+                                                   name="order"
+                                                   id="order"
+                                                   value="{{ old('order') }}"
                                                    placeholder="10"
                                                    class="form-control">
                                         </div>

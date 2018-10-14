@@ -75,41 +75,41 @@
                         <span class="text-muted">·</span>
                         @if($cv['is_approved'])
                             <span class="dropdown">
-                            <a id="moveToDrop"
-                               class="dropdown-toggle"
-                               data-toggle="dropdown"
-                               aria-expanded="false">
-                                Move To
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="moveToDrop"
-                                style="position:relative; float:right; border: 1px solid rgba(0, 0, 0, 0.03);">
-                                    @foreach($job->workflow->workflowSteps as $workflowStep)
+                                <a id="moveToDrop"
+                                   class="dropdown-toggle"
+                                   data-toggle="dropdown"
+                                   aria-expanded="false">
+                                    Move To
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="moveToDrop"
+                                    style="position:relative; float:right; border: 1px solid rgba(0, 0, 0, 0.03);">
+                                        @foreach($job->workflow->workflowSteps as $workflowStep)
 
-                                    @if($workflowStep->slug == 'ALL' || $workflowStep->slug == $current_status)
-                                        @continue
-                                    @endif
+                                        @if($workflowStep->slug == 'ALL' || $workflowStep->slug == $current_status)
+                                            @continue
+                                        @endif
 
-                                    <li>
-                                        <a data-toggle="modal"
-                                           data-target="#viewModal"
-                                           id="modalButton"
-                                           data-title="{{ $workflowStep->name }}"
-                                           data-view="{{ route('modal-step-action', [
-                                           'step' => $workflowStep->name,
-                                           'stepSlug' => $workflowStep->slug,
-                                           'stepId' => $workflowStep->id
-                                           ]) }}"
-                                           data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
-                                           data-cv="{{ $cv['id'] }}"
-                                           data-type="normal">
-                                            {{ $workflowStep->name }}
-                                        </a>
-                                    </li>
+                                        <li>
+                                            <a data-toggle="modal"
+                                               data-target="#viewModal"
+                                               id="modalButton"
+                                               data-title="{{ $workflowStep->name }}"
+                                               data-view="{{ route('modal-step-action', [
+                                               'step' => $workflowStep->name,
+                                               'stepSlug' => $workflowStep->slug,
+                                               'stepId' => $workflowStep->id
+                                               ]) }}"
+                                               data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
+                                               data-cv="{{ $cv['id'] }}"
+                                               data-type="normal">
+                                                {{ $workflowStep->name }}
+                                            </a>
+                                        </li>
 
-                                @endforeach
-                            </ul>
-                        </span>
+                                    @endforeach
+                                </ul>
+                            </span>
 
                             <span class="text-muted"> &middot; </span>
                             <span class="dropdown">
@@ -145,60 +145,64 @@
                         </span>
 
                         @else
-                        <!-- // Approval Button -->
-                            <a data-toggle="modal"
-                               data-target="#viewModal"
-                               id="modalButton"
-                               data-title="Approve"
-                               data-view="{{ route('modal-approve', [
+                            @foreach($job->workflow->workflowSteps as $workflowStep)
+                                @if(in_array(auth()->user()->id, $workflowStep->approvals->pluck('id')->toArray()))
+                                    <!-- // Approval Button -->
+                                    <a data-toggle="modal"
+                                       data-target="#viewModal"
+                                       id="modalButton"
+                                       data-title="Approve"
+                                       data-view="{{ route('modal-approve', [
                                            'stepSlug' => $workflowStep->slug,
                                            'stepId' => $workflowStep->id
                                            ]) }}"
-                               data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
-                               data-cv="{{ $cv['id'] }}"
-                               data-type="normal"
-                               class="text-success">
-                                Approve
-                            </a>
+                                       data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
+                                       data-cv="{{ $cv['id'] }}"
+                                       data-type="normal"
+                                       class="text-success">
+                                        Approve
+                                    </a>
 
-                            <span class="text-muted">·</span>
+                                    <span class="text-muted">·</span>
 
-                            <span class="dropdown">
-                            <a id="moveToDrop"
-                               class="dropdown-toggle text-danger"
-                               data-toggle="dropdown"
-                               aria-expanded="false">
-                                Decline To
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="moveToDrop"
-                                style="position:relative; float:right; border: 1px solid rgba(0, 0, 0, 0.03);">
-                                    @foreach($job->workflow->workflowSteps as $workflowStep)
-
-                                    @if($workflowStep->slug == 'ALL' || $workflowStep->slug == $current_status)
-                                        @continue
-                                    @endif
-
-                                    <li>
-                                        <a data-toggle="modal"
-                                           data-target="#viewModal"
-                                           id="modalButton"
-                                           data-title="{{ $workflowStep->name }}"
-                                           data-view="{{ route('modal-step-action', [
-                                           'step' => $workflowStep->name,
-                                           'stepSlug' => $workflowStep->slug,
-                                           'stepId' => $workflowStep->id
-                                           ]) }}"
-                                           data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
-                                           data-cv="{{ $cv['id'] }}"
-                                           data-type="normal">
-                                            {{ $workflowStep->name }}
+                                    <span class="dropdown">
+                                        <a id="moveToDrop"
+                                           class="dropdown-toggle text-danger"
+                                           data-toggle="dropdown"
+                                           aria-expanded="false">
+                                            Decline To
+                                            <span class="caret"></span>
                                         </a>
-                                    </li>
+                                        <ul class="dropdown-menu" aria-labelledby="moveToDrop"
+                                            style="position:relative; float:right; border: 1px solid rgba(0, 0, 0, 0.03);">
+                                                @foreach($job->workflow->workflowSteps as $workflowStep)
 
-                                @endforeach
-                            </ul>
-                        </span>
+                                                @if($workflowStep->slug == 'ALL' || $workflowStep->slug == $current_status)
+                                                    @continue
+                                                @endif
+
+                                                <li>
+                                                    <a data-toggle="modal"
+                                                       data-target="#viewModal"
+                                                       id="modalButton"
+                                                       data-title="{{ $workflowStep->name }}"
+                                                       data-view="{{ route('modal-step-action', [
+                                                       'step' => $workflowStep->name,
+                                                       'stepSlug' => $workflowStep->slug,
+                                                       'stepId' => $workflowStep->id
+                                                       ]) }}"
+                                                       data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
+                                                       data-cv="{{ $cv['id'] }}"
+                                                       data-type="normal">
+                                                        {{ $workflowStep->name }}
+                                                    </a>
+                                                </li>
+
+                                            @endforeach
+                                        </ul>
+                                    </span>
+                                @endif
+                            @endforeach
                         @endif
 
                         {{-- @if($status != 'SHORTLISTED' && $status != 'ASSESSED' && $status != 'INTERVIEWED' && $status != 'HIRED')  --}}
@@ -490,10 +494,12 @@
         @endif
         <!-- <ul class="list-unstyled">
         <li class="">a) <a href="{{ route('job-promote',  $jobID) }}" class="">Promote this job</a></li>
-        <li class="">b) <a href="{{ route('job-promote',  $jobID) }}" class="">Share on social media</a></li>
-        <li class="">c) <a href="{{ route('job-promote',  $jobID) }}" class="">Get referrals for this job</a></li>
-        <li class="">d) <a class="">Upload applicants to this job</a></li>
-      </ul> -->
+                                <li class="">b) <a href="{{ route('job-promote',  $jobID) }}" class="">Share on social
+                                        media</a></li>
+                                <li class="">c) <a href="{{ route('job-promote',  $jobID) }}" class="">Get referrals for
+                                        this job</a></li>
+                                <li class="">d) <a class="">Upload applicants to this job</a></li>
+                                </ul> -->
         </p>
     </div>
 

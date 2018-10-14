@@ -24,3 +24,7 @@ span.dropdown {
     overflow-x: auto;
     white-space: nowrap;
 }
+
+.workflow-steps {
+    cursor: grab;
+}

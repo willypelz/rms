@@ -29,26 +29,32 @@
                                 {{ csrf_field() }}
                                 <input type="hidden" name="_method" value="put">
 
-                                <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text"
-                                           name="name"
-                                           id="name"
-                                           value="{{ old('name', $workflowStep->name) }}"
-                                           placeholder="Waiting List"
-                                           class="form-control">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="order">Order</label>
-                                    <input type="number"
-                                           min="0"
-                                           step="1"
-                                           name="order"
-                                           id="order"
-                                           value="{{ old('order', $workflowStep->order) }}"
-                                           placeholder="10"
-                                           class="form-control">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="name">Name</label>
+                                            <input type="text"
+                                                   name="name"
+                                                   id="name"
+                                                   value="{{ old('name', $workflowStep->name) }}"
+                                                   placeholder="Waiting List"
+                                                   class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="type">Type</label>
+                                            <select name="type"
+                                                    id="type"
+                                                    class="select2"
+                                                    style="width: 100%;">
+                                                <option value="">- select -</option>
+                                                @foreach(config('workflowStepTypes') as $stepSlug => $stepLabel)
+                                                    <option value="{{ $stepSlug }}">{{ $stepLabel }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
@@ -63,7 +69,7 @@
                                            class="control-check"
                                            value="1"
                                            @if(old('requires_approval', $workflowStep->requires_approval) == 1) checked @endif>
-                                    <label for="requireApprovalRequires Approval"></label>
+                                    <label for="requireApproval">Requires Approval</label>
                                 </div>
 
                                 <div class="form-group">

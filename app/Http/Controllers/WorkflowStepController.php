@@ -66,4 +66,35 @@ class WorkflowStepController extends Controller
             ->back()
             ->with('error', 'Can not step to Workflow, try again!!');
     }
+
+    public function reorderSteps(Request $request)
+    {
+        if (!$workflow = Workflow::with([
+            'workflowSteps' => function ($q) {
+                return $q->orderBy('order', 'asc');
+            }
+        ])->find($request->input('workflow_id'))) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Workflow does not exist, please reload and try again',
+            ], 400);
+        }
+
+        // set new order for workflow steps
+        foreach ($workflow->workflowSteps as $workflowStep) {
+            $workflowStep->order = array_search($workflowStep->id, $request->input('steps')) + 1;
+            if(!$workflowStep->update()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Error completing reorder, please reload and try again',
+                ], 417);
+            }
+        }
+
+        // send back a general success message
+        return response()->json([
+            'status' => true,
+            'message' => 'Step reorder successfully',
+        ]);
+    }
 }

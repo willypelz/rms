@@ -34,10 +34,26 @@ $(function () {
         .disableSelection();
 
     sortableSteps.on('sortstop', function (e, ui) {
-        var sorted = sortableSteps.sortable("serialize");
-        // var sorted = sortableSteps.sortable("toArray");
 
-        console.log(sorted);
+        $.post("/settings/workflow/steps/reorder", {
+            workflow_id: sortableSteps.data('workflow-id'),
+            steps: sortableSteps.sortable("toArray")
+        })
+            .done(function (data) {
+                // sorting became successful
+                $.growl.notice({message: data.message});
+                /*
+                $.growl.info({message: 'reloadiing...'});
+                $(this).delay(2000).queue(function(){
+                    location.reload(true);
+                });
+                */
+            })
+            .fail(function (jqXHR) {
+                // what happens when sort fails
+                $.growl.warning({message: jqXHR.responseJSON.message});
+            });
+
     });
 
 

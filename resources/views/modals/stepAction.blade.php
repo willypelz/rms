@@ -41,7 +41,6 @@
                         + $field.closest('.modal-body').find('.media-heading a').text()
                 });
 
-                // Just guessing what this method does 😀
                 sh.reloadStatus();
             });
 

@@ -29,11 +29,10 @@
                     </h4>
 
                     @if($workflow->workflowSteps()->exists())
-                        <div id="sortableSteps">
+                        <div id="sortableSteps" data-workflow-id="{{ $workflow->id }}">
                             @foreach($workflow->workflowSteps as $workflowStep)
-                                <div class="panel panel-default"
-                                     data-sortable-id="{{ $workflowStep->id }}"
-                                     data-sortable-rank="{{ $workflowStep->rank }}">
+                                <div class="panel panel-default workflow-steps"
+                                     id="{{ $workflowStep->id }}">
                                     <div class="panel-body clearfix">
                                         <div class="pull-left">
                                             <h5>{{ $workflowStep->name }}</h5>
@@ -46,10 +45,9 @@
                                                 {{ ($workflowStep->visible_to_applicant) ? 'Yes' : 'No' }}
                                             </p>
                                             <div class="">
-                                                - {{ $workflowStep->order }}
-                                                - {!! $workflowStep->is_readonly
-                                            ? '<span class="text-warning">System Generated</span>'
-                                            : '' !!}
+                                                {!! $workflowStep->is_readonly
+                                           ? '- <span class="text-warning">System Generated</span> -'
+                                           : '' !!}
                                             </div>
                                         </div>
 
@@ -60,7 +58,7 @@
                                                     <i class="fa fa-pencil fa-fw"></i>
                                                     Edit
                                                 </a>
-
+                                                {{--
                                                 <form action="{{ route('step-delete', ['id' => $workflowStep->id]) }}"
                                                       method="post"
                                                       class="delete-spoof">
@@ -71,7 +69,7 @@
                                                     <button type="submit" class="btn btn-danger btn-sm">
                                                         <i class="fa fa-times-circle fa-fw"></i>
                                                     </button>
-                                                </form>
+                                                </form>--}}
                                             </div>
                                         @endif
                                     </div>
@@ -108,8 +106,8 @@
                                                    value="{{ old('name') }}"
                                                    placeholder="Waiting List"
                                                    class="form-control">
+                                        </div>
                                     </div>
-                                </div>
                                 <!-- <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="order">Order</label>

@@ -40,13 +40,13 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="rank">Rank/Priority</label>
+                                    <label for="order">Order</label>
                                     <input type="number"
                                            min="0"
                                            step="1"
-                                           name="rank"
-                                           id="rank"
-                                           value="{{ old('rank', $workflowStep->rank) }}"
+                                           name="order"
+                                           id="order"
+                                           value="{{ old('order', $workflowStep->order) }}"
                                            placeholder="10"
                                            class="form-control">
                                 </div>
@@ -54,7 +54,7 @@
                                 <div class="form-group">
                                     <input type="hidden"
                                            name="requires_approval"
-                                           id="requireApproval"
+                                           id=""
                                            class="control-check"
                                            value="0">
                                     <input type="checkbox"
@@ -63,7 +63,7 @@
                                            class="control-check"
                                            value="1"
                                            @if(old('requires_approval', $workflowStep->requires_approval) == 1) checked @endif>
-                                    Requires Approval
+                                    <label for="requireApprovalRequires Approval"></label>
                                 </div>
 
                                 <div class="form-group">
@@ -76,7 +76,7 @@
                                            id="visibleToApplicant"
                                            value="1"
                                            @if(old('visible_to_applicant', $workflowStep->visible_to_applicant) == 1) checked @endif>
-                                    Visible to Applicant
+                                    <label for="visibleToApplicant">Visible to Applicant</label>
                                 </div>
 
                                 <div class="form-group">

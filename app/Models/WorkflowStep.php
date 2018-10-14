@@ -25,7 +25,7 @@ class WorkflowStep extends Model
     protected $fillable = [
         'name',
         'slug',
-        'rank',
+        'order',
         'type',
         'description',
         'workflow_id',

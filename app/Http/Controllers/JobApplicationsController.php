@@ -301,7 +301,7 @@ class JobApplicationsController extends Controller
         $job = Job::with([
             'form_fields',
             'workflow.workflowSteps' => function ($q) {
-                return $q->orderBy('rank', 'asc');
+                return $q->orderBy('order', 'asc');
             }
         ])->find($request->jobID);
 
@@ -794,7 +794,7 @@ class JobApplicationsController extends Controller
     {
         $job = Job::with([
             'workflow.workflowSteps' => function ($q) {
-                return $q->orderBy('rank', 'asc');
+                return $q->orderBy('order', 'asc');
             }
         ])->find($request->job_id);
 

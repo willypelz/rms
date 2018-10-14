@@ -12,7 +12,7 @@ class WorkflowStepController extends Controller
     {
         if (!$workflow = Workflow::with([
             'workflowSteps' => function ($q) {
-                return $q->orderBy('rank', 'asc');
+                return $q->orderBy('order', 'asc');
             }
         ])->find($id)) {
             return redirect()->route('workflow');
@@ -29,18 +29,27 @@ class WorkflowStepController extends Controller
 
     public function store(Request $request, $id)
     {
-        if (!$workflow = Workflow::with('workflowSteps')->find($id)) {
+        if (!$workflow = Workflow::with([
+            'workflowSteps' => function ($q) {
+                return $q->orderBy('order', 'asc');
+            }
+        ])->find($id)) {
             return redirect()->route('workflow');
         }
 
+        $workflowLastStep = $workflow->workflowSteps->last();
+
         $this->validate($request, [
             'name' => 'required',
-            'rank' => 'required|integer|min:1',
+            // 'order' => 'required|integer|min:1', // Order default to last +1, disable user ability to set order
             'type' => 'required',
             'approval_users' => 'required_if:requires_approval,1',
         ]);
 
-        if ($newWorkflowStep = $workflow->workflowSteps()->create($request->all() + ['slug' => $request->name])) {
+        if ($newWorkflowStep = $workflow->workflowSteps()->create($request->all() + [
+                'slug' => $request->input('name'),
+                'order' => $workflowLastStep->order + 1,
+            ])) {
 
             // attach users that can approval steps
             if ($approval_users = $request->input('approval_users')) {

@@ -27,7 +27,7 @@ class WorkflowController extends Controller
                 [
                     'name' => 'All',
                     'slug' => 'all',
-                    'rank' => '1',
+                    'order' => '1',
                     'type' => 'normal',
                     'is_readonly' => true,
                     'description' => 'List of all the applicants for this job.',
@@ -35,7 +35,7 @@ class WorkflowController extends Controller
                 [
                     'name' => 'Pending',
                     'slug' => 'pending',
-                    'rank' => '1',
+                    'order' => '1',
                     'type' => 'normal',
                     'is_readonly' => true,
                     'description' => 'All applicants are listed here until at least a recruitment action is taken.',

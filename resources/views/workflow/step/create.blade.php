@@ -93,18 +93,20 @@
 
                                 {{ csrf_field() }}
 
-                                <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text"
-                                           name="name"
-                                           id="name"
-                                           value="{{ old('name') }}"
-                                           placeholder="Waiting List"
-                                           class="form-control">
-                                </div>
 
                                 <div class="row">
                                     <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="name">Name</label>
+                                            <input type="text"
+                                                   name="name"
+                                                   id="name"
+                                                   value="{{ old('name') }}"
+                                                   placeholder="Waiting List"
+                                                   class="form-control">
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="order">Order</label>
                                             <input type="number"
@@ -116,7 +118,7 @@
                                                    placeholder="10"
                                                    class="form-control">
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="type">Type</label>
@@ -140,7 +142,7 @@
                                            class="control-check"
                                            value="1"
                                            @if(old('requires_approval') == 1) checked @endif>
-                                    Requires Approval
+                                    <label for="requireApproval">Requires Approval</label>
                                 </div>
 
                                 <div class="form-group" id="approvalUsersBlock">
@@ -164,7 +166,7 @@
                                            id="visibleToApplicant"
                                            value="1"
                                            @if(old('visible_to_applicant') == 1) checked @endif>
-                                    Visible to Applicant
+                                    <label for="visibleToApplicant">Visible to Applicant</label>
                                 </div>
 
                                 <div class="form-group">
@@ -182,6 +184,7 @@
                                               placeholder="... ... .."
                                               class="form-control">{{ old('message_template') }}</textarea>
 
+                                    <!-- Message Template Placeholder Buttons -->
                                     <div class="msg-template-placeholders" style="margin: 10px auto;">
                                         <button type="button" class="btn btn-sm btn-secondary templateBtn"
                                                 value="{applicant_name}">

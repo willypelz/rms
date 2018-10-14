@@ -26,4 +26,35 @@ $(function () {
         });
     }
 
+    var sortableSteps = $("#sortableSteps");
+    sortableSteps
+        .sortable({
+            opacity: 0.8
+        })
+        .disableSelection();
+
+    sortableSteps.on('sortstop', function (e, ui) {
+
+        $.post("/settings/workflow/steps/reorder", {
+            workflow_id: sortableSteps.data('workflow-id'),
+            steps: sortableSteps.sortable("toArray")
+        })
+            .done(function (data) {
+                // sorting became successful
+                $.growl.notice({message: data.message});
+                /*
+                $.growl.info({message: 'reloadiing...'});
+                $(this).delay(2000).queue(function(){
+                    location.reload(true);
+                });
+                */
+            })
+            .fail(function (jqXHR) {
+                // what happens when sort fails
+                $.growl.warning({message: jqXHR.responseJSON.message});
+            });
+
+    });
+
+
 });

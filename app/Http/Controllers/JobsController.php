@@ -879,7 +879,7 @@ class JobsController extends Controller
         $company = get_current_company();
 
         $jobs = $company->jobs()->with(['workflow.workflowSteps'=> function ($q) {
-            return $q->orderBy('rank', 'asc');
+            return $q->orderBy('order', 'asc');
         }])->orderBy('created_at','desc');
 
         $job_access = Job::where('company_id',$company->id)->whereHas('users',function($q) use($user){
@@ -1375,7 +1375,7 @@ class JobsController extends Controller
 
     public function JobActivities($id, Request $request){
          $job = Job::with(['workflow.workflowSteps' => function($q){
-             return $q->orderBy('rank', 'asc');
+             return $q->orderBy('order', 'asc');
          }])->find($id);
 
         //Check if he  is the owner of the job

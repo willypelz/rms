@@ -73,6 +73,9 @@
                                                     <a target="_blank"
                                                         href="{{ route('job-board', [$job['id']]) }}"><b>{{ $job['title'] }}</b>
                                                     </a>
+                                                    <a href="{{ route('workflow-steps-add', ['id' => $job->workflow->id]) }}" class="label label-info">
+                                                        {{ ucwords($job->workflow->name) }}
+                                                    </a>
                                                 </h5>
                                                 {{--<hr/>--}}
                                                 <small class="text-muted">

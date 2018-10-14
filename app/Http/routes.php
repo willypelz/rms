@@ -53,35 +53,32 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('embed-test', ['as' => 'embed', 'uses' => 'JobsController@getEmbedTest']);
     Route::get('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
     Route::post('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
-    
+
     // Candidate
-    Route::group(['prefix'=>'candidate'], function(){
+    Route::group(['prefix' => 'candidate'], function () {
 
-        Route::match(['get','post'],'/login', 'CandidateController@login')->name('candidate-login');
-        Route::match(['get','post'],'/logout', 'CandidateController@logout')->name('candidate-logout');
-        Route::match(['get','post'],'/register', 'CandidateController@register')->name('candidate-register');
-        Route::match(['get','post'],'/forgot', 'CandidateController@forgot')->name('candidate-forgot');
-        Route::match(['get','post'],'/reset', 'CandidateController@reset')->name('candidate-reset');
+        Route::match(['get', 'post'], '/login', 'CandidateController@login')->name('candidate-login');
+        Route::match(['get', 'post'], '/logout', 'CandidateController@logout')->name('candidate-logout');
+        Route::match(['get', 'post'], '/register', 'CandidateController@register')->name('candidate-register');
+        Route::match(['get', 'post'], '/forgot', 'CandidateController@forgot')->name('candidate-forgot');
+        Route::match(['get', 'post'], '/reset', 'CandidateController@reset')->name('candidate-reset');
 
-        Route::match(['get','post'],'/dashboard', 'CandidateController@dashboard')->name('candidate-dashboard');
-        Route::match(['get','post'],'/{application_id}/activities', 'CandidateController@activities')->name('candidate-activities');
-        Route::match(['get','post'],'/jobs', 'CandidateController@jobs')->name('candidate-jobs');
-        Route::match(['get','post'],'/{application_id}/documents', 'CandidateController@documents')->name('candidate-documents');
-        
+        Route::match(['get', 'post'], '/dashboard', 'CandidateController@dashboard')->name('candidate-dashboard');
+        Route::match(['get', 'post'], '/{application_id}/activities',
+            'CandidateController@activities')->name('candidate-activities');
+        Route::match(['get', 'post'], '/jobs', 'CandidateController@jobs')->name('candidate-jobs');
+        Route::match(['get', 'post'], '/{application_id}/documents',
+            'CandidateController@documents')->name('candidate-documents');
 
-        
 
-        Route::match(['get','post'],'/{application_id}/messages', 'CandidateController@messages')->name('candidate-messages');
+        Route::match(['get', 'post'], '/{application_id}/messages',
+            'CandidateController@messages')->name('candidate-messages');
 
-        Route::match(['get','post'],'/messages/send', 'CandidateController@sendMessage')->name('candidate-send-message');
+        Route::match(['get', 'post'], '/messages/send',
+            'CandidateController@sendMessage')->name('candidate-send-message');
 
-         
-        
-
-        
 
     });
-
 
 
     Route::get('/test', function () {
@@ -177,8 +174,6 @@ Route::group(['middleware' => 'web'], function () {
     //  Route::get('embed-view', function(){
     //     echo "good one";
     // });
-
-    
 
 
     Route::get('payment_successful', function () {
@@ -509,7 +504,8 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::get('messages/{appl_id}',
             ['uses' => 'JobApplicationsController@Messages', 'as' => 'applicant-messages']);
-        Route::match(['get','post'],'/messages/send', 'JobApplicationsController@sendMessage')->name('admin-send-message');
+        Route::match(['get', 'post'], '/messages/send',
+            'JobApplicationsController@sendMessage')->name('admin-send-message');
 
         Route::get('activities/{appl_id}',
             ['uses' => 'JobApplicationsController@activities', 'as' => 'applicant-activities']);
@@ -558,7 +554,7 @@ Route::group(['middleware' => 'web'], function () {
         }
     ]);
 
-     Route::get('settings/embed',
+    Route::get('settings/embed',
         ['as' => 'settings-embed', 'uses' => 'JobsController@embed']);
 
     Route::get('cron/delete-temp-files',
@@ -655,6 +651,9 @@ Route::group(['middleware' => 'web'], function () {
             // Workflow <-> Steps
             Route::get('/{id}/steps/add', 'WorkflowStepController@create')->name('workflow-steps-add');
             Route::post('/{id}/steps/add', 'WorkflowStepController@store')->name('workflow-steps-store');
+
+            // API calls
+            Route::post('/steps/reorder', 'WorkflowStepController@reorderSteps');
         });
 
         // Steps
@@ -662,9 +661,10 @@ Route::group(['middleware' => 'web'], function () {
         Route::match(['put', 'patch'], '/step/{id}/edit', 'StepController@update');
         Route::delete('/step/{id}', 'StepController@destroy')->name('step-delete');
 
-        Route::get('modal/step-action/{step}/{stepSlug}/{stepId}', 'JobApplicationsController@modalStepAction')->name('modal-step-action');
+        Route::get('modal/step-action/{step}/{stepSlug}/{stepId}',
+            'JobApplicationsController@modalStepAction')->name('modal-step-action');
 
-        Route::match(['get', 'post'] ,'modal/approve', 'JobApplicationsController@modalApprove')->name('modal-approve');
+        Route::match(['get', 'post'], 'modal/approve', 'JobApplicationsController@modalApprove')->name('modal-approve');
 
     });
 
@@ -673,7 +673,7 @@ Route::group(['middleware' => 'web'], function () {
         return view('Admin.Layouts.default');
     });
     Route::group([
-        'prefix'     => '/admin',
+        'prefix' => '/admin',
         'middleware' => 'admin'
     ], function () {
         //

@@ -25,7 +25,8 @@ class StepController extends Controller
 
         $this->validate($request, [
             'name' => 'required',
-            'order' => 'required|integer',
+            // 'order' => 'required|integer', // Disable order modification on update
+            'type' => 'required',
         ]);
 
         if ($workflowStep->update($request->all() + ['slug' => $request->name])) {

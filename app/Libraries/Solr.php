@@ -46,7 +46,7 @@ class Solr {
 			$search_field .= ':';
 
 		$filename = Solr::$host."q=".$search_field.$q."&rows=".$row."&start=".$start
-							."&facet=true&facet.limit=-1&facet.field=gender&facet.field=marital_status&facet.field=last_position&facet.field=years_of_experience&facet.field=state&facet.field=state_of_origin&facet.field=last_company_worked&facet.field=folder_name&facet.field=folder_type&facet.field=application_status&facet.field=test_name&facet.field=test_status&facet.field=test_score&facet.field=highest_qualification&facet.field=willing_to_relocate&facet.field=cv_source&facet.field=video_application_score&facet.field=custom_field_name&facet.field=custom_field_value&facet.field=grade"
+							."&facet=true&facet.limit=-1&facet.field=gender&facet.field=marital_status&facet.field=last_position&facet.field=years_of_experience&facet.field=state&facet.field=state_of_origin&facet.field=last_company_worked&facet.field=folder_name&facet.field=folder_type&facet.field=application_status&facet.field=test_name&facet.field=test_status&facet.field=test_score&facet.field=highest_qualification&facet.field=willing_to_relocate&facet.field=cv_source&facet.field=video_application_score&facet.field=custom_field_name&facet.field=custom_field_value&facet.field=grade&facet.field=is_approved"
 							// ."&facet=true&facet.field=job_type&facet.field=company&facet.field=loc&facet.field=job_level&facet.field=site_name&facet.date=expiry_date&facet.date.start=NOW/DAY&facet.date.end=NOW/DAY%2B60DAY&facet.date.gap=%2B7DAY&wt=json"
 							."&sort=".$sort
 							.$additional

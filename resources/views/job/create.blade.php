@@ -167,6 +167,50 @@
                                     <h4>Default Fields</h4>
                                     <hr>
 
+                                    {{-- Select all --}}
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <label for=""></label>
+
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <label style="cursor: pointer;">
+                                                <input type="checkbox" id="is_required_all" style="margin:10px"> <span class="text-uppercase"><strong>Toggle all</strong></span></label>
+                                            </div>
+                                            <div class="col-xs-3">
+                                                <label style="cursor: pointer;">
+                                                <input type="checkbox" id="is_visible_all" style="margin:10px" checked="checked"> <span class="text-uppercase"><strong>Toggle all</strong></span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <script type="text/javascript">
+                                        $(document).ready(function(){
+                                            $('#is_required_all').on('click', function(){
+                                                if( $(this).is(':checked') )
+                                                {
+                                                    $('.is_required').prop('checked','checked');
+                                                }
+                                                else
+                                                {
+                                                    $('.is_required').removeProp('checked');
+                                                }
+                                            });
+
+                                            $('#is_visible_all').on('click', function(){
+                                                if( $(this).is(':checked') )
+                                                {
+                                                    $('.is_visible').prop('checked','checked');
+                                                }
+                                                else
+                                                {
+                                                    $('.is_visible').removeProp('checked');
+                                                }
+                                            });
+                                        });
+                                    </script>
+
                                     @foreach( $application_fields as $key => $application_field )
                                         <div class="form-group">
                                             <div class="row">
@@ -175,10 +219,10 @@
 
                                                 </div>
                                                 <div class="col-xs-3">
-                                                    <input type="checkbox" name="is_required[{{ $key }}][]" class=" " style="margin:10px"> Is required
+                                                    <input type="checkbox" name="is_required[{{ $key }}][]" class="is_required" style="margin:10px"> Is required
                                                 </div>
                                                 <div class="col-xs-3">
-                                                    <input type="checkbox" name="is_visible[{{ $key }}][]" class="" style="margin:10px" checked="checked"> Is visible
+                                                    <input type="checkbox" name="is_visible[{{ $key }}][]" class="is_visible" style="margin:10px" checked="checked"> Is visible
                                                 </div>
                                             </div>
                                         </div>

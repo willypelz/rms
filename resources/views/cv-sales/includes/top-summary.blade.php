@@ -25,6 +25,27 @@
 				}
 				
 
+				//Format approved filter string
+				
+				
+				preg_match('/(is_approved:"(true|false)")/',$filter_string, $matches);
+
+    		if( !empty( $matches ) )
+				{
+					$approval_text = str_replace( 'is_approved:', 'pending approval? :', $matches[0] );
+
+					if( $matches[2] == "false" ) 
+					{
+						$approval_text = str_replace('false', 'yes', $approval_text);
+					}
+					else if( $matches[2] == "true" ) 
+					{
+						$approval_text = str_replace('true', 'no', $approval_text);
+					}
+
+					$filter_string = str_replace( $matches[0], $approval_text, $filter_string);
+				}
+
 				?>
 			
 			{{ ucwords(str_ireplace("_", " ", $filter_string)) }}

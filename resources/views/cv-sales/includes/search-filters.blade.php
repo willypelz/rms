@@ -26,6 +26,39 @@
 
             @endif
 
+
+            <p class="border-bottom-thin text-muted">Pending approval?<i class="fa fa-filter pull-right"></i></p>
+              <div class="checkbox-inline">
+                  {{--*/ $other_willing_to_relocate = 0  /*--}}
+                  {{--*/ $index = 0  /*--}}
+
+                  @foreach( $result['facet_counts']['facet_fields']['is_approved'] as $key => $is_approved )
+                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['is_approved'][ $key + 1 ] != 0 )
+                        
+                        {{--*/ $index++  /*--}}
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="is_approved" data-value="{{ $is_approved }}"> 
+                        @if( $is_approved == "true")
+                          {{  "No (".$result['facet_counts']['facet_fields']['is_approved'][ $key + 1 ].")" }}
+                        @elseif( $is_approved == "false")
+                          {{  "Yes (".$result['facet_counts']['facet_fields']['is_approved'][ $key + 1 ].")" }}
+                        @endif
+                        </label> <br></div>
+                      @else
+
+                        {{--*/ @$other_willing_to_relocate += $result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ] /*--}}
+
+                      @endif
+                  @endforeach
+
+                  {{-- <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_willing_to_relocate.")" }}</label> <br></div> --}}
+              </div>
+              
+              @if($index > 4)
+                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+              @endif
+
+              <p></p>
+
           @if( @$status == 'ASSESSED' )
                   <p class="border-bottom-thin text-muted">Test Name<i class="fa fa-filter pull-right"></i></p>
                     <div class="checkbox-inline">

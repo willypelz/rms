@@ -48,37 +48,54 @@
                               
 
                               <ul class="list-group list-notify">
-                          
+                          @if( count($interview_note_categories) > 0 )
+                                    @foreach( $interview_note_categories as $template_name => $interview_notes )
+                                    <h3 style="padding:10px;">{{ $template_name }}</h3>
                                 <li class="list-group-item" role="candidate-comments">
                           
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-warning"></i>
-                                    <i class="fa fa-commenting-o fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-file-text-o fa-stack-1x fa-inverse"></i>
                                   </span>
 
-                                  @if( count($interview_notes) > 0 )
-                                    @foreach( $interview_notes as $interview_note )
+                                  
 
+                                      
+                                      @foreach( $interview_notes as $interview_note )
+
+                                      
+                                          <div class="commenter">
+                                            <p class="pull-left">
+                                              <a>{{ $interview_note->interviewer->name }}</a> made a note on candidate
+                                              <br>
+                                                  <small class="text-muted pull-left">[{{ date('D, j-n-Y, h:i A', strtotime( $interview_note->created_at ))  }}]</small>
+
+                                              <button class="btn btn-success btn-block " title="Interview Note by {{ $interview_note->interviewer->name }}" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview Note by {{ $interview_note->interviewer->name }}" data-view="{{ route('modal-interview-notes',['interview_id'=>$interview_note, 'readonly'=>true , 'interviewed_by' => $interview_note->interviewed_by]) }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide" >View Note</button>
+                                            </p>
+                                            {{-- <blockquote class="h5"> --}}
+                                              
+                                          
+
+                                              <div class="pull-right">
+                                                <h3 class="text-primary text-center no-margin">SCORE</h3>
+                                                  <h1 class=" text-center">{{ round( $interview_note->value * $interview_note->weight / 5, 2) }}</h1>
+                                              </div>
+                                              
+                                              <!-- <span role="comment-body text-muted">
+                                                  <strong>General Comments: </strong>{{ @$interview_note->general_comments }} <br><br>
+                                                  <strong>Recommendations: </strong>{{ @$interview_note->recommendation }}
+                                                  
+                                              </span> -->
+                                            {{-- </blockquote> --}}
+
+                                            <div class="clearfix"></div><br>
+                                          </div>
+                                          <hr>
+                                      @endforeach
                                     
-                                        <div class="commenter">
-                                          <p>
-                                            <a>{{ $interview_note->interviewer->name }}</a> made a note on candidate
-                                                <small class="text-muted pull-right">[{{ date('D, j-n-Y, h:i A', strtotime( $interview_note->created_at ))  }}]</small>
-                                          </p>
-                                          <blockquote class="h5">
-                                            <div class="pull-right">
-                                                <button class="btn btn-success btn-block" title="Interview Note by {{ $interview_note->interviewer->name }}" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Interview Note by {{ $interview_note->interviewer->name }}" data-view="{{ route('modal-interview-notes',['interview_id'=>$interview_note, 'readonly'=>true , 'interviewed_by' => $interview_note->interviewed_by]) }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide" >View Note</button>
-                                            </div>
-                                            <!-- <span role="comment-body text-muted">
-                                                <strong>General Comments: </strong>{{ @$interview_note->general_comments }} <br><br>
-                                                <strong>Recommendations: </strong>{{ @$interview_note->recommendation }}
-                                                
-                                            </span> -->
-                                          </blockquote>
-
-                                          <div class="clearfix"></div><br>
-                                        </div>
-                                    @endforeach
+                                </li>
+                          
+                                @endforeach
                                   @else
                                     
                                     <div>
@@ -86,9 +103,6 @@
                                     </div>
                                     
                                   @endif
-                                </li>
-                          
-                                
                           
                               </ul>
                               

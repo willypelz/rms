@@ -25,4 +25,9 @@ class InterviewNoteOptions extends Model
     {
     	return FormFields::where('job_id',$job_id)->get();
     }
+
+    public function interview_note_template()
+    {
+        return $this->hasOne('App\Models\InterviewNoteTemplates','id','interview_template_id');
+    }
 }

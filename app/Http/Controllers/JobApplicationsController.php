@@ -211,10 +211,14 @@ class JobApplicationsController extends Controller
         $nav_type = 'notes';
 
         // $interview_notes = $appl->interview_notes()->with('user')->get();
-        $interview_notes = InterviewNoteValues::with('interviewer')->where('job_application_id',
-            $appl->id)->groupBy('interviewed_by')->get();
+        // $interview_notes = InterviewNoteValues::with('interviewer')->where('job_application_id',
+        //     $appl->id)->groupBy('interviewed_by')->get();
 
-        return view('applicant.notes', compact('appl', 'nav_type', 'interview_notes'));
+        $interview_note_categories = InterviewNoteValues::with('interviewer','interview_note_option')->where('job_application_id',
+            $appl->id)->get()->groupBy('interview_note_option.interview_note_template.name');
+
+
+        return view('applicant.notes', compact('appl', 'nav_type', 'interview_note_categories'));
     }
 
     public function checks($appl_id)
@@ -301,7 +305,9 @@ class JobApplicationsController extends Controller
         $job = Job::with([
             'form_fields',
             'workflow.workflowSteps' => function ($q) {
+                
                 return $q->orderBy('order', 'asc');
+
             }
         ])->find($request->jobID);
 

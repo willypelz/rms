@@ -26,4 +26,19 @@ $(function () {
         });
     }
 
+    var sortableSteps = $("#sortableSteps");
+    sortableSteps
+        .sortable({
+            opacity: 0.8
+        })
+        .disableSelection();
+
+    sortableSteps.on('sortstop', function (e, ui) {
+        var sorted = sortableSteps.sortable("serialize");
+        // var sorted = sortableSteps.sortable("toArray");
+
+        console.log(sorted);
+    });
+
+
 });

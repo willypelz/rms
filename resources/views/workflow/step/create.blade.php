@@ -29,51 +29,55 @@
                     </h4>
 
                     @if($workflow->workflowSteps()->exists())
-                        @foreach($workflow->workflowSteps as $workflowStep)
-                            <div class="panel panel-default">
-                                <div class="panel-body clearfix">
-                                    <div class="pull-left">
-                                        <h5>{{ $workflowStep->name }}</h5>
-                                        <p class="text-muted">
-                                            Require Approval :
-                                            {{ ($workflowStep->requires_approval) ? 'Yes' : 'No' }}
-                                        </p>
-                                        <p class="text-muted">
-                                            Visible to Applicant :
-                                            {{ ($workflowStep->visible_to_applicant) ? 'Yes' : 'No' }}
-                                        </p>
-                                        <div class="">
-                                            - {{ $workflowStep->rank }}
-                                            - {!! $workflowStep->is_readonly
+                        <div id="sortableSteps">
+                            @foreach($workflow->workflowSteps as $workflowStep)
+                                <div class="panel panel-default"
+                                     data-sortable-id="{{ $workflowStep->id }}"
+                                     data-sortable-rank="{{ $workflowStep->rank }}">
+                                    <div class="panel-body clearfix">
+                                        <div class="pull-left">
+                                            <h5>{{ $workflowStep->name }}</h5>
+                                            <p class="text-muted">
+                                                Require Approval :
+                                                {{ ($workflowStep->requires_approval) ? 'Yes' : 'No' }}
+                                            </p>
+                                            <p class="text-muted">
+                                                Visible to Applicant :
+                                                {{ ($workflowStep->visible_to_applicant) ? 'Yes' : 'No' }}
+                                            </p>
+                                            <div class="">
+                                                - {{ $workflowStep->rank }}
+                                                - {!! $workflowStep->is_readonly
                                             ? '<span class="text-warning">System Generated</span>'
                                             : '' !!}
+                                            </div>
                                         </div>
+
+                                        @if(!$workflowStep->is_readonly)
+                                            <div class="pull-right">
+                                                <a href="{{ route('step-edit', ['id' => $workflowStep->id]) }}"
+                                                   class="btn btn-primary btn-sm">
+                                                    <i class="fa fa-pencil fa-fw"></i>
+                                                    Edit
+                                                </a>
+
+                                                <form action="{{ route('step-delete', ['id' => $workflowStep->id]) }}"
+                                                      method="post"
+                                                      class="delete-spoof">
+                                                    {{ csrf_field() }}
+
+                                                    <input type="hidden" name="_method" value="delete">
+
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <i class="fa fa-times-circle fa-fw"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @endif
                                     </div>
-
-                                    @if(!$workflowStep->is_readonly)
-                                        <div class="pull-right">
-                                            <a href="{{ route('step-edit', ['id' => $workflowStep->id]) }}"
-                                               class="btn btn-primary btn-sm">
-                                                <i class="fa fa-pencil fa-fw"></i>
-                                                Edit
-                                            </a>
-
-                                            <form action="{{ route('step-delete', ['id' => $workflowStep->id]) }}"
-                                                  method="post"
-                                                  class="delete-spoof">
-                                                {{ csrf_field() }}
-
-                                                <input type="hidden" name="_method" value="delete">
-
-                                                <button type="submit" class="btn btn-danger btn-sm">
-                                                    <i class="fa fa-times-circle fa-fw"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    @endif
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
                     @else
                         <div class="panel panel-danger">
                             <div class="panel-body">

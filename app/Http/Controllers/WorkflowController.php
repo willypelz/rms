@@ -35,7 +35,7 @@ class WorkflowController extends Controller
                 [
                     'name' => 'Pending',
                     'slug' => 'pending',
-                    'order' => '1',
+                    'order' => '2',
                     'type' => 'normal',
                     'is_readonly' => true,
                     'description' => 'All applicants are listed here until at least a recruitment action is taken.',

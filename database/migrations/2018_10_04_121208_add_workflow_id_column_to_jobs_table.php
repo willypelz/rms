@@ -14,7 +14,7 @@ class AddWorkflowIdColumnToJobsTable extends Migration
     public function up()
     {
         Schema::table('jobs', function (Blueprint $table) {
-            $table->integer('workflow_id')->after('description');
+            $table->integer('workflow_id');
         });
     }
 

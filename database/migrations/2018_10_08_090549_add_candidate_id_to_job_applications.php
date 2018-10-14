@@ -26,6 +26,8 @@ class AddCandidateIdToJobApplications extends Migration
     public function down()
     {
         Schema::table('job_applications', function (Blueprint $table) {
+            $table->dropForeign(['candidate_id']);
+            // $table->dropIndex(['candidate_id']);
             $table->dropColumn('candidate_id');
         });
     }

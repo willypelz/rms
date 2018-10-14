@@ -41,7 +41,7 @@ class WorkflowStepController extends Controller
 
         $this->validate($request, [
             'name' => 'required',
-            // 'order' => 'required|integer|min:1', // Order default to last +1, disable user ability to set order
+            // 'order' => 'required|integer|min:1', // Order default to last +1, disable user ability to set order on create
             'type' => 'required',
             'approval_users' => 'required_if:requires_approval,1',
         ]);

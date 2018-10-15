@@ -44,7 +44,8 @@
 
                                                 <br>
 
-                                                <h6 class="no-margin " id="your-statistics" style="display:none;">
+
+                                                <h6 class="no-margin " id="your-statistics" >
                                                     <span class="text-brandon text-uppercase"> Applications per stage</span>
                                                 </h6>
                                                 <div class="clearfix">

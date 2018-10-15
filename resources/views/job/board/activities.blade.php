@@ -1,7 +1,7 @@
 @extends('layout.template-user')
 
 @section('content')
-    {!! Charts::assets() !!}
+    {{-- {!! Charts::assets() !!} --}}
     @include('job.board.jobBoard-header')
 
     @if($job['status'] != 'DELETED')
@@ -34,12 +34,64 @@
                                                     <hr>
                                                 </div>
 
-                                                {!! $applications_per_day_chart->render() !!} <br>
-                                                {!! $applicantsFunnelChart->render() !!} <br>
+                                                <script src="https://code.highcharts.com/highcharts.js"></script>
+                                                <script src="https://code.highcharts.com/modules/funnel.js"></script>
+                                                <script src="https://code.highcharts.com/modules/data.js"></script>
+                                                <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-                                                <!-- Funnel chart -->
-                                                <div id="funnelBlueprint"
-                                                     style="min-width: 410px; max-width: 600px; height: 400px; margin: 0 auto"></div>
+                                                {!! $applications_per_day_chart->render() !!}
+                                                {{-- {!! $applicantsFunnelChart->render() !!}  --}}
+
+                                                <br>
+                                                <div id="fun"  style="min-width: 410px; max-width: 600px; height: 400px; margin: 0 auto"></div>
+
+                                                <script type="text/javascript">
+                                                    var applicant_funnel = [<?php echo $applicant_funnel; ?>];
+                                                    $(function () {
+
+
+                                                      
+                                                        var chartype = {
+                                                            type: 'funnel',
+                                                            marginRight: 100
+                                                        }
+                                                        var chartitle = {
+                                                            text: 'Applicants funnel',
+                                                            x: -50
+                                                        }
+                                                        var chartplotoptions = {
+                                                            series: {
+                                                                dataLabels: {
+                                                                    enabled: true,
+                                                                    format: '<b>{point.name}</b> ({point.y:,.0f})',
+                                                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                                                                    softConnector: true
+                                                                },
+                                                                center: ['40%', '50%'],
+                                                                neckWidth: '30%',
+                                                                neckHeight: '25%',
+                                                                width: '80%'
+                                                            }
+                                                        }
+                                                        var chartlegend = {
+                                                            enabled: false
+                                                        }
+                                                        var chartseries = [{
+                                                            name: 'Applicants',
+                                                            data: applicant_funnel
+                                                        }]
+                                                        $('#fun').highcharts({
+                                                            chart:chartype,
+                                                            title: chartitle,
+                                                            plotOptions:chartplotoptions,
+                                                            legend:chartlegend,
+                                                            series: chartseries,
+                                                            credits: false,
+                                                            responsive:true
+                                                        });
+                                                    });
+                                                </script>
+                                             
 
                                                 <h6 class="no-margin">
                                                   <span class="text-brandon text-uppercase">

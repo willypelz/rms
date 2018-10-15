@@ -43,6 +43,13 @@
                                                 {{-- {!! $applicantsFunnelChart->render() !!}  --}}
 
                                                 <br>
+
+                                                <h6 class="no-margin " id="your-statistics" style="display:none;">
+                                                    <span class="text-brandon text-uppercase"> Applications per stage</span>
+                                                </h6>
+                                                <div class="clearfix">
+                                                    <hr>
+                                                </div>
                                                 <div id="fun"  style="min-width: 410px; max-width: 600px; height: 400px; margin: 0 auto"></div>
 
                                                 <script type="text/javascript">
@@ -56,7 +63,7 @@
                                                             marginRight: 100
                                                         }
                                                         var chartitle = {
-                                                            text: 'Applicants funnel',
+                                                            text: ' ',
                                                             x: -50
                                                         }
                                                         var chartplotoptions = {

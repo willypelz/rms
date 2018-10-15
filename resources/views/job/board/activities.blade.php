@@ -42,7 +42,7 @@
                                                 {!! $applications_per_day_chart->render() !!}
                                                 {{-- {!! $applicantsFunnelChart->render() !!}  --}}
 
-                                                <br>
+                                                <br><br>
 
 
                                                 <h6 class="no-margin " id="your-statistics" >

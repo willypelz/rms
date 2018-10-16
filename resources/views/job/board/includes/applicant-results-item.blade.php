@@ -94,7 +94,7 @@
                                             <a data-toggle="modal"
                                                data-target="#viewModal"
                                                id="modalButton"
-                                               data-title="{{ $workflowStep->name }}"
+                                               data-title="Move to {{ $workflowStep->name }}"
                                                data-view="{{ route('modal-step-action', [
                                                'step' => $workflowStep->name,
                                                'stepSlug' => $workflowStep->slug,
@@ -147,7 +147,7 @@
                         @else
                             @foreach($job->workflow->workflowSteps as $workflowStep)
                                 @if(in_array(auth()->user()->id, $workflowStep->approvals->pluck('id')->toArray()))
-                                    <!-- // Approval Button -->
+                                <!-- // Approval Button -->
                                     <a data-toggle="modal"
                                        data-target="#viewModal"
                                        id="modalButton"

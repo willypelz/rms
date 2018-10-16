@@ -49,14 +49,14 @@ Route::group(['middleware' => 'web'], function () {
      * Make admin group and apply a guard to it
      */
     Route::get('/admin', function () {
-        return view('Admin.Layouts.default');
+        return view('Admin.dashboard');
     });
 
     Route::group([
         'prefix' => '/admin',
         'middleware' => 'admin'
     ], function () {
-        //
+        Route::get('auth/logout', 'AuthController@logout');
     });
     /** -- End: Administrator Panel Route -- */
 

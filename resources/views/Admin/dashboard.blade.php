@@ -9,4 +9,10 @@
  */
 ?>
 
-Fork it...
+@extends('Admin.Layouts.default')
+
+@section('content')
+    <h1>
+        What a wonderful day it is!!
+    </h1>
+@endsection

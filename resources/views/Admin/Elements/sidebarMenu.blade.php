@@ -11,33 +11,33 @@
 
 <!-- ### $Sidebar Menu ### -->
 <ul class="sidebar-menu scrollable pos-r">
-
+    
     <li class="nav-item mT-30 active">
-        <a class="sidebar-link" href="index.html">
+        <a class="sidebar-link" href="#">
                 <span class="icon-holder">
                   <i class="c-blue-500 ti-home"></i>
                 </span>
             <span class="title">Dashboard</span>
         </a>
     </li>
-
-    {{--
+    
     <li class="nav-item">
-        <a class='sidebar-link' href="email.html">
+        <a class='sidebar-link' href="#">
                 <span class="icon-holder">
                   <i class="c-brown-500 ti-email"></i>
                 </span>
-            <span class="title">Email</span>
+            <span class="title">Users</span>
         </a>
     </li>
     <li class="nav-item">
-        <a class='sidebar-link' href="compose.html">
+        <a class='sidebar-link' href="#">
                 <span class="icon-holder">
                   <i class="c-blue-500 ti-share"></i>
                 </span>
-            <span class="title">Compose</span>
+            <span class="title">Companies</span>
         </a>
     </li>
+    {{--
     <li class="nav-item">
         <a class='sidebar-link' href="calendar.html">
                 <span class="icon-holder">

@@ -39,7 +39,7 @@
     </li>
     {{--
     <li class="nav-item">
-        <a class='sidebar-link' href="calendar.html">
+        <a class='sidebar-link' href="">
                 <span class="icon-holder">
                   <i class="c-deep-orange-500 ti-calendar"></i>
                 </span>
@@ -47,7 +47,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class='sidebar-link' href="chat.html">
+        <a class='sidebar-link' href="">
                 <span class="icon-holder">
                   <i class="c-deep-purple-500 ti-comment-alt"></i>
                 </span>
@@ -55,7 +55,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class='sidebar-link' href="charts.html">
+        <a class='sidebar-link' href="">
                 <span class="icon-holder">
                   <i class="c-indigo-500 ti-bar-chart"></i>
                 </span>
@@ -63,7 +63,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class='sidebar-link' href="forms.html">
+        <a class='sidebar-link' href="">
                 <span class="icon-holder">
                   <i class="c-light-blue-500 ti-pencil"></i>
                 </span>
@@ -71,7 +71,7 @@
         </a>
     </li>
     <li class="nav-item dropdown">
-        <a class="sidebar-link" href="ui.html">
+        <a class="sidebar-link" href="">
                 <span class="icon-holder">
                     <i class="c-pink-500 ti-palette"></i>
                   </span>
@@ -90,10 +90,10 @@
         </a>
         <ul class="dropdown-menu">
             <li>
-                <a class='sidebar-link' href="basic-table.html">Basic Table</a>
+                <a class='sidebar-link' href="">Basic Table</a>
             </li>
             <li>
-                <a class='sidebar-link' href="datatable.html">Data Table</a>
+                <a class='sidebar-link' href="">Data Table</a>
             </li>
         </ul>
     </li>

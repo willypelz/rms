@@ -10,7 +10,9 @@ class WorkflowController extends Controller
     public function index(Request $request)
     {
         return view('workflow.list', [
-            'workflows' => Workflow::whereCompanyId(get_current_company()->id)->get()
+            'workflows' => Workflow::whereCompanyId(get_current_company()->id)
+                ->orderBy('created_at', 'desc')
+                ->get()
         ]);
     }
 

@@ -1,60 +1,74 @@
 @extends('layout.template-default')
 
 @section('content')
-
+    
     <section>
         <div class="container">
-
+            
             @include('layout.alerts')
-
+            
             <div class="row">
-
+                
                 <div class="col-md-6">
                     <h4>Workflows</h4>
-
+                    
                     @if(count($workflows))
                         @foreach($workflows as $workflow)
                             <div class="panel panel-default">
-                                <div class="panel-body clearfix">
-                                    <div class="pull-left">
-                                        <h5>{{ $workflow->name }}</h5>
-                                        <p class="text-muted">{{ $workflow->description }}</p>
-                                        <p class="text-info">{{ $workflow->workflowSteps()->count() }} Steps</p>
+                                <div class="panel-body">
+                                    <div class="worflow-top-part clearfix">
+                                        
+                                        <div class="pull-left">
+                                            <h5>{{ $workflow->name }}</h5>
+                                            <p class="text-muted">{{ $workflow->description }}</p>
+                                        </div>
+                                        
+                                        <div class="pull-right">
+                                        <!--
+                                                <a href="{{ route('workflow-show', ['id' => $workflow->id]) }}"
+                                                   class="btn btn-info btn-sm pull-right">
+                                                    <i class="fa fa-eye fa-fw"></i>
+                                                    View
+                                                </a>
+                                             -->
+                                            <a href="{{ route('workflow-steps-add', ['id' => $workflow->id]) }}"
+                                               class="btn btn-primary btn-sm">
+                                                <i class="fa fa-plus fa-fw"></i>
+                                                Add Steps
+                                            </a>
+                                            
+                                            <a href="{{ route('workflow-edit', ['id' => $workflow->id]) }}"
+                                               class="btn btn-warning btn-sm">
+                                                <i class="fa fa-pencil fa-fw"></i>
+                                                Edit
+                                            </a>
+                                            @if(!$workflow->jobs()->exists())
+                                                <form action="{{ route('workflow-delete', ['id' => $workflow->id]) }}"
+                                                      method="post"
+                                                      class="delete-spoof">
+                                                    {{ csrf_field() }}
+                                                    
+                                                    <input type="hidden" name="_method" value="delete">
+                                                    
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <i class="fa fa-trash fa-fw"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        </div>
                                     </div>
-
-                                    <div class="pull-right">
-                                        <a href="{{ route('workflow-steps-add', ['id' => $workflow->id]) }}"
-                                           class="btn btn-primary btn-sm">
-                                            <i class="fa fa-plus fa-fw"></i>
-                                            Add Steps
-                                        </a>
-
-                                        <a href="{{ route('workflow-edit', ['id' => $workflow->id]) }}"
-                                           class="btn btn-warning btn-sm">
-                                            <i class="fa fa-pencil fa-fw"></i>
-                                            Edit
-                                        </a>
-                                        {{--
-                                        <form action="{{ route('workflow-delete', ['id' => $workflow->id]) }}"
-                                              method="post"
-                                              class="delete-spoof">
-                                            {{ csrf_field() }}
-
-                                            <input type="hidden" name="_method" value="delete">
-
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fa fa-times-circle fa-fw"></i>
-                                            </button>
-                                        </form>
-                                        --}}
+                                    <!-- Some little info about this current workflow -->
+                                    <div class="workflow-bottom-part clearfix">
+                                        
+                                        <div class="pull-left">
+                                            <p class="text-info">{{ $workflow->workflowSteps()->count() }} Steps</p>
+                                        </div>
+                                        
+                                        <div class="pull-right text-warning">
+                                            Attached to {{ ($attachments_count = $workflow->jobs()->count()) > 0 ? $attachments_count : 'no' }} Jobs
+                                        </div>
+                                    
                                     </div>
-                                <!--
-                                    <a href="{{ route('workflow-show', ['id' => $workflow->id]) }}"
-                                       class="btn btn-info btn-sm pull-right">
-                                        <i class="fa fa-eye fa-fw"></i>
-                                        View
-                                    </a>
-                                     -->
                                 </div>
                             </div>
                         @endforeach
@@ -65,18 +79,18 @@
                             </div>
                         </div>
                     @endif
-
+                
                 </div>
-
+                
                 <div class="col-md-6">
                     <h4>Create Workflows</h4>
                     <div class="panel panel-default">
                         <div class="panel-body">
-
+                            
                             <form action="{{ route('workflow-store') }}" method="post">
-
+                                
                                 {{ csrf_field() }}
-
+                                
                                 <div class="form-group">
                                     <label for="name">Name</label>
                                     <input type="text"
@@ -86,7 +100,7 @@
                                            placeholder="Manager Hire"
                                            class="form-control">
                                 </div>
-
+                                
                                 <div class="form-group">
                                     <label for="description">Description</label>
                                     <textarea name="description"
@@ -94,21 +108,21 @@
                                               placeholder="A short note about this workflow"
                                               class="form-control">{{ old('description') }}</textarea>
                                 </div>
-
+                                
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fa fa-plus fa-fw"></i>
                                         Create
                                     </button>
                                 </div>
-
+                            
                             </form>
-
+                        
                         </div>
                     </div>
-
+                
                 </div>
-
+            
             </div>
         </div>
     </section>

@@ -30,4 +30,9 @@ class Workflow extends Model
         return $this->hasMany(WorkflowStep::class);
     }
 
+    public function jobs()
+    {
+        return $this->hasMany(Job::class);
+    }
+
 }

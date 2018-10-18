@@ -9,10 +9,13 @@ class WorkflowController extends Controller
 {
     public function index(Request $request)
     {
+        $workflows = Workflow::whereCompanyId(get_current_company()->id)
+            ->with('jobs')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return view('workflow.list', [
-            'workflows' => Workflow::whereCompanyId(get_current_company()->id)
-                ->orderBy('created_at', 'desc')
-                ->get()
+            'workflows' => $workflows
         ]);
     }
 

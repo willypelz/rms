@@ -94,8 +94,6 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::match(['get', 'post'], '/messages/send',
             'CandidateController@sendMessage')->name('candidate-send-message');
-
-
     });
 
 

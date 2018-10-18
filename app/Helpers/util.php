@@ -375,20 +375,20 @@ use App\Models\Job;
 
 		// If a company is not selected, default to the first on the list
 		return Auth::user()->companies[0];
-	}
+    }
 
-	function get_form_field_types()
-	{
-		return [
-			'DROPDOWN',
-			'RADIO',
-			'CHECKBOX',
-			'TEXT',
-			'TEXTAREA',
-			'MULTIPLE_OPTION',
-			'FILE'
-		];
-	}
+    function get_form_field_types()
+    {
+        return [
+            'DROPDOWN' => 'Dropdown',
+            'RADIO' => 'Radio',
+            'CHECKBOX' => 'Checkbox',
+            'TEXT' => 'Short Text',
+            'TEXTAREA' => 'Long Text',
+            'MULTIPLE_OPTION' => 'Multiple Option',
+            'FILE' => 'File'
+        ];
+    }
 
 	function convert_number_to_words($number) {
 	    

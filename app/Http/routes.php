@@ -49,7 +49,7 @@ Route::group(['middleware' => 'web'], function () {
      * Make admin group and apply a guard to it
      */
     Route::get('/admin', function () {
-        return view('Admin.dashboard');
+        return view('admin.dashboard');
     });
 
     Route::group([

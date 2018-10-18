@@ -35,7 +35,6 @@
                         @endforeach
                     </h4>
                     <p>{{ @$cv['last_position'] }} @if( @$cv['last_company_worked'] != '' ) {{ ' at '.@$cv['last_company_worked'] }}  @endif</p>
-                    {{--<hr/>--}}
 
                     <?php $appl_status = $cv['application_status'][$current_app_index]; ?>
                     @if( $appl_status == 'ASSESSED')

@@ -440,7 +440,6 @@ class JobsController extends Controller
                 'workflow_id' => $request->workflow_id
             ];
 
-
             $validator = Validator::make( $data, [
                         'job_title' => 'required',
                         'job_location' => 'required',

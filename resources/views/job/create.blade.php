@@ -27,14 +27,14 @@
                                     @endforeach
                                 </ul>
                             @endif
-
+                            
                             <div class="col-md-8 col-md-offset-2">
                                 <!-- <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio voluptatibus magni officiis id error numquam.</p> -->
                                 <form class="job-details" id="myForm" role="job-details" method="post"
                                       action="{{ route('post-job') }}">
-
+                                    
                                     <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
-
+                                    
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-12"><label for="job-title">job title <span
@@ -58,11 +58,11 @@
                                                 </select>
                                             </div>
                                         <!-- <input id="job-title" type="text" name="job_title" class="form-control" {{ (Request::old('job_title')) ? ' value='. e(Request::old('job_title')) .'' : '' }}></div> -->
-
+                                            
                                             <div class="col-sm-6">
                                                 <label for="job-title">Job Type <span class="text-danger">*</span>
                                                 </label>
-
+                                                
                                                 <select name="job_type" id="job_level" required="" type="text"
                                                         class="form-control">
                                                     <option value=""> --Choose--</option>
@@ -88,13 +88,13 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
-
+                                            
                                             <div class="col-sm-12"><label for="job-loc">Position</label>
                                                 <input type="text" name="position" class="form-control"
                                                        value="{{ Request::old('position')}}">
                                                 <small>e.g. Associate Marketer</small>
                                             </div>
-
+                                        
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -114,11 +114,11 @@
                                                 </label>
                                                 <input type="text" name="expiry_date" class="datepicker form-control"
                                                        value="{{ Request::old('expiry_date')}}" autocomplete="off">
-
+                                            
                                             </div>
                                         </div>
                                     </div>
-
+                                
                                 <!-- <div class="form-group">
             <div class="row">
                 <div class="col-xs-12">
@@ -127,7 +127,7 @@
                 </div>
             </div>
         </div> -->
-
+                                    
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
@@ -147,7 +147,7 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
@@ -158,93 +158,95 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    
                                     <hr>
                                     <br>
                                     <h3>Job Application Fields</h3>
                                     <br>
-
+                                    
                                     <h4>Default Fields</h4>
                                     <hr>
-
+                                    
                                     {{-- Select all --}}
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-4">
                                                 <label for=""></label>
-
+                                            
                                             </div>
                                             <div class="col-xs-3">
                                                 <label style="cursor: pointer;">
-                                                <input type="checkbox" id="is_required_all" style="margin:10px"> <span class="text-uppercase"><strong>Toggle all</strong></span></label>
+                                                    <input type="checkbox" id="is_required_all" style="margin:10px">
+                                                    <span class="text-uppercase"><strong>Toggle all</strong></span></label>
                                             </div>
                                             <div class="col-xs-3">
                                                 <label style="cursor: pointer;">
-                                                <input type="checkbox" id="is_visible_all" style="margin:10px" checked="checked"> <span class="text-uppercase"><strong>Toggle all</strong></span></label>
+                                                    <input type="checkbox" id="is_visible_all" style="margin:10px"
+                                                           checked="checked"> <span class="text-uppercase"><strong>Toggle all</strong></span></label>
                                             </div>
                                         </div>
                                     </div>
-
+                                    
                                     <script type="text/javascript">
-                                        $(document).ready(function(){
-                                            $('#is_required_all').on('click', function(){
-                                                if( $(this).is(':checked') )
-                                                {
-                                                    $('.is_required').prop('checked','checked');
+                                        $(document).ready(function () {
+                                            $('#is_required_all').on('click', function () {
+                                                if ($(this).is(':checked')) {
+                                                    $('.is_required').prop('checked', 'checked');
                                                 }
-                                                else
-                                                {
+                                                else {
                                                     $('.is_required').removeProp('checked');
                                                 }
                                             });
 
-                                            $('#is_visible_all').on('click', function(){
-                                                if( $(this).is(':checked') )
-                                                {
-                                                    $('.is_visible').prop('checked','checked');
+                                            $('#is_visible_all').on('click', function () {
+                                                if ($(this).is(':checked')) {
+                                                    $('.is_visible').prop('checked', 'checked');
                                                 }
-                                                else
-                                                {
+                                                else {
                                                     $('.is_visible').removeProp('checked');
                                                 }
                                             });
                                         });
                                     </script>
-
+                                    
                                     @foreach( $application_fields as $key => $application_field )
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col-xs-4">
                                                     <label for=""> {{ $application_field }}</label>
-
+                                                
                                                 </div>
                                                 <div class="col-xs-3">
-                                                    <input type="checkbox" name="is_required[{{ $key }}][]" class="is_required" style="margin:10px"> Is required
+                                                    <input type="checkbox" name="is_required[{{ $key }}][]"
+                                                           class="is_required" style="margin:10px"> Is required
                                                 </div>
                                                 <div class="col-xs-3">
-                                                    <input type="checkbox" name="is_visible[{{ $key }}][]" class="is_visible" style="margin:10px" checked="checked"> Is visible
+                                                    <input type="checkbox" name="is_visible[{{ $key }}][]"
+                                                           class="is_visible" style="margin:10px" checked="checked"> Is
+                                                    visible
                                                 </div>
                                             </div>
                                         </div>
                                     @endforeach
                                     <br>
-
-
+                                    
+                                    
                                     <h4>Custom Fields</h4>
                                     <hr>
                                     <div id="custom_fields"></div>
-
-
+                                    
+                                    
                                     <div class="AddFieldButton">
                                         <a href="#addField" data-toggle="collapse" aria-controls=""
                                            class="btn btn-line btn-sm text-success"
                                            style="background: whitesmoke; border: none; border-radius: 3px 3px 0 0;"><i
                                                     class="fa fa-plus"></i> Add Custom field</a> &nbsp;
-                                        <small class="">- Use this to add a custom question or input to the application form
+                                        <small class="">- Use this to add a custom question or input to the application
+                                            form
                                         </small>
                                         <br>
                                     </div>
-
+                                    
                                     <!-- <div class="AddFieldButton">
                                         <a href="#" id="addCustomField" data-toggle="modal" data-target="#Cust_modal" aria-controls="" class="btn btn-line btn-sm text-success"><i class="fa fa-plus"></i> Add Custom field</a> &nbsp;
                                         <small class="">- Use this to add a custom question or input to this form</small><br>
@@ -259,7 +261,7 @@
                                                     <h4 class="modal-title">Adding Custom Field</h4>
                                                 </div>
                                                 <div class="modal-body">
-
+                                                    
                                                     <div id="listFieldItems" class="list-group no-margin">
                                                         <a href="#" class="list-group-item addFieldRadio">
                                                             <img src="input-radio.png" class="img-form pull-left"
@@ -267,7 +269,8 @@
                                                             <h4 class="list-group-item-heading">Radio Buttons</h4>
                                                             <p class="list-group-item-text">Donec id elit non mi porta
                                                                 gravida at eget metus. Maecenas sed diam eget risus
-                                                                varius blandit.</p>
+                                                                varius blandit.
+                                                            </p>
                                                             <span class="clearfix"></span>
                                                         </a>
                                                         <a href="#" class="list-group-item addFieldDrop">
@@ -277,7 +280,8 @@
                                                                 list</h4>
                                                             <p class="list-group-item-text">Donec id elit non mi porta
                                                                 gravida at eget metus. Maecenas sed diam eget risus
-                                                                varius blandit.</p>
+                                                                varius blandit.
+                                                            </p>
                                                             <span class="clearfix"></span>
                                                         </a>
                                                         <a href="#" class="list-group-item addFieldChck">
@@ -286,7 +290,8 @@
                                                             <h4 class="list-group-item-heading">Checkbox</h4>
                                                             <p class="list-group-item-text">Donec id elit non mi porta
                                                                 gravida at eget metus. Maecenas sed diam eget risus
-                                                                varius blandit.</p>
+                                                                varius blandit.
+                                                            </p>
                                                             <span class="clearfix"></span>
                                                         </a>
                                                         <a href="#" class="list-group-item addFieldArea">
@@ -294,7 +299,8 @@
                                                                  alt="Textarea">
                                                             <h4 class="list-group-item-heading">Textarea</h4>
                                                             <p class="list-group-item-text">For adding long paragraph
-                                                                texts</p>
+                                                                texts
+                                                            </p>
                                                             <span class="clearfix"></span>
                                                         </a>
                                                         <a href="#" class="list-group-item addFieldOpt">
@@ -303,7 +309,8 @@
                                                             <h4 class="list-group-item-heading">Multiple Options</h4>
                                                             <p class="list-group-item-text">Donec id elit non mi porta
                                                                 gravida at eget metus. Maecenas sed diam eget risus
-                                                                varius blandit.</p>
+                                                                varius blandit.
+                                                            </p>
                                                             <span class="clearfix"></span>
                                                         </a>
                                                         <a href="#" class="list-group-item addFieldFile">
@@ -312,20 +319,21 @@
                                                             <h4 class="list-group-item-heading">File Upload field</h4>
                                                             <p class="list-group-item-text">Donec id elit non mi porta
                                                                 gravida at eget metus. Maecenas sed diam eget risus
-                                                                varius blandit.</p>
+                                                                varius blandit.
+                                                            </p>
                                                             <span class="clearfix"></span>
                                                         </a>
-
+                                                    
                                                     </div>
-
+                                                    
                                                     <div class="dumpField" class="">
-
+                                                        
                                                         <p class="">
                                                             <a id="back2list" href="#" class="pull-right">
                                                                 <i class="fa fa-arrow-left"></i> Back to list
                                                             </a>
                                                         </p>
-
+                                                        
                                                         <!-- Adding Radio Buttons -->
                                                         <div class="fieldInput-radio collapse">
                                                             <h4 class="text-warning text-bold">Radio Buttons</h4>
@@ -347,53 +355,53 @@
                                                             </div>
                                                         </div>
                                                         <!-- End of Radio Buttons -->
-
-
+                                                        
+                                                        
                                                         <!--  -->
                                                         <div class="fieldInput-dropdown collapse">
                                                             <div class="form-group">
                                                                 <label for="name"></label>
                                                             </div>
                                                         </div>
-
+                                                        
                                                         <!--  -->
-
+                                                        
                                                         <!--  -->
                                                         <div class="fieldInput-checkbox collapse">
                                                             <div class="form-group">
                                                                 <label for="name"></label>
                                                             </div>
                                                         </div>
-
+                                                        
                                                         <!--  -->
-
+                                                        
                                                         <!--  -->
                                                         <div class="fieldInput-text collapse">
                                                             <div class="form-group">
                                                                 <label for="name"></label>
                                                             </div>
                                                         </div>
-
+                                                        
                                                         <!--  -->
-
+                                                        
                                                         <!--  -->
                                                         <div class="fieldInput-textarea collapse">
                                                             <div class="form-group">
                                                                 <label for="name"></label>
                                                             </div>
                                                         </div>
-
+                                                        
                                                         <!--  -->
-
+                                                        
                                                         <!--  -->
                                                         <div class="fieldInput-options collapse">
                                                             <div class="form-group">
                                                                 <label for="name"></label>
                                                             </div>
                                                         </div>
-
+                                                        
                                                         <!--  -->
-
+                                                        
                                                         <!--  -->
                                                         <div class="fieldInput-file collapse">
                                                             <div class="form-group">
@@ -411,8 +419,8 @@
                                             </div><!-- /.modal-content -->
                                         </div><!-- /.modal-dialog -->
                                     </div><!-- /.modal -->
-
-
+                                    
+                                    
                                     <script>
                                         // $('#addCustomField').on('click');
 
@@ -421,15 +429,15 @@
                                             $().fadeOut();
                                             $().fadeIn();
                                         });
-
+                                    
                                     </script>
-
-
+                                    
+                                    
                                     <div id="addField" class="well no-shadow no-border no-bod-radius collapse">
-
+                                        
                                         <a href="#addField" data-toggle="collapse"
                                            class="lead no-margin no-pad text-danger fa-2x pull-right">&times;</a>
-
+                                        
                                         <div class="row"><br>
                                             <div class="col-xs-2 col-xs-offset-2 text-uppercase small"><strong>Field
                                                     <br> Label</strong></div>
@@ -462,35 +470,37 @@
                                             <div class="clearfix"></div>
                                             <hr>
                                         </div>
-
+                                        
                                         <div class="row">
-                                            <div class="col-xs-2 col-xs-offset-2 text-uppercase small"><strong>Required? </strong></div>
+                                            <div class="col-xs-2 col-xs-offset-2 text-uppercase small">
+                                                <strong>Required? </strong></div>
                                             <div class="col-xs-6">
-                                                <input name="" id="required-box" type="checkbox" />
+                                                <input name="" id="required-box" type="checkbox"/>
                                             </div>
                                             <div class="clearfix"></div>
                                             <hr>
                                         </div>
-
+                                        
                                         <div class="row">
-                                            <div class="col-xs-2 col-xs-offset-2 text-uppercase small"><strong>Visible? </strong></div>
+                                            <div class="col-xs-2 col-xs-offset-2 text-uppercase small">
+                                                <strong>Visible? </strong></div>
                                             <div class="col-xs-6">
-                                                <input name="" id="visible-box" type="checkbox" checked="checked" />
+                                                <input name="" id="visible-box" type="checkbox" checked="checked"/>
                                             </div>
                                             <div class="clearfix"></div>
                                             <hr>
                                         </div>
-
+                                        
                                         <div class="row">
                                             <div class="col-xs-8 col-xs-offset-2">
                                                 <a href="javascript://" class="btn-sm btn btn-success pull-right"
                                                    id="add-field-btn"><i class="fa fa-check"></i> Add field</a>
-
+                                                
                                                 <!--                                                    <button href="" class="btn-sm btn btn-line disabled pull-left" ><i class="fa fa-plus"></i> Add another field</button>-->
                                             </div>
                                         </div>
                                     </div>
-
+                                    
                                     <div class="form-group hidden">
                                         <div class="row">
                                             <div class="col-xs-8 col-xs-offset-2 text-center">
@@ -516,7 +526,7 @@
                                                             <span class="clearfix"></span>
                                                         </label>
                                                     @endforeach
-
+                                                
                                                 </div>
                                             </div>
                                             <div class="col-xs-6">
@@ -532,7 +542,7 @@
                                                             <span class="clearfix"></span>
                                                         </label>
                                                     @endforeach
-
+                                                
                                                 </div>
                                             </div>
                                             <!-- <div class="col-xs-12"><br><p class="text-center">Post this job to see more available job boards</p></div> -->
@@ -553,7 +563,7 @@
                                     <div class="row">
                                         <div class="col-xs-12">
                                             <hr>
-
+                                        
                                         </div>
                                         <div class="col-xs-4">
                                             <!-- <a href="job.php" type="submit" id="SaveDraft" class="btn btn-line"><i class="fa fa-save"></i> Save as draft</a> -->
@@ -596,14 +606,14 @@
             var token = $('#token').val();
             var url = "{{ route('job-draft') }}"
             $.ajax
-             ({
-                 type: "POST",
-                 url: url,
-                 data: ({rnd: Math.random() * 100000, _token: token, title: title, location: location}),
-                 success: function (response) {
-                     console.log(response)
-                 }
-             });
+            ({
+                type: "POST",
+                url: url,
+                data: ({rnd: Math.random() * 100000, _token: token, title: title, location: location}),
+                success: function (response) {
+                    console.log(response)
+                }
+            });
         })
         // Replace the <textarea id="editor1"> with a CKEditor
         // instance, using default configuration.
@@ -628,9 +638,7 @@
                 if ($('body #addField #name-box').val() == "") {
                     $.growl.error({message: "Please enter custom field name."});
                 }
-                else if ($('body #addField #options-box input').val() == "" && ["TEXT", "TEXTAREA","FILE"].indexOf( $('body #addField #type-box').val() ) == -1 ) 
-
-                {
+                else if ($('body #addField #options-box input').val() == "" && ["TEXT", "TEXTAREA", "FILE"].indexOf($('body #addField #type-box').val()) == -1) {
                     $.growl.error({message: "Please enter custom field option."});
                 }
                 else {

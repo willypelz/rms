@@ -65,7 +65,7 @@
                                         </div>
                                         
                                         <div class="pull-right text-warning">
-                                            Attached to {{ ($attachments_count = $workflow->jobs()->count()) > 0 ? $attachments_count : 'no' }} Jobs
+                                            Attached to <strong>{{ ($attachments_count = $workflow->jobs()->count()) > 0 ? $attachments_count : 'No' }} Jobs</strong>
                                         </div>
                                     
                                     </div>

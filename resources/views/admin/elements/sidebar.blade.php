@@ -44,6 +44,6 @@
             </div>
         </div>
 
-        @include('Admin.Elements.sidebarMenu')
+        @include('admin.elements.sidebar-menu')
     </div>
 </div>

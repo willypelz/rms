@@ -11,7 +11,7 @@
         <!DOCTYPE html>
 <html>
 <head>
-    @include('Admin.Elements.headContent')
+    @include('admin.elements.head-content')
 </head>
 <body class="app">
     <!-- @TOC -->
@@ -28,17 +28,17 @@
               > $App Screen Content
     -->
     
-    @include('Admin.Elements.pageLoader')
+    @include('admin.elements.page-loader')
     
     <!-- @App Content -->
     <!-- =================================================== -->
     <div>
-    @include('Admin.Elements.sidebar')
+    @include('admin.elements.sidebar')
     
     <!-- #Main ============================ -->
         <div class="page-container">
         
-        @include('Admin.Elements.topbar')
+        @include('admin.elements.topbar')
         
             <!-- ### $App Screen Content ### -->
             <main class='main-content bgc-grey-100'>
@@ -51,7 +51,7 @@
                 </div>
             </main>
             
-            @include('Admin.Elements.footer')
+            @include('admin.elements.footer')
         </div>
     </div>
     <script src="{{ secure_asset('admin/vendor.js') }}"></script>

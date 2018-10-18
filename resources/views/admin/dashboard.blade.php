@@ -9,7 +9,7 @@
  */
 ?>
 
-@extends('Admin.Layouts.default')
+@extends('admin.layouts.default')
 
 @section('content')
     <h1>

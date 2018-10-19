@@ -165,9 +165,7 @@ return [
         ConsoleTVs\Charts\ChartsServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
-        // MarkTopper\DoctrineDBALTimestampType\Laravel5ServiceProvider::class,
         
-
     ],
 
     /*

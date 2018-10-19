@@ -19,8 +19,7 @@
         "consoletvs/charts": "3.*",
         "jenssegers/agent": "^2.5",
         "aws/aws-sdk-php": "~3.0",
-        "barryvdh/laravel-snappy": "^0.4.0",
-        "marktopper/doctrine-dbal-timestamp-type": "^1.0"
+        "barryvdh/laravel-snappy": "^0.4.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

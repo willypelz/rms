@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 
 class PasswordController extends Controller
 {
@@ -31,6 +33,36 @@ class PasswordController extends Controller
     {
         $this->middleware('guest');
     }
+
+
+    /**
+     * Send a reset link to the given user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    /*public function sendResetLinkEmail(Request $request)
+    {
+        $this->validateSendResetLinkEmail($request);
+
+        $broker = $this->getBroker();
+
+        $response = Password::broker($broker)->sendResetLink(
+            $this->getSendResetLinkEmailCredentials($request),
+            $this->resetEmailBuilder()
+        );
+
+        switch ($response) {
+            case Password::RESET_LINK_SENT:
+                $request->session()->flash('success', 'Password reset link as been sent');
+                return $this->getSendResetLinkEmailSuccessResponse($response);
+            case Password::INVALID_USER:
+            default:
+            $request->session()->flash('warning', 'Failed to send reset link');
+                return $this->getSendResetLinkEmailFailureResponse($response);
+        }
+    }*/
+
 
     public function postReset(Request $request)
     {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fad0b2bff24d6582c0e43a256d4535dc",
+    "content-hash": "7b26da882223c586f0beda42df7eb0d5",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1849,6 +1849,45 @@
                 "laravel"
             ],
             "time": "2018-09-04T19:00:09+00:00"
+        },
+        {
+            "name": "marktopper/doctrine-dbal-timestamp-type",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marktopper/doctrine-dbal-timestamp-type.git",
+                "reference": "1139c5fe1c855f7c3e329820355d2486ecc70f29"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marktopper/doctrine-dbal-timestamp-type/zipball/1139c5fe1c855f7c3e329820355d2486ecc70f29",
+                "reference": "1139c5fe1c855f7c3e329820355d2486ecc70f29",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "^2.5",
+                "php": ">=5.6.4"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "MarkTopper\\DoctrineDBALTimestampType\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Add the timestamp type for Doctrine/DBAL",
+            "keywords": [
+                "database",
+                "dbal",
+                "doctrine",
+                "laravel",
+                "mysql",
+                "timestamp"
+            ],
+            "time": "2016-11-28T12:42:32+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",

@@ -166,7 +166,6 @@ return [
         Jenssegers\Agent\AgentServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
         
-
     ],
 
     /*

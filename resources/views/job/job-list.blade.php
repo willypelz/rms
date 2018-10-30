@@ -157,15 +157,12 @@
                                                 </div>
                                             </div>
                                             
-                                            <div class="col-md-6">
-                                                <div id="job-list-data-{{ $job['id'] }}" class="job-items">
-                                                    @foreach($job->workflow->workflowSteps as $workflowStep)
-                                                        <div class="job-item">
-                                                            <span class="number">--</span><br/>{{ $workflowStep->name }}
-                                                        </div>
-                                                    @endforeach
-                                                    <div class="clearfix"></div>
-                                                </div>
+                                            <div id="job-list-data-{{ $job['id'] }}" class="job-items col-md-6">
+                                                @foreach($job->workflow->workflowSteps as $workflowStep)
+                                                    <div class="job-item">
+                                                        <span class="number">--</span><br/>{{ $workflowStep->name }}
+                                                    </div>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>

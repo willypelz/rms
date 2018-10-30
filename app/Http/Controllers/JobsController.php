@@ -20,6 +20,7 @@ use App\Models\Settings;
 use App\Models\TestRequest;
 use App\Models\Invoices;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 use Validator;
 use Cart;
 use Session;
@@ -359,12 +360,54 @@ class JobsController extends Controller
 
     }
 
+    /**
+     * Currently, this action assumes that invited team is having company access
+     * @param Request $request
+     * @param         $id
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
+    public function acceptTeamInvite(Request $request, $id)
+    {
+        /**
+         * - Find the invite user
+         * - Show form for signup
+         * - Add user to the users table and attach to the company
+         */
+        // fetch the user data with the job or company that required the user
+        $team = JobTeamInvite::with([
+            'job',
+            'company'
+        ])->find($id);
+
+        // show sign up form
+
+        // proccess sign up form
+        if ($request->isMethod('post')) {
+
+            $newUser           = User::firstOrNew([
+                'email' => $team->email,
+                'password' => Hash::make($request->input('password')),
+            ]);
+            $newUser->save();
+            // attach user to company
+            $team->company();
+
+            // sign team(newly added user) into
+            Auth::attempt(['email' => $newUser->email, 'password' => $request->input('password')]);
+            return redirect()->route('select-company', ['slug' => $team->company->slug]);
+
+        }
+
+        return view('job.accept-team-invite', compact('team', 'job', 'status', 'is_new_user', 'newUser'));
+
+    }
+
     public function declineInvite($id){
 
         $job_team_invite = JobTeamInvite::find($id);
         $job = Job::with('company')->find( $job_team_invite->job_id );
         $company = Company::find( $job->company->id );
-
 
         if( $job_team_invite->is_accepted )
         {
@@ -1096,15 +1139,15 @@ class JobsController extends Controller
                   /*case "SHORTLISTED":
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
-                          
+
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-info"></i>
                                     <i class="fa fa-filter fa-stack-1x fa-inverse"></i>
                                   </span>
-                          
+
                                   <h5 class="no-margin text-info">Shortlist</h5>
                                   <p>
-                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small>
                                       <a href="'. url('applicant/activities/'.$ac->application->id)  .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been shortlisted by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                   </p>
                                 </li>';
@@ -1113,15 +1156,15 @@ class JobsController extends Controller
                   /*case "ASSESSED":
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
-                          
+
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-info"></i>
                                     <i class="fa fa-question-circle-o fa-stack-1x fa-inverse"></i>
                                   </span>
-                          
+
                                   <h5 class="no-margin text-info">Test</h5>
                                   <p>
-                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small>
                                       <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been scheduled for test by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                   </p>
                                 </li>';
@@ -1181,15 +1224,15 @@ class JobsController extends Controller
                     /*case "INTERVIEWED":
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
-                          
+
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-info"></i>
                                     <i class="fa fa-thumbs-o-up fa-stack-1x fa-inverse"></i>
                                   </span>
-                          
+
                                   <h5 class="no-margin text-info">Interview</h5>
                                   <p>
-                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small>
                                       <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been interviewed by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                   </p>
                                 </li>';
@@ -1200,15 +1243,15 @@ class JobsController extends Controller
                  /*case "HIRED":
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
-                          
+
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-info"></i>
                                     <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
                                   </span>
-                          
+
                                   <h5 class="no-margin text-info">Hired</h5>
                                   <p>
-                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small>
                                       <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been hired by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                   </p>
                                 </li>';
@@ -1217,15 +1260,15 @@ class JobsController extends Controller
                   /*case "WAITING":
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
-                          
+
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-info"></i>
                                     <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
                                   </span>
-                          
+
                                   <h5 class="no-margin text-info">Waiting</h5>
                                   <p>
-                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small> 
+                                      <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small>
                                       <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been added to the waiting list by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                   </p>
                                 </li>';
@@ -1235,12 +1278,12 @@ class JobsController extends Controller
                     $applicant = $ac->application->cv;
                     // dd($ac->to);
                     $content .= '<li role="warning-notifications" class="list-group-item">
-                          
+
                                  <span class="fa-stack fa-lg i-notify">
                                     <i class="fa fa-circle fa-stack-2x text-danger"></i>
                                     <i class="fa fa-user-times fa-stack-1x fa-inverse"></i>
                                   </span>
-                          
+
                                   <h5 class="no-margin text-danger">Reject</h5>
                                   <p>
                                       <small class="text-muted pull-right">['.  date('D, j-n-Y, h:i A', strtotime($ac->created_at)) .']</small>
@@ -1393,7 +1436,7 @@ class JobsController extends Controller
         foreach ($job->workflow->workflowSteps as $key => $step) {
             if( $step->slug != "ALL" ){
                 $funnel_cummulative += $application_statuses[ $step->slug ];
-                $applicant_funnel[] = "['".$step->name. "',". $funnel_cummulative ."]";  
+                $applicant_funnel[] = "['".$step->name. "',". $funnel_cummulative ."]";
             }
         }
 
@@ -2375,8 +2418,6 @@ class JobsController extends Controller
             // if($upload){
               return redirect('select-company/'.$request->slug);
             // }
-
-
 
         }
 

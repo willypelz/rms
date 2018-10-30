@@ -173,7 +173,6 @@ Route::group(['middleware' => 'web'], function () {
     //     echo "good one";
     // });
 
-
     Route::get('payment_successful', function () {
         return view('payment.payment_succes');
     });
@@ -272,6 +271,10 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'accept-invite/{id}',
         ['uses' => 'JobsController@acceptInvite', 'as' => 'accept-invite']);
+
+    Route::match(['get', 'post'], '/accept-team-invite/{id}', 'JobsController@acceptTeamInvite')
+        ->name('accept-team-invite');
+
     Route::match(['get', 'post'], 'decline-invite/{id}',
         ['uses' => 'JobsController@declineInvite', 'as' => 'decline-invite']);
     Route::match(['get', 'post'], 'account-expired/{c_url}', 'JobsController@accountExpired');
@@ -295,7 +298,6 @@ Route::group(['middleware' => 'web'], function () {
     // Route::any('log-in', function () {
     //     return view('auth.login');
     // });
-
 
     Route::match(['get', 'post'], 'job/candidates/{jobID}',
         ['uses' => 'JobApplicationsController@viewApplicants', 'as' => 'job-candidates']);
@@ -659,22 +661,22 @@ Route::group(['middleware' => 'web'], function () {
         Route::match(['put', 'patch'], '/step/{id}/edit', 'StepController@update');
         Route::delete('/step/{id}', 'StepController@destroy')->name('step-delete');
 
-        Route::get('modal/step-action/{step}/{stepSlug}/{stepId}',
-            'JobApplicationsController@modalStepAction')->name('modal-step-action');
+        Route::get('modal/step-action/{step}/{stepSlug}/{stepId}', 'JobApplicationsController@modalStepAction')
+            ->name('modal-step-action');
 
         Route::match(['get', 'post'], 'modal/approve', 'JobApplicationsController@modalApprove')->name('modal-approve');
 
     });
 
+
     // Administrators
-    Route::get('/admin', function () {
-        return view('Admin.Layouts.default');
-    });
     Route::group([
         'prefix' => '/admin',
         'middleware' => 'admin'
     ], function () {
-        //
+        Route::get('/admin', function () {
+            return view('Admin.Layouts.default');
+        });
     });
 
 

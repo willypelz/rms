@@ -77,7 +77,7 @@
                                                         {{ ucwords($job->workflow->name) }}
                                                     </a>
                                                 </h5>
-                                                {{--<hr/>--}}
+                                                <hr/>
                                                 <small class="text-muted">
                                                     @if( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 )
                                                         <span class="text-danger"><i
@@ -98,64 +98,64 @@
                                                     &nbsp;
                                                     <i class="glyphicon glyphicon-calendar"></i> Date Created
                                                     : {{ date('D. j M, Y', strtotime($job['created_at'])) }}</small>
-
-                                            </div>
-
-
-                                            <div class="btn-group btn-abs-ad">
-                                                <a href="{{ route('job-board', [$job['id']]) }}" type="button"
-                                                   class="btn btn-success">View Job</a>
-                                                <button type="button" class="btn btn-success dropdown-toggle"
-                                                        data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                    <span class="caret"></span>
-                                                    <span class="sr-only">Toggle Dropdown</span>
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="{{ route('job-candidates', [$job['id']]) }}">View
-                                                            Applicants</a></li>
-                                                    <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote this
-                                                            Job</a></li>
-                                                    <li><a href="{{ route('job-promote', [$job['id']]) }}">Get
-                                                            Referrals </a></li>
-                                                    <li><a href="{{ route('job-promote', [$job['id']]) }}">Share this
-                                                            job on
-                                                            Social Media. </a></li>
-                                                    <li role="separator" class="divider"></li>
-                                                    @if($job['status'] == 'SUSPENDED')
-                                                        <li><a href="#"
-                                                               onclick="Activate( {{$job['id']}} ); return false">Activate
+    
+    
+                                                <div class="btn-group btn-abs-ad">
+                                                    <a href="{{ route('job-board', [$job['id']]) }}" type="button"
+                                                       class="btn btn-success">View Job</a>
+                                                    <button type="button" class="btn btn-success dropdown-toggle"
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">
+                                                        <span class="caret"></span>
+                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="{{ route('job-candidates', [$job['id']]) }}">View
+                                                                Applicants</a></li>
+                                                        <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote this
                                                                 Job</a></li>
-                                                    @elseif($job['status'] == 'DRAFT')
+                                                        <li><a href="{{ route('job-promote', [$job['id']]) }}">Get
+                                                                Referrals </a></li>
+                                                        <li><a href="{{ route('job-promote', [$job['id']]) }}">Share this
+                                                                job on
+                                                                Social Media. </a></li>
+                                                        <li role="separator" class="divider"></li>
+                                                        @if($job['status'] == 'SUSPENDED')
+                                                            <li><a href="#"
+                                                                   onclick="Activate( {{$job['id']}} ); return false">Activate
+                                                                    Job</a></li>
+                                                        @elseif($job['status'] == 'DRAFT')
+                                                            <li><a href="#"
+                                                                   onclick="Activate( {{$job['id']}} ); return false">Activate
+                                                                    Job</a></li>
+                                                        @elseif($job['status'] == 'EXPIRED')
+                                                            <li><a href="#" disabled>EXPIRED</a></li>
+                                                        @elseif($job['status'] == 'ACTIVE')
+                                                            <li><a href="#"
+                                                                   onclick="Suspend( {{$job['id']}} ); return false">Suspend
+                                                                    Job</a></li>
+                                                        @endif
                                                         <li><a href="#"
-                                                               onclick="Activate( {{$job['id']}} ); return false">Activate
+                                                               onclick="DuplicateJob( {{$job['id']}} ); return false">Duplicate
                                                                 Job</a></li>
-                                                    @elseif($job['status'] == 'EXPIRED')
-                                                        <li><a href="#" disabled>EXPIRED</a></li>
-                                                    @elseif($job['status'] == 'ACTIVE')
-                                                        <li><a href="#"
-                                                               onclick="Suspend( {{$job['id']}} ); return false">Suspend
-                                                                Job</a></li>
-                                                    @endif
-                                                    <li><a href="#"
-                                                           onclick="DuplicateJob( {{$job['id']}} ); return false">Duplicate
-                                                            Job</a></li>
-                                                    <li role="separator" class="divider"></li>
-                                                    <li><a href="#" id="delete-job" class="text text-danger"
-                                                           data-id="{{$job['id']}}" data-title="{{ $job['title'] }}"
-                                                           data-toggle="modal" data-target="#deleteJob" id="modalButton"
-                                                           href="#deleteJob">Delete Job</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                        <div id="job-list-data-{{ $job['id'] }}" class="job-items">
-                                            @foreach($job->workflow->workflowSteps as $workflowStep)
-                                                <div class="job-item">
-                                                    <span class="number">--</span><br/>{{ $workflowStep->name }}
+                                                        <li role="separator" class="divider"></li>
+                                                        <li><a href="#" id="delete-job" class="text text-danger"
+                                                               data-id="{{$job['id']}}" data-title="{{ $job['title'] }}"
+                                                               data-toggle="modal" data-target="#deleteJob" id="modalButton"
+                                                               href="#deleteJob">Delete Job</a></li>
+                                                    </ul>
                                                 </div>
-                                            @endforeach
 
+                                            </div>
+    
+                                            <div id="job-list-data-{{ $job['id'] }}" class="job-items">
+                                                @foreach($job->workflow->workflowSteps as $workflowStep)
+                                                    <div class="job-item">
+                                                        <span class="number">--</span><br/>{{ $workflowStep->name }}
+                                                    </div>
+                                                @endforeach
+    
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

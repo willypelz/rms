@@ -215,8 +215,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 .btn-group.btn-abs-ad {
     position: absolute;
-    top: 4rem;
-    right: 4rem;
+    top: 7rem;
+    right: 2rem;
 }
 
 .btn-group-justified .btn.disabled {
@@ -2639,8 +2639,8 @@ section.grey hr {
 }
 
 .pricing-table td:
-
 nth-child
+
 (
 2
 n +
@@ -3757,10 +3757,10 @@ div.baser {
 }
 
 .job-item {
-    border-right: 1px solid #ccc;
-    padding: 15px 10px;
+    border-left: 1px solid #ccc;
+    padding: 35px 10px;
     width: 115px;
-    height: 100%;
+    height: 122px;
     display: inline-block;
     text-align: center;
     /*float: right;*/
@@ -3770,7 +3770,7 @@ div.baser {
 }
 
 .job-item:last-of-type {
-    border-right: none 0;
+    border-right: 1px solid #ccc;
 }
 
 .title-job {

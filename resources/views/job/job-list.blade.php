@@ -66,7 +66,7 @@
                             <div class="col-xs-12 job-block">
                                 <div class="panel panel-default b-db">
                                     <div class="panel-body no-pad">
-                                        <div class="">
+                                        {{--<div class="">--}}
                                             <div class="title-job pull-left">
                                                 <h5>
                                                     <a target="_blank"
@@ -155,7 +155,7 @@
                                                     </div>
                                                 @endforeach
                                             </div>
-                                        </div>
+                                        {{--</div>--}}
                                     </div>
                                 </div>
                             </div>

@@ -20,7 +20,7 @@ span.dropdown {
 }
 
 .job-items {
-    border-top: solid 1px #ccc;
+    /*border-top: solid 1px #ccc;*/
     overflow-x: auto;
     white-space: nowrap;
 }

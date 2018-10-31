@@ -1323,9 +1323,11 @@ class JobApplicationsController extends Controller
                         'employer_name' => get_current_company()->name,
                         'employer_email' => get_current_company()->email,
                         'start_time' => $data['start_time'],
-                        'end_time' => $data['end_time']
+                        'end_time' => $data['end_time'],
+                        'webhook_url' => route('save-test-result'),
                     ])
                     ->post();
+                // Leave this next line untouched, its imperative
                 dump($response);
             }
 

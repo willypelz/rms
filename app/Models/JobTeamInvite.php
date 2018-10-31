@@ -23,8 +23,15 @@ class JobTeamInvite extends Model
         'updated_at'
     ];
 
-
     protected $table = 'job_team_invites';
 
+public function job()
+    {
+        return $this->belongsTo(Job::class);
+    }
 
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 }

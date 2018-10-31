@@ -165,7 +165,6 @@ return [
         ConsoleTVs\Charts\ChartsServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
-        
     ],
 
     /*

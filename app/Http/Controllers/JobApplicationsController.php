@@ -562,7 +562,7 @@ class JobApplicationsController extends Controller
                 "HIGHEST EDUCATION" => @$value['highest_qualification'],
                 "LAST COMPANY WORKED AT" => @$value['last_company_worked'],
                 "YEARS OF EXPERIENCE" => @$value['years_of_experience'],
-                "WILLING TO RELOCATE?" => '',
+                "WILLING TO RELOCATE?" => ( $value['willing_to_relocate'] == "true" ) ? 'Yes' : 'No',
                 "TESTS" => $tests,
 
 

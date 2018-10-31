@@ -43,7 +43,7 @@ class CandidateController extends Controller
 
             }
             else{
-                $request->session()->flash('error', "Invalid Credentials");
+                $request->session()->flash('warning', "Invalid Credentials");
                 return back();
             }
             

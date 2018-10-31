@@ -9,16 +9,23 @@ class JobTeamInvite extends Model
     //
     public $guarded = [];
 
-     /**
+    /**
      * Attributes that should be mass-assignable.
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'job_id', 'created_at', 'updated_at'];
+    protected $fillable = [
+        'name',
+        'email',
+        'job_id',
+        'company_id',
+        'created_at',
+        'updated_at'
+    ];
 
     protected $table = 'job_team_invites';
 
-    public function job()
+public function job()
     {
         return $this->belongsTo(Job::class);
     }
@@ -27,5 +34,4 @@ class JobTeamInvite extends Model
     {
         return $this->belongsTo(Company::class);
     }
-
 }

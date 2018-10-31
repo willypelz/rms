@@ -28,14 +28,13 @@
                         <span class="span-stage">{{ $current_status }}</span>
                         @foreach($job->workflow->workflowSteps as $workflowStep)
                             @if($workflowStep->slug == $current_status && !$cv['is_approved'] && $workflowStep->requires_approval)
-                                <span class="span-stage text-info">
+                                <span class="span-stage text-danger" style="font-size: 12px;">
                                     (Requires Approval)
                                 </span>
                             @endif
                         @endforeach
                     </h4>
                     <p>{{ @$cv['last_position'] }} @if( @$cv['last_company_worked'] != '' ) {{ ' at '.@$cv['last_company_worked'] }}  @endif</p>
-                    <hr/>
 
                     <?php $appl_status = $cv['application_status'][$current_app_index]; ?>
                     @if( $appl_status == 'ASSESSED')
@@ -45,8 +44,7 @@
                             <p> {{ @$cv['test_name'][$i] }}
                                 <span class="span-stage">
                                     @if(!empty($cv['test_score'])){{ number_format(@$cv['test_score'][$i]) }} @endif
-                                    [{{ ( $cv['test_status'][$i] == "PENDING" ) ? 'INVITED' : $cv['test_status'][$i] }}
-                                    ]
+                                    [{{ ( $cv['test_status'][$i] == "PENDING" ) ? 'INVITED' : $cv['test_status'][$i] }}]
                                 </span> @if(!empty($cv['test_score']))
                                     <a href="{{ route('applicant-assess',   $cv['application_id'][ $current_app_index ]  ) }}">
                                         View test results

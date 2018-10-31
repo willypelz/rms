@@ -40,8 +40,26 @@ Route::get('hospital-project', function () {
     return view('lifeplan', compact('agent'));
 });
 
-
 Route::group(['middleware' => 'web'], function () {
+
+    /** ---------
+     * Start: Administrator Panel Routes
+     * ----------
+     *
+     * Make admin group and apply a guard to it
+     */
+    Route::get('/admin', function () {
+        return view('admin.dashboard');
+    });
+
+    Route::group([
+        'prefix' => '/admin',
+        'middleware' => 'admin'
+    ], function () {
+        Route::get('auth/logout', 'AuthController@logout');
+    });
+    /** -- End: Administrator Panel Route -- */
+
     Route::auth();
     Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
 
@@ -667,18 +685,6 @@ Route::group(['middleware' => 'web'], function () {
         Route::match(['get', 'post'], 'modal/approve', 'JobApplicationsController@modalApprove')->name('modal-approve');
 
     });
-
-
-    // Administrators
-    Route::group([
-        'prefix' => '/admin',
-        'middleware' => 'admin'
-    ], function () {
-        Route::get('/admin', function () {
-            return view('Admin.Layouts.default');
-        });
-    });
-
 
 });
 

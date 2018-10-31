@@ -17,7 +17,7 @@
                 <div class="col-sm-8 col-sm-offset-2">
 
                     <div class="form-group">
-                        <textarea class="form-control" id="embed_code" rows="6">{{ $embed_code }}</textarea>
+                        <textarea class="form-control" id="embed_code" rows="6" readonly="readonly">{{ $embed_code }}</textarea>
                     </div>
 
                     <div class="form-group text-center">

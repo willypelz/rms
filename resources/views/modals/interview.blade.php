@@ -50,6 +50,8 @@
   
   var app_ids = <?php echo json_encode($app_ids );?>  ;
   var cv_ids = <?php echo json_encode($cv_ids );?> ; 	
+  var step = <?php echo $step ?>;
+  var stepId = <?php echo $stepId ?>;
 
  	$('body #sendInterviewBtn').on('click',function(){
  		
@@ -59,7 +61,9 @@
             app_ids: app_ids,
  						location:  $('#interview-location').val(),
  						date:  $('#interview-time').val(),
- 						message:  $('#interview-message').val()
+ 						message:  $('#interview-message').val(),
+            step : step,
+            stepId : stepId,
  					};
         $field = $(this);
  		$.post("{{ route('invite-for-interview') }}", data ,function(data){

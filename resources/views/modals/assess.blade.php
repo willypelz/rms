@@ -155,6 +155,8 @@
 
         var app_ids = <?php echo json_encode($app_ids );?>  ;
         var cv_ids = <?php echo json_encode($cv_ids );?> ;
+        var step = <?php echo $step ?>;
+        var stepId = <?php echo $stepId ?>;
         var type = "{{ $type }}";
         var has_invoice = false;
 
@@ -241,7 +243,9 @@
                 job_id: "{{ $appl->job->id }}",
                 total_amount: tot * parseInt( {{ $count }} ),
                 type: type,
-                tests : tests
+                tests : tests,
+                step : step,
+                stepId: stepId,
                 // test_id: 
                 // test_name: 
                 // test_owner:
@@ -300,7 +304,9 @@
                 checks : checks,
                 service_type: "{{ $section }}",
                 total_amount: tot * parseInt( {{ $count }} ),
-                type: type
+                type: type,
+                step : step,
+                stepId : stepId,
                 // test_id: 
                 // test_name: 
                 // test_owner:

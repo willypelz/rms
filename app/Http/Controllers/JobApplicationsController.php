@@ -1013,7 +1013,10 @@ class JobApplicationsController extends Controller
             return $modalVars;
         }
 
-        return view('modals.interview', compact('applicant_badge', 'app_ids', 'cv_ids', 'appl'));
+        $step = $request->step;
+        $stepId = $request->stepId;
+
+        return view('modals.interview', compact('applicant_badge', 'app_ids', 'cv_ids', 'appl','step','stepId'));
     }
 
     public function modalInterviewNotes(Request $request)
@@ -1191,9 +1194,13 @@ class JobApplicationsController extends Controller
         $section   = 'TEST';
         $type      = "TEST";
         $done_test = array_pluck(TestRequest::whereIn('job_application_id', $app_ids)->get()->toArray(), 'id');
+
+        $step = $request->step;
+        $stepId = $request->stepId;
+
         return view('modals.assess',
             compact('applicant_badge', 'app_ids', 'cv_ids', 'products', 'appl', 'test_available', 'section', 'count',
-                'type'));
+                'type','step','stepId'));
     }
 
     public function modalTestResult(Request $request)
@@ -1225,9 +1232,13 @@ class JobApplicationsController extends Controller
 
         $section = 'BACKGROUND';
         $type    = "BACKGROUND_CHECK";
+
+        $step = $request->step;
+        $stepId = $request->stepId;
+
         return view('modals.assess',
             compact('applicant_badge', 'app_ids', 'cv_ids', 'products', 'appl', 'test_available', 'count', 'section',
-                'type'));
+                'type','step','stepId'));
     }
 
 
@@ -1246,9 +1257,13 @@ class JobApplicationsController extends Controller
 
         $section = 'HEALTH';
         $type    = "MEDICAL_CHECK";
+
+        $step = $request->step;
+        $stepId = $request->stepId;
+
         return view('modals.assess',
             compact('applicant_badge', 'app_ids', 'cv_ids', 'products', 'appl', 'test_available', 'count', 'section',
-                'type'));
+                'type','step', 'stepId'));
     }
 
 
@@ -1312,7 +1327,7 @@ class JobApplicationsController extends Controller
 
                 $app = JobApplication::with('cv')->find($app_id);
 
-                JobApplication::massAction(@$request->job_id, @$request->cv_ids, 'ASSESSED');
+                JobApplication::massAction(@$request->job_id, @$request->cv_ids, $request->step, $request->stepId);
                 $response = Curl::to('https://seamlesstesting.com/test-request')
                     ->withData([
                         'job_title' => $app->job->title,
@@ -1488,7 +1503,7 @@ class JobApplicationsController extends Controller
 
         save_activities('INTERVIEWED', $request->job_id, $request->app_ids);
 
-        JobApplication::massAction(@$request->job_id, @$request->cv_ids, 'INTERVIEWED');
+        JobApplication::massAction(@$request->job_id, @$request->cv_ids, $request->step, $request->stepId);
 
     }
 

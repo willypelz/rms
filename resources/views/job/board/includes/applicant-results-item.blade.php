@@ -112,7 +112,11 @@
                                                id="modalButton"
                                                href="#viewModal"
                                                data-title="Test"
-                                               data-view="{{ route('modal-assess') }}"
+                                               data-view="{{ route('modal-assess', [
+                                               'step' => $workflowStep->name,
+                                               'stepSlug' => $workflowStep->slug,
+                                               'stepId' => $workflowStep->id
+                                               ]) }}"
                                                data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
                                                data-cv="{{ $cv['id'] }}"
                                                data-type="wide">Test</a>
@@ -126,7 +130,11 @@
                                                id="modalButton"
                                                href="#viewModal"
                                                data-title="Schedule an interview for"
-                                               data-view="{{ route('modal-interview') }}"
+                                               data-view="{{ route('modal-interview',[
+                                               'step' => $workflowStep->name,
+                                               'stepSlug' => $workflowStep->slug,
+                                               'stepId' => $workflowStep->id
+                                               ]) }}"
                                                data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
                                                data-cv="{{ $cv['id'] }}"
                                                data-type="normal">Interview</a>
@@ -136,6 +144,7 @@
                                 </ul>
                             </span>
                             
+                            @if(  $workflowStep->type == "background-check" || $workflowStep->type == "medical-check" )
                             <span class="text-muted"> &middot; </span>
                             <span class="dropdown">
                                 <a id="checkDrop" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -151,7 +160,11 @@
                                                id="modalButton"
                                                href="#viewModal"
                                                data-title="Background Check"
-                                               data-view="{{ route('modal-background-check') }}"
+                                               data-view="{{ route('modal-background-check',[
+                                               'step' => $workflowStep->name,
+                                               'stepSlug' => $workflowStep->slug,
+                                               'stepId' => $workflowStep->id
+                                               ]) }}"
                                                data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
                                                data-cv="{{ $cv['id'] }}"
                                                data-type="wide">Background Check</a>
@@ -165,7 +178,11 @@
                                                id="modalButton"
                                                href="#viewModal"
                                                data-title="Medical Check"
-                                               data-view="{{ route('modal-medical-check') }}"
+                                               data-view="{{ route('modal-medical-check',[
+                                               'step' => $workflowStep->name,
+                                               'stepSlug' => $workflowStep->slug,
+                                               'stepId' => $workflowStep->id
+                                               ]) }}"
                                                data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
                                                data-cv="{{ $cv['id'] }}"
                                                data-type="wide">Medical Check</a>
@@ -174,6 +191,8 @@
                                 
                                 </ul>
                             </span>
+
+                            @endif
                         
                         @else
                             @foreach($job->workflow->workflowSteps as $workflowStep)

@@ -23,11 +23,7 @@
                         <div class="row">
                           <div class="col-xs-12">
                             <h5> <span class="text-brandon">Assesment</span>
-                            <a  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Test" data-view="{{ route('modal-assess',[
-                                               'step' => $workflowStep->name,
-                                               'stepSlug' => $workflowStep->slug,
-                                               'stepId' => $workflowStep->id
-                                               ]) }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide" class="btn btn-sm btn-line pull-right"><i class="fa fa-plus"></i>Request Assessment</a>
+                            <a  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Test" data-view="{{ route('modal-assess') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide" class="btn btn-sm btn-line pull-right"><i class="fa fa-plus"></i>Request Assessment</a>
                               <!-- <a href="background-check" class="btn btn-line">Medicals</a> -->
                               <div class="clearfix"></div>
                             </h5>

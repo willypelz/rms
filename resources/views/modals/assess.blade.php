@@ -155,7 +155,7 @@
 
         var app_ids = <?php echo json_encode($app_ids );?>  ;
         var cv_ids = <?php echo json_encode($cv_ids );?> ;
-        var step = <?php echo $step ?>;
+        var step = "{{ $step }}";
         var stepId = <?php echo $stepId ?>;
         var type = "{{ $type }}";
         var has_invoice = false;

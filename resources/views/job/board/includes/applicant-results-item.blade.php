@@ -5,6 +5,7 @@
         <?php  $pic = default_color_picture($cv);
         $current_app_index = array_search($jobID, $cv['job_id']);
         $current_status = ($cv['application_status'][$current_app_index] == "ASSESSED") ? "TEST" : $cv['application_status'][$current_app_index];
+
         ?>
         
         <div class="ats-abx">
@@ -36,8 +37,10 @@
                     </h4>
                     <p>{{ @$cv['last_position'] }} @if( @$cv['last_company_worked'] != '' ) {{ ' at '.@$cv['last_company_worked'] }}  @endif</p>
 
-                    <?php $appl_status = $cv['application_status'][$current_app_index]; ?>
-                    @if( $appl_status == 'ASSESSED')
+                    <?php 
+                      $appl_status = $cv['application_status'][$current_app_index];
+                      $applicant_step = $job->workflow->workflowSteps->where('name',$appl_status)->first();  ?>
+                    @if( @$applicant_step->type == 'assessment')
                         
                         @for($i = 0; $i < count(@$cv['test_name']); $i++)
                             
@@ -84,7 +87,7 @@
                                     style="position:relative; float:right; border: 1px solid rgba(0, 0, 0, 0.03);">
                                     @foreach($job->workflow->workflowSteps as $workflowStep)
                                         
-                                        @if($workflowStep->slug == 'ALL' || $workflowStep->slug == $current_status)
+                                        @if($workflowStep->slug == 'ALL' || $workflowStep->slug == @$applicant_step->slug)
                                             @continue
                                         @endif
                                         
@@ -105,46 +108,48 @@
                                             </a>
                                         </li>
                                     @endforeach
-                                    @if($workflowStep->type == 'assessment')
-                                        <li>
-                                            <a data-toggle="modal"
-                                               data-target="#viewModal"
-                                               id="modalButton"
-                                               href="#viewModal"
-                                               data-title="Test"
-                                               data-view="{{ route('modal-assess', [
-                                               'step' => $workflowStep->name,
-                                               'stepSlug' => $workflowStep->slug,
-                                               'stepId' => $workflowStep->id
-                                               ]) }}"
-                                               data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
-                                               data-cv="{{ $cv['id'] }}"
-                                               data-type="wide">Test</a>
-                                        </li>
-                                    @endif
                                     
-                                    @if($workflowStep->type == 'interview')
-                                        <li>
-                                            <a data-toggle="modal"
-                                               data-target="#viewModal"
-                                               id="modalButton"
-                                               href="#viewModal"
-                                               data-title="Schedule an interview for"
-                                               data-view="{{ route('modal-interview',[
-                                               'step' => $workflowStep->name,
-                                               'stepSlug' => $workflowStep->slug,
-                                               'stepId' => $workflowStep->id
-                                               ]) }}"
-                                               data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
-                                               data-cv="{{ $cv['id'] }}"
-                                               data-type="normal">Interview</a>
-                                        </li>
-                                    @endif
                                 
                                 </ul>
                             </span>
+
+                            @if(@$applicant_step->type == 'assessment')
+
+                                    <a data-toggle="modal"
+                                       data-target="#viewModal"
+                                       id="modalButton"
+                                       href="#viewModal"
+                                       data-title="Test"
+                                       data-view="{{ route('modal-assess', [
+                                       'step' => $applicant_step->name,
+                                       'stepSlug' => $applicant_step->slug,
+                                       'stepId' => $applicant_step->id
+                                       ]) }}"
+                                       data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
+                                       data-cv="{{ $cv['id'] }}"
+                                       data-type="wide">Test</a>
+
+                            @endif
                             
-                            @if(  $workflowStep->type == "background-check" || $workflowStep->type == "medical-check" )
+                            @if(@$applicant_step->type == 'interview')
+
+                                    <a data-toggle="modal"
+                                       data-target="#viewModal"
+                                       id="modalButton"
+                                       href="#viewModal"
+                                       data-title="Schedule an interview for"
+                                       data-view="{{ route('modal-interview',[
+                                       'step' => $applicant_step->name,
+                                       'stepSlug' => $applicant_step->slug,
+                                       'stepId' => $applicant_step->id
+                                       ]) }}"
+                                       data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
+                                       data-cv="{{ $cv['id'] }}"
+                                       data-type="normal">Interview</a>
+
+                            @endif
+                            
+                            @if(  @$applicant_step->type == "background-check" || @$applicant_step->type == "medical-check" )
                             <span class="text-muted"> &middot; </span>
                             <span class="dropdown">
                                 <a id="checkDrop" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -153,7 +158,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="checkDrop"
                                     style="position:relative; float:right; border: 1px solid rgba(0, 0, 0, 0.03);">
-                                    @if($workflowStep->type == 'background-check')
+                                    @if(@$applicant_step->type == 'background-check')
                                         <li>
                                             <a data-toggle="modal"
                                                data-target="#viewModal"
@@ -161,9 +166,9 @@
                                                href="#viewModal"
                                                data-title="Background Check"
                                                data-view="{{ route('modal-background-check',[
-                                               'step' => $workflowStep->name,
-                                               'stepSlug' => $workflowStep->slug,
-                                               'stepId' => $workflowStep->id
+                                               'step' => $applicant_step->name,
+                                               'stepSlug' => $applicant_step->slug,
+                                               'stepId' => $applicant_step->id
                                                ]) }}"
                                                data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
                                                data-cv="{{ $cv['id'] }}"
@@ -171,7 +176,7 @@
                                         </li>
                                     @endif
                                     
-                                    @if($workflowStep->type == 'medical-check')
+                                    @if(@$applicant_step->type == 'medical-check')
                                         <li>
                                             <a data-toggle="modal"
                                                data-target="#viewModal"
@@ -179,9 +184,9 @@
                                                href="#viewModal"
                                                data-title="Medical Check"
                                                data-view="{{ route('modal-medical-check',[
-                                               'step' => $workflowStep->name,
-                                               'stepSlug' => $workflowStep->slug,
-                                               'stepId' => $workflowStep->id
+                                               'step' => $applicant_step->name,
+                                               'stepSlug' => $applicant_step->slug,
+                                               'stepId' => $applicant_step->id
                                                ]) }}"
                                                data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
                                                data-cv="{{ $cv['id'] }}"
@@ -227,7 +232,7 @@
                                             style="position:relative; float:right; border: 1px solid rgba(0, 0, 0, 0.03);">
                                             @foreach($job->workflow->workflowSteps as $workflowStep)
                                                 
-                                                @if($workflowStep->slug == 'ALL' || $workflowStep->slug == $current_status)
+                                                @if($workflowStep->slug == 'ALL' || $workflowStep->slug == @$applicant_step->slug)
                                                     @continue
                                                 @endif
                                                 

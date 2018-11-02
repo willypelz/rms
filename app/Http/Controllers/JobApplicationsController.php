@@ -145,7 +145,7 @@ class JobApplicationsController extends Controller
     public function assess($appl_id)
     {
 
-        $appl = JobApplication::with('job', 'cv')->find($appl_id);
+        $appl = JobApplication::with('job.workflow', 'cv')->find($appl_id);
 
         check_if_job_owner($appl->job->id);
 
@@ -173,7 +173,7 @@ class JobApplicationsController extends Controller
     public function medicals($appl_id)
     {
 
-        $appl = JobApplication::with('job', 'cv')->find($appl_id);
+        $appl = JobApplication::with('job.workflow', 'cv')->find($appl_id);
 
         check_if_job_owner($appl->job->id);
 
@@ -224,7 +224,7 @@ class JobApplicationsController extends Controller
     public function checks($appl_id)
     {
 
-        $appl = JobApplication::with('job', 'cv')->find($appl_id);
+        $appl = JobApplication::with('job.workflow', 'cv')->find($appl_id);
 
         check_if_job_owner($appl->job->id);
 

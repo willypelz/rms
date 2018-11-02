@@ -25,7 +25,14 @@
                         <div class="row">
                           <div class="col-xs-12">
                             <h5> <span class="text-brandon">Background Check</span>
-                            <a  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Background Check" data-view="{{ route('modal-background-check') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide" class="btn btn-sm btn-line pull-right"><i class="fa fa-plus"></i>Request Background Check</a>
+                            <?php $applicant_step = $appl->job->workflow->workflowSteps->where('name',$appl->status)->first();  ?>
+                            @if( @$applicant_step->type == 'background-check' )
+                            <a  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Background Check" data-view="{{ route('modal-background-check', [
+                                       'step' => $applicant_step->name,
+                                       'stepSlug' => $applicant_step->slug,
+                                       'stepId' => $applicant_step->id
+                                       ]) }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide" class="btn btn-sm btn-line pull-right"><i class="fa fa-plus"></i>Request Background Check</a>
+                            @endif
                               <!-- <a href="background-check" class="btn btn-line">Medicals</a> -->
                               <div class="clearfix"></div>
                             </h5>
@@ -44,7 +51,19 @@
                                 <h3 class="panel-title">Requested Background Check(s)</h3>
                             </div>
                             @else
-                                <div class="alert alert-warning">No Background checks has been requested for {{ $appl->cv->first_name }}. <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Background Check" data-view="{{ route('modal-background-check') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide"> <i class="fa fa-plus"></i> Request Now</a></div>
+
+                                @if( @$applicant_step->type == 'background-check' )
+                                <div class="alert alert-warning">No Background checks has been requested for {{ $appl->cv->first_name }}. <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Background Check" data-view="{{ route('modal-background-check', [
+                                       'step' => $applicant_step->name,
+                                       'stepSlug' => $applicant_step->slug,
+                                       'stepId' => $applicant_step->id
+                                       ]) }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide"> <i class="fa fa-plus"></i> Request Now</a></div>
+                                @else
+
+                                    <div class="alert alert-warning">Background check cannot be requested for {{ $appl->cv->first_name }} in {{ $applicant_step->name }} step . </div>
+
+                                @endif
+                                
                             @endif
 
                             @foreach($requests as $req)

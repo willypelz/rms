@@ -23,7 +23,15 @@
                         <div class="row">
                           <div class="col-xs-12">
                             <h5> <span class="text-brandon">Assesment</span>
-                            <a  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Test" data-view="{{ route('modal-assess') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide" class="btn btn-sm btn-line pull-right"><i class="fa fa-plus"></i>Request Assessment</a>
+                            <?php $applicant_step = $appl->job->workflow->workflowSteps->where('name',$appl->status)->first();  ?>
+
+                            @if( @$applicant_step->type == 'assessment' )
+                            <a  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Test" data-view="{{ route('modal-assess', [
+                                       'step' => $applicant_step->name,
+                                       'stepSlug' => $applicant_step->slug,
+                                       'stepId' => $applicant_step->id
+                                       ]) }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide" class="btn btn-sm btn-line pull-right"><i class="fa fa-plus"></i>Request Assessment</a>
+                            @endif
                               <!-- <a href="background-check" class="btn btn-line">Medicals</a> -->
                               <div class="clearfix"></div>
                             </h5>
@@ -42,7 +50,17 @@
                                 <h3 class="panel-title">Requested Assesment(s)</h3>
                             </div>
                             @else
-                                <div class="alert alert-warning">No Assesments has been requested for {{ $appl->cv->first_name }}. <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Test" data-view="{{ route('modal-assess') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide">Assess Candidate</a></div>
+                                @if( @$applicant_step->type == 'assessment' )
+                                <div class="alert alert-warning">No Assesments has been requested for {{ $appl->cv->first_name }}. <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Test" data-view="{{ route('modal-assess', [
+                                       'step' => $applicant_step->name,
+                                       'stepSlug' => $applicant_step->slug,
+                                       'stepId' => $applicant_step->id
+                                       ]) }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide">Assess Candidate</a></div>
+                                @else
+
+                                    <div class="alert alert-warning">{{ $appl->cv->first_name }} cannot be assessed in {{ $applicant_step->name }} step . </div>
+
+                                @endif
                             @endif
 
                             @foreach($requests as $req)

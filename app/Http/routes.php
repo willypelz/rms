@@ -76,6 +76,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::group(['prefix' => 'candidate'], function () {
 
         Route::match(['get', 'post'], '/login', 'CandidateController@login')->name('candidate-login');
+
         Route::match(['get', 'post'], '/logout', 'CandidateController@logout')->name('candidate-logout');
         Route::match(['get', 'post'], '/register', 'CandidateController@register')->name('candidate-register');
         Route::match(['get', 'post'], '/forgot', 'CandidateController@forgot')->name('candidate-forgot');

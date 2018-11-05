@@ -3,21 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ThirdPartyEntryController extends Controller
 {
     public function index(Request $request)
     {
-        // Get all data coming in from thirdparty website
-        if ($request->input('intended_action') == 'post-job'){
-            // firstOrCreate user account and auth user
+        if (!$company = Company::whereApiKey($request->input('_api_key')->first())) {
+            return redirect('/login')->withErrors('Invalid third-party login, please login with your account details');
+        }
 
+        // Get all data coming in from thirdparty website
+        if ($request->input('intended_action') == 'post-job') {
+            // firstOrCreate user account and auth user
+            $adminUser = User::firstOrCreate($request->input('user_data'));
+            // sync company relationship
+            $company->users()->syncWithoutDetaching([$adminUser->id]);
+            // auth user and set the remember token
+            Auth::login($adminUser, true);
         } else {
             // default to applying for a job, firstOrCreate user account and auth user
 
         }
-
 
         return redirect();
 

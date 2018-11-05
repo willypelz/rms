@@ -11,6 +11,7 @@ use App\Models\Specialization;
 use App\Models\Company;
 use App\Models\FormFields;
 use Illuminate\Mail\Mailer;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 // use Zipper;
@@ -264,7 +265,10 @@ class JobController extends Controller
                 $query->where('status', "ACTIVE")
                     ->orderBy('created_at', 'desc')
                     ->where('expiry_date', '>', date('Y-m-d'))
-                    ->whereIsFor('internal');
+                    ->where(function ($q) {
+                        $q->whereIsFor('internal')
+                            ->orWhere('is_for', 'external');
+                    });
             }
         ])->where('slug', $slug)->first();
 

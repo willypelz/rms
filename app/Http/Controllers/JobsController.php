@@ -444,6 +444,11 @@ class JobsController extends Controller
 
     public function PostJob(Request $request)
     {
+        // Another approach.. Get data from session
+        if(true) {
+            // get the data from session
+        }
+
         $application_fields = config('constants.application_fields');
         $qualifications = qualifications();
         $locations = locations();
@@ -469,8 +474,6 @@ class JobsController extends Controller
         if ($request->isMethod('post')) {
 
                 $pickd_boards = [ 1 ];
-                // dd( $request->all() );
-
 
             $data = [
                 'job_title' => $request->job_title,

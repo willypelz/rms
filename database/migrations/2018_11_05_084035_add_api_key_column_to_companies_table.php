@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 use Webpatser\Uuid\Uuid;
 
 class AddApiKeyColumnToCompaniesTable extends Migration
@@ -15,7 +16,6 @@ class AddApiKeyColumnToCompaniesTable extends Migration
     {
         Schema::table('companies', function (Blueprint $table) {
             $table->uuid('api_key')
-                ->default(Uuid::generate(4))
                 ->nullable();
         });
     }

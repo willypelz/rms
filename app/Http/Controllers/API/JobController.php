@@ -257,13 +257,15 @@ class JobController extends Controller
 
     public function company($slug)
     {
+        //validate request via company api_key
+
         $company = Company::with([
             'jobs' => function ($query) {
                 $query->where('status', "ACTIVE")
                     ->orderBy('created_at', 'desc')
                     ->where('expiry_date', '>', date('Y-m-d'))
-                    ->where(function ($q) {
-                        $q->whereIsFor('internal')
+                    ->where(function ($q) { // fetch both internal and external jobs to show on staffstrength
+                        $q->where('is_for', 'internal')
                             ->orWhere('is_for', 'external');
                     });
             }

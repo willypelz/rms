@@ -686,7 +686,11 @@ Route::group(['middleware' => 'web'], function () {
 
     });
 
+    Route::post('/third-party/entry', 'ThirdPartyEntryController@index');
+
     /* API Routes */
+    Route::get('/settings/api-key', 'ApiController@index')->name('view-api-key');
+    Route::post('/settings/api-key', 'ApiController@update');
     Route::group([
         'prefix' => 'api/v1',
         'namespace' => 'API'

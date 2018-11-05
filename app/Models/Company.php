@@ -19,11 +19,26 @@ class Company extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'logo', 'email', 'phone', 'address', 'website', 'slug', 'about', 'location_id','date_added','has_expired','valid_till'];
+    protected $fillable = [
+        'name',
+        'logo',
+        'email',
+        'phone',
+        'address',
+        'website',
+        'slug',
+        'about',
+        'location_id',
+        'date_added',
+        'has_expired',
+        'valid_till',
+        'api_key'
+    ];
 
     public $timestamps = false;
 
-    public function jobs(){
+    public function jobs()
+    {
         return $this->hasMany('App\Models\Job', 'company_id');
     }
 

@@ -686,8 +686,9 @@ Route::group(['middleware' => 'web'], function () {
 
     });
 
+    /* API Routes */
     Route::group([
-        'prefix' => 'api',
+        'prefix' => 'api/v1',
         'namespace' => 'API'
     ], function () {
         Route::get('/{c_url}', 'JobController@company');

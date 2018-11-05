@@ -26,9 +26,9 @@
                         </span>
                         <a href="{{ route('workflow') }}" class="text-muted">Workflows</a>
                     </p>
-                    <h4>
+                    <h3>
                         {{ $workflow->name }}
-                    </h4>
+                    </h3>
                     
                     @if($workflow->workflowSteps()->exists())
                         <div id="sortableSteps" data-workflow-id="{{ $workflow->id }}">

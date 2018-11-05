@@ -10,6 +10,7 @@ use App\Models\Job;
 use App\Models\Specialization;
 use App\Models\Company;
 use App\Models\FormFields;
+use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\Validator;
 
 // use Zipper;
@@ -72,7 +73,7 @@ class JobController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @return void
+     * @param Mailer $mailer
      */
     public function __construct(Mailer $mailer)
     {
@@ -138,8 +139,6 @@ class JobController extends Controller
         if ($request->isMethod('post')) {
 
             $pickd_boards = [1];
-            // dd( $request->all() );
-
 
             $data = [
                 'job_title' => $request->job_title,
@@ -167,7 +166,6 @@ class JobController extends Controller
                     ->withErrors($validator)
                     ->withInput();
             } else {
-                // dd('Success');
                 $pickd_boards = [1];
 
                 //get field visibilities
@@ -205,14 +203,7 @@ class JobController extends Controller
                         $m->to($to)->subject('New Job initiated');
                     });
 
-                // $insidify_url = Curl::to("https://insidify.com/ss-post-job")
-                //             ->withData(  [ 'secret' => '1ns1d1fy', 'data' =>  [ 'job' => $job_data, 'specializations' => @$request->specializations, 'company' => get_current_company()->toArray(), 'action_link' => url('job/apply/'.$job->id.'/'.str_slug($job->title) ) ]  ]  )
-                //             // ->asJson()
-                //             ->post();
-                // $urls[1] = $insidify_url;
-                //
                 $urls[1] = "";
-                // dd( [ 'job' => $job_data, 'specializations' => $request->specializations, 'insidify_url' => $insidify_url, 'company' => get_current_company()->toArray(), 'action_link' => url('job/apply/'.$job->id.'/'.str_slug($job->title) ) ] );
 
                 //Save job creation to activity
                 save_activities('JOB-CREATED', $job->id);
@@ -268,7 +259,6 @@ class JobController extends Controller
 
     public function company($slug)
     {
-
         $company = Company::with([
             'jobs' => function ($query) {
                 $query->where('status', "ACTIVE")

@@ -14,8 +14,6 @@ use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
-// use Zipper;
-
 class JobController extends Controller
 {
     private $search_params = [
@@ -136,7 +134,6 @@ class JobController extends Controller
         //Free Job boards urls
         $insidify_url = "";
 
-        // dd($job_bards);
         if ($request->isMethod('post')) {
 
             $pickd_boards = [1];

@@ -10,19 +10,7 @@ use App\Models\Job;
 use App\Models\Specialization;
 use App\Models\Company;
 use App\Models\FormFields;
-use App\User;
-use Validator;
-use Cart;
-use Session;
-use Auth;
-use Mail;
-use Curl;
-use Carbon\Carbon;
-use DB;
-use Crypt;
-use File;
-use Illuminate\Mail\Mailer;
-use Charts;
+use Illuminate\Support\Facades\Validator;
 
 // use Zipper;
 
@@ -278,7 +266,7 @@ class JobController extends Controller
         ));
     }
 
-    public function company($c_url)
+    public function company($slug)
     {
 
         $company = Company::with([
@@ -288,10 +276,7 @@ class JobController extends Controller
                     ->where('expiry_date', '>', date('Y-m-d'))
                     ->whereIsFor('internal');
             }
-        ])->where('slug', $c_url)->first();
-
-        // $company->jobs()->orderBy('created_at','desc')->get()->toArray();
-        // dd($company);
+        ])->where('slug', $slug)->first();
 
         $company->logo = File::exists(public_path('uploads/' . @$company->logo))
             ? asset('uploads/' . @$company->logo)
@@ -304,35 +289,5 @@ class JobController extends Controller
         ]);
 
     }
-
-    public function getUID(Request $request)
-    {
-        // allow origin
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
-        // add any additional headers you need to support here
-        header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With,X-Auth-Token, Origin');
-
-        list($id, $email, $created_at, $company_id) = explode('~&', Crypt::decrypt($request->key));
-
-        // var_dump($id, $email, $created_at);
-
-        $user = User::with('companies')->whereHas('companies', function ($query) use ($company_id) {
-            $query->where('company_id', $company_id);
-        })
-            ->where('id', $id)
-            // ->where('email', $email."")
-            ->where('created_at', $created_at)->first();
-
-        if ($user->exists()) {
-            $company = Company::find($company_id);
-            $jobs    = $company->jobs()->orderBy('created_at', 'desc')->get()->toArray();
-        } else {
-            $company = null;
-            $jobs    = "Invalid Key";
-        }
-        return view('guest.embed-view', compact('jobs', 'user', 'company'));
-    }
-
 
 }

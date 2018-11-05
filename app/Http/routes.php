@@ -686,6 +686,13 @@ Route::group(['middleware' => 'web'], function () {
 
     });
 
+    Route::group([
+        'prefix' => 'api',
+        'namespace' => 'API'
+    ], function () {
+        Route::get('/{c_url}', 'JobController@company');
+    });
+
 });
 
 /* Easily update Solr via URL*/

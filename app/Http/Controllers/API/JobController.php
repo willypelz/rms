@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Candidate;
 use App\Models\Workflow;
 use Illuminate\Http\Request;
 use App\Models\JobBoard;
@@ -122,7 +123,7 @@ class JobController extends Controller
                     ->where('expiry_date', '>', date('Y-m-d'))
                     ->where(function ($q) { // fetch both internal and external jobs to show on staffstrength
                         $q->where('is_for', 'internal');
-                            // ->orWhere('is_for', 'external');
+                        // ->orWhere('is_for', 'external');
                     });
             }
         ])->where('slug', $slug)->first();
@@ -133,8 +134,22 @@ class JobController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => '',
+            'message' => 'success',
             'data' => $company
+        ]);
+
+    }
+
+    public function applicants($job_id)
+    {
+        //validate request via company api_key
+
+        $applicants = Job::with(['applicants'])->find($job_id)->applicants;
+
+        return response()->json([
+            'status' => true,
+            'message' => 'success',
+            'data' => $applicants
         ]);
 
     }

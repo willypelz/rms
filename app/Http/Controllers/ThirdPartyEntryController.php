@@ -30,7 +30,7 @@ class ThirdPartyEntryController extends Controller
             $redirect_url = route('post-job');
         } else {
             // default to applying for a job, firstOrCreate user account and auth user
-            $candidate = Candidate::firstOrCreate($userData);
+            $candidate = Candidate::firstOrCreate($userData + ['company_id' => $company->id]);
             // auth user and set the remember token
             Auth::guard('candidate')->login($candidate, true);
 

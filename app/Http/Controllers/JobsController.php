@@ -445,9 +445,9 @@ class JobsController extends Controller
     public function PostJob(Request $request)
     {
         // Another approach.. Get data from session
-        if(true) {
-            // get the data from session
-        }
+        $thirdPartyData = collect(session('third_party_data'));
+
+        // dd($thirdPartyData);
 
         $application_fields = config('constants.application_fields');
         $qualifications = qualifications();
@@ -594,6 +594,7 @@ class JobsController extends Controller
             'board2',
             'locations',
             'workflows',
+            'thirdPartyData',
             'application_fields'
         ));
     }

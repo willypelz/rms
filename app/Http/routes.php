@@ -687,20 +687,23 @@ Route::group(['middleware' => 'web'], function () {
 
     });
 
-    Route::post('/third-party/entry', 'ThirdPartyEntryController@index');
-
-    /* API Routes */
     Route::get('/settings/api-key', 'ApiController@index')->name('view-api-key');
     Route::post('/settings/api-key', 'ApiController@update');
-    Route::group([
-        'prefix' => 'api/v1',
-        'namespace' => 'API'
-    ], function () {
-        Route::get('/{c_url}', 'JobController@company');
-        Route::get('/job/{job_id}/applicants', 'JobController@applicants');
-    });
+
 
 });
+
+Route::post('/third-party/entry', 'ThirdPartyEntryController@index');
+
+/* API Routes */
+Route::group([
+    'prefix' => 'api/v1',
+    'namespace' => 'API'
+], function () {
+    Route::get('/{c_url}', 'JobController@company');
+    Route::get('/job/{job_id}/applicants', 'JobController@applicants');
+});
+
 
 /* Easily update Solr via URL*/
 Route::get('/solr/update/{redirect?}', function ($redirect = '') {

@@ -12,8 +12,13 @@ class ThirdPartyEntryController extends Controller
 {
     public function index(Request $request)
     {
-        if (!$company = Company::whereApiKey($request->input('_api_key')->first())) {
-            return redirect('/login')->withErrors('Invalid third-party login, please login with your account details');
+
+        if(!$req_header = $request->input('_api_key')){
+            return redirect('/login', 422)->withErrors('Bad Request, make sure your request format is correct');
+        }
+
+        if (!$company = Company::whereApiKey($req_header)->first()) {
+            return redirect('/login', 422)->withErrors('Invalid third-party login, please login with your account details');
         }
 
         $userData = $request->input('user_data');

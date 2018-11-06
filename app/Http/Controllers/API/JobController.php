@@ -112,9 +112,43 @@ class JobController extends Controller
 
     }
 
-    public function company($slug)
+    private function _confirmIntegrity($api_key)
+    {
+        if (!$company = Company::whereApiKey($api_key)->first()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized!.',
+                'data' => []
+            ], 401);
+        }
+    }
+
+    /**
+     * TODO: This code so need to be refactored in the future
+     *
+     * @param Request $request
+     * @param         $slug
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function company(Request $request, $slug)
     {
         //validate request via company api_key
+        if(!$req_header = $request->header('X-API-KEY')){
+            return response()->json([
+                'status' => false,
+                'message' => 'Bad Request, make sure your request format is correct',
+                'data' => []
+            ], 400);
+        }
+
+        if (!$company = Company::whereApiKey($req_header)->first()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized!.',
+                'data' => []
+            ], 401);
+        }
 
         $company = Company::with([
             'jobs' => function ($query) {
@@ -140,9 +174,24 @@ class JobController extends Controller
 
     }
 
-    public function applicants($job_id)
+    public function applicants(Request $request, $job_id)
     {
         //validate request via company api_key
+        if(!$req_header = $request->header('X-API-KEY')){
+            return response()->json([
+                'status' => false,
+                'message' => 'Bad Request, make sure your request format is correct',
+                'data' => []
+            ], 400);
+        }
+
+        if (!$company = Company::whereApiKey($req_header)->first()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized!.',
+                'data' => []
+            ], 401);
+        }
 
         $applicants = Job::with(['applicants'])->find($job_id)->applicants;
 

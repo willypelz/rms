@@ -1813,11 +1813,7 @@ class JobsController extends Controller
             $last_cv = [];
         }
 
-
-
         return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades','custom_fields', 'candidate','last_cv','fields'));
-
-
     }
 
     public function JobVideoApplication($jobID, $job_slug, $appl_id, Request $request)

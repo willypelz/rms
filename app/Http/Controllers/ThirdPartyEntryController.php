@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Candidate;
 use App\Models\Company;
 use App\User;
 use Illuminate\Http\Request;
@@ -20,28 +21,31 @@ class ThirdPartyEntryController extends Controller
         // Get all data coming in from thirdparty website
         if ($request->input('intended_action') == 'post-job') {
             // firstOrCreate user account and auth user
-            $adminUser = User::firstOrCreate($userData);
+            $user = User::firstOrCreate($userData);
             // sync company relationship
-            $company->users()->syncWithoutDetaching([$adminUser->id]);
+            $company->users()->syncWithoutDetaching([$user->id]);
             // auth user and set the remember token
-            Auth::login($adminUser, true);
+            Auth::login($user, true);
 
             $redirect_url = route('post-job');
         } else {
             // default to applying for a job, firstOrCreate user account and auth user
-            $candidateUser = User::firstOrCreate($userData);
+            $candidate = Candidate::firstOrCreate($userData);
             // auth user and set the remember token
-            Auth::guard('candidate')->login($candidateUser, true);
+            Auth::guard('candidate')->login($candidate, true);
 
             $redirect_url = $request->input('intended_url');
         }
+
+        // store the form_data in session for retrival on job posting page
+        session(['third_party_data' => $request->input('form_data')]);
 
         return redirect($redirect_url);
 
         // [
         //     '_api_key' => 'ab5c5eee-5180-4291-bcbf-b06d070c6327',
         //     'user_data' => [
-        //         'full_name' => 'Michael Akanji',
+        //         'name' => 'Michael Akanji',
         //         'email' => 'mat@example.com',
         //     ],
         //     'form_data' => [

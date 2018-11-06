@@ -1891,19 +1891,18 @@ class JobsController extends Controller
     public function company($slug)
     {
 
-        $company = Company::with([
-            'jobs' => function ($query) {
-                $query->where('status', "ACTIVE")
-                    ->orderBy('created_at', 'desc')
-                    ->where('expiry_date', '>', date('Y-m-d'))
-                    ->where(function ($q) { // fetch both internal and external jobs to show on staffstrength
-                        $q->where('is_for', 'external');
-                        if (Auth::guard('candidate')->user() && Auth::guard('candidate')->company_id) {
-                            $q->orWhere('is_for', 'internal');
-                        }
-                    });
-            }
-        ])->where('slug', $slug)->first();
+        $company = Company::where('slug', $slug)->first();
+
+        $jobs = Job::where('company_id', $company->id)
+            ->where('status', "ACTIVE")
+            ->where('expiry_date', '>', date('Y-m-d'))
+            ->where(function ($q) use ($company) { // fetch both internal and external jobs to show on staffstrength
+                $q->where('is_for', 'external');
+                if (Auth::guard('candidate')->user() && Auth::guard('candidate')->company_id == $company->id) {
+                    $q->orWhere('is_for', 'internal');
+                }
+            })->orderBy('created_at', 'desc')
+            ->get();
 
         if (File::exists(public_path('uploads/' . @$company->logo))) {
             $company->logo = asset('uploads/'.@$company->logo);
@@ -1922,9 +1921,7 @@ class JobsController extends Controller
             $embed = "";
         }
 
-
-
-        return view('job.company', compact('company','embed'));
+        return view('job.company', compact('company','jobs','embed'));
 
     }
 

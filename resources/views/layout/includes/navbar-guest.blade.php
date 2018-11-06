@@ -53,9 +53,9 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li>
+                {{-- <li>
                     <a class="btn btn-primary" href="{{ url('register') }}" >SIGN UP</a>
-                </li>
+                </li> --}}
                 <li>
                     <a class="signin" href="{{ url('login') }}" >LOG IN</a>
 

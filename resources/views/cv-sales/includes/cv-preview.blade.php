@@ -184,7 +184,7 @@
                                     
                                     @else
                                     
-                                    <iframe src="https://drive.google.com/gview?url={{ 'http://seamlesshiring.com/uploads/CVs/'.$cv['cv_file'] }}&embedded=true" style="width:100%;padding-left: 8px;height:600px" frameborder="1"  allowfullscreen webkitallowfullscreen>
+                                    <iframe src="https://drive.google.com/gview?url={{ url('uploads/CVs/').'/'.$cv['cv_file'] }}&embedded=true" style="width:100%;padding-left: 8px;height:600px" frameborder="1"  allowfullscreen webkitallowfullscreen>
                                     {!! preloader() !!}
                                     </iframe>
                                     
@@ -192,7 +192,7 @@
                                 @endif
                                 @if(@$is_applicant || $page == 'pool')
                                 <div class="pull-right">
-                                    <a href="http://seamlesshiring.com/uploads/CVs/{{ $cv['cv_file'] }}" class="btn btn-sm btn-success btn-block" title="Download Dossier">Download CV</a>
+                                    <a href="{{ url('uploads/CVs/').'/'.$cv['cv_file'] }}" class="btn btn-sm btn-success btn-block" title="Download Dossier">Download CV</a>
                                 </div>
                                 @endif
                                 

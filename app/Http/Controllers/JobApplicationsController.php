@@ -789,10 +789,27 @@ class JobApplicationsController extends Controller
     {
 
         $job = Job::with(['form_fields', 'workflow.workflowSteps'])->find($request->job_id);
+        $applications = JobApplication::where('job_id',$request->job_id)->get()->groupBy('status');
 
-        $result               = Solr::get_applicants($this->search_params, $request->job_id, @$request->status);
-        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],
-            $job->workflow->workflowSteps()->pluck('slug'));
+        $application_statuses = [];
+        $total = 0;
+        foreach( $job->workflow->workflowSteps as $step)
+        {
+
+            if( isset( $applications[ $step->slug ] ) )
+            {
+                $application_statuses[ $step->slug ] = count( $applications[ $step->slug ] );
+            }
+            else
+            {
+                $application_statuses[ $step->slug ] =  0;
+            }
+
+            $total += $application_statuses[ $step->slug ];
+            
+        }
+        $application_statuses['ALL'] = $total;
+
         return view('job.board.includes.applicant-status', compact('application_statuses', 'result', 'job'));
     }
 
@@ -1013,7 +1030,7 @@ class JobApplicationsController extends Controller
             return $modalVars;
         }
 
-        $step = $request->step;
+        $step = $request->stepSlug;
         $stepId = $request->stepId;
 
         return view('modals.interview', compact('applicant_badge', 'app_ids', 'cv_ids', 'appl','step','stepId'));
@@ -1195,7 +1212,7 @@ class JobApplicationsController extends Controller
         $type      = "TEST";
         $done_test = array_pluck(TestRequest::whereIn('job_application_id', $app_ids)->get()->toArray(), 'id');
 
-        $step = $request->step;
+        $step = $request->stepSlug;
         $stepId = $request->stepId;
 
         return view('modals.assess',
@@ -1233,7 +1250,7 @@ class JobApplicationsController extends Controller
         $section = 'BACKGROUND';
         $type    = "BACKGROUND_CHECK";
 
-        $step = $request->step;
+        $step = $request->stepSlug;
         $stepId = $request->stepId;
 
         return view('modals.assess',
@@ -1258,7 +1275,7 @@ class JobApplicationsController extends Controller
         $section = 'HEALTH';
         $type    = "MEDICAL_CHECK";
 
-        $step = $request->step;
+        $step = $request->stepSlug;
         $stepId = $request->stepId;
 
         return view('modals.assess',

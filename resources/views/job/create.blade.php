@@ -49,7 +49,7 @@
                                         <div class="row">
                                             <div class="col-sm-6"><label for="job-title">Location <span
                                                             class="text-danger">*</span></label>
-                                                <select name="job_location" id="location" class="select2"
+                                                <select required name="job_location" id="location" class="select2"
                                                         style="width: 303px;">
                                                     <option value="">--choose state--</option>
                                                     @foreach($locations as $state)
@@ -63,7 +63,7 @@
                                                 <label for="job-title">Job Type <span class="text-danger">*</span>
                                                 </label>
                                                 
-                                                <select name="job_type" id="job_level" required="" type="text"
+                                                <select name="job_type" id="job_level" required type="text"
                                                         class="form-control">
                                                     <option value=""> --Choose--</option>
                                                     <option value="full-time"
@@ -89,9 +89,9 @@
                                     <div class="form-group">
                                         <div class="row">
                                             
-                                            <div class="col-sm-12"><label for="job-loc">Position</label>
+                                            <div class="col-sm-12"><label for="job-loc">Position <span class="text-danger">*</span></label>
                                                 <input type="text" name="position" class="form-control"
-                                                       value="{{ Request::old('position')}}">
+                                                       value="{{ Request::old('position')}}" required>
                                                 <small>e.g. Associate Marketer</small>
                                             </div>
                                         
@@ -113,7 +113,7 @@
                                                 <label for="job-title">Expiry Date <span class="text-danger">*</span>
                                                 </label>
                                                 <input type="text" name="expiry_date" class="datepicker form-control"
-                                                       value="{{ Request::old('expiry_date')}}" autocomplete="off">
+                                                       value="{{ Request::old('expiry_date')}}" autocomplete="off" required>
                                             
                                             </div>
                                         </div>
@@ -138,7 +138,7 @@
                                                 <select name="workflow_id"
                                                         id="workflowId"
                                                         class="select2"
-                                                        style="width: 100%;">
+                                                        style="width: 100%;" required>
                                                     <option value="">- Select Workflow -</option>
                                                     @foreach($workflows as $workflow)
                                                         <option value="{{ $workflow->id }}">{{ $workflow->name }}</option>
@@ -154,7 +154,7 @@
                                                 <label for="">Job Details <span class="text-danger">*</span></label>
                                                 <textarea name="details" id="editor1" cols="30" rows="6"
                                                           class="form-control"
-                                                          placeholder="">{{ (Request::old('details')) ? e(Request::old('details')) : '' }}</textarea>
+                                                          placeholder="" required>{{ (Request::old('details')) ? e(Request::old('details')) : '' }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -572,7 +572,7 @@
                                             <!-- <a href="job.php" target="_blank" type="submit" class="btn pull-right">Preview Job</a> -->
                                         </div>
                                         <div class="col-sm-4">
-                                            <button type="submit" class="btn btn-success btn-block">Post job &raquo;
+                                            <button id="post-job-btn" type="submit" class="btn btn-success btn-block">Post job &raquo;
                                             </button>
                                         </div>
                                         <div class="separator separator-small"></div>
@@ -618,6 +618,18 @@
         // Replace the <textarea id="editor1"> with a CKEditor
         // instance, using default configuration.
         $(document).ready(function () {
+            $('#post-job-btn').on('click', function(e){
+                e.preventDefault();
+                if( editor.getData() != "" )
+                {
+                    $('#myForm').submit();
+                }
+                else
+                {
+                    $.growl.error({message: "Please enter description."});
+                }
+            });
+
             $('.datepicker').datepicker({
                 format: 'mm/dd/yyyy'
             });
@@ -672,9 +684,10 @@
                 $(this).loadCustomFields();
             });
         });
-        CKEDITOR.replace('editor1');
+        var editor = CKEDITOR.replace('editor1');
         CKEDITOR.replace('editor3');
         CKEDITOR.replace('editor2');
+
     </script>
     <div class="separator separator-small"></div>
 @endsection

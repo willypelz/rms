@@ -26,7 +26,7 @@
 
                 <h3 class="text-left">{{ ucwords( implode( '_', array_slice( explode('_', $appl->cv->cv_file) , 1) ) ) }}</h3>
                 @if( $appl->cv->cv_file != "" )
-                  <a class="pull-left" href="{{ asset('uploads/'.$appl->cv->cv_file) }}" target="_blank" > <i class="fa fa-paperclip"></i> Download Attachment</a>
+                  <a class="pull-left" href="{{ asset('uploads/CVs/'.$appl->cv->cv_file) }}" target="_blank" > <i class="fa fa-paperclip"></i> Download Attachment</a>
                 @endif
                 <div class="clearfix"></div>
                 <div>

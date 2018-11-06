@@ -23,7 +23,7 @@
                         <div class="row">
                           <div class="col-xs-12">
                             <h5> <span class="text-brandon">Assesment</span>
-                            <?php $applicant_step = $appl->job->workflow->workflowSteps->where('name',$appl->status)->first();  ?>
+                            <?php $applicant_step = $appl->job->workflow->workflowSteps->where('slug',$appl->status)->first();  ?>
 
                             @if( @$applicant_step->type == 'assessment' )
                             <a  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Test" data-view="{{ route('modal-assess', [

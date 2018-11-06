@@ -39,7 +39,7 @@
 
                     <?php 
                       $appl_status = $cv['application_status'][$current_app_index];
-                      $applicant_step = $job->workflow->workflowSteps->where('name',$appl_status)->first();  ?>
+                      $applicant_step = $job->workflow->workflowSteps->where('slug',$appl_status)->first(); ?>
                     @if( @$applicant_step->type == 'assessment')
                         
                         @for($i = 0; $i < count(@$cv['test_name']); $i++)
@@ -201,7 +201,7 @@
                         
                         @else
                             @foreach($job->workflow->workflowSteps as $workflowStep)
-                                @if(in_array(auth()->user()->id, $workflowStep->approvals->pluck('id')->toArray()))
+                                @if(in_array(auth()->user()->id, $workflowStep->approvals->pluck('id')->toArray()) && $workflowStep->slug == @$applicant_step->slug)
                                 <!-- // Approval Button -->
                                     <a data-toggle="modal"
                                        data-target="#viewModal"

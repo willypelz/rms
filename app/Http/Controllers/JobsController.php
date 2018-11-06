@@ -1550,7 +1550,6 @@ class JobsController extends Controller
         $company = $job->company;
         $specializations = Specialization::get();
 
-
         if(empty($job)){
             abort(404);
         }
@@ -1787,6 +1786,11 @@ class JobsController extends Controller
                 return redirect()->route('job-video-application', ['jobid' => $jobID, 'slug'=>$slug, 'appl_id' => $appl->id]);
 
             }
+
+             Mail::send('emails.new.job_application_successful', ['user' => $candidate, 'link'=> url('candidate-dashboard'), 'job' => $job ], function (Message $m) use ($candidate) {
+                $m->from('support@seamlesshr.com')->to($candidate->email)->subject('Job Application Successful');
+            });
+            
 
             return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);
 

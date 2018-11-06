@@ -695,13 +695,12 @@ Route::post('/third-party/entry', 'ThirdPartyEntryController@index');
 
 /* API Routes */
 Route::group([
-    'prefix' => 'api/v1',
+    'prefix' => '/api/v1',
     'namespace' => 'API'
 ], function () {
     Route::get('/{c_url}', 'JobController@company');
     Route::get('/job/{job_id}/applicants', 'JobController@applicants');
 });
-
 
 /* Easily update Solr via URL*/
 Route::get('/solr/update/{redirect?}', function ($redirect = '') {

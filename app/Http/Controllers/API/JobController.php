@@ -121,8 +121,8 @@ class JobController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->where('expiry_date', '>', date('Y-m-d'))
                     ->where(function ($q) { // fetch both internal and external jobs to show on staffstrength
-                        $q->where('is_for', 'internal')
-                            ->orWhere('is_for', 'external');
+                        $q->where('is_for', 'internal');
+                            // ->orWhere('is_for', 'external');
                     });
             }
         ])->where('slug', $slug)->first();

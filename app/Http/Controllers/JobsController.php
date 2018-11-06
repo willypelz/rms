@@ -826,14 +826,7 @@ class JobsController extends Controller
                     $this->saveCompanyUploadedCv($cvs, $additional_data, $request);
                     return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
                 }
-
-
-
-
-
             }
-
-
     }
 
     public function saveCompanyUploadedCv($cvs, $additional_data, $request)
@@ -919,17 +912,24 @@ class JobsController extends Controller
 
     public function JobList(Request $request){
 
-        $user = User::with(['companies.jobs'])
-            ->where('id', Auth::user()->id)
+        $user    = User::with([
+            'companies.jobs' => function ($q) {
+                 // fetch both internal and external jobs to show on staffstrength
+                    return $q->where('is_for', 'internal');
+                        // ->orWhere('is_for', 'external');
+            }
+        ])->where('id', Auth::user()->id)
             ->first();
         $company = get_current_company();
 
-        $jobs = $company->jobs()->with(['workflow.workflowSteps'=> function ($q) {
-            return $q->orderBy('order', 'asc');
-        }])->orderBy('created_at','desc');
+        $jobs = $company->jobs()->with([
+            'workflow.workflowSteps' => function ($q) {
+                return $q->orderBy('order', 'asc');
+            }
+        ])->orderBy('created_at', 'desc');
 
-        $job_access = Job::where('company_id',$company->id)->whereHas('users',function($q) use($user){
-            $q->where('user_id',$user->id);
+        $job_access = Job::where('company_id', $company->id)->whereHas('users', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
         })->get()->pluck('id')->toArray();
 
         $company_role = $company->users()->wherePivot('user_id', $user->id )->first()->pivot->role;
@@ -1888,19 +1888,24 @@ class JobsController extends Controller
     }
 
 
-    public function company($c_url){
+    public function company($slug)
+    {
 
-        $company = Company::with(['jobs'=>function($query){
-                                        $query->where('status', "ACTIVE")
-                                        ->orderBy('created_at','desc')
-                                        ->where('expiry_date','>',date('Y-m-d'));
-                                    }])->where('slug', $c_url)->first();
+        $company = Company::with([
+            'jobs' => function ($query) {
+                $query->where('status', "ACTIVE")
+                    ->orderBy('created_at', 'desc')
+                    ->where('expiry_date', '>', date('Y-m-d'))
+                    ->where(function ($q) { // fetch both internal and external jobs to show on staffstrength
+                        $q->where('is_for', 'external');
+                        if (Auth::guard('candidate')->user() && Auth::guard('candidate')->company_id) {
+                            $q->orWhere('is_for', 'internal');
+                        }
+                    });
+            }
+        ])->where('slug', $slug)->first();
 
-        // $company->jobs()->orderBy('created_at','desc')->get()->toArray();
-        // dd($company);
-
-        if( File::exists( public_path( 'uploads/'.@$company->logo ) ) )
-        {
+        if (File::exists(public_path('uploads/' . @$company->logo))) {
             $company->logo = asset('uploads/'.@$company->logo);
         }
         else

@@ -113,9 +113,9 @@
 
 
 
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.3/bootstrap-slider.min.js" integrity="sha256-5nbI9tCmHZc4BwASrfLC1vJlG4NEVJrqF2v5AkPagHk=" crossorigin="anonymous"></script>
 
-                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/bootstrap-slider.min.js"></script>
-              <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.0.2/css/bootstrap-slider.min.css" />
+              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.3/css/bootstrap-slider.min.css" integrity="sha256-OtZEO9nZAHk5GocvW/Mozi3E3tWtBeBR/nt2U6jxwLQ=" crossorigin="anonymous" />
                 
 
                 <p class="border-bottom-thin text-muted">Completed Test Score<i class="glyphicon glyphicon-birthday pull-right"></i></p>
@@ -139,7 +139,7 @@
           
               <script type="text/javascript">
                   $(document).ready(function(){
-                      $("#score-slider").slider({
+                      $("#score-slider").bootstrapSlider({
                         // formatter: function(value,a) {
 
                         //   return 'Current value: ' + value + "  ";
@@ -176,7 +176,7 @@
           
               <script type="text/javascript">
                   $(document).ready(function(){
-                      $("#age-slider").slider({
+                      $("#age-slider").bootstrapSlider({
                         // formatter: function(value,a) {
 
                         //   return 'Current value: ' + value + "  ";
@@ -342,7 +342,7 @@
           
               <script type="text/javascript">
                   $(document).ready(function(){
-                      $("#age-slider").slider({
+                      $("#age-slider").bootstrapSlider({
                         // formatter: function(value,a) {
 
                         //   return 'Current value: ' + value + "  ";
@@ -378,7 +378,7 @@
                 
           <script type="text/javascript">
               $(document).ready(function(){
-                  $("#exp_years-slider").slider({
+                  $("#exp_years-slider").bootstrapSlider({
                     // formatter: function(value,a) {
 
                     //   return 'Current value: ' + value + "  ";
@@ -413,7 +413,7 @@
                 
               <script type="text/javascript">
                   $(document).ready(function(){
-                      $("#video_application_score-slider").slider({
+                      $("#video_application_score-slider").bootstrapSlider({
                         // formatter: function(value,a) {
 
                         //   return 'Current value: ' + value + "  ";

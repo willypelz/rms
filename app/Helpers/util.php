@@ -302,14 +302,21 @@ use App\Models\Job;
 			
 			if($count > 0)
 				$ret[$val] = $count;
-			
 		}
 
 		$status_array = [];
-		foreach ($statuses as $val) {
-			$status_array[$val] = (isset($ret[$val]))?$ret[$val]:0;
-			$all += $status_array[$val];
+		if( !empty( $statuses ) )
+		{
+			foreach ($statuses as $val) {
+				$status_array[$val] = (isset($ret[$val]))?$ret[$val]:0;
+				$all += $status_array[$val];
+			}
 		}
+		else{
+			$status_array = $ret;
+			$all = array_sum( array_values( $ret ) );
+		}
+		
 		
 		$status_array['ALL'] = $all;
 

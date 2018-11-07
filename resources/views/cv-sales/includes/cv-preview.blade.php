@@ -173,18 +173,18 @@
                                     || ends_with($cv['cv_file'], 'png')
                                     || ends_with($cv['cv_file'], 'gif'))
                                     
-                                    <img src="{{ url('uploads/CVs/').'/'.$cv['cv_file'] }}" width="100%" />
+                                    <img src="{{ url( env('fileupload') ).'/CVs/'.$cv['cv_file'] }}" width="100%" />
 
                                     @elseif(ends_with($cv['cv_file'], 'doc')
                                     || ends_with($cv['cv_file'], 'docx'))
 
-                                        <iframe src="https://view.officeapps.live.com/op/view.aspx?src={{ url('uploads/CVs/').'/'.$cv['cv_file'] }}" style="width:100%;padding-left: 8px;height:600px" frameborder="1" allowfullscreen webkitallowfullscreen>
+                                        <iframe src="https://view.officeapps.live.com/op/view.aspx?src={{ url( env('fileupload') ).'/CVs/'.$cv['cv_file'] }}" style="width:100%;padding-left: 8px;height:600px" frameborder="1" allowfullscreen webkitallowfullscreen>
                                             {!! preloader() !!}
                                         </iframe>
                                     
                                     @else
                                     
-                                    <iframe src="https://drive.google.com/gview?url={{ url('uploads/CVs/').'/'.$cv['cv_file'] }}&embedded=true" style="width:100%;padding-left: 8px;height:600px" frameborder="1"  allowfullscreen webkitallowfullscreen>
+                                    <iframe src="https://drive.google.com/gview?url={{ url( env('fileupload') ).'/CVs/'.$cv['cv_file'] }}&embedded=true" style="width:100%;padding-left: 8px;height:600px" frameborder="1"  allowfullscreen webkitallowfullscreen>
                                     {!! preloader() !!}
                                     </iframe>
                                     
@@ -192,7 +192,7 @@
                                 @endif
                                 @if(@$is_applicant || $page == 'pool')
                                 <div class="pull-right">
-                                    <a href="{{ url('uploads/CVs/').'/'.$cv['cv_file'] }}" class="btn btn-sm btn-success btn-block" title="Download Dossier">Download CV</a>
+                                    <a href="{{ url( env('fileupload') ).'/CVs/'.$cv['cv_file'] }}" class="btn btn-sm btn-success btn-block" title="Download Dossier">Download CV</a>
                                 </div>
                                 @endif
                                 

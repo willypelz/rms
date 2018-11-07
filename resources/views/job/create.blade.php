@@ -158,8 +158,8 @@
                                                         class="select2"
                                                         style="width: 100%;">
                                                     <option value="">- Select -</option>
-                                                    <option>External</option>
-                                                    <option>Internal</option>
+                                                    <option value="external">External</option>
+                                                    <option value="internal">Internal</option>
                                                 </select>
                                             </div>
                                         </div>

@@ -468,7 +468,6 @@ class JobsController extends Controller
         //Free Job boards urls
         $insidify_url = "";
 
-        // dd($job_bards);
         if ($request->isMethod('post')) {
 
                 $pickd_boards = [ 1 ];
@@ -500,7 +499,6 @@ class JobsController extends Controller
                           ->withErrors($validator)
                           ->withInput();
                     }else{
-                        // dd('Success');
                         $pickd_boards = [ 1 ];
 
                         //get field visibilities
@@ -545,7 +543,6 @@ class JobsController extends Controller
                         // $urls[1] = $insidify_url;
                         //
                         $urls[1] = "";
-                        // dd( [ 'job' => $job_data, 'specializations' => $request->specializations, 'insidify_url' => $insidify_url, 'company' => get_current_company()->toArray(), 'action_link' => url('job/apply/'.$job->id.'/'.str_slug($job->title) ) ] );
 
                         //Save job creation to activity
                         save_activities('JOB-CREATED',  $job->id );

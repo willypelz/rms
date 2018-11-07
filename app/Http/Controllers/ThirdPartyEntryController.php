@@ -60,18 +60,5 @@ class ThirdPartyEntryController extends Controller
         session(['third_party_data' => $request->input('form_data')]);
 
         return redirect($redirect_url);
-
-        // [
-        //     '_api_key' => 'ab5c5eee-5180-4291-bcbf-b06d070c6327',
-        //     'user_data' => [
-        //         'name' => 'Michael Akanji',
-        //         'email' => 'mat@example.com',
-        //     ],
-        //     'form_data' => [
-        //         // nothing to set here until
-        //     ],
-        //     'intended_action' => 'apply-to-job',
-        //     'intended_url' => 'https://link.to/posted/job-from/staffstrength',
-        // ];
     }
 }

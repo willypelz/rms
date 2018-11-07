@@ -1152,9 +1152,12 @@ class JobApplicationsController extends Controller
 
             $JA = JobApplication::whereIn('cv_id',$request->cv_ids)->update(['is_approved' => true]);
 
+            Solr::update_core();
+
             return ($JA) ? 'true' : 'false';
 
         }
+
 
         $modalVars = $this->modalActions('Approve', $request->cv_id, $request->app_id);
 

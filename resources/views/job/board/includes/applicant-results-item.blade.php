@@ -41,7 +41,8 @@
                       $appl_status = $cv['application_status'][$current_app_index];
                       $applicant_step = $job->workflow->workflowSteps->where('slug',$appl_status)->first(); ?>
                     @if( @$applicant_step->type == 'assessment')
-                        
+
+                        @if( is_array( @$cv['test_name'] ) )
                         @for($i = 0; $i < count(@$cv['test_name']); $i++)
                             
                             <p> {{ @$cv['test_name'][$i] }}
@@ -55,6 +56,10 @@
                                 @endif
                             </p>
                         @endfor
+
+                        @else
+                          <p class="text-warning">No test requested for candidate</p>
+                        @endif
                     
                     @endif
                     

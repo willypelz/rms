@@ -145,7 +145,7 @@
                     </div>
                     @endif
                     @if(!@$is_embedded)
-                    @if(@!$is_applicant && $page != 'pool')
+                    @if(!@$is_applicant && $page != 'pool')
                     <div class="" id="cv">
                         <pre>
                                 @if(isset($cv['extracted_content'][0] ))

@@ -834,9 +834,10 @@ class JobsController extends Controller
 
     public function saveCompanyUploadedCv($cvs, $additional_data, $request)
     {
-        $settings = new Settings();
+        // $settings = new Settings();
         extract($additional_data);
-        $last_cv_upload_index = intval( $settings->get('LAST_CV_UPLOAD_INDEX') );
+        // $last_cv_upload_index = intval( $settings->get('LAST_CV_UPLOAD_INDEX') );
+
         // $new_cvs = [];
         $cv_source = "";
 

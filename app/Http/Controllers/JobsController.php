@@ -447,8 +447,6 @@ class JobsController extends Controller
         // Another approach.. Get data from session
         $thirdPartyData = collect(session('third_party_data'));
 
-        // dd($thirdPartyData);
-
         $application_fields = config('constants.application_fields');
         $qualifications = qualifications();
         $locations = locations();
@@ -493,7 +491,8 @@ class JobsController extends Controller
                         'job_type' => 'required',
                         'position' => 'required',
                         'expiry_date' => 'required',
-                        'workflow_id' => 'required|integer'
+                        'workflow_id' => 'required|integer',
+                        'is_for' => 'required',
                 ]);
 
             if($validator->fails()){
@@ -525,6 +524,7 @@ class JobsController extends Controller
                                 'status' => 'ACTIVE',
                                 'company_id' => $company->id,
                                 'workflow_id' => $request->workflow_id,
+                                'is_for' => $request->is_for,
                                 'fields' => json_encode($fields),
                         ];
 

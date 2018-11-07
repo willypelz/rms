@@ -43,7 +43,7 @@
                                                             class="text-danger">*</span></label>
                                                 <input required id="job_title" type="text" name="job_title"
                                                        class="form-control"
-                                                       value="{{ old('job_title', $thirdPartyData->get('job_title') ?: '') }}">
+                                                       value="{{ old('job_title', $thirdPartyData->get('job') ?: '') }}">
                                                 <small>e.g. Marketer at {{ get_current_company()->name }}</small>
                                             </div>
                                         </div>
@@ -94,7 +94,7 @@
                                             
                                             <div class="col-sm-12"><label for="job-loc">Position</label>
                                                 <input type="text" name="position" class="form-control"
-                                                       value="{{ old('position', $thirdPartyData->get('job_position') ?: '')}}">
+                                                       value="{{ old('position', $thirdPartyData->get('job') ?: '')}}">
                                                 <small>e.g. Associate Marketer</small>
                                             </div>
                                         
@@ -133,7 +133,7 @@
                                     
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-xs-12">
+                                            <div class="col-sm-6">
                                                 <label for="workflowId">
                                                     Job Workflow
                                                     <span class="text-danger">*</span>
@@ -146,6 +146,20 @@
                                                     @foreach($workflows as $workflow)
                                                         <option value="{{ $workflow->id }}">{{ $workflow->name }}</option>
                                                     @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="isFor">
+                                                    Candidate
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <select name="is_for"
+                                                        id="isFor"
+                                                        class="select2"
+                                                        style="width: 100%;">
+                                                    <option value="">- Select -</option>
+                                                    <option>External</option>
+                                                    <option>Internal</option>
                                                 </select>
                                             </div>
                                         </div>

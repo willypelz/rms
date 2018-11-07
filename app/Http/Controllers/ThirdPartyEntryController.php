@@ -12,19 +12,16 @@ class ThirdPartyEntryController extends Controller
 {
     public function index(Request $request)
     {
-
-        // dd($request->all());
-
         if (!$req_header = $request->input('_api_key')) {
             return redirect('/login', 301)->withErrors([
-                'message',
+                'warning',
                 'Bad Request, make sure your request format is correct'
             ]);
         }
 
         if (!$company = Company::whereApiKey($req_header)->first()) {
             return redirect('/login', 301)->withErrors([
-                'message',
+                'warning',
                 'Invalid third-party login, please login with your account details'
             ]);
         }
@@ -35,8 +32,10 @@ class ThirdPartyEntryController extends Controller
         if ($request->input('intended_action') == 'post-job') {
             // firstOrCreate user account and auth user
             $user = User::firstOrNew(['email' => $userData->get('email')]);
-            $user->full_name = $userData->get('full_name');
+            $user->name = $userData->get('full_name');
+            $user->activated = 1;
             $user->save();
+
             // sync company relationship
             $company->users()->syncWithoutDetaching([$user->id]);
             // auth user and set the remember token
@@ -49,6 +48,7 @@ class ThirdPartyEntryController extends Controller
             list($fname, $lname) = explode(' ', $userData->get('full_name'));
             $candidate->first_name = $fname;
             $candidate->last_name  = $lname;
+            $candidate->is_from  = 'internal';
             $candidate->save();
             // auth user and set the remember token
             Auth::guard('candidate')->login($candidate, true);

@@ -33,10 +33,16 @@ class Job extends Model
         'position',
         'published',
         'experience',
-        'fields'
+        'fields',
+        'is_for',
     ];
 
 
+    public function setIsForAttribute($value)
+    {
+        $this->attributes['is_for'] = strtolower($value);
+    }
+    
     public function boards()
     {
         return $this->belongsToMany('App\Models\JobBoard', 'jobs_job_boards')->withPivot('url', 'url');

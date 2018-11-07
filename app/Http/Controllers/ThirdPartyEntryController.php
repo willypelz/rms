@@ -13,9 +13,9 @@ class ThirdPartyEntryController extends Controller
     public function index(Request $request)
     {
 
-        dd($request->all());
+        // dd($request->all());
 
-        if (!$req_header = $request->input('api_key')) {
+        if (!$req_header = $request->input('_api_key')) {
             return redirect('/login', 301)->withErrors([
                 'message',
                 'Bad Request, make sure your request format is correct'
@@ -32,7 +32,7 @@ class ThirdPartyEntryController extends Controller
         $userData = collect($request->input('user_data'));
 
         // Get all data coming in from thirdparty website
-        if ($request->input('intended_action') == 'post_job') {
+        if ($request->input('intended_action') == 'post-job') {
             // firstOrCreate user account and auth user
             $user = User::firstOrNew(['email' => $userData->get('email')]);
             $user->full_name = $userData->get('full_name');

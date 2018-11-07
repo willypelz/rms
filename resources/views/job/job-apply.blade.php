@@ -67,7 +67,7 @@
                                     <div class=" job-cta">
                                     <div class="col-sm-12">
                                         <h3 class="pull-left">Job Application</h3>
-                                        <a class="pull-right candidate" href="route('candidate-dashboard')"> {{ $candidate->first_name . " " . $candidate->last_name }} </a>
+                                        <a class="pull-right candidate" href="{{ route('candidate-dashboard') }}"> {{ $candidate->first_name . " " . $candidate->last_name }} </a>
                                     </div>
                                         
                                         <div class="clearfix"></div>
@@ -79,6 +79,8 @@
                                         
                                         <div class="col-sm-8">
                                             @if( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 )
+                                                <p class="text-center">This application is closed.</p>
+                                            @elseif ( in_array(  $job->status, ['SUSPENDED','DELETED'] ) )
                                                 <p class="text-center">This application is closed.</p>
                                             @else
                                             <p class="text-center">Please fill in the information below carefully.</p>
@@ -106,7 +108,7 @@
                                             @if( $fields->email->is_visible )
                                             <div class="col-sm-6">
                                                 <label for="job-title">email @if( $fields->email->is_required )<span class="text-danger">*</span>@endif</label>
-                                                <input id="job-title" name='email' value="{{ $candidate->email }}" @if( $fields->email->is_required ) required @endif type="email" class="form-control">
+                                                <input id="job-title" name='email' value="{{ $candidate->email }}" @if( $fields->email->is_required ) required @endif type="email" readonly class="form-control">
                                             </div>
                                             @endif
 

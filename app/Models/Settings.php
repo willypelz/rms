@@ -25,7 +25,16 @@ class Settings extends Model
 
     public function get($key)
     {
-        return $this->where('key', $key)->first()->pluck('value')[0];
+        $setting = $this->where('key', $key)->first();
+        if( $setting )
+        {
+            return $this->where('key', $key)->first()->pluck('value')[0];    
+        }
+        else
+        {
+            return null;
+        }
+        
     }
 
     public function set($key,$value)

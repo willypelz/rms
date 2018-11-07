@@ -829,9 +829,10 @@ class JobsController extends Controller
 
     public function saveCompanyUploadedCv($cvs, $additional_data, $request)
     {
-        $settings = new Settings();
+        // $settings = new Settings();
         extract($additional_data);
-        $last_cv_upload_index = intval( $settings->get('LAST_CV_UPLOAD_INDEX') );
+        // $last_cv_upload_index = intval( $settings->get('LAST_CV_UPLOAD_INDEX') );
+
         // $new_cvs = [];
         $cv_source = "";
 
@@ -1552,7 +1553,6 @@ class JobsController extends Controller
         $company = $job->company;
         $specializations = Specialization::get();
 
-
         if(empty($job)){
             abort(404);
         }
@@ -1789,6 +1789,13 @@ class JobsController extends Controller
                 return redirect()->route('job-video-application', ['jobid' => $jobID, 'slug'=>$slug, 'appl_id' => $appl->id]);
 
             }
+
+             Mail::send('emails.new.job_application_successful', ['user' => $candidate, 'link'=> route('candidate-dashboard'), 'job' => $job ], function (Message $m) use ($candidate) {
+                $m->from('support@seamlesshr.com')->to($candidate->email)->subject('Job Application Successful');
+            });
+
+             Solr::update_core();
+            
 
             return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);
 

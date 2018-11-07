@@ -125,24 +125,24 @@
 
                                     <div class="form-group col-xs-6">
                                         <label for="cv-name" class="pull-left">Firstname</label>
-                                        <input type="text" name="cv_first_name" id=cv-name"" class="form-control" />
+                                        <input type="text" name="cv_first_name" id="cv-first_name" class="form-control" />
                                     </div>
 
                                     <div class="form-group col-xs-6">
                                         <label for="cv-name" class="pull-left">Lastname</label>
-                                        <input type="text" name="cv_last_name" id=cv-name"" class="form-control" />
+                                        <input type="text" name="cv_last_name" id="cv-last_name" class="form-control" />
                                     </div>
 
                                     
 
                                     <div class="form-group col-xs-6">
-                                        <label for="cv-name" class="pull-left">Email</label>
-                                        <input type="email" name="cv_email" id=cv-email"" class="form-control" />
+                                        <label for="cv-email" class="pull-left">Email</label>
+                                        <input type="email" name="cv_email" id=cv-email" class="form-control" />
                                     </div>
 
                                     <div class="form-group col-xs-6">
-                                        <label for="cv-name" class="pull-left">Phone</label>
-                                        <input type="text" name="cv_phone" id=cv-phone"" class="form-control" />
+                                        <label for="cv-phone" class="pull-left">Phone</label>
+                                        <input type="text" name="cv_phone" id="cv-phone" class="form-control" />
                                     </div>
 
                                     <div class="form-group col-xs-6">

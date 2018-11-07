@@ -588,7 +588,7 @@ class CvSalesController extends Controller
         
         // $response = Solr::search_resume($this->search_params);
         $response = $result = Solr::get_all_my_cvs($this->search_params, @$solr_age, @$solr_exp_years);
-        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] ); 
 
         $end = (($start + $this->search_params['row']) > intval($application_statuses['ALL']))?$application_statuses['ALL']:($start + $this->search_params['row']);
         // $showing = "Showing ".($start+1)." - ".$end." of ".$result['response']['numFound']." Cvs [Page ".floor($request->start + 1)."]";

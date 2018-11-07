@@ -153,7 +153,7 @@ class AuthController extends Controller
     }
 
     public function Registration (Request $request){
-
+        return redirect('/');
         if ($request->isMethod('post')) {
             // dd($request->request); 
 

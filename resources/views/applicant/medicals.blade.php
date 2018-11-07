@@ -23,7 +23,7 @@
                         <div class="row">
                           <div class="col-xs-12">
                             <h5> <span class="text-brandon">Medical Check</span>
-                                <?php $applicant_step = $appl->job->workflow->workflowSteps->where('slug',$appl->status)->first();  ?>
+                                
                                 @if( @$applicant_step->type == 'medical-check' )
                                 <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Medical Check" data-view="{{ route('modal-medical-check', [
                                            'step' => $applicant_step->name,

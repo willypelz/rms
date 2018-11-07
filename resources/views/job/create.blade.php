@@ -7,6 +7,10 @@
             margin-right: 20px;
             margin-bottom: 10px;
         }
+
+        .error{
+                color: #a94442;
+        }
     </style>
     <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
     <div class="separator separator-small"></div>
@@ -619,15 +623,19 @@
         // instance, using default configuration.
         $(document).ready(function () {
             $('#post-job-btn').on('click', function(e){
-                e.preventDefault();
-                if( editor.getData() != "" )
+                if( $("#myForm").valid() )
                 {
-                    $('#myForm').submit();
+                    if( editor.getData() == "" )
+                    {
+                        e.preventDefault();
+                        $.growl.error({message: "Please enter description."});
+                    }
+                    else
+                    {
+                        
+                    }
                 }
-                else
-                {
-                    $.growl.error({message: "Please enter description."});
-                }
+                
             });
 
             $('.datepicker').datepicker({

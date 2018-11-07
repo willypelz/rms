@@ -1787,9 +1787,11 @@ class JobsController extends Controller
 
             }
 
-             Mail::send('emails.new.job_application_successful', ['user' => $candidate, 'link'=> url('candidate-dashboard'), 'job' => $job ], function (Message $m) use ($candidate) {
+             Mail::send('emails.new.job_application_successful', ['user' => $candidate, 'link'=> route('candidate-dashboard'), 'job' => $job ], function (Message $m) use ($candidate) {
                 $m->from('support@seamlesshr.com')->to($candidate->email)->subject('Job Application Successful');
             });
+
+             Solr::update_core();
             
 
             return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);

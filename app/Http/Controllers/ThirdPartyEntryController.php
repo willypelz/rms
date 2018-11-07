@@ -13,20 +13,30 @@ class ThirdPartyEntryController extends Controller
     public function index(Request $request)
     {
 
-        if(!$req_header = $request->input('_api_key')){
-            return redirect('/login', 422)->withErrors('Bad Request, make sure your request format is correct');
+        dd($request->all());
+
+        if (!$req_header = $request->input('api_key')) {
+            return redirect('/login', 301)->withErrors([
+                'message',
+                'Bad Request, make sure your request format is correct'
+            ]);
         }
 
         if (!$company = Company::whereApiKey($req_header)->first()) {
-            return redirect('/login', 422)->withErrors('Invalid third-party login, please login with your account details');
+            return redirect('/login', 301)->withErrors([
+                'message',
+                'Invalid third-party login, please login with your account details'
+            ]);
         }
 
-        $userData = $request->input('user_data');
+        $userData = collect($request->input('user_data'));
 
         // Get all data coming in from thirdparty website
-        if ($request->input('intended_action') == 'post-job') {
+        if ($request->input('intended_action') == 'post_job') {
             // firstOrCreate user account and auth user
-            $user = User::firstOrCreate($userData);
+            $user = User::firstOrNew(['email' => $userData->get('email')]);
+            $user->full_name = $userData->get('full_name');
+            $user->save();
             // sync company relationship
             $company->users()->syncWithoutDetaching([$user->id]);
             // auth user and set the remember token
@@ -35,7 +45,11 @@ class ThirdPartyEntryController extends Controller
             $redirect_url = $request->input('intended_url');
         } else {
             // default to applying for a job, firstOrCreate user account and auth user
-            $candidate = Candidate::firstOrCreate($userData + ['company_id' => $company->id]);
+            $candidate = Candidate::firstOrNew(['email' => $userData->get('email')]);
+            list($fname, $lname) = explode(' ', $userData->get('full_name'));
+            $candidate->first_name = $fname;
+            $candidate->last_name  = $lname;
+            $candidate->save();
             // auth user and set the remember token
             Auth::guard('candidate')->login($candidate, true);
 

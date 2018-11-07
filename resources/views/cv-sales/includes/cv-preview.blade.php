@@ -174,17 +174,17 @@
                                     || ends_with($cv['cv_file'], 'gif'))
                                     
                                     <img src="{{ url( env('fileupload') ).'/CVs/'.$cv['cv_file'] }}" width="100%" />
-
+{{-- 
                                     @elseif(ends_with($cv['cv_file'], 'doc')
                                     || ends_with($cv['cv_file'], 'docx'))
 
                                         <iframe src="https://view.officeapps.live.com/op/view.aspx?src={{ url( env('fileupload') ).'/CVs/'.$cv['cv_file'] }}" style="width:100%;padding-left: 8px;height:600px" frameborder="1" allowfullscreen webkitallowfullscreen>
                                             {!! preloader() !!}
                                         </iframe>
-                                    
+                                     --}}
                                     @else
                                     
-                                    <iframe src="https://drive.google.com/gview?url={{ url( env('fileupload') ).'/CVs/'.$cv['cv_file'] }}&embedded=true" style="width:100%;padding-left: 8px;height:600px" frameborder="1"  allowfullscreen webkitallowfullscreen>
+                                    <iframe src="https://docs.google.com/viewer?url={{ url( env('fileupload') ).'/CVs/'.$cv['cv_file'] }}&embedded=true" style="width:100%;padding-left: 8px;height:600px" frameborder="1"  allowfullscreen webkitallowfullscreen>
                                     {!! preloader() !!}
                                     </iframe>
                                     

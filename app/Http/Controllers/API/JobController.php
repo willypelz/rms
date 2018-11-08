@@ -77,19 +77,6 @@ class JobController extends Controller
      */
     public function __construct(Mailer $mailer)
     {
-        $this->middleware('auth', [
-            'except' => [
-                'JobView',
-                'company',
-                'jobApply',
-                'JobApplied',
-                'JobVideoApplication',
-                'getEmbed',
-                'getEmbedTest',
-                'acceptInvite',
-                'declineInvite',
-            ]
-        ]);
 
         $this->qualifications = [
 

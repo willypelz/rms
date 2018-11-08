@@ -11,23 +11,25 @@
 @extends('layout.template-default')
 
 @section('content')
-
+    
     <section>
         <div class="container">
-
+            
             @include('layout.alerts')
-
+            
             <div class="row">
-
+                
                 <div class="col-md-6">
-                    <h4>
-                        {{ $workflow->name }}
+                    <p>
                         <span class="text-muted">
-                            <->
-                            <a href="{{ route('workflow') }}" class="text-muted">Workflow</a>
+                            <-
                         </span>
-                    </h4>
-
+                        <a href="{{ route('workflow') }}" class="text-muted">Workflows</a>
+                    </p>
+                    <h3>
+                        {{ $workflow->name }}
+                    </h3>
+                    
                     @if($workflow->workflowSteps()->exists())
                         <div id="sortableSteps" data-workflow-id="{{ $workflow->id }}">
                             @foreach($workflow->workflowSteps as $workflowStep)
@@ -50,7 +52,7 @@
                                            : '' !!}
                                             </div>
                                         </div>
-
+                                        
                                         @if(!$workflowStep->is_readonly)
                                             <div class="pull-right">
                                                 <a href="{{ route('step-edit', ['id' => $workflowStep->id]) }}"
@@ -83,19 +85,19 @@
                             </div>
                         </div>
                     @endif
-
+                
                 </div>
-
+                
                 <div class="col-md-6">
                     <h4>Create Steps</h4>
                     <div class="panel panel-default">
                         <div class="panel-body">
-
+                            
                             <form action="{{ route('workflow-steps-store', ['id' => $workflow->id]) }}" method="post">
-
+                                
                                 {{ csrf_field() }}
-
-
+                                
+                                
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -136,7 +138,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                
                                 <div class="form-group">
                                     <input type="checkbox"
                                            name="requires_approval"
@@ -146,7 +148,7 @@
                                            @if(old('requires_approval') == 1) checked @endif>
                                     <label for="requireApproval">Requires Approval</label>
                                 </div>
-
+                                
                                 <div class="form-group" id="approvalUsersBlock">
                                     <label for="approvalUsers">Approval Users</label>
                                     <select class="select2"
@@ -161,7 +163,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-
+                                
                                 <div class="form-group">
                                     <input type="checkbox"
                                            name="visible_to_applicant"
@@ -170,7 +172,7 @@
                                            @if(old('visible_to_applicant') == 1) checked @endif>
                                     <label for="visibleToApplicant">Visible to Applicant</label>
                                 </div>
-
+                                
                                 <div class="form-group">
                                     <label for="description">Description</label>
                                     <textarea name="description"
@@ -178,14 +180,14 @@
                                               placeholder="A short note about this workflow"
                                               class="form-control">{{ old('description') }}</textarea>
                                 </div>
-
+                                
                                 <div class="form-group">
                                     <label for="messageTemplate">Message Template</label>
                                     <textarea name="message_template"
                                               id="messageTemplate"
                                               placeholder="... ... .."
                                               class="form-control">{{ old('message_template') }}</textarea>
-
+                                    
                                     <!-- Message Template Placeholder Buttons -->
                                     <div class="msg-template-placeholders" style="margin: 10px auto;">
                                         <button type="button" class="btn btn-sm btn-secondary templateBtn"
@@ -206,23 +208,23 @@
                                             Job Title
                                         </button>
                                     </div>
-
+                                
                                 </div>
-
+                                
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fa fa-plus fa-fw"></i>
                                         Create
                                     </button>
                                 </div>
-
+                            
                             </form>
-
+                        
                         </div>
                     </div>
-
+                
                 </div>
-
+            
             </div>
         </div>
     </section>

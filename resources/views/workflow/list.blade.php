@@ -19,7 +19,9 @@
                                     <div class="worflow-top-part clearfix">
                                         
                                         <div class="pull-left">
-                                            <h5>{{ $workflow->name }}</h5>
+                                            <a href="{{ route('workflow-edit', ['id' => $workflow->id]) }}">
+                                                <h5>{{ $workflow->name }}</h5>
+                                            </a>
                                             <p class="text-muted">{{ $workflow->description }}</p>
                                         </div>
                                         
@@ -61,7 +63,11 @@
                                     <div class="workflow-bottom-part clearfix">
                                         
                                         <div class="pull-left">
-                                            <p class="text-info">{{ $workflow->workflowSteps()->count() }} Steps</p>
+                                            <p class="text-info">
+                                                <a href="{{ route('workflow-edit', ['id' => $workflow->id]) }}">
+                                                    {{ $workflow->workflowSteps()->count() }} Steps
+                                                </a>
+                                            </p>
                                         </div>
                                         
                                         <div class="pull-right text-warning">

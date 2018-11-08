@@ -20,8 +20,10 @@
                 <div class="col-sm-12">
                     <div class="page">
                         <div class="row">
-                            <h5 class="no-margin text-center l-sp-5 text-brandon text-uppercase">Fill in your job
-                                requirements here.</h5>
+                            <h5 class="no-margin text-center l-sp-5 text-brandon text-uppercase">
+                                Fill in your job
+                                requirements here.
+                            </h5>
                             <hr>
                             <br>
                             @if ($errors->any())
@@ -44,7 +46,8 @@
                                             <div class="col-sm-12"><label for="job-title">job title <span
                                                             class="text-danger">*</span></label>
                                                 <input required id="job_title" type="text" name="job_title"
-                                                       class="form-control" {{ (Request::old('job_title')) ? ' value='. e(Request::old('job_title')) .'' : '' }}>
+                                                       class="form-control"
+                                                       value="{{ old('job_title', $thirdPartyData->get('job') ?: '') }}">
                                                 <small>e.g. Marketer at {{ get_current_company()->name }}</small>
                                             </div>
                                         </div>
@@ -95,7 +98,7 @@
                                             
                                             <div class="col-sm-12"><label for="job-loc">Position <span class="text-danger">*</span></label>
                                                 <input type="text" name="position" class="form-control"
-                                                       value="{{ Request::old('position')}}" required>
+                                                       value="{{ old('position', $thirdPartyData->get('job') ?: '')}}" required>
                                                 <small>e.g. Associate Marketer</small>
                                             </div>
                                         
@@ -134,7 +137,7 @@
                                     
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-xs-12">
+                                            <div class="col-sm-6">
                                                 <label for="workflowId">
                                                     Job Workflow
                                                     <span class="text-danger">*</span>
@@ -149,6 +152,20 @@
                                                     @endforeach
                                                 </select>
                                             </div>
+                                            <div class="col-sm-6">
+                                                <label for="isFor">
+                                                    Candidate
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <select name="is_for"
+                                                        id="isFor"
+                                                        class="select2"
+                                                        style="width: 100%;">
+                                                    <option value="">- Select -</option>
+                                                    <option value="external">External</option>
+                                                    <option value="internal">Internal</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                     
@@ -158,7 +175,7 @@
                                                 <label for="">Job Details <span class="text-danger">*</span></label>
                                                 <textarea name="details" id="editor1" cols="30" rows="6"
                                                           class="form-control"
-                                                          placeholder="" required>{{ (Request::old('details')) ? e(Request::old('details')) : '' }}</textarea>
+                                                          placeholder="" required>{{ old('details', $thirdPartyData->get('job_details') ?: '') }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -181,12 +198,14 @@
                                             <div class="col-xs-3">
                                                 <label style="cursor: pointer;">
                                                     <input type="checkbox" id="is_required_all" style="margin:10px">
-                                                    <span class="text-uppercase"><strong>Toggle all</strong></span></label>
+                                                    <span class="text-uppercase"><strong>Toggle
+                                                            all</strong></span></label>
                                             </div>
                                             <div class="col-xs-3">
                                                 <label style="cursor: pointer;">
                                                     <input type="checkbox" id="is_visible_all" style="margin:10px"
-                                                           checked="checked"> <span class="text-uppercase"><strong>Toggle all</strong></span></label>
+                                                           checked="checked"> <span class="text-uppercase"><strong>Toggle
+                                                            all</strong></span></label>
                                             </div>
                                         </div>
                                     </div>
@@ -526,7 +545,8 @@
                                                             <span class="col-xs-5"><img src="{{ $b['img'] }}"
                                                                                         width="100%" alt=""></span>
                                                             <span class="col-xs-7 text-muted"
-                                                                  style="padding-left:0"><b>{{ $b['name'] }}</b><br>{{ $b['url'] }}</span>
+                                                                  style="padding-left:0"><b>{{ $b['name'] }}</b><br>{{ $b['url'] }}
+                                                            </span>
                                                             <span class="clearfix"></span>
                                                         </label>
                                                     @endforeach
@@ -542,7 +562,8 @@
                                                             <span class="col-xs-5"><img src="{{ $jb['img'] }}"
                                                                                         width="100%" alt=""></span>
                                                             <span class="col-xs-7 text-muted"
-                                                                  style="padding-left:0"><b>{{ $jb['name'] }}</b><br>{{ $jb['url'] }}</span>
+                                                                  style="padding-left:0"><b>{{ $jb['name'] }}</b><br>{{ $jb['url'] }}
+                                                            </span>
                                                             <span class="clearfix"></span>
                                                         </label>
                                                     @endforeach
@@ -632,7 +653,7 @@
                     }
                     else
                     {
-                        
+                    
                     }
                 }
                 

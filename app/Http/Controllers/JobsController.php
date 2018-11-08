@@ -444,6 +444,9 @@ class JobsController extends Controller
 
     public function PostJob(Request $request)
     {
+        // Another approach.. Get data from session
+        $thirdPartyData = collect(session('third_party_data'));
+
         $application_fields = config('constants.application_fields');
         $qualifications = qualifications();
         $locations = locations();
@@ -465,12 +468,9 @@ class JobsController extends Controller
         //Free Job boards urls
         $insidify_url = "";
 
-        // dd($job_bards);
         if ($request->isMethod('post')) {
 
                 $pickd_boards = [ 1 ];
-                // dd( $request->all() );
-
 
             $data = [
                 'job_title' => $request->job_title,
@@ -480,7 +480,8 @@ class JobsController extends Controller
                 'position' => $request->position,
                 // 'post_date' => $request->post_date,
                 'expiry_date' => $request->expiry_date,
-                'workflow_id' => $request->workflow_id
+                'workflow_id' => $request->workflow_id,
+                'is_for' => $request->is_for,
             ];
 
             $validator = Validator::make( $data, [
@@ -490,7 +491,8 @@ class JobsController extends Controller
                         'job_type' => 'required',
                         'position' => 'required',
                         'expiry_date' => 'required',
-                        'workflow_id' => 'required|integer'
+                        'workflow_id' => 'required|integer',
+                        'is_for' => 'required',
                 ]);
 
             if($validator->fails()){
@@ -498,7 +500,6 @@ class JobsController extends Controller
                           ->withErrors($validator)
                           ->withInput();
                     }else{
-                        // dd('Success');
                         $pickd_boards = [ 1 ];
 
                         //get field visibilities
@@ -522,6 +523,7 @@ class JobsController extends Controller
                                 'status' => 'ACTIVE',
                                 'company_id' => $company->id,
                                 'workflow_id' => $request->workflow_id,
+                                'is_for' => $request->is_for,
                                 'fields' => json_encode($fields),
                         ];
 
@@ -542,7 +544,6 @@ class JobsController extends Controller
                         // $urls[1] = $insidify_url;
                         //
                         $urls[1] = "";
-                        // dd( [ 'job' => $job_data, 'specializations' => $request->specializations, 'insidify_url' => $insidify_url, 'company' => get_current_company()->toArray(), 'action_link' => url('job/apply/'.$job->id.'/'.str_slug($job->title) ) ] );
 
                         //Save job creation to activity
                         save_activities('JOB-CREATED',  $job->id );
@@ -591,6 +592,7 @@ class JobsController extends Controller
             'board2',
             'locations',
             'workflows',
+            'thirdPartyData',
             'application_fields'
         ));
     }
@@ -822,14 +824,7 @@ class JobsController extends Controller
                     $this->saveCompanyUploadedCv($cvs, $additional_data, $request);
                     return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
                 }
-
-
-
-
-
             }
-
-
     }
 
     public function saveCompanyUploadedCv($cvs, $additional_data, $request)
@@ -916,17 +911,24 @@ class JobsController extends Controller
 
     public function JobList(Request $request){
 
-        $user = User::with(['companies.jobs'])
-            ->where('id', Auth::user()->id)
+        $user    = User::with([
+            'companies.jobs' => function ($q) {
+                 // fetch both internal and external jobs to show on staffstrength
+                    return $q->where('is_for', 'internal');
+                        // ->orWhere('is_for', 'external');
+            }
+        ])->where('id', Auth::user()->id)
             ->first();
         $company = get_current_company();
 
-        $jobs = $company->jobs()->with(['workflow.workflowSteps'=> function ($q) {
-            return $q->orderBy('order', 'asc');
-        }])->orderBy('created_at','desc');
+        $jobs = $company->jobs()->with([
+            'workflow.workflowSteps' => function ($q) {
+                return $q->orderBy('order', 'asc');
+            }
+        ])->orderBy('created_at', 'desc');
 
-        $job_access = Job::where('company_id',$company->id)->whereHas('users',function($q) use($user){
-            $q->where('user_id',$user->id);
+        $job_access = Job::where('company_id', $company->id)->whereHas('users', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
         })->get()->pluck('id')->toArray();
 
         $company_role = $company->users()->wherePivot('user_id', $user->id )->first()->pivot->role;
@@ -1816,11 +1818,7 @@ class JobsController extends Controller
             $last_cv = [];
         }
 
-
-
         return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations','grades','custom_fields', 'candidate','last_cv','fields'));
-
-
     }
 
     public function JobVideoApplication($jobID, $job_slug, $appl_id, Request $request)
@@ -1891,19 +1889,23 @@ class JobsController extends Controller
     }
 
 
-    public function company($c_url){
+    public function company($slug)
+    {
 
-        $company = Company::with(['jobs'=>function($query){
-                                        $query->where('status', "ACTIVE")
-                                        ->orderBy('created_at','desc')
-                                        ->where('expiry_date','>',date('Y-m-d'));
-                                    }])->where('slug', $c_url)->first();
+        $company = Company::where('slug', $slug)->first();
 
-        // $company->jobs()->orderBy('created_at','desc')->get()->toArray();
-        // dd($company);
+        $jobs = Job::where('company_id', $company->id)
+            ->where('status', "ACTIVE")
+            ->where('expiry_date', '>', date('Y-m-d'))
+            ->where(function ($q) use ($company) { // fetch both internal and external jobs to show on staffstrength
+                $q->where('is_for', 'external');
+                if (Auth::guard('candidate')->user() && Auth::guard('candidate')->company_id == $company->id) {
+                    $q->orWhere('is_for', 'internal');
+                }
+            })->orderBy('created_at', 'desc')
+            ->get();
 
-        if( File::exists( public_path( 'uploads/'.@$company->logo ) ) )
-        {
+        if (File::exists(public_path('uploads/' . @$company->logo))) {
             $company->logo = asset('uploads/'.@$company->logo);
         }
         else
@@ -1920,9 +1922,7 @@ class JobsController extends Controller
             $embed = "";
         }
 
-
-
-        return view('job.company', compact('company','embed'));
+        return view('job.company', compact('company','jobs','embed'));
 
     }
 

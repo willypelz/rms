@@ -33,16 +33,22 @@ class Job extends Model
         'position',
         'published',
         'experience',
-        'fields'
+        'fields',
+        'is_for',
     ];
 
 
+    public function setIsForAttribute($value)
+    {
+        $this->attributes['is_for'] = strtolower($value);
+    }
+    
     public function boards()
     {
         return $this->belongsToMany('App\Models\JobBoard', 'jobs_job_boards')->withPivot('url', 'url');
     }
 
-     public function specializations()
+    public function specializations()
     {
         return $this->belongsToMany('App\Models\Specialization', 'jobs_specializations');
     }
@@ -65,12 +71,13 @@ class Job extends Model
 
     public static function getMyJobIds()
     {
-        return Job::where('company_id',@get_current_company()->id)->where('status','!=','DELETED')->get()->pluck('id')->toArray();
+        return Job::where('company_id', @get_current_company()->id)->where('status', '!=',
+            'DELETED')->get()->pluck('id')->toArray();
     }
 
     public static function getMyJobs()
     {
-        return Job::where('company_id',@get_current_company()->id)->where('status','!=','DELETED')->get()->toArray();
+        return Job::where('company_id', @get_current_company()->id)->where('status', '!=', 'DELETED')->get()->toArray();
     }
 
     public function users()
@@ -81,5 +88,10 @@ class Job extends Model
     public function workflow()
     {
         return $this->belongsTo(Workflow::class);
+    }
+
+    public function applicants()
+    {
+        return $this->belongsToMany(Cv::class, 'job_applications', 'job_id', 'cv_id');
     }
 }

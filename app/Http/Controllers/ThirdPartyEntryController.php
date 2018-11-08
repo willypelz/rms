@@ -47,6 +47,7 @@ class ThirdPartyEntryController extends Controller
             $candidate->first_name = $fname;
             $candidate->last_name  = $lname;
             $candidate->is_from    = 'internal';
+            $candidate->company_id = $company->id;
             $candidate->save();
             // auth user and set the remember token
             Auth::guard('candidate')->login($candidate, true);

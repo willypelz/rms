@@ -15,7 +15,6 @@ class AddCompanyIdColumnToCandidatesTable extends Migration
     {
         Schema::table('candidates', function (Blueprint $table) {
             $table->unsignedInteger('company_id')
-                ->after('remember_token')
                 ->nullable();
         });
     }

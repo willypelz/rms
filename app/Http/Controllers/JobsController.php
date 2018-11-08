@@ -909,32 +909,28 @@ class JobsController extends Controller
         return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
     }
 
-    public function JobList(Request $request){
-
+    public function JobList(Request $request)
+    {
         $user    = User::with([
-            'companies.jobs' => function ($q) {
-                 // fetch both internal and external jobs to show on staffstrength
-                    return $q->where('is_for', 'internal');
-                        // ->orWhere('is_for', 'external');
-            }
+            'companies.jobs'
         ])->where('id', Auth::user()->id)
             ->first();
         $company = get_current_company();
 
-        $jobs = $company->jobs()->with([
+        $jobsOrm = $company->jobs()->with([
             'workflow.workflowSteps' => function ($q) {
                 return $q->orderBy('order', 'asc');
             }
-        ])->orderBy('created_at', 'desc');
+        ]);
+        $jobs = $jobsOrm->orderBy('created_at', 'desc');
 
         $job_access = Job::where('company_id', $company->id)->whereHas('users', function ($q) use ($user) {
             $q->where('user_id', $user->id);
         })->get()->pluck('id')->toArray();
 
-        $company_role = $company->users()->wherePivot('user_id', $user->id )->first()->pivot->role;
+        $company_role = $company->users()->wherePivot('user_id', $user->id)->first()->pivot->role;
 
-        if( isset($request->q) )
-        {
+        if (isset($request->q)) {
             $jobs = $jobs->where('title','LIKE','%'. $request->q .'%');
         }
 
@@ -1540,25 +1536,31 @@ class JobsController extends Controller
         // dd($j[0]->highest_qualification);
     }
 
-    public function jobApply($jobID, $slug, Request $request){
+    public function jobApply($jobID, $slug, Request $request)
+    {
 
-        if( !Auth::guard('candidate')->check() )
-        {
-            return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
+        if (!Auth::guard('candidate')->check()) {
+            return redirect()->route('candidate-login', ['redirect_to' => url()->current()]);
         }
         $candidate = Auth::guard('candidate')->user();
 
         // dd( Auth::guard('candidate')->attempt() );
-        $job = Job::with('company')->where('id', $jobID)->first();
-        $company = $job->company;
+        $job             = Job::with('company')->where('id', $jobID)->first();
+        $company         = $job->company;
         $specializations = Specialization::get();
 
-        if(empty($job)){
+        if (empty($job)) {
             abort(404);
         }
 
+        // disavow internal staff from applying to external jobs
+        if ($job->is_for == 'external' && $candidate->company_id == $company->id) {
+            return redirect()->route('candidate-dashboard')
+                ->withErrors(['warning' => 'You can not apply for this job, It is meant for external candidate']);
+        }
+
         $qualifications = $this->qualifications;
-        $grades = grades();
+        $grades         = grades();
 
         $states = $this->states;
 
@@ -1795,7 +1797,7 @@ class JobsController extends Controller
             });
 
              Solr::update_core();
-            
+
 
             return redirect()->route('job-applied', ['jobid' => $jobID, 'slug'=>$slug]);
 
@@ -1899,6 +1901,7 @@ class JobsController extends Controller
             ->where('expiry_date', '>', date('Y-m-d'))
             ->where(function ($q) use ($company) { // fetch both internal and external jobs to show on staffstrength
                 $q->where('is_for', 'external');
+                $q->orWhere('is_for', 'both');
                 if (Auth::guard('candidate')->user() && Auth::guard('candidate')->company_id == $company->id) {
                     $q->orWhere('is_for', 'internal');
                 }

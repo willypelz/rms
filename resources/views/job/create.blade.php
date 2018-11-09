@@ -7,9 +7,9 @@
             margin-right: 20px;
             margin-bottom: 10px;
         }
-
-        .error{
-                color: #a94442;
+        
+        .error {
+            color: #a94442;
         }
     </style>
     <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
@@ -96,9 +96,11 @@
                                     <div class="form-group">
                                         <div class="row">
                                             
-                                            <div class="col-sm-12"><label for="job-loc">Position <span class="text-danger">*</span></label>
+                                            <div class="col-sm-12"><label for="job-loc">Position <span
+                                                            class="text-danger">*</span></label>
                                                 <input type="text" name="position" class="form-control"
-                                                       value="{{ old('position', $thirdPartyData->get('job') ?: '')}}" required>
+                                                       value="{{ old('position', $thirdPartyData->get('job') ?: '')}}"
+                                                       required>
                                                 <small>e.g. Associate Marketer</small>
                                             </div>
                                         
@@ -120,7 +122,8 @@
                                                 <label for="job-title">Expiry Date <span class="text-danger">*</span>
                                                 </label>
                                                 <input type="text" name="expiry_date" class="datepicker form-control"
-                                                       value="{{ Request::old('expiry_date')}}" autocomplete="off" required>
+                                                       value="{{ Request::old('expiry_date')}}" autocomplete="off"
+                                                       required>
                                             
                                             </div>
                                         </div>
@@ -137,7 +140,7 @@
                                     
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-12">
                                                 <label for="workflowId">
                                                     Job Workflow
                                                     <span class="text-danger">*</span>
@@ -152,19 +155,13 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="col-sm-6">
-                                                <label for="isFor">
-                                                    Candidate
-                                                    <span class="text-danger">*</span>
-                                                </label>
-                                                <select name="is_for"
-                                                        id="isFor"
-                                                        class="select2"
-                                                        style="width: 100%;">
-                                                    <option value="">- Select -</option>
-                                                    <option value="external">External</option>
-                                                    <option value="internal">Internal</option>
-                                                </select>
+                                            <div>
+                                                <input name="is_for"
+                                                       id="isFor"
+                                                       type="hidden"
+                                                       class="form-control"
+                                                       value="{{ $thirdPartyData->get('request_type') }}"
+                                                       style="width: 100%;">
                                             </div>
                                         </div>
                                     </div>
@@ -175,7 +172,8 @@
                                                 <label for="">Job Details <span class="text-danger">*</span></label>
                                                 <textarea name="details" id="editor1" cols="30" rows="6"
                                                           class="form-control"
-                                                          placeholder="" required>{{ old('details', $thirdPartyData->get('job_details') ?: '') }}</textarea>
+                                                          placeholder=""
+                                                          required>{{ old('details', $thirdPartyData->get('job_details') ?: '') }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -597,7 +595,8 @@
                                             <!-- <a href="job.php" target="_blank" type="submit" class="btn pull-right">Preview Job</a> -->
                                         </div>
                                         <div class="col-sm-4">
-                                            <button id="post-job-btn" type="submit" class="btn btn-success btn-block">Post job &raquo;
+                                            <button id="post-job-btn" type="submit" class="btn btn-success btn-block">
+                                                Post job &raquo;
                                             </button>
                                         </div>
                                         <div class="separator separator-small"></div>
@@ -643,20 +642,17 @@
         // Replace the <textarea id="editor1"> with a CKEditor
         // instance, using default configuration.
         $(document).ready(function () {
-            $('#post-job-btn').on('click', function(e){
-                if( $("#myForm").valid() )
-                {
-                    if( editor.getData() == "" )
-                    {
+            $('#post-job-btn').on('click', function (e) {
+                if ($("#myForm").valid()) {
+                    if (editor.getData() == "") {
                         e.preventDefault();
                         $.growl.error({message: "Please enter description."});
                     }
-                    else
-                    {
-                    
+                    else {
+
                     }
                 }
-                
+
             });
 
             $('.datepicker').datepicker({
@@ -716,7 +712,7 @@
         var editor = CKEDITOR.replace('editor1');
         CKEDITOR.replace('editor3');
         CKEDITOR.replace('editor2');
-
+    
     </script>
     <div class="separator separator-small"></div>
 @endsection

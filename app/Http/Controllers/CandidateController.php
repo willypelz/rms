@@ -67,9 +67,12 @@ class CandidateController extends Controller
         if( $request->isMethod('post') )
         {
             $candidate = Candidate::firstOrCreate([
+                'email' => $request->email,
+                
+            ],
+            [
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
-                'email' => $request->email,
                 'password' => bcrypt( $request->password ),
             ]);
             if($candidate)

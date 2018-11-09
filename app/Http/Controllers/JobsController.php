@@ -349,7 +349,6 @@ class JobsController extends Controller
 
                 $company->users()->sync([$user->id => ['role' => $role] ], false);
 
-
                 $job_team_invite->is_accepted = true;
                 $job_team_invite->save();
 
@@ -481,7 +480,6 @@ class JobsController extends Controller
                 // 'post_date' => $request->post_date,
                 'expiry_date' => $request->expiry_date,
                 'workflow_id' => $request->workflow_id,
-                'is_for' => $request->is_for,
             ];
 
             $validator = Validator::make( $data, [

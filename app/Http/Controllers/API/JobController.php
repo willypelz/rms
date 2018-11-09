@@ -120,7 +120,7 @@ class JobController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function company(Request $request, $slug, $jobType = 'external')
+    public function company(Request $request, $slug, $jobType = 'all')
     {
         //validate request via company api_key
         if (!$req_header = $request->header('X-API-KEY')) {
@@ -136,8 +136,10 @@ class JobController extends Controller
             'jobs' => function ($query) use ($jobType) {
                 $query->whereStatus("ACTIVE")
                     ->orderBy('created_at', 'desc')
-                    ->where('expiry_date', '>', date('Y-m-d'))
-                    ->whereIsFor($jobType); // default $jobType == external
+                    ->where('expiry_date', '>', date('Y-m-d'));
+                if ($jobType != 'all') {
+                    $query->whereIsFor($jobType); // default $jobType == external
+                }
             }
         ])->whereApiKey($req_header)
             ->whereSlug($slug)

@@ -19,7 +19,6 @@
                         @include('candidate.includes.sidebar')
                     </div>
                     
-                    
                     <!-- Main body -->
                     <div class="col-md-9">
                         

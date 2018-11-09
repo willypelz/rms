@@ -116,12 +116,14 @@ class JobController extends Controller
      * @param Request $request
      * @param         $slug
      *
+     * @param string  $jobType
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function company(Request $request, $slug)
+    public function company(Request $request, $slug, $jobType = 'all')
     {
         //validate request via company api_key
-        if(!$req_header = $request->header('X-API-KEY')){
+        if (!$req_header = $request->header('X-API-KEY')) {
             return response()->json([
                 'status' => false,
                 'message' => 'Bad Request, make sure your request format is correct',
@@ -129,25 +131,27 @@ class JobController extends Controller
             ], 400);
         }
 
-        if (!$company = Company::whereApiKey($req_header)->first()) {
+        // Get company and its jobs
+        $company = Company::with([
+            'jobs' => function ($query) use ($jobType) {
+                $query->whereStatus("ACTIVE")
+                    ->orderBy('created_at', 'desc')
+                    ->where('expiry_date', '>', date('Y-m-d'));
+                if ($jobType != 'all') {
+                    $query->whereIsFor($jobType); // default $jobType == external
+                }
+            }
+        ])->whereApiKey($req_header)
+            ->whereSlug($slug)
+            ->first();
+
+        if (!$company) {
             return response()->json([
                 'status' => false,
                 'message' => 'Unauthorized!.',
                 'data' => []
             ], 401);
         }
-
-        $company = Company::with([
-            'jobs' => function ($query) {
-                $query->where('status', "ACTIVE")
-                    ->orderBy('created_at', 'desc')
-                    ->where('expiry_date', '>', date('Y-m-d'))
-                    ->where(function ($q) { // fetch both internal and external jobs to show on staffstrength
-                        $q->where('is_for', 'internal');
-                        // ->orWhere('is_for', 'external');
-                    });
-            }
-        ])->where('slug', $slug)->first();
 
         $company->logo = File::exists(public_path('uploads/' . @$company->logo))
             ? asset('uploads/' . @$company->logo)
@@ -164,7 +168,7 @@ class JobController extends Controller
     public function applicants(Request $request, $job_id)
     {
         //validate request via company api_key
-        if(!$req_header = $request->header('X-API-KEY')){
+        if (!$req_header = $request->header('X-API-KEY')) {
             return response()->json([
                 'status' => false,
                 'message' => 'Bad Request, make sure your request format is correct',

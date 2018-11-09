@@ -696,7 +696,7 @@ Route::group(['middleware' => 'web'], function () {
         'prefix' => '/api/v1',
         'namespace' => 'API'
     ], function () {
-        Route::get('/{slug}', 'JobController@company');
+        Route::get('/{slug}/{jobType?}', 'JobController@company');
         Route::get('/job/{job_id}/applicants', 'JobController@applicants');
     });
 

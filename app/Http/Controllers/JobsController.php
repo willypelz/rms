@@ -490,7 +490,6 @@ class JobsController extends Controller
                         'position' => 'required',
                         'expiry_date' => 'required',
                         'workflow_id' => 'required|integer',
-                        'is_for' => 'required',
                 ]);
 
             if($validator->fails()){
@@ -521,7 +520,7 @@ class JobsController extends Controller
                                 'status' => 'ACTIVE',
                                 'company_id' => $company->id,
                                 'workflow_id' => $request->workflow_id,
-                                'is_for' => $request->is_for,
+                                'is_for' => $request->is_for ?: 'external',
                                 'fields' => json_encode($fields),
                         ];
 

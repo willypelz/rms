@@ -120,7 +120,7 @@ class JobController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function company(Request $request, $slug, $jobType = 'all')
+    public function company(Request $request, $jobType = 'all')
     {
         //validate request via company api_key
         if (!$req_header = $request->header('X-API-KEY')) {

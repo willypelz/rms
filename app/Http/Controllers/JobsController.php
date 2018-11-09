@@ -349,7 +349,6 @@ class JobsController extends Controller
 
                 $company->users()->sync([$user->id => ['role' => $role] ], false);
 
-
                 $job_team_invite->is_accepted = true;
                 $job_team_invite->save();
 

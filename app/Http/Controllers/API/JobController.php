@@ -142,7 +142,6 @@ class JobController extends Controller
                 }
             }
         ])->whereApiKey($req_header)
-            ->whereSlug($slug)
             ->first();
 
         if (!$company) {

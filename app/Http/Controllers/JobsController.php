@@ -481,7 +481,6 @@ class JobsController extends Controller
                 // 'post_date' => $request->post_date,
                 'expiry_date' => $request->expiry_date,
                 'workflow_id' => $request->workflow_id,
-                'is_for' => $request->is_for,
             ];
 
             $validator = Validator::make( $data, [

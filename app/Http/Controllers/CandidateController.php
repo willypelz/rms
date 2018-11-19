@@ -19,34 +19,28 @@ use Mail;
 
 class CandidateController extends Controller
 {
- 
+
 
     public function login(Request $request)
     {
-        if( Auth::guard('candidate')->check() )
-        {
+        if (Auth::guard('candidate')->check()) {
             return redirect()->route('candidate-dashboard');
         }
         $redirect_to = $request->redirect_to;
 
-        if( $request->isMethod('post') )
-        {
-            if( Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password]) )
-            {
-                if( $request->redirect_to )
-                {
-                    return redirect( $request->redirect_to );
-                }
-                else{
+        if ($request->isMethod('post')) {
+            if (Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password])) {
+                if ($request->redirect_to) {
+                    return redirect($request->redirect_to);
+                } else {
                     return redirect()->route('candidate-dashboard');
                 }
 
-            }
-            else{
+            } else {
                 $request->session()->flash('warning', "Invalid Credentials");
                 return back();
             }
-            
+
         }
         return view('candidate.login', compact('redirect_to'));
     }
@@ -59,42 +53,31 @@ class CandidateController extends Controller
 
     public function register(Request $request)
     {
-
         $redirect_to = $request->redirect_to;
 
-        
+        if ($request->isMethod('post')) {
 
-        if( $request->isMethod('post') )
-        {
             $candidate = Candidate::firstOrCreate([
                 'email' => $request->email,
-                
-            ],
-            [
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'password' => bcrypt( $request->password ),
-            ]);
-            if($candidate)
-            {
-                if( Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password]) )
-                {
-                    if( $request->redirect_to )
-                    {
-                        return redirect( $request->redirect_to );
-                    }
-                    else{
+            ])->update($request->only(['first_name', 'last_name']) + [
+                    'password' => bcrypt($request->input('password'))
+                ]);
+            
+            if ($candidate) {
+
+                if (Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password])) {
+                    if ($request->redirect_to) {
+                        return redirect($request->redirect_to);
+                    } else {
                         return redirect()->route('candidate-dashboard');
                     }
 
-                }
-                else{
+                } else {
                     $request->session()->flash('error', "Could not register. Please try again.");
                     return back();
                 }
             }
-            
-            
+
         }
 
         return view('candidate.register', compact('redirect_to'));
@@ -114,16 +97,14 @@ class CandidateController extends Controller
     }
 
 
-
     public function dashboard(Request $request)
     {
-        if( !Auth::guard('candidate')->check() )
-        {
-            return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
+        if (!Auth::guard('candidate')->check()) {
+            return redirect()->route('candidate-login', ['redirect_to' => url()->current()]);
         }
 
 
-        $applicant_id = $this->generateApplicationId( Auth::guard('candidate')->user() );
+        $applicant_id = $this->generateApplicationId(Auth::guard('candidate')->user());
 
 
         return view('candidate.dashboard', compact('applicant_id'));
@@ -131,108 +112,102 @@ class CandidateController extends Controller
 
     public function activities(Request $request)
     {
-        if( !Auth::guard('candidate')->check() )
-        {
-            return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
+        if (!Auth::guard('candidate')->check()) {
+            return redirect()->route('candidate-login', ['redirect_to' => url()->current()]);
         }
 
-        $application_id = $request->application_id;
-        $current_application = JobApplication::with('cv','job.company')->where('id',$application_id)->first();
-        $ignore_list = [
+        $application_id      = $request->application_id;
+        $current_application = JobApplication::with('cv', 'job.company')->where('id', $application_id)->first();
+        $ignore_list         = [
             'JOB-CREATED'
         ];
-        $show_messages_tab = true;
-        $activities = JobActivity::where('job_application_id',$application_id)->get();
+        $show_messages_tab   = true;
+        $activities          = JobActivity::where('job_application_id', $application_id)->get();
 
-        return view('candidate.activities', compact('application_id','ignore_list','show_messages_tab','activities','current_application'));
+        return view('candidate.activities',
+            compact('application_id', 'ignore_list', 'show_messages_tab', 'activities', 'current_application'));
     }
 
     public function jobs(Request $request)
     {
-        if( !Auth::guard('candidate')->check() )
-        {
-            return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
+        if (!Auth::guard('candidate')->check()) {
+            return redirect()->route('candidate-login', ['redirect_to' => url()->current()]);
         }
 
         //Get All jobs applied to
         $job_ids = Auth::guard('candidate')->user()->applications->unique('job_id')->pluck('job_id')->toArray();
 
-        
-        $company_ids = Job::whereIn('id',$job_ids)->get()->unique('company_id')->pluck('company_id')->toArray();
 
-        $jobs = Job::with('company')->whereIn('company_id',$company_ids)->get();
+        $company_ids = Job::whereIn('id', $job_ids)->get()->unique('company_id')->pluck('company_id')->toArray();
 
-        return view('candidate.job-list', compact('application_id','ignore_list','jobs'));
+        $jobs = Job::with('company')->whereIn('company_id', $company_ids)->get();
+
+        return view('candidate.job-list', compact('application_id', 'ignore_list', 'jobs'));
     }
 
     public function messages(Request $request)
     {
-        if( !Auth::guard('candidate')->check() )
-        {
-            return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
+        if (!Auth::guard('candidate')->check()) {
+            return redirect()->route('candidate-login', ['redirect_to' => url()->current()]);
         }
 
-        $application_id = $request->application_id;
-        $current_application = JobApplication::with('cv','job.company')->where('id',$application_id)->first();
-        $messages = Message::where( 'job_application_id', $request->application_id )->get();
-        return view('candidate.messages', compact('messages','application_id','current_application'));
+        $application_id      = $request->application_id;
+        $current_application = JobApplication::with('cv', 'job.company')->where('id', $application_id)->first();
+        $messages            = Message::where('job_application_id', $request->application_id)->get();
+        return view('candidate.messages', compact('messages', 'application_id', 'current_application'));
     }
 
     public function documents(Request $request)
     {
-        if( !Auth::guard('candidate')->check() )
-        {
-            return redirect()->route('candidate-login', ['redirect_to' => url()->current() ]);
+        if (!Auth::guard('candidate')->check()) {
+            return redirect()->route('candidate-login', ['redirect_to' => url()->current()]);
         }
 
-        $application_id = $request->application_id;
-        $current_application = JobApplication::with('cv','job.company')->where('id',$application_id)->first();
-        
+        $application_id      = $request->application_id;
+        $current_application = JobApplication::with('cv', 'job.company')->where('id', $application_id)->first();
 
-        $documents = Message::where( 'job_application_id', $application_id )
-                            ->where('attachment', '!=', '' )
-                            ->where('user_id', null )
-                            ->get();
 
-        return view('candidate.documents', compact('documents','application_id','current_application'));
+        $documents = Message::where('job_application_id', $application_id)
+            ->where('attachment', '!=', '')
+            ->where('user_id', null)
+            ->get();
+
+        return view('candidate.documents', compact('documents', 'application_id', 'current_application'));
     }
 
     public function sendMessage(Request $request)
     {
 
-        if( $request->hasFile('attachment') )
-        {
+        if ($request->hasFile('attachment')) {
             $file_name  = (@$request->attachment->getClientOriginalName());
-            $fi =  @$request->file('attachment')->getClientOriginalExtension(); 
-            $attachment = $request->application_id.'-'.time().'-'.$file_name;
+            $fi         = @$request->file('attachment')->getClientOriginalExtension();
+            $attachment = $request->application_id . '-' . time() . '-' . $file_name;
 
             $upload = $request->file('attachment')->move(
                 env('fileupload'), $attachment
             );
-        }
-        else
-        {
+        } else {
             $attachment = '';
         }
 
         Message::create([
             'job_application_id' => $request->application_id,
             'message' => $request->message,
-            'attachment'=> $attachment,
+            'attachment' => $attachment,
         ]);
         $application_id = $request->application_id;
 
-        return redirect()->route('candidate-messages', ['application_id' => $application_id]); 
+        return redirect()->route('candidate-messages', ['application_id' => $application_id]);
 
     }
 
     private function generateApplicationId($candidate)
     {
-        $id = "";
+        $id     = "";
         $string = explode("@", $candidate->email)[0];
 
-        for($i=0; $i<strlen( $string ); $i++) {
-         $id .= ord( $string[$i] );
+        for ($i = 0; $i < strlen($string); $i++) {
+            $id .= ord($string[$i]);
         }
 
         $id .= $candidate->id;

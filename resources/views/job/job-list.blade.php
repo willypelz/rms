@@ -10,15 +10,12 @@
                 <div class="col-xs-12 no-margin">
                     <br>
                     <h3 class="text-green-light no-margin">
-                        {{ $active + $expired + $suspended }} {{ $company->name }}  @if($active + $suspended == 1)
-                            Job @else Jobs @endif
+                        {{ $active + $expired + $suspended }} {{ $company->name }}  @if($active + $suspended > 1)
+                            Jobs @else Job @endif
                         &nbsp;
                         <a href="{{ route('post-job') }}" class="btn btn-success"><i class="fa fa-plus"></i> Post a New
                             Job</a>
-                        
-                        <small class="pull-right text-white">Active ({{ $active }}) | Expired ({{ $expired }}) |
-                            Suspended ({{ $suspended }})
-                        </small>
+
                     </h3>
                 </div>
             
@@ -30,8 +27,33 @@
     <section class="no-pad">
         <div class="container">
             <div class="row">
+
+                <div class="col-md-8 col-sm-12" id="filter">
+                    <button class="btn btn-primary active" type="button" data-target="all">
+                        All <span class="badge">{{ $active + $expired + $suspended }}</span>
+                    </button>
+                    <button class="btn btn-primary" type="button" data-target="active">
+                        Active <span class="badge">{{ $active }}</span>
+                    </button>
+                    <button class="btn btn-primary" type="button" data-target="suspended">
+                        Suspended <span class="badge">{{ $suspended }}</span>
+                    </button>
+                    <button class="btn btn-primary" type="button" data-target="expired">
+                        Expired <span class="badge">{{ $expired }}</span>
+                    </button>
+                </div>
+                <script>
+                    $(document).ready(function(){
+                        $('#filter button').on('click',function(){
+                            $('#filter button').removeClass('active');
+                            $('body .job-block').hide();
+                            $(this).addClass('active');
+                            $( "body .job-" + $(this).data('target') ).fadeIn();
+                        })
+                    });
+                </script>
                 
-                <div class="col-md-4 col-sm-12 pull-right" style="margin-top: -40px;margin-bottom: 20px;">
+                <div class="col-md-4 col-sm-12" style="margin-top: -40px;margin-bottom: 20px;">
                     <form action="" class="form-group"><br>
                         
                         <div class="form-lg">
@@ -52,7 +74,9 @@
                 
                 </div>
                 <div class="clearfix"></div>
-                
+
+
+
                 @if( @$q !== null && count( $jobs ) == 0 )
                     
                     <h2 class="text-center">No Jobs with "{{ @$q }}" Found</h2>
@@ -62,8 +86,9 @@
                 @foreach( $all_jobs as  $jobs)
                     @if( count(@$jobs) > 0 )
                         @foreach($jobs as $job)
+                            @php $tag = ( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 ) ? 'expired' : strtolower($job['status']); @endphp
                             
-                            <div class="col-xs-12 job-block">
+                            <div class="col-xs-12 job-block job-all job-{{$tag}}">
                                 <div class="panel panel-default b-db">
                                     <div class="panel-body no-pad">
                                         <div class="row">

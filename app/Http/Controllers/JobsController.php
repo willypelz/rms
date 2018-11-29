@@ -1511,7 +1511,15 @@ class JobsController extends Controller
         }*/
         $company->logo = get_company_logo($company->logo);
 
-        return view('job.job-details', compact('job', 'company'));
+        if( Carbon::now()->diffInDays( Carbon::parse($job->expiry_date), false ) < 0 || in_array(  $job->status, ['SUSPENDED','DELETED'] ))
+        {
+            $closed = true;
+        }
+        else
+        {
+            $closed = false;
+        }
+        return view('job.job-details', compact('job', 'company','closed'));
     }
 
     public function correctHighestQualification(){
@@ -1899,8 +1907,12 @@ class JobsController extends Controller
             ->where(function ($q) use ($company) { // fetch both internal and external jobs to show on staffstrength
                 $q->where('is_for', 'external');
                 $q->orWhere('is_for', 'both');
-                if (Auth::guard('candidate')->user() && Auth::guard('candidate')->company_id == $company->id) {
-                    $q->orWhere('is_for', 'internal');
+                if ( Auth::guard('candidate')->check() ) {
+                    if( Auth::guard('candidate')->user()->company_id == $company->id )
+                    {
+                        $q->orWhere('is_for', 'internal');
+                    }
+
                 }
             })->orderBy('created_at', 'desc')
             ->get();

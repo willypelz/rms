@@ -31,19 +31,19 @@
                                 <div class="page no-bod-rad">
                                   <br>
 
-                                  <div class="message-content">
+                                  <div class="col-xs-12">
 
                                     {{-- Get application cv --}}
 
-                                    <div class="media">
-
-                                      <h3 class="text-left">{{ ucwords( implode( '_', array_slice( explode('_', $current_application->cv->cv_file) , 1) ) ) }}</h3>
-                                      @if( $current_application->cv->cv_file != "" )
-                                        <a class="pull-left" href="{{ asset('uploads/CVs/'.$current_application->cv->cv_file) }}" target="_blank" > <i class="fa fa-paperclip"></i> Download Attachment</a>
-                                      @endif
-                                      <div class="clearfix"></div>
+                                      <div class="panel panel-default panel-body">
+                                          <h4 class="no-margin"> <i class="fa fa-paperclip"></i>  {{ ucwords( implode( '_', array_slice( explode('_', $current_application->cv->cv_file) , 1) ) ) }}</h4>
+                                          <br>
                                       <div>
-                                        <small class="date pull-left">{{ date('D. j M, Y', strtotime( $current_application->cv->created_at)) }}</small>
+                                          @if( $current_application->cv->cv_file != "" )
+                                              <a class="pull-left" href="{{ asset('uploads/CVs/'.$current_application->cv->cv_file) }}" target="_blank" > <i class="fa fa-paperclip"></i> Download Attachment</a>
+                                          @endif
+                                        <small class="date pull-right">{{ date('D. j M, Y', strtotime( $current_application->cv->created_at)) }}</small>
+                                          <div class="clearfix"></div>
                                       </div>
                                       
                                     </div>
@@ -51,16 +51,21 @@
 
                                     @if( count( $documents ) )
                                       @foreach( $documents as $document )
-                                       
-                                        <div class="media">
 
-                                          <h3 class="text-left">{{ ucwords( implode( '-', array_slice( explode('-', $document->attachment) , 2) ) ) }}</h3>
+                                              <div class="panel panel-default panel-body">
+                                                  <h4 class="no-margin"> <i class="fa fa-paperclip"></i>  {{ ucwords( implode( '-', array_slice( explode('-', $document->attachment) , 2) ) ) }}</h4>
+                                                  <br>
+
                                           @if( $document->attachment != "" )
                                             <a class="pull-left" href="{{ asset('uploads/'.$document->attachment) }}" target="_blank" > <i class="fa fa-paperclip"></i> Download Attachment</a>
                                           @endif
-                                          <div class="clearfix"></div>
+
                                           <div>
-                                            <small class="date pull-left">{{ date('D. j M, Y', strtotime( $document->created_at)) }}</small>
+                                              @if( $document->attachment != "" )
+                                                  <a class="pull-left" href="{{ asset('uploads/'.$document->attachment) }}" target="_blank" > <i class="fa fa-paperclip"></i> Download Attachment</a>
+                                              @endif
+                                            <small class="date pull-right">{{ date('D. j M, Y', strtotime( $document->created_at)) }}</small>
+                                              <div class="clearfix"></div>
                                           </div>
                                           
                                         </div>

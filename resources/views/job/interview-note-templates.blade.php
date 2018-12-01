@@ -4,50 +4,93 @@
 @section('content')
 
 
+    @include('job.includes.interview-head')
+    <div class="h-80vh">
+        <br>
 
-<section class="">
         <div class="container">
             <div class="row">
 
-                <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-center">
-                    <h3>Interview Note Templates</h3>
+                <div class="col-sm-12"><br>
 
-                    <a href="{{ route('interview-note-template-create') }}" class="btn btn-info">Add new</a><br><br>
-                    <!-- <p class="text-muted">Africa's fastest growing network of professionals</p> -->
-                </div>
+                    <!-- <h4>Interview Templates</h4> -->
 
-                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="row">
 
-                    @foreach( $interview_note_templates as $interview_note_template )
-                    <div class="col-xs-12 job-block">
-                        <div class="panel panel-default b-db">
-                            <div class="panel-body no-pad">
+                        @forelse( $interview_note_templates as $interview_note_template )
+                            <div class="col-xs-4">
+                                <div class="job-block">
+                                    <div class="panel panel-default interview-panel no-border">
+                                        <div class="panel-body">
 
-                                <div class="title-job pull-left" style="width:100%">
+                                            <div class="">
 
-                                    <big><a target="_blank" href="#!"><b>{{ $interview_note_template->name }}</b></a></big>
-                                    <a href="{{ route('interview-note-options', ['id' => $interview_note_template->id ]) }}" class="btn btn-info pull-right" style="margin-top: -10px; margin-left:10px;">View Options</a>
-                                    <a href="{{ route('interview-note-template-edit', ['id' => $interview_note_template->id ]) }}" class="pull-right btn btn-success" style="margin-top: -10px;">Edit</a>
-                                    <hr>
-                                    <small class="text-muted">
-                                        {!! $interview_note_template->description !!}
-                                     </small><br>
+                                                <h4 class="no-margin panel-title"
+                                                    title="{{ $interview_note_template->name }}">
+                                                    <b>{{ $interview_note_template->name }}</b></h4>
+                                                <hr>
 
+                                                <div class="text-muted panel-desc"
+                                                     title="{!! $interview_note_template->description !!}">
+                                                    {!! $interview_note_template->description !!}
+                                                </div>
+
+                                                <hr>
+
+                                                <div>
+
+
+                                                    <div class="btn-group">
+                                                        <a href="{{ route('interview-note-options', ['id' => $interview_note_template->id ]) }}"
+                                                           class="btn btn-line " style="">Options <span
+                                                                    class="badge badge-danger text-white">{{ $interview_note_template->options->count()  }}</span></a>
+                                                        <a href="{{ route('interview-note-option-create', ['interview_template_id' => $interview_note_template->id]) }}" class="btn btn-line" style="padding: 9px ;"><i
+                                                                    class="fa fa-plus no-margin fa-lg"></i></a>
+                                                    </div>
+
+
+                                                    <a href="{{ route('interview-note-template-edit', ['id' => $interview_note_template->id ]) }}"
+                                                       class=" btn pull-right" style=""><i
+                                                                class="fa fa-lg no-margin fa-pencil"></i></a>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                            @empty
+                                <div class="col-xs-12">
+                                    <div class="panel panel-default panel-empty">
+                                        <div class="panel-body text-center text-muted">
+                                            <div>
+                                                <i class="fa fa-5x fa-folder-open"></i>
+                                                <br>
+                                                <p class="lead">You have not created any template. <br> Start by
+                                                    creating a one
+                                                </p>
+                                                <p>
+                                                    <a href="{{ route('interview-note-template-create') }}"
+                                                       class="btn btn-primary">Create a template</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforelse
+
+
                     </div>
-                    @endforeach
-
-
-
 
                 </div>
 
 
             </div>
         </div>
-</section>
+        <br>
+    </div>
 
 
 @endsection
+n

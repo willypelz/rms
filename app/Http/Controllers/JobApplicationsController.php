@@ -1540,7 +1540,7 @@ class JobApplicationsController extends Controller
     public function viewInterviewNoteTemplates(Request $request)
     {
 
-        $interview_note_templates = InterviewNoteTemplates::where('company_id', get_current_company()->id)->get();
+        $interview_note_templates = InterviewNoteTemplates::with('options')->where('company_id', get_current_company()->id)->get();
         return view('job.interview-note-templates', compact('interview_note_templates'));
     }
 

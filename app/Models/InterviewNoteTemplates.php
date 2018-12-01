@@ -20,4 +20,9 @@ class InterviewNoteTemplates extends Model
 
     protected $table = 'interview_note_templates';
 
+    public function options()
+    {
+        return $this->hasMany('App\Models\InterviewNoteOptions','interview_template_id','id');
+    }
+
 }

@@ -9,23 +9,24 @@
         ?>
         
         <div class="ats-abx">
-            <div class="comment media" data-cv="{{ $cv['id'] }}"
+            <div class="comment" data-cv="{{ $cv['id'] }}"
                  data-app-id="{{ $cv['application_id'][ $current_app_index ] }}">
                 <hr>
                 <span class="col-md-2 col-sm-3">
                     <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}"
                        target="_blank"
-                       class="pull-left">
+                       class="text-center">
                         <img alt="" src="{{ $pic['image'] }}" style="background:{{ $pic['color'] }};"
                              class="media-object "
-                             width="100%">
+                             width="90%">
                     </a>
                 </span>
-                <div class="media-body">
+                <div class="">
                     <input type="checkbox" class="media-body-check check-applicant pull-right">
                     <h4 class="media-heading text-muted">
                         <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}"
-                           target="_blank">{{ ucwords( @$cv['first_name']. " " . @$cv['last_name'] ) }}</a>
+                           target="_blank"><strong>{{ ucwords( @$cv['first_name']. " " . @$cv['last_name'] ) }}</strong></a>
+
                         <span class="span-stage">{{ $current_status }}</span>
                         @foreach($job->workflow->workflowSteps as $workflowStep)
                             @if($workflowStep->slug == $current_status && !$cv['is_approved'] && $workflowStep->requires_approval)
@@ -65,31 +66,31 @@
                     
                     
                     <div>
-                        <span class="text-muted">{{ human_time( @$cv['application_date'], 1) }}</span>
+                        <span class="text-muted"><i class="fa fa-calendar"></i> {{ human_time( @$cv['application_date'], 1) }} &nbsp; &middot; &nbsp;</span>
                         &nbsp;
                         <a id="showCvBtn" data-toggle="modal" data-target="#cvModal"
                            onclick="showCvModal('{{ $cv['id'] }}',true, {{ $cv['application_id'][ $current_app_index ] }});">
                             View CV
                         </a>
-                        <span class="text-muted">&middot;</span>
+                        <span class="text-muted">&nbsp; &middot; &nbsp;</span>
                         <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}">
-                            View Application
+                            View application
                         </a>
                     <!--span class="text-muted">·</span>
               <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}">View Application</a-->
                         
-                        <span class="text-muted">·</span>
+                        <span class="text-muted">&nbsp; </span>
                         @if($cv['is_approved'])
                             <span class="dropdown">
                                 <a id="moveToDrop"
                                    class="dropdown-toggle"
                                    data-toggle="dropdown"
                                    aria-expanded="false">
-                                    Move To
+                                    Move to
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="moveToDrop"
-                                    style="position:relative; float:right; border: 1px solid rgba(0, 0, 0, 0.03);">
+                                    >
                                     @foreach($job->workflow->workflowSteps as $workflowStep)
                                         
                                         @if($workflowStep->slug == 'ALL' || $workflowStep->slug == @$applicant_step->slug)
@@ -155,14 +156,14 @@
                             @endif
                             
                             @if(  @$applicant_step->type == "background-check" || @$applicant_step->type == "medical-check" )
-                            <span class="text-muted"> &middot; </span>
+                                <span class="text-muted"> &nbsp; &middot;  &nbsp;</span>
                             <span class="dropdown">
                                 <a id="checkDrop" type="button" data-toggle="dropdown" aria-expanded="false">
                                     Checks
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="checkDrop"
-                                    style="position:relative; float:right; border: 1px solid rgba(0, 0, 0, 0.03);">
+                                    >
                                     @if(@$applicant_step->type == 'background-check')
                                         <li>
                                             <a data-toggle="modal"
@@ -222,8 +223,8 @@
                                        class="text-success">
                                         Approve
                                     </a>
-                                    
-                                    <span class="text-muted">·</span>
+
+                                    <span class="text-muted">&nbsp; · &nbsp;</span>
                                     
                                     <span class="dropdown">
                                         <a id="moveToDrop"
@@ -234,7 +235,7 @@
                                             <span class="caret"></span>
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="moveToDrop"
-                                            style="position:relative; float:right; border: 1px solid rgba(0, 0, 0, 0.03);">
+                                            >
                                             @foreach($job->workflow->workflowSteps as $workflowStep)
                                                 
                                                 @if($workflowStep->slug == 'ALL' || $workflowStep->slug == @$applicant_step->slug)
@@ -363,7 +364,7 @@
               <!-- <a href="#" data-toggle="modal" data-target="#reviewCv[data-user='{{ @$cv['id'] }}']" id="reviewBtn-{{ $cv['application_id'][ $current_app_index ] }}">Comment</a> -->
 
 --}}
-                        <span class="text-muted">·</span>
+                        <span class="text-muted">&nbsp; &middot; &nbsp;</span>
                         
                         <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal"
                            data-title="Comment" data-view="{{ route('modal-comment') }}"

@@ -126,7 +126,6 @@
                         
                         <img src="{{ default_picture( Auth::user(), 'user' ) }}" width="40px" class="img-profile"
                              height="40px" alt="">
-                        <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu top-user-menu" aria-labelledby="drop3">
                         <!-- <li><a href="setting.php">Account Setting</a></li>  -->

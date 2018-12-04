@@ -1,4 +1,4 @@
-<script src="{{ secure_asset('js/jquery.form.js') }}"></script> 
+<script src="{{ secure_asset('js/jquery.form.js') }}"></script>
 
 <script>
     $(document).ready(function(){
@@ -17,8 +17,8 @@
 
 
 
-    //-------- CV cart--------//    
-    
+    //-------- CV cart--------//
+
     //--------Buy CV and update cart--------//
 
     //var cv_cart = 0;
@@ -28,10 +28,10 @@
     $('.btn-cv-buy').on('click',function(e){
 
         console.log('Using thuis')
-        
+
         cart_count = Number(cart_count) + 1;
         p_total = 500 * cart_count;
-        
+
         e.preventDefault();
         $(this).parents('.purchase-action').find('.btn-cv-discard').removeClass('collapse');
         $(this).addClass('collapse');
@@ -48,7 +48,7 @@
     $('.btn-cv-discard').on('click',function(e){
 
         console.log('cart count is '+cart_count);
-        
+
         cart_count = Number(cart_count) - 1;
         p_total = 500 * cart_count;
 
@@ -78,7 +78,7 @@
 
 
 
-    
+
 
     $("#owl-posts").owlCarousel({
           navigation: true,
@@ -120,23 +120,23 @@
             <div class="row">
 
 
-                <div class="col-md-3">
+                <div class="col-md-3 hidden">
                    <h5>Find us on Social Media.</h5>
-               
+
                            <a href="https://www.facebook.com/insidifyhq?ref=hl&ref_type=bookmark" class="">
                                    <span class="fa-stack fa-lg">
                                      <i class="fa fa-circle fa-stack-2x text-"  style="color:#3b5998"></i>
                                      <i class="fa fa-facebook fa-stack-1x fa-inverse" ></i>
                                    </span>
                            </a>
-               
+
                            <a href="https://twitter.com/insidifyhq" class="">
                                    <span class="fa-stack fa-lg">
                                      <i class="fa fa-circle fa-stack-2x text-"  style="color:#0084b4"></i>
                                      <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
                                    </span>
                            </a>
-               
+
                            <a href="https://www.linkedin.com/company/insidify-com?trk=biz-companies-cym" class="">
                                    <span class="fa-stack fa-lg">
                                      <i class="fa fa-circle fa-stack-2x text-primary"></i>
@@ -146,8 +146,8 @@
                    </div>
 
 
-                
-                <div class="col-sm-6">
+
+                <div class="col-sm-6 hidden">
                     <div class="col-sm-4">
                         <ul class="list-unstyled">
                             <li>
@@ -195,18 +195,18 @@
                     </div>
                 </div>
 
-                <div class="col-sm-3 text-right">
+                <div class="col-sm-12 text-center">
                     <ul class="list-unstyled footer-logo">
                         <li>
-                            <img src="http://seamlesshiring.com/img/seamlesshiring-logo-white.png" alt="" width="185px"><br><br>
-                            <small class="text-white">&copy; 2016. All Rights Reserved<br> Insidify HR Suite</small>
+                            <img src="http://seamlesshiring.com/img/seamlesshiring-logo-white.png" alt="" width="185px"><br>
+                            <small class="text-white">&copy; {{date('Y')}}. All Rights Reserved</small>
                         </li>
                     </ul>
                 </div>
             </div>
 
 
-        </div><br>
+        </div>
     </footer>
 
 
@@ -218,7 +218,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <section class="no-pad">
 
-                
+
                     <div class="" >
                         <div class="row" id="content-Area">
 
@@ -230,9 +230,9 @@
                             <div class="col-sm-12">
 
                                 <div class="white padbox rounded">
-                                
+
                                 <div id="mssg"></div>
-                                
+
                                     <form role="form" id="AjaxLogin" class="form-signin" method="POST" action="{{ route('ajax_login') }}">
                             {!! csrf_field() !!}
 
@@ -293,7 +293,7 @@
                     </div>
 
                     <script>
-                    $(document).ready(function() { 
+                    $(document).ready(function() {
 
                        // console.log("{{ asset('img/loader-logo-32.gif') }}")
 
@@ -304,20 +304,20 @@
                                     if(response == 'Failed'){
                                         $('#mssg').html("<span class='alert alert-danger' > Your login credentials are incorrect. </span>")
                                         $("#SubBtn").html('Proceed');
-                                        
+
                                     }else{
                                         // $('#mssg').html("<span class='alert alert-success' > Logged in successfully. </span>")
                                         $("#SubBtn").html('Logging you in');
                                          $("#content-Area").html('{!! preloader() !!}');
 
-                                        setTimeout(function(){ 
+                                        setTimeout(function(){
                                             window.location = "{{ url('dashboard') }}";
                                         }, 3000);
                                     }
 
                                 },
                                  reset: true
-                         }); 
+                         });
 
                         function genPreSubmit(){
                           console.log("We are here....");
@@ -325,12 +325,12 @@
 
                         }
 
-                       
+
                     });
 
 
                     </script>
-                
+
 
             </section>
             </div>
@@ -345,9 +345,9 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <section class="no-pad">
 
-                
+
                     <div class=""><div class="text-center">
-                        
+
                         <h2>SeamlessHiring</h2>
                         <p class="text-muted">Africa's fastest growing network of professionals</p>
                     </div>
@@ -446,7 +446,7 @@
 
                     </div>
                     </div>
-                
+
 
             </section>
             </div>
@@ -454,8 +454,8 @@
     </div>
 
     <!-- CV Modal -->
-    
-        
+
+
     <!-- My Cart Invoice -->
     <div class="modal fade" tabindex="-1" id="myInvoice" role="dialog" aria-labelledby="myInvoice">
       <div class="modal-dialog">
@@ -469,7 +469,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="content rounded">
-         
+
                             <div class="alert alert-info text-center">If you choose to make payment directly to our bank account by visiting a bank physically or via online transfer, do ensure to
                             send a mail to billing@insidify.com stating the details of your payment.
                             </div>
@@ -495,12 +495,12 @@
                                     TIN: 12001705-0001
                                 </div>
                                 <div class="clearfix">
-                                
+
                                 </div>
 
                             </div>
 
-                        
+
                         <div class="col-sm-12">
                         <br>
                         <div class="">
@@ -550,7 +550,7 @@
                             </table>
                         </div>
                         <div class="clearfix">
-                        
+
                         </div>
                     <!-- <a class="btn btn-line">Cancel Order</a> -->
                     <div class="col-sm-12 text-center">
@@ -571,14 +571,14 @@
     <div class="modal fade no-border" id="cvModal" role="dialog" aria-labelledby="cvViewModalLabel" aria-hidden="false">
        <div id="cvModalContent">
 
-            
-         
+
+
        </div>
     </div>
 
     @include('modals.template')
 
-    
+
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <!-- <script src="{{ asset('js/script.js') }}"></script> -->
     {{--<script src="{{ asset('js/owl.carousel.js') }}"></script>--}}
@@ -586,7 +586,7 @@
     <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>
     <script src="{{ asset('js/jquery.growl.js') }}"></script>
-    
+
     <script type="text/javascript">
         $(window).scroll(function() {
 
@@ -624,7 +624,7 @@
         // $user.find('input[type="checkbox"]').remove();
         // $user.find('small').remove();
         // data.badge = $user.html();
-        
+
         $.get(view, data, function(response){
             $('#viewModal .modal-body').html( response);
 
@@ -638,7 +638,7 @@
     }
 
     $(document).ready(function(){
-        
+
         $('.modal-header .close');
 
         $('body').on('click','#modalButton', function(){
@@ -675,17 +675,17 @@
     });
     </script>
 
-    
+
     <script>
 
     var nowDate = new Date();
     var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
-    
+
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd',
             todayHighlight: true,
             autoclose: true,
-            startDate: today 
+            startDate: today
 
         });
 
@@ -704,11 +704,11 @@
                   data: ({ rnd : Math.random() * 100000, cv_id:cv_id, is_applicant:is_applicant, appl_id:appl_id }),
                   success: function(response){
                     $("#cvModalContent").html(response);
-                       
+
                   }
               });
 
-            
+
 
 
             return false;
@@ -720,10 +720,10 @@
         function scrollTo(target){
           $('html, body').animate({
                 scrollTop: $(target).offset().top
-            }, 2000);          
+            }, 2000);
         }
 
-        
+
 
     </script>
 

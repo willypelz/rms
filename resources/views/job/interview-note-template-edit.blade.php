@@ -31,13 +31,13 @@
                                 <div class="">
                                     <div class="form-group text-left">
                                         <label for="name">Name</label>
-                                        <input type="text" name="name" class="form-control" value="{{ @$interview_note_template->name }}" required>
+                                        <input type="text" name="name" class="form-control" value="{{ $interview_note_template->name }}" required>
                                     </div>
 
                                     <div class="form-group text-left">
                                         <label for="description">Description</label>
                                         <textarea name="description" id="summernote" class="form-control" rows="6" required>
-                                        {{ @$interview_note_template->description }}
+                                        {{ $interview_note_template->description }}
                                     </textarea>
                                     </div>
                                 </div>

@@ -34,7 +34,7 @@
                                 </div>
 
                                 <!-- applicant -->
-                                <div class="col-xs-8 ">
+                                <div class="col-xs-9 ">
 
                                     <div class="row">
 
@@ -66,7 +66,7 @@
 
                                         <div id="h_act-on" class="col-xs-12 app-action" style="display:none;">
                                             <div>
-                                                <div class="btn-group select-action btn-group-justified"
+                                                <div class="select-action"
                                                      id="mass-action">
                                                     @foreach($job->workflow->workflowSteps as $workflowStep)
 
@@ -189,10 +189,10 @@
                                     <ul id="pagination" class="pagination-sm"></ul>
 
                                     <!--a class="btn btn-line btn-block load" href="">
-                                    <span class="glyphicon glyphicon-repeat"></span>&nbsp; Load more</a-->
+                                    <span class="glyphicon glyphicon-repeat"><sea/span>&nbsp; Load more</a-->
                                 </div>
                                 <!-- Filter -->
-                                <div class="col-sm-4 col-shift">
+                                <div class="col-sm-3">
                                     <div class="well well-cart animated slideInUp collapse fixer" id="collapseWellCart">
                                         <div class="row">
                                             <div class="col-md-3 hidden-xs hidden-sm small text-light text-muted">

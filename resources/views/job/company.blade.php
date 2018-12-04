@@ -7,10 +7,10 @@
 @show()
 
 @section('content')
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
-    
-    
+
+
     <section class="no-pad">
         <div class="container">
             <div class="row">
@@ -19,10 +19,10 @@
                         <section class="job-head blue no-margin">
                             <div class="">
                                 <div class="row">
-                                    
+
                                     <div class="col-sm-12 text-center">
                                         <small class="text-brandon l-sp-5 text-uppercase">Career Page</small>
-                                        
+
                                         <h2 class="job-title">
                                             {{ @$company->name }}
                                         </h2>
@@ -33,43 +33,17 @@
                                                 <strong>&nbsp;{{ $jobs->count() }}</strong>&nbsp; Job Opening(s)
                                             </li>
                                         </ul>
-                                        
-                                        @if( Auth::check() )
-                                            
-                                            <button class="btn btn-success pull-right" id="get-embed"
-                                                    data-clipboard-text="{{ $embed }}">
-                                                <small class="">
-                                                    <span class="glyphicon glyphicons-embed-close"></span>
-                                                    &nbsp; < /> &nbsp; Get Embed
-                                                </small>
-                                            </button>
-                                            
-                                            
-                                            <div class="clearfix"></div>
-                                            <script src="{{ asset('js/jquery.growl.js') }}"></script>
-                                            <link rel="stylesheet" type="text/css"
-                                                  href="{{ asset('css/jquery.growl.css') }}"/>
-                                            
-                                            <script type="text/javascript">
-                                                var clipboard = new ClipboardJS('#get-embed');
 
-                                                clipboard.on('success', function (e) {
-                                                    $.growl.notice({message: "Embed copied to clipboard"});
-                                                });
-                                            </script>
-                                        
-                                        @endif
-                                    
                                     </div>
                                     <div class="clearfix"></div>
-                                
-                                
+
+
                                 </div>
                             </div>
-                        
+
                         </section>
                         <div class="row">
-                            
+
                             <div class="col-sm-12">
                                 <div class="page no-bod-rad" style="border-radius: 0 0 0 0">
                                     <div class="row">
@@ -91,7 +65,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
-                                                
+
                                                 <p class="pull-right no-margin">
                                                     Share on &nbsp;
                                                     <a href="" class="">
@@ -100,14 +74,14 @@
                                                             <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
                                                         </span>
                                                     </a>
-                                                    
+
                                                     <a href="" class="">
                                                         <span class="fa-stack fa-lg">
                                                             <i class="fa fa-circle fa-stack-2x text-"></i>
                                                             <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
                                                         </span>
                                                     </a>
-                                                    
+
                                                     <a href="" class="">
                                                         <span class="fa-stack fa-lg">
                                                             <i class="fa fa-circle fa-stack-2x text-"></i>
@@ -118,18 +92,18 @@
                                             </div>
                                             <div class="clearfix"></div>
                                         </div>
-                                        
+
                                         <div class="tab-content">
-                                            
+
                                             <div class="row">
-                                                
+
                                                 <div class="col-sm-8">
                                                     <h6 class="text-brandon text-uppercase l-sp-5 no-margin">Job
                                                         Openings</h6>
                                                     <br>
-                                                    
+
                                                     <div class="" id="">
-                                                        
+
                                                         <ul class="search-results">
                                                             @if( $jobs->count())
                                                                 @foreach($jobs as $job)
@@ -148,7 +122,7 @@
                                                                         </div>
                                                                         <div class="description">
                                                                             <p>{{ str_limit(strip_tags($job->details), 200) }}</p>
-                                                                            
+
                                                                             <a href="{{ url(@$company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"
                                                                                target="_blank"><i
                                                                                         class="fa fa-envelope"></i>
@@ -161,20 +135,20 @@
                                                                         </div>
                                                                         <hr>
                                                                     </li>
-                                                                
+
                                                                 @endforeach
                                                             @endif
-                                                        
-                                                        
+
+
                                                         </ul>
-                                                        
-                                                        
+
+
                                                         <!--a href="" class="btn btn-line load">
                                                             <span class="glyphicon glyphicon-repeat"></span>&nbsp; Load more</a-->
-                                                    
+
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="col-sm-4">
                                                     <h6 class="text-brandon text-uppercase l-sp-5 no-margin">company
                                                         details</h6><br>
@@ -206,9 +180,9 @@
                                                     </p>
                                                 </div>
                                                 <div class="clearfix"></div>
-                                            
+
                                             </div>
-                                            
+
                                             <!--<div class="panel panel-default">-->
                                             <!--<div class="panel-heading">-->
                                             <!--<h4 class="panel-title">Friends who work <p>Medical Doctor, Valuepreneur, Doer... </p></h4>-->
@@ -219,10 +193,10 @@
                                             <!--</div>-->
                                             <!--</div>-->
                                             <!--</div>-->
-                                        
+
                                         </div>
                                     </div>
-                                
+
                                 </div>
                                 <!--/tab-content-->
                                 <div class="page page-sm foot no-bod-rad">
@@ -238,7 +212,7 @@
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
-                            
+
                             </div>
                             <div class="clearfix"></div>
                             <div class="separator separator-small hidden">
@@ -256,7 +230,7 @@
             </div>
         </div>
     </section>
-    
+
     <div class="separator separator-small"><br></div>
 
 

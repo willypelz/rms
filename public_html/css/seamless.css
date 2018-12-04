@@ -169,7 +169,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 .navbar .nav > li > a:focus, .navbar .nav > li > a:hover {
     text-decoration: none;
-    background-color: #2889ce;
+    background-color: #296db3;
     color: #fff !important;
 }
 
@@ -183,7 +183,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 .navbar-nav > li > a.a-user {
-    padding: 10px 15px 5px;
+    padding: 10px 5px 5px;
     margin-left: 10px;
 }
 
@@ -297,7 +297,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 .text-blue {
-    color: #2889ce;
+    color: #296db3;
 }
 
 .fa-abx {
@@ -583,7 +583,7 @@ section.s-div {
     margin-top: -50px;
     padding-top: 3.5em;
     padding-bottom: 1em;
-    background: #2889ce;
+    background: #296db3;
     background-size: cover;
     /*border-bottom: 3px solid #5CB85C;
     */
@@ -598,7 +598,7 @@ section.s-div.homepage {
 }
 
 section.s-div.dashboard {
-    background: #2889ce url(../img/2.jpg) center fixed;
+    background: #296db3 url(../img/2.jpg) center fixed;
     background-size: cover;
 }
 
@@ -857,7 +857,7 @@ h3.brand-title {
 */
 .btn-primary {
     border-color: #2677b1;
-    background-color: #2889ce;
+    background-color: #296db3;
 }
 
 .btn-primary:hover, .btn-primary:focus {
@@ -1235,7 +1235,7 @@ h3.faq-section {
     */
     border-bottom: none;
     border-radius: 0;
-    background: #2889ce;
+    background: #296db3;
     color: #fff;
 }
 
@@ -2247,6 +2247,8 @@ ul.notif > li a img {
 
 .form-control {
     background: #f9f9f9;
+    color: #333;
+    font-weight: normal;
 }
 
 .padbox {
@@ -2510,7 +2512,7 @@ ul.notif > li a img {
 }
 
 section.blue {
-    background: #2889ce url('../img/intro-bg2.jpg') center bottom fixed;
+    background: #296db3 url('../img/intro-bg2.jpg') center bottom fixed;
     background-size: cover;
     color: #ffffff;
 }
@@ -2648,7 +2650,7 @@ n +
 1
 )
 ,
-.pricing-table td:nth-child(3n+1) {
+.pricing-table td: nth-child(2n+1), .pricing-table td:nth-child(3n+1) {
     text-align: center;
     font-weight: bold;
     font
@@ -2673,7 +2675,7 @@ n +
 }
 
 .th-price-platinum {
-    background-color: rgb(127, 77, 152);;
+    background-color: rgb(127, 77, 152);
 }
 
 .nav-border-bl {
@@ -2947,7 +2949,7 @@ n +
 
 .filter-div p {
     text-transform: uppercase;
-    color: #98AF98;
+    color: #c79f6a;
 }
 
 .filter-div p:after {
@@ -3036,7 +3038,7 @@ n +
     */
     /* background: #10588a;
     */
-    background: #2889ce;
+    background: #296db3;
 }
 
 .job-head.has-bg-img {
@@ -3180,6 +3182,8 @@ body.employer {
 .status-1 {
     font-size: 12px;
     padding: 6px 6px;
+    margin-bottom: 3px;
+    margin-right: 6px;
 }
 
 .status-2 {
@@ -3443,6 +3447,7 @@ label {
     text-transform: uppercase;
     color: #666;
     font-size: 12px;
+    letter-spacing: 1px;
 }
 
 label.normal {
@@ -3454,6 +3459,9 @@ label.normal {
     border-width: 1px 0 1px;
     padding-top: 5px;
     padding-bottom: 5px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    font-weight: bolder;
 }
 
 .filter-div .border-bottom-thin:first-child {
@@ -3741,6 +3749,10 @@ div.baser {
     margin-top: -1px;
 }
 
+.panel-empty .panel-body{
+    padding: 150px;
+}
+
 .company-list {
     background: #eee;
     color: #666;
@@ -3757,10 +3769,10 @@ div.baser {
 }
 
 .job-item {
-    border-left: 1px solid #ccc;
-    padding: 35px 10px;
+    border-right: 1px solid #ccc;
+    padding: 15px 10px;
     width: 115px;
-    height: 122px;
+    height: 85px;
     display: inline-block;
     text-align: center;
     /*float: right;*/
@@ -3770,7 +3782,10 @@ div.baser {
 }
 
 .job-item:last-of-type {
-    border-right: 1px solid #ccc;
+    border-right: none 0;
+}
+.h-80vh{
+    min-height: 80vh;
 }
 
 .title-job {
@@ -3814,7 +3829,7 @@ div.baser {
 }
 
 .job-item.blue {
-    border-top: 1px solid #2889ce;
+    border-top: 1px solid #296db3;
 }
 
 .job-item.green {
@@ -4045,7 +4060,7 @@ section.invite {
 }
 
 .color-blue {
-    color: #2889ce;
+    color: #296db3;
 }
 
 .color-cream {
@@ -5376,7 +5391,7 @@ textarea.embed-code {
 }
 
 .blue-bg {
-    background-color: #2889ce;
+    background-color: #296db3;
 }
 
 .cta {
@@ -6779,7 +6794,7 @@ text-shadow: {
 }
 
 .th-price-platinum {
-    background-color: rgb(127, 77, 152);;
+    background-color: rgb(127, 77, 152);
 }
 
 .text-orange {
@@ -6851,6 +6866,28 @@ form.form-search .input-s {
 
 .panel-group-trans .panel-default > .panel-heading {
     background: rgba(255, 255, 255, 0);
+}
+
+.interview-panel .panel-title{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding-top: 5px;
+    font-size: 20px;
+    color: #333;
+}
+.interview-panel .panel-desc{
+    color: #666;
+    font-weight: 300;
+    font-size: 15px;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    height: 82px;
+    overflow: hidden;
+    -webkit-line-clamp: 4;
+    text-overflow: ellipsis;
+    text-overflow: -o-ellipsis-lastline;
 }
 
 .rev {

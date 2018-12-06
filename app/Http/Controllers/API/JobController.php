@@ -163,7 +163,7 @@ class JobController extends Controller
 
     }
 
-    public function applicants(Request $request, $job_id)
+    public function applicants(Request $request, $job_id, $status_slug)
     {
         //validate request via company api_key
         if (!$req_header = $request->header('X-API-KEY')) {
@@ -182,7 +182,11 @@ class JobController extends Controller
             ], 401);
         }
 
-        $applicants = Job::with(['applicants'])->find($job_id)->applicants;
+        $applicants = Job::with([
+            'applicants' => function ($q) use ($status_slug) {
+                $q->whereStatus($status_slug);
+            }
+        ])->find($job_id)->applicants;
 
         return response()->json([
             'status' => true,

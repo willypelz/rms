@@ -202,7 +202,7 @@
                                     ({
                                         type: "POST",
                                         url: "{{ route('job-list-data') }}",
-                                        data: ({rnd: Math.random() * 100000, job_id:{{$job['id']}} }),
+                                        data: ({rnd: Math.random() * 100000, job_id:{{ $job['id'] }}, workflow_steps : {!! $job->workflow->workflowSteps()->pluck('slug')->toJson() !!} }),
                                         success: function (response) {
                                             $("#job-list-data-{{ $job['id'] }}").html(response);
 

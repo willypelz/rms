@@ -186,24 +186,26 @@ class JobApplicationsController extends Controller
     }
 
 
-    public function documents($appl_id){
+    public function documents($appl_id)
+    {
 
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
-        check_if_job_owner( $appl->job->id );
+        check_if_job_owner($appl->job->id);
 
         $nav_type = 'documents';
 
-        $documents = CandidateMessage::where( 'job_application_id', $appl->id )
-                            ->where('attachment', '!=', '' )
-                            ->where('user_id', null )
-                            ->get();
+        $documents = CandidateMessage::where('job_application_id', $appl->id)
+            ->where('attachment', '!=', '')
+            ->where('user_id', null)
+            ->get();
 
 
-        return view('applicant.documents', compact('appl', 'nav_type','documents'));
+        return view('applicant.documents', compact('appl', 'nav_type', 'documents'));
     }
 
-    public function notes($appl_id){
+    public function notes($appl_id)
+    {
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
         check_if_job_owner($appl->job->id);
@@ -214,7 +216,8 @@ class JobApplicationsController extends Controller
         // $interview_notes = InterviewNoteValues::with('interviewer')->where('job_application_id',
         //     $appl->id)->groupBy('interviewed_by')->get();
 
-        $interview_note_categories = InterviewNoteValues::with('interviewer','interview_note_option')->where('job_application_id',
+        $interview_note_categories = InterviewNoteValues::with('interviewer',
+            'interview_note_option')->where('job_application_id',
             $appl->id)->get()->groupBy('interview_note_option.interview_note_template.name');
 
 
@@ -261,8 +264,8 @@ class JobApplicationsController extends Controller
 
         $nav_type = 'messages';
 
-        $messages = CandidateMessage::where( 'job_application_id', $appl->id )->get();
-        return view('applicant.messages', compact('appl', 'nav_type','messages'));
+        $messages = CandidateMessage::where('job_application_id', $appl->id)->get();
+        return view('applicant.messages', compact('appl', 'nav_type', 'messages'));
 
     }
 
@@ -270,30 +273,27 @@ class JobApplicationsController extends Controller
     public function sendMessage(Request $request)
     {
 
-        if( $request->hasFile('attachment') )
-        {
+        if ($request->hasFile('attachment')) {
             $file_name  = (@$request->attachment->getClientOriginalName());
-            $fi =  @$request->file('attachment')->getClientOriginalExtension(); 
-            $attachment = $request->application_id.'-'.time().'-'.$file_name;
+            $fi         = @$request->file('attachment')->getClientOriginalExtension();
+            $attachment = $request->application_id . '-' . time() . '-' . $file_name;
 
             $upload = $request->file('attachment')->move(
                 env('fileupload'), $attachment
             );
-        }
-        else
-        {
+        } else {
             $attachment = '';
         }
 
         CandidateMessage::create([
             'job_application_id' => $request->application_id,
             'message' => $request->message,
-            'attachment'=> $attachment,
+            'attachment' => $attachment,
             'user_id' => Auth::user()->id
         ]);
         $application_id = $request->application_id;
 
-        return redirect()->route('applicant-messages', ['appl_id' => $application_id]); 
+        return redirect()->route('applicant-messages', ['appl_id' => $application_id]);
 
     }
 
@@ -305,7 +305,7 @@ class JobApplicationsController extends Controller
         $job = Job::with([
             'form_fields',
             'workflow.workflowSteps' => function ($q) {
-                
+
                 return $q->orderBy('order', 'asc');
 
             }
@@ -562,7 +562,7 @@ class JobApplicationsController extends Controller
                 "HIGHEST EDUCATION" => @$value['highest_qualification'],
                 "LAST COMPANY WORKED AT" => @$value['last_company_worked'],
                 "YEARS OF EXPERIENCE" => @$value['years_of_experience'],
-                "WILLING TO RELOCATE?" => ( $value['willing_to_relocate'] == "true" ) ? 'Yes' : 'No',
+                "WILLING TO RELOCATE?" => ($value['willing_to_relocate'] == "true") ? 'Yes' : 'No',
                 "TESTS" => $tests,
 
 
@@ -788,25 +788,21 @@ class JobApplicationsController extends Controller
     public function getAllApplicantStatus(Request $request)
     {
 
-        $job = Job::with(['form_fields', 'workflow.workflowSteps'])->find($request->job_id);
-        $applications = JobApplication::where('job_id',$request->job_id)->get()->groupBy('status');
+        $job          = Job::with(['form_fields', 'workflow.workflowSteps'])->find($request->job_id);
+        $applications = JobApplication::where('job_id', $request->job_id)->get()->groupBy('status');
 
         $application_statuses = [];
-        $total = 0;
-        foreach( $job->workflow->workflowSteps as $step)
-        {
+        $total                = 0;
+        foreach ($job->workflow->workflowSteps as $step) {
 
-            if( isset( $applications[ $step->slug ] ) )
-            {
-                $application_statuses[ $step->slug ] = count( $applications[ $step->slug ] );
-            }
-            else
-            {
-                $application_statuses[ $step->slug ] =  0;
+            if (isset($applications[$step->slug])) {
+                $application_statuses[$step->slug] = count($applications[$step->slug]);
+            } else {
+                $application_statuses[$step->slug] = 0;
             }
 
-            $total += $application_statuses[ $step->slug ];
-            
+            $total += $application_statuses[$step->slug];
+
         }
         $application_statuses['ALL'] = $total;
 
@@ -815,22 +811,15 @@ class JobApplicationsController extends Controller
 
     public function JobListData(Request $request)
     {
-        $job = Job::with([
-            'workflow.workflowSteps' => function ($q) {
-                return $q->orderBy('order', 'asc');
-            }
-        ])->find($request->job_id);
-
         $result               = Solr::get_applicants($this->search_params, $request->job_id, @$request->status);
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],
-            $statuses = $job->workflow->workflowSteps()->pluck('slug'));
+            $statuses = $request->workflow_steps);
 
         if ($request->type == 'job_view') {
             $total_applicants = ($result['response']['numFound']);
             echo $total_applicants;
             // exit;
         }
-
 
         $stats = '';
         foreach ($application_statuses as $key => $value) {
@@ -1030,10 +1019,10 @@ class JobApplicationsController extends Controller
             return $modalVars;
         }
 
-        $step = $request->stepSlug;
+        $step   = $request->stepSlug;
         $stepId = $request->stepId;
 
-        return view('modals.interview', compact('applicant_badge', 'app_ids', 'cv_ids', 'appl','step','stepId'));
+        return view('modals.interview', compact('applicant_badge', 'app_ids', 'cv_ids', 'appl', 'step', 'stepId'));
     }
 
     public function modalInterviewNotes(Request $request)
@@ -1150,7 +1139,7 @@ class JobApplicationsController extends Controller
 
         if ($request->isMethod('post')) {
 
-            $JA = JobApplication::whereIn('cv_id',$request->cv_ids)->update(['is_approved' => true]);
+            $JA = JobApplication::whereIn('cv_id', $request->cv_ids)->update(['is_approved' => true]);
 
             Solr::update_core();
 
@@ -1215,12 +1204,12 @@ class JobApplicationsController extends Controller
         $type      = "TEST";
         $done_test = array_pluck(TestRequest::whereIn('job_application_id', $app_ids)->get()->toArray(), 'id');
 
-        $step = $request->stepSlug;
+        $step   = $request->stepSlug;
         $stepId = $request->stepId;
 
         return view('modals.assess',
             compact('applicant_badge', 'app_ids', 'cv_ids', 'products', 'appl', 'test_available', 'section', 'count',
-                'type','step','stepId'));
+                'type', 'step', 'stepId'));
     }
 
     public function modalTestResult(Request $request)
@@ -1253,12 +1242,12 @@ class JobApplicationsController extends Controller
         $section = 'BACKGROUND';
         $type    = "BACKGROUND_CHECK";
 
-        $step = $request->stepSlug;
+        $step   = $request->stepSlug;
         $stepId = $request->stepId;
 
         return view('modals.assess',
             compact('applicant_badge', 'app_ids', 'cv_ids', 'products', 'appl', 'test_available', 'count', 'section',
-                'type','step','stepId'));
+                'type', 'step', 'stepId'));
     }
 
 
@@ -1278,12 +1267,12 @@ class JobApplicationsController extends Controller
         $section = 'HEALTH';
         $type    = "MEDICAL_CHECK";
 
-        $step = $request->stepSlug;
+        $step   = $request->stepSlug;
         $stepId = $request->stepId;
 
         return view('modals.assess',
             compact('applicant_badge', 'app_ids', 'cv_ids', 'products', 'appl', 'test_available', 'count', 'section',
-                'type','step', 'stepId'));
+                'type', 'step', 'stepId'));
     }
 
 
@@ -1370,7 +1359,7 @@ class JobApplicationsController extends Controller
         }
 
 
-        $res = array();
+        $res = [];
         $res = ['total_amount' => $request->total_amount, 'order_id' => $order->id, 'type_ids' => $test_ids];
         return $res;
 
@@ -1468,7 +1457,7 @@ class JobApplicationsController extends Controller
             // var_dump($data);
 
         }
-        $res = array();
+        $res = [];
         $res = ['total_amount' => $request->total_amount, 'order_id' => $order->id, 'type_ids' => $check_ids];
         return $res;
         // JobApplication::massAction( @$request->job_id, [ @$request->cv_id ], 'ASSESSED' );
@@ -1540,7 +1529,8 @@ class JobApplicationsController extends Controller
     public function viewInterviewNoteTemplates(Request $request)
     {
 
-        $interview_note_templates = InterviewNoteTemplates::with('options')->where('company_id', get_current_company()->id)->get();
+        $interview_note_templates = InterviewNoteTemplates::with('options')->where('company_id',
+            get_current_company()->id)->get();
         return view('job.interview-note-templates', compact('interview_note_templates'));
     }
 

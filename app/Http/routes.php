@@ -697,7 +697,7 @@ Route::group(['middleware' => 'web'], function () {
         'namespace' => 'API'
     ], function () {
         Route::get('/jobs/{jobType?}', 'JobController@company');
-        Route::get('/job/{job_id}/applicants', 'JobController@applicants');
+        Route::get('/job/{job_id}/{status_slug}/applicants', 'JobController@applicants');
     });
 
 });

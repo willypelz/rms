@@ -114,8 +114,6 @@ class JobController extends Controller
      * TODO: This code so need to be refactored in the future
      *
      * @param Request $request
-     * @param         $slug
-     *
      * @param string  $jobType
      *
      * @return \Illuminate\Http\JsonResponse
@@ -134,7 +132,8 @@ class JobController extends Controller
         // Get company and its jobs
         $company = Company::with([
             'jobs' => function ($query) use ($jobType) {
-                $query->whereStatus("ACTIVE")
+                $query->with(['workflow.workflowSteps'])
+                    ->whereStatus("ACTIVE")
                     ->orderBy('created_at', 'desc')
                     ->where('expiry_date', '>', date('Y-m-d'));
                 if ($jobType != 'all') {
@@ -164,7 +163,7 @@ class JobController extends Controller
 
     }
 
-    public function applicants(Request $request, $job_id)
+    public function applicants(Request $request, $job_id, $status_slug)
     {
         //validate request via company api_key
         if (!$req_header = $request->header('X-API-KEY')) {
@@ -183,7 +182,13 @@ class JobController extends Controller
             ], 401);
         }
 
-        $applicants = Job::with(['applicants'])->find($job_id)->applicants;
+        $status_slug = strtoupper($status_slug);
+
+        $applicants = Job::with([
+            'applicants' => function ($q) use ($status_slug) {
+                $q->whereStatus($status_slug);
+            }
+        ])->find($job_id)->applicants;
 
         return response()->json([
             'status' => true,

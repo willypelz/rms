@@ -182,6 +182,8 @@ class JobController extends Controller
             ], 401);
         }
 
+        $status_slug = strtoupper($status_slug);
+
         $applicants = Job::with([
             'applicants' => function ($q) use ($status_slug) {
                 $q->whereStatus($status_slug);

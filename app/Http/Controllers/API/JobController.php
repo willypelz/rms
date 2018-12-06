@@ -114,8 +114,6 @@ class JobController extends Controller
      * TODO: This code so need to be refactored in the future
      *
      * @param Request $request
-     * @param         $slug
-     *
      * @param string  $jobType
      *
      * @return \Illuminate\Http\JsonResponse
@@ -134,7 +132,8 @@ class JobController extends Controller
         // Get company and its jobs
         $company = Company::with([
             'jobs' => function ($query) use ($jobType) {
-                $query->whereStatus("ACTIVE")
+                $query->with(['workflow.workflowSteps'])
+                    ->whereStatus("ACTIVE")
                     ->orderBy('created_at', 'desc')
                     ->where('expiry_date', '>', date('Y-m-d'));
                 if ($jobType != 'all') {

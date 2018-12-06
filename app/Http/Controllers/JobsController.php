@@ -149,17 +149,17 @@ class JobsController extends Controller
             echo 'Issue dey';
         }
         else
-        {   
+        {
           //Create User
-             $link = "dashboard";   
+             $link = "dashboard";
             $user = User::where('email', $request->email)->first();
             $company = Company::find( get_current_company()->id );
             if(empty($user) or is_null($user)){
 
-                $user = User::FirstorCreate([              
+                $user = User::FirstorCreate([
                   'email' => $request->email,
                   'name' => $request->name
-                ]);    
+                ]);
 
                 $link = url("password/reset");
             }
@@ -173,18 +173,18 @@ class JobsController extends Controller
             $decline = route('job-team-decline', [ 'ref' => encrypt(  $user->id."_".$company->id) ]);
 
             $mail_body = $request->body_mail;
-            
+
 
 
             //Add user to company users
-            
+
             $company->users()->attach($user->id);
 
             $job = Job::find($request->job_id);
 
             //Save Invite Code
             $user->invite_code = str_random(40);
-            
+
             //Send notification mail
             $email_from = ( Auth::user()->email ) ? Auth::user()->email : 'no-reply@insidify.com';
 
@@ -196,10 +196,10 @@ class JobsController extends Controller
             echo 'Saved';
         }
 
-        
+
       //$comp->users()->attach($user->id);
 
-      
+
     }*/
 
     public function JobTeamAdd(Request $request)
@@ -601,7 +601,7 @@ class JobsController extends Controller
 
         $subscribed_boards = $job->boards()->get()->toArray();
 
-        /*$approved_count = array_filter( array_pluck( $subscribed_boards, 'pivot.url' ), function(){ 
+        /*$approved_count = array_filter( array_pluck( $subscribed_boards, 'pivot.url' ), function(){
 
                 if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
                 {
@@ -713,7 +713,7 @@ class JobsController extends Controller
           "job" => "90"
           "cv-upload-file" => ""
         ]*/
-        //'Image' => 
+        //'Image' =>
         //
         // highest qualification, sex, location, years of experience
             $validation_fields = [
@@ -1115,6 +1115,10 @@ class JobsController extends Controller
                     break;
                  case "APPLIED":
 
+                     if(is_null($ac->application))
+                     {
+                         continue;
+                     }
                      $applicant = $ac->application->cv;
                      $job = $ac->application->job;
                      $content .= '<li role="candidate-application" class="list-group-item">
@@ -1166,6 +1170,11 @@ class JobsController extends Controller
                      break;*/
 
                     case "TEST_ORDER":
+
+                        if(is_null($ac->application))
+                        {
+                            continue;
+                        }
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
@@ -1183,6 +1192,11 @@ class JobsController extends Controller
                      break;
 
                      case "TEST_RESULT":
+
+                         if(is_null($ac->application))
+                         {
+                             continue;
+                         }
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
@@ -1200,6 +1214,11 @@ class JobsController extends Controller
                      break;
 
                   case "PENDING":
+
+                      if(is_null($ac->application))
+                      {
+                          continue;
+                      }
                  $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
@@ -1287,6 +1306,11 @@ class JobsController extends Controller
                                 </li>';
                      break;*/
                  case "COMMENT":
+
+                     if(is_null($ac->application))
+                     {
+                         continue;
+                     }
                  $applicant = $ac->application->cv;
 
                      $content .= '<li role="messaging" class="list-group-item">
@@ -1306,6 +1330,11 @@ class JobsController extends Controller
                      break;
 
                      case "REVIEW":
+
+                         if(is_null($ac->application))
+                         {
+                             continue;
+                         }
                      $applicant = $ac->application->cv;
 
 
@@ -1326,6 +1355,8 @@ class JobsController extends Controller
                      break;
 
                     case "SUSPEND-JOB":
+
+
                      $content .= '<li role="messaging" class="list-group-item">
                           
                                  <span class="fa-stack fa-lg i-notify">
@@ -1377,7 +1408,10 @@ class JobsController extends Controller
                      break;
 
                  default:
-
+                     if(is_null($ac->application))
+                     {
+                         continue;
+                     }
                      $applicant = $ac->application->cv;
                      $content .= '<li role="candidate-application" class="list-group-item">
                           
@@ -2316,7 +2350,7 @@ class JobsController extends Controller
     public function addCompany(Request $request){
 
         if ($request->isMethod('post')) {
-            // dd($request->request); 
+            // dd($request->request);
 
              $validator = Validator::make($request->all(), [
                 'slug' => 'unique:companies'
@@ -2382,7 +2416,7 @@ class JobsController extends Controller
             dd( get_current_company() );
 
         if ($request->isMethod('post')) {
-            // dd($request->request); 
+            // dd($request->request);
 
              $validator = Validator::make($request->all(), [
                 'slug' => 'unique:companies'

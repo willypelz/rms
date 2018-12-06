@@ -6977,5 +6977,19 @@ form.form-search .input-s {
 }
 */
 
+.slider.slider-horizontal
+{
+    width: 100% !important;
+}
+
+
+.navbar-brand {
+    min-height: 50px;
+    min-width: 100px;
+    background-size: contain !important;
+    width: auto !important;;
+    background-repeat: no-repeat !important;;
+}
+
 
 

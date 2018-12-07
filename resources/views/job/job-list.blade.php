@@ -205,11 +205,8 @@
                                         url: url,
                                         data: ({rnd: Math.random() * 100000, job_id: id, status: 'ACTIVE'}),
                                         success: function (response) {
-                                            // $('#statusBtn').hide()
                                             alert('Job has been Activated');
                                             location.reload();
-                                            ;
-                                            // alert('success')
 
                                         }
                                     });
@@ -224,7 +221,6 @@
                                         url: url,
                                         data: ({rnd: Math.random() * 100000, job_id: id, status: 'SUSPENDED'}),
                                         success: function (response) {
-                                            // $('#statusBtn').hide()
                                             alert('Job has been Suspended');
                                             location.reload();
                                         }
@@ -240,7 +236,6 @@
                                         url: url,
                                         data: ({rnd: Math.random() * 100000, job_id: id}),
                                         success: function (response) {
-                                            // $('#statusBtn').hide()
                                             alert('Job has been Duplicated');
                                             location.reload();
                                         }

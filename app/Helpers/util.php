@@ -31,7 +31,7 @@ use App\Models\Job;
 		return grades()[$index];
 	}
 
-	function human_time($time, $max_units = NULL){
+	function human_time($time, $max_units = NULL){	
 		$time  = strtotime($time);
 		// $lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
 		// $units = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
@@ -60,7 +60,7 @@ use App\Models\Job;
 
 		return ($future) ? implode($unit_string_array, ', ') . ' to go' : implode($unit_string_array, ', ') . ' ago';
 	}
-
+	
 
 	function save_activities($activity_type,  $job_id = false, $job_app_id = false, $comment = false) {
 
@@ -83,7 +83,7 @@ use App\Models\Job;
 			}
 
 		  if (!$job_id) $job_id = NULL;
-
+		  
 		  if (!$comment) $comment = NULL;
 
 		  if( is_array( $job_app_id ) )
@@ -114,9 +114,9 @@ use App\Models\Job;
 				 'updated_at' => date('Y-m-d H:i:s'),
 		  	];
 		  }
+		  
 
-
-
+		 
 
 		$response =  JobActivity::insert( $insert );
 
@@ -167,7 +167,7 @@ use App\Models\Job;
 				'Outside Nigeria'=>'Outside Nigeria',
 
 			);
-
+	
 	}
 
 	function remove_cv_contact($cv) {
@@ -207,23 +207,23 @@ use App\Models\Job;
 			case 'cv':
 				$string1 = trim( $data['first_name'] );
 				$string2 = trim(  @$data['last_name'] );
-
+				
 				break;
 			case 'user':
 				$data['name'] = str_replace('  ', '', $data['name']);
 				$data_arr = explode(' ', $data['name']);
 				$string1 = $data_arr[0];
 				$string2 = @$data_arr[1];
-
+				
 				break;
-
+			
 			default:
 				# code...
 				break;
 		}
 
 		return 'http://dummyimage.com/300x300/10588a/ffffff.jpg&text='.strtoupper( substr($string1,0,1).substr($string2,0,1) );
-
+		
 	}
 
 	function default_color_picture($data, $type='cv')
@@ -237,15 +237,15 @@ use App\Models\Job;
 			case 'cv':
 				$string1 = @$data['first_name'];
 				$string2 = @$data['last_name'];
-
+				
 				break;
 			case 'user':
 				$data_arr = explode(' ', $data['name']);
 				$string1 = $data_arr[0];
 				$string2 = @$data_arr[1];
-
+				
 				break;
-
+			
 			default:
 				# code...
 				break;
@@ -275,7 +275,7 @@ use App\Models\Job;
 
 
 		return [ 'color' => '#'.$color, 'image' => 'http://dummyimage.com/300x300/'.$color.'/ffffff.jpg&text='.$text ];
-
+		
 	}
 
 
@@ -288,10 +288,10 @@ use App\Models\Job;
 		$all = 0; //total number of results
 		// dd($solr_arr);
 
-		for ($i=0; $i < count($status); $i = $i+2) {
+		for ($i=0; $i < count($status); $i = $i+2) { 
 
 			$val = $status[$i];
-			$count = $status[$i + 1];
+			$count = $status[$i + 1];														
 			if(empty($val))
 				$val = "Not Specified";
 
@@ -299,7 +299,7 @@ use App\Models\Job;
                 strtolower(preg_replace('|[^a-z]|i', '', $val)) == 'choose' ||
                 strtolower($val) == 'select')
 				$val = "Not Specified";
-
+			
 			if($count > 0)
 				$ret[$val] = $count;
 		}
@@ -316,8 +316,8 @@ use App\Models\Job;
 			$status_array = $ret;
 			$all = array_sum( array_values( $ret ) );
 		}
-
-
+		
+		
 		$status_array['ALL'] = $all;
 
 
@@ -328,8 +328,8 @@ use App\Models\Job;
 		// $status_array['ASSESSED'] = ( array_search('ASSESSED', $status) !== false && intval( array_search('ASSESSED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('ASSESSED', $status) ) + 1 ] : 0;
 		// $status_array['SHORTLISTED'] = ( array_search('SHORTLISTED', $status) !== false && intval( array_search('SHORTLISTED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('SHORTLISTED', $status) ) + 1 ] : 0;
 
-
-
+		
+		
 		// dd(array_search('PENDING', $status));
 		return $status_array;
 	}
@@ -361,7 +361,7 @@ use App\Models\Job;
 			}
         }
 
-
+		
 	}
 
 	function get_current_company()
@@ -398,7 +398,7 @@ use App\Models\Job;
     }
 
 	function convert_number_to_words($number) {
-
+	    
 	    $hyphen      = '-';
 	    $conjunction = ' and ';
 	    $separator   = ', ';
@@ -441,11 +441,11 @@ use App\Models\Job;
 	        1000000000000000    => 'quadrillion',
 	        1000000000000000000 => 'quintillion'
 	    );
-
+	    
 	    if (!is_numeric($number)) {
 	        return false;
 	    }
-
+	    
 	    if (($number >= 0 && (int) $number < 0) || (int) $number < 0 - PHP_INT_MAX) {
 	        // overflow
 	        trigger_error(
@@ -458,13 +458,13 @@ use App\Models\Job;
 	    if ($number < 0) {
 	        return $negative . convert_number_to_words(abs($number));
 	    }
-
+	    
 	    $string = $fraction = null;
-
+	    
 	    if (strpos($number, '.') !== false) {
 	        list($number, $fraction) = explode('.', $number);
 	    }
-
+	    
 	    switch (true) {
 	        case $number < 21:
 	            $string = $dictionary[$number];
@@ -496,7 +496,7 @@ use App\Models\Job;
 	            }
 	            break;
 	    }
-
+	    
 	    if (null !== $fraction && is_numeric($fraction)) {
 	        $string .= $decimal;
 	        $words = array();
@@ -505,21 +505,21 @@ use App\Models\Job;
 	        }
 	        $string .= implode(' ', $words);
 	    }
-
+	    
 	    return $string;
 	}
 
-	function rrmdir($dir) {
-	   if (is_dir($dir)) {
-	     $objects = scandir($dir);
-	     foreach ($objects as $object) {
-	       if ($object != "." && $object != "..") {
-	         if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object);
-	       }
-	     }
-	     reset($objects);
-	     rmdir($dir);
-	   }
+	function rrmdir($dir) { 
+	   if (is_dir($dir)) { 
+	     $objects = scandir($dir); 
+	     foreach ($objects as $object) { 
+	       if ($object != "." && $object != "..") { 
+	         if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object); 
+	       } 
+	     } 
+	     reset($objects); 
+	     rmdir($dir); 
+	   } 
 	 }
 
 	function get_company_logo($logo){
@@ -527,7 +527,7 @@ use App\Models\Job;
 		{
 			return asset('img/company.png');
 		}
-
+		
 		if( File::exists( public_path( 'uploads/'.@$logo ) ) )
         {
             return asset('uploads/'.@$logo);
@@ -543,4 +543,3 @@ use App\Models\Job;
 		return \App\Models\InterviewNoteTemplates::where('company_id',get_current_company()->id )->get();
 
 	}
-?>

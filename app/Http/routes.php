@@ -324,6 +324,10 @@ Route::group(['middleware' => 'web'], function () {
         ['uses' => 'JobApplicationsController@viewApplicants', 'as' => 'job-candidates-infinite']);
     Route::match(['get', 'post'], 'job-list-data',
         ['uses' => 'JobApplicationsController@JobListData', 'as' => 'job-list-data']);
+
+    Route::match(['get', 'post'], 'get-job-data',
+        'JobApplicationsController@getJobsData')->name('get-job-data');
+
     Route::match(['get', 'post'], 'job-view-data',
         ['uses' => 'JobApplicationsController@JobViewData', 'as' => 'job-view-data']);
     Route::match(['get', 'post'], 'download-applicant-spreadsheet',

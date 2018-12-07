@@ -15,7 +15,7 @@
                         &nbsp;
                         <a href="{{ route('post-job') }}" class="btn btn-success"><i class="fa fa-plus"></i> Post a New
                             Job</a>
-
+                    
                     </h3>
                 </div>
             
@@ -27,7 +27,7 @@
     <section class="no-pad">
         <div class="container">
             <div class="row">
-
+                
                 <div class="col-md-8 col-sm-12" id="filter">
                     <button class="btn btn-primary active" type="button" data-target="all">
                         All <span class="badge">{{ $active + $expired + $suspended }}</span>
@@ -43,12 +43,12 @@
                     </button>
                 </div>
                 <script>
-                    $(document).ready(function(){
-                        $('#filter button').on('click',function(){
+                    $(document).ready(function () {
+                        $('#filter button').on('click', function () {
                             $('#filter button').removeClass('active');
                             $('body .job-block').hide();
                             $(this).addClass('active');
-                            $( "body .job-" + $(this).data('target') ).fadeIn();
+                            $("body .job-" + $(this).data('target')).fadeIn();
                         })
                     });
                 </script>
@@ -74,9 +74,8 @@
                 
                 </div>
                 <div class="clearfix"></div>
-
-
-
+                
+                
                 @if( @$q !== null && count( $jobs ) == 0 )
                     
                     <h2 class="text-center">No Jobs with "{{ @$q }}" Found</h2>
@@ -196,25 +195,9 @@
                             </div>
                             
                             <script type="text/javascript">
-                                $(document).ready(function () {
-
-                                    $.ajax
-                                    ({
-                                        type: "POST",
-                                        url: "{{ route('job-list-data') }}",
-                                        data: ({rnd: Math.random() * 100000, job_id:{{ $job['id'] }}, workflow_steps : {!! $job->workflow->workflowSteps()->pluck('slug')->toJson() !!} }),
-                                        success: function (response) {
-                                            $("#job-list-data-{{ $job['id'] }}").html(response);
-
-                                        }
-                                    });
-
-
-                                });
 
                                 function Activate(id) {
-                                    console.log(id)
-                                    var url = "{{ route('job-status') }}"
+                                    var url = "{{ route('job-status') }}";
 
                                     $.ajax
                                     ({
@@ -223,8 +206,9 @@
                                         data: ({rnd: Math.random() * 100000, job_id: id, status: 'ACTIVE'}),
                                         success: function (response) {
                                             // $('#statusBtn').hide()
-                                            alert('Job has been Activated')
+                                            alert('Job has been Activated');
                                             location.reload();
+                                            ;
                                             // alert('success')
 
                                         }
@@ -232,8 +216,7 @@
                                 }
 
                                 function Suspend(id) {
-                                    console.log(id)
-                                    var url = "{{ route('job-status') }}"
+                                    var url = "{{ route('job-status') }}";
 
                                     $.ajax
                                     ({
@@ -242,15 +225,14 @@
                                         data: ({rnd: Math.random() * 100000, job_id: id, status: 'SUSPENDED'}),
                                         success: function (response) {
                                             // $('#statusBtn').hide()
-                                            alert('Job has been Suspended')
+                                            alert('Job has been Suspended');
                                             location.reload();
                                         }
                                     });
                                 }
 
                                 function DuplicateJob(id) {
-                                    console.log(id)
-                                    var url = "{{ route('duplicate-job') }}"
+                                    var url = "{{ route('duplicate-job') }}";
 
                                     $.ajax
                                     ({
@@ -259,7 +241,7 @@
                                         data: ({rnd: Math.random() * 100000, job_id: id}),
                                         success: function (response) {
                                             // $('#statusBtn').hide()
-                                            alert('Job has been Duplicated')
+                                            alert('Job has been Duplicated');
                                             location.reload();
                                         }
                                     });
@@ -268,7 +250,8 @@
                         @endforeach
                         
                         <script type="text/javascript">
-                            $(document).ready(function () {
+                            $(function () {
+
                                 var job_id = "";
                                 var job_title = "";
                                 var this_one = null;
@@ -308,7 +291,28 @@
                     @endif
                 @endforeach
                 
+                <script>
+                    $(function () {
+
+                        $.ajax
+                        ({
+                            type: "POST",
+                            url: "{{ route('get-job-data') }}",
+                            data: ({
+                                rnd: Math.random() * 100000,
+                                jobs_ids: {!! $job->pluck('id')->toJson() !!} }),
+                            success: function (response) {
+
+                                response.forEach(function (v) {
+                                    $("#job-list-data-" + v.id).html(v.html_data);
+                                });
+
+                            }
+                        });
+
+                    });
                 
+                </script>
                 <span class="col-xs-6"></span>
             </div>
         

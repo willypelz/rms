@@ -980,6 +980,7 @@ class JobsController extends Controller
                     ];
 
         @$q = @$request->q;
+
         return view('job.job-list', compact('jobs', 'active', 'suspended', 'deleted', 'company', 'all_jobs','expired','q'));
     }
 

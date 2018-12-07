@@ -850,6 +850,44 @@ class JobApplicationsController extends Controller
         echo $stats;
     }
 
+    public function getJobsData(Request $request)
+    {
+        $jobs_data = [];
+
+        if (count($jobs_ids = $request->input('jobs_ids')) > 0) {
+            foreach ($jobs_ids as $job_id) {
+                $job_response_data = [
+                    'id' => $job_id,
+                    'html_data' => ''
+                ];
+
+                $job = Job::with([
+                    'workflow.workflowSteps' => function ($q) {
+                        return $q->orderBy('order', 'asc');
+                    }
+                ])->find($job_id);
+
+                $result               = Solr::get_applicants($this->search_params, $job_id,
+                    ''); // status parater value is formerly : @$request->status
+                $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],
+                    $statuses = $job->workflow->workflowSteps()->pluck('slug'));
+
+
+                foreach ($application_statuses as $key => $value) {
+                    $job_response_data['html_data'] .= '<div class="job-item">'
+                        . '<span class="number">' . $value . '</span>'
+                        . '<br/>'
+                        . $key
+                        . '</div>';
+                }
+
+                $jobs_data[] = $job_response_data;
+            }
+        }
+
+        return response()->json($jobs_data);
+    }
+
     public function JobViewData(Request $request)
     {
 

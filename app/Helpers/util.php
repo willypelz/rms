@@ -543,4 +543,3 @@ use App\Models\Job;
 		return \App\Models\InterviewNoteTemplates::where('company_id',get_current_company()->id )->get();
 
 	}
-?>

@@ -42,7 +42,7 @@ class Job extends Model
     {
         $this->attributes['is_for'] = strtolower($value);
     }
-    
+
     public function boards()
     {
         return $this->belongsToMany('App\Models\JobBoard', 'jobs_job_boards')->withPivot('url', 'url');
@@ -94,4 +94,10 @@ class Job extends Model
     {
         return $this->belongsToMany(Cv::class, 'job_applications', 'job_id', 'cv_id');
     }
+
+    public function applicantsViaJAT() // JAT - Job Applications Table
+    {
+        return $this->hasMany(JobApplication::class);
+    }
+
 }

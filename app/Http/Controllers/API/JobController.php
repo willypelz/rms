@@ -186,7 +186,10 @@ class JobController extends Controller
 
         $applicants = Job::with([
             'applicants' => function ($q) use ($status_slug) {
-                $q->whereStatus($status_slug);
+                if ($status_slug != 'ALL') {
+                    $q->whereStatus($status_slug);
+                }
+                $q->with('cv');
             }
         ])->find($job_id)->applicants;
 

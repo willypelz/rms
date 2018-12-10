@@ -92,6 +92,11 @@ class Job extends Model
 
     public function applicants()
     {
+        return $this->belongsToMany(Cv::class, 'job_applications', 'job_id', 'cv_id');
+    }
+
+    public function applicantsViaJAT() // JAT - Job Applications Table
+    {
         return $this->hasMany(JobApplication::class);
     }
 

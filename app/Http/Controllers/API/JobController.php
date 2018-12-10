@@ -185,7 +185,7 @@ class JobController extends Controller
         $status_slug = strtoupper($status_slug);
 
         $applicants = Job::with([
-            'applicantsViaJAT' => function ($q) use ($status_slug) {
+            'applicantsViaJAT' => function ($q) use ($status_slug) { // applicant via JAT, JAT - Job Applications Table
                 if ($status_slug != 'ALL') {
                     $q->whereStatus($status_slug);
                 }

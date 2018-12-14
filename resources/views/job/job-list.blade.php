@@ -2,11 +2,11 @@
 
 @section('content')
     <script src="http://seamlesshiring.com/js/embed.js"></script>
-    
+
     <section class="s-div">
         <div class="container">
             <div class="row no-pad">
-                
+
                 <div class="col-xs-12 no-margin">
                     <br>
                     <h3 class="text-green-light no-margin">
@@ -15,19 +15,19 @@
                         &nbsp;
                         <a href="{{ route('post-job') }}" class="btn btn-success"><i class="fa fa-plus"></i> Post a New
                             Job</a>
-                    
+
                     </h3>
                 </div>
-            
+
             </div>
         </div>
     </section>
     <div class="separator separator-small"></div>
-    
+
     <section class="no-pad">
         <div class="container">
             <div class="row">
-                
+
                 <div class="col-md-8 col-sm-12" id="filter">
                     <button class="btn btn-primary active" type="button" data-target="all">
                         All <span class="badge">{{ $active + $expired + $suspended }}</span>
@@ -52,10 +52,10 @@
                         })
                     });
                 </script>
-                
+
                 <div class="col-md-4 col-sm-12" style="margin-top: -40px;margin-bottom: 20px;">
                     <form action="" class="form-group"><br>
-                        
+
                         <div class="form-lg">
                             <div class="col-xs-10">
                                 <div class="row"><input placeholder="Search" name="q" id="q" value="{{ @$q }}"
@@ -71,22 +71,22 @@
                             </div>
                         </div>
                     </form>
-                
+
                 </div>
                 <div class="clearfix"></div>
-                
-                
+
+
                 @if( @$q !== null && count( $jobs ) == 0 )
-                    
+
                     <h2 class="text-center">No Jobs with "{{ @$q }}" Found</h2>
-                
+
                 @endif
-                
+
                 @foreach( $all_jobs as  $jobs)
                     @if( count(@$jobs) > 0 )
                         @foreach($jobs as $job)
                             @php $tag = ( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 ) ? 'expired' : strtolower($job['status']); @endphp
-                            
+
                             <div class="col-xs-12 job-block job-all job-{{$tag}}">
                                 <div class="panel panel-default b-db">
                                     <div class="panel-body no-pad">
@@ -126,9 +126,9 @@
                                                     <small class="text-muted"><i
                                                                 class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }}
                                                         &nbsp;
-                                                        <i class="glyphicon glyphicon-calendar"></i> Date Created
-                                                        : {{ date('D. j M, Y', strtotime($job['created_at'])) }}</small>
-                                                    
+                                                        <i class="glyphicon glyphicon-calendar"></i> Date Posted
+                                                        : {{ date('D. j M, Y', strtotime($job['post_date'])) }}</small>
+
                                                     <div class="btn-group btn-abs-ad">
                                                         <a href="{{ route('job-board', [$job['id']]) }}" type="button"
                                                            class="btn btn-success">View Job</a>
@@ -193,7 +193,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <script type="text/javascript">
 
                                 function Activate(id) {
@@ -243,7 +243,7 @@
                                 }
                             </script>
                         @endforeach
-                        
+
                         <script type="text/javascript">
                             $(function () {
 
@@ -276,16 +276,16 @@
                                     $('#deleteJob').modal('toggle');
                                 });
                             });
-                        
+
                         </script>
-                    
+
                     @else
-                    
-                    
-                    
+
+
+
                     @endif
                 @endforeach
-                
+
                 <script>
                     $(function () {
 
@@ -306,15 +306,15 @@
                         });
 
                     });
-                
+
                 </script>
                 <span class="col-xs-6"></span>
             </div>
-        
+
         </div>
         <h1></h1>
     </section>
-    
+
     <div class="modal widemodal fade" id="deleteJob" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="false">
         <div class="modal-dialog modal-md">
@@ -327,18 +327,18 @@
                 </div>
                 <div class="modal-body">
                     Are you sure you want to delete this job?
-                    
+
                     <div class="clearfix"></div>
                     <div class="pull-right">
                         <a href="javascript://" id="delete-job-pop" class="btn btn-success pull-right">Yes</a>
                         <div class="separator separator-small"></div>
                     </div>
-                    
+
                     <div class="pull-right" style="margin-right:10px;">
                         <a href="javascript://" id="closeRejectModal" class="btn btn-danger pull-right">No</a>
                         <div class="separator separator-small"></div>
                     </div>
-                    
+
                     <div class="clearfix"></div>
                 </div>
             </div>

@@ -13,14 +13,16 @@
     {{--</li>--}}
 
     @foreach($job->workflow->workflowSteps as $workflowStep)
-        <li class="{{ $firstActive }}">
+        <li class="{{ $firstActive }}" style="text-align: center;">
             <a href="javascript://"
                data-value="{{ $workflowStep->slug }}"
                data-toggle="tooltip"
                data-placement="top"
                title="{{ $workflowStep->description }}">
+                <span class="badge">{{ $application_statuses[$workflowStep->slug] }}</span>
+                <br>
                 {{ $workflowStep->name }}
-                <span class="badge">{{ $application_statuses[$workflowStep->slug] }}</span></a>
+            </a>
         </li>
         @php
             $firstActive = '';

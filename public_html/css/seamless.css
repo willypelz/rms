@@ -2908,6 +2908,8 @@ n +
 .ats-abx {
     margin-left: -15px;
     margin-bottom: 15px;
+    clear:both;
+    min-height: 100px;
 }
 
 .comp-name {

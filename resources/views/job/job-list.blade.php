@@ -295,7 +295,7 @@
                             url: "{{ route('get-job-data') }}",
                             data: ({
                                 rnd: Math.random() * 100000,
-                                jobs_ids: {!! $job->pluck('id')->toJson() !!} }),
+                                jobs_ids: {!! $jobs->pluck('id')->toJson() !!} }),
                             success: function (response) {
 
                                 response.forEach(function (v) {

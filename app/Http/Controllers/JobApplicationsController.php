@@ -1037,7 +1037,7 @@ class JobApplicationsController extends Controller
 
         // $pdf = PDF::loadView('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'));
         // return $pdf->download('dossier.pdf');
-        // 
+        //
         // $html = view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'))->render();
         // $pdf = PDF::loadHTML($html);
 
@@ -1237,7 +1237,7 @@ class JobApplicationsController extends Controller
         $test_available = true;
         $count          = count($cv_ids);
         $products       = get_current_company()->tests;
-        // $products = AtsProduct::where('company_id', get_current_company()->tests)->get(); 
+        // $products = AtsProduct::where('company_id', get_current_company()->tests)->get();
         $section   = 'TEST';
         $type      = "TEST";
         $done_test = array_pluck(TestRequest::whereIn('job_application_id', $app_ids)->get()->toArray(), 'id');

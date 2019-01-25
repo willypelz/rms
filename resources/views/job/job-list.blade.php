@@ -82,9 +82,9 @@
 
                 @endif
 
-                @foreach( $all_jobs as  $jobs)
-                    @if( count(@$jobs) > 0 )
-                        @foreach($jobs as $job)
+                @foreach( $all_jobs as  $job_section)
+                    @if( count(@$job_section) > 0 )
+                        @foreach($job_section as $job)
                             @php $tag = ( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 ) ? 'expired' : strtolower($job['status']); @endphp
 
                             <div class="col-xs-12 job-block job-all job-{{$tag}}">

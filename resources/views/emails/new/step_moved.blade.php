@@ -46,7 +46,7 @@
 																	<div style="color:#2d2d2d;width:100%;margin:0 auto;">
 																		<h3 style="font-size: 20px;margin:0 0 5%;padding:0;"><a href="" style="font-family: Roboto,'Open Sans','Helvetica Neue',Arial,Helvetica,sans-serif;word-wrap:break-word;color: #3a5979;text-decoration:none;display:block;text-align: center;width:100%;" target="_blank">Feedback</a></h3>
 																		<hr style="border-width:0 0 1px">
-																		{{ $message }}
+																		{!! $message_content !!}
 
 																	</div>
 

@@ -1789,18 +1789,23 @@ class JobApplicationsController extends Controller
                     '{job_detail}' => $job->details,
                     '{job_title}' => $job->title,
                 ];
-                $message = $step->message_template;
+                $message_content = $step->message_template;
 
                 foreach ($replacements as $key => $replacement) {
-                    $message = str_replace($key, $replacement, $message);
+                    $message_content = str_replace($key, $replacement, $message_content);
                 }
-                $this->mailer->send('emails.new.step_moved', ['cv' => $cv, 'job' => $job, 'step' => $step,'message' => $message],
-                    function (Message $m) use ($cv) {
-                        $m->from($this->sender, get_current_company()->name)
-                            ->replyTo($this->replyTo, get_current_company()->name)
-                            ->to($cv->email)
-                            ->subject('Feedback');
-                    });
+                if(!is_null($cv->email))
+                {
+                    $this->mailer->send('emails.new.step_moved', ['cv' => $cv, 'job' => $job, 'step' => $step,'message_content' => $message_content],
+                        function (Message $m) use ($cv) {
+
+                            $m->from($this->sender, get_current_company()->name)
+                                ->replyTo($this->replyTo, get_current_company()->name)
+                                ->to($cv->email)
+                                ->subject('Feedback');
+                        });
+                }
+
             }
 
 

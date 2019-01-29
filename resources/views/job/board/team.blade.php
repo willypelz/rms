@@ -3,7 +3,7 @@
 @section('content')
 
                     @include('job.board.jobBoard-header')
-            
+
             @if($job['status'] != 'DELETED')
             <div class="row">
 
@@ -13,12 +13,12 @@
 
 
                             @include('job.board.job-board-tabs')
-                      
+
                       <div class="tab-content">
 
 
-                        <div class="row">  
-                          <p>Manage your team members for this job here.</p>                         
+                        <div class="row">
+                          <p>Manage your team members for this job here.</p>
                         <!-- applicant -->
                         <div class="col-xs-7">
                             <h5 class="no-margin"> <!-- <i class="fa fa-lg fa-users"></i> --> Team members</h5><hr>
@@ -36,13 +36,24 @@
 
                                       @if( Auth::user()->id == $owner->id &&  $user->id != Auth::user()->id )
                                       <div class="col-xs-4 small"><br>
-                                          <a class="text-muted" id="removeTeamMember" style="cursor:pointer;" data-id="{{ $user->id }}" data-comp="{{ get_current_company()->id }}" data-job="{{ $job['id'] }}"><i class="fa fa-close"></i> Remove</a></span>
+                                          <a data-toggle="modal"
+                                             data-target="#viewModal"
+                                             id="modalButton"
+                                             href="#viewModal"
+                                             data-id="{{$user->id}}"
+                                             data-title="Job Team"
+                                             data-view="{{ route('remove-job-team-member',[
+                                               'ref' => $user->id,
+                                               'comp' => get_current_company()->id,
+                                               'job' => $job['id']
+                                               ]) }}"
+                                             data-type="normal"><i class="fa fa-close"></i> Remove</a></a>
                                       </div>
                                       @endif
                                       <div class="clearfix"></div>
                                   </li>
                                   @endforeach
-                                
+
                               </ul>
                             @endif
 
@@ -67,10 +78,10 @@
                                       <div class="clearfix"></div>
                                   </li>
                                   @endforeach
-                                
+
                               </ul>
                             @endif
-                            
+
 
                         </div>
 
@@ -94,15 +105,15 @@
 
                                        <input type="hidden" name="email_from" value="{{ get_current_company()->email }}" class="form-control">
                                        <input type="hidden" name="job_id" value="{{ $job->id }}" class="form-control">
-                                       
+
                                        <label for="">Email: </label>
-                                       
+
                                        <input type="text" name="email" id="email_to" placeholder="email addresses here" class="form-control" required>
                                        <small><em>The email address of the team member</em></small><br><br>
 
 
                                        <label for="">Access: </label>
-                                       
+
                                        <select name="access" id="access" class="form-control" required>
                                          <option value="job">"{{ $job->title }}" only</option>
                                          <option value="company">All Jobs</option>
@@ -111,7 +122,7 @@
                                    </div>
 
                                    <label for="editor1">Invite Mail</label>
-                                       <textarea rows="10" cols="30" id="editor1" name="body_mail" style="visibility: hidden; display: none;">                                       
+                                       <textarea rows="10" cols="30" id="editor1" name="body_mail" style="visibility: hidden; display: none;">
                                        &lt;p&gt;Hello,&lt;br&gt;
 
 
@@ -121,7 +132,7 @@ You would be required to collaborate with your team in selecting the candidate(s
 
                                        </textarea>
                                        <script>
-                                          
+
                                            CKEDITOR.replace( 'editor1' );
                                        </script>
 
@@ -138,7 +149,7 @@ You would be required to collaborate with your team in selecting the candidate(s
 
                                </div>
                         </div>
-                                
+
                         </div>
 
                     </div>
@@ -154,17 +165,17 @@ You would be required to collaborate with your team in selecting the candidate(s
             @endif
         </div>
     </section>
-<script src="{{ secure_asset('js/jquery.form.js') }}"></script> 
+<script src="{{ secure_asset('js/jquery.form.js') }}"></script>
 
     <script>
     $(document).ready( function(){
-        $('#JobTeamAdd').ajaxForm({ 
+        $('#JobTeamAdd').ajaxForm({
                 headers: { 'X-CSRF-TOKEN': $('input[name="_token"]').val() },
                 beforeSubmit:btn,
                 success:showResponse
-        }); 
+        });
 
-        $('body #removeTeamMember').on('click', function(){
+        /*$('body #removeTeamMember').on('click', function(){
             $comp = $(this).data('comp');
             $id = $(this).data('id');
             $job = $(this).data('job');
@@ -173,9 +184,9 @@ You would be required to collaborate with your team in selecting the candidate(s
             $.post("{{ route('remove-job-team-member') }}",{ ref: $id, comp: $comp, job: $job }, function(response){
 
             });
-        });
+        });*/
     });
-        
+
 
                     function btn(){
                         $('#sendMail').attr('disabled','disabled').prepend('<div class="pull-right">' + '{!! preloader() !!}' + '</div>');
@@ -183,7 +194,7 @@ You would be required to collaborate with your team in selecting the candidate(s
 
                     function showResponse(res){
                         res = JSON.parse( res );
-                        
+
                         $('#sendMail').removeAttr('disabled');
                         $('#AddTeamMember').removeClass('in');
                         $('#email_to').val('');
@@ -197,7 +208,7 @@ You would be required to collaborate with your team in selecting the candidate(s
                         {
                           $.growl.error({ message: res.message });
                         }
-                        
+
 
 
                     }

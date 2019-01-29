@@ -269,12 +269,23 @@ class JobsController extends Controller
 
     public function removeJobTeamMember( Request $request )
     {
-        $company = Company::find( $request->comp );
-        $job = Job::find( $request->job );
+        $team_member = User::find($request->ref);
+        $comp = $request->comp;
+        $job = $request->job;
+        $ref = $request->ref;
 
-        $company->users()->sync([$request->ref => ['role' => 0] ], false);
+        if($request->isMethod('post'))
+        {
+            $company = Company::find( $request->comp );
+            $job = Job::find( $request->job );
 
-        $job->users()->detach($request->ref);
+            $company->users()->detach($request->ref);
+
+            $job->users()->detach($request->ref);
+        }
+
+        return view('modals.job-team-remove', compact('team_member','comp','job','ref'));
+
 
     }
 

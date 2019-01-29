@@ -510,6 +510,9 @@
                     $(this).closest('li').addClass('active');
                     $(this).reloadResult();
 
+                    $('.select-all input[type="checkbox"]').removeAttr('checked');
+                    $('.media-body-check').removeAttr('checked');
+
                 });
 
                 $.fn.reloadResult = function () {

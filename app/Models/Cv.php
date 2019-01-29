@@ -15,4 +15,14 @@ class Cv extends Model
     {
         return $this->belongsToMany('App\Models\Specialization', 'cvs_specializations');
     }
+
+    /**
+     * Get the user's full name.
+     *
+     * @return string
+     */
+    public function getNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
 }

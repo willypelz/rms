@@ -30,6 +30,7 @@ return [
 
     'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
 
+
     /*
     |--------------------------------------------------------------------------
     | SMTP Host Port
@@ -54,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => null, 'name' => null],
+    'from' => ['address' => 'support@seamlesshiring.com', 'name' => 'Seamless Hiring'],
 
     /*
     |--------------------------------------------------------------------------
@@ -107,5 +108,7 @@ return [
     */
 
     'sendmail' => '/usr/sbin/sendmail -bs',
+
+    'pretend'=>false,
 
 ];

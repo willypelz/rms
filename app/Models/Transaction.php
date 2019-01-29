@@ -21,4 +21,5 @@ class Transaction extends Model
      */
     protected $fillable = ['order_id', 'status', 'message'];
 
+    
 }

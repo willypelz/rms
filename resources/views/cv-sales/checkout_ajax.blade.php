@@ -1,3 +1,5 @@
+<script src="https://checkout.simplepay.ng/v2/simplepay.js"></script>
+
  <section class="no-pad">
                 <div class="">
                     <div class="row">
@@ -15,8 +17,8 @@
                                 <div class="col-xs-6">
 
                                     <strong>Invoiced To</strong><br>
-                                    bunmifamiloni<br>familoni oluwatayo<br>
-                                    mayfair, ile ife, Osun, 234, Nigeria
+                                    {{ $company->name }},<br>{{$company->phone}}<br>
+                                    {{ $company->address }}
 
                                 </div>
                                 <div class="col-xs-6">
@@ -40,7 +42,7 @@
                         <div class="col-sm-12">
                         <br>
                         <div class="">
-                            <span class="title">Invoice #80186</span><br>
+                            <span class="title">Invoice {{ $invoice_no }}</span><br>
                             Invoice Date: 11/09/2015<br>
                             Due Date: 25/09/2015
                         </div>
@@ -55,27 +57,31 @@
                                     </tr>
                                 </thead>
                             
+                              
+                                <?php $total=0; ?>
                             @foreach($items as $item)
                                 <tr>
-                                    <td>{{ $item->name }} (25/09/2015 - 24/09/2016) *</td>
-                                    <td class="textcenter">N500.00</td>
+                                    <td>{{ $item->name }} *</td>
+                                    <td class="textcenter">&#8358;{{ $item->price }}</td>
                                 </tr>
-                             @endforeach   
-                                <tr class="title">
+                                <?php $total += $item->price;
+                                 ?>
+                             @endforeach 
+                             <?php 
+                             $vat = (5 / 100) * $total; 
+
+                             ?>  <tr class="title">
                                     <td class="text-right">Sub Total:</td>
-                                    <td class="textcenter">N5,338.88</td>
+                                    <td class="textcenter">&#8358;{{ $total }}</td>
                                 </tr>
                                     <tr class="title">
                                     <td class="text-right">5.00% VAT:</td>
-                                    <td class="textcenter">N257.14</td>
+                                    <td class="textcenter">&#8358;{{ $vat }}</td>
                                 </tr>
-                                        <tr class="title">
-                                    <td class="text-right">Credit:</td>
-                                    <td class="textcenter">N0.00</td>
-                                </tr>
+                                      
                                 <tr class="title">
                                     <td class="text-right">Total:</td>
-                                    <td class="textcenter">N5,596.02</td>
+                                    <td class="textcenter">&#8358;{{ $total + $vat }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -85,13 +91,14 @@
                         </div>
                     <!-- <a class="btn btn-line">Cancel Order</a> -->
                         <div class="col-sm-12">
-                            <form action="{{ route('payment') }}" method="post">
+                            <form method="post" action="{{ route('payment') }}" id="BoardPaymentForm">
                                 Bank Transfer/Deposit: <input type="radio" name="payment_option" value="bank" required><br>
-                                Pay Online via Paystack: <input type="radio" name="payment_option" value="paystack"><br>
+                                Pay Online via SimplePay: <input type="radio" name="payment_option" value="paystack"><br>
                                     <input type="hidden" name="order_id" value="{{ $order_id }}">
-                                    <input type="hidden" name="amount" value="{{ $total_amount }}">
+                                    <input type="hidden" name="amount" value="{{ $total }}">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <input type="submit" class="btn btn-success pull-right" value="Pay">
+                                    <input type="hidden" name="cart_type" value="jobBoards">
+                                <input type="submit" id="PayBtnn2" class="btn btn-success pull-right" value="Pay">
                         <div class="separator separator-small"></div>
 
                             </form>
@@ -103,5 +110,107 @@
 
                     </div>
                 </div>
+
+                <script>
+                $("#BoardPaymentForm").submit(function(event){
+                            event.preventDefault();
+                    // var total_amount = "{{ $total }}"
+                    var radioo = $('input[name=payment_option]:checked', '#BoardPaymentForm').val()
+
+                    if(radioo == 'bank'){
+                        window.location = "{{ route('payment', [$order_id] ) }}";
+                    }
+
+                    var total_amount = "{{ $total }}"
+
+                        $("#invoice-response").html('<img src="{{ asset("img/wheel.gif") }}" width="100px" /> please wait... Connecting to payment gateway');
+                        setTimeout(pay, 3000);
+                });
+                
+                function pay(){
+                    $('#PayBtnn2').html('please wait...')
+                    console.log('SimplePay working fine');
+
+                     var url = "{{ route('transactions') }}";
+                    $.ajax
+                      ({
+                          type: "POST",
+                          url: url,
+                          data: ({order_id: "{{ $order_id }}", status:false, message:'Transaction Not Found', "_token":"{{ csrf_token() }}"}),
+                          success: function(response){
+                            console.log(response) 
+                            $('#myInvoice').modal('hide')
+                            loadSimplePay();
+                          }
+                      });
+
+                }
+
+                function loadSimplePay(){
+                     var handler = SimplePay.configure({
+                           token: processPayment, // callback function to be called after token is received
+                           key: 'test_pu_6afdbcd91aa446ecb7f79a2f29c2b530', // place your api key. Demo: test_pu_*. Live: pu_*
+                           image: 'http://' // optional: an url to an image of your choice
+                        });
+
+                    handler.open(SimplePay.CHECKOUT, // type of payment
+                        {
+                           email: '{{ $company->email }}', // optional: user's email
+                           phone: '{{ $company->phone }}', // optional: user's phone number
+                           description: 'Payment for ' + Cart.config.type.replace( '-', ' ' ), // a description of your choosing
+                           address: '{{ $company->address }}', // user's address
+                           postal_code: '110001', // user's postal code
+                           // city: '{{ $company->location }}', // user's city
+                           country: 'NG', // user's country
+                           amount: '{{ $total_amount.'00' }}', // value of the purchase, ₦ 1100
+                           currency: 'NGN' // currency of the transaction
+                        });
+                }   
+
+                function processPayment (token) {
+
+                    $('#myInvoice').modal('show')
+                    $("#invoice-response").html('<img src="{{ asset("img/wheel.gif") }}" width="100px" /> please wait... Verifying your payment');
+
+
+                 var url ="{{ route('simplepay') }}"
+                  $.ajax
+                    ({
+                        type: "POST",
+                        url: url,
+                        data: ({ rnd : Math.random() * 100000, token:token }),
+                        success: function(response){
+                             console.log(response)
+
+                             if(response != null){
+                                 var oldurl = "{{ route('transactions') }}";
+
+                                 $.ajax
+                                  ({
+                                      type: "POST",
+                                      url: oldurl,
+                                      data: ({ jsonres:response, order_id:"{{ $order_id }}", status:true, message:'Transaction Successful', "_token":"{{ csrf_token() }}"}),
+                                      success: function(response){
+                                        console.log(response);
+                                        $("#paymemt-success").html('Payment Successful');
+                                        window.location = "{{ url('payment_successful') }}";
+
+
+                                      }
+                                  });
+                             }
+                        }
+                    });
+
+
+
+              }
+
+                </script>
 </section>
+
+
+
+
+
 

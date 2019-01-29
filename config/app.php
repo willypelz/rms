@@ -1,5 +1,10 @@
 <?php
 
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
+// add any additional headers you need to support here
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With,X-Auth-Token, X-API-KEY, X-CSRF-TOKEN, Origin');
+
 return [
 
     /*
@@ -26,7 +31,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', true),
+    'debug' => env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +57,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Africa/Lagos',
 
     /*
     |--------------------------------------------------------------------------
@@ -157,7 +162,14 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
-
+        Collective\Html\HtmlServiceProvider::class,
+        Ixudra\Curl\CurlServiceProvider::class,
+        Chumper\Zipper\ZipperServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+        ConsoleTVs\Charts\ChartsServiceProvider::class,
+        Jenssegers\Agent\AgentServiceProvider::class,
+        Barryvdh\Snappy\ServiceProvider::class,
     ],
 
     /*
@@ -173,39 +185,47 @@ return [
 
     'aliases' => [
 
-        'App'       => Illuminate\Support\Facades\App::class,
-        'Artisan'   => Illuminate\Support\Facades\Artisan::class,
-        'Auth'      => Illuminate\Support\Facades\Auth::class,
-        'Blade'     => Illuminate\Support\Facades\Blade::class,
-        'Cache'     => Illuminate\Support\Facades\Cache::class,
-        'Config'    => Illuminate\Support\Facades\Config::class,
-        'Cookie'    => Illuminate\Support\Facades\Cookie::class,
-        'Crypt'     => Illuminate\Support\Facades\Crypt::class,
-        'DB'        => Illuminate\Support\Facades\DB::class,
-        'Eloquent'  => Illuminate\Database\Eloquent\Model::class,
-        'Event'     => Illuminate\Support\Facades\Event::class,
-        'File'      => Illuminate\Support\Facades\File::class,
-        'Gate'      => Illuminate\Support\Facades\Gate::class,
-        'Hash'      => Illuminate\Support\Facades\Hash::class,
-        'Lang'      => Illuminate\Support\Facades\Lang::class,
-        'Log'       => Illuminate\Support\Facades\Log::class,
-        'Mail'      => Illuminate\Support\Facades\Mail::class,
-        'Password'  => Illuminate\Support\Facades\Password::class,
-        'Queue'     => Illuminate\Support\Facades\Queue::class,
-        'Redirect'  => Illuminate\Support\Facades\Redirect::class,
-        'Redis'     => Illuminate\Support\Facades\Redis::class,
-        'Request'   => Illuminate\Support\Facades\Request::class,
-        'Response'  => Illuminate\Support\Facades\Response::class,
-        'Route'     => Illuminate\Support\Facades\Route::class,
-        'Schema'    => Illuminate\Support\Facades\Schema::class,
-        'Session'   => Illuminate\Support\Facades\Session::class,
-        'Storage'   => Illuminate\Support\Facades\Storage::class,
-        'URL'       => Illuminate\Support\Facades\URL::class,
+        'App' => Illuminate\Support\Facades\App::class,
+        'Artisan' => Illuminate\Support\Facades\Artisan::class,
+        'Auth' => Illuminate\Support\Facades\Auth::class,
+        'Blade' => Illuminate\Support\Facades\Blade::class,
+        'Cache' => Illuminate\Support\Facades\Cache::class,
+        'Config' => Illuminate\Support\Facades\Config::class,
+        'Cookie' => Illuminate\Support\Facades\Cookie::class,
+        'Crypt' => Illuminate\Support\Facades\Crypt::class,
+        'DB' => Illuminate\Support\Facades\DB::class,
+        'Eloquent' => Illuminate\Database\Eloquent\Model::class,
+        'Event' => Illuminate\Support\Facades\Event::class,
+        'File' => Illuminate\Support\Facades\File::class,
+        'Gate' => Illuminate\Support\Facades\Gate::class,
+        'Hash' => Illuminate\Support\Facades\Hash::class,
+        'Lang' => Illuminate\Support\Facades\Lang::class,
+        'Log' => Illuminate\Support\Facades\Log::class,
+        'Mail' => Illuminate\Support\Facades\Mail::class,
+        'Password' => Illuminate\Support\Facades\Password::class,
+        'Queue' => Illuminate\Support\Facades\Queue::class,
+        'Redirect' => Illuminate\Support\Facades\Redirect::class,
+        'Redis' => Illuminate\Support\Facades\Redis::class,
+        'Request' => Illuminate\Support\Facades\Request::class,
+        'Response' => Illuminate\Support\Facades\Response::class,
+        'Route' => Illuminate\Support\Facades\Route::class,
+        'Schema' => Illuminate\Support\Facades\Schema::class,
+        'Session' => Illuminate\Support\Facades\Session::class,
+        'Storage' => Illuminate\Support\Facades\Storage::class,
+        'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
-        'View'      => Illuminate\Support\Facades\View::class,
-        'Cart'      => 'Gloudemans\Shoppingcart\Facades\Cart',
-
-
+        'View' => Illuminate\Support\Facades\View::class,
+        'Curl' => Ixudra\Curl\Facades\Curl::class,
+        'Cart' => 'Gloudemans\Shoppingcart\Facades\Cart',
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
+        'Zipper' => Chumper\Zipper\Zipper::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        // 'PDF' => Barryvdh\DomPDF\Facade::class,
+        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
+        'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
+        'Agent' => Jenssegers\Agent\Facades\Agent::class,
+        'Uuid' => Webpatser\Uuid\Uuid::class,
     ],
-
 ];

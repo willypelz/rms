@@ -3,18 +3,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
     <link rel="apple-touch-icon" href="apple-touch-icon-precomposed.png">
 
-    <title> &middot; Seamless Hiring</title>
+    <title> @if(isset($pageTitle)){{ $pageTitle }}&middot;@endif SeamlessHiring</title>
 
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/seamless.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-social.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/owl.carousel.css') }}" rel="stylesheet">
+    {{--<link href="{{ asset('css/owl.carousel.css') }}" rel="stylesheet">--}}
+    {{--<link href="{{ asset('css/owl.theme.css') }}" rel="stylesheet">--}}
 
+    <link href="https://cdn.insidify.com/dist/css/owl.carousel.min.css" rel="stylesheet">
+    <link href="https://cdn.insidify.com/dist/css/owl.theme.default.min.css" rel="stylesheet">
+
+    <link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/select2.css') }}" rel="stylesheet">
     
     <script src="//cdn.ckeditor.com/4.5.7/basic/ckeditor.js"></script>
 
@@ -29,4 +35,6 @@
             width: 1140px;
         }
     </style>
+
+    <link rel="stylesheet" href="{{ secure_asset('css/update-2018.css')  }}">
 </head>

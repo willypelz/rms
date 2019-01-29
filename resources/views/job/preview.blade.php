@@ -6,6 +6,7 @@
 @section('content')
 
 
+<style>footer{opacity:0;}</style>
 
     <section class="no-pad">
         <div class="container">
@@ -105,17 +106,17 @@
 
                                                 <div class="col-xs-6 col-sm-3"><small class="text-muted">Job Type</small>
                                                 <br>
-                                                <i class="fa fa-3x fa-clock-o text-info"></i>
+                                                <!-- <i class="fa fa-3x fa-clock-o text-info"></i> -->
                                                 <h5 class="text-uppercase text-brandon">full time</h5>
                                                 </div>
                                                 <div class="col-xs-6 col-sm-4"><small class="text-muted">Salary Range</small>
                                                 <br>
-                                                <i class="fa fa-3x fa-money text-success"></i>
+                                                <!-- <i class="fa fa-3x fa-money text-success"></i> -->
                                                 <h5 class="text-uppercase text-brandon">Not Specified</h5>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-5"><small class="text-muted">Minimum Qualification</small>
                                                 <br>
-                                                <i class="fa fa-3x fa-user-md text-danger"></i>
+                                                <!-- <i class="fa fa-3x fa-user-md text-danger"></i> -->
                                                 <h5 class="text-uppercase text-brandon">BSc. Computer Science</h5>
                                                 </div>
 
@@ -152,10 +153,6 @@
                                                 <i class="fa fa-globe"></i> www.britishcouncil.ng
                                             </p>
                                         </div>
-                                        <div class="col-sm-6 col-sm-offset-3 text-center hidden"><!-- <hr> -->
-                                            <p >Powered by <a href="http://www.seamlesshiring.com"><i class="fa fa-skype"></i> Seamless Hiring</a> <br>
-                                            <small class="text-muted">&copy; 2016. Seamless Hiring</small></p>
-                                        </div>
                                         <div class="clearfix"></div>
 
                                     </div>
@@ -178,8 +175,9 @@
                                 <!--/tab-content-->
                                 <div class="page page-sm foot no-bod-rad">
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                                        <p>Powered by <a href="http://www.seamlesshiring.com"><i class="fa fa-skype"></i> Seamless Hiring</a> <br>
-                                        <small class="text-muted">&copy; 2016. Seamless Hiring</small></p>
+                                        <p><img src="{{ url('/') }}/img/seamlesshiring-logo.png" alt="" width="120px"> </p> 
+                                        <p><small class="text-muted"> &nbsp;
+                                        &copy; 2016. Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a></small></p>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>

@@ -1,296 +1,687 @@
 @extends('layout.template-default')
-
+<style>
+  .section-tab{
+    padding: 3em 0;
+  }
+  .list-prod .list-group-item{
+    padding: 20px 25px;
+  }
+</style>
 @section('content')
 
+<!-- <an-ins an-type="EVENT" an-data="{id:9}" an-action="PAGE_LOADED"></an-ins> -->
 <section class="s-div dark homepage">
-        <div class="container">
+  <div class="">
+    <div class="">
+      <div class="col-lg-12 text-center">
 
-           <div class="row">
-                <div class="col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
-                    <div class="pagehead text-white text-center"> 
-                        <!-- <img src="" alt="seamless Hiring logo" width="100%"> -->
-                        <!-- <i class="fa fa-skype fa-inverse fa-5x hidden-sm"></i>&nbsp;  -->
-                        <div class="separator separator-small"><br></div>                        
-                       <div class="separator separator-small hidden-xs"></div>
+        <!-- Slider -->
+        <div id="carousel-example-generic" class="carousel slide home-carousel" data-ride="carousel">
+          <!-- Indicators -->
+          <ol class="carousel-indicators">
+            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+          </ol>
 
-                       <h1 class="fa-3x no-margin bold hidden-xs text-brandon text-light">About Seamless Hiring</h1>
-                       <h1 class=" hidden-sm hidden-md hidden-lg no-margin  text-brandon text-light">About Seamless Hiring</h1>
-
-                       <p class="lead"><br>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus commodi, excepturi doloremque, eius. Nobis fugiat repellat dolor.</p>
-                       <div class="row">
-                           <!-- <div class="col-sm-12 col-md-6 col-sm-8">
-                               <a href="" class="btn btn-success btn-block btn-lg text-uppercase text-bold">No Dulling. Start Now <i class="fa fa-chevron-right"></i></a>
-                               </div> -->
-                        <form action="{{ url('cv/search') }}" class="form-group" method="POST">
-                        <br class="hidden-xs">
-                          {!! csrf_field() !!}
-                           <div class="form-lg hidden-xs">
-                             <div class="col-sm-8">
-                               <div class="row"><input placeholder="Find something you want" class="form-control input-lg input-talent" name="search_query" type="text"></div>
-                             </div>
-                             <div class="col-sm-4">
-                               <div class="row"><button type="submit" class="btn btn-lg btn-block btn-success btn-talent">Find Candidates &nbsp; <span class="hidden-xs"><i class="fa fa-chevron-right"></i></span></button></div>
-                             </div>
-                           </div>
-                        </form>
-
-                           <div class="form-sm hidden-sm hidden-md hidden-lg">
-                             <div class="col-sm-8">
-                               <div class="">
-                                <input placeholder="Find something you want" class="form-control input-lg" type="text"></div>
-                             </div>
-                             <div class="col-sm-4">
-                               <div class=""><a href="cv-search.php" class="no-bod-rad btn btn-lg btn-block btn-warning btn-lg no-bod-rad">Find Candidates &nbsp; <i class="fa fa-chevron-right"></i></a></div>
-                             </div>
-                           </div>
-                        <div class="col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
-                              <div class="separator separator-sm"><br><br></div>
-                              <div class="col-sm-7">
-                                <a href="" class="btn btn-block btn-line text-white"><i class="fa fa-cloud-download"></i> &nbsp; Download Brochure</a>
-                                <br class="hidden-sm hidden-md hidden-lg">
-                              </div>
-                              <div class="col-sm-5">
-                                <a href="" class="btn btn-block btn-line text-white"><i class="fa fa-bars"></i> &nbsp; Learn More</a>
-                              </div>
-                              <div class="clearfix"></div>
-                            <!-- <div class="separator separator-small hidden-sm">&nbsp;</div> <--><br>
-                        </div>
-                       </div>
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner" role="listbox">
+            <div class="item active">
+              <div class="carousel-caption">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <div class="pagehead text-white">
+                      <div class="separator separator-small"><br></div>
+                      <h1 class="fa-3x bold text-brandon text-light no-margin"><span class="">Everything</span> You Need To Hire, In One Place!</h1>
+                      <div class="col-xs-4 col-xs-offset-4">
+                        <hr>
+                      </div>
+                      <div class="clearfix"></div>
+                      <p class="lead text-light no-margin">Cut cost, shorten recruitment time and increase the quality of hires drastically with the compact, easy-to-use recruitment solution.</p>
+                      <br><br>
+                      <p>
+                        <a href="register" class="btn btn-lg btn-success">Get Started for Free &nbsp; <i class="fa fa-chevron-right"></i></a>
+                      </p>
+                      
                     </div>
                 </div>
-           </div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="carousel-caption">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <div class="pagehead text-white">
+                      <div class="separator separator-small"><br></div>
+                      <h1 class="fa-3x bold text-capitalize text-brandon text-light no-margin"><span class="">Talent sourcing made unbelievably easy!</h1>
+                      <div class="col-xs-4 col-xs-offset-4">
+                        <hr>
+                      </div>
+                      <div class="clearfix"></div>
+                      <p class="lead text-light no-margin">You can entrust your talent search to us. We will help you fill any role within your organisation with the best fit, in record time!</p>
+                      <br><br>
+                      <p>
+                        <a href="talentSource" class="btn btn-lg btn-primary">Start Sourcing &nbsp; <i class="fa fa-chevron-right"></i></a>
+                      </p>
+                      
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="carousel-caption">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <div class="pagehead text-white">
+                      <div class="separator separator-small"><br></div>
+                      <h1 class="fa-3x bold text-brandon text-light no-margin text-capitalize"> Sell your brand to applicants exclusively!</h1>
+                      <div class="col-xs-4 col-xs-offset-4">
+                        <hr>
+                      </div>
+                      <div class="clearfix"></div>
+                      <p class="lead text-light no-margin">Introduce your brand and workplace culture exclusively to prospective applicants with our 1st-in-Africa video job posting feature.</p>
+                      <br><br>
+                      <p>
+                        <a href="#videoPosting" class="btn btn-lg btn-success">Learn more &nbsp; <i class="fa fa-chevron-right"></i></a>
+                      </p>
+                      
+                    </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
 
+          <!-- Controls -->
+          <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
         </div>
+        <!-- End of slider -->
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <!-- <div class="visible-xs navituder"></div> -->
+    <div  class="no-pad navitude navituder">
+
+      <div class="btn-group hidden-xs btn-group-justified btn-tabs home-tabs no-pad no-margin" role="tab-list" aria-label="...">
+
+        <div class="btn-group" role="group">
+          <a href="#tab-1" aria-controls="tab-1" role="tab-1" data-toggle="tab" type="button" class="btn btn-line text-capitalize">
+              <span class="">
+              <span class="hidden-xs"> <h2>
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                <i class="fa fa-send fa-stack-1x"></i>
+              </span>
+              </h2> <br> Broadcast Jobs <br> everywhere.</span><br></span>
+            <i class="hidden-xs fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+
+            <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-send fa-stack-1x "></i>
+          </a>
+        </div>
+
+        <div class="btn-group" role="group">
+          <a href="#tab-2" aria-controls="tab-2" role="tab-2" data-toggle="tab" type="button" class="btn btn-line text-capitalize">
+              <span class="">
+              <span class="hidden-xs"> <h2>
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                <i class="fa fa-briefcase fa-stack-1x text"></i>
+              </span>
+              </h2> <br> Organize, Sort & <br> Track Applicants</span><br></span>
+            <i class="hidden-xs fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+
+            <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-briefcase fa-stack-1x  text"></i>
+          </a>
+        </div>
+
+        <div class="btn-group" role="group">
+          <a href="#tab-3" aria-controls="tab-3" role="tab-3" data-toggle="tab" type="button" class="btn btn-line text-capitalize">
+              <span class="">
+              <span class="hidden-xs"> <h2>
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                <i class="fa fa-pencil-square-o fa-stack-1x"></i>
+              </span>
+              </h2> <br> Conduct Online <br> Recruitment Tests</span><br></span>
+            <i class="hidden-xs fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+
+            <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-pencil-square-o fa-stack-1x"></i>
+          </a>
+        </div>
+
+        <div class="btn-group" role="group">
+          <a href="#tab-4" aria-controls="tab-4" role="tab-4" data-toggle="tab" type="button" class="btn btn-line text-capitalize text-muted">
+              <span class="">
+              <span class="hidden-xs"> <h2>
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                <i class="fa fa-heartbeat fa-stack-1x"></i>
+              </span>
+              </h2> <br> Run Background & <br> Medical Checks</span><br></span>
+            <i class="hidden-xs fa fa-arrow-right pull-right fa-abx fa-lg"></i>
+
+            <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-heartbeat fa-stack-1x"></i>
+
+          </a>
+        </div>
+
+        <div class="btn-group" role="group">
+          <a href="#tab-5" aria-controls="tab-5" role="tab-5" data-toggle="tab" type="button" class="btn btn-line text-capitalize text-muted">
+              <span class="">
+              <span class="hidden-xs"> <h2>
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
+                <i class="fa fa-cloud-download fa-stack-1x"></i>
+              </span>
+              </h2> <br> Save & Download <br> the Entire Process</span><br></span>
+            <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
+
+            <i class="hidden-sm hidden-md hidden-lg fa fa-3x fa-cloud-download fa-stack-1x "></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <div class="tab-content no-margin">
+
+    <section id="tab-1" role="tabpanel" class="section-tab white tab-pane active">
+      <div class="container">
+        <div class="row">
+          <div class=" text-center">
+            <!-- <h2 class="no-margin text-brandon">1</h2><br> -->
+            <h2 class="text-light animated text-brandon fadeIn no-margin"><span class="text-blue">Seamlessly Attract</span> Talent From Everywhere.</h2>
+            <div class="clearfix"></div>
+            <hr class="hr-bg"><br>
+          </div>
+
+          <div class="col-sm-5 animated slideInLeft">
+            <!-- <div class="separator separator-small hidden-xs"><br><br></div> -->
+            <p class="lead text-muted">You don’t need to go from site to site to post jobs. Job posting is now seamless and simple! Create your jobs here and advertise them on various distribution channels, in just a few clicks!</p>
+
+            <table class="table hidden">
+              <thead>
+              <tr>
+                <th>Job Sites</th>
+                <th>Newspapers</th>
+                <th>Social Media</th>
+                <th>Your Website</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <th scope="row">Insidify.com</th>
+                <td>Guardian</td> <td>Facebook</td>
+                <td>Embed</td>
+              </tr>
+              <tr>
+                <th scope="row">Jobberman.com</th>
+                <td>Punch</td>
+                <td>Twitter</td>
+                <td>Referral</td>
+              </tr>
+              <tr>
+                <th scope="row">NgCareers.com</th>
+                <td>Vanguard</td>
+                <td>LinkedIn</td>
+                <td></td>
+              </tr>
+              <tr>
+                <th scope="row">MyJobmag.com</th>
+                <td>The Nation</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <th scope="row">PushCV.com</th>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <th scope="row">Efritin.com</th>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              </tbody>
+            </table>
+            <p class="">Job Sites</p>
+            <ul class="list-inline">
+              <li><img width="175px" src="img/newlogo.png" alt=""></li>
+              <li><img width="175px" src="img/justjobs.png" alt=""></li>
+              <!-- <li><img src="img/jobzilla.jpeg" alt=""></li> -->
+              <li><img width="175px" src="img/logo6.png" alt=""></li>
+              <li><img width="175px" src="img/jobzilla.jpg" alt=""></li>
+              <!-- <li><img width="75px" src="img/careers24.jpeg" alt=""></li> -->
+            </ul>
+            <p class="hidden">Newspapers</p>
+            <ul class="list-inline">
+              <li><img src="" alt=""></li>
+              <li><img src="" alt=""></li>
+              <li><img src="" alt=""></li>
+            </ul>
+            <p class="hidden">Social Media</p>
+            <ul class="list-inline hidden">
+              <li href="https://www.facebook.com/insidifyhq?ref=hl&ref_type=bookmark" class="">
+                         <span class="fa-stack fa-2x">
+                           <i class="fa fa-circle fa-stack-2x text-"  style="color:#3b5998"></i>
+                           <i class="fa fa-facebook fa-stack-1x fa-inverse" ></i>
+                         </span>
+              </li>
+
+              <li href="https://twitter.com/insidifyhq" class="">
+                         <span class="fa-stack fa-2x">
+                           <i class="fa fa-circle fa-stack-2x text-"  style="color:#0084b4"></i>
+                           <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                         </span>
+              </li>
+
+              <li href="https://www.linkedin.com/company/insidify-com?trk=biz-companies-cym" class="">
+                         <span class="fa-stack fa-2x">
+                           <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                           <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                         </span>
+              </li>
+            </ul>
+            <!-- <p><i class="fa fa-plus"></i> Your Website</p>
+            <ul class="list-inline">
+              <li><img src="" alt=""></li>
+              <li><img src="" alt=""></li>
+              <li><img src="" alt=""></li>
+            </ul> -->
+          </div>
+          <div class="col-sm-5 col-sm-offset-1 animated slideInRight">
+            <img src="img/ats-1.jpg" width="100%" alt="">
+          </div>
+          <div class="col-sm-12 text-center"><br>
+            <a href="#tab-2" aria-controls="tab-2" role="tab-2" data-toggle="tab" type="button" class=" btn btn-lg btn-line text-capitalize">Next &nbsp; <i class="fa fa-chevron-right"></i></a>
+
+          </div>
+        </div>
+      </div>
     </section>
 
-<section class="no-pad white">
+    <section id="tab-2" role="tabpanel" class="section-tab white tab-pane">
+      <div class="container">
 
-          <div class="btn-group btn-group-justified btn-tabs" role="group" aria-label="...">
-            <div class="btn-group" role="group">
-              <a href="dashboard.php" type="button" class="btn btn-line text-capitalize in">
-              <span class="fa-lg"><i class="fa fa-tachometer"></i>
-              <span class="hidden-xs text-brandon"> &nbsp; Overview</span><br></span>
-              <small class="text-muted hidden-xs">Notifications & Statistics </small>
-              </a>
+        <div class="row">
+
+          <div class=" text-center">
+            <!-- <h2 class="no-margin text-brandon">1</h2><br> -->
+            <h2 class="text-light animated text-brandon fadeIn no-margin">Tracking Applicants is now <span class="text-blue">unbelievably easy!</span></h2>
+            <div class="clearfix"></div>
+            <hr class="hr-bg"><br>
+          </div>
+
+          <div class="col-sm-6 animated slideInLeft">
+            <div class="separator separator-small hidden-xs"><br><br></div>
+
+            <p class="lead text-muted">You will see that the ease and speed with which you’ll be able to find the best candidates and run through the entire recruitment process is almost magical!</p>
+
+            <p class=""><ul class="list-unstyled">
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Sort and filter based on almost any criteria</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Move candidates along the recruitment channel</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Recruit with your team</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Make notes and comments on candidates</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Schedule interviews</li>
+            </ul></p>
+
+          </div>
+          <div class="col-sm-6 animated zoomIn">
+            <img src="img/ats-2.jpg" width="100%" alt="">
+          </div>
+          <div class="col-sm-12"><br>
+            <a href="#tab-1" aria-controls="tab-1" role="tab-1" data-toggle="tab" type="button" class="btn-lg btn btn-line text-capitalize"><i class="fa fa-chevron-left"></i> &nbsp; Previous</a>
+            <a href="#tab-3" aria-controls="tab-3" role="tab-3" data-toggle="tab" type="button" class="pull-right btn btn-lg btn-line text-capitalize">Next &nbsp; <i class="fa fa-chevron-right"></i></a>
+          </div>
+        </div></div>
+    </section>
+
+    <section id="tab-3" role="tabpanel" class="section-tab white tab-pane">
+      <div class="container">
+
+        <div class="row">
+          <div class=" text-center">
+            <!-- <h2 class="no-margin text-brandon">1</h2><br> -->
+            <h2 class="text-light animated text-brandon fadeIn no-margin"><span class="text-blue">Sieve the Best </span> from the Rest, seamlessly!</h2>
+            <div class="clearfix"></div>
+            <hr class="hr-bg"><br>
+          </div>
+
+          <div class="col-sm-6 animated slideInLeft">
+            <p class="lead text-muted">Choose from several tests or upload yours seamlessly with our Applicant Testing Technology.</p>
+
+            <p class=""><ul class="list-unstyled">
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; IQ Tests</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Aptitude Tests</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Personality Tests</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Skill Tests</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Upload your own Test</li>
+            </ul></p><br>
+
+            <p>With our e-invigilator technology, thousands of candidates can take your tests with ease on their phones, tabs and computers anywhere in the world and you get the results instantly.</p>
+
+
+          </div>
+          <div class="col-sm-5 col-sm-offset-1 animated slideInRight">
+            <img src="img/ats-3.jpg" width="100%" alt="">
+          </div>
+          <div class="clearfix"></div>
+          <br>
+          <div class="col-sm-12">
+            <div class="">
+              <a href="#tab-2" aria-controls="tab-2" role="tab-2" data-toggle="tab" type="button" class=" btn btn-lg btn-line text-capitalize"><i class="fa fa-chevron-left"></i> &nbsp; Previous</a>
+              <a href="#tab-4" aria-controls="tab-4" role="tab-4" data-toggle="tab" type="button" class="pull-right btn btn-lg btn-line text-capitalize">Next &nbsp; <i class="fa fa-chevron-right"></i></a>
             </div>
-            <div class="btn-group" role="group">
-              <a href="your-jobs.php" type="button" class="btn btn-line text-capitalize">
-              <span class="fa-lg"><i class="fa fa-briefcase"></i>
-              <span class="hidden-xs text-brandon"> &nbsp; Your Jobs</span><br></span>
-              <small class="text-muted hidden-xs">Jobs you have created</small>
-              </a>
-            </div>
-            <div class="btn-group" role="group">
-              <a href="talen-pool.php" type="button" class="btn btn-line text-capitalize">
-              <span class="fa-lg"><i class="fa fa-file-text"></i>
-              <span class="hidden-xs text-brandon"> &nbsp; Talent Pool</span><br></span>
-              <small class="text-muted hidden-xs">Resumes / CVs</small>
-              </a>
-            </div>
-            <div class="btn-group" role="group">
-              <a href="setting.php" type="button" class="btn btn-line text-capitalize text-muted">
-              <span class="fa-lg"><i class="fa fa-cog"></i>
-              <span class="hidden-xs text-brandon"> &nbsp; Settings</span><br></span>
-              <small class="text-muted hidden-xs">Edit your settings</small>
-              </a>
-            </div>
-          </div> 
+          </div>
+        </div></div>
+    </section>
+
+    <section id="tab-4" role="tabpanel" class="section-tab white tab-pane">
+      <div class="container">
+
+        <div class="row">
+          <div class="col-sm-12 animated fadeIn text-center">
+            <!-- <h2 class="no-margin text-brandon">1</h2><br> -->
+            <h2 class="no-margin text-brandon text-light"><span class="text-blue">Run Background and Medical Checks</h2>
+            <div class="clearfix"></div>
+            <hr class="hr-bg">
+            <p class="lead text-muted">We have partnered with Background Check International, Mecure Healthcare and St. Nicholas Hospital to provide you with full background and medical checks in just a few clicks. Upon ordering these checks, our partners will fulfil the entire process, while you simply get the results – in record time!</p>
+
+            <hr class="hr-bg">
+          </div>
+
+          <div class="col-sm-4 animated zoomIn">
+
+            <p class="text-brandon text-danger">Background Checks</p>
+
+            <p class=""><ul class="list-unstyled">
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Academic Certificate Verfication</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Previous Employment</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Professional Certificate Verification</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; WAEC Certificate Verification</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Personal Reference Check</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Address Confirmation</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Credit Check</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Criminal Record Check</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; NYSC Certificate Verification</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Criminal Check</li>
+            </ul></p><br>
+
+          </div>
 
 
 
-        <div class="">                           
-            <div class="tab-content tab-content-adjust">
+          <div class="col-sm-4 animated zoomIn">
 
-                              
-                  <div role="tabpanel" class="tab-pane animated active" id="engine">
-                      <section style="padding-top: 1em">
-                          <div class="container">
-                          <!-- <h3 id="" class="text-light text-brandon text-center">The Recruitment Engine</h3><br><br> -->
-                          <div class="row">
-                            <div class="col-sm-6 img-div">
+            <p class="text-brandon text-danger">Medical Checks</p>
 
-                                <img class="img-responsive img-rounded img-screen animated fadeInUp" src="img/screenshot-AMS.jpg">
-                            </div>
-                            <div class="col-sm-5 col-sm-offset-1">
-                                <!-- <h1><i class="fa-5em fa fa-dot-circle-o"></i></h1> -->
-                                <h3 class="text-brandon text-light">Applicant Management System</h3>
-                                <p class="lead">We have developed a one-stop shop for all things recruitment. With the Applicant Management System, you can;</p>
-                                
-                                <ul class="list-unstyled no-pad no-margin lead">
-                                    <li class="">
-                                    <i class="fa fa-arrow-right fa-lg"></i>
-                                    Sort &amp; filter any number of applicants’ CVs within seconds – even if they are millions!</li>
-                                    <li class="">
-                                    <i class="fa fa-arrow-right fa-lg"></i>
-                                    Manage the entire recruitment process; shortlists, interview lists, waiting lists etc.</li>
-                                    <li class="">
-                                    <i class="fa fa-arrow-right fa-lg"></i>
-                                    Exchange messages between applicants and various members of your recruitment team.</li>
-                                    <li class="">
-                                    <i class="fa fa-arrow-right fa-lg"></i>
-                                    Make comments on candidates during the recruitment process.</li>
-                                </ul>
-                            
-                            </div>
-                          </div>
-                          </div>
-                      </section>
+            <p class=""><ul class="list-unstyled">
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Full Medical History</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Vital Signs</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Blood Group</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Genotype</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Retroviral Screening V1&2</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Hepatitis B sAg</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Pregnancy Test</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Urinalysis: Colour, appearance and pH</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Chest X-ray</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; ECG</li>
+            </ul></p><br>
 
-                      <section class="blue">
-                          <div class="container">
-                          <div class="row">
-                            <div class="col-sm-6">
+          </div>
 
-                                <h3 class="text-brandon text-light">Interview with your team</h3>
-                                <p class="lead">You can invite your entire HR team and other stakeholders to join the recruitment process, so as to ensure better assessment of candidates, and to keep relevant parties adequately informed.</p>
-                            </div>
-                            <div class="col-sm-6 img-div">
-                                <img class="img-responsive img-rounded img-screen animated fadeInUp" src="img/screenshot-interview.jpg">
-                            </div>
-                          </div>
-                          </div>
-                      </section>
+          <div class="col-sm-4 animated zoomIn">
+            <img src="img/bci.jpg" width="100%" alt="">
+          </div>
 
-                      <section>
-                          <div class="container">
-                          <div class="row">
-                            <div class="col-sm-6 img-div">
-                                <img class="img-responsive img-rounded img-screen animated fadeInUp" src="img/screenshot-interview2.jpg">
-                            </div>
-                            <div class="col-sm-6">
-                                <h4 class="text-brandon text-">Make Interview Notes</h4>
-                            <p class="lead">Right on the recruitment machine. All your interviewers can make interview notes too.</p>
-                            </div>
-                          </div>
-                      </div>
-                      </section>
+          <div class="clearfix"></div><br>
 
-                      <section class="blue">
-                          <div class="container">
-                          <div class="row">
-                            <div class="col-sm-6">
-                                <h3 class="text-brandon text-light">Download the entire candidate dossier</h3>
-                            <p class="lead">Because the recruitment engine does it all; with one click you can download a printable version of the entire recruitment. Candidate’s profile, CV, cover letter, interview notes background &amp; health check results &amp; test results.</p>
-                                                  </div>
-                            <div class="col-sm-6 img-div">
-                                <img class="img-responsive img-rounded img-screen animated fadeInUp" src="img/screenshot-dossier.jpg">
-                            </div>
-                          </div>
-                          </div>
-                      </section>
-
-                      <section class="">
-                          <div class="container">
-                          <div class="row">
-                            <div class="col-sm-6 img-div">
-                                <img class="img-responsive img-rounded img-screen animated fadeInUp" src="img/screenshot-match.jpg">
-                            </div>
-                            <div class="col-sm-6">
-                            <br>
-                                <h3 class="text-brandon text-light">Find matching candidates from Insidify’s database</h3>
-                            <p class="lead">When you post a job, the recruitment engine automatically finds matches from our huge database of professionals who did not apply for your job, but are a perfect fit.</p>
-                            </div>
-                          </div>
-                      </div>
-                      </section>
-                  </div>
+          <div class="col-sm-12">
+            <a href="#tab-3" aria-controls="tab-3" role="tab-3" data-toggle="tab" type="button" class="btn-lg btn btn-line text-capitalize"><i class="fa fa-chevron-left"></i> &nbsp; Previous</a>
+            <a href="#tab-5" aria-controls="tab-5" role="tab-5" data-toggle="tab" type="button" class="pull-right btn-lg btn btn-line text-capitalize">Next &nbsp; <i class="fa fa-chevron-right"></i></a>
+          </div>
 
 
-                  <div role="tabpanel" class="tab-pane animated" id="background">
-                          <!-- <h3 class="text-light text-brandon text-center">Background Checks & Medicals</h3> -->
-                      <section>
-                          <!-- <div class="separator separator-small"></div> -->
-                          <div class="container">
-                            <div class="row">
-                              <div class="col-sm-6 img-div">
-                                  <img class="img-responsive img-rounded img-screen animated fadeInUp" src="img/screenshot-check.jpg">
-                              </div>
-                              <div class="col-sm-6">
-                                  <h4 class="text-brandon text-uppercase">Background Checks</h4>
-                                  <p class="lead">Run Background Checks on applicants directly from the recruitment engine. This service is delivered in collaboration with Background Check International Limited. </p>
-                              
-                              </div>
-                            </div>
-                          </div>
-                      </section>
+          </p>
 
-                      <section class="blue">
-                          <div class="container">
-                              <div class="row">
-                                <div class="col-sm-6">
-                                    <h4 class="text-brandon text-uppercase">Pre-employment Medicals</h4>
-                                    <p class="lead">We have collaborated with Mecure Healthcare Limited to offer pre-employment Medicals. You order for the test, Mecure does it and results are fed to you via the Engine.</p>
-                                </div>
-                                <div class="col-sm-6 img-div">
-                                    <img class="img-responsive img-rounded img-screen animated fadeInUp" src="img/screenshot-medic.jpg">
-                                </div>
-                              </div>
-                          </div>
-                      </section>
-                  </div>
-
-
-                  <div role="tabpanel" class="tab-pane animated" id="test">
-
-
-                      <section>
-                          <!-- <h3 class="text-light text-brandon text-center">Recruitment Testing</h3> -->
-                          <!-- <div class="separator separator-small"></div> -->
-                          <div class="container">
-                          <div class="col-sm-6 img-div">
-                              <img class="img-responsive img-rounded img-screen animated fadeInUp" src="img/screenshot-test.jpg">
-                          </div>
-                          <div class="col-sm-6">
-                              <div>
-                              <!-- <div class="separator separator-small"></div> -->
-                                  <h4 class="text-brandon text-uppercase">The Insidify Testing and Assessment Center</h4>
-                                  <p class="lead">IQ, Personality, Quantitative- any test. Test job applicants either with your own questions or with standard tests by 3rd party pre-employment test providers on Insidify.com. Applicants can take tests online or at any location of your choice. The results are fed to the recruitment engine automatically.</p>
-
-                              </div>
-                          </div>
-                          </div>
-                      </section>
-
-
-                  </div>
-
-
-                  <div role="tabpanel" class="tab-pane animated" id="company">
-
-                      <section>
-                          <!-- <h3 class="text-light text-brandon text-center">Company Page and More</h3> -->
-                              <!-- <div class="separator separator-small"></div> -->
-                              <div class="container">
-                              <div class="col-sm-6 img-div">
-                                  <img class="img-responsive img-rounded img-screen animated fadeInUp" src="img/screenshot-comp.jpg">
-                              </div>
-                              <div class="col-sm-6">
-                                  <div>
-                                  <!-- <div class="separator separator-small"></div> -->
-                                      <h4 class="text-brandon text-uppercase">Get a Company Page</h4>
-                                      <p class="lead">The Company page is your company’s personalized page on Insidify.com. It allows you share important information about your company such as company culture, products &amp; services and social media activities. </p>
-                              </div>
-                              </div>
-                              </div>
-                          </section>
-
-                          <section class="blue">
-                          <div class="container">
-                              <div class="col-sm-6">
-                                  <h4 class="text-brandon text-uppercase">Embed Jobs on your own site</h4>
-                                  <p class="lead"> The Job Embed Tool allows you to post a job on Insidify.com, and embed it directly into the career section of your company’s website.</p>
-
-                              </div>
-                              <div class="col-sm-6 img-div">
-                                  <img class="img-responsive img-rounded img-screen animated fadeInUp" src="img/img-dummy.jpg">
-                              </div>
-                              </div>
-
-                          </section>
-                <!--/tab-content-->
-
-            </div>
         </div>
+
+
+      </div>
+    </section>
+
+    <section id="tab-5" role="tabpanel" class="section-tab white tab-pane">
+      <div class="container">
+
+        <div class="row">
+          <div class=" text-center">
+            <!-- <h2 class="no-margin text-brandon">1</h2><br> -->
+            <h2 class="animated fadeIn col-sm-12 no-margin text-brandon text-light"><span class="text-blue">Save and Download</span> the Entire Process</h2>
+            <div class="clearfix"></div>
+            <hr class="hr-bg"><br></div>
+
+          <div class="col-sm-6 animated slideInLeft">
+            <p class="lead text-muted">Because you hired seamlessly from A to Z, you have won yourself the right to download the entire recruitment process seamlessly!</p>
+
+            <p>For each of your candidates, you can download:</p>
+
+            <p class=""><ul class="list-unstyled">
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; The CV</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Cover Letter</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Team Comments and Reviews</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Test Results</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Interview notes</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Background Check Reports</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Medical Test Reports</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Messages and Interactions</li>
+              <li class="lh-x"><i class="fa fa-check"></i> &nbsp; Statistics.</li>
+            </ul></p><br>
+
+
+          </div>
+          <div class="col-sm-6 hidden-xs animated slideInRight">
+            <img src="img/ats-5.jpg" width="100%" alt="">
+          </div>
+
+          <div class="col-sm-12 text-center"><br>
+
+            <p class="text-center"><br>
+              <a href="{{ url('register') }}" class="btn btn-success btn-lg">Great? Get Started!</a>
+            </p>
+
+          </div>
+
+        </div></div>
+    </section>
+  </div>
+
+  <section class="no-pad white">
+
+  </section>
+
+  <section id="videoPosting" class="grey">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1 text-center">
+          <h1 class=" text- text-brandon"><i class="fa text-blue fa-play-circle"></i> &nbsp;Video Job Posting</h1>
+          <p class="l-sp-5">SELL YOUR BRAND TO APPLICANTS EXCLUSIVELY!</p>
+          <div class="col-xs-4 col-xs-offset-4"><hr></div>
+          <div class="clearfix"></div>
+          <p class="lead" data-wow-duration="1s">Our 1st-in-Africa SeamlessHiring video job posting feature provides you with a personal, more human way to introduce your company, role details, expectations and other valuable information to job seekers. Now, you can exclusively sell your brand and workplace culture to prospective applicants.</p>
+          <br>
+        </div>
+        <div class="clearfix"></div>
+        <div class="pad pad-xs"><br></div>
+        <div class="">
+          <!-- <div class="col-md-6"><br>
+            <img src="https://seamlesshiring.com/img/ats-2.jpg" width="100%" alt="" class="wow fadeInLeft">
+          </div> -->
+          <div class="col-md-12">
+            <div class="well blue-bg text-dark well-lg  fadeInRight wow fadeInRight animated">
+
+              <h4 class="text-uppercase text-center l-sp-5 text-white">This way you get:</h4><br>
+
+
+              <div class="col-sm-6">
+                <div class="well well-lg h4"><i class="fa text-blue fa-2x fa-heart pull-left"></i> &nbsp; Applicants to know a lot more about your brand and actually fall in love with it.</div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="well well-lg h4"><i class="fa text-blue fa-2x fa-lightbulb-o pull-left"></i> &nbsp; A chance to test the comprehension and mental prowess of your applicants through the video.</div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="well well-lg h4"><i class="fa text-blue fa-2x fa-sort-amount-asc pull-left"></i> &nbsp; To sort applicants based on their performance following a test.</div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="well well-lg h4"><i class="fa text-blue fa-2x fa-street-view pull-left"></i> &nbsp; To choose from a pool of successful candidates who already love your brand.</div>
+              </div>
+
+              <div class="clearfix"></div><br>
+            </div>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="pad pad-xs"></div>
+        <div class="col-xs-12">
+          <br>
+          <p class="text-center lsp3 text-lighter wow fadeInUp"><a href="{{ url('register') }}" class=" btn btn-success btn-lg">Start Posting </a></p>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
+
+  <div id="sec-talentSource no-padding" class="white">
+    <div class="">
+      <div class="">
+        <div class="col-lg-6 no-pad">
+          <img src="img/mentorship.jpg" width="100%" alt="">
+        </div>
+        <div class="col-lg-6 pad-ft">
+          <h2 class=" text- text-brandon"><!-- <i class="fa text-blue fa-user-plus pull-right"></i>  -->Talent Sourcing</h2>
+          <!-- <p class="l-sp-5">SELL YOUR BRAND TO APPLICANTS EXCLUSIVELY!</p> -->
+          <!-- <div class="col-xs-4"><hr></div> --> <br>
+          <div class="clearfix"></div>
+          <p class="lead" data-wow-duration="1s">Choose this specialized alternative recruitment solution if you want to fill that position FAST and still ensure QUALITY talents. We will do the recruiting for you!</p>
+          
+          
+          <p class="text-lighter wow fadeInUp"><a href="talentSource" class=" btn btn-primary btn-lg">Learn more </a></p>
+
+        </div>
+        <div class="clearfix"></div>
+        <!-- <div class="pad pad-xs"><br></div> -->
+        <div class="">
+        </div>
+        <div class="clearfix"></div>
+        <!-- <div class="pad pad-xs"></div> -->
+      </div>
+    </div>
+  </div>
+
+  <section class="grey">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1 text-center">
+          <h2 class=" text-brandon"><!-- <i class="fa text-green fa-users"></i> &nbsp; -->Team Recruitment</h2>
+          <p class="l-sp-5">HIRE COLLABORATIVELY WITH YOUR TEAM </p>
+          <div class="col-xs-4 col-xs-offset-4"><hr></div>
+          <div class="clearfix"></div>
+          <p class="lead" data-wow-duration="1s">There is no limit to the number of team members you can invite to join you in hiring the best. Every team member has their own dedicated account and login access to view and track applicants and carry out other specified functions within the recruitment process.</p>
+          <br>
+        </div>
+        <div class="clearfix"></div>
+        <div class="pad pad-xs"><br></div>
+        <div class="col-md-8 col-md-offset-2 text-center">
+          <div class="row">
+            <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/001-avatar-2.png" alt=""></div>
+            <div class="hidden-xs col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/008-social-5.png" alt=""></div>
+            <div class="hidden-xs col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/005-social-8.png" alt=""></div>
+            <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/004-avatar.png" alt=""></div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="separator separator-small hidden-xs"><br></div>
+          <div class="row">
+            <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/002-avatar-1.png" alt=""></div>
+            <div class="hidden-xs col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/016-people.png" alt=""></div>
+            <div class="hidden-xs col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/010-social-3.png" alt=""></div>
+            <div class="col-sm-3 col-xs-6"><img class="img-circle" height="100px" width="100px" src="https://cdn.insidify.com/dist/img/faces/add-circular-button.png" alt=""></div>
+          </div>
+          <div class="row">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="white">
+    <div class="container-fluid text-center">
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1 text-center">
+          <h2 class="text-brandon no-top-margin"><i class="text-blue fa fa-heart"></i> &nbsp; They Trust Us</h2>
+          <p class="text-uppercase l-sp-5">Join Top Companies using SeamlessHiring</p>
+          <div class="col-xs-4 col-xs-offset-4"><hr></div>
+          <div class="clearfix"></div>
+          <div id="brandSlider" class="owl-carousel owl-theme companies">
+            <div class="item">
+              <h1 class="text-center no-bottom-margin"><img src="{{asset('img/tib-logo.png')}}" alt="" height="auto" width="auto"></h1>
+            </div>
+            <div class="item">
+              <h1 class="text-center no-bottom-margin"><img src="{{asset('img/cpr-logo.png')}}" alt="" height="auto" width="auto"></h1>
+            </div>
+            <div class="item">
+              <h1 class="text-center no-bottom-margin"><img src="{{asset('img/fmcl-logo.png')}}" alt="" height="auto" width="auto"></h1>
+            </div>
+            <div class="item">
+              <h1 class="text-center no-bottom-margin"><img src="{{asset('img/vla-logo.png')}}" alt="" height="auto" width="auto"></h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="s-div dark no-margin">
+    <div class="container">
+      <br>
+      <div class="row text-center">
+        <div class="col-sm-12">
+          <p class="lead text-brandon text-white">Recruitment Made Unbelievably Easy.</p>
+          <a href="{{ url('register') }}" class="btn btn-success btn-lg"> Get Started for Free! &nbsp; <i class="fa fa-chevron-right"></i></a>
+        </div>
+      </div><div class="clearfix"><br></div>
+      <br>
+    </div>
+  </section>
+
+
+  <!-- Scripts -->
+  <script>
+      $("a[data-toggle='tab']").click(function() {
+          $('html,body').animate({
+              scrollTop: $(".navituder").offset().top},'slow');
+      });
+  </script>
+  <script>
+    $(document).ready(function() {
+       $('#brandSlider').owlCarousel({
+           items:3,
+           dots: false,
+           loop:true,
+           margin:40,
+           autoplay:true,
+           autoplayTimeout:2000,
+           autoplayHover: false
+       });
+    });
+  </script>
 @endsection

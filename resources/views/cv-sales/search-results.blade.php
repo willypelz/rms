@@ -1,25 +1,56 @@
-@extends('layout.template-user')
+@extends('layout.template-default')
 
 @section('content')
+<style type="text/css">
+  .see-more{display: none;}
+  .see-more-shown{ display: block; }
+  .pagination .page{ padding: 0px !important; }
+</style>
 
+<script src="{{ secure_asset('js/jquery.form.js') }}"></script> 
+<script src="{{ asset('js/jquery.twbsPagination.min.js') }}"></script>
 
-            <script src="http://malsup.github.com/jquery.form.js"></script> 
+<script src="{{ asset('js/cart.js') }}"></script>
 
-<section class="s-div dark">
+<script type="text/javascript">
+    
+    $(document).ready(function(){
+
+        Cart.init({
+          type : 'cv-sales',
+          actionUrl: "{{ route('cart') }}",
+          getCountUrl: "{{ route('getCartCount') }}",
+          checkoutUrl: "{{ route('ajax_cart') }}",
+          cartAddText: '<i class="fa fa-plus"></i> Purchase CV for &#8358;',
+          cartRemoveText: '<i class="fa fa-trash"></i> Remove from Cart ',
+          cartAddClass: 'btn-success',
+          cartRemoveClass: 'btn-line'
+        });
+
+    });
+
+</script>
+<section class="s-div dark scroll-to">
         <div class="container">
+{{-- dd($result) --}}
+
+{{  Session::put('url.intended', url()->full() ) }}
+{{-- */ $can_purchase = true /* --}}
 
             <div class="row">
                 <div class="col-md-6 hidden-sm hidden-xs">
-                    <div class=""><br>
-                        <h4 class="text-white push-down text-uppercase text-brandon"> <i class="fa fa-street-view"></i> Talent Pool</h4>
-                    </div>
+                    
+                      <div class=""><br>
+                          <h4 class="text-white push-down text-uppercase text-brandon"> <i class="fa fa-street-view"></i> Search Results</h4>
+                      </div>
+
                 </div>
                 <div class="col-md-6 col-sm-12">
-                    <form action="{{ url('cv/search') }}" class="form-group" method="POST"><br>
-                      {!! csrf_field() !!}
+                    <form action="{{ url('cv/search') }}" class="form-group"><br>
+                      
                        <div class="form-lg">
                          <div class="col-xs-10">
-                           <div class="row"><input placeholder="Find something you want" name="search_query" id="search_query" value="{{ $search_query }}" class="form-control input-lg input-talent" type="text"></div>
+                           <div class="row"><input placeholder="e.g Accountant, Lagos" name="search_query" id="search_query" value="{{ $search_query }}" class="form-control input-lg input-talent" type="text"></div>
                          </div>
                          <div class="col-xs-2">
                            <div class="row">
@@ -38,7 +69,7 @@
         </div>
     </section>
 
-    <section class="no-pad">
+    <section class="no-pad  ">
         <div class="container">
             <div class="row">
 
@@ -51,7 +82,7 @@
 
 
             <div class="col-sm-8">
-
+                  <small class="text-muted result-label" id="showing"> {!! $showing !!} </small> <br/>
                   <div class="" id="search-results">
 
                     <ul class="search-results">
@@ -62,14 +93,16 @@
                       
                       
                     </ul>
-                
+                    <ul id="pagination" class="pagination-sm"></ul>
               </div> <!--/tab-content-->
+
+
 
             </div>
             <!-- End of col-9 -->
 
             <div class="col-sm-4">
-                @if(empty($items))
+                @if($many== 0)
                 <div id="collapseWellCart" class="well well-cart animated slideInUp collapse">
                 @else
                 <div id="collapseWellCart" class="well well-cart animated slideInUp">
@@ -99,142 +132,26 @@
                         </div>
                     </div><hr>
                     <div class="row">
-                        <div class="col-xs-6"><a id="checkout" href="#" target="_blank" data-toggle="modal" data-target="#myInvoice" class="btn btn-block btn-danger btn-sm btn-cart-checkout"> Checkout &raquo;</a></div>
-                        <div class="col-xs-6"><button id="clearCart" class="btn btn-block btn-line btn-sm btn-cart-clear text-muted"><i class="fa fa-close"></i> Clear</button></div>
+                        <div class="col-xs-6"><a id="checkout" href="#" target="_blank" data-toggle="modal" data-target="#myInvoice" data-pass="{{ csrf_token() }}" class="btn btn-block btn-danger btn-sm btn-cart-checkout"> Checkout &raquo;</a></div>
+                        <div class="col-xs-6"><button id="clearCart" class="btn btn-block btn-line btn-sm btn-cart-clear text-muted" data-pass="{{ csrf_token() }}"><i class="fa fa-close"></i> Clear</button></div>
                     </div>
                 </div>
-              @if( $result['response']['numFound'] > 0 )
-              <div class="panel-group filter-div" id="accordion">
-
-
-                  <div class="panel panel-default" style="border-width: 3px">
-                    <div class="panel-heading">
-                      <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                          Filter Result here
-                        </a>
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="pull-right"><img src="{{ asset('img/up.png') }}"></a>
-                      </h4>
-                    </div>
-                    <div id="collapseOne" class="panel-collapse collapse in">
-                      <div class="panel-body">
-                          <p class="border-bottom-thin text-muted">Gender<i class="glyphicon glyphicon-user pull-right"></i></p>
-                          <div class="checkbox-inline">
-                              {{--*/ $other_gender = 0  /*--}}
-                              @foreach( $result['facet_counts']['facet_fields']['gender'] as $key => $gender )
-                                  @if( $key % 2 == 0 && ( $gender == 'male' || $gender == 'female' ))
-                                    
-                                    <label class="normal"><input type="checkbox" class="" data-field="gender" data-value="{{ $gender }}"> {{ ucwords( $gender )." (".$result['facet_counts']['facet_fields']['gender'][ $key + 1 ].")" }}</label> <br>
-                                  @else
-
-                                    {{--*/ @$other_gender += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /*--}}
-
-                                  @endif
-                              @endforeach
-
-                              <label class="normal"><input type="checkbox" class="" data-field="gender" data-value="null"> unspecified {{ " (".$other_gender.")" }}</label> <br>
-                          </div>
-
-                          <p>--</p>
-
-                        <p class="border-bottom-thin text-muted">Marital Status<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
-                          <div class="checkbox-inline">
-                              {{--*/ $other_marital_status = 0  /*--}}
-                              @foreach( $result['facet_counts']['facet_fields']['marital_status'] as $key => $marital_status )
-                                  @if( $key % 2 == 0 &&  $marital_status != ''  && $marital_status != "0"  )
-                                    
-                                    <label class="normal"><input type="checkbox" class="see-more-filter" data-field="marital_status" data-value="{{ $marital_status }}"> {{ ucwords( $marital_status )." (".$result['facet_counts']['facet_fields']['marital_status'][ $key + 1 ].")" }}</label> <br>
-                                  @else
-
-                                    {{--*/ @$other_marital_status += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /*--}}
-
-                                  @endif
-                              @endforeach
-
-                              <label class="normal"><input type="checkbox" class=""> unspecified {{ " (".$other_marital_status.")" }}</label> <br>
-                          </div>
-                        
-                        <p>--</p>
-
-                        <p class="border-bottom-thin text-muted">School<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
-                          <div class="checkbox-inline">
-                              {{--*/ $other_edu_school = 0  /*--}}
-                              @foreach( $result['facet_counts']['facet_fields']['edu_school'] as $key => $edu_school )
-                                  @if( $key % 2 == 0 &&  $edu_school != ''  && $edu_school != "0"  )
-                                    
-                                    <label class="normal"><input type="checkbox" class="" data-field="edu_school" data-value="{{ $edu_school }}"> {{ ucwords( $edu_school )." (".$result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ].")" }}</label> <br>
-                                  @else
-
-                                    {{--*/ @$other_edu_school += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /*--}}
-
-                                  @endif
-                              @endforeach
-
-                              <label class="normal"><input type="checkbox" class=""> unspecified {{ " (".$other_edu_school.")" }}</label> <br>
-                          </div>
-
-
-                        <p>--</p>
-
-                        <p class="border-bottom-thin text-muted">Company<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
-                          <div class="checkbox-inline">
-                              {{--*/ $other_exp_company = 0  /*--}}
-                              @foreach( $result['facet_counts']['facet_fields']['exp_company'] as $key => $exp_company )
-                                  @if( $key % 2 == 0 &&  $exp_company != ''  && $exp_company != "0"  )
-                                    
-                                    <label class="normal"><input type="checkbox" class="" data-field="exp_company" data-value="{{ $exp_company }}"> {{ ucwords( $exp_company )." (".$result['facet_counts']['facet_fields']['exp_company'][ $key + 1 ].")" }}</label> <br>
-                                  @else
-
-                                    {{--*/ @$other_exp_company += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /*--}}
-
-                                  @endif
-                              @endforeach
-
-                              <label class="normal"><input type="checkbox" class=""> unspecified {{ " (".$other_exp_company.")" }}</label> <br>
-                          </div>
-
-
-                        <p>--</p>
-
-                        <p class="border-bottom-thin text-muted">Grade<i class="glyphicon glyphicon-map-marker pull-right"></i></p>
-                          <div class="checkbox-inline">
-                              {{--*/ $other_edu_grade = 0  /*--}}
-                              @foreach( $result['facet_counts']['facet_fields']['edu_grade'] as $key => $edu_grade )
-                                  @if( $key % 2 == 0 &&  $edu_grade != ''  && $edu_grade != "0" && $edu_grade != "-Choose-" )
-                                    
-                                    <label class="normal"><input type="checkbox" class="" data-field="edu_grade" data-value="{{ $edu_grade }}"> {{ ucwords( $edu_grade )." (".$result['facet_counts']['facet_fields']['edu_grade'][ $key + 1 ].")" }}</label> <br>
-                                  @else
-
-                                    {{--*/ @$other_edu_grade += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] /*--}}
-
-                                  @endif
-                              @endforeach
-
-                              <label class="normal"><input type="checkbox" class=""> unspecified {{ " (".$other_edu_grade.")" }}</label> <br>
-                          </div>
-                          <div><a href="#" class="more-link read-more-show "><small>See More</small></a></div>
-                          
-                          <!-- <div><small class="">&nbsp; <a href="" class="">See More</a></small></div> -->
-
-
-
-
-                      </div>
-                    </div>
-                  </div>
+                <div id="search-filters">
+                    @include('cv-sales.includes.search-filters')
                 </div>
-                @endif
+                
+
             </div> <!--/col-sm-4-->
 
             </div>
 
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group text-right">
                         <a data-toggle="modal" data-target="#myInvoice" href="#" target="_blank" type="submit" class="btn btn-danger disabled btn-cart-checkout">Proceed to payment &raquo;</a>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
         </div>
 
@@ -249,83 +166,68 @@
 
 
 
-<div class="modal fade" tabindex="-1" id="myInvoice" role="dialog" aria-labelledby="myInvoice">
-  <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal fade" tabindex="-1" id="myInvoice" role="dialog" aria-labelledby="myInvoice">
+      <div class="modal-dialog">
+        <div class="modal-content">
 
-        <h3 class="text-center">Confirm your order</h3>
-
-
-              <div id="invoice-res">
-                
-              </div>
-       
-
-          <script>
-
-                           var url = "{{ route('ajax_cart') }}";
-
-                 $("#contentArea").html('<img src="{{ asset("img/wheel.gif") }}" width="100px" /> please wait...');
-                              
-                                $("#checkout").click(function(){
-                                      // console.log(url)
-                                      $.ajax
-                                      ({
-                                        type: "POST",
-                                        url: url,
-                                        data: ({ rnd : Math.random() * 100000, "_token":"{{ csrf_token() }}"}),
-                                        success: function(response){
-                                          
-                                          // console.log(response);
-                                          $('#invoice-res').html(response)
-                                          
-                                        }
-                                    });
-
-                                  });
-
-          </script>
-
-
-      <script>
-
-                       var url = "{{ route('ajax_cart') }}";
-
-             $("#contentArea").html('<img src="{{ asset("img/wheel.gif") }}" width="100px" /> please wait...');
-                          
-                            $("#checkout").click(function(){
-                                  // console.log(url)
-                                  $.ajax
-                                  ({
-                                    type: "POST",
-                                    url: url,
-                                    data: ({ rnd : Math.random() * 100000, "_token":"{{ csrf_token() }}"}),
-                                    success: function(response){
-                                      
-                                      // console.log(response);
-                                      $('#invoice-res').html(response)
-                                      
-                                    }
-                                });
-
-                              });
-
-      </script>
-
+            <h3 class="text-center">Confirm your order</h3>
+            <div id="invoice-res">
+              
+            </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
 <script type="text/javascript">
-    $(document).ready(function(){
-        filters = [];
+    var folders = [];
+    var filters = [];
+    var age_range = exp_years_range = null;
 
-        $('.filter-div input[type=checkbox').on('change',function(){
-            console.log("changed");
+    $(document).ready(function(){
+        
+
+        $.fn.setMyFolders = function(cv_folders)
+        {
+          var html = "" ;
+          $.each(folders,function(index,value){
+
+              if(cv_folders.indexOf( value.id.toString() ) >= 0)
+              {
+                active = ' &nbsp; <i class="fa fa-check"></i> ';
+              }
+              else
+              {
+                active = "";
+              }
+              html += '<li id="folder-item" data-ref="' + value.id + '" ><a href="#"><i class="fa fa-folder-o"></i> ' + value.name + active + '</a></li>';
+          });
+          return html;
+        }
+
+        $.fn.getMyFolders = function()
+        {
+          $.post("{{ url('cv/get-my-folders') }}",function(data){
+                // console.log(data);
+                folders = data.folders;
+                $('body #folder-item').remove();
+                $('body #folders').each(function(index,value){
+                    cv_folders = $(this).attr('data-folders').split(':');
+                    $(this).prepend($(this).setMyFolders(cv_folders));
+                })
+          });
+        }
+
+        
+
+        $(document).getMyFolders();
+
+        $(document).on('change', '.filter-div input[type=checkbox]', function(){
+            // console.log("changed");
 
             var filter = $(this).attr('data-field') + ':"' + $(this).attr('data-value') + '"';
+
             var index = $.inArray( filter, filters );
-            console.log( filter + "---" + index );
+            // console.log( filter + "---" + index );
             if( index == -1 )
             {
               filters.push( filter );
@@ -335,15 +237,251 @@
                 filters.splice(index, 1);
             }
 
-            $('.search-results').html("Loading");
-            $.post("{{ url('cv/filter_search') }}", {search_query: $('#search_query').val(), filter_query : filters },function(data){
-                //console.log(data);
-                $('.search-results').html(data);
-            });
+
+            $(this).performFilter();
         });
+
+        $('body').on('click', '#clearAllFilters', function(){
+
+            filters = [];
+            $('.filter-div input[type=checkbox]' ).prop('checked',false);
+
+            $('#search_keyword').val("");
+            $('.body #showing').html('');
+            $('#pagination').hide();
+
+            age_range = exp_years_range = null;
+
+            $(this).performFilter();
+
+        });
+
+        $.fn.performFilter = function(){
+            
+
+            $('.search-results').html('{!! preloader() !!}');
+            $('body #showing').html('');
+            $('#pagination').hide();
+            scrollTo('.scroll-to');
+            $.get("{{ url('cv/search') }}", {search_query: $('#search_query').val(), filter_query : filters, age: age_range, exp_years : exp_years_range  },function(data){
+                //console.log(response);
+                // var response = JSON.parse(data);
+                // console.log(data.search_results);
+                $('.search-results').html(data.search_results);
+                
+                $('body #showing').html(data.showing);
+                if( data.count > 0 )
+                {
+                    $('#pagination').show();
+                    $('.result-label').show();
+                    $('#search-filters').html(data.search_filters);
+                }
+                else
+                {
+                    $('#pagination').hide();
+                    $('.result-label').hide();
+                }
+
+                $.each(filters, function(index,value){
+                    
+                    var arr = value.split(':');
+                    
+                    $('.filter-div input[type=checkbox]' + '[data-field=' + arr[0] + ']' + '[data-value=' + arr[1] + ']' ).attr('checked',true);
+                });
+            });
+
+        }
+
+        $(document).on('click','.read-more-show', function(){
+            // console.log($(this).text() );
+            // $(this).prev().find('.see-more').show();
+            $(this).closest('div').prev().find('.see-more').toggleClass('see-more-shown');
+
+            var text = ( $(this).text() == 'See More' ) ? 'See Less' : 'See More';
+            $(this).text(text);
+        });
+
+        // $(document).on('click', '#showCvBtn', function(){ 
+        //   var this_one = $(this);
+        //     $.post("{{ url('cv/get_cv_preview') }}",function(data){
+        //        $( this_one.attr('data-target') ).html(data);
+        //     });
+        // });
+
+        /*$('body').on('click', '#add_folder_btn',function(){
+            var input = $(this).parent().parent().parent().find('#add_folder');
+            input.show();
+        });*/
+        
+        $('#newFolder').on('shown.bs.modal', function () {
+            $('#add_folder').focus();
+        })
+
+        $('body').on('keydown', '#add_folder',function(){
+            if(event.which == 13) 
+            {
+                $(this).createFolder();
+
+            }
+        });
+
+        $('body #createFolderBtn').click(function(){
+          $(this).createFolder();
+        });
+
+        $.fn.createFolder = function()
+        {
+              $field = $('body #add_folder');
+
+              $field.attr('disabled','disabled');
+
+              $('#newFolder #message').html('<div class”text-center”>Creating...</div>');
+
+                $.post("{{ url('cv/add-folder') }}", {name: $field.val(),type: 'saved' },function(data){
+                    if(data == true)
+                    {
+                      // $field.val("").hide();
+                      $(this).getMyFolders();
+                      $('#newFolder #message').html('<div class="alert alert-success">Folder added successfully</div>');
+                      $('#newFolder').modal('toggle');
+                      
+                    }
+
+                    else
+                    {
+                      $field.val("").hide();
+                      // $field.after('<p>'+ data +'</p>');
+                      $('#loginModal #mssg').text(data);
+                      $('.signin').trigger('click');
+                    }
+                    
+                });
+        }
+
+        $('body').on('click','#folder-item',function(){
+
+            $field = $(this);
+            
+            $.post("{{ url('cv/save-to-folder') }}", {folder_id: $field.attr( 'data-ref' ),cv_id: $(this).closest('#folders').attr('data-cv') },function(data){
+                    if(data == true)
+                    {
+                      $field.addClass( 'active' );
+
+                       $field.closest('.description').append('<div id="notification"><div class="clearfix"></div><div class="alert alert-success">Added to folder successfully</div></div>');
+                        window.setTimeout(function() {
+                            $field.closest('.description').find('#notification').fadeTo(500, 0).slideUp(500, function(){
+                                $(this).remove(); 
+                            });
+                        }, 5000);
+                    }
+                    
+                });
+
+        });
+
+
+        function searchKeyword(){
+
+            var filter = 'text' + ':"' + $(search_keyword).val() + '"';
+            var key = $(search_keyword).val();
+
+            var index = $.inArray( filter, filters );
+            // console.log( filter + "---" + index );
+            if( index == -1 )
+            {
+              filters.push( filter );
+            }
+            else
+            {
+                filters.splice(index, 1);
+            }
+
+            $('.search-results').html('{!! preloader() !!}');
+            scrollTo('.job-progress-xs');
+            $('.result-label').html('');
+            $('#pagination').hide();
+            $.get("{{ url('cv/search') }}", {search_query: $('#search_query').val(), filter_query : filters, age: age_range, exp_years : exp_years_range  },function(data){
+                //console.log(response);
+                // var response = JSON.parse(data);
+                // console.log(data.search_results);
+                $('.search-results').html(data.search_results);
+                $('#search-filters').html(data.search_filters);
+                $('.result-label').html(data.showing);
+                if( data.count > 0 )
+                {
+                    $('#pagination').show();
+                    $('.result-label').show();
+                }
+                else
+                {
+                    $('#pagination').hide();
+                    $('.result-label').hide();
+                }
+                $('#search_keyword').val(key);
+
+                $.each(filters, function(index,value){
+                    
+                    var arr = value.split(':');
+                    
+                    $('.filter-div input[type=checkbox]' + '[data-field=' + arr[0] + ']' + '[data-value=' + arr[1] + ']' ).attr('checked',true);
+                });
+            });
+
+            return false;
+        }
+
+
+        $('body').on('keydown', '#search_keyword',function(){
+            if(event.which == 13) 
+            {
+                searchKeyword();
+
+            }
+        });
+
     });
 </script>
 
+
+
+<div class="modal fade" tabindex="-1" id="newFolder" role="dialog" aria-labelledby="newFolder">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+            <h3 class="text-center">Create new folder</h3>
+
+
+        <section class="no-pad" id='ContentAREA'>
+                <div class="">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="content rounded">
+                                <div id="message"></div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control" id="add_folder" placeholder="" name="email">
+                                    
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    
+                                  </div>
+                                  <div class="clearfix"></div>
+                              <div class="pull-right">
+                                  <a href="javascript://" id="createFolderBtn" class="btn btn-success pull-right">Create</a>
+                                  <div class="separator separator-small"></div>
+                              </div>
+        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+         </section>
+        </div>
+      </div>
+    </div>
+
+
+    
 
 @endsection
 

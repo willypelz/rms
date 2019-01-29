@@ -1,0 +1,30 @@
+/**
+ * Description
+ *
+ * @package     seamlesshiring.vcom
+ * @category    Source
+ * @author      Michael Akanji <matscode@gmail.com>
+ * @date        2018-09-26
+ */
+
+.page-actions {
+    margin: 20px auto;
+}
+
+.delete-spoof {
+    display: inline-block;
+}
+
+span.dropdown {
+    /*display: inline-block;*/
+}
+
+.job-items {
+    /*border-top: solid 1px #ccc;*/
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.workflow-steps {
+    cursor: grab;
+}

@@ -2,8 +2,10 @@
 /storage
 /node_modules
 /public/storage
-/storage/logs/
 /bootstrap
 Homestead.yaml
 Homestead.json
 .env
+/.idea
+/.vscode
+/public_html/uploads

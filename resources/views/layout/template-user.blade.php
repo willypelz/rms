@@ -2,8 +2,8 @@
 
 @section('header')
 	@include('layout.includes.header-user')
-@show()
+@endsection
 
 @section('navbar')
 	@include('layout.includes.navbar-user')
-@show()
+@endsection

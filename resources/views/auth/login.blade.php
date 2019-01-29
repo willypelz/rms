@@ -1,45 +1,39 @@
+
+
 @extends('layout.template-default')
 
 @section('navbar')
     
 @show()
-
 @section('content')
+
+<style>
+    
+    body{
+        background:url('img/intro-bg.jpg') no-repeat fixed ;
+        background-size:cover;
+    }
+
+</style>
 <section>
         <div class="container">
             <div class="row">
 
-                <div class="col-sm-4 col-sm-offset-4 text-center">
-                    <h2>Seamless Hiring</h2>
-                    <p class="text-muted">Africa's fastest growing network of professionals</p>
+                <div class="col-sm-4 col-sm-offset-4 text-center text-white">
+                    <h2 class=""><img src="http://seamlesshiring.com/img/seamlesshiring-logo-white.png" width="190px" alt=""></h2><br>    
+                    <!-- <p class="">Everything You Need To Hire, In One Place!</p> -->
                 </div>
 
                 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
 
                     <div class="white padbox rounded">
-
+                        
+                        @include('layout.alerts')
 
                         <form role="form" class="form-signin" method="POST" action="{{ url('/login') }}">
                             {!! csrf_field() !!}
                             
                             <div class="row">
-                                <p class="text-center">Sign in with</p>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <a id="social" class="btn btn-social btn-linkedin btn-block"> <i class="fa fa-linkedin"></i> Linkedin</a>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <a id="social" class="btn btn-social btn-facebook btn-block"> <i class="fa fa-facebook"></i> Facebook</a>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                            <fieldset><legend>or</legend></fieldset>
                             <div class="col-sm-12">
                                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                     <label for="">Your Email</label>
@@ -74,7 +68,7 @@
                                 </div>
 
                                 <div class="col-sm-6"><br>
-                                    <p class="small text-left"><a href="">:( I can't remember my password!</a></p>
+                                    <p class="small text-left"><a href="{{ url('password/reset') }}">:( I can't remember my password!</a></p>
                                 </div>
 
                                 <div class="col-sm-6"><br>
@@ -84,7 +78,10 @@
                             </div>
                         </form>
 
-                    </div>
+
+                    </div><br>
+
+                        <p class="text-center"><small class="text-white">&copy; {{ date('Y') }}. All Rights Reserved. SeamlessHiring <br> Insidify Enterprise by Insidify.com</small></p>
                     <!--/tab-content-->
 
                 </div>

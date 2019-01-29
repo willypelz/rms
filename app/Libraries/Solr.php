@@ -2,15 +2,27 @@
 
 namespace App\Libraries;
 
+use Auth;
+use App\Models\Job;
+
 class Solr {
+	static $url;
+	static $host;
+	static $core;
 
-	static $host = "http://50.28.104.199:8983/solr/resumes/select?";
+	static function init()
+	{
+		Solr::$url = env("SOLR_URL");
+		Solr::$core = env("SOLR_CORE");
+		Solr::$host = env("SOLR_URL").Solr::$core."/select?";
+		
+	}
 
-	static $default_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'post_date+desc', 'grouped'=>FALSE ];
+	static $default_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'last_modified+desc', 'grouped'=>FALSE ];
 	
 
 
-	static function search_resume($data){
+	static function search_resume($data,$additional=''){
 		extract($data);
 		if(empty($q))
 			return array();
@@ -34,10 +46,12 @@ class Solr {
 			$search_field .= ':';
 
 		$filename = Solr::$host."q=".$search_field.$q."&rows=".$row."&start=".$start
-							."&facet=true&facet.field=gender&facet.field=marital_status&facet.field=edu_school&facet.field=exp_company&facet.field=edu_grade"
+							."&facet=true&facet.limit=-1&facet.field=gender&facet.field=marital_status&facet.field=last_position&facet.field=years_of_experience&facet.field=state&facet.field=state_of_origin&facet.field=last_company_worked&facet.field=folder_name&facet.field=folder_type&facet.field=application_status&facet.field=test_name&facet.field=test_status&facet.field=test_score&facet.field=highest_qualification&facet.field=willing_to_relocate&facet.field=cv_source&facet.field=video_application_score&facet.field=custom_field_name&facet.field=custom_field_value&facet.field=grade&facet.field=is_approved"
 							// ."&facet=true&facet.field=job_type&facet.field=company&facet.field=loc&facet.field=job_level&facet.field=site_name&facet.date=expiry_date&facet.date.start=NOW/DAY&facet.date.end=NOW/DAY%2B60DAY&facet.date.gap=%2B7DAY&wt=json"
-							// ."&sort=".$sort
-							."&fq=cv_file:*&wt=json"
+							."&sort=".$sort
+							.$additional
+							// ."&fq=cv_file:*".
+							."&group=true&group.field=email&group.truncate=true&group.main=true&wt=json" //&group.main=true
 							;
 		if(@$filter_query)
 		{
@@ -54,7 +68,7 @@ class Solr {
 
 					// $filter_string .= implode('', $filter_item);
 				
-				$filename .= '&fq='.$value;
+				$filename .= '&fq='.str_ireplace(" ", "+", $value);
 			}
 			// $filename .= $filter_string;
 		}
@@ -99,6 +113,91 @@ class Solr {
 		
 		
 		
+	}
+
+	static function get_saved_cvs($data)
+	{
+		$additional = "&fq=company_folder_id:". @get_current_company()->id."&fq=folder_type:saved";
+		return Solr::search_resume($data,$additional);
+	}
+
+	static function get_purchased_cvs($data)
+	{
+		$additional = "&fq=company_folder_id:". @get_current_company()->id."&fq=folder_type:purchased";
+		return Solr::search_resume($data,$additional);
+	}
+
+	static function get_all_my_cvs($data, $age = null,$exp_years=null)
+	{
+		// $additional = "&fq=( job_id:(5) OR company_folder_id:". @get_current_company()->id.' )';
+		//job_id:(15 10 12) OR company_folder_id:1
+		// $additional = "&fq=company_folder_id:". @get_current_company()->id;
+		
+		
+		// $additional = "&fq=(job_id:(".  implode('+', Job::getMyJobIds() )  .")+OR+company_folder_id:". @get_current_company()->id .")"."&fq=-folder_type:saved";
+		
+		
+
+		if( !empty( Job::getMyJobIds() ) )
+		{
+			$job = "job_id:(".  implode('+', Job::getMyJobIds() )  .")+OR+" ;
+		}
+		else{
+			
+			$job = "";
+		}
+
+		$additional = "&fq=". $job ."(company_folder_id:". @get_current_company()->id ."+AND+-folder_type:saved".")" ;
+
+		if( !is_null($age) )
+		{
+			// $additional .= "&fq=dob<=".$age[0]."&fq=dob>=".$age[1];
+			$additional .= "&fq=dob:[".$age[1]."+TO+".$age[0]."]";
+		}	
+
+		if( !is_null($exp_years) )
+		{
+			$additional .= "&fq=years_of_experience:[".$exp_years[0]."+TO+".$exp_years[1]."]";
+		}
+
+
+
+		// echo "&fq=dob:[".$age[1] ."+TO+".$age[0]."]";
+		return Solr::search_resume($data, $additional);
+	}
+	
+
+	static function get_applicants($data, $job_id, $status = "",$age = null,$exp_years=null,$video_application_score=null,$test_score=null)
+	{
+		$additional = "&fq=job_id:". $job_id;
+
+		if($status != "")
+		{
+			$additional .= "&fq=application_status:". $status;
+		}
+
+		if( !is_null($age) )
+		{
+			// $additional .= "&fq=dob<=".$age[0]."&fq=dob>=".$age[1];
+			$additional .= "&fq=dob:[".$age[1]."+TO+".$age[0]."]";
+		}
+
+		if( !is_null($exp_years) )
+		{
+			$additional .= "&fq=years_of_experience:[".$exp_years[0]."+TO+".$exp_years[1]."]";
+		}
+
+		if( !is_null($video_application_score) )
+		{
+			$additional .= "&fq=video_application_score:[".$video_application_score[0]."+TO+".$video_application_score[1]."]";
+		}
+
+		if( !is_null($test_score) )
+		{
+			$additional .= "&fq=test_score:[".$test_score[0]."+TO+".$test_score[1]."]";
+		}
+
+		return Solr::search_resume($data,$additional);
 	}
 
 
@@ -225,7 +324,7 @@ class Solr {
 		
 		$sort = 'score+desc';
 		
-		$filename = 'http://50.28.37.75:8983/solr/resumes/select?q={!q.op=AND}'.$q.'&rows='.$row.'&start='.$start.'&facet=true&facet.field=exp_company&facet.field=state&facet.field=gender&facet.field=experience&facet.field=edu_end_year&facet.field=edu_school&facet.field=edu_grade&facet.field=marital_status&facet.field=religion&facet.date=dob&facet.date.start=NOW/DAY-60YEAR&facet.date.end=NOW/DAY-10YEAR&facet.date.gap=%2B1YEAR&wt=json&sort=rank+desc';
+		$filename = Solr::$url.Solr::$core.'/select?q={!q.op=AND}'.$q.'&rows='.$row.'&start='.$start.'&facet=true&facet.field=exp_company&facet.field=state&facet.field=gender&facet.field=experience&facet.field=edu_end_year&facet.field=edu_school&facet.field=edu_grade&facet.field=marital_status&facet.field=religion&facet.date=dob&facet.date.start=NOW/DAY-60YEAR&facet.date.end=NOW/DAY-10YEAR&facet.date.gap=%2B1YEAR&wt=json&sort=rank+desc';
 
 		// echo $filename.'<br/>';
 			
@@ -267,7 +366,7 @@ class Solr {
 
 
 		
-		$link = 'http://50.28.37.75:8983/solr/applications/select?q='.$q.'&rows='.$row.'&start='.$start
+		$link = Solr::$url.'applications/select?q='.$q.'&rows='.$row.'&start='.$start
 					.'&facet=true&facet.field=exp_company&facet.field=state&facet.field=gender&facet.field=experience'
 					.'&facet.field=edu_end_year&facet.field=edu_school&facet.field=edu_grade&facet.field=marital_status&facet.field=religion&facet.field=test_name&facet.field=tr_status&facet.field=score&facet.date=dob&facet.date.start=NOW/DAY-60YEAR&facet.date.end=NOW'
 					.'/DAY-10YEAR&facet.date.gap=%2B1YEAR&wt=json&sort=created+desc';
@@ -296,7 +395,7 @@ class Solr {
 
 	function update_applications($command="full-import"){
 
-		$url = "http://50.28.37.75:8983/solr/applications/dataimport?command=".$command;
+		$url = Solr::$url."applications/dataimport?command=".$command;
 
 		try {
 		 	$handle = fopen($url, "r");
@@ -315,9 +414,13 @@ class Solr {
 	}
 
 
-	function update_core($core = 'jobs', $command="delta-import"){
+	static function update_core($core = null, $command="delta-import"){
 
-		$url = "http://50.28.37.75:8983/solr/".$core."/dataimport?command=".$command;
+		if( is_null( $core ) )
+		{
+			$core = Solr::$core;
+		}
+		$url = Solr::$url."".$core."/dataimport?command=".$command;
 
 		try {
 			$handle = fopen($url, "r");
@@ -344,7 +447,7 @@ class Solr {
 		
 		$sort = 'score+desc';
 		
-		$filename = 'http://50.28.37.75:8983/solr/resumes/select?q='.$q.'&rows='.$row.'&start='.$start.'&wt=json&sort=rank+desc';
+		$filename = Solr::$url.Solr::$core.'/select?q='.$q.'&rows='.$row.'&start='.$start.'&wt=json&sort=rank+desc';
 			
 		// echo $filename;
 
@@ -433,7 +536,7 @@ class Solr {
 			$sort = 'post_date+desc';
 		else
 			$sort = 'score+desc';
-		$filename = "http://50.28.37.75:8983/solr/resumes/select?q=".$type.":".trim($q).$dq."&fq=-personal_url:[*+TO+*]&rows=".$row."&start=".$start
+		$filename = Solr::$url.Solr::$core."/select?q=".$type.":".trim($q).$dq."&fq=-personal_url:[*+TO+*]&rows=".$row."&start=".$start
 							."&fq=".$sign."userId:(".$followers.")&facet=false&wt=json";
 							
 		// echo $filename.'<br/>---<br/><br/>';
@@ -467,7 +570,7 @@ class Solr {
 		if(empty($q))
 			return array();
 
-		$filename = "http://50.28.37.75:8983/solr/connection/select?q=".$type.":".trim($q)."&rows=".$row."&start=".$start
+		$filename = Solr::$url."connection/select?q=".$type.":".trim($q)."&rows=".$row."&start=".$start
 							."&fq=connected_user_id:(".$friends.")&facet=false&wt=json";
 							
 		try {
@@ -486,5 +589,7 @@ class Solr {
 	}*/
 	
 }
+
+Solr::init();
 
 /* End of file Sms.php */

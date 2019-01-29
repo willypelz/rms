@@ -1,39 +1,7 @@
 @extends('layout.template-user')
 
 @section('content')
-
-
-<section class="s-div dark">
-        <div class="container">
-
-            <div class="row">
-                <div class="col-md-4 col-md-offset-1 hidden-sm hidden-xs">
-                    <div class=""><br>
-                        <h2 class="text-white push-down no-margin"> <i class="fa fa-street-view"></i> Talent Pool</h2>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-12">
-                    <form action="cv-search.php" class="form-group"><br>
-                       <div class="form-lg">
-                         <div class="col-xs-10">
-                           <div class="row"><input placeholder="Find something you want" value="Frontend Developer" class="form-control input-lg input-talent" type="text"></div>
-                         </div>
-                         <div class="col-xs-2">
-                           <div class="row">
-                               <button type="submit" class="btn btn-lg btn-block btn-success btn-talent">
-                               <!-- Find <span class="hidden-sm hidden-xs">Candidates</span>  -->
-                               <i class="fa fa-search fa-lg"></i>
-                               </button>
-                           </div>
-                         </div>
-                       </div>
-                    </form>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
+<script src="https://checkout.simplepay.ng/v2/simplepay.js"></script>
 
 
     <section class="no-pad">
@@ -56,64 +24,32 @@
                               @else
                                     <h2>Payment via Paystack</h2>
 
-                                      <img class="pp-img" src="<?php echo asset('img/paystack_logo.jpeg') ?>" alt="Image Alternative text" title="Image Title" />
+                                      <img class="pp-img" src="<?php echo asset('img/simplepay.png') ?>" alt="Image Alternative text" title="Image Title" />
+                                      <br>
                                       <!-- <p>Important: You will be redirected to PayPal's website to securely complete your payment.</p> -->
-                                      <a onclick="pay()" id="sub_btn" class="btn btn-primary">Checkout via PayStack</a>   
+                                      <a onclick="pay()" id="sub_btn" class="btn btn-primary">Checkout via SimplePay</a>   
                               @endif
 
                             </div>
                         </div>
 
-    <script src="https://paystack.ng/js/inline.js"></script>
+              <script>
 
-          <script>
-              function pay(){
-                // console.log('got here')
-                <?php
-                        $uuid = uniqid(true);
-                ?>
-                var ajax_image = "<img src='<?php echo asset('img/faceb.gif') ?>' alt='Loading...' />";
-                // console.log(ajax_image);
-                    // $('#sub_btn').html(ajax_image)
+              function processPayment (token) {
+                  // implement your code here - we call this after a token is generated
+                  // example:
+                 // alert(token)
+                 // console.log(token)
+                 var url ="{{ route('simplepay') }}"
+                  $.ajax
+                    ({
+                        type: "POST",
+                        url: url,
+                        data: ({ rnd : Math.random() * 100000, token:token }),
+                        success: function(response){
+                             console.log(response)
 
-                    var url = "{{ route('transactions') }}";
-                    $.ajax
-                      ({
-                          type: "POST",
-                          url: url,
-                          data: ({order_id: "{{ $order_id }}", status:false, message:'Transaction Not Found', "_token":"{{ csrf_token() }}"}),
-                          success: function(response){
-                            // console.log(response) 
-                            loadPaystack();
-                          }
-                      });
-
-                    function loadPaystack(){
-                        var handler = PaystackPop.setup({
-                            key: 'pk_test_7d7271a9f0ca45ac76d8ca1569ea47948e1bb5f5',
-                            email: 'info@bus.com.ng',
-                            amount: "{{ $total_amount }}",
-                            ref: '<?php echo $uuid; ?>',
-                            callback: paystackcallback
-                        })
-                        handler.openIframe()
-                    }
-
-                    function paystackcallback(response){
-
-                 $("#paymemt-success").html('<img src="{{ asset("img/wheel.gif") }}" width="100px" /> please wait...');
-
-                    var url = "https://paystack.ng/charge/verification";
-                    $.ajax
-                      ({
-                          type: "POST",
-                          url: url,
-                          data: ({trxref:response.trxref, merchantid:'pk_test_7d7271a9f0ca45ac76d8ca1569ea47948e1bb5f5'}),
-                          success: function(response){
-                            var pars = (JSON.parse(response))
-                            var resp =(pars.status)
-
-                            if(resp == 'success'){
+                             if(response != null){
                                  var oldurl = "{{ route('transactions') }}";
 
                                  $.ajax
@@ -122,20 +58,57 @@
                                       url: oldurl,
                                       data: ({order_id:"{{ $order_id }}", status:true, message:'Transaction Successful', "_token":"{{ csrf_token() }}"}),
                                       success: function(response){
-                                          // conosle.log(response);
-                                    $("#paymemt-success").html('Payment Successful');
+                                         console.log(response);
+                                        $("#paymemt-success").html('Payment Successful');
 
                                       }
                                   });
-                            }
-                          }
-                      });
-                  }
+                             }
+                        }
+                    });
 
 
 
-                }
-          </script>
+              }
+
+                var handler = SimplePay.configure({
+                   token: processPayment, // callback function to be called after token is received
+                   key: 'test_pu_6afdbcd91aa446ecb7f79a2f29c2b530', // place your api key. Demo: test_pu_*. Live: pu_*
+                   image: 'http://' // optional: an url to an image of your choice
+                });
+
+
+              function pay(){
+
+                var url = "{{ route('transactions') }}";
+                $.ajax
+                  ({
+                      type: "POST",
+                      url: url,
+                      data: ({order_id: "{{ $order_id }}", status:false, message:'Transaction Not Found', "_token":"{{ csrf_token() }}"}),
+                      success: function(response){
+                        console.log(response) 
+                        // loadPaystack();
+                      }
+                  });
+
+                handler.open(SimplePay.CHECKOUT, // type of payment
+                {
+                   email: '{{ $company->email }}', // optional: user's email
+                   phone: '{{ $company->phone }}', // optional: user's phone number
+                   description: 'Payment for Job boards', // a description of your choosing
+                   address: '{{ $company->address }}', // user's address
+                   postal_code: '110001', // user's postal code
+                   // city: '{{ $company->location }}', // user's city
+                   country: 'NG', // user's country
+                   amount: '{{ $total_amount }}', // value of the purchase, ₦ 1100
+                   currency: 'NGN' // currency of the transaction
+                });
+
+
+              }
+
+              </script>
 
 
                         <div class="col-sm-8">
@@ -163,8 +136,56 @@
 
                             </div>
 
-                        
-                        <div class="col-sm-12">
+                  @if(!empty($jobBoards))
+                   <div class="col-sm-12">
+                        <br>
+                        <div class="">
+                            <span class="title">Invoice #80186</span><br>
+                            Invoice Date: 11/09/2015<br>
+                            Due Date: 25/09/2015
+                        </div>
+
+                            <br>
+                            <table class="table table-striped table-bordered">
+                                <tbody>
+                                <thead class="title textcenter">
+                                    <tr>
+                                        <td>Description</td>
+                                        <td>Amount</td>
+                                    </tr>
+                                </thead>
+                            
+                           <?php $total=0; ?>
+                            @foreach($items as $item)
+                                <tr>
+                                    <td>{{ $item->name }} *</td>
+                                    <td class="textcenter">{{ $item->price }}</td>
+                                </tr>
+                                <?php $total += $item->price;
+                                 ?>
+                             @endforeach 
+                             <?php 
+                             $vat = (5 / 100) * $total; 
+
+                             ?>  <tr class="title">
+                                    <td class="text-right">Sub Total:</td>
+                                    <td class="textcenter">&#8358;{{ $total }}</td>
+                                </tr>
+                                    <tr class="title">
+                                    <td class="text-right">5.00% VAT:</td>
+                                    <td class="textcenter">&#8358;{{ $vat }}</td>
+                                </tr>
+                                      
+                                <tr class="title">
+                                    <td class="text-right">Total:</td>
+                                    <td class="textcenter">N{{ $total }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                      </div>
+
+                  @else
+                      <div class="col-sm-12">
                         <br>
                         <div class="">
                             <span class="title">Invoice #80186</span><br>
@@ -206,7 +227,10 @@
                                 </tr>
                                 </tbody>
                             </table>
-                        </div>
+                      </div>
+                  @endif
+
+
                         <div class="clearfix">
                         <div class="separator separator-small"></div>
 
@@ -217,4 +241,6 @@
                     </div>
                 </div>
          </section>
+
+
 @endsection

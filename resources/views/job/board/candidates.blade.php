@@ -584,13 +584,13 @@
                 }
                 $.fn.fixDetailsforBulkActions = function () {
                     $field = $(this);
-                    cv_ids = $(".search-results .comment.media").map(function (i, v) {
+                    cv_ids = $(".search-results .comment").map(function (i, v) {
                         if ($(this).find('.media-body-check').is(':checked')) {
                             return [$(this).data("cv")];
                         }
 
                     }).get();
-                    app_ids = $(".search-results .comment.media").map(function (i, v) {
+                    app_ids = $(".search-results .comment").map(function (i, v) {
                         if ($(this).find('.media-body-check').is(':checked')) {
                             return [$(this).data("app-id")];
                         }

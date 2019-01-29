@@ -78,8 +78,6 @@ class UploadZipCv extends Job implements SelfHandling, ShouldQueue
 
                 rename($tempDir . $file, public_path('uploads/CVs/') . $cv);
 
-            } else {
-
             }
         }
 

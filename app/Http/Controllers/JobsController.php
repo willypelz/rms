@@ -770,7 +770,7 @@ class JobsController extends Controller
                 if( $mimeType == 'application/zip')
                 {
                     $request_data = json_encode( $request->all() );
-                    Log::info("shit started");
+
                     // $request_data = collect( $request->all() );
                     $this->dispatch(new UploadZipCv($filename, $randomName, $additional_data, $request_data ));
                     //

@@ -36,8 +36,6 @@ use App\Models\JobApplication;
 
 	function human_time($time, $max_units = NULL){
 		$time  = strtotime($time);
-		// $lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
-		// $units = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
 		$lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560);
 		$units = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year');
 		$unit_string_array = array();
@@ -323,17 +321,6 @@ use App\Models\JobApplication;
 
 		$status_array['ALL'] = $all;
 
-
-		// $status_array['PENDING'] = ( array_search('PENDING', $status) !== false && intval( array_search('PENDING', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('PENDING', $status) ) + 1 ] : 0;
-		// $status_array['INTERVIEWED'] = ( array_search('INTERVIEWED', $status) !== false && intval( array_search('INTERVIEWED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('INTERVIEWED', $status) ) + 1 ] : 0;
-		// $status_array['REJECTED'] = ( array_search('REJECTED', $status) !== false && intval( array_search('REJECTED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('REJECTED', $status) ) + 1 ] : 0;
-		// $status_array['HIRED'] = ( array_search('HIRED', $status) !== false && intval( array_search('HIRED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('HIRED', $status) ) + 1 ] : 0;
-		// $status_array['ASSESSED'] = ( array_search('ASSESSED', $status) !== false && intval( array_search('ASSESSED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('ASSESSED', $status) ) + 1 ] : 0;
-		// $status_array['SHORTLISTED'] = ( array_search('SHORTLISTED', $status) !== false && intval( array_search('SHORTLISTED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('SHORTLISTED', $status) ) + 1 ] : 0;
-
-
-
-		// dd(array_search('PENDING', $status));
 		return $status_array;
 	}
 
@@ -549,11 +536,9 @@ use App\Models\JobApplication;
 
 function saveCompanyUploadedCv($cvs, $additional_data, $request)
 {
-    // $settings = new Settings();
-    extract($additional_data);
-    // $last_cv_upload_index = intval( $settings->get('LAST_CV_UPLOAD_INDEX') );
 
-    // $new_cvs = [];
+    extract($additional_data);
+
     $cv_source = "";
 
     $options = ( is_null( $options ) ) ? 'upToJob' : $options;
@@ -606,8 +591,6 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
                 break;
         }
 
-
-        // $last_cv = Cv::insertGetId([ 'first_name' => 'Cv ' . $last_cv_upload_index, 'cv_file' => $cv , 'cv_source' => $cv_source ]);
 
         if($options == 'upToJob'){
             JobApplication::insert([

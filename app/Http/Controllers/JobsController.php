@@ -21,6 +21,7 @@ use App\Models\TestRequest;
 use App\Models\Invoices;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Validator;
 use Cart;
 use Session;
@@ -769,6 +770,7 @@ class JobsController extends Controller
                 if( $mimeType == 'application/zip')
                 {
                     $request_data = json_encode( $request->all() );
+
                     // $request_data = collect( $request->all() );
                     $this->dispatch(new UploadZipCv($filename, $randomName, $additional_data, $request_data ));
                     //
@@ -818,92 +820,10 @@ class JobsController extends Controller
                 else
                 {
                     $cvs = [  $filename ];
-                    $this->saveCompanyUploadedCv($cvs, $additional_data, $request);
+                    saveCompanyUploadedCv($cvs, $additional_data, $request);
                     return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
                 }
             }
-    }
-
-    public function saveCompanyUploadedCv($cvs, $additional_data, $request)
-    {
-        // $settings = new Settings();
-        extract($additional_data);
-        // $last_cv_upload_index = intval( $settings->get('LAST_CV_UPLOAD_INDEX') );
-
-        // $new_cvs = [];
-        $cv_source = "";
-
-        $options = ( is_null( $options ) ) ? 'upToJob' : $options;
-
-
-
-        switch ($options) {
-            case 'upToJob':
-                $cv_source = "Uploaded Candidate";
-                break;
-            case 'upToFolder':
-                $cv_source = $folder;
-                break;
-            default:
-                # code...
-                break;
-        }
-
-
-        foreach ($cvs as $key => $cv) {
-
-
-            switch ( $request->type ) {
-                case 'single':
-                    $last_cv = Cv::insertGetId([
-                         'first_name' => $request->cv_first_name,
-                         'last_name' => $request->cv_last_name,
-                         'email' => $request->cv_email,
-                         'phone' => $request->cv_phone,
-                         'gender' => $request->gender,
-                         'state' => $request->location,
-                         'highest_qualification' => $request->highest_qualification,
-                         'years_of_experience' => $request->years_of_experience,
-                         'last_company_worked' => $request->last_company_worked,
-                         'last_position' => $request->last_position,
-                         'willing_to_relocate' => $request->willing_to_relocate,
-                         'graduation_grade' => $request->graduation_grade,
-                         'cv_file' => $cv ,
-                         'cv_source' => $cv_source
-                     ]);
-                    break;
-
-                case 'bulk':
-                    // $last_cv_upload_index++;
-                    $last_cv = Cv::insertGetId([ 'first_name' => $key, 'cv_file' => $cv , 'cv_source' => $cv_source ]);
-                    break;
-
-                default:
-                    continue;
-                    break;
-            }
-
-
-            // $last_cv = Cv::insertGetId([ 'first_name' => 'Cv ' . $last_cv_upload_index, 'cv_file' => $cv , 'cv_source' => $cv_source ]);
-
-            if($options == 'upToJob'){
-                JobApplication::insert([
-                        'cv_id' => $last_cv,
-                        'job_id' => $job_id,
-                        'created' => date('Y-m-d H:i:s'),
-                        'action_date' => date('Y-m-d H:i:s'),
-                        'status' => 'PENDING',
-                    ]);
-            }
-        }
-
-        // $settings->set('LAST_CV_UPLOAD_INDEX',$last_cv_upload_index);
-        $user = Auth::user();
-        Solr::update_core();
-        $this->mailer->send('emails.new.cv_upload_successful', ['user' => $user, 'link'=> url('cv/talent-pool') ], function (Message $m) use ($user) {
-                $m->from('support@seamlesshr.com')->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
-            });
-        return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
     }
 
     public function JobList(Request $request)

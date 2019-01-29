@@ -602,10 +602,10 @@
                 }
                 $('.select-all input[type=checkbox]').on('click', function () {
                     if ($(this).prop('checked')) {
-                        $('.search-results .media-body input[type=checkbox]').prop('checked', true);
+                        $('.search-results .media-body-check').prop('checked', true);
                         $('#h_act-on').fadeIn();
                     } else {
-                        $('.search-results .media-body input[type=checkbox]').prop('checked', false);
+                        $('.search-results .media-body-check').prop('checked', false);
                         $('#h_act-on').fadeOut();
                     }
                     $(this).fixDetailsforBulkActions();

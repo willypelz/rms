@@ -905,18 +905,18 @@ class JobApplicationsController extends Controller
 
         $amount_spent = 0;
 
-        $stats = '<table class="table table-bordered"> 
-                            <tbody> 
-                        <tr> 
+        $stats = '<table class="table table-bordered">
+                            <tbody>
+                        <tr>
                             <td class="text-center"><h1 class="no-margin text-bold"><a href="' . route('job-candidates',
-                [$job->id]) . ' ">' . $total_applicants . '</a></h1><small class="text-muted">Applicants</small></td> 
-                            <!--td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">' . $matching . '</a></h1><small class="text-muted">Matching Candidates</small></td--> 
-                        </tr> 
-                        <tr> 
-                            <td class="text-center"><h1 class="no-margin text-muted">' . $open_days . '</h1><small class="text-muted">Days Opened</small></td> 
-                            <!--td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">' . $amount_spent . '</a></h1><small class="text-muted">Amount Spent</small></td--> 
+                [$job->id]) . ' ">' . $total_applicants . '</a></h1><small class="text-muted">Applicants</small></td>
+                            <!--td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">' . $matching . '</a></h1><small class="text-muted">Matching Candidates</small></td-->
                         </tr>
-                        </tbody> 
+                        <tr>
+                            <td class="text-center"><h1 class="no-margin text-muted">' . $open_days . '</h1><small class="text-muted">Days Opened</small></td>
+                            <!--td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">' . $amount_spent . '</a></h1><small class="text-muted">Amount Spent</small></td-->
+                        </tr>
+                        </tbody>
                         </table>';
         echo $stats;
 

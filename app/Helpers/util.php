@@ -1,6 +1,9 @@
 <?php
 use App\Models\JobActivity;
 use App\Models\Job;
+use App\Models\Cv;
+use App\Libraries\Solr;
+use App\Models\JobApplication;
 // use Faker;
 
 	function test(){
@@ -31,7 +34,7 @@ use App\Models\Job;
 		return grades()[$index];
 	}
 
-	function human_time($time, $max_units = NULL){	
+	function human_time($time, $max_units = NULL){
 		$time  = strtotime($time);
 		// $lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
 		// $units = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
@@ -60,7 +63,7 @@ use App\Models\Job;
 
 		return ($future) ? implode($unit_string_array, ', ') . ' to go' : implode($unit_string_array, ', ') . ' ago';
 	}
-	
+
 
 	function save_activities($activity_type,  $job_id = false, $job_app_id = false, $comment = false) {
 
@@ -83,7 +86,7 @@ use App\Models\Job;
 			}
 
 		  if (!$job_id) $job_id = NULL;
-		  
+
 		  if (!$comment) $comment = NULL;
 
 		  if( is_array( $job_app_id ) )
@@ -114,9 +117,9 @@ use App\Models\Job;
 				 'updated_at' => date('Y-m-d H:i:s'),
 		  	];
 		  }
-		  
 
-		 
+
+
 
 		$response =  JobActivity::insert( $insert );
 
@@ -167,7 +170,7 @@ use App\Models\Job;
 				'Outside Nigeria'=>'Outside Nigeria',
 
 			);
-	
+
 	}
 
 	function remove_cv_contact($cv) {
@@ -207,23 +210,23 @@ use App\Models\Job;
 			case 'cv':
 				$string1 = trim( $data['first_name'] );
 				$string2 = trim(  @$data['last_name'] );
-				
+
 				break;
 			case 'user':
 				$data['name'] = str_replace('  ', '', $data['name']);
 				$data_arr = explode(' ', $data['name']);
 				$string1 = $data_arr[0];
 				$string2 = @$data_arr[1];
-				
+
 				break;
-			
+
 			default:
 				# code...
 				break;
 		}
 
 		return 'http://dummyimage.com/300x300/10588a/ffffff.jpg&text='.strtoupper( substr($string1,0,1).substr($string2,0,1) );
-		
+
 	}
 
 	function default_color_picture($data, $type='cv')
@@ -237,15 +240,15 @@ use App\Models\Job;
 			case 'cv':
 				$string1 = @$data['first_name'];
 				$string2 = @$data['last_name'];
-				
+
 				break;
 			case 'user':
 				$data_arr = explode(' ', $data['name']);
 				$string1 = $data_arr[0];
 				$string2 = @$data_arr[1];
-				
+
 				break;
-			
+
 			default:
 				# code...
 				break;
@@ -275,7 +278,7 @@ use App\Models\Job;
 
 
 		return [ 'color' => '#'.$color, 'image' => 'http://dummyimage.com/300x300/'.$color.'/ffffff.jpg&text='.$text ];
-		
+
 	}
 
 
@@ -288,10 +291,10 @@ use App\Models\Job;
 		$all = 0; //total number of results
 		// dd($solr_arr);
 
-		for ($i=0; $i < count($status); $i = $i+2) { 
+		for ($i=0; $i < count($status); $i = $i+2) {
 
 			$val = $status[$i];
-			$count = $status[$i + 1];														
+			$count = $status[$i + 1];
 			if(empty($val))
 				$val = "Not Specified";
 
@@ -299,7 +302,7 @@ use App\Models\Job;
                 strtolower(preg_replace('|[^a-z]|i', '', $val)) == 'choose' ||
                 strtolower($val) == 'select')
 				$val = "Not Specified";
-			
+
 			if($count > 0)
 				$ret[$val] = $count;
 		}
@@ -316,8 +319,8 @@ use App\Models\Job;
 			$status_array = $ret;
 			$all = array_sum( array_values( $ret ) );
 		}
-		
-		
+
+
 		$status_array['ALL'] = $all;
 
 
@@ -328,8 +331,8 @@ use App\Models\Job;
 		// $status_array['ASSESSED'] = ( array_search('ASSESSED', $status) !== false && intval( array_search('ASSESSED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('ASSESSED', $status) ) + 1 ] : 0;
 		// $status_array['SHORTLISTED'] = ( array_search('SHORTLISTED', $status) !== false && intval( array_search('SHORTLISTED', $status) + 1 ) > 0 ) ? @$status[ intval( array_search('SHORTLISTED', $status) ) + 1 ] : 0;
 
-		
-		
+
+
 		// dd(array_search('PENDING', $status));
 		return $status_array;
 	}
@@ -361,7 +364,7 @@ use App\Models\Job;
 			}
         }
 
-		
+
 	}
 
 	function get_current_company()
@@ -398,7 +401,7 @@ use App\Models\Job;
     }
 
 	function convert_number_to_words($number) {
-	    
+
 	    $hyphen      = '-';
 	    $conjunction = ' and ';
 	    $separator   = ', ';
@@ -441,11 +444,11 @@ use App\Models\Job;
 	        1000000000000000    => 'quadrillion',
 	        1000000000000000000 => 'quintillion'
 	    );
-	    
+
 	    if (!is_numeric($number)) {
 	        return false;
 	    }
-	    
+
 	    if (($number >= 0 && (int) $number < 0) || (int) $number < 0 - PHP_INT_MAX) {
 	        // overflow
 	        trigger_error(
@@ -458,13 +461,13 @@ use App\Models\Job;
 	    if ($number < 0) {
 	        return $negative . convert_number_to_words(abs($number));
 	    }
-	    
+
 	    $string = $fraction = null;
-	    
+
 	    if (strpos($number, '.') !== false) {
 	        list($number, $fraction) = explode('.', $number);
 	    }
-	    
+
 	    switch (true) {
 	        case $number < 21:
 	            $string = $dictionary[$number];
@@ -496,7 +499,7 @@ use App\Models\Job;
 	            }
 	            break;
 	    }
-	    
+
 	    if (null !== $fraction && is_numeric($fraction)) {
 	        $string .= $decimal;
 	        $words = array();
@@ -505,21 +508,21 @@ use App\Models\Job;
 	        }
 	        $string .= implode(' ', $words);
 	    }
-	    
+
 	    return $string;
 	}
 
-	function rrmdir($dir) { 
-	   if (is_dir($dir)) { 
-	     $objects = scandir($dir); 
-	     foreach ($objects as $object) { 
-	       if ($object != "." && $object != "..") { 
-	         if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object); 
-	       } 
-	     } 
-	     reset($objects); 
-	     rmdir($dir); 
-	   } 
+	function rrmdir($dir) {
+	   if (is_dir($dir)) {
+	     $objects = scandir($dir);
+	     foreach ($objects as $object) {
+	       if ($object != "." && $object != "..") {
+	         if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object);
+	       }
+	     }
+	     reset($objects);
+	     rmdir($dir);
+	   }
 	 }
 
 	function get_company_logo($logo){
@@ -527,7 +530,7 @@ use App\Models\Job;
 		{
 			return asset('img/company.png');
 		}
-		
+
 		if( File::exists( public_path( 'uploads/'.@$logo ) ) )
         {
             return asset('uploads/'.@$logo);
@@ -543,3 +546,86 @@ use App\Models\Job;
 		return \App\Models\InterviewNoteTemplates::where('company_id',get_current_company()->id )->get();
 
 	}
+
+function saveCompanyUploadedCv($cvs, $additional_data, $request)
+{
+    // $settings = new Settings();
+    extract($additional_data);
+    // $last_cv_upload_index = intval( $settings->get('LAST_CV_UPLOAD_INDEX') );
+
+    // $new_cvs = [];
+    $cv_source = "";
+
+    $options = ( is_null( $options ) ) ? 'upToJob' : $options;
+
+
+
+    switch ($options) {
+        case 'upToJob':
+            $cv_source = "Uploaded Candidate";
+            break;
+        case 'upToFolder':
+            $cv_source = $folder;
+            break;
+        default:
+            # code...
+            break;
+    }
+
+
+    foreach ($cvs as $key => $cv) {
+
+
+        switch ( $request->type ) {
+            case 'single':
+                $last_cv = Cv::insertGetId([
+                    'first_name' => $request->cv_first_name,
+                    'last_name' => $request->cv_last_name,
+                    'email' => $request->cv_email,
+                    'phone' => $request->cv_phone,
+                    'gender' => $request->gender,
+                    'state' => $request->location,
+                    'highest_qualification' => $request->highest_qualification,
+                    'years_of_experience' => $request->years_of_experience,
+                    'last_company_worked' => $request->last_company_worked,
+                    'last_position' => $request->last_position,
+                    'willing_to_relocate' => $request->willing_to_relocate,
+                    'graduation_grade' => $request->graduation_grade,
+                    'cv_file' => $cv ,
+                    'cv_source' => $cv_source
+                ]);
+                break;
+
+            case 'bulk':
+                // $last_cv_upload_index++;
+                $last_cv = Cv::insertGetId([ 'first_name' => $key, 'cv_file' => $cv , 'cv_source' => $cv_source ]);
+                break;
+
+            default:
+                continue;
+                break;
+        }
+
+
+        // $last_cv = Cv::insertGetId([ 'first_name' => 'Cv ' . $last_cv_upload_index, 'cv_file' => $cv , 'cv_source' => $cv_source ]);
+
+        if($options == 'upToJob'){
+            JobApplication::insert([
+                'cv_id' => $last_cv,
+                'job_id' => $job_id,
+                'created' => date('Y-m-d H:i:s'),
+                'action_date' => date('Y-m-d H:i:s'),
+                'status' => 'PENDING',
+            ]);
+        }
+    }
+
+    // $settings->set('LAST_CV_UPLOAD_INDEX',$last_cv_upload_index);
+    $user = Auth::user();
+    Solr::update_core();
+    Mail::send('emails.new.cv_upload_successful', ['user' => $user, 'link'=> url('cv/talent-pool') ], function ($m) use ($user) {
+        $m->from('support@seamlesshr.com')->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
+    });
+
+    return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
+}

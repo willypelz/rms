@@ -283,8 +283,6 @@ use App\Models\JobApplication;
 
 	function get_application_statuses($status, $statuses = [])
 	{
-
-
 		$ret = array();
 		$all = 0; //total number of results
 		// dd($solr_arr);

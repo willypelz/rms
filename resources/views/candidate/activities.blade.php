@@ -11,7 +11,7 @@
         <div class="row">
                     <div class="col-sm-10 col-sm-offset-1">
                         <div class="separator separator-small"></div>
-                        
+
                         <!-- Sidebar -->
 
                         <div class="col-md-3">
@@ -35,31 +35,30 @@
                                     @foreach( $activities as $activity )
                                       @if( !in_array($activity->activity_type, $ignore_list) )
                                         <li role="candidate-application" class="list-group-item">
-                                          
+
                                           <span class="fa-stack fa-lg i-notify">
                                             <i class="fa fa-circle fa-stack-2x text-warning"></i>
                                             <i class="fa fa-hourglass-half fa-stack-1x fa-inverse"></i>
                                           </span>
-                                          
-                                          
+
+
                                             @if($activity->activity_type == 'APPLIED')
                                               <h4 class="no-margin text-info">You applied for {{ $current_application->job->title }} at {{ $current_application->job->company->name }} </h4>
                                             @else
-                                              <h4 class="no-margin text-info">{{ $current_application->job->company->name }} moved your application to {{ str_replace('-', ' ', $activity->activity_type ) }}</h4>
-
+                                                <h4 class="no-margin text-info">{{ $current_application->job->company->name }} moved your application to {{ str_replace('-', ' ', $activity->activity_type ) }}</h4>
                                             @endif
 
                                             <p>
                                               <small class="text-muted pull-right">[{{ date('D. j M, Y', strtotime( $activity->created_at)) }}]</small>
                                               <b>Responed</b>: {{ date('D. j M, Y', strtotime( $activity->created_at)) }}
                                             </p>
-                                            
-                                          
-                                          
+
+
+
                                         </li>
                                       @endif
                                     @endforeach
-                                    
+
                                   </ul>
                                   <div class="clearfix"></div>
                                 </div>
@@ -82,9 +81,9 @@
                         </div>
                         <div class="clearfix"></div>
                     </div>
-                </div>    
+                </div>
 
-                
+
 
     </div>
     <div class="clearfix"></div>

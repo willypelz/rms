@@ -119,10 +119,11 @@ class CandidateController extends Controller
         $application_id      = $request->application_id;
         $current_application = JobApplication::with('cv', 'job.company')->where('id', $application_id)->first();
         $ignore_list         = [
-            'JOB-CREATED'
+            'JOB-CREATED',
+            'TEST_RESULT'
         ];
         $show_messages_tab   = true;
-        $activities          = JobActivity::where('job_application_id', $application_id)->get();
+        $activities          = JobActivity::where('job_application_id', $application_id)->orderBy('id','DESC')->get();
 
         return view('candidate.activities',
             compact('application_id', 'ignore_list', 'show_messages_tab', 'activities', 'current_application'));

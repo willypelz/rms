@@ -287,6 +287,19 @@ use App\Models\JobApplication;
 		$all = 0; //total number of results
 		// dd($solr_arr);
 
+        $status_from_db = collect( \DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`cv_id`=`cvs`.`id`") );
+
+        $status_array2  =['ALL' => $status_from_db->count()];
+
+        foreach ($statuses as $stat) {
+            $status_array2[$stat] = $status_from_db->where('status',$stat)->count();
+        }
+        $status_array2 ['ALL'] = $status_from_db->count();
+
+        return $status_array2;
+
+/*
+
 		for ($i=0; $i < count($status); $i = $i+2) {
 
 			$val = $status[$i];
@@ -319,7 +332,7 @@ use App\Models\JobApplication;
 
 		$status_array['ALL'] = $all;
 
-		return $status_array;
+		return $status_array;*/
 	}
 
 

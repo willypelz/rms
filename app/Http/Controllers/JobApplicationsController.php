@@ -38,6 +38,7 @@ use App\Models\InterviewNoteTemplates;
 use App\Models\Message as CandidateMessage;
 use App\Models\WorkflowStep;
 
+
 class JobApplicationsController extends Controller
 {
     private $search_params = [
@@ -376,12 +377,16 @@ class JobApplicationsController extends Controller
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],
             $statuses);
+//        $statuses_grouped = JobApplication::where('job_id',53)->select('status', \solrDB::raw('count(*) as total'))
+//        ->groupBy('status')
+//        ->pluck('total','status')->all();
+
 
 
         if (isset($request->status)) {
             $status = $request->status;
-
-//            dd($status);
+            if($request->status != "")
+                $application_statuses['ALL'] = $application_statuses[$status];
         }
 
         $end = (($start + $this->search_params['row']) > intval($application_statuses['ALL'])) ? $application_statuses['ALL'] : ($start + $this->search_params['row']);
@@ -423,6 +428,7 @@ class JobApplicationsController extends Controller
                 'video_application_score' => @$request->video_application_score,
                 'test_score' => @$request->test_score
             ])->render();
+
             return response()->json([
                 'search_results' => $search_results,
                 'search_filters' => $search_filters,
@@ -797,10 +803,10 @@ class JobApplicationsController extends Controller
     public function getAllApplicantStatus(Request $request)
     {
         $job = Job::with(['form_fields', 'workflow.workflowSteps'])->find($request->job_id);
-        $result = Solr::get_applicants($this->search_params,$request->job_id);
+//        $result = Solr::get_applicants($this->search_params,$request->job_id);
         $statuses = $job->workflow->workflowSteps()->pluck('slug');
 
-        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],
+        $application_statuses = get_application_statuses([],
             $statuses);
 
 

@@ -377,6 +377,7 @@ class JobApplicationsController extends Controller
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],
             $statuses);
 
+
         if (isset($request->status)) {
             $status = $request->status;
 
@@ -795,24 +796,13 @@ class JobApplicationsController extends Controller
 
     public function getAllApplicantStatus(Request $request)
     {
-
         $job = Job::with(['form_fields', 'workflow.workflowSteps'])->find($request->job_id);
-        $applications = JobApplication::where('job_id', $request->job_id)->get()->groupBy('status');
+        $result = Solr::get_applicants($this->search_params,$request->job_id);
+        $statuses = $job->workflow->workflowSteps()->pluck('slug');
 
-        $application_statuses = [];
-        $total = 0;
-        foreach ($job->workflow->workflowSteps as $step) {
+        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],
+            $statuses);
 
-            if (isset($applications[$step->slug])) {
-                $application_statuses[$step->slug] = count($applications[$step->slug]);
-            } else {
-                $application_statuses[$step->slug] = 0;
-            }
-
-            $total += $application_statuses[$step->slug];
-
-        }
-        $application_statuses['ALL'] = $total;
 
         return view('job.board.includes.applicant-status', compact('application_statuses', 'result', 'job'));
     }

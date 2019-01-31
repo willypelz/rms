@@ -1,5 +1,5 @@
 @if( $result['response']['numFound'] > 0 )
-    
+
     @foreach( @$result['response']['docs'] as $cv )
 
         <?php  $pic = default_color_picture($cv);
@@ -7,7 +7,7 @@
         $current_status = ($cv['application_status'][$current_app_index] == "ASSESSED") ? "TEST" : $cv['application_status'][$current_app_index];
 
         ?>
-        
+
         <div class="ats-abx">
             <div class="comment" data-cv="{{ $cv['id'] }}"
                  data-app-id="{{ $cv['application_id'][ $current_app_index ] }}">
@@ -26,7 +26,7 @@
                     <h4 class="media-heading text-muted">
                         <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}"
                            target="_blank"><strong>{{ ucwords( @$cv['first_name']. " " . @$cv['last_name'] ) }}</strong></a>
-                        
+
                         <span class="span-stage">{{ $current_status }}</span>
                         @foreach($job->workflow->workflowSteps as $workflowStep)
                             @if($workflowStep->slug == $current_status && !$cv['is_approved'] && $workflowStep->requires_approval)
@@ -42,10 +42,10 @@
                     $appl_status = $cv['application_status'][$current_app_index];
                     $applicant_step = $job->workflow->workflowSteps->where('slug', $appl_status)->first(); ?>
                     @if( @$applicant_step->type == 'assessment')
-                        
+
                         @if( is_array( @$cv['test_name'] ) )
                             @for($i = 0; $i < count(@$cv['test_name']); $i++)
-                                
+
                                 <p> {{ @$cv['test_name'][$i] }}
                                     <span class="span-stage">
                                         @if(!empty($cv['test_score'])){{ number_format(@$cv['test_score'][$i]) }} @endif
@@ -58,17 +58,17 @@
                                     @endif
                                 </p>
                             @endfor
-                        
+
                         @else
                             <p class="text-warning">No test requested for candidate</p>
                         @endif
-                    
+
                     @endif
-                    
-                    
+
+
                     <div>
                         <span class="text-muted"><i
-                                    class="fa fa-calendar"></i> {{ human_time( @$cv['application_date'], 1) }} &nbsp;
+                                    class="fa fa-calendar"></i> {{ \Carbon\Carbon::parse( @$cv['application_date'] )->subHour()->diffForHumans() }} &nbsp;
                             &middot; &nbsp;</span>
                         &nbsp;
                         <a id="showCvBtn" data-toggle="modal" data-target="#cvModal"
@@ -81,7 +81,7 @@
                         </a>
                     <!--span class="text-muted">·</span>
               <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}">View Application</a-->
-                        
+
                         <span class="text-muted">&nbsp; </span>
                         @if($cv['is_approved'])
                             <span class="dropdown">
@@ -95,11 +95,11 @@
                                 <ul class="dropdown-menu" aria-labelledby="moveToDrop"
                                 >
                                     @foreach($job->workflow->workflowSteps as $workflowStep)
-                                        
+
                                         @if($workflowStep->slug == 'ALL' || $workflowStep->slug == @$applicant_step->slug)
                                             @continue
                                         @endif
-                                        
+
                                         <li>
                                             <a data-toggle="modal"
                                                data-target="#viewModal"
@@ -117,13 +117,13 @@
                                             </a>
                                         </li>
                                     @endforeach
-                                
-                                
+
+
                                 </ul>
                             </span>
-                            
+
                             @if(@$applicant_step->type == 'assessment')
-                                
+
                                 <a data-toggle="modal"
                                    data-target="#viewModal"
                                    id="modalButton"
@@ -137,11 +137,11 @@
                                    data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
                                    data-cv="{{ $cv['id'] }}"
                                    data-type="wide">Test</a>
-                            
+
                             @endif
-                            
+
                             @if(@$applicant_step->type == 'interview')
-                                
+
                                 <a data-toggle="modal"
                                    data-target="#viewModal"
                                    id="modalButton"
@@ -155,9 +155,9 @@
                                    data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
                                    data-cv="{{ $cv['id'] }}"
                                    data-type="normal">Interview</a>
-                            
+
                             @endif
-                            
+
                             @if(  @$applicant_step->type == "background-check" || @$applicant_step->type == "medical-check" )
                                 <span class="text-muted"> &nbsp; &middot; &nbsp;</span>
                                 <span class="dropdown">
@@ -184,7 +184,7 @@
                                                    data-type="wide">Background Check</a>
                                             </li>
                                         @endif
-                                        
+
                                         @if(@$applicant_step->type == 'medical-check')
                                             <li>
                                                 <a data-toggle="modal"
@@ -202,12 +202,12 @@
                                                    data-type="wide">Medical Check</a>
                                             </li>
                                         @endif
-                                    
+
                                     </ul>
                                 </span>
-                            
+
                             @endif
-                        
+
                         @else
                             @foreach($job->workflow->workflowSteps as $workflowStep)
                                 @if(in_array(auth()->user()->id, $workflowStep->approvals->pluck('id')->toArray()) && $workflowStep->slug == @$applicant_step->slug)
@@ -226,9 +226,9 @@
                                        class="text-success">
                                         Approve
                                     </a>
-                                    
+
                                     <span class="text-muted">&nbsp; · &nbsp;</span>
-                                    
+
                                     <span class="dropdown">
                                         <a id="moveToDrop"
                                            class="dropdown-toggle text-danger"
@@ -240,11 +240,11 @@
                                         <ul class="dropdown-menu" aria-labelledby="moveToDrop"
                                         >
                                             @foreach($job->workflow->workflowSteps as $workflowStep)
-                                                
+
                                                 @if($workflowStep->slug == 'ALL' || $workflowStep->slug == @$applicant_step->slug)
                                                     @continue
                                                 @endif
-                                                
+
                                                 <li>
                                                     <a data-toggle="modal"
                                                        data-target="#viewModal"
@@ -261,14 +261,14 @@
                                                         {{ $workflowStep->name }}
                                                     </a>
                                                 </li>
-                                            
+
                                             @endforeach
                                         </ul>
                                     </span>
                                 @endif
                             @endforeach
                         @endif
-                        
+
                         {{-- @if($status != 'SHORTLISTED' && $status != 'ASSESSED' && $status != 'INTERVIEWED' && $status != 'HIRED')  --}}
                         {{--@if($status != 'SHORTLISTED')
                             <a data-toggle="modal"
@@ -368,24 +368,24 @@
 
 --}}
                         <span class="text-muted">&nbsp; &middot; &nbsp;</span>
-                        
+
                         <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal"
                            data-title="Comment" data-view="{{ route('modal-comment') }}"
                            data-app-id="{{ $cv['application_id'][ $current_app_index ] }}" data-cv="{{ $cv['id'] }}"
                            data-type="normal">Comment</a>
-                        
+
                         <span class="pull-right hide">
                             <a class="text-muted" href="#">Background Check</a>
                             <span class="text-muted">·</span>
                         </span>
                     </div>
-                
-                
+
+
                 </div>
             </div>
         </div>
-        
-        
+
+
         <!-- <div class="modal fade" tabindex="-1" id="reviewCv" data-user="{{ @$cv['id'] }}" role="dialog" aria-labelledby="reviewCv">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -401,15 +401,15 @@
                                 <div id="message"></div>
                                 <div class="form-group">
                                     <textarea class="form-control" id="add_folder" data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"></textarea>
-                              
-                                    
+
+
                                   </div>
                                   <div class="clearfix"></div>
                               <div class="pull-right">
                                   <a href="javascript://" id="writeReviewBtn" data-app-id="{{ $cv['application_id'][ $current_app_index ] }}" data-cv="{{ $cv['id'] }}" class="btn btn-success pull-right">Send</a>
                                   <div class="separator separator-small"></div>
                               </div>
-        
+
                             </div>
                         </div>
                     </div>
@@ -423,7 +423,7 @@
 
         var id = "{{ $cv['id'] }}";
         var url = "{{ route('cart') }}"
-        
+
         $("#cartAdd"+id).click(function(){
             // console.log(url)
             $.ajax
@@ -432,9 +432,9 @@
               url: url,
               data: ({ rnd : Math.random() * 100000, cv_id: id, type:'add', name:"{{ $cv['first_name']. " " . @$cv['last_name'] }}", 'qty':1, 'price':500, "_token":"{{ csrf_token() }}"}),
               success: function(response){
-                
+
                 console.log(response);
-                
+
               }
           });
 
@@ -449,9 +449,9 @@
               url: url,
               data: ({ rnd : Math.random() * 100000, cv_id: id, type:'remove', "_token":"{{ csrf_token() }}"}),
               success: function(response){
-                
+
                 console.log(response);
-                
+
               }
           });
 
@@ -465,9 +465,9 @@
               url: url,
               data: ({ rnd : Math.random() * 100000, cv_id: id, type:'clear', "_token":"{{ csrf_token() }}"}),
               success: function(response){
-                
+
                 console.log(response);
-                
+
               }
           });
 
@@ -478,7 +478,7 @@
 
 </script-->
     @endforeach
-    
+
     <script type="text/javascript">
         total_candidates = "{{ $application_statuses['ALL'] }}";
 

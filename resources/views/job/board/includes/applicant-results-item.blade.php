@@ -21,7 +21,7 @@
                              width="90%">
                     </a>
                 </span>
-                <div class="">
+                <div class="col-md-10 col-sm-9" style="padding-bottom: 10px;">
                     <input type="checkbox" class="media-body-check check-applicant pull-right">
                     <h4 class="media-heading text-muted">
                         <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}"
@@ -167,41 +167,41 @@
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="checkDrop"
                                     >
-                                        @if(@$applicant_step->type == 'background-check')
-                                            <li>
-                                                <a data-toggle="modal"
-                                                   data-target="#viewModal"
-                                                   id="modalButton"
-                                                   href="#viewModal"
-                                                   data-title="Background Check"
-                                                   data-view="{{ route('modal-background-check',[
-                                               'step' => $applicant_step->name,
-                                               'stepSlug' => $applicant_step->slug,
-                                               'stepId' => $applicant_step->id
-                                               ]) }}"
-                                                   data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
-                                                   data-cv="{{ $cv['id'] }}"
-                                                   data-type="wide">Background Check</a>
-                                            </li>
-                                        @endif
+                                        {{--@if(@$applicant_step->type == 'background-check')--}}
+                                            {{--<li>--}}
+                                                {{--<a data-toggle="modal"--}}
+                                                   {{--data-target="#viewModal"--}}
+                                                   {{--id="modalButton"--}}
+                                                   {{--href="#viewModal"--}}
+                                                   {{--data-title="Background Check"--}}
+                                                   {{--data-view="{{ route('modal-background-check',[--}}
+                                               {{--'step' => $applicant_step->name,--}}
+                                               {{--'stepSlug' => $applicant_step->slug,--}}
+                                               {{--'stepId' => $applicant_step->id--}}
+                                               {{--]) }}"--}}
+                                                   {{--data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"--}}
+                                                   {{--data-cv="{{ $cv['id'] }}"--}}
+                                                   {{--data-type="wide">Background Check</a>--}}
+                                            {{--</li>--}}
+                                        {{--@endif--}}
 
-                                        @if(@$applicant_step->type == 'medical-check')
-                                            <li>
-                                                <a data-toggle="modal"
-                                                   data-target="#viewModal"
-                                                   id="modalButton"
-                                                   href="#viewModal"
-                                                   data-title="Medical Check"
-                                                   data-view="{{ route('modal-medical-check',[
-                                               'step' => $applicant_step->name,
-                                               'stepSlug' => $applicant_step->slug,
-                                               'stepId' => $applicant_step->id
-                                               ]) }}"
-                                                   data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
-                                                   data-cv="{{ $cv['id'] }}"
-                                                   data-type="wide">Medical Check</a>
-                                            </li>
-                                        @endif
+                                        {{--@if(@$applicant_step->type == 'medical-check')--}}
+                                            {{--<li>--}}
+                                                {{--<a data-toggle="modal"--}}
+                                                   {{--data-target="#viewModal"--}}
+                                                   {{--id="modalButton"--}}
+                                                   {{--href="#viewModal"--}}
+                                                   {{--data-title="Medical Check"--}}
+                                                   {{--data-view="{{ route('modal-medical-check',[--}}
+                                               {{--'step' => $applicant_step->name,--}}
+                                               {{--'stepSlug' => $applicant_step->slug,--}}
+                                               {{--'stepId' => $applicant_step->id--}}
+                                               {{--]) }}"--}}
+                                                   {{--data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"--}}
+                                                   {{--data-cv="{{ $cv['id'] }}"--}}
+                                                   {{--data-type="wide">Medical Check</a>--}}
+                                            {{--</li>--}}
+                                        {{--@endif--}}
 
                                     </ul>
                                 </span>

@@ -547,6 +547,7 @@
 
                         $('.search-results').html(data.search_results);
                         $('#search-filters').html(data.search_filters);
+
                         $(document).getShowing();
                         $('#mass-action a').show();
 

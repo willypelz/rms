@@ -923,7 +923,7 @@ class JobsController extends Controller
 
         $result = Solr::get_applicants($this->search_params, $id,'');
 
-        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'],$id );
 
         $active_tab = 'promote';
 
@@ -976,7 +976,7 @@ class JobsController extends Controller
         $result = Solr::get_applicants($this->search_params, $id,'');
 
 
-        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'], $id);
         // return view('emails.e-exculsively-invited');
         $job_team_invites = JobTeamInvite::where('job_id', $job->id)->where('is_accepted',0)->where('is_declined',0)->get();
         return view('job.board.team', compact('job', 'active_tab', 'company','result','application_statuses','owner','job_team_invites'));
@@ -1389,7 +1389,7 @@ class JobsController extends Controller
 
         $result = Solr::get_applicants($this->search_params, $id,'');
 
-        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $job->workflow->workflowSteps()->pluck('slug'));
+        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id, $job->workflow->workflowSteps()->pluck('slug'));
 
         $applicant_funnel = [];
         $funnel_cummulative = 0;
@@ -1444,7 +1444,7 @@ class JobsController extends Controller
 
         $result = Solr::get_applicants($this->search_params, $id,'');
 
-        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'], $id );
 
 
         return view('job.board.matching', compact('job', 'active_tab','result','application_statuses'));

@@ -375,7 +375,7 @@ class JobApplicationsController extends Controller
 
         $statuses = $job->workflow->workflowSteps()->pluck('slug');
 
-        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],
+        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$request->jobID,
             $statuses);
 //        $statuses_grouped = JobApplication::where('job_id',53)->select('status', \solrDB::raw('count(*) as total'))
 //        ->groupBy('status')
@@ -806,7 +806,7 @@ class JobApplicationsController extends Controller
 //        $result = Solr::get_applicants($this->search_params,$request->job_id);
         $statuses = $job->workflow->workflowSteps()->pluck('slug');
 
-        $application_statuses = get_application_statuses([],
+        $application_statuses = get_application_statuses([],$request->job_id,
             $statuses);
 
 
@@ -816,7 +816,7 @@ class JobApplicationsController extends Controller
     public function JobListData(Request $request)
     {
         $result = Solr::get_applicants($this->search_params, $request->job_id, @$request->status);
-        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],
+        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$request->job_id,
             $statuses = $request->workflow_steps);
 
         if ($request->type == 'job_view') {
@@ -873,7 +873,7 @@ class JobApplicationsController extends Controller
 
                 $result = Solr::get_applicants($this->search_params, $job_id,
                     ''); // status parater value is formerly : @$request->status
-                $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],
+                $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$job_id,
                     $statuses = $job->workflow->workflowSteps()->pluck('slug'));
 
 

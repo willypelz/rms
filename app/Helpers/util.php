@@ -281,13 +281,16 @@ use App\Models\JobApplication;
 
 
 
-	function get_application_statuses($status, $statuses = [])
+	function get_application_statuses($status,$job_id=null, $statuses = [])
 	{
 		$ret = array();
 		$all = 0; //total number of results
 		// dd($solr_arr);
 
-        $status_from_db = collect( \DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`cv_id`=`cvs`.`id`") );
+        if( is_null($job_id) )
+            $status_from_db = collect( \DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`cv_id`=`cvs`.`id`") );
+        else
+            $status_from_db = collect( \DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`job_id` = ".$job_id." and `job_applications`.`cv_id`=`cvs`.`id`") );
 
         $status_array2  =['ALL' => $status_from_db->count()];
 

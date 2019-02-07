@@ -541,10 +541,10 @@ class JobsController extends Controller
                         //Send New job notification email
                         $to = 'support@seamlesshr.com';
                         $mail = Mail::send('emails.new.job-application', ['job' => $job ,'boards' => null ,'company' => $company], function ($m) use($company,$to) {
-                        //     $m->from($to, @$company->name);
+                            $m->from($to, @$company->name);
 
-                        //     $m->to($to)->subject('New Job initiated');
-                        // });
+                            $m->to($to)->subject('New Job initiated');
+                        });
 
                         // $insidify_url = Curl::to("https://insidify.com/ss-post-job")
                         //             ->withData(  [ 'secret' => '1ns1d1fy', 'data' =>  [ 'job' => $job_data, 'specializations' => @$request->specializations, 'company' => get_current_company()->toArray(), 'action_link' => url('job/apply/'.$job->id.'/'.str_slug($job->title) ) ]  ]  )
@@ -600,7 +600,6 @@ class JobsController extends Controller
                 ];
                 $job_link = urlencode($job_link);
                 $url = "{$callback_url}?api_key={$api_key}&requisition_id={$requisition_id}&job_link={$job_link}";
-                // dd($url);
                 // Get cURL resource
                 $curl = curl_init();
                 // Set some options - we are passing in a useragent too here

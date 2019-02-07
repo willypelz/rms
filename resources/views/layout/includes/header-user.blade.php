@@ -13,21 +13,19 @@
     <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-social.css') }}" rel="stylesheet">
-    {{--<link href="{{ asset('css/owl.carousel.css') }}" rel="stylesheet">--}}
-    {{--<link href="{{ asset('css/owl.theme.css') }}" rel="stylesheet">--}}
 
     <link href="https://cdn.insidify.com/dist/css/owl.carousel.min.css" rel="stylesheet">
     <link href="https://cdn.insidify.com/dist/css/owl.theme.default.min.css" rel="stylesheet">
 
     <link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/select2.css') }}" rel="stylesheet">
-    
+
     <script src="//cdn.ckeditor.com/4.5.7/basic/ckeditor.js"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style type="text/css">
         .container {
@@ -37,4 +35,8 @@
     </style>
 
     <link rel="stylesheet" href="{{ secure_asset('css/update-2018.css')  }}">
+    <!-- Add Custom CSS for brand white listing here -->
+    @if(env('CUSTOM_BRAND_STYLE'))
+    <link href="{{ asset('css/'.env('CUSTOM_BRAND_STYLE')) }}" rel="stylesheet">
+    @endif
 </head>

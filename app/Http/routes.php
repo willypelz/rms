@@ -314,6 +314,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'job-status', ['uses' => 'JobsController@JobStatus', 'as' => 'job-status']);
 
+
     // Route::any('log-in', function () {
     //     return view('auth.login');
     // });

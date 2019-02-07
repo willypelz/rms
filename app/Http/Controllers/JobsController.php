@@ -541,10 +541,10 @@ class JobsController extends Controller
                         //Send New job notification email
                         $to = 'support@seamlesshr.com';
                         $mail = Mail::send('emails.new.job-application', ['job' => $job ,'boards' => null ,'company' => $company], function ($m) use($company,$to) {
-                            $m->from($to, @$company->name);
+                        //     $m->from($to, @$company->name);
 
-                            $m->to($to)->subject('New Job initiated');
-                        });
+                        //     $m->to($to)->subject('New Job initiated');
+                        // });
 
                         // $insidify_url = Curl::to("https://insidify.com/ss-post-job")
                         //             ->withData(  [ 'secret' => '1ns1d1fy', 'data' =>  [ 'job' => $job_data, 'specializations' => @$request->specializations, 'company' => get_current_company()->toArray(), 'action_link' => url('job/apply/'.$job->id.'/'.str_slug($job->title) ) ]  ]  )
@@ -587,6 +587,42 @@ class JobsController extends Controller
                         }
 
                     }
+            if($request->callback_url){
+                $job_link = url($company->slug . '/job/' . $job->id . '/' . str_slug($job->title));
+                $redirect_url = "{$request->callback_url}/{$request->api_key}/{$request->requisition_id}/{$job_link}";
+                $callback_url = $request->callback_url;
+                $requisition_id = $request->requisition_id;
+                $api_key = $request->api_key;
+                // set post fields
+                $post = [
+                    'requisition_id' => $request->requisition_id,
+                    'api_key'        => $request->api_key,
+                ];
+                $job_link = urlencode($job_link);
+                $url = "{$callback_url}?api_key={$api_key}&requisition_id={$requisition_id}&job_link={$job_link}";
+                // dd($url);
+                // Get cURL resource
+                $curl = curl_init();
+                // Set some options - we are passing in a useragent too here
+                curl_setopt_array($curl, array(
+                    CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0,
+                    CURLOPT_URL => $url,
+                ));
+
+                // Send the request & save response to $resp
+                $resp = curl_exec($curl);
+                $error = curl_error($curl);
+                // Close request to clear up some resources
+                curl_close($curl);
+                $resp = json_decode($resp, true);
+                if($resp['status'])
+                {
+                    return redirect($callback_url);
+                }
+                return view('utils.staffstrength_data', compact('job_link', 'callback_url', 'requisition_id', 'api_key'));
+            }
 
             Session::flash('flash_message', 'Congratulations! Your job has been posted on '.$flash_boards.'. You will begin to receive applications from those job boards shortly - <i>this is definite</i>.');
             return redirect()->route('post-success', ['jobID' => $job->id]);

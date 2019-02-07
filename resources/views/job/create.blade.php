@@ -40,7 +40,9 @@
                                       action="{{ route('post-job') }}">
                                     
                                     <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
-                                    
+                                    <input type="hidden" id="api_key" name="api_key" value="{{ $thirdPartyData->get('api_key') ?: '' }}">
+                                    <input type="hidden" id="callback_url" name="callback_url" value="{{ $thirdPartyData->get('callback_url') ?: '' }}">
+                                    <input type="hidden" id="requisition_id" name="requisition_id" value="{{ $thirdPartyData->get('requisition_id') ?: '' }}">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-12"><label for="job-title">job title <span

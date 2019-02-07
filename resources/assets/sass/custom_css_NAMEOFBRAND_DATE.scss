@@ -1,0 +1,123 @@
+/*
+	Created  8:04am Wednesday 5 December 2018 by SeamlessHR
+	Title: Custom Style Sheet for [NAME OF BRAND]
+*/
+
+
+/* Color Variables */
+
+$primary-color: inherit;
+$secondary-color: inherit;
+$tertiary-color: inherit;
+
+
+/* Typeface Variables */
+
+$primary-font: inherit;
+$secondary-font: inherit;
+
+/* Misc */
+$im: !important;
+
+// ============================
+// Most important modules to be changed for white listing are listed below.
+// Start by changing the inherit properties below
+
+/* General Layout */
+
+body{
+  background: {
+    color:inherit ;
+  }
+}
+section{
+  &.s-div, .s-div.homepage{
+    &.dashboard{
+      background: {
+        color: inherit;
+      }
+    }
+  }
+}
+.job-head{
+  &.blue{
+    background-color: inherit;
+    border-bottom: 3px solid inherit;
+  }
+}
+
+
+/* Navbar and Header */
+
+
+.navbar{
+  border-top: 4px solid $primary-color;
+  background: {
+    color: #fff;
+  }
+  .nav{
+    li{
+      a{
+        &:hover{
+          background-color: darken($tertiary-color,55%);
+          color:  #fff $im;
+        }
+      }
+      &.active{
+        a{
+          color: $primary-color;
+        }
+      }
+    }
+  }
+  a{
+    color: darken($tertiary-color,75%);
+
+  }
+  .navbar-header{
+    .navbar-brand{
+      background: {
+        image: url('../img/brand/brand-logo.png') $im;
+        size: contain;
+      }
+    }
+  }
+}
+
+
+/* Buttons */
+
+.btn{
+  &.btn-default{
+    color:inherit;
+  }
+  &.btn-primary{
+    color:inherit;
+  }
+}
+
+
+/* Typography and Links */
+
+.text-primary:color:inherit;;
+a{
+  color:inherit;
+  &:hover{
+    color:inherit;
+  }
+}
+
+
+/* Footer and Signatures */
+
+footer{
+  background: {
+    color: inherit;
+  }
+  a{
+    color:inherit;
+    &:hover{
+      color:inherit;
+    }
+  }
+}

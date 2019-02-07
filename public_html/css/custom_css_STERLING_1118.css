@@ -1,0 +1,64 @@
+/*
+	Created  8:04am Wednesday 5 December 2018 by SeamlessHR
+	Title: Custom Style Sheet for [NAME OF BRAND]
+*/
+/* Imports (if any) */
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600");
+/* Color Variables */
+/* Typeface Variables */
+/* Misc */
+/* ============================ */
+/* Most important modules to be changed for white listing are listed below */
+/* General Layout */
+body {
+    font-family: "Open Sans", sans-serif !important;
+    background-color: #d1d1d1; }
+
+section.s-div, section .s-div.homepage {
+    background-color: #b60b32 !important; }
+section.s-div.dashboard, section .s-div.homepage.dashboard {
+    /* image:  none; */ }
+
+.job-head.blue {
+    background-color: #2b2b2b;
+    border-bottom: 3px solid #787878; }
+
+/* Navbar and Header */
+.navbar {
+    border-top: 4px solid #b60b32;
+    background-color: #fff; }
+.navbar .nav li a:hover {
+    background-color: #454545;
+    color: #fff !important; }
+.navbar .nav li.active a, .navbar .nav li:focus a, .navbar .nav li:visited a {
+    color: #b60b32; }
+.navbar a {
+    color: #121212; }
+.navbar .navbar-header .navbar-brand {
+    width: 115px;
+    background-image: url("../img/brand/sterling-bank-login-logo.png") !important;
+    background-size: contain; }
+
+/* Buttons */
+.btn.btn-default {
+    background-color: #2b2b2b; }
+.btn.btn-default:hover {
+    background-color: #454545; }
+
+.btn.btn-primary {
+    /* color:inherit; */ }
+
+/* Typography and Links */
+.text-primary {
+    /* color:inherit; */ }
+
+a:hover {
+    color: inherit; }
+
+/* Footer and Signatures */
+footer {
+    background-color: #2b2b2b; }
+footer a {
+    color: inherit; }
+footer a:hover {
+    color: inherit; }

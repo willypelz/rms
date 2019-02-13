@@ -18,6 +18,7 @@ use App\Models\FormFields;
 use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class JobController extends Controller
 {
@@ -230,6 +231,8 @@ class JobController extends Controller
             ]);
         }
 
+        $time = Carbon::now()->toDatetimeString();
+
         $cv = new Cv();
         $cv->first_name = isset($request->cv['first_name']) ? $request->cv['first_name'] : null ;
         $cv->last_name =  isset($request->cv['last_name']) ? $request->cv['last_name'] : null ;
@@ -248,6 +251,8 @@ class JobController extends Controller
         $job_application->cover_note = isset($request->application['cover_note']) ? $request->application['cover_note'] : null;
         $job_application->status = isset($request->application['status']) ? $request->application['status'] : null;
         $job_application->is_approved = isset($request->application['is_approved']) ? $request->application['is_approved'] : null;
+        $job_application->created = $time;
+        $job_application->action_date = $time;
         $job_application->save();
 
         if(isset($request->form_fields ) && !empty($request->form_fields))

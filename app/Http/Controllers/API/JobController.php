@@ -250,13 +250,18 @@ class JobController extends Controller
         $job_application->is_approved = isset($request->application['is_approved']) ? $request->application['is_approved'] : null;
         $job_application->save();
 
-        foreach ($request->form_fields as $form_field) {
-            $form_field_value = new FormFieldValues();
-            $form_field_value->form_field_id = $form_field->form_field_id;
-            $form_field_value->value = $form_field->value;
-            $form_field_value->job_application_id = $job_application->id;
-            $form_field_value->save();
+        if(isset($request->form_fields ) && !empty($request->form_fields))
+        {
+            foreach ($request->form_fields as $form_field) {
+                $form_field_value = new FormFieldValues();
+                $form_field_value->form_field_id = $form_field->form_field_id;
+                $form_field_value->value = $form_field->value;
+                $form_field_value->job_application_id = $job_application->id;
+                $form_field_value->save();
+            }
         }
+
+
 
 
         Solr::update_core();

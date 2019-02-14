@@ -7,6 +7,12 @@
  * @date        2018-09-26
  */
 
+body {
+    margin: 0;
+    padding-top: 60px;
+    padding-bottom: 50px;
+}
+
 .page-actions {
     margin: 20px auto;
 }
@@ -27,4 +33,14 @@ span.dropdown {
 
 .workflow-steps {
     cursor: grab;
+}
+
+#app-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    font-size: 0.9em;
+    padding: 5px;
 }

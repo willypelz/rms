@@ -43,10 +43,12 @@
                 <!-- <li class="{{ Request::is('cv/search*') ? 'active' : '' }}">
                     <a class="" href="{{ url('cv/search') }}">Find Resumes</a>
                 </li> -->
+{{--
 
                 <li class="{{ Request::is('talent-source') ? 'active' : '' }}">
                     <a class="" href="{{ route('talent-source') }}">Talent Sourcing <!-- &nbsp;<i class="fa fa-search"> </i> --></a>
                 </li>
+--}}
 
                 <li class="{{ Request::is('contact') ? 'active' : '' }}">
                     <a class="" href="{{ url('contact') }}">Contact</a>

@@ -136,7 +136,6 @@
                                         <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>
                         @endforeach
                         <li role="separator" class="divider"></li>
-                        {{--<li><a href="{{ route('add-company') }}"><i class="fa fa-plus fa-fw"></i> Create new Company</a>--}}
 
                         </li>
                     <!-- <li><a href="{{-- route('edit-company', ['id' => get_current_company()->id ]) --}}">Edit <strong>{{ get_current_company()->name }}</strong> </a></li> -->

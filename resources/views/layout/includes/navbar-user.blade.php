@@ -1,5 +1,6 @@
 <div id="target-stick" style="position: fixed;"></div>
-<div class="navbar no-margin" role="navigation">
+
+<div class="navbar navbar-fixed-top no-margin" role="navigation">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">

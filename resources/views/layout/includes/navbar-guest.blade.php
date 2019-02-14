@@ -1,9 +1,10 @@
 <style>
-  body{
-    font-weight: 300;
-
-  }
-  p{
+    body {
+        font-weight: 300;
+        
+    }
+    
+    p {
         font-size: 110%;
         /* color: #666; */
     }
@@ -13,7 +14,8 @@
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -27,29 +29,29 @@
                 <li class="{{ Request::is('/') ? 'active' : '' }}">
                     <a class="" href="{{ url('/') }}">Home</a>
                 </li>
-
-                <!-- <li>
+            
+            <!-- <li>
                     <a class="" href="{{ url('about') }}">About</a>
                 </li> -->
-
+                
                 <li class="{{ Request::is('about') ? 'active' : '' }}">
                     <a class="" href="{{ url('about') }}">About</a>
                 </li>
-
+                
                 <li class="{{ Request::is('pricing') ? 'active' : '' }}">
                     <a class="" href="{{ url('pricing') }}">Pricing</a>
                 </li>
-
-                <!-- <li class="{{ Request::is('cv/search*') ? 'active' : '' }}">
+            
+            <!-- <li class="{{ Request::is('cv/search*') ? 'active' : '' }}">
                     <a class="" href="{{ url('cv/search') }}">Find Resumes</a>
                 </li> -->
-{{--
-
-                <li class="{{ Request::is('talent-source') ? 'active' : '' }}">
-                    <a class="" href="{{ route('talent-source') }}">Talent Sourcing <!-- &nbsp;<i class="fa fa-search"> </i> --></a>
-                </li>
---}}
-
+                {{--
+                
+                                <li class="{{ Request::is('talent-source') ? 'active' : '' }}">
+                                    <a class="" href="{{ route('talent-source') }}">Talent Sourcing <!-- &nbsp;<i class="fa fa-search"> </i> --></a>
+                                </li>
+                --}}
+                
                 <li class="{{ Request::is('contact') ? 'active' : '' }}">
                     <a class="" href="{{ url('contact') }}">Contact</a>
                 </li>
@@ -59,8 +61,7 @@
                     <a class="btn btn-primary" href="{{ url('register') }}" >SIGN UP</a>
                 </li> --}}
                 <li>
-                    <a class="signin" href="{{ url('login') }}" >LOG IN</a>
-
+                    <a class="signin" href="{{ url('login') }}">LOG IN</a>
                 </li>
             </ul>
         </div>

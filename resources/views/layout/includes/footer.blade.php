@@ -51,10 +51,6 @@
             cart_count = Number(cart_count) - 1;
             p_total = 500 * cart_count;
 
-            //console.log('New cart count is '+cv_cart+' and New cost is '+p_total);
-
-            //  //console.log(cv_cart);
-
             e.preventDefault();
             $(this).parents('.purchase-action').find('.btn-cv-buy').removeClass('collapse');
             $(this).addClass('collapse');
@@ -78,7 +74,6 @@
             scrollPerPage: false,
             pagination: true,
             autoPlay: false,
-            // rewindNav: false,
             navigationText: [
                 "<span class="fa fa - chevron - left"></span>",
                 "<span class="fa fa - chevron - right"></span>"
@@ -93,7 +88,6 @@
             scrollPerPage: false,
             pagination: true,
             autoPlay: false,
-            // rewindNav: false,
             navigationText: [
                 "<span class="fa fa - chevron - left"></span>",
                 "<span class="fa fa - chevron - right"></span>"
@@ -104,12 +98,10 @@
     });
 </script>
 
-
 <footer id="app-footer">
     <div class="container">
         
         <div class="row">
-            
             
             <div class="col-md-3 hidden">
                 <h5>Find us on Social Media.</h5>
@@ -135,7 +127,6 @@
                     </span>
                 </a>
             </div>
-            
             
             <div class="col-sm-6 hidden">
                 <div class="col-sm-4">

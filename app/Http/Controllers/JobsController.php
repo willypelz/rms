@@ -21,6 +21,7 @@ use App\Models\TestRequest;
 use App\Models\Invoices;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Validator;
 use Cart;
 use Session;
@@ -268,12 +269,23 @@ class JobsController extends Controller
 
     public function removeJobTeamMember( Request $request )
     {
-        $company = Company::find( $request->comp );
-        $job = Job::find( $request->job );
+        $team_member = User::find($request->ref);
+        $comp = $request->comp;
+        $job = $request->job;
+        $ref = $request->ref;
 
-        $company->users()->sync([$request->ref => ['role' => 0] ], false);
+        if($request->isMethod('post'))
+        {
+            $company = Company::find( $request->comp );
+            $job = Job::find( $request->job );
 
-        $job->users()->detach($request->ref);
+            $company->users()->detach($request->ref);
+
+            $job->users()->detach($request->ref);
+        }
+
+        return view('modals.job-team-remove', compact('team_member','comp','job','ref'));
+
 
     }
 
@@ -575,6 +587,41 @@ class JobsController extends Controller
                         }
 
                     }
+            if($request->callback_url){
+                $job_link = url($company->slug . '/job/' . $job->id . '/' . str_slug($job->title));
+                $redirect_url = "{$request->callback_url}/{$request->api_key}/{$request->requisition_id}/{$job_link}";
+                $callback_url = $request->callback_url;
+                $requisition_id = $request->requisition_id;
+                $api_key = $request->api_key;
+                // set post fields
+                $post = [
+                    'requisition_id' => $request->requisition_id,
+                    'api_key'        => $request->api_key,
+                ];
+                $job_link = urlencode($job_link);
+                $url = "{$callback_url}?api_key={$api_key}&requisition_id={$requisition_id}&job_link={$job_link}";
+                // Get cURL resource
+                $curl = curl_init();
+                // Set some options - we are passing in a useragent too here
+                curl_setopt_array($curl, array(
+                    CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0,
+                    CURLOPT_URL => $url,
+                ));
+
+                // Send the request & save response to $resp
+                $resp = curl_exec($curl);
+                $error = curl_error($curl);
+                // Close request to clear up some resources
+                curl_close($curl);
+                $resp = json_decode($resp, true);
+                if($resp['status'])
+                {
+                    return redirect($callback_url);
+                }
+                return view('utils.staffstrength_data', compact('job_link', 'callback_url', 'requisition_id', 'api_key'));
+            }
 
             Session::flash('flash_message', 'Congratulations! Your job has been posted on '.$flash_boards.'. You will begin to receive applications from those job boards shortly - <i>this is definite</i>.');
             return redirect()->route('post-success', ['jobID' => $job->id]);
@@ -769,6 +816,7 @@ class JobsController extends Controller
                 if( $mimeType == 'application/zip')
                 {
                     $request_data = json_encode( $request->all() );
+
                     // $request_data = collect( $request->all() );
                     $this->dispatch(new UploadZipCv($filename, $randomName, $additional_data, $request_data ));
                     //
@@ -818,92 +866,10 @@ class JobsController extends Controller
                 else
                 {
                     $cvs = [  $filename ];
-                    $this->saveCompanyUploadedCv($cvs, $additional_data, $request);
+                    saveCompanyUploadedCv($cvs, $additional_data, $request);
                     return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
                 }
             }
-    }
-
-    public function saveCompanyUploadedCv($cvs, $additional_data, $request)
-    {
-        // $settings = new Settings();
-        extract($additional_data);
-        // $last_cv_upload_index = intval( $settings->get('LAST_CV_UPLOAD_INDEX') );
-
-        // $new_cvs = [];
-        $cv_source = "";
-
-        $options = ( is_null( $options ) ) ? 'upToJob' : $options;
-
-
-
-        switch ($options) {
-            case 'upToJob':
-                $cv_source = "Uploaded Candidate";
-                break;
-            case 'upToFolder':
-                $cv_source = $folder;
-                break;
-            default:
-                # code...
-                break;
-        }
-
-
-        foreach ($cvs as $key => $cv) {
-
-
-            switch ( $request->type ) {
-                case 'single':
-                    $last_cv = Cv::insertGetId([
-                         'first_name' => $request->cv_first_name,
-                         'last_name' => $request->cv_last_name,
-                         'email' => $request->cv_email,
-                         'phone' => $request->cv_phone,
-                         'gender' => $request->gender,
-                         'state' => $request->location,
-                         'highest_qualification' => $request->highest_qualification,
-                         'years_of_experience' => $request->years_of_experience,
-                         'last_company_worked' => $request->last_company_worked,
-                         'last_position' => $request->last_position,
-                         'willing_to_relocate' => $request->willing_to_relocate,
-                         'graduation_grade' => $request->graduation_grade,
-                         'cv_file' => $cv ,
-                         'cv_source' => $cv_source
-                     ]);
-                    break;
-
-                case 'bulk':
-                    // $last_cv_upload_index++;
-                    $last_cv = Cv::insertGetId([ 'first_name' => $key, 'cv_file' => $cv , 'cv_source' => $cv_source ]);
-                    break;
-
-                default:
-                    continue;
-                    break;
-            }
-
-
-            // $last_cv = Cv::insertGetId([ 'first_name' => 'Cv ' . $last_cv_upload_index, 'cv_file' => $cv , 'cv_source' => $cv_source ]);
-
-            if($options == 'upToJob'){
-                JobApplication::insert([
-                        'cv_id' => $last_cv,
-                        'job_id' => $job_id,
-                        'created' => date('Y-m-d H:i:s'),
-                        'action_date' => date('Y-m-d H:i:s'),
-                        'status' => 'PENDING',
-                    ]);
-            }
-        }
-
-        // $settings->set('LAST_CV_UPLOAD_INDEX',$last_cv_upload_index);
-        $user = Auth::user();
-        Solr::update_core();
-        $this->mailer->send('emails.new.cv_upload_successful', ['user' => $user, 'link'=> url('cv/talent-pool') ], function (Message $m) use ($user) {
-                $m->from('support@seamlesshr.com')->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
-            });
-        return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
     }
 
     public function JobList(Request $request)
@@ -992,7 +958,7 @@ class JobsController extends Controller
 
         $result = Solr::get_applicants($this->search_params, $id,'');
 
-        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'],$id );
 
         $active_tab = 'promote';
 
@@ -1045,7 +1011,7 @@ class JobsController extends Controller
         $result = Solr::get_applicants($this->search_params, $id,'');
 
 
-        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'], $id);
         // return view('emails.e-exculsively-invited');
         $job_team_invites = JobTeamInvite::where('job_id', $job->id)->where('is_accepted',0)->where('is_declined',0)->get();
         return view('job.board.team', compact('job', 'active_tab', 'company','result','application_statuses','owner','job_team_invites'));
@@ -1458,7 +1424,7 @@ class JobsController extends Controller
 
         $result = Solr::get_applicants($this->search_params, $id,'');
 
-        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $job->workflow->workflowSteps()->pluck('slug'));
+        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id, $job->workflow->workflowSteps()->pluck('slug'));
 
         $applicant_funnel = [];
         $funnel_cummulative = 0;
@@ -1513,7 +1479,7 @@ class JobsController extends Controller
 
         $result = Solr::get_applicants($this->search_params, $id,'');
 
-        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
+        $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'], $id );
 
 
         return view('job.board.matching', compact('job', 'active_tab','result','application_statuses'));

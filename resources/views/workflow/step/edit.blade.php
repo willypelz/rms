@@ -38,7 +38,7 @@
                                                    id="name"
                                                    value="{{ old('name', $workflowStep->name) }}"
                                                    placeholder="Waiting List"
-                                                   class="form-control">
+                                                   class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -47,10 +47,10 @@
                                             <select name="type"
                                                     id="type"
                                                     class="select2"
-                                                    style="width: 100%;">
+                                                    style="width: 100%;" required>
                                                 <option value="">- select -</option>
                                                 @foreach(config('workflowStepTypes') as $stepSlug => $stepLabel)
-                                                    <option value="{{ $stepSlug }}">{{ $stepLabel }}</option>
+                                                    <option value="{{ $stepSlug }}" @if($workflowStep->type == $stepSlug) selected = "selected" @endif>{{ $stepLabel }}</option>
                                                 @endforeach
                                             </select>
                                         </div>

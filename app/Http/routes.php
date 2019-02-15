@@ -101,7 +101,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/test', function () {
 
         /* $jobs = \App\Models\Job::where('company_id',50)->where('status','ACTIVE')->orderBy('title','ASC')->get();
-        
+
         foreach( $jobs as $job )
         {
             echo $job->title . '<a href="' . url('job/apply/'.$job->id.'/'.str_slug($job->title)).'" > Apply </a><br>';
@@ -285,7 +285,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'job/team/{jobID}', ['uses' => 'JobsController@JobTeam', 'as' => 'job-team']);
     Route::match(['get', 'post'], 'job/teams/add', ['uses' => 'JobsController@JobTeamAdd', 'as' => 'job-team-add']);
-    Route::post('job/teams/remove', ['uses' => 'JobsController@removeJobTeamMember', 'as' => 'remove-job-team-member']);
+    Route::match(['get','post'],'job/teams/remove', ['uses' => 'JobsController@removeJobTeamMember', 'as' => 'remove-job-team-member']);
     Route::get('job/teams/decline', ['uses' => 'JobsController@JobTeamDecline', 'as' => 'job-team-decline']);
 
     Route::match(['get', 'post'], 'accept-invite/{id}',
@@ -313,6 +313,7 @@ Route::group(['middleware' => 'web'], function () {
         ['uses' => 'JobsController@JobVideoApplication', 'as' => 'job-video-application']);
 
     Route::match(['get', 'post'], 'job-status', ['uses' => 'JobsController@JobStatus', 'as' => 'job-status']);
+
 
     // Route::any('log-in', function () {
     //     return view('auth.login');
@@ -702,6 +703,8 @@ Route::group(['middleware' => 'web'], function () {
     ], function () {
         Route::get('/jobs/{jobType?}', 'JobController@company');
         Route::get('/job/{job_id}/{status_slug}/applicants', 'JobController@applicants');
+        Route::post('/jobs/apply', 'JobController@apply');
+
     });
 
 });

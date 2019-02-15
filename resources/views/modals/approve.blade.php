@@ -29,7 +29,8 @@
             $.post("{{ route('modal-approve') }}", {
                 job_id: '{{ $appl->job->id }}',
                 cv_ids: cv_ids,
-                app_ids: app_ids
+                app_ids: app_ids,
+                stepId: '{{ $stepId }}'
             }, function (data) {
 
                 $('#viewModal').modal('toggle');

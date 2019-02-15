@@ -1,0 +1,134 @@
+/*
+	Created  8:04am Wednesday 5 December 2018 by SeamlessHR
+	Title: Custom Style Sheet for [NAME OF BRAND]
+*/
+
+
+/* Imports (if any) */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600');
+
+/* Color Variables */
+
+$primary-color: #b60b32;
+$secondary-color: #ad161f;
+$tertiary-color: #d1d1d1;
+
+
+/* Typeface Variables */
+
+$primary-font: 'Open Sans', sans-serif;
+$secondary-font: inherit;
+
+/* Misc */
+$im: !important;
+
+/* ============================ */
+/* Most important modules to be changed for white listing are listed below */
+/* General Layout */
+
+body{
+  font-family: $primary-font $im;
+  background: {
+    color: $tertiary-color;
+  }
+}
+section{
+  &.s-div, .s-div.homepage{
+    background: {
+      color: $primary-color $im;
+    }
+    &.dashboard{
+      background: {
+        /* image:  none; */
+      }
+    }
+  }
+}
+.job-head{
+  &.blue{
+    background-color: darken($tertiary-color,65%);
+    border-bottom: 3px solid darken($tertiary-color,35%);
+  }
+}
+
+
+/* Navbar and Header */
+
+.navbar{
+  border-top: 4px solid $primary-color;
+  background: {
+    color: #fff;
+  }
+  .nav{
+    li{
+      a{
+        &:hover{
+          background-color: darken($tertiary-color,55%);
+          color:  #fff $im;
+        }
+      }
+      &.active, &:focus, &:visited{
+        a{
+          color: $primary-color;
+        }
+      }
+    }
+  }
+  a{
+    color: darken($tertiary-color,75%);
+
+  }
+  .navbar-header{
+    .navbar-brand{
+      width: 115px;
+      background: {
+        image: url('../img/brand/sterling-bank-login-logo.png') $im;
+        size: contain;
+      }
+    }
+  }
+}
+
+
+/* Buttons */
+
+.btn{
+  &.btn-default{
+    background: {
+      color: darken($tertiary-color,65%);
+    }
+    &:hover{
+      background-color: darken($tertiary-color,55%);
+    }
+  }
+  &.btn-primary{
+    /* color:inherit; */
+  }
+}
+
+
+/* Typography and Links */
+
+.text-primary{
+  /* color:inherit; */
+}
+a{
+  &:hover{
+    color:inherit;
+  }
+}
+
+
+/* Footer and Signatures */
+
+footer{
+  background: {
+    color: darken($tertiary-color,65%);
+  }
+  a{
+    color:inherit;
+    &:hover{
+      color:inherit;
+    }
+  }
+}

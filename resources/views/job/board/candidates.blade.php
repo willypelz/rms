@@ -510,6 +510,9 @@
                     $(this).closest('li').addClass('active');
                     $(this).reloadResult();
 
+                    $('.select-all input[type="checkbox"]').removeAttr('checked');
+                    $('.media-body-check').removeAttr('checked');
+
                 });
 
                 $.fn.reloadResult = function () {
@@ -544,6 +547,7 @@
 
                         $('.search-results').html(data.search_results);
                         $('#search-filters').html(data.search_filters);
+
                         $(document).getShowing();
                         $('#mass-action a').show();
 
@@ -584,13 +588,13 @@
                 }
                 $.fn.fixDetailsforBulkActions = function () {
                     $field = $(this);
-                    cv_ids = $(".search-results .comment.media").map(function (i, v) {
+                    cv_ids = $(".search-results .comment").map(function (i, v) {
                         if ($(this).find('.media-body-check').is(':checked')) {
                             return [$(this).data("cv")];
                         }
 
                     }).get();
-                    app_ids = $(".search-results .comment.media").map(function (i, v) {
+                    app_ids = $(".search-results .comment").map(function (i, v) {
                         if ($(this).find('.media-body-check').is(':checked')) {
                             return [$(this).data("app-id")];
                         }
@@ -602,10 +606,10 @@
                 }
                 $('.select-all input[type=checkbox]').on('click', function () {
                     if ($(this).prop('checked')) {
-                        $('.search-results .media-body input[type=checkbox]').prop('checked', true);
+                        $('.search-results .media-body-check').prop('checked', true);
                         $('#h_act-on').fadeIn();
                     } else {
-                        $('.search-results .media-body input[type=checkbox]').prop('checked', false);
+                        $('.search-results .media-body-check').prop('checked', false);
                         $('#h_act-on').fadeOut();
                     }
                     $(this).fixDetailsforBulkActions();

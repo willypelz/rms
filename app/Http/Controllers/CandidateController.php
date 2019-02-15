@@ -62,7 +62,7 @@ class CandidateController extends Controller
             ])->update($request->only(['first_name', 'last_name']) + [
                     'password' => bcrypt($request->input('password'))
                 ]);
-            
+
             if ($candidate) {
 
                 if (Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password])) {
@@ -119,10 +119,11 @@ class CandidateController extends Controller
         $application_id      = $request->application_id;
         $current_application = JobApplication::with('cv', 'job.company')->where('id', $application_id)->first();
         $ignore_list         = [
-            'JOB-CREATED'
+            'JOB-CREATED',
+            'TEST_RESULT'
         ];
         $show_messages_tab   = true;
-        $activities          = JobActivity::where('job_application_id', $application_id)->get();
+        $activities          = JobActivity::where('job_application_id', $application_id)->orderBy('id','DESC')->get();
 
         return view('candidate.activities',
             compact('application_id', 'ignore_list', 'show_messages_tab', 'activities', 'current_application'));
@@ -140,7 +141,7 @@ class CandidateController extends Controller
 
         $company_ids = Job::whereIn('id', $job_ids)->get()->unique('company_id')->pluck('company_id')->toArray();
 
-        $jobs = Job::with('company')->whereIn('company_id', $company_ids)->get();
+        $jobs = Job::with('company')->whereIn('company_id', $company_ids)->where('status','ACTIVE')->get();
 
         return view('candidate.job-list', compact('application_id', 'ignore_list', 'jobs'));
     }

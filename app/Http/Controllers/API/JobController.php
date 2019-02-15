@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Libraries\Solr;
 use App\Models\Candidate;
+use App\Models\Cv;
+use App\Models\FormFieldValues;
+use App\Models\JobApplication;
 use App\Models\Workflow;
 use Illuminate\Http\Request;
 use App\Models\JobBoard;
@@ -14,6 +18,7 @@ use App\Models\FormFields;
 use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class JobController extends Controller
 {
@@ -140,7 +145,7 @@ class JobController extends Controller
                     $query->whereIsFor($jobType); // default $jobType == external
                 }
             }
-        ])->whereApiKey($req_header)
+        ,'jobs.form_fields','jobs.specializations','jobs.company'])->whereApiKey($req_header)
             ->first();
 
         if (!$company) {
@@ -197,6 +202,79 @@ class JobController extends Controller
             'status' => true,
             'message' => 'success',
             'data' => $applicants
+        ]);
+
+    }
+
+    public function apply(Request $request)
+    {
+        //validate request via company api_key
+        if (!$req_header = $request->header('X-API-KEY')) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Bad Request, make sure your request format is correct',
+                'data' => []
+            ], 400);
+        }
+
+        $owned_cvs = CV::where('email',$request->cv['email'])->pluck('id');
+        $owned_applicataions_count = JobApplication::whereIn( 'cv_id', $owned_cvs )->where('job_id',$request->application['job_id'])->get()->count();
+
+
+
+        if( $owned_applicataions_count > 0 )
+        {
+            return response()->json([
+                'status' => false,
+                'message' => 'You have already applied for this job',
+                'data' => null
+            ]);
+        }
+
+        $time = Carbon::now()->toDatetimeString();
+
+        $cv = new Cv();
+        $cv->first_name = isset($request->cv['first_name']) ? $request->cv['first_name'] : null ;
+        $cv->last_name =  isset($request->cv['last_name']) ? $request->cv['last_name'] : null ;
+        $cv->other_name =  isset($request->cv['other_name']) ? $request->cv['other_name'] : null ;
+        $cv->email =  isset($request->cv['email']) ? $request->cv['email'] : null ;
+        $cv->phone =  isset($request->cv['phone']) ? $request->cv['phone'] : null ;
+        $cv->gender =  isset($request->cv['gender']) ? $request->cv['gender'] : null ;
+        $cv->date_of_birth =  isset($request->cv['date_of_birth']) ? $request->cv['date_of_birth'] : null ;
+        $cv->state =  isset($request->cv['state']) ? $request->cv['state'] : null ;
+        $cv->cv_source =  isset($request->cv['cv_source']) ? $request->cv['cv_source'] : null ;
+        $cv->save();
+
+        $job_application = new JobApplication();
+        $job_application->cv_id = $cv->id;
+        $job_application->job_id = isset($request->application['job_id']) ? $request->application['job_id'] : null;
+        $job_application->cover_note = isset($request->application['cover_note']) ? $request->application['cover_note'] : null;
+        $job_application->status = isset($request->application['status']) ? $request->application['status'] : null;
+        $job_application->is_approved = isset($request->application['is_approved']) ? $request->application['is_approved'] : null;
+        $job_application->created = $time;
+        $job_application->action_date = $time;
+        $job_application->save();
+
+        if(isset($request->form_fields ) && !empty($request->form_fields))
+        {
+            foreach ($request->form_fields as $form_field) {
+                $form_field_value = new FormFieldValues();
+                $form_field_value->form_field_id = $form_field->form_field_id;
+                $form_field_value->value = $form_field->value;
+                $form_field_value->job_application_id = $job_application->id;
+                $form_field_value->save();
+            }
+        }
+
+
+
+
+        Solr::update_core();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'success',
+            'data' => null
         ]);
 
     }

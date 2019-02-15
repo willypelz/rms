@@ -75,8 +75,8 @@
             pagination: true,
             autoPlay: false,
             navigationText: [
-                "<span class="fa fa - chevron - left"></span>",
-                "<span class="fa fa - chevron - right"></span>"
+                "<span class='fa fa-chevron-left'></span>",
+                "<span class='fa fa-chevron-right'></span>"
             ],
 
         });
@@ -89,8 +89,8 @@
             pagination: true,
             autoPlay: false,
             navigationText: [
-                "<span class="fa fa - chevron - left"></span>",
-                "<span class="fa fa - chevron - right"></span>"
+                "<span class='fa fa-chevron-left'></span>",
+                "<span class='fa fa-chevron-right'></span>"
             ],
 
         });
@@ -100,26 +100,26 @@
 
 <footer id="app-footer">
     <div class="container">
-        
+
         <div class="row">
-            
+
             <div class="col-md-3 hidden">
                 <h5>Find us on Social Media.</h5>
-                
+
                 <a href="https://www.facebook.com/insidifyhq?ref=hl&ref_type=bookmark" class="">
                     <span class="fa-stack fa-lg">
                         <i class="fa fa-circle fa-stack-2x text-" style="color:#3b5998"></i>
                         <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
                     </span>
                 </a>
-                
+
                 <a href="https://twitter.com/insidifyhq" class="">
                     <span class="fa-stack fa-lg">
                         <i class="fa fa-circle fa-stack-2x text-" style="color:#0084b4"></i>
                         <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
                     </span>
                 </a>
-                
+
                 <a href="https://www.linkedin.com/company/insidify-com?trk=biz-companies-cym" class="">
                     <span class="fa-stack fa-lg">
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
@@ -127,7 +127,7 @@
                     </span>
                 </a>
             </div>
-            
+
             <div class="col-sm-6 hidden">
                 <div class="col-sm-4">
                     <ul class="list-unstyled">
@@ -146,7 +146,7 @@
                         </li>
                     </ul>
                 </div>
-                
+
                 <div class="col-sm-4">
                     <ul class="list-unstyled">
                         <li>
@@ -158,7 +158,7 @@
                         </li>
                     </ul>
                 </div>
-                
+
                 <div class="col-sm-4">
                     <ul class="list-unstyled">
                         <li>
@@ -175,7 +175,7 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="col-sm-12 text-center">
                 <ul class="list-unstyled footer-logo">
                     <li>
@@ -185,8 +185,8 @@
                 </ul>
             </div>
         </div>
-    
-    
+
+
     </div>
 </footer>
 
@@ -198,34 +198,34 @@
         <div class="">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <section class="no-pad">
-                
-                
+
+
                 <div class="">
                     <div class="row" id="content-Area">
-                        
+
                         <div class="col-sm-12 text-center">
                             <h2>SeamlessHiring</h2>
                             <p class="text-muted">Everything You Need To Hire, In One Place!</p>
                         </div>
-                        
+
                         <div class="col-sm-12">
-                            
+
                             <div class="white padbox rounded">
-                                
+
                                 <div id="mssg"></div>
-                                
+
                                 <form role="form" id="AjaxLogin" class="form-signin" method="POST"
                                       action="{{ route('ajax_login') }}">
                                     {!! csrf_field() !!}
-                                    
-                                    
+
+
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <div class="form-group{{ @$errors->has('email') ? ' has-error' : '' }}">
                                                 <label for="">Your Email</label>
                                                 <input type="email" class="form-control" id="" placeholder=""
                                                        name="email" value="{{ old('email') }}" required>
-                                                
+
                                                 @if (@$errors->has('email'))
                                                     <span class="help-block">
                                                         <strong>{{ @$errors->first('email') }}</strong>
@@ -233,7 +233,7 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-sm-12">
                                             <div class="form-group{{ @$errors->has('password') ? ' has-error' : '' }}">
                                                 <label for="">Your Password</label>
@@ -246,42 +246,42 @@
                                                 @endif
                                             </div>
                                         </div>
-                                    
+
                                     </div>
-                                    
+
                                     <div class="row"><br>
-                                        
+
                                         <div class="col-sm-10 col-sm-offset-1">
                                             <button type="submit" id="SubBtn" class="btn btn-success btn-block">Proceed
                                                 &raquo;
                                             </button>
                                         </div>
-                                        
+
                                         <div class="col-xs-12">
                                             <hr>
                                         </div>
-                                        
+
                                         <div class="col-sm-6">
                                             <p class="text-center"><a href="{{ url('password/reset') }}">I can't
                                                     remember my password!</a></p>
                                         </div>
-                                        
+
                                         <div class="col-sm-6">
                                             <p class="text-center">Not registered? <a href="{{ url('sign-up') }}">Sign
                                                     Up Here</a></p>
                                         </div>
-                                    
+
                                     </div>
                                 </form>
-                            
+
                             </div>
                             <!--/tab-content-->
-                        
+
                         </div>
-                    
+
                     </div>
                 </div>
-                
+
                 <script>
                     $(document).ready(function () {
 
@@ -292,11 +292,7 @@
                             success: function (response) {
                                 console.log(response);
                                 if (response == 'Failed') {
-                                    $('#mssg').html("<span class="
-                                    alert
-                                    alert - danger
-                                    " > Your login credentials are incorrect. </span>"
-                                )
+                                    $('#mssg').html("<span class='alert alert - danger' > Your login credentials are incorrect. </span>");
                                     $("#SubBtn").html('Proceed');
 
                                 } else {
@@ -321,11 +317,11 @@
 
 
                     });
-                
-                
+
+
                 </script>
-            
-            
+
+
             </section>
         </div>
     </div>
@@ -339,22 +335,22 @@
         <div class="">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <section class="no-pad">
-                
-                
+
+
                 <div class="">
                     <div class="text-center">
-                        
+
                         <h2>SeamlessHiring</h2>
                         <p class="text-muted">Africa's fastest growing network of professionals</p>
                     </div>
                     <div class="white padbox rounded">
-                        
-                        
+
+
                         <form role="form" class="form-signup" method="POST" action="{{ url('/register') }}">
                             {!! csrf_field() !!}
-                            
+
                             <div class="row">
-                                
+
                                 <div class="col-sm-6">
                                     <div class="form-group{{ @$errors->has('first_name') ? ' has-error' : '' }}">
                                         <label for="">First name</label>
@@ -367,7 +363,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-sm-6">
                                     <div class="form-group{{ @$errors->has('last_name') ? ' has-error' : '' }}">
                                         <label for="">Last name</label>
@@ -380,7 +376,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-sm-12">
                                     <div class="form-group{{ @$errors->has('email') ? ' has-error' : '' }}">
                                         <label for="">Your Email</label>
@@ -393,13 +389,13 @@
                                         @endif
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-sm-6">
                                     <div class="form-group{{ @$errors->has('password') ? ' has-error' : '' }}">
                                         <label for="">Create your Password</label>
                                         <input type="password" class="form-control" id="" placeholder=""
                                                name="password">
-                                        
+
                                         @if (@$errors->has('password'))
                                             <span class="help-block">
                                                 <strong>{{ @$errors->first('password') }}</strong>
@@ -407,7 +403,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-sm-6">
                                     <div class="form-group{{ @$errors->has('password_confirmation') ? ' has-error' : '' }}">
                                         <label for="">Re-type Password</label>
@@ -420,35 +416,35 @@
                                         @endif
                                     </div>
                                 </div>
-                            
+
                             </div>
-                            
+
                             <div class="row">
                                 <span class="hidden-xs"><br></span>
                                 <div class="col-sm-6 text-muted">
                                     By clicking "Sign Up", you agree with our <a href="#">Terms & Conditions</a>
                                     <span class="visible-xs"><br></span>
                                 </div>
-                                
+
                                 <div class="col-sm-6">
                                     <button type="submit" class="btn btn-success btn-block">Proceed &raquo;</button>
                                 </div>
-                                
+
                                 <div class="col-sm-12">
                                     <hr>
                                 </div>
-                                
+
                                 <div class="col-xs-12 text-center">
                                     <p>Already registered? <a href="{{ url('log-in') }}">Sign In Here</a></p>
                                 </div>
-                            
+
                             </div>
                         </form>
-                    
+
                     </div>
                 </div>
-            
-            
+
+
             </section>
         </div>
     </div>
@@ -461,32 +457,32 @@
 <div class="modal fade" tabindex="-1" id="myInvoice" role="dialog" aria-labelledby="myInvoice">
     <div class="modal-dialog">
         <div class="modal-content">
-            
+
             <h3 class="text-center">Confirm your order</h3>
-            
-            
+
+
             <section class="no-pad" id='ContentAREA'>
                 <div class="">
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="content rounded">
-                                
+
                                 <div class="alert alert-info text-center">If you choose to make payment directly to our
                                     bank account by visiting a bank physically or via online transfer, do ensure to
                                     send a mail to billing@insidify.com stating the details of your payment.
                                 </div>
-                                
+
                                 <div class="well">
-                                    
+
                                     <div class="col-xs-6">
-                                        
+
                                         <strong>Invoiced To</strong><br>
                                         bunmifamiloni<br>familoni oluwatayo<br>
                                         mayfair, ile ife, Osun, 234, Nigeria
-                                    
+
                                     </div>
                                     <div class="col-xs-6">
-                                        
+
                                         <strong>Pay To</strong><br>
                                         Account Name: Insidify Limited<br>
                                         Account No: 0114023729<br>
@@ -497,12 +493,12 @@
                                         TIN: 12001705-0001
                                     </div>
                                     <div class="clearfix">
-                                    
+
                                     </div>
-                                
+
                                 </div>
-                                
-                                
+
+
                                 <div class="col-sm-12">
                                     <br>
                                     <div class="">
@@ -510,7 +506,7 @@
                                         Invoice Date: 11/09/2015<br>
                                         Due Date: 25/09/2015
                                     </div>
-                                    
+
                                     <br>
                                     <table class="table table-striped table-bordered">
                                         <tbody>
@@ -555,14 +551,14 @@
                                     </table>
                                 </div>
                                 <div class="clearfix">
-                                
+
                                 </div>
                                 <!-- <a class="btn btn-line">Cancel Order</a> -->
                                 <div class="col-sm-12 text-center">
                                     <a href="payment-success.php" class="btn btn-success pull-right">Pay Now</a>
                                     <div class="separator separator-small"></div>
                                 </div>
-                            
+
                             </div>
                         </div>
             </section>
@@ -574,8 +570,8 @@
 <!-- modals -->
 <div class="modal fade no-border" id="cvModal" role="dialog" aria-labelledby="cvViewModalLabel" aria-hidden="false">
     <div id="cvModalContent">
-    
-    
+
+
     </div>
 </div>
 

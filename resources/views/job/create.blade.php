@@ -651,7 +651,8 @@
                         $.growl.error({message: "Please enter description."});
                     }
                     else {
-                        $(this).attr('disabled','disabled');
+                        $('#post-job-btn').attr('disabled','disabled');
+                        $("#myForm").submit();
                     }
                 }
 

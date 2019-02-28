@@ -1505,7 +1505,7 @@ class JobsController extends Controller
         $company = $job->company;
 
         if(empty($job)){
-            // redirect to 404 page
+            abort(404);
         }
 
 

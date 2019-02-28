@@ -1491,25 +1491,24 @@ class JobsController extends Controller
 
     }
 
-    public function JobView($company_slug, $jobid, $job_slug, Request $request = null)
+    /**
+     * Show a preview of a job detail
+     * @param $jobid
+     * @param $job_slug
+     * @param Request|null $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function JobView($jobid, $job_slug, Request $request = null)
     {
-        $company = Company::where('slug', $company_slug)->first();
-        $job = Job::where('id', $jobid)->where("company_id",$company->id)->first();
+
+        $job = Job::with('company')->where('id', $jobid)->first();
+        $company = $job->company;
 
         if(empty($job)){
-            // redirect to 404 page
+            abort(404);
         }
 
-        //increment job views
 
-        /*if( File::exists( public_path( 'uploads/'.@$company->logo ) ) )
-        {
-            $company->logo = asset('uploads/'.@$company->logo);
-        }
-        else
-        {
-            $company->logo = asset('img/company.png');
-        }*/
         $company->logo = get_company_logo($company->logo);
 
         if( Carbon::now()->diffInDays( Carbon::parse($job->expiry_date), false ) < 0 || in_array(  $job->status, ['SUSPENDED','DELETED'] ))

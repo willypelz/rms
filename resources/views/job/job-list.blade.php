@@ -120,7 +120,7 @@
                                                         @else Job Expired @endif |
                                                         <a href="{{ route('job-board', [$job['id']]) }}">View Job</a> |
                                                         <a
-                                                                href="{{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"
+                                                                href="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}"
                                                                 target="_blank">Preview Job</a></small>
                                                     <br/>
                                                     <small class="text-muted"><i

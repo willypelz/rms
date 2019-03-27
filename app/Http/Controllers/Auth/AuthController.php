@@ -46,27 +46,12 @@ class AuthController extends Controller
      *
      * @return void
      */
-    // public function __construct()
-    // {
-    //     $this->middleware('guest', ['except' => 'logout']);
-
-    // }
 
     public function __construct(ActivationService $activationService)
     {
         $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
         $this->activationService = $activationService;
     }
-
-    // public function redirectPath()
-    // {
-    //     // // Logic that determines where to send the user
-    //     // if (\Auth::user()->type == 'admin') {
-    //     //     return '/admin';
-    //     // }
-
-    //     return '/poop';
-    // }
 
     /**
      * Get a validator for an incoming registration request.
@@ -105,7 +90,6 @@ class AuthController extends Controller
 
     public function AjaxLogin(Request $request){
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            // return redirect()->route('ajax_checkout');
             echo 'True';
         }else{
             echo 'Failed';
@@ -169,8 +153,8 @@ class AuthController extends Controller
 
             if( $request->hasFile('logo') )
             {
-                $file_name  = (@$request->logo->getClientOriginalName());
-                $fi =  @$request->file('logo')->getClientOriginalExtension();
+                $file_name  = ($request->logo->getClientOriginalName());
+                $fi =  $request->file('logo')->getClientOriginalExtension();
                 $logo = $request->company_name.'-'.$file_name;
             }
             else

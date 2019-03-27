@@ -25,7 +25,11 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('auth');
+      $this->middleware('auth', ['except' => [
+          'requestACall',
+          'pricing',
+          'viewTalentSource',
+      ]]);
     }
 
     /**
@@ -40,7 +44,6 @@ class HomeController extends Controller
 
     public function dashbaord()
     {
-
         $comp_id = get_current_company()->id;
         $jobs_count = Job::where('company_id', $comp_id)->where('status','!=','DELETED')->count();
 
@@ -58,11 +61,11 @@ class HomeController extends Controller
         // $purchased_cvs_count = Solr::get_purchased_cvs($this->search_params)['response']['numFound'];
 
         // dd( FolderContent::where('getFolderType.type','saved')->get()->toArray() );
-         
+
         // Mail::send('emails.cv-sales.invoice', [], function($message){
         //     $message->from('no-reply@insidify.com');
         //     $message->to('babatopeoni@gmail.com', 'SH test email');
-        // }); 
+        // });
 
         return view('talent-pool.dashboard', compact('posts', 'jobs_count','talent_pool_count','saved_cvs_count','purchased_cvs_count'));
     }
@@ -111,5 +114,5 @@ class HomeController extends Controller
         return view('guest.pricing');
     }
 
-    
+
 }

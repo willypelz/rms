@@ -98,18 +98,43 @@
                                 <br/><br/>
                                    <form action="{{ route('job-team-add') }}" method="post" id="JobTeamAdd">
                                     {!! csrf_field() !!}
-                                   <div class="form-group">
-                                       <label for="">Name: </label>
-                                       <input type="text" id="name" name="name" value="" class="form-control" required>
-                                       <small><em>The name of the team member</em></small><br><br>
+                                       <div class="form-group">
+                                           <label for="">Internal</label>
+                                           <input type="radio" value="internal" id="internal">
+                                           <label for="">External</label>
+                                           <input type="radio" value="external" id="external">
+                                       </div>
 
-                                       <input type="hidden" name="email_from" value="{{ get_current_company()->email }}" class="form-control">
-                                       <input type="hidden" name="job_id" value="{{ $job->id }}" class="form-control">
+                                       <div class="form-group">
+                                           <div id="hiddenForm">
+                                               <div id="external_div">
+                                                   <label for="">Name: </label>
+                                                   <input type="text" id="name" name="name" value="" class="form-control" >
+                                                   <small><em>The name of the team member</em></small><br><br>
+                                                   <input type="hidden" name="email_from" value="{{ get_current_company()->email }}" class="form-control">
+                                                   <input type="hidden" name="job_id" value="{{ $job->id }}" class="form-control">
+                                                   <label for="">Email: </label>
+                                                   <input type="text" name="email" id="email_to" placeholder="email addresses here" class="form-control" >
+                                                   <small><em>The email address of the team member</em></small><br><br>
+                                               </div>
+                                               <div id="internal_div">
+                                                   <label for="">Select Employee from HCHub</label>
+                                                   <select type="text" class="form-control" name="" id="employeeSelect">
+                                                       <option value="{{null}}">--Select Employee--</option>
+                                                   </select>
 
-                                       <label for="">Email: </label>
+                                               </div>
 
-                                       <input type="text" name="email" id="email_to" placeholder="email addresses here" class="form-control" required>
-                                       <small><em>The email address of the team member</em></small><br><br>
+                                           </div>
+
+
+                                           <label for="role">Role</label>
+                                           <select name="role" id="role" class="form-control">
+                                               <option value="{{null}}"> --Select One-- </option>
+                                               @foreach($roles as $role)
+                                                   <option value="{{$role->id}}">{{ucfirst($role->name)}}</option>
+                                               @endforeach
+                                           </select>
 
 
                                        <label for="">Access: </label>
@@ -145,6 +170,7 @@ You would be required to collaborate with your team in selecting the candidate(s
                                        <input class="btn btn-success btn-sm pull-right" id="sendMail" type="submit" value="Send mail">
                                        <!-- <button class="btn btn-success btn-sm pull-right" aria-controls="collapseWYSIWYG" aria-expanded="false" href="#collapseWYSIWYG" data-toggle="collapse" role="button" type="submit">Send Mail &nbsp;  <i class="fa fa-send"></i></button> -->
                                    </p>
+
                                    </form>
 
                                </div>
@@ -169,12 +195,66 @@ You would be required to collaborate with your team in selecting the candidate(s
 
     <script>
     $(document).ready( function(){
+        var employees = [];
         $('#JobTeamAdd').ajaxForm({
                 headers: { 'X-CSRF-TOKEN': $('input[name="_token"]').val() },
                 beforeSubmit:btn,
                 success:showResponse
         });
+        $('#hiddenForm').hide();
+        $('#external_div').hide();
+        $('#internal_div').hide();
 
+        $('#internal').change(function () {
+            $('#hiddenForm').show();
+
+            if($('#internal').is(":checked")) {
+                $('#external').prop('checked', false);
+                $('#internal_div').show();
+                $('#external_div').hide();
+                $("#employeeSelect").select2();
+                $.ajax({
+                    url: "{{ route('fetch-employees') }}",
+                    type: "get",
+                    success: function (response) {
+                        employees = response;
+                        $("#employeeSelect").append(response.map( function(item){
+                            var name = item.first_name + ' ' + item.last_name;
+                            return "<option value="+ item.id +">" + name  + "</option>";
+                        })).trigger("change");
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        $.growl.error({message: 'Could not fetch employees please try again'});
+                    }
+                });
+            } else {
+                $('#external').prop('checked', true);
+                $('#internal_div').hide();
+                $('#external_div').hide();
+            }
+        });
+
+        $('#external').change(function () {
+            $('#hiddenForm').show();
+
+            if($('#external').is(":checked")) {
+                $('#internal').prop('checked', false);
+                $('#external_div').show();
+                $('#internal_div').hide();
+
+            } else {
+                $('#internal').prop('checked', true);
+                $('#external_div').hide();
+                $('#internal_div').show();
+
+            }
+        });
+
+        $('#employeeSelect').on('change', function () {
+            employee = employees.find(employee => employee.id == $('#employeeSelect').val());
+            $('#name').val(employee.first_name + ' ' + employee.last_name);
+            $('#email_to').val(employee.email);
+        });
         /*$('body #removeTeamMember').on('click', function(){
             $comp = $(this).data('comp');
             $id = $(this).data('id');
@@ -193,12 +273,11 @@ You would be required to collaborate with your team in selecting the candidate(s
                     }
 
                     function showResponse(res){
-                        res = JSON.parse( res );
-
                         $('#sendMail').removeAttr('disabled');
                         $('#AddTeamMember').removeClass('in');
                         $('#email_to').val('');
                         $('#name').val('');
+                        $('#role').val(null);
 
                         if( res.status == true )
                         {
@@ -206,10 +285,15 @@ You would be required to collaborate with your team in selecting the candidate(s
                         }
                         else
                         {
-                          $.growl.error({ message: res.message });
+                            if(typeof (res.message) === 'object') {
+                                $.each(res.message, function( index, value ) {
+                                    $.growl.error({message: value});
+                                });
+                            } else {
+                                $.growl.error({message: res.message});
+                            }
+
                         }
-
-
 
                     }
     </script>

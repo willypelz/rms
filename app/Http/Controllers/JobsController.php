@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Models\Role;
 use App\Models\Workflow;
 use Illuminate\Http\Request;
 use App\Models\JobBoard;
@@ -203,22 +204,26 @@ class JobsController extends Controller
 
     }*/
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function JobTeamAdd(Request $request)
     {
       # code...
-      // dd('helo');
-      // dd($request->request);
-
       $validator = Validator::make($request->all(), [
-            'email' => 'required',
-            'name' => 'required'
+            'email' => 'required|email',
+            'name' => 'required',
+            'role' => 'required|numeric'
         ],[
-            'email.required' => 'Email is required',
-            'name.required' => 'Name is required'
+            'email.required' => 'Email is required. If you selected an employee, check that they have a valid email',
+            'name.required' => 'Name is required',
+            'role.required' => 'Role is required',
+            'role.numeric' => 'Please select a valid role'
         ]);
 
         if ($validator->fails()) {
-            echo 'Some fields are missing';
+            return response()->json( ['status' => 'false', 'message' => $validator->getMessageBag()->toArray() ]);
         }
         else
         {
@@ -228,16 +233,16 @@ class JobsController extends Controller
                     'name' => $request->name,
                     'email' => $request->email,
                     'job_id' => ( $request->access == "company" ) ? null : $request->job_id,
-
+                    'role_id' => $request->role,
                 ];
 
 
             if( JobTeamInvite::where('job_id',$data['job_id'])->where('email',$data['email'])->count() )
             {
-                return json_encode( ['status' => false, 'message' => $data['name'].' has been invited already'] );
+                return response()->json(['status' => false, 'message' => $data['name'].' has been invited already']);
             }
 
-            $job_team_invite = JobTeamInvite::create($data);
+            $job_team_invite = JobTeamInvite::firstOrCreate($data);
             $company = Company::find( get_current_company()->id );
 
 
@@ -253,15 +258,12 @@ class JobsController extends Controller
             //Send notification mail
             $email_from = ( Auth::user()->email ) ? Auth::user()->email : 'no-reply@insidify.com';
 
-            $this->mailer->send('emails.new.exclusively_invited', ['data' => $data, 'job_title'=>$job->title, 'company'=>$company->name, 'accept_link'=> $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
+            \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $data, 'job_title'=>$job->title, 'company'=>$company->name, 'accept_link'=> $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
                 $m->from('support@seamlesshr.com')->to($data->email)->subject('You Have Been Exclusively Invited');
             });
 
-            return json_encode( ['status' => true, 'message' => 'Email was sent successfully'] );
+            return response()->json(['status' => true, 'message' => 'Email was sent successfully'] );
         }
-
-
-      //$comp->users()->attach($user->id);
 
 
     }
@@ -289,28 +291,34 @@ class JobsController extends Controller
 
     }
 
+    /**
+     * @param $id
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
      public function acceptInvite($id, Request $request){
         $job_team_invite = JobTeamInvite::find($id);
         $job = Job::with('company')->find( $job_team_invite->job_id );
         $company = Company::find( $job->company->id );
+        $user_role = Role::find($job_team_invite->role_id);
 
         $is_new_user = true;
 
         if ($request->isMethod('post')) {
 
-            // $validator = Validator::make($request->all(), [
-            //     'password' => 'required|confirmed|min:6',
-            // ],[
-            //     'password.confirmed' => 'Passwords do not match',
-            // ]);
+             $validator = Validator::make($request->all(), [
+                 'password' => 'required|confirmed|min:6',
+             ],[
+                 'password.confirmed' => 'Passwords do not match',
+             ]);
 
-            // if ($validator->fails()) {
-            //     return redirect()->back()
-            //               ->withErrors($validator)
-            //               ->withInput();
-            // }
-            // else
-            // {
+             if ($validator->fails()) {
+                 return redirect()->back()
+                           ->withErrors($validator)
+                           ->withInput();
+             }
+             else
+             {
                 $user = User::find( @$request->ref );
                 $user->password = bcrypt( $request->password );
                 $user->save();
@@ -318,7 +326,7 @@ class JobsController extends Controller
                 Auth::attempt(['email' => $user->email, 'password' => $request->password]);
                 return redirect()->route('select-company',['slug'=>$job->company->slug]);
 
-            // }
+             }
 
         }
         else
@@ -356,8 +364,14 @@ class JobsController extends Controller
                 else
                 {
                     $role = 0;
-                    $job->users()->sync([$user->id], false);
+                    if(!is_null($job_team_invite->job_id)) {
+                        $job->users()->sync([$user->id => ['role_id' => $user_role->id]]);
+                    } else {
+                        $job->users()->sync([$user->id]);
+                    }
                 }
+                if($user->roles()->where('role_id', $user_role->id)) $user->roles()->detach($user_role->id);
+                $user->attachRole($user_role);
 
                 $company->users()->sync([$user->id => ['role' => $role] ], false);
 
@@ -370,6 +384,7 @@ class JobsController extends Controller
         return view('job.accept-invite', compact('job_team_invite', 'job','status','is_new_user','user'));
 
     }
+
 
     /**
      * Currently, this action assumes that invited team is having company access
@@ -1013,8 +1028,9 @@ class JobsController extends Controller
 
         $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'], $id);
         // return view('emails.e-exculsively-invited');
+        $roles = Role::select('id', 'name')->get();
         $job_team_invites = JobTeamInvite::where('job_id', $job->id)->where('is_accepted',0)->where('is_declined',0)->get();
-        return view('job.board.team', compact('job', 'active_tab', 'company','result','application_statuses','owner','job_team_invites'));
+        return view('job.board.team', compact('job', 'active_tab', 'company','result','application_statuses','owner','job_team_invites', 'roles'));
     }
 
     public function ActivityContent(Request $request){

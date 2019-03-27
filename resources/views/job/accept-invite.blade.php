@@ -34,20 +34,20 @@
                     @if(is_null( @$status ))
                       <p class="lh1-7 text-normal" style="font-size: 1.15em; color: #5d5d5d">
                         Welcome {{ ucwords( $job_team_invite->name ) }}, 
-                        <br>You have accepted the invitation to join the job team for the recruitment of <strong>{{ $job->title }}</strong> in <strong>{{ $job->company->name }}</strong>
+                        <br>You have accepted the invitation to join the job team for the recruitment of <strong>{{ $job ? $job->title : 'all jobs' }}</strong> in <strong>{{ $company->name }}</strong>
 
                       </p>
                     @else
                       <p class="lh1-7 text-normal text-center" style="font-size: 1.15em; color: #5d5d5d">
 
                         @if( $status )
-                            You have accepted the invitation to join the job team for the recruitment of <strong>{{ $job->title }}</strong> in <strong>{{ $job->company->name }}</strong>
+                            You have accepted the invitation to join the job team for the recruitment of <strong>{{ $job ? $job->title : 'all jobs' }}</strong> in <strong>{{ $company->name }}</strong>
                             <hr>
                             <div class="col-sm-4 col-sm-offset-4">
-                              <a href="{{ route('select-company',['slug'=>$job->company->slug]) }}" class="btn btn-success btn-block">Login</a>
+                              <a href="{{ route('select-company',['slug'=>$company->slug]) }}" class="btn btn-success btn-block">Login</a>
                             </div>
                         @else
-                            You have declined the invitation to join the job team for the recruitment of <strong>{{ $job->title }}</strong> in <strong>{{ $job->company->name }}</strong>
+                            You have declined the invitation to join the job team for the recruitment of <strong>{{ $job ? $job->title : 'all jobs' }}</strong> in <strong>{{ $company->name }}</strong>
                             <div class="clearfix"></div>
                             <hr>
                             <p class="text-muted text-center">If you did not wish to decline this job team invitation, kindly contact the admin to re-invite you to the job team</p>
@@ -64,10 +64,10 @@
                 <div class="row">
                   <hr>
 
-                  @if( !$is_new_user )
+                  @if( !$is_new_user || $is_internal )
                   <div class="col-sm-4 col-sm-offset-4">
                     <!-- Click here if you already have an account -->
-                    <a href="{{ route('select-company',['slug'=>$job->company->slug]) }}" class="btn btn-success btn-block">Login</a>
+                    <a href="{{ route('select-company',['slug'=> $company->slug]) }}" class="btn btn-success btn-block">Login</a>
                   </div>
                   @else
                   

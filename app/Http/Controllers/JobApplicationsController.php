@@ -247,12 +247,12 @@ class JobApplicationsController extends Controller
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
         check_if_job_owner($appl->job->id);
-
+        $job_id = $appl->job->id;
         $nav_type = 'profile';
 
         // dd($appl->toArray());
-
-        return view('applicant.profile', compact('appl', 'nav_type'));
+        $permissions = getUserPermissions();
+        return view('applicant.profile', compact('appl', 'nav_type', 'permissions', 'job_id'));
 
     }
 
@@ -413,11 +413,12 @@ class JobApplicationsController extends Controller
         $states = $this->states;
         $qualifications = $this->qualifications;
         $grades = grades();
-
+        $permissions = getUserPermissions();
         if ($request->ajax()) {
+
             $search_results = view('job.board.includes.applicant-results-item',
                 compact('job', 'active_tab', 'status', 'result', 'jobID', 'start', 'myJobs', 'myFolders',
-                    'application_statuses', 'request'))->render();
+                    'application_statuses', 'request', 'permissions'))->render();
             $search_filters = view('cv-sales.includes.search-filters', [
                 'result' => $result,
                 'search_query' => $request->search_query,
@@ -456,7 +457,7 @@ class JobApplicationsController extends Controller
                     'showing',
                     'myJobs',
                     'myFolders', 'application_statuses', 'job',
-                    'video_application_score', 'request', 'states', 'qualifications', 'grades'));
+                    'video_application_score', 'request', 'states', 'qualifications', 'grades', 'permissions'));
         }
 
 

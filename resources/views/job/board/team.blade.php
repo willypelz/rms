@@ -99,10 +99,10 @@
                                    <form action="{{ route('job-team-add') }}" method="post" id="JobTeamAdd">
                                     {!! csrf_field() !!}
                                        <div class="form-group">
-                                           <label for="">Internal</label>
-                                           <input type="radio" value="internal" id="internal">
+                                           <label for="" >Internal</label>
+                                           <input type="radio" name="internal" value="internal" id="internal">
                                            <label for="">External</label>
-                                           <input type="radio" value="external" id="external">
+                                           <input type="radio" name="external" value="external" id="external">
                                        </div>
 
                                        <div class="form-group">

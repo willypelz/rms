@@ -106,6 +106,7 @@ class JobsController extends Controller
             'getEmbedTest',
             'acceptInvite',
             'declineInvite',
+            'selectCompany',
         ]]);
 
         $this->qualifications = [
@@ -234,6 +235,7 @@ class JobsController extends Controller
                     'email' => $request->email,
                     'job_id' => ( $request->access == "company" ) ? null : $request->job_id,
                     'role_id' => $request->role,
+                    'is_internal' => $request->internal ? 1 : 0,
                 ];
 
 
@@ -298,12 +300,12 @@ class JobsController extends Controller
      */
      public function acceptInvite($id, Request $request){
         $job_team_invite = JobTeamInvite::find($id);
-        $job = Job::with('company')->find( $job_team_invite->job_id );
-        $company = Company::find( $job->company->id );
+        $companies = Company::all();
+        $job = ($job_team_invite->job_id) ? Job::with('company')->find( $job_team_invite->job_id ) : null;
+        $company = !is_null($job) ? Company::find( $job->company->id ) : $companies->first();
         $user_role = Role::find($job_team_invite->role_id);
-
         $is_new_user = true;
-
+        $is_internal = $job_team_invite->is_internal;
         if ($request->isMethod('post')) {
 
              $validator = Validator::make($request->all(), [
@@ -331,6 +333,8 @@ class JobsController extends Controller
         }
         else
         {
+            $user = User::where('email', $job_team_invite->email)->first();
+            if($user) $is_new_user = false;
             if( $job_team_invite->is_accepted )
             {
                 $status = true;
@@ -341,16 +345,12 @@ class JobsController extends Controller
             }
             else
             {
-                $user = User::where('email', $job_team_invite->email)->first();
-
                 if(empty($user) or is_null($user)){
 
                     $user = User::FirstorCreate([
                       'email' => $job_team_invite->email,
                       'name' => $job_team_invite->name
                     ]);
-
-
                 }
                 else
                 {
@@ -372,16 +372,21 @@ class JobsController extends Controller
                 }
                 if($user->roles()->where('role_id', $user_role->id)) $user->roles()->detach($user_role->id);
                 $user->attachRole($user_role);
-
-                $company->users()->sync([$user->id => ['role' => $role] ], false);
+                if(!is_null($job)) {
+                    $company->users()->sync([$user->id => ['role' => $role, 'role_id' => $user_role->id] ], false);
+                } else {
+                    foreach ($companies as $company) {
+                        $company->users()->sync([$user->id => ['role' => $role, 'role_id' => $user_role->id] ], false);
+                    }
+                }
 
                 $job_team_invite->is_accepted = true;
                 $job_team_invite->save();
-
             }
+            if($is_internal == 1 || !$is_new_user && !Auth::check())  Auth::loginUsingId($user->id);
         }
 
-        return view('job.accept-invite', compact('job_team_invite', 'job','status','is_new_user','user'));
+         return view('job.accept-invite', compact('job_team_invite', 'job','status','is_new_user','user', 'is_internal', 'company'));
 
     }
 

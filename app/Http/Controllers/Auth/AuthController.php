@@ -46,11 +46,6 @@ class AuthController extends Controller
      *
      * @return void
      */
-    // public function __construct()
-    // {
-    //     $this->middleware('guest', ['except' => 'logout']);
-
-    // }
 
     public function __construct(ActivationService $activationService)
     {
@@ -58,6 +53,7 @@ class AuthController extends Controller
         $this->activationService = $activationService;
     }
 
+   
     // public function redirectPath()
     // {
     //     // // Logic that determines where to send the user
@@ -67,9 +63,6 @@ class AuthController extends Controller
         
     //     return '/poop';
     // }
-
-
-   
 
 
     public function verifyUser(Request $request)
@@ -98,6 +91,7 @@ class AuthController extends Controller
                 return ['status' => 500, 'message' => 'These credentials do not match our records' ];
         }
     }
+
 
     /**
      * Get a validator for an incoming registration request.
@@ -136,7 +130,6 @@ class AuthController extends Controller
 
     public function AjaxLogin(Request $request){
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            // return redirect()->route('ajax_checkout');
             echo 'True';
         }else{
             echo 'Failed';
@@ -175,7 +168,7 @@ class AuthController extends Controller
 
     public function activateUser($token)
     {
-        
+
         if ($user = $this->activationService->activateUser($token)) {
             auth()->login($user);
             return redirect($this->redirectPath());
@@ -186,7 +179,6 @@ class AuthController extends Controller
     public function Registration (Request $request){
         return redirect('/');
         if ($request->isMethod('post')) {
-            // dd($request->request); 
 
              $validator = Validator::make($request->all(), [
                 'name' => 'unique:companies',
@@ -201,18 +193,18 @@ class AuthController extends Controller
 
             if( $request->hasFile('logo') )
             {
-                $file_name  = (@$request->logo->getClientOriginalName());
-                $fi =  @$request->file('logo')->getClientOriginalExtension(); 
+                $file_name  = ($request->logo->getClientOriginalName());
+                $fi =  $request->file('logo')->getClientOriginalExtension();
                 $logo = $request->company_name.'-'.$file_name;
             }
             else
             {
                 $logo = '';
             }
-           
-            
-             
-            
+
+
+
+
 
             $com['name'] = $request->company_name;
             $com['slug'] = $request->slug;
@@ -251,7 +243,7 @@ class AuthController extends Controller
             ]);
 
 
-            
+
             if( $request->hasFile('logo') )
             {
                 $upload = $request->file('logo')->move(
@@ -278,12 +270,40 @@ class AuthController extends Controller
                 // if($login)
                 //     return redirect('dashboard');
             // }
-            
+
 
 
         }
         return view('auth.register');
     }
 
-    
+    /**
+     * [singleSignOn login and redirect to url]
+     * @param  [string] $encoded_email [encoded email]
+     * @param  [string] $encoded_key   [encoded key]
+     * @param  [string] $encoded_url   [encoded url]
+     * @return [route]                 [redirect to url]
+     */
+    public function singleSignOn($encoded_email, $encoded_key, $encoded_url)
+    {
+
+      $decoded_email = base64_decode($encoded_email);
+      $decoded_key = base64_decode($encoded_key);
+      $decoded_url = base64_decode($encoded_url);
+
+      $user = User::where('email', $decoded_email)->first();
+      if(!$user){
+        return back()->with('error', 'User email does not exist');
+      }
+      $api_key = $user->companies()->where('api_key', $decoded_key)->first();
+      if($api_key == null){
+        return back()->with('error', 'API key not valid');
+      }
+
+      Auth::login($user);
+
+      return redirect($decoded_url);
+    }
+
+
 }

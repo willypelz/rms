@@ -47,7 +47,6 @@ class HomeController extends Controller
         $comp_id = get_current_company()->id;
         $jobs_count = Job::where('company_id', $comp_id)->where('status','!=','DELETED')->count();
 
-        // dd($jobs);
         $response = Curl::to('https://api.insidify.com/articles/get-posts')
                                 ->withData(array('limit'=>6))
                                 ->post();
@@ -59,8 +58,6 @@ class HomeController extends Controller
         // $talent_pool_count = Solr::get_all_my_cvs($this->search_params)['response']['numFound'];
         // $saved_cvs_count = Solr::get_saved_cvs($this->search_params)['response']['numFound'];
         // $purchased_cvs_count = Solr::get_purchased_cvs($this->search_params)['response']['numFound'];
-
-        // dd( FolderContent::where('getFolderType.type','saved')->get()->toArray() );
 
         // Mail::send('emails.cv-sales.invoice', [], function($message){
         //     $message->from('no-reply@insidify.com');

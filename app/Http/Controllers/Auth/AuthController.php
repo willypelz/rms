@@ -155,7 +155,6 @@ class AuthController extends Controller
     public function Registration (Request $request){
         return redirect('/');
         if ($request->isMethod('post')) {
-            // dd($request->request);
 
              $validator = Validator::make($request->all(), [
                 'name' => 'unique:companies',

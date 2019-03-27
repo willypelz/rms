@@ -120,8 +120,12 @@
 
                     }else{
 
-                        $('#error').html(res.message);
-                        $('#error').show();
+                        
+                        setTimeout(function(){ 
+                            $('#error').html(res.message);
+                            $('#error').show();
+                         }, 3000);
+
                     }
                 } 
             });

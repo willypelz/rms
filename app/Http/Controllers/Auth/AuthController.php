@@ -70,8 +70,10 @@ class AuthController extends Controller
 
         $user = User::whereEmail($request->email)->first();
 
+
         if($user){
-            $is_external = 0;
+        // TODO
+            $is_external = 1;
 
             if($is_external){
                 

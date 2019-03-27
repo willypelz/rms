@@ -30,9 +30,13 @@ use Illuminate\Support\Facades\Route;
 URL::forceSchema('https');
 
 Route::group(['middleware' => ['web']], function () {
+  Route::get('/sso/auto/login/{email}/{key}/{url}', 'Auth\AuthController@singleSignOn');
+});
+
+
+Route::group(['middleware' => ['web']], function () {
 
     Route::controller('schedule', 'ScheduleController');
-
 });
 
 Route::get('hospital-project', function () {

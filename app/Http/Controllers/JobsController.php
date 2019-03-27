@@ -1493,6 +1493,19 @@ class JobsController extends Controller
 
     /**
      * Show a preview of a job detail
+     * @param $c_url
+     * @param $jobid
+     * @param $job_slug
+     * @param Request|null $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function JobViewOld($c_url, $jobid, $job_slug, Request $request = null)
+    {
+        return redirect()->route('job-view',['jobID'=>$jobid,'jobSlug' => str_slug($job_slug) ]);
+    }
+    
+    /**
+     * Show a preview of a job detail
      * @param $jobid
      * @param $job_slug
      * @param Request|null $request
@@ -1521,6 +1534,7 @@ class JobsController extends Controller
         }
         return view('job.job-details', compact('job', 'company','closed'));
     }
+
 
     public function correctHighestQualification(){
 

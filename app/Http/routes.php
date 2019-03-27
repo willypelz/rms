@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Route;
 URL::forceSchema('https');
 
 Route::group(['middleware' => ['web']], function () {
-  Route::get('/talent-acquisition/sso/login/{email}/{key}/{url}', 'SsoController@singleSignOn');
+  Route::get('/sso/auto/login/{email}/{key}/{url}', 'Auth\AuthController@singleSignOn');
 });
 
 

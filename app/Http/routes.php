@@ -62,6 +62,8 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::auth();
     Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
+    
+    Route::post('user/auth/verify', 'Auth\AuthController@verifyUser')->name('verify-user-details');
 
     Route::get('/', function () {
 

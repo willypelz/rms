@@ -68,6 +68,37 @@ class AuthController extends Controller
     //     return '/poop';
     // }
 
+
+   
+
+
+    public function verifyUser(Request $request)
+    {
+
+        $user = User::whereEmail($request->email)->first();
+
+        if($user){
+            $is_external = 0;
+
+            if($is_external){
+                
+                // Show password field
+                return ['status' => 200, 'is_external' => true];
+
+            }else{
+                // Redirect to StaffStrength with Login
+                $user_email = base64_encode($request->email);
+                
+                $redirect_url = env('HIRS_REDIRECT_LOGIN').'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;
+
+                return ['status' => 200, 'is_external' => false, 'redirect_url' => $redirect_url];
+                
+            }
+        }else{
+                return ['status' => 500, 'message' => 'These credentials do not match our records' ];
+        }
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *

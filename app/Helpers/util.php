@@ -633,9 +633,7 @@ function checkIfUserHasCompanyPermission() {
 	    $company = get_current_company();
 
 	    $has_per =  $company->users()->where('user_id', $user->id)->where('role_id', $role->id)->first();
-	    is_null($has_per) ? $result = false : $result = true;
-
-	    return $result;
+        return is_null($has_per) ?  false :  true;
 }
 
 function checkIfUserHasJobPermission($job_id) {
@@ -644,17 +642,13 @@ function checkIfUserHasJobPermission($job_id) {
     $job = Job::find($job_id);
 
     $has_per = $job->users()->where('user_id', $user->id)->where('role_id', $role->id)->first();
-    is_null($has_per) ? $result = false : $result = true;
-
-    return $result;
+    return is_null($has_per) ?  false :  true;
 }
 
 function checkForBothPermissions($job_id) {
 	    $has_job = checkIfUserHasJobPermission($job_id);
 	    $has_comp = checkIfUserHasCompanyPermission();
-        ($has_comp || $has_job) ? $result = true : $result = false;
-
-        return $result;
+        return ($has_comp || $has_job) ?  true :  false;
 }
 
 function getUserPermissions() {

@@ -383,7 +383,7 @@ class JobsController extends Controller
                 $job_team_invite->is_accepted = true;
                 $job_team_invite->save();
             }
-            if($is_internal == 1 || !$is_new_user && !Auth::check())  Auth::loginUsingId($user->id);
+            if(!$is_new_user && !Auth::check() && $is_internal == 0)  Auth::loginUsingId($user->id);
         }
 
          return view('job.accept-invite', compact('job_team_invite', 'job','status','is_new_user','user', 'is_internal', 'company'));

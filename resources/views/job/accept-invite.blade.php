@@ -41,11 +41,23 @@
                       <p class="lh1-7 text-normal text-center" style="font-size: 1.15em; color: #5d5d5d">
 
                         @if( $status )
+
                             You have accepted the invitation to join the job team for the recruitment of <strong>{{ $job ? $job->title : 'all jobs' }}</strong> in <strong>{{ $company->name }}</strong>
                             <hr>
+                        @if($is_internal)
+                        @php
+                            $user_email = base64_encode($user->email);
+                            $redirect_url = env('HIRS_REDIRECT_LOGIN').'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;
+                        @endphp
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <!-- Click here if you already have an account -->
+                          <a href="{{ $redirect_url }}" class="btn btn-success btn-block">Login</a>
+                        </div>
+                        @else
                             <div class="col-sm-4 col-sm-offset-4">
                               <a href="{{ route('select-company',['slug'=>$company->slug]) }}" class="btn btn-success btn-block">Login</a>
                             </div>
+                        @endif
                         @else
                             You have declined the invitation to join the job team for the recruitment of <strong>{{ $job ? $job->title : 'all jobs' }}</strong> in <strong>{{ $company->name }}</strong>
                             <div class="clearfix"></div>
@@ -64,11 +76,21 @@
                 <div class="row">
                   <hr>
 
-                  @if( !$is_new_user || $is_internal )
+                  @if( !$is_new_user && !$is_internal )
                   <div class="col-sm-4 col-sm-offset-4">
                     <!-- Click here if you already have an account -->
                     <a href="{{ route('select-company',['slug'=> $company->slug]) }}" class="btn btn-success btn-block">Login</a>
                   </div>
+                  @elseif($is_internal)
+                    {{dd('internal')}}
+                    @php
+                      $user_email = base64_encode($user->email);
+                      $redirect_url = env('HIRS_REDIRECT_LOGIN').'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;
+                    @endphp
+                    <div class="col-sm-4 col-sm-offset-4">
+                      <!-- Click here if you already have an account -->
+                      <a href="{{ $redirect_url }}" class="btn btn-success btn-block">Login</a>
+                    </div>
                   @else
                   
                   <div class="col-sm-4 col-sm-offset-4">

@@ -153,6 +153,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Zizaco\Entrust\EntrustServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -227,5 +228,6 @@ return [
         'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
         'Uuid' => Webpatser\Uuid\Uuid::class,
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
     ],
 ];

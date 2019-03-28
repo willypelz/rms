@@ -19,6 +19,8 @@ use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 class JobController extends Controller
 {
@@ -277,6 +279,26 @@ class JobController extends Controller
             'data' => null
         ]);
 
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse|\Psr\Http\Message\ResponseInterface
+     */
+    public function fetchEmployees()
+    {
+        $client = new Client();
+        $company = get_current_company();
+        $api_key = $company->api_key;
+        try {
+            $result = $client->get(env('STAFFSTRENGTH_URL') . 'admin/employees/api/get/all/employees', [
+                'headers' => ['Authorization' => $api_key],
+                'verify' => false,
+            ]);
+            if($result->getStatusCode() == 200) $result = json_decode($result->getBody()->getContents())->data;
+            return $result;
+        } catch (\Exception $exception) {
+            return response()->json(['status' => false, 'message' => 'something went wrong']);
+        }
     }
 
 }

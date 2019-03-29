@@ -512,7 +512,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/my-career-page', 'JobsController@MyCompany');
 
     // Route::get('/{c_url}/job/{job_id}', 'JobsController@JobView');
-    Route::get('/{c_url}/job/{job_id}/{job_slug}', 'JobsController@JobView');
+    Route::get('/{c_url}/job/{job_id}/{job_slug}', 'JobsController@JobViewOld');
 
     Route::get('/{c_url}', 'JobsController@company');
 
@@ -711,7 +711,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('/jobs/{jobType?}', 'JobController@company');
         Route::get('/job/{job_id}/{status_slug}/applicants', 'JobController@applicants');
         Route::post('/jobs/apply', 'JobController@apply');
-
+        Route::get('/get/employees', 'JobController@fetchEmployees')->name('fetch-employees');
     });
 
 });

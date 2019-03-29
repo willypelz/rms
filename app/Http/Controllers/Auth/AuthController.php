@@ -73,7 +73,7 @@ class AuthController extends Controller
 
         if($user){
         // TODO
-            $is_external = 1;
+            $is_external = 0;
 
             if($is_external){
                 
@@ -286,12 +286,11 @@ class AuthController extends Controller
      * @param  [string] $encoded_url   [encoded url]
      * @return [route]                 [redirect to url]
      */
-    public function singleSignOn($encoded_email, $encoded_key, $encoded_url)
+    public function singleSignOnVerify($encoded_email, $encoded_key)
     {
 
       $decoded_email = base64_decode($encoded_email);
       $decoded_key = base64_decode($encoded_key);
-      $decoded_url = base64_decode($encoded_url);
 
       $user = User::where('email', $decoded_email)->first();
       if(!$user){
@@ -299,12 +298,21 @@ class AuthController extends Controller
       }
       $api_key = $user->companies()->where('api_key', $decoded_key)->first();
       if($api_key == null){
-        return back()->with('error', 'API key not valid');
+          return ['status' => false, 'message' => 'API key not valid'];
+      }else{
+        return ['status' => true, 'message' => 'API key valid', 'user_id' => $user->id];
       }
 
-      Auth::login($user);
+    }
 
-      return redirect($decoded_url);
+    public function loginUser($url, $user_id)
+    {
+        $user_id = base64_decode($user_id);
+        $url = base64_decode($url);
+
+        $user = User::find($user_id);
+        Auth::login($user);
+        return redirect($url);
     }
 
 

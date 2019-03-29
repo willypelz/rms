@@ -40,7 +40,7 @@
                     <?php
                     $appl_status = $cv['application_status'][$current_app_index];
                     $applicant_step = $job->workflow->workflowSteps->where('slug', $appl_status)->first(); ?>
-                    @if( @$applicant_step->type == 'assessment' && in_array('can-test', $permissions) && checkForBothPermissions($jobID))
+                    @if( @$applicant_step->type == 'assessment' && in_array('can-test', $permissions) && $check_both_permissions)
 
                         @if( is_array( @$cv['test_name'] ) )
                             @for($i = 0; $i < count(@$cv['test_name']); $i++)
@@ -69,13 +69,13 @@
                         <span class="text-muted"><i
                                     class="fa fa-calendar"></i> {{ \Carbon\Carbon::parse( @$cv['application_date'] )->subHour()->diffForHumans() }} &nbsp;
                             &middot; &nbsp;</span>
-                        @if(in_array('can-view-job', $permissions) && checkForBothPermissions($jobID))&nbsp;
+                        @if(in_array('can-view-job', $permissions) && $check_both_permissions)&nbsp;
                         <a id="showCvBtn" data-toggle="modal" data-target="#cvModal"
                            onclick="showCvModal('{{ $cv['id'] }}',true, {{ $cv['application_id'][ $current_app_index ] }});">
                             View CV
                         </a>
                         @endif
-                        @if(in_array('can-view-candidates', $permissions) && checkForBothPermissions($jobID))
+                        @if(in_array('can-view-candidates', $permissions) && $check_both_permissions)
                         <span class="text-muted">&nbsp; &middot; &nbsp;</span>
                         <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}">
                             View application
@@ -85,7 +85,7 @@
               <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}">View Application</a-->
 
                         <span class="text-muted">&nbsp; </span>
-                        @if($cv['is_approved'] && in_array('can-move-application', $permissions) && checkForBothPermissions($jobID))
+                        @if($cv['is_approved'] && in_array('can-move-application', $permissions) && $check_both_permissions)
                             <span class="dropdown">
                                 <a id="moveToDrop"
                                    class="dropdown-toggle"
@@ -124,7 +124,7 @@
                                 </ul>
                             </span>
 
-                            @if(@$applicant_step->type == 'assessment' && in_array('can-test', $permissions) && checkForBothPermissions($jobID))
+                            @if(@$applicant_step->type == 'assessment' && in_array('can-test', $permissions) && $check_both_permissions)
 
                                 <a data-toggle="modal"
                                    data-target="#viewModal"
@@ -142,7 +142,7 @@
 
                             @endif
 
-                            @if(@$applicant_step->type == 'interview' && in_array('can-view-interview', $permissions) && checkForBothPermissions($jobID))
+                            @if(@$applicant_step->type == 'interview' && in_array('can-view-interview', $permissions) && $check_both_permissions)
 
                                 <a data-toggle="modal"
                                    data-target="#viewModal"
@@ -212,7 +212,7 @@
 
                         @else
                             @foreach($job->workflow->workflowSteps as $workflowStep)
-                                @if(in_array(auth()->user()->id, $workflowStep->approvals->pluck('id')->toArray()) && $workflowStep->slug == @$applicant_step->slug && in_array('can-perform-interview-actions', $permissions) && checkForBothPermissions($jobID))
+                                @if(in_array(auth()->user()->id, $workflowStep->approvals->pluck('id')->toArray()) && $workflowStep->slug == @$applicant_step->slug && in_array('can-perform-interview-actions', $permissions) && $check_both_permissions)
                                 <!-- // Approval Button -->
                                     <a data-toggle="modal"
                                        data-target="#viewModal"
@@ -370,7 +370,7 @@
 
 --}}
                         <span class="text-muted">&nbsp; &middot; &nbsp;</span>
-                        @if(in_array('can-view-comments', $permissions) && checkForBothPermissions($jobID))
+                        @if(in_array('can-view-comments', $permissions) && $check_both_permissions)
                         <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal"
                            data-title="Comment" data-view="{{ route('modal-comment') }}"
                            data-app-id="{{ $cv['application_id'][ $current_app_index ] }}" data-cv="{{ $cv['id'] }}"

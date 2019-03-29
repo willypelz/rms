@@ -762,7 +762,6 @@ class JobsController extends Controller
         $states = $this->states;
         $qualifications = $this->qualifications;
         $grades = grades();
-
         return view ('job.add-candidates', compact('jobid', 'job', 'myJobs', 'myFolders','states','qualifications','grades'));
     }
 

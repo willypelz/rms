@@ -442,7 +442,7 @@ class JobApplicationsController extends Controller
             $exp_years = [env('EXPERIENCE_START'), env('EXPERIENCE_END')];
             $video_application_score = [env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END')];
             $test_score = [40, 160];
-
+            $check_both_permissions = checkForBothPermissions($jobID);
             return view('job.board.candidates',
                 compact('job',
                     'active_tab',
@@ -457,7 +457,7 @@ class JobApplicationsController extends Controller
                     'showing',
                     'myJobs',
                     'myFolders', 'application_statuses', 'job',
-                    'video_application_score', 'request', 'states', 'qualifications', 'grades', 'permissions'));
+                    'video_application_score', 'request', 'states', 'qualifications', 'grades', 'permissions', 'check_both_permissions'));
         }
 
 

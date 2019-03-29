@@ -53,8 +53,6 @@ class AuthController extends Controller
         $this->activationService = $activationService;
     }
 
-   
-   
 
     public function verifyUser(Request $request)
     {
@@ -64,21 +62,21 @@ class AuthController extends Controller
 
         if($user){
         // TODO
-            $is_external = 0;
+            $is_internal = $user->is_internal;
 
-            if($is_external){
-                
+            if($is_internal){
+
                 // Show password field
                 return ['status' => 200, 'is_external' => true];
 
             }else{
                 // Redirect to StaffStrength with Login
                 $user_email = base64_encode($request->email);
-                
+
                 $redirect_url = env('HIRS_REDIRECT_LOGIN').'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;
 
                 return ['status' => 200, 'is_external' => false, 'redirect_url' => $redirect_url];
-                
+
             }
         }else{
                 return ['status' => 500, 'message' => 'These credentials do not match our records' ];
@@ -291,7 +289,10 @@ class AuthController extends Controller
       if($api_key == null){
           return ['status' => false, 'message' => 'API key not valid'];
       }else{
-        return ['status' => true, 'message' => 'API key valid', 'user_id' => $user->id];
+        $token = $this->tokenGenerator();
+        $user->user_token = $token;
+        $user->save();
+        return ['status' => true, 'message' => 'API key valid', 'user_id' => $user->id, 'token' => $token];
       }
 
     }
@@ -303,14 +304,34 @@ class AuthController extends Controller
      * @param  [string] $user_auth   [user_auth]
      * @return [route]                 [redirect to url]
      */
-    public function loginUser($url, $user_auth)
+    public function loginUser($url, $user_id, $token)
     {
-        $user_auth = base64_decode($user_auth);
+        $user_id = base64_decode($user_id);
         $url = base64_decode($url);
 
-        $user = User::find($user_auth);
-        Auth::login($user);
-        return redirect($url);
+        $user = User::find($user_id);
+        if($token == $user->user_token){
+          Auth::login($user);
+
+          $user->user_token = '';
+          $user->save();
+
+          return redirect($url);
+        }else{
+          return ['status' => false, 'message' => 'Token not valid'];
+        }
+    }
+
+    /**
+     * [tokenGenerator function to generate token]
+     * @param  integer $length [length of token string desired]
+     * @return string          [token string]
+     */
+    private function tokenGenerator($length = 50)
+    {
+      $characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      $token = substr( str_shuffle( $characters ), rand(0,70), $length );
+      return $token;
     }
 
 

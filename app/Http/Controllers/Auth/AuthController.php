@@ -305,12 +305,19 @@ class AuthController extends Controller
 
     }
 
-    public function loginUser($url, $user_id)
+    /**
+     * [After Api confirmation, Log user in]
+     * @param  [string] $url [url]
+     * @param  [string] $user_   [encoded key]
+     * @param  [string] $user_auth   [user_auth]
+     * @return [route]                 [redirect to url]
+     */
+    public function loginUser($url, $user_auth)
     {
-        $user_id = base64_decode($user_id);
+        $user_auth = base64_decode($user_auth);
         $url = base64_decode($url);
 
-        $user = User::find($user_id);
+        $user = User::find($user_auth);
         Auth::login($user);
         return redirect($url);
     }

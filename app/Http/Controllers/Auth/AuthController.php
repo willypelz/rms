@@ -53,6 +53,48 @@ class AuthController extends Controller
         $this->activationService = $activationService;
     }
 
+   
+    // public function redirectPath()
+    // {
+    //     // // Logic that determines where to send the user
+    //     // if (\Auth::user()->type == 'admin') {
+    //     //     return '/admin';
+    //     // }
+        
+    //     return '/poop';
+    // }
+
+
+    public function verifyUser(Request $request)
+    {
+
+        $user = User::whereEmail($request->email)->first();
+
+
+        if($user){
+        // TODO
+            $is_external = 0;
+
+            if($is_external){
+                
+                // Show password field
+                return ['status' => 200, 'is_external' => true];
+
+            }else{
+                // Redirect to StaffStrength with Login
+                $user_email = base64_encode($request->email);
+                
+                $redirect_url = env('HIRS_REDIRECT_LOGIN').'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;
+
+                return ['status' => 200, 'is_external' => false, 'redirect_url' => $redirect_url];
+                
+            }
+        }else{
+                return ['status' => 500, 'message' => 'These credentials do not match our records' ];
+        }
+    }
+
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -244,12 +286,11 @@ class AuthController extends Controller
      * @param  [string] $encoded_url   [encoded url]
      * @return [route]                 [redirect to url]
      */
-    public function singleSignOn($encoded_email, $encoded_key, $encoded_url)
+    public function singleSignOnVerify($encoded_email, $encoded_key)
     {
 
       $decoded_email = base64_decode($encoded_email);
       $decoded_key = base64_decode($encoded_key);
-      $decoded_url = base64_decode($encoded_url);
 
       $user = User::where('email', $decoded_email)->first();
       if(!$user){
@@ -257,12 +298,28 @@ class AuthController extends Controller
       }
       $api_key = $user->companies()->where('api_key', $decoded_key)->first();
       if($api_key == null){
-        return back()->with('error', 'API key not valid');
+          return ['status' => false, 'message' => 'API key not valid'];
+      }else{
+        return ['status' => true, 'message' => 'API key valid', 'user_id' => $user->id];
       }
 
-      Auth::login($user);
+    }
 
-      return redirect($decoded_url);
+    /**
+     * [After Api confirmation, Log user in]
+     * @param  [string] $url [url]
+     * @param  [string] $user_   [encoded key]
+     * @param  [string] $user_auth   [user_auth]
+     * @return [route]                 [redirect to url]
+     */
+    public function loginUser($url, $user_auth)
+    {
+        $user_auth = base64_decode($user_auth);
+        $url = base64_decode($url);
+
+        $user = User::find($user_auth);
+        Auth::login($user);
+        return redirect($url);
     }
 
 

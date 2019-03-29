@@ -54,16 +54,7 @@ class AuthController extends Controller
     }
 
    
-    // public function redirectPath()
-    // {
-    //     // // Logic that determines where to send the user
-    //     // if (\Auth::user()->type == 'admin') {
-    //     //     return '/admin';
-    //     // }
-        
-    //     return '/poop';
-    // }
-
+   
 
     public function verifyUser(Request $request)
     {

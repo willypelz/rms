@@ -54,6 +54,11 @@ class AuthController extends Controller
         $this->activationService = $activationService;
     }
 
+    /**
+     * [verifyUser description]
+     * @param  Request $request [request object]
+     * @return [array]          [array of response]
+     */
     public function verifyUser(Request $request)
     {
 

@@ -14,6 +14,7 @@ use Auth;
 use DB;
 use App\ActivationService;
 use Illuminate\Support\Facades\Hash;
+use Crypt;
 
 
 class AuthController extends Controller
@@ -53,7 +54,11 @@ class AuthController extends Controller
         $this->activationService = $activationService;
     }
 
-
+    /**
+     * [verifyUser description]
+     * @param  Request $request [request object]
+     * @return [array]          [array of response]
+     */
     public function verifyUser(Request $request)
     {
 
@@ -289,7 +294,7 @@ class AuthController extends Controller
       if($api_key == null){
           return ['status' => false, 'message' => 'API key not valid'];
       }else{
-        $token = $this->tokenGenerator();
+        $token =  Crypt::encrypt($user->email.time());
         $user->user_token = $token;
         $user->save();
         return ['status' => true, 'message' => 'API key valid', 'user_id' => $user->id, 'token' => $token];
@@ -321,18 +326,4 @@ class AuthController extends Controller
           return ['status' => false, 'message' => 'Token not valid'];
         }
     }
-
-    /**
-     * [tokenGenerator function to generate token]
-     * @param  integer $length [length of token string desired]
-     * @return string          [token string]
-     */
-    private function tokenGenerator($length = 50)
-    {
-      $characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-      $token = substr( str_shuffle( $characters ), rand(0,70), $length );
-      return $token;
-    }
-
-
 }

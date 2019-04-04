@@ -983,6 +983,7 @@ class JobApplicationsController extends Controller
         $notes = InterviewNotes::with('user')->where('job_application_id', $appl->id)->get();
         $interview_notes = InterviewNoteValues::with('interviewer',
             'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
+
 // dd( $interview_notes );
         //To file
         // $html = view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','interview_notes'))->render();
@@ -993,6 +994,7 @@ class JobApplicationsController extends Controller
             compact('applicant_badge', 'app_ids', 'cv_ids', 'jobID', 'appl', 'comments', 'interview_notes'))->render());
         $pdf->setTemporaryFolder($path);
         $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' dossier.pdf', true);
+        dd('here');
 
 
         $filename = $appl->cv->first_name . ' ' . $appl->cv->last_name . ".zip";
@@ -1013,7 +1015,6 @@ class JobApplicationsController extends Controller
                 $files_to_archive[] = $cv_local_file;
             }
         }
-
         // dump( $appl->cv->cv_file );
 
         $test_path = "http://seamlesstesting.com/test/combined/pdf/" . $appl->id;

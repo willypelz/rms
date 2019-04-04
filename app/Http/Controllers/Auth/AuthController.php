@@ -67,7 +67,7 @@ class AuthController extends Controller
 
         if($user){
         // TODO
-            $is_external = 0;
+            $is_external = $user->is_internal == 0 ? 1 :0;
 
             if($is_external){
 

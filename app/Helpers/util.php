@@ -660,3 +660,19 @@ function getUserPermissions() {
         }
 	    return !empty($perm_array) ?  $perm_array : null;
 }
+
+function getAdminName($roleName) {
+    switch ($roleName){
+        case 'admin':
+            $name = 'Talent Acquisition Partner';
+            break;
+        case 'interviewer':
+            $name = "Business Manager";
+            break;
+        case 'commenter':
+            $name = 'Business Partner';
+            break;
+    }
+
+    return $name;
+}

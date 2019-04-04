@@ -132,20 +132,7 @@
                                            <select name="role" id="role" class="form-control">
                                                <option value="{{null}}"> --Select One-- </option>
                                                @foreach($roles as $role)
-                                                   @php
-                                                       switch ($role->name){
-                                                           case 'admin':
-                                                           $name = 'Talent Acquisition Partner';
-                                                           break;
-                                                           case 'interviewer':
-                                                           $name = "Business Manager";
-                                                           break;
-                                                           case 'commenter':
-                                                           $name = 'Business Partner';
-                                                           break;
-                                                       }
-                                                   @endphp
-                                                   <option value="{{$role->id}}">{{$name}}</option>
+                                                   <option value="{{$role->id}}">{{getAdminName($role->name)}}</option>
                                                @endforeach
                                            </select>
 

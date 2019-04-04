@@ -626,3 +626,37 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 
     return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
 }
+
+function checkIfUserHasCompanyPermission() {
+	    $user = auth()->user()->load('roles');
+	    $role = $user->roles->first();
+	    $company = get_current_company();
+
+	    $has_per =  $company->users()->where('user_id', $user->id)->where('role_id', $role->id)->first();
+        return is_null($has_per) ?  false :  true;
+}
+
+function checkIfUserHasJobPermission($job_id) {
+    $user = auth()->user()->load('roles');
+    $role = $user->roles()->first();
+    $job = Job::find($job_id);
+
+    $has_per = $job->users()->where('user_id', $user->id)->where('role_id', $role->id)->first();
+    return is_null($has_per) ?  false :  true;
+}
+
+function checkForBothPermissions($job_id) {
+	    $has_job = checkIfUserHasJobPermission($job_id);
+	    $has_comp = checkIfUserHasCompanyPermission();
+        return ($has_comp || $has_job) ?  true :  false;
+}
+
+function getUserPermissions() {
+	    $role = auth()->user()->roles->first();
+	    $permissions = $role->perms;
+	    $perm_array = [];
+	    foreach ($permissions as $permission) {
+	        $perm_array[] = $permission->name;
+        }
+	    return !empty($perm_array) ?  $perm_array : null;
+}

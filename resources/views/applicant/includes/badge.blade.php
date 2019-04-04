@@ -55,12 +55,15 @@
                 
                @if( $interview_note_templates->count() )
                 <div class="btn-group" role="group">
+                  @if(in_array('can-view-interview', $permissions) && checkForBothPermissions($job_id))
                   <a href="#" class="btn btn-line dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Interview Note <i class="fa fa-caret-down"></i> </a>
-                  
+                  @endif
                   <ul class="dropdown-menu">
 
                     @foreach( $interview_note_templates as $interview_note_template )
-                      <li><a  title="Take Interview Notes" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Take Interview Note" data-view="{{ route('modal-interview-notes', ['id' => $interview_note_template->id]) }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide">Use: {{ $interview_note_template->name }}</a></li>
+                      @if(in_array('can-take-interview-notes', $permissions) && checkForBothPermissions($job_id))
+                        <li><a  title="Take Interview Notes" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Take Interview Note" data-view="{{ route('modal-interview-notes', ['id' => $interview_note_template->id]) }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide">Use: {{ $interview_note_template->name }}</a></li>
+                      @endif
                     @endforeach
                     
 

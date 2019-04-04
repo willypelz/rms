@@ -30,9 +30,14 @@ use Illuminate\Support\Facades\Route;
 URL::forceSchema('https');
 
 Route::group(['middleware' => ['web']], function () {
+Route::get('/sso/auto/login/verify/{email}/{key}', 'Auth\AuthController@singleSignOnVerify');
+  Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\AuthController@loginUser');
+});
+
+
+Route::group(['middleware' => ['web']], function () {
 
     Route::controller('schedule', 'ScheduleController');
-
 });
 
 Route::get('hospital-project', function () {
@@ -51,7 +56,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/admin', function () {
         return view('admin.dashboard');
     });
-
+    Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
+    Route::match(['get', 'post'], '/admin/mange-roles', 'JobsController@manageRoles')->name('change-admin-role');
     Route::group([
         'prefix' => '/admin',
         'middleware' => 'admin'
@@ -62,6 +68,8 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::auth();
     Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
+
+    Route::post('user/auth/verify', 'Auth\AuthController@verifyUser')->name('verify-user-details');
 
     Route::get('/', function () {
 
@@ -704,7 +712,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('/jobs/{jobType?}', 'JobController@company');
         Route::get('/job/{job_id}/{status_slug}/applicants', 'JobController@applicants');
         Route::post('/jobs/apply', 'JobController@apply');
-
+        Route::get('/get/employees', 'JobController@fetchEmployees')->name('fetch-employees');
     });
 
 });

@@ -247,12 +247,12 @@ class JobApplicationsController extends Controller
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
         check_if_job_owner($appl->job->id);
-
+        $job_id = $appl->job->id;
         $nav_type = 'profile';
 
         // dd($appl->toArray());
-
-        return view('applicant.profile', compact('appl', 'nav_type'));
+        $permissions = getUserPermissions();
+        return view('applicant.profile', compact('appl', 'nav_type', 'permissions', 'job_id'));
 
     }
 
@@ -413,11 +413,12 @@ class JobApplicationsController extends Controller
         $states = $this->states;
         $qualifications = $this->qualifications;
         $grades = grades();
-
+        $permissions = getUserPermissions();
         if ($request->ajax()) {
+
             $search_results = view('job.board.includes.applicant-results-item',
                 compact('job', 'active_tab', 'status', 'result', 'jobID', 'start', 'myJobs', 'myFolders',
-                    'application_statuses', 'request'))->render();
+                    'application_statuses', 'request', 'permissions'))->render();
             $search_filters = view('cv-sales.includes.search-filters', [
                 'result' => $result,
                 'search_query' => $request->search_query,
@@ -441,7 +442,7 @@ class JobApplicationsController extends Controller
             $exp_years = [env('EXPERIENCE_START'), env('EXPERIENCE_END')];
             $video_application_score = [env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END')];
             $test_score = [40, 160];
-
+            $check_both_permissions = checkForBothPermissions($jobID);
             return view('job.board.candidates',
                 compact('job',
                     'active_tab',
@@ -456,7 +457,7 @@ class JobApplicationsController extends Controller
                     'showing',
                     'myJobs',
                     'myFolders', 'application_statuses', 'job',
-                    'video_application_score', 'request', 'states', 'qualifications', 'grades'));
+                    'video_application_score', 'request', 'states', 'qualifications', 'grades', 'permissions', 'check_both_permissions'));
         }
 
 
@@ -982,9 +983,7 @@ class JobApplicationsController extends Controller
         $notes = InterviewNotes::with('user')->where('job_application_id', $appl->id)->get();
         $interview_notes = InterviewNoteValues::with('interviewer',
             'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
-// dd( $interview_notes );
-        //To file
-        // $html = view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','interview_notes'))->render();
+
         $path = public_path('uploads/tmp/');
 
         $pdf = App::make('snappy.pdf.wrapper');
@@ -1012,7 +1011,6 @@ class JobApplicationsController extends Controller
                 $files_to_archive[] = $cv_local_file;
             }
         }
-
         // dump( $appl->cv->cv_file );
 
         $test_path = "http://seamlesstesting.com/test/combined/pdf/" . $appl->id;

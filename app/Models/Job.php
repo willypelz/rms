@@ -82,7 +82,7 @@ class Job extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\User', 'job_users')->withPivot('role');
+        return $this->belongsToMany('App\User', 'job_users')->withPivot('role', 'role_id');
     }
 
     public function workflow()

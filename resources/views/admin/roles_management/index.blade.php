@@ -32,7 +32,20 @@
                                     <td>
                                         <select name="role" data-id="{{$user->id}}" class="roles" id="{{$user->id . 'roles'}}">
                                             @foreach($roles as $role)
-                                            <option @if($user->roles()->first()->id == $role->id) selected @endif value="{{$role->id}}">{{ucfirst($role->name)}}</option>
+                                                @php
+                                                    switch ($role->name){
+                                                        case 'admin':
+                                                        $name = 'Talent Acquisition Partner';
+                                                        break;
+                                                        case 'interviewer':
+                                                        $name = "Business Manager";
+                                                        break;
+                                                        case 'commenter':
+                                                        $name = 'Business Partner';
+                                                        break;
+                                                    }
+                                                @endphp
+                                            <option @if($user->roles()->first()->id == $role->id) selected @endif value="{{$role->id}}">{{$name}}</option>
                                             @endforeach
                                         </select>
                                     </td>

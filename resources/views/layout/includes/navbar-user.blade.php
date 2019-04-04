@@ -70,6 +70,17 @@
                                 Embed
                             </a>
                         </li>
+                        @php
+                            $user = auth()->user()->load('roles');
+                        @endphp
+                        @if($user->roles() && $user->roles()->first()->name == 'admin')
+                        <li>
+                            <a href="{{ route('change-admin-role') }}">
+                                <i class="fa fa-user fa-fw"></i>
+                                Manage Roles
+                            </a>
+                        </li>
+                        @endif
                     <!-- <li class="{{ Request::is('cv/purchased') ? 'active' : '' }}"><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li> -->
                     <!-- <li class="{{ Request::is('cv/saved') ? 'active' : '' }}"><a href="{{ url('cv/saved') }}">Saved Cvs</a></li> -->
                     <!-- <li class="{{ Request::is('cv/purchased') ? 'active' : '' }}"><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li> -->

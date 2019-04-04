@@ -56,7 +56,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/admin', function () {
         return view('admin.dashboard');
     });
-
+    Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
+    Route::match(['get', 'post'], '/admin/mange-roles', 'JobsController@manageRoles')->name('change-admin-role');
     Route::group([
         'prefix' => '/admin',
         'middleware' => 'admin'

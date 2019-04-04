@@ -658,5 +658,5 @@ function getUserPermissions() {
 	    foreach ($permissions as $permission) {
 	        $perm_array[] = $permission->name;
         }
-	    return $perm_array;
+	    return !empty($perm_array) ?  $perm_array : null;
 }

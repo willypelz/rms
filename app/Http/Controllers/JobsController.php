@@ -109,7 +109,7 @@ class JobsController extends Controller
             'acceptInvite',
             'declineInvite',
             'selectCompany',
-            'makeOldStaffsAdmin'
+            'makeOldStaffsAdmin',
         ]]);
 
         $this->qualifications = [

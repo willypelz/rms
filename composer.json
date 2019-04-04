@@ -21,9 +21,7 @@
         "aws/aws-sdk-php": "~3.0",
         "barryvdh/laravel-snappy": "^0.4.0",
         "webpatser/laravel-uuid": "^2.0",
-        "zizaco/entrust": "5.2.x-dev",
-        "h4cc/wkhtmltopdf-amd64": "0.12.x",
-        "h4cc/wkhtmltoimage-amd64": "0.12.x"
+        "zizaco/entrust": "5.2.x-dev"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -67,9 +67,9 @@ class AuthController extends Controller
 
         if($user){
         // TODO
-            $is_external = $user->is_internal == 0 ? 1 :0;
+            $is_internal = $user->is_internal;
 
-            if($is_external){
+            if($is_internal){
 
                 // Show password field
                 return ['status' => 200, 'is_external' => true];

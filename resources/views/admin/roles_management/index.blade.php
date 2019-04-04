@@ -32,7 +32,7 @@
                                     <td>
                                         <select name="role" data-id="{{$user->id}}" class="roles" id="{{$user->id . 'roles'}}">
                                             @foreach($roles as $role)
-                                            <option @if($user->roles()->first()->id == $role->id) selected @endif value="{{$role->id}}">{{ucfirst($role->name)}}</option>
+                                            <option @if($user->roles()->first()->id == $role->id) selected @endif value="{{$role->id}}">{{getAdminName($role->name)}}</option>
                                             @endforeach
                                         </select>
                                     </td>

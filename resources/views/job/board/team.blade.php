@@ -132,7 +132,7 @@
                                            <select name="role" id="role" class="form-control">
                                                <option value="{{null}}"> --Select One-- </option>
                                                @foreach($roles as $role)
-                                                   <option value="{{$role->id}}">{{ucfirst($role->name)}}</option>
+                                                   <option value="{{$role->id}}">{{getAdminName($role->name)}}</option>
                                                @endforeach
                                            </select>
 

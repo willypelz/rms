@@ -82,7 +82,6 @@
                     <a href="{{ route('select-company',['slug'=> $company->slug]) }}" class="btn btn-success btn-block">Login</a>
                   </div>
                   @elseif($is_internal)
-                    {{dd('internal')}}
                     @php
                       $user_email = base64_encode($user->email);
                       $redirect_url = env('HIRS_REDIRECT_LOGIN').'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;

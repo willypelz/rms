@@ -62,14 +62,14 @@ class AuthController extends Controller
     public function verifyUser(Request $request)
     {
 
-        $user = User::whereEmail($request->email)->first();
-
+        $user = User::whereEmail($request->email)->orWhere('username', $request->email)->first();
 
         if($user){
         // TODO
             $is_internal = $user->is_internal;
 
-            if($is_internal){
+
+            if(!$is_internal){
 
                 // Show password field
                 return ['status' => 200, 'is_external' => true];

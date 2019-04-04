@@ -230,9 +230,11 @@ class JobsController extends Controller
         {
           //Create User
 
+
             $data = [
                     'name' => $request->name,
                     'email' => $request->email,
+                    'username' => $request->username,
                     'job_id' => ( $request->access == "company" ) ? null : $request->job_id,
                     'role_id' => $request->role,
                     'is_internal' => $request->internal ? 1 : 0,
@@ -349,7 +351,8 @@ class JobsController extends Controller
 
                     $user = User::FirstorCreate([
                       'email' => $job_team_invite->email,
-                      'name' => $job_team_invite->name
+                      'name' => $job_team_invite->name,
+                      'username' => $job_team_invite->username
                     ]);
                 }
                 else

@@ -661,6 +661,10 @@ function getUserPermissions() {
 	    return !empty($perm_array) ?  $perm_array : null;
 }
 
+/**
+ * @param $roleName
+ * @return string
+ */
 function getAdminName($roleName) {
     switch ($roleName){
         case 'admin':
@@ -675,4 +679,18 @@ function getAdminName($roleName) {
     }
 
     return $name;
+}
+
+function getAdminPermissions() {
+    $perms = auth()->user()->roles()->first()->perms;
+    $perms_array = [];
+    foreach ($perms as $perm) {
+        $perms_array[] = $perm->name;
+    }
+
+    return $perms_array;
+}
+
+function getCurrentLoggedInUserRole() {
+        return auth()->user()->roles()->first();
 }

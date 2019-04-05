@@ -3,7 +3,9 @@
 @section('content')
 
                     @include('job.board.jobBoard-header')
-
+                    @php
+                        $user_role = getCurrentLoggedInUserRole();
+                    @endphp
             @if($job['status'] != 'DELETED')
             <div class="row">
 
@@ -34,7 +36,7 @@
                                           <p>{{ $user->email }}</p>
                                       </div>
 
-                                      @if( Auth::user()->id == $owner->id &&  $user->id != Auth::user()->id )
+                                      @if( Auth::user()->id == $owner->id &&  $user->id != Auth::user()->id && $user_role == 'admin' )
                                       <div class="col-xs-4 small"><br>
                                           <a data-toggle="modal"
                                              data-target="#viewModal"
@@ -88,9 +90,9 @@
 
                         <div class="col-xs-5" id="Section2">
                             <h5 class="no-margin">Add New Team member <span class="pull-right"><i class="fa fa-lg fa-user-plus"></i></span></h5><hr>
-
+                            @if($user_role->name == 'admin')
                             <a aria-controls="AddTeamMember" aria-expanded="false" class="btn btn-warning" data-toggle="collapse" data-target="#AddTeamMember" href="#AddTeamMember"><i class="fa fa-user-plus"></i> Add New Member</a>
-
+                            @endif
                             <div id="AddTeamMember" class="collapse">
                                <!--div class="alert alert-success"><i class="fa fa-check fa-lg"></i>
                                     &nbsp; Your mail has been sent. Refresh page to send more.

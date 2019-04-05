@@ -4,7 +4,9 @@
     
     <section>
         <div class="container">
-            
+            @php
+                $user_role = getCurrentLoggedInUserRole();
+            @endphp
             @include('layout.alerts')
             
             <div class="row">
@@ -19,7 +21,7 @@
                                     <div class="worflow-top-part clearfix">
                                         
                                         <div class="pull-left">
-                                            <a href="{{ route('workflow-edit', ['id' => $workflow->id]) }}">
+                                            <a @if($user_role->name != 'admin') href="#" @else  href="{{ route('workflow-edit', ['id' => $workflow->id]) }}" @endif>
                                                 <h5>{{ $workflow->name }}</h5>
                                             </a>
                                             <p class="text-muted">{{ $workflow->description }}</p>
@@ -33,6 +35,7 @@
                                                     View
                                                 </a>
                                              -->
+                                            @if($user_role->name == 'admin')
                                             <a href="{{ route('workflow-steps-add', ['id' => $workflow->id]) }}"
                                                class="btn btn-primary btn-sm">
                                                 <i class="fa fa-plus fa-fw"></i>
@@ -44,6 +47,7 @@
                                                 <i class="fa fa-pencil fa-fw"></i>
                                                 Edit
                                             </a>
+                                            @endif
                                             @if(!$workflow->jobs()->exists())
                                                 <form action="{{ route('workflow-delete', ['id' => $workflow->id]) }}"
                                                       method="post"
@@ -116,7 +120,7 @@
                                 </div>
                                 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button @if($user_role->name != 'admin') disabled @endif type="submit" class="btn btn-primary">
                                         <i class="fa fa-plus fa-fw"></i>
                                         Create
                                     </button>

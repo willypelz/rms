@@ -1,5 +1,8 @@
 @extends('layout.template-user')
 @section('content')
+    @php
+        $user_role = getCurrentLoggedInUserRole();
+    @endphp
     @include('job.board.jobBoard-header')
 
     {{-- dd($job,$result) --}}
@@ -51,8 +54,10 @@
                                                     <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                                    @if($user_role == 'admin')
                                                     <li><a href="javscript://" id="downSpreadsheet">Spreadsheet</a></li>
                                                     <li><a href="javscript://" id="downCv">CVs</a></li>
+                                                    @endif
                                                     <!-- <li role="separator" class="divider"></li>
                                                     <li><a href="#">Separated link</a></li> -->
                                                 </ul>
@@ -147,6 +152,7 @@
                                                             <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu">
+                                                            @if($user_role->name == 'admin')
                                                             <li>
                                                                 <a data-toggle="modal" data-target="#viewModal"
                                                                    id="modalButton" href="#viewModal"
@@ -165,6 +171,7 @@
                                                                     Medical Check
                                                                 </a>
                                                             </li>
+                                                            @endif
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -228,13 +235,14 @@
                                         </div>
                                     </div>
                                     <!-- <p class="small text-muted"><strong>Download Spreadsheet view.</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p> -->
+                                    @if($user_role->name == 'admin')
                                     <a data-toggle="modal" data-target="#addCandidateModal" id="modalButton"
                                        href="#addCandidateModal" class="btn btn-line btn-block">
 
                                         <i class="fa fa-cloud-upload"></i>
                                         &nbsp; Upload CV to this Job
                                     </a>
-
+                                    @endif
                                     <div class="modal widemodal fade" id="addCandidateModal" tabindex="-1" role="dialog"
                                          aria-labelledby="myModalLabel" aria-hidden="false">
                                         <div class="modal-dialog modal-lg">

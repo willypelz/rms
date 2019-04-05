@@ -21,13 +21,18 @@ class RolesSeeder extends Seeder
         $perform_actions_int = \App\Models\Permission::where('name', 'can-perform-interview-actions')->first();
         $move_application = \App\Models\Permission::where('name', 'can-move-application')->first();
         $can_test = \App\Models\Permission::where('name', 'can-test')->first();
+        $background_checks = \App\Models\Permission::where('name', 'can-view-background-check')->first();
 
             $admin = \App\Models\Role::firstOrCreate([
                 'name' => 'admin',
                 'display_name' => 'Admin',
                 'description' => 'Admin'
             ]);
-            $admin->attachPermissions([$view_job, $view_candidates, $view_comments, $make_comments, $take_int_notes, $view_interview, $perform_actions_int, $move_application, $can_test]);
+            if (count ($admin->perms()) == 0) {
+                $admin->attachPermissions([$view_job, $view_candidates, $view_comments, $make_comments, $take_int_notes, $view_interview, $perform_actions_int, $move_application, $can_test, $background_checks]);
+            } else if(count($admin->perms()) == 9){ // this means the last permission for background check added hasn't be synced with admin role....
+                $admin->attachPermission($background_checks);
+            }
 
             $commenter = \App\Models\Role::firstOrCreate([
                 'name' => 'commenter',
@@ -35,7 +40,8 @@ class RolesSeeder extends Seeder
                 'description' => 'Commenter'
             ]);
 
-            $commenter->attachPermissions([$view_job, $view_candidates, $view_comments, $make_comments]);
+            if(count($commenter->perms()) == 0) $commenter->attachPermissions([$view_job, $view_candidates, $view_comments, $make_comments]);
+
 
             $interviewer = \App\Models\Role::firstOrCreate([
                 'name' => 'interviewer',
@@ -43,7 +49,7 @@ class RolesSeeder extends Seeder
                 'description' => 'Interviewer'
             ]);
 
-            $interviewer->attachPermissions([$view_job, $view_candidates, $take_int_notes, $view_interview]);
+            if(count($interviewer->perms()) == 0)  $interviewer->attachPermissions([$view_job, $view_candidates, $take_int_notes, $view_interview]);
 
         }
 }

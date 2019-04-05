@@ -5,6 +5,7 @@
         <?php  $pic = default_color_picture($cv);
         $current_app_index = array_search($jobID, $cv['job_id']);
         $current_status = ($cv['application_status'][$current_app_index] == "ASSESSED") ? "TEST" : $cv['application_status'][$current_app_index];
+        $check_both_permissions = checkForBothPermissions ($jobID);
         ?>
 
         <div class="ats-abx">
@@ -376,10 +377,12 @@
                            data-app-id="{{ $cv['application_id'][ $current_app_index ] }}" data-cv="{{ $cv['id'] }}"
                            data-type="normal">Comment</a>
                         @endif
+                        @if(in_array('can-view-background-check', $permissions) && $check_both_permissions)
                         <span class="pull-right hide">
                             <a class="text-muted" href="#">Background Check</a>
                             <span class="text-muted">·</span>
                         </span>
+                        @endif
                     </div>
 
 

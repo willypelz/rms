@@ -344,7 +344,7 @@ class JobsController extends Controller
                       'email' => $job_team_invite->email,
                       'name' => $job_team_invite->name,
                       'username' => $job_team_invite->username,
-                        'is_internal' => $is_internal == 1 ? 1 : 0
+                      'is_internal' => $is_internal
                     ]);
                 } else {
                     $is_new_user = false;

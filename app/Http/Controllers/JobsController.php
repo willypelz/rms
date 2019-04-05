@@ -231,13 +231,15 @@ class JobsController extends Controller
         } else {
             //Create User
 
+
             $data = [
-                'name' => $request->name,
-                'email' => $request->email,
-                'job_id' => ($request->access == "company") ? null : $request->job_id,
-                'role_id' => $request->role,
-                'is_internal' => $request->internal ? 1 : 0,
-            ];
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'username' => $request->username,
+                    'job_id' => ( $request->access == "company" ) ? null : $request->job_id,
+                    'role_id' => $request->role,
+                    'is_internal' => $request->internal ? 1 : 0,
+                ];
 
 
             if (JobTeamInvite::where('job_id', $data['job_id'])->where('email', $data['email'])->count()) {
@@ -339,8 +341,9 @@ class JobsController extends Controller
                 if (empty($user) or is_null($user)) {
 
                     $user = User::FirstorCreate([
-                        'email' => $job_team_invite->email,
-                        'name' => $job_team_invite->name,
+                      'email' => $job_team_invite->email,
+                      'name' => $job_team_invite->name,
+                      'username' => $job_team_invite->username,
                         'is_internal' => $is_internal == 1 ? 1 : 0
                     ]);
                 } else {

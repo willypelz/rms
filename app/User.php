@@ -19,7 +19,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'invite_code'
+        'invite_code',
+        'is_internal',
     ];
 
     /**

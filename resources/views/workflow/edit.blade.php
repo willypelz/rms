@@ -12,7 +12,9 @@
 @extends('layout.template-default')
 
 @section('content')
-
+    @php
+        $user_role = getCurrentLoggedInUserRole();
+    @endphp
     <section>
         <div class="container">
 
@@ -48,7 +50,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button @if($user_role->name != 'admin') disabled @endif type="submit" class="btn btn-primary">
                                         <i class="fa fa-pencil fa-fw"></i>
                                         Update
                                     </button>

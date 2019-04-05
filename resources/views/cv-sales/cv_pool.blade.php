@@ -18,9 +18,12 @@
           <span class="h4 text-green-light text-brandon"> <i class="fa fa-street-view"></i> Talent Pool <span class="text-white"> ({{ $application_statuses['ALL'] }} Candidates)</span></span>
 
           &nbsp;
-
+          @php
+            $user_role = getCurrentLoggedInUserRole();
+          @endphp
+          @if($user_role->name == 'admin')
           <a data-toggle="modal" data-target="#addCandidateModal" id="modalButton" href="#addCandidateModal" class="btn btn-line" ><i class="fa fa-cloud-upload"></i> Upload CV to Folder &nbsp;</a>
-
+          @endif
           <div class="clearfix"></div>
 
         </div>

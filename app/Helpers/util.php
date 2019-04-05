@@ -681,6 +681,9 @@ function getAdminName($roleName) {
     return $name;
 }
 
+/**
+ * @return array
+ */
 function getAdminPermissions() {
     $perms = auth()->user()->roles()->first()->perms;
     $perms_array = [];
@@ -691,6 +694,9 @@ function getAdminPermissions() {
     return $perms_array;
 }
 
+/**
+ * @return mixed
+ */
 function getCurrentLoggedInUserRole() {
         return auth()->user()->roles()->first();
 }

@@ -1,4 +1,8 @@
-<?php $applicant_step = $appl->job->workflow->workflowSteps->where('slug',$appl->status)->first();  ?>
+<?php
+$applicant_step = $appl->job->workflow->workflowSteps->where('slug',$appl->status)->first();
+$permissions = getAdminPermissions();
+$job_id = $appl->job->id;
+?>
 <div class="panel-group">
 
   <div class="panel panel-default tweak panel-dash">

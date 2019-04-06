@@ -50,11 +50,8 @@
 
                                         <span class="label label-warning text-uppercase"
                                               style="">{{ $interview_note_option->type }}</span>
-                                        @if($user_role->name == 'admin')
-                                        <a href="{{ route('interview-note-option-edit', ['interview_template_id' => $interview_template_id,'id' => $interview_note_option->id ]) }}"
                                            class="pull-right btn" style="margin-top: -5px;"><i
                                                     class="fa fa-lg fa-pencil"></i> Edit</a>
-                                        @endif
 
                                     </div>
 

@@ -47,7 +47,7 @@
                                         </div>
                                         <div class="col-xs-2">
                                             <div class="dropdown">
-                                                <button class="btn btn-line btn-sm dropdown-toggle" type="button"
+                                                <button style="display: none" class="btn btn-line btn-sm dropdown-toggle" type="button"
                                                         id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
                                                         aria-expanded="true">
                                                     Download

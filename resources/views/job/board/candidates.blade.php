@@ -45,24 +45,25 @@
                                             <small class="text-muted result-label"
                                                    id="showing"> {!! $showing !!} </small>
                                         </div>
+                                        @if($user_role->name == 'admin')
                                         <div class="col-xs-2">
                                             <div class="dropdown">
-                                                <button style="display: none" class="btn btn-line btn-sm dropdown-toggle" type="button"
+                                                <button class="btn btn-line btn-sm dropdown-toggle" type="button"
                                                         id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
                                                         aria-expanded="true">
                                                     Download
                                                     <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                                    @if($user_role == 'admin')
                                                     <li><a href="javscript://" id="downSpreadsheet">Spreadsheet</a></li>
                                                     <li><a href="javscript://" id="downCv">CVs</a></li>
-                                                    @endif
                                                     <!-- <li role="separator" class="divider"></li>
                                                     <li><a href="#">Separated link</a></li> -->
                                                 </ul>
                                             </div>
                                         </div>
+                                        @endif
+
                                         <div class="col-xs-2">
                                             <label class="select-all pull-right">Select All
                                                 <input type="checkbox">

@@ -322,7 +322,7 @@ class JobsController extends Controller
                     ->withErrors($validator)
                     ->withInput();
             } else {
-                $user = User::find(@$request->ref);
+                $user = User::find($request->ref);
                 $user->password = bcrypt($request->password);
                 $user->activated = 1;
                 $user->save();

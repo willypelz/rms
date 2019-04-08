@@ -55,7 +55,7 @@
                         </div>
                         @else
                             <div class="col-sm-4 col-sm-offset-4">
-                              <a href="{{ route('select-company',['slug'=>$company->slug]) }}" class="btn btn-success btn-block">Login hhh</a>
+                              <a href="{{ route('select-company',['slug'=>$company->slug]) }}" class="btn btn-success btn-block">Login</a>
                             </div>
                         @endif
                         @else
@@ -79,7 +79,7 @@
                   @if( !$is_new_user && Auth::check() )
                   <div class="col-sm-4 col-sm-offset-4">
                     <!-- Click here if you already have an account -->
-                    <a href="{{ route('select-company',['slug'=> $company->slug]) }}" class="btn btn-success btn-block">Login rrr</a>
+                    <a href="{{ route('select-company',['slug'=> $company->slug]) }}" class="btn btn-success btn-block">Login</a>
                   </div>
                   @elseif($is_internal == 1)
                     @php

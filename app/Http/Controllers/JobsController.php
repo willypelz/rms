@@ -314,7 +314,7 @@ class JobsController extends Controller
             ]);
 
             if ($validator->fails()) {
-                $user = User::find(@$request->ref);
+                $user = User::find($request->ref);
                 $user->delete();
                 $job_team_invite->is_accepted = 0;
                 $job_team_invite->save();

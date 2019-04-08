@@ -309,25 +309,25 @@ class JobsController extends Controller
         $is_new_user = true;
         $is_internal = $job_team_invite->is_internal;
         if ($request->isMethod('post')) {
-
             $validator = Validator::make($request->all(), [
                 'password' => 'required|confirmed|min:6',
-            ], [
-                'password.confirmed' => 'Passwords do not match',
             ]);
 
             if ($validator->fails()) {
+                $user = User::find(@$request->ref);
+                $user->delete();
+                $job_team_invite->is_accepted = 0;
+                $job_team_invite->save();
                 return redirect()->back()
                     ->withErrors($validator)
                     ->withInput();
             } else {
                 $user = User::find(@$request->ref);
                 $user->password = bcrypt($request->password);
+                $user->activated = 1;
                 $user->save();
-
                 Auth::attempt(['email' => $user->email, 'password' => $request->password]);
                 return redirect()->route('select-company', ['slug' => $job->company->slug]);
-
             }
 
         } else {
@@ -370,7 +370,14 @@ class JobsController extends Controller
                 $job_team_invite->is_accepted = true;
                 $job_team_invite->save();
             }
-            if (!$is_new_user && !Auth::check() && $is_internal == 0) Auth::loginUsingId($user->id);
+
+            if($is_internal == 0 && $user->password == ''){
+                $job_team_invite->is_accepted = 0;
+                $job_team_invite->save();
+                unset($status);
+                $is_new_user = false;
+            } elseif (!$is_new_user && !Auth::check() && $is_internal == 0) Auth::loginUsingId($user->id);
+
         }
 
         return view('job.accept-invite', compact('job_team_invite', 'job', 'status', 'is_new_user', 'user', 'is_internal', 'company'));

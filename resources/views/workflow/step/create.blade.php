@@ -11,7 +11,9 @@
 @extends('layout.template-default')
 
 @section('content')
-    
+    @php
+        $user_role = getCurrentLoggedInUserRole()->name;
+    @endphp
     <section>
         <div class="container">
             
@@ -53,7 +55,7 @@
                                             </div>
                                         </div>
                                         
-                                        @if(!$workflowStep->is_readonly)
+                                        @if(!$workflowStep->is_readonly && $user_role == 'admin')
                                             <div class="pull-right">
                                                 <a href="{{ route('step-edit', ['id' => $workflowStep->id]) }}"
                                                    class="btn btn-primary btn-sm">
@@ -210,13 +212,14 @@
                                     </div>
                                 
                                 </div>
-                                
+                                @if($user_role == 'admin')
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fa fa-plus fa-fw"></i>
                                         Create
                                     </button>
                                 </div>
+                               @endif
                             
                             </form>
                         

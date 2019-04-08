@@ -28,7 +28,7 @@ class RolesSeeder extends Seeder
                 'display_name' => 'Admin',
                 'description' => 'Admin'
             ]);
-            if (count ($admin->perms()) == 0) {
+            if ($admin->perms()->count() == 0) {
                 $admin->attachPermissions([$view_job, $view_candidates, $view_comments, $make_comments, $take_int_notes, $view_interview, $perform_actions_int, $move_application, $can_test, $background_checks]);
             } else if(count($admin->perms()) == 9){ // this means the last permission for background check added hasn't be synced with admin role....
                 $admin->attachPermission($background_checks);
@@ -40,7 +40,7 @@ class RolesSeeder extends Seeder
                 'description' => 'Commenter'
             ]);
 
-            if(count($commenter->perms()) == 0) $commenter->attachPermissions([$view_job, $view_candidates, $view_comments, $make_comments]);
+            if($commenter->perms()->count() == 0) $commenter->attachPermissions([$view_job, $view_candidates, $view_comments, $make_comments]);
 
 
             $interviewer = \App\Models\Role::firstOrCreate([
@@ -49,7 +49,7 @@ class RolesSeeder extends Seeder
                 'description' => 'Interviewer'
             ]);
 
-            if(count($interviewer->perms()) == 0)  $interviewer->attachPermissions([$view_job, $view_candidates, $take_int_notes, $view_interview]);
+            if($interviewer->perms()->count() == 0)  $interviewer->attachPermissions([$view_job, $view_candidates, $take_int_notes, $view_interview]);
 
         }
 }

@@ -517,6 +517,7 @@
                     status_filter = $(this).attr('data-value');
                     $('#status_filters li').removeClass('active');
                     $(this).closest('li').addClass('active');
+
                     $(this).reloadResult();
 
                     $('.select-all input[type="checkbox"]').removeAttr('checked');
@@ -530,7 +531,6 @@
                         $('#mass-action a').show();
                         $('#mass-action a[data-action="PENDING"').hide();
                     }
-
 
                     $('.search-results').html('{!! preloader() !!}');
                     scrollTo('.job-progress-xs');

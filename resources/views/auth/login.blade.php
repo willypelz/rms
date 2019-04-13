@@ -68,11 +68,7 @@
                                 </div>
 
                                 <div class="col-sm-6"><br>
-                                    <p class="small text-left"><a href="{{ url('password/reset') }}">:( I can't remember my password!</a></p>
-                                </div>
-
-                                <div class="col-sm-6"><br>
-                                    <p class="small text-right">Not registered? <a href="{{ url('sign-up') }}">Sign Up Here</a></p>
+                                    <p class="small text-left"><a href="@if(env('USE_ACTIVE_DIRECTORY') == 1) {{env('STAFFSTRENGTH_URL') . 'forgot-password'}} @else {{ url('password/reset') }} @endif">:( I can't remember my password!</a></p>
                                 </div>
 
                             </div>

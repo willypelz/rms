@@ -629,7 +629,7 @@ class CvSalesController extends Controller
 
         $jobs = Job::where('company_id',get_current_company()->id)->get();
 
-        $myFolders = array_unique( array_pluck( $response ,'cv_source') );
+        $myFolders = is_null($response) ? [] : array_unique( array_pluck( $response ,'cv_source') );
 
         if(($key = array_search('Direct Application', $myFolders)) !== false) {
             unset($myFolders[$key]);

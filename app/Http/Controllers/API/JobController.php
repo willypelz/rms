@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use App\User;
+use App\Models\JobActivity;
 
 class JobController extends Controller
 {
@@ -303,6 +305,69 @@ class JobController extends Controller
         } catch (\Exception $exception) {
             return response()->json(['status' => false, 'message' => 'something went wrong']);
         }
+    }
+
+    /**
+     * [getUserJobs description]
+     * @param  Request $request [description]
+     * @return array            [description]
+     */
+    public function getUserJobs(Request $request)
+    {
+      $candidate = Candidate::with('applications')->where('email', $request->email)->first();
+
+      if($candidate == null){
+        return response()->json(['status' => false, 'message' => 'user not found']);
+      }
+
+      \Log::info($candidate->toArray());
+
+      //Get All jobs applied to
+      if($candidate->applications){
+
+        $job_ids = $candidate->applications->unique('job_id')->pluck('job_id')->toArray();
+
+        $jobs = [];
+        foreach ($candidate->applications as $key => $application) {
+          $job = Job::find($application->job_id);
+          $job->application = $application;
+          array_push($jobs, $job->toArray());
+        }
+      }
+
+      return response()->json([
+        'success' => true,
+        'data' => $jobs
+      ]);
+    }
+
+    /**
+     * [getUserJobActivities description]
+     * @param  Request $request [description]
+     * @return array            [description]
+     */
+    public function getUserJobActivities(Request $request)
+    {
+      \Log::info($request->toArray());
+      $candidate = Candidate::with('applications')->where('email', $request->email)->first();
+
+      if($candidate == null){
+        return response()->json(['status' => false, 'message' => 'user not found']);
+      }
+
+      $job = Job::find($request->job_id);
+      $activities = JobActivity::where('job_id', $request->job_id)
+                               ->where('job_application_id', $request->application_id)
+                               ->get();
+
+     return response()->json([
+       'success' => true,
+       'data' => [
+         'activities' => $activities,
+         'job'  => $job
+       ]
+     ]);
+
     }
 
 }

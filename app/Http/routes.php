@@ -713,6 +713,9 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('/job/{job_id}/{status_slug}/applicants', 'JobController@applicants');
         Route::post('/jobs/apply', 'JobController@apply');
         Route::get('/get/employees', 'JobController@fetchEmployees')->name('fetch-employees');
+
+        Route::get('/get/user-jobs', 'JobController@getUserJobs')->name('get-user-jobs');
+        Route::get('/get/user-jobs/activities', 'JobController@getUserJobActivities');
     });
 
 });

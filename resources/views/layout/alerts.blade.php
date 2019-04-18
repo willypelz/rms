@@ -1,3 +1,4 @@
+
 @if (session('status'))
     <div class="alert alert-success">
         {{ session('status') }}
@@ -34,4 +35,6 @@
 <div class="alert alert-success" id="success" style="display:none"></div>
 
 
-<div class="alert alert-warning" id="error" style="display:none"></div>
+<div class="alert alert-warning" id="warning" style="display:none"></div>
+
+<div class="alert alert-danger" id="error" style="display:none"></div>

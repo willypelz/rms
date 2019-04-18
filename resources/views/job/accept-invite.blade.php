@@ -34,20 +34,32 @@
                     @if(is_null( @$status ))
                       <p class="lh1-7 text-normal" style="font-size: 1.15em; color: #5d5d5d">
                         Welcome {{ ucwords( $job_team_invite->name ) }}, 
-                        <br>You have accepted the invitation to join the job team for the recruitment of <strong>{{ $job->title }}</strong> in <strong>{{ $job->company->name }}</strong>
+                        <br>You have accepted the invitation to join the job team for the recruitment of <strong>{{ $job ? $job->title : 'all jobs' }}</strong> in <strong>{{ $company->name }}</strong>
 
                       </p>
                     @else
                       <p class="lh1-7 text-normal text-center" style="font-size: 1.15em; color: #5d5d5d">
 
                         @if( $status )
-                            You have accepted the invitation to join the job team for the recruitment of <strong>{{ $job->title }}</strong> in <strong>{{ $job->company->name }}</strong>
+
+                            You have accepted the invitation to join the job team for the recruitment of <strong>{{ $job ? $job->title : 'all jobs' }}</strong> in <strong>{{ $company->name }}</strong>
                             <hr>
-                            <div class="col-sm-4 col-sm-offset-4">
-                              <a href="{{ route('select-company',['slug'=>$job->company->slug]) }}" class="btn btn-success btn-block">Login</a>
-                            </div>
+                        @if($is_internal == 1)
+                        @php
+                            $user_email = base64_encode($user->email);
+                            $redirect_url = env('HIRS_REDIRECT_LOGIN').'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;
+                        @endphp
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <!-- Click here if you already have an account -->
+                          <a href="{{ $redirect_url }}" class="btn btn-success btn-block">Login</a>
+                        </div>
                         @else
-                            You have declined the invitation to join the job team for the recruitment of <strong>{{ $job->title }}</strong> in <strong>{{ $job->company->name }}</strong>
+                            <div class="col-sm-4 col-sm-offset-4">
+                              <a href="{{ route('select-company',['slug'=>$company->slug]) }}" class="btn btn-success btn-block">Login</a>
+                            </div>
+                        @endif
+                        @else
+                            You have declined the invitation to join the job team for the recruitment of <strong>{{ $job ? $job->title : 'all jobs' }}</strong> in <strong>{{ $company->name }}</strong>
                             <div class="clearfix"></div>
                             <hr>
                             <p class="text-muted text-center">If you did not wish to decline this job team invitation, kindly contact the admin to re-invite you to the job team</p>
@@ -64,14 +76,32 @@
                 <div class="row">
                   <hr>
 
-                  @if( !$is_new_user )
+                  @if( !$is_new_user && Auth::check() )
                   <div class="col-sm-4 col-sm-offset-4">
                     <!-- Click here if you already have an account -->
-                    <a href="{{ route('select-company',['slug'=>$job->company->slug]) }}" class="btn btn-success btn-block">Login</a>
+                    <a href="{{ route('select-company',['slug'=> $company->slug]) }}" class="btn btn-success btn-block">Login</a>
                   </div>
+                  @elseif($is_internal == 1)
+                    @php
+                      $user_email = base64_encode($user->email);
+                      $redirect_url = env('HIRS_REDIRECT_LOGIN').'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;
+                    @endphp
+                    <div class="col-sm-4 col-sm-offset-4">
+                      <!-- Click here if you already have an account -->
+                      <a href="{{ $redirect_url }}" class="btn btn-success btn-block">Login</a>
+                    </div>
                   @else
                   
                   <div class="col-sm-4 col-sm-offset-4">
+                    @if ($errors->any())
+                      <div class="alert alert-danger">
+                        <ul>
+                          @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                          @endforeach
+                        </ul>
+                      </div>
+                  @endif
                     <!-- Click here to activate your account -->
                     <a role="button" data-toggle="collapse" href="#loginForm" class="btn btn-primary btn-block"> Activate</a>
                   </div>
@@ -80,7 +110,7 @@
                   <hr style="margin-bottom: 0">
                 </div>
                 <div class="row">
-                    <form action="" class="collapse pad-v-sm" method="post" id="loginForm" style="background: #F1F3F5;border-bottom: 1px solid #bbb">
+                    <form action="{{route ('accept-invite', $job_team_invite->id )}}" class="collapse pad-v-sm" method="post" id="loginForm" style="background: #F1F3F5;border-bottom: 1px solid #bbb">
                       <div class="col-sm-6 col-sm-offset-3">
                       <div class="form-group">
                         <label for="">Email</label>
@@ -91,10 +121,10 @@
                         <label for="">Password</label>
                         <input type="password" class="form-control" placeholder="Enter password" name="password" id="password" required>
                       </div>
-                      <!-- <div class="form-group">
+                       <div class="form-group">
                         <label for="">Retype Password</label>
-                        <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Re-Enter password" required>
-                      </div> -->
+                        <input type="password" class="form-control" name="password_confirmation" id="confirm_password" placeholder="Re-Enter password" required>
+                      </div>
                       <div class="form-group">
                         <button class="btn btn-success pull-right">Submit</button>
                         <div class="clearfix"></div>

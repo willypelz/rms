@@ -1,5 +1,8 @@
 @extends('layout.template-user')
 @section('content')
+    @php
+        $user_role = getCurrentLoggedInUserRole();
+    @endphp
     @include('job.board.jobBoard-header')
 
     {{-- dd($job,$result) --}}
@@ -42,6 +45,7 @@
                                             <small class="text-muted result-label"
                                                    id="showing"> {!! $showing !!} </small>
                                         </div>
+                                        @if($user_role->name == 'admin')
                                         <div class="col-xs-2">
                                             <div class="dropdown">
                                                 <button class="btn btn-line btn-sm dropdown-toggle" type="button"
@@ -58,6 +62,8 @@
                                                 </ul>
                                             </div>
                                         </div>
+                                        @endif
+
                                         <div class="col-xs-2">
                                             <label class="select-all pull-right">Select All
                                                 <input type="checkbox">
@@ -147,6 +153,7 @@
                                                             <span class="caret"></span>
                                                         </button>
                                                         <ul class="dropdown-menu">
+                                                            @if($user_role->name == 'admin')
                                                             <li>
                                                                 <a data-toggle="modal" data-target="#viewModal"
                                                                    id="modalButton" href="#viewModal"
@@ -165,6 +172,7 @@
                                                                     Medical Check
                                                                 </a>
                                                             </li>
+                                                            @endif
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -228,13 +236,14 @@
                                         </div>
                                     </div>
                                     <!-- <p class="small text-muted"><strong>Download Spreadsheet view.</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p> -->
+                                    @if($user_role->name == 'admin')
                                     <a data-toggle="modal" data-target="#addCandidateModal" id="modalButton"
                                        href="#addCandidateModal" class="btn btn-line btn-block">
 
                                         <i class="fa fa-cloud-upload"></i>
                                         &nbsp; Upload CV to this Job
                                     </a>
-
+                                    @endif
                                     <div class="modal widemodal fade" id="addCandidateModal" tabindex="-1" role="dialog"
                                          aria-labelledby="myModalLabel" aria-hidden="false">
                                         <div class="modal-dialog modal-lg">
@@ -508,6 +517,7 @@
                     status_filter = $(this).attr('data-value');
                     $('#status_filters li').removeClass('active');
                     $(this).closest('li').addClass('active');
+
                     $(this).reloadResult();
 
                     $('.select-all input[type="checkbox"]').removeAttr('checked');
@@ -521,7 +531,6 @@
                         $('#mass-action a').show();
                         $('#mass-action a[data-action="PENDING"').hide();
                     }
-
 
                     $('.search-results').html('{!! preloader() !!}');
                     scrollTo('.job-progress-xs');

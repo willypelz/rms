@@ -19,6 +19,10 @@ use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
+use App\User;
+use App\Models\JobActivity;
 
 class JobController extends Controller
 {
@@ -125,6 +129,10 @@ class JobController extends Controller
      */
     public function company(Request $request, $jobType = 'all')
     {
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
+// add any additional headers you need to support here
+        header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With,X-Auth-Token, X-API-KEY, X-CSRF-TOKEN, Origin');
         //validate request via company api_key
         if (!$req_header = $request->header('X-API-KEY')) {
             return response()->json([
@@ -276,6 +284,89 @@ class JobController extends Controller
             'message' => 'success',
             'data' => null
         ]);
+
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse|\Psr\Http\Message\ResponseInterface
+     */
+    public function fetchEmployees()
+    {
+        $client = new Client();
+        $company = get_current_company();
+        $api_key = $company->api_key;
+        try {
+            $result = $client->get(env('STAFFSTRENGTH_URL') . '/admin/employees/api/get/all/employees', [
+                'headers' => ['Authorization' => $api_key],
+                'verify' => false,
+            ]);
+            if($result->getStatusCode() == 200) $result = json_decode($result->getBody()->getContents())->data;
+            return $result;
+        } catch (\Exception $exception) {
+            return response()->json(['status' => false, 'message' => 'something went wrong']);
+        }
+    }
+
+    /**
+     * [getUserJobs description]
+     * @param  Request $request [description]
+     * @return array            [description]
+     */
+    public function getUserJobs(Request $request)
+    {
+      $candidate = Candidate::with('applications')->where('email', $request->email)->first();
+
+      if($candidate == null){
+        return response()->json(['status' => false, 'message' => 'user not found']);
+      }
+
+      \Log::info($candidate->toArray());
+
+      //Get All jobs applied to
+      if($candidate->applications){
+
+        $job_ids = $candidate->applications->unique('job_id')->pluck('job_id')->toArray();
+
+        $jobs = [];
+        foreach ($candidate->applications as $key => $application) {
+          $job = Job::find($application->job_id);
+          $job->application = $application;
+          array_push($jobs, $job->toArray());
+        }
+      }
+
+      return response()->json([
+        'success' => true,
+        'data' => $jobs
+      ]);
+    }
+
+    /**
+     * [getUserJobActivities description]
+     * @param  Request $request [description]
+     * @return array            [description]
+     */
+    public function getUserJobActivities(Request $request)
+    {
+      \Log::info($request->toArray());
+      $candidate = Candidate::with('applications')->where('email', $request->email)->first();
+
+      if($candidate == null){
+        return response()->json(['status' => false, 'message' => 'user not found']);
+      }
+
+      $job = Job::find($request->job_id);
+      $activities = JobActivity::where('job_id', $request->job_id)
+                               ->where('job_application_id', $request->application_id)
+                               ->get();
+
+     return response()->json([
+       'success' => true,
+       'data' => [
+         'activities' => $activities,
+         'job'  => $job
+       ]
+     ]);
 
     }
 

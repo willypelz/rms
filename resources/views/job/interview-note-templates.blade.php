@@ -2,7 +2,9 @@
 
 
 @section('content')
-
+    @php
+        $user_role = getCurrentLoggedInUserRole();
+    @endphp
 
     @include('job.includes.interview-head')
     <div class="h-80vh">
@@ -43,16 +45,21 @@
                                                     <div class="btn-group">
                                                         <a href="{{ route('interview-note-options', ['id' => $interview_note_template->id ]) }}"
                                                            class="btn btn-line " style="">Options <span
-                                                                    class="badge badge-danger text-white">{{ $interview_note_template->options->count()  }}</span></a>
+                                                                    class="badge badge-danger text-white">{{ $interview_note_template->options->count()  }}</span>
+
+                                                        </a>
+                                                        @if($user_role->name == 'admin')
                                                         <a href="{{ route('interview-note-option-create', ['interview_template_id' => $interview_note_template->id]) }}" class="btn btn-line" style="padding: 9px ;"><i
                                                                     class="fa fa-plus no-margin fa-lg"></i></a>
+                                                        @endif
                                                     </div>
 
+                                                    @if($user_role->name == 'admin')
 
                                                     <a href="{{ route('interview-note-template-edit', ['id' => $interview_note_template->id ]) }}"
                                                        class=" btn pull-right" style=""><i
                                                                 class="fa fa-lg no-margin fa-pencil"></i></a>
-
+                                                    @endif
                                                 </div>
 
                                             </div>
@@ -70,10 +77,12 @@
                                                 <p class="lead">You have not created any template. <br> Start by
                                                     creating a one
                                                 </p>
+                                                @if($user_role->name == 'admin')
                                                 <p>
                                                     <a href="{{ route('interview-note-template-create') }}"
                                                        class="btn btn-primary">Create a template</a>
                                                 </p>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

@@ -2,7 +2,9 @@
 
 @section('content')
     <script src="http://seamlesshiring.com/js/embed.js"></script>
-
+    @php
+        $user_role = getCurrentLoggedInUserRole();
+    @endphp
     <section class="s-div">
         <div class="container">
             <div class="row no-pad">
@@ -13,9 +15,10 @@
                         {{ $active + $expired + $suspended }} {{ $company->name }}  @if($active + $suspended > 1)
                             Jobs @else Job @endif
                         &nbsp;
+                        @if($user_role == 'admin')
                         <a href="{{ route('post-job') }}" class="btn btn-success"><i class="fa fa-plus"></i> Post a New
                             Job</a>
-
+                        @endif
                     </h3>
                 </div>
 
@@ -118,10 +121,12 @@
                                                         Suspended
                                                         @elseif($job['status'] == 'DELETED') Job Deleted
                                                         @else Job Expired @endif |
-                                                        <a href="{{ route('job-board', [$job['id']]) }}">View Job</a> |
-                                                        <a
-                                                                href="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}"
-                                                                target="_blank">Preview Job</a></small>
+                                                        <a href="{{ route('job-board', [$job['id']]) }}">View Job</a>
+                                                            @if($user_role->name == 'admin' || $user_role->name == 'commenter') |
+                                                                <a href="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}"
+                                                                    target="_blank">Preview Job</a>
+                                                            @endif
+                                                    </small>
                                                     <br/>
                                                     <small class="text-muted"><i
                                                                 class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }}
@@ -141,6 +146,7 @@
                                                         <ul class="dropdown-menu">
                                                             <li><a href="{{ route('job-candidates', [$job['id']]) }}">View
                                                                     Applicants</a></li>
+                                                            @if($user_role->name == 'admin')
                                                             <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote
                                                                     this
                                                                     Job</a></li>
@@ -176,6 +182,7 @@
                                                                    data-toggle="modal" data-target="#deleteJob"
                                                                    id="modalButton"
                                                                    href="#deleteJob">Delete Job</a></li>
+                                                            @endif
                                                         </ul>
                                                     </div>
                                                 </div>

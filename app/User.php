@@ -4,10 +4,12 @@ namespace App;
 
 use App\Models\WorkflowStep;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 
 class User extends Authenticatable
 {
+    use EntrustUserTrait;
     /**
      * The attributes that are mass assignable.
      *
@@ -17,7 +19,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'invite_code'
+        'invite_code',
+        'is_internal',
     ];
 
     /**

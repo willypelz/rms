@@ -1,5 +1,4 @@
 @if( $result['response']['numFound'] > 0 )
-
   <div class="panel-group filter-div" id="accordion">
 
 
@@ -120,7 +119,7 @@
 
                 <p class="border-bottom-thin text-muted">Completed Test Score<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                      <p class="text-center">
-                        <input id="score-slider" type="text" class="span2" value="" data-slider-min="40" data-slider-max="160" data-slider-step="5" data-slider-value="{{ '['.$test_score[0].','.$test_score[1].']' }}"/> 
+                        <input id="score-slider" type="text" class="span2" value="" data-slider-min="40" data-slider-max="160" data-slider-step="5" data-slider-value="@if(isset($test_score)) {{ '['.$test_score[0].','.$test_score[1].']' }} @endif"/>
                         <div class="text-center">
                           <b class="col-sm-2 pull-left" style="color: #bbb;">40</b>
                           <b  class="col-sm-2 pull-right" style="color: #bbb;">160</b>
@@ -157,7 +156,7 @@
 
           <p class="border-bottom-thin text-muted">Age<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                      <p class="text-center">
-                        <input id="age-slider" type="text" class="span2" value="" data-slider-min="{{ env('AGE_START') }}" data-slider-max="{{ env('AGE_END') }}" data-slider-step="1" data-slider-value="{{ '['.$age[0].','.$age[1].']' }}"/> 
+                        <input id="age-slider" type="text" class="span2" value="" data-slider-min="{{ env('AGE_START') }}" data-slider-max="{{ env('AGE_END') }}" data-slider-step="1" data-slider-value="@if(!is_null($age[0]) && !is_null($age[1])) {{ '['.$age[0].','.$age[1].']' }} @endif"/>
                         <div class="text-center">
                           <b class="col-sm-2 pull-left" style="color: #bbb;">{{ env('AGE_START') }}</b>
                           <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ env('AGE_END') }}</b>
@@ -323,7 +322,7 @@
 
                 <p class="border-bottom-thin text-muted">Age<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                      <p class="text-center">
-                        <input id="age-slider" type="text" class="span2" value="" data-slider-min="{{ env('AGE_START') }}" data-slider-max="{{ env('AGE_END') }}" data-slider-step="1" data-slider-value="{{ '['.$age[0].','.$age[1].']' }}"/> 
+                        <input id="age-slider" type="text" class="span2" value="" data-slider-min="{{ env('AGE_START') }}" data-slider-max="{{ env('AGE_END') }}" data-slider-step="1" data-slider-value="@if(!is_null($age[0]) && !is_null($age[1])) {{ '['.$age[0].','.$age[1].']' }} @endif"/>
                         <div class="text-center">
                           <b class="col-sm-2 pull-left" style="color: #bbb;">{{ env('AGE_START') }}</b>
                           <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ env('AGE_END') }}</b>
@@ -365,7 +364,7 @@
 
           <p class="border-bottom-thin text-muted">Years of Experience<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                  <p class="text-center">
-                    <input id="exp_years-slider" type="text" class="span2" value="" data-slider-min="{{ env('EXPERIENCE_START') }}" data-slider-max="{{ env('EXPERIENCE_END') }}" data-slider-step="1" data-slider-value="{{ '['.$exp_years[0].','.$exp_years[1].']' }}"/> 
+                    <input id="exp_years-slider" type="text" class="span2" value="" data-slider-min="{{ env('EXPERIENCE_START') }}" data-slider-max="{{ env('EXPERIENCE_END') }}" data-slider-step="1" data-slider-value="@if(!is_null ($exp_years[0]) && !is_null ($exp_years[1])) {{ '['.$exp_years[0].','.$exp_years[1].']' }} @endif"/>
                     <div class="text-center">
                       <b class="col-sm-2 pull-left" style="color: #bbb;">{{ env('EXPERIENCE_START') }}</b>
                       <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ env('EXPERIENCE_END') }}</b>
@@ -400,7 +399,7 @@
             @if( @$job['video_posting_enabled'] )
             <p class="border-bottom-thin text-muted">Video Application Score<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                  <p class="text-center">
-                    <input id="video_application_score-slider" type="text" class="span2" value="" data-slider-min="{{ env('VIDEO_APPLICATION_START') }}" data-slider-max="{{ env('VIDEO_APPLICATION_END') }}" data-slider-step="1" data-slider-value="{{ '['.$video_application_score[0].','.$video_application_score[1].']' }}"/> 
+                    <input id="video_application_score-slider" type="text" class="span2" value="" data-slider-min="{{ env('VIDEO_APPLICATION_START') }}" data-slider-max="{{ env('VIDEO_APPLICATION_END') }}" data-slider-step="1" data-slider-value="@if(!is_null ($video_application_score[0]) && !is_null ($video_application_score[1])) {{ '['.$video_application_score[0].','.$video_application_score[1].']' }} @endif"/>
                     <div class="text-center">
                       <b class="col-sm-2 pull-left" style="color: #bbb;">{{ env('VIDEO_APPLICATION_START') }}%</b>
                       <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ env('VIDEO_APPLICATION_END') }}%</b>

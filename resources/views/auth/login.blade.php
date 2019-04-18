@@ -30,14 +30,14 @@
                         
                         @include('layout.alerts')
 
-                        <form role="form" class="form-signin" method="POST" action="{{ url('/login') }}">
+                        <form role="form" class="form-signin" method="POST">
                             {!! csrf_field() !!}
                             
                             <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                     <label for="">Your Email</label>
-                                    <input type="email" class="form-control" id="" placeholder="" name="email" value="{{ old('email') }}">
+                                    <input type="email" required="" class="form-control" placeholder="" id="email" name="email" value="{{ old('email') }}">
 
                                     @if ($errors->has('email'))
                                         <span class="help-block">
@@ -47,10 +47,10 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-12">
+                            <div class="col-sm-12" style="display: none" id="passwordField">
                                 <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                                     <label for="">Your Password</label>
-                                    <input type="password" class="form-control" id="" placeholder="" name="password">
+                                    <input type="password" required="" class="form-control" id="" placeholder="" name="password">
                                     @if ($errors->has('password'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('password') }}</strong>
@@ -64,15 +64,11 @@
                             <div class="row"><br>
 
                                 <div class="col-sm-10 col-sm-offset-1 col-md-12 col-sm-offset-0">
-                                    <button type="submit" class="btn btn-success btn-block">Proceed &raquo;</button>
+                                    <button type="submit" id="submitLoginButton" onclick="checkUserDetails();return false" class="btn btn-success btn-block">Proceed &raquo;</button>
                                 </div>
 
                                 <div class="col-sm-6"><br>
-                                    <p class="small text-left"><a href="{{ url('password/reset') }}">:( I can't remember my password!</a></p>
-                                </div>
-
-                                <div class="col-sm-6"><br>
-                                    <p class="small text-right">Not registered? <a href="{{ url('sign-up') }}">Sign Up Here</a></p>
+                                    <p class="small text-left"><a href="@if(env('USE_ACTIVE_DIRECTORY') == 1) {{env('STAFFSTRENGTH_URL') . 'forgot-password'}} @else {{ url('password/reset') }} @endif">:( I can't remember my password!</a></p>
                                 </div>
 
                             </div>
@@ -90,6 +86,48 @@
         </div>
     </section>
 @endsection
+
+
+<script type="text/javascript">
+    function checkUserDetails() {
+        var email = $('#email').val();
+
+
+        if(email.length < 1){
+            $('#error').html('Please enter your email');
+            $('#error').show();
+            return false;
+        }
+
+
+        $.ajax({ url:"{{ route('verify-user-details') }}",
+                data:{email:email, _token:"{{ csrf_token() }}"},
+                type:'POST', success:function(res){
+                    if(res.status == 200){
+
+                        if(res.is_external == true){
+                            // Show Password field
+                            $('#passwordField').show();
+                            $("#submitLoginButton").prop("onclick", null).off("click");
+                        }else{
+
+                            window.location = res.redirect_url;
+                        }
+
+                    }else{
+
+                        
+                        setTimeout(function(){ 
+                            $('#error').html(res.message);
+                            $('#error').show();
+                         }, 3000);
+
+                    }
+                } 
+            });
+
+    }
+</script>
 
 @section('footer')
     

@@ -1,6 +1,8 @@
 <div class="container text-brandon text-uppercase h5 separator separator-small" style="">
 <i class="fa fa-compass"></i> Applicants Tracking System (ATS)</div>
-
+@php
+    $user_role = getCurrentLoggedInUserRole();
+@endphp
  <section class="no-pad" >
     <div class="container" >
         <section class="job-head blue no-margin" id="jobHead">
@@ -50,9 +52,10 @@
                             </small>
                         </div> -->
                     </div>
-
+                    @if(!is_null($user_role))
+                        @if($user_role->name == 'admin' || $user_role->name == 'commenter')
                     <div class="col-xs-6 job-progress-xs">
-                    <div class="pull-left text-white small" style="margin-top: 24px;">Recruitment<br>Stage &nbsp; &rarr;</div>
+                    <div  class="pull-left text-white small" style="margin-top: 24px;">Recruitment<br>Stage &nbsp; &rarr;</div>
                         <?php
 
 
@@ -148,6 +151,8 @@
 
 
                     </div>
+                        @endif
+                    @endif
 
 
                     </div>

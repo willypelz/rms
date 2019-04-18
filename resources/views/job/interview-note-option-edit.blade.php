@@ -7,6 +7,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
 
     @include('job.includes.interview-head')
+    @php
+        $user_role = getCurrentLoggedInUserRole();
+    @endphp
     <section class="">
         <div class="container">
             <div class="row">
@@ -53,7 +56,7 @@
 
 
                             <div class="panel-footer text-right">
-                                <button class="btn btn-primary">Save option</button>
+                                <button class="btn btn-primary" @if($user_role->name != 'admin') disabled @endif>Save option</button>
                             </div>
                         </div>
 

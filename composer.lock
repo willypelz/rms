@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "69b855621b241a02dc6231a84506cdf1",
+    "content-hash": "c98dc4a5a7c092e40f50435f9030b566",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -70,16 +70,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.90.12",
+            "version": "3.92.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "a628927d3a350fbda308eadea88d9d4845aa1c44"
+                "reference": "94ecf9ad388d9fd04e8dfe492fd9484f94efb69e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a628927d3a350fbda308eadea88d9d4845aa1c44",
-                "reference": "a628927d3a350fbda308eadea88d9d4845aa1c44",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/94ecf9ad388d9fd04e8dfe492fd9484f94efb69e",
+                "reference": "94ecf9ad388d9fd04e8dfe492fd9484f94efb69e",
                 "shasum": ""
             },
             "require": {
@@ -148,7 +148,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-03-28T18:10:49+00:00"
+            "time": "2019-04-19T18:08:54+00:00"
         },
         {
             "name": "barryvdh/laravel-dompdf",
@@ -1093,91 +1093,6 @@
             "time": "2018-12-04T20:46:45+00:00"
         },
         {
-            "name": "h4cc/wkhtmltoimage-amd64",
-            "version": "0.12.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/h4cc/wkhtmltoimage-amd64.git",
-                "reference": "c4e33f635207af89a704205b8902fb5715ca88be"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/h4cc/wkhtmltoimage-amd64/zipball/c4e33f635207af89a704205b8902fb5715ca88be",
-                "reference": "c4e33f635207af89a704205b8902fb5715ca88be",
-                "shasum": ""
-            },
-            "bin": [
-                "bin/wkhtmltoimage-amd64"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL Version 3"
-            ],
-            "authors": [
-                {
-                    "name": "Julius Beckmann",
-                    "email": "github@h4cc.de"
-                }
-            ],
-            "description": "Convert html to image using webkit (qtwebkit). Static linked linux binary for amd64 systems.",
-            "homepage": "http://wkhtmltopdf.org/",
-            "keywords": [
-                "binary",
-                "convert",
-                "image",
-                "snapshot",
-                "thumbnail",
-                "wkhtmltoimage"
-            ],
-            "time": "2018-01-15T07:23:40+00:00"
-        },
-        {
-            "name": "h4cc/wkhtmltopdf-amd64",
-            "version": "0.12.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/h4cc/wkhtmltopdf-amd64.git",
-                "reference": "4e2ab2d032a5d7fbe2a741de8b10b8989523c95b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/h4cc/wkhtmltopdf-amd64/zipball/4e2ab2d032a5d7fbe2a741de8b10b8989523c95b",
-                "reference": "4e2ab2d032a5d7fbe2a741de8b10b8989523c95b",
-                "shasum": ""
-            },
-            "bin": [
-                "bin/wkhtmltopdf-amd64"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "h4cc\\WKHTMLToPDF\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL Version 3"
-            ],
-            "authors": [
-                {
-                    "name": "Julius Beckmann",
-                    "email": "github@h4cc.de"
-                }
-            ],
-            "description": "Convert html to pdf using webkit (qtwebkit). Static linked linux binary for amd64 systems.",
-            "homepage": "http://wkhtmltopdf.org/",
-            "keywords": [
-                "binary",
-                "convert",
-                "pdf",
-                "snapshot",
-                "thumbnail",
-                "wkhtmltopdf"
-            ],
-            "time": "2018-01-15T06:57:33+00:00"
-        },
-        {
             "name": "ixudra/curl",
             "version": "6.16.0",
             "source": {
@@ -1318,16 +1233,16 @@
         },
         {
             "name": "jaybizzle/crawler-detect",
-            "version": "v1.2.79",
+            "version": "v1.2.81",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JayBizzle/Crawler-Detect.git",
-                "reference": "e6ce66e9c892c42898cf84a35ecbfec5b4ab481c"
+                "reference": "ffb1880f8e9610569d3bc70dc90bf07db311471d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JayBizzle/Crawler-Detect/zipball/e6ce66e9c892c42898cf84a35ecbfec5b4ab481c",
-                "reference": "e6ce66e9c892c42898cf84a35ecbfec5b4ab481c",
+                "url": "https://api.github.com/repos/JayBizzle/Crawler-Detect/zipball/ffb1880f8e9610569d3bc70dc90bf07db311471d",
+                "reference": "ffb1880f8e9610569d3bc70dc90bf07db311471d",
                 "shasum": ""
             },
             "require": {
@@ -1363,7 +1278,7 @@
                 "crawlerdetect",
                 "php crawler detect"
             ],
-            "time": "2019-03-04T19:10:41+00:00"
+            "time": "2019-04-23T20:02:21+00:00"
         },
         {
             "name": "jenssegers/agent",
@@ -1787,16 +1702,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.50",
+            "version": "1.0.51",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "dab4e7624efa543a943be978008f439c333f2249"
+                "reference": "755ba7bf3fb9031e6581d091db84d78275874396"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/dab4e7624efa543a943be978008f439c333f2249",
-                "reference": "dab4e7624efa543a943be978008f439c333f2249",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/755ba7bf3fb9031e6581d091db84d78275874396",
+                "reference": "755ba7bf3fb9031e6581d091db84d78275874396",
                 "shasum": ""
             },
             "require": {
@@ -1867,7 +1782,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2019-02-01T08:50:36+00:00"
+            "time": "2019-03-30T13:22:34+00:00"
         },
         {
             "name": "maatwebsite/excel",
@@ -2899,16 +2814,16 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v3.4.23",
+            "version": "v3.4.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "ec625e2fff7f584eeb91754821807317b2e79236"
+                "reference": "a088aafcefb4eef2520a290ed82e4374092a6dff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/ec625e2fff7f584eeb91754821807317b2e79236",
-                "reference": "ec625e2fff7f584eeb91754821807317b2e79236",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/a088aafcefb4eef2520a290ed82e4374092a6dff",
+                "reference": "a088aafcefb4eef2520a290ed82e4374092a6dff",
                 "shasum": ""
             },
             "require": {
@@ -2958,11 +2873,11 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2019-02-23T15:06:07+00:00"
+            "time": "2019-04-02T08:51:52+00:00"
         },
         {
             "name": "symfony/filesystem",
-            "version": "v3.4.23",
+            "version": "v3.4.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",

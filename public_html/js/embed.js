@@ -9,6 +9,24 @@ if (typeof Array.prototype.indexOf !== 'function') {
     }; 
 }
 
+
+function getHostName(){
+    var firstDot = window.location.hostname.indexOf('.');
+    var tld = ".net";
+    var isSubdomain = firstDot < window.location.hostname.indexOf(tld);
+    var domain;
+
+    if (isSubdomain == true) {
+    domain = window.location.hostname.substring(firstDot == -1 ? 0 : firstDot + 1);
+    }
+    else {
+      domain = window.location.hostname;
+    }
+
+    return domain;
+
+}
+
 window.SH_Embed = (function () {
     function SH(els) {
         for(var i = 0; i < els.length; i++ ) {
@@ -25,11 +43,14 @@ window.SH_Embed = (function () {
     }
 
     function getEmbed(options) {
-	    var xmlhttp;
-	    // var host = "https://localhost/seamlesshiring/public_html/";
-	    var host = "https://seamlesshiring.com/";
-	    var self = this;	   
+	   
+        var xmlhttp;
+
+        // var host = document.location.hostname;
+        var host = getHostName();
 	    
+	    var self = this;	
+        console.log(options)   
 
 	    if (window.XMLHttpRequest) {
 	        // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -40,6 +61,7 @@ window.SH_Embed = (function () {
 	    }
 
 	    xmlhttp.onreadystatechange = function() {
+
 	        if (xmlhttp.readyState == 4 ) {
 	           if(xmlhttp.status == 200){
 	               self.embedUI = xmlhttp.responseText;
@@ -58,10 +80,7 @@ window.SH_Embed = (function () {
 	    // xmlhttp.open("POST", host + "embed-view" + parser(options) , false);
         xmlhttp.open("POST", host + "embed-view" + parser(options) , false);
 	    xmlhttp.send();
-	    //alert(xmlhttp.responseText);
 	    return self.embedUI;
-	    // return "abc";
-	    // return embedUI;
 
 	}
 

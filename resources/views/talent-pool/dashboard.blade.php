@@ -10,9 +10,9 @@
 <section class="s-div dashboard">
   <div class="container">
     <div class="row">
-      
                 <div class="col-sm-12 "><br>
                 <h4 class="text-white">Welcome Admin, <span class="small pull-right text-white"><i class="fa fa-calendar"></i> <?php echo date("l, d/m/Y") . "<br>"; ?></span></h4>
+                  
                     @if($user_role->name == 'admin')
                         <div class=" btn-group-justified btn-dash" role="group" aria-label="...">
                           <div class="btn-group" role="group">

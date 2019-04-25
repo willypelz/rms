@@ -1876,8 +1876,11 @@ class JobsController extends Controller
             $company->logo = asset('img/company.png');
         }
 
+        $domain_url = url('/').'/js/embed.js';
+
+
         if (Auth::check()) {
-            $embed = "<div id='SH_Embed'></div><script src='http://seamlesshiring.com/js/embed.js'></script><script type='text/javascript'>document.getElementById('SH_Embed').innerHTML = SH_Embed.pull({key : '" . Crypt::encrypt(Auth::user()->id . "~&" . Auth::user()->email . "~&" . Auth::user()->created_at . "~&" . $company->id) . "'});</script>";
+            $embed = "<div id='SH_Embed'></div><script src='".$domain_url."'></script><script type='text/javascript'>document.getElementById('SH_Embed').innerHTML = SH_Embed.pull({key : '" . Crypt::encrypt(Auth::user()->id . "~&" . Auth::user()->email . "~&" . Auth::user()->created_at . "~&" . $company->id) . "'});</script>";
         } else {
             $embed = "";
         }
@@ -2401,7 +2404,9 @@ class JobsController extends Controller
         $user = get_current_company()->users()->first();
         $key = Crypt::encrypt($user->id . '~&' . $user->email . '~&' . $user->created_at . '~&' . get_current_company()->id);
 
-        $embed_code = "<div id='SH_Embed'></div><script src='http://seamlesshiring.com/js/embed.js'></script><script type='text/javascript'>document.getElementById('SH_Embed').innerHTML=SH_Embed.pull({key : '" . $key . "'});</script>";
+        $domain_url = url('/').'/js/embed.js';
+
+        $embed_code = "<div id='SH_Embed'></div><script src='" .$domain_url. "'></script><script type='text/javascript'>document.getElementById('SH_Embed').innerHTML=SH_Embed.pull({key : '" . $key . "'});</script>";
 
         return view('settings.embed', compact('embed_code'));
     }

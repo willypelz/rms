@@ -542,9 +542,6 @@ class JobApplicationsController extends Controller
 
         foreach ($data as $key => $value) {
 
-            // dd($value['application_id'][0]);
-
-            
             
             if (!empty($request->cv_ids) && !in_array($value['id'], $request->cv_ids)) {
                 continue;
@@ -600,12 +597,10 @@ class JobApplicationsController extends Controller
                   $excel_data[$key][$value->form_field->name] = $value->value;
                }
             }
-            // $form_fields = 
 
 
         }
 
-        // dd($excel_data);
 
         $excel = App::make('excel');
         Excel::create('Applicants Report: ' . $other_data['job_title'],

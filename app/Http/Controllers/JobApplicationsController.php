@@ -576,7 +576,7 @@ class JobApplicationsController extends Controller
                 "HIGHEST EDUCATION" => @$value['highest_qualification'],
                 "LAST COMPANY WORKED AT" => @$value['last_company_worked'],
                 "YEARS OF EXPERIENCE" => @$value['years_of_experience'],
-                "WILLING TO RELOCATE?" => ($value['willing_to_relocate'] == "true") ? 'Yes' : 'No',
+                "WILLING TO RELOCATE?" => (array_key_exists('willing_to_relocate', $value) && $value['willing_to_relocate'] == "true") ? 'Yes' : 'No',
                 "TESTS" => $tests,
 
 
@@ -608,7 +608,6 @@ class JobApplicationsController extends Controller
         // dd($excel_data);
 
         $excel = App::make('excel');
-
         Excel::create('Applicants Report: ' . $other_data['job_title'],
             function ($excel) use ($excel_data, $other_data) {
                 // Set the title

@@ -592,7 +592,6 @@ class JobApplicationsController extends Controller
             ];
             if(isset($value['application_id'][0])) {
                $jobApplication = JobApplication::with('custom_fields.form_field')->find($value['application_id'][0]); 
-               // dd($jobApplication);
                foreach ($jobApplication->custom_fields as $value) {
                   $excel_data[$key][$value->form_field->name] = $value->value;
                }

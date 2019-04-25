@@ -541,6 +541,8 @@ class JobApplicationsController extends Controller
         $excel_data = [];
 
         foreach ($data as $key => $value) {
+
+            
             if (!empty($request->cv_ids) && !in_array($value['id'], $request->cv_ids)) {
                 continue;
             }
@@ -588,11 +590,16 @@ class JobApplicationsController extends Controller
                 // "application_status" => array:1 [▶]
                 // "_version_" => 1.5462453107564E+18
             ];
+            if(isset($value['application_id'][0])) {
+               $jobApplication = JobApplication::with('custom_fields.form_field')->find($value['application_id'][0]); 
+               foreach ($jobApplication->custom_fields as $value) {
+                  $excel_data[$key][$value->form_field->name] = $value->value;
+               }
+            }
 
 
         }
 
-        // dd($excel_data);
 
         $excel = App::make('excel');
         Excel::create('Applicants Report: ' . $other_data['job_title'],

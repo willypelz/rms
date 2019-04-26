@@ -502,6 +502,7 @@ class JobsController extends Controller
                 // 'post_date' => $request->post_date,
                 'expiry_date' => $request->expiry_date,
                 'workflow_id' => $request->workflow_id,
+                'experience' => $request->experience,
             ];
 
             $validator = Validator::make($data, [
@@ -512,6 +513,7 @@ class JobsController extends Controller
                 'position' => 'required',
                 'expiry_date' => 'required',
                 'workflow_id' => 'required|integer',
+                'experience' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -544,6 +546,7 @@ class JobsController extends Controller
                     'workflow_id' => $request->workflow_id,
                     'is_for' => $request->is_for ?: 'external',
                     'fields' => json_encode($fields),
+                    'experience' => $request->experience,
                 ];
 
                 $job = Job::FirstorCreate($job_data);

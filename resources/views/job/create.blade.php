@@ -179,6 +179,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <label for="">Experience<span class="text-danger">*</span></label>
+                                                <textarea name="experience" id="editor3" cols="30" rows="6"
+                                                          class="form-control"
+                                                          placeholder=""
+                                                          required>{{ old('experience', $thirdPartyData->get('experience') ?: '') }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <hr>
                                     <br>

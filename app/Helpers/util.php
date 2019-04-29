@@ -601,7 +601,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
                 break;
 
             default:
-                continue;
+                // continue;
                 break;
         }
 

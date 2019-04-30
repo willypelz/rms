@@ -771,22 +771,6 @@ class JobApplicationsController extends Controller
 
         //MAT: ignore the rejected part of the code for now
         switch ($request->status) {
-            case 'REJECTED':
-                $appls = JobApplication::with('cv', 'job', 'job.company')->whereIn('id', $request->app_ids)->get();
-                // dd( $appls );
-
-                foreach ($appls as $key => $appl) {
-                    $cv = $appl->cv;
-                    $job = $appl->job;
-                    $this->mailer->send('emails.new.reject_email', ['cv' => $cv, 'job' => $job],
-                        function (Message $m) use ($cv) {
-                            $m->from($this->sender, get_current_company()->name)
-                                ->replyTo($this->replyTo, get_current_company()->name)
-                                ->to($cv->email)
-                                ->subject('Feedback');
-                        });
-                }
-                break;
             case 'ALL':
 
                 break;
@@ -1797,12 +1781,12 @@ class JobApplicationsController extends Controller
                 if(!is_null($cv->email))
                 {
                     $this->mailer->send('emails.new.step_moved', ['cv' => $cv, 'job' => $job, 'step' => $step,'message_content' => $message_content],
-                        function (Message $m) use ($cv) {
+                        function (Message $m) use ($cv,$job) {
 
                             $m->from($this->sender, get_current_company()->name)
                                 ->replyTo($this->replyTo, get_current_company()->name)
                                 ->to($cv->email)
-                                ->subject('Feedback');
+                                ->subject('Feedback on Your Application for the role of '.$job->title);
                         });
                 }
 

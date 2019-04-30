@@ -502,6 +502,7 @@ class JobsController extends Controller
                 // 'post_date' => $request->post_date,
                 'expiry_date' => $request->expiry_date,
                 'workflow_id' => $request->workflow_id,
+                'experience' => $request->experience,
             ];
 
             $validator = Validator::make($data, [
@@ -512,6 +513,7 @@ class JobsController extends Controller
                 'position' => 'required',
                 'expiry_date' => 'required',
                 'workflow_id' => 'required|integer',
+                'experience' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -544,6 +546,7 @@ class JobsController extends Controller
                     'workflow_id' => $request->workflow_id,
                     'is_for' => $request->is_for ?: 'external',
                     'fields' => json_encode($fields),
+                    'experience' => $request->experience,
                 ];
 
                 $job = Job::FirstorCreate($job_data);
@@ -2406,7 +2409,9 @@ class JobsController extends Controller
 
         $domain_url = url('/').'/js/embed.js';
 
-        $embed_code = "<div id='SH_Embed'></div><script src='" .$domain_url. "'></script><script type='text/javascript'>document.getElementById('SH_Embed').innerHTML=SH_Embed.pull({key : '" . $key . "'});</script>";
+        $base_url = url('/').'/';
+
+        $embed_code = "<div id='SH_Embed'></div><script src='" .$domain_url. "'></script><script type='text/javascript'>document.getElementById('SH_Embed').innerHTML=SH_Embed.pull({key : '" . $key . "', base_url : '" . $base_url . "'});</script>";
 
         return view('settings.embed', compact('embed_code'));
     }
@@ -2438,6 +2443,8 @@ class JobsController extends Controller
             ->where('id', $id)
             // ->where('email', $email."")
             ->where('created_at', $created_at)->first();
+
+
 
         if ($user->exists()) {
             $company = Company::find($company_id);

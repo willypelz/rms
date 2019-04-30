@@ -35,6 +35,7 @@ class Job extends Model
         'experience',
         'fields',
         'is_for',
+        'job_type'
     ];
 
 

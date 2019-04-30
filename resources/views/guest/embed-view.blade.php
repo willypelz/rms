@@ -75,7 +75,7 @@
 		                                    </div>
 		                                </div>
 		                                <div class="ml-auto">
-		                                    <a class="btn btn-sm btn-primary" href="{{ url($company->slug.'/job/'.$job['id'].'/'.str_slug($job['title'])) }}"  target="_blank">
+		                                    <a class="btn btn-sm btn-primary" href="{{ route('job-view', [$job['id'], str_slug($job['title']) ]) }}"  target="_blank">
 		                                        View Details
 		                                        <i class="fas fa-chevron-right ml-2">
 		                                        </i>

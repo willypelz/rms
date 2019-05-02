@@ -46,11 +46,9 @@ window.SH_Embed = (function () {
 	   
         var xmlhttp;
 
-        // var host = document.location.hostname;
         var host = getHostName();
 	    
 	    var self = this;	
-        console.log(options)   
 
 	    if (window.XMLHttpRequest) {
 	        // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -77,7 +75,9 @@ window.SH_Embed = (function () {
 	        
 	    };
 
-	    // xmlhttp.open("POST", host + "embed-view" + parser(options) , false);
+
+        var host = options.base_url;
+
         xmlhttp.open("POST", host + "embed-view" + parser(options) , false);
 	    xmlhttp.send();
 	    return self.embedUI;
@@ -279,6 +279,7 @@ window.SH_Embed = (function () {
         	var defaults = {
         			id : "",
                     key : "",
+                    url : "",
         		    background : "",
     				headerTextColor : "",
     				headerBackground : "",

@@ -2409,7 +2409,9 @@ class JobsController extends Controller
 
         $domain_url = url('/').'/js/embed.js';
 
-        $embed_code = "<div id='SH_Embed'></div><script src='" .$domain_url. "'></script><script type='text/javascript'>document.getElementById('SH_Embed').innerHTML=SH_Embed.pull({key : '" . $key . "'});</script>";
+        $base_url = url('/').'/';
+
+        $embed_code = "<div id='SH_Embed'></div><script src='" .$domain_url. "'></script><script type='text/javascript'>document.getElementById('SH_Embed').innerHTML=SH_Embed.pull({key : '" . $key . "', base_url : '" . $base_url . "'});</script>";
 
         return view('settings.embed', compact('embed_code'));
     }
@@ -2441,6 +2443,8 @@ class JobsController extends Controller
             ->where('id', $id)
             // ->where('email', $email."")
             ->where('created_at', $created_at)->first();
+
+
 
         if ($user->exists()) {
             $company = Company::find($company_id);

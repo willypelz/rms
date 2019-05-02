@@ -77,8 +77,8 @@
                            <strong style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Phone:</strong>&nbsp; {{ $appl->cv->phone }}</li>
 
                        <li style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
-                           <strong style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Age:</strong>&nbsp; {{ str_replace('ago', 'old', human_time($appl->cv->dob, 1)) }} 
-                           <span class="text-muted" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;color: #999;">({{ date('M d, Y', strtotime($appl->cv->dob)) }})</span>
+                           <strong style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Age:</strong>&nbsp; {{ str_replace('ago', 'old', human_time($appl->cv->date_of_birth, 1)) }} 
+                           <span class="text-muted" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;color: #999;">({{ date('M d, Y', strtotime($appl->cv->date_of_birth)) }})</span>
                        </li>
 
                        <li style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">

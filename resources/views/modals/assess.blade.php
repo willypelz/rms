@@ -115,14 +115,14 @@
                   <label>Tests Available From</label>
                   <div class="input-group date" id='datetimepicker1'>
                       <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                      <input type="text" required class="form-control" value="{{ date('D, d/m/Y', strtotime('+ 1 day')) }}" id="test-start" aria-describedby="" placeholder="Open Date">
+                      <input type="text" required class="form-control" value="{{ date('Y-m-d H',strtotime('+ 1 day')) }}" id="test-start" aria-describedby="" placeholder="Open Date">
                   </div>
               </div>
               <div class="form-group">
                   <label>Tests Available Till</label>
                   <div class="input-group date" id='datetimepicker2'>
                       <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                      <input type="text" required class=" form-control" value="{{ date('D, d/m/Y', strtotime('+ 1 week')) }}" id="test-end" aria-describedby="" placeholder="Close Date">
+                      <input type="text" required class=" form-control" value="{{ date('Y-m-d H',strtotime('+ 1 week')) }}" id="test-end" aria-describedby="" placeholder="Close Date">
                   </div>
               </div>
               <input type="submit" class="btn btn-success pull-right" id="request-test" disabled="disabled" value="Request Test">

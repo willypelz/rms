@@ -71,10 +71,11 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::post('user/auth/verify', 'Auth\AuthController@verifyUser')->name('verify-user-details');
 
-    Route::get('/', function () {
+    Route::get('/', 'HomeController@homepage')->name('homepage');
 
-        return view('guest.landing');
-    });
+    // Route::get('/', function () {
+    //     return view('guest.landing');
+    // });
 
     Route::get('embed-test', ['as' => 'embed', 'uses' => 'JobsController@getEmbedTest']);
     Route::get('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);

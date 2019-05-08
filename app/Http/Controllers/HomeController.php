@@ -28,8 +28,26 @@ class HomeController extends Controller
       $this->middleware('auth', ['except' => [
           'requestACall',
           'pricing',
+          'homepage',
           'viewTalentSource',
       ]]);
+    }
+
+
+     /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function homepage()
+    {   
+
+        $hirs_redirect = env('HIRS_REDIRECT_LOGIN');
+
+        // if(!is_null($hirs_redirect) &&  strlen($hirs_redirect) != 0 )
+        //     return redirect('login');
+
+        return view('guest.landing');
     }
 
     /**

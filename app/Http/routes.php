@@ -58,6 +58,10 @@ Route::group(['middleware' => 'web'], function () {
     });
     Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
     Route::match(['get', 'post'], '/admin/mange-roles', 'JobsController@manageRoles')->name('change-admin-role');
+    Route::match(['get', 'post'], '/sys/roles', 'AdminsController@manageRoles')->name('list-role');
+    Route::match(['get', 'post'], '/sys/roles/create', 'AdminsController@createRole')->name('create-role');
+    Route::match(['get', 'post'], '/sys/roles/edit/{id}', 'AdminsController@editRole')->name('role-edit');
+    Route::match(['get', 'post'], '/sys/roles/delete/{id}', 'AdminsController@deleteRole')->name('role-delete');
     Route::group([
         'prefix' => '/admin',
         'middleware' => 'admin'
@@ -293,6 +297,7 @@ Route::group(['middleware' => 'web'], function () {
         ['uses' => 'JobsController@JobPromote', 'as' => 'job-promote']);
 
     Route::match(['get', 'post'], 'job/team/{jobID}', ['uses' => 'JobsController@JobTeam', 'as' => 'job-team']);
+    Route::match(['get', 'post'], 'job/settings/team/{job_id}', ['uses' => 'JobsController@jobTemSettings', 'as' => 'job-team-setting']);
     Route::match(['get', 'post'], 'job/teams/add', ['uses' => 'JobsController@JobTeamAdd', 'as' => 'job-team-add']);
     Route::match(['get','post'],'job/teams/remove', ['uses' => 'JobsController@removeJobTeamMember', 'as' => 'remove-job-team-member']);
     Route::get('job/teams/decline', ['uses' => 'JobsController@JobTeamDecline', 'as' => 'job-team-decline']);

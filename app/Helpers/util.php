@@ -666,6 +666,7 @@ function getUserPermissions() {
  * @return string
  */
 function getAdminName($roleName) {
+	$name = '';
     switch ($roleName){
         case 'admin':
             $name = 'Talent Acquisition Partner';

@@ -996,6 +996,7 @@ class JobsController extends Controller
 
     public function JobTeam($id, Request $request)
     {
+
         //Check if he  is the owner of the job
         check_if_job_owner($id);
         $comp_id = get_current_company()->id;
@@ -1009,13 +1010,41 @@ class JobsController extends Controller
 
         $result = Solr::get_applicants($this->search_params, $id, '');
 
-
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id);
-        // return view('emails.e-exculsively-invited');
+
         $roles = Role::select('id', 'name')->get();
+
         $job_team_invites = JobTeamInvite::where('job_id', $job->id)->where('is_accepted', 0)->where('is_declined', 0)->get();
+
         return view('job.board.team', compact('job', 'active_tab', 'company', 'result', 'application_statuses', 'owner', 'job_team_invites', 'roles'));
     }
+
+
+
+    public function jobTemSettings(Request $request, $job_id)
+    {
+        
+        $jobs = Job::with(['users'=> function ($q) { $q->where('users.id', 4); } ])->take(5)->get();
+
+        $permissions = [];
+        foreach($jobs as $job){
+
+            $can_view = 0;
+            $can_edit = 0;
+            if(!empty($job->users->toArray())){
+                $can_view = $job->users[0]->can_view;
+                $can_edit = $job->users[0]->can_edit;
+            }
+
+            $permissions[] = ['id' => $job->id, 'title' => $job->title, 'can_view' => $can_view, 'can_edit' => $can_edit];
+
+        }
+
+
+        return view('job.team.settings', compact('jobs', 'permissions'));
+    }
+
+
 
     public function ActivityContent(Request $request)
     {

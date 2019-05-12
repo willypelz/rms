@@ -39,6 +39,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Company', 'company_users')->withPivot('role');
     }
 
+    public function roles()
+    {
+        return $this->belongsToMany('App\Models\Role', 'role_user');
+    }
+
     public function workflowSteps()
     {
         return $this->belongsToMany(

@@ -2,10 +2,11 @@
 
 @section('content')
 
-                    @include('job.board.jobBoard-header')
-                    @php
-                        $user_role = getCurrentLoggedInUserRole();
-                    @endphp
+            @include('job.board.jobBoard-header')
+            @php
+                $user_role = getCurrentLoggedInUserRole();
+            @endphp
+
             @if($job['status'] != 'DELETED')
             <div class="row">
 
@@ -13,18 +14,17 @@
                     <div class="page no-bod-rad">
                         <div class="row">
 
-
                             @include('job.board.job-board-tabs')
 
                       <div class="tab-content">
 
 
                         <div class="row">
-                          <p>Manage your team members for this job here.</p>
+                          <p> Manage your team members for this job here. </p>
                         <!-- applicant -->
                         <div class="col-xs-7">
-                            <h5 class="no-margin"> <!-- <i class="fa fa-lg fa-users"></i> --> Team members</h5><hr>
-
+                            <h5 class="no-margin"> Team members </h5><hr>
+                            
                             @if( count( @$company->users ) > 0 )
                               <ul class="list-group">
 
@@ -55,9 +55,9 @@
                                       <div class="clearfix"></div>
                                   </li>
                                   @endforeach
-
                               </ul>
                             @endif
+
 
                             <br><br>
                             <h5 class="no-margin"> <!-- <i class="fa fa-lg fa-users"></i> --> Invites</h5><hr>
@@ -90,9 +90,12 @@
 
                         <div class="col-xs-5" id="Section2">
                             <h5 class="no-margin">Add New Team member <span class="pull-right"><i class="fa fa-lg fa-user-plus"></i></span></h5><hr>
-                            @if($user_role->name == 'admin')
-                            <a aria-controls="AddTeamMember" aria-expanded="false" class="btn btn-warning" data-toggle="collapse" data-target="#AddTeamMember" href="#AddTeamMember"><i class="fa fa-user-plus"></i> Add New Member</a>
-                            @endif
+                            
+                            @permission('can-add-job-team-members')
+                              <a aria-controls="AddTeamMember" aria-expanded="false" class="btn btn-warning" data-toggle="collapse" data-target="#AddTeamMember" href="#AddTeamMember"><i class="fa fa-user-plus"></i> Add New Member</a>
+                            @endpermission
+
+
                             <div id="AddTeamMember" class="collapse">
                                <!--div class="alert alert-success"><i class="fa fa-check fa-lg"></i>
                                     &nbsp; Your mail has been sent. Refresh page to send more.
@@ -132,15 +135,14 @@
 
                                            <label for="role">Role</label>
                                            <select name="role" id="role" class="form-control">
-                                               <option value="{{null}}"> --Select One-- </option>
+                                               <option value=""> --Select One-- </option>
                                                @foreach($roles as $role)
-                                                   <option value="{{$role->id}}">{{getAdminName($role->name)}}</option>
+                                                   <option value="{{ $role->id }}">{{ ucwords($role->name) }}</option>
                                                @endforeach
                                            </select>
 
 
                                        <label for="">Access: </label>
-
                                        <select name="access" id="access" class="form-control" required>
                                          <option value="job">"{{ $job->title }}" only</option>
                                          <option value="company">All Jobs</option>
@@ -153,8 +155,8 @@
                                        &lt;p&gt;Hello,&lt;br&gt;
 
 
-Regarding the ongoing recruitment process at {{ ucwords( get_current_company()->name ) }} company for the job of {{ ucwords( $job->title ) }}, this is to inform you that you have been invited to join the recruitment team.
-You would be required to collaborate with your team in selecting the candidate(s) who best suit(s) the job.
+                                        Regarding the ongoing recruitment process at {{ ucwords( get_current_company()->name ) }} company for the job of {{ ucwords( $job->title ) }}, this is to inform you that you have been invited to join the recruitment team.
+                                        You would be required to collaborate with your team in selecting the candidate(s) who best suit(s) the job.
 
 
                                        </textarea>
@@ -166,7 +168,8 @@ You would be required to collaborate with your team in selecting the candidate(s
                                    <br>
                                    <p>
                                        <!-- <a class="btn btn-line btn-sm" aria-controls="collapseWYSIWYG" aria-expanded="false" href="#collapseWYSIWYG" data-toggle="collapse" role="button"><i class="fa fa-times"></i> &nbsp; Cancel</a> -->
-                            <a aria-controls="AddTeamMember" aria-expanded="false" class="btn btn-line btn-sm" data-toggle="collapse" data-target="#AddTeamMember" href="#AddTeamMember"> Cancel</a>
+                                        
+                                        <a aria-controls="AddTeamMember" aria-expanded="false" class="btn btn-line btn-sm" data-toggle="collapse" data-target="#AddTeamMember" href="#AddTeamMember"> Cancel</a>
 
                                        <!-- <a class="btn btn-success btn-sm pull-right" aria-controls="collapseWYSIWYG" aria-expanded="false" href="#collapseWYSIWYG" data-toggle="collapse" role="button">Send Mail &nbsp; <i class="fa fa-send"></i></a> -->
                                        <input class="btn btn-success btn-sm pull-right" id="sendMail" type="submit" value="Send mail">

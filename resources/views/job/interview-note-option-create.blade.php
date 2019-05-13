@@ -38,15 +38,16 @@
 
                                 <div class="form-group">
                                     <label for="type">Type</label>
-                                    <select name="type" class="form-control" required>
+                                    <select name="type" class="form-control" onchange="hideWeight(this)" required>
+                                        <option value="">--select one--</option>
                                         <option value="text" >Text</option>
                                         <option value="rating" >Rating</option>
                                     </select>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" id="weightDiv" style="display:none">
                                     <label for="weight">Weight</label>
-                                    <input type="text" name="weight" class="form-control" required>
+                                    <input type="number" name="weight" class="form-control" id="weight" required>
                                 </div>
                             </div>
 
@@ -71,7 +72,21 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#summernote').summernote();
+            // console.log("plppp");
         });
+    </script>
+
+    <script>
+    function hideWeight(e) {
+      if(e.value == 'rating'){
+        document.getElementById('weightDiv').style.display = 'block';
+        document.getElementById('weight').setAttribute("required", "");
+      }else{
+        console.log("ol");
+        document.getElementById('weightDiv').style.display = 'none';
+        document.getElementById('weight').removeAttribute("required");
+      }
+    }
     </script>
 
 

@@ -91,6 +91,8 @@ Route::group(['middleware' => 'web'], function () {
         Route::match(['get', 'post'], '/login', 'HomeController@home');
 
         Route::match(['get', 'post'], '/logout', 'CandidateController@logout')->name('candidate-logout');
+       
+        // TODO
         // Route::match(['get', 'post'], '/register', 'CandidateController@register')->name('candidate-register');
         // Route::match(['get', 'post'], '/forgot', 'CandidateController@forgot')->name('candidate-reset');
         // Route::match(['get', 'post'], '/reset', 'CandidateController@reset')->name('candidate-reset');

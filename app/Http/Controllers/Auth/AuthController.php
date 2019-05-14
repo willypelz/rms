@@ -288,7 +288,7 @@ class AuthController extends Controller
 
       $user = User::where('email', $decoded_email)->first();
       if(!$user){
-        return back()->with('error', 'User email does not exist');
+        return ['status' => false, 'message' => 'User email does not exist'];
       }
       $api_key = $user->companies()->where('api_key', $decoded_key)->first();
       if($api_key == null){

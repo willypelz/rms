@@ -1,0 +1,155 @@
+html{
+    font-size: 14px;
+}
+
+a{
+    color: #1070CA;
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: none;
+}
+
+
+:root {
+    --dark-blue-color: #052749;
+}
+
+.dark-blue-text{
+    color: var(--dark-blue-color);
+}
+
+.font-16{
+    font-size: 16px;
+}
+
+
+.shr-auth{
+    color: #66788A;
+    min-height: 100vh;
+    height: 100vh;
+    font-family: 'Muli', sans-serif;
+    font-weight: lighter;
+}
+
+/* Form Section */
+.shr-auth-logo{
+    margin-bottom: 2rem;
+    height: 94px;
+}
+
+.shr-auth-form{
+    padding-top: 2.5rem;
+    padding-left: 11.5%;
+    padding-right: 10%;
+}
+
+.shr-auth-form-toggle{
+    display: inline-block;
+    margin: 0.75rem auto;
+    padding: 0.625rem;
+    background-color: #F2F5F7;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.shr-auth-form-toggle .toggle-button{
+    display: inline-block;
+    padding: 0.6rem 1rem;
+    color: var(--dark-blue-color);
+}
+
+.shr-auth-form-toggle .toggle-button:hover{
+    text-decoration: none;
+}
+
+.shr-auth-form-toggle .toggle-button.active{
+    border-radius: 4px;
+    background-color: var(--dark-blue-color);
+    color: #FFFFFF;
+}
+
+.shr-form-group{
+    margin-bottom: 1.25rem;
+}
+
+.shr-input-group{
+    background-color: #FFFFFF;
+    border: 1px solid #C5D1DA;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px 0 #F2F2F2;
+    height: 3.25rem;
+    display: flex;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+.shr-input-group:focus-within{
+    border: 3px solid #C5D1DA;
+    box-shadow: 0 2px 6px 0 #F2F2F2;
+}
+
+.shr-input-group .shr-input{
+    border: none;
+    width: 100%;
+    height: 100%;
+    color: var(--dark-blue-color);
+    margin-left: 0.75rem;
+}
+
+.shr-input-group .shr-input::placeholder{
+    color: #C6CCD1;
+    font-size: 16px;
+}
+
+.shr-auth-form-button{
+    width: 100%;
+    padding: 0.875rem 0;
+    margin-top: 2.5rem;
+    font-size: 17px;
+    text-align: center;
+    border-radius: 4px;
+    color: #ffffff;
+    box-shadow: 0 2px 2px 0 #F2F2F2;
+    background-color: #4BB779;
+}
+
+.shr-auth-form-button:hover{
+    color: #ffffff;    
+}
+
+
+/* Jobs section */
+.shr-auth-jobs{
+    padding-top: calc(4rem + 94px);
+    padding-bottom: 2%;
+    padding-left: 4%;
+    padding-right: calc(4% + 12px);
+    background-color: #F4F7FA;
+}
+
+.shr-auth-jobs .job-card{
+    padding: 1rem 1.25rem;
+    background-color: #FFFFFF;
+    border-radius: 6px;
+    box-shadow: 11px 11px 0 #BACDE0;
+    margin-bottom: 2rem;
+}
+
+.job-card-content{
+    line-height: 21px;
+    height: 63px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;  
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.shr-job-badge{
+    background-color: #E8EBED;
+    border-radius: 6px;
+    padding: 4px 8px;
+    margin: auto 8px;
+}

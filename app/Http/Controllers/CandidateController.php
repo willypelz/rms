@@ -3,18 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use Illuminate\Http\Request;
-use Curl;
-use App\Models\Company;
+use App\Libraries\Solr;
 use App\Models\Candidate;
+use App\Models\Company;
+use App\Models\FolderContent;
 use App\Models\Job;
 use App\Models\JobActivity;
 use App\Models\JobApplication;
-use App\Libraries\Solr;
-use Auth;
-use App\Models\FolderContent;
 use App\Models\Message;
+use Auth;
+use Carbon\Carbon;
+use Curl;
+use Illuminate\Http\Request;
 use Mail;
+use DB;
 
 
 class CandidateController extends Controller
@@ -86,14 +88,73 @@ class CandidateController extends Controller
     public function forgot(Request $request)
     {
 
+        if($request->isMethod('post')){
+
+            $candidate = Candidate::whereEmail($request->email)->first();
+
+            if($candidate){
+
+                $token = str_random(60).time();
+
+                DB::table('password_resets')->insertGetId(
+                    ['email' => $request->email, 'token' => $token, 'created_at' => Carbon::now() ]
+                );
+
+
+                Mail::send('emails.candidate-forgot-password', ['token' => $token], function ($m) use ($candidate) {
+                    $m->from('support@seamlesshr.com', env('APP_NAME'));
+                    $m->to($candidate->email, $candidate->first_name)->subject('Your Password Reset Link!');
+                });
+
+
+                return redirect()->route('candidate-forgot-sent');
+
+            }else{
+                return redirect()->back()->with('error', 'Failed to send reset link');
+            }
+
+        }
+
         $redirect_to = $request->redirect_to;
+
         return view('candidate.forgot', compact('redirect_to'));
     }
 
-    public function reset(Request $request)
+
+    public function forgotSent(Request $request)
+    {
+
+        return view('candidate.forgot-sent', compact('redirect_to'));
+    }
+
+    public function reset(Request $request, $token)
     {
         $redirect_to = $request->redirect_to;
-        return view('candidate.rest', compact('redirect_to'));
+
+        $token_reset = DB::table('password_resets')->where('token', $token)->first();
+
+
+        if(is_null($token_reset))
+            return redirect()->route('candidate-login')->with('error', 'Invalid password reset link');
+
+        if($request->isMethod('post')){
+            $this->validate($request, [
+                'password' => 'required',
+                'password_confirmation' => 'same:password',
+            ]);
+
+
+
+
+            $candidate = Candidate::whereEmail($token_reset->email)->first();
+            $candidate->update(['password' => bcrypt($request->password)]);
+
+            DB::table('password_resets')->where('token', $token)->delete();
+
+            return redirect()->route('candidate-login')->with('success', 'Password has been successfully update. You can login now.');
+        }
+
+        return view('candidate.reset', compact('redirect_to'));
     }
 
 

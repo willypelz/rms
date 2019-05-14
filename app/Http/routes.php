@@ -70,8 +70,13 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
 
     Route::post('user/auth/verify', 'Auth\AuthController@verifyUser')->name('verify-user-details');
+    Route::any('', 'HomeController@home')->name('candidate-login');
+    Route::any('register', 'HomeController@register')->name('candidate-register');
+    Route::any('forgot', 'CandidateController@forgot')->name('candidate-forgot');
+    Route::get('forgot/sent', 'CandidateController@forgotSent')->name('candidate-forgot-sent');
+    Route::any('reset/{token}', 'CandidateController@reset')->name('candidate-reset');
 
-    Route::get('/', function () {
+    Route::get('/admin/login', function () {
 
         return view('guest.landing');
     });
@@ -83,12 +88,14 @@ Route::group(['middleware' => 'web'], function () {
     // Candidate
     Route::group(['prefix' => 'candidate'], function () {
 
-        Route::match(['get', 'post'], '/login', 'CandidateController@login')->name('candidate-login');
+        Route::match(['get', 'post'], '/login', 'HomeController@home');
 
         Route::match(['get', 'post'], '/logout', 'CandidateController@logout')->name('candidate-logout');
-        Route::match(['get', 'post'], '/register', 'CandidateController@register')->name('candidate-register');
-        Route::match(['get', 'post'], '/forgot', 'CandidateController@forgot')->name('candidate-forgot');
-        Route::match(['get', 'post'], '/reset', 'CandidateController@reset')->name('candidate-reset');
+       
+        // TODO
+        // Route::match(['get', 'post'], '/register', 'CandidateController@register')->name('candidate-register');
+        // Route::match(['get', 'post'], '/forgot', 'CandidateController@forgot')->name('candidate-reset');
+        // Route::match(['get', 'post'], '/reset', 'CandidateController@reset')->name('candidate-reset');
 
         Route::match(['get', 'post'], '/dashboard', 'CandidateController@dashboard')->name('candidate-dashboard');
         Route::match(['get', 'post'], '/{application_id}/activities',

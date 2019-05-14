@@ -307,6 +307,11 @@ class JobController extends Controller
         }
     }
 
+    public function createSuperAdmin(Request $request)
+    {
+
+    }
+
     /**
      * [getUserJobs description]
      * @param  Request $request [description]

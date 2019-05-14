@@ -131,22 +131,27 @@
                                                </div>
 
                                            </div>
-
-
-                                           <label for="role">Role</label>
-                                           <select name="role" id="role" class="form-control">
-                                               <option value=""> --Select One-- </option>
+                                            <div class="for-group">
+                                                <label for="">Role Name</label>
+                                                <input  name="role_name" type="text" class="form-control">
+                                            </div>
+                                           <div class="form-group">
+                                               <label for="role">Permissions</label>
+                                               <select class="select2 form-control" multiple name="role[]" id="role" class="form-control">
                                                @foreach($roles as $role)
-                                                   <option value="{{ $role->id }}">{{ ucwords($role->name) }}</option>
-                                               @endforeach
-                                           </select>
+                                                       <option value="{{ $role->id }}">{{ ucwords($role->display_name) }}</option>
+                                                   @endforeach
+                                               </select>
+                                           </div>
+
 
 
                                        <label for="">Access: </label>
                                        <select name="access" id="access" class="form-control" required>
-                                         <option value="job">"{{ $job->title }}" only</option>
-                                         <option value="company">All Jobs</option>
+                                         <option value="job" hidden>"{{ $job->title }}"</option>
                                        </select>
+                                           
+                                           
 
                                    </div>
 

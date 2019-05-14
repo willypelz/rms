@@ -151,7 +151,7 @@ class CandidateController extends Controller
 
             DB::table('password_resets')->where('token', $token)->delete();
 
-            return redirect()->route('candidate-login')->with('success', 'Passowrd has been successfully update. You can login now.');
+            return redirect()->route('candidate-login')->with('success', 'Password has been successfully update. You can login now.');
         }
 
         return view('candidate.reset', compact('redirect_to'));

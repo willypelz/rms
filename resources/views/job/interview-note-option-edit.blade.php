@@ -42,15 +42,16 @@
 
                                 <div class="form-group">
                                     <label for="type">Type</label>
-                                    <select name="type" class="form-control" required>
+                                    <select name="type" class="form-control" onchange="hideWeight(this)" id="type" required>
+                                        <option value="">--select one--</option>
                                         <option value="text" @if( $interview_note_option->type == 'text' ) selected="selected" @endif >Text</option>
                                         <option value="rating" @if( $interview_note_option->type == 'rating' ) selected="selected" @endif>Rating</option>
                                     </select>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" id="weightDiv">
                                     <label for="weight">Weight</label>
-                                    <input type="text" name="weight" class="form-control" value="{{ @$interview_note_option->weight }}" required>
+                                    <input type="text" name="weight" class="form-control" value="{{ @$interview_note_option->weight }}" id="weight" required>
                                 </div>
                             </div>
 
@@ -75,7 +76,26 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#summernote').summernote();
+
+            if($('#type').val() == "text"){
+              $('#weight').val('');
+              document.getElementById('weightDiv').style.display = 'none';
+              document.getElementById('weight').removeAttribute("required");
+            }
+
+
         });
+
+        function hideWeight(e) {
+          if(e.value == 'rating'){
+            document.getElementById('weightDiv').style.display = 'block';
+            document.getElementById('weight').setAttribute("required", "");
+          }else{
+            $('#weight').val('');
+            document.getElementById('weightDiv').style.display = 'none';
+            document.getElementById('weight').removeAttribute("required");
+          }
+        }
     </script>
 
 

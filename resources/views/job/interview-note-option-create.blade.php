@@ -82,7 +82,6 @@
         document.getElementById('weightDiv').style.display = 'block';
         document.getElementById('weight').setAttribute("required", "");
       }else{
-        console.log("ol");
         document.getElementById('weightDiv').style.display = 'none';
         document.getElementById('weight').removeAttribute("required");
       }

@@ -601,6 +601,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('modal/assess', ['as' => 'modal-assess', 'uses' => 'JobApplicationsController@modalAssess']);
 
     Route::get('modal/comment', ['as' => 'modal-comment', 'uses' => 'JobApplicationsController@modalComment']);
+    Route::get('message/bulk/modal', ['as' => 'send-bulk-message-modal', 'uses' => 'CandidateController@sendBulkMessageModal']);
+    Route::any('message/bulk/{ids}', ['as' => 'send-bulk-message', 'uses' => 'CandidateController@sendBulkMessage']);
 
     Route::get('modal/shortlist', ['as' => 'modal-shortlist', 'uses' => 'JobApplicationsController@modalShortlist']);
 

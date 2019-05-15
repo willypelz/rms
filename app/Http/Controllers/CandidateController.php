@@ -11,6 +11,7 @@ use App\Models\Job;
 use App\Models\JobActivity;
 use App\Models\JobApplication;
 use App\Models\Message;
+use App\Models\Message as CandidateMessage;
 use Auth;
 use Carbon\Carbon;
 use Curl;
@@ -206,6 +207,71 @@ class CandidateController extends Controller
 
         return view('candidate.job-list', compact('application_id', 'ignore_list', 'jobs'));
     }
+
+
+     /**
+     * Bulk message modal to show applicants number and show to accept ot decline
+     *
+     * @return void
+     */
+     public function sendBulkMessageModal(Request $request)
+    {
+
+        $app_ids = explode(',', @$request->app_id);
+        $params = urlencode($request->app_id);
+        $count_applicants = count($app_ids);
+
+        return view('candidate.messaging.action', compact(
+            'count_applicants', 'params',
+            'app_ids'
+        ));
+    }
+
+
+     /**
+     * Send Bulk message to candidate
+     *
+     * @return void
+     */
+    public function sendBulkMessage(Request $request, $ids)
+    {
+        $params = urldecode($ids);
+        $app_ids = explode(',', $params);
+        $nav_type = 'messages';
+
+        $job_applications = JobApplication::with('cv')->find($app_ids);
+
+        if($request->isMethod('post')){
+
+            if ($request->hasFile('attachment')) {
+                $file_name  = $request->attachment->getClientOriginalName();
+                $attachment = $job_applications[0]->id . '-' . time() . '-' . $file_name;
+                
+                $request->file('attachment')->move(env('fileupload'), $attachment);
+
+            } else {
+                $attachment = '';
+            }
+
+            // Loop throgh applicants selected and dispatch message to them
+            foreach ($job_applications as $key => $jb) {
+
+                Message::create([
+                    'job_application_id' => $jb->id,
+                    'message' => $request->message,
+                    'user_id' => Auth::id(),
+                    'attachment' => $attachment,
+                ]);
+
+            }
+
+            return redirect()->back()->with('success', 'Message has been sent successfully to applicant(s)');
+        }
+
+        return view('candidate.messaging.bulk', compact('appl', 'nav_type', 'job_applications', 'messages'));        
+
+    }
+
 
     public function messages(Request $request)
     {

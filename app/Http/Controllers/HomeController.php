@@ -52,6 +52,10 @@ class HomeController extends Controller
             return redirect()->route('candidate-dashboard');
         }
 
+        if (Auth::check()) {
+            return redirect('dashboard');
+        }
+
         $jobs = Job::whereStatus('ACTIVE')->take(env('JOB_HOMEPAGE_LIST', 3))->orderBy('id', 'desc')->get();
 
         $redirect_to = $request->redirect_to;

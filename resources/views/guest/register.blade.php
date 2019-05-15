@@ -30,12 +30,13 @@
                         <div class="shr-input-group">
                             <img src="{{ asset('homepage/images/icon-user.svg') }}" class="shr-input-group-addon">
                             <input name="first_name" type="text" class="shr-input" placeholder="Enter your first name" value="{{ old('first_name') }}">
-                             @if ($errors->has('first_name'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('first_name') }}</strong>
-                                </span>
-                            @endif
+                            
                         </div>
+                        @if ($errors->has('first_name'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('first_name') }}</strong>
+                            </span>
+                        @endif
                     </div>
 
                     <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }} shr-form-group">
@@ -43,13 +44,12 @@
                         <div class="shr-input-group">
                             <img src="{{ asset('homepage/images/icon-user.svg') }}" class="shr-input-group-addon">
                             <input type="text" name="last_name" class="shr-input" placeholder="Enter your last name">
-
-                            @if ($errors->has('last_name'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('last_name') }}</strong>
-                                </span>
-                            @endif
                         </div>
+                        @if ($errors->has('last_name'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('last_name') }}</strong>
+                            </span>
+                        @endif
                     </div>
 
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} shr-form-group">
@@ -57,12 +57,13 @@
                         <div class="shr-input-group">
                             <img src="{{ asset('homepage/images/icon-envelope-alt.svg') }}" class="shr-input-group-addon">
                             <input type="email" name="email" class="shr-input" placeholder="Enter your email">
-                            @if ($errors->has('email'))
+                            
+                        </div>
+                        @if ($errors->has('email'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('email') }}</strong>
                                 </span>
                             @endif
-                        </div>
                     </div>
 
 
@@ -71,12 +72,13 @@
                         <div class="shr-input-group">
                             <img src="{{ asset('homepage/images/icon-lock-alt.svg') }}" class="shr-input-group-addon">
                             <input type="password" name="password" class="shr-input" placeholder="Enter a password">
-                            @if ($errors->has('password'))
+                            
+                        </div>
+                        @if ($errors->has('password'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('password') }}</strong>
                                 </span>
                             @endif
-                        </div>
                     </div>
 
                     <button type="submit" class="btn btn-block shr-auth-form-button">Create your account</button>

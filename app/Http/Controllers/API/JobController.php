@@ -339,7 +339,6 @@ class JobController extends Controller
             'activated' => 1,
             'is_super_admin' => 1,
         ]);
-        dd('here');
         $role = Role::whereName('admin')->first();
         $user->attachRole($role);
         $current_company->users()->sync([$user->id => ['role' => $role]], false);

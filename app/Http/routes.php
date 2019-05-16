@@ -454,7 +454,11 @@ Route::group(['middleware' => 'web'], function () {
         });
 
         Route::get('create', function () {
-            return view('job.create');
+            return view('job.create-step1');
+        });
+
+        Route::get('create/next', function () {
+            return view('job.create-step2');
         });
 
         Route::get('advertise', function () {

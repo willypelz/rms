@@ -236,7 +236,7 @@
                                     <hr>
                                 </div>
                                 <div class="col-xs-7">
-                                    <a href="/jobs/create-step2" type="submit" id="SaveDraft" class="text-dark">
+                                    <a href="/jobs/create-step2" type="submit" id="SaveDraft" class="btn job-posting-text-dark">
                                         <i class="fa fa-arrow-left"></i>
                                         Previous step
                                     </a>
@@ -244,8 +244,8 @@
                                 <div class="col-xs-5">
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <button id="post-job-btn" type="submit" class="btn btn-primary btn-block">
-                                                Save As Draft
+                                            <button id="save-btn" data-toggle="modal" data-target="#savedAsDraft" class="btn btn-primary btn-block">
+                                                Save and continue later
                                             </button>
                                         </div>
                                         <div class="col-sm-6">
@@ -258,6 +258,25 @@
                                 <div class="separator separator-small"></div>
                             </div>
                             <div class="clearfix"></div>
+
+                            <div id="savedAsDraft" class="modal fade" tabindex="-1" role="dialog">
+                                <div class="modal-dialog " role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body ">
+                                            <div class="text-center">
+                                                <br>
+                                                <i class="fa fa-check text-success fa-4x"></i>
+                                                <h5>Your job posting has been saved as draft</h5>
+                                                <div class="pad-ft">
+                                                    <button class="btn btn-success">Go to your Dashboard</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div>
                         </div>
                     </div>
                     <!--/tab-content-->

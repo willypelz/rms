@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use Illuminate\Http\Request;
-use Curl;
+use App\Libraries\Solr;
+use App\Models\Candidate;
 use App\Models\Company;
+use App\Models\FolderContent;
 use App\Models\Job;
 use App\Models\JobActivity;
-use App\Libraries\Solr;
 use Auth;
-use App\Models\FolderContent;
+use Curl;
+use Illuminate\Http\Request;
 use Mail;
 
 
@@ -28,6 +29,8 @@ class HomeController extends Controller
       $this->middleware('auth', ['except' => [
           'requestACall',
           'pricing',
+          'home',
+          'register',
           'viewTalentSource',
       ]]);
     }
@@ -41,6 +44,84 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+
+    public function home(Request $request)
+    {
+        if (Auth::guard('candidate')->check()) {
+            return redirect()->route('candidate-dashboard');
+        }
+
+        if (Auth::check()) {
+            return redirect('dashboard');
+        }
+
+        $jobs = Job::whereStatus('ACTIVE')->take(env('JOB_HOMEPAGE_LIST', 3))->orderBy('id', 'desc')->get();
+
+        $redirect_to = $request->redirect_to;
+
+        if ($request->isMethod('post')) {
+            if (Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password])) {
+                if ($request->redirect_to) {
+                    return redirect($request->redirect_to);
+                } else {
+                    return redirect()->route('candidate-dashboard');
+                }
+
+            } else {
+                $request->session()->flash('warning', "Invalid Credentials");
+                return back();
+            }
+
+        }
+
+
+        return view('guest.landing', compact('jobs'));
+    }
+
+
+      public function register(Request $request)
+    {
+        $redirect_to = $request->redirect_to;
+        $jobs = Job::whereStatus('ACTIVE')->take('3')->orderBy('id', 'desc')->get();
+
+        if ($request->isMethod('post')) {
+
+            $this->validate($request, [
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'email' => 'required',
+                'password' => 'required',
+            ]);
+
+
+            $candidate = Candidate::firstOrCreate([
+                'email' => $request->email,
+            ])->update($request->only(['first_name', 'last_name']) + [
+                    'password' => bcrypt($request->input('password'))
+                ]);
+
+            if ($candidate) {
+
+                if (Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password])) {
+                    if ($request->redirect_to) {
+                        return redirect($request->redirect_to);
+                    } else {
+                        return redirect()->route('candidate-dashboard');
+                    }
+
+                } else {
+                    $request->session()->flash('error', "Could not register. Please try again.");
+                    return back();
+                }
+            }
+
+        }
+
+        return view('guest.register', compact('redirect_to', 'jobs'));
+    }
+
+
 
     public function dashbaord()
     {

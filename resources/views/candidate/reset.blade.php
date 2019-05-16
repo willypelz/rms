@@ -20,17 +20,25 @@
                 <h4 class="my-4 dark-blue-text font-weight-bold">Enter your email to reset your password</h4>
                 
                 <form action="" method="POST">
+                    
                         @include('layout.alerts')
+                    <div class="form-group shr-form-group">
+                        <label class="shr-input-label">Password</label>
+                        <div class="shr-input-group">
+                            <img src="{{ asset('homepage/images/icon-lock-alt.svg') }}" class="shr-input-group-addon">
+                            <input required="" name="password" type="password" class="shr-input">
+                        </div>
+                    </div>
 
                     <div class="form-group shr-form-group">
-                        <label class="shr-input-label">Your email address</label>
+                        <label class="shr-input-label">Password confirmation</label>
                         <div class="shr-input-group">
-                            <img src="{{ asset('homepage/images/icon-envelope-alt.svg') }}" class="shr-input-group-addon">
-                            <input required="" name="email" type="email" class="shr-input">
+                            <img src="{{ asset('homepage/images/icon-lock-alt.svg') }}" class="shr-input-group-addon">
+                            <input required="" name="password_confirmation" type="password" class="shr-input">
                         </div>
                     </div>
                     
-                    <button class="btn btn-block shr-auth-form-button" type="submit" > Send Forgot Password Link </button>
+                    <button class="btn btn-block shr-auth-form-button" type="submit" > Reset Password</button>
                 </form>
             </section>
         

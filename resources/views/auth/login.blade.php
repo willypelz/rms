@@ -57,6 +57,10 @@
                                         </span>
                                     @endif
                                 </div>
+
+                                  <div class="col-sm-6"><br>
+                                    <p class="small text-left"><a href="@if(env('USE_ACTIVE_DIRECTORY') == 1) {{env('STAFFSTRENGTH_URL') . 'forgot-password'}} @else {{ url('password/reset') }} @endif">:( I can't remember my password!</a></p>
+                                </div>
                             </div>
 
                             </div>
@@ -67,9 +71,7 @@
                                     <button type="submit" id="submitLoginButton" onclick="checkUserDetails();return false" class="btn btn-success btn-block">Proceed &raquo;</button>
                                 </div>
 
-                                <div class="col-sm-6"><br>
-                                    <p class="small text-left"><a href="@if(env('USE_ACTIVE_DIRECTORY') == 1) {{env('STAFFSTRENGTH_URL') . 'forgot-password'}} @else {{ url('password/reset') }} @endif">:( I can't remember my password!</a></p>
-                                </div>
+                              
 
                             </div>
                         </form>

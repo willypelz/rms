@@ -1733,6 +1733,11 @@ class JobApplicationsController extends Controller
         $interview_template_id = $request->interview_template_id;
 
         if ($request->isMethod('post')) {
+
+          $this->validate($request, [
+            'description' => 'required'
+          ]);
+
             InterviewNoteOptions::create([
                 'name' => $request->name,
                 'description' => $request->description,
@@ -1742,7 +1747,7 @@ class JobApplicationsController extends Controller
                 'interview_template_id' => $request->interview_template_id
             ]);
 
-            \Session::flash('status', 'Create Successfully');
+            \Session::flash('status', 'Created Successfully');
         }
 
 
@@ -1795,10 +1800,9 @@ class JobApplicationsController extends Controller
             $score = 0;
             $correct_count = 0;
             foreach ($interview_note_options as $key => $option) {
-
                 $interview_note_values[] = [
                     'interview_note_option_id' => $option->id,
-                    'value' => $data['option_' . $option->id],
+                    'value' =>($option->type == 'rating') ? ($data['option_' . $option->id] / 5)*$option->weight : $data['option_' . $option->id],
                     'job_application_id' => $appl->id,
                     'interviewed_by' => @Auth::user()->id,
                     'created_at' => Carbon::now(),

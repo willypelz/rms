@@ -8,6 +8,7 @@ use App\Models\Candidate;
 use App\Models\Cv;
 use App\Models\FormFieldValues;
 use App\Models\JobApplication;
+use App\Models\Role;
 use App\Models\Workflow;
 use Illuminate\Http\Request;
 use App\Models\JobBoard;
@@ -309,6 +310,42 @@ class JobController extends Controller
 
     public function createSuperAdmin(Request $request)
     {
+        $req_header = $request->header('X-API-KEY');
+        if(!$req_header)
+            return response()->json([
+                'status' => false,
+                'message' => 'No API Key'
+            ], 400);
+
+        $current_company = Company::get()->first();
+
+        if($req_header != $current_company->api_key)
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid API Key'
+            ], 400);
+
+        if(!$request->name || !$request->email)
+            return response()->json([
+                'status' => false,
+                'message' => 'Name and employee email required'
+            ], 400);
+
+        $user = User::firstOrCreate([
+            'name' => $request->name,
+            'email' => $request->email,
+            'username' => $request->username,
+            'is_internal' => 1,
+            'activated' => 1,
+            'is_super_admin' => 1,
+        ]);
+        $role = Role::whereName('admin')->first();
+        $user->attachRole($role);
+        $current_company->users()->sync([$user->id => ['role' => $role]], false);
+        return response()->json([
+            'status' => true,
+            'message' => 'created successfully'
+        ]);
 
     }
 

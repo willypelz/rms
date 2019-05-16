@@ -145,6 +145,10 @@
                                                         Pending</a>
                                                         --}}
                                                     <div class="btn-group" role="group">
+
+                                                        
+
+
                                                         <button type="button"
                                                                 class="btn btn-line status-1 dropdown-toggle"
                                                                 data-toggle="dropdown" aria-haspopup="true"
@@ -152,6 +156,10 @@
                                                             Checks
                                                             <span class="caret"></span>
                                                         </button>
+
+
+                                                        
+
                                                         <ul class="dropdown-menu">
                                                             @if($user_role->name == 'admin')
                                                             <li>
@@ -173,7 +181,22 @@
                                                                 </a>
                                                             </li>
                                                             @endif
+
+                                                            
+
                                                         </ul>
+
+                                                          <a class="btn btn-line status-1"
+                                                           data-toggle="modal"
+                                                           data-target="#viewModal"
+                                                           id="modalButton"
+                                                           data-title="Send message?"
+                                                           data-view="{{ route('send-bulk-message-modal') }}"
+                                                           data-app-id=""
+                                                           data-cv=""
+                                                           data-type="normal"> 
+                                                            Send Message to All
+                                                         </a>
                                                     </div>
                                                 </div>
 
@@ -671,7 +694,7 @@
 
                     //         //$('#status_filters a[data-value="' + $field.data('action') + '"]').trigger('click');
                     //     });
-                    console.log(cv_ids, app_ids);
+                    console.log('Checks', cv_ids, app_ids);
                 });
 
 
@@ -681,7 +704,7 @@
                     }, function (data) {
                         $('body #status_filters').replaceWith(data);
                     });
-                }
+                };
                 sh.reloadStatus = function () {
                     $.get("{{ route('get-all-applicant-status') }}", {
                         job_id: "{{ $jobID }}"
@@ -690,7 +713,7 @@
                         $('#status_filters a[data-value="' + status_page.toUpperCase() + '"]').trigger('click');
                     });
 
-                }
+                };
 
                 $('body').on('click', '#clearAllFilters', function () {
                     filters = [];
@@ -775,5 +798,10 @@
             });*/
                 });
             });
+
+        function messageAllCandidates() {
+          // body...
+        }
+
         </script>
 @endsection

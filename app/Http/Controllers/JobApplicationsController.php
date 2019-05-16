@@ -313,7 +313,6 @@ class JobApplicationsController extends Controller
 
     public function viewApplicants(Request $request)
     {
-      // dd($request);
         //Check if he  is the owner of the job
         check_if_job_owner($request->jobID);
 
@@ -326,7 +325,6 @@ class JobApplicationsController extends Controller
 
             }
         ])->find($request->jobID);
-        // dd($job->applicants);
 
 
         $active_tab = 'candidates';

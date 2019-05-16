@@ -19,7 +19,7 @@ class RolesSeeder extends Seeder
             'can-view-candidates',
             'can-take-interview-notes',
             'can-view-interview',
-            'can-perform-interview-actions'
+            'can-perform-interview-actions',
         ];
         $commenter_permission_list = ['can-view-job', 'can-view-candidates', 'can-view-comments', 'can-make-comments'];
         $test_admin_permission_list = ['can-view-job', 'can-view-candidates', 'can-test'];
@@ -36,7 +36,8 @@ class RolesSeeder extends Seeder
             'can-add-job-team-members',
             'can-test',
             'can-view-background-check',
-            'can-post-job'
+            'can-post-job',
+            'can-add-job-team-members'
         ];
 
 
@@ -152,4 +153,3 @@ class RolesSeeder extends Seeder
         $role->attachPermissions($perms);
     }
 }
-

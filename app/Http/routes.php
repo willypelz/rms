@@ -80,11 +80,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('forgot/sent', 'CandidateController@forgotSent')->name('candidate-forgot-sent');
     Route::any('reset/{token}', 'CandidateController@reset')->name('candidate-reset');
 
-<<<<<<< HEAD
     Route::get('/', 'HomeController@homepage')->name('homepage');
-=======
     Route::get('/admin/login', function () {
->>>>>>> 9d8fa8cbce0854d5460370e08e48d735c8c83552
 
     // Route::get('/', function () {
     //     return view('guest.landing');

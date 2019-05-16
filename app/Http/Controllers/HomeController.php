@@ -29,12 +29,9 @@ class HomeController extends Controller
       $this->middleware('auth', ['except' => [
           'requestACall',
           'pricing',
-<<<<<<< HEAD
           'homepage',
-=======
           'home',
           'register',
->>>>>>> 9d8fa8cbce0854d5460370e08e48d735c8c83552
           'viewTalentSource',
       ]]);
     }

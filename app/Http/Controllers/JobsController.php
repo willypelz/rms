@@ -361,10 +361,12 @@ class JobsController extends Controller
                     $role = 0;
                 // assign roles to user
                 foreach (json_decode($job_team_invite->role_ids) as $role_id) {
-                    $user->attachRole($role_id);
+                    $user->roles()->attach($role_id, [
+                        'job_id' => $job->id
+                    ]);
                 }
                 //  add the user to the job assigned to him
-                $job->users()->sync([$user->id]);
+                $job->users()->sync([$user->id => ['role_name' => $job_team_invite->role_name]], false);
                 // add the user to the company that owns the job
                 $company->users()->sync([$user->id => ['role' => $role]], false);
 
@@ -1021,10 +1023,34 @@ class JobsController extends Controller
 
         $job_team_invites = JobTeamInvite::where('job_id', $job->id)->where('is_accepted', 0)->where('is_declined', 0)->get();
 
+
         return view('job.board.team', compact('job', 'active_tab', 'company', 'result', 'application_statuses', 'owner', 'job_team_invites', 'roles'));
     }
 
 
+    public function persisRole(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $user_roles = $user->roles()->where('job_id', $request->job_id)->get();
+        $exist = false;
+        if($request->checked){
+            foreach ($user_roles as $role) {
+                if($role->id == $request->role_id) {
+                    $exist = true;
+                    break;
+                    //do nothing
+                }
+            }
+            if(!$exist)
+                $user->roles()->attach($request->role_id, ['job_id' => $request->job_id]);
+        } else {
+            $user->roles()->where('job_id', $request->job_id)->detach($request->role_id);
+        }
+        return response()->json([
+            'status' => true,
+            'message' => 'Updated successfully'
+        ]);
+    }
 
     public function jobTemSettings(Request $request, $job_id)
     {

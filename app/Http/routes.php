@@ -302,6 +302,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get','post'],'job/teams/remove', ['uses' => 'JobsController@removeJobTeamMember', 'as' => 'remove-job-team-member']);
     Route::get('job/teams/decline', ['uses' => 'JobsController@JobTeamDecline', 'as' => 'job-team-decline']);
 
+    Route::get('/get-all-roles', 'JobsController@getAllRoles')->name('get-all-roles');
+    Route::post('/persis-role', 'JobsController@persisRole')->name('persis-role');
+
     Route::match(['get', 'post'], 'accept-invite/{id}',
         ['uses' => 'JobsController@acceptInvite', 'as' => 'accept-invite']);
 
@@ -722,6 +725,7 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::get('/get/user-jobs', 'JobController@getUserJobs')->name('get-user-jobs');
         Route::get('/get/user-jobs/activities', 'JobController@getUserJobActivities');
+        Route::post('/save-super-admin', 'JobController@createSuperAdmin');
     });
 
 });

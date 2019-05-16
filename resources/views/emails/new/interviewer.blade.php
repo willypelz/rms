@@ -46,19 +46,22 @@
 																	<div style="color:#2d2d2d;width:100%;margin:0 auto;">
 																		<h3 style="font-size: 20px;margin:0 0 5%;padding:0;"><a href="" style="font-family: Roboto,'Open Sans','Helvetica Neue',Arial,Helvetica,sans-serif;word-wrap:break-word;color: #3a5979;text-decoration:none;display:block;text-align: center;width:100%;" target="_blank">Interview Invitation</a></h3>
 																		<hr style="border-width:0 0 1px">
-																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">Dear {{ $cv->first_name.' '.$cv->last_name }},
+																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">Dear {{ $interviewer->name}},
 																		<br><br>
 																		Trust this meets you well.
-																		<br><br>We received your application for the job {{ $job->title }} at {{ $job->company->name }} company.
-																		<br><br>Kindly acknowledge if you will be available for an interview on {{ date('D, j-n-Y, h:i A', strtotime($interview->date))  }}. The interview is scheduled to hold at {{ $interview->location }},
+																		<br><br>You have been picked to interview {{ $cv->first_name.' '.$cv->last_name }} for {{ $job->title }}.
+																		<br><br>Kindly acknowledge if you will be available to oversee the interview on {{ date('D, j-n-Y, h:i A', strtotime($interview->date))  }}. The interview is scheduled to hold at {{ $interview->location }},
                                     and will last for {{ $interview->duration }} minutes
-																		<br><br>Please ensure to come along with the necessary credentials.
+
 																		@if( $interview->message != "" && !is_null( $interview->message ) )
-																			<br><br>PLEASE NOTE:  {{ $interview->message }}
-																		@endif
                                     <br><br>
+                                      This Message was attached to the interview for the candidate:
+																			{{ $interview->message }}
+																		@endif
+
                                     @if($interview->interview_file)
-                                      You can download this file for further information
+                                      <br><br>
+                                      This file was attached to the interview for the candidate:
                                       <a href="{{asset('uploads/'.$interview->interview_file)}}" download>Download</a>
                                     @endif
 																		</p>

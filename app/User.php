@@ -55,4 +55,14 @@ class User extends Authenticatable
             'workflow_step_id'
         );
     }
+
+    public function workflow_steps()
+    {
+      return $this->belongsToMany('App\Models\WorkflowStep');
+    }
+
+    public function interviews()
+    {
+      return $this->belongsToMany('App\Models\Interview');
+    }
 }

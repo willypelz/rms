@@ -2,144 +2,185 @@
 
 @section('content')
 
-    @include('job.board.jobBoard-header')
-    @php
-        $admin_roles = getRoleArrayName($job->id, auth()->user());
-    @endphp
+            @include('job.board.jobBoard-header')
+            @php
+                $user_role = getCurrentLoggedInUserRole();
+                $admin_roles = getRoleArrayName($job->id, auth()->user());
+            @endphp
 
-    @if($job['status'] != 'DELETED')
-        <div class="row">
+            @if($job['status'] != 'DELETED')
+            <div class="row">
 
-            <div class="col-sm-12">
-                <div class="page no-bod-rad">
-                    <div class="row">
+                <div class="col-sm-12">
+                    <div class="page no-bod-rad">
+                        <div class="row">
 
-                        @include('job.board.job-board-tabs')
+                            @include('job.board.job-board-tabs')
 
-                        <div class="tab-content">
-
-
-                            <div class="row">
-                                <p> Manage your team members for this job here. </p>
-                                <!-- applicant -->
-                                <div class="col-xs-7">
-                                    <h5 class="no-margin"> Team members </h5>
-                                    <hr>
-                                    @php
-                                        $my_array = []
-                                    @endphp
-                                    @if( count( @$company->users ) > 0 )
-                                        <ul class="list-group">
-
-                                            @foreach($company->users as $user)
-                                                <li style="display: flex; align-items: start; margin: 20px 10px">
-
-                                                    <img alt="" src="{{ default_picture( $user, 'user' ) }}"
-                                                         class="img-circle" style="width: 50px;height: 50px;">
-
-                                                    <div style="margin-left: 20px;">
-                                                        <h5 style="color: #0E2231; margin-bottom: 5px;margin-top: 0px;"> {{ $user->name }}</h5>
-                                                        <p>{{ $user->email }}</p>
-                                                        <h6 class="text-info">{{$job->users()->where('user_id', $user->id)->first() ? $job->users()->where('user_id', $user->id)->first()->pivot->role_name : ''}} </h6>
-                                                        <ul class="list-unstyled">
-                                                            @php
-                                                                $all_roles = \App\Models\Role::get();
-                                                                $user_roles = getRoleArrayName($job->id, $user);
-                                                            @endphp
-                                                            @foreach($all_roles as $role)
-                                                                <li>
-                                                                    <input @if(!in_array('admin', $admin_roles)) disabled @endif class="role-{!! $user->id !!}-{!! $role->id !!}" onclick="submitRoles('{{$user->id}}', '{{$role->id}}')" type="checkbox" data-id="{{$role->id}}" @if(in_array($role->name, $user_roles)) checked @endif>
-                                                                    {{$role->display_name}}
-                                                                </li>
-                                                            @endforeach
-                                                        </ul>
-                                                            {{--<button class="btn btn-primary" style="margin-top: 10px;" onclick="submitRoles('{{$user->id}}', '{{$role->id}}')">--}}
-                                                                {{--Update Permissions--}}
-                                                            {{--</button>--}}
-
-                                                    </div>
-
-                                                    @if( Auth::user()->id == $owner->id &&  $user->id != Auth::user()->id && in_array('admin', $admin_roles) )
-                                                        <div class="col-xs-4 small"><br>
-                                                            <a data-toggle="modal"
-                                                               data-target="#viewModal"
-                                                               id="modalButton"
-                                                               href="#viewModal"
-                                                               data-id="{{$user->id}}"
-                                                               data-title="Job Team"
-                                                               data-view="{{ route('remove-job-team-member',[
-                                               'ref' => $user->id,
-                                               'comp' => get_current_company()->id,
-                                               'job' => $job['id']
-                                               ]) }}"
-                                                               data-type="normal"><i class="fa fa-close"></i>
-                                                                Remove</a></a>
-                                                        </div>
-                                                    @endif
-                                                    <div class="clearfix"></div>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    @endif
-                                    <hr>
-
-                                    <br><br>
-                                    <h5 class="no-margin"> <!-- <i class="fa fa-lg fa-users"></i> --> Invites</h5>
-                                    <hr>
-                                    @if( count( @$job_team_invites ) > 0 )
-                                        <ul class="list-group">
-
-                                            @foreach($job_team_invites as $job_team_invite)
-                                                <li class="list-group-item">
-                                                    <div class="col-xs-2"><img width="100%" alt=""
-                                                                               src="{{ default_picture( @$user, 'user' ) }}"
-                                                                               class="img-circle"></div>
-                                                    <div class="col-xs-6">
-                                                        <h5> {{ $job_team_invite->name }}</h5>
-                                                        <p>{{ $job_team_invite->email }}</p>
-                                                    </div>
+                      <div class="tab-content">
 
 
-                                                    <div class="col-xs-4 small"><br>
-                                                        <i class="fa fa-hourglass"></i> Pending</span>
-                                                    </div>
+                        <div class="row">
+                          <p> Manage your team members for this job here. </p>
+                        <!-- applicant -->
+                        <div class="col-xs-7">
+                            <h5 class="no-margin"> Team members </h5><hr>
+                            <hr>
+                            @php
+                                $my_array = []
+                            @endphp
+                            @if( count( @$company->users ) > 0 )
+                              <ul class="list-group">
 
-                                                    <div class="clearfix"></div>
-                                                </li>
-                                            @endforeach
+                                @foreach($company->users as $user)
+                                    <li style="display: flex; align-items: start; margin: 20px 10px">
 
-                                        </ul>
-                                    @endif
+                                        <img alt="" src="{{ default_picture( $user, 'user' ) }}"
+                                             class="img-circle" style="width: 50px;height: 50px;">
 
+                                        <div style="margin-left: 20px;">
+                                            <h5 style="color: #0E2231; margin-bottom: 5px;margin-top: 0px;"> {{ $user->name }}</h5>
+                                            <p>{{ $user->email }}</p>
+                                            <h6 class="text-info">{{$job->users()->where('user_id', $user->id)->first() ? $job->users()->where('user_id', $user->id)->first()->pivot->role_name : ''}} </h6>
+                                            <ul class="list-unstyled">
+                                                @php
+                                                    $all_roles = \App\Models\Role::get();
+                                                    $user_roles = getRoleArrayName($job->id, $user);
+                                                @endphp
+                                                @foreach($all_roles as $role)
+                                                    <li>
+                                                        <input @if(!in_array('admin', $admin_roles)) disabled @endif class="role-{!! $user->id !!}-{!! $role->id !!}" onclick="submitRoles('{{$user->id}}', '{{$role->id}}')" type="checkbox" data-id="{{$role->id}}" @if(in_array($role->name, $user_roles)) checked @endif>
+                                                        {{$role->display_name}}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                                {{--<button class="btn btn-primary" style="margin-top: 10px;" onclick="submitRoles('{{$user->id}}', '{{$role->id}}')">--}}
+                                                    {{--Update Permissions--}}
+                                                {{--</button>--}}
 
-                                </div>
+                                        </div>
 
-
-                                <div class="col-xs-5" id="Section2">
-                                    <h5 class="no-margin">Add New Team member <span class="pull-right"><i
-                                                    class="fa fa-lg fa-user-plus"></i></span></h5>
-                                    <hr>
-
-                                    @permission('can-add-job-team-members')
-                                    <a aria-controls="AddTeamMember" aria-expanded="false" class="btn btn-warning"
-                                       data-toggle="collapse" data-target="#AddTeamMember" href="#AddTeamMember"><i
-                                                class="fa fa-user-plus"></i> Add New Member</a>
-                                    @endpermission
-
-
-                                    <div id="AddTeamMember" class="collapse">
-                                        <!--div class="alert alert-success"><i class="fa fa-check fa-lg"></i>
-                                             &nbsp; Your mail has been sent. Refresh page to send more.
-                                         </div-->
-                                        <br/><br/>
-                                        <form action="{{ route('job-team-add') }}" method="post" id="JobTeamAdd">
-                                            {!! csrf_field() !!}
-                                            <div class="form-group">
-                                                <label for="">Internal</label>
-                                                <input type="radio" name="internal" value="internal" id="internal">
-                                                <label for="">External</label>
-                                                <input type="radio" name="external" value="external" id="external">
+                                        @if( Auth::user()->id == $owner->id &&  $user->id != Auth::user()->id && in_array('admin', $admin_roles) )
+                                            <div class="col-xs-4 small"><br>
+                                                <a data-toggle="modal"
+                                                   data-target="#viewModal"
+                                                   id="modalButton"
+                                                   href="#viewModal"
+                                                   data-id="{{$user->id}}"
+                                                   data-title="Job Team"
+                                                   data-view="{{ route('remove-job-team-member',[
+                                                   'ref' => $user->id,
+                                                   'comp' => get_current_company()->id,
+                                                   'job' => $job['id']
+                                                   ]) }}"
+                                                   data-type="normal"><i class="fa fa-close"></i>
+                                                    Remove</a></a>
                                             </div>
+                                        @endif
+                                        <div class="clearfix"></div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                        <hr>
+
+                        <br><br>
+                        <h5 class="no-margin"> <!-- <i class="fa fa-lg fa-users"></i> --> Invites</h5>
+                        <hr>
+                        @if( count( @$job_team_invites ) > 0 )
+                            <ul class="list-group">
+
+                                @foreach($job_team_invites as $job_team_invite)
+                                    <li class="list-group-item">
+                                        <div class="col-xs-2"><img width="100%" alt=""
+                                                                   src="{{ default_picture( @$user, 'user' ) }}"
+                                                                   class="img-circle"></div>
+                                        <div class="col-xs-6">
+                                            <h5> {{ $job_team_invite->name }}</h5>
+                                            <p>{{ $job_team_invite->email }}</p>
+                                        </div>
+
+
+                                        <div class="col-xs-4 small"><br>
+                                            <i class="fa fa-hourglass"></i> Pending</span>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                    </li>
+                                @endforeach
+
+                            </ul>
+                        @endif
+
+                    </div>
+
+                        <div class="col-xs-5" id="Section2">
+                            <h5 class="no-margin">Add New Team member <span class="pull-right"><i class="fa fa-lg fa-user-plus"></i></span></h5><hr>
+
+                            @permission('can-add-job-team-members')
+                              <a aria-controls="AddTeamMember" aria-expanded="false" class="btn btn-warning" data-toggle="collapse" data-target="#AddTeamMember" href="#AddTeamMember"><i class="fa fa-user-plus"></i> Add New Member</a>
+                            @endpermission
+
+
+                            <div id="AddTeamMember" class="collapse">
+                               <!--div class="alert alert-success"><i class="fa fa-check fa-lg"></i>
+                                    &nbsp; Your mail has been sent. Refresh page to send more.
+                                </div-->
+                                <br/><br/>
+                                   <form action="{{ route('job-team-add') }}" method="post" id="JobTeamAdd">
+                                    {!! csrf_field() !!}
+                                       <div class="form-group">
+                                           <label for="" >Internal</label>
+                                           <input type="radio" name="internal" value="internal" id="internal">
+                                           <label for="">External</label>
+                                           <input type="radio" name="external" value="external" id="external">
+                                       </div>
+
+                                       <div class="form-group">
+                                           <div id="hiddenForm">
+                                               <div id="external_div">
+                                                   <label for="">Name: </label>
+                                                   <input type="text" id="name" name="name" value="" class="form-control" >
+                                                   <small><em>The name of the team member</em></small><br><br>
+                                                   <input type="hidden" name="email_from" value="{{ get_current_company()->email }}" class="form-control">
+                                                   <input type="hidden" name="job_id" value="{{ $job->id }}" class="form-control">
+                                                   <label for="">Email: </label>
+                                                   <input type="text" name="email" id="email_to" placeholder="email addresses here" class="form-control" >
+                                                   <small><em>The email address of the team member</em></small><br><br>
+                                               </div>
+                                               <div id="internal_div">
+                                                   <label for="">Select Employee from HCHub</label>
+                                                   <select type="text" class="form-control" name="" id="employeeSelect">
+                                                       <option value="{{null}}">--Select Employee--</option>
+                                                   </select>
+
+                                               </div>
+
+                                           </div>
+                                            <div class="form-group">
+                                                <label for="">Role Name</label>
+                                                <input  name="role_name" type="text" class="form-control">
+                                            </div>
+                                           <div class="form-group">
+                                               <label for="role">Permissions</label>
+                                               <select class="select2 form-control" multiple name="role[]" id="role">
+                                                   @foreach($roles as $role)
+                                                       <option value="{{ $role->id }}">{{ ucwords($role->display_name) }}</option>
+                                                   @endforeach
+                                               </select>
+                                           </div>
+
+                                           <div class="form-group" style="display:none" id="stepDiv">
+                                             <label for="role">Steps on this service</label>
+                                             <select class="select2 form-control" multiple name="steps[]" id="step" class="form-control">
+                                                 @foreach($job->workflow->workflowSteps as $step)
+                                                    @if($step->type == 'interview')
+                                                     <option value="{{ $step->id }}">{{ ucwords($step->name) }}</option>
+                                                    @endif
+                                                 @endforeach
+                                             </select>
+                                           </div>
+
 
                                             <div class="form-group">
                                                 <div id="hiddenForm">
@@ -189,6 +230,10 @@
                                                 <select name="access" id="access" class="form-control" required>
                                                     <option value="job" hidden>"{{ $job->title }}"</option>
                                                 </select>
+                                               <label for="">Access: </label>
+                                               <select name="access" id="access" class="form-control" required>
+                                                 <option value="job" hidden>"{{ $job->title }}"</option>
+                                               </select>
 
 
                                             </div>
@@ -209,9 +254,11 @@
                                                 CKEDITOR.replace('editor1');
                                             </script>
 
-                                            <br>
-                                            <p>
-                                                <!-- <a class="btn btn-line btn-sm" aria-controls="collapseWYSIWYG" aria-expanded="false" href="#collapseWYSIWYG" data-toggle="collapse" role="button"><i class="fa fa-times"></i> &nbsp; Cancel</a> -->
+                                   <br>
+                                   <p>
+                                       <!-- <a class="btn btn-line btn-sm" aria-controls="collapseWYSIWYG" aria-expanded="false" href="#collapseWYSIWYG" data-toggle="collapse" role="button"><i class="fa fa-times"></i> &nbsp; Cancel</a> -->
+
+                                        <a aria-controls="AddTeamMember" aria-expanded="false" class="btn btn-line btn-sm" data-toggle="collapse" data-target="#AddTeamMember" href="#AddTeamMember"> Cancel</a>
 
                                                 <a aria-controls="AddTeamMember" aria-expanded="false"
                                                    class="btn btn-line btn-sm" data-toggle="collapse"
@@ -319,51 +366,93 @@
         });*/
 
 
-            });
+    function btn(){
+        $('#sendMail').attr('disabled','disabled').prepend('<div class="pull-right">' + '{!! preloader() !!}' + '</div>');
+    }
 
-            function submitRoles(user_id , role_id) {
+    function showResponse(res){
+        $('#sendMail').removeAttr('disabled');
+        $('#AddTeamMember').removeClass('in');
+        $('#email_to').val('');
+        $('#name').val('');
+        $('#role').val(null);
 
-               var checked =  $('.role-' + user_id + '-' + role_id).is(':checked') ? 1 : 0,
-                   job_id = {!! $job->id !!};
-                $.ajax({
-                    url: "{{ route('persis-role') }}",
-                    type: "post",
-                    data: {user_id, role_id, job_id, checked},
-                    success: function (response) {
-                        $.growl.notice({message: 'updated successfully'});
-
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        $.growl.error({message: 'something went wrong.. please try again'});
-                    }
+        if( res.status == true )
+        {
+          $.growl.notice({ message: res.message });
+        }
+        else
+        {
+            if(typeof (res.message) === 'object') {
+                $.each(res.message, function( index, value ) {
+                    $.growl.error({message: value});
                 });
+            } else {
+                $.growl.error({message: res.message});
             }
-            function btn() {
-                $('#sendMail').attr('disabled', 'disabled').prepend('<div class="pull-right">' + '{!! preloader() !!}' + '</div>');
+
+        }
+
+    }
+
+    $('#role').change(function () {
+      var stepText = $('#role option:selected').toArray().map(item => item.text).join();
+      var stepArray = stepText.split(",");
+
+      if(stepArray.includes("Interviewer")){
+        $('#stepDiv').show();
+      }else{
+        $('#stepDiv').hide();
+      }
+
+    });
+
+    function submitRoles(user_id , role_id) {
+
+       var checked =  $('.role-' + user_id + '-' + role_id).is(':checked') ? 1 : 0,
+           job_id = {!! $job->id !!};
+        $.ajax({
+            url: "{{ route('persis-role') }}",
+            type: "post",
+            data: {user_id, role_id, job_id, checked},
+            success: function (response) {
+                $.growl.notice({message: 'updated successfully'});
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.growl.error({message: 'something went wrong.. please try again'});
+            }
+        });
+    }
+
+    function btn() {
+        $('#sendMail').attr('disabled', 'disabled').prepend('<div class="pull-right">' + '{!! preloader() !!}' + '</div>');
+    }
+
+    function showResponse(res) {
+        $('#sendMail').removeAttr('disabled');
+        $('#AddTeamMember').removeClass('in');
+        $('#email_to').val('');
+        $('#name').val('');
+        $('#role').val(null);
+
+        if (res.status == true) {
+            $.growl.notice({message: res.message});
+        } else {
+            if (typeof (res.message) === 'object') {
+                $.each(res.message, function (index, value) {
+                    $.growl.error({message: value});
+                });
+            } else {
+                $.growl.error({message: res.message});
             }
 
-            function showResponse(res) {
-                $('#sendMail').removeAttr('disabled');
-                $('#AddTeamMember').removeClass('in');
-                $('#email_to').val('');
-                $('#name').val('');
-                $('#role').val(null);
+        }
 
-                if (res.status == true) {
-                    $.growl.notice({message: res.message});
-                } else {
-                    if (typeof (res.message) === 'object') {
-                        $.each(res.message, function (index, value) {
-                            $.growl.error({message: value});
-                        });
-                    } else {
-                        $.growl.error({message: res.message});
-                    }
+    }
 
-                }
+  });
 
-            }
-        </script>
-
-        <div class="separator separator-small"><br></div>
+    </script>
+    <div class="separator separator-small"><br></div>
 @endsection

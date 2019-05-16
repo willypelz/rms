@@ -717,4 +717,3 @@
 </script>
 
 <script src="{{ secure_asset('js/update-october-2018.js') }}"></script>
-

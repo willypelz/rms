@@ -80,8 +80,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('forgot/sent', 'CandidateController@forgotSent')->name('candidate-forgot-sent');
     Route::any('reset/{token}', 'CandidateController@reset')->name('candidate-reset');
 
-    Route::get('/', 'HomeController@homepage')->name('homepage');
-    Route::get('/admin/login', function () {
+    // Route::get('/', 'HomeController@homepage')->name('homepage');
 
     // Route::get('/', function () {
     //     return view('guest.landing');
@@ -97,7 +96,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::match(['get', 'post'], '/login', 'HomeController@home');
 
         Route::match(['get', 'post'], '/logout', 'CandidateController@logout')->name('candidate-logout');
-       
+
         // TODO
         // Route::match(['get', 'post'], '/register', 'CandidateController@register')->name('candidate-register');
         // Route::match(['get', 'post'], '/forgot', 'CandidateController@forgot')->name('candidate-reset');
@@ -571,6 +570,9 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('documents/{appl_id}',
             ['uses' => 'JobApplicationsController@documents', 'as' => 'applicant-documents']);
 
+        Route::get('interviews/{appl_id}',
+            ['uses' => 'JobApplicationsController@interviews', 'as' => 'applicant-interviews']);
+
 
         Route::get('profile', function () {
             return view('applicant.profile');
@@ -744,12 +746,12 @@ Route::group(['middleware' => 'web'], function () {
 
 });
 
-/* Easily update Solr via URL*/
-Route::get('/solr/update/{redirect?}', function ($redirect = '') {
-    Solr::update_core(null, 'full-import');
+  /* Easily update Solr via URL*/
+  Route::get('/solr/update/{redirect?}', function ($redirect = '') {
+      Solr::update_core(null, 'full-import');
 
-    if ($redirect == 'false') {
-        return '';
-    }
-    return redirect()->back();
-});
+      if ($redirect == 'false') {
+          return '';
+      }
+      return redirect()->back();
+  });

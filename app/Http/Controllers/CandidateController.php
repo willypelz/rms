@@ -246,7 +246,7 @@ class CandidateController extends Controller
             if ($request->hasFile('attachment')) {
                 $file_name  = $request->attachment->getClientOriginalName();
                 $attachment = $job_applications[0]->id . '-' . time() . '-' . $file_name;
-                
+
                 $request->file('attachment')->move(env('fileupload'), $attachment);
 
             } else {
@@ -268,7 +268,7 @@ class CandidateController extends Controller
             return redirect()->back()->with('success', 'Message has been sent successfully to applicant(s)');
         }
 
-        return view('candidate.messaging.bulk', compact('appl', 'nav_type', 'job_applications', 'messages'));        
+        return view('candidate.messaging.bulk', compact('appl', 'nav_type', 'job_applications', 'messages'));
 
     }
 

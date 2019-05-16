@@ -60,4 +60,9 @@ class WorkflowStep extends Model
             'user_id'
         );
     }
+
+    public function users()
+    {
+      return $this->belongsToMany('App\User');
+    }
 }

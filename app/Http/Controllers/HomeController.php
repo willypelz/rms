@@ -43,7 +43,7 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function homepage()
-    {   
+    {
 
         $hirs_redirect = env('HIRS_REDIRECT_LOGIN');
 

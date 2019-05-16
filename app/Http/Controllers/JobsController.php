@@ -239,6 +239,7 @@ class JobsController extends Controller
                     'username' => $request->username,
                     'job_id' => $request->job_id,
                     'role_ids' => json_encode($request->role),
+                    'step_ids' => json_encode($request->steps),
                     'is_internal' => $request->internal ? 1 : 0,
                     'role_name' => $request->role_name
                 ];
@@ -331,6 +332,12 @@ class JobsController extends Controller
                 $user->password = bcrypt($request->password);
                 $user->activated = 1;
                 $user->save();
+
+                $steps = json_decode($job_team_invite->step_ids);
+                foreach ($steps as $key => $step) {
+                  $user->workflow_steps()->attach($step);
+                }
+
                 Auth::attempt(['email' => $user->email, 'password' => $request->password]);
                 return redirect()->route('select-company', ['slug' => $job->company->slug]);
             }
@@ -1010,7 +1017,7 @@ class JobsController extends Controller
 
         $owner = $company->users()->first();
 
-        $job = Job::find($id);
+        $job = Job::with('workflow.workflowSteps')->find($id);
         $active_tab = 'team';
 
         $result = Solr::get_applicants($this->search_params, $id, '');

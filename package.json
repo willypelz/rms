@@ -7,8 +7,8 @@
     "scss": "node-sass --watch resources/assets/sass -o public_html/css"
   },
   "dependencies": {
-    "laravel-elixir": "^4.0.0",
     "bootstrap-sass": "^3.0.0",
-    "node-sass": "^4.9.4"
+    "laravel-elixir": "^4.0.0",
+    "node-sass": "^4.12.0"
   }
 }

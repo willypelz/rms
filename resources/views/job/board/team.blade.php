@@ -24,7 +24,7 @@
                         <!-- applicant -->
                         <div class="col-xs-7">
                             <h5 class="no-margin"> Team members </h5><hr>
-                            
+
                             @if( count( @$company->users ) > 0 )
                               <ul class="list-group">
 
@@ -90,7 +90,7 @@
 
                         <div class="col-xs-5" id="Section2">
                             <h5 class="no-margin">Add New Team member <span class="pull-right"><i class="fa fa-lg fa-user-plus"></i></span></h5><hr>
-                            
+
                             @permission('can-add-job-team-members')
                               <a aria-controls="AddTeamMember" aria-expanded="false" class="btn btn-warning" data-toggle="collapse" data-target="#AddTeamMember" href="#AddTeamMember"><i class="fa fa-user-plus"></i> Add New Member</a>
                             @endpermission
@@ -131,17 +131,28 @@
                                                </div>
 
                                            </div>
-                                            <div class="for-group">
+                                            <div class="form-group">
                                                 <label for="">Role Name</label>
                                                 <input  name="role_name" type="text" class="form-control">
                                             </div>
                                            <div class="form-group">
                                                <label for="role">Permissions</label>
-                                               <select class="select2 form-control" multiple name="role[]" id="role" class="form-control">
-                                               @foreach($roles as $role)
+                                               <select class="select2 form-control" multiple name="role[]" id="role">
+                                                   @foreach($roles as $role)
                                                        <option value="{{ $role->id }}">{{ ucwords($role->display_name) }}</option>
                                                    @endforeach
                                                </select>
+                                           </div>
+
+                                           <div class="form-group" style="display:none" id="stepDiv">
+                                             <label for="role">Steps on this service</label>
+                                             <select class="select2 form-control" multiple name="steps[]" id="step" class="form-control">
+                                                 @foreach($job->workflow->workflowSteps as $step)
+                                                    @if($step->type == 'interview')
+                                                     <option value="{{ $step->id }}">{{ ucwords($step->name) }}</option>
+                                                    @endif
+                                                 @endforeach
+                                             </select>
                                            </div>
 
 
@@ -150,8 +161,8 @@
                                        <select name="access" id="access" class="form-control" required>
                                          <option value="job" hidden>"{{ $job->title }}"</option>
                                        </select>
-                                           
-                                           
+
+
 
                                    </div>
 
@@ -173,7 +184,7 @@
                                    <br>
                                    <p>
                                        <!-- <a class="btn btn-line btn-sm" aria-controls="collapseWYSIWYG" aria-expanded="false" href="#collapseWYSIWYG" data-toggle="collapse" role="button"><i class="fa fa-times"></i> &nbsp; Cancel</a> -->
-                                        
+
                                         <a aria-controls="AddTeamMember" aria-expanded="false" class="btn btn-line btn-sm" data-toggle="collapse" data-target="#AddTeamMember" href="#AddTeamMember"> Cancel</a>
 
                                        <!-- <a class="btn btn-success btn-sm pull-right" aria-controls="collapseWYSIWYG" aria-expanded="false" href="#collapseWYSIWYG" data-toggle="collapse" role="button">Send Mail &nbsp; <i class="fa fa-send"></i></a> -->
@@ -278,34 +289,46 @@
     });
 
 
-                    function btn(){
-                        $('#sendMail').attr('disabled','disabled').prepend('<div class="pull-right">' + '{!! preloader() !!}' + '</div>');
-                    }
+    function btn(){
+        $('#sendMail').attr('disabled','disabled').prepend('<div class="pull-right">' + '{!! preloader() !!}' + '</div>');
+    }
 
-                    function showResponse(res){
-                        $('#sendMail').removeAttr('disabled');
-                        $('#AddTeamMember').removeClass('in');
-                        $('#email_to').val('');
-                        $('#name').val('');
-                        $('#role').val(null);
+    function showResponse(res){
+        $('#sendMail').removeAttr('disabled');
+        $('#AddTeamMember').removeClass('in');
+        $('#email_to').val('');
+        $('#name').val('');
+        $('#role').val(null);
 
-                        if( res.status == true )
-                        {
-                          $.growl.notice({ message: res.message });
-                        }
-                        else
-                        {
-                            if(typeof (res.message) === 'object') {
-                                $.each(res.message, function( index, value ) {
-                                    $.growl.error({message: value});
-                                });
-                            } else {
-                                $.growl.error({message: res.message});
-                            }
+        if( res.status == true )
+        {
+          $.growl.notice({ message: res.message });
+        }
+        else
+        {
+            if(typeof (res.message) === 'object') {
+                $.each(res.message, function( index, value ) {
+                    $.growl.error({message: value});
+                });
+            } else {
+                $.growl.error({message: res.message});
+            }
 
-                        }
+        }
 
-                    }
+    }
+
+    $('#role').change(function () {
+      var stepText = $('#role option:selected').toArray().map(item => item.text).join();
+      var stepArray = stepText.split(",");
+
+      if(stepArray.includes("Interviewer")){
+        $('#stepDiv').show();
+      }else{
+        $('#stepDiv').hide();
+      }
+
+    });
     </script>
 
 <div class="separator separator-small"><br></div>

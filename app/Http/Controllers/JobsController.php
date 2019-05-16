@@ -217,13 +217,14 @@ class JobsController extends Controller
         # code...
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'name' => 'required',
-            'role' => 'required|numeric'
+            'name' => 'required|string',
+            'role' => 'required|array',
+            'role_name' => 'required|string'
         ], [
             'email.required' => 'Email is required. If you selected an employee, check that they have a valid email',
             'name.required' => 'Name is required',
             'role.required' => 'Role is required',
-            'role.numeric' => 'Please select a valid role'
+            'role.numeric' => 'Please select a valid role',
         ]);
 
         if ($validator->fails()) {
@@ -236,11 +237,11 @@ class JobsController extends Controller
                     'name' => $request->name,
                     'email' => $request->email,
                     'username' => $request->username,
-                    'job_id' => ( $request->access == "company" ) ? null : $request->job_id,
-                    'role_id' => $request->role,
+                    'job_id' => $request->job_id,
+                    'role_ids' => json_encode($request->role),
                     'is_internal' => $request->internal ? 1 : 0,
+                    'role_name' => $request->role_name
                 ];
-
 
             if (JobTeamInvite::where('job_id', $data['job_id'])->where('email', $data['email'])->count()) {
                 return response()->json(['status' => false, 'message' => $data['name'] . ' has been invited already']);
@@ -304,24 +305,28 @@ class JobsController extends Controller
         $job_team_invite = JobTeamInvite::find($id);
         $companies = Company::all();
         $job = ($job_team_invite->job_id) ? Job::with('company')->find($job_team_invite->job_id) : null;
-        $company = !is_null($job) ? Company::find($job->company->id) : $companies->first();
-        $user_role = Role::find($job_team_invite->role_id);
+        $company = Company::find($job->company->id);
         $is_new_user = true;
         $is_internal = $job_team_invite->is_internal;
+
+        // this is when the user is creating password.. happens to only external team members on first access
         if ($request->isMethod('post')) {
             $validator = Validator::make($request->all(), [
                 'password' => 'required|confirmed|min:6',
             ]);
 
             if ($validator->fails()) {
+                // delete use from table because user has been created pending when password would be added
                 $user = User::find($request->ref);
                 $user->delete();
+                // set accepted to force so the system recognises user as first time user when next user logs in
                 $job_team_invite->is_accepted = 0;
                 $job_team_invite->save();
                 return redirect()->back()
                     ->withErrors($validator)
                     ->withInput();
             } else {
+                //persist user password for future authentication
                 $user = User::find($request->ref);
                 $user->password = bcrypt($request->password);
                 $user->activated = 1;
@@ -331,15 +336,18 @@ class JobsController extends Controller
             }
 
         } else {
+            // when user accesses the link sent as invitation to their email
+            //check if user already exist in the system.. meaning is already a team member for some other job
             $user = User::where('email', $job_team_invite->email)->first();
             if ($user) $is_new_user = false;
+            // check if user has accepted, declined or is a first time accesser from  the job team invite
             if ($job_team_invite->is_accepted) {
                 $status = true;
             } elseif ($job_team_invite->is_declined) {
                 $status = false;
             } else {
                 if (empty($user) or is_null($user)) {
-
+                    // create user if a first time visitor with link
                     $user = User::FirstorCreate([
                       'email' => $job_team_invite->email,
                       'name' => $job_team_invite->name,
@@ -349,33 +357,32 @@ class JobsController extends Controller
                 } else {
                     $is_new_user = false;
                 }
-
-                if (is_null($job_team_invite->job_id)) {
-                    $role = 1;
-                } else {
+                // set role to show this is not the job owner or poster of the job
                     $role = 0;
-                    ($user->roles()->where('role_id', $user_role->id)) ? $user->roles()->detach($user_role->id) : '';
-                    $user->attachRole($user_role);
-                    if (!is_null($job_team_invite->job_id)) {
-                        $job->users()->sync([$user->id => ['role_id' => $user_role->id]]);
-                        $company->users()->sync([$user->id => ['role' => $role]], false);
-
-                    } else {
-                        $job->users()->sync([$user->id]);
-                        foreach ($companies as $company) {
-                            $company->users()->sync([$user->id => ['role' => $role, 'role_id' => $user_role->id]], false);
-                        }
-                    }
+                // assign roles to user
+                foreach (json_decode($job_team_invite->role_ids) as $role_id) {
+                    $user->roles()->attach($role_id, [
+                        'job_id' => $job->id
+                    ]);
                 }
+                //  add the user to the job assigned to him
+                $job->users()->sync([$user->id => ['role_name' => $job_team_invite->role_name]], false);
+                // add the user to the company that owns the job
+                $company->users()->sync([$user->id => ['role' => $role]], false);
+
+                }
+                //set accepted to true
                 $job_team_invite->is_accepted = true;
                 $job_team_invite->save();
-            }
+
 
             if($is_internal == 0 && $user->password == ''){
+                //if user is not internal and still hasnt created a password make system assume its a new user
                 $job_team_invite->is_accepted = 0;
                 $job_team_invite->save();
                 unset($status);
                 $is_new_user = false;
+                // if its not a new user and user is not internal and no current session of the user, log user in
             } elseif (!$is_new_user && !Auth::check() && $is_internal == 0) Auth::loginUsingId($user->id);
 
         }
@@ -996,6 +1003,7 @@ class JobsController extends Controller
 
     public function JobTeam($id, Request $request)
     {
+
         //Check if he  is the owner of the job
         check_if_job_owner($id);
         $comp_id = get_current_company()->id;
@@ -1009,13 +1017,65 @@ class JobsController extends Controller
 
         $result = Solr::get_applicants($this->search_params, $id, '');
 
-
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id);
-        // return view('emails.e-exculsively-invited');
-        $roles = Role::select('id', 'name')->get();
+
+        $roles = Role::select('id', 'display_name')->get();
+
         $job_team_invites = JobTeamInvite::where('job_id', $job->id)->where('is_accepted', 0)->where('is_declined', 0)->get();
+
+
         return view('job.board.team', compact('job', 'active_tab', 'company', 'result', 'application_statuses', 'owner', 'job_team_invites', 'roles'));
     }
+
+
+    public function persisRole(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $user_roles = $user->roles()->where('job_id', $request->job_id)->get();
+        $exist = false;
+        if($request->checked){
+            foreach ($user_roles as $role) {
+                if($role->id == $request->role_id) {
+                    $exist = true;
+                    break;
+                    //do nothing
+                }
+            }
+            if(!$exist)
+                $user->roles()->attach($request->role_id, ['job_id' => $request->job_id]);
+        } else {
+            $user->roles()->where('job_id', $request->job_id)->detach($request->role_id);
+        }
+        return response()->json([
+            'status' => true,
+            'message' => 'Updated successfully'
+        ]);
+    }
+
+    public function jobTemSettings(Request $request, $job_id)
+    {
+        
+        $jobs = Job::with(['users'=> function ($q) { $q->where('users.id', 4); } ])->take(5)->get();
+
+        $permissions = [];
+        foreach($jobs as $job){
+
+            $can_view = 0;
+            $can_edit = 0;
+            if(!empty($job->users->toArray())){
+                $can_view = $job->users[0]->can_view;
+                $can_edit = $job->users[0]->can_edit;
+            }
+
+            $permissions[] = ['id' => $job->id, 'title' => $job->title, 'can_view' => $can_view, 'can_edit' => $can_edit];
+
+        }
+
+
+        return view('job.team.settings', compact('jobs', 'permissions'));
+    }
+
+
 
     public function ActivityContent(Request $request)
     {

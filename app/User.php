@@ -21,6 +21,8 @@ class User extends Authenticatable
         'password',
         'invite_code',
         'is_internal',
+        'role_name',
+        'is_super_admin'
     ];
 
     /**
@@ -37,6 +39,11 @@ class User extends Authenticatable
     public function companies()
     {
         return $this->belongsToMany('App\Models\Company', 'company_users')->withPivot('role');
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany('App\Models\Role', 'role_user')->withPivot('job_id');
     }
 
     public function workflowSteps()

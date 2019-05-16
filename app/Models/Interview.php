@@ -12,4 +12,9 @@ class Interview extends Model
     public $timestamps = false;
 
     protected $table = 'interview';
+
+    public function users()
+    {
+      return $this->belongsToMany('App\User');
+    }
 }

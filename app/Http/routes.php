@@ -556,6 +556,9 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('documents/{appl_id}',
             ['uses' => 'JobApplicationsController@documents', 'as' => 'applicant-documents']);
 
+        Route::get('interviews/{appl_id}',
+            ['uses' => 'JobApplicationsController@interviews', 'as' => 'applicant-interviews']);
+
 
         Route::get('profile', function () {
             return view('applicant.profile');

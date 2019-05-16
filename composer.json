@@ -21,7 +21,8 @@
         "aws/aws-sdk-php": "~3.0",
         "barryvdh/laravel-snappy": "^0.4.0",
         "webpatser/laravel-uuid": "^2.0",
-        "zizaco/entrust": "5.2.x-dev"
+        "zizaco/entrust": "5.2.x-dev",
+        "spatie/calendar-links": "^1.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

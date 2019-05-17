@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use \Illuminate\Support\Facades\DB;
 
 class AddJobIdToRoleUsersTable extends Migration
 {
@@ -12,16 +13,26 @@ class AddJobIdToRoleUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('role_user', function (Blueprint $table) {
-            $table->integer('job_id')->nullable();
+        $data =  DB::table('role_user')->get();
+//        dd($data);
+        Schema::drop('role_user');
+        Schema::create('role_user', function (Blueprint $table) {
+            $table->integer('user_id')->nullable()->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE')->onUpdate('CASCADE');
+
+            $table->integer('role_id')->nullable()->unsigned();
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('CASCADE')->onUpdate('CASCADE');
+
+            $table->integer('job_id')->nullable()->unsigned();
             $table->foreign('job_id')->references('id')->on('jobs')->onDelete('CASCADE')->onUpdate('CASCADE');
-            try{
-                $table->dropPrimary('user_id_primary');
-                $table->dropPrimary('role_id_primary');
-            } catch (\Exception $e) {
-                \Illuminate\Support\Facades\Log::info($e);
-            }
+
         });
+
+        foreach ($data as $row){
+           $row = (array)$row;
+            DB::table('role_user')->insert($row);
+        }
+
     }
 
     /**
@@ -31,12 +42,6 @@ class AddJobIdToRoleUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('role_user', function (Blueprint $table) {
-            Schema::disableForeignKeyConstraints();
-            $table->dropForeign(['job_id']);
-            $table->dropColumn('job_id');
-            Schema::enableForeignKeyConstraints();
 
-        });
     }
 }

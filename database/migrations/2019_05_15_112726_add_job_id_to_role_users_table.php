@@ -14,7 +14,7 @@ class AddJobIdToRoleUsersTable extends Migration
     public function up()
     {
         $data =  DB::table('role_user')->get();
-//        dd($data);
+        
         Schema::drop('role_user');
         Schema::create('role_user', function (Blueprint $table) {
             $table->integer('user_id')->nullable()->unsigned();

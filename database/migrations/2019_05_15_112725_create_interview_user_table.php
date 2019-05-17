@@ -13,13 +13,13 @@ class CreateInterviewUserTable extends Migration
     public function up()
     {
         //
-//        Schema::create('interview_user', function (Blueprint $table) {
-//          $table->integer('user_id')->unsigned();
-//          $table->foreign('user_id')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
-//          $table->integer('interview_id');
-//          $table->foreign('interview_id')->references('id')->on('interview')->onUpdate('CASCADE')->onDelete('CASCADE');
-//          $table->timestamps();
-//        });
+        Schema::create('interview_user', function (Blueprint $table) {
+          $table->integer('user_id')->unsigned();
+          $table->foreign('user_id')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
+          $table->integer('interview_id');
+          $table->foreign('interview_id')->references('id')->on('interview')->onUpdate('CASCADE')->onDelete('CASCADE');
+          $table->timestamps();
+        });
     }
 
     /**

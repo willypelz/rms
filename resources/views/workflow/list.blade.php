@@ -68,7 +68,7 @@
                                         
                                         <div class="pull-left">
                                             <p class="text-info">
-                                                <a href="{{ route('workflow-edit', ['id' => $workflow->id]) }}">
+                                                <a href="{{ route('workflow-steps-add', ['id' => $workflow->id]) }}">
                                                     {{ $workflow->workflowSteps()->count() }} Steps
                                                 </a>
                                             </p>

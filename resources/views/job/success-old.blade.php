@@ -212,9 +212,9 @@
                                             <div class="clearfix"></div>
                                             <br>
                                             
-                                            <h5 class="col-xs-4 col-xs-offset-2">Job Newspapers</h5>
+                                            <h5 style="display: none"  class="A col-xs-4 col-xs-offset-2">Job Newspapers</h5>
                                             <div class="clearfix"></div>
-                                            <div id="fromNews">
+                                            <div style="display: none" id="fromNews">
                                                 <?php $index = 0; ?>
                                                 @foreach($all_job_boards as $key => $board)
                                                     @if( $board['type'] == 'paid' && $board['avi'] == 1)
@@ -454,9 +454,9 @@
                                     <div class="clearfix"></div>
                                     <br>
                                     
-                                    <h5 class="col-xs-5 col-xs-offset-1">Job Newspapers</h5>
+                                    <h5 style="display: none"  class="col-xs-5 col-xs-offset-1">Job Newspapers</h5>
                                     <div class="clearfix"></div>
-                                    <div id="fromNews">
+                                    <div style="display: none" id="fromNews">
                                         <?php $index = 0; ?>
                                         @foreach($all_job_boards as $key => $board)
                                             @if( $board['type'] == 'paid' && $board['avi'] == 1)

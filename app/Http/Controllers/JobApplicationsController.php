@@ -777,6 +777,136 @@ class JobApplicationsController extends Controller
 
     }
 
+    public function downloadInterviewNotes(Request $request)
+    {
+      //Check if you should have access to the excel
+      check_if_job_owner($request->jobId);
+
+      $job = Job::find($request->jobId);
+
+      $this->search_params['filter_query'] = @$request->filter_query;
+      $this->search_params['row'] = 2147483647;
+
+
+      //If age is available
+      if (@$request->age) {
+          $date = Carbon::now();
+          //2015-09-16T00:00:00Z
+          $start_dob = explode(' ', $date->subYears(@$request->age[0]))[0] . 'T23:59:59Z';
+          $end_dob = explode(' ', $date->subYears(@$request->age[1]))[0] . 'T00:00:00Z';
+
+          $solr_age = [$start_dob, $end_dob];
+          // dd($request->age, $start_dob, $end_dob);
+      } else {
+          $request->age = [15, 65];
+          $solr_age = null;
+      }
+
+      //If years of experience is available
+      if (@$request->exp_years) {
+          //2015-09-16T00:00:00Z
+
+          $solr_exp_years = [@$request->exp_years[0], @$request->exp_years[1]];
+      } else {
+          $request->exp_years = [0, 40];
+          $solr_exp_years = null;
+      }
+
+      //If test score is available
+      if (@$request->test_score) {
+          //2015-09-16T00:00:00Z
+
+          $solr_test_score = [@$request->test_score[0], @$request->test_score[1]];
+      } else {
+          $request->test_score = [40, 160];
+          $solr_test_score = null;
+      }
+
+      //If video application score is available
+      if (@$request->video_application_score) {
+          //2015-09-16T00:00:00Z
+
+          $solr_video_application_score = [
+              @$request->video_application_score[0],
+              @$request->video_application_score[1]
+          ];
+      } else {
+          $request->video_application_score = [env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END')];
+          $solr_video_application_score = null;
+      }
+
+      // dump("request", $request->toArray());
+      $result = Solr::get_applicants($this->search_params, $request->jobId, @$request->status, @$solr_age,
+          @$solr_exp_years, @$solr_video_application_score, @$solr_test_score);
+          dd([$this->search_params, $request->jobId, @$request->status, @$solr_age,
+              @$solr_exp_years, @$solr_video_application_score, @$solr_test_score],[ $result]);
+      dump("---------------------------------------------------------------------------------------------");
+      dump("result", $result);
+      $data = $result['response']['docs'];
+      dump("---------------------------------------------------------------------------------------------");
+      dump("data", $data);
+      $other_data = [
+
+          'company' => get_current_company()->name,
+          'user' => Auth::user()->name,
+          'job_title' => $job->title,
+      ];
+
+      // $zippy = Zippy::load();
+
+      $path = public_path('uploads/tmp/');
+
+      $filename = Auth::user()->id . "_" . get_current_company()->id . "_" . time() . ".zip";
+      //$archive = $zippy->create(  $path.$filename );
+
+      $cvs = array_pluck($data, 'cv_file');
+      $ids = array_pluck($data, 'id');
+
+      dump("---------------------------------------------------------------------------------------------");
+      dump("cvs1", $cvs);
+
+      dump("---------------------------------------------------------------------------------------------");
+      dump("ids", $ids);
+
+
+      //Check for selected cvs to download and append path to it
+      $cvs = array_map(function ($cv, $id) use ($request) {
+
+          if (!empty($request->cv_ids) && !in_array($id, $request->cv_ids)) {
+              return null;
+          }
+
+          if (!file_exists(public_path('uploads/CVs/') . $cv)) {
+              return null;
+          }
+
+          if (is_null($cv) or $cv == "") {
+              return null;
+          }
+
+          return public_path('uploads/CVs/') . $cv;
+      }, $cvs, $ids);
+
+      dump("---------------------------------------------------------------------------------------------");
+      dump("cvs2", $cvs);
+
+      //Remove nulls
+      $cvs = array_filter($cvs, function ($var) {
+          return !is_null($var);
+      });
+
+      dump("---------------------------------------------------------------------------------------------");
+      dump("cvs3", $cvs);
+      dd("done");
+
+      //$archive->addMembers($cvs, $recursive = false );
+
+      $zipper = new \Chumper\Zipper\Zipper;
+      @$zipper->make($path . $filename)->add($cvs)->close();
+
+      return Response::download($path . $filename, 'Cv.zip', ['Content-Type' => 'application/octet-stream']);
+    }
+
     public function massAction(Request $request)
     {
 

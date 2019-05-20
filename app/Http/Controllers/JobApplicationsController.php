@@ -1045,7 +1045,6 @@ class JobApplicationsController extends Controller
 
         $jobID = $appl->job->id;
         check_if_job_owner($jobID);
-        dd($modalVars);
         $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type',
             'REVIEW')->where('job_application_id', $appl->id)->get();
         $notes = InterviewNotes::with('user')->where('job_application_id', $appl->id)->get();

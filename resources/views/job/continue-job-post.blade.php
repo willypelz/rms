@@ -83,8 +83,7 @@
 
                                     @foreach( $application_fields as $key => $application_field )
 
-                                        @php
-                                        @endphp
+                                        
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col-xs-4">
@@ -340,7 +339,6 @@
              $('#myForm').ajaxForm({ 
                 // target identifies the element(s) to update with the server response 
                 beforeSubmit: function(){
-                    console.log(submitTarget);
                     var newElement = '<input type="hidden" name="request_type" value='+submitTarget+'>';
                     $( "#hiddenForm" ).append( $(newElement) );
                 }, 
@@ -405,17 +403,14 @@
                 $('#custom_fields').html('');
                 $.each(custom_fields, function (key, field) {
                     $('#custom_fields').append('<div class="well alert-success small text-uppercase" id="custom_field_item" data-key="' + key + '"><i class="fa fa-question-circle fa-lg"></i> <strong>' + field.name + ' *</strong><span class="pull-right"> <a href="" class="hidden" data-key="' + key + '"><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field" data-key="' + key + '"><i class="fa fa-times"></i> REMOVE</a></span><input type="text" class="hidden" name="custom_names[]" value="' + field.name + '" /> <input type="text" class="hidden" name="custom_types[]" value="' + field.type + '" /> <input type="text" class="hidden" name="custom_options[]" value="' + field.options + '" /><input type="text" class="hidden" name="custom_required[]" value="' + field.required + '" /><input type="text" class="hidden" name="custom_visible[]" value="' + field.visible + '" /> </div>');
-                        // $('#custom_fields').append('<div class="well small" id="custom_field_item" data-key="' + key + '">Custom Field: ' + field.name + ' <span class="pull-right"><a href="" class="hidden" data-key="' + key + '"><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field" data-key="' + key + '"><i class="fa fa-times"></i> REMOVE</a></span> <input type="text" class="hidden" name="custom_names[]" value="' + field.name + '" /> <input type="text" class="hidden" name="custom_types[]" value="' + field.type + '" /> <input type="text" class="hidden" name="custom_options[]" value="' + field.options + '" /> </div>');
+                      
                                         });
-                        // $('#custom_fields').append('<div class="well small" >Custom Field: ' + $('body #addField #name-box').val() + ' <span class="pull-right"><a href="" class=""><i class="fa fa-pencil"></i> EDIT</a> &nbsp; <a href="" class="text-muted" id="remove-custom-field"><i class="fa fa-times"></i> REMOVE</a></span></div>');
             };
             $('body').on('click', '#remove-custom-field', function (e) {
                 e.preventDefault();
                 key = parseInt($(this).data('key'));
-                console.log(custom_fields);
                 $.growl.notice({message: custom_fields[key].name + " custom field removed."});
                 custom_fields.splice(key, 1);
-                console.log(custom_fields);
                 $(this).loadCustomFields();
             });
 
@@ -443,13 +438,6 @@
         });
 
 
-        // $('#next-job-btn').click(function (e) {
-        //         console.log('HERE');
-           
-        //     $('#myForm').ajaxForm(function(res) { 
-        //         console.log(res);
-        //     }); 
-        // });
 
 
     </script>

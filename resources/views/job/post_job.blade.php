@@ -326,7 +326,6 @@
     <script type="text/javascript">
 
         function checkIfWorkFlowIsSelected(){
-            console.log($('#workflowId').val());
             getWorkFlowSteps($('#workflowId').val());
         }
 

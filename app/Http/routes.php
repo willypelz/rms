@@ -276,8 +276,13 @@ Route::group(['middleware' => 'web'], function () {
         ['uses' => 'JobsController@SavetoMailbox', 'as' => 'savetoMailbox']);
 
     Route::match(['get', 'post'], 'jobs/save-job', ['uses' => 'JobsController@SaveJob', 'as' => 'job-draft']);
+    Route::match(['get', 'post'], 'job/edit/progress/{id}', ['uses' => 'JobsController@continueJob', 'as' => 'continue-draft']);
+    Route::match(['get', 'post'], 'job/edit/confirm/{id}', ['uses' => 'JobsController@confirmJobDetails', 'as' => 'confirm-job-post']);
     Route::match(['get', 'post'], 'jobs/refer-job', ['uses' => 'JobsController@ReferJob', 'as' => 'refer-job']);
-    Route::match(['get', 'post'], 'jobs/post-a-job', ['uses' => 'JobsController@PostJob', 'as' => 'post-job']);
+    Route::match(['get', 'post'], 'jobs/create-a-job', ['uses' => 'JobsController@createJob', 'as' => 'post-job']);
+    Route::match(['get', 'post'], 'jobs/post-a-job/{id?}', ['uses' => 'JobsController@createJob', 'as' => 'create-job']);
+    Route::match(['get', 'post'], 'jobs/create-a-job/{id?}', ['uses' => 'JobsController@createJob', 'as' => 'create-job']);
+    Route::match(['get', 'post'], 'jobs/approve/{id}', ['uses' => 'JobsController@approveJobPost', 'as' => 'approve-job-post']);
     Route::match(['get', 'post'], 'edit-job/{jobid}', ['uses' => 'JobsController@EditJob', 'as' => 'edit-job']);
 
     Route::match(['get', 'post'], 'jobs/post-success/{jobID}/{slug?}',
@@ -707,6 +712,7 @@ Route::group(['middleware' => 'web'], function () {
         ], function () {
             // Workflow
             Route::get('/{id}/view', 'WorkflowController@show')->name('workflow-show');
+            Route::get('/steps/view/{id}', 'WorkflowController@getSteps')->name('get-workflow-steps');
             Route::get('/create', 'WorkfelowController@create')->name('workflow-create');
             Route::get('/{id}/edit', 'WorkflowController@editView')->name('workflow-edit');
             Route::match(['put', 'patch'], '/{id}/edit', 'WorkflowController@update')->name('workflow-update');

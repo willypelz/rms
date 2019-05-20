@@ -5,7 +5,6 @@
     @endphp
     @include('job.board.jobBoard-header')
 
-    {{-- dd($job,$result) --}}
     <style type="text/css">
         .see-more {
             display: none;

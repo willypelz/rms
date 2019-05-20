@@ -175,7 +175,6 @@ class Solr {
 
 	static function get_applicants($data, $job_id, $status = "",$age = null,$exp_years=null,$video_application_score=null,$test_score=null)
 	{
-		dd($data);
 		$additional = "&fq=job_id:". $job_id;
 
 		if($status != "")

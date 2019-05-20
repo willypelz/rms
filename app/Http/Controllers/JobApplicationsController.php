@@ -779,132 +779,66 @@ class JobApplicationsController extends Controller
 
     public function downloadInterviewNotes(Request $request)
     {
-      //Check if you should have access to the excel
-      check_if_job_owner($request->jobId);
+      foreach ($request->app_ids as $key => $app_id) {
+        $appl = JobApplication::with('job', 'cv')->find($app_id);
+        $jobID = $appl->job->id;
+        check_if_job_owner($jobID);
 
-      $job = Job::find($request->jobId);
+        $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type',
+            'REVIEW')->where('job_application_id', $appl->id)->get();
+        $notes = InterviewNotes::with('user')->where('job_application_id', $appl->id)->get();
+        $interview_notes = InterviewNoteValues::with('interviewer',
+            'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
 
-      $this->search_params['filter_query'] = @$request->filter_query;
-      $this->search_params['row'] = 2147483647;
+        $path = public_path('uploads/tmp/');
+
+        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf->loadHTML(view('modals.inc.dossier-content',
+            compact('applicant_badge', 'app_ids', 'cv_ids', 'jobID', 'appl', 'comments', 'interview_notes'))->render());
+        $pdf->setTemporaryFolder($path);
+        $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' dossier.pdf', true);
 
 
-      //If age is available
-      if (@$request->age) {
-          $date = Carbon::now();
-          //2015-09-16T00:00:00Z
-          $start_dob = explode(' ', $date->subYears(@$request->age[0]))[0] . 'T23:59:59Z';
-          $end_dob = explode(' ', $date->subYears(@$request->age[1]))[0] . 'T00:00:00Z';
+        $filename = $appl->cv->first_name . ' ' . $appl->cv->last_name . ".zip";
+        $interview_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview-note.pdf';
+        $cv_local_file = @$path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' cv - ' . $appl->cv->cv_file;
 
-          $solr_age = [$start_dob, $end_dob];
-          // dd($request->age, $start_dob, $end_dob);
-      } else {
-          $request->age = [15, 65];
-          $solr_age = null;
+        $files_to_archive = [$interview_local_file];
+        //get cv
+        if (!file_exists(public_path('uploads/CVs/') . $appl->cv->cv_file)) {
+            $cv = null;
+        } else {
+            if (is_null($appl->cv->cv_file) or $appl->cv->cv_file == "") {
+                $cv = null;
+            } else {
+                $cv = $appl->cv->cv_file;
+                $cv_file = public_path('uploads/CVs/') . $cv;
+                copy($cv_file, $cv_local_file);
+                $files_to_archive[] = $cv_local_file;
+            }
+        }
+
+        $test_path = "http://seamlesstesting.com/test/combined/pdf/" . $appl->id;
+        $test_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' tests.pdf';
+        // Response::download($test_path, $appl->cv->first_name.' '.$appl->cv->last_name. ' tests.pdf');
+
+
+        if (@copy($test_path, $test_local_file)) {
+            //if test exists
+            if ($test_local_file) {
+                $files_to_archive[] = $test_local_file;
+            }
+
+        }
+        $timestamp = " " . time() . " ";
+
+        $zipper = new \Chumper\Zipper\Zipper;
+        @$zipper->make($path . $timestamp . $filename)->add($files_to_archive)->close();
       }
 
-      //If years of experience is available
-      if (@$request->exp_years) {
-          //2015-09-16T00:00:00Z
 
-          $solr_exp_years = [@$request->exp_years[0], @$request->exp_years[1]];
-      } else {
-          $request->exp_years = [0, 40];
-          $solr_exp_years = null;
-      }
-
-      //If test score is available
-      if (@$request->test_score) {
-          //2015-09-16T00:00:00Z
-
-          $solr_test_score = [@$request->test_score[0], @$request->test_score[1]];
-      } else {
-          $request->test_score = [40, 160];
-          $solr_test_score = null;
-      }
-
-      //If video application score is available
-      if (@$request->video_application_score) {
-          //2015-09-16T00:00:00Z
-
-          $solr_video_application_score = [
-              @$request->video_application_score[0],
-              @$request->video_application_score[1]
-          ];
-      } else {
-          $request->video_application_score = [env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END')];
-          $solr_video_application_score = null;
-      }
-
-      // dump("request", $request->toArray());
-      $result = Solr::get_applicants($this->search_params, $request->jobId, @$request->status, @$solr_age,
-          @$solr_exp_years, @$solr_video_application_score, @$solr_test_score);
-          dd([$this->search_params, $request->jobId, @$request->status, @$solr_age,
-              @$solr_exp_years, @$solr_video_application_score, @$solr_test_score],[ $result]);
-      dump("---------------------------------------------------------------------------------------------");
-      dump("result", $result);
-      $data = $result['response']['docs'];
-      dump("---------------------------------------------------------------------------------------------");
-      dump("data", $data);
-      $other_data = [
-
-          'company' => get_current_company()->name,
-          'user' => Auth::user()->name,
-          'job_title' => $job->title,
-      ];
-
-      // $zippy = Zippy::load();
-
-      $path = public_path('uploads/tmp/');
-
-      $filename = Auth::user()->id . "_" . get_current_company()->id . "_" . time() . ".zip";
-      //$archive = $zippy->create(  $path.$filename );
-
-      $cvs = array_pluck($data, 'cv_file');
-      $ids = array_pluck($data, 'id');
-
-      dump("---------------------------------------------------------------------------------------------");
-      dump("cvs1", $cvs);
-
-      dump("---------------------------------------------------------------------------------------------");
-      dump("ids", $ids);
-
-
-      //Check for selected cvs to download and append path to it
-      $cvs = array_map(function ($cv, $id) use ($request) {
-
-          if (!empty($request->cv_ids) && !in_array($id, $request->cv_ids)) {
-              return null;
-          }
-
-          if (!file_exists(public_path('uploads/CVs/') . $cv)) {
-              return null;
-          }
-
-          if (is_null($cv) or $cv == "") {
-              return null;
-          }
-
-          return public_path('uploads/CVs/') . $cv;
-      }, $cvs, $ids);
-
-      dump("---------------------------------------------------------------------------------------------");
-      dump("cvs2", $cvs);
-
-      //Remove nulls
-      $cvs = array_filter($cvs, function ($var) {
-          return !is_null($var);
-      });
-
-      dump("---------------------------------------------------------------------------------------------");
-      dump("cvs3", $cvs);
-      dd("done");
-
-      //$archive->addMembers($cvs, $recursive = false );
-
-      $zipper = new \Chumper\Zipper\Zipper;
-      @$zipper->make($path . $filename)->add($cvs)->close();
-
-      return Response::download($path . $filename, 'Cv.zip', ['Content-Type' => 'application/octet-stream']);
+      return Response::download($path . $timestamp . $filename, $filename,
+          ['Content-Type' => 'application/octet-stream']);
     }
 
     public function massAction(Request $request)
@@ -1111,7 +1045,7 @@ class JobApplicationsController extends Controller
 
         $jobID = $appl->job->id;
         check_if_job_owner($jobID);
-
+        dd($modalVars);
         $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type',
             'REVIEW')->where('job_application_id', $appl->id)->get();
         $notes = InterviewNotes::with('user')->where('job_application_id', $appl->id)->get();

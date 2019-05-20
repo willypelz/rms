@@ -360,6 +360,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'download-applicant-cv',
         ['uses' => 'JobApplicationsController@downloadApplicantCv', 'as' => 'download-applicant-cv']);
 
+    Route::match(['get', 'post'], 'download-interview-notes',
+        ['uses' => 'JobApplicationsController@downloadInterviewNotes', 'as' => 'download-interview-notes']);
+
     Route::post('job/applicant/mass-action', ['uses' => 'JobApplicationsController@massAction', 'as' => 'mass-action']);
     Route::post('job/applicant/write-review',
         ['uses' => 'JobApplicationsController@writeReview', 'as' => 'write-review']);

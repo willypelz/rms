@@ -5,7 +5,6 @@
     @endphp
     @include('job.board.jobBoard-header')
 
-    {{-- dd($job,$result) --}}
     <style type="text/css">
         .see-more {
             display: none;
@@ -57,6 +56,7 @@
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                                     <li><a href="javscript://" id="downSpreadsheet">Spreadsheet</a></li>
                                                     <li><a href="javscript://" id="downCv">CVs</a></li>
+                                                    <li><a href="javscript://" id="downloadInterviewNotes">Interview Notes</a></li>
                                                     <!-- <li role="separator" class="divider"></li>
                                                     <li><a href="#">Separated link</a></li> -->
                                                 </ul>
@@ -146,7 +146,7 @@
                                                         --}}
                                                     <div class="btn-group" role="group">
 
-                                                        
+
 
 
                                                         <button type="button"
@@ -158,7 +158,7 @@
                                                         </button>
 
 
-                                                        
+
 
                                                         <ul class="dropdown-menu">
                                                             @if($user_role->name == 'admin')
@@ -182,7 +182,7 @@
                                                             </li>
                                                             @endif
 
-                                                            
+
 
                                                         </ul>
 
@@ -194,7 +194,7 @@
                                                            data-view="{{ route('send-bulk-message-modal') }}"
                                                            data-app-id=""
                                                            data-cv=""
-                                                           data-type="normal"> 
+                                                           data-type="normal">
                                                             Send Message to All
                                                          </a>
                                                     </div>
@@ -797,7 +797,24 @@
 
             });*/
                 });
+
+
+                $('body').on('click', '#downloadInterviewNotes', function () {
+                    $data = {
+                        search_query: $('#search_query').val(),
+                        filter_query: filters,
+                        status: status_filter,
+                        jobId: "{{ $jobID }}",
+                        age: age_range,
+                        test_score: test_score_range,
+                        exp_years: exp_years_range,
+                        video_application_score: video_application_score_range,
+                        cv_ids: cv_ids,
+                        app_ids: app_ids
+                    };
+                    window.open("{{ route('download-interview-notes') }}" + "?" + $.param($data), '_blank');
             });
+        });
 
         function messageAllCandidates() {
           // body...

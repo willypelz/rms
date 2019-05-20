@@ -777,6 +777,70 @@ class JobApplicationsController extends Controller
 
     }
 
+    public function downloadInterviewNotes(Request $request)
+    {
+      foreach ($request->app_ids as $key => $app_id) {
+        $appl = JobApplication::with('job', 'cv')->find($app_id);
+        $jobID = $appl->job->id;
+        check_if_job_owner($jobID);
+
+        $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type',
+            'REVIEW')->where('job_application_id', $appl->id)->get();
+        $notes = InterviewNotes::with('user')->where('job_application_id', $appl->id)->get();
+        $interview_notes = InterviewNoteValues::with('interviewer',
+            'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
+
+        $path = public_path('uploads/tmp/');
+
+        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf->loadHTML(view('modals.inc.dossier-content',
+            compact('applicant_badge', 'app_ids', 'cv_ids', 'jobID', 'appl', 'comments', 'interview_notes'))->render());
+        $pdf->setTemporaryFolder($path);
+        $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' dossier.pdf', true);
+
+
+        $filename = $appl->cv->first_name . ' ' . $appl->cv->last_name . ".zip";
+        $interview_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview-note.pdf';
+        $cv_local_file = @$path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' cv - ' . $appl->cv->cv_file;
+
+        $files_to_archive = [$interview_local_file];
+        //get cv
+        if (!file_exists(public_path('uploads/CVs/') . $appl->cv->cv_file)) {
+            $cv = null;
+        } else {
+            if (is_null($appl->cv->cv_file) or $appl->cv->cv_file == "") {
+                $cv = null;
+            } else {
+                $cv = $appl->cv->cv_file;
+                $cv_file = public_path('uploads/CVs/') . $cv;
+                copy($cv_file, $cv_local_file);
+                $files_to_archive[] = $cv_local_file;
+            }
+        }
+
+        $test_path = "http://seamlesstesting.com/test/combined/pdf/" . $appl->id;
+        $test_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' tests.pdf';
+        // Response::download($test_path, $appl->cv->first_name.' '.$appl->cv->last_name. ' tests.pdf');
+
+
+        if (@copy($test_path, $test_local_file)) {
+            //if test exists
+            if ($test_local_file) {
+                $files_to_archive[] = $test_local_file;
+            }
+
+        }
+        $timestamp = " " . time() . " ";
+
+        $zipper = new \Chumper\Zipper\Zipper;
+        @$zipper->make($path . $timestamp . $filename)->add($files_to_archive)->close();
+      }
+
+
+      return Response::download($path . $timestamp . $filename, $filename,
+          ['Content-Type' => 'application/octet-stream']);
+    }
+
     public function massAction(Request $request)
     {
 
@@ -981,7 +1045,6 @@ class JobApplicationsController extends Controller
 
         $jobID = $appl->job->id;
         check_if_job_owner($jobID);
-
         $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type',
             'REVIEW')->where('job_application_id', $appl->id)->get();
         $notes = InterviewNotes::with('user')->where('job_application_id', $appl->id)->get();
@@ -1015,11 +1078,9 @@ class JobApplicationsController extends Controller
                 $files_to_archive[] = $cv_local_file;
             }
         }
-        // dump( $appl->cv->cv_file );
 
         $test_path = "http://seamlesstesting.com/test/combined/pdf/" . $appl->id;
         $test_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' tests.pdf';
-        // Response::download($test_path, $appl->cv->first_name.' '.$appl->cv->last_name. ' tests.pdf');
 
 
         if (@copy($test_path, $test_local_file)) {

@@ -47,7 +47,6 @@
                             <br>
 
                             <div class="col-md-8 col-md-offset-2">
-                                <!-- <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio voluptatibus magni officiis id error numquam.</p> -->
                                 <form action="{{ route('continue-draft', $job->id) }}" class="job-details" action="" id="myForm" role="job-details" method="post">
 
                                     <div class="text-center">
@@ -222,8 +221,6 @@
                                             <div class="col-xs-8 col-xs-offset-2">
                                                 <a href="javascript://" class="btn-sm btn btn-success pull-right"
                                                    id="add-field-btn"><i class="fa fa-check"></i> Add field</a>
-                                                <!--                                                    <button href="" class="btn-sm btn btn-line disabled pull-left" ><i class="fa fa-plus"></i> Add another field</button>-->
-                                            </div>
                                         </div>
                                     </div>
 
@@ -252,12 +249,10 @@
 
                                                 </div>
                                             </div>
-                                            <!-- <div class="col-xs-12"><br><p class="text-center">Post this job to see more available job boards</p></div> -->
                                             <div class="col-xs-6 hidden">
                                                 <div class="well no-border no-shadow">
                                                     <label for=""><i class="fa fa-folder"></i> Create Job Folder</label>
                                                     &nbsp;
-                                                    <!-- <textarea name="" id="" cols="30" rows="4" class="form-control" placeholder=""></textarea> -->
                                                     <input type="text"
                                                            class="form-control"
                                                            placeholder="e.g lawyer2-02-2016">
@@ -402,7 +397,6 @@
                     $('body #addField #name-box').val('');
                     $('body #addField #options-box input').val('');
                 }
-                    // $('#addField').toggle();
             });
 
 

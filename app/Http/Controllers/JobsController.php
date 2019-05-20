@@ -506,7 +506,7 @@ class JobsController extends Controller
                 'position' => $request->position,
                 'post_date' => date('Y-m-d'),
                 'expiry_date' => $request->expiry_date,
-                'status' => 'ACTIVE',
+                'status' => 'DRAFT',
                 'company_id' => $company->id,
                 'workflow_id' => $request->workflow_id,
                 'experience' => $request->experience,
@@ -803,12 +803,6 @@ class JobsController extends Controller
                     $m->to($to)->subject('New Job initiated');
                 });
 
-                // $insidify_url = Curl::to("https://insidify.com/ss-post-job")
-                //             ->withData(  [ 'secret' => '1ns1d1fy', 'data' =>  [ 'job' => $job_data, 'specializations' => @$request->specializations, 'company' => get_current_company()->toArray(), 'action_link' => url('job/apply/'.$job->id.'/'.str_slug($job->title) ) ]  ]  )
-                //             // ->asJson()
-                //             ->post();
-                // $urls[1] = $insidify_url;
-                //
                 $urls[1] = "";
 
                 //Save job creation to activity

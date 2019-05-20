@@ -1067,9 +1067,22 @@ class JobApplicationsController extends Controller
             return $modalVars;
         }
 
-        $step = $request->stepSlug;
-        $stepId = $request->stepId;
-
+        if( count($app_ids) > 1){
+          foreach ($app_ids as $key => $application_id) {
+            $job_application = JobApplication::find($application_id);
+            $applicant_step = $job_application->job->workflow->workflowSteps->where('slug', $job_application->status)->first();
+            if($applicant_step->type != 'interview')
+            {
+              $interview_step_error = $job_application->cv->first_name. " is not on an interview step, pls untick";
+              return view('modals.interview-error', compact('interview_step_error'));
+            }
+            $step = $applicant_step->slug;
+            $stepId = $applicant_step->id;
+          }
+        }else{
+          $step = $request->stepSlug;
+          $stepId = $request->stepId;
+        }
 
         /**
          * [$interviewers get all admins with this permission]
@@ -1084,11 +1097,10 @@ class JobApplicationsController extends Controller
          * @var boolean
          */
         $is_a_reschedule = false;
-        $interview_record = Interview::where('job_application_id', $request->app_id)->get()->last();
+        $interview_record = Interview::whereIn('job_application_id', $app_ids)->get()->last();
         if($interview_record != null){
           $is_a_reschedule = true;
         }
-
         return view('modals.interview', compact('applicant_badge', 'app_ids', 'cv_ids', 'appl', 'step', 'stepId', 'interviewers', 'is_a_reschedule', 'interview_record'));
     }
 
@@ -1542,6 +1554,22 @@ class JobApplicationsController extends Controller
 
     public function inviteForInterview(Request $request)
     {
+      $validator = Validator::make($request->all(), [
+              'interview_file' => 'required',
+              'location' => 'required',
+              'date' => 'required',
+              'message' => 'required',
+              'duration' => 'required',
+              'interviewer_ids' => 'required',
+          ]);
+
+          if ($validator->fails()) {
+            return response()->json([
+              'success' => false,
+              'errors' => $validator->getMessageBag()->toArray(),
+            ]);
+          }
+
         $appls = JobApplication::with('cv', 'job', 'job.company')->whereIn('id', $request->app_ids)->get();
 
         foreach ($appls as $key => $appl) {
@@ -1563,7 +1591,7 @@ class JobApplicationsController extends Controller
                 'job_application_id' => $appl->id,
                 'duration' => $request->duration,
                 'interview_file' => $file_name,
-                'reschedule' => ($request->reschedule == true) ? 1 : 0,
+                'reschedule' => ($request->reschedule == 'true') ? 1 : 0,
             ];
 
             $interview = Interview::create($data);

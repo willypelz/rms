@@ -146,7 +146,7 @@
                                                         --}}
                                                     <div class="btn-group" role="group">
 
-                                                        
+
 
 
                                                         <button type="button"
@@ -158,7 +158,7 @@
                                                         </button>
 
 
-                                                        
+
 
                                                         <ul class="dropdown-menu">
                                                             @if($user_role->name == 'admin')
@@ -182,11 +182,11 @@
                                                             </li>
                                                             @endif
 
-                                                            
+
 
                                                         </ul>
 
-                                                          <a class="btn btn-line status-1"
+                                                        <a class="btn btn-line status-1"
                                                            data-toggle="modal"
                                                            data-target="#viewModal"
                                                            id="modalButton"
@@ -194,9 +194,21 @@
                                                            data-view="{{ route('send-bulk-message-modal') }}"
                                                            data-app-id=""
                                                            data-cv=""
-                                                           data-type="normal"> 
+                                                           data-type="normal">
                                                             Send Message to All
                                                          </a>
+
+                                                         <a class="btn btn-line status-1"
+                                                            data-toggle="modal"
+                                                            data-target="#viewModal"
+                                                            id="modalButton"
+                                                            data-title="Interview?"
+                                                            data-view="{{ route('modal-interview-bulk') }}"
+                                                            data-app-id=""
+                                                            data-cv=""
+                                                            data-type="normal">
+                                                             Interview All
+                                                          </a>
                                                     </div>
                                                 </div>
 

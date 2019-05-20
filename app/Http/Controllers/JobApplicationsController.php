@@ -1078,11 +1078,9 @@ class JobApplicationsController extends Controller
                 $files_to_archive[] = $cv_local_file;
             }
         }
-        // dump( $appl->cv->cv_file );
 
         $test_path = "http://seamlesstesting.com/test/combined/pdf/" . $appl->id;
         $test_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' tests.pdf';
-        // Response::download($test_path, $appl->cv->first_name.' '.$appl->cv->last_name. ' tests.pdf');
 
 
         if (@copy($test_path, $test_local_file)) {

@@ -1,5 +1,4 @@
 @if( $result['response']['numFound'] > 0 )
-
     @foreach( @$result['response']['docs'] as $cv )
 
         <?php  $pic = default_color_picture($cv);

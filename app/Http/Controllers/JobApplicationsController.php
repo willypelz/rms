@@ -777,6 +777,70 @@ class JobApplicationsController extends Controller
 
     }
 
+    public function downloadInterviewNotes(Request $request)
+    {
+      foreach ($request->app_ids as $key => $app_id) {
+        $appl = JobApplication::with('job', 'cv')->find($app_id);
+        $jobID = $appl->job->id;
+        check_if_job_owner($jobID);
+
+        $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type',
+            'REVIEW')->where('job_application_id', $appl->id)->get();
+        $notes = InterviewNotes::with('user')->where('job_application_id', $appl->id)->get();
+        $interview_notes = InterviewNoteValues::with('interviewer',
+            'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
+
+        $path = public_path('uploads/tmp/');
+
+        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf->loadHTML(view('modals.inc.dossier-content',
+            compact('applicant_badge', 'app_ids', 'cv_ids', 'jobID', 'appl', 'comments', 'interview_notes'))->render());
+        $pdf->setTemporaryFolder($path);
+        $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' dossier.pdf', true);
+
+
+        $filename = $appl->cv->first_name . ' ' . $appl->cv->last_name . ".zip";
+        $interview_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview-note.pdf';
+        $cv_local_file = @$path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' cv - ' . $appl->cv->cv_file;
+
+        $files_to_archive = [$interview_local_file];
+        //get cv
+        if (!file_exists(public_path('uploads/CVs/') . $appl->cv->cv_file)) {
+            $cv = null;
+        } else {
+            if (is_null($appl->cv->cv_file) or $appl->cv->cv_file == "") {
+                $cv = null;
+            } else {
+                $cv = $appl->cv->cv_file;
+                $cv_file = public_path('uploads/CVs/') . $cv;
+                copy($cv_file, $cv_local_file);
+                $files_to_archive[] = $cv_local_file;
+            }
+        }
+
+        $test_path = "http://seamlesstesting.com/test/combined/pdf/" . $appl->id;
+        $test_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' tests.pdf';
+        // Response::download($test_path, $appl->cv->first_name.' '.$appl->cv->last_name. ' tests.pdf');
+
+
+        if (@copy($test_path, $test_local_file)) {
+            //if test exists
+            if ($test_local_file) {
+                $files_to_archive[] = $test_local_file;
+            }
+
+        }
+        $timestamp = " " . time() . " ";
+
+        $zipper = new \Chumper\Zipper\Zipper;
+        @$zipper->make($path . $timestamp . $filename)->add($files_to_archive)->close();
+      }
+
+
+      return Response::download($path . $timestamp . $filename, $filename,
+          ['Content-Type' => 'application/octet-stream']);
+    }
+
     public function massAction(Request $request)
     {
 
@@ -981,7 +1045,6 @@ class JobApplicationsController extends Controller
 
         $jobID = $appl->job->id;
         check_if_job_owner($jobID);
-
         $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type',
             'REVIEW')->where('job_application_id', $appl->id)->get();
         $notes = InterviewNotes::with('user')->where('job_application_id', $appl->id)->get();
@@ -1015,11 +1078,9 @@ class JobApplicationsController extends Controller
                 $files_to_archive[] = $cv_local_file;
             }
         }
-        // dump( $appl->cv->cv_file );
 
         $test_path = "http://seamlesstesting.com/test/combined/pdf/" . $appl->id;
         $test_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' tests.pdf';
-        // Response::download($test_path, $appl->cv->first_name.' '.$appl->cv->last_name. ' tests.pdf');
 
 
         if (@copy($test_path, $test_local_file)) {
@@ -1067,9 +1128,22 @@ class JobApplicationsController extends Controller
             return $modalVars;
         }
 
-        $step = $request->stepSlug;
-        $stepId = $request->stepId;
-
+        if( count($app_ids) > 1){
+          foreach ($app_ids as $key => $application_id) {
+            $job_application = JobApplication::find($application_id);
+            $applicant_step = $job_application->job->workflow->workflowSteps->where('slug', $job_application->status)->first();
+            if($applicant_step->type != 'interview')
+            {
+              $interview_step_error = $job_application->cv->first_name. " is not on an interview step, pls untick";
+              return view('modals.interview-error', compact('interview_step_error'));
+            }
+            $step = $applicant_step->slug;
+            $stepId = $applicant_step->id;
+          }
+        }else{
+          $step = $request->stepSlug;
+          $stepId = $request->stepId;
+        }
 
         /**
          * [$interviewers get all admins with this permission]
@@ -1084,11 +1158,10 @@ class JobApplicationsController extends Controller
          * @var boolean
          */
         $is_a_reschedule = false;
-        $interview_record = Interview::where('job_application_id', $request->app_id)->get()->last();
+        $interview_record = Interview::whereIn('job_application_id', $app_ids)->get()->last();
         if($interview_record != null){
           $is_a_reschedule = true;
         }
-
         return view('modals.interview', compact('applicant_badge', 'app_ids', 'cv_ids', 'appl', 'step', 'stepId', 'interviewers', 'is_a_reschedule', 'interview_record'));
     }
 
@@ -1542,6 +1615,22 @@ class JobApplicationsController extends Controller
 
     public function inviteForInterview(Request $request)
     {
+      $validator = Validator::make($request->all(), [
+              'interview_file' => 'required',
+              'location' => 'required',
+              'date' => 'required',
+              'message' => 'required',
+              'duration' => 'required',
+              'interviewer_ids' => 'required',
+          ]);
+
+          if ($validator->fails()) {
+            return response()->json([
+              'success' => false,
+              'errors' => $validator->getMessageBag()->toArray(),
+            ]);
+          }
+
         $appls = JobApplication::with('cv', 'job', 'job.company')->whereIn('id', $request->app_ids)->get();
 
         foreach ($appls as $key => $appl) {
@@ -1563,7 +1652,7 @@ class JobApplicationsController extends Controller
                 'job_application_id' => $appl->id,
                 'duration' => $request->duration,
                 'interview_file' => $file_name,
-                'reschedule' => ($request->reschedule == true) ? 1 : 0,
+                'reschedule' => ($request->reschedule == 'true') ? 1 : 0,
             ];
 
             $interview = Interview::create($data);

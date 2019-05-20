@@ -365,6 +365,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'download-applicant-cv',
         ['uses' => 'JobApplicationsController@downloadApplicantCv', 'as' => 'download-applicant-cv']);
 
+    Route::match(['get', 'post'], 'download-interview-notes',
+        ['uses' => 'JobApplicationsController@downloadInterviewNotes', 'as' => 'download-interview-notes']);
+
     Route::post('job/applicant/mass-action', ['uses' => 'JobApplicationsController@massAction', 'as' => 'mass-action']);
     Route::post('job/applicant/write-review',
         ['uses' => 'JobApplicationsController@writeReview', 'as' => 'write-review']);
@@ -650,6 +653,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('modal/reject', ['as' => 'modal-reject', 'uses' => 'JobApplicationsController@modalReject']);
 
     Route::get('modal/interview', ['as' => 'modal-interview', 'uses' => 'JobApplicationsController@modalInterview']);
+    Route::get('modal/interview/bulk', ['as' => 'modal-interview-bulk', 'uses' => 'JobApplicationsController@modalInterview']);
     // Route::get('modal/interview-notes', [ 'as' => 'modal-interview-notes', 'uses' => 'JobApplicationsController@modalInterviewNotes' ]);
 
     Route::get('modal/interview-notes',

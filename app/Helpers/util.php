@@ -679,16 +679,17 @@ function checkForBothPermissions($job_id) {
 
 function getUserPermissions() {
 
-	    $roles = auth()->user()->roles;
+    $roles = auth()->user()->roles;
 
-        $perm_array = [];
+    $perm_array = [];
 
-        foreach ($roles as $role) {
-            foreach ($role->perms as $permission) {
-                $perm_array[] = $permission->name;
-            }
+    foreach ($roles as $role) {
+        foreach ($role->perms as $permission) {
+            $perm_array[] = $permission->name;
         }
-	    return !empty($perm_array) ?  array_unique($perm_array) : null;
+    }
+    return !empty($perm_array) ?  array_unique($perm_array) : null;
+    
 }
 
 /**

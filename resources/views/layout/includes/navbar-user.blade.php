@@ -46,14 +46,13 @@
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown">Jobs <i
                                 class="fa fa-caret-down fa-fw"></i></a>
                     <ul class="dropdown-menu">
-                        @if(in_array ('can-view-job', $perms))
+                        @if($user->is_super_admin)
                         <li class="{{ Request::is('my-jobs*') ? 'active' : '' }}">
                             <a class="" href="{{ url('my-jobs') }}">
                                 <i class="fa fa-briefcase fa-fw"></i>
-                                All Job
+                                All Jobs
                             </a>
                         </li>
-                        @if($user_role->name == 'admin' || $user_role->name == 'commenter' )
                         <li>
                             <a href="{{ route('workflow') }}">
                                 <i class="fa fa-chain fa-fw"></i>
@@ -66,27 +65,13 @@
                                 Interview Note Templates
                             </a>
                         </li>
-                        @endif
-                        @if($user_role->name == 'admin')
                          <li>
                             <a href="{{ route('settings-embed') }}">
                                 <i class="fa fa-code fa-fw"></i>
                                 Embed
                             </a>
                         </li>
-                        @endif
-                        @endif
-                        @php
-                            $user = auth()->user()->load('roles');
-                        @endphp
-                        @if($user->roles() && $user->roles()->first()->name == 'admin')
-                        <li>
-                            <a href="{{ route('change-admin-role') }}">
-                                <i class="fa fa-user fa-fw"></i>
-                                Manage Roles
-                            </a>
-                        </li>
-                        @endif
+
                     <!-- <li class="{{ Request::is('cv/purchased') ? 'active' : '' }}"><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li> -->
                     <!-- <li class="{{ Request::is('cv/saved') ? 'active' : '' }}"><a href="{{ url('cv/saved') }}">Saved Cvs</a></li> -->
                     <!-- <li class="{{ Request::is('cv/purchased') ? 'active' : '' }}"><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li> -->
@@ -94,12 +79,13 @@
                 </li>
                 
                 <li class="">
-                    <a @if(!in_array ('can-view-job', $perms) || !checkIfUserHasCompanyPermission()) disabled @endif class="" href="{{ url('my-career-page') }}" target="_blank">My Career Page <i
+                    <a class="" href="{{ url('my-career-page') }}" target="_blank">My Career Page <i
                                 class="fa fa-building mask"></i></a>
                 </li>
-                
-                
-                <!--li class="">
+            @endif
+
+
+            <!--li class="">
                     <a class="" href="">Mail <span class="badge badge-danger animated bounce">3</span></a>
                 </li-->
             

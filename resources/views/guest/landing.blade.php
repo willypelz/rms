@@ -52,7 +52,7 @@
 
                 @forelse($jobs as $job)
                 <div class="job-card">
-                    <h5 class="dark-blue-text font-weight-bold font-16">{{ $job->title }}</h5>
+                    <a href="#"><h5 class="dark-blue-text font-weight-bold font-16">{{ $job->title }}</h5></a>
                     <p class="mb-2 job-card-content"> {!! str_limit(str_replace('<p>', '', $job->details), 150) !!} </p>
                     <div class="d-flex align-items-center">
                         <span class="d-flex align-items-center">

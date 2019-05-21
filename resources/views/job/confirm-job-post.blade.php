@@ -76,8 +76,8 @@
                                         <br>
                                     </div>
                                     <div class="col-sm-4">
-                                        <div>JOB SPECIALIZATION <span class="text-danger">*</span></div>
-                                        <h4 class="no-margin-bottom text-dark"> @foreach($job_specializations as $specilization) {{ $specilization }}  @endforeach...</h4>
+                                        <div>JOB WORKFLOW <span class="text-danger">*</span></div>
+                                        <h4 class="no-margin-bottom text-dark">{{ $job->workflow->name }}</h4>
                                         <br>
                                     </div>
                                     <div class="col-sm-4"> </div>
@@ -88,9 +88,14 @@
                                         <br>
                                     </div>
 
-                                    <div class="col-sm-4">
-                                        <div>JOB WORKFLOW <span class="text-danger">*</span></div>
-                                        <h4 class="no-margin-bottom text-dark">{{ $job->workflow->name }}</h4>
+                                    <div class="col-sm-12">
+                                        <div>JOB SPECIALIZATION <span class="text-danger">*</span></div>
+                                        <h4 class="no-margin-bottom text-dark">
+                                            @foreach($job_specializations as $key => $specialization)
+                                                @if($key < count($job_specializations)-1){{ $specialization.', ' }}
+                                                @else {{ $specialization.'.' }} @endif
+                                            @endforeach
+                                        </h4>
                                         <br>
                                     </div>
                                     <div class="col-sm-12">
@@ -104,8 +109,6 @@
                                     </div>
                                     <br>
 
-
-
                                 </div>
 
                                 <br>
@@ -113,12 +116,13 @@
                                     <i class="fa fa-circle-thin fa-stack-2x"></i>
                                     <span class="fa-stack-1x">2</span>
                                 </p>
+                                <h3 class="no-margin">Default Fields</h3>
+                                <br>
+
                                 <div class="row">
-                                    <br>
-                                    <h3>Default Fields</h3>
-                                    <br>
+
                                     @foreach($selected_fields as $key => $field)
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <p>
                                             @if($field->is_required)
                                                 <i class="text-success fa fa-check"></i>
@@ -129,7 +133,7 @@
                                         </p>
                                     </div>
                                     @endforeach
-                                    
+
                                 </div>
 
                                 <div class="row">
@@ -143,16 +147,16 @@
                                             </div>
                                         @endforeach
                                     @endif
-                                    
+
                                 </div>
-                               
-                               
+
+
                             </div>
                             <div class="row">
                                 <div class="col-xs-12">
                                     <hr>
                                 </div>
-                                
+
                                 <div class="col-xs-7">
                                     <a href="{{ route('continue-draft', $job->id) }}" type="submit" id="previousStep" class="btn job-posting-text-dark">
                                         <i class="fa fa-arrow-left"></i>
@@ -203,5 +207,5 @@
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
     <div class="separator separator-small"></div>
 
-    
+
 @endsection

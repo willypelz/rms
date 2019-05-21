@@ -16,12 +16,12 @@
                                 <p>Fill in your job requirements</p>
 
                                 @if ($errors->any())
-                                <ul class="alert alert-danger">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            @endif
+                                    <ul class="alert alert-danger">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                @endif
                             </div>
                             <div class="col-sm-6">
                                 <div class="row progress-tabs">
@@ -54,17 +54,18 @@
                                 </div>
                             </div>
                             <br>
+                            <form action="{{ route('job-draft') }}" class="job-details" id="myForm"
+                                  role="job-details" method="post">
+                                <div class="col-md-8 col-md-offset-2">
+                                    <!-- <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio voluptatibus magni officiis id error numquam.</p> -->
 
-                            <div class="col-md-8 col-md-offset-2">
-                                <!-- <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio voluptatibus magni officiis id error numquam.</p> -->
-                                <form action="{{ route('job-draft') }}" class="job-details" id="myForm" role="job-details" method="post">
 
                                     <div class="text-center">
                                         <h4>Add your job description details here</h4>
                                         <br>
                                     </div>
 
-                                     @php
+                                    @php
                                         $job_type = NULL;
                                         $job_title = NULL;
                                         $job_summary = NULL;
@@ -99,7 +100,8 @@
                                                 <label for="job-loc">Job Title
                                                     <span style="color:red" class="text-danger">*</span>
                                                 </label>
-                                                <input type="text" name="title" value="{{ $job_title }}" id="job_title" class="form-control" required>
+                                                <input type="text" name="title" value="{{ $job_title }}" id="job_title"
+                                                       class="form-control" required>
                                                 <small>e.g. Marketer at {{ get_current_company()->name }}</small>
                                             </div>
 
@@ -109,7 +111,7 @@
 
                                     <input type="hidden" name="job_id" value="{{ $jobId }}">
 
-                                    
+
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-6">
@@ -131,15 +133,16 @@
                                             </div>
 
                                             <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
-                                            
-                                           
+
+
                                             <div class="col-sm-6">
                                                 <label for="job-title">Job Type <span class="text-danger">*</span>
                                                 </label>
 
-                                                <select name="job_type" id="job_level" required type="text" class="form-control job_type" >
+                                                <select name="job_type" id="job_level" required type="text"
+                                                        class="form-control job_type">
                                                     <option value=""> --Choose--</option>
-                                                      <option value="full-time"
+                                                    <option value="full-time"
                                                             @if ($job_type == 'full-time') selected="selected" @endif>
                                                         Full-Time
                                                     </option>
@@ -179,9 +182,9 @@
                                                 <label for="job-loc">Position
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                 <input type="text" name="position" class="form-control position"
-                                                   value="{{ $job_position }}"
-                                                   required>
+                                                <input type="text" name="position" class="form-control position"
+                                                       value="{{ $job_position }}"
+                                                       required>
                                                 <small>e.g. Associate Marketer</small>
                                             </div>
 
@@ -196,25 +199,8 @@
                                                      <option @if ($eligibilty == 'internal') selected="selected" @endif value="internal"> INTERNAL STAFF </option>
                                                      <option @if ($eligibilty == 'external') selected="selected" @endif value="external"> EXTERNAL STAFF </option>
                                                  </select>
-                                                <small>e.g. Associate Marketer</small>
                                             </div>
 
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <label for="job-title">Job Specialization
-                                                    <span class="text-danger">*</span>
-                                                </label>
-                                                <br>
-                                                <select name="specializations[]" id="specialization" multiple required
-                                                        class="select2" style="width: 303px;">
-                                                    @foreach($specializations as $s)
-                                                        <option value="{{ $s->id }}" {{ ( in_array($s->id, $job_specilizations) ) ? 'selected="selected"' : '' }}>{{ $s->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
                                             <div class="col-sm-6">
                                                 <label for="job-title">Expiry Date <span class="text-danger">*</span>
                                                 </label>
@@ -228,8 +214,22 @@
                                         </div>
                                     </div>
 
-
-
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label for="job-title">Job Specialization
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <br>
+                                                <select name="specializations[]" id="specialization" multiple required
+                                                        class="select2" style="width: 100%;">
+                                                    @foreach($specializations as $s)
+                                                        <option value="{{ $s->id }}" {{ ( in_array($s->id, $job_specilizations) ) ? 'selected="selected"' : '' }}>{{ $s->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="form-group">
                                         <div class="row">
@@ -291,38 +291,39 @@
                                             </div>
                                         </div>
                                     </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <hr>
                                 </div>
-                                <div class="col-xs-7" >
-                                    <a style="display: none;" href="/jobs/create-step2" type="submit" id="previous_step" class="btn job-posting-text-dark">
-                                        <i class="fa fa-arrow-left"></i>
-                                        Previous step
-                                    </a>
-                                </div>
-                                <div class="col-xs-5">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <a id="SaveDraft" data-toggle="modal" data-target="#savedAsDraft" class="btn btn-primary btn-block">
-                                                Save and continue later
-                                            </a>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <button id="post-job-next-btn" type="submit" class="btn btn-success btn-block">
-                                                Next
-                                            </button>
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <hr>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <a style="display: none;" href="/jobs/create-step2" type="submit"
+                                           id="previous_step"
+                                           class="btn job-posting-text-dark">
+                                            <i class="fa fa-arrow-left"></i>
+                                            Previous step
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <a id="SaveDraft" data-toggle="modal" data-target="#savedAsDraft"
+                                                   class="btn btn-primary btn-block">
+                                                    Save and continue later
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <button id="post-job-next-btn" type="submit"
+                                                        class="btn btn-success btn-block">
+                                                    Next
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="separator separator-small"></div>
                                 </div>
-                                <div class="separator separator-small"></div>
-                            </div>
-
-                                </form>
-
+                            </form>
 
                             <div class="clearfix"></div>
 
@@ -356,42 +357,44 @@
 
     <script type="text/javascript">
 
-        function checkIfWorkFlowIsSelected(){
-            getWorkFlowSteps($('#workflowId').val());
+    function checkIfWorkFlowIsSelected () {
+        getWorkFlowSteps($('#workflowId').val())
+    }
+
+    checkIfWorkFlowIsSelected()
+
+    $('#workflowId').on('change', function () {
+        getWorkFlowSteps(this.value)
+    })
+
+    function getWorkFlowSteps (Id) {
+        if (Id.length) {
+            var url = "{{ url('settings/workflow/steps/view') }}/" + Id
+            $.ajax({
+                url: url,
+                type: 'GET', success: function (res) {
+                    $('#showWorkFlowSteps').html(res)
+                },
+            })
+        } else {
+            $('#showWorkFlowSteps').html('')
         }
+    }
 
-            checkIfWorkFlowIsSelected();
+    // Field ID and FieldName
+    function isFormValid (fieldId, fieldName) {
 
-        
-        $('#workflowId').on('change', function() {
-            getWorkFlowSteps(this.value);
-        });
-
-        function getWorkFlowSteps(Id) {
-            if(Id.length){
-                var url = "{{ url('settings/workflow/steps/view') }}/"+Id;
-                  $.ajax({ url: url,
-                    type:'GET', success:function(res){
-                        $('#showWorkFlowSteps').html(res);
-                    } 
-                 });
-            }else{
-                $('#showWorkFlowSteps').html('');
-            }
+        if (fieldId == null || fieldId == '') {
+            alert(fieldName + ' must be filled')
+            return false
         }
+        return true
+    }
 
-       
-        // Field ID and FieldName
-        function isFormValid(fieldId, fieldName) {
-            
-            if (fieldId == null || fieldId == "") {
-                alert(fieldName+" must be filled");
-                return false;
-            }
-            return true;
-        }
+    $('#SaveDraft').click(function (e) {
+        e.preventDefault()
 
-
+<<<<<<< HEAD
         $('#SaveDraft').click(function (e) {
             e.preventDefault();
 
@@ -461,10 +464,71 @@
 
 
         });
+=======
+        var title = $('#job_title').val()
+        if (title == null || title == '') {
+            alert('Title must be filled')
+            return false
+        }
+        var details = editor.getData()
+        if (details == null || details == '') {
+            alert('details must be filled')
+            return false
+        }
+>>>>>>> RMS-Updates---May-2019
 
+        var location = $('.job_location option:selected').val()
+        if (location == null || location == '') {
+            alert('location must be filled')
+            return false
+        }
 
-        var editor = CKEDITOR.replace('editor1');
-        var exp = CKEDITOR.replace('editor3');
+        var token = $('#token').val()
+        var url = "{{ route('job-draft') }}"
+
+        var specializations = $('#specialization').val()
+
+        var location = $('.job_location option:selected').val()
+        var job_type = $('.job_type option:selected').val()
+        var position = $('.position').val()
+        var expiry_date = $('.expiry_date').val()
+        var workflowId = $('#workflowId').val()
+        var experience = exp.getData()
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                title: title,
+                details: details,
+                location: location,
+                job_type: job_type,
+                position: position,
+                expiry_date: expiry_date,
+                experience: experience,
+                specializations: specializations,
+                workflow_id: workflowId,
+                job_id: "{{ $jobId }}",
+                is_ajax: 'true',
+            },
+            success: function (res) {
+                if (res.status == 200) {
+
+                    if (!res.is_update) {
+                        setTimeout(function () { window.location.href = res.redirect_url }, 1200)
+                    } else {
+
+                    }
+
+                }
+            },
+        })
+
+    })
+
+    var editor = CKEDITOR.replace('editor1')
+    var exp = CKEDITOR.replace('editor3')
 
     </script>
 @endsection

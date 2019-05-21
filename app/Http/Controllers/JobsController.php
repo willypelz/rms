@@ -512,12 +512,15 @@ class JobsController extends Controller
                 $jb->update($job_data);
             }
 
+
             if($request->specializations){
                 $job->specializations()->detach();
                 foreach ($request->specializations as $e) {
                     $job->specializations()->attach($e);
                 }
             }
+
+            $job->users()->attach(Auth::id());
 
 
             if(!isset($request->is_ajax))
@@ -1313,6 +1316,7 @@ class JobsController extends Controller
             'companies.jobs'
         ])->where('id', Auth::user()->id)
             ->first();
+
         $company = get_current_company();
 
         $jobsOrm = $company->jobs()->with([
@@ -1320,6 +1324,7 @@ class JobsController extends Controller
                 return $q->orderBy('order', 'asc');
             }
         ]);
+
         $jobs = $jobsOrm->orderBy('created_at', 'desc');
 
         $job_access = Job::where('company_id', $company->id)->whereHas('users', function ($q) use ($user) {

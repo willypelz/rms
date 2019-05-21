@@ -449,7 +449,7 @@
                             if(res.status == 200){
 
                                 if(!res.is_update){
-                                    setTimeout(function(){ window.location.href = res.redirect_url; }, 1200);
+                                    setTimeout(function(){ window.location.href = res.redirect_url; }, 2000);
                                 }else{
 
                                 }

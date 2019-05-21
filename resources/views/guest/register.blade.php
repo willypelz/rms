@@ -93,7 +93,7 @@
 
                    <div class="job-card">
                        <a href="{{ route('job-view', [$job->id, $job->slug]) }}"><h5 class="dark-blue-text font-weight-bold font-16">{{ $job->title }}</h5></a>
-                       <p class="mb-2 job-card-content"> {!! str_limit(str_replace('<p>', '', $job->details), 150) !!} </p>
+                       <p class="mb-2 job-card-content"> {{ $job->summary }} </p>
                        <div class="d-flex align-items-center">
                            <span class="d-flex align-items-center">
                                <img src="{{ asset('homepage/images/icon-clock-three.svg') }}" class="mr-1">

@@ -22,6 +22,7 @@ class Job extends Model
      */
     protected $fillable = [
         'title',
+        'summary',
         'details',
         'company_id',
         'workflow_id',

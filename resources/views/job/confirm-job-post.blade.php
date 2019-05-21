@@ -188,7 +188,7 @@
                                                 <i class="fa fa-check text-success fa-4x"></i>
                                                 <h5>Your job posting has been saved as draft</h5>
                                                 <div class="pad-ft">
-                                                    <button class="btn btn-success">Go to your Dashboard</button>
+                                                    <a href="{{ route('dashboard') }}" class="btn btn-success">Go to your Dashboard</a>
                                                 </div>
                                             </div>
 

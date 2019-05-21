@@ -53,10 +53,10 @@
                     <h4 class="dark-blue-text font-weight-bold ml-3">Job’s you might be interested in</h4>
                 </div>
 
-                @forelse($jobs as $job)
 
+                @forelse($jobs as $job)
                     <div class="job-card">
-                        <a href="#"><h5 class="dark-blue-text font-weight-bold font-16">{{ $job->title }}</h5></a>
+                        <a href="{{ route('job-view', [$job->id, $job->slug]) }}"><h5 class="dark-blue-text font-weight-bold font-16">{{ $job->title }}</h5></a>
                         <p class="mb-2 job-card-content"> {!! str_limit(str_replace('<p>', '', $job->details), 150) !!} </p>
                         <div class="d-flex align-items-center">
                             <span class="d-flex align-items-center">
@@ -79,7 +79,7 @@
                 @endforelse
 
 
-                <p class="text-center dark-blue-text font-weight-bold">To see more job postings, create an account</p>
+                <p class="text-center dark-blue-text font-weight-bold">To see more job postings, <a href="{{ url('register') }}">create an account </a> </p>
             </section>
         </div>
     </div>

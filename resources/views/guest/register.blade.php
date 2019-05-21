@@ -15,7 +15,7 @@
                 <p>We are an equal opportunity employer. All stages of the employment process will be based on merit, competence, performance and business needs.</p>
 
                 <div class="shr-auth-form-toggle">
-                        <a href="{{ route('candidate-login') }}" class="toggle-button">Log in to our account</a>
+                        <a href="{{ route('candidate-login') }}" class="toggle-button">Log in to your account</a>
                         <a href="" class="toggle-button active">Create an account</a>
                 </div>
 
@@ -88,10 +88,11 @@
                     <h4 class="dark-blue-text font-weight-bold ml-3">Job’s you might be interested in</h4>
                 </div>
 
+
                @forelse($jobs as $job)
 
                    <div class="job-card">
-                       <a href="#"><h5 class="dark-blue-text font-weight-bold font-16">{{ $job->title }}</h5></a>
+                       <a href="{{ route('job-view', [$job->id, $job->slug]) }}"><h5 class="dark-blue-text font-weight-bold font-16">{{ $job->title }}</h5></a>
                        <p class="mb-2 job-card-content"> {!! str_limit(str_replace('<p>', '', $job->details), 150) !!} </p>
                        <div class="d-flex align-items-center">
                            <span class="d-flex align-items-center">

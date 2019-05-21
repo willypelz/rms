@@ -68,22 +68,26 @@
                                     @php
                                         $job_type = NULL;
                                         $job_title = NULL;
+                                        $job_summary = NULL;
                                         $job_location = NULL;
                                         $job_position = NULL;
                                         $expiry_date = NULL;
                                         $workflowId = NULL;
                                         $details = NULL;
                                         $experience = NULL;
+                                        $eligibilty = NULL;
                                         $jobId = NULL;
                                         if(!is_null($job)){
                                             $job_type = $job->job_type;
                                             $job_title = $job->title;
+                                            $job_summary = $job->summary;
                                             $job_position = $job->position;
                                             $job_location = $job->location;
                                             $expiry_date = $job->expiry_date;
                                             $workflowId = $job->workflow_id;
                                             $details = $job->details;
                                             $experience = $job->experience;
+                                            $eligibilty = $job->is_for;
                                             $jobId = $job->id;
                                         }
 
@@ -158,6 +162,20 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                     <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label for="job-loc">Job Summary
+                                                    <span style="color:red" class="text-danger">*</span>
+                                                </label>
+                                                <textarea id="job_summary" class="form-control"  required=""> {{ $job_summary }}</textarea>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-6">
@@ -168,6 +186,19 @@
                                                        value="{{ $job_position }}"
                                                        required>
                                                 <small>e.g. Associate Marketer</small>
+                                            </div>
+
+
+                                             <div class="col-sm-6">
+                                                <label for="job-loc">Eligibility
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                 <select class="form-control" id="is_for" name="is_for" >
+                                                     <option value=""> --choose eligibilty -- </option>
+                                                     <option @if ($eligibilty == 'both') selected="selected" @endif  value="both"> BOTH </option>
+                                                     <option @if ($eligibilty == 'internal') selected="selected" @endif value="internal"> INTERNAL STAFF </option>
+                                                     <option @if ($eligibilty == 'external') selected="selected" @endif value="external"> EXTERNAL STAFF </option>
+                                                 </select>
                                             </div>
 
                                             <div class="col-sm-6">
@@ -305,7 +336,7 @@
                                                 <i class="fa fa-check text-success fa-4x"></i>
                                                 <h5>Your job posting has been saved as draft</h5>
                                                 <div class="pad-ft">
-                                                    <button class="btn btn-success">Go to your Dashboard</button>
+                                                    <a href="{{ route('dashboard') }}" class="btn btn-success">Go to your Dashboard</a>
                                                 </div>
                                             </div>
 
@@ -360,69 +391,77 @@
         return true
     }
 
-    $('#SaveDraft').click(function (e) {
-        e.preventDefault()
 
-        var title = $('#job_title').val()
-        if (title == null || title == '') {
-            alert('Title must be filled')
-            return false
-        }
-        var details = editor.getData()
-        if (details == null || details == '') {
-            alert('details must be filled')
-            return false
-        }
+        $('#SaveDraft').click(function (e) {
+            e.preventDefault();
 
-        var location = $('.job_location option:selected').val()
-        if (location == null || location == '') {
-            alert('location must be filled')
-            return false
-        }
+                
+            var title = $('#job_title').val();
+            if (title == null || title == "") {
+                alert("Title must be filled");
+                return false;
+            }
 
-        var token = $('#token').val()
-        var url = "{{ route('job-draft') }}"
+            var summary = $('#job_summary').val();
+            if (summary == null || summary == "") {
+                alert("Summary must be filled");
+                return false;
+            }
 
-        var specializations = $('#specialization').val()
+            var details = editor.getData();
+            if (details == null || details == "") {
+                alert("details must be filled");
+                return false;
+            }
 
-        var location = $('.job_location option:selected').val()
-        var job_type = $('.job_type option:selected').val()
-        var position = $('.position').val()
-        var expiry_date = $('.expiry_date').val()
-        var workflowId = $('#workflowId').val()
-        var experience = exp.getData()
+            var eligibilty = $('#is_for').val();
+            if (eligibilty == null || eligibilty == "") {
+                alert("Eligibility must be selected");
+                return false;
+            }
 
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}',
-                title: title,
-                details: details,
-                location: location,
-                job_type: job_type,
-                position: position,
-                expiry_date: expiry_date,
-                experience: experience,
-                specializations: specializations,
-                workflow_id: workflowId,
-                job_id: "{{ $jobId }}",
-                is_ajax: 'true',
-            },
-            success: function (res) {
-                if (res.status == 200) {
 
-                    if (!res.is_update) {
-                        setTimeout(function () { window.location.href = res.redirect_url }, 1200)
-                    } else {
+            var location = $('.job_location option:selected').val();
+            if (location == null || location == "") {
+                alert("location must be filled");
+                return false;
+            }
 
-                    }
+            var workflowId = $('#workflowId').val();
+            if (workflowId == null || workflowId == "") {
+                alert("Workflow must be selected");
+                return false;
+            }
 
-                }
-            },
-        })
+            var token = $('#token').val();
+            var url = "{{ route('job-draft') }}";
 
-    })
+            var specializations = $('#specialization').val();
+
+            var job_type = $('.job_type option:selected').val();
+            var position = $('.position').val();
+            var expiry_date = $('.expiry_date').val();
+            var experience = exp.getData();
+
+             $.ajax({ url: url,
+                    type:'POST',
+                    data: { _token: '{{ csrf_token() }}', title: title, details: details, location: location, job_type: job_type, position: position, expiry_date: expiry_date, experience: experience, specializations:specializations, workflow_id:workflowId, job_id:"{{ $jobId }}", eligibilty:eligibilty, summary:summary, is_ajax:'true' },
+                         success:function(res){
+                            if(res.status == 200){
+
+                                if(!res.is_update){
+                                    setTimeout(function(){ window.location.href = res.redirect_url; }, 1200);
+                                }else{
+
+                                }
+                                
+                            }
+                    } 
+                 });
+
+
+        });
+
 
     var editor = CKEDITOR.replace('editor1')
     var exp = CKEDITOR.replace('editor3')

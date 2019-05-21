@@ -100,6 +100,7 @@ class HomeController extends Controller
 
       public function register(Request $request)
     {
+
         $redirect_to = $request->redirect_to;
         $jobs = Job::whereStatus('ACTIVE')->take('3')->orderBy('id', 'desc')->get();
 

@@ -483,18 +483,6 @@ class JobsController extends Controller
 
          if ($request->isMethod('post')) {
 
-            $this->validate($request, [
-                'title' => 'required',
-                'location' => 'required',
-                'details' => 'required',
-                'job_type' => 'required',
-                'position' => 'required',
-                'expiry_date' => 'required',
-                'workflow_id' => 'required|integer',
-                'experience' => 'required',
-            ]);
-
-
             $company = get_current_company();
 
             $job_data = [
@@ -535,7 +523,7 @@ class JobsController extends Controller
             if(!isset($request->is_ajax))
                 return redirect()->route('continue-draft', $job->id);
             else
-                $redirect_url = route('create-job', $job->id);
+                $redirect_url = route('job-list');
 
 
             if($job){

@@ -163,22 +163,9 @@
                                         </div>
                                     </div>
 
-                                     <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label for="job-loc">Job Summary
-                                                    <span style="color:red" class="text-danger">*</span>
-                                                </label>
-                                                <textarea id="job_summary" class="form-control"  required=""> {{ $job_summary }}</textarea>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-12">
                                                 <label for="job-loc">Position
                                                     <span class="text-danger">*</span>
                                                 </label>
@@ -258,6 +245,18 @@
                                                        class="form-control"
                                                        style="width: 100%;">
                                             </div>
+                                        </div>
+                                    </div>
+
+                                     <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label for="job-loc">Job Summary
+                                                    <span style="color:red" class="text-danger">*</span>
+                                                </label>
+                                                <textarea id="job_summary" class="form-control"  required=""> {{ $job_summary }}</textarea>
+                                            </div>
+
                                         </div>
                                     </div>
 

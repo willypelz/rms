@@ -479,7 +479,7 @@ class JobsController extends Controller
 
     public function SaveJob(Request $request)
     {
-        
+
         $is_update = false;
 
          if ($request->isMethod('post')) {
@@ -494,7 +494,7 @@ class JobsController extends Controller
                 'workflow_id' => 'required|integer',
                 'experience' => 'required',
             ]);
-           
+
 
             $company = get_current_company();
 
@@ -586,7 +586,7 @@ class JobsController extends Controller
                 if ($resp['status']) {
                     return redirect($callback_url);
                 }
-               
+
                 return view('utils.staffstrength_data', compact('job_link', 'callback_url', 'requisition_id', 'api_key'));
             }
 
@@ -624,13 +624,13 @@ class JobsController extends Controller
         $selected_fields = json_decode($job->fields);
         $selected_form_fields = $job->form_fields;
 
-        $job_specializations = $job->specializations->take(1)->pluck('name');
+        $job_specializations = $job->specializations->take(50)->pluck('name');
 
         return view('job.confirm-job-post', compact('job', 'selected_fields', 'job_specializations', 'selected_form_fields'));
     }
 
     public function continueJob(Request $request, $id)
-    {   
+    {
 
         $job = Job::with('form_fields')->find($id);
 
@@ -638,7 +638,7 @@ class JobsController extends Controller
         $selected_fields = json_decode($job->fields);
         $selected_form_fields = $job->form_fields;
 
-        
+
         if($request->isMethod('post')){
 
             // Saving default fields attributes
@@ -869,7 +869,7 @@ class JobsController extends Controller
                 if ($resp['status']) {
                     return redirect($callback_url);
                 }
-               
+
                 return view('utils.staffstrength_data', compact('job_link', 'callback_url', 'requisition_id', 'api_key'));
             }
 
@@ -893,7 +893,7 @@ class JobsController extends Controller
 
 
     public function createJob(Request $request, $id='')
-    {   
+    {
 
         if(!empty($id)){
             $job = Job::with('specializations')->find($id);
@@ -1133,7 +1133,7 @@ class JobsController extends Controller
         return view('job.success-old', compact('job', 'insidify_url', 'subscribed_boards', 'approved_count', 'pending_count', 'all_job_boards', 'subscribed_boards_id'));
     }
 
-    
+
 
     public function Advertise($jobid, $slug = null)
     {

@@ -11,15 +11,12 @@
 
                 <div class="shr-auth-form-inner">
                     <h2 class="dark-blue-text font-weight-bold">Welcome candidate</h2>
-                    <p>We are equal opportunity employer. All aspects of employment will be based on merit, competence, performance, and business needs.</p>
-                    <h4 class="mt-4 dark-blue-text font-weight-bold">Access our candidate portal</h4>
+                    <p>We are an equal opportunity employer. All stages of the employment process will be based on merit, competence, performance and business needs.</p>
 
                     <div class="shr-auth-form-toggle">
                         <a href="" class="toggle-button active">Log in to your account</a>
                         <a href="{{ route('candidate-register') }}" class="toggle-button">Create an account</a>
                     </div>
-
-                    <p class="my-2 dark-blue-text font-16">Log in to get access into your account.</p>
 
                       @include('layout.alerts')
 
@@ -66,6 +63,18 @@
                     </div>
                 </div>
                 @endforeach
+
+                @if(count($jobs) <= 2)
+                    @foreach(range(0, 2 - count($jobs)) as $i)
+                        <div class="job-card">
+                            <div class="py-4 text-center">
+                                <img src="images/icon-briefcase.svg" class="mr-1 my-2">
+                                <h5 class="font-16 mb-3">No job listings</h5>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
+
 
                 <p class="text-center dark-blue-text font-weight-bold">To see more job postings, create an account</p>
             </section>

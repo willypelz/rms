@@ -5,23 +5,20 @@
     }
 </style>
 @section('content')
-  
+
   <div class="container-fluid shr-auth">
         <div class="row">
-        
+
             <section class="col shr-auth-form">
                 <img src="{{ env('APP_LOGO') }}" class="shr-auth-logo">
                 <h2 class="dark-blue-text font-weight-bold">Welcome candidate</h2>
-                <p>We are equal opportunity employer. All aspects of employment will be based on merit, competence, performance, and business needs.</p>
-                <h4 class="mt-4 dark-blue-text font-weight-bold">Access our candidate portal</h4>
-                
+                <p>We are an equal opportunity employer. All stages of the employment process will be based on merit, competence, performance and business needs.</p>
+
                 <div class="shr-auth-form-toggle">
                         <a href="{{ route('candidate-login') }}" class="toggle-button">Log in to our account</a>
                         <a href="" class="toggle-button active">Create an account</a>
                 </div>
-                
-                <p class="my-1 dark-blue-text">Create an account to get access into the portal.</p>
-                
+
                 <form action="" method="POST">
                         @include('layout.alerts')
 
@@ -30,7 +27,7 @@
                         <div class="shr-input-group">
                             <img src="{{ asset('homepage/images/icon-user.svg') }}" class="shr-input-group-addon">
                             <input name="first_name" type="text" class="shr-input" placeholder="Enter your first name" value="{{ old('first_name') }}">
-                            
+
                         </div>
                         @if ($errors->has('first_name'))
                             <span class="help-block">
@@ -57,7 +54,7 @@
                         <div class="shr-input-group">
                             <img src="{{ asset('homepage/images/icon-envelope-alt.svg') }}" class="shr-input-group-addon">
                             <input type="email" name="email" class="shr-input" placeholder="Enter your email">
-                            
+
                         </div>
                         @if ($errors->has('email'))
                                 <span class="help-block">
@@ -72,7 +69,7 @@
                         <div class="shr-input-group">
                             <img src="{{ asset('homepage/images/icon-lock-alt.svg') }}" class="shr-input-group-addon">
                             <input type="password" name="password" class="shr-input" placeholder="Enter a password">
-                            
+
                         </div>
                         @if ($errors->has('password'))
                                 <span class="help-block">
@@ -84,7 +81,7 @@
                     <button type="submit" class="btn btn-block shr-auth-form-button">Create your account</button>
                 </form>
             </section>
-            
+
            <section class="col shr-auth-jobs">
                 <div class="d-flex align-items-center mb-3">
                     <img src="{{ asset('homepage/images/icon-jobs.svg') }}">
@@ -104,6 +101,17 @@
                     </div>
                 </div>
                 @endforeach
+
+               @if(count($jobs) <= 2)
+                   @foreach(range(0, 2 - count($jobs)) as $i)
+                       <div class="job-card">
+                           <div class="py-4 text-center">
+                               <img src="images/icon-briefcase.svg" class="mr-1 my-2">
+                               <h5 class="font-16 mb-3">No job listings</h5>
+                           </div>
+                       </div>
+                   @endforeach
+               @endif
 
                 <p class="text-center dark-blue-text font-weight-bold">To see more job postings, create an account</p>
             </section>

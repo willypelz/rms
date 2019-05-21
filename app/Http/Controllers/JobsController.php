@@ -457,12 +457,11 @@ class JobsController extends Controller
             $status = false;
             $job_team_invite->is_declined = true;
             $job_team_invite->save();
-
         }
 
 
-        return view('job.decline-invite', compact('company', 'job', 'status'));
 
+        return view('job.decline-invite', compact('company', 'job', 'status'));
     }
 
     public function JobTeamDecline(Request $request)
@@ -484,16 +483,16 @@ class JobsController extends Controller
 
          if ($request->isMethod('post')) {
 
-            $this->validate($request, [
-                'title' => 'required',
-                'location' => 'required',
-                'details' => 'required',
-                'job_type' => 'required',
-                'position' => 'required',
-                'expiry_date' => 'required',
-                'workflow_id' => 'required|integer',
-                'experience' => 'required',
-            ]);
+            // $this->validate($request, [
+            //     'title' => 'required',
+            //     'location' => 'required',
+            //     'details' => 'required',
+            //     'job_type' => 'required',
+            //     'position' => 'required',
+            //     'expiry_date' => 'required',
+            //     'workflow_id' => 'required|integer',
+            //     'experience' => 'required',
+            // ]);
            
 
             $company = get_current_company();
@@ -501,6 +500,8 @@ class JobsController extends Controller
             $job_data = [
                 'title' => $request->title,
                 'location' => $request->location,
+                'summary' => $request->summary,
+                'is_for' => $request->eligibilty,
                 'details' => $request->details,
                 'job_type' => $request->job_type,
                 'position' => $request->position,
@@ -615,7 +616,8 @@ class JobsController extends Controller
             Job::find($id)->update(['status' => 'ACTIVE']);
 
             Session::flash('flash_message', 'Congratulations! Your job has been posted on ' . $flash_boards . '. You will begin to receive applications from those job boards shortly - <i>this is definite</i>.');
-            return redirect()->route('post-success', ['jobID' => $job->id]);
+            
+            return redirect()->route('job-candidates', $job->id);
     }
 
     public function confirmJobDetails(Request $request, $id)
@@ -624,7 +626,7 @@ class JobsController extends Controller
         $selected_fields = json_decode($job->fields);
         $selected_form_fields = $job->form_fields;
 
-        $job_specializations = $job->specializations->take(1)->pluck('name');
+        $job_specializations = $job->specializations->take(3)->pluck('name');
 
         return view('job.confirm-job-post', compact('job', 'selected_fields', 'job_specializations', 'selected_form_fields'));
     }
@@ -1352,11 +1354,13 @@ class JobsController extends Controller
         $suspended = 0;
         $deleted = 0;
         $expired = 0;
+        $draft = 0;
 
         $active_jobs = [];
         $suspended_jobs = [];
         $deleted_jobs = [];
         $expired_jobs = [];
+        $draft_jobs = [];
 
         foreach ($jobs as $job) {
 
@@ -1373,6 +1377,9 @@ class JobsController extends Controller
             } else if ($job->status == 'SUSPENDED') {
                 $suspended_jobs[] = $job;
                 $suspended++;
+            } else if ($job->status == 'DRAFT') {
+                $draft_jobs[] = $job;
+                $draft++;
             } else {
                 // $suspended++;
             }
@@ -1382,12 +1389,15 @@ class JobsController extends Controller
             'ACTIVE' => $active_jobs,
             'SUSPENDED' => $suspended_jobs,
             'EXPIRED' => $expired_jobs,
+            'DRAFT' => $draft_jobs,
             // 'DELETED' => $deleted_jobs
         ];
 
+        // dd($all_jobs);
+
         @$q = @$request->q;
 
-        return view('job.job-list', compact('jobs', 'active', 'suspended', 'deleted', 'company', 'all_jobs', 'expired', 'q'));
+        return view('job.job-list', compact('jobs', 'draft', 'active', 'suspended', 'deleted', 'company', 'all_jobs', 'expired', 'q'));
     }
 
     public function JobPromote($id, Request $request)
@@ -2001,7 +2011,6 @@ class JobsController extends Controller
         if (empty($job)) {
             abort(404);
         }
-
 
         $company->logo = get_company_logo($company->logo);
 

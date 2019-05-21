@@ -53,10 +53,13 @@
                     <h4 class="dark-blue-text font-weight-bold ml-3">Job’s you might be interested in</h4>
                 </div>
 
+
+
                 @foreach($jobs as $job)
                 <div class="job-card">
-                    <h5 class="dark-blue-text font-weight-bold font-16">{{ $job->title }}</h5>
-                    <p class="mb-2 job-card-content"> {!! str_limit(str_replace('<p>', '', $job->details), 150) !!} </p>
+                    <h5 class="dark-blue-text font-weight-bold font-16"> 
+                        <a href="{{ route('job-view', [$job->id, $job->slug]) }}">  {{ $job->title }}  </a> </h5>
+                    <p class="mb-2 job-card-content"> {{ @$job->summary }} </p>
                     <div class="d-flex align-items-center">
                         <span class="d-flex align-items-center">
                             <img src="{{ asset('homepage/images/icon-clock-three.svg') }}" class="mr-1">
@@ -67,7 +70,7 @@
                 </div>
                 @endforeach
 
-                <p class="text-center dark-blue-text font-weight-bold">To see more job postings, create an account</p>
+                <p class="text-center dark-blue-text font-weight-bold">To see more job postings, <a href="{{ url('register') }}">create an account </a> </p>
             </section>
         </div>
     </div>

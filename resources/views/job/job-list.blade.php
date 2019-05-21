@@ -44,6 +44,9 @@
                     <button class="btn btn-primary" type="button" data-target="expired">
                         Expired <span class="badge">{{ $expired }}</span>
                     </button>
+                    <button class="btn btn-primary" type="button" data-target="draft">
+                        Draft <span class="badge">{{ $draft }}</span>
+                    </button>
                 </div>
                 <script>
                     $(document).ready(function () {
@@ -144,45 +147,55 @@
                                                             <span class="sr-only">Toggle Dropdown</span>
                                                         </button>
                                                         <ul class="dropdown-menu">
-                                                            <li><a href="{{ route('job-candidates', [$job['id']]) }}">View
+                                                            
+                                                            @if($job['status'] != 'DRAFT')
+                                                                <li><a href="{{ route('job-candidates', [$job['id']]) }}">View
                                                                     Applicants</a></li>
-                                                            @if($user_role->name == 'admin')
-                                                            <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote
-                                                                    this
-                                                                    Job</a></li>
-                                                            <li><a href="{{ route('job-promote', [$job['id']]) }}">Get
-                                                                    Referrals </a></li>
-                                                            <li><a href="{{ route('job-promote', [$job['id']]) }}">Share
-                                                                    this
-                                                                    job on
-                                                                    Social Media. </a></li>
-                                                            <li role="separator" class="divider"></li>
-                                                            @if($job['status'] == 'SUSPENDED')
-                                                                <li><a href="#"
-                                                                       onclick="Activate( {{$job['id']}} ); return false">Activate
+                                                                @if($user_role->name == 'admin')
+                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote
+                                                                        this
                                                                         Job</a></li>
-                                                            @elseif($job['status'] == 'DRAFT')
+                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Get
+                                                                        Referrals </a></li>
+                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Share
+                                                                        this
+                                                                        job on
+                                                                        Social Media. </a></li>
+                                                                <li role="separator" class="divider"></li>
+                                                                @if($job['status'] == 'SUSPENDED')
+                                                                    <li><a href="#"
+                                                                           onclick="Activate( {{$job['id']}} ); return false">Activate
+                                                                            Job</a></li>
+                                                                @elseif($job['status'] == 'DRAFT')
+                                                                    <li><a href="#"
+                                                                           onclick="Activate( {{$job['id']}} ); return false">Activate
+                                                                            Job</a></li>
+                                                                @elseif($job['status'] == 'EXPIRED')
+                                                                    <li><a href="#" disabled>EXPIRED</a></li>
+                                                                @elseif($job['status'] == 'ACTIVE')
+                                                                    <li><a href="#"
+                                                                           onclick="Suspend( {{$job['id']}} ); return false">Suspend
+                                                                            Job</a></li>
+                                                                @endif
                                                                 <li><a href="#"
-                                                                       onclick="Activate( {{$job['id']}} ); return false">Activate
+                                                                       onclick="DuplicateJob( {{$job['id']}} ); return false">Duplicate
                                                                         Job</a></li>
-                                                            @elseif($job['status'] == 'EXPIRED')
-                                                                <li><a href="#" disabled>EXPIRED</a></li>
-                                                            @elseif($job['status'] == 'ACTIVE')
-                                                                <li><a href="#"
-                                                                       onclick="Suspend( {{$job['id']}} ); return false">Suspend
-                                                                        Job</a></li>
+
+                                                                <li role="separator" class="divider"></li>
+                                                                @endif
                                                             @endif
-                                                            <li><a href="#"
-                                                                   onclick="DuplicateJob( {{$job['id']}} ); return false">Duplicate
-                                                                    Job</a></li>
-                                                            <li role="separator" class="divider"></li>
+
+                                                           
+
+                                                            <li><a href="{{ route('create-job', $job['id']) }}"  class="text t"
+                                                                   >Edit Job</a></li>
+
                                                             <li><a href="#" id="delete-job" class="text text-danger"
                                                                    data-id="{{$job['id']}}"
                                                                    data-title="{{ $job['title'] }}"
                                                                    data-toggle="modal" data-target="#deleteJob"
                                                                    id="modalButton"
                                                                    href="#deleteJob">Delete Job</a></li>
-                                                            @endif
                                                         </ul>
                                                     </div>
                                                 </div>

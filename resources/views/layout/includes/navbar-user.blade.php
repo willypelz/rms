@@ -39,8 +39,7 @@
                     </ul>
                 </li>
                 @php
-                   $perms =  getAdminPermissions();
-                   $user_role = getCurrentLoggedInUserRole();
+                   $user = auth()->user();
                 @endphp
                 <li class="dropdown {{ Request::is('cv/*') ? 'active' : '' }}">
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown">Jobs <i

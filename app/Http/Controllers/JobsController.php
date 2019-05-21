@@ -1390,10 +1390,9 @@ class JobsController extends Controller
             'SUSPENDED' => $suspended_jobs,
             'EXPIRED' => $expired_jobs,
             'DRAFT' => $draft_jobs,
-            // 'DELETED' => $deleted_jobs
+            //  'DELETED' => $deleted_jobs  TODO
         ];
 
-        // dd($all_jobs);
 
         @$q = @$request->q;
 

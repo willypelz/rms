@@ -202,7 +202,6 @@ class CandidateController extends Controller
 
         $company_ids = Job::whereIn('id', $job_ids)->get()->unique('company_id')->pluck('company_id')->toArray();
 
-        // $jobs = Job::with('company')->whereIn('company_id', $company_ids)->where('status','ACTIVE')->get();
         $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->get();
 
 

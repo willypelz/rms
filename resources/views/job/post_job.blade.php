@@ -391,10 +391,7 @@
         return true
     }
 
-    $('#SaveDraft').click(function (e) {
-        e.preventDefault()
 
-<<<<<<< HEAD
         $('#SaveDraft').click(function (e) {
             e.preventDefault();
 
@@ -464,68 +461,7 @@
 
 
         });
-=======
-        var title = $('#job_title').val()
-        if (title == null || title == '') {
-            alert('Title must be filled')
-            return false
-        }
-        var details = editor.getData()
-        if (details == null || details == '') {
-            alert('details must be filled')
-            return false
-        }
->>>>>>> RMS-Updates---May-2019
 
-        var location = $('.job_location option:selected').val()
-        if (location == null || location == '') {
-            alert('location must be filled')
-            return false
-        }
-
-        var token = $('#token').val()
-        var url = "{{ route('job-draft') }}"
-
-        var specializations = $('#specialization').val()
-
-        var location = $('.job_location option:selected').val()
-        var job_type = $('.job_type option:selected').val()
-        var position = $('.position').val()
-        var expiry_date = $('.expiry_date').val()
-        var workflowId = $('#workflowId').val()
-        var experience = exp.getData()
-
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}',
-                title: title,
-                details: details,
-                location: location,
-                job_type: job_type,
-                position: position,
-                expiry_date: expiry_date,
-                experience: experience,
-                specializations: specializations,
-                workflow_id: workflowId,
-                job_id: "{{ $jobId }}",
-                is_ajax: 'true',
-            },
-            success: function (res) {
-                if (res.status == 200) {
-
-                    if (!res.is_update) {
-                        setTimeout(function () { window.location.href = res.redirect_url }, 1200)
-                    } else {
-
-                    }
-
-                }
-            },
-        })
-
-    })
 
     var editor = CKEDITOR.replace('editor1')
     var exp = CKEDITOR.replace('editor3')

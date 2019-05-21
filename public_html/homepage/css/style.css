@@ -47,7 +47,7 @@ a:hover{
 
 .shr-auth-form-toggle{
     display: inline-block;
-    margin: 0.75rem auto;
+    margin: 0.75rem auto 1.75rem;
     padding: 0.625rem;
     background-color: #F2F5F7;
     border-radius: 8px;
@@ -116,7 +116,7 @@ a:hover{
 }
 
 .shr-auth-form-button:hover{
-    color: #ffffff;    
+    color: #ffffff;
 }
 
 
@@ -142,7 +142,7 @@ a:hover{
     height: 63px;
     display: -webkit-box;
     -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;  
+    -webkit-box-orient: vertical;
     text-overflow: ellipsis;
     overflow: hidden;
 }

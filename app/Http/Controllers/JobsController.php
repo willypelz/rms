@@ -477,8 +477,436 @@ class JobsController extends Controller
         return redirect()->to('login');
     }
 
+    public function SaveJob(Request $request)
+    {
+
+        $is_update = false;
+
+         if ($request->isMethod('post')) {
+
+            $this->validate($request, [
+                'title' => 'required',
+                'location' => 'required',
+                'details' => 'required',
+                'job_type' => 'required',
+                'position' => 'required',
+                'expiry_date' => 'required',
+                'workflow_id' => 'required|integer',
+                'experience' => 'required',
+            ]);
+
+
+            $company = get_current_company();
+
+            $job_data = [
+                'title' => $request->title,
+                'location' => $request->location,
+                'details' => $request->details,
+                'job_type' => $request->job_type,
+                'position' => $request->position,
+                'post_date' => date('Y-m-d'),
+                'expiry_date' => $request->expiry_date,
+                'status' => 'DRAFT',
+                'company_id' => $company->id,
+                'workflow_id' => $request->workflow_id,
+                'experience' => $request->experience,
+            ];
+
+
+            if(empty($request->job_id)){
+                $job = Job::FirstorCreate($job_data);
+            }else{
+                $is_update = true;
+                $jb = Job::find($request->job_id);
+                $job = $jb;
+
+                $jb->update($job_data);
+            }
+
+            if($request->specializations){
+                $job->specializations()->detach();
+                foreach ($request->specializations as $e) {
+                    $job->specializations()->attach($e);
+                }
+            }
+
+
+            if(!isset($request->is_ajax))
+                return redirect()->route('continue-draft', $job->id);
+            else
+                $redirect_url = route('create-job', $job->id);
+
+
+            if($job){
+                return ['status' => 200, 'message' => ' Your job has been saved as DRAFT', 'is_update' => $is_update, 'redirect_url'=> $redirect_url ];
+            }else
+                return ['status' => 500, 'message'=>'Your job cannot be saved as DRAFT. Please try again later'];
+
+
+        }
+    }
+
+
+    public function approveJobPost(Request $request, $id)
+    {
+
+        $thirdPartyData = collect(session('third_party_data'));
+
+        $job = Job::find($id);
+
+         if ($request->callback_url) {
+                $job_link = url($company->slug . '/job/' . $job->id . '/' . str_slug($job->title));
+                $redirect_url = "{$request->callback_url}/{$request->api_key}/{$request->requisition_id}/{$job_link}";
+                $callback_url = $request->callback_url;
+                $requisition_id = $request->requisition_id;
+                $api_key = $request->api_key;
+                // set post fields
+                $post = [
+                    'requisition_id' => $request->requisition_id,
+                    'api_key' => $request->api_key,
+                ];
+                $job_link = urlencode($job_link);
+                $url = "{$callback_url}?api_key={$api_key}&requisition_id={$requisition_id}&job_link={$job_link}";
+                // Get cURL resource
+                $curl = curl_init();
+                // Set some options - we are passing in a useragent too here
+                curl_setopt_array($curl, array(
+                    CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0,
+                    CURLOPT_URL => $url,
+                ));
+
+                // Send the request & save response to $resp
+                $resp = curl_exec($curl);
+                $error = curl_error($curl);
+                // Close request to clear up some resources
+                curl_close($curl);
+                $resp = json_decode($resp, true);
+                if ($resp['status']) {
+                    return redirect($callback_url);
+                }
+
+                return view('utils.staffstrength_data', compact('job_link', 'callback_url', 'requisition_id', 'api_key'));
+            }
+
+             $job_boards = JobBoard::where('type', 'free')->get()->toArray();
+                $c = (count($job_boards) / 2);
+                $t = array_chunk($job_boards, $c);
+                $board1 = $t[0];
+                $board2 = $t[1];
+                $urls = [];
+                foreach ($job_boards as $s) {
+                    $bds[] = ($s['id']);
+                    $urls[$s['id']] = "";
+                }
+
+                $pickd_boards = [1];
+
+
+             $out_boards = array();
+                foreach ($pickd_boards as $p) {
+                    if (in_array($p, $bds))
+                        $job->boards()->attach($p, ['url' => $urls[$p]]);
+                    $out_boards[] = JobBoard::where('id', $p)->first()->name;
+                }
+                $flash_boards = implode(', ', $out_boards);
+
+            Job::find($id)->update(['status' => 'ACTIVE']);
+
+            Session::flash('flash_message', 'Congratulations! Your job has been posted on ' . $flash_boards . '. You will begin to receive applications from those job boards shortly - <i>this is definite</i>.');
+            return redirect()->route('post-success', ['jobID' => $job->id]);
+    }
+
+    public function confirmJobDetails(Request $request, $id)
+    {
+        $job = Job::with('form_fields', 'specializations', 'workflow')->find($id);
+        $selected_fields = json_decode($job->fields);
+        $selected_form_fields = $job->form_fields;
+
+        $job_specializations = $job->specializations->take(50)->pluck('name');
+
+        return view('job.confirm-job-post', compact('job', 'selected_fields', 'job_specializations', 'selected_form_fields'));
+    }
+
+    public function continueJob(Request $request, $id)
+    {
+
+        $job = Job::with('form_fields')->find($id);
+
+        $application_fields = config('constants.application_fields');
+        $selected_fields = json_decode($job->fields);
+        $selected_form_fields = $job->form_fields;
+
+
+        if($request->isMethod('post')){
+
+            // Saving default fields attributes
+            foreach ($application_fields as $key => $application_field) {
+                $fields[$key] = [
+                    'is_required' => (isset($request->is_required[$key])) ? 1 : 0,
+                    'is_visible' => (isset($request->is_visible[$key])) ? 1 : 0,
+                ];
+            }
+
+            if($fields){
+                // Save into the Job Application
+                Job::find($id)->update([ 'fields' => json_encode($fields) ]);
+            }
+
+            // Delete all Custom fields associated to this Job
+
+             if (isset($request->custom_names) and $request->custom_names != null) {
+                $custom_data = [];
+                for ($i = 0; $i < count($request->custom_names); $i++) {
+                    $custom_data[] = [
+                        'name' => $request->custom_names[$i],
+                        'type' => $request->custom_types[$i],
+                        'options' => $request->custom_options[$i],
+                        'is_required' => $request->custom_required[$i],
+                        'is_visible' => $request->custom_visible[$i],
+                        'job_id' => $job->id,
+                    ];
+                }
+
+                // Insert New added custom fields
+                foreach($custom_data as $cd){
+
+                    if($job->form_fields){
+                        // Check custom data item is in the Database Array
+                        $check_data = $job->form_fields->where('name', $cd['name'])->first();
+                        // If Not Present - Add
+                        if(!$check_data){
+                            FormFields::insert($cd);
+                        }
+
+                    }else
+                        FormFields::insert($custom_data);
+
+                }
+
+                // Delete Ones not here
+                foreach($job->form_fields as $saved_field){
+                    $get = $this->searchForName($saved_field['name'], $custom_data);
+                    if(is_null($get))
+                        $saved_field->delete();
+
+                }
+            }
+
+            $redirect_url = route('confirm-job-post', $id);
+
+            if($request->ajax()){
+                return ['status' => 200, 'message' => ' Your job details has been updated and saved as DRAFT', 'is_update' => true, 'redirect_url' => $redirect_url ];
+            }else
+                return redirect()->route('confirm-job-post', $id);
+        }
+
+
+
+        return view('job.continue-job-post', compact('job', 'selected_fields', 'selected_form_fields', 'application_fields'));
+    }
+
+
     public function PostJob(Request $request)
     {
+        // Another approach.. Get data from session
+        $thirdPartyData = collect(session('third_party_data'));
+
+        $application_fields = config('constants.application_fields');
+        $qualifications = qualifications();
+        $locations = locations();
+        $specializations = Specialization::get();
+
+        $user = Auth::user();
+        $company = get_current_company();
+        $job_boards = JobBoard::where('type', 'free')->get()->toArray();
+        $c = (count($job_boards) / 2);
+        $t = array_chunk($job_boards, $c);
+        $board1 = $t[0];
+        $board2 = $t[1];
+        $urls = [];
+        foreach ($job_boards as $s) {
+            $bds[] = ($s['id']);
+            $urls[$s['id']] = "";
+        }
+
+        //Free Job boards urls
+        $insidify_url = "";
+
+        if ($request->isMethod('post')) {
+
+            $pickd_boards = [1];
+
+
+            $data = [
+                'job_title' => $request->job_title,
+                'job_location' => $request->job_location,
+                'details' => $request->details,
+                'job_type' => $request->job_type,
+                'position' => $request->position,
+                'expiry_date' => $request->expiry_date,
+                'workflow_id' => $request->workflow_id,
+                'experience' => $request->experience,
+            ];
+
+            $validator = Validator::make($data, [
+                'job_title' => 'required',
+                'job_location' => 'required',
+                'details' => 'required',
+                'job_type' => 'required',
+                'position' => 'required',
+                'expiry_date' => 'required',
+                'workflow_id' => 'required|integer',
+                'experience' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            } else {
+                $pickd_boards = [1];
+
+                //get field visibilities
+                $fields = [];
+
+                foreach ($application_fields as $key => $application_field) {
+                    $fields[$key] = [
+                        'is_required' => (isset($request->is_required[$key])) ? 1 : 0,
+                        'is_visible' => (isset($request->is_visible[$key])) ? 1 : 0,
+                    ];
+                }
+
+                $job_data = [
+                    'title' => $request->job_title,
+                    'location' => $request->job_location,
+                    'details' => $request->details,
+                    'job_type' => $request->job_type,
+                    'position' => $request->position,
+                    'post_date' => date('Y-m-d'),
+                    'expiry_date' => $request->expiry_date,
+                    'status' => 'ACTIVE',
+                    'company_id' => $company->id,
+                    'workflow_id' => $request->workflow_id,
+                    'is_for' => $request->is_for ?: 'external',
+                    'fields' => json_encode($fields),
+                    'experience' => $request->experience,
+                ];
+
+                $job = Job::FirstorCreate($job_data);
+
+                //Send New job notification email
+                $to = 'support@seamlesshr.com';
+                $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
+                    $m->from($to, @$company->name);
+                    $m->to($to)->subject('New Job initiated');
+                });
+
+                $urls[1] = "";
+
+                //Save job creation to activity
+                save_activities('JOB-CREATED', $job->id);
+
+                //save custom fields
+                if (isset($request->custom_names) and $request->custom_names != null) {
+                    $custom_data = [];
+                    for ($i = 0; $i < count($request->custom_names); $i++) {
+                        $custom_data[] = [
+                            'name' => $request->custom_names[$i],
+                            'type' => $request->custom_types[$i],
+                            'options' => $request->custom_options[$i],
+                            'is_required' => $request->custom_required[$i],
+                            'is_visible' => $request->custom_visible[$i],
+                            'job_id' => $job->id,
+                        ];
+                    }
+                    FormFields::insert($custom_data);
+                }
+
+                $out_boards = array();
+                foreach ($pickd_boards as $p) {
+                    if (in_array($p, $bds))
+                        $job->boards()->attach($p, ['url' => $urls[$p]]);
+                    $out_boards[] = JobBoard::where('id', $p)->first()->name;
+                }
+                $flash_boards = implode(', ', $out_boards);
+
+                foreach ($request->specializations as $e) {
+                    $job->specializations()->attach($e);
+                }
+
+            }
+            if ($request->callback_url) {
+                $job_link = url($company->slug . '/job/' . $job->id . '/' . str_slug($job->title));
+                $redirect_url = "{$request->callback_url}/{$request->api_key}/{$request->requisition_id}/{$job_link}";
+                $callback_url = $request->callback_url;
+                $requisition_id = $request->requisition_id;
+                $api_key = $request->api_key;
+                // set post fields
+                $post = [
+                    'requisition_id' => $request->requisition_id,
+                    'api_key' => $request->api_key,
+                ];
+                $job_link = urlencode($job_link);
+                $url = "{$callback_url}?api_key={$api_key}&requisition_id={$requisition_id}&job_link={$job_link}";
+                // Get cURL resource
+                $curl = curl_init();
+                // Set some options - we are passing in a useragent too here
+                curl_setopt_array($curl, array(
+                    CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0,
+                    CURLOPT_URL => $url,
+                ));
+
+                // Send the request & save response to $resp
+                $resp = curl_exec($curl);
+                $error = curl_error($curl);
+                // Close request to clear up some resources
+                curl_close($curl);
+                $resp = json_decode($resp, true);
+                if ($resp['status']) {
+                    return redirect($callback_url);
+                }
+
+                return view('utils.staffstrength_data', compact('job_link', 'callback_url', 'requisition_id', 'api_key'));
+            }
+
+            Session::flash('flash_message', 'Congratulations! Your job has been posted on ' . $flash_boards . '. You will begin to receive applications from those job boards shortly - <i>this is definite</i>.');
+            return redirect()->route('post-success', ['jobID' => $job->id]);
+        }
+
+        $workflows = Workflow::whereCompanyId(get_current_company()->id)->get();
+
+        return view('job.create', compact(
+            'qualifications',
+            'specializations',
+            'board1',
+            'board2',
+            'locations',
+            'workflows',
+            'thirdPartyData',
+            'application_fields'
+        ));
+    }
+
+
+    public function createJob(Request $request, $id='')
+    {
+
+        if(!empty($id)){
+            $job = Job::with('specializations')->find($id);
+
+            // Get the specialization relations --- Using with callback didnt work, returns pivot
+            if($job->specializations){
+                $job_specilizations = $job->specializations()->pluck('specializations.id')->toArray();
+            }
+        }else{
+            $job = NULL;
+            $job_specilizations = [];
+        }
+
         // Another approach.. Get data from session
         $thirdPartyData = collect(session('third_party_data'));
 
@@ -654,10 +1082,11 @@ class JobsController extends Controller
 
         $workflows = Workflow::whereCompanyId(get_current_company()->id)->get();
 
-        return view('job.create', compact(
+        return view('job.post_job', compact(
             'qualifications',
             'specializations',
             'board1',
+            'job', 'job_specilizations',
             'board2',
             'locations',
             'workflows',
@@ -704,10 +1133,7 @@ class JobsController extends Controller
         return view('job.success-old', compact('job', 'insidify_url', 'subscribed_boards', 'approved_count', 'pending_count', 'all_job_boards', 'subscribed_boards_id'));
     }
 
-    public function SaveJob(Request $request)
-    {
-        dd($request->request);
-    }
+
 
     public function Advertise($jobid, $slug = null)
     {
@@ -2551,6 +2977,17 @@ class JobsController extends Controller
         $roles = Role::get();
         return view ('admin.roles_management.index', compact ('users', 'roles'));
     }
+
+
+    function searchForName($id, $array) {
+       foreach ($array as $key => $val) {
+           if ($val['name'] === $id) {
+               return $key;
+           }
+       }
+       return null;
+    }
+
 
 
 }

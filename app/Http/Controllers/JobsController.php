@@ -379,12 +379,12 @@ class JobsController extends Controller
 
                 }
                 //set accepted to true
-                $job_team_invite->is_accepted = true;
+                $job_team_invite->is_accepted = 1;
                 $job_team_invite->save();
 
 
             if($is_internal == 0 && $user->password == ''){
-                //if user is not internal and still hasnt created a password make system assume its a new user
+                //if user is not external and still hasn't created a password make system assume its a new user
                 $job_team_invite->is_accepted = 0;
                 $job_team_invite->save();
                 unset($status);

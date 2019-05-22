@@ -361,7 +361,8 @@
                 // success identifies the function to invoke when the server response
                 // has been received; here we apply a fade-in effect to the new content
                 success: function (res) {
-                    $.growl.notice({ message: 'Your job has been updated as DRAFT' })
+                    $('#savedAsDraft').modal('show');
+
 
                     if (res.status == 200) {
                         if (submitTarget == 'redirect') {

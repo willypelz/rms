@@ -50,7 +50,7 @@
                                                             @endphp
                                                             @foreach($all_roles as $role)
                                                                 <li>
-                                                                    <input @if(!in_array('admin', $admin_roles) || auth()->user()->is_super_admin == 1) disabled
+                                                                    <input @if(!in_array('admin', $admin_roles) || auth()->user()->is_super_admin == 0) disabled
                                                                            @endif class="role-{!! $user->id !!}-{!! $role->id !!}"
                                                                            onclick="submitRoles('{{$user->id}}', '{{$role->id}}')"
                                                                            type="checkbox" data-id="{{$role->id}}"
@@ -92,10 +92,10 @@
                                     <br><br>
                                     <h5 class="no-margin"> <!-- <i class="fa fa-lg fa-users"></i> --> Invites</h5>
                                     <hr>
-                                    @if( count( @$job_team_invites ) > 0 )
+                                    @if( count( @$job_team_invites->where('job_id', $job->id) ) > 0 )
                                         <ul class="list-group">
 
-                                            @foreach($job_team_invites as $job_team_invite)
+                                            @foreach($job_team_invites->where('job_id', $job->id) as $job_team_invite)
                                                 <li class="list-group-item">
                                                     <div class="col-xs-2"><img width="100%" alt=""
                                                                                src="{{ default_picture( @$user, 'user' ) }}"

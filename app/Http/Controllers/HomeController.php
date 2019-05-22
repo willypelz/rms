@@ -74,7 +74,7 @@ class HomeController extends Controller
             return redirect('dashboard');
         }
 
-        $jobs = Job::whereStatus('ACTIVE')->take(env('JOB_HOMEPAGE_LIST', 3))->orderBy('id', 'desc')->get();
+        $jobs = Job::whereStatus('ACTIVE')->where('is_for', '!=', 'internal')->take(env('JOB_HOMEPAGE_LIST', 3))->orderBy('id', 'desc')->get();
 
         $redirect_to = $request->redirect_to;
 
@@ -102,7 +102,8 @@ class HomeController extends Controller
     {
 
         $redirect_to = $request->redirect_to;
-        $jobs = Job::whereStatus('ACTIVE')->take('3')->orderBy('id', 'desc')->get();
+        $jobs = Job::whereStatus('ACTIVE')->where('is_for', '!=', 'internal')->take(env('JOB_HOMEPAGE_LIST', 3))->orderBy('id', 'desc')->get();
+        
 
         if ($request->isMethod('post')) {
 

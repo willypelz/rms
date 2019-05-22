@@ -520,8 +520,12 @@ class JobsController extends Controller
                     $job->specializations()->attach($e);
                 }
             }
-
-            $job->users()->sync([auth()->user()->id => ['role_name' => 'Job Admin']], false);
+            $user = auth()->user();
+            $job->users()->sync([$user->id => ['role_name' => 'Job Admin']], false);
+            if(!$user->hasRole('admin')) {
+                $admin_role = Role::whereName('admin')->first();
+                $user->roles()->attach($admin_role);
+            }
 
             if(!isset($request->is_ajax))
                 return redirect()->route('continue-draft', $job->id);

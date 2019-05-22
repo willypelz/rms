@@ -297,8 +297,7 @@ Route::group(['middleware' => 'web'], function () {
         ['uses' => 'JobsController@AddCandidates', 'as' => 'add-candidates']);
 
     Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
-    Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}',
-        ['uses' => 'JobsController@JobView', 'as' => 'job-view']);
+    Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}', ['uses' => 'JobsController@JobView', 'as' => 'job-view']);
     Route::match(['get', 'post'], 'job/preview/{jobID}', ['uses' => 'JobsController@Preview', 'as' => 'job-preview']);
 
     Route::match(['get', 'post'], 'job/activities/{jobID}',

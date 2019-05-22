@@ -71,7 +71,7 @@
 
                     <div class="job-card">
                         <div class="py-4 text-center">
-                            <img src="images/icon-briefcase.svg" class="mr-1 my-2">
+                            <img src="{{ asset('homepage/images/icon-briefcase.svg') }}" class="mr-1 my-2">
                             <h5 class="font-16 mb-3">No job listings</h5>
                         </div>
                     </div>

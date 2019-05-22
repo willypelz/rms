@@ -93,7 +93,6 @@
     var file_data = $('#interview-file').prop('files')[0];
     var form_data = new FormData();
 
-    console.log($('#interviewer_id').val());
     if(file_data == undefined){
       form_data.append('interviewer_id', '');
     }else{
@@ -109,10 +108,8 @@
     form_data.append('step', step);
     form_data.append('stepId', stepId);
     if($('#interviewer_id').val() == null){
-      console.log("null");
       form_data.append('interviewer_id', '');
     }else{
-      console.log("not null");
       form_data.append('interviewer_id[]', $('#interviewer_id').val());
     }
     form_data.append('reschedule', reschedule);

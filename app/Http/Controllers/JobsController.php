@@ -1923,9 +1923,10 @@ class JobsController extends Controller
         $applicant_funnel = [];
         $funnel_cummulative = 0;
 
+
         foreach ($job->workflow->workflowSteps as $key => $step) {
             if ($step->slug != "ALL") {
-                $funnel_cummulative += $application_statuses[$step->slug];
+                $funnel_cummulative = $application_statuses[$step->slug];
                 $applicant_funnel[] = "['" . $step->name . "'," . $funnel_cummulative . "]";
             }
         }

@@ -520,8 +520,7 @@ class JobsController extends Controller
                 }
             }
 
-            $job->users()->attach(Auth::id());
-
+            $job->users()->sync([auth()->user()->id => ['role_name' => 'Job Admin']], false);
 
             if(!isset($request->is_ajax))
                 return redirect()->route('continue-draft', $job->id);

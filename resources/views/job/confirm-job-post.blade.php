@@ -141,11 +141,14 @@
                                     <h3>Custom Fields</h3>
                                     <br>
                                    @if(isset($selected_form_fields))
-                                        @foreach($selected_form_fields as $key => $form)
+                                        @forelse($selected_form_fields as $key => $form)
                                             <div class="well alert-success small text-uppercase" id="custom_field_item" data-key="0">
                                                     <strong>{{ $form->name }} *</strong>
                                             </div>
-                                        @endforeach
+                                        @empty
+                                            <div class="well alert-danger small text-uppercase" id="custom_field_item" data-key="0"><i class="fa fa-question-circle fa-lg"></i> <strong>No Custom Field selected</strong></div>
+                                        @endforelse
+
                                     @endif
 
                                 </div>

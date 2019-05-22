@@ -485,6 +485,19 @@ class JobsController extends Controller
 
             $company = get_current_company();
 
+            if(!isset($request->is_ajax)){
+                $this->validate($request, [
+                    'title' => 'required',
+                    'location' => 'required',
+                    'details' => 'required',
+                    'job_type' => 'required',
+                    'position' => 'required',
+                    'expiry_date' => 'required',
+                    'workflow_id' => 'required|integer',
+                    'experience' => 'required',
+                ]);
+            }
+
 
             $job_data = [
                 'title' => $request->title,

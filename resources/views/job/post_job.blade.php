@@ -15,13 +15,7 @@
                                 </h5>
                                 <p>Fill in your job requirements</p>
 
-                                @if ($errors->any())
-                                    <ul class="alert alert-danger">
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                @endif
+                               
                             </div>
                             <div class="col-sm-6">
                                 <div class="row progress-tabs">
@@ -64,6 +58,14 @@
                                         <h4>Add your job description details here</h4>
                                         <br>
                                     </div>
+
+                                     @if ($errors->any())
+                                        <ul class="alert alert-danger">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
 
                                     @php
                                         $job_type = NULL;
@@ -409,7 +411,7 @@
 
             var details = editor.getData();
             if (details == null || details == "") {
-                alert("details must be filled");
+                alert("Details must be filled");
                 return false;
             }
 
@@ -432,6 +434,13 @@
                 return false;
             }
 
+            var expiry_date = $('.expiry_date').val();
+            if (expiry_date == null || expiry_date == "") {
+                alert("Expiry Date must be selected");
+                return false;
+            }
+
+
             var token = $('#token').val();
             var url = "{{ route('job-draft') }}";
 
@@ -439,7 +448,6 @@
 
             var job_type = $('.job_type option:selected').val();
             var position = $('.position').val();
-            var expiry_date = $('.expiry_date').val();
             var experience = exp.getData();
 
              $.ajax({ url: url,

@@ -180,7 +180,7 @@
                                                 <label for="job-loc">Eligibility
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                 <select class="form-control" id="is_for" name="is_for" >
+                                                 <select name="eligibilty" class="form-control" id="is_for" name="is_for" >
                                                      <option value=""> --choose eligibilty -- </option>
                                                      <option @if ($eligibilty == 'both') selected="selected" @endif  value="both"> BOTH </option>
                                                      <option @if ($eligibilty == 'internal') selected="selected" @endif value="internal"> INTERNAL STAFF </option>
@@ -254,7 +254,7 @@
                                                 <label for="job-loc">Job Summary
                                                     <span style="color:red" class="text-danger">*</span>
                                                 </label>
-                                                <textarea id="job_summary" class="form-control"  required=""> {{ $job_summary }}</textarea>
+                                                <textarea name="summary" id="job_summary" class="form-control"  required=""> {{ $job_summary }}</textarea>
                                             </div>
 
                                         </div>
@@ -335,7 +335,7 @@
                                                 <i class="fa fa-check text-success fa-4x"></i>
                                                 <h5>Your job posting has been saved as draft</h5>
                                                 <div class="pad-ft">
-                                                    <a href="{{ route('dashboard') }}" class="btn btn-success">Go to your Dashboard</a>
+                                                    <a href="{{ route('job-list') }}" class="btn btn-success">Go to job list</a>
                                                 </div>
                                             </div>
 

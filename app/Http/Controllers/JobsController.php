@@ -485,6 +485,7 @@ class JobsController extends Controller
 
             $company = get_current_company();
 
+
             $job_data = [
                 'title' => $request->title,
                 'location' => $request->location,

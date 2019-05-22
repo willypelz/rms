@@ -39,7 +39,7 @@
 
                     <?php
                     $appl_status = $cv['application_status'][$current_app_index];
-                    $applicant_step = $job->workflow->workflowSteps->where('slug', $appl_status)->first(); ?>
+                    $applicant_step = $job->workflow->workflowSteps->where('slug', $appl_status)->first();?>
                     @if( @$applicant_step->type == 'assessment' && in_array('can-test', $permissions) && $check_both_permissions)
 
                         @if( is_array( @$cv['test_name'] ) )
@@ -123,6 +123,7 @@
 
                                 </ul>
                             </span>
+                          @endif
 
                             @if(@$applicant_step->type == 'assessment' && in_array('can-test', $permissions) && $check_both_permissions)
 
@@ -143,7 +144,6 @@
                             @endif
 
                             @if(@$applicant_step->type == 'interview' && in_array('can-view-interview', $permissions) && $check_both_permissions)
-
                                 <a data-toggle="modal"
                                    data-target="#viewModal"
                                    id="modalButton"
@@ -157,7 +157,6 @@
                                    data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
                                    data-cv="{{ $cv['id'] }}"
                                    data-type="normal">Interview</a>
-
                             @endif
 
                             @if(  (@$applicant_step->type == "background-check" || @$applicant_step->type == "medical-check")  && in_array('can-view-background-check', $permissions) && $check_both_permissions )
@@ -210,7 +209,7 @@
 
                             @endif
 
-                        @else
+                        {{-- @else --}}
                             @foreach($job->workflow->workflowSteps as $workflowStep)
                                 @if(in_array(auth()->user()->id, $workflowStep->approvals->pluck('id')->toArray()) && $workflowStep->slug == @$applicant_step->slug && in_array('can-perform-interview-actions', $permissions) && $check_both_permissions)
                                 <!-- // Approval Button -->
@@ -269,7 +268,7 @@
                                     </span>
                                 @endif
                             @endforeach
-                        @endif
+                        {{-- @endif --}}
 
                         {{-- @if($status != 'SHORTLISTED' && $status != 'ASSESSED' && $status != 'INTERVIEWED' && $status != 'HIRED')  --}}
                         {{--@if($status != 'SHORTLISTED')

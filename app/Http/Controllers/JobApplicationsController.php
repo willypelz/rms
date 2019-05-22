@@ -1616,14 +1616,12 @@ class JobApplicationsController extends Controller
     public function inviteForInterview(Request $request)
     {
       $validator = Validator::make($request->all(), [
-              'interview_file' => 'required',
               'location' => 'required',
               'date' => 'required',
               'message' => 'required',
               'duration' => 'required',
-              'interviewer_ids' => 'required',
+              'interviewer_id' => 'required',
           ]);
-
           if ($validator->fails()) {
             return response()->json([
               'success' => false,
@@ -1638,17 +1636,21 @@ class JobApplicationsController extends Controller
             $cv = $appl->cv;
             $job = $appl->job;
 
+            if($request->file('interview_file')){
+              $destination = 'uploads';
+              $extension = $request->file('interview_file')->getClientOriginalExtension();
+              $file_name = rand(1111111, 9999999).'.'.$extension;
+              $request->file('interview_file')->move($destination, $file_name);
+            }else{
+              $file_name = null;
+            }
 
-            $destination = 'uploads';
-            $extension = $request->file('interview_file')->getClientOriginalExtension();
-            $file_name = rand(1111111, 9999999).'.'.$extension;
-            $request->file('interview_file')->move($destination, $file_name);
-
+            $date = date("Y-m-d H:i", strtotime($request->date));
 
             $data = [
                 'location' => @$request->location,
                 'message' => @$request->message,
-                'date' => @$request->date,
+                'date' => $date,
                 'job_application_id' => $appl->id,
                 'duration' => $request->duration,
                 'interview_file' => $file_name,
@@ -1657,9 +1659,8 @@ class JobApplicationsController extends Controller
 
             $interview = Interview::create($data);
 
-
             // attach interviews to interview
-            $interviewer_ids = explode(",", $request->interviewer_ids[0]);
+            $interviewer_ids = explode(",", $request->interviewer_id[0]);
 
             $interview->users()->attach($interviewer_ids);
             $duration = (int)$request->duration;

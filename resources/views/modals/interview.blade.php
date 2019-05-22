@@ -59,7 +59,7 @@
 
   <div class="form-group">
     <br>
-    <label><strong>ADDITIONAL NOTE: </strong></label>
+    <label><strong>Message: </strong></label>
     <textarea class="form-control" id="interview-message" placeholder="Message" required> </textarea>
   </div>
 
@@ -93,7 +93,12 @@
     var file_data = $('#interview-file').prop('files')[0];
     var form_data = new FormData();
 
-    form_data.append('interview_file', file_data);
+    console.log($('#interviewer_id').val());
+    if(file_data == undefined){
+      form_data.append('interviewer_id', '');
+    }else{
+      form_data.append('interview_file', file_data);
+    }
     form_data.append('job_id', '{{ $appl->job->id }}');
     form_data.append('cv_ids[]', cv_ids);
     form_data.append('app_ids[]', app_ids);
@@ -103,7 +108,13 @@
     form_data.append('duration', $('#interview-duration').val());
     form_data.append('step', step);
     form_data.append('stepId', stepId);
-    form_data.append('interviewer_ids[]', $('#interviewer_id').val());
+    if($('#interviewer_id').val() == null){
+      console.log("null");
+      form_data.append('interviewer_id', '');
+    }else{
+      console.log("not null");
+      form_data.append('interviewer_id[]', $('#interviewer_id').val());
+    }
     form_data.append('reschedule', reschedule);
     $field = $(this);
 

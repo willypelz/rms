@@ -30,10 +30,10 @@
                                     @php
                                         $my_array = []
                                     @endphp
-                                    @if( count( @$company->users ) > 0 )
+                                    @if( count( @$job->users ) > 0 )
                                         <ul class="list-group">
 
-                                            @foreach($company->users as $user)
+                                            @foreach($job->users as $user)
                                                 <li style="display: flex; align-items: start; margin: 20px 10px">
 
                                                     <img alt="" src="{{ default_picture( $user, 'user' ) }}"
@@ -50,7 +50,7 @@
                                                             @endphp
                                                             @foreach($all_roles as $role)
                                                                 <li>
-                                                                    <input @if(!in_array('admin', $admin_roles) || auth()->user()->is_super_admin == 0) disabled
+                                                                    <input @if(!in_array('admin', $admin_roles) || auth()->user()->is_super_admin == 1) disabled
                                                                            @endif class="role-{!! $user->id !!}-{!! $role->id !!}"
                                                                            onclick="submitRoles('{{$user->id}}', '{{$role->id}}')"
                                                                            type="checkbox" data-id="{{$role->id}}"

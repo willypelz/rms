@@ -37,7 +37,6 @@ class RolesSeeder extends Seeder
             'can-test',
             'can-view-background-check',
             'can-post-job',
-            'can-add-job-team-members'
         ];
 
 

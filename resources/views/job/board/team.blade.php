@@ -50,7 +50,7 @@
                                                             @endphp
                                                             @foreach($all_roles as $role)
                                                                 <li>
-                                                                    <input @if(!in_array('admin', $admin_roles)) disabled
+                                                                    <input @if(!in_array('admin', $admin_roles) || auth()->user()->is_super_admin == 0) disabled
                                                                            @endif class="role-{!! $user->id !!}-{!! $role->id !!}"
                                                                            onclick="submitRoles('{{$user->id}}', '{{$role->id}}')"
                                                                            type="checkbox" data-id="{{$role->id}}"
@@ -488,24 +488,6 @@
 
                 });
 
-                function submitRoles(user_id, role_id) {
-
-                    var checked = $('.role-' + user_id + '-' + role_id).is(':checked') ? 1 : 0,
-                        job_id = {!! $job->id !!};
-                    $.ajax({
-                        url: "{{ route('persis-role') }}",
-                        type: "post",
-                        data: {user_id, role_id, job_id, checked},
-                        success: function (response) {
-                            $.growl.notice({message: 'updated successfully'});
-
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            $.growl.error({message: 'something went wrong.. please try again'});
-                        }
-                    });
-                }
-
                 function btn() {
                     $('#sendMail').attr('disabled', 'disabled').prepend('<div class="pull-right">' + '{!! preloader() !!}' + '</div>');
                 }
@@ -533,6 +515,23 @@
                 }
 
             });
+            function submitRoles(user_id, role_id) {
+
+                var checked = $('.role-' + user_id + '-' + role_id).is(':checked') ? 1 : 0,
+                    job_id = {!! $job->id !!};
+                $.ajax({
+                    url: "{{ route('persis-role') }}",
+                    type: "post",
+                    data: {user_id, role_id, job_id, checked},
+                    success: function (response) {
+                        $.growl.notice({message: 'updated successfully'});
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $.growl.error({message: 'something went wrong.. please try again'});
+                    }
+                });
+            }
 
         </script>
         <div class="separator separator-small"><br></div>

@@ -1,8 +1,6 @@
 <div class="container text-brandon text-uppercase h5 separator separator-small" style="">
 <i class="fa fa-compass"></i> Applicants Tracking System (ATS)</div>
-@php
-    $user_role = getCurrentLoggedInUserRole();
-@endphp
+
  <section class="no-pad" >
     <div class="container" >
         <section class="job-head blue no-margin" id="jobHead">
@@ -52,9 +50,11 @@
                             </small>
                         </div> -->
                     </div>
-                    @if(!is_null($user_role))
-                        @if($user_role->name == 'admin' || $user_role->name == 'commenter')
+                    @php
+                      $user = auth()->user();
+                    @endphp
                     <div class="col-xs-6 job-progress-xs">
+                    {{-- @if($user->hasRole('admin') || $user->hasRole('commenter')) --}}
                     <div  class="pull-left text-white small" style="margin-top: 24px;">Recruitment<br>Stage &nbsp; &rarr;</div>
                         <?php
 
@@ -125,10 +125,9 @@
                         </ul>--}}
 
                         <!-- Select Job Status -->
-
+                        @if($user->hasRole('admin') || $user->hasRole('commenter'))
                         <div class="btn-group btn-group-justified" role="group">
                             <div  class="btn-group" role="group">
-
                                 <a href="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}" target="_blank" type="button" class="btn-sm btn btn-info status"><i class="fa fa-eye"></i> &nbsp;Preview</a>
                             </div>
                             <div  class="btn-group" role="group">
@@ -148,13 +147,10 @@
 
                             </div>
                         </div>
-
-
-                    </div>
                         @endif
-                    @endif
 
-
+                        {{-- @endif --}}
+                    </div>
                     </div>
                 </div>
             </section>
@@ -208,5 +204,3 @@
     }
 
 </script>
-
-

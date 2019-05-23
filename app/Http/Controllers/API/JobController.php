@@ -18,6 +18,7 @@ use App\Models\Company;
 use App\Models\FormFields;
 use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
@@ -383,7 +384,7 @@ class JobController extends Controller
                 400
             );
         }
-        $user_found = User::whereName($request->name)->whereUsername($request->username)->first();
+        $user_found = User::whereName($request->name)->whereUsername($request->username)->whereEmail($request->email)->first();
         $user = $user_found ? $user_found->update(
             [
                 'name' => $request->name,
@@ -404,15 +405,29 @@ class JobController extends Controller
             ]
         );
         $role = Role::whereName('admin')->first();
-
+        // if user is found there is a possibility that the user already has roles on the system so I am detaching
+        //the roles if they exist
         if ($user_found && $user_found->roles->count()) {
             $user_found->roles()->detach();
-
+        }
+        //user could return a boolean if $user_found->update() logic is run so I am checking if $user
+        // is a collection before attempting to attach roles to it and doing thesame for userfound
+        if($user instanceof Illuminate\Database\Eloquent\Collection) {
+            $user->attachRole($role);
+            // checking if the user already exists for the current company on company users table
+            // if so do nothing else sync user to company
+            if(!$current_company->users()->where('user_id', $user->id)->first()) {
+                $current_company->users()->sync([$user->id => ['role' => $role]], false);
+            }
+        }elseif($user_found instanceof Illuminate\Database\Eloquent\Collection) {
+            $user_found->attachRole($role);
+            // checking if the user already exists for the current company on company users table
+            // if so do nothing else sync user to company
+            if(!$current_company->users()->where('user_id', $user_found->id)->first()) {
+                $current_company->users()->sync([$user_found->id => ['role' => $role]], false);
+            }
         }
 
-        $user->attachRole($role);
-
-        $current_company->users()->sync([$user->id => ['role' => $role]], false);
 
         return response()->json(
             [

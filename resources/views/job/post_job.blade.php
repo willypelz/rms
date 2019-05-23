@@ -15,7 +15,7 @@
                                 </h5>
                                 <p>Fill in your job requirements</p>
 
-                               
+
                             </div>
                             <div class="col-sm-6">
                                 <div class="row progress-tabs">
@@ -93,7 +93,12 @@
                                             $jobId = $job->id;
                                         }
 
-
+                                        if(($job == null) && isset($thirdPartyData)){
+                                          $thirdPartyData = $thirdPartyData->toArray();
+                                          $job_title = $thirdPartyData['job'];
+                                          $eligibilty = $thirdPartyData['request_type'];
+                                          $details = $thirdPartyData['job_description'];
+                                        }
                                     @endphp
 
                                     <div class="form-group">
@@ -396,7 +401,7 @@
         $('#SaveDraft').click(function (e) {
             e.preventDefault();
 
-                
+
             var title = $('#job_title').val();
             if (title == null || title == "") {
                 alert("Title must be filled");
@@ -461,9 +466,9 @@
                                 }else{
 
                                 }
-                                
+
                             }
-                    } 
+                    }
                  });
 
 

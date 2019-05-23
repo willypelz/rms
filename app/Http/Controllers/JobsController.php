@@ -903,7 +903,6 @@ class JobsController extends Controller
 
     public function createJob(Request $request, $id='')
     {
-      // \Log::info($request->toArray());
         if(!empty($id)){
             $job = Job::with('specializations')->find($id);
 
@@ -918,7 +917,6 @@ class JobsController extends Controller
 
         // Another approach.. Get data from session
         $thirdPartyData = collect(session('third_party_data'));
-        \Log::info(($thirdPartyData->toArray()));
 
         $application_fields = config('constants.application_fields');
         $qualifications = qualifications();

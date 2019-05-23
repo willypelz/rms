@@ -58,7 +58,6 @@ class ThirdPartyEntryController extends Controller
 
             $redirect_url = $request->input('intended_url');
         }
-        \Log::info($formData);
 
         // store the form_data in session for retrival on job posting page
         session(['third_party_data' => $formData]);

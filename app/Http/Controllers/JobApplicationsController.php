@@ -299,12 +299,14 @@ class JobApplicationsController extends Controller
             $attachment = '';
         }
 
-        CandidateMessage::create([
+        $message = CandidateMessage::create([
             'job_application_id' => $request->application_id,
             'message' => $request->message,
             'attachment' => $attachment,
             'user_id' => Auth::user()->id
         ]);
+
+
         $application_id = $request->application_id;
 
         return redirect()->route('applicant-messages', ['appl_id' => $application_id]);

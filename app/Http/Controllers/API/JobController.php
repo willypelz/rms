@@ -414,16 +414,21 @@ class JobController extends Controller
         // is a collection before attempting to attach roles to it and doing thesame for userfound
         if($user instanceof Illuminate\Database\Eloquent\Collection) {
             $user->attachRole($role);
+            // checking if the user already exists for the current company on company users table
+            // if so do nothing else sync user to company
+            if(!$current_company->users()->where('user_id', $user->id)->first()) {
+                $current_company->users()->sync([$user->id => ['role' => $role]], false);
+            }
         }elseif($user_found instanceof Illuminate\Database\Eloquent\Collection) {
             $user_found->attachRole($role);
-            $user = $user_found;
+            // checking if the user already exists for the current company on company users table
+            // if so do nothing else sync user to company
+            if(!$current_company->users()->where('user_id', $user_found->id)->first()) {
+                $current_company->users()->sync([$user_found->id => ['role' => $role]], false);
+            }
         }
-        // checking if the user already exists for the current company on company users table
-        // if so do nothing else sync user to company
-        if(!$current_company->users()->where('user_id', $user->id)->first()) {
-            $current_company->users()->sync([$user->id => ['role' => $role]], false);
-        }
-        
+
+
         return response()->json(
             [
                 'status' => true,

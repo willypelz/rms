@@ -9,7 +9,7 @@
     <link rel="apple-touch-icon" href="apple-touch-icon-precomposed.png" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
 
     <title style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Lateef Koshemani Doissier | Insidify.com </title>
-    
+
     <!-- <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
     <link href="../css/font-awesome.css" rel="stylesheet">
@@ -60,6 +60,7 @@
            </div>
        </div>
 
+       @if(isset($show_other_sections) && ($show_other_sections == true))
        <div class="unit-box" style="margin: 0em 0 3em 1em;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;position: relative;display: inline-block;width: 100%;">
            <div class="row" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin-left: -15px;margin-right: -15px;">
 
@@ -77,7 +78,7 @@
                            <strong style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Phone:</strong>&nbsp; {{ $appl->cv->phone }}</li>
 
                        <li style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
-                           <strong style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Age:</strong>&nbsp; {{ str_replace('ago', 'old', human_time($appl->cv->date_of_birth, 1)) }} 
+                           <strong style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Age:</strong>&nbsp; {{ str_replace('ago', 'old', human_time($appl->cv->date_of_birth, 1)) }}
                            <span class="text-muted" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;color: #999;">({{ date('M d, Y', strtotime($appl->cv->date_of_birth)) }})</span>
                        </li>
 
@@ -126,6 +127,7 @@
                </div>
            </div>
        </div>
+       @endif
 
 
 
@@ -133,6 +135,7 @@
    <div class="row" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin-left: -15px;margin-right: -15px;">
        <div class="message-content" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
            <hr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: content-box;box-sizing: content-box;margin-top: 20px;margin-bottom: 20px;border: 0;border-top: 1px solid #eee;height: 0;">
+           @if(isset($show_other_sections) && ($show_other_sections == true))
            <div class="col-xs-12" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;width: 100%;float: left;position: relative;min-height: 1px;padding-left: 15px;padding-right: 15px;">
                    <h4 class="text-center text-uppercase" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-size: 18px;text-align: center;">
                        <i class="fa fa-comment-o" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"></i>&nbsp;
@@ -148,7 +151,7 @@
                          </h5>
                          <p style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">{{ $comment->comment }}</p>
                          <small style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
-                             <span class="text-muted" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;color: #999;">{{ date('D, j-n-Y, h:i A', strtotime($comment->created_at)) }}</span>&nbsp; 
+                             <span class="text-muted" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;color: #999;">{{ date('D, j-n-Y, h:i A', strtotime($comment->created_at)) }}</span>&nbsp;
                              <!-- <a href="#" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Like</a>
                              <span class="text-muted" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;color: #999;">·</span> <a href="#" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Comment</a> -->
                          </small>
@@ -157,6 +160,7 @@
                @endforeach
 
            </div>
+           @endif
 
            <div class="col-xs-12" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;width: 100%;float: left;position: relative;min-height: 1px;padding-left: 15px;padding-right: 15px;">
                <hr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: content-box;box-sizing: content-box;margin-top: 20px;margin-bottom: 20px;border: 0;border-top: 1px solid #eee;height: 0;">
@@ -175,7 +179,7 @@
                        <div class="label label-default" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">1 - Unsatisfactory</div>
                    </p>
                  </div>
-                    
+
                     @foreach( $interview_notes as $note )
                         <h4 class="text-center"> {{ $note[0]->interviewer->name }} <br><small>on {{ date('D, j-n-Y, h:i A', strtotime($note[0]->created_at)) }}</small></h4>
                         <table class="table table-bordered" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;max-width: 100%;background-color: transparent;border-collapse: collapse;border-spacing: 0;border: 1px solid #ddd;width: 100%;margin-bottom: 20px;">
@@ -211,7 +215,7 @@
                                     @endif
                                  @endforeach
 
- 
+
 
                            <!-- </tbody> -->
                        </table>
@@ -223,20 +227,20 @@
                                     <div class="" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
                                         <h4 style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-size: 18px;"><i class="fa fa-question-circle" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"></i> {{ $option->interview_note_option->name }}</h4>
                                         <p style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">{{ @$option->value }}</p><br style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
-            
-            
+
+
                                     </div>
                                     <?php $index++; ?>
                                     @endif
                                  @endforeach
-                       
-      
-  
+
+
+
 
                    @endforeach
 
 
-                   
+
 
 
                </div>
@@ -245,7 +249,7 @@
            <!-- <div class="col-xs-12 hidden" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;width: 100%;float: left;position: relative;min-height: 1px;padding-left: 15px;padding-right: 15px;">
                <hr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: content-box;box-sizing: content-box;margin-top: 20px;margin-bottom: 20px;border: 0;border-top: 1px solid #eee;height: 0;">
                <div class="" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
-                   
+
                    <h4 style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-size: 18px;"><i class="fa fa-question-circle" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"></i> Listening Skills</h4>
                    <p style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">To build a career where I can use my skills to improve customer satisfaction and retention rates, improve earning capacity and add to the growth of any organisation I belong to</p><br style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
 
@@ -311,7 +315,7 @@
             <br style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"><hr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: content-box;box-sizing: content-box;margin-top: 20px;margin-bottom: 20px;border: 0;border-top: 1px solid #eee;height: 0;">
             <div class="unit-box text-center " style="margin: 0em 0 3em 1em;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;text-align: center;position: relative;display: inline-block;width: 100%;">
                 <small class="text-muted center-block" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;color: #999;">
-                    © 2015. All Rights Reserved. www.insidify.com
+                    © {{date('Y')}}. All Rights Reserved. www.seamlesshr.com
                 </small>
                 <br style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
             </div>

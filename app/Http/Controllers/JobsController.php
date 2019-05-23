@@ -478,7 +478,6 @@ class JobsController extends Controller
 
     public function SaveJob(Request $request)
     {
-
         $is_update = false;
 
          if ($request->isMethod('post')) {
@@ -624,7 +623,7 @@ class JobsController extends Controller
             Job::find($id)->update(['status' => 'ACTIVE']);
 
             Session::flash('flash_message', 'Congratulations! Your job has been posted on ' . $flash_boards . '. You will begin to receive applications from those job boards shortly - <i>this is definite</i>.');
-            
+
             return redirect()->route('job-candidates', $job->id);
     }
 
@@ -904,7 +903,7 @@ class JobsController extends Controller
 
     public function createJob(Request $request, $id='')
     {
-
+      // \Log::info($request->toArray());
         if(!empty($id)){
             $job = Job::with('specializations')->find($id);
 
@@ -919,6 +918,7 @@ class JobsController extends Controller
 
         // Another approach.. Get data from session
         $thirdPartyData = collect(session('third_party_data'));
+        \Log::info(($thirdPartyData->toArray()));
 
         $application_fields = config('constants.application_fields');
         $qualifications = qualifications();

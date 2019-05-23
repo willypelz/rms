@@ -29,6 +29,7 @@ class ThirdPartyEntryController extends Controller
         $formData['api_key'] = $request->input('_api_key');
         $formData['callback_url'] = $request->input('callback_url');
         $formData['requisition_id'] = $request->input('requisition_id');
+        $formData['job_description'] = $request->input('job_description');
         // Get all data coming in from thirdparty website
         if ($request->input('intended_action') == 'post-job') {
             // firstOrCreate user account and auth user
@@ -57,6 +58,7 @@ class ThirdPartyEntryController extends Controller
 
             $redirect_url = $request->input('intended_url');
         }
+        \Log::info($formData);
 
         // store the form_data in session for retrival on job posting page
         session(['third_party_data' => $formData]);

@@ -44,7 +44,8 @@
                                             <small class="text-muted result-label"
                                                    id="showing"> {!! $showing !!} </small>
                                         </div>
-                                        @if($user_role->name == 'admin')
+                                        {{-- {{dump($user_role)}} --}}
+                                        {{-- @if($user_role->name == 'admin') --}}
                                         <div class="col-xs-2">
                                             <div class="dropdown">
                                                 <button class="btn btn-line btn-sm dropdown-toggle" type="button"
@@ -62,7 +63,7 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                        @endif
+                                        {{-- @endif --}}
 
                                         <div class="col-xs-2">
                                             <label class="select-all pull-right">Select All

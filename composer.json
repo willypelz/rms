@@ -22,7 +22,9 @@
         "barryvdh/laravel-snappy": "^0.4.0",
         "webpatser/laravel-uuid": "^2.0",
         "zizaco/entrust": "5.2.x-dev",
-        "spatie/calendar-links": "^1.2"
+        "spatie/calendar-links": "^1.2",
+        "h4cc/wkhtmltopdf-amd64": "0.12.x",
+        "h4cc/wkhtmltoimage-amd64": "0.12.x"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

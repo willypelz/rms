@@ -779,7 +779,6 @@ class JobApplicationsController extends Controller
 
     public function downloadInterviewNotes(Request $request)
     {
-      // dd($request->toArray());
       if(!$request->has('appl_ids')){
         $job = Job::with('applicants')->find($request->jobId);
         $application_ids = $job->applicants->pluck('id');

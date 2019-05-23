@@ -10,3 +10,4 @@ LocalValetDriver.php
 /.idea
 /.vscode
 /public_html/uploads
+/config/snappy.php

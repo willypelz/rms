@@ -781,8 +781,15 @@ class JobApplicationsController extends Controller
 
     public function downloadInterviewNotes(Request $request)
     {
-      foreach ($request->app_ids as $key => $app_id) {
-        $appl = JobApplication::with('job', 'cv')->find($app_id);
+      if(!$request->has('appl_ids')){
+        $job = Job::with('applicants')->find($request->jobId);
+        $application_ids = $job->applicants->pluck('id');
+      }else {
+        $application_ids = $request->app_ids;
+      }
+
+      foreach ($application_ids as $key => $app_id) {
+        $appl = JobApplication::with('job', 'cv')->where('cv_id', $app_id)->where('job_id', $job->id)->first();
         $jobID = $appl->job->id;
         check_if_job_owner($jobID);
 

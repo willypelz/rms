@@ -18,6 +18,7 @@ use App\Models\Company;
 use App\Models\FormFields;
 use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
@@ -383,7 +384,7 @@ class JobController extends Controller
                 400
             );
         }
-        $user_found = User::whereName($request->name)->whereUsername($request->username)->first();
+        $user_found = User::whereName($request->name)->whereUsername($request->username)->whereEmail($request->email)->first();
         $user = $user_found ? $user_found->update(
             [
                 'name' => $request->name,
@@ -407,12 +408,20 @@ class JobController extends Controller
 
         if ($user_found && $user_found->roles->count()) {
             $user_found->roles()->detach();
-
+        }
+        if($user instanceof Illuminate\Database\Eloquent\Collection) {
+            $user->attachRole($role);
+            if(!$current_company->users()->where('user_id', $user->id)->first()) {
+                $current_company->users()->sync([$user->id => ['role' => $role]], false);
+            }
+        }elseif($user_found instanceof Illuminate\Database\Eloquent\Collection) {
+            $user_found->attachRole($role);
+            if(!$current_company->users()->where('user_id', $user_found->id)->first()) {
+                $current_company->users()->sync([$user_found->id => ['role' => $role]], false);
+            }
         }
 
-        $user->attachRole($role);
 
-        $current_company->users()->sync([$user->id => ['role' => $role]], false);
 
         return response()->json(
             [

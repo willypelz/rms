@@ -10,14 +10,15 @@ use App\Models\FolderContent;
 use App\Models\Job;
 use App\Models\JobActivity;
 use App\Models\JobApplication;
-use App\Models\Message;
 use App\Models\Message as CandidateMessage;
+use App\Models\Message;
+use App\User;
 use Auth;
 use Carbon\Carbon;
 use Curl;
+use DB;
 use Illuminate\Http\Request;
 use Mail;
-use DB;
 
 
 class CandidateController extends Controller
@@ -256,12 +257,29 @@ class CandidateController extends Controller
             // Loop throgh applicants selected and dispatch message to them
             foreach ($job_applications as $key => $jb) {
 
+                $user = Candidate::find($jb->candidate_id);
+                $job = Job::find($jb->job_id);
                 Message::create([
                     'job_application_id' => $jb->id,
                     'message' => $request->message,
                     'user_id' => Auth::id(),
                     'attachment' => $attachment,
                 ]);
+
+                $link = route('candidate-messages', $jb->id);
+
+                $candidate = $user;
+                $email_title = $candidate->first_name.' you a message.';
+                $message_content = 'You just recieve message from candidate: '.$candidate->first_name;
+
+
+                $email_title = 'Feedback for your application';
+                $message_content = 'You just recieve message on your job application: '.$job->title;
+
+
+                 Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
+                    $m->from('support@seamlesshr.com')->to($user->email)->subject($email_title);
+                });
 
             }
 
@@ -305,7 +323,6 @@ class CandidateController extends Controller
 
     public function sendMessage(Request $request)
     {
-
         if ($request->hasFile('attachment')) {
             $file_name  = (@$request->attachment->getClientOriginalName());
             $fi         = @$request->file('attachment')->getClientOriginalExtension();
@@ -318,12 +335,33 @@ class CandidateController extends Controller
             $attachment = '';
         }
 
+
         Message::create([
             'job_application_id' => $request->application_id,
             'message' => $request->message,
             'attachment' => $attachment,
         ]);
+
+        $job_application = JobApplication::find($request->application_id);
+        $job = Job::find($job_application->job_id);
+        // Get admin
+        $admin_user = Message::where('job_application_id', $request->application_id)->whereNotNull('user_id')->first();
+        
+        $user = User::find($admin_user->id);
+
         $application_id = $request->application_id;
+
+        $link = route('applicant-messages', $request->application_id);
+        $candidate = Candidate::find($job_application->candidate_id);
+        $email_title = $candidate->first_name.' you a message.';
+        $message_content = 'You just recieve message from candidate: '.$candidate->first_name;
+
+
+         Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
+            $m->from('support@seamlesshr.com')->to($user->email)->subject($email_title);
+        });
+
+
 
         return redirect()->route('candidate-messages', ['application_id' => $application_id]);
 

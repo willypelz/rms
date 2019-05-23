@@ -2254,7 +2254,6 @@ class JobsController extends Controller
                 }
 
                 FormFieldValues::insert($custom_field_values);
-                // dd( $request->all(), $custom_fields, $custom_field_values );
             }
 
             if ($request->hasFile('cv_file')) {

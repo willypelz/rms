@@ -2,6 +2,8 @@
     .container{}
     .nav-tabs > li > a{
         font-size: 12px;
+        padding-right: 16.4px;
+        padding-left: 16.4px;
     }
 </style>
 <ul class="nav nav-tabs">
@@ -19,6 +21,9 @@
     </li>
 
     <li  @if($nav_type=='documents')class="active"@endif ><a href="{{ route('applicant-documents',  $appl->id) }}">Documents</a>
+    </li>
+
+    <li  @if($nav_type=='interviews')class="active"@endif ><a href="{{ route('applicant-interviews',  $appl->id) }}">Interviews</a>
     </li>
     <!-- <li class="dropdown">
         <a href="#" class="dropdown-toggle" type="button" id="dropOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">&nbsp;<i class="fa fa-caret-down"></i></a>

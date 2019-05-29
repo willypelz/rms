@@ -58,6 +58,10 @@ Route::group(['middleware' => 'web'], function () {
     });
     Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
     Route::match(['get', 'post'], '/admin/mange-roles', 'JobsController@manageRoles')->name('change-admin-role');
+    Route::match(['get', 'post'], '/sys/roles', 'AdminsController@manageRoles')->name('list-role');
+    Route::match(['get', 'post'], '/sys/roles/create', 'AdminsController@createRole')->name('create-role');
+    Route::match(['get', 'post'], '/sys/roles/edit/{id}', 'AdminsController@editRole')->name('role-edit');
+    Route::match(['get', 'post'], '/sys/roles/delete/{id}', 'AdminsController@deleteRole')->name('role-delete');
     Route::group([
         'prefix' => '/admin',
         'middleware' => 'admin'
@@ -70,11 +74,17 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
 
     Route::post('user/auth/verify', 'Auth\AuthController@verifyUser')->name('verify-user-details');
+    Route::any('', 'HomeController@home')->name('candidate-login');
+    Route::any('register', 'HomeController@register')->name('candidate-register');
+    Route::any('forgot', 'CandidateController@forgot')->name('candidate-forgot');
+    Route::get('forgot/sent', 'CandidateController@forgotSent')->name('candidate-forgot-sent');
+    Route::any('reset/{token}', 'CandidateController@reset')->name('candidate-reset');
 
-    Route::get('/', function () {
+    // Route::get('/', 'HomeController@homepage')->name('homepage');
 
-        return view('guest.landing');
-    });
+    // Route::get('/', function () {
+    //     return view('guest.landing');
+    // });
 
     Route::get('embed-test', ['as' => 'embed', 'uses' => 'JobsController@getEmbedTest']);
     Route::get('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
@@ -83,12 +93,14 @@ Route::group(['middleware' => 'web'], function () {
     // Candidate
     Route::group(['prefix' => 'candidate'], function () {
 
-        Route::match(['get', 'post'], '/login', 'CandidateController@login')->name('candidate-login');
+        Route::match(['get', 'post'], '/login', 'HomeController@home');
 
         Route::match(['get', 'post'], '/logout', 'CandidateController@logout')->name('candidate-logout');
-        Route::match(['get', 'post'], '/register', 'CandidateController@register')->name('candidate-register');
-        Route::match(['get', 'post'], '/forgot', 'CandidateController@forgot')->name('candidate-forgot');
-        Route::match(['get', 'post'], '/reset', 'CandidateController@reset')->name('candidate-reset');
+
+        // TODO
+        // Route::match(['get', 'post'], '/register', 'CandidateController@register')->name('candidate-register');
+        // Route::match(['get', 'post'], '/forgot', 'CandidateController@forgot')->name('candidate-reset');
+        // Route::match(['get', 'post'], '/reset', 'CandidateController@reset')->name('candidate-reset');
 
         Route::match(['get', 'post'], '/dashboard', 'CandidateController@dashboard')->name('candidate-dashboard');
         Route::match(['get', 'post'], '/{application_id}/activities',
@@ -264,8 +276,13 @@ Route::group(['middleware' => 'web'], function () {
         ['uses' => 'JobsController@SavetoMailbox', 'as' => 'savetoMailbox']);
 
     Route::match(['get', 'post'], 'jobs/save-job', ['uses' => 'JobsController@SaveJob', 'as' => 'job-draft']);
+    Route::match(['get', 'post'], 'job/edit/progress/{id}', ['uses' => 'JobsController@continueJob', 'as' => 'continue-draft']);
+    Route::match(['get', 'post'], 'job/edit/confirm/{id}', ['uses' => 'JobsController@confirmJobDetails', 'as' => 'confirm-job-post']);
     Route::match(['get', 'post'], 'jobs/refer-job', ['uses' => 'JobsController@ReferJob', 'as' => 'refer-job']);
-    Route::match(['get', 'post'], 'jobs/post-a-job', ['uses' => 'JobsController@PostJob', 'as' => 'post-job']);
+    Route::match(['get', 'post'], 'jobs/create-a-job', ['uses' => 'JobsController@createJob', 'as' => 'post-job']);
+    Route::match(['get', 'post'], 'jobs/post-a-job/{id?}', ['uses' => 'JobsController@createJob', 'as' => 'create-job']);
+    Route::match(['get', 'post'], 'jobs/create-a-job/{id?}', ['uses' => 'JobsController@createJob', 'as' => 'create-job']);
+    Route::match(['get', 'post'], 'jobs/approve/{id}', ['uses' => 'JobsController@approveJobPost', 'as' => 'approve-job-post']);
     Route::match(['get', 'post'], 'edit-job/{jobid}', ['uses' => 'JobsController@EditJob', 'as' => 'edit-job']);
 
     Route::match(['get', 'post'], 'jobs/post-success/{jobID}/{slug?}',
@@ -280,8 +297,7 @@ Route::group(['middleware' => 'web'], function () {
         ['uses' => 'JobsController@AddCandidates', 'as' => 'add-candidates']);
 
     Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
-    Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}',
-        ['uses' => 'JobsController@JobView', 'as' => 'job-view']);
+    Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}', ['uses' => 'JobsController@JobView', 'as' => 'job-view']);
     Route::match(['get', 'post'], 'job/preview/{jobID}', ['uses' => 'JobsController@Preview', 'as' => 'job-preview']);
 
     Route::match(['get', 'post'], 'job/activities/{jobID}',
@@ -292,9 +308,13 @@ Route::group(['middleware' => 'web'], function () {
         ['uses' => 'JobsController@JobPromote', 'as' => 'job-promote']);
 
     Route::match(['get', 'post'], 'job/team/{jobID}', ['uses' => 'JobsController@JobTeam', 'as' => 'job-team']);
+    Route::match(['get', 'post'], 'job/settings/team/{job_id}', ['uses' => 'JobsController@jobTemSettings', 'as' => 'job-team-setting']);
     Route::match(['get', 'post'], 'job/teams/add', ['uses' => 'JobsController@JobTeamAdd', 'as' => 'job-team-add']);
     Route::match(['get','post'],'job/teams/remove', ['uses' => 'JobsController@removeJobTeamMember', 'as' => 'remove-job-team-member']);
     Route::get('job/teams/decline', ['uses' => 'JobsController@JobTeamDecline', 'as' => 'job-team-decline']);
+
+    Route::get('/get-all-roles', 'JobsController@getAllRoles')->name('get-all-roles');
+    Route::post('/persis-role', 'JobsController@persisRole')->name('persis-role');
 
     Route::match(['get', 'post'], 'accept-invite/{id}',
         ['uses' => 'JobsController@acceptInvite', 'as' => 'accept-invite']);
@@ -343,6 +363,9 @@ Route::group(['middleware' => 'web'], function () {
         ['uses' => 'JobApplicationsController@downloadApplicantSpreadsheet', 'as' => 'download-applicant-spreadsheet']);
     Route::match(['get', 'post'], 'download-applicant-cv',
         ['uses' => 'JobApplicationsController@downloadApplicantCv', 'as' => 'download-applicant-cv']);
+
+    Route::match(['get', 'post'], 'download-interview-notes',
+        ['uses' => 'JobApplicationsController@downloadInterviewNotes', 'as' => 'download-interview-notes']);
 
     Route::post('job/applicant/mass-action', ['uses' => 'JobApplicationsController@massAction', 'as' => 'mass-action']);
     Route::post('job/applicant/write-review',
@@ -454,7 +477,15 @@ Route::group(['middleware' => 'web'], function () {
         });
 
         Route::get('create', function () {
-            return view('job.create');
+            return view('job.create-step1');
+        });
+
+        Route::get('create/next', function () {
+            return view('job.create-step2');
+        });
+
+        Route::get('create/confirm', function () {
+            return view('job.create-step3');
         });
 
         Route::get('advertise', function () {
@@ -550,6 +581,9 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('documents/{appl_id}',
             ['uses' => 'JobApplicationsController@documents', 'as' => 'applicant-documents']);
 
+        Route::get('interviews/{appl_id}',
+            ['uses' => 'JobApplicationsController@interviews', 'as' => 'applicant-interviews']);
+
 
         Route::get('profile', function () {
             return view('applicant.profile');
@@ -594,6 +628,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('modal/assess', ['as' => 'modal-assess', 'uses' => 'JobApplicationsController@modalAssess']);
 
     Route::get('modal/comment', ['as' => 'modal-comment', 'uses' => 'JobApplicationsController@modalComment']);
+    Route::get('message/bulk/modal', ['as' => 'send-bulk-message-modal', 'uses' => 'CandidateController@sendBulkMessageModal']);
+    Route::any('message/bulk/{ids}', ['as' => 'send-bulk-message', 'uses' => 'CandidateController@sendBulkMessage']);
 
     Route::get('modal/shortlist', ['as' => 'modal-shortlist', 'uses' => 'JobApplicationsController@modalShortlist']);
 
@@ -616,6 +652,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('modal/reject', ['as' => 'modal-reject', 'uses' => 'JobApplicationsController@modalReject']);
 
     Route::get('modal/interview', ['as' => 'modal-interview', 'uses' => 'JobApplicationsController@modalInterview']);
+    Route::get('modal/interview/bulk', ['as' => 'modal-interview-bulk', 'uses' => 'JobApplicationsController@modalInterview']);
     // Route::get('modal/interview-notes', [ 'as' => 'modal-interview-notes', 'uses' => 'JobApplicationsController@modalInterviewNotes' ]);
 
     Route::get('modal/interview-notes',
@@ -674,6 +711,7 @@ Route::group(['middleware' => 'web'], function () {
         ], function () {
             // Workflow
             Route::get('/{id}/view', 'WorkflowController@show')->name('workflow-show');
+            Route::get('/steps/view/{id}', 'WorkflowController@getSteps')->name('get-workflow-steps');
             Route::get('/create', 'WorkfelowController@create')->name('workflow-create');
             Route::get('/{id}/edit', 'WorkflowController@editView')->name('workflow-edit');
             Route::match(['put', 'patch'], '/{id}/edit', 'WorkflowController@update')->name('workflow-update');
@@ -716,16 +754,17 @@ Route::group(['middleware' => 'web'], function () {
 
         Route::get('/get/user-jobs', 'JobController@getUserJobs')->name('get-user-jobs');
         Route::get('/get/user-jobs/activities', 'JobController@getUserJobActivities');
+        Route::post('/save-super-admin', 'JobController@createSuperAdmin');
     });
 
 });
 
-/* Easily update Solr via URL*/
-Route::get('/solr/update/{redirect?}', function ($redirect = '') {
-    Solr::update_core(null, 'full-import');
+  /* Easily update Solr via URL*/
+  Route::get('/solr/update/{redirect?}', function ($redirect = '') {
+      Solr::update_core(null, 'full-import');
 
-    if ($redirect == 'false') {
-        return '';
-    }
-    return redirect()->back();
-});
+      if ($redirect == 'false') {
+          return '';
+      }
+      return redirect()->back();
+  });

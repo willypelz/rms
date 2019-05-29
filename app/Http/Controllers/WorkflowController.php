@@ -19,6 +19,30 @@ class WorkflowController extends Controller
         ]);
     }
 
+
+    public function getSteps($id)
+    {
+        
+        $workflow = Workflow::with('workflowSteps')->find($id);
+
+        if($workflow->workflowSteps){
+            $html = '';
+
+            $lastStep = $workflow->workflowSteps->last();
+
+            foreach($workflow->workflowSteps as $key => $step){
+                if($lastStep->id != $step->id)
+                    $html .= $step->name.' -> ';
+                else
+                    $html .= $step->name;
+            }
+                
+                return $html;
+        }else
+            return 'This workflow has no step.';
+    }
+
+
     public function store(Request $request)
     {
         $this->validate($request, [

@@ -5,7 +5,6 @@
     @endphp
     @include('job.board.jobBoard-header')
 
-    {{-- dd($job,$result) --}}
     <style type="text/css">
         .see-more {
             display: none;
@@ -57,6 +56,7 @@
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                                     <li><a href="javscript://" id="downSpreadsheet">Spreadsheet</a></li>
                                                     <li><a href="javscript://" id="downCv">CVs</a></li>
+                                                    <li><a href="javscript://" id="downloadInterviewNotes">Interview Notes</a></li>
                                                     <!-- <li role="separator" class="divider"></li>
                                                     <li><a href="#">Separated link</a></li> -->
                                                 </ul>
@@ -145,6 +145,10 @@
                                                         Pending</a>
                                                         --}}
                                                     <div class="btn-group" role="group">
+
+
+
+
                                                         <button type="button"
                                                                 class="btn btn-line status-1 dropdown-toggle"
                                                                 data-toggle="dropdown" aria-haspopup="true"
@@ -152,6 +156,10 @@
                                                             Checks
                                                             <span class="caret"></span>
                                                         </button>
+
+
+
+
                                                         <ul class="dropdown-menu">
                                                             @if($user_role->name == 'admin')
                                                             <li>
@@ -173,7 +181,34 @@
                                                                 </a>
                                                             </li>
                                                             @endif
+
+
+
                                                         </ul>
+
+                                                        <a class="btn btn-line status-1"
+                                                           data-toggle="modal"
+                                                           data-target="#viewModal"
+                                                           id="modalButton"
+                                                           data-title="Send message?"
+                                                           data-view="{{ route('send-bulk-message-modal') }}"
+                                                           data-app-id=""
+                                                           data-cv=""
+                                                           data-type="normal">
+                                                            Send Message to All
+                                                         </a>
+
+                                                         <a class="btn btn-line status-1"
+                                                            data-toggle="modal"
+                                                            data-target="#viewModal"
+                                                            id="modalButton"
+                                                            data-title="Interview?"
+                                                            data-view="{{ route('modal-interview-bulk') }}"
+                                                            data-app-id=""
+                                                            data-cv=""
+                                                            data-type="normal">
+                                                             Interview All
+                                                          </a>
                                                     </div>
                                                 </div>
 
@@ -671,7 +706,7 @@
 
                     //         //$('#status_filters a[data-value="' + $field.data('action') + '"]').trigger('click');
                     //     });
-                    console.log(cv_ids, app_ids);
+                    console.log('Checks', cv_ids, app_ids);
                 });
 
 
@@ -681,7 +716,7 @@
                     }, function (data) {
                         $('body #status_filters').replaceWith(data);
                     });
-                }
+                };
                 sh.reloadStatus = function () {
                     $.get("{{ route('get-all-applicant-status') }}", {
                         job_id: "{{ $jobID }}"
@@ -690,7 +725,7 @@
                         $('#status_filters a[data-value="' + status_page.toUpperCase() + '"]').trigger('click');
                     });
 
-                }
+                };
 
                 $('body').on('click', '#clearAllFilters', function () {
                     filters = [];
@@ -774,6 +809,28 @@
 
             });*/
                 });
+
+
+                $('body').on('click', '#downloadInterviewNotes', function () {
+                    $data = {
+                        search_query: $('#search_query').val(),
+                        filter_query: filters,
+                        status: status_filter,
+                        jobId: "{{ $jobID }}",
+                        age: age_range,
+                        test_score: test_score_range,
+                        exp_years: exp_years_range,
+                        video_application_score: video_application_score_range,
+                        cv_ids: cv_ids,
+                        app_ids: app_ids
+                    };
+                    window.open("{{ route('download-interview-notes') }}" + "?" + $.param($data), '_blank');
             });
+        });
+
+        function messageAllCandidates() {
+          // body...
+        }
+
         </script>
 @endsection

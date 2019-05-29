@@ -628,21 +628,47 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 }
 
 function checkIfUserHasCompanyPermission() {
+	    //check if user is a super admin
 	    $user = auth()->user()->load('roles');
-	    $role = $user->roles->first();
-	    $company = get_current_company();
+        return $user->is_super_admin = 1 ?  true :  false;
+}
 
-	    $has_per =  $company->users()->where('user_id', $user->id)->where('role_id', $role->id)->first();
-        return is_null($has_per) ?  false :  true;
+function getRoleArray($job_id, $user) {
+    $job = \App\Models\Job::find($job_id);
+    $user = \App\User::find($user->id);
+    $roles = $user->roles()->where('job_id', $job->id)->get();
+    $role_array = [];
+    foreach ($roles as $role) {
+        $role = \App\Models\Role::select('id', 'display_name')->find($role->pivot->role_id);
+
+        if(!is_null($role))
+            $role_array[] = $role->id;
+    }
+
+    return $role_array;
+}
+
+function getRoleArrayName($job_id, $user) {
+    $job = \App\Models\Job::find($job_id);
+    $user = \App\User::find($user->id);
+    $roles = $user->roles()->where('job_id', $job->id)->get();
+    $role_array = [];
+    foreach ($roles as $role) {
+        $role = \App\Models\Role::select('id', 'name')->find($role->pivot->role_id);
+
+        if(!is_null($role))
+            $role_array[] = $role->name;
+    }
+
+    return $role_array;
 }
 
 function checkIfUserHasJobPermission($job_id) {
     $user = auth()->user()->load('roles');
-    $role = $user->roles()->first();
-    $job = Job::find($job_id);
-
-    $has_per = $job->users()->where('user_id', $user->id)->where('role_id', $role->id)->first();
-    return is_null($has_per) ?  false :  true;
+    //get all the roles the user has for this job
+    $role_array = getRoleArray($job_id, $user);
+    //if no roles for this job then he has no permissions
+    return empty($role_array) ?  false :  true;
 }
 
 function checkForBothPermissions($job_id) {
@@ -652,13 +678,18 @@ function checkForBothPermissions($job_id) {
 }
 
 function getUserPermissions() {
-	    $role = auth()->user()->roles->first();
-	    $permissions = $role->perms;
-	    $perm_array = [];
-	    foreach ($permissions as $permission) {
-	        $perm_array[] = $permission->name;
+
+    $roles = auth()->user()->roles;
+
+    $perm_array = [];
+
+    foreach ($roles as $role) {
+        foreach ($role->perms as $permission) {
+            $perm_array[] = $permission->name;
         }
-	    return !empty($perm_array) ?  $perm_array : null;
+    }
+    return !empty($perm_array) ?  array_unique($perm_array) : null;
+    
 }
 
 /**
@@ -666,6 +697,7 @@ function getUserPermissions() {
  * @return string
  */
 function getAdminName($roleName) {
+	$name = '';
     switch ($roleName){
         case 'admin':
             $name = 'Talent Acquisition Partner';

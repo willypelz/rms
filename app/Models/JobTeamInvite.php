@@ -18,9 +18,11 @@ class JobTeamInvite extends Model
         'name',
         'email',
         'job_id',
-        'role_id',
+        'role_ids',
+        'step_ids',
         'company_id',
         'is_internal',
+        'role_name',
         'created_at',
         'updated_at'
     ];

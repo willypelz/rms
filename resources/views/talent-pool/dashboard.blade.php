@@ -1,9 +1,6 @@
 @extends('layout.template-user')
 
 @section('content')
-@php
-    $user_role = getCurrentLoggedInUserRole();
-@endphp
 
 <!-- <div class="container text-brandon text-uppercase h5 separator separator-small" style=""><i class="fa fa-tachometer"></i> Your Dashboard</div> -->
 
@@ -13,7 +10,7 @@
                 <div class="col-sm-12 "><br>
                 <h4 class="text-white">Welcome Admin, <span class="small pull-right text-white"><i class="fa fa-calendar"></i> <?php echo date("l, d/m/Y") . "<br>"; ?></span></h4>
                   
-                    @if($user_role->name == 'admin')
+                    @if(checkIfUserHasCompanyPermission())
                         <div class=" btn-group-justified btn-dash" role="group" aria-label="...">
                           <div class="btn-group" role="group">
                             <a href="{{ route('post-job') }}" type="button" class="btn btn-success text-capitalize in">

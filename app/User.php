@@ -21,6 +21,8 @@ class User extends Authenticatable
         'password',
         'invite_code',
         'is_internal',
+        'role_name',
+        'is_super_admin'
     ];
 
     /**
@@ -39,6 +41,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Company', 'company_users')->withPivot('role');
     }
 
+    public function roles()
+    {
+        return $this->belongsToMany('App\Models\Role', 'role_user')->withPivot('job_id');
+    }
+
     public function workflowSteps()
     {
         return $this->belongsToMany(
@@ -47,5 +54,15 @@ class User extends Authenticatable
             'user_id',
             'workflow_step_id'
         );
+    }
+
+    public function workflow_steps()
+    {
+      return $this->belongsToMany('App\Models\WorkflowStep');
+    }
+
+    public function interviews()
+    {
+      return $this->belongsToMany('App\Models\Interview');
     }
 }

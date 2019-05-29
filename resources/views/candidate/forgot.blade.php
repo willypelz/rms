@@ -1,85 +1,40 @@
+<!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@if(isset($pageTitle)){{ $pageTitle }}&middot;@endif SeamlessHiring</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,600" rel="stylesheet"> 
+    <link rel="stylesheet" href="{{ asset('homepage/css/style.css') }}">
 
+</head>
+<body>
+    <div class="container-fluid shr-auth">
+        <div class="h-100 row justify-content-center align-items-center">
 
-@extends('layout.template-default')
+            <section class="col-xs-10 col-md-4">
 
-@section('navbar')
-    
-@show()
-@section('content')
-
-<style>
-    
-    body{
-        background:url('img/intro-bg.jpg') no-repeat fixed ;
-        background-size:cover;
-    }
-
-</style>
-<section>
-        <div class="container">
-            <div class="row">
-
-                <div class="col-sm-4 col-sm-offset-4 text-center text-white">
-                    <h2 class=""><img src="https://cdn.insidify.com/dist/img/logos/seamlesshiring-white.svg" width="190px" alt=""></h2><br>    
-                    <!-- <p class="">Everything You Need To Hire, In One Place!</p> -->
+                <div class="text-center">
+                    <img src="{{ env('APP_LOGO') }}" class="shr-auth-logo">
                 </div>
 
-                <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-                    <h2 class="text-center">Candidate Login</h2>
-                    <div class="white padbox rounded">
-                        
+                <h4 class="my-4 dark-blue-text font-weight-bold">Enter your email to reset your password</h4>
+                
+                <form action="" method="POST">
                         @include('layout.alerts')
 
-                        <form role="form" class="form-signin" method="POST" action="{{ route('candidate-login') }}">
-                            {!! csrf_field() !!}
-                            
-                            <div class="row">
-                                <input type="hidden" name="redirect_to" value="{{ $redirect_to }}" />
-                            <div class="col-sm-12">
-                                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                    <label for="">Email</label>
-                                    <input type="email" class="form-control" id="" placeholder="" name="email" value="{{ old('email') }}" required>
-
-                                    @if ($errors->has('email'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('email') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            </div>
-
-                            <div class="row"><br>
-
-                                <div class="col-sm-10 col-sm-offset-1 col-md-12 col-sm-offset-0">
-                                    <button type="submit" class="btn btn-success btn-block">Reset &raquo;</button>
-                                </div>
-
-                                <div class="col-sm-6"><br>
-                                    <p class="small text-left"><a href="{{ route('candidate-forgot', ['redirect_to' => $redirect_to]) }}">:( I can't remember my password!</a></p>
-                                </div>
-
-                                <div class="col-sm-6"><br>
-                                    <p class="small text-right">Not registered? <a href="{{ route('candidate-register', ['redirect_to' => $redirect_to]) }}">Sign Up Here</a></p>
-                                </div>
-
-                            </div>
-                        </form>
-
-
-                    </div><br>
-
-                        <p class="text-center"><small class="text-white">&copy; {{ date('Y') }}. All Rights Reserved. SeamlessHiring <br> Insidify Enterprise by Insidify.com</small></p>
-                    <!--/tab-content-->
-
-                </div>
-
-            </div>
+                    <div class="form-group shr-form-group">
+                        <label class="shr-input-label">Your email address</label>
+                        <div class="shr-input-group">
+                            <img src="{{ asset('homepage/images/icon-envelope-alt.svg') }}" class="shr-input-group-addon">
+                            <input required="" name="email" type="email" class="shr-input">
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-block shr-auth-form-button" type="submit" > Send Forgot Password Link </button>
+                </form>
+            </section>
+        
         </div>
-    </section>
-@endsection
-
-@section('footer')
-    
-@show()
+    </div>
+</body>
+</html>

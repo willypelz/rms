@@ -41,11 +41,13 @@ class PasswordController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    /*public function sendResetLinkEmail(Request $request)
+    public function sendResetLinkEmail(Request $request)
     {
         $this->validateSendResetLinkEmail($request);
 
+
         $broker = $this->getBroker();
+
 
         $response = Password::broker($broker)->sendResetLink(
             $this->getSendResetLinkEmailCredentials($request),
@@ -61,7 +63,7 @@ class PasswordController extends Controller
             $request->session()->flash('warning', 'Failed to send reset link');
                 return $this->getSendResetLinkEmailFailureResponse($response);
         }
-    }*/
+    }
 
 
     public function postReset(Request $request)

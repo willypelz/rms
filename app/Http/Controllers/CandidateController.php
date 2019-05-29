@@ -3,17 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use Illuminate\Http\Request;
-use Curl;
-use App\Models\Company;
+use App\Libraries\Solr;
 use App\Models\Candidate;
+use App\Models\Company;
+use App\Models\FolderContent;
 use App\Models\Job;
 use App\Models\JobActivity;
 use App\Models\JobApplication;
-use App\Libraries\Solr;
-use Auth;
-use App\Models\FolderContent;
+use App\Models\Message as CandidateMessage;
 use App\Models\Message;
+use App\User;
+use Auth;
+use Carbon\Carbon;
+use Curl;
+use DB;
+use Illuminate\Http\Request;
 use Mail;
 
 
@@ -86,14 +90,73 @@ class CandidateController extends Controller
     public function forgot(Request $request)
     {
 
+        if($request->isMethod('post')){
+
+            $candidate = Candidate::whereEmail($request->email)->first();
+
+            if($candidate){
+
+                $token = str_random(60).time();
+
+                DB::table('password_resets')->insertGetId(
+                    ['email' => $request->email, 'token' => $token, 'created_at' => Carbon::now() ]
+                );
+
+
+                Mail::send('emails.candidate-forgot-password', ['token' => $token], function ($m) use ($candidate) {
+                    $m->from('support@seamlesshr.com', env('APP_NAME'));
+                    $m->to($candidate->email, $candidate->first_name)->subject('Your Password Reset Link!');
+                });
+
+
+                return redirect()->route('candidate-forgot-sent');
+
+            }else{
+                return redirect()->back()->with('error', 'Failed to send reset link');
+            }
+
+        }
+
         $redirect_to = $request->redirect_to;
+
         return view('candidate.forgot', compact('redirect_to'));
     }
 
-    public function reset(Request $request)
+
+    public function forgotSent(Request $request)
+    {
+
+        return view('candidate.forgot-sent', compact('redirect_to'));
+    }
+
+    public function reset(Request $request, $token)
     {
         $redirect_to = $request->redirect_to;
-        return view('candidate.rest', compact('redirect_to'));
+
+        $token_reset = DB::table('password_resets')->where('token', $token)->first();
+
+
+        if(is_null($token_reset))
+            return redirect()->route('candidate-login')->with('error', 'Invalid password reset link');
+
+        if($request->isMethod('post')){
+            $this->validate($request, [
+                'password' => 'required',
+                'password_confirmation' => 'same:password',
+            ]);
+
+
+
+
+            $candidate = Candidate::whereEmail($token_reset->email)->first();
+            $candidate->update(['password' => bcrypt($request->password)]);
+
+            DB::table('password_resets')->where('token', $token)->delete();
+
+            return redirect()->route('candidate-login')->with('success', 'Password has been successfully update. You can login now.');
+        }
+
+        return view('candidate.reset', compact('redirect_to'));
     }
 
 
@@ -138,13 +201,95 @@ class CandidateController extends Controller
         //Get All jobs applied to
         $job_ids = Auth::guard('candidate')->user()->applications->unique('job_id')->pluck('job_id')->toArray();
 
-
         $company_ids = Job::whereIn('id', $job_ids)->get()->unique('company_id')->pluck('company_id')->toArray();
 
-        $jobs = Job::with('company')->whereIn('company_id', $company_ids)->where('status','ACTIVE')->get();
+        $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->get();
+
 
         return view('candidate.job-list', compact('application_id', 'ignore_list', 'jobs'));
     }
+
+
+     /**
+     * Bulk message modal to show applicants number and show to accept ot decline
+     *
+     * @return void
+     */
+     public function sendBulkMessageModal(Request $request)
+    {
+
+        $app_ids = explode(',', @$request->app_id);
+        $params = urlencode($request->app_id);
+        $count_applicants = count($app_ids);
+
+        return view('candidate.messaging.action', compact(
+            'count_applicants', 'params',
+            'app_ids'
+        ));
+    }
+
+
+     /**
+     * Send Bulk message to candidate
+     *
+     * @return void
+     */
+    public function sendBulkMessage(Request $request, $ids)
+    {
+        $params = urldecode($ids);
+        $app_ids = explode(',', $params);
+        $nav_type = 'messages';
+
+        $job_applications = JobApplication::with('cv')->find($app_ids);
+
+        if($request->isMethod('post')){
+
+            if ($request->hasFile('attachment')) {
+                $file_name  = $request->attachment->getClientOriginalName();
+                $attachment = $job_applications[0]->id . '-' . time() . '-' . $file_name;
+
+                $request->file('attachment')->move(env('fileupload'), $attachment);
+
+            } else {
+                $attachment = '';
+            }
+
+            // Loop throgh applicants selected and dispatch message to them
+            foreach ($job_applications as $key => $jb) {
+
+                $user = Candidate::find($jb->candidate_id);
+                $job = Job::find($jb->job_id);
+                Message::create([
+                    'job_application_id' => $jb->id,
+                    'message' => $request->message,
+                    'user_id' => Auth::id(),
+                    'attachment' => $attachment,
+                ]);
+
+                $link = route('candidate-messages', $jb->id);
+
+                $candidate = $user;
+                $email_title = $candidate->first_name.' you a message.';
+                $message_content = 'You just recieve message from candidate: '.$candidate->first_name;
+
+
+                $email_title = 'Feedback for your application';
+                $message_content = 'You just recieve message on your job application: '.$job->title;
+
+
+                 Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
+                    $m->from('support@seamlesshr.com')->to($user->email)->subject($email_title);
+                });
+
+            }
+
+            return redirect()->back()->with('success', 'Message has been sent successfully to applicant(s)');
+        }
+
+        return view('candidate.messaging.bulk', compact('appl', 'nav_type', 'job_applications', 'messages'));
+
+    }
+
 
     public function messages(Request $request)
     {
@@ -178,7 +323,6 @@ class CandidateController extends Controller
 
     public function sendMessage(Request $request)
     {
-
         if ($request->hasFile('attachment')) {
             $file_name  = (@$request->attachment->getClientOriginalName());
             $fi         = @$request->file('attachment')->getClientOriginalExtension();
@@ -191,12 +335,33 @@ class CandidateController extends Controller
             $attachment = '';
         }
 
+
         Message::create([
             'job_application_id' => $request->application_id,
             'message' => $request->message,
             'attachment' => $attachment,
         ]);
+
+        $job_application = JobApplication::find($request->application_id);
+        $job = Job::find($job_application->job_id);
+        // Get admin
+        $admin_user = Message::where('job_application_id', $request->application_id)->whereNotNull('user_id')->first();
+        
+        $user = User::find($admin_user->id);
+
         $application_id = $request->application_id;
+
+        $link = route('applicant-messages', $request->application_id);
+        $candidate = Candidate::find($job_application->candidate_id);
+        $email_title = $candidate->first_name.' you a message.';
+        $message_content = 'You just recieve message from candidate: '.$candidate->first_name;
+
+
+         Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
+            $m->from('support@seamlesshr.com')->to($user->email)->subject($email_title);
+        });
+
+
 
         return redirect()->route('candidate-messages', ['application_id' => $application_id]);
 

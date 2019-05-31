@@ -58,8 +58,12 @@
                 type: "post",
                 data: {id: userId, role: 1 },
                 success: function (response) {
-                    $.growl.notice({message: 'Changed successfully'});
-                    window.location.reload();
+                    if (response.status) {
+                        $.growl.notice({message: 'Changed successfully'});
+                        window.location.reload();
+                    } else {
+                        $.growl.error({message: response.message});
+                    }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     $.growl.error({message: 'Could not change role please try again'});
@@ -73,8 +77,12 @@
                 type: "post",
                 data: {id: userId, role: 0 },
                 success: function (response) {
-                    $.growl.notice({message: 'Changed successfully'});
-                    window.location.reload();
+                    if (response.status) {
+                        $.growl.notice({message: 'Changed successfully'});
+                        window.location.reload();
+                    } else {
+                        $.growl.error({message: response.message});
+                    }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     $.growl.error({message: 'Could not change role please try again'});

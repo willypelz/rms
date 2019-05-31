@@ -3003,10 +3003,17 @@ class JobsController extends Controller
     {
         if ( $request->isMethod ( 'post' ) ) {
             $user = User::with('roles')->find($request->id);
-            $user->update([
-                'is_super_admin' => $request->role
-            ]);
-            return response()->json (['status' => true]);
+            if (!is_null(env('STAFFSTRENGTH_URL'))) {
+                $user->update([
+                    'is_super_admin' => $request->role
+                ]);
+                return response()->json (['status' => true]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => "you have to manage super admins from HRMS"
+                ]);
+            }
         }
         $users = User::with('roles')->get();
         $roles = Role::get();

@@ -7,16 +7,16 @@
             <div class="col">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h2 class="text-center">Manage Job Team Memebers Roles</h2>
+                        <h2 class="text-center">Make Users Super Admins</h2>
                     </div>
                     <div class="panel-body">
-                        <table class="table">
+                        <table class="table" id="myTable">
                             <thead>
                                 <tr>
                                     <th></th>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>Role</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -30,11 +30,11 @@
                                         {{$user->email}}
                                     </td>
                                     <td>
-                                        <select name="role" data-id="{{$user->id}}" class="roles" id="{{$user->id . 'roles'}}">
-                                            @foreach($roles as $role)
-                                            <option @if($user->roles()->first()->id == $role->id) selected @endif value="{{$role->id}}">{{getAdminName($role->name)}}</option>
-                                            @endforeach
-                                        </select>
+                                        @if($user->is_super_admin)
+                                            <div onclick="removeRole({!! $user->id !!})" class="btn btn-danger">Remove super admin role</div>
+                                        @else
+                                            <div onclick="assignRole({!! $user->id !!})" class="btn btn-success">Assign super admin role</div
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -48,22 +48,39 @@
     <script src="{{ secure_asset('js/jquery.form.js') }}"></script>
 
     <script>
-        $('.roles').on('change', function () {
-            var userId = $(this).data('id');
-            var role = $('#' + userId + 'roles').val();
-                $.ajax({
-                    url: "{{ route('change-admin-role') }}",
-                    type: "post",
-                    data: {id: userId, role: role },
-                    success: function (response) {
-                        $.growl.notice({message: 'Changed successfully'});
-                        window.location.reload();
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        $.growl.error({message: 'Could not change role please try again'});
-                    }
-                });
-        });
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+
+        function assignRole(userId) {
+            $.ajax({
+                url: "{{ route('change-admin-role') }}",
+                type: "post",
+                data: {id: userId, role: 1 },
+                success: function (response) {
+                    $.growl.notice({message: 'Changed successfully'});
+                    window.location.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $.growl.error({message: 'Could not change role please try again'});
+                }
+            });
+        }
+
+        function removeRole(userId) {
+            $.ajax({
+                url: "{{ route('change-admin-role') }}",
+                type: "post",
+                data: {id: userId, role: 0 },
+                success: function (response) {
+                    $.growl.notice({message: 'Changed successfully'});
+                    window.location.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $.growl.error({message: 'Could not change role please try again'});
+                }
+            });
+        }
 
     </script>
 @endsection

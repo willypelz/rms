@@ -50,13 +50,23 @@
                                                             @endphp
                                                             @foreach($all_roles as $role)
                                                                 <li>
-                                                                    <input @if(!in_array('admin', $admin_roles) || auth()->user()->is_super_admin == 0) disabled
+                                                                    <input @if(auth()->user()->is_super_admin == 0) disabled
                                                                            @endif class="role-{!! $user->id !!}-{!! $role->id !!}"
                                                                            onclick="submitRoles('{{$user->id}}', '{{$role->id}}')"
                                                                            type="checkbox" data-id="{{$role->id}}"
                                                                            @if(in_array($role->name, $user_roles)) checked @endif>
                                                                     {{$role->display_name}}
                                                                 </li>
+                                                                <a data-toggle="modal"
+                                                                   data-target="#viewModal"
+                                                                   id="modalButton"
+                                                                   data-id="{{$user->id}}"
+                                                                   class="modalButton"
+                                                                   href="#viewModal"
+                                                                   data-title="Select Workflow steps"
+                                                                   data-view="{{ route('workflow-select', [$job->id, $user->id])}}"
+                                                                   data-type="normal">
+                                                                    </a>
                                                             @endforeach
                                                         </ul>
                                                         {{--<button class="btn btn-primary" style="margin-top: 10px;" onclick="submitRoles('{{$user->id}}', '{{$role->id}}')">--}}
@@ -65,7 +75,7 @@
 
                                                     </div>
 
-                                                    @if( Auth::user()->id == $owner->id &&  $user->id != Auth::user()->id && in_array('admin', $admin_roles) )
+                                                    @if( $user->id != Auth::user()->id && in_array('admin', $admin_roles) )
                                                         <div class="col-xs-4 small"><br>
                                                             <a data-toggle="modal"
                                                                data-target="#viewModal"
@@ -198,7 +208,8 @@
                                                             </div>
                                                             <div class="form-group" style="display:none" id="stepDiv">
                                                                 <label for="role">Steps on this service</label>
-                                                                <select class="select2 form-control" multiple name="steps[]" id="step" class="form-control">
+                                                                <select class="select2 form-control" multiple
+                                                                        name="steps[]" id="step" class="form-control">
                                                                     @foreach($job->workflow->workflowSteps as $step)
                                                                         @if($step->type == 'interview')
                                                                             <option value="{{ $step->id }}">{{ ucwords($step->name) }}</option>
@@ -249,7 +260,8 @@
 
                                             </form>
                                         @else
-                                            <form action="{{ route('job-team-add') }}" method="post" id="JobTeamAdd-noEnv">
+                                            <form action="{{ route('job-team-add') }}" method="post"
+                                                  id="JobTeamAdd-noEnv">
                                                 {!! csrf_field() !!}
 
                                                 <div class="form-group">
@@ -296,7 +308,8 @@
 
                                                             <div class="form-group" style="display:none" id="stepDiv">
                                                                 <label for="role">Steps on this service</label>
-                                                                <select class="select2 form-control" multiple name="steps[]" id="step" class="form-control">
+                                                                <select class="select2 form-control" multiple
+                                                                        name="steps[]" id="step" class="form-control">
                                                                     @foreach($job->workflow->workflowSteps as $step)
                                                                         @if($step->type == 'interview')
                                                                             <option value="{{ $step->id }}">{{ ucwords($step->name) }}</option>
@@ -515,22 +528,28 @@
                 }
 
             });
+
             function submitRoles(user_id, role_id) {
+                console.log($('.role-' + user_id + '-' + role_id).is(':checked'));
+                if(role_id == "{{$interviewer_id}}" && $('.role-' + user_id + '-' + role_id).is(':checked')) {
+                    $('.modalButton').click();
+                } else {
+                    var checked = $('.role-' + user_id + '-' + role_id).is(':checked') ? 1 : 0,
+                        job_id = {!! $job->id !!};
+                    $.ajax({
+                        url: "{{ route('persis-role') }}",
+                        type: "post",
+                        data: {user_id, role_id, job_id, checked},
+                        success: function (response) {
+                            $.growl.notice({message: 'updated successfully'});
 
-                var checked = $('.role-' + user_id + '-' + role_id).is(':checked') ? 1 : 0,
-                    job_id = {!! $job->id !!};
-                $.ajax({
-                    url: "{{ route('persis-role') }}",
-                    type: "post",
-                    data: {user_id, role_id, job_id, checked},
-                    success: function (response) {
-                        $.growl.notice({message: 'updated successfully'});
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            $.growl.error({message: 'something went wrong.. please try again'});
+                        }
+                    });
+                }
 
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        $.growl.error({message: 'something went wrong.. please try again'});
-                    }
-                });
             }
 
         </script>

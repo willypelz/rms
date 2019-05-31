@@ -57,7 +57,7 @@ Route::group(['middleware' => 'web'], function () {
         return view('admin.dashboard');
     });
     Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
-    Route::match(['get', 'post'], '/admin/mange-roles', 'JobsController@manageRoles')->name('change-admin-role');
+    Route::match(['get', 'post'], '/admin/assign', 'JobsController@manageRoles')->name('change-admin-role');
     Route::match(['get', 'post'], '/sys/roles', 'AdminsController@manageRoles')->name('list-role');
     Route::match(['get', 'post'], '/sys/roles/create', 'AdminsController@createRole')->name('create-role');
     Route::match(['get', 'post'], '/sys/roles/edit/{id}', 'AdminsController@editRole')->name('role-edit');
@@ -79,8 +79,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::any('forgot', 'CandidateController@forgot')->name('candidate-forgot');
     Route::get('forgot/sent', 'CandidateController@forgotSent')->name('candidate-forgot-sent');
     Route::any('reset/{token}', 'CandidateController@reset')->name('candidate-reset');
+    Route::get('/workflow-select/{job_id}/{user_id}', 'JobsController@workflowSelect')->name('workflow-select');
 
-    // Route::get('/', 'HomeController@homepage')->name('homepage');
+    // Route::get('/', 'omeController@homepage')->name('homepage');
 
     // Route::get('/', function () {
     //     return view('guest.landing');

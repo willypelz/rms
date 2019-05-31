@@ -208,6 +208,15 @@ class JobsController extends Controller
 
     }*/
 
+    public function workflowSelect(Request $request)
+    {
+        $job = Job::with('workflow.workflowSteps')->find($request->job_id);
+        $steps = $job->workflow->workflowSteps;
+        $user = User::find($request->user_id);
+        $role_id = Role::whereName('interviewer')->first()->id;
+
+        return view('modals.select-interview-step', compact('steps', 'user', 'role_id', 'job'));
+    }
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -1333,7 +1342,6 @@ class JobsController extends Controller
             ->first();
 
         $company = get_current_company();
-
         $jobsOrm = $company->jobs()->with([
             'workflow.workflowSteps' => function ($q) {
                 return $q->orderBy('order', 'asc');
@@ -1346,13 +1354,12 @@ class JobsController extends Controller
             $q->where('user_id', $user->id);
         })->get()->pluck('id')->toArray();
 
-        $company_role = $company->users()->wherePivot('user_id', $user->id)->first()->pivot->role;
+        $is_super_admin = $user->is_super_admin;
 
         if (isset($request->q)) {
             $jobs = $jobs->where('title', 'LIKE', '%' . $request->q . '%');
         }
-
-        if (!$company_role) {
+        if (!$is_super_admin) {
             $jobs = $jobs->whereIn('id', $job_access);
         }
 
@@ -1469,11 +1476,12 @@ class JobsController extends Controller
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id);
 
-        $roles = Role::select('id', 'display_name')->get();
+        $roles = Role::select('id', 'display_name', 'name')->get();
 
         $job_team_invites = JobTeamInvite::where('job_id', $job->id)->where('is_accepted', 0)->where('is_declined', 0)->get();
+        $interviewer_id = $roles->where('name','interviewer')->first()->id;
 
-        return view('job.board.team', compact('job', 'active_tab', 'company', 'result', 'application_statuses', 'owner', 'job_team_invites', 'roles'));
+        return view('job.board.team', compact('job', 'active_tab', 'company', 'result', 'application_statuses', 'owner', 'job_team_invites', 'roles', 'interviewer_id'));
     }
 
 
@@ -1482,6 +1490,8 @@ class JobsController extends Controller
         $user = User::find($request->user_id);
         $user_roles = $user->roles()->where('job_id', $request->job_id)->get();
         $exist = false;
+        $interviewer_id = Role::where('name','interviewer')->first()->id;
+
         if($request->checked){
             foreach ($user_roles as $role) {
                 if($role->id == $request->role_id) {
@@ -1490,10 +1500,20 @@ class JobsController extends Controller
                     //do nothing
                 }
             }
-            if(!$exist)
+            if(!$exist) {
                 $user->roles()->attach($request->role_id, ['job_id' => $request->job_id]);
+                if($request->steps) {
+                    foreach ($request->steps as $key => $step) {
+                        $user->workflow_steps()->attach($step);
+                    }
+                }
+            }
         } else {
+            if($interviewer_id == $request->role_id){
+                $user->workflow_steps()->detach();
+            }
             $user->roles()->where('job_id', $request->job_id)->detach($request->role_id);
+
         }
         return response()->json([
             'status' => true,
@@ -2983,10 +3003,9 @@ class JobsController extends Controller
     {
         if ( $request->isMethod ( 'post' ) ) {
             $user = User::with('roles')->find($request->id);
-            $current_role = $user->roles()->first();
-            $new_role = Role::find($request->role);
-            $user->roles()->detach($current_role);
-            $user->roles()->attach($new_role);
+            $user->update([
+                'is_super_admin' => $request->role
+            ]);
             return response()->json (['status' => true]);
         }
         $users = User::with('roles')->get();

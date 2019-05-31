@@ -530,7 +530,6 @@
             });
 
             function submitRoles(user_id, role_id) {
-                console.log($('.role-' + user_id + '-' + role_id).is(':checked'));
                 if(role_id == "{{$interviewer_id}}" && $('.role-' + user_id + '-' + role_id).is(':checked')) {
                     $('.modalButton').click();
                 } else {

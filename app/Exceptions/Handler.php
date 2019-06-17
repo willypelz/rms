@@ -56,9 +56,7 @@ class Handler extends ExceptionHandler
         if (!env('APP_DEBUG')) {
             return parent::render($request, $exception);
         } else {
-            return response()->view('errors.defaultError', [
-                'sentryID' => $this->sentryID,
-            ], 500);
+            return redirect()->route('errors.defaultError');
         }
         return parent::render($request, $exception);
     }

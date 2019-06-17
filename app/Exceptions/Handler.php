@@ -31,10 +31,17 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $e
      * @return void
      */
-    public function report(Exception $e)
+    public function report(Exception $exception)
     {
-        parent::report($e);
+        if (!env('APP_DEBUG')) {
+            if (app()->bound('sentry') && $this->shouldReport($exception)) {
+                app('sentry')->captureException($exception);
+            }
+        }
+
+        parent::report($exception);
     }
+
 
     /**
      * Render an exception into an HTTP response.
@@ -45,15 +52,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        if( env('APP_DEBUG') )
-        {
+        if (!env('APP_DEBUG')) {
             return parent::render($request, $e);
-         
+        } else {
+            return response()->view('errors.defaultError', [
+                'sentryID' => $this->sentryID,
+            ], 500);
         }
-        else
-        {
-            return redirect()->route('errors.defaultError');
-        }
-        // 
+        return parent::render($request, $e);
     }
 }

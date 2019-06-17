@@ -11,6 +11,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
+    private $sentryID;
     /**
      * A list of the exception types that should not be reported.
      *
@@ -50,15 +51,15 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $e
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $e)
+    public function render($request, Exception $exception)
     {
         if (!env('APP_DEBUG')) {
-            return parent::render($request, $e);
+            return parent::render($request, $exception);
         } else {
             return response()->view('errors.defaultError', [
                 'sentryID' => $this->sentryID,
             ], 500);
         }
-        return parent::render($request, $e);
+        return parent::render($request, $exception);
     }
 }

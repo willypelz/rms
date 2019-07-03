@@ -384,7 +384,7 @@ class JobController extends Controller
                 400
             );
         }
-        $user_found = User::whereName($request->name)->whereUsername($request->username)->whereEmail($request->email)->first();
+        $user_found = User::whereName($request->name)->whereEmail($request->email)->first();
         $user = $user_found ? $user_found->update(
             [
                 'name' => $request->name,

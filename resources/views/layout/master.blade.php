@@ -7,7 +7,9 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <script src="{{ asset('js/jquery-1.11.1.min.js') }}"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.growl.css') }}"/>
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
 
 <script type="text/javascript">
     $(function () {

@@ -70,7 +70,14 @@
                                 Embed
                             </a>
                         </li>
-
+                        @if(env('STAFFSTRENGTH_URL'))
+                            <li>
+                                <a href="{{ route('change-admin-role') }}">
+                                    <i class="fa fa-user fa-fw"></i>
+                                    Manage Super Admins
+                                </a>
+                            </li>
+                        @endif
                     <!-- <li class="{{ Request::is('cv/purchased') ? 'active' : '' }}"><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li> -->
                     <!-- <li class="{{ Request::is('cv/saved') ? 'active' : '' }}"><a href="{{ url('cv/saved') }}">Saved Cvs</a></li> -->
                     <!-- <li class="{{ Request::is('cv/purchased') ? 'active' : '' }}"><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li> -->

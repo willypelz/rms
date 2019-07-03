@@ -354,8 +354,7 @@ class JobController extends Controller
     {
         $req_header = $request->header('X-API-KEY');
         if (!$req_header) {
-            return response()->json(
-                [
+            return response()->json([
                     'status' => false,
                     'message' => 'No API Key',
                 ],
@@ -366,8 +365,7 @@ class JobController extends Controller
         $current_company = Company::get()->first();
 
         if ($req_header != $current_company->api_key) {
-            return response()->json(
-                [
+            return response()->json([
                     'status' => false,
                     'message' => 'Invalid API Key',
                 ],
@@ -376,15 +374,16 @@ class JobController extends Controller
         }
 
         if (!$request->name || !$request->email) {
-            return response()->json(
-                [
+            return response()->json([
                     'status' => false,
                     'message' => 'Name and employee email required',
                 ],
                 400
             );
         }
+        
         $user = User::whereName($request->name)->whereEmail($request->email)->first();
+        
         $data = [
                 'name' => $request->name,
                 'email' => $request->email,
@@ -393,29 +392,22 @@ class JobController extends Controller
                 'activated' => 1,
                 'is_super_admin' => 1,
             ];
-            
-            
         
-        if(is_null($user)) {
-            $user = User::firstOrCreate($data);
-        } else {
+        if($user) {
             $user->username = $data['username'];
             $user->is_internal = $data['is_internal'];
             $user->activated = $data['activated'];
             $user->is_super_admin = $data['is_super_admin'];
             $user->save();
+        } else {
+            $user = User::firstOrCreate($data);
         }
         
-        $role = Role::whereName('admin')->first();
+        $role = Role::whereName('admin')->pluck('id')->toArray();
         
-        if ($user && $user->roles->count()) {
-            $user->roles()->detach();
-        }
-        
-        $user->attachRole($role);
+        $user->roles()->sync($role);
 
-        return response()->json(
-            [
+        return response()->json([
                 'status' => true,
                 'message' => 'created successfully',
             ]

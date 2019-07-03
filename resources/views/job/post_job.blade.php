@@ -95,9 +95,9 @@
 
                                         if(($job == null) && isset($thirdPartyData)){
                                           $thirdPartyData = $thirdPartyData->toArray();
-                                          $job_title = $thirdPartyData['job'];
-                                          $eligibilty = $thirdPartyData['request_type'];
-                                          $details = $thirdPartyData['job_description'];
+                                          $job_title = isset($thirdPartyData['job']) ? $thirdPartyData['job'] : NULL;
+                                          $eligibilty = isset($thirdPartyData['request_type']) ? $thirdPartyData['request_type'] : NULL;
+                                          $details = isset($thirdPartyData['job_description']) ? $thirdPartyData['job_description'] : NULL;
                                         }
                                     @endphp
 

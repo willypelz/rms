@@ -171,6 +171,7 @@ return [
         ConsoleTVs\Charts\ChartsServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
+        Sentry\Laravel\ServiceProvider::class,
     ],
 
     /*
@@ -229,5 +230,6 @@ return [
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
         'Uuid' => Webpatser\Uuid\Uuid::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
     ],
 ];

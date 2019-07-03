@@ -11,6 +11,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
+    private $sentryID;
     /**
      * A list of the exception types that should not be reported.
      *
@@ -31,10 +32,17 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $e
      * @return void
      */
-    public function report(Exception $e)
+    public function report(Exception $exception)
     {
-        parent::report($e);
+        if (!env('APP_DEBUG')) {
+            if (app()->bound('sentry') && $this->shouldReport($exception)) {
+                app('sentry')->captureException($exception);
+            }
+        }
+
+        parent::report($exception);
     }
+
 
     /**
      * Render an exception into an HTTP response.
@@ -43,17 +51,12 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $e
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $e)
+    public function render($request, Exception $exception)
     {
-        if( env('APP_DEBUG') )
-        {
-            return parent::render($request, $e);
-         
-        }
-        else
-        {
+        if (!env('APP_DEBUG')) {
             return redirect()->route('errors.defaultError');
+        } else {
+            return parent::render($request, $exception);
         }
-        // 
     }
 }

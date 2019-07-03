@@ -384,50 +384,35 @@ class JobController extends Controller
                 400
             );
         }
-        $user_found = User::whereName($request->name)->whereEmail($request->email)->first();
-        $user = $user_found ? $user_found->update(
-            [
+        $user = User::whereName($request->name)->whereEmail($request->email)->first();
+        $data = [
                 'name' => $request->name,
                 'email' => $request->email,
                 'username' => $request->username,
                 'is_internal' => 1,
                 'activated' => 1,
                 'is_super_admin' => 1,
-            ]
-        ) : User::firstOrCreate(
-            [
-                'name' => $request->name,
-                'email' => $request->email,
-                'username' => $request->username,
-                'is_internal' => 1,
-                'activated' => 1,
-                'is_super_admin' => 1,
-            ]
-        );
+            ];
+            
+            
+        
+        if(is_null($user)) {
+            $user = User::firstOrCreate($data);
+        } else {
+            $user->username = $data['username'];
+            $user->is_internal = $data['is_internal'];
+            $user->activated = $data['activated'];
+            $user->is_super_admin = $data['is_super_admin'];
+            $user->save();
+        }
+        
         $role = Role::whereName('admin')->first();
-        // if user is found there is a possibility that the user already has roles on the system so I am detaching
-        //the roles if they exist
-        if ($user_found && $user_found->roles->count()) {
-            $user_found->roles()->detach();
+        
+        if ($user && $user->roles->count()) {
+            $user->roles()->detach();
         }
-        //user could return a boolean if $user_found->update() logic is run so I am checking if $user
-        // is a collection before attempting to attach roles to it and doing thesame for userfound
-        if($user instanceof Illuminate\Database\Eloquent\Collection) {
-            $user->attachRole($role);
-            // checking if the user already exists for the current company on company users table
-            // if so do nothing else sync user to company
-            if(!$current_company->users()->where('user_id', $user->id)->first()) {
-                $current_company->users()->sync([$user->id => ['role' => $role]], false);
-            }
-        }elseif($user_found instanceof Illuminate\Database\Eloquent\Collection) {
-            $user_found->attachRole($role);
-            // checking if the user already exists for the current company on company users table
-            // if so do nothing else sync user to company
-            if(!$current_company->users()->where('user_id', $user_found->id)->first()) {
-                $current_company->users()->sync([$user_found->id => ['role' => $role]], false);
-            }
-        }
-
+        
+        $user->attachRole($role);
 
         return response()->json(
             [

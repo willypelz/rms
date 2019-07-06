@@ -1922,8 +1922,7 @@ class JobApplicationsController extends Controller
         $appls = JobApplication::with('cv', 'job', 'job.company')->whereIn('id', $app_ids)->get();
         $step = WorkflowStep::find($step_id);
 
-
-        if ($step->visible_to_applicant && !$step->requires_approval) {
+        if ($step->visible_to_applicant && !$step->requires_approval && $step->message_to_applicant) {
             foreach ($appls as $key => $appl) {
                 $cv = $appl->cv;
                 $job = $appl->job;

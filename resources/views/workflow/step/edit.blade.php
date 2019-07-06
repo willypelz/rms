@@ -95,12 +95,17 @@
 
                                 <div class="form-group">
                                     <label for="messageTemplate">Message Template</label>
-                                    <textarea name="message_template"
-                                              id="messageTemplate"
-                                              placeholder="... ... .."
-                                              class="form-control">{{ old('message_template', $workflowStep->message_template) }}</textarea>
+                                    <div class="form-group">
+                                        <input type="hidden" name="message_to_applicant" id="" class="control-check" value="0">
+                                        <input type="checkbox" name="message_to_applicant" id="messageToApplicant" value="1" @if(
+                                            $workflowStep->message_to_applicant == 1) checked @endif>
+                                        <label for="messageToApplicant">Send Message to Applicant</label>
+                                    </div>
+                                    <div>
+                                        <textarea name="message_template" id="messageTemplate" placeholder="... ... .."
+                                            class="form-control">{{ old('message_template', $workflowStep->message_template) }}</textarea>
+                                    </div>
                                 </div>
-
                                 <div class="form-group">
                                     <a href="#" class="btn btn-warning"
                                        onclick="history.back()">

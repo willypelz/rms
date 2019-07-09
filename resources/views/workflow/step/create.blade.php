@@ -24,7 +24,7 @@
                 <div class="col-md-6">
                     <p>
                         <span class="text-muted">
-                            <-
+                            
                         </span>
                         <a href="{{ route('workflow') }}" class="text-muted">Workflows</a>
                     </p>
@@ -47,6 +47,10 @@
                                             <p class="text-muted">
                                                 Visible to Applicant :
                                                 {{ ($workflowStep->visible_to_applicant) ? 'Yes' : 'No' }}
+                                            </p>
+                                            <p class="text-muted">
+                                                Send Message to Applicant :
+                                                {{ ($workflowStep->message_to_applicant) ? 'Yes' : 'No' }}
                                             </p>
                                             <div class="">
                                                 {!! $workflowStep->is_readonly
@@ -185,30 +189,31 @@
                                 
                                 <div class="form-group">
                                     <label for="messageTemplate">Message Template</label>
-                                    <textarea name="message_template"
-                                              id="messageTemplate"
-                                              placeholder="... ... .."
-                                              class="form-control">{{ old('message_template') }}</textarea>
-                                    
-                                    <!-- Message Template Placeholder Buttons -->
-                                    <div class="msg-template-placeholders" style="margin: 10px auto;">
-                                        <button type="button" class="btn btn-sm btn-secondary templateBtn"
-                                                value="{applicant_name}">
-                                            Applicant Name
-                                        </button>
-                                        |
-                                        <button type="button" class="btn btn-sm btn-secondary templateBtn"
-                                                value="{company_name}">
-                                            Company Name
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-secondary templateBtn"
-                                                value="{job_detail}">
-                                            Job Detail
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-secondary templateBtn"
-                                                value="{job_title}">
-                                            Job Title
-                                        </button>
+                                    <div class="form-group">
+                                        <input type="checkbox" name="message_to_applicant" id="messageToApplicant" value="1"
+                                            @if(old('message_to_applicant')==1) checked @endif>
+                                        <label for="messageToApplicant">Send Message to Applicant</label>
+                                    </div>
+                                    <div id="messageTemplateBlock">
+                                        <textarea name="message_template" id="messageTemplate" placeholder="... ... .."
+                                            class="form-control">{{ old('message_template') }}</textarea>
+                                
+                                        <!-- Message Template Placeholder Buttons -->
+                                        <div class="msg-template-placeholders" style="margin: 10px auto;">
+                                            <button type="button" class="btn btn-sm btn-secondary templateBtn" value="{applicant_name}">
+                                                Applicant Name
+                                            </button>
+                                            |
+                                            <button type="button" class="btn btn-sm btn-secondary templateBtn" value="{company_name}">
+                                                Company Name
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-secondary templateBtn" value="{job_detail}">
+                                                Job Detail
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-secondary templateBtn" value="{job_title}">
+                                                Job Title
+                                            </button>
+                                        </div>
                                     </div>
                                 
                                 </div>

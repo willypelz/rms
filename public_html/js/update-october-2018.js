@@ -18,6 +18,18 @@ $(function () {
         }
     });
 
+    $(function () {
+        var messageTemplate = $('#messageTemplateBlock');
+        messageTemplate.hide();
+        $('#messageToApplicant').change(function () {
+            if ($(this).prop('checked')) {
+                messageTemplate.show();
+            } else {
+                messageTemplate.hide();
+            }
+        });
+    });
+
     if ($('#messageTemplate').length) {
         CKEDITOR.replace('messageTemplate');
 
@@ -41,7 +53,7 @@ $(function () {
         })
             .done(function (data) {
                 // sorting became successful
-                $.growl.notice({message: data.message});
+                $.growl.notice({ message: data.message });
                 /*
                 $.growl.info({message: 'reloadiing...'});
                 $(this).delay(2000).queue(function(){
@@ -51,7 +63,7 @@ $(function () {
             })
             .fail(function (jqXHR) {
                 // what happens when sort fails
-                $.growl.warning({message: jqXHR.responseJSON.message});
+                $.growl.warning({ message: jqXHR.responseJSON.message });
             });
 
     });

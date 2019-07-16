@@ -138,7 +138,7 @@
                                                     style="width: 100%;">
                                                 <option value="">- select -</option>
                                                 @foreach(config('workflowStepTypes') as $stepSlug => $stepLabel)
-                                                    <option value="{{ $stepSlug }}">{{ $stepLabel }}</option>
+                                                    <option value="{{ $stepSlug }}" @if(old('type') == $stepSlug) selected = "selected" @endif>{{ $stepLabel }}</option>
                                                 @endforeach
                                             </select>
                                         </div>

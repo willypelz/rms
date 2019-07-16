@@ -223,7 +223,7 @@ use App\Models\JobApplication;
 				break;
 		}
 
-		return 'http://dummyimage.com/300x300/10588a/ffffff.jpg&text='.strtoupper( substr($string1,0,1).substr($string2,0,1) );
+		return 'https://dummyimage.com/300x300/10588a/ffffff.jpg&text='.strtoupper( substr($string1,0,1).substr($string2,0,1) );
 
 	}
 
@@ -689,7 +689,7 @@ function getUserPermissions() {
         }
     }
     return !empty($perm_array) ?  array_unique($perm_array) : null;
-    
+
 }
 
 /**

@@ -61,7 +61,7 @@
                                                                    data-target="#viewModal"
                                                                    id="modalButton"
                                                                    data-id="{{$user->id}}"
-                                                                   class="modalButton"
+                                                                   class="modalButton-{!! $user->id !!}-{!! $role->id !!}"
                                                                    href="#viewModal"
                                                                    data-title="Select Workflow steps"
                                                                    data-view="{{ route('workflow-select', [$job->id, $user->id])}}"
@@ -108,7 +108,7 @@
                                             @foreach($job_team_invites->where('job_id', $job->id) as $job_team_invite)
                                                 <li class="list-group-item">
                                                     <div class="col-xs-2"><img width="100%" alt=""
-                                                                               src="{{ default_picture( @$user, 'user' ) }}"
+                                                                               src="{{ isset($user) ? default_picture( @$user, 'user' ) : null }}"
                                                                                class="img-circle"></div>
                                                     <div class="col-xs-6">
                                                         <h5> {{ $job_team_invite->name }}</h5>
@@ -476,6 +476,9 @@
 
                     if (res.status == true) {
                         $.growl.notice({message: res.message});
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);
                     } else {
                         if (typeof (res.message) === 'object') {
                             $.each(res.message, function (index, value) {
@@ -514,6 +517,9 @@
 
                     if (res.status == true) {
                         $.growl.notice({message: res.message});
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);
                     } else {
                         if (typeof (res.message) === 'object') {
                             $.each(res.message, function (index, value) {
@@ -531,7 +537,7 @@
 
             function submitRoles(user_id, role_id) {
                 if(role_id == "{{$interviewer_id}}" && $('.role-' + user_id + '-' + role_id).is(':checked')) {
-                    $('.modalButton').click();
+                    $('.modalButton-'+user_id+'-'+role_id).click();
                 } else {
                     var checked = $('.role-' + user_id + '-' + role_id).is(':checked') ? 1 : 0,
                         job_id = {!! $job->id !!};

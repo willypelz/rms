@@ -20,7 +20,11 @@ $(function () {
 
     $(function () {
         var messageTemplate = $('#messageTemplateBlock');
-        messageTemplate.hide();
+        if ($('#messageToApplicant').prop('checked')) {
+            messageTemplate.show();
+        } else {
+            messageTemplate.hide();
+        }
         $('#messageToApplicant').change(function () {
             if ($(this).prop('checked')) {
                 messageTemplate.show();

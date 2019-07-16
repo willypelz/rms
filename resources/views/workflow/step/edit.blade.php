@@ -101,7 +101,7 @@
                                             $workflowStep->message_to_applicant == 1) checked @endif>
                                         <label for="messageToApplicant">Send Message to Applicant</label>
                                     </div>
-                                    <div>
+                                    <div id="messageTemplateBlock">
                                         <textarea name="message_template" id="messageTemplate" placeholder="... ... .."
                                             class="form-control">{{ old('message_template', $workflowStep->message_template) }}</textarea>
                                     </div>

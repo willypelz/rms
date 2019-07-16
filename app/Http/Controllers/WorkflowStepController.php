@@ -45,6 +45,9 @@ class WorkflowStepController extends Controller
             'type' => 'required',
             'approval_users' => 'required_if:requires_approval,1',
         ]);
+        if($request->message_to_applicant && empty($request->message_template)){
+            return redirect()->back()->withInput()->with('error', 'Message Template is Empty');
+        }
 
         if ($newWorkflowStep = $workflow->workflowSteps()->create($request->all() + [
                 'slug' => $request->input('name'),

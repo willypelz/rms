@@ -1342,6 +1342,18 @@ class JobsController extends Controller
         }
     }
 
+    public function adminUploadDocument(Request $request){
+        dd($request->all());
+        $this->validate($request, ['document' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt']);
+        $message = CandidateMessage::create([
+            'job_application_id' => $request->job_id,
+            'message' => $request->document_description,
+            'attachment' => $request->document_file,
+            'user_id' => $request->appl_id,
+        ]);
+        return ['status' => 1, 'data' => 'Documents Uploaded successfully'];
+    }
+
     public function JobList(Request $request)
     {
         $user = User::with([

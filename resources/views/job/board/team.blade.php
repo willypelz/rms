@@ -493,10 +493,11 @@
                 }
 
                 $('#role').change(function () {
-                    var stepText = $('#role option:selected').toArray().map(item => item.text).join();
-                    var stepArray = stepText.split(",");
 
-                    if (stepArray.includes("Interviewer")) {
+                    var roleIds = $('#role option:selected').toArray().map(item => item.value);
+                    var isInterviewIdInRoleIdsArray = roleIds.includes("{{$interviewer_id}}");
+
+                    if (isInterviewIdInRoleIdsArray == true) {
                         $('#stepDiv').show();
                     } else {
                         $('#stepDiv').hide();

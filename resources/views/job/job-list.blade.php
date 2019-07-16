@@ -1,7 +1,7 @@
 @extends('layout.template-user')
 
 @section('content')
-    <script src="http://seamlesshiring.com/js/embed.js"></script>
+    <script src="{{ asset('js/embed.js') }}"></script>
     @php
         $user_role = getCurrentLoggedInUserRole();
     @endphp
@@ -147,7 +147,7 @@
                                                             <span class="sr-only">Toggle Dropdown</span>
                                                         </button>
                                                         <ul class="dropdown-menu">
-                                                            
+
                                                             @if($job['status'] != 'DRAFT')
                                                                 <li><a href="{{ route('job-candidates', [$job['id']]) }}">View
                                                                     Applicants</a></li>
@@ -185,7 +185,7 @@
                                                                 @endif
                                                             @endif
 
-                                                           
+
 
                                                             <li><a href="{{ route('create-job', $job['id']) }}"  class="text t"
                                                                    >Edit Job</a></li>

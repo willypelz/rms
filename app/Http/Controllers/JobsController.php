@@ -295,9 +295,11 @@ class JobsController extends Controller
             $company = Company::find($request->comp);
             $job = Job::find($request->job);
 
-            $company->users()->detach($request->ref);
+            // $company->users()->detach($request->ref);
 
             $job->users()->detach($request->ref);
+            JobTeamInvite::where('job_id', $job->id)->where('email', $team_member->email)->delete();
+            return response()->json(['status' => true, 'message' => 'Removed successfully']);
         }
 
         return view('modals.job-team-remove', compact('team_member', 'comp', 'job', 'ref'));
@@ -381,6 +383,12 @@ class JobsController extends Controller
                         'job_id' => $job->id
                     ]);
                 }
+
+                $steps = json_decode($job_team_invite->step_ids);
+                foreach ($steps as $key => $step) {
+                  $user->workflow_steps()->attach($step);
+                }
+
                 //  add the user to the job assigned to him
                 $job->users()->sync([$user->id => ['role_name' => $job_team_invite->role_name]], false);
                 // add the user to the company that owns the job

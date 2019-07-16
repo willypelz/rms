@@ -248,7 +248,7 @@ class JobsController extends Controller
                     'username' => $request->username,
                     'job_id' => $request->job_id,
                     'role_ids' => json_encode($request->role),
-                    'step_ids' => json_encode($request->steps),
+                    'step_ids' => isset($request->steps) ? json_encode($request->steps) : [],
                     'is_internal' => $request->internal ? 1 : 0,
                     'role_name' => $request->role_name
                 ];

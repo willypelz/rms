@@ -349,6 +349,9 @@ class JobsController extends Controller
                   $user->workflow_steps()->attach($step);
                 }
 
+                $job_team_invite->is_accepted = 1;
+                $job_team_invite->save();
+
                 Auth::attempt(['email' => $user->email, 'password' => $request->password]);
                 return redirect()->route('select-company', ['slug' => $job->company->slug]);
             }

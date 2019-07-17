@@ -37,7 +37,9 @@
               @foreach( $documents as $document )
               <div class="panel panel-default panel-body">
                 <h4 class="no-margin"> <i class="fa fa-paperclip"></i>
-                  {{ ucwords( implode( '-', array_slice( explode('-', $document->attachment) , 2) ) ) }}</h4>
+                  {{ ucwords( implode( '-', array_slice( explode('-', $document->attachment) , 2) ) ) }} @if ($document !="")
+                      {{"($document->title)"}}
+                  @endif</h4>
                 <br>
                 <div>
                   @if( $document->attachment != "" )
@@ -52,7 +54,7 @@
               @endforeach
               @endif
               <a class="btn btn-sm btn-line text-uppercase pull-right" data-toggle="modal" data-target="#attachDocument"
-                id="modalButton" href="#attachDocument" data-title="Attach Download">Attach Download</a>
+                id="modalButton" href="#attachDocument" data-title="Attach Document">Attach Document</a>
             </div>
           </div>
         </div>
@@ -71,7 +73,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="margin: 18px;">×</button>
       </div>
       <div class="modal-body">
-        <form role="form" class="form-signin" method="POST" id="request-form" action="">
+        <form role="form" class="form-signin" method="POST" enctype="multipart/form-data" id="request-form" action="">
           {!! csrf_field() !!}
           <div class="row">
             <div class="col-sm-12">
@@ -100,20 +102,17 @@
           $(document).ready(function () {
             $('body #request-form').on('submit', function (e) {
               e.preventDefault();
-              $field = $(this);
-              params = {
-                document_title: $('#document_title').val(),
-                document_description: $('#document_description').val(),
-                document_file: $('#document_file').val(),
-              };
-              $("body #request-form input").prop("disabled", true);
-              $.post("{{ route('upload-document',['appl_id' => $appl->id, 'job_id' => $appl->job->id]) }}", params, function (data) {
-                $('#attachDocument').modal('toggle');
-                $('#document_title').val("");
-                $('#document_description').val("");
-                $('#document_file').val("");
-                $("body #request-form input").prop("disabled", false);
-                $.growl.notice({ message: "Your request has been sent", location: 'tc', size: 'large' });
+              var formdata = new FormData(this);
+              $.ajax({
+                url: "{{ route('upload-document',['appl_id' => $appl->id, 'job_id' => $appl->job->id]) }}",
+                type: 'POST',
+                data: formdata,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                  $.growl.notice({ message: data.data });
+                  location.reload().delay(3000);
+                }
               });
             });
           });

@@ -37,10 +37,14 @@
               @foreach( $documents as $document )
               <div class="panel panel-default panel-body">
                 <h4 class="no-margin"> <i class="fa fa-paperclip"></i>
-                  {{ ucwords( implode( '-', array_slice( explode('-', $document->attachment) , 2) ) ) }} @if ($document !="")
+                  {{ ucwords( implode( '-', array_slice( explode('-', $document->attachment) , 2) ) ) }} @if ($document->title !="")
                       {{"($document->title)"}}
-                  @endif</h4>
-                <br>
+                  @endif
+                  </h4>
+                {{-- <br> --}}
+                @if ($document->description !="")
+                      <h5>{{"Decription: ".$document->description}}</h5>
+                @endif
                 <div>
                   @if( $document->attachment != "" )
                   <a class="pull-left" href="{{ asset('uploads/'.$document->attachment) }}" target="_blank"> <i
@@ -112,7 +116,11 @@
                 success: function (data) {
                   $.growl.notice({ message: data.data });
                   location.reload().delay(3000);
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                   $.growl.error({ message: "Error While Uploading" });
                 }
+               
               });
             });
           });

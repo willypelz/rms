@@ -1360,7 +1360,7 @@ class JobsController extends Controller
         }
         $message = CandidateMessage::create([
             'job_application_id' => $request->appl_id,
-            'message' => $request->document_description,
+            'description' => $request->document_description,
             'title' => $request->document_title,
             'attachment' => $document_file,
         ]);

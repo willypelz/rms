@@ -41,7 +41,6 @@
                       {{"($document->title)"}}
                   @endif
                   </h4>
-                {{-- <br> --}}
                 @if ($document->description !="")
                       <h5>{{"Decription: ".$document->description}}</h5>
                 @endif

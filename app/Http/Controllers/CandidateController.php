@@ -323,23 +323,25 @@ class CandidateController extends Controller
 
     public function sendMessage(Request $request)
     {
-        if ($request->hasFile('attachment')) {
-            $file_name  = (@$request->attachment->getClientOriginalName());
-            $fi         = @$request->file('attachment')->getClientOriginalExtension();
-            $attachment = $request->application_id . '-' . time() . '-' . $file_name;
+        if ($request->hasFile('document_file')) {
+            $file_name  = (@$request->document_file->getClientOriginalName());
+            $fi         = @$request->file('document_file')->getClientOriginalExtension();
+            $document_file = $request->application_id . '-' . time() . '-' . $file_name;
 
-            $upload = $request->file('attachment')->move(
-                env('fileupload'), $attachment
+            $upload = $request->file('document_file')->move(
+                env('fileupload'), $document_file
             );
         } else {
-            $attachment = '';
+            $document_file = '';
         }
 
 
         Message::create([
             'job_application_id' => $request->application_id,
             'message' => $request->message,
-            'attachment' => $attachment,
+            'attachment' => $document_file,
+            'title' => $request->document_title,
+            'description' => $request->document_description
         ]);
 
         $job_application = JobApplication::find($request->application_id);

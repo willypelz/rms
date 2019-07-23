@@ -42,6 +42,7 @@ use App\Jobs\UploadZipCv;
 use Alchemy\Zippy\Zippy;
 use Charts;
 use App\Models\JobTeamInvite;
+use App\Models\Message as CandidateMessage;
 
 // use Zipper;
 
@@ -1343,6 +1344,30 @@ class JobsController extends Controller
                 return ['status' => 1, 'data' => 'Cv(s) uploaded successfully'];
             }
         }
+    }
+
+    public function adminUploadDocument(Request $request){
+
+        $this->validate($request, ['document_file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt']);
+        if ($request->hasFile('document_file')) {
+
+            $file_name = (@$request->document_file->getClientOriginalName());
+            $fi = @$request->file('document_file')->getClientOriginalExtension();
+            $document_file = $request->application_id . '-' . time() . '-' . $file_name;
+
+            $upload = $request->file('document_file')->move(
+                env('fileupload'), $document_file
+            );
+        } else {
+            $document_file = '';
+        }
+        $message = CandidateMessage::create([
+            'job_application_id' => $request->appl_id,
+            'description' => $request->document_description,
+            'title' => $request->document_title,
+            'attachment' => $document_file,
+        ]);
+        return ['status' => 1, 'data' => 'Documents Uploaded successfully'];
     }
 
     public function JobList(Request $request)

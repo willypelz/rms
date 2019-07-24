@@ -289,6 +289,7 @@ class JobController extends Controller
         $cv->date_of_birth = isset($request->cv['date_of_birth']) ? $request->cv['date_of_birth'] : null;
         $cv->state = isset($request->cv['state']) ? $request->cv['state'] : null;
         $cv->cv_source = isset($request->cv['cv_source']) ? $request->cv['cv_source'] : null;
+        $cv->applicant_type = $request->cv['applicant_type'];
         $cv->save();
 
         $job_application = new JobApplication();
@@ -304,8 +305,8 @@ class JobController extends Controller
         if (isset($request->form_fields) && !empty($request->form_fields)) {
             foreach ($request->form_fields as $form_field) {
                 $form_field_value = new FormFieldValues();
-                $form_field_value->form_field_id = $form_field->form_field_id;
-                $form_field_value->value = $form_field->value;
+                $form_field_value->form_field_id = $form_field['form_field_id'];
+                $form_field_value->value = $form_field['value'];
                 $form_field_value->job_application_id = $job_application->id;
                 $form_field_value->save();
             }

@@ -299,6 +299,7 @@
                                             </div>
                                             @endif
                                         </div>
+                                        {{ Form::hidden('applicant_type', 'external') }}
                                     </div>
 
                                     

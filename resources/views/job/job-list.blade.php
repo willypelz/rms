@@ -131,7 +131,11 @@
                                                             @endif
                                                     </small>
                                                     <br/>
-                                                    <small class="text-muted"><i
+                                                    <small class="text-muted">
+                                                    <i
+                                                                class="glyphicon glyphicon-bookmark "></i> {{$job['is_for']}}
+                                                        &nbsp;
+                                                        <i
                                                                 class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }}
                                                         &nbsp;
                                                         <i class="glyphicon glyphicon-calendar"></i> Date Posted

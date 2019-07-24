@@ -146,7 +146,7 @@
                                              &nbsp; Your mail has been sent. Refresh page to send more.
                                          </div-->
                                         <br/><br/>
-                                        @if(env('STAFFSTRENGTH_URL'))
+                                        @if(env('STAFFSTRENGTH_URL') && env('SEAMLESS_RMS_STANDALONE'))
                                             <form action="{{ route('job-team-add') }}" method="post" id="JobTeamAdd">
                                                 {!! csrf_field() !!}
                                                 <div class="form-group">

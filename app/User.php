@@ -22,7 +22,8 @@ class User extends Authenticatable
         'invite_code',
         'is_internal',
         'role_name',
-        'is_super_admin'
+        'is_super_admin',
+        'user_token'
     ];
 
     /**

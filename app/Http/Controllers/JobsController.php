@@ -223,7 +223,48 @@ class JobsController extends Controller
      */
     public function JobTeamAdd(Request $request)
     {
-        # code...
+        if ($request->mod) {
+            $validator = Validator::make($request->all(), [
+                'email' => 'required|email',
+                'name' => 'required|string',
+            ], [
+                'email.required' => 'Email is required. If you selected an employee, check that they have a valid email',
+                'name.required' => 'Name is required',
+            ]);
+            if ($validator->fails()) {
+                return back()->with('error', $validator->getMessageBag()->toArray());
+            } else{
+                $token = hash_hmac('sha256', str_random(40), config('app.key'));
+                $user = User::FirstorCreate([
+                    'email' => $request->email,
+                    'name' => $request->name,
+                    'is_super_admin' => '1',
+                    'user_token'=> $token
+                  ]);
+                  if($user){
+
+                    $company = Company::find(get_current_company()->id);
+
+                    $accept_link = route('admin-accept-invite', ['id' => $token,'company_id'=>$company->id]);
+        
+                    $mail_body = $request->body_mail;
+        
+                    $data = [
+                        'email'=>$request->email,
+                        'name' => $request->name,
+                        'token' => $user->token
+                    ];
+                    $data = (object)$data;
+                    //Send notification mail
+                    $email_from = (Auth::user()->email) ? Auth::user()->email : env('COMPANY_EMAIL');
+        
+                    \Illuminate\Support\Facades\Mail::send('emails.new.admin_invite', ['data'=>$data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) {
+                        $m->from(env('COMPANY_EMAIL'))->to(request()->email)->subject('You Have Been Exclusively Invited');
+                    });
+                    return back()->with('success', "Invite Sent successfully");
+                  }
+            }
+        }else{
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'name' => 'required|string',
@@ -279,7 +320,7 @@ class JobsController extends Controller
 
             return response()->json(['status' => true, 'message' => 'Email was sent successfully']);
         }
-
+    }
 
     }
 

@@ -694,6 +694,11 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('request/check', ['as' => 'request-check', 'uses' => 'JobApplicationsController@requestCheck']);
     Route::post('invite/interview',
         ['as' => 'invite-for-interview', 'uses' => 'JobApplicationsController@inviteForInterview']);
+    
+    Route::post('preview/interview',
+        ['as' => 'invite-for-interview-preview', 'uses' => 'JobApplicationsController@previewInterview']);
+        
+
     Route::post('save-interview-note',
         ['as' => 'save-interview-note', 'uses' => 'JobApplicationsController@takeInterviewNote']);
 

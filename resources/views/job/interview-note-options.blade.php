@@ -4,6 +4,7 @@
 @section('content')
     @php
         $user_role = getCurrentLoggedInUserRole();
+        $is_super_admin = auth()->user()->is_super_admin;
     @endphp
 
     @include('job.includes.interview-head')

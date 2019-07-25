@@ -8,7 +8,7 @@
                     <h2 class="text-center">Manage Super Admins</h2>
                 </div>
                 <div class="panel-body">
-                @if(env('SEAMLESS_RMS_STANDALONE'))    
+                @if(env('RMS_STAND_ALONE'))    
                 <div data-toggle="modal" data-target="#superAdminModal" href="#superAdminModal" data-title="Background Check" style="margin-bottom:15px" class="btn btn-info pull-right">Invite Super Admin</div>
                 @endif
                     <table class="table" id="myTable">

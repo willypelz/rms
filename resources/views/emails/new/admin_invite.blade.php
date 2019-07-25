@@ -37,7 +37,7 @@
 																			<br><br>
 																			Regarding the ongoing recruitment process at {{ $company->name }}, this is to inform you that you have been assigned the Role of Super Admin. 
 																			<br><br>
-																			You would be required to collaborate with your team and manage the System..
+																			You would be required to collaborate with your team and manage the System.
 																			<br><br>To view the recruitment process, click the link below,
 																		</p>
 																		<div style="color:#2d2d2d;" align="center">

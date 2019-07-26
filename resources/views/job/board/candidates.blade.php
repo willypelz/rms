@@ -54,9 +54,9 @@
                                                     <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                                    <li><a href="javscript://" id="downSpreadsheet">Spreadsheet</a></li>
-                                                    <li><a href="javscript://" id="downCv">CVs</a></li>
-                                                    <li><a href="javscript://" id="downloadInterviewNotes">Interview Notes</a></li>
+                                                    <li><a href="" id="downSpreadsheet">Spreadsheet</a></li>
+                                                    <li><a href="" id="downCv">CVs</a></li>
+                                                    <li><a href="" id="downloadInterviewNotes">Interview Notes</a></li>
                                                     <!-- <li role="separator" class="divider"></li>
                                                     <li><a href="#">Separated link</a></li> -->
                                                 </ul>

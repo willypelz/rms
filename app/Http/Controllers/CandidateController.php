@@ -379,4 +379,30 @@ class CandidateController extends Controller
         $id .= $candidate->id;
         return $id;
     }
+
+    public function candidateAccept(Request $request, $id, $token)
+    {
+        // dd($id, $token);
+        // dd($request->toArray());
+        $candidate = Candidate::where(['id'=>$id, 'token'=>$token])->first();
+        if ($candidate) {
+            
+            if ($request->isMethod('post')) {
+                $validator = Validator::make($request->all(), ['password' => 'required|confirmed|min:6']);
+                if ($validator->fails()) {
+                    return redirect()->back()
+                        ->withErrors($validator)
+                        ->withInput();
+                }
+                Candidate::where('id', $request->id)->update(['password' => bcrypt($request->password), 'token' => '']);
+                // dd("pl");
+                // return redirect()->route('');
+            }
+            // dd("pl");
+            // dd("pl");
+            return view('job.candidate-invite',compact('candidate'))->with('errors','here');
+        } else {
+            dd('Invalid');
+        }
+    }
 }

@@ -769,3 +769,5 @@ Route::group(['middleware' => 'web'], function () {
       }
       return redirect()->back();
   });
+
+  Route::match(['get', 'post'], 'candidate-invite/{id}/{token}',['uses' => 'CandidateController@candidateAccept', 'as' => 'candidate-invite']);

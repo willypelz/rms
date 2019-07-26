@@ -4,6 +4,8 @@ use App\Models\Job;
 use App\Models\Cv;
 use App\Libraries\Solr;
 use App\Models\JobApplication;
+use App\Models\Candidate;
+use App\Models\Company;
 // use Faker;
 
 	function test(){
@@ -28,6 +30,20 @@ use App\Models\JobApplication;
                 'Other',
                 'Unspecified'
             ];
+	}
+	function grade(){
+		return $options = array(
+			'First Class' =>'First Class',
+			'Distinction' => 'Distinction',
+			'Second Class Upper' => 'Second Class Upper',
+			'Second Class Lower' =>'Second Class Lower',
+			'Upper Credit' =>'Upper Credit',
+			'Lower Credit'=>'Lower Credit',
+			'Third Class'=>'Third Class',
+			'Pass'=>'Pass',
+			'Other'=>'Other',
+			'Unspecified'=>'Unspecified'
+		);
 	}
 
 	function getGrade($index){
@@ -574,6 +590,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 
     foreach ($cvs as $key => $cv) {
 
+		$token = hash_hmac('sha256', str_random(40), config('app.key'));
 
         switch ( $request->type ) {
             case 'single':
@@ -592,7 +609,26 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
                     'graduation_grade' => $request->graduation_grade,
                     'cv_file' => $cv ,
                     'cv_source' => $cv_source
-                ]);
+				]);
+				$data = [
+					'name'=>$request->cv_last_name,
+					'job'=>$job_id,
+					'email'=> $request->cv_email
+				];
+				$data = (object)$data;
+				
+				// $candidate = Candidate::firstOrCreate(['email' => $request->cv_email])->update($request->only(['first_name', 'last_name'])+ ['token'=> $token]);
+				$candidate = Candidate::firstOrCreate(['email' => $request->cv_email, 'first_name' => $request->cv_first_name,
+				'last_name' => $request->cv_last_name]);
+				Candidate::where('id',$candidate->id)->update(['token'=>$token]);
+
+				$company = Company::find(get_current_company()->id);
+
+				$accept_link = route('candidate-invite', ['id' => $candidate->id,'token'=>$token]);
+
+				Mail::send('emails.new.candidate-invite', ['data' => $data, 'company' => $company, 'accept_link' => $accept_link], function ($m) use($data) {
+					$m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
+				});
                 break;
 
             case 'bulk':

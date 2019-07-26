@@ -31,20 +31,6 @@ use App\Models\Company;
                 'Unspecified'
             ];
 	}
-	function grade(){
-		return $options = array(
-			'First Class' =>'First Class',
-			'Distinction' => 'Distinction',
-			'Second Class Upper' => 'Second Class Upper',
-			'Second Class Lower' =>'Second Class Lower',
-			'Upper Credit' =>'Upper Credit',
-			'Lower Credit'=>'Lower Credit',
-			'Third Class'=>'Third Class',
-			'Pass'=>'Pass',
-			'Other'=>'Other',
-			'Unspecified'=>'Unspecified'
-		);
-	}
 
 	function getGrade($index){
 		return grades()[$index];
@@ -648,7 +634,8 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
                 'job_id' => $job_id,
                 'created' => date('Y-m-d H:i:s'),
                 'action_date' => date('Y-m-d H:i:s'),
-                'status' => 'PENDING',
+				'status' => 'PENDING',
+				'candidate_id'=> $candidate = (isset($candidate->id)) ? $candidate->id : null
             ]);
         }
     }

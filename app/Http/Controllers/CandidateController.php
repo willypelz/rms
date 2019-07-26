@@ -19,6 +19,7 @@ use Curl;
 use DB;
 use Illuminate\Http\Request;
 use Mail;
+use Validator;
 
 
 class CandidateController extends Controller
@@ -382,8 +383,6 @@ class CandidateController extends Controller
 
     public function candidateAccept(Request $request, $id, $token)
     {
-        // dd($id, $token);
-        // dd($request->toArray());
         $candidate = Candidate::where(['id'=>$id, 'token'=>$token])->first();
         if ($candidate) {
             
@@ -395,14 +394,11 @@ class CandidateController extends Controller
                         ->withInput();
                 }
                 Candidate::where('id', $request->id)->update(['password' => bcrypt($request->password), 'token' => '']);
-                // dd("pl");
-                // return redirect()->route('');
+                return redirect()->route('candidate-login')->with('success', 'Password Successfully Changed Please Login.');
             }
-            // dd("pl");
-            // dd("pl");
-            return view('job.candidate-invite',compact('candidate'))->with('errors','here');
+            return view('job.candidate-invite', compact('candidate'));
         } else {
-            dd('Invalid');
+            return redirect()->route('candidate-login')->with('error', 'Account Not Found');
         }
     }
 }

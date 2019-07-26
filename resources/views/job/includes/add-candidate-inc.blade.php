@@ -163,7 +163,7 @@
 
                                     <div class="form-group col-xs-6">
                                         <label for="graduation_grade" class="pull-left">Graduation Grade</label>
-                                        {{ Form::select('graduation_grade', grade(), 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
+                                        {{ Form::select('graduation_grade', grades(), 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
                                     </div>
 
                                     <div class="form-group col-xs-6">

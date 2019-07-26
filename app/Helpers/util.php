@@ -603,7 +603,6 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 				];
 				$data = (object)$data;
 				
-				// $candidate = Candidate::firstOrCreate(['email' => $request->cv_email])->update($request->only(['first_name', 'last_name'])+ ['token'=> $token]);
 				$candidate = Candidate::firstOrCreate(['email' => $request->cv_email, 'first_name' => $request->cv_first_name,
 				'last_name' => $request->cv_last_name]);
 				Candidate::where('id',$candidate->id)->update(['token'=>$token]);

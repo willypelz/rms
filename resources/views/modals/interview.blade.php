@@ -9,58 +9,58 @@
   if refill this form, you will be rescheduling it for another date
 </div>
 @endif
-<form id="preview_form" class="">
-  <div class="form-group">
-    <!--<label>Location</label>-->
-    <div class="input-group">
-      <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
-      <input type="text" class="form-control" id="interview-location" placeholder="Location" required>
-    </div>
-    <!--<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>-->
-    <!--<span id="inputGroupSuccess1Status" class="sr-only">(success)</span>-->
+<!-- <form id="preview_form" class=""> -->
+<div class="form-group">
+  <!--<label>Location</label>-->
+  <div class="input-group">
+    <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+    <input required type="text" class="form-control" id="interview-location" placeholder="Location" required>
   </div>
-  <div class="form-group">
-    <!--<label>Location</label>-->
-    <div class="input-group">
-      <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-      <input type="text" name="expiry_date" class="datepicker form-control" id="interview-time" placeholder="Open Date" required>
-    </div>
+  <!--<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>-->
+  <!--<span id="inputGroupSuccess1Status" class="sr-only">(success)</span>-->
+</div>
+<div class="form-group">
+  <!--<label>Location</label>-->
+  <div class="input-group">
+    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+    <input required type="text" name="expiry_date" class="datepicker form-control" id="interview-time" placeholder="Open Date" required>
   </div>
-  <div class="form-group">
-    <div class="input-group">
-      <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-      <input type="number" name="duration" class="form-control" id="interview-duration" placeholder="Enter Duration" required>
-      <span class="input-group-addon">mins</span>
-    </div>
+</div>
+<div class="form-group">
+  <div class="input-group">
+    <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+    <input required type="number" name="duration" class="form-control" id="interview-duration" placeholder="Enter Duration" required>
+    <span class="input-group-addon">mins</span>
   </div>
-  <div class="form-group">
-    <div class="input-group">
-      <span class="input-group-addon"><i class="fa fa-file"></i></span>
-      <input type="file" name="file" class="form-control" id="interview-file" placeholder="Choose File" required>
-    </div>
+</div>
+<div class="form-group">
+  <div class="input-group">
+    <span class="input-group-addon"><i class="fa fa-file"></i></span>
+    <input required type="file" name="file" class="form-control" id="interview-file" placeholder="Choose File" required>
   </div>
-  <div class="form-group">
-    <div class="input-group">
-      <span class="input-group-addon"><i class="fa fa-user"></i></span>
-      <select placeholder="Choose Interviewer" class="select2" name="interviewer_id[]" id="interviewer_id" multiple="multiple" required style="width: 100% !important;">
-        <option disabled value="">--choose interviewer--</option>
-        @foreach($interviewers as $key => $interviewer)
-        <option value="{{$key}}">{{$interviewer}}</option>
-        @endforeach
-      </select>
-    </div>
-    <input type="hidden" name="">
+</div>
+<div class="form-group">
+  <div class="input-group">
+    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+    <select placeholder="Choose Interviewer" class="select2" name="interviewer_id[]" id="interviewer_id" multiple="multiple" required style="width: 100% !important;">
+      <option disabled value="">--choose interviewer--</option>
+      @foreach($interviewers as $key => $interviewer)
+      <option value="{{$key}}">{{$interviewer}}</option>
+      @endforeach
+    </select>
   </div>
-  <div class="form-group">
-    <br>
-    <label><strong>Message: </strong></label>
-    <textarea class="form-control" id="interview-message" placeholder="Message" required> </textarea>
-  </div>
-  <div class="pull-right">
-    <button type="submit" id="previewInterviewBtn" class="btn btn-info " onclick="showForm('previewInterviewBtn')">Preview Invite</button>
-    <button type="submit" id="sendInterviewBtn" class="btn btn-success " onclick="showForm('sendInterviewBtn')">Send Invite</button>
-  </div>
-</form>
+  <input type="hidden" name="">
+</div>
+<div class="form-group">
+  <br>
+  <label><strong>Message: </strong></label>
+  <textarea class="form-control" id="interview-message" placeholder="Message" required> </textarea>
+</div>
+<div class="pull-right">
+  <button type="submit" id="previewInterviewBtn" class="btn btn-info " onclick="showForm('previewInterviewBtn')">Preview Invite</button>
+  <button type="submit" id="sendInterviewBtn" class="btn btn-success " onclick="showForm('sendInterviewBtn')">Send Invite</button>
+</div>
+<!-- </form> -->
 <div class="clearfix"></div>
 <script type="text/javascript">
   $('#interviewer_id').select2();
@@ -71,112 +71,68 @@
   var step = "{{ $step }}";
   var stepId = <?php echo $stepId ?>;
   var reschedule = <?php echo $is_a_reschedule ? 'true' : 'false'; ?>;
-  // $('body #sendInterviewBtn').on('click', function(e) {
-  //   e.preventDefault();
-  //   var file_data = $('#interview-file').prop('files')[0];
-  //   if (file_data == undefined) {
-  //     form_data.append('interviewer_id', '');
-  //   } else {
-  //     form_data.append('interview_file', file_data);
-  //   }
-  //   form_data.append('job_id', '{{ $appl->job->id }}');
-  //   form_data.append('cv_ids[]', cv_ids);
-  //   form_data.append('app_ids[]', app_ids);
-  //   form_data.append('location', $('#interview-location').val());
-  //   form_data.append('date', $('#interview-time').val());
-  //   form_data.append('message', $('#interview-message').val());
-  //   form_data.append('duration', $('#interview-duration').val());
-  //   form_data.append('step', step);
-  //   form_data.append('stepId', stepId);
-  //   if ($('#interviewer_id').val() == null) {
-  //     form_data.append('interviewer_id', '');
-  //   } else {
-  //     form_data.append('interviewer_id[]', $('#interviewer_id').val());
-  //   }
-  //   form_data.append('reschedule', reschedule);
-  //   $field = $(this);
-  //   $.ajax({
-  //     type: 'POST',
-  //     url: "{{ route('invite-for-interview') }}",
-  //     contentType: false,
-  //     processData: false,
-  //     data: form_data,
-  //     success: function(response) {
-  //       if (response.success == false) {
-  //         $.each(response.errors, function(index, value) {
-  //           $.growl.error({
-  //             message: value
-  //           });
-  //         });
-  //         return;
-  //       }
-  //       $('#viewModal').modal('toggle');
-  //       $.growl.notice({
-  //         message: "You have scheduled " + $field.closest('.modal-body').find('.media-heading a').text() + " for an interview"
-  //       });
-  //       sh.reloadStatus();
-  //     }
-  //   });
-  // });
 
   function showForm(type) {
     var type = type;
-    // $('body #' + type).on('click', function(e) {
-      e.preventDefault();
-      var file_data = $('#interview-file').prop('files')[0];
-      if (file_data == undefined) {
-        form_data.append('interviewer_id', '');
-      } else {
-        form_data.append('interview_file', file_data);
-      }
-      form_data.append('job_id', '{{ $appl->job->id }}');
-      form_data.append('cv_ids[]', cv_ids);
-      form_data.append('app_ids[]', app_ids);
-      form_data.append('location', $('#interview-location').val());
-      form_data.append('date', $('#interview-time').val());
-      form_data.append('message', $('#interview-message').val());
-      form_data.append('duration', $('#interview-duration').val());
-      form_data.append('step', step);
-      form_data.append('stepId', stepId);
-      if ($('#interviewer_id').val() == null) {
-        form_data.append('interviewer_id', '');
-      } else {
-        form_data.append('interviewer_id[]', $('#interviewer_id').val());
-      }
-      form_data.append('reschedule', reschedule);
-      $field = $(this);
-      if (type == 'previewInterviewBtn') {
-        var url = "{{route('invite-for-interview-preview')}}";
-      } else {
-        var url = "{{ route('invite-for-interview') }}";
-      }
-      $.ajax({
-        type: 'POST',
-        url: url,
-        contentType: false,
-        processData: false,
-        data: form_data,
-        success: function(response) {
-          if (response.success == false) {
-            $.each(response.errors, function(index, value) {
-              $.growl.error({
-                message: value
-              });
+    var file_data = $('#interview-file').prop('files')[0];
+    if (file_data == undefined) {
+      form_data.append('interviewer_id', '');
+    } else {
+      form_data.append('interview_file', file_data);
+    }
+    form_data.append('job_id', '{{ $appl->job->id }}');
+    form_data.append('cv_ids[]', cv_ids);
+    form_data.append('app_ids[]', app_ids);
+    form_data.append('location', $('#interview-location').val());
+    form_data.append('date', $('#interview-time').val());
+    form_data.append('message', $('#interview-message').val());
+    form_data.append('duration', $('#interview-duration').val());
+    form_data.append('step', step);
+    form_data.append('stepId', stepId);
+    if ($('#interviewer_id').val() == null) {
+      form_data.append('interviewer_id', '');
+    } else {
+      form_data.append('interviewer_id[]', $('#interviewer_id').val());
+    }
+    form_data.append('reschedule', reschedule);
+    $field = $(this);
+    if (type == 'previewInterviewBtn') {
+      var url = "{{route('invite-for-interview-preview')}}";
+    } else {
+      var url = "{{ route('invite-for-interview') }}";
+    }
+    $.ajax({
+      type: 'POST',
+      url: url,
+      contentType: false,
+      processData: false,
+      data: form_data,
+      success: function(response) {
+        if (response.success == false) {
+          $.each(response.errors, function(index, value) {
+            $.growl.error({
+              message: value
             });
-            return;
-          }
-          if (type == 'previewInterviewBtn') {
-
-          } else {
-            $('#viewModal').modal('toggle');
-            $.growl.notice({
-              message: "You have scheduled " + $field.closest('.modal-body').find('.media-heading a').text() + " for an interview"
-            });
-            sh.reloadStatus();
-          }
-
+          });
+          return;
         }
-      });
+        if (type == 'previewInterviewBtn') {
+          var w = window.open();
+          $(w.document.body).html(response);
+
+        } else {
+          $('#viewModal').modal('toggle');
+          $.growl.notice({
+            message: "You have scheduled " + $field.closest('.modal-body').find('.media-heading a').text() + " for an interview"
+          });
+          sh.reloadStatus();
+          setTimeout(function() {
+            location.reload();
+          }, 5000);
+        }
+
+      }
+    });
     // });
   }
 </script>

@@ -1721,8 +1721,8 @@ class JobApplicationsController extends Controller
             }
             $date = date('D, j-n-Y, h:i A', strtotime($request->date));
             $data = [
-                'location' => @$request->location,
-                'message' => @$request->message,
+                'location' => $request->location,
+                'message' => $request->message,
                 'date' => $date,
                 'job_application_id' => $appl->id,
                 'duration' => $request->duration,
@@ -1734,13 +1734,12 @@ class JobApplicationsController extends Controller
             $to =  date('Y-m-d H:i', strtotime("+$duration minutes", strtotime($request->date)));
             $from_in_carbon_format = Carbon::createFromFormat('Y-m-d H:i', $from);
             $to_in_carbon_format = Carbon::createFromFormat('Y-m-d H:i', $to);
-            $link = Link::create('Interview Schedule', $from_in_carbon_format, $to_in_carbon_format)
-                ->description($request->message)
-                ->address($request->location);
-                $interview = (object) $data;
+
+            $interview = (object) $data;
+
             $invite_email = view('emails.new.interview_invitation', compact('cv', 'job', 'interview'))->render();
 
-            $interviewer['name'] = "Interviewer Name";
+            $interviewer['name'] = "{Interviewer Name}";
             $interviewer = (object) $interviewer;
 
             $interviewer_email = view('emails.new.interviewer', compact('cv', 'job', 'interview', 'interviewer'))->render();

@@ -62,6 +62,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], '/sys/roles/create', 'AdminsController@createRole')->name('create-role');
     Route::match(['get', 'post'], '/sys/roles/edit/{id}', 'AdminsController@editRole')->name('role-edit');
     Route::match(['get', 'post'], '/sys/roles/delete/{id}', 'AdminsController@deleteRole')->name('role-delete');
+    Route::post('upload-document/{appl_id}/{job_id}', ['uses' => 'JobsController@adminUploadDocument', 'as' => 'upload-document']);
     Route::group([
         'prefix' => '/admin',
         'middleware' => 'admin'

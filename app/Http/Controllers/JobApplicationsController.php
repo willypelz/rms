@@ -212,7 +212,6 @@ class JobApplicationsController extends Controller
 
         $documents = CandidateMessage::where('job_application_id', $appl->id)
             ->where('attachment', '!=', '')
-            ->where('user_id', null)
             ->get();
 
 
@@ -287,23 +286,25 @@ class JobApplicationsController extends Controller
     public function sendMessage(Request $request)
     {
 
-        if ($request->hasFile('attachment')) {
-            $file_name = (@$request->attachment->getClientOriginalName());
-            $fi = @$request->file('attachment')->getClientOriginalExtension();
-            $attachment = $request->application_id . '-' . time() . '-' . $file_name;
+        if ($request->hasFile('document_file')) {
+            $file_name = (@$request->document_file->getClientOriginalName());
+            $fi = @$request->file('document_file')->getClientOriginalExtension();
+            $document_file = $request->application_id . '-' . time() . '-' . $file_name;
 
-            $upload = $request->file('attachment')->move(
-                env('fileupload'), $attachment
+            $upload = $request->file('document_file')->move(
+                env('fileupload'), $document_file
             );
         } else {
-            $attachment = '';
+            $document_file = '';
         }
 
         $message = CandidateMessage::create([
             'job_application_id' => $request->application_id,
             'message' => $request->message,
-            'attachment' => $attachment,
-            'user_id' => Auth::user()->id
+            'attachment' => $document_file,
+            'user_id' => Auth::user()->id,
+            'title' => $request->document_title,
+            'description' => $request->document_description
         ]);
 
 

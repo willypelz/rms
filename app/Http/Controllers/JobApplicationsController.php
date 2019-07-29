@@ -619,7 +619,8 @@ class JobApplicationsController extends Controller
 
 
         $excel = App::make('excel');
-        Excel::create('Applicants Report: ' . $other_data['job_title'],
+        $filename = 'Applicants Report: ' . $other_data['job_title'];
+        Excel::create($filename,
             function ($excel) use ($excel_data, $other_data) {
                 // Set the title
                 $excel->setTitle('Applicants Report: ' . $other_data['job_title']);
@@ -662,7 +663,8 @@ class JobApplicationsController extends Controller
 
 
                 });
-            })->download('xlsx');
+            })->store('xlsx', storage_path('exports'));
+            return response()->download(storage_path('exports/').$filename.'.xlsx');
     }
 
     public function downloadApplicantCv(Request $request)

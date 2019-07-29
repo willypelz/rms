@@ -760,6 +760,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('/save-super-admin', 'JobController@createSuperAdmin');
     });
 
+    Route::any('candidate-invite/{id}/{token}',['uses' => 'CandidateController@candidateAccept', 'as' => 'candidate-invite']);
 });
 
   /* Easily update Solr via URL*/
@@ -771,3 +772,4 @@ Route::group(['middleware' => 'web'], function () {
       }
       return redirect()->back();
   });
+

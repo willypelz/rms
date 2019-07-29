@@ -19,6 +19,7 @@ use Curl;
 use DB;
 use Illuminate\Http\Request;
 use Mail;
+use Validator;
 
 
 class CandidateController extends Controller
@@ -380,5 +381,26 @@ class CandidateController extends Controller
 
         $id .= $candidate->id;
         return $id;
+    }
+
+    public function candidateAccept(Request $request, $id, $token)
+    {
+        $candidate = Candidate::where(['id'=>$id, 'token'=>$token])->first();
+        if ($candidate) {
+            
+            if ($request->isMethod('post')) {
+                $validator = Validator::make($request->all(), ['password' => 'required|confirmed|min:6']);
+                if ($validator->fails()) {
+                    return redirect()->back()
+                        ->withErrors($validator)
+                        ->withInput();
+                }
+                Candidate::where('id', $request->id)->update(['password' => bcrypt($request->password), 'token' => '']);
+                return redirect()->route('candidate-login')->with('success', 'Password Successfully Changed Please Login.');
+            }
+            return view('job.candidate-invite', compact('candidate'));
+        } else {
+            return redirect()->route('candidate-login')->with('error', 'Account Not Found');
+        }
     }
 }

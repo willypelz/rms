@@ -621,7 +621,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
     $user = Auth::user();
     Solr::update_core();
     Mail::send('emails.new.cv_upload_successful', ['user' => $user, 'link'=> url('cv/talent-pool') ], function ($m) use ($user) {
-        $m->from('support@seamlesshr.com')->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
+        $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
     });
 
     return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;

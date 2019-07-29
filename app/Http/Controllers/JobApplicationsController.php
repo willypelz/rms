@@ -129,11 +129,11 @@ class JobApplicationsController extends Controller
         $this->mailer = $mailer;
 
         if (Auth::check()) {
-            $this->sender = (get_current_company()->slug != "" && get_current_company()->slug) ? get_current_company()->slug . '@seamlesshr.com' : 'support@seamlesshr.com';
-            $this->replyTo = (get_current_company()->email) ? get_current_company()->email : 'support@seamlesshr.com';
+            $this->sender = (get_current_company()->slug != "" && get_current_company()->slug) ? get_current_company()->slug . '@seamlesshr.com' : env('COMPANY_EMAIL');
+            $this->replyTo = (get_current_company()->email) ? get_current_company()->email : env('COMPANY_EMAIL');
         } else {
-            $this->sender = 'support@seamlesshr.com';
-            $this->replyTo = 'support@seamlesshr.com';
+            $this->sender = env('COMPANY_EMAIL');
+            $this->replyTo = env('COMPANY_EMAIL');
         }
 
 
@@ -141,7 +141,7 @@ class JobApplicationsController extends Controller
 
         $job = (object) [ "title" => "CEO", "company" => (object) [ "name" => "Insidify" ] ];
         $this->mailer->send('emails.new.reject_email', ['cv' => $cv, 'job' => $job], function (Message $m) use ($cv) {
-                                $m->from('support@seamlesshr.com')->to($cv->email)->subject('Feedback');
+                                $m->from(env('COMPANY_EMAIL'))->to($cv->email)->subject('Feedback');
                             });*/
     }
 
@@ -1667,7 +1667,7 @@ class JobApplicationsController extends Controller
             if ($appl->job->company->id == 96) {
                 $this->mailer->send('emails.new.interview_invitation_ibfc',
                     ['cv' => $cv, 'job' => $job, 'interview' => (object)$data], function (Message $m) use ($cv) {
-                        $m->from('support@seamlesshr.com')->to($cv->email)->subject('Interview Invitation');
+                        $m->from(env('COMPANY_EMAIL'))->to($cv->email)->subject('Interview Invitation');
                     });
             } else {
                 $this->mailer->send('emails.new.interview_invitation',

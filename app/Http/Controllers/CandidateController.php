@@ -104,7 +104,7 @@ class CandidateController extends Controller
 
 
                 Mail::send('emails.candidate-forgot-password', ['token' => $token], function ($m) use ($candidate) {
-                    $m->from('support@seamlesshr.com', env('APP_NAME'));
+                    $m->from(env('COMPANY_EMAIL'), env('APP_NAME'));
                     $m->to($candidate->email, $candidate->first_name)->subject('Your Password Reset Link!');
                 });
 
@@ -278,7 +278,7 @@ class CandidateController extends Controller
 
 
                  Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
-                    $m->from('support@seamlesshr.com')->to($user->email)->subject($email_title);
+                    $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
                 });
 
             }
@@ -358,7 +358,7 @@ class CandidateController extends Controller
 
 
          Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
-            $m->from('support@seamlesshr.com')->to($user->email)->subject($email_title);
+            $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
         });
 
 

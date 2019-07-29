@@ -192,11 +192,11 @@ class JobsController extends Controller
             $user->invite_code = str_random(40);
 
             //Send notification mail
-            $email_from = ( Auth::user()->email ) ? Auth::user()->email : 'no-reply@insidify.com';
+            $email_from = ( Auth::user()->email ) ? Auth::user()->email : env('COMPANY_EMAIL');
 
 
             $this->mailer->send('emails.new.exclusively_invited', ['user' => $user, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=> $link, 'decline' => $decline], function (Message $m) use ($user) {
-                $m->from('support@seamlesshr.com')->to($user->email)->subject('You have been Exclusively Invited');
+                $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject('You have been Exclusively Invited');
             });
 
             echo 'Saved';
@@ -311,7 +311,7 @@ class JobsController extends Controller
             $data = (object)$data;
 
             //Send notification mail
-            $email_from = (Auth::user()->email) ? Auth::user()->email : 'no-reply@insidify.com';
+            $email_from = (Auth::user()->email) ? Auth::user()->email : env('COMPANY_EMAIL');
 
             \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $data, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
                 $m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
@@ -866,7 +866,7 @@ class JobsController extends Controller
                 $job = Job::FirstorCreate($job_data);
 
                 //Send New job notification email
-                $to = 'support@seamlesshr.com';
+                $to = env('COMPANY_EMAIL');
                 $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
                     $m->from($to, @$company->name);
                     $m->to($to)->subject('New Job initiated');
@@ -1062,7 +1062,7 @@ class JobsController extends Controller
                 $job = Job::FirstorCreate($job_data);
 
                 //Send New job notification email
-                $to = 'support@seamlesshr.com';
+                $to = env('COMPANY_EMAIL');
                 $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
                     $m->from($to, @$company->name);
 
@@ -2596,7 +2596,7 @@ class JobsController extends Controller
     {
         $job = Job::find($request->job_id);
         $company = get_current_company();
-        $to = 'support@seamlesshr.com';
+        $to = env('COMPANY_EMAIL');
 
         if ($request->type == 'JOB_BOARD') {
             $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => $request->boards, 'company' => $company], function ($m) use ($company, $to) {
@@ -2697,7 +2697,7 @@ class JobsController extends Controller
                 $mail = Mail::send('emails.new.successful_payment', compact('invoice', 'invoice_type', 'user', 'amount'), function ($m) use ($invoice, $invoice_type) {
                     $m->from(env('COMPANY_EMAIL'), 'Seamlesshiring');
 
-                    // $m->to('support@seamlesshr.com')->subject('Customer Invoice: #'.$invoice->id);
+                    // $m->to(env('COMPANY_EMAIL'))->subject('Customer Invoice: #'.$invoice->id);
                     $m->to(Auth::user()->email)->subject('Customer Invoice: #' . $invoice->id);
                 });
                 if ($request->type == 'JOB_BOARD') {

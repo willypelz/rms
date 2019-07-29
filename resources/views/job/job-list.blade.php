@@ -4,6 +4,7 @@
     <script src="{{ asset('js/embed.js') }}"></script>
     @php
         $user_role = getCurrentLoggedInUserRole();
+        $is_super_admin = auth()->user()->is_super_admin;
     @endphp
     <section class="s-div">
         <div class="container">
@@ -125,7 +126,7 @@
                                                         @elseif($job['status'] == 'DELETED') Job Deleted
                                                         @else Job Expired @endif |
                                                         <a href="{{ route('job-board', [$job['id']]) }}">View Job</a>
-                                                            @if($user_role->name == 'admin' || $user_role->name == 'commenter') |
+                                                        @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin','commenter'])) || $is_super_admin)
                                                                 <a href="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}"
                                                                     target="_blank">Preview Job</a>
                                                             @endif
@@ -151,7 +152,7 @@
                                                             @if($job['status'] != 'DRAFT')
                                                                 <li><a href="{{ route('job-candidates', [$job['id']]) }}">View
                                                                     Applicants</a></li>
-                                                                @if($user_role->name == 'admin')
+                                                                @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
                                                                 <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote
                                                                         this
                                                                         Job</a></li>

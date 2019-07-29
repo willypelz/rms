@@ -14,6 +14,7 @@
 @section('content')
     @php
         $user_role = getCurrentLoggedInUserRole();
+        $is_super_admin = auth()->user()->is_super_admin;
     @endphp
     <section>
         <div class="container">
@@ -50,7 +51,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <button @if($user_role->name != 'admin') disabled @endif type="submit" class="btn btn-primary">
+                                    <button @if(!$is_super_admin) disabled @endif type="submit" class="btn btn-primary">
                                         <i class="fa fa-pencil fa-fw"></i>
                                         Update
                                     </button>

@@ -256,7 +256,6 @@ class JobsController extends Controller
                     ];
                     $data = (object)$data;
                     //Send notification mail
-                    $email_from = (Auth::user()->email) ? Auth::user()->email : env('COMPANY_EMAIL');
         
                     \Illuminate\Support\Facades\Mail::send('emails.new.admin_invite', ['data'=>$data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) {
                         $m->from(env('COMPANY_EMAIL'))->to(request()->email)->subject('You Have Been Exclusively Invited');
@@ -315,7 +314,7 @@ class JobsController extends Controller
             $email_from = (Auth::user()->email) ? Auth::user()->email : 'no-reply@insidify.com';
 
             \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $data, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
-                $m->from('support@seamlesshr.com')->to($data->email)->subject('You Have Been Exclusively Invited');
+                $m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
             });
 
             return response()->json(['status' => true, 'message' => 'Email was sent successfully']);
@@ -2343,7 +2342,7 @@ class JobsController extends Controller
             }
 
             Mail::send('emails.new.job_application_successful', ['user' => $candidate, 'link' => route('candidate-dashboard'), 'job' => $job], function (Message $m) use ($candidate) {
-                $m->from('support@seamlesshr.com')->to($candidate->email)->subject('Job Application Successful');
+                $m->from(env('COMPANY_EMAIL'))->to($candidate->email)->subject('Job Application Successful');
             });
 
             Solr::update_core();
@@ -2696,7 +2695,7 @@ class JobsController extends Controller
 
                 $user = Auth::user();
                 $mail = Mail::send('emails.new.successful_payment', compact('invoice', 'invoice_type', 'user', 'amount'), function ($m) use ($invoice, $invoice_type) {
-                    $m->from('support@seamlesshr.com', 'Seamlesshiring');
+                    $m->from(env('COMPANY_EMAIL'), 'Seamlesshiring');
 
                     // $m->to('support@seamlesshr.com')->subject('Customer Invoice: #'.$invoice->id);
                     $m->to(Auth::user()->email)->subject('Customer Invoice: #' . $invoice->id);

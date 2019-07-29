@@ -5,7 +5,6 @@
     @include('job.board.jobBoard-header')
     @php
         $user_role = getCurrentLoggedInUserRole();
-        $is_super_admin = auth()->user()->is_super_admin;
         $admin_roles = getRoleArrayName($job->id, auth()->user());
     @endphp
 

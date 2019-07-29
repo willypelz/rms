@@ -45,7 +45,7 @@ $is_super_admin = auth()->user()->is_super_admin;
                                             <small class="text-muted result-label"
                                                    id="showing"> {!! $showing !!} </small>
                                         </div>
-                                        @if($is_super_admin)
+                                        @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
                                         <div class="col-xs-2">
                                             <div class="dropdown">
                                                 <button class="btn btn-line btn-sm dropdown-toggle" type="button"
@@ -162,7 +162,7 @@ $is_super_admin = auth()->user()->is_super_admin;
 
 
                                                         <ul class="dropdown-menu">
-                                                            @if($is_super_admin)
+                                                            @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin','interviewer'])) || $is_super_admin)
                                                             <li>
                                                                 <a data-toggle="modal" data-target="#viewModal"
                                                                    id="modalButton" href="#viewModal"
@@ -272,7 +272,7 @@ $is_super_admin = auth()->user()->is_super_admin;
                                         </div>
                                     </div>
                                     <!-- <p class="small text-muted"><strong>Download Spreadsheet view.</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p> -->
-                                    @if($is_super_admin)
+                                    @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin','interviewer'])) || $is_super_admin)
                                     <a data-toggle="modal" data-target="#addCandidateModal" id="modalButton"
                                        href="#addCandidateModal" class="btn btn-line btn-block">
 

@@ -22,7 +22,7 @@
                                     <div class="worflow-top-part clearfix">
                                         
                                         <div class="pull-left">
-                                            <a @if(!$is_super_admin) href="#" @else  href="{{ route('workflow-edit', ['id' => $workflow->id]) }}" @endif>
+                                            <a @if((isset($user_role) && !is_null($user_role) && !in_array($user_role->name, ['admin'])) || !$is_super_admin) href="#" @else  href="{{ route('workflow-edit', ['id' => $workflow->id]) }}" @endif>
                                                 <h5>{{ $workflow->name }}</h5>
                                             </a>
                                             <p class="text-muted">{{ $workflow->description }}</p>
@@ -36,7 +36,7 @@
                                                     View
                                                 </a>
                                              -->
-                                            @if($is_super_admin)
+                                             @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
                                             <a href="{{ route('workflow-steps-add', ['id' => $workflow->id]) }}"
                                                class="btn btn-primary btn-sm">
                                                 <i class="fa fa-plus fa-fw"></i>
@@ -121,7 +121,7 @@
                                 </div>
                                 
                                 <div class="form-group">
-                                    <button @if(!$is_super_admin) disabled @endif type="submit" class="btn btn-primary">
+                                    <button @if((isset($user_role) && !is_null($user_role) && !in_array($user_role->name, ['admin'])) || !$is_super_admin) disabled @endif type="submit" class="btn btn-primary">
                                         <i class="fa fa-plus fa-fw"></i>
                                         Create
                                     </button>

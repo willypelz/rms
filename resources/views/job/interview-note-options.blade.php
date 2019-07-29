@@ -25,7 +25,7 @@
                         </h3>
 
                     </div>
-                    @if($user_role->name == 'admin')
+                    @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
                     <div class="col-sm-2 text-right">
                         <a href="{{ route('interview-note-option-create', ['interview_template_id' => $interview_template_id]) }}"
                            class="btn btn-info">Add new</a>
@@ -51,7 +51,7 @@
 
                                         <span class="label label-warning text-uppercase"
                                               style="">{{ $interview_note_option->type }}</span>
-                                        @if($user_role->name == 'admin')
+                                        @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
                                         <a href="{{ route('interview-note-option-edit', ['interview_template_id' => $interview_template_id,'id' => $interview_note_option->id ]) }}"
                                            class="pull-right btn" style="margin-top: -5px;"><i
                                                     class="fa fa-lg fa-pencil"></i> Edit</a>
@@ -82,7 +82,7 @@
                                         <p class="lead">You have not created any options under this template. Start by
                                             creating a one </p>
                                         <p>
-                                            @if($user_role->name == 'admin')
+                                            @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
                                             <a href="{{ route('interview-note-option-create', ['interview_template_id' => $interview_template_id]) }}"
                                                class="btn btn-info">Add an option</a>
                                             @endif
@@ -94,7 +94,7 @@
 
 
                         <div class="text-right">
-                            @if($user_role->name == 'admin')
+                            @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
                             <a href="{{ route('interview-note-option-create', ['interview_template_id' => $interview_template_id]) }}"
                                class="btn btn-info">Add new</a>
                             @endif

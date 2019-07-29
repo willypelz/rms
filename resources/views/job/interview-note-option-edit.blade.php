@@ -58,7 +58,7 @@
 
 
                             <div class="panel-footer text-right">
-                                <button class="btn btn-primary" @if(!$is_super_admin) disabled @endif>Save option</button>
+                                <button class="btn btn-primary" @if((isset($user_role) && !is_null($user_role) && !in_array($user_role->name, ['admin'])) || !$is_super_admin) disabled @endif>Save option</button>
                             </div>
                         </div>
 

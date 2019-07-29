@@ -40,7 +40,7 @@ class ActivationService
             $m->from('support@seamlesshiring.com')->to($user->email)->subject('Activate your Seamlesshiring account');
         });
         // Mail::send('emails.cv-sales.invoice', [], function($message){
-        //     $message->from('no-reply@insidify.com');
+        //     $message->from(env('COMPANY_EMAIL'));
         //     $message->to('babatopeoni@gmail.com', 'SH test email');
         // }); 
 

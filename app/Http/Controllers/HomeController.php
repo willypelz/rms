@@ -161,7 +161,7 @@ class HomeController extends Controller
         // $purchased_cvs_count = Solr::get_purchased_cvs($this->search_params)['response']['numFound'];
 
         // Mail::send('emails.cv-sales.invoice', [], function($message){
-        //     $message->from('no-reply@insidify.com');
+        //     $message->from(env('COMPANY_EMAIL'));
         //     $message->to('babatopeoni@gmail.com', 'SH test email');
         // });
 

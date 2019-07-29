@@ -60,7 +60,7 @@ class OnboardingController extends Controller
         // dd( FolderContent::where('getFolderType.type','saved')->get()->toArray() );
          
         // Mail::send('emails.cv-sales.invoice', [], function($message){
-        //     $message->from('no-reply@insidify.com');
+        //     $message->from(env('COMPANY_EMAIL'));
         //     $message->to('babatopeoni@gmail.com', 'SH test email');
         // }); 
 
@@ -79,7 +79,7 @@ class OnboardingController extends Controller
         // });
 
         Mail::send('emails.guest.request-call', $request->all(), function($message){
-            $message->from('no-reply@insidify.com');
+            $message->from(env('COMPANY_EMAIL'));
             $message->to('support@seamlesshiring.com', 'Seamless Hiring Call Request');
         });
     }

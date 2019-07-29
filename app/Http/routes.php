@@ -69,6 +69,7 @@ Route::group(['middleware' => 'web'], function () {
     ], function () {
         Route::get('auth/logout', 'AuthController@logout');
     });
+    Route::any('admin-accept-invite/{id}/{company_id}',['uses' => 'AdminsController@adminAcceptInvite', 'as' => 'admin-accept-invite']);
     /** -- End: Administrator Panel Route -- */
 
     Route::auth();

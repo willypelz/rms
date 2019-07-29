@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'support@seamlesshiring.com', 'name' => 'Seamless Hiring'],
+    'from' => ['address' => env('COMPANY_EMAIL'), 'name' => env('COMPANY_NAME')],
 
     /*
     |--------------------------------------------------------------------------

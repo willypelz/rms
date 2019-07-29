@@ -1706,6 +1706,47 @@ class JobApplicationsController extends Controller
 
     }
 
+    public function previewInterview(Request $request)
+    {
+        $appls = JobApplication::with('cv', 'job', 'job.company')->whereIn('id', $request->app_ids)->get();
+        foreach ($appls as $key => $appl) {
+            $cv = $appl->cv;
+            $job = $appl->job;
+            if ($request->file('interview_file')) {
+                $destination = 'uploads';
+                $extension = $request->file('interview_file')->getClientOriginalExtension();
+                $file_name = rand(1111111, 9999999) . '.' . $extension;
+                $request->file('interview_file')->move($destination, $file_name);
+            } else {
+                $file_name = null;
+            }
+            $date = date('D, j-n-Y, h:i A', strtotime($request->date));
+            $data = [
+                'location' => $request->location,
+                'message' => $request->message,
+                'date' => $date,
+                'job_application_id' => $appl->id,
+                'duration' => $request->duration,
+                'interview_file' => $file_name,
+                'reschedule' => ($request->reschedule == 'true') ? 1 : 0,
+            ];
+            $duration = (int) $request->duration;
+            $from = date('Y-m-d H:i', strtotime($request->date));
+            $to =  date('Y-m-d H:i', strtotime("+$duration minutes", strtotime($request->date)));
+            $from_in_carbon_format = Carbon::createFromFormat('Y-m-d H:i', $from);
+            $to_in_carbon_format = Carbon::createFromFormat('Y-m-d H:i', $to);
+
+            $interview = (object) $data;
+
+            $invite_email = view('emails.new.interview_invitation', compact('cv', 'job', 'interview'))->render();
+
+            $interviewer['name'] = "{Interviewer Name}";
+            $interviewer = (object) $interviewer;
+
+            $interviewer_email = view('emails.new.interviewer', compact('cv', 'job', 'interview', 'interviewer'))->render();
+            return view('admin.preview', compact('invite_email','interviewer_email'));
+        }
+    }
 
     public function saveInterviewNote(Request $request)
     {

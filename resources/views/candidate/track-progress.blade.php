@@ -28,6 +28,7 @@
       <ul class="list-group list-notify list-track">
         
         @foreach( Auth::guard('candidate')->user()->applications as $application )
+        @if($application->job->status == "ACTIVE")
           <li role="candidate-application" class="list-group-item">
             
             <!-- <span class="fa-stack fa-lg i-notify">
@@ -44,6 +45,7 @@
               <b>Applied</b>: {{ date('D. j M, Y', strtotime( $application->job->created_at)) }}
             </p>
           </li>
+          @endif
         @endforeach
         
       </ul>

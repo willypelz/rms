@@ -69,7 +69,7 @@
                         <span class="text-muted"><i
                                     class="fa fa-calendar"></i> {{ \Carbon\Carbon::parse( @$cv['application_date'] )->subHour()->diffForHumans() }} &nbsp;
                             &middot; &nbsp;</span>
-                        @if((isset($permissions) && in_array('can-view-job', $permissions)) && $cv['is_approved']|| $check_both_permissions)&nbsp;
+                        @if((isset($permissions) && in_array('can-view-job', $permissions)) && $cv['is_approved'] || $check_both_permissions)&nbsp;
                         <a id="showCvBtn" data-toggle="modal" data-target="#cvModal"
                            onclick="showCvModal('{{ $cv['id'] }}',true, {{ $cv['application_id'][ $current_app_index ] }});">
                             View CV

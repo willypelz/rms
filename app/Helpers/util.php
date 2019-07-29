@@ -630,7 +630,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 function checkIfUserHasCompanyPermission() {
 	    //check if user is a super admin
 	    $user = auth()->user()->load('roles');
-        return $user->is_super_admin = 1 ?  true :  false;
+        return $user->is_super_admin ?  true :  false;
 }
 
 function getRoleArray($job_id, $user) {

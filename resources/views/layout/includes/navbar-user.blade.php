@@ -38,20 +38,26 @@
                     <!-- <li class="{{ Request::is('cv/purchased') ? 'active' : '' }}"><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li> -->
                     </ul>
                 </li>
+                
                 @php
                    $user = auth()->user();
+                   $is_super_admin = $user->is_super_admin;
+                   $user_role = getCurrentLoggedInUserRole();
                 @endphp
+                @if( (isset($user_role) && !is_null($user_role) && in_array( $user_role->name, ['admin','interviewer','commenter','check_admin','test_admin'] ) ) || $is_super_admin )
+
                 <li class="dropdown {{ Request::is('cv/*') ? 'active' : '' }}">
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown">Jobs <i
                                 class="fa fa-caret-down fa-fw"></i></a>
                     <ul class="dropdown-menu">
-                        @if($user->is_super_admin)
+                    
                         <li class="{{ Request::is('my-jobs*') ? 'active' : '' }}">
                             <a class="" href="{{ url('my-jobs') }}">
                                 <i class="fa fa-briefcase fa-fw"></i>
                                 All Jobs
                             </a>
                         </li>
+                        @if($is_super_admin)
                         <li>
                             <a href="{{ route('workflow') }}">
                                 <i class="fa fa-chain fa-fw"></i>
@@ -64,31 +70,32 @@
                                 Interview Note Templates
                             </a>
                         </li>
-                         <li>
+                        <li>
                             <a href="{{ route('settings-embed') }}">
                                 <i class="fa fa-code fa-fw"></i>
                                 Embed
                             </a>
                         </li>
-                        @if(env('STAFFSTRENGTH_URL'))
-                            <li>
-                                <a href="{{ route('change-admin-role') }}">
-                                    <i class="fa fa-user fa-fw"></i>
-                                    Manage Super Admins
-                                </a>
-                            </li>
+                        <li>
+                            <a href="{{ route('change-admin-role') }}">
+                                <i class="fa fa-user fa-fw"></i>
+                                Manage Super Admins
+                            </a>
+                        </li>
                         @endif
+                        
                     <!-- <li class="{{ Request::is('cv/purchased') ? 'active' : '' }}"><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li> -->
                     <!-- <li class="{{ Request::is('cv/saved') ? 'active' : '' }}"><a href="{{ url('cv/saved') }}">Saved Cvs</a></li> -->
                     <!-- <li class="{{ Request::is('cv/purchased') ? 'active' : '' }}"><a href="{{ url('cv/purchased') }}">Purchased Cvs</a></li> -->
                     </ul>
                 </li>
+                @endif
                 
                 <li class="">
                     <a class="" href="{{ url('my-career-page') }}" target="_blank">My Career Page <i
                                 class="fa fa-building mask"></i></a>
                 </li>
-            @endif
+            
 
 
             <!--li class="">

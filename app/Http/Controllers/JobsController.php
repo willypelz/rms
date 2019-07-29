@@ -1556,18 +1556,22 @@ class JobsController extends Controller
 
     public function ActivityContent(Request $request)
     {
+        $user = Auth::user();
+        $comp_id = get_current_company()->id;
+        $job_access = Job::where('company_id', $comp_id)
+                        ->whereHas('users', function ($q) use ($user){
+                            $q->where('user_id', $user->id);
+                        })->get()->pluck('id')->toArray();
+
 
         $content = '<ul class="list-group list-notify">';
 
 
         if (!empty($request->appl_id)) {
             $activities = JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('id', 'desc');
-        } elseif ($request->type == 'dashboard') {
+        } elseif ($request->type == 'dashboard') { 
 
-
-            $comp_id = get_current_company()->id;
-
-            $jobs = Job::where('company_id', $comp_id)->get(['id'])->toArray();
+            $jobs = ($user->is_super_admin) ? Job::where('company_id', $comp_id)->get(['id'])->toArray() : $job_access;
             $activities = JobActivity::with('user', 'application.cv', 'job')->whereIn('job_id', $jobs)->orderBy('id', 'desc');
             // dd($activities);
 

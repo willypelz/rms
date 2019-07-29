@@ -28,7 +28,7 @@
       <ul class="list-group list-notify list-track">
         
         @foreach( Auth::guard('candidate')->user()->applications as $application )
-        @if($application->job->status != "DELETED")
+        @if($application->job->status == "ACTIVE")
           <li role="candidate-application" class="list-group-item">
             
             <!-- <span class="fa-stack fa-lg i-notify">

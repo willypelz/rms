@@ -2292,6 +2292,7 @@ class JobsController extends Controller
             }
 
             $cv->candidate_id = $candidate->id;
+            $cv->applicant_type = $data['applicant_type'];
             $cv->save();
 
             $cvExt = new CvSalesController();

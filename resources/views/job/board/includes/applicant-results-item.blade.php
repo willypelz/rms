@@ -5,6 +5,7 @@
         $current_app_index = array_search($jobID, $cv['job_id']);
         $current_status = ($cv['application_status'][$current_app_index] == "ASSESSED") ? "TEST" : $cv['application_status'][$current_app_index];
         $check_both_permissions = checkForBothPermissions ($jobID);
+        $is_stand_alone = env('RMS_STAND_ALONE');
         ?>
 
         <div class="ats-abx">
@@ -24,7 +25,8 @@
                     <input type="checkbox" class="media-body-check check-applicant pull-right">
                     <h4 class="media-heading text-muted">
                         <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}"
-                           target="_blank"><strong>{{ ucwords( @$cv['first_name']. " " . @$cv['last_name'] ) }}</strong></a>
+                           target="_blank"><strong>{{ ucwords( @$cv['first_name']. " " . @$cv['last_name'] ) }}</strong>
+                           <small>{{((!$is_stand_alone) && isset($cv['applicant_type'])) ? '('.$cv['applicant_type'].')' : ''}} </small> </a>
 
                         <span class="span-stage">{{ $current_status }}</span>
                         @foreach($job->workflow->workflowSteps as $workflowStep)

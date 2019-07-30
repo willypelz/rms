@@ -5,7 +5,7 @@ $is_super_admin = auth()->user()->is_super_admin;
 
 <div class="btn-group btn-group-justified btn-tabs job-dash no-pad text-brandon" role="group" aria-label="...">
                            <div class="btn-group" role="group">
-                           <a  @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin','interviewer'])) || $is_super_admin) href="#" @else  href="{{ route('job-board', [$job->id]) }}" @endif type="button" class="btn btn-line text-capitalize @if($active_tab == 'activities') in @endif">
+                           <a  @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['interviewer']))) href="#" @else  href="{{ route('job-board', [$job->id]) }}" @endif type="button" class="btn btn-line text-capitalize @if($active_tab == 'activities') in @endif">
                             <span class="fa-lg"><i class="fa fa-bar-chart"></i>
                             <span class="hidden-xs"> &nbsp; Activities</span></span>
                             <!-- <small class="text-muted hidden-xs">Job Statistics</small> -->
@@ -29,7 +29,7 @@ $is_super_admin = auth()->user()->is_super_admin;
                           </div>
 
                           <div class="btn-group" role="group">
-                            <a @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin) href="#" @else href="{{ route('job-promote', [$job->id]) }}" @endif type="button" class="btn btn-line text-capitalize text-muted @if($active_tab == 'promote') in @endif">
+                            <a @if((isset($user_role) && !is_null($user_role) && !in_array($user_role->name, ['admin']))) href="#" @else href="{{ route('job-promote', [$job->id]) }}" @endif type="button" class="btn btn-line text-capitalize text-muted @if($active_tab == 'promote') in @endif">
                             <span class="fa-lg"><i class="fa fa-send"></i>
                             <span class="hidden-xs"> &nbsp; Promote Job</span></span>
                             <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->

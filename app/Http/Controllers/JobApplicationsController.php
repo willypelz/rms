@@ -930,8 +930,8 @@ class JobApplicationsController extends Controller
 
                 $result = Solr::get_applicants($this->search_params, $job_id,
                     ''); // status parater value is formerly : @$request->status
-                $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$job_id,
-                    $statuses = $job->workflow->workflowSteps()->pluck('slug'));
+                $application_statuses = isset($result['facet_counts']) ? get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$job_id,
+                    $statuses = $job->workflow->workflowSteps()->pluck('slug')) : [];
 
 
                 foreach ($application_statuses as $key => $value) {

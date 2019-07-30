@@ -24,7 +24,7 @@
                   {{ ucwords( implode( '_', array_slice( explode('_', $appl->cv->cv_file) , 1) ) ) }}</h4>
                 <br>
                 <div>
-                  @if( $appl->cv != null )
+                  @if( $appl->cv != null || $appl->cv != "")
                   <a class="pull-left" href="{{ asset('uploads/CVs/'.$appl->cv->cv_file) }}" target="_blank"> <i
                       class="fa fa-paperclip"></i> Download Attachment</a>
                   <small class="date pull-right">{{ date('M d, Y', strtotime( $appl->cv->last_modified)) }}</small>

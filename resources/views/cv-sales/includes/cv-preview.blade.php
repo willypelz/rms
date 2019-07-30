@@ -190,7 +190,7 @@
                                     
                                     @endif
                                 @endif
-                                @if(@$is_applicant || $page == 'pool' && $cv['cv_file'] != '')
+                                @if((@$is_applicant || $page == 'pool') && $cv['cv_file'] != "")
                                 <div class="pull-right">
                                     <a href="{{ url( env('fileupload') ).'/CVs/'.$cv['cv_file'] }}" class="btn btn-sm btn-success btn-block" title="Download Dossier">Download CV</a>
                                 </div>

@@ -129,11 +129,11 @@ class JobApplicationsController extends Controller
         $this->mailer = $mailer;
 
         if (Auth::check()) {
-            $this->sender = (get_current_company()->slug != "" && get_current_company()->slug) ? get_current_company()->slug . '@seamlesshr.com' : 'support@seamlesshr.com';
-            $this->replyTo = (get_current_company()->email) ? get_current_company()->email : 'support@seamlesshr.com';
+            $this->sender = (get_current_company()->slug != "" && get_current_company()->slug) ? get_current_company()->slug . '@seamlesshr.com' : env('COMPANY_EMAIL');
+            $this->replyTo = (get_current_company()->email) ? get_current_company()->email : env('COMPANY_EMAIL');
         } else {
-            $this->sender = 'support@seamlesshr.com';
-            $this->replyTo = 'support@seamlesshr.com';
+            $this->sender = env('COMPANY_EMAIL');
+            $this->replyTo = env('COMPANY_EMAIL');
         }
 
 
@@ -141,7 +141,7 @@ class JobApplicationsController extends Controller
 
         $job = (object) [ "title" => "CEO", "company" => (object) [ "name" => "Insidify" ] ];
         $this->mailer->send('emails.new.reject_email', ['cv' => $cv, 'job' => $job], function (Message $m) use ($cv) {
-                                $m->from('support@seamlesshr.com')->to($cv->email)->subject('Feedback');
+                                $m->from(env('COMPANY_EMAIL'))->to($cv->email)->subject('Feedback');
                             });*/
     }
 
@@ -212,7 +212,6 @@ class JobApplicationsController extends Controller
 
         $documents = CandidateMessage::where('job_application_id', $appl->id)
             ->where('attachment', '!=', '')
-            ->where('user_id', null)
             ->get();
 
 
@@ -287,23 +286,25 @@ class JobApplicationsController extends Controller
     public function sendMessage(Request $request)
     {
 
-        if ($request->hasFile('attachment')) {
-            $file_name = (@$request->attachment->getClientOriginalName());
-            $fi = @$request->file('attachment')->getClientOriginalExtension();
-            $attachment = $request->application_id . '-' . time() . '-' . $file_name;
+        if ($request->hasFile('document_file')) {
+            $file_name = (@$request->document_file->getClientOriginalName());
+            $fi = @$request->file('document_file')->getClientOriginalExtension();
+            $document_file = $request->application_id . '-' . time() . '-' . $file_name;
 
-            $upload = $request->file('attachment')->move(
-                env('fileupload'), $attachment
+            $upload = $request->file('document_file')->move(
+                env('fileupload'), $document_file
             );
         } else {
-            $attachment = '';
+            $document_file = '';
         }
 
         $message = CandidateMessage::create([
             'job_application_id' => $request->application_id,
             'message' => $request->message,
-            'attachment' => $attachment,
-            'user_id' => Auth::user()->id
+            'attachment' => $document_file,
+            'user_id' => Auth::user()->id,
+            'title' => $request->document_title,
+            'description' => $request->document_description
         ]);
 
 
@@ -618,7 +619,8 @@ class JobApplicationsController extends Controller
 
 
         $excel = App::make('excel');
-        Excel::create('Applicants Report: ' . $other_data['job_title'],
+        $filename = 'Applicants Report: ' . $other_data['job_title'];
+        Excel::create($filename,
             function ($excel) use ($excel_data, $other_data) {
                 // Set the title
                 $excel->setTitle('Applicants Report: ' . $other_data['job_title']);
@@ -661,7 +663,8 @@ class JobApplicationsController extends Controller
 
 
                 });
-            })->download('xlsx');
+            })->store('xlsx', storage_path('exports'));
+            return response()->download(storage_path('exports/').$filename.'.xlsx');
     }
 
     public function downloadApplicantCv(Request $request)
@@ -1667,7 +1670,7 @@ class JobApplicationsController extends Controller
             if ($appl->job->company->id == 96) {
                 $this->mailer->send('emails.new.interview_invitation_ibfc',
                     ['cv' => $cv, 'job' => $job, 'interview' => (object)$data], function (Message $m) use ($cv) {
-                        $m->from('support@seamlesshr.com')->to($cv->email)->subject('Interview Invitation');
+                        $m->from(env('COMPANY_EMAIL'))->to($cv->email)->subject('Interview Invitation');
                     });
             } else {
                 $this->mailer->send('emails.new.interview_invitation',
@@ -1705,6 +1708,47 @@ class JobApplicationsController extends Controller
 
     }
 
+    public function previewInterview(Request $request)
+    {
+        $appls = JobApplication::with('cv', 'job', 'job.company')->whereIn('id', $request->app_ids)->get();
+        foreach ($appls as $key => $appl) {
+            $cv = $appl->cv;
+            $job = $appl->job;
+            if ($request->file('interview_file')) {
+                $destination = 'uploads';
+                $extension = $request->file('interview_file')->getClientOriginalExtension();
+                $file_name = rand(1111111, 9999999) . '.' . $extension;
+                $request->file('interview_file')->move($destination, $file_name);
+            } else {
+                $file_name = null;
+            }
+            $date = date('D, j-n-Y, h:i A', strtotime($request->date));
+            $data = [
+                'location' => $request->location,
+                'message' => $request->message,
+                'date' => $date,
+                'job_application_id' => $appl->id,
+                'duration' => $request->duration,
+                'interview_file' => $file_name,
+                'reschedule' => ($request->reschedule == 'true') ? 1 : 0,
+            ];
+            $duration = (int) $request->duration;
+            $from = date('Y-m-d H:i', strtotime($request->date));
+            $to =  date('Y-m-d H:i', strtotime("+$duration minutes", strtotime($request->date)));
+            $from_in_carbon_format = Carbon::createFromFormat('Y-m-d H:i', $from);
+            $to_in_carbon_format = Carbon::createFromFormat('Y-m-d H:i', $to);
+
+            $interview = (object) $data;
+
+            $invite_email = view('emails.new.interview_invitation', compact('cv', 'job', 'interview'))->render();
+
+            $interviewer['name'] = "{Interviewer Name}";
+            $interviewer = (object) $interviewer;
+
+            $interviewer_email = view('emails.new.interviewer', compact('cv', 'job', 'interview', 'interviewer'))->render();
+            return view('admin.preview', compact('invite_email','interviewer_email'));
+        }
+    }
 
     public function saveInterviewNote(Request $request)
     {

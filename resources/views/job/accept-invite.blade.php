@@ -118,7 +118,7 @@
                       </div>
                       <input type="hidden" name="ref" value="{{ $user->id }}" />
                       <div class="form-group">
-                        <label for="">Password</label>
+                        <label for="">Create Password</label>
                         <input type="password" class="form-control" placeholder="Enter password" name="password" id="password" required>
                       </div>
                        <div class="form-group">

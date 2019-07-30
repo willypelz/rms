@@ -78,9 +78,19 @@
                                           <input type="hidden" name="application_id" value="{{ $application_id }}">
                                           <textarea class="form-control short" id="message" name="message" rows="3" required></textarea>
                                         </div>
-                                        <div class="col-xs-12"><br>
-                                          <small>Attachement (Optional)</small>
-                                          <input type="file" name="attachment" name="attachment">
+                                        <div class="col-xs-12">
+                                          <br>
+                                          <label><input type="checkbox" id="attachment" /> <b>Attachment (Optional)</b></label>
+                                          <br />
+                                        </div>
+                                        <div class="col-xs-12" id="attachmentTemplateBlock">
+                                          <label for="">Title</label>
+                                          <input type="text" class="form-control" name="document_title" id="document_title">
+                                          <label for="">Decription</label>
+                                          <textarea class="form-control short" name="document_description" id="document_description"
+                                            rows="3"></textarea>
+                                          <label for="">Document</label>
+                                          <input type="file" name="document_file" id="attachment">
                                         </div>
                                       </div>
                                       <div class="form-group">
@@ -129,5 +139,21 @@
 
 <div class="separator separator-small"><br></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
+<script>
+  $(function () {
+    var attachmentTemplate = $('#attachmentTemplateBlock');
+    if ($('#attachment').prop('checked')) {
+      attachmentTemplate.show();
+    } else {
+      attachmentTemplate.hide();
+    }
+    $('#attachment').change(function () {
+      if ($(this).prop('checked')) {
+        attachmentTemplate.show();
+      } else {
+        attachmentTemplate.hide();
+      }
+    });
+  });
+</script>
 @endsection

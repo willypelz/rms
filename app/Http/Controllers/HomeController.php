@@ -145,8 +145,23 @@ class HomeController extends Controller
 
     public function dashbaord()
     {
+        $user = Auth::user();
         $comp_id = get_current_company()->id;
-        $jobs_count = Job::where('company_id', $comp_id)->where('status','!=','DELETED')->count();
+        $job_access = Job::where('company_id', $comp_id)
+                        ->whereHas('users', function ($q) use ($user){
+                            $q->where('user_id', $user->id);
+                        })->get()->pluck('id')->toArray();
+
+        
+
+        
+        $jobs_count = Job::where('company_id', $comp_id);
+
+        if($user->is_super_admin){
+        } else {
+            $jobs_count = $jobs_count->whereIn('id', $job_access);
+        }
+        $jobs_count = $jobs_count->where('status','!=','DELETED')->count();
 
         $response = Curl::to('https://api.insidify.com/articles/get-posts')
                                 ->withData(array('limit'=>6))
@@ -161,7 +176,7 @@ class HomeController extends Controller
         // $purchased_cvs_count = Solr::get_purchased_cvs($this->search_params)['response']['numFound'];
 
         // Mail::send('emails.cv-sales.invoice', [], function($message){
-        //     $message->from('no-reply@insidify.com');
+        //     $message->from(env('COMPANY_EMAIL'));
         //     $message->to('babatopeoni@gmail.com', 'SH test email');
         // });
 

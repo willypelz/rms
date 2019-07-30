@@ -62,12 +62,14 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], '/sys/roles/create', 'AdminsController@createRole')->name('create-role');
     Route::match(['get', 'post'], '/sys/roles/edit/{id}', 'AdminsController@editRole')->name('role-edit');
     Route::match(['get', 'post'], '/sys/roles/delete/{id}', 'AdminsController@deleteRole')->name('role-delete');
+    Route::post('upload-document/{appl_id}/{job_id}', ['uses' => 'JobsController@adminUploadDocument', 'as' => 'upload-document']);
     Route::group([
         'prefix' => '/admin',
         'middleware' => 'admin'
     ], function () {
         Route::get('auth/logout', 'AuthController@logout');
     });
+    Route::any('admin-accept-invite/{id}/{company_id}',['uses' => 'AdminsController@adminAcceptInvite', 'as' => 'admin-accept-invite']);
     /** -- End: Administrator Panel Route -- */
 
     Route::auth();
@@ -694,6 +696,11 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('request/check', ['as' => 'request-check', 'uses' => 'JobApplicationsController@requestCheck']);
     Route::post('invite/interview',
         ['as' => 'invite-for-interview', 'uses' => 'JobApplicationsController@inviteForInterview']);
+    
+    Route::post('preview/interview',
+        ['as' => 'invite-for-interview-preview', 'uses' => 'JobApplicationsController@previewInterview']);
+        
+
     Route::post('save-interview-note',
         ['as' => 'save-interview-note', 'uses' => 'JobApplicationsController@takeInterviewNote']);
 
@@ -758,6 +765,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('/save-super-admin', 'JobController@createSuperAdmin');
     });
 
+    Route::any('candidate-invite/{id}/{token}',['uses' => 'CandidateController@candidateAccept', 'as' => 'candidate-invite']);
 });
 
   /* Easily update Solr via URL*/
@@ -769,3 +777,4 @@ Route::group(['middleware' => 'web'], function () {
       }
       return redirect()->back();
   });
+

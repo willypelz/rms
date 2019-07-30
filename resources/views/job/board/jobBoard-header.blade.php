@@ -43,12 +43,12 @@
                         @else
                         <div id="status-box" class="label label-danger" style="">Job has expired</div> <!-- <small>To change</small> -->
                         @endif
-                        <!-- <div class="badge badge-job badge-job-active">
+                        <div class="badge badge-job badge-job-active">
                             <small class="">
-                                <span class="glyphicon glyphicon-ok"></span>
-                                &nbsp; Job is active
+                                <span class="glyphicon glyphicon-bookmark"></span>
+                                <b>&nbsp; {{ ucfirst($job['is_for'])}}</b>
                             </small>
-                        </div> -->
+                        </div>
                     </div>
                     @php
                       $user = auth()->user();

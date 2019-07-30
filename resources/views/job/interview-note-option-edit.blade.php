@@ -9,6 +9,7 @@
     @include('job.includes.interview-head')
     @php
         $user_role = getCurrentLoggedInUserRole();
+        $is_super_admin = auth()->user()->is_super_admin;
     @endphp
     <section class="">
         <div class="container">
@@ -57,7 +58,7 @@
 
 
                             <div class="panel-footer text-right">
-                                <button class="btn btn-primary" @if($user_role->name != 'admin') disabled @endif>Save option</button>
+                                <button class="btn btn-primary" @if((isset($user_role) && !is_null($user_role) && !in_array($user_role->name, ['admin'])) || !$is_super_admin) disabled @endif>Save option</button>
                             </div>
                         </div>
 

@@ -2045,12 +2045,11 @@ class JobsController extends Controller
     {
 
         $job = Job::with('company')->where('id', $jobid)->first();
-        $company = $job->company;
 
-        if (empty($job)) {
+        if (empty($job) || is_null($job)) {
             abort(404);
         }
-
+        $company = $job->company;
         $company->logo = get_company_logo($company->logo);
 
         if (Carbon::now()->diffInDays(Carbon::parse($job->expiry_date), false) < 0 || in_array($job->status, ['SUSPENDED', 'DELETED'])) {
@@ -2396,7 +2395,9 @@ class JobsController extends Controller
     {
 
         $company = Company::where('slug', $slug)->first();
-
+        if (empty($company) || is_null($company)) {
+            abort(404);
+        }
         $jobs = Job::where('company_id', $company->id)
             ->where('status', "ACTIVE")
             ->where('expiry_date', '>', date('Y-m-d'))

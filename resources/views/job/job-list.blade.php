@@ -266,12 +266,6 @@
                                         }
                                     });
                                 }
-                            </script>
-                        @endforeach
-
-                        <script type="text/javascript">
-                            $(function () {
-
                                 var job_id = "";
                                 var job_title = "";
                                 var this_one = null;
@@ -280,29 +274,35 @@
                                     job_title = $(this).data('title');
                                     this_one = $(this);
                                 });
-
-                                $('body').on('click', '#delete-job-pop', function () {
-
-                                    $this = $(this);
-
-                                    $.post("{{ route('job-status') }}", {
-                                        rnd: Math.random() * 100000,
-                                        job_id: this_one.data('id'),
-                                        status: 'DELETED'
-                                    }, function () {
-                                        this_one.closest('.job-block').remove();
-                                        $('#deleteJob').modal('toggle');
-                                        $.growl.notice({message: "You have deleted '" + this_one.data('title') + "'"});
-                                    });
-
-                                });
-
-                                $('body #closeRejectModal').on('click', function () {
-                                    $('#deleteJob').modal('toggle');
-                                });
-                            });
-
-                        </script>
+                                function Kolo() {
+                                    var url = "{{ route('job-status') }}";
+                                    $.ajax
+                                        ({
+                                            type: "POST",
+                                            url: url,
+                                            data: ({
+                                                rnd: Math.random() * 100000,
+                                                job_id: job_id,
+                                                status: 'DELETED'
+                                            }),
+                                            success: function (response) {
+                                                if (response == "true") {
+                                                    $('#deleteJob').modal('hide');
+                                                    $.growl.notice({
+                                                        message: "You have deleted '" + this_one.data('title') + "'"
+                                                    });
+                                                    setTimeout(function(){location.reload()}, 3000);
+                                                } else {
+                                                    $('#deleteJob').modal('hide');
+                                                    $.growl.error({
+                                                        message: "Applicants are attached to '" + this_one.data('title') + "'"
+                                                    });
+                                                }
+                                            }
+                                        });
+                                }
+                            </script>
+                        @endforeach
 
                     @else
 
@@ -355,7 +355,7 @@
 
                     <div class="clearfix"></div>
                     <div class="pull-right">
-                        <a href="javascript://" id="delete-job-pop" class="btn btn-success pull-right">Yes</a>
+                        <a href="javascript://" onclick="Kolo();" class="btn btn-success pull-right">Yes</a>
                         <div class="separator separator-small"></div>
                     </div>
 

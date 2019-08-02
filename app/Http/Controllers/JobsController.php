@@ -2592,11 +2592,17 @@ class JobsController extends Controller
 
         $job = Job::find($request->job_id);
         // dd($job);
-        $res = Job::where('id', $request->job_id)
-            ->update(['status' => $request->status]);
+        $count = JobApplication::where('job_id', $request->job_id)->count();
+        if ($count) {
+            return "false";
+        } else {
+            $res = Job::where('id', $request->job_id)
+                ->update(['status' => $request->status]);
 
-        if ($res)
-            echo true;
+            if ($res)
+                return "true";
+        }
+        
     }
 
     public function ReferJob(Request $request)
@@ -2870,8 +2876,10 @@ class JobsController extends Controller
     public function DuplicateJob(Request $request)
     {
 
-        $newJob = Job::find($request->job_id)->replicate()->save();
-
+        $newJob = Job::find($request->job_id)->replicate();
+        $newJob->save();
+        $newJob->status = "DRAFT";
+        $newJob->save();
         if ($newJob) {
             echo true;
         }

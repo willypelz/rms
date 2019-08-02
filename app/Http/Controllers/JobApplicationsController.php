@@ -588,6 +588,7 @@ class JobApplicationsController extends Controller
                 "PHONE" => @$value['phone'],
                 "COVER NOTE" => @$value['cover_note'][0],
                 "HIGHEST EDUCATION" => @$value['highest_qualification'],
+                "GRADUATION GRADE" => @getGrade($value['grade']),
                 "LAST COMPANY WORKED AT" => @$value['last_company_worked'],
                 "YEARS OF EXPERIENCE" => @$value['years_of_experience'],
                 "WILLING TO RELOCATE?" => (array_key_exists('willing_to_relocate', $value) && $value['willing_to_relocate'] == "true") ? 'Yes' : 'No',

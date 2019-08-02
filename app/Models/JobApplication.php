@@ -63,4 +63,9 @@ class JobApplication extends Model
     {
         return $this->hasMany('App\Models\FormFieldValues');
     }
+
+    public function candidate()
+    {
+        return $this->belongsTo('App\Models\Candidate', 'candidate_id');
+    }
 }

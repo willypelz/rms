@@ -349,8 +349,15 @@ class CandidateController extends Controller
         $job = Job::find($job_application->job_id);
         // Get admin
         $admin_user = Message::where('job_application_id', $request->application_id)->whereNotNull('user_id')->first();
-        
-        $user = User::find($admin_user->id);
+
+        if($admin_user){
+            $user = User::find($admin_user->user_id);
+        }else{
+            $user = new \stdClass();
+            $user->email = "myemail@gmail.com";
+            $user->name = "Admin";
+            $user->first_name = "Admin";
+        }
 
         $application_id = $request->application_id;
 

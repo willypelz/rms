@@ -39,6 +39,7 @@ use App\Models\Message as CandidateMessage;
 use App\Models\WorkflowStep;
 use App\User;
 use Spatie\CalendarLinks\Link;
+use Mail;
 
 class JobApplicationsController extends Controller
 {
@@ -306,9 +307,13 @@ class JobApplicationsController extends Controller
             'title' => $request->document_title,
             'description' => $request->document_description
         ]);
-
-
+        $candidate = JobApplication::find($request->application_id);
+        $email_title = "Message on your job application ".$candidate->job->title;
         $application_id = $request->application_id;
+        $link = route('candidate-messages', $request->application_id);
+        Mail::send('emails.new.admin_send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($candidate, $email_title) {
+            $m->from(env('COMPANY_EMAIL'))->to($candidate->candidate->email)->subject($email_title);
+        });
 
         return redirect()->route('applicant-messages', ['appl_id' => $application_id]);
 

@@ -270,7 +270,7 @@ class CandidateController extends Controller
                 $link = route('candidate-messages', $jb->id);
 
                 $candidate = $user;
-                $email_title = $candidate->first_name.' you a message.';
+                $email_title = $candidate->first_name." sent you a message.";
                 $message_content = 'You just recieve message from candidate: '.$candidate->first_name;
 
 
@@ -363,7 +363,7 @@ class CandidateController extends Controller
 
         $link = route('applicant-messages', $request->application_id);
         $candidate = Candidate::find($job_application->candidate_id);
-        $email_title = $candidate->first_name.' you a message.';
+        $email_title = $candidate->first_name." sent you a message.";
         $message_content = 'You just recieve message from candidate: '.$candidate->first_name;
 
 

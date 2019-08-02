@@ -358,7 +358,7 @@ use App\Models\Company;
 
 
 
-        if(!$company_role)
+        if(!$company_role && $user->is_super_admin != 1)
         {
 
             if ( !in_array($job_id, $job_access) )

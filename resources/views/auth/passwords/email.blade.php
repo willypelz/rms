@@ -70,12 +70,6 @@
                                             &raquo;
                                         </button>
                                     </div>
-                                    
-                                    
-                                    <div class="col-sm-12"><br>
-                                        <p class="small text-right">Not registered? <a href="{{ url('sign-up') }}">Sign
-                                                Up Here</a></p>
-                                    </div>
                                 
                                 </div>
                         </form>

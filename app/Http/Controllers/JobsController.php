@@ -3084,7 +3084,7 @@ class JobsController extends Controller
     {
         if ( $request->isMethod ( 'post' ) ) {
             $user = User::with('roles')->find($request->id);
-            if (!is_null(env('STAFFSTRENGTH_URL'))) {
+            if (!is_null(env('STAFFSTRENGTH_URL')) || env('RMS_STAND_ALONE') ) {
                 $user->update([
                     'is_super_admin' => $request->role
                 ]);

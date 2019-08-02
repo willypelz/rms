@@ -741,7 +741,7 @@ function getAdminName($roleName) {
 function getAdminPermissions() {
 	$perms = auth()->user()->roles()->first();
 	$perms_array = [];
-	if(count($perms)){
+	if(isset($perms->perms)){
 		$perms = $perms->perms;
 		foreach ($perms as $perm) {
 			$perms_array[] = $perm->name;

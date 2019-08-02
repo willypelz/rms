@@ -2290,6 +2290,9 @@ class JobsController extends Controller
             if ($fields->cv_file->is_visible) {
                 $cv->cv_file = $data['cv_file'];
             }
+            if ($fields->state_of_origin->is_visible) {
+                $cv->state_of_origin = $data['state_of_origin'];
+            }
 
             $cv->candidate_id = $candidate->id;
             $cv->applicant_type = $data['applicant_type'];

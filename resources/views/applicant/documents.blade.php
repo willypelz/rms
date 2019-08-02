@@ -19,19 +19,24 @@
           <div class="row">
             <div class="col-xs-12">
               {{-- Get application cv --}}
+              
+              @if( $appl->cv->cv_file != null || $appl->cv->cv_file != "")
               <div class="panel panel-default panel-body">
                 <h4 class="no-margin"> <i class="fa fa-paperclip"></i>
                   {{ ucwords( implode( '_', array_slice( explode('_', $appl->cv->cv_file) , 1) ) ) }}</h4>
                 <br>
                 <div>
-                  @if( $appl->cv != null || $appl->cv != "")
                   <a class="pull-left" href="{{ asset('uploads/CVs/'.$appl->cv->cv_file) }}" target="_blank"> <i
                       class="fa fa-paperclip"></i> Download Attachment</a>
                   <small class="date pull-right">{{ date('M d, Y', strtotime( $appl->cv->last_modified)) }}</small>
                   <div class="clearfix"></div>
-                  @endif
-                </div>
+                  </div>
               </div>
+              @else
+              <div class="panel panel-default panel-body">
+                <h5 class="text-center">No CV attachment</h5>
+              </div>
+              @endif
               <br>
               @if( count( $documents ) )
               @foreach( $documents as $document )

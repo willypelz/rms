@@ -50,7 +50,7 @@
                         <!--/footer-->
                         <div class="page page-sm foot no-bod-rad">
                             <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                                <p><img src="http://seamlesshiring.com/img/seamlesshiring-logo.png" alt=""
+                                <p><img src="{{ env('SEAMLESS_HIRING_LOGO') }}" alt=""
                                         width="200px"></p>
                                 <p>
                                     <small class="text-muted"> &nbsp;

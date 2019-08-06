@@ -68,4 +68,9 @@ class JobApplication extends Model
     {
         return $this->belongsTo('App\Models\Candidate', 'candidate_id');
     }
+
+    public function messages()
+    {
+        return $this->hasMany('App\Models\Message','job_application_id');
+    }
 }

@@ -511,8 +511,9 @@ class JobController extends Controller
 
             $jobs = [];
             foreach ($candidate->applications as $key => $application) {
-                $job = Job::find($application->job_id);
+                $job = Job::with('activities')->find($application->job_id);
                 $job->application = $application;
+                $job->messages = $application->messages;
                 array_push($jobs, $job->toArray());
             }
         }

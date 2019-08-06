@@ -764,7 +764,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('/get/user-jobs/activities', 'JobController@getUserJobActivities');
         Route::post('/save-super-admin', 'JobController@createSuperAdmin');
     });
-
+    Route::post('/api/v1/messages/send','CandidateController@sendMessage');
     Route::any('candidate-invite/{id}/{token}',['uses' => 'CandidateController@candidateAccept', 'as' => 'candidate-invite']);
 });
 

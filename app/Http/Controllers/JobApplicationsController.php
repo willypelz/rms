@@ -286,11 +286,6 @@ class JobApplicationsController extends Controller
 
     public function sendMessage(Request $request)
     {
-        $candidate = JobApplication::find($request->application_id);
-        if($candidate->is_from == 'internal')
-        {
-            return redirect()->back()->with('error', 'Messaging Not allowed for Internal Applicant');
-        }
 
         if ($request->hasFile('document_file')) {
             $file_name = (@$request->document_file->getClientOriginalName());
@@ -312,7 +307,7 @@ class JobApplicationsController extends Controller
             'title' => $request->document_title,
             'description' => $request->document_description
         ]);
-        
+        $candidate = JobApplication::find($request->application_id);
         $email_title = "Message on your job application ".$candidate->job->title;
         $application_id = $request->application_id;
         $link = route('candidate-messages', $request->application_id);

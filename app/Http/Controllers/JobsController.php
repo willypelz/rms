@@ -258,7 +258,7 @@ class JobsController extends Controller
                     $data = (object)$data;
                     //Send notification mail
         
-                    \Illuminate\Support\Facades\Mail::send('emails.new.admin_invite', ['data'=>$data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) {
+                    \Illuminate\Support\Facades\Mail::queue('emails.new.admin_invite', ['data'=>$data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) {
                         $m->from(env('COMPANY_EMAIL'))->to(request()->email)->subject('You Have Been Exclusively Invited');
                     });
                     return back()->with('success', "Invite Sent successfully");
@@ -314,7 +314,7 @@ class JobsController extends Controller
             //Send notification mail
             $email_from = (Auth::user()->email) ? Auth::user()->email : env('COMPANY_EMAIL');
 
-            \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $data, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
+            \Illuminate\Support\Facades\Mail::queue('emails.new.exclusively_invited', ['data' => $data, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
                 $m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
             });
 
@@ -868,7 +868,7 @@ class JobsController extends Controller
 
                 //Send New job notification email
                 $to = env('COMPANY_EMAIL');
-                $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
+                $mail = Mail::queue('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
                     $m->from($to, @$company->name);
                     $m->to($to)->subject('New Job initiated');
                 });
@@ -1064,7 +1064,7 @@ class JobsController extends Controller
 
                 //Send New job notification email
                 $to = env('COMPANY_EMAIL');
-                $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
+                $mail = Mail::queue('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
                     $m->from($to, @$company->name);
 
                     $m->to($to)->subject('New Job initiated');
@@ -2374,7 +2374,7 @@ class JobsController extends Controller
 
             }
 
-            Mail::send('emails.new.job_application_successful', ['user' => $candidate, 'link' => route('candidate-dashboard'), 'job' => $job], function (Message $m) use ($candidate) {
+            Mail::queue('emails.new.job_application_successful', ['user' => $candidate, 'link' => route('candidate-dashboard'), 'job' => $job], function (Message $m) use ($candidate) {
                 $m->from(env('COMPANY_EMAIL'))->to($candidate->email)->subject('Job Application Successful');
             });
 
@@ -2638,7 +2638,7 @@ class JobsController extends Controller
         $to = env('COMPANY_EMAIL');
 
         if ($request->type == 'JOB_BOARD') {
-            $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => $request->boards, 'company' => $company], function ($m) use ($company, $to) {
+            $mail = Mail::queue('emails.new.job-application', ['job' => $job, 'boards' => $request->boards, 'company' => $company], function ($m) use ($company, $to) {
                 $m->from($to, @$company->name);
 
                 $m->to($to)->subject('New Job initiated');
@@ -2733,7 +2733,7 @@ class JobsController extends Controller
 
 
                 $user = Auth::user();
-                $mail = Mail::send('emails.new.successful_payment', compact('invoice', 'invoice_type', 'user', 'amount'), function ($m) use ($invoice, $invoice_type) {
+                $mail = Mail::queue('emails.new.successful_payment', compact('invoice', 'invoice_type', 'user', 'amount'), function ($m) use ($invoice, $invoice_type) {
                     $m->from(env('COMPANY_EMAIL'), 'Seamlesshiring');
 
                     // $m->to(env('COMPANY_EMAIL'))->subject('Customer Invoice: #'.$invoice->id);

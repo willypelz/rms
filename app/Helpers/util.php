@@ -611,7 +611,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 
 				$accept_link = route('candidate-invite', ['id' => $candidate->id,'token'=>$token]);
 
-				Mail::send('emails.new.candidate-invite', ['data' => $data, 'company' => $company, 'accept_link' => $accept_link], function ($m) use($data) {
+				Mail::queue('emails.new.candidate-invite', ['data' => $data, 'company' => $company, 'accept_link' => $accept_link], function ($m) use($data) {
 					$m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
 				});
                 break;
@@ -642,7 +642,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
     // $settings->set('LAST_CV_UPLOAD_INDEX',$last_cv_upload_index);
     $user = Auth::user();
     Solr::update_core();
-    Mail::send('emails.new.cv_upload_successful', ['user' => $user, 'link'=> url('cv/talent-pool') ], function ($m) use ($user) {
+    Mail::queue('emails.new.cv_upload_successful', ['user' => $user, 'link'=> url('cv/talent-pool') ], function ($m) use ($user) {
         $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
     });
 

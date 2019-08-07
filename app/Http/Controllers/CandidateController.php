@@ -104,7 +104,7 @@ class CandidateController extends Controller
                 );
 
 
-                Mail::send('emails.candidate-forgot-password', ['token' => $token], function ($m) use ($candidate) {
+                Mail::queue('emails.candidate-forgot-password', ['token' => $token], function ($m) use ($candidate) {
                     $m->from(env('COMPANY_EMAIL'), env('APP_NAME'));
                     $m->to($candidate->email, $candidate->first_name)->subject('Your Password Reset Link!');
                 });
@@ -278,7 +278,7 @@ class CandidateController extends Controller
                 $message_content = 'You just recieve message on your job application: '.$job->title;
 
 
-                 Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
+                 Mail::queue('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
                     $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
                 });
 
@@ -367,7 +367,7 @@ class CandidateController extends Controller
         $message_content = 'You just recieve message from candidate: '.$candidate->first_name;
 
 
-         Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
+         Mail::queue('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
             $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
         });
         if ($candidate->is_from == 'internal') 

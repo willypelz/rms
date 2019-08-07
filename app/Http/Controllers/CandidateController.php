@@ -370,7 +370,7 @@ class CandidateController extends Controller
          Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
             $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
         });
-        if ($request->isMethod('post')) 
+        if ($candidate->is_from == 'internal') 
         {
             return response()->json(['status' => true, 'message' => 'sent']);
         }

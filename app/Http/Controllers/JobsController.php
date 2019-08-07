@@ -253,13 +253,15 @@ class JobsController extends Controller
                     $data = [
                         'email'=>$request->email,
                         'name' => $request->name,
-                        'token' => $user->token
+                        'token' => $token
                     ];
+
                     $data = (object)$data;
+                    $email = $request->email;
                     //Send notification mail
         
-                    \Illuminate\Support\Facades\Mail::queue('emails.new.admin_invite', ['data'=>$data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) {
-                        $m->from(env('COMPANY_EMAIL'))->to(request()->email)->subject('You Have Been Exclusively Invited');
+                    \Illuminate\Support\Facades\Mail::queue('emails.new.admin_invite', ['data'=>$data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) use ($email){
+                        $m->from(env('COMPANY_EMAIL'))->to($email)->subject('You Have Been Exclusively Invited');
                     });
                     return back()->with('success', "Invite Sent successfully");
                   }

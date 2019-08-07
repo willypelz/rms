@@ -216,6 +216,8 @@
                             @foreach($job->workflow->workflowSteps as $workflowStep)
                                 @if(in_array(auth()->user()->id, $workflowStep->approvals->pluck('id')->toArray()) && $workflowStep->slug == @$applicant_step->slug && (isset($permissions) && in_array('can-perform-interview-actions', $permissions)))
 
+                                @if(!$cv['is_approved'])
+
                                 <!-- // Approval Button -->
                                     <a data-toggle="modal"
                                        data-target="#viewModal"
@@ -270,6 +272,7 @@
                                             @endforeach
                                         </ul>
                                     </span>
+                                @endif
                                 @endif
                             @endforeach
                         {{-- @endif --}}

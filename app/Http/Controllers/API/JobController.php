@@ -355,11 +355,22 @@ class JobController extends Controller
         $cv->email = isset($request->cv['email']) ? $request->cv['email'] : null;
         $cv->phone = isset($request->cv['phone']) ? $request->cv['phone'] : null;
         $cv->gender = isset($request->cv['gender']) ? $request->cv['gender'] : null;
-        $cv->date_of_birth = isset($request->cv['date_of_birth']) ? $request->cv['date_of_birth'] : null;
+        $cv->date_of_birth = null;
         $cv->state = isset($request->cv['state']) ? $request->cv['state'] : null;
         $cv->cv_source = isset($request->cv['cv_source']) ? $request->cv['cv_source'] : null;
         $cv->applicant_type = $request->cv['applicant_type'];
         $cv->save();
+
+        $candidate = Candidate::where('email', $request->email)->first();
+
+        if ($candidate == null) {
+            $candidate = new Candidate();
+            $candidate->email = isset($request->cv['email']) ? $request->cv['email'] : null;
+            $candidate->first_name = isset($request->cv['first_name']) ? $request->cv['first_name'] : null;
+            $candidate->last_name = isset($request->cv['last_name']) ? $request->cv['last_name'] : null;$candidate->is_from =  'internal';
+            $candidate->company_id = isset($request->cv['company_id']) ? $request->cv['company_id'] : null;
+            $candidate->save();
+        }
 
         $job_application = new JobApplication();
         $job_application->cv_id = $cv->id;
@@ -368,8 +379,12 @@ class JobController extends Controller
         $job_application->status = isset($request->application['status']) ? $request->application['status'] : null;
         $job_application->is_approved = isset($request->application['is_approved']) ? $request->application['is_approved'] : null;
         $job_application->created = $time;
-        $job_application->action_date = $time;
+        $job_application->action_date = $time;        
+        $job_application->candidate_id = $candidate->id;        
+
         $job_application->save();
+
+        
 
         if (isset($request->form_fields) && !empty($request->form_fields)) {
             foreach ($request->form_fields as $form_field) {
@@ -521,7 +536,7 @@ class JobController extends Controller
         return response()->json(
             [
                 'success' => true,
-                'data' => $jobs,
+                'data' => $jobs,$candidate,$candidate->applications,
             ]
         );
     }

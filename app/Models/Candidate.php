@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Candidate extends Authenticatable
 {
 
-    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'remember_token','token'];
+    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'remember_token','token','is_from','company_id'];
 
     public function cvs()
     {

@@ -354,7 +354,7 @@ class CandidateController extends Controller
             $user = User::find($admin_user->user_id);
         }else{
             $user = new \stdClass();
-            $user->email = "myemail@gmail.com";
+            $user->email = env('COMPANY_EMAIL');
             $user->name = "Admin";
             $user->first_name = "Admin";
         }

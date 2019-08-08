@@ -111,7 +111,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: 'Montserrat', sans-serif;
     font-weight: 300;
     text-transform: capitalize;
-    background: url('http://seamlesshiring.com/img/seamlesshiring-logo.png') no-repeat left;
+    background: url('../img/seamlesshiring-logo.png') no-repeat left;
     background-size: 100%;
     width: 205px;
     margin-top: 10px;

@@ -179,7 +179,7 @@
             <div class="col-sm-12 text-center">
                 <ul class="list-unstyled footer-logo">
                     <li>
-                        {{--<img src="{{env('SEAMLESS_HIRING_LOGO')}}" alt="" width="185px"><br>--}}
+                        {{--<img src="{{env('SEAMLESS_HIRING_LOGO_WHITE')}}" alt="" width="185px"><br>--}}
                         <small class="text-white">&copy; {{date('Y')}}. All Rights Reserved</small>
                     </li>
                 </ul>

@@ -43,6 +43,7 @@ use Alchemy\Zippy\Zippy;
 use Charts;
 use App\Models\JobTeamInvite;
 use App\Models\Message as CandidateMessage;
+use App\Models\Candidate;
 
 // use Zipper;
 
@@ -2167,6 +2168,13 @@ class JobsController extends Controller
 
         if (empty($job)) {
             abort(404);
+        }
+        $candidate = Candidate::find(Auth::guard('candidate')->user()->id);
+
+        if($candidate->is_from == 'external' && $job->is_for == 'internal')
+        {
+            return redirect()->route('candidate-dashboard')
+            ->withErrors(['warning' => 'You can not apply for this job, It is meant for Internal candidate']);
         }
 
         // disavow internal staff from applying to external jobs

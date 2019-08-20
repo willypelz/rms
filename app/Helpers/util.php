@@ -578,6 +578,12 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 
 		$token = hash_hmac('sha256', str_random(40), config('app.key'));
 
+		if($request->willing_to_relocate == 'yes')
+		{
+			$relocate = 1;
+		}else{
+			$relocate = 0;
+		}
         switch ( $request->type ) {
             case 'single':
                 $last_cv = Cv::insertGetId([
@@ -591,7 +597,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
                     'years_of_experience' => $request->years_of_experience,
                     'last_company_worked' => $request->last_company_worked,
                     'last_position' => $request->last_position,
-                    'willing_to_relocate' => $request->willing_to_relocate,
+                    'willing_to_relocate' => $relocate,
                     'graduation_grade' => $request->graduation_grade,
                     'cv_file' => $cv ,
                     'cv_source' => $cv_source

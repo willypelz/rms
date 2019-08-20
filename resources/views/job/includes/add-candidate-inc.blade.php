@@ -381,12 +381,11 @@
                         {
                             
                             $('#u_s').text( response.data ).show();
-                            setInterval('window.location.reload()', 3000);
+                            setInterval('window.location.reload()', 5000);
                         }
                         else
                         {
                             $('#u_f').text( response.data ).show();
-                            setInterval('window.location.reload()', 3000);
                         }
 
                         $(".progress").hide();

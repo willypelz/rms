@@ -188,7 +188,7 @@
                                                 <label for="job-loc">Eligibility
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                 <select @if($eligibilty) disabled @endif name="eligibilty" class="form-control" id="is_for" name="is_for" >
+                                                 <select @if($eligibilty) readonly @endif name="eligibility" class="form-control" id="is_for" >
                                                      <option value=""> --choose eligibility -- </option>
                                                      <option @if ($eligibilty == 'both') selected="selected" @endif  value="both"> BOTH </option>
                                                      <option @if ($eligibilty == 'internal') selected="selected" @endif value="internal"> INTERNAL STAFF </option>

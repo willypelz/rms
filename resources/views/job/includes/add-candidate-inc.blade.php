@@ -137,7 +137,7 @@
 
                                     <div class="form-group col-xs-6">
                                         <label for="cv-email" class="pull-left">Email</label>
-                                        <input type="email" name="cv_email" id=cv-email" class="form-control" />
+                                        <input type="email" name="cv_email" id="cv-email" class="form-control" />
                                     </div>
 
                                     <div class="form-group col-xs-6">
@@ -381,10 +381,12 @@
                         {
                             
                             $('#u_s').text( response.data ).show();
+                            setInterval('window.location.reload()', 3000);
                         }
                         else
                         {
                             $('#u_f').text( response.data ).show();
+                            setInterval('window.location.reload()', 3000);
                         }
 
                         $(".progress").hide();

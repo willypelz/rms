@@ -137,7 +137,7 @@
 
                                     <div class="form-group col-xs-6">
                                         <label for="cv-email" class="pull-left">Email</label>
-                                        <input type="email" name="cv_email" id=cv-email" class="form-control" />
+                                        <input type="email" name="cv_email" id="cv-email" class="form-control" />
                                     </div>
 
                                     <div class="form-group col-xs-6">
@@ -153,17 +153,17 @@
 
                                     <div class="form-group col-xs-6">
                                         <label for="location" class="pull-left">Current Location</label>
-                                        {{ Form::select('location', $states, 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
+                                        {{ Form::select('location', locations(), 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
                                     </div>
 
                                     <div class="form-group col-xs-6">
                                         <label for="highest_qualification" class="pull-left">Highest Qualification</label>
-                                        {{ Form::select('highest_qualification', $qualifications, 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
+                                        {{ Form::select('highest_qualification', qualifications(), 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
                                     </div>
 
                                     <div class="form-group col-xs-6">
                                         <label for="graduation_grade" class="pull-left">Graduation Grade</label>
-                                        {{ Form::select('graduation_grade', $grades, 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
+                                        {{ Form::select('graduation_grade', grades(), 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
                                     </div>
 
                                     <div class="form-group col-xs-6">
@@ -381,6 +381,7 @@
                         {
                             
                             $('#u_s').text( response.data ).show();
+                            setInterval('window.location.reload()', 5000);
                         }
                         else
                         {

@@ -78,9 +78,19 @@
                                           <input type="hidden" name="application_id" value="{{ $application_id }}">
                                           <textarea class="form-control short" id="message" name="message" rows="3" required></textarea>
                                         </div>
-                                        <div class="col-xs-12"><br>
-                                          <small>Attachement (Optional)</small>
-                                          <input type="file" name="attachment" name="attachment">
+                                        <div class="col-xs-12">
+                                          <br>
+                                          <label><input type="checkbox" id="attachment" /> <b>Attachment (Optional)</b></label>
+                                          <br />
+                                        </div>
+                                        <div class="col-xs-12" id="attachmentTemplateBlock">
+                                          <label for="">Title</label>
+                                          <input type="text" class="form-control" name="document_title" id="document_title">
+                                          <label for="">Decription</label>
+                                          <textarea class="form-control short" name="document_description" id="document_description"
+                                            rows="3"></textarea>
+                                          <label for="">Document</label>
+                                          <input type="file" name="document_file" id="attachment">
                                         </div>
                                       </div>
                                       <div class="form-group">
@@ -103,7 +113,7 @@
                             <!--/footer-->
                             <div class="page page-sm foot no-bod-rad">
                                 <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                                <p><img src="http://seamlesshiring.com/img/seamlesshiring-logo.png" alt="" width="200px"> </p>
+                                <p><img src="{{ env('SEAMLESS_HIRING_LOGO') }}" alt="" width="200px"> </p>
                                 <p><small class="text-muted"> &nbsp;
                                     &copy; {{ date('Y') }}. Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a></small></p>
                                 </div>
@@ -129,5 +139,21 @@
 
 <div class="separator separator-small"><br></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
+<script>
+  $(function () {
+    var attachmentTemplate = $('#attachmentTemplateBlock');
+    if ($('#attachment').prop('checked')) {
+      attachmentTemplate.show();
+    } else {
+      attachmentTemplate.hide();
+    }
+    $('#attachment').change(function () {
+      if ($(this).prop('checked')) {
+        attachmentTemplate.show();
+      } else {
+        attachmentTemplate.hide();
+      }
+    });
+  });
+</script>
 @endsection

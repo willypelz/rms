@@ -8,6 +8,9 @@ use App\Models\Role;
 use App\User;
 use Illuminate\Http\Request;
 use Auth;
+use App\Models\Company;
+use Illuminate\Support\Facades\DB;
+use Validator;
 
 class AdminsController extends Controller
 {
@@ -71,5 +74,36 @@ class AdminsController extends Controller
      {
      	# code...
      }
+
+    public function adminAcceptInvite(Request $request)
+    {
+       
+        $user = User::where('user_token', $request->id)->first();
+        $company = Company::find($request->company_id);
+        if ($user) {
+            if ($request->isMethod('post')) {
+                $validator = Validator::make($request->all(), [
+                    'password' => 'required|confirmed|min:6',
+                ]);
+                if ($validator->fails()) {
+                    return redirect()->back()
+                        ->withErrors($validator)
+                        ->withInput();
+                }
+
+                $user->password = bcrypt($request->password);
+                $user->activated = 1;
+                $user->save();
+                $assoc = DB::table('company_users')->insert([
+                    ['user_id' => $user->id, 'company_id' => $request->company_id, 'role_id' => '1']
+                ]);
+                User::where('user_token', $request->id)->update(['user_token' => null]);
+                return redirect()->route('dashboard');
+            } else {
+                return view('job.admin-accept', compact('user', 'company'));
+            }
+        }
+        return redirect()->route('dashboard');
+    }
 
 }

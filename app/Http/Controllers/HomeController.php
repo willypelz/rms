@@ -145,8 +145,23 @@ class HomeController extends Controller
 
     public function dashbaord()
     {
+        $user = Auth::user();
         $comp_id = get_current_company()->id;
-        $jobs_count = Job::where('company_id', $comp_id)->where('status','!=','DELETED')->count();
+        $job_access = Job::where('company_id', $comp_id)
+                        ->whereHas('users', function ($q) use ($user){
+                            $q->where('user_id', $user->id);
+                        })->get()->pluck('id')->toArray();
+
+        
+
+        
+        $jobs_count = Job::where('company_id', $comp_id);
+
+        if($user->is_super_admin){
+        } else {
+            $jobs_count = $jobs_count->whereIn('id', $job_access);
+        }
+        $jobs_count = $jobs_count->where('status','!=','DELETED')->count();
 
         $response = Curl::to('https://api.insidify.com/articles/get-posts')
                                 ->withData(array('limit'=>6))
@@ -160,8 +175,8 @@ class HomeController extends Controller
         // $saved_cvs_count = Solr::get_saved_cvs($this->search_params)['response']['numFound'];
         // $purchased_cvs_count = Solr::get_purchased_cvs($this->search_params)['response']['numFound'];
 
-        // Mail::send('emails.cv-sales.invoice', [], function($message){
-        //     $message->from('no-reply@insidify.com');
+        // Mail::queue('emails.cv-sales.invoice', [], function($message){
+        //     $message->from(env('COMPANY_EMAIL'));
         //     $message->to('babatopeoni@gmail.com', 'SH test email');
         // });
 
@@ -172,7 +187,7 @@ class HomeController extends Controller
     {
         if( $request->isMethod('post') )
         {
-            $mail = Mail::send('emails.guest.talent-sourcing', $request->all(), function($message){
+            $mail = Mail::queue('emails.guest.talent-sourcing', $request->all(), function($message){
                 $message->from('support@seamlesshiring.com');
                 $message->to('support@seamlesshiring.com', 'Seamless Hiring Talent Sourcing Request');
             });
@@ -192,7 +207,7 @@ class HomeController extends Controller
 
     public function requestACall(Request $request)
     {
-        // Mail::send('emails.welcome', $data, function($message)
+        // Mail::queue('emails.welcome', $data, function($message)
         // {
         //     // $message->from('us@example.com', 'Laravel');
 
@@ -201,7 +216,7 @@ class HomeController extends Controller
         //     $message->attach($pathToFile);
         // });
 
-        Mail::send('emails.guest.request-call', $request->all(), function($message){
+        Mail::queue('emails.guest.request-call', $request->all(), function($message){
             $message->from('support@seamlesshiring.com');
             $message->to('support@seamlesshiring.com', 'Seamless Hiring Call Request');
         });

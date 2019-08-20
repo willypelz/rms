@@ -12,7 +12,8 @@
 
 @section('content')
     @php
-        $user_role = getCurrentLoggedInUserRole()->name;
+        $user_role = ( null !== getCurrentLoggedInUserRole()) ? getCurrentLoggedInUserRole()->name : null;
+        $is_super_admin = auth()->user()->is_super_admin;
     @endphp
     <section>
         <div class="container">
@@ -59,7 +60,7 @@
                                             </div>
                                         </div>
                                         
-                                        @if(!$workflowStep->is_readonly && $user_role == 'admin')
+                                        @if(!$workflowStep->is_readonly && ($user_role == 'admin' || $is_super_admin)  )
                                             <div class="pull-right">
                                                 <a href="{{ route('step-edit', ['id' => $workflowStep->id]) }}"
                                                    class="btn btn-primary btn-sm">
@@ -217,7 +218,7 @@
                                     </div>
                                 
                                 </div>
-                                @if($user_role == 'admin')
+                                @if($user_role == 'admin' || $is_super_admin)
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fa fa-plus fa-fw"></i>

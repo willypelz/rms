@@ -4,6 +4,7 @@
     <script src="{{ asset('js/embed.js') }}"></script>
     @php
         $user_role = getCurrentLoggedInUserRole();
+        $is_super_admin = auth()->user()->is_super_admin;
     @endphp
     <section class="s-div">
         <div class="container">
@@ -125,13 +126,17 @@
                                                         @elseif($job['status'] == 'DELETED') Job Deleted
                                                         @else Job Expired @endif |
                                                         <a href="{{ route('job-board', [$job['id']]) }}">View Job</a>
-                                                            @if($user_role->name == 'admin' || $user_role->name == 'commenter') |
+                                                        @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin','commenter'])) || $is_super_admin)
                                                                 <a href="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}"
                                                                     target="_blank">Preview Job</a>
                                                             @endif
                                                     </small>
                                                     <br/>
-                                                    <small class="text-muted"><i
+                                                    <small class="text-muted">
+                                                    <i
+                                                                class="glyphicon glyphicon-bookmark "></i> {{$job['is_for']}}
+                                                        &nbsp;
+                                                        <i
                                                                 class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }}
                                                         &nbsp;
                                                         <i class="glyphicon glyphicon-calendar"></i> Date Posted
@@ -151,7 +156,7 @@
                                                             @if($job['status'] != 'DRAFT')
                                                                 <li><a href="{{ route('job-candidates', [$job['id']]) }}">View
                                                                     Applicants</a></li>
-                                                                @if($user_role->name == 'admin')
+                                                                @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
                                                                 <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote
                                                                         this
                                                                         Job</a></li>
@@ -261,12 +266,6 @@
                                         }
                                     });
                                 }
-                            </script>
-                        @endforeach
-
-                        <script type="text/javascript">
-                            $(function () {
-
                                 var job_id = "";
                                 var job_title = "";
                                 var this_one = null;
@@ -275,29 +274,35 @@
                                     job_title = $(this).data('title');
                                     this_one = $(this);
                                 });
-
-                                $('body').on('click', '#delete-job-pop', function () {
-
-                                    $this = $(this);
-
-                                    $.post("{{ route('job-status') }}", {
-                                        rnd: Math.random() * 100000,
-                                        job_id: this_one.data('id'),
-                                        status: 'DELETED'
-                                    }, function () {
-                                        this_one.closest('.job-block').remove();
-                                        $('#deleteJob').modal('toggle');
-                                        $.growl.notice({message: "You have deleted '" + this_one.data('title') + "'"});
-                                    });
-
-                                });
-
-                                $('body #closeRejectModal').on('click', function () {
-                                    $('#deleteJob').modal('toggle');
-                                });
-                            });
-
-                        </script>
+                                function Kolo() {
+                                    var url = "{{ route('job-status') }}";
+                                    $.ajax
+                                        ({
+                                            type: "POST",
+                                            url: url,
+                                            data: ({
+                                                rnd: Math.random() * 100000,
+                                                job_id: job_id,
+                                                status: 'DELETED'
+                                            }),
+                                            success: function (response) {
+                                                if (response == "true") {
+                                                    $('#deleteJob').modal('hide');
+                                                    $.growl.notice({
+                                                        message: "You have deleted '" + this_one.data('title') + "'"
+                                                    });
+                                                    setTimeout(function(){location.reload()}, 3000);
+                                                } else {
+                                                    $('#deleteJob').modal('hide');
+                                                    $.growl.error({
+                                                        message: "Applicants are attached to '" + this_one.data('title') + "'"
+                                                    });
+                                                }
+                                            }
+                                        });
+                                }
+                            </script>
+                        @endforeach
 
                     @else
 
@@ -350,7 +355,7 @@
 
                     <div class="clearfix"></div>
                     <div class="pull-right">
-                        <a href="javascript://" id="delete-job-pop" class="btn btn-success pull-right">Yes</a>
+                        <a href="javascript://" onclick="Kolo();" class="btn btn-success pull-right">Yes</a>
                         <div class="separator separator-small"></div>
                     </div>
 

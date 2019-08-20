@@ -46,11 +46,11 @@
 																	<div style="color:#2d2d2d;width:100%;margin:0 auto;">
 																		<h3 style="font-size: 20px;margin:0 0 5%;padding:0;"><span  style="font-family: Roboto,'Open Sans','Helvetica Neue',Arial,Helvetica,sans-serif;word-wrap:break-word;text-decoration:none;display:block;text-align: center;width:100%;" target="_blank"> {{ $email_title}} </span></h3>
 																		<hr style="border-width:0 0 1px">
-																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">Dear {{ isset($user->name) ? $user->name : $user->first_name }},
+																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">Dear {{ $candidate->candidate->last_name}},
 																		<br><br>
 																		Trust this meets you well.
 																		<br><br>
-																		<p> {{ $message_content }} </b> </p>
+																		<p> You have a new message based on your job application for the post of {{ $candidate->job->title}} </b> </p>
 									                                    <br><br>
                                    
                                     									  <a href="{{ $link }}" download>View Message</a>
@@ -81,7 +81,7 @@
 										</table>
 
 										<div style="color:#777;width:94%;text-align:center;margin:7% auto 0;padding:0" align="center">
-											<p style="font-family:Arial,Helvetica,sans-serif;color: #6b6b6b;font-size:12px;line-height:1.42em;text-align:center;margin:16px 0 8%;padding:0;" align="center">This notification was sent to <a href="mailto:{{ $user->email }}" target="_blank">{{ $user->email }}</a>
+											<p style="font-family:Arial,Helvetica,sans-serif;color: #6b6b6b;font-size:12px;line-height:1.42em;text-align:center;margin:16px 0 8%;padding:0;" align="center">This notification was sent to <a href="mailto:{{ $candidate->candidate->email }}" target="_blank">{{ $candidate->candidate->email }}</a>
 												<br> because you registered on seamlesshiring.com
 												<br>
 												<br> If you no longer wish to receive <i>any</i> notifications when an activity is carried out <a href="" style="font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2" target="_blank">unsubscribe</a>.

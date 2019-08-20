@@ -99,6 +99,7 @@
                                           $eligibilty = isset($thirdPartyData['request_type']) ? $thirdPartyData['request_type'] : NULL;
                                           $details = isset($thirdPartyData['job_description']) ? $thirdPartyData['job_description'] : NULL;
                                         }
+                                        $eligibilty = (env('RMS_STAND_ALONE')) ? "external" : NULL;
                                     @endphp
 
                                     <div class="form-group">
@@ -187,11 +188,11 @@
                                                 <label for="job-loc">Eligibility
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                 <select name="eligibilty" class="form-control" id="is_for" name="is_for" >
-                                                     <option value=""> --choose eligibilty -- </option>
+                                                 <select @if($eligibilty) readonly @endif name="eligibility" class="form-control" id="is_for" >
+                                                     <option value=""> --choose eligibility -- </option>
                                                      <option @if ($eligibilty == 'both') selected="selected" @endif  value="both"> BOTH </option>
                                                      <option @if ($eligibilty == 'internal') selected="selected" @endif value="internal"> INTERNAL STAFF </option>
-                                                     <option @if ($eligibilty == 'external') selected="selected" @endif value="external"> EXTERNAL STAFF </option>
+                                                     <option @if ($eligibilty == 'external') selected="selected" @endif selected value="external"> EXTERNAL STAFF </option>
                                                  </select>
                                             </div>
 

@@ -19,6 +19,7 @@ use Curl;
 use DB;
 use Illuminate\Http\Request;
 use Mail;
+use Validator;
 
 
 class CandidateController extends Controller
@@ -103,8 +104,8 @@ class CandidateController extends Controller
                 );
 
 
-                Mail::send('emails.candidate-forgot-password', ['token' => $token], function ($m) use ($candidate) {
-                    $m->from('support@seamlesshr.com', env('APP_NAME'));
+                Mail::queue('emails.candidate-forgot-password', ['token' => $token], function ($m) use ($candidate) {
+                    $m->from(env('COMPANY_EMAIL'), env('APP_NAME'));
                     $m->to($candidate->email, $candidate->first_name)->subject('Your Password Reset Link!');
                 });
 
@@ -269,7 +270,7 @@ class CandidateController extends Controller
                 $link = route('candidate-messages', $jb->id);
 
                 $candidate = $user;
-                $email_title = $candidate->first_name.' you a message.';
+                $email_title = $candidate->first_name." sent you a message.";
                 $message_content = 'You just recieve message from candidate: '.$candidate->first_name;
 
 
@@ -277,8 +278,8 @@ class CandidateController extends Controller
                 $message_content = 'You just recieve message on your job application: '.$job->title;
 
 
-                 Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
-                    $m->from('support@seamlesshr.com')->to($user->email)->subject($email_title);
+                 Mail::queue('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
+                    $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
                 });
 
             }
@@ -323,45 +324,56 @@ class CandidateController extends Controller
 
     public function sendMessage(Request $request)
     {
-        if ($request->hasFile('attachment')) {
-            $file_name  = (@$request->attachment->getClientOriginalName());
-            $fi         = @$request->file('attachment')->getClientOriginalExtension();
-            $attachment = $request->application_id . '-' . time() . '-' . $file_name;
+        if ($request->hasFile('document_file')) {
+            $file_name  = (@$request->document_file->getClientOriginalName());
+            $fi         = @$request->file('document_file')->getClientOriginalExtension();
+            $document_file = $request->application_id . '-' . time() . '-' . $file_name;
 
-            $upload = $request->file('attachment')->move(
-                env('fileupload'), $attachment
+            $upload = $request->file('document_file')->move(
+                env('fileupload'), $document_file
             );
         } else {
-            $attachment = '';
+            $document_file = '';
         }
 
 
         Message::create([
             'job_application_id' => $request->application_id,
             'message' => $request->message,
-            'attachment' => $attachment,
+            'attachment' => $document_file,
+            'title' => $request->document_title,
+            'description' => $request->document_description
         ]);
 
         $job_application = JobApplication::find($request->application_id);
         $job = Job::find($job_application->job_id);
         // Get admin
         $admin_user = Message::where('job_application_id', $request->application_id)->whereNotNull('user_id')->first();
-        
-        $user = User::find($admin_user->id);
+
+        if($admin_user){
+            $user = User::find($admin_user->user_id);
+        }else{
+            $user = new \stdClass();
+            $user->email = env('COMPANY_EMAIL');
+            $user->name = "Admin";
+            $user->first_name = "Admin";
+        }
 
         $application_id = $request->application_id;
 
         $link = route('applicant-messages', $request->application_id);
         $candidate = Candidate::find($job_application->candidate_id);
-        $email_title = $candidate->first_name.' you a message.';
+        $email_title = $candidate->first_name." sent you a message.";
         $message_content = 'You just recieve message from candidate: '.$candidate->first_name;
 
 
-         Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
-            $m->from('support@seamlesshr.com')->to($user->email)->subject($email_title);
+         Mail::queue('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
+            $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
         });
-
-
+        if ($candidate->is_from == 'internal') 
+        {
+            return response()->json(['status' => true, 'message' => 'sent']);
+        }
 
         return redirect()->route('candidate-messages', ['application_id' => $application_id]);
 
@@ -378,5 +390,26 @@ class CandidateController extends Controller
 
         $id .= $candidate->id;
         return $id;
+    }
+
+    public function candidateAccept(Request $request, $id, $token)
+    {
+        $candidate = Candidate::where(['id'=>$id, 'token'=>$token])->first();
+        if ($candidate) {
+            
+            if ($request->isMethod('post')) {
+                $validator = Validator::make($request->all(), ['password' => 'required|confirmed|min:6']);
+                if ($validator->fails()) {
+                    return redirect()->back()
+                        ->withErrors($validator)
+                        ->withInput();
+                }
+                Candidate::where('id', $request->id)->update(['password' => bcrypt($request->password), 'token' => '']);
+                return redirect()->route('candidate-login')->with('success', 'Password Successfully Changed Please Login.');
+            }
+            return view('job.candidate-invite', compact('candidate'));
+        } else {
+            return redirect()->route('candidate-login')->with('error', 'Account Not Found');
+        }
     }
 }

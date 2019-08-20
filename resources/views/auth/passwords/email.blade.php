@@ -21,7 +21,7 @@
             <div class="row">
                 <div class="col-sm-4 col-sm-offset-4 text-center text-white">
                     <h2 class="">
-                        <img src="http://seamlesshiring.com/img/seamlesshiring-logo-white.png" width="190px" alt="">
+                        <img src="{{env('SEAMLESS_HIRING_LOGO_WHITE')}}" width="190px" alt="">
                     </h2><br>
                     <!-- <p class="">Everything You Need To Hire, In One Place!</p> -->
                 </div>
@@ -69,12 +69,6 @@
                                         <button type="submit" class="btn btn-success btn-block">Send Password Reset Link
                                             &raquo;
                                         </button>
-                                    </div>
-                                    
-                                    
-                                    <div class="col-sm-12"><br>
-                                        <p class="small text-right">Not registered? <a href="{{ url('sign-up') }}">Sign
-                                                Up Here</a></p>
                                     </div>
                                 
                                 </div>

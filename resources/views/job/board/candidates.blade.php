@@ -2,6 +2,7 @@
 @section('content')
     @php
         $user_role = getCurrentLoggedInUserRole();
+$is_super_admin = auth()->user()->is_super_admin;
     @endphp
     @include('job.board.jobBoard-header')
 
@@ -44,7 +45,7 @@
                                             <small class="text-muted result-label"
                                                    id="showing"> {!! $showing !!} </small>
                                         </div>
-                                        @if($user_role->name == 'admin')
+                                        @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
                                         <div class="col-xs-2">
                                             <div class="dropdown">
                                                 <button class="btn btn-line btn-sm dropdown-toggle" type="button"
@@ -54,9 +55,9 @@
                                                     <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                                    <li><a href="javscript://" id="downSpreadsheet">Spreadsheet</a></li>
-                                                    <li><a href="javscript://" id="downCv">CVs</a></li>
-                                                    <li><a href="javscript://" id="downloadInterviewNotes">Interview Notes</a></li>
+                                                    <li><a href="" id="downSpreadsheet">Spreadsheet</a></li>
+                                                    <li><a href="" id="downCv">CVs</a></li>
+                                                    <li><a href="" id="downloadInterviewNotes">Interview Notes</a></li>
                                                     <!-- <li role="separator" class="divider"></li>
                                                     <li><a href="#">Separated link</a></li> -->
                                                 </ul>
@@ -161,7 +162,7 @@
 
 
                                                         <ul class="dropdown-menu">
-                                                            @if($user_role->name == 'admin')
+                                                            @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin','interviewer'])) || $is_super_admin)
                                                             <li>
                                                                 <a data-toggle="modal" data-target="#viewModal"
                                                                    id="modalButton" href="#viewModal"
@@ -271,7 +272,7 @@
                                         </div>
                                     </div>
                                     <!-- <p class="small text-muted"><strong>Download Spreadsheet view.</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p> -->
-                                    @if($user_role->name == 'admin')
+                                    @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin','interviewer'])) || $is_super_admin)
                                     <a data-toggle="modal" data-target="#addCandidateModal" id="modalButton"
                                        href="#addCandidateModal" class="btn btn-line btn-block">
 

@@ -25,6 +25,11 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App\User;
 use App\Models\JobActivity;
+use App\Models\InterviewNoteOptions;
+use App\Models\InterviewNoteValues;
+use App\Models\InterviewNotes;
+use App;
+use App\Models\Message;
 
 class JobController extends Controller
 {
@@ -236,6 +241,70 @@ class JobController extends Controller
             ]
         )->find($job_id)->applicantsViaJAT;
 
+
+        foreach ($applicants as $key => $applicant) {
+          // code...
+          if($applicant->cv){
+            $path_to_file = public_path('uploads/CVs').'/'.$applicant->cv->cv_file;
+
+            $arrContextOptions = array("ssl" => array("verify_peer" => false, "verify_peer_name" => false));
+            $file_content = base64_encode(file_get_contents($path_to_file, false,stream_context_create($arrContextOptions)));
+            $applicant->cv->file_content = $file_content;
+
+            // interview notes
+
+            $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type',
+                'REVIEW')->where('job_application_id', $applicant->id)->get();
+            $notes = InterviewNotes::with('user')->where('job_application_id', $applicant->id)->get();
+            $interview_notes = InterviewNoteValues::with('interviewer',
+                'interview_note_option')->where('job_application_id', $applicant->id)->get()->groupBy('interviewed_by');
+
+            $path = public_path('uploads/tmp/');
+            $show_other_sections = false;
+
+            $appl = $applicant;
+            $pdf = App::make('snappy.pdf.wrapper');
+            $pdf->loadHTML(view('modals.inc.dossier-content',
+                compact('applicant_badge', 'app_ids', 'cv_ids', 'jobID', 'appl', 'comments', 'interview_notes', 'show_other_sections'))->render());
+            $pdf->setTemporaryFolder($path);
+            $pdf->save($path . $applicant->cv->first_name . ' ' . $applicant->cv->last_name . ' interview.pdf', true);
+
+            $path_to_interview_note = $path . '/' . $applicant->cv->first_name . ' ' . $applicant->cv->last_name . ' interview.pdf';
+            $interview_note_file_content = base64_encode(file_get_contents($path_to_interview_note, false,stream_context_create($arrContextOptions)));
+
+            $applicant->cv->interview_note_file_name = $applicant->cv->first_name . ' ' . $applicant->cv->last_name . ' interview.pdf';
+            $applicant->cv->interview_note_file = $interview_note_file_content;
+
+            // other docs
+            $message_docs = Message::where('job_application_id', $applicant->id)
+                                   ->where('user_id', null)
+                                   ->get();
+
+            $message_docs_file = [];
+
+            foreach ($message_docs as $key => $doc) {
+              if($doc->attachment) {
+                
+                $path_to_doc = public_path('uploads').'/'.$doc->attachment;
+                $doc_file_content = base64_encode(file_get_contents($path_to_doc, false,stream_context_create($arrContextOptions)));
+                $applicant->cv->file_content = $file_content;
+
+                $doc_array = ['title' => $doc->title, 'attachment' => $doc->attachment, 'content' => $doc_file_content];
+
+                array_push($message_docs_file, $doc_array);
+
+              }
+            }
+
+            $applicant->document = $message_docs_file;
+          }
+
+        }
+
+        // cv
+        // interview notes
+        // documents
+
         return response()->json(
             [
                 'status' => true,
@@ -286,10 +355,22 @@ class JobController extends Controller
         $cv->email = isset($request->cv['email']) ? $request->cv['email'] : null;
         $cv->phone = isset($request->cv['phone']) ? $request->cv['phone'] : null;
         $cv->gender = isset($request->cv['gender']) ? $request->cv['gender'] : null;
-        $cv->date_of_birth = isset($request->cv['date_of_birth']) ? $request->cv['date_of_birth'] : null;
+        $cv->date_of_birth = null;
         $cv->state = isset($request->cv['state']) ? $request->cv['state'] : null;
         $cv->cv_source = isset($request->cv['cv_source']) ? $request->cv['cv_source'] : null;
+        $cv->applicant_type = $request->cv['applicant_type'];
         $cv->save();
+
+        $candidate = Candidate::where('email', $request->email)->first();
+
+        if ($candidate == null) {
+            $candidate = new Candidate();
+            $candidate->email = isset($request->cv['email']) ? $request->cv['email'] : null;
+            $candidate->first_name = isset($request->cv['first_name']) ? $request->cv['first_name'] : null;
+            $candidate->last_name = isset($request->cv['last_name']) ? $request->cv['last_name'] : null;$candidate->is_from =  'internal';
+            $candidate->company_id = isset($request->cv['company_id']) ? $request->cv['company_id'] : null;
+            $candidate->save();
+        }
 
         $job_application = new JobApplication();
         $job_application->cv_id = $cv->id;
@@ -298,14 +379,18 @@ class JobController extends Controller
         $job_application->status = isset($request->application['status']) ? $request->application['status'] : null;
         $job_application->is_approved = isset($request->application['is_approved']) ? $request->application['is_approved'] : null;
         $job_application->created = $time;
-        $job_application->action_date = $time;
+        $job_application->action_date = $time;        
+        $job_application->candidate_id = $candidate->id;        
+
         $job_application->save();
+
+        
 
         if (isset($request->form_fields) && !empty($request->form_fields)) {
             foreach ($request->form_fields as $form_field) {
                 $form_field_value = new FormFieldValues();
-                $form_field_value->form_field_id = $form_field->form_field_id;
-                $form_field_value->value = $form_field->value;
+                $form_field_value->form_field_id = $form_field['form_field_id'];
+                $form_field_value->value = $form_field['value'];
                 $form_field_value->job_application_id = $job_application->id;
                 $form_field_value->save();
             }
@@ -381,9 +466,9 @@ class JobController extends Controller
                 400
             );
         }
-        
+
         $user = User::whereName($request->name)->whereEmail($request->email)->first();
-        
+
         $data = [
                 'name' => $request->name,
                 'email' => $request->email,
@@ -392,7 +477,7 @@ class JobController extends Controller
                 'activated' => 1,
                 'is_super_admin' => 1,
             ];
-        
+
         if($user) {
             $user->username = $data['username'];
             $user->is_internal = $data['is_internal'];
@@ -402,13 +487,13 @@ class JobController extends Controller
         } else {
             $user = User::firstOrCreate($data);
         }
-        
+
         $role = Role::whereName('admin')->pluck('id')->toArray();
-        
+
         if(!$current_company->users()->where('user_id', $user->id)->first()) {
             $current_company->users()->sync([$user->id => ['role' => $role]], false);
         }
-        
+
         $user->roles()->sync($role);
 
         return response()->json([
@@ -441,8 +526,9 @@ class JobController extends Controller
 
             $jobs = [];
             foreach ($candidate->applications as $key => $application) {
-                $job = Job::find($application->job_id);
+                $job = Job::with('activities')->find($application->job_id);
                 $job->application = $application;
+                $job->messages = $application->messages;
                 array_push($jobs, $job->toArray());
             }
         }
@@ -450,7 +536,7 @@ class JobController extends Controller
         return response()->json(
             [
                 'success' => true,
-                'data' => $jobs,
+                'data' => $jobs,$candidate,$candidate->applications,
             ]
         );
     }

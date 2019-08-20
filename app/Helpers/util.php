@@ -4,6 +4,8 @@ use App\Models\Job;
 use App\Models\Cv;
 use App\Libraries\Solr;
 use App\Models\JobApplication;
+use App\Models\Candidate;
+use App\Models\Company;
 // use Faker;
 
 	function test(){
@@ -356,7 +358,7 @@ use App\Models\JobApplication;
 
 
 
-        if(!$company_role)
+        if(!$company_role && $user->is_super_admin != 1)
         {
 
             if ( !in_array($job_id, $job_access) )
@@ -574,7 +576,14 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 
     foreach ($cvs as $key => $cv) {
 
+		$token = hash_hmac('sha256', str_random(40), config('app.key'));
 
+		if($request->willing_to_relocate == 'yes')
+		{
+			$relocate = 1;
+		}else{
+			$relocate = 0;
+		}
         switch ( $request->type ) {
             case 'single':
                 $last_cv = Cv::insertGetId([
@@ -588,11 +597,29 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
                     'years_of_experience' => $request->years_of_experience,
                     'last_company_worked' => $request->last_company_worked,
                     'last_position' => $request->last_position,
-                    'willing_to_relocate' => $request->willing_to_relocate,
+                    'willing_to_relocate' => $relocate,
                     'graduation_grade' => $request->graduation_grade,
                     'cv_file' => $cv ,
                     'cv_source' => $cv_source
-                ]);
+				]);
+				$data = [
+					'name'=>$request->cv_last_name,
+					'job'=>$job_id,
+					'email'=> $request->cv_email
+				];
+				$data = (object)$data;
+				
+				$candidate = Candidate::firstOrCreate(['email' => $request->cv_email, 'first_name' => $request->cv_first_name,
+				'last_name' => $request->cv_last_name]);
+				Candidate::where('id',$candidate->id)->update(['token'=>$token]);
+
+				$company = Company::find(get_current_company()->id);
+
+				$accept_link = route('candidate-invite', ['id' => $candidate->id,'token'=>$token]);
+
+				Mail::queue('emails.new.candidate-invite', ['data' => $data, 'company' => $company, 'accept_link' => $accept_link], function ($m) use($data) {
+					$m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
+				});
                 break;
 
             case 'bulk':
@@ -612,7 +639,8 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
                 'job_id' => $job_id,
                 'created' => date('Y-m-d H:i:s'),
                 'action_date' => date('Y-m-d H:i:s'),
-                'status' => 'PENDING',
+				'status' => 'PENDING',
+				'candidate_id'=> $candidate = (isset($candidate->id)) ? $candidate->id : null
             ]);
         }
     }
@@ -620,8 +648,8 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
     // $settings->set('LAST_CV_UPLOAD_INDEX',$last_cv_upload_index);
     $user = Auth::user();
     Solr::update_core();
-    Mail::send('emails.new.cv_upload_successful', ['user' => $user, 'link'=> url('cv/talent-pool') ], function ($m) use ($user) {
-        $m->from('support@seamlesshr.com')->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
+    Mail::queue('emails.new.cv_upload_successful', ['user' => $user, 'link'=> url('cv/talent-pool') ], function ($m) use ($user) {
+        $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
     });
 
     return [ 'status' => 1 ,'data' => 'Cv(s) uploaded successfully' ] ;
@@ -630,7 +658,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 function checkIfUserHasCompanyPermission() {
 	    //check if user is a super admin
 	    $user = auth()->user()->load('roles');
-        return $user->is_super_admin = 1 ?  true :  false;
+        return $user->is_super_admin ?  true :  false;
 }
 
 function getRoleArray($job_id, $user) {
@@ -717,11 +745,16 @@ function getAdminName($roleName) {
  * @return array
  */
 function getAdminPermissions() {
-    $perms = auth()->user()->roles()->first()->perms;
-    $perms_array = [];
-    foreach ($perms as $perm) {
-        $perms_array[] = $perm->name;
-    }
+	$perms = auth()->user()->roles()->first();
+	$perms_array = [];
+	if(isset($perms->perms)){
+		$perms = $perms->perms;
+		foreach ($perms as $perm) {
+			$perms_array[] = $perm->name;
+		}
+	}
+		
+		
 
     return $perms_array;
 }

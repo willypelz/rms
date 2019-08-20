@@ -42,6 +42,7 @@ use App\Jobs\UploadZipCv;
 use Alchemy\Zippy\Zippy;
 use Charts;
 use App\Models\JobTeamInvite;
+use App\Models\Message as CandidateMessage;
 
 // use Zipper;
 
@@ -192,11 +193,11 @@ class JobsController extends Controller
             $user->invite_code = str_random(40);
 
             //Send notification mail
-            $email_from = ( Auth::user()->email ) ? Auth::user()->email : 'no-reply@insidify.com';
+            $email_from = ( Auth::user()->email ) ? Auth::user()->email : env('COMPANY_EMAIL');
 
 
             $this->mailer->send('emails.new.exclusively_invited', ['user' => $user, 'job_title'=>$job->title, 'company'=>$company->name, 'link'=> $link, 'decline' => $decline], function (Message $m) use ($user) {
-                $m->from('support@seamlesshr.com')->to($user->email)->subject('You have been Exclusively Invited');
+                $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject('You have been Exclusively Invited');
             });
 
             echo 'Saved';
@@ -223,7 +224,49 @@ class JobsController extends Controller
      */
     public function JobTeamAdd(Request $request)
     {
-        # code...
+        if ($request->mod) {
+            $validator = Validator::make($request->all(), [
+                'email' => 'required|email',
+                'name' => 'required|string',
+            ], [
+                'email.required' => 'Email is required. If you selected an employee, check that they have a valid email',
+                'name.required' => 'Name is required',
+            ]);
+            if ($validator->fails()) {
+                return back()->with('error', $validator->getMessageBag()->toArray());
+            } else{
+                $token = hash_hmac('sha256', str_random(40), config('app.key'));
+                $user = User::FirstorCreate([
+                    'email' => $request->email,
+                    'name' => $request->name,
+                    'is_super_admin' => '1',
+                    'user_token'=> $token
+                  ]);
+                  if($user){
+
+                    $company = Company::find(get_current_company()->id);
+
+                    $accept_link = route('admin-accept-invite', ['id' => $token,'company_id'=>$company->id]);
+        
+                    $mail_body = $request->body_mail;
+        
+                    $data = [
+                        'email'=>$request->email,
+                        'name' => $request->name,
+                        'token' => $token
+                    ];
+
+                    $data = (object)$data;
+                    $email = $request->email;
+                    //Send notification mail
+        
+                    \Illuminate\Support\Facades\Mail::queue('emails.new.admin_invite', ['data'=>$data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) use ($email){
+                        $m->from(env('COMPANY_EMAIL'))->to($email)->subject('You Have Been Exclusively Invited');
+                    });
+                    return back()->with('success', "Invite Sent successfully");
+                  }
+            }
+        }else{
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'name' => 'required|string',
@@ -271,15 +314,15 @@ class JobsController extends Controller
             $data = (object)$data;
 
             //Send notification mail
-            $email_from = (Auth::user()->email) ? Auth::user()->email : 'no-reply@insidify.com';
+            $email_from = (Auth::user()->email) ? Auth::user()->email : env('COMPANY_EMAIL');
 
-            \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $data, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
-                $m->from('support@seamlesshr.com')->to($data->email)->subject('You Have Been Exclusively Invited');
+            \Illuminate\Support\Facades\Mail::queue('emails.new.exclusively_invited', ['data' => $data, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
+                $m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
             });
 
             return response()->json(['status' => true, 'message' => 'Email was sent successfully']);
         }
-
+    }
 
     }
 
@@ -522,7 +565,7 @@ class JobsController extends Controller
                 'title' => $request->title,
                 'location' => $request->location,
                 'summary' => $request->summary,
-                'is_for' => $request->eligibilty,
+                'is_for' => $request->eligibility,
                 'details' => $request->details,
                 'job_type' => $request->job_type,
                 'position' => $request->position,
@@ -826,8 +869,8 @@ class JobsController extends Controller
                 $job = Job::FirstorCreate($job_data);
 
                 //Send New job notification email
-                $to = 'support@seamlesshr.com';
-                $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
+                $to = env('COMPANY_EMAIL');
+                $mail = Mail::queue('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
                     $m->from($to, @$company->name);
                     $m->to($to)->subject('New Job initiated');
                 });
@@ -1022,8 +1065,8 @@ class JobsController extends Controller
                 $job = Job::FirstorCreate($job_data);
 
                 //Send New job notification email
-                $to = 'support@seamlesshr.com';
-                $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
+                $to = env('COMPANY_EMAIL');
+                $mail = Mail::queue('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
                     $m->from($to, @$company->name);
 
                     $m->to($to)->subject('New Job initiated');
@@ -1345,6 +1388,30 @@ class JobsController extends Controller
         }
     }
 
+    public function adminUploadDocument(Request $request){
+
+        $this->validate($request, ['document_file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt']);
+        if ($request->hasFile('document_file')) {
+
+            $file_name = (@$request->document_file->getClientOriginalName());
+            $fi = @$request->file('document_file')->getClientOriginalExtension();
+            $document_file = $request->application_id . '-' . time() . '-' . $file_name;
+
+            $upload = $request->file('document_file')->move(
+                env('fileupload'), $document_file
+            );
+        } else {
+            $document_file = '';
+        }
+        $message = CandidateMessage::create([
+            'job_application_id' => $request->appl_id,
+            'description' => $request->document_description,
+            'title' => $request->document_title,
+            'attachment' => $document_file,
+        ]);
+        return ['status' => 1, 'data' => 'Documents Uploaded successfully'];
+    }
+
     public function JobList(Request $request)
     {
         $user = User::with([
@@ -1559,18 +1626,22 @@ class JobsController extends Controller
 
     public function ActivityContent(Request $request)
     {
+        $user = Auth::user();
+        $comp_id = get_current_company()->id;
+        $job_access = Job::where('company_id', $comp_id)
+                        ->whereHas('users', function ($q) use ($user){
+                            $q->where('user_id', $user->id);
+                        })->get()->pluck('id')->toArray();
+
 
         $content = '<ul class="list-group list-notify">';
 
 
         if (!empty($request->appl_id)) {
             $activities = JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('id', 'desc');
-        } elseif ($request->type == 'dashboard') {
+        } elseif ($request->type == 'dashboard') { 
 
-
-            $comp_id = get_current_company()->id;
-
-            $jobs = Job::where('company_id', $comp_id)->get(['id'])->toArray();
+            $jobs = ($user->is_super_admin) ? Job::where('company_id', $comp_id)->get(['id'])->toArray() : $job_access;
             $activities = JobActivity::with('user', 'application.cv', 'job')->whereIn('job_id', $jobs)->orderBy('id', 'desc');
             // dd($activities);
 
@@ -2220,8 +2291,12 @@ class JobsController extends Controller
             if ($fields->cv_file->is_visible) {
                 $cv->cv_file = $data['cv_file'];
             }
+            if ($fields->state_of_origin->is_visible) {
+                $cv->state_of_origin = $data['state_of_origin'];
+            }
 
             $cv->candidate_id = $candidate->id;
+            $cv->applicant_type = $data['applicant_type'];
             $cv->save();
 
             $cvExt = new CvSalesController();
@@ -2300,8 +2375,8 @@ class JobsController extends Controller
 
             }
 
-            Mail::send('emails.new.job_application_successful', ['user' => $candidate, 'link' => route('candidate-dashboard'), 'job' => $job], function (Message $m) use ($candidate) {
-                $m->from('support@seamlesshr.com')->to($candidate->email)->subject('Job Application Successful');
+            Mail::queue('emails.new.job_application_successful', ['user' => $candidate, 'link' => route('candidate-dashboard'), 'job' => $job], function (Message $m) use ($candidate) {
+                $m->from(env('COMPANY_EMAIL'))->to($candidate->email)->subject('Job Application Successful');
             });
 
             Solr::update_core();
@@ -2523,11 +2598,17 @@ class JobsController extends Controller
 
         $job = Job::find($request->job_id);
         // dd($job);
-        $res = Job::where('id', $request->job_id)
-            ->update(['status' => $request->status]);
+        $count = JobApplication::where('job_id', $request->job_id)->count();
+        if ($count) {
+            return "false";
+        } else {
+            $res = Job::where('id', $request->job_id)
+                ->update(['status' => $request->status]);
 
-        if ($res)
-            echo true;
+            if ($res)
+                return "true";
+        }
+        
     }
 
     public function ReferJob(Request $request)
@@ -2557,10 +2638,10 @@ class JobsController extends Controller
     {
         $job = Job::find($request->job_id);
         $company = get_current_company();
-        $to = 'support@seamlesshr.com';
+        $to = env('COMPANY_EMAIL');
 
         if ($request->type == 'JOB_BOARD') {
-            $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => $request->boards, 'company' => $company], function ($m) use ($company, $to) {
+            $mail = Mail::queue('emails.new.job-application', ['job' => $job, 'boards' => $request->boards, 'company' => $company], function ($m) use ($company, $to) {
                 $m->from($to, @$company->name);
 
                 $m->to($to)->subject('New Job initiated');
@@ -2655,10 +2736,10 @@ class JobsController extends Controller
 
 
                 $user = Auth::user();
-                $mail = Mail::send('emails.new.successful_payment', compact('invoice', 'invoice_type', 'user', 'amount'), function ($m) use ($invoice, $invoice_type) {
-                    $m->from('support@seamlesshr.com', 'Seamlesshiring');
+                $mail = Mail::queue('emails.new.successful_payment', compact('invoice', 'invoice_type', 'user', 'amount'), function ($m) use ($invoice, $invoice_type) {
+                    $m->from(env('COMPANY_EMAIL'), 'Seamlesshiring');
 
-                    // $m->to('support@seamlesshr.com')->subject('Customer Invoice: #'.$invoice->id);
+                    // $m->to(env('COMPANY_EMAIL'))->subject('Customer Invoice: #'.$invoice->id);
                     $m->to(Auth::user()->email)->subject('Customer Invoice: #' . $invoice->id);
                 });
                 if ($request->type == 'JOB_BOARD') {
@@ -2801,8 +2882,10 @@ class JobsController extends Controller
     public function DuplicateJob(Request $request)
     {
 
-        $newJob = Job::find($request->job_id)->replicate()->save();
-
+        $newJob = Job::find($request->job_id)->replicate();
+        $newJob->save();
+        $newJob->status = "DRAFT";
+        $newJob->save();
         if ($newJob) {
             echo true;
         }
@@ -3015,7 +3098,7 @@ class JobsController extends Controller
     {
         if ( $request->isMethod ( 'post' ) ) {
             $user = User::with('roles')->find($request->id);
-            if (!is_null(env('STAFFSTRENGTH_URL'))) {
+            if (!is_null(env('STAFFSTRENGTH_URL')) || env('RMS_STAND_ALONE') ) {
                 $user->update([
                     'is_super_admin' => $request->role
                 ]);

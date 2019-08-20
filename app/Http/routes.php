@@ -62,12 +62,14 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], '/sys/roles/create', 'AdminsController@createRole')->name('create-role');
     Route::match(['get', 'post'], '/sys/roles/edit/{id}', 'AdminsController@editRole')->name('role-edit');
     Route::match(['get', 'post'], '/sys/roles/delete/{id}', 'AdminsController@deleteRole')->name('role-delete');
+    Route::post('upload-document/{appl_id}/{job_id}', ['uses' => 'JobsController@adminUploadDocument', 'as' => 'upload-document']);
     Route::group([
         'prefix' => '/admin',
         'middleware' => 'admin'
     ], function () {
         Route::get('auth/logout', 'AuthController@logout');
     });
+    Route::any('admin-accept-invite/{id}/{company_id}',['uses' => 'AdminsController@adminAcceptInvite', 'as' => 'admin-accept-invite']);
     /** -- End: Administrator Panel Route -- */
 
     Route::auth();
@@ -220,7 +222,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('simple-pay', function () {
 
         $user  = 'AYolana';
-        $email = Mail::send('emails.cv-sales.invoice', ['user' => $user], function ($message) {
+        $email = Mail::queue('emails.cv-sales.invoice', ['user' => $user], function ($message) {
             $message->from('us@example.com', 'Laravel');
 
             $message->to('lanaayodele@gmail.com');
@@ -529,7 +531,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('/test-mail', function () {
 
-        dd(Mail::send('emails.sample', ['name' => 'Deji Lana'], function ($m) {
+        dd(Mail::queue('emails.sample', ['name' => 'Deji Lana'], function ($m) {
             $m->from('alerts@insidify.com', 'Ndidi, Insidify.com');
 
             $m->to('deji@insidify.com', 'Deji Lana')->subject('Your Reminder!');
@@ -694,6 +696,11 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('request/check', ['as' => 'request-check', 'uses' => 'JobApplicationsController@requestCheck']);
     Route::post('invite/interview',
         ['as' => 'invite-for-interview', 'uses' => 'JobApplicationsController@inviteForInterview']);
+    
+    Route::post('preview/interview',
+        ['as' => 'invite-for-interview-preview', 'uses' => 'JobApplicationsController@previewInterview']);
+        
+
     Route::post('save-interview-note',
         ['as' => 'save-interview-note', 'uses' => 'JobApplicationsController@takeInterviewNote']);
 
@@ -757,7 +764,8 @@ Route::group(['middleware' => 'web'], function () {
         Route::get('/get/user-jobs/activities', 'JobController@getUserJobActivities');
         Route::post('/save-super-admin', 'JobController@createSuperAdmin');
     });
-
+    Route::post('/api/v1/messages/send','CandidateController@sendMessage');
+    Route::any('candidate-invite/{id}/{token}',['uses' => 'CandidateController@candidateAccept', 'as' => 'candidate-invite']);
 });
 
   /* Easily update Solr via URL*/
@@ -769,3 +777,4 @@ Route::group(['middleware' => 'web'], function () {
       }
       return redirect()->back();
   });
+

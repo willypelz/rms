@@ -565,7 +565,7 @@ class JobsController extends Controller
                 'title' => $request->title,
                 'location' => $request->location,
                 'summary' => $request->summary,
-                'is_for' => $request->eligibilty,
+                'is_for' => $request->eligibility,
                 'details' => $request->details,
                 'job_type' => $request->job_type,
                 'position' => $request->position,

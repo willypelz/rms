@@ -531,7 +531,7 @@
                    <?php
                       $custom_field_name = explode('--', $custom_field_name);
                     ?>
-                   <p class="border-bottom-thin text-muted">{{ trim($custom_field_name[1]) }}?<i class="fa fa-filter pull-right"></i></p>
+                   <p class="border-bottom-thin text-muted">{{ isset($custom_field_name[1]) ? trim($custom_field_name[1]) : null }}?<i class="fa fa-filter pull-right"></i></p>
                    @foreach ($result['facet_counts']['facet_fields']['custom_field_value'] as $key => $custom_field_value)
                      @if($key % 2 == 0  && $result['facet_counts']['facet_fields']['custom_field_value'][ $key + 1 ] != 0)
                        <?php

@@ -163,8 +163,7 @@ class JobController extends Controller
                 'jobs' => function ($query) use ($jobType) {
                     $query->with(['workflow.workflowSteps'])
                         ->whereStatus("ACTIVE")
-                        ->orderBy('created_at', 'desc')
-                        ->where('expiry_date', '>', date('Y-m-d'));
+                        ->orderBy('created_at', 'desc');
                     if ($jobType != 'all') {
                         $query->whereIsFor($jobType); // default $jobType == external
                     }

@@ -204,8 +204,14 @@ class CandidateController extends Controller
 
         $company_ids = Job::whereIn('id', $job_ids)->get()->unique('company_id')->pluck('company_id')->toArray();
 
-        $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->get();
+        $candidate = Auth::guard('candidate')->user();
 
+        if($candidate->is_from == 'external')
+        {
+            $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->where('is_for','external')->get();
+        }else{
+            $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->get();
+        }
 
         return view('candidate.job-list', compact('application_id', 'ignore_list', 'jobs'));
     }

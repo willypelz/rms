@@ -625,7 +625,7 @@ class JobApplicationsController extends Controller
 
 
         $excel = App::make('excel');
-        $filename = 'Applicants Report: ' . $other_data['job_title'];
+        $filename = 'Applicants Report - ' . $other_data['job_title'];
         Excel::create($filename,
             function ($excel) use ($excel_data, $other_data) {
                 // Set the title
@@ -755,7 +755,6 @@ class JobApplicationsController extends Controller
         $cvs = array_pluck($data, 'cv_file');
         $ids = array_pluck($data, 'id');
 
-
         //Check for selected cvs to download and append path to it
         $cvs = array_map(function ($cv, $id) use ($request) {
 
@@ -778,6 +777,11 @@ class JobApplicationsController extends Controller
         $cvs = array_filter($cvs, function ($var) {
             return !is_null($var);
         });
+
+        // if cvs are empty return back
+        if(empty($cvs)) {
+          return redirect()->back()->with('error', 'The candidates do not have any cv\'s and can\'t be downloaded');
+        }
 
         //$archive->addMembers($cvs, $recursive = false );
 

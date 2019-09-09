@@ -1,6 +1,4 @@
 @extends('layout.template-user')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
 @section('content')
 @include('applicant.includes.job-title-bar')
 <section class="applicant no-pad">
@@ -128,6 +126,8 @@
     });
   });
 </script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
 <script type="text/javascript">
   $(document).ready(function() {
     $('#summernote').summernote();

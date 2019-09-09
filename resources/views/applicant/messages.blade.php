@@ -1,4 +1,6 @@
 @extends('layout.template-user')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
 @section('content')
 @include('applicant.includes.job-title-bar')
 <section class="applicant no-pad">
@@ -44,7 +46,7 @@
                 <div class="media-body">
 
                   <h4 class="media-heading text-{{ $media_position }}">{{ $title }}</h4>
-                  <p class="text-{{ $media_position }} ">{{ $message->message }}</p>
+                  <div class="text-{{ $media_position }} ">{!! $message->message !!}</div>
                   @if( $message->attachment != "" )
                   <a class="pull-{{ $media_position }}" href="{{ asset('uploads/'.$message->attachment) }}"
                     target="_blank"> <i class="fa fa-paperclip"></i> Download Attachment</a>
@@ -68,7 +70,7 @@
 
                   <div class="col-xs-12">
                     <input type="hidden" name="application_id" value="{{ $appl->id }}">
-                    <textarea class="form-control short" id="message" name="message" rows="3" required></textarea>
+                    <textarea class="form-control short" name="message" id="summernote" class="form-control" rows="7" required></textarea>
                   </div>
 
                   <div class="col-xs-12">
@@ -124,6 +126,11 @@
         attachmentTemplate.hide();
       }
     });
+  });
+</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#summernote').summernote();
   });
 </script>
 @endsection

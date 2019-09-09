@@ -1,7 +1,5 @@
 @extends('layout.template-guest')
 <link rel="stylesheet" type="text/css" href="{{ asset('font/flaticon.css') }}">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
 @section('navbar')
 
 @show()
@@ -158,6 +156,8 @@
     });
   });
 </script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
 <script type="text/javascript">
   $(document).ready(function() {
     $('#summernote').summernote();

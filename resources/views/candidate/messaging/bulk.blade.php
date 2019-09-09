@@ -48,7 +48,7 @@
                 <div class="form-group">
 
                   <div class="col-xs-12">
-                    <textarea class="form-control short" id="message" name="message" rows="3" required></textarea>
+                    <textarea class="form-control short" name="message" id="summernote" class="form-control" rows="7" required></textarea>
                   </div>
                   <div class="col-xs-12"><br>
                     <small>Attachement (Optional)</small>
@@ -75,4 +75,13 @@
   </div>
 </section>
 <div class="separator separator-small"></div>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#summernote').summernote({
+    height: 200
+  });
+});
+</script>
 @endsection

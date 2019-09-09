@@ -48,15 +48,21 @@
 																		<hr style="border-width:0 0 1px">
 																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">Dear {{ $cv->first_name.' '.$cv->last_name }},
 																		<br><br>
-																		Trust this meets you well. 
+																		Trust this meets you well.
 																		<br><br>We received your application for the job {{ $job->title }} at {{ $job->company->name }} company.
-																		<br><br>Kindly acknowledge if you will be available for an interview on {{ date('D, j-n-Y, h:i A', strtotime($interview->date))  }}. The interview is scheduled to hold at {{ $interview->location }}.
+																		<br><br>Kindly acknowledge if you will be available for an interview on {{ date('D, j-n-Y, h:i A', strtotime($interview->date))  }}. The interview is scheduled to hold at {{ $interview->location }},
+                                    and will last for {{ $interview->duration }} minutes
 																		<br><br>Please ensure to come along with the necessary credentials.
 																		@if( $interview->message != "" && !is_null( $interview->message ) )
 																			<br><br>PLEASE NOTE:  {{ $interview->message }}
 																		@endif
+                                    <br><br>
+                                    @if($interview->interview_file)
+                                      You can download this file for further information
+                                      <a href="{{asset('uploads/'.$interview->interview_file)}}" download>Download</a>
+                                    @endif
 																		</p>
-																		
+
 																		<hr style="border-width:0 0 1px">
 																		<p style="color:#666">Best,
 																			<br> {{ get_current_company()->name }} Team</p>
@@ -77,7 +83,7 @@
 														</div>
 													</td>
 												</tr>
-												
+
 											</tbody>
 										</table>
 

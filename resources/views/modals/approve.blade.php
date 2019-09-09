@@ -36,6 +36,7 @@
                 $('#viewModal').modal('toggle');
                 $.growl.notice({message: "You have approved " + $field.closest('.modal-body').find('.media-heading a').text()});
                 sh.reloadStatus();
+                setTimeout(function() { location.reload(); }, 3000);
             });
 
         });

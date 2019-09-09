@@ -22,6 +22,7 @@ class Job extends Model
      */
     protected $fillable = [
         'title',
+        'summary',
         'details',
         'company_id',
         'workflow_id',
@@ -83,7 +84,7 @@ class Job extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\User', 'job_users')->withPivot('role', 'role_id');
+        return $this->belongsToMany('App\User', 'job_users')->withPivot('role', 'role_id', 'role_name');
     }
 
     public function workflow()

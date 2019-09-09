@@ -111,7 +111,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: 'Montserrat', sans-serif;
     font-weight: 300;
     text-transform: capitalize;
-    background: url('http://seamlesshiring.com/img/seamlesshiring-logo.png') no-repeat left;
+    background: url('../img/seamlesshiring-logo.png') no-repeat left;
     background-size: 100%;
     width: 205px;
     margin-top: 10px;
@@ -2650,7 +2650,17 @@ n +
 1
 )
 ,
-.pricing-table td: nth-child(2n+1), .pricing-table td:nth-child(3n+1) {
+.pricing-table td:
+
+nth-child
+(
+2
+n +
+
+1
+)
+,
+.pricing-table td:nth-child(3n+1) {
     text-align: center;
     font-weight: bold;
     font
@@ -2908,7 +2918,7 @@ n +
 .ats-abx {
     margin-left: -15px;
     margin-bottom: 15px;
-    clear:both;
+    clear: both;
     min-height: 100px;
 }
 
@@ -3751,7 +3761,7 @@ div.baser {
     margin-top: -1px;
 }
 
-.panel-empty .panel-body{
+.panel-empty .panel-body {
     padding: 150px;
 }
 
@@ -3786,7 +3796,8 @@ div.baser {
 .job-item:last-of-type {
     border-right: none 0;
 }
-.h-80vh{
+
+.h-80vh {
     min-height: 80vh;
 }
 
@@ -6870,7 +6881,7 @@ form.form-search .input-s {
     background: rgba(255, 255, 255, 0);
 }
 
-.interview-panel .panel-title{
+.interview-panel .panel-title {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -6878,7 +6889,8 @@ form.form-search .input-s {
     font-size: 20px;
     color: #333;
 }
-.interview-panel .panel-desc{
+
+.interview-panel .panel-desc {
     color: #666;
     font-weight: 300;
     font-size: 15px;
@@ -6979,8 +6991,7 @@ form.form-search .input-s {
 }
 */
 
-.slider.slider-horizontal
-{
+.slider.slider-horizontal {
     width: 100% !important;
 }
 
@@ -6993,5 +7004,102 @@ form.form-search .input-s {
     background-repeat: no-repeat !important;;
 }
 
+/*Progress Tabs on Job listing page*/
+.progress-tabs {
+}
 
+.progress-tabs .progress-tab {
+    border-top: 1px solid #E2E7EA;
+    border-bottom: 1px solid #E2E7EA;
+    display: inline-block;
+    padding: 8px 16px 8px 32px;
+    color: #66788A;
+    position: relative;
+    font-size: 14px;
+}
 
+.progress-tab:first-child{
+    padding-left: 10px;
+    border-radius: 5px 0 0 5px;
+    border-left: 1px solid #E2E7EA;
+}
+
+.progress-tab:last-child{
+    padding-right: 10px;
+    border-radius: 0 5px 5px 0;
+    border-right: 1px solid #E2E7EA;
+}
+
+.progress-tab.active {
+    background-color: #10588A;
+    color: #FFFFFF;
+}
+
+.progress-tab.completed {
+    background-color: #2093A3;
+    color: #FFFFFF;
+}
+
+.progress-tabs .progress-tab::after,
+.progress-tabs .progress-tab::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 0;
+    right: -21px;
+    height: 0;
+    border-left: 22px solid #ffffff;
+    border-top: 22px solid transparent;
+    border-bottom: 22px solid transparent;
+    z-index: 2;
+}
+
+.progress-tabs .progress-tab:after {
+    right: -25px;
+    border-left: 24px solid #E2E7EA;
+    z-index: 1;
+}
+
+.progress-tabs .progress-tab:last-child:before,
+.progress-tabs .progress-tab:last-child:after {
+    border: none;
+}
+
+.progress-tabs .progress-tab.active::before {
+    border-left: 22px solid #10588A;
+}
+
+.progress-tabs .progress-tab.active::after{
+    border: none;
+}
+
+.progress-tabs .progress-tab.completed::after {
+    right: -25px;
+    border-left: 22px solid #FFFFFF;
+    z-index: 1;
+}
+
+.progress-tabs .progress-tab.completed::before {
+    border-left: 22px solid #2093A3;
+}
+
+.progress-tab .fa-stack-1x {
+    color: #FFFFFF;
+    font-size: 12px;
+}
+
+.progress-tab.active .fa-stack-1x {
+    color: #66788A;
+}
+
+.progress-tab.completed .fa-stack-1x {
+    color: #2093A3;
+}
+
+.progress-tab.active .fa-stack-2x {
+    color: #FFFFFF;
+}
+
+.job-posting-text-dark{
+    color: #333333;
+}

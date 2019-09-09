@@ -1,9 +1,10 @@
 @extends('layout.template-user')
 
 @section('content')
-    <script src="http://seamlesshiring.com/js/embed.js"></script>
+    <script src="{{ asset('js/embed.js') }}"></script>
     @php
         $user_role = getCurrentLoggedInUserRole();
+        $is_super_admin = auth()->user()->is_super_admin;
     @endphp
     <section class="s-div">
         <div class="container">
@@ -43,6 +44,9 @@
                     </button>
                     <button class="btn btn-primary" type="button" data-target="expired">
                         Expired <span class="badge">{{ $expired }}</span>
+                    </button>
+                    <button class="btn btn-primary" type="button" data-target="draft">
+                        Draft <span class="badge">{{ $draft }}</span>
                     </button>
                 </div>
                 <script>
@@ -122,13 +126,17 @@
                                                         @elseif($job['status'] == 'DELETED') Job Deleted
                                                         @else Job Expired @endif |
                                                         <a href="{{ route('job-board', [$job['id']]) }}">View Job</a>
-                                                            @if($user_role->name == 'admin' || $user_role->name == 'commenter') |
+                                                        @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin','commenter'])) || $is_super_admin)
                                                                 <a href="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}"
                                                                     target="_blank">Preview Job</a>
                                                             @endif
                                                     </small>
                                                     <br/>
-                                                    <small class="text-muted"><i
+                                                    <small class="text-muted">
+                                                    <i
+                                                                class="glyphicon glyphicon-bookmark "></i> {{$job['is_for']}}
+                                                        &nbsp;
+                                                        <i
                                                                 class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }}
                                                         &nbsp;
                                                         <i class="glyphicon glyphicon-calendar"></i> Date Posted
@@ -144,45 +152,55 @@
                                                             <span class="sr-only">Toggle Dropdown</span>
                                                         </button>
                                                         <ul class="dropdown-menu">
-                                                            <li><a href="{{ route('job-candidates', [$job['id']]) }}">View
+
+                                                            @if($job['status'] != 'DRAFT')
+                                                                <li><a href="{{ route('job-candidates', [$job['id']]) }}">View
                                                                     Applicants</a></li>
-                                                            @if($user_role->name == 'admin')
-                                                            <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote
-                                                                    this
-                                                                    Job</a></li>
-                                                            <li><a href="{{ route('job-promote', [$job['id']]) }}">Get
-                                                                    Referrals </a></li>
-                                                            <li><a href="{{ route('job-promote', [$job['id']]) }}">Share
-                                                                    this
-                                                                    job on
-                                                                    Social Media. </a></li>
-                                                            <li role="separator" class="divider"></li>
-                                                            @if($job['status'] == 'SUSPENDED')
-                                                                <li><a href="#"
-                                                                       onclick="Activate( {{$job['id']}} ); return false">Activate
+                                                                @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
+                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote
+                                                                        this
                                                                         Job</a></li>
-                                                            @elseif($job['status'] == 'DRAFT')
+                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Get
+                                                                        Referrals </a></li>
+                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Share
+                                                                        this
+                                                                        job on
+                                                                        Social Media. </a></li>
+                                                                <li role="separator" class="divider"></li>
+                                                                @if($job['status'] == 'SUSPENDED')
+                                                                    <li><a href="#"
+                                                                           onclick="Activate( {{$job['id']}} ); return false">Activate
+                                                                            Job</a></li>
+                                                                @elseif($job['status'] == 'DRAFT')
+                                                                    <li><a href="#"
+                                                                           onclick="Activate( {{$job['id']}} ); return false">Activate
+                                                                            Job</a></li>
+                                                                @elseif($job['status'] == 'EXPIRED')
+                                                                    <li><a href="#" disabled>EXPIRED</a></li>
+                                                                @elseif($job['status'] == 'ACTIVE')
+                                                                    <li><a href="#"
+                                                                           onclick="Suspend( {{$job['id']}} ); return false">Suspend
+                                                                            Job</a></li>
+                                                                @endif
                                                                 <li><a href="#"
-                                                                       onclick="Activate( {{$job['id']}} ); return false">Activate
+                                                                       onclick="DuplicateJob( {{$job['id']}} ); return false">Duplicate
                                                                         Job</a></li>
-                                                            @elseif($job['status'] == 'EXPIRED')
-                                                                <li><a href="#" disabled>EXPIRED</a></li>
-                                                            @elseif($job['status'] == 'ACTIVE')
-                                                                <li><a href="#"
-                                                                       onclick="Suspend( {{$job['id']}} ); return false">Suspend
-                                                                        Job</a></li>
+
+                                                                <li role="separator" class="divider"></li>
+                                                                @endif
                                                             @endif
-                                                            <li><a href="#"
-                                                                   onclick="DuplicateJob( {{$job['id']}} ); return false">Duplicate
-                                                                    Job</a></li>
-                                                            <li role="separator" class="divider"></li>
+
+
+
+                                                            <li><a href="{{ route('create-job', $job['id']) }}"  class="text t"
+                                                                   >Edit Job</a></li>
+
                                                             <li><a href="#" id="delete-job" class="text text-danger"
                                                                    data-id="{{$job['id']}}"
                                                                    data-title="{{ $job['title'] }}"
                                                                    data-toggle="modal" data-target="#deleteJob"
                                                                    id="modalButton"
                                                                    href="#deleteJob">Delete Job</a></li>
-                                                            @endif
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -248,12 +266,6 @@
                                         }
                                     });
                                 }
-                            </script>
-                        @endforeach
-
-                        <script type="text/javascript">
-                            $(function () {
-
                                 var job_id = "";
                                 var job_title = "";
                                 var this_one = null;
@@ -262,29 +274,35 @@
                                     job_title = $(this).data('title');
                                     this_one = $(this);
                                 });
-
-                                $('body').on('click', '#delete-job-pop', function () {
-
-                                    $this = $(this);
-
-                                    $.post("{{ route('job-status') }}", {
-                                        rnd: Math.random() * 100000,
-                                        job_id: this_one.data('id'),
-                                        status: 'DELETED'
-                                    }, function () {
-                                        this_one.closest('.job-block').remove();
-                                        $('#deleteJob').modal('toggle');
-                                        $.growl.notice({message: "You have deleted '" + this_one.data('title') + "'"});
-                                    });
-
-                                });
-
-                                $('body #closeRejectModal').on('click', function () {
-                                    $('#deleteJob').modal('toggle');
-                                });
-                            });
-
-                        </script>
+                                function Kolo() {
+                                    var url = "{{ route('job-status') }}";
+                                    $.ajax
+                                        ({
+                                            type: "POST",
+                                            url: url,
+                                            data: ({
+                                                rnd: Math.random() * 100000,
+                                                job_id: job_id,
+                                                status: 'DELETED'
+                                            }),
+                                            success: function (response) {
+                                                if (response == "true") {
+                                                    $('#deleteJob').modal('hide');
+                                                    $.growl.notice({
+                                                        message: "You have deleted '" + this_one.data('title') + "'"
+                                                    });
+                                                    setTimeout(function(){location.reload()}, 3000);
+                                                } else {
+                                                    $('#deleteJob').modal('hide');
+                                                    $.growl.error({
+                                                        message: "Applicants are attached to '" + this_one.data('title') + "'"
+                                                    });
+                                                }
+                                            }
+                                        });
+                                }
+                            </script>
+                        @endforeach
 
                     @else
 
@@ -337,7 +355,7 @@
 
                     <div class="clearfix"></div>
                     <div class="pull-right">
-                        <a href="javascript://" id="delete-job-pop" class="btn btn-success pull-right">Yes</a>
+                        <a href="javascript://" onclick="Kolo();" class="btn btn-success pull-right">Yes</a>
                         <div class="separator separator-small"></div>
                     </div>
 

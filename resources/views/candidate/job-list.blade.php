@@ -74,8 +74,9 @@
                                                                 <ul class="search-results">
                                                                     @foreach($jobs as $job)
                                                                     <li>
-                                                                        <h4><a role="presentation" href="{{ url($job->company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" >{{ $job->title }}</a>
+                                                                        <h4><a role="presentation" href="{{ route('job-view', [$job->id, $job->slug]) }}" >{{ $job->title }}</a>
                                                                         </h4>
+                                                                        <p>{{ $job->summary }}</p>
                                                                         <div class="dt"><strong>Company:</strong>&nbsp;{{ $job->company->name }}, <strong>Location:</strong>&nbsp;{{ $job->location }}. <strong>Posted:</strong>&nbsp;{{ date('D. j M, Y', strtotime( $job->created_at)) }}</div>
                                                                         <div class="description">
                                                                             {{-- <p>Able bodied security men and women needed in a hotel. Must be smart and able to work in a corporate environment ...</p> --}}
@@ -117,7 +118,7 @@
                             <!--/footer-->
                             <div class="page page-sm foot no-bod-rad">
                                 <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                                <p><img src="http://seamlesshiring.com/img/seamlesshiring-logo.png" alt="" width="200px"> </p>
+                                <p><img src="{{ env('SEAMLESS_HIRING_LOGO') }}" alt="" width="200px"> </p>
                                 <p><small class="text-muted"> &nbsp;
                                     &copy; {{ date('Y') }}. Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a></small></p>
                                 </div>

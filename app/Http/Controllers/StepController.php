@@ -28,6 +28,9 @@ class StepController extends Controller
             // 'order' => 'required|integer', // Disable order modification on update
             'type' => 'required',
         ]);
+        if($request->message_to_applicant && empty($request->message_template)){
+            return redirect()->back()->withInput()->with('error', 'Message Template is Empty');
+        }
 
         if ($workflowStep->update($request->all() + ['slug' => $request->name])) {
             return redirect()

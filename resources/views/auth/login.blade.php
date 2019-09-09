@@ -3,12 +3,12 @@
 @extends('layout.template-default')
 
 @section('navbar')
-    
+
 @show()
 @section('content')
 
 <style>
-    
+
     body{
         background:url('img/intro-bg.jpg') no-repeat fixed ;
         background-size:cover;
@@ -20,19 +20,19 @@
             <div class="row">
 
                 <div class="col-sm-4 col-sm-offset-4 text-center text-white">
-                    <h2 class=""><img src="http://seamlesshiring.com/img/seamlesshiring-logo-white.png" width="190px" alt=""></h2><br>    
+                    <h2 class=""><img src="{{env('SEAMLESS_HIRING_LOGO_WHITE')}}" width="190px" alt=""></h2><br>
                     <!-- <p class="">Everything You Need To Hire, In One Place!</p> -->
                 </div>
 
                 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
 
                     <div class="white padbox rounded">
-                        
+
                         @include('layout.alerts')
 
                         <form role="form" class="form-signin" method="POST">
                             {!! csrf_field() !!}
-                            
+
                             <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
@@ -57,6 +57,10 @@
                                         </span>
                                     @endif
                                 </div>
+
+                                  <div class="col-sm-6"><br>
+                                    <p class="small text-left"><a href="@if(env('USE_ACTIVE_DIRECTORY') == 1) {{env('STAFFSTRENGTH_URL') . 'forgot-password'}} @else {{ url('password/reset') }} @endif">:( I can't remember my password!</a></p>
+                                </div>
                             </div>
 
                             </div>
@@ -67,9 +71,7 @@
                                     <button type="submit" id="submitLoginButton" onclick="checkUserDetails();return false" class="btn btn-success btn-block">Proceed &raquo;</button>
                                 </div>
 
-                                <div class="col-sm-6"><br>
-                                    <p class="small text-left"><a href="@if(env('USE_ACTIVE_DIRECTORY') == 1) {{env('STAFFSTRENGTH_URL') . 'forgot-password'}} @else {{ url('password/reset') }} @endif">:( I can't remember my password!</a></p>
-                                </div>
+
 
                             </div>
                         </form>
@@ -116,19 +118,19 @@
 
                     }else{
 
-                        
-                        setTimeout(function(){ 
+
+                        setTimeout(function(){
                             $('#error').html(res.message);
                             $('#error').show();
                          }, 3000);
 
                     }
-                } 
+                }
             });
 
     }
 </script>
 
 @section('footer')
-    
+
 @show()

@@ -9,7 +9,7 @@ $job_id = $appl->job->id;
     <div class="panel-heading">
       <h3 class="text-brandon text-center no-margin applicant-name">{{ $appl->cv->first_name.' '.$appl->cv->last_name }}</h3>
     </div>
-    
+
     <div class="panel-collapse">
       <div class="row">
         <div class="panel-body no-padding">
@@ -38,7 +38,7 @@ $job_id = $appl->job->id;
             <div class="clearfix"></div>
           </div>
           <br/>
-          
+
           <div class="col-xs-12">
             <p><i class="fa fa-clock-o"></i> Applied: {{ date('D, j-n-Y', strtotime($appl->created)) }}</p>
             <!-- <p><i class="fa fa-cloud-upload"></i> Uploaded CV: {{ date('D. d M, Y') }}</p>
@@ -52,24 +52,24 @@ $job_id = $appl->job->id;
                 <a  class="btn btn-sm btn-success btn-block" title="Download Dossier" href="{{ route('download-dossier',['app_id' => $appl->id,'cv_id' => $appl->cv->id ]) }}" target="_blank">
                   Download Dossier
                 </a>
-                
+
               </div>
               <div class="col-xs-6">
                 <?php $interview_note_templates = get_interview_note_templates(); ?>
-                
+
                @if( $interview_note_templates->count() )
                 <div class="btn-group" role="group">
-                  @if(in_array('can-view-interview', $permissions) && checkForBothPermissions($job_id))
+                  @if((isset($permissions) && in_array('can-view-interview', $permissions)) || checkForBothPermissions($job_id))
                   <a href="#" class="btn btn-line dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Interview Note <i class="fa fa-caret-down"></i> </a>
                   @endif
                   <ul class="dropdown-menu">
 
                     @foreach( $interview_note_templates as $interview_note_template )
-                      @if(in_array('can-take-interview-notes', $permissions) && checkForBothPermissions($job_id))
+                      @if((isset($permissions) && in_array('can-take-interview-notes', $permissions)) || checkForBothPermissions($job_id))
                         <li><a  title="Take Interview Notes" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Take Interview Note" data-view="{{ route('modal-interview-notes', ['id' => $interview_note_template->id]) }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="wide">Use: {{ $interview_note_template->name }}</a></li>
                       @endif
                     @endforeach
-                    
+
 
                   </ul>
                 </div>
@@ -79,9 +79,9 @@ $job_id = $appl->job->id;
             </div>
             <hr class="">
             <div class="btn-group btn-group-justified no-margin" role="group" aria-label="Justified button group with nested dropdown">
-              
+
               <a title="Email Applicant" href="mailto:{{ $appl->cv->email }}" class="btn btn-line" role="button"><i class="fa fa-envelope-o no-margin"></i></a>
-              
+
               <a title="Make Comment on Applicant" data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Comment" data-view="{{ route('modal-comment') }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="normal" class="btn btn-line" role="button"><i class="fa fa-comment-o no-margin"></i></a>
 
               @if( @$applicant_step->type == 'interview' )
@@ -92,7 +92,7 @@ $job_id = $appl->job->id;
                                        ]) }}" data-app-id="{{ $appl->id }}" data-cv="{{ $appl->cv->id }}" data-type="normal" class="btn btn-line" role="button"><i class="fa fa-file-text-o no-margin"></i></a>
                 @endif
 
-              
+
               @if( @$applicant_step->type == 'assessment' )
               <a title="Test Applicant"  data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal" data-title="Test" data-view="{{ route('modal-assess', [
                                        'step' => $applicant_step->name,
@@ -165,4 +165,3 @@ $job_id = $appl->job->id;
   </div>
 
 </div>
-

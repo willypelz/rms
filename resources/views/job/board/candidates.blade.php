@@ -2,10 +2,10 @@
 @section('content')
     @php
         $user_role = getCurrentLoggedInUserRole();
+$is_super_admin = auth()->user()->is_super_admin;
     @endphp
     @include('job.board.jobBoard-header')
 
-    {{-- dd($job,$result) --}}
     <style type="text/css">
         .see-more {
             display: none;
@@ -38,6 +38,7 @@
 
                                 <!-- applicant -->
                                 <div class="col-xs-9 ">
+                                  @include('layout.alerts');
 
                                     <div class="row">
 
@@ -45,7 +46,7 @@
                                             <small class="text-muted result-label"
                                                    id="showing"> {!! $showing !!} </small>
                                         </div>
-                                        @if($user_role->name == 'admin')
+                                        @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
                                         <div class="col-xs-2">
                                             <div class="dropdown">
                                                 <button class="btn btn-line btn-sm dropdown-toggle" type="button"
@@ -55,8 +56,9 @@
                                                     <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                                    <li><a href="javscript://" id="downSpreadsheet">Spreadsheet</a></li>
-                                                    <li><a href="javscript://" id="downCv">CVs</a></li>
+                                                    <li><a href="" id="downSpreadsheet">Spreadsheet</a></li>
+                                                    <li><a href="" id="downCv">CVs</a></li>
+                                                    <li><a href="" id="downloadInterviewNotes">Interview Notes</a></li>
                                                     <!-- <li role="separator" class="divider"></li>
                                                     <li><a href="#">Separated link</a></li> -->
                                                 </ul>
@@ -145,6 +147,10 @@
                                                         Pending</a>
                                                         --}}
                                                     <div class="btn-group" role="group">
+
+
+
+
                                                         <button type="button"
                                                                 class="btn btn-line status-1 dropdown-toggle"
                                                                 data-toggle="dropdown" aria-haspopup="true"
@@ -152,8 +158,12 @@
                                                             Checks
                                                             <span class="caret"></span>
                                                         </button>
+
+
+
+
                                                         <ul class="dropdown-menu">
-                                                            @if($user_role->name == 'admin')
+                                                            @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin','interviewer'])) || $is_super_admin)
                                                             <li>
                                                                 <a data-toggle="modal" data-target="#viewModal"
                                                                    id="modalButton" href="#viewModal"
@@ -173,7 +183,34 @@
                                                                 </a>
                                                             </li>
                                                             @endif
+
+
+
                                                         </ul>
+
+                                                        <a class="btn btn-line status-1"
+                                                           data-toggle="modal"
+                                                           data-target="#viewModal"
+                                                           id="modalButton"
+                                                           data-title="Send message?"
+                                                           data-view="{{ route('send-bulk-message-modal') }}"
+                                                           data-app-id=""
+                                                           data-cv=""
+                                                           data-type="normal">
+                                                            Send Message to All
+                                                         </a>
+
+                                                         <a class="btn btn-line status-1"
+                                                            data-toggle="modal"
+                                                            data-target="#viewModal"
+                                                            id="modalButton"
+                                                            data-title="Interview?"
+                                                            data-view="{{ route('modal-interview-bulk') }}"
+                                                            data-app-id=""
+                                                            data-cv=""
+                                                            data-type="normal">
+                                                             Interview All
+                                                          </a>
                                                     </div>
                                                 </div>
 
@@ -236,7 +273,7 @@
                                         </div>
                                     </div>
                                     <!-- <p class="small text-muted"><strong>Download Spreadsheet view.</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p> -->
-                                    @if($user_role->name == 'admin')
+                                    @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin','interviewer'])) || $is_super_admin)
                                     <a data-toggle="modal" data-target="#addCandidateModal" id="modalButton"
                                        href="#addCandidateModal" class="btn btn-line btn-block">
 
@@ -671,7 +708,7 @@
 
                     //         //$('#status_filters a[data-value="' + $field.data('action') + '"]').trigger('click');
                     //     });
-                    console.log(cv_ids, app_ids);
+                    console.log('Checks', cv_ids, app_ids);
                 });
 
 
@@ -681,7 +718,7 @@
                     }, function (data) {
                         $('body #status_filters').replaceWith(data);
                     });
-                }
+                };
                 sh.reloadStatus = function () {
                     $.get("{{ route('get-all-applicant-status') }}", {
                         job_id: "{{ $jobID }}"
@@ -690,7 +727,7 @@
                         $('#status_filters a[data-value="' + status_page.toUpperCase() + '"]').trigger('click');
                     });
 
-                }
+                };
 
                 $('body').on('click', '#clearAllFilters', function () {
                     filters = [];
@@ -774,6 +811,28 @@
 
             });*/
                 });
+
+
+                $('body').on('click', '#downloadInterviewNotes', function () {
+                    $data = {
+                        search_query: $('#search_query').val(),
+                        filter_query: filters,
+                        status: status_filter,
+                        jobId: "{{ $jobID }}",
+                        age: age_range,
+                        test_score: test_score_range,
+                        exp_years: exp_years_range,
+                        video_application_score: video_application_score_range,
+                        cv_ids: cv_ids,
+                        app_ids: app_ids
+                    };
+                    window.open("{{ route('download-interview-notes') }}" + "?" + $.param($data), '_blank');
             });
+        });
+
+        function messageAllCandidates() {
+          // body...
+        }
+
         </script>
 @endsection

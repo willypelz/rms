@@ -19,9 +19,10 @@
 
           &nbsp;
           @php
-            $user_role = getCurrentLoggedInUserRole();
+          $user_role = getCurrentLoggedInUserRole();
+          $is_super_admin = auth()->user()->is_super_admin;
           @endphp
-          @if($user_role->name == 'admin')
+          @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
           <a data-toggle="modal" data-target="#addCandidateModal" id="modalButton" href="#addCandidateModal" class="btn btn-line" ><i class="fa fa-cloud-upload"></i> Upload CV to Folder &nbsp;</a>
           @endif
           <div class="clearfix"></div>

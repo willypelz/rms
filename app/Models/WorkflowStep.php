@@ -34,6 +34,7 @@ class WorkflowStep extends Model
         'visible_to_applicant',
         'message_template',
         'is_readonly',
+        'message_to_applicant'
     ];
 
     public function setSlugAttribute($value)
@@ -59,5 +60,10 @@ class WorkflowStep extends Model
             'workflow_step_id',
             'user_id'
         );
+    }
+
+    public function users()
+    {
+      return $this->belongsToMany('App\User');
     }
 }

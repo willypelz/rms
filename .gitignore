@@ -5,7 +5,9 @@
 /bootstrap
 Homestead.yaml
 Homestead.json
+LocalValetDriver.php
 .env
 /.idea
 /.vscode
 /public_html/uploads
+/config/snappy.php

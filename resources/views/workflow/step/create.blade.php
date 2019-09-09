@@ -12,7 +12,8 @@
 
 @section('content')
     @php
-        $user_role = getCurrentLoggedInUserRole()->name;
+        $user_role = ( null !== getCurrentLoggedInUserRole()) ? getCurrentLoggedInUserRole()->name : null;
+        $is_super_admin = auth()->user()->is_super_admin;
     @endphp
     <section>
         <div class="container">
@@ -24,7 +25,7 @@
                 <div class="col-md-6">
                     <p>
                         <span class="text-muted">
-                            <-
+                            
                         </span>
                         <a href="{{ route('workflow') }}" class="text-muted">Workflows</a>
                     </p>
@@ -48,6 +49,10 @@
                                                 Visible to Applicant :
                                                 {{ ($workflowStep->visible_to_applicant) ? 'Yes' : 'No' }}
                                             </p>
+                                            <p class="text-muted">
+                                                Send Message to Applicant :
+                                                {{ ($workflowStep->message_to_applicant) ? 'Yes' : 'No' }}
+                                            </p>
                                             <div class="">
                                                 {!! $workflowStep->is_readonly
                                            ? '- <span class="text-warning">System Generated</span> -'
@@ -55,7 +60,7 @@
                                             </div>
                                         </div>
                                         
-                                        @if(!$workflowStep->is_readonly && $user_role == 'admin')
+                                        @if(!$workflowStep->is_readonly && ($user_role == 'admin' || $is_super_admin)  )
                                             <div class="pull-right">
                                                 <a href="{{ route('step-edit', ['id' => $workflowStep->id]) }}"
                                                    class="btn btn-primary btn-sm">
@@ -134,7 +139,7 @@
                                                     style="width: 100%;">
                                                 <option value="">- select -</option>
                                                 @foreach(config('workflowStepTypes') as $stepSlug => $stepLabel)
-                                                    <option value="{{ $stepSlug }}">{{ $stepLabel }}</option>
+                                                    <option value="{{ $stepSlug }}" @if(old('type') == $stepSlug) selected = "selected" @endif>{{ $stepLabel }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -185,34 +190,35 @@
                                 
                                 <div class="form-group">
                                     <label for="messageTemplate">Message Template</label>
-                                    <textarea name="message_template"
-                                              id="messageTemplate"
-                                              placeholder="... ... .."
-                                              class="form-control">{{ old('message_template') }}</textarea>
-                                    
-                                    <!-- Message Template Placeholder Buttons -->
-                                    <div class="msg-template-placeholders" style="margin: 10px auto;">
-                                        <button type="button" class="btn btn-sm btn-secondary templateBtn"
-                                                value="{applicant_name}">
-                                            Applicant Name
-                                        </button>
-                                        |
-                                        <button type="button" class="btn btn-sm btn-secondary templateBtn"
-                                                value="{company_name}">
-                                            Company Name
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-secondary templateBtn"
-                                                value="{job_detail}">
-                                            Job Detail
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-secondary templateBtn"
-                                                value="{job_title}">
-                                            Job Title
-                                        </button>
+                                    <div class="form-group">
+                                        <input type="checkbox" name="message_to_applicant" id="messageToApplicant" value="1"
+                                            @if(old('message_to_applicant')==1) checked @endif>
+                                        <label for="messageToApplicant">Send Message to Applicant</label>
+                                    </div>
+                                    <div id="messageTemplateBlock">
+                                        <textarea name="message_template" id="messageTemplate" placeholder="... ... .."
+                                            class="form-control">{{ old('message_template') }}</textarea>
+                                
+                                        <!-- Message Template Placeholder Buttons -->
+                                        <div class="msg-template-placeholders" style="margin: 10px auto;">
+                                            <button type="button" class="btn btn-sm btn-secondary templateBtn" value="{applicant_name}">
+                                                Applicant Name
+                                            </button>
+                                            |
+                                            <button type="button" class="btn btn-sm btn-secondary templateBtn" value="{company_name}">
+                                                Company Name
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-secondary templateBtn" value="{job_detail}">
+                                                Job Detail
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-secondary templateBtn" value="{job_title}">
+                                                Job Title
+                                            </button>
+                                        </div>
                                     </div>
                                 
                                 </div>
-                                @if($user_role == 'admin')
+                                @if($user_role == 'admin' || $is_super_admin)
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fa fa-plus fa-fw"></i>

@@ -167,7 +167,15 @@
 
                                                                 </h5>
                                                             </div>
+                                                            
 
+                                                            <div class="col-xs-12">
+                                                                <hr>
+                                                                <h6 class="text-info text-brandon text-uppercase l-sp-5 no-margin">
+                                                                    Job Summary</h6>
+                                                                <hr>
+                                                                {!!html_entity_decode( ucfirst( $job['summary'] ) )!!}
+                                                            </div>
 
                                                             <div class="col-xs-12">
                                                                 <hr>
@@ -175,6 +183,15 @@
                                                                     Job Description</h6>
                                                                 <hr>
                                                                 {!!html_entity_decode( ucfirst( $job['details'] ) )!!}
+                                                            </div>
+
+
+                                                             <div class="col-xs-12">
+                                                                <hr>
+                                                                <h6 class="text-info text-brandon text-uppercase l-sp-5 no-margin">
+                                                                    Job Experience</h6>
+                                                                <hr>
+                                                                {!!html_entity_decode( ucfirst( $job['experience'] ) )!!}
                                                             </div>
 
                                                         <!-- <div class="col-xs-12">

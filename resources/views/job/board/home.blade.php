@@ -25,7 +25,7 @@
                                 
                                   <div class="panel-heading">
                                     <h3 class="panel-title">Job Board Status 
-                                    <span class="pull-right text-warning"><i class="fa fa-check-circle"></i> {{ $approved_count }} approved &nbsp; &middot; &nbsp;<i class="fa fa-hourglass-half"></i> {{ $pending_count }} Pending</span>
+                                    <!-- <span class="pull-right text-warning"><i class="fa fa-check-circle"></i> {{ $approved_count }} approved &nbsp; &middot; &nbsp;<i class="fa fa-hourglass-half"></i> {{ $pending_count }} Pending</span> -->
 
                                   </div>
                                   <div class="panel-body" style="height: 720px; overflow: auto;">
@@ -65,9 +65,12 @@
                                           </div>
                                           <div class="col-xs-3">
                                           <h5>Share this link</h5>
+                                          @php $job_text= str_slug($job->title);
+                                          $job_url = route('job-view',['job_id' => $job->id,'str_slug'=>$job_text]);
+                                          @endphp
                                             <ul class="list-inline">
                                                    <li class="no-pad no-margin">
-                                                       <a href="https://www.facebook.com/sharer/sharer.php?u={{ $subscribed_board['pivot']['url'] }}" class="btn-disabled" target="_blank" >
+                                                       <a href="{{env('FACEBOOK_URL')}}sharer/sharer.php?u={{$job_url}}" class="btn-disabled" target="_blank" >
                                                                <span class="fa-stack fa-lg">
                                                                  <i class="fa fa-square fa-stack-2x text-"></i>
                                                                  <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
@@ -76,7 +79,7 @@
                                                    </li>
                                                                                   
                                                    <li class="no-pad no-margin">
-                                                       <a href="https://twitter.com/home?status={{ $subscribed_board['pivot']['url'] }}" class="btn-disabled" target="_blank" >
+                                                       <a href="{{env('TWITTER_URL')}}intent/tweet?url={{$job_url}}" class="btn-disabled" target="_blank" >
                                                                <span class="fa-stack fa-lg">
                                                                  <i class="fa fa-square fa-stack-2x text-"></i>
                                                                  <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
@@ -85,7 +88,7 @@
                                                    </li>
                                                                                   
                                                    <li class="no-pad no-margin">
-                                                       <a href="https://plus.google.com/share?url={{ $subscribed_board['pivot']['url'] }}" class="btn-disabled" target="_blank" >
+                                                       <a href="{{env('LINKEDIN_URL')}}shareArticle?mini=true&url={{$job_url}}&title={{$job->title}}&summary=&source=Seamlesshiring" class="btn-disabled" target="_blank" >
                                                                <span class="fa-stack fa-lg">
                                                                  <i class="fa fa-square fa-stack-2x text-"></i>
                                                                  <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
@@ -119,7 +122,7 @@
                               <!-- <a href="{{ route('post-success', ['jobID' => $job->id]) }}" class="btn btn-primary btn-block" target="_blank" data-toggle="modal" data-target="#promoteJob">
                                 Expand Job Reach Now
                               </a> -->
-                              <a href="{{ route('post-success', ['jobID' => $job->id]) }}" class="btn btn-primary btn-block" target="_blank" >
+                              <a href="{{ route('post-success', ['jobID' => $job->id]) }}" class="btn btn-primary btn-block" disabled target="_blank" >
                                 Expand Job Reach Now
                               </a>
                             <p></p>
@@ -166,7 +169,7 @@
                                
                                            <ul class="list-inline">
                                                <li>
-                                                   <a href="https://www.facebook.com/sharer/sharer.php?u={{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" class="" target="_blank" >
+                                                   <a href="{{env('FACEBOOK_URL')}}sharer/sharer.php?u={{$job_url}}" class="" target="_blank" >
                                                            <span class="fa-stack fa-2x">
                                                              <i class="fa fa-circle fa-stack-2x text-" style="color:#3b5998"></i>
                                                              <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
@@ -175,7 +178,7 @@
                                                </li>
                                                                               
                                                <li>
-                                                   <a href="https://twitter.com/home?status={{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" class="" target="_blank" >
+                                                   <a href="{{env('TWITTER_URL')}}intent/tweet?url={{$job_url}}" class="" target="_blank" >
                                                            <span class="fa-stack fa-2x">
                                                              <i class="fa fa-circle fa-stack-2x text-" style="color:#0084b4"></i>
                                                              <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
@@ -184,7 +187,7 @@
                                                </li>
                                                                               
                                                <li>
-                                                   <a href="https://plus.google.com/share?url={{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}" class="" target="_blank" >
+                                                   <a href="{{env('LINKEDIN_URL')}}shareArticle?mini=true&url={{$job_url}}&title={{$job->title}}&summary=&source=Seamlesshiring" class="" target="_blank" >
                                                            <span class="fa-stack fa-2x">
                                                              <i class="fa fa-circle fa-stack-2x text-" style="color:#007bb6"></i>
                                                              <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>

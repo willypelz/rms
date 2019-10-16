@@ -516,8 +516,6 @@ class JobController extends Controller
             return response()->json(['status' => false, 'message' => 'user not found']);
         }
 
-        \Log::info($candidate->toArray());
-
         //Get All jobs applied to
         if ($candidate->applications) {
 
@@ -525,7 +523,9 @@ class JobController extends Controller
 
             $jobs = [];
             foreach ($candidate->applications as $key => $application) {
-                $job = Job::with('activities')->find($application->job_id);
+                $job = Job::with(['activities'=>function($q) use($application){
+                    $q->where('job_application_id',$application->id)->get();
+                }])->find($application->job_id);
                 $job->application = $application;
                 $job->messages = $application->messages;
                 array_push($jobs, $job->toArray());

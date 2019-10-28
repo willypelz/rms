@@ -360,7 +360,7 @@ class JobController extends Controller
         $cv->applicant_type = $request->cv['applicant_type'];
         $cv->save();
 
-        $candidate = Candidate::where('email', $request->email)->first();
+        $candidate = Candidate::where('email', $request->cv['email'])->first();
 
         if ($candidate == null) {
             $candidate = new Candidate();

@@ -487,13 +487,13 @@ class JobController extends Controller
             $user = User::firstOrCreate($data);
         }
 
-        $role = Role::whereName('admin')->pluck('id')->toArray();
+        $role = Role::whereName('admin')->first();
 
         if(!$current_company->users()->where('user_id', $user->id)->first()) {
-            $current_company->users()->sync([$user->id => ['role' => $role]], false);
+            $current_company->users()->update([ 'user_id' => $user->id, 'role' => $role[0]['id']]);
         }
 
-        $user->roles()->sync($role);
+        $user->roles()->sync($role->pluck('id')->toArray());
 
         return response()->json([
                 'status' => true,

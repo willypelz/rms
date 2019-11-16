@@ -248,9 +248,9 @@ class JobsController extends Controller
                     $company = Company::find(get_current_company()->id);
 
                     $accept_link = route('admin-accept-invite', ['id' => $token,'company_id'=>$company->id]);
-        
+
                     $mail_body = $request->body_mail;
-        
+
                     $data = [
                         'email'=>$request->email,
                         'name' => $request->name,
@@ -260,7 +260,7 @@ class JobsController extends Controller
                     $data = (object)$data;
                     $email = $request->email;
                     //Send notification mail
-        
+
                     \Illuminate\Support\Facades\Mail::queue('emails.new.admin_invite', ['data'=>$data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) use ($email){
                         $m->from(env('COMPANY_EMAIL'))->to($email)->subject('You Have Been Exclusively Invited');
                     });
@@ -1273,7 +1273,6 @@ class JobsController extends Controller
     public function UploadCVfile(Request $request)
     {
 
-
         // $zipper = new Zipper;
         ///Applications/AMPPS/www/seamlesshiring/public_html/
         // dd( Zipper::getFileContent( '\Applications\AMPPS\www\seamlesshiring\public_html\uploads\esimakin-twbs-pagination-1.3.1-2-g4a2f5ff.zip' ) );
@@ -1288,14 +1287,9 @@ class JobsController extends Controller
         //'Image' =>
         //
         // highest qualification, sex, location, years of experience
-        $validation_fields = [
-            'cv-upload-file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt' //application/octet-stream,
-        ];
 
-        $validation_fields_copy = [
-            'cv-upload-file.required' => 'Please select a file',
-            'cv-upload-file.mimes' => 'Allowed extensions are .zip, .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt',
-        ];
+
+        $validation_fields_copy = ['cv-upload-file.required' => 'Please select a file'];
 
         if ($request->type == "single") {
             $validation_fields['cv_first_name'] = 'required';
@@ -1310,12 +1304,26 @@ class JobsController extends Controller
             $validation_fields['last_position'] = 'required';
             $validation_fields['willing_to_relocate'] = 'required';
             $validation_fields['graduation_grade'] = 'required';
+            $validation_fields = [
+                'cv-upload-file' => 'required|mimes:pdf,doc,docx,txt,rtf,pptx,ppt' //application/octet-stream,
+            ];
+            $validation_fields_copy = [
+                'cv-upload-file.mimes' => 'Allowed extensions are .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt',
+            ];
 
 
             $validation_fields_copy['cv_first_name.required'] = 'Firstname is required';
             $validation_fields_copy['cv_last_name.required'] = 'Lastname is required';
             $validation_fields_copy['cv_email.required'] = 'Email is required';
             $validation_fields_copy['cv_phone.required'] = 'Phone number is required';
+        }else{
+            $validation_fields = [
+                'cv-upload-file' => 'required|mimes:zip' //application/octet-stream,
+            ];
+
+            $validation_fields_copy = [
+                'cv-upload-file.mimes' => 'Allowed extensions are .zip',
+            ];
         }
 
         $validator = Validator::make($request->all(), $validation_fields, $validation_fields_copy);
@@ -1640,7 +1648,7 @@ class JobsController extends Controller
 
         if (!empty($request->appl_id)) {
             $activities = JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('id', 'desc');
-        } elseif ($request->type == 'dashboard') { 
+        } elseif ($request->type == 'dashboard') {
 
             $jobs = ($user->is_super_admin) ? Job::where('company_id', $comp_id)->get(['id'])->toArray() : $job_access;
             $activities = JobActivity::with('user', 'application.cv', 'job')->whereIn('job_id', $jobs)->orderBy('id', 'desc');
@@ -2616,7 +2624,7 @@ class JobsController extends Controller
             if ($res)
                 return "true";
         }
-        
+
     }
 
     public function ReferJob(Request $request)

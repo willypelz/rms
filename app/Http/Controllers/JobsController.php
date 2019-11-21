@@ -2200,7 +2200,6 @@ class JobsController extends Controller
         $fields = json_decode($job->fields);
 
         if ($request->isMethod('post')) {
-
             $data = $request->all();
 
 
@@ -2347,8 +2346,7 @@ class JobsController extends Controller
                 $custom_field_values = [];
 
                 foreach ($custom_fields as $custom_field) {
-                    if ($custom_field->type == 'FILE') {
-                        continue;
+                    if ($custom_field->type == "FILE") {
                         $name = 'cf_' . str_slug($custom_field->name, '_');
                         if ($request->hasFile($name)) {
 

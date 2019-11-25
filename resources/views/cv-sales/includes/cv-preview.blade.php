@@ -4,10 +4,10 @@
             <div class="col-sm-10 col-sm-offset-1 view">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
                 <br>
-                
+
                 <div class="row">
                     <div class="col-sm-5 ">
-                        
+
                         <p class="hide">
                             <!-- Single button -->
                             <div class="btn-group">
@@ -37,10 +37,10 @@
                     </div>
                 </div>
                 <div class="clearfix"></div>
-                
+
                 <div class="tab-content stack" id="cv">
-                    
-                    
+
+
                     <div class="row">
                         <div class="col-sm-12 cv-name text-center">
                             <h2>
@@ -106,10 +106,9 @@
                         </div>
                     </div>
                     @if(isset($appl))
-
                             <div class="unit-box">
                                 <div class="row">
-                                    
+
                                     <div class="col-xs-1 r-left">
                                         <span class="glyphicon glyphicon-briefcase"></span>
                                     </div>
@@ -120,18 +119,24 @@
                                             @foreach($appl->custom_fields as $key => $form)
 
                                                 <li>
-                                                    <strong>{{ @$form->form_field->name }}:</strong>&nbsp; {{ $form->value }}</li>
+                                                    @if ($form->form_field->type == 'FILE')
+                                                      <a href="{{asset('uploads/Others/'.$form->value)}}">
+                                                        <strong>{{ @$form->form_field->name }}</strong>
+                                                      </a>
+                                                    @else
+                                                      <strong>{{ @$form->form_field->name }}:</strong>&nbsp; {{ $form->value }}</li>
+                                                    @endif
                                                 <li>
 
                                             @endforeach
-                                            
+
                                         </ul>
                                     </div>
                                 </div>
                             </div>
 
 
-                    
+
                     <div class="unit-box">
                         <div class="row">
                             <div class="col-sm-1 r-left">
@@ -167,14 +172,14 @@
                                 @if( $cv['cv_file'] == '' )
                                 <span>Sorry! No uploaded CV for this applicant.</span>
                                 @else
-                                
+
                                     @if(ends_with($cv['cv_file'], 'jpg')
                                     || ends_with($cv['cv_file'], 'jpeg')
                                     || ends_with($cv['cv_file'], 'png')
                                     || ends_with($cv['cv_file'], 'gif'))
-                                    
+
                                     <img src="{{ url( env('fileupload') ).'/CVs/'.$cv['cv_file'] }}" width="100%" />
-{{-- 
+{{--
                                     @elseif(ends_with($cv['cv_file'], 'doc')
                                     || ends_with($cv['cv_file'], 'docx'))
 
@@ -183,11 +188,11 @@
                                         </iframe>
                                      --}}
                                     @else
-                                    
+
                                     <iframe src="https://docs.google.com/viewer?embedded=true&url={{ url( env('fileupload') ).'/CVs/'.$cv['cv_file'] }}&embedded=true" style="width:100%;padding-left: 8px;height:600px" frameborder="1"  allowfullscreen webkitallowfullscreen>
                                     {!! preloader() !!}
                                     </iframe>
-                                    
+
                                     @endif
                                 @endif
                                 @if((@$is_applicant || $page == 'pool') && $cv['cv_file'] != "")
@@ -195,7 +200,7 @@
                                     <a href="{{ url( env('fileupload') ).'/CVs/'.$cv['cv_file'] }}" class="btn btn-sm btn-success btn-block" title="Download Dossier">Download CV</a>
                                 </div>
                                 @endif
-                                
+
                             </div>
                         </div>
                     </div>

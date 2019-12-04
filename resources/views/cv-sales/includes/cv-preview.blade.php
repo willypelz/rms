@@ -170,7 +170,9 @@
                                 <h5>UPLOADED CV</h5>
                                 <!--iframe src="https://drive.google.com/gview?url=http://www.nwu.ac.za/files/images/Basic_Curriculum_Vitae_example.pdf&embedded=true" style="width:100%;padding-left: 8px;height:100%" frameborder="1"-->
                                 @if( $cv['cv_file'] == '' )
-                                <span>Sorry! No uploaded CV for this applicant.</span>
+                                  <span>Sorry! No uploaded CV for this applicant.</span>
+                                @elseif(! (file_exists(url( env('fileupload') ).'/CVs/'.$cv['cv_file'])) )
+                                  <span>Sorry! The CV for this applicant cannot be found.</span>
                                 @else
 
                                     @if(ends_with($cv['cv_file'], 'jpg')
@@ -189,7 +191,7 @@
                                      --}}
                                     @else
 
-                                    <iframe src="https://docs.google.com/viewer?embedded=true&url={{ url( env('fileupload') ).'/CVs/'.$cv['cv_file'] }}&embedded=true" style="width:100%;padding-left: 8px;height:600px" frameborder="1"  allowfullscreen webkitallowfullscreen>
+                                    <iframe src="https://docs.google.com/viewer?embedded=true&url={{ url( env('fileupload') ).'/CVs/'.$cv['cv_file'] }}" style="width:100%;padding-left: 8px;height:600px" frameborder="1"  allowfullscreen webkitallowfullscreen>
                                     {!! preloader() !!}
                                     </iframe>
 

@@ -208,7 +208,10 @@ class CandidateController extends Controller
 
         if($candidate->is_from == 'external')
         {
-            $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->where('is_for','external')->get();
+            $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')
+            ->where(function($q){
+                $q->where('is_for','external')->orWhere('is_for', 'both');
+            })->get();
         }else{
             $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->get();
         }

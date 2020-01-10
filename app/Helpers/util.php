@@ -765,3 +765,12 @@ function getAdminPermissions() {
 function getCurrentLoggedInUserRole() {
         return auth()->user()->roles()->first();
 }
+
+function get_company_email_logo(){
+	$logo = env("APP_LOGO");
+	$url = env("APP_URL");
+	return 
+	"<a href='$url' style='font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2' target='_blank'>
+		<img src='$logo' width='50%' height='' style='outline:none;text-decoration:none;display:block;min-height:31px;margin:0 auto;border:0;' class='CToWUd' alt='COMPANY_LOGO'>
+	</a>";
+}

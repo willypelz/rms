@@ -20,7 +20,7 @@
 												<tr>
 													<td valign="top" style="font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;color:#2a3744;line-height:200%;padding: 30px 18px 0px;">
 														<div style="color:#2d2d2d;display:block;width:100%;margin: 0 auto 5px;" align="center">
-															<a href="http://seamlesshiring.com" style="font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2" target="_blank"><img src="https://cdn.insidify.com/dist/img/logos/seamlesshiring.png" width="50%" height="" style="outline:none;text-decoration:none;display:block;min-height:31px;margin:0 auto;border:0;" class="CToWUd" alt="Seamlesshiring"></a>
+															{!! get_company_email_logo() !!}
 														</div>
 
 
@@ -89,7 +89,7 @@
 
 										<div style="color:#777;width:94%;text-align:center;margin:7% auto 0;padding:0" align="center">
 											<p style="font-family:Arial,Helvetica,sans-serif;color: #6b6b6b;font-size:12px;line-height:1.42em;text-align:center;margin:16px 0 8%;padding:0;" align="center">This notification was sent to <a href="mailto:{{ $user->email }}" target="_blank">{{ $user->email }}</a>
-												<br> because you registered on seamlesshiring.com
+												<br> because you registered on {{ env('APP_URL') }}
 												<br>
 												<br> If you no longer wish to receive <i>any</i> notifications when an activity is carried out <a href="" style="font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2" target="_blank">unsubscribe</a>.
 												<br>View SeamlessHiring's <a href="" target="_blank">Privacy Policy</a></p>

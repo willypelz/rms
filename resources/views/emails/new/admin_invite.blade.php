@@ -1,3 +1,7 @@
+@php
+	$data = is_array($data) ? (object) $data : $data;
+	$company = is_array($company) ? (object) $company : $company;
+@endphp
 <body style="
     background: #dcdcdc;
     padding: 0;

@@ -117,7 +117,13 @@
 
 
                                                     <div class="col-xs-4 small"><br>
-                                                        <i class="fa fa-hourglass"></i> Pending</span>
+                                                        @if($job_team_invite->is_accepted)
+                                                            <i class="fa fa-check"></i> Accepted</span>
+                                                        @elseif($job_team_invite->is_declined)
+                                                            <i class="fa fa-times"></i> Declined</span>
+                                                        @else
+                                                            <i class="fa fa-hourglass"></i> Pending</span>
+                                                        @endif
                                                     </div>
 
                                                     <div class="clearfix"></div>

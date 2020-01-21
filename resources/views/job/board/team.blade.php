@@ -186,7 +186,7 @@
                                                                 <br><br>
                                                             </div>
                                                             <div id="internal_div">
-                                                                <label for="">Select Employee from HCHub</label>
+                                                                <label for="">Select Employee from {{env('STAFFSTRENGTH_NAME') ?? 'HRMS'}}</label>
                                                                 <select type="text" class="form-control" name=""
                                                                         id="employeeSelect">
                                                                     <option value="{{null}}">--Select Employee--

@@ -61,7 +61,8 @@
 		                <div class="job-card-meta pt-2">
 		                    <div class="card border-0 bg-light">
 		                        <div class="card-body p-2">
-		                            <div class="d-flex small align-items-center text-secondary">
+		                            <div class="d-flex small align-items-center text-secondary flex-wrap">
+
 		                                <div class="d-flex">
 		                                    <div class="mr-4">
 		                                        <i class="fas fa-calendar mr-2">
@@ -74,6 +75,7 @@
 		                                        {{ $job['location'] }}
 		                                    </div>
 		                                </div>
+
 		                                <div class="ml-auto">
 		                                    <a class="btn btn-sm btn-primary" href="{{ route('job-view', [$job['id'], str_slug($job['title']) ]) }}"  target="_blank">
 		                                        View Details
@@ -81,6 +83,7 @@
 		                                        </i>
 		                                    </a>
 		                                </div>
+
 		                            </div>
 		                        </div>
 		                    </div>

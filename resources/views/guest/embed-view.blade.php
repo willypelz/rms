@@ -57,6 +57,7 @@
 		                    <!-- <p>
 		                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae assumenda temporibus doloremque quas eos reprehenderit accusamus ex quo quibusdam ullam officia fuga mollitia molestiae nisi, corporis rerum sequi, illum eaque.
 		                    </p> -->
+		                    
 		                </div>
 		                <div class="job-card-meta pt-2">
 		                    <div class="card border-0 bg-light">

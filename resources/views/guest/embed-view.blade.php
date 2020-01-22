@@ -45,7 +45,7 @@
 		        <div class="card-body">
 		            <div class="job-card-heading d-flex">
 		                <div>
-		                    <a class="job-title font-weight-bold text-dark h5" href="{{ url($company->slug.'/job/'.$job['id'].'/'.str_slug($job['title'])) }}" target="_blank">
+		                    <a class="job-title font-weight-bold text-dark h5" href="{{ route('job-view', [$job['id'], str_slug($job['title']) ]) }}" target="_blank">
 		                        {{ ucwords( $job['title'] ) }}
 		                    </a>
 		                </div>

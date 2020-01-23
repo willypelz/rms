@@ -14,13 +14,22 @@
 									<td style="font-family:Arial,Helvetica,sans-serif">
 
 
+@php
+	
+	$logo = env("APP_LOGO");
+	$url = env("APP_URL");
+
+@endphp
+
 
 										<table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;width:100%!important;text-align:center;background-color:#ffffff" bgcolor="#ffffff">
 											<tbody>
 												<tr>
 													<td valign="top" style="font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;color:#2a3744;line-height:200%;padding: 30px 18px 0px;">
 														<div style="color:#2d2d2d;display:block;width:100%;margin: 0 auto 5px;" align="center">
-															{!! @get_company_email_logo() !!}
+															<a href='$url' style='font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2' target='_blank'>
+		<img src='$logo' width='50%' height='' style='outline:none;text-decoration:none;display:block;min-height:31px;margin:0 auto;border:0;' class='CToWUd' alt='COMPANY_LOGO'>
+	</a>
 														</div>
 
 

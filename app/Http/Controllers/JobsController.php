@@ -2393,7 +2393,12 @@ class JobsController extends Controller
                 $m->from(env('COMPANY_EMAIL'))->to($candidate->email)->subject('Job Application Successful');
             });
 
-            Solr::update_core();
+
+            try {
+                Solr::update_core();
+            } catch (Exception $e) {
+                Log::info(json_encode($e));
+            }
 
 
             return redirect()->route('job-applied', ['jobid' => $jobID, 'slug' => $slug]);

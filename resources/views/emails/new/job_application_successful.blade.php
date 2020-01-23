@@ -20,7 +20,7 @@
 												<tr>
 													<td valign="top" style="font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;color:#2a3744;line-height:200%;padding: 30px 18px 0px;">
 														<div style="color:#2d2d2d;display:block;width:100%;margin: 0 auto 5px;" align="center">
-															{!! get_company_email_logo() !!}
+															{!! @get_company_email_logo() !!}
 														</div>
 
 

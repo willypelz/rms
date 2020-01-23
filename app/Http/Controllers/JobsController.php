@@ -3085,7 +3085,7 @@ class JobsController extends Controller
 
         if ($user->exists()) {
             $company = Company::find($company_id);
-            $jobs = $company->jobs()->where('status', 'ACTIVE')->orderBy('created_at', 'desc')->get()->toArray();
+            $jobs = $company->jobs()->whereStatus('ACTIVE')->orderBy('created_at', 'desc')->get()->toArray();
         } else {
             $company = null;
             $jobs = "Invalid Key";

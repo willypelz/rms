@@ -2618,15 +2618,13 @@ class JobsController extends Controller
         $job = Job::find($request->job_id);
         // dd($job);
         $count = JobApplication::where('job_id', $request->job_id)->count();
-        if ($count) {
-            return "false";
-        } else {
+       
             $res = Job::where('id', $request->job_id)
                 ->update(['status' => $request->status]);
 
             if ($res)
                 return "true";
-        }
+        
 
     }
 

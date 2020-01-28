@@ -143,10 +143,11 @@ class Solr {
 		// $additional = "&fq=(job_id:(".  implode('+', Job::getMyJobIds() )  .")+OR+company_folder_id:". @get_current_company()->id .")"."&fq=-folder_type:saved";
 
 
+		$job_ids = Job::getMyJobIds();
 
-		if( !empty( Job::getMyJobIds() ) )
+		if( !empty( $job_ids ) )
 		{
-			$job = "job_id:(".  implode('+', Job::getMyJobIds() )  .")+OR+" ;
+			$job = "job_id:(".  implode('+', $job_ids )  .")+OR+" ;
 		}
 		else{
 

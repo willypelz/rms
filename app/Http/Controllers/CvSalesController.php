@@ -67,7 +67,7 @@ class CvSalesController extends Controller
                 'Taraba',
                 'Yobe',
                 'Zamfara'
-            ]; 
+            ];
     /**
      * Create a new controller instance.
      *
@@ -92,7 +92,7 @@ class CvSalesController extends Controller
 
     public function search(Request $request)
     {
-            
+
 
             if( $request->search_query && $request->search_query != '' )
             {
@@ -100,16 +100,16 @@ class CvSalesController extends Controller
             }
 
             $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start * $this->search_params['row'] ) : 0;
-            
+
             $additional = "";
 
             if( @$request->age ){
 
                 //2015-09-16T00:00:00Z
-                // $start_dob = str_replace('+', '', $date->subYears( @$request->age[0] )->toIso8601String() ). "Z" ; 
-                // $end_dob = str_replace('+', '', $date->subYears( @$request->age[1] )->toIso8601String() ). "Z";  
-                
-                $start_dob = explode(' ', Carbon::now()->subYears( @$request->age[0] ) )[0] .'T23:59:59Z'; 
+                // $start_dob = str_replace('+', '', $date->subYears( @$request->age[0] )->toIso8601String() ). "Z" ;
+                // $end_dob = str_replace('+', '', $date->subYears( @$request->age[1] )->toIso8601String() ). "Z";
+
+                $start_dob = explode(' ', Carbon::now()->subYears( @$request->age[0] ) )[0] .'T23:59:59Z';
                 $end_dob = explode(' ', Carbon::now()->subYears( @$request->age[1] ) )[0] .'T00:00:00Z';
 
                 $solr_age = [ $start_dob, $end_dob ];
@@ -141,14 +141,14 @@ class CvSalesController extends Controller
             if( $request->filter_query ){
                 $this->search_params['filter_query'] = @$request->filter_query;
             }
-            
+
             // $response = Solr::search_resume($this->search_params);
 
             $result = Solr::search_resume($this->search_params, @$additional);
             $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
-            $cart = Utilities::getCartContent('cv-sales'); 
-            $count = Utilities::getBoardCartCount('cv-sales'); 
+            $cart = Utilities::getCartContent('cv-sales');
+            $count = Utilities::getBoardCartCount('cv-sales');
 
             //to get ids of all items in cart so as to check the button to display in view
             foreach ($cart as $k) {
@@ -159,21 +159,21 @@ class CvSalesController extends Controller
                 $ids = null;
 
 
-            
+
             $end = (($start + $this->search_params['row']) > intval($application_statuses['ALL']))?$application_statuses['ALL']:($start + $this->search_params['row']);
-            $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $application_statuses['ALL'], 'type'=> '', 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();    
+            $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $application_statuses['ALL'], 'type'=> '', 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();
 
             if($request->ajax())
             {
-                $search_results = view('cv-sales.includes.search-results-item',['result' => $result,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'search', 'can_purchase' => true, 'application_statuses' => $application_statuses])->render();    
+                $search_results = view('cv-sales.includes.search-results-item',['result' => $result,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'search', 'can_purchase' => true, 'application_statuses' => $application_statuses])->render();
                 $search_filters = view('cv-sales.includes.search-filters',['result' => $result,'search_query' => $request->search_query, 'age' => @$request->age,'exp_years' => @$request->exp_years])->render();
                 return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing' => $showing, 'count' => $result['response']['numFound'] ] );
-                
+
             }
             else{
                 return view('cv-sales.search-results',['result' => $result,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'search', 'showing' => $showing, 'age' => @$request->age,'exp_years' => @$request->exp_years, 'application_statuses' => $application_statuses ]);
             }
-            
+
     }
 
 
@@ -186,7 +186,7 @@ class CvSalesController extends Controller
             $this->search_params['filter_query'] = @$request->filter_query;//dd($this->search_params);
 
             $cart = Cart::content();
-            $count = Cart::count(false); 
+            $count = Cart::count(false);
 
              foreach ($cart as $k) {
                 $ids[] = ($k->id);
@@ -194,7 +194,7 @@ class CvSalesController extends Controller
 
             if(empty($ids))
                 $ids = null;
-            
+
             $response = Solr::search_resume($this->search_params);
 
             return view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids ]);*/
@@ -207,20 +207,20 @@ class CvSalesController extends Controller
         $is_applicant = $request->is_applicant;
         $is_embedded = $request->is_embedded;
         if(isset($request->appl_id)){
-            $appl = JobApplication::find($request->appl_id);   
+            $appl = JobApplication::find($request->appl_id);
              // dd( $appl->custom_fields );
 
-             
+
         }
-        
+
         // dd( FormFieldValues::where('job_application_id') )
         return view('cv-sales.includes.cv-preview',compact("cv", "is_applicant", "appl", 'is_embedded'));
     }
 
     public function saveCvPreview(){ // to solr
-        
+
         /*$jobs = [218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,298,316,317,318,319];
-        
+
         dd( JobApplication::with('cv')->where('cv_id', '>', '33790')->whereIn('job_id', $jobs)->count() );
         JobApplication::with('cv')->where('cv_id', '>', '28581')->whereIn('job_id', $jobs)->chunk(100, function ($apps) {
             foreach ($apps as $app) {
@@ -244,17 +244,17 @@ class CvSalesController extends Controller
             }
         });
 */
-        
+
 
     }
 
     public function ExtractCv($cv, Request $request = null){ // to solr
-        
+
         $this->dispatch(new ExtractCvContent($cv));
     }
 
     public function Cart(Request $request){
-        
+
         // dd($request->all());
 
                    if($request->action == 'add'){
@@ -265,21 +265,21 @@ class CvSalesController extends Controller
                    elseif ($request->action == 'remove') {
                         $search = Cart::instance( $request->type )->search(array('id'=>$request->id));
                         Cart::instance( $request->type )->remove($search[0]);
-                        // echo 'Deleted';    
+                        // echo 'Deleted';
                    }
                    elseif ($request->action == 'clear') {
                         Cart::instance( $request->type )->destroy();
                     }
                     else{
-                        
+
                         Cart::instance($request->type)->destroy();
 
-                   } 
+                   }
 
                 return json_encode( [ 'count' =>  Utilities::getBoardCartCount( $request->type ), 'total' => Utilities::getBoardCartCost( $request->type ) ] );
 
 
-        
+
     }
 
     /* CART TESTING */
@@ -306,7 +306,7 @@ class CvSalesController extends Controller
             $items = Cart::instance( $request->type )->content();
             $view = view('cv-sales.ajax_cart', compact('items'));
             return $view;
-        
+
     }
 
     public function Ajax_checkout(Request $request){
@@ -326,7 +326,7 @@ class CvSalesController extends Controller
 
         $items = Cart::instance( $request->type )->content();
 
-        
+
         $order = Order::firstOrCreate([
                 'company_id' => $company->id,
                 'order_date'=> date('Y-m-d H:i:s'),
@@ -377,9 +377,9 @@ class CvSalesController extends Controller
             $order_id = $request->order_id;
             $total_amount = $request->amount.'00';
             return view('cv-sales.pay', compact('type', 'items', 'order_id', 'total_amount', 'company', 'total_amount'));
-        }        
+        }
     }
-    
+
 
     public function Transactions(Request $request){
 
@@ -425,7 +425,7 @@ class CvSalesController extends Controller
     public function getMyFolders(){
         if( Auth::check() )
         {
-            $company_folder_obj = new CompanyFolder(); 
+            $company_folder_obj = new CompanyFolder();
             $folders = $company_folder_obj->getMyFolders( get_current_company()->id );
             return response()->json( ['folders' => $folders] );
 
@@ -440,10 +440,10 @@ class CvSalesController extends Controller
     {
         if( Auth::check() )
         {
-            $company_folder_obj = new CompanyFolder(); 
+            $company_folder_obj = new CompanyFolder();
             $company_folder_obj::create( ['name' => $request->name, 'type' => $request->type, 'date_added' => Carbon::now(), 'company_id' => get_current_company()->id ] );
 
-            
+
             return response()->json( true );
 
         }
@@ -457,7 +457,7 @@ class CvSalesController extends Controller
     {
         if( Auth::check() )
         {
-            $folder_content_obj = new FolderContent(); 
+            $folder_content_obj = new FolderContent();
             $folder_content_obj::create( ['cv_id' => $request->cv_id, 'company_folder_id' => $request->folder_id ] );
 
             return response()->json( true );
@@ -475,15 +475,15 @@ class CvSalesController extends Controller
 
         $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start * $this->search_params['row'] ) : 0;
 
-        
-        
+
+
         $this->search_params['filter_query'] = @$request->filter_query;
         // $response = Solr::search_resume($this->search_params);
         $response = Solr::get_saved_cvs($this->search_params);
 
 
-        $cart = Utilities::getCartContent('saved-cvs'); 
-        $count = Utilities::getBoardCartCount('saved-cvs'); 
+        $cart = Utilities::getCartContent('saved-cvs');
+        $count = Utilities::getBoardCartCount('saved-cvs');
 
         //to get ids of all items in cart so as to check the button to display in view
         foreach ($cart as $k) {
@@ -495,11 +495,11 @@ class CvSalesController extends Controller
     // $in_cart = in_array('26618', $ids);
         if($request->ajax())
         {
-            
-            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'saved',  'is_saved' => true])->render();    
+
+            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'saved',  'is_saved' => true])->render();
             $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters ] );
-            
+
         }
         else{
             return view('cv-sales.cv_saved',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'saved',  'is_saved' => true ]);
@@ -512,15 +512,15 @@ class CvSalesController extends Controller
         $this->search_params['q'] = ( $request->search_query && trim( $request->search_query ) != '' ) ? $request->search_query : '*' ;
 
         $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start * $this->search_params['row'] ) : 0;
-        
-        
+
+
         $this->search_params['filter_query'] = @$request->filter_query;
         // $response = Solr::search_resume($this->search_params);
         $response = Solr::get_purchased_cvs($this->search_params);
 
 
         $cart = Cart::content();
-        $count = Cart::count(false); 
+        $count = Cart::count(false);
 
         //to get ids of all items in cart so as to check the button to display in view
         foreach ($cart as $k) {
@@ -532,31 +532,33 @@ class CvSalesController extends Controller
     // $in_cart = in_array('26618', $ids);
         if($request->ajax())
         {
-            
-            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'purchased',  'is_saved' => true])->render();    
+
+            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'purchased',  'is_saved' => true])->render();
             $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters ] );
-            
+
         }
         else{
             return view('cv-sales.cv_purchased',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'purchased',  'is_saved' => true ]);
         }
         // return view('cv-sales.cv_saved');
     }
-    
+
     public function viewTalentPool(Request $request)
     {
+        ini_set('memory_limit', '1024M');
+        set_time_limit(0);
         $this->search_params['q'] = ( $request->search_query && trim( $request->search_query ) != '' ) ? $request->search_query : '*' ;
 
         $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start * $this->search_params['row'] ) : 0;
-        
-        
 
-        
+
+
+
         if( @$request->age ){
 
             //2015-09-16T00:00:00Z
-            $start_dob = explode(' ', Carbon::now()->subYears( @$request->age[0] ) )[0] .'T23:59:59Z'; 
+            $start_dob = explode(' ', Carbon::now()->subYears( @$request->age[0] ) )[0] .'T23:59:59Z';
             $end_dob = explode(' ', Carbon::now()->subYears( @$request->age[1] ) )[0] .'T00:00:00Z';
 
             $solr_age = [ $start_dob, $end_dob ];
@@ -585,7 +587,7 @@ class CvSalesController extends Controller
         if( $request->filter_query ){
             $this->search_params['filter_query'] = @$request->filter_query;
         }
-        
+
         // $response = Solr::search_resume($this->search_params);
         $response = $result = Solr::get_all_my_cvs($this->search_params, @$solr_age, @$solr_exp_years);
         if ((isset($result['facet_counts']))) {
@@ -603,7 +605,7 @@ class CvSalesController extends Controller
 
         //     $filter_text .= "<br/>Filtering by: ";
         //     foreach ($request->filter_query as $fq) {
-                
+
         //         $filter_text .= ucwords(str_ireplace("_", " ", $fq)).', ';
         //     }
 
@@ -615,11 +617,11 @@ class CvSalesController extends Controller
         // {
         //     $showing .= $filter_text . '<a id="clearAllFilters" href="javacript://" >Clear Filter</a>';
         // }
-        
-        $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $application_statuses['ALL'], 'type'=>'Cvs', 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();    
+
+        $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $application_statuses['ALL'], 'type'=>'Cvs', 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();
 
         $cart = Cart::content();
-        $count = Cart::count(false); 
+        $count = Cart::count(false);
 
         //to get ids of all items in cart so as to check the button to display in view
         foreach ($cart as $k) {
@@ -628,38 +630,36 @@ class CvSalesController extends Controller
 
         if(empty($ids))
             $ids = null;
-    // $in_cart = in_array('26618', $ids);
 
         $jobs = Job::where('company_id',get_current_company()->id)->get();
 
         $myFolders = is_null($response) ? [] : array_unique( array_pluck( $response ,'cv_source') );
-
         if(($key = array_search('Direct Application', $myFolders)) !== false) {
             unset($myFolders[$key]);
         }
 
-        $states = $this->states; 
+
+        $states = $this->states;
         $qualifications = qualifications();
         $grades = grades();
 
+
         if($request->ajax())
         {
-            
-            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'myJobs' => Job::getMyJobs(), 'myFolders' => $myFolders, 'application_statuses' => $application_statuses ])->render();    
+
+            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'myJobs' => Job::getMyJobs(), 'myFolders' => $myFolders, 'application_statuses' => $application_statuses ])->render();
             $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query, 'age' => @$request->age,'exp_years' => @$request->exp_years])->render();
             return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing, 'count' => $result['response']['numFound'] ] );
-            
+
         }
         else{
             return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query,'showing'=>$showing, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 5, 85 ], 'exp_years' => [ 0, 60 ], 'myJobs' => Job::getMyJobs(), 'myFolders' => $myFolders, 'application_statuses' => $application_statuses, 'states' => $states, 'qualifications' => $qualifications, 'grades' => $grades ]);
         }
-
-        // return view('cv-sales.cv_saved');
     }
 
     public function getBoardCartCount(Request $request)
     {
         return Utilities::getBoardCartCount( @$request->type );
     }
-    
+
 }

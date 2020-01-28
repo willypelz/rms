@@ -53,9 +53,9 @@ Route::group(['middleware' => 'web'], function () {
      *
      * Make admin group and apply a guard to it
      */
-    Route::get('/admin', function () {
-        return view('admin.dashboard');
-    });
+    // Route::get('/admin', function () {
+    //    return view('admin.dashboard');
+    // });
     Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
     Route::match(['get', 'post'], '/admin/assign', 'JobsController@manageRoles')->name('change-admin-role');
     Route::match(['get', 'post'], '/sys/roles', 'AdminsController@manageRoles')->name('list-role');

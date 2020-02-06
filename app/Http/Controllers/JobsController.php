@@ -396,7 +396,7 @@ class JobsController extends Controller
                 $job_team_invite->is_accepted = 1;
                 $job_team_invite->save();
 
-                Auth::attempt(['email' => $user->email, 'password' => $request->password]);
+                auth()->login($user);
                 return redirect()->route('select-company', ['slug' => $job->company->slug]);
             }
 

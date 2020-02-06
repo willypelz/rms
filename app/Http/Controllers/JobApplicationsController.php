@@ -624,7 +624,6 @@ class JobApplicationsController extends Controller
 
         }
 
-        // dd("ki");
 
 
         $excel = App::make('excel');

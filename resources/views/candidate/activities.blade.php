@@ -50,7 +50,7 @@
 
                                             <p>
                                               <small class="text-muted pull-right">[{{ date('D. j M, Y', strtotime( $activity->created_at)) }}]</small>
-                                              <b>Responed</b>: {{ date('D. j M, Y', strtotime( $activity->created_at)) }}
+                                              <b>Date</b>: {{ date('D. j M, Y', strtotime( $activity->created_at)) }}
                                             </p>
 
 

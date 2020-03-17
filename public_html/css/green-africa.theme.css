@@ -7318,12 +7318,18 @@ section.s-div {
 section.s-div.dashboard {
   background-position: center 50px;
   background-image: url("/img/green-africa/dashboard-bg.png");
+  background-size: auto;
   background-repeat: no-repeat;
   background-color: #2e2260;
 }
 
 section.s-div.dashboard h4 {
   font-weight: bold;
+}
+
+.navbar .nav > li > a:focus,
+.navbar .nav > li > a:hover {
+  background-color: #231a4a;
 }
 
 .btn-group-justified.btn-dash > .btn-group .btn {

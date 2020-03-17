@@ -28,6 +28,7 @@ section.s-div {
 section.s-div.dashboard {
   background-position: center 50px;
   background-image: url('/img/green-africa/dashboard-bg.png');
+  background-size: auto;
   background-repeat: no-repeat;
   background-color: $c-primary;
 
@@ -35,6 +36,10 @@ section.s-div.dashboard {
     font-weight: bold;
     //font-size: 28px;
   }
+}
+
+.navbar .nav > li > a:focus, .navbar .nav > li > a:hover {
+  background-color: $c-primary-hover;
 }
 
 .btn-group-justified.btn-dash > .btn-group .btn {

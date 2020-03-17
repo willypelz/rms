@@ -81,6 +81,17 @@ section.s-div.dashboard {
 
 }
 
+//.shr-auth-form-button {
+//  color: #ffffff;
+//  box-shadow: 0 2px 2px 0 #F2F2F2;
+//  background-color: #4BB779;
+//}
+
+.shr-auth .shr-auth-form .shr-auth-form-inner .shr-auth-form-toggle .toggle-button.active {
+  background-color: $c-primary;
+  color: $c-white;
+  border-color: $c-primary;
+}
 
 .btn.btn-primary {
   background-color: $c-secondary;
@@ -93,7 +104,8 @@ section.s-div.dashboard {
   }
 }
 
-.btn.btn-success, .centre.btn.btn-default {
+.btn.btn-success, .centre.btn.btn-default,
+.shr-auth .shr-auth-form .shr-auth-form-inner .btn.shr-auth-form-button {
   background-color: $c-success;
   color: $c-primary;
 
@@ -110,3 +122,4 @@ section.s-div.dashboard {
 .ga-text-success {
   color: $c-success;
 }
+

@@ -1,7 +1,7 @@
         <div class="container">
             <div class="row">
 
-               
+
                 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
 
                     <div class="white padbox rounded">
@@ -9,7 +9,7 @@
 
                         <form role="form" id="AjaxSignin" class="form-signin" method="POST" action="">
                             {!! csrf_field() !!}
-                            
+
                             <div class="row">
                                 <p class="text-center">Sign in with</p>
                                 <div id="error" style="color:red"></div>
@@ -108,7 +108,7 @@
                                                     success: function(response){
                                                       // console.log(response);
                                                       $('#invoice-res').html(response)
-                                                      
+
                                                     }
                                                 });
                                           }
@@ -117,6 +117,6 @@
                                     });
 
                 return false;
-                
+
             })
             </script>

@@ -53,7 +53,6 @@
                     <h4 class="dark-blue-text font-weight-bold ml-3">Job’s you might be interested in</h4>
                 </div>
 
-
                 @forelse($jobs as $job)
                     <div class="job-card">
                         <a href="{{ route('job-view', [$job->id, $job->slug]) }}"><h5 class="dark-blue-text font-weight-bold font-16">{{ $job->title }}</h5></a>

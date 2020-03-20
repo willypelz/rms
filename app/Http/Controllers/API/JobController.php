@@ -436,6 +436,7 @@ class JobController extends Controller
 
     public function createSuperAdmin(Request $request)
     {
+
         $req_header = $request->header('X-API-KEY');
         if (!$req_header) {
             return response()->json([
@@ -477,6 +478,7 @@ class JobController extends Controller
                 'is_super_admin' => 1,
             ];
 
+
         if($user) {
             $user->username = $data['username'];
             $user->is_internal = $data['is_internal'];
@@ -493,7 +495,7 @@ class JobController extends Controller
             $current_company->users()->update([ 'user_id' => $user->id, 'role' => $role[0]['id']]);
         }
 
-        $user->roles()->sync([$role]);
+        $user->roles()->attach([$role]);
 
         return response()->json([
                 'status' => true,

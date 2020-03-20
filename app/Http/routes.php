@@ -156,7 +156,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('/invoice-pop', ['as' => 'show-invoice-pop', 'uses' => 'PaymentController@createInvoice']);
 
 
-    route::get('error', [
+    Route::get('error', [
         'as' => 'errors.defaultError',
         function () {
             return view('errors.500');

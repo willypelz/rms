@@ -447,9 +447,18 @@ class JobController extends Controller
             );
         }
 
-        $current_company = Company::get()->first();
+        $company = Company::first();
 
-        if ($req_header != $current_company->api_key) {
+        if(is_null($company)){
+            return response()->json([
+                'status' => false,
+                'message' => 'No company has being set up on this platform',
+            ],
+                400
+            );
+        }
+
+        if ($req_header != $company->api_key) {
             return response()->json([
                     'status' => false,
                     'message' => 'Invalid API Key',
@@ -479,21 +488,21 @@ class JobController extends Controller
             ];
 
 
-        if($user) {
-            $user->username = $data['username'];
-            $user->is_internal = $data['is_internal'];
-            $user->activated = $data['activated'];
-            $user->is_super_admin = $data['is_super_admin'];
-            $user->save();
-        } else {
-            $user = User::firstOrCreate($data);
+        if(!is_null($user)) {
+            return response()->json([
+                    'status' => false,
+                    'message' => 'User already exist',
+                ],
+                400
+            );
+
         }
+
+        $user = User::firstOrCreate($data);
 
         $role = Role::whereName('admin')->first()->id;
 
-        if(!$current_company->users()->where('user_id', $user->id)->first()) {
-            $current_company->users()->update([ 'user_id' => $user->id, 'role' => $role[0]['id']]);
-        }
+        $company->users()->attach($user->id, ['role' => $role[0]['id']]);
 
         $user->roles()->attach([$role]);
 
@@ -502,6 +511,8 @@ class JobController extends Controller
                 'message' => 'created successfully',
             ]
         );
+
+
 
     }
 

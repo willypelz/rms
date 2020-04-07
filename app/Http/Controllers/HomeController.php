@@ -147,12 +147,14 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         $comp_id = get_current_company()->id;
-        $job_access = Job::where('company_id', $comp_id)
-                        ->whereHas('users', function ($q) use ($user){
-                            $q->where('user_id', $user->id);
-                        })->get()->pluck('id')->toArray();
 
-        
+
+        $job_access = Job::with('users')->where('company_id',  $comp_id)->get();
+        $job_access->filter(function ($item) use ($user){
+            return $item->users->where('user_id', $user->id);
+        });
+
+        $job_access->pluck('id')->toArray();
 
         
         $jobs_count = Job::where('company_id', $comp_id);

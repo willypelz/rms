@@ -27,17 +27,17 @@
 use App\Libraries\Solr;
 use Illuminate\Support\Facades\Route;
 
-URL::forceSchema('https');
+// URL::forceSchema('https');
 
 Route::group(['middleware' => ['web']], function () {
-Route::get('/sso/auto/login/verify/{email}/{key}', 'Auth\AuthController@singleSignOnVerify');
-  Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\AuthController@loginUser');
+Route::get('/sso/auto/login/verify/{email}/{key}', 'Auth\LoginController@singleSignOnVerify');
+  Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
 });
 
 
 Route::group(['middleware' => ['web']], function () {
 
-    Route::controller('schedule', 'ScheduleController');
+    Route::resource('schedule', 'ScheduleController');
 });
 
 Route::get('hospital-project', function () {
@@ -67,15 +67,15 @@ Route::group(['middleware' => 'web'], function () {
         'prefix' => '/admin',
         'middleware' => 'admin'
     ], function () {
-        Route::get('auth/logout', 'AuthController@logout');
+        Route::get('auth/logout', 'LoginController@logout');
     });
     Route::any('admin-accept-invite/{id}/{company_id}',['uses' => 'AdminsController@adminAcceptInvite', 'as' => 'admin-accept-invite']);
     /** -- End: Administrator Panel Route -- */
 
     Route::auth();
-    Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
+    Route::get('user/activation/{token}', 'Auth\LoginController@activateUser')->name('user.activate');
 
-    Route::post('user/auth/verify', 'Auth\AuthController@verifyUser')->name('verify-user-details');
+    Route::post('user/auth/verify', 'Auth\LoginController@verifyUser')->name('verify-user-details');
     Route::any('', 'HomeController@home')->name('candidate-login');
     Route::any('register', 'HomeController@register')->name('candidate-register');
     Route::any('forgot', 'CandidateController@forgot')->name('candidate-forgot');
@@ -121,7 +121,7 @@ Route::group(['middleware' => 'web'], function () {
     });
 
 
-    Route::get('/test', function () {
+    // Route::get('/test', function () {
 
         /* $jobs = \App\Models\Job::where('company_id',50)->where('status','ACTIVE')->orderBy('title','ASC')->get();
 
@@ -147,7 +147,7 @@ Route::group(['middleware' => 'web'], function () {
         // })->where('status','!=','PENDING')->count();
 
         // dump( $applications )
-    });
+    // });
 
     Route::get('invoice/{invoice_id}', ['as' => 'show-invoice', 'uses' => 'PaymentController@showInvoice']);
 
@@ -240,18 +240,19 @@ Route::group(['middleware' => 'web'], function () {
         //return view('payment.simplepay');
     });
 
-    Route::get('log-in', 'Auth\AuthController@showLoginForm');
+    Route::get('log-in', 'Auth\LoginController@showLoginForm');
+    Route::get('/logout', 'Auth\LoginController@logout');
 
-    Route::post('log-in', 'Auth\AuthController@login');
+    Route::post('log-in', 'Auth\LoginController@login');
 
-    Route::get('/auto-login/{code}', 'Auth\AuthController@autoLogin');
+    Route::get('/auto-login/{code}', 'Auth\LoginController@autoLogin');
 
 
     // Route::get('sign-up', 'Auth\AuthController@showRegistrationForm');
 
     // Route::post('sign-up', 'Auth\AuthController@register');
 
-    Route::match(['get', 'post'], 'auth/ajax_login', ['uses' => 'Auth\AuthController@AjaxLogin', 'as' => 'ajax_login']);
+    Route::match(['get', 'post'], 'auth/ajax_login', ['uses' => 'Auth\LoginController@AjaxLogin', 'as' => 'ajax_login']);
     Route::match(['get', 'post'], 'sign-up', ['uses' => 'Auth\AuthController@Registration', 'as' => 'registration']);
     Route::match(['get', 'post'], 'add-company', ['uses' => 'JobsController@AddCompany', 'as' => 'add-company']);
     // Route::match(['get', 'post'], 'edit-company', ['uses' => 'JobsController@editCompany', 'as' => 'edit-company']);

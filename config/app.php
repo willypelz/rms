@@ -153,7 +153,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Zizaco\Entrust\EntrustServiceProvider::class,
+        Illuminate\Notifications\NotificationServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -162,6 +162,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Zizaco\Entrust\EntrustServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Ixudra\Curl\CurlServiceProvider::class,

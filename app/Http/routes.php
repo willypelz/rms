@@ -173,7 +173,7 @@ Route::group(['middleware' => 'web'], function () {
         $request = request();
         $data = $request->all();
 
-        $mail = Mail::queue('emails.new.contact', $data, function ($m) use ($data) {
+        $mail = Mail::send('emails.new.contact', $data, function ($m) use ($data) {
             $m->from($data->email, 'New Job Paid');
             // $m->to('babatopeoni@gnmail.com')->subject('Contact');
             $m->to('support@seamlesshiring.com')->subject('Contact');
@@ -222,7 +222,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('simple-pay', function () {
 
         $user  = 'AYolana';
-        $email = Mail::queue('emails.cv-sales.invoice', ['user' => $user], function ($message) {
+        $email = Mail::send('emails.cv-sales.invoice', ['user' => $user], function ($message) {
             $message->from('us@example.com', 'Laravel');
 
             $message->to('lanaayodele@gmail.com');
@@ -532,7 +532,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('/test-mail', function () {
 
-        dd(Mail::queue('emails.sample', ['name' => 'Deji Lana'], function ($m) {
+        dd(Mail::send('emails.sample', ['name' => 'Deji Lana'], function ($m) {
             $m->from('alerts@insidify.com', 'Ndidi, Insidify.com');
 
             $m->to('deji@insidify.com', 'Deji Lana')->subject('Your Reminder!');

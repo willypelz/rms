@@ -246,7 +246,7 @@ class LoginController extends Controller
 
             //Send New user notification email
             /*$to = 'support@seamlesshiring.com';
-            $mail = Mail::queue('emails.new.sign-up', ['user' => $user ,'company' => $comp], function ($m) use($comp,$user,$to) {
+            $mail = Mail::send('emails.new.sign-up', ['user' => $user ,'company' => $comp], function ($m) use($comp,$user,$to) {
                 $m->from($to, @$comp->name);
 
                 $m->to($to)->subject('New Sign Up');

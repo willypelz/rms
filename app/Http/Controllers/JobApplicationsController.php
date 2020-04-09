@@ -311,7 +311,7 @@ class JobApplicationsController extends Controller
         $email_title = "Message on your job application ".$candidate->job->title;
         $application_id = $request->application_id;
         $link = route('candidate-messages', $request->application_id);
-        Mail::queue('emails.new.admin_send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($candidate, $email_title) {
+        Mail::send('emails.new.admin_send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($candidate, $email_title) {
             $m->from(env('COMPANY_EMAIL'))->to($candidate->candidate->email)->subject($email_title);
         });
 
@@ -787,7 +787,7 @@ class JobApplicationsController extends Controller
 
         //$archive->addMembers($cvs, $recursive = false );
 
-        $zipper = new \Chumper\Zipper\Zipper;
+        $zipper = new \Madnest\Madzipper\Zipper;
         @$zipper->make($path . $filename)->add($cvs)->close();
 
         return Response::download($path . $filename, 'Cv.zip', ['Content-Type' => 'application/octet-stream']);
@@ -833,7 +833,7 @@ class JobApplicationsController extends Controller
         $timestamp = " " . time() . " ";
 
         }
-        $zipper = new \Chumper\Zipper\Zipper;
+        $zipper = new \Madnest\Madzipper\Zipper;
         @$zipper->make($path . $timestamp . $filename)->add($files_to_archive)->close();
 
 
@@ -1092,7 +1092,7 @@ class JobApplicationsController extends Controller
         }
         $timestamp = " " . time() . " ";
 
-        $zipper = new \Chumper\Zipper\Zipper;
+        $zipper = new \Madnest\Madzipper\Zipper;
         @$zipper->make($path . $timestamp . $filename)->add($files_to_archive)->close();
 
 

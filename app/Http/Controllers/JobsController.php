@@ -261,7 +261,7 @@ class JobsController extends Controller
                     $email = $request->email;
                     //Send notification mail
 
-                    \Illuminate\Support\Facades\Mail::queue('emails.new.admin_invite', ['data'=>$data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) use ($email){
+                    \Illuminate\Support\Facades\Mail::send('emails.new.admin_invite', ['data'=>$data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) use ($email){
                         $m->from(env('COMPANY_EMAIL'))->to($email)->subject('You Have Been Exclusively Invited');
                     });
                     return back()->with('success', "Invite Sent successfully");
@@ -317,7 +317,7 @@ class JobsController extends Controller
             //Send notification mail
             $email_from = (Auth::user()->email) ? Auth::user()->email : env('COMPANY_EMAIL');
 
-            \Illuminate\Support\Facades\Mail::queue('emails.new.exclusively_invited', ['data' => $data, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
+            \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $data, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
                 $m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
             });
 
@@ -871,7 +871,7 @@ class JobsController extends Controller
 
                 //Send New job notification email
                 $to = env('COMPANY_EMAIL');
-                $mail = Mail::queue('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
+                $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
                     $m->from($to, @$company->name);
                     $m->to($to)->subject('New Job initiated');
                 });
@@ -1067,7 +1067,7 @@ class JobsController extends Controller
 
                 //Send New job notification email
                 $to = env('COMPANY_EMAIL');
-                $mail = Mail::queue('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
+                $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
                     $m->from($to, @$company->name);
 
                     $m->to($to)->subject('New Job initiated');
@@ -2389,7 +2389,7 @@ class JobsController extends Controller
 
             }
 
-            Mail::queue('emails.new.job_application_successful', ['user' => $candidate, 'link' => route('candidate-dashboard'), 'job' => $job], function (Message $m) use ($candidate) {
+            Mail::send('emails.new.job_application_successful', ['user' => $candidate, 'link' => route('candidate-dashboard'), 'job' => $job], function (Message $m) use ($candidate) {
                 $m->from(env('COMPANY_EMAIL'))->to($candidate->email)->subject('Job Application Successful');
             });
 
@@ -2636,7 +2636,7 @@ class JobsController extends Controller
             $to = explode(',', $request->to);
             $job = Job::find($request->jobid);
 
-            $mail = Mail::queue('emails.cv-sales-invoice', ['job' => $job], function ($m) use ($to) {
+            $mail = Mail::send('emails.cv-sales-invoice', ['job' => $job], function ($m) use ($to) {
                 $m->from('hello@app.com', 'Your Application');
 
                 $m->to($to)->subject('Your Reminder!');
@@ -2658,7 +2658,7 @@ class JobsController extends Controller
         $to = env('COMPANY_EMAIL');
 
         if ($request->type == 'JOB_BOARD') {
-            $mail = Mail::queue('emails.new.job-application', ['job' => $job, 'boards' => $request->boards, 'company' => $company], function ($m) use ($company, $to) {
+            $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => $request->boards, 'company' => $company], function ($m) use ($company, $to) {
                 $m->from($to, @$company->name);
 
                 $m->to($to)->subject('New Job initiated');
@@ -2753,7 +2753,7 @@ class JobsController extends Controller
 
 
                 $user = Auth::user();
-                $mail = Mail::queue('emails.new.successful_payment', compact('invoice', 'invoice_type', 'user', 'amount'), function ($m) use ($invoice, $invoice_type) {
+                $mail = Mail::send('emails.new.successful_payment', compact('invoice', 'invoice_type', 'user', 'amount'), function ($m) use ($invoice, $invoice_type) {
                     $m->from(env('COMPANY_EMAIL'), 'Seamlesshiring');
 
                     // $m->to(env('COMPANY_EMAIL'))->subject('Customer Invoice: #'.$invoice->id);
@@ -2769,7 +2769,7 @@ class JobsController extends Controller
                     }
 
 
-                    $mail = Mail::queue('emails.new.job-application', ['job' => $job, 'boards' => $request->boards, 'company' => $company], function ($m) use ($company, $to) {
+                    $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => $request->boards, 'company' => $company], function ($m) use ($company, $to) {
                         $m->from($to, @$company->name);
 
                         $m->to($to)->subject('New Job Paid');
@@ -2801,7 +2801,7 @@ class JobsController extends Controller
                 }
 
 
-                $mail = Mail::queue('emails.new.job-application', ['job' => $job, 'boards' => $request->boards, 'company' => $company], function ($m) use ($company, $to) {
+                $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => $request->boards, 'company' => $company], function ($m) use ($company, $to) {
                     $m->from($to, @$company->name);
 
                     $m->to($to)->subject('New Job Paid');
@@ -2861,7 +2861,7 @@ class JobsController extends Controller
         $job = Job::find($request->jobid);
         $to = $request->emails;
 
-        $mail = Mail::queue('emails.cv-sales-invoice', ['job' => $job], function ($m) use ($to) {
+        $mail = Mail::send('emails.cv-sales-invoice', ['job' => $job], function ($m) use ($to) {
             $m->from('alerts@insidify.com', 'Your Application');
 
             $m->to($to)->subject('Job for you');
@@ -2882,7 +2882,7 @@ class JobsController extends Controller
         $job = Job::find($request->jobid);
         $to = $user->email;
 
-        $mail = Mail::queue('emails.cv-sales-invoice', ['job' => $job], function ($m) use ($to) {
+        $mail = Mail::send('emails.cv-sales-invoice', ['job' => $job], function ($m) use ($to) {
             $m->from('alerts@insidify.com', 'Your Application');
 
             $m->to($to)->subject('Job for you');

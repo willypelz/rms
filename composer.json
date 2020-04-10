@@ -28,7 +28,8 @@
         "h4cc/wkhtmltopdf-amd64": "0.12.x",
         "h4cc/wkhtmltoimage-amd64": "0.12.x",
         "sentry/sentry-laravel": "^1.0",
-        "wemersonjanuario/wkhtmltopdf-windows": "0.12.2.3"
+        "wemersonjanuario/wkhtmltopdf-windows": "0.12.2.3",
+        "laravel/helpers": "^1.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

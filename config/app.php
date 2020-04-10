@@ -153,7 +153,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Zizaco\Entrust\EntrustServiceProvider::class,
+        Illuminate\Notifications\NotificationServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -162,10 +162,11 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Trebol\Entrust\EntrustServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Ixudra\Curl\CurlServiceProvider::class,
-        Chumper\Zipper\ZipperServiceProvider::class,
+        Madnest\Madzipper\MadzipperServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         ConsoleTVs\Charts\ChartsServiceProvider::class,
@@ -221,7 +222,7 @@ return [
         'Cart' => 'Gloudemans\Shoppingcart\Facades\Cart',
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-        'Zipper' => Chumper\Zipper\Zipper::class,
+        'Zipper' => Madnest\Madzipper\Zipper::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         // 'PDF' => Barryvdh\DomPDF\Facade::class,
         'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
@@ -229,7 +230,7 @@ return [
         'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
         'Uuid' => Webpatser\Uuid\Uuid::class,
-        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'Entrust'   => Trebol\Entrust\EntrustFacade::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
     ],
 ];

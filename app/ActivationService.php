@@ -39,7 +39,7 @@ class ActivationService
         $this->mailer->send('emails.new.activate_account', ['user' => $user, 'link' => $link], function (Message $m) use ($user) {
             $m->from('support@seamlesshiring.com')->to($user->email)->subject('Activate your Seamlesshiring account');
         });
-        // Mail::queue('emails.cv-sales.invoice', [], function($message){
+        // Mail::send('emails.cv-sales.invoice', [], function($message){
         //     $message->from(env('COMPANY_EMAIL'));
         //     $message->to('babatopeoni@gmail.com', 'SH test email');
         // }); 

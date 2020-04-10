@@ -59,7 +59,7 @@ class OnboardingController extends Controller
 
         // dd( FolderContent::where('getFolderType.type','saved')->get()->toArray() );
          
-        // Mail::queue('emails.cv-sales.invoice', [], function($message){
+        // Mail::send('emails.cv-sales.invoice', [], function($message){
         //     $message->from(env('COMPANY_EMAIL'));
         //     $message->to('babatopeoni@gmail.com', 'SH test email');
         // }); 
@@ -69,7 +69,7 @@ class OnboardingController extends Controller
 
     public function requestACall(Request $request)
     {
-        // Mail::queue('emails.welcome', $data, function($message)
+        // Mail::send('emails.welcome', $data, function($message)
         // {
         //     // $message->from('us@example.com', 'Laravel');
 
@@ -78,7 +78,7 @@ class OnboardingController extends Controller
         //     $message->attach($pathToFile);
         // });
 
-        Mail::queue('emails.guest.request-call', $request->all(), function($message){
+        Mail::send('emails.guest.request-call', $request->all(), function($message){
             $message->from(env('COMPANY_EMAIL'));
             $message->to('support@seamlesshiring.com', 'Seamless Hiring Call Request');
         });
@@ -98,7 +98,7 @@ class OnboardingController extends Controller
                     $company->last_mail_sent = 'noAction1';
                     $company->save();
 
-                    // $mail = Mail::queue('emails.new.onboarding.signedup_because', ['email' => $owner->email, 'name' => $owner->name], function($message) use($owner){
+                    // $mail = Mail::send('emails.new.onboarding.signedup_because', ['email' => $owner->email, 'name' => $owner->name], function($message) use($owner){
                     //     $message->from('support@seamlesshiring.com')
                     //              ->to($owner->email)
                     //              ->subject('You signed up because…');
@@ -124,7 +124,7 @@ class OnboardingController extends Controller
                     $company->save();
 
 
-                    // $mail = Mail::queue('emails.new.onboarding.why_wait', ['email' => $owner->email, 'name' => $owner->name], function($message) use($owner){
+                    // $mail = Mail::send('emails.new.onboarding.why_wait', ['email' => $owner->email, 'name' => $owner->name], function($message) use($owner){
                     //     $message->from('support@seamlesshiring.com')
                     //              ->to($owner->email)
                     //              ->subject('Why wait? Let’s get you started.');
@@ -139,7 +139,7 @@ class OnboardingController extends Controller
     public function noAction3( Request $request )
     {
         $owner = (object) [ 'email' => 'babatopeoni@gmail.com', 'name' => 'Babatope Oni' ];
-        $mail = Mail::queue('emails.new.onboarding.better_hiring_process', ['email' => $owner->email, 'name' => $owner->name], function($message) use($owner){
+        $mail = Mail::send('emails.new.onboarding.better_hiring_process', ['email' => $owner->email, 'name' => $owner->name], function($message) use($owner){
                         $message->from('support@seamlesshiring.com')
                                  ->to($owner->email)
                                  ->subject('Let Us Help You Build a Better Hiring Process.');
@@ -156,7 +156,7 @@ class OnboardingController extends Controller
                     $company->save();
 
 
-                    // $mail = Mail::queue('emails.new.onboarding.better_hiring_process', ['email' => $owner->email, 'name' => $owner->name], function($message) use($owner){
+                    // $mail = Mail::send('emails.new.onboarding.better_hiring_process', ['email' => $owner->email, 'name' => $owner->name], function($message) use($owner){
                     //     $message->from('support@seamlesshiring.com')
                     //              ->to($owner->email)
                     //              ->subject('Let Us Help You Build a Better Hiring Process.');
@@ -172,7 +172,7 @@ class OnboardingController extends Controller
     public function actionTaken1( Request $request )
     {
         $owner = (object) [ 'email' => 'babatopeoni@gmail.com', 'name' => 'Babatope Oni' ];
-        $mail = Mail::queue('emails.new.onboarding.better_hiring_process', ['email' => $owner->email, 'name' => $owner->name], function($message) use($owner){
+        $mail = Mail::send('emails.new.onboarding.better_hiring_process', ['email' => $owner->email, 'name' => $owner->name], function($message) use($owner){
                         $message->from('support@seamlesshiring.com')
                                  ->to($owner->email)
                                  ->subject('Let Us Help You Build a Better Hiring Process.');
@@ -189,7 +189,7 @@ class OnboardingController extends Controller
                     $company->save();
 
 
-                    // $mail = Mail::queue('emails.new.onboarding.better_hiring_process', ['email' => $owner->email, 'name' => $owner->name], function($message) use($owner){
+                    // $mail = Mail::send('emails.new.onboarding.better_hiring_process', ['email' => $owner->email, 'name' => $owner->name], function($message) use($owner){
                     //     $message->from('support@seamlesshiring.com')
                     //              ->to($owner->email)
                     //              ->subject('Let Us Help You Build a Better Hiring Process.');

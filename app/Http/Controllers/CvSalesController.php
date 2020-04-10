@@ -411,7 +411,7 @@ class CvSalesController extends Controller
 
         $user = Auth::user();
         // dd($user);
-       $emailer =  Mail::queue('emails.cv-sales.invoice', ['user' => $user], function ($m) use ($user) {
+       $emailer =  Mail::send('emails.cv-sales.invoice', ['user' => $user], function ($m) use ($user) {
             $m->from('support@seamlesshiring.com', 'Your Application');
 
             $m->to('babatopeoni@gmail.com', 'Ayo')->subject('Your Reminder!');

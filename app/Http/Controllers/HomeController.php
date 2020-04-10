@@ -177,7 +177,7 @@ class HomeController extends Controller
         // $saved_cvs_count = Solr::get_saved_cvs($this->search_params)['response']['numFound'];
         // $purchased_cvs_count = Solr::get_purchased_cvs($this->search_params)['response']['numFound'];
 
-        // Mail::queue('emails.cv-sales.invoice', [], function($message){
+        // Mail::send('emails.cv-sales.invoice', [], function($message){
         //     $message->from(env('COMPANY_EMAIL'));
         //     $message->to('babatopeoni@gmail.com', 'SH test email');
         // });
@@ -189,7 +189,7 @@ class HomeController extends Controller
     {
         if( $request->isMethod('post') )
         {
-            $mail = Mail::queue('emails.guest.talent-sourcing', $request->all(), function($message){
+            $mail = Mail::send('emails.guest.talent-sourcing', $request->all(), function($message){
                 $message->from('support@seamlesshiring.com');
                 $message->to('support@seamlesshiring.com', 'Seamless Hiring Talent Sourcing Request');
             });
@@ -209,7 +209,7 @@ class HomeController extends Controller
 
     public function requestACall(Request $request)
     {
-        // Mail::queue('emails.welcome', $data, function($message)
+        // Mail::send('emails.welcome', $data, function($message)
         // {
         //     // $message->from('us@example.com', 'Laravel');
 
@@ -218,7 +218,7 @@ class HomeController extends Controller
         //     $message->attach($pathToFile);
         // });
 
-        Mail::queue('emails.guest.request-call', $request->all(), function($message){
+        Mail::send('emails.guest.request-call', $request->all(), function($message){
             $message->from('support@seamlesshiring.com');
             $message->to('support@seamlesshiring.com', 'Seamless Hiring Call Request');
         });

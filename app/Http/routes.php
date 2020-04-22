@@ -35,10 +35,16 @@ Route::get('/sso/auto/login/verify/{email}/{key}', 'Auth\LoginController@singleS
 });
 
 
+
+Route::get('/ping', 'SolariumController@ping');
+
+
 Route::group(['middleware' => ['web']], function () {
 
     Route::resource('schedule', 'ScheduleController');
 });
+
+
 
 Route::get('hospital-project', function () {
     $agent = new \Jenssegers\Agent\Agent();
@@ -350,6 +356,11 @@ Route::group(['middleware' => 'web'], function () {
     // Route::any('log-in', function () {
     //     return view('auth.login');
     // });
+
+Route::get('/one_applicant', 'JobApplication@oneApplicantData');
+
+    Route::match(['get', 'post'], 'one_applicant',
+        ['uses' => 'JobApplicationsController@oneApplicantData']);
 
     Route::match(['get', 'post'], 'job/candidates/{jobID}',
         ['uses' => 'JobApplicationsController@viewApplicants', 'as' => 'job-candidates']);
@@ -771,7 +782,7 @@ Route::group(['middleware' => 'web'], function () {
 
   /* Easily update Solr via URL*/
   Route::get('/solr/update/{redirect?}', function ($redirect = '') {
-      Solr::update_core(null, 'full-import');
+      SolrPackage::update_core(null, 'full-import');
 
       if ($redirect == 'false') {
           return '';

@@ -1,11 +1,12 @@
 <?php
-use App\Models\JobActivity;
-use App\Models\Job;
-use App\Models\Cv;
 use App\Libraries\Solr;
-use App\Models\JobApplication;
 use App\Models\Candidate;
 use App\Models\Company;
+use App\Models\Cv;
+use App\Models\Job;
+use App\Models\JobActivity;
+use App\Models\JobApplication;
+use SeamlessHR\SolrPackage\Facades\SolrPackage;
 // use Faker;
 
 	function test(){
@@ -647,7 +648,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 
     // $settings->set('LAST_CV_UPLOAD_INDEX',$last_cv_upload_index);
     $user = Auth::user();
-    Solr::update_core();
+    SolrPackage::update_core();
     Mail::send('emails.new.cv_upload_successful', ['user' => $user, 'link'=> url('cv/talent-pool') ], function ($m) use ($user) {
         $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
     });

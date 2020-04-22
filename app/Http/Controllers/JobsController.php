@@ -2,48 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use  App\Http\Controllers\CvSalesController;
+use Alchemy\Zippy\Zippy;
 use App\Http\Requests;
-use App\Models\Role;
-use App\Models\Workflow;
-use Illuminate\Http\Request;
-use App\Models\JobBoard;
-use App\Models\Job;
-use App\Models\Specialization;
-use App\Models\JobActivity;
-use App\Models\Cv;
-use App\Models\JobApplication;
-use App\Models\Company;
-use App\Models\FormFields;
-use App\Models\FormFieldValues;
-use App\Models\VideoApplicationOptions;
-use App\Models\VideoApplicationValues;
-use App\Models\Settings;
-use App\Models\TestRequest;
-use App\Models\Invoices;
-use App\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Validator;
-use Cart;
-use Session;
-use Auth;
-use Mail;
-use Curl;
+use App\Jobs\UploadZipCv;
 use App\Libraries\Solr;
 use App\Libraries\Utilities;
-use Carbon\Carbon;
-use DB;
-use Crypt;
-use  App\Http\Controllers\CvSalesController;
-use File;
-use Illuminate\Mail\Mailer;
-use Illuminate\Mail\Message;
-use App\Jobs\UploadZipCv;
-use Alchemy\Zippy\Zippy;
-use Charts;
+use App\Models\Candidate;
+use App\Models\Company;
+use App\Models\Cv;
+use App\Models\FormFieldValues;
+use App\Models\FormFields;
+use App\Models\Invoices;
+use App\Models\Job;
+use App\Models\JobActivity;
+use App\Models\JobApplication;
+use App\Models\JobBoard;
 use App\Models\JobTeamInvite;
 use App\Models\Message as CandidateMessage;
-use App\Models\Candidate;
+use App\Models\Role;
+use App\Models\Settings;
+use App\Models\Specialization;
+use App\Models\TestRequest;
+use App\Models\VideoApplicationOptions;
+use App\Models\VideoApplicationValues;
+use App\Models\Workflow;
+use App\User;
+use Auth;
+use Carbon\Carbon;
+use Cart;
+use Charts;
+use Crypt;
+use Curl;
+use DB;
+use File;
+use Illuminate\Http\Request;
+use Illuminate\Mail\Mailer;
+use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Mail;
+use SeamlessHR\SolrPackage\Facades\SolrPackage;
+use Session;
+use Validator;
 
 // use Zipper;
 
@@ -1252,13 +1253,13 @@ class JobsController extends Controller
 
     public function AddCandidates($jobid = null)
     {
-
+        $job = NULL;
         if (!empty($jobid)) {
             $job = Job::find($jobid);
         }
 
         $myJobs = Job::getMyJobs();
-        $myFolders = array_unique(array_pluck(Solr::get_all_my_cvs($this->search_params, null, null)['response']['docs'], 'cv_source'));
+        $myFolders = array_unique(array_pluck(SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'], 'cv_source'));
 
         if (($key = array_search('Direct Application', $myFolders)) !== false) {
             unset($myFolders[$key]);
@@ -1508,7 +1509,7 @@ class JobsController extends Controller
         $job = Job::find($id);
         $company = $job->company()->first();
 
-        $result = Solr::get_applicants($this->search_params, $id, '');
+        $result = SolrPackage::get_applicants($this->search_params, $id, '');
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id);
 
@@ -1540,7 +1541,7 @@ class JobsController extends Controller
         };
 
         $myJobs = Job::getMyJobs();
-        $myFolders = array_unique(array_pluck(Solr::get_all_my_cvs($this->search_params, null, null)['response']['docs'], 'cv_source'));
+        $myFolders = array_unique(array_pluck(SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'], 'cv_source'));
 
         return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'result', 'application_statuses', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
     }
@@ -1559,7 +1560,7 @@ class JobsController extends Controller
         $job = Job::with('workflow.workflowSteps')->find($id);
         $active_tab = 'team';
 
-        $result = Solr::get_applicants($this->search_params, $id, '');
+        $result = SolrPackage::get_applicants($this->search_params, $id, '');
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id);
 
@@ -1697,9 +1698,7 @@ class JobsController extends Controller
                     break;
                 case "APPLIED":
 
-                    if (is_null($ac->application)) {
-                        continue;
-                    }
+                    if (!is_null($ac->application)) {
                     $applicant = $ac->application->cv;
                     $job = $ac->application->job;
                     $content .= '<li role="candidate-application" class="list-group-item">
@@ -1715,6 +1714,8 @@ class JobsController extends Controller
                                       <a href="' . url('applicant/activities/' . $ac->application->id) . '" target="_blank">' . $applicant->first_name . ' ' . $applicant->last_name . '</a> applied for <strong><a href="' . url('job/candidates/' . $ac->application->job->id) . '" target="_blank">' . $job->title . '</a></strong>
                                   </p>
                                 </li>';
+                    }
+
                     break;
                 /*case "SHORTLISTED":
                $applicant = $ac->application->cv;
@@ -1731,7 +1732,7 @@ class JobsController extends Controller
                                     <a href="'. url('applicant/activities/'.$ac->application->id)  .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been shortlisted by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                 </p>
                               </li>';
-                   break;*/
+                   continue;*/
 
                 /*case "ASSESSED":
                $applicant = $ac->application->cv;
@@ -1748,13 +1749,11 @@ class JobsController extends Controller
                                     <a href="'. url('applicant/activities/'.$ac->application->id) .'" target="_blank">'.$applicant->first_name.' '.$applicant->last_name.'</a> has been scheduled for test by <strong>'.( is_null( @$ac->user->name ) ? 'Admin' : @$ac->user->name ).'</strong>.
                                 </p>
                               </li>';
-                   break;*/
+                   continue;*/
 
                 case "TEST_ORDER":
 
-                    if (is_null($ac->application)) {
-                        continue;
-                    }
+                    if (!is_null($ac->application)) {
                     $applicant = $ac->application->cv;
                     $content .= '<li role="candidate-application" class="list-group-item">
 
@@ -1769,13 +1768,13 @@ class JobsController extends Controller
                                       A test as been ordered <a href="' . url('applicant/activities/' . $ac->application->id) . '" target="_blank">' . $applicant->first_name . ' ' . $applicant->last_name . '</a>.
                                   </p>
                                 </li>';
+                    }
                     break;
 
                 case "TEST_RESULT":
 
-                    if (is_null($ac->application)) {
-                        continue;
-                    }
+                    if (!is_null($ac->application)) {
+                        
                     $applicant = $ac->application->cv;
                     $content .= '<li role="candidate-application" class="list-group-item">
 
@@ -1790,13 +1789,12 @@ class JobsController extends Controller
                                       <a href="' . url('applicant/activities/' . $ac->application->id) . '" target="_blank">' . $applicant->first_name . ' ' . $applicant->last_name . '</a>\'s test result has been sent.
                                   </p>
                                 </li>';
+                    }
                     break;
 
                 case "PENDING":
 
-                    if (is_null($ac->application)) {
-                        continue;
-                    }
+                    if (!is_null($ac->application)) {
                     $applicant = $ac->application->cv;
                     $content .= '<li role="candidate-application" class="list-group-item">
 
@@ -1811,6 +1809,7 @@ class JobsController extends Controller
                                       <a href="' . url('applicant/activities/' . $ac->application->id) . '" target="_blank">' . $applicant->first_name . ' ' . $applicant->last_name . '</a> has been returned to all by <strong>' . (is_null(@$ac->user->name) ? 'Admin' : @$ac->user->name) . '</strong>.
                                   </p>
                                 </li>';
+                    }
                     break;
 
                 /*case "INTERVIEWED":
@@ -1884,9 +1883,7 @@ class JobsController extends Controller
                     break;*/
                 case "COMMENT":
 
-                    if (is_null($ac->application)) {
-                        continue;
-                    }
+                    if (!is_null($ac->application)) {
                     $applicant = $ac->application->cv;
 
                     $content .= '<li role="messaging" class="list-group-item">
@@ -1903,13 +1900,12 @@ class JobsController extends Controller
                                   </p>
 
                                 </li>';
+                    }
                     break;
 
                 case "REVIEW":
 
-                    if (is_null($ac->application)) {
-                        continue;
-                    }
+                    if (!is_null($ac->application)) {
                     $applicant = $ac->application->cv;
 
 
@@ -1927,6 +1923,7 @@ class JobsController extends Controller
                                   </p>
 
                                 </li>';
+                    }
                     break;
 
                 case "SUSPEND-JOB":
@@ -1983,9 +1980,7 @@ class JobsController extends Controller
                     break;
 
                 default:
-                    if (is_null($ac->application)) {
-                        continue;
-                    }
+                    if (!is_null($ac->application)) {
                     $applicant = $ac->application->cv;
                     $content .= '<li role="candidate-application" class="list-group-item">
 
@@ -2000,6 +1995,7 @@ class JobsController extends Controller
                                       <a href="' . url('applicant/activities/' . $ac->application->id) . '" target="_blank">' . $applicant->first_name . ' ' . $applicant->last_name . '</a> has been moved to <strong>' . $ac->application->status . '</strong> by <strong>' . (is_null(@$ac->user->name) ? 'Admin' : @$ac->user->name) . '</strong>.
                                   </p>
                                 </li>';
+                    }
             }
 
         }
@@ -2029,7 +2025,9 @@ class JobsController extends Controller
 
         $active_tab = 'activities';
 
-        $result = Solr::get_applicants($this->search_params, $id, '');
+        $result = SolrPackage::get_applicants($this->search_params, $id, '');
+
+        // dd($result, 'so');
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id, $job->workflow->workflowSteps()->pluck('slug'));
 
@@ -2047,28 +2045,36 @@ class JobsController extends Controller
         $applicant_funnel = implode(',', $applicant_funnel);
 
 
-        $applications = JobApplication::where('job_id', $id)->select("created", DB::raw("DATE_FORMAT(created, '%d-%c-%Y') as created"))->get()->groupBy('created')->toArray();
+        $applications = JobApplication::where('job_id', $id)->select("created", DB::raw("DATE_FORMAT(created, '%d-%c-%Y') as created"))->orderBy('created', 'asc')->get()->groupBy('created')->take(10)->toArray();
         //"cust.*", DB::raw("DATE_FORMAT(cust.cust_dob, '%d-%b-%Y') as formatted_dob")
 
         $applications = array_map(function ($value) {
             return count($value);
         }, $applications);
 
-        $applications_per_day_chart = Charts::create('line', 'highcharts')
-            // ->view('custom.line.chart.view') // Use this if you want to use your own template
-            ->title(' ')
-            ->elementLabel("Applicants")
-            ->labels(array_keys($applications))
-            // ->labels( array_map(function($value){ return date('D. d M Y', strtotime( $value ) ); },  array_keys($applications) ) )
-            ->values(array_values($applications))
-            // ->dimensions(1000,500)
-            // ->width('100%')
-            ->credits(false)
-            // ->legend({ 'enabled' : false })
-            ->responsive(true);
+
+        // $chart = new SampleChart;
+        // $chart->labels($);
+        // $chart->dataset('My dataset', 'line', [1, 2, 3, 4]);
+        // $chart->dataset('My dataset 2', 'line', [4, 3, 2, 1]);
+
+        // $applications_per_day_chart = Charts::create('line', 'highcharts')
+        //     // ->view('custom.line.chart.view') // Use this if you want to use your own template
+        //     ->title(' ')
+        //     ->elementLabel("Applicants")
+        //     ->labels(array_keys($applications))
+        //     // ->labels( array_map(function($value){ return date('D. d M Y', strtotime( $value ) ); },  array_keys($applications) ) )
+        //     ->values(array_values($applications))
+        //     // ->dimensions(1000,500)
+        //     // ->width('100%')
+        //     ->credits(false)
+        //     // ->legend({ 'enabled' : false })
+        //     ->responsive(true);
+        //     
+        // dd(array_values($applications), array_keys($applications));
 
 
-        return view('job.board.activities', compact('job', 'active_tab', 'content', 'result', 'application_statuses', 'applications_per_day_chart', 'applicantsFunnelChart', 'applicant_funnel'));
+        return view('job.board.activities', compact('job', 'active_tab', 'result', 'application_statuses', 'applications', 'applicant_funnel', 'applications'));
     }
 
     public function JobCandidates($id, Request $request)
@@ -2087,7 +2093,7 @@ class JobsController extends Controller
         $job = Job::find($id);
         $active_tab = 'matching';
 
-        $result = Solr::get_applicants($this->search_params, $id, '');
+        $result = SolrPackage::get_applicants($this->search_params, $id, '');
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id);
 
@@ -2395,7 +2401,7 @@ class JobsController extends Controller
 
 
             try {
-                Solr::update_core();
+                SolrPackage::update_core();
             } catch (Exception $e) {
                 Log::info(json_encode($e));
             }

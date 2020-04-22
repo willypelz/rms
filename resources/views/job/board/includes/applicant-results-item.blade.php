@@ -2,7 +2,8 @@
     @foreach( @$result['response']['docs'] as $cv )
 
         <?php  $pic = default_color_picture($cv);
-        $current_app_index = array_search($jobID, $cv['job_id']);
+        $current_app_index = array_search($jobID, $cv['job_id'] );
+        // dd($cv['application_id'], $current_app_index );
         $current_status = ($cv['application_status'][$current_app_index] == "ASSESSED") ? "TEST" : $cv['application_status'][$current_app_index];
         $check_both_permissions = checkForBothPermissions ($jobID);
         $is_stand_alone = env('RMS_STAND_ALONE');
@@ -13,7 +14,7 @@
                  data-app-id="{{ $cv['application_id'][ $current_app_index ] }}">
                 <hr>
                 <span class="col-md-2 col-sm-3">
-                    <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}"
+                    <a href="{{ route('applicant-profile', [$cv['application_id']][ $current_app_index ] ) }}"
                        target="_blank"
                        class="text-center">
                         <img alt="" src="{{ $pic['image'] }}" style="background:{{ $pic['color'] }};"
@@ -24,7 +25,7 @@
                 <div class="col-md-10 col-sm-9" style="padding-bottom: 10px;">
                     <input type="checkbox" class="media-body-check check-applicant pull-right">
                     <h4 class="media-heading text-muted">
-                        <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}"
+                        <a href="{{ route('applicant-profile', [$cv['application_id']][ $current_app_index ] ) }}"
                            target="_blank"><strong>{{ ucwords( @$cv['first_name']. " " . @$cv['last_name'] ) }}</strong>
                            <small>{{((!$is_stand_alone) && isset($cv['applicant_type'])) ? '('.$cv['applicant_type'].')' : ''}} </small> </a>
 
@@ -79,12 +80,12 @@
                         @endif
                         @if((isset($permissions) && in_array('can-view-candidates', $permissions)) || $check_both_permissions)
                         <span class="text-muted">&nbsp; &middot; &nbsp;</span>
-                        <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}">
+                        <a href="{{ route('applicant-profile', [$cv['application_id']][ $current_app_index ] ) }}">
                             View application
                         </a>
                         @endif
                     <!--span class="text-muted">·</span>
-              <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}">View Application</a-->
+              <a href="{{ route('applicant-profile', [$cv['application_id']][ $current_app_index ] ) }}">View Application</a-->
 
                         <span class="text-muted">&nbsp; </span>
                         @if((isset($permissions) && in_array('can-view-application', $permissions) && $cv['is_approved']) || $check_both_permissions)

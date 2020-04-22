@@ -2,34 +2,36 @@
 
 namespace App\Http\Controllers\API;
 
+use App;
 use App\Http\Controllers\Controller;
+use App\Jobs\UploadApplicant;
 use App\Libraries\Solr;
 use App\Models\Candidate;
+use App\Models\Company;
 use App\Models\Cv;
 use App\Models\FormFieldValues;
-use App\Models\JobApplication;
-use App\Models\Role;
-use App\Models\Workflow;
-use Illuminate\Http\Request;
-use App\Models\JobBoard;
-use App\Models\Job;
-use App\Models\Specialization;
-use App\Models\Company;
 use App\Models\FormFields;
+use App\Models\InterviewNoteOptions;
+use App\Models\InterviewNoteValues;
+use App\Models\InterviewNotes;
+use App\Models\Job;
+use App\Models\JobActivity;
+use App\Models\JobApplication;
+use App\Models\JobBoard;
+use App\Models\Message;
+use App\Models\Role;
+use App\Models\Specialization;
+use App\Models\Workflow;
+use App\User;
+use Carbon\Carbon;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\Request;
 use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Carbon\Carbon;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Client;
-use App\User;
-use App\Models\JobActivity;
-use App\Models\InterviewNoteOptions;
-use App\Models\InterviewNoteValues;
-use App\Models\InterviewNotes;
-use App;
-use App\Models\Message;
+use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
 class JobController extends Controller
 {
@@ -396,7 +398,8 @@ class JobController extends Controller
         }
 
 
-        Solr::update_core();
+
+        UploadApplicant::dispatch($job_application)->onQueue('solr');                
 
         return response()->json(
             [

@@ -114,7 +114,7 @@ return [
     |
     */
 
-    'log' => env('APP_LOG', 'single'),
+    'log' => env('APP_LOG', 'daily'),
 
     /*
     |--------------------------------------------------------------------------
@@ -173,6 +173,9 @@ return [
         Jenssegers\Agent\AgentServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
         Sentry\Laravel\ServiceProvider::class,
+
+                App\Providers\SolariumServiceProvider::class,
+
     ],
 
     /*

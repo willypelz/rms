@@ -308,6 +308,8 @@ class LoginController extends Controller
      */
     public function loginUser($url, $user_id, $token)
     {
+
+
         $user_id = base64_decode($user_id);
         $url = base64_decode($url);
 

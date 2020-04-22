@@ -2,44 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
+use Alchemy\Zippy\Adapter\ZipExtensionAdapter;
+use Alchemy\Zippy\Zippy;
+use App;
 use App\Http\Requests;
-use Response;
-use App\Models\JobApplication;
+use App\Libraries\Solr;
+use App\Models\AtsProduct;
+use App\Models\AtsRequest;
+use App\Models\AtsService;
+use App\Models\Cv;
+use App\Models\Interview;
+use App\Models\InterviewNoteOptions;
+use App\Models\InterviewNoteTemplates;
+use App\Models\InterviewNoteValues;
+use App\Models\InterviewNotes;
 use App\Models\Job;
-use App\Models\Transaction;
+use App\Models\JobActivity;
+use App\Models\JobApplication;
+use App\Models\Message as CandidateMessage;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\AtsRequest;
-use App\Libraries\Solr;
-use App\Models\AtsService;
-use App\Models\AtsProduct;
 use App\Models\TestRequest;
-use App\Models\Interview;
-use App\Models\InterviewNotes;
-use App\Models\JobActivity;
-use App\Models\Cv;
-use Carbon\Carbon;
-use Auth;
-use Excel;
-use App;
-use PDF;
-use Curl;
-use Illuminate\Mail\Mailer;
-use Illuminate\Mail\Message;
-use Alchemy\Zippy\Zippy;
-use Alchemy\Zippy\Adapter\ZipExtensionAdapter;
-use Validator;
-use File;
-use App\Models\InterviewNoteOptions;
-use App\Models\InterviewNoteValues;
-use App\Models\InterviewNoteTemplates;
-use App\Models\Message as CandidateMessage;
+use App\Models\Transaction;
 use App\Models\WorkflowStep;
 use App\User;
-use Spatie\CalendarLinks\Link;
+use Auth;
+use Carbon\Carbon;
+use Curl;
+use Excel;
+use File;
+use Illuminate\Http\Request;
+use Illuminate\Mail\Mailer;
+use Illuminate\Mail\Message;
 use Mail;
+use PDF;
+use Response;
+use SeamlessHR\SolrPackage\Facades\SolrPackage;
+use Spatie\CalendarLinks\Link;
+use Validator;
 
 class JobApplicationsController extends Controller
 {
@@ -157,7 +157,6 @@ class JobApplicationsController extends Controller
 
         $requests = TestRequest::where('job_application_id', $appl_id)->with('product.provider')->get();
 
-        // dd($appl->toArray());
 
         return view('applicant.assess', compact('appl', 'nav_type', 'requests'));
     }
@@ -169,9 +168,8 @@ class JobApplicationsController extends Controller
 
         check_if_job_owner($appl->job->id);
 
-        // dd($appl);
         $nav_type = 'activities';
-        return view('applicant.activities', compact('appl', 'nav_type', 'result', 'application_statuses'));
+        return view('applicant.activities', compact('appl', 'nav_type'));
     }
 
     public function medicals($appl_id)
@@ -227,9 +225,6 @@ class JobApplicationsController extends Controller
 
         $nav_type = 'notes';
 
-        // $interview_notes = $appl->interview_notes()->with('user')->get();
-        // $interview_notes = InterviewNoteValues::with('interviewer')->where('job_application_id',
-        //     $appl->id)->groupBy('interviewed_by')->get();
 
         $interview_note_categories = InterviewNoteValues::with('interviewer',
             'interview_note_option')->where('job_application_id',
@@ -324,6 +319,7 @@ class JobApplicationsController extends Controller
         //Check if he  is the owner of the job
         check_if_job_owner($request->jobID);
 
+
         $job = Job::with([
             'form_fields',
             'applicants',
@@ -385,7 +381,8 @@ class JobApplicationsController extends Controller
             $solr_video_application_score = null;
         }
 
-        $result = Solr::get_applicants(
+        // dd($this->search_params);
+        $result = SolrPackage::get_applicants(
             $this->search_params,
             $request->jobID,
             @$request->status,
@@ -395,14 +392,11 @@ class JobApplicationsController extends Controller
             @$solr_test_score
         );
 
+
         $statuses = $job->workflow->workflowSteps()->pluck('slug');
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$request->jobID,
             $statuses);
-//        $statuses_grouped = JobApplication::where('job_id',53)->select('status', \solrDB::raw('count(*) as total'))
-//        ->groupBy('status')
-//        ->pluck('total','status')->all();
-
 
 
         if (isset($request->status)) {
@@ -412,8 +406,6 @@ class JobApplicationsController extends Controller
         }
 
         $end = (($start + $this->search_params['row']) > intval($application_statuses['ALL'])) ? $application_statuses['ALL'] : ($start + $this->search_params['row']);
-        // $showing = "Showing ".($start+1)." - ".$end." of ".$result['response']['numFound']." Applicants [Page ".floor($request->start + 1)."]";
-        // dd($result);
 
         $showing = view('cv-sales.includes.top-summary', [
             'start' => ($start + 1),
@@ -424,7 +416,7 @@ class JobApplicationsController extends Controller
             'filters' => $request->filter_query
         ])->render();
         $myJobs = Job::getMyJobs();
-        $all_my_cvs = Solr::get_all_my_cvs($this->search_params, null,
+        $all_my_cvs = SolrPackage::get_all_my_cvs($this->search_params, null,
         null)['response']['docs'];
         $myFolders = $all_my_cvs ? array_unique(array_pluck($all_my_cvs, 'cv_source')) : [];
 
@@ -436,7 +428,11 @@ class JobApplicationsController extends Controller
         $qualifications = $this->qualifications;
         $grades = grades();
         $permissions = getUserPermissions();
+
+        // dd($all_my_cvs);
+
         if ($request->ajax()) {
+
 
             $search_results = view('job.board.includes.applicant-results-item',
                 compact('job', 'active_tab', 'status', 'result', 'jobID', 'start', 'myJobs', 'myFolders',
@@ -481,7 +477,63 @@ class JobApplicationsController extends Controller
                     'myFolders', 'application_statuses', 'job',
                     'video_application_score', 'request', 'states', 'qualifications', 'grades', 'permissions', 'check_both_permissions'));
         }
+    }
 
+
+    public function uploadApplicantsToSolr()
+    {
+        
+
+    }
+
+
+
+
+
+    public function oneApplicantData(Request $request){
+
+        $applicants = JobApplication::with('job', 'cv')->find([68825, 68824, 68827]);
+
+        // dd($applicants->toArray());
+
+        foreach($applicants as $applicant){
+            $cand['gender'] = $applicant->cv->gender;
+            $cand['last_company_worked'] = $applicant->cv->last_company_worked;
+            $cand['dob'] = $applicant->cv->date_of_birth;
+            $cand['cv_file'] = $applicant->cv->cv_file;
+            $cand['display_picture'] = $applicant->cv->display_picture;
+            $cand['years_of_experience'] = $applicant->cv->years_of_experience;
+            $cand['extracted_content'] = [0];
+            $cand['rank'] = 1;
+            $cand['id'] = $applicant->id;
+            $cand['state'] = $applicant->cv->state;
+            $cand['first_name'] = $applicant->cv->first_name;
+            $cand['last_name'] = $applicant->cv->last_name;
+            $cand['headline'] = [$applicant->cv->headline];
+            $cand['last_modified'] = $applicant->cv->last_modified;
+            $cand['grade'] = $applicant->cv->graduation_grade;
+            $cand['willing_to_relocate'] = $applicant->cv->willing_to_relocate ? true : false;
+            $cand['email'] = $applicant->cv->email;
+            $cand['last_position'] = $applicant->cv->last_position;
+            $cand['cv_source'] = $applicant->cv->cv_source;
+            $cand['highest_qualification'] = $applicant->cv->highest_qualification;
+            $cand['marital_status'] = $applicant->cv->marital_status;
+            $cand['phone'] = $applicant->cv->phone;
+            $cand['cover_note'] = $applicant->cover_note;
+            $cand['job_id'] = [$applicant->job_id];
+            $cand['application_date'] = $applicant->created;
+            $cand['application_modified'] = $applicant->created;
+            $cand['application_id'] = [$applicant->id];
+            $cand['is_approved'] = true;
+            $cand['application_status'] = [$applicant->status];
+            $cand['job_title'] = [$applicant->job->title];
+
+            // dd($cand);
+            App\Libraries\SolrPackage::create_new_document($cand);
+
+        }
+
+        dd('DONE');
 
     }
 
@@ -548,7 +600,7 @@ class JobApplicationsController extends Controller
         }
 
 
-        $result = Solr::get_applicants($this->search_params, $request->jobId, @$request->status, @$solr_age,
+        $result = SolrPackage::get_applicants($this->search_params, $request->jobId, @$request->status, @$solr_age,
             @$solr_exp_years, @$solr_video_application_score, @$solr_test_score);
 
 
@@ -600,18 +652,6 @@ class JobApplicationsController extends Controller
                 "TESTS" => $tests,
 
 
-                // "JOB TITLE" => $job->title,
-
-                // "cv_file" => "1470054202_cheidiatgmailcom_Moyosoluwa's draft.docx"
-                // "display_picture" => "default-profile.png"
-                // "rank" => 1
-                // "id" => "5617"
-                // "last_modified" => "2016-09-23T05:54:57Z"
-                // "application_date" => "2016-08-01T13:23:22Z"
-                // "application_modified" => "2016-08-01T13:23:22Z"
-                // "application_id" => array:1 [▶]
-                // "application_status" => array:1 [▶]
-                // "_version_" => 1.5462453107564E+18
             ];
             if(isset($value['application_id'][0])) {
                $jobApplication = JobApplication::with('custom_fields.form_field')->find($value['application_id'][0]);
@@ -638,15 +678,6 @@ class JobApplicationsController extends Controller
                 $excel->sheet('Report', function ($sheet) use ($excel_data, $other_data) {
 
 
-                    // first row styling and writing content
-                    // $sheet->mergeCells('A1:W1');
-                    // $sheet->row(1, function ($row) {
-                    //     $row->setFontFamily('Comic Sans MS');
-                    //     $row->setFontSize(30);
-                    // });
-
-                    // $sheet->row(1, array('Some big header here'));
-
                     $sheet->fromArray($excel_data, null, 'A1', false, true);
                     $sheet->cells('A1:P1', function ($cells) {
                         $cells->setBackground('#eeeeee');
@@ -661,13 +692,7 @@ class JobApplicationsController extends Controller
                             'horizontal' => 'left'
                         ]
                     ]);
-                    // $sheet->setVerticalAlign('text-top');
-
-                    // $sheet->setFitToPage(true);
-                    // $sheet->setFitToHeight(true);
-                    // $sheet->setFitToWidth(true);
-
-                    // $sheet->setAutoSize(true);
+                  
 
 
                 });
@@ -736,7 +761,7 @@ class JobApplicationsController extends Controller
         }
 
 
-        $result = Solr::get_applicants($this->search_params, $request->jobId, @$request->status, @$solr_age,
+        $result = SolrPackage::get_applicants($this->search_params, $request->jobId, @$request->status, @$solr_age,
             @$solr_exp_years, @$solr_video_application_score, @$solr_test_score);
 
         $data = $result['response']['docs'];
@@ -860,7 +885,8 @@ class JobApplicationsController extends Controller
                 $this->sendWorkflowStepNotification($request->app_ids, $request->step_id);
                 break;
         }
-        Solr::update_core();
+        
+
         return save_activities($request->status, $request->job_id, $request->app_ids);
     }
 
@@ -872,19 +898,18 @@ class JobApplicationsController extends Controller
     public function getAllApplicantStatus(Request $request)
     {
         $job = Job::with(['form_fields', 'workflow.workflowSteps'])->find($request->job_id);
-//        $result = Solr::get_applicants($this->search_params,$request->job_id);
         $statuses = $job->workflow->workflowSteps()->pluck('slug');
 
         $application_statuses = get_application_statuses([],$request->job_id,
             $statuses);
 
 
-        return view('job.board.includes.applicant-status', compact('application_statuses', 'result', 'job'));
+        return view('job.board.includes.applicant-status', compact('application_statuses', 'job'));
     }
 
     public function JobListData(Request $request)
     {
-        $result = Solr::get_applicants($this->search_params, $request->job_id, @$request->status);
+        $result = SolrPackage::get_applicants($this->search_params, $request->job_id, @$request->status);
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$request->job_id,
             $statuses = $request->workflow_steps);
 
@@ -903,23 +928,7 @@ class JobApplicationsController extends Controller
                 . '</div>';
         }
 
-        /*$stats = '<div class="job-item ">
-                    <span class="number">' . $application_statuses['HIRED'] . '</span><br/>Hired
-                </div>
-                <div class="job-item ">
-                    <span class="number">' . $application_statuses['ASSESSED'] . '</span><br/>Tested
-                </div>
-                <div class="job-item ">
-                    <span class="number">' . $application_statuses['INTERVIEWED'] . '</span><br/>Interviewed
-                </div>
-                <div class="job-item ">
-                    <span class="number text-muted">' . $application_statuses['SHORTLISTED'] . '</span><br/>Shortlisted
-                </div>
-                <div class="job-item  purple">
-                    <span class="number text-muted">' . $result['response']['numFound'] . '</span><br/>All
-                </div>';*/
-
-        // dd($stats);
+      
         echo $stats;
     }
 
@@ -940,8 +949,11 @@ class JobApplicationsController extends Controller
                     }
                 ])->find($job_id);
 
-                $result = Solr::get_applicants($this->search_params, $job_id,
+                $result = SolrPackage::get_applicants($this->search_params, $job_id,
                     ''); // status parater value is formerly : @$request->status
+
+                // dd($result);
+
                 $application_statuses = isset($result['facet_counts']) ? get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$job_id,
                     $statuses = $job->workflow->workflowSteps()->pluck('slug')) : [];
 
@@ -965,7 +977,7 @@ class JobApplicationsController extends Controller
     {
 
 
-        $result = Solr::get_applicants($this->search_params, $request->job_id, @$request->status);
+        $result = SolrPackage::get_applicants($this->search_params, $request->job_id, @$request->status);
         $total_applicants = ($result['response']['numFound']);
         $matching = 10000;
 
@@ -1096,22 +1108,9 @@ class JobApplicationsController extends Controller
         @$zipper->make($path . $timestamp . $filename)->add($files_to_archive)->close();
 
 
-//         File::delete( $files_to_archive );
-
         return Response::download($path . $timestamp . $filename, $filename,
             ['Content-Type' => 'application/octet-stream']);
 
-
-        // $pdf = PDF::loadView('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'));
-        // return $pdf->download('dossier.pdf');
-        //
-        // $html = view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'))->render();
-        // $pdf = PDF::loadHTML($html);
-
-        // // return $pdf->download('dossier.pdf');
-        // return $pdf->stream();
-        // // echo $html;
-        // return view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'));
     }
 
     /**
@@ -1179,8 +1178,6 @@ class JobApplicationsController extends Controller
         $note = InterviewNotes::where('job_application_id', $app_id)->where('id',
             @$request->interview_id)->get()->first();
 
-
-        // dd($note, $request->interview_id, count($notes), count($note));
 
         return view('modals.interview-notes', compact('applicant_badge', 'app_id', 'cv_id', 'appl', 'notes', 'note'));
     }
@@ -1283,7 +1280,7 @@ class JobApplicationsController extends Controller
 
             $this->sendWorkflowStepNotification($request->app_ids, $stepId);
 
-            Solr::update_core();
+            SolrPackage::update_core();
 
             return ($JA) ? 'true' : 'false';
 
@@ -1536,7 +1533,7 @@ class JobApplicationsController extends Controller
                         'result_comment' => @$request->result_comment,
                         'status' => @$request->status
                     ]);
-                Solr::update_core();
+                SolrPackage::update_core();
 
             }
 

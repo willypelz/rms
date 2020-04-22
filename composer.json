@@ -29,7 +29,9 @@
         "h4cc/wkhtmltoimage-amd64": "0.12.x",
         "sentry/sentry-laravel": "^1.0",
         "wemersonjanuario/wkhtmltopdf-windows": "0.12.2.3",
-        "laravel/helpers": "^1.2"
+        "laravel/helpers": "^1.2",
+        "seamlesshr/solrpackage": "develop-dev",
+        "solarium/solarium": "^5.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -40,6 +42,12 @@
         "barryvdh/laravel-debugbar": "^3.2",
         "filp/whoops": "~2.0"
     },
+     "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://git@bitbucket.org/insidify/solr-package.git"
+        }
+    ],
     "autoload": {
         "classmap": [
             "database"

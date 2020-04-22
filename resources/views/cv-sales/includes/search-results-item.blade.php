@@ -232,19 +232,19 @@
 
 @if( $page == 'pool' )
   
-  {{-- */ $pagination_url = url('cv/talent-pool') /* --}}
+  @php $pagination_url = url('cv/talent-pool') @endphp
 
 @elseif( $page == 'saved' )
   
-  {{-- */ $pagination_url = url('cv/saved') /* --}}
+  @php $pagination_url = url('cv/saved') @endphp
   
 @elseif( $page == 'purchased' )
   
-  {{-- */ $pagination_url = url('cv/purchased') /* --}}
+  @php $pagination_url = url('cv/purchased') @endphp
   
 @elseif( $page == 'search' )
 
-  {{-- */ $pagination_url = url('cv/search') /* --}}
+  @php $pagination_url = url('cv/search') @endphp
 
 @endif
 

@@ -31,8 +31,7 @@
         "wemersonjanuario/wkhtmltopdf-windows": "0.12.2.3",
         "laravel/helpers": "^1.2",
         "seamlesshr/solrpackage": "develop-dev",
-        "solarium/solarium": "^5.1",
-        "seamlesshr/stringcrypt": "1.0.*"
+        "solarium/solarium": "^5.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

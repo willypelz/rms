@@ -1,5 +1,4 @@
 <?php
-use Seamlesshr\Stringcrypt\Stringcrypt;
 
 return [
 
@@ -56,16 +55,16 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'read' => [
-		        'host' => [Stringcrypt::decrypt(env('DB_HOST_READ', '127.0.0.1'))],
+		        'host' => [env('DB_HOST_READ', '127.0.0.1')],
 		    ],
 		    'write' => [
-		        'host' => [Stringcrypt::decrypt(env('DB_HOST_WRITE', '127.0.0.1'))],
+		        'host' => [env('DB_HOST_WRITE', '127.0.0.1')],
 		    ],
 		    'sticky'    => true,
             'port' => env('DB_PORT', '3306'),
-            'database' => Stringcrypt::decrypt(env('DB_DATABASE', 'forge')),
-            'username' => Stringcrypt::decrypt(env('DB_USERNAME', 'forge')),
-            'password' => Stringcrypt::decrypt(env('DB_PASSWORD', '')),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',

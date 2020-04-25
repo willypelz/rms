@@ -1,4 +1,5 @@
 <?php
+use Seamlesshr\Stringcrypt\Stringcrypt;
 
 return [
 
@@ -51,43 +52,30 @@ return [
             'database' => database_path('database.sqlite'),
             'prefix'   => '',
         ],
-
+        
         'mysql' => [
-            'driver'    => 'mysql',
-            'host'      => env('DB_HOST', '139.162.159.128'),
-            'database'  => env('DB_DATABASE', 'seamless-hiring'),
-            'username'  => env('DB_USERNAME', 'insidify'),
-            'password'  => env('DB_PASSWORD', '@Ch@s3rs'),
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-            'strict'    => false,
-            'engine'    => null,
-        ],
-
-        'mysql_inf' => [
-            'driver'    => 'mysql',
-            'host'      => env('DB_HOST', '50.28.104.199'),
-            'database'  => 'infrastructure',
-            'username'  => env('DB_USERNAME', 'dejinsidfy'),
-            'password'  => env('DB_PASSWORD', 'd3j1ndify'),
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-            'strict'    => false,
-            'engine'    => null,
-        ],
-        'mysql_far' => [
-            'driver'    => 'mysql',
-            'host'      => env('DB_HOST', '50.28.104.199'),
-            'database'  => 'fareast-merchantile',
-            'username'  => env('DB_USERNAME', 'dejinsidfy'),
-            'password'  => env('DB_PASSWORD', 'd3j1ndify'),
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-            'strict'    => false,
-            'engine'    => null,
+            'driver' => 'mysql',
+            'read' => [
+		        'host' => [Stringcrypt::decrypt(env('DB_HOST_READ', '127.0.0.1'))],
+		    ],
+		    'write' => [
+		        'host' => [Stringcrypt::decrypt(env('DB_HOST_WRITE', '127.0.0.1'))],
+		    ],
+		    'sticky'    => true,
+            'port' => env('DB_PORT', '3306'),
+            'database' => Stringcrypt::decrypt(env('DB_DATABASE', 'forge')),
+            'username' => Stringcrypt::decrypt(env('DB_USERNAME', 'forge')),
+            'password' => Stringcrypt::decrypt(env('DB_PASSWORD', '')),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+            'sslmode' => env('DB_SSLMODE', 'prefer'),
+		    'options' => (env('MYSQL_SSL')) ? [
+		        PDO::MYSQL_ATTR_SSL_KEY    => env('MYSQL_ATTR_SSL_KEY'), 
+		    ] : [],
         ],
 
         'pgsql' => [

@@ -2,7 +2,7 @@
 /storage
 /node_modules
 /public/storage
-/bootstrap
+/bootstrap/cache
 Homestead.yaml
 Homestead.json
 LocalValetDriver.php

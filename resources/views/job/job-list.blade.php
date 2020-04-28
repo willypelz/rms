@@ -356,7 +356,7 @@
                     </div>
 
                     <div class="pull-right" style="margin-right:10px;">
-                        <a href="javascript://" id="closeRejectModal" class="btn btn-danger pull-right">No</a>
+                        <a href="javascript://" id="closeRejectModal" onclick = "$('#deleteJob').modal('hide');"class="btn btn-danger pull-right">No</a>
                         <div class="separator separator-small"></div>
                     </div>
 

@@ -167,17 +167,13 @@
                                                                         job on
                                                                         Social Media. </a></li>
                                                                 <li role="separator" class="divider"></li>
-                                                                @if($job['status'] == 'SUSPENDED')
-                                                                    <li><a href="#"
-                                                                           onclick="Activate( {{$job['id']}} ); return false">Activate
-                                                                            Job</a></li>
-                                                                @elseif($job['status'] == 'DRAFT')
+                                                                @if(in_array($job['status'], ['SUSPENDED', 'DRAFT'] ) && !$job->hasExpied())
                                                                     <li><a href="#"
                                                                            onclick="Activate( {{$job['id']}} ); return false">Activate
                                                                             Job</a></li>
                                                                 @elseif($job['status'] == 'EXPIRED')
                                                                     <li><a href="#" disabled>EXPIRED</a></li>
-                                                                @elseif($job['status'] == 'ACTIVE')
+                                                                @elseif($job['status'] == 'ACTIVE' && !$job->hasExpied())
                                                                     <li><a href="#"
                                                                            onclick="Suspend( {{$job['id']}} ); return false">Suspend
                                                                             Job</a></li>

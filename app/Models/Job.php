@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Auth;
+use Carbon\Carbon;
 
 class Job extends Model
 {
@@ -100,6 +101,11 @@ class Job extends Model
     public function applicantsViaJAT() // JAT - Job Applications Table
     {
         return $this->hasMany(JobApplication::class);
+    }
+
+    public function hasExpied() : bool
+    {
+        return $this->expiry_date < Carbon::now();
     }
 
 }

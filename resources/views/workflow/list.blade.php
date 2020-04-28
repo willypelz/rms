@@ -57,7 +57,7 @@
                                                     
                                                     <input type="hidden" name="_method" value="delete">
                                                     
-                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                    <button  onclick="return confirm('Are you sure you want to delete workflow?');" type="submit" class="btn btn-danger btn-sm">
                                                         <i class="fa fa-trash fa-fw"></i>
                                                     </button>
                                                 </form>

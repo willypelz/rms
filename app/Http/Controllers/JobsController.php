@@ -235,15 +235,41 @@ class JobsController extends Controller
                 'name.required' => 'Name is required',
             ]);
             if ($validator->fails()) {
-                return back()->with('error', $validator->getMessageBag()->toArray());
+                return back()->with('errors', $validator->getMessageBag()->toArray());
             } else{
+
+                if($request->id)
+                    $check_email = User::whereEmail($request->email)->where('email', '!=', $request->email)->count();
+                else
+                    $check_email = User::whereEmail($request->email)->count();
+
+
+                if($check_email)
+                    return back()->with('warning', "The email you enter already exist");
+
                 $token = hash_hmac('sha256', str_random(40), config('app.key'));
-                $user = User::FirstorCreate([
-                    'email' => $request->email,
-                    'name' => $request->name,
-                    'is_super_admin' => '1',
-                    'user_token'=> $token
-                  ]);
+                
+                if(isset($request->id)){
+
+                     $user = User::find($request->id)->update([
+                        'email' => $request->email,
+                        'name' => $request->name,
+                      ]);
+
+                    $user = User::find($request->id);
+                    
+                }else{
+
+                    $user = User::FirstorCreate([
+                        'email' => $request->email,
+                        'name' => $request->name,
+                        'is_super_admin' => '1',
+                        'user_token'=> $token
+                      ]);
+                   
+                }
+                
+
                   if($user){
 
                     $company = Company::find(get_current_company()->id);
@@ -261,11 +287,21 @@ class JobsController extends Controller
                     $data = (object)$data;
                     $email = $request->email;
                     //Send notification mail
+                    //
+                    // dd($request->all());
 
-                    \Illuminate\Support\Facades\Mail::send('emails.new.admin_invite', ['data'=>$data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) use ($email){
-                        $m->from(env('COMPANY_EMAIL'))->to($email)->subject('You Have Been Exclusively Invited');
-                    });
-                    return back()->with('success', "Invite Sent successfully");
+                    if(isset($request->resend_email) || !isset($request->id)){
+                        \Illuminate\Support\Facades\Mail::send('emails.new.admin_invite', ['data'=>$data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) use ($email){
+                            $m->from(env('COMPANY_EMAIL'))->to($email)->subject('You Have Been Exclusively Invited');
+                        });
+
+                         return back()->with('success', "Invite Sent successfully");
+
+                    }
+
+                         return back()->with('success', "Details updated successfully");
+
+
                   }
             }
         }else{

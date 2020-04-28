@@ -42,9 +42,8 @@
 
                                                 <div>
 
-
                                                     <div class="btn-group">
-                                                        <a href="{{ route('interview-note-options', ['id' => $interview_note_template->id ]) }}"
+                                                        <a href="{{ route('interview-note-options', $interview_note_template->id ) }}"
                                                            class="btn btn-line " style="">Options <span
                                                                     class="badge badge-danger text-white">{{ $interview_note_template->options->count()  }}</span>
 

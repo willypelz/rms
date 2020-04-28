@@ -18,6 +18,16 @@ $(function () {
         }
     });
 
+
+     var requireApproval = document.getElementById("requireApproval");
+      if (requireApproval.checked) {
+            approvalUsers.show();
+        
+      } else {
+            approvalUsers.hide();
+        
+      }
+
     $(function () {
         var messageTemplate = $('#messageTemplateBlock');
         if ($('#messageToApplicant').prop('checked')) {

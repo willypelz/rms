@@ -51,6 +51,12 @@
                                 </div>
 
                                 <div class="form-group">
+
+                                    <a href="{{ route('workflow') }}"" type="submit" class="btn btn-warning">
+                                        <i class="fa fa-arrow-left fa-fw"></i>
+                                        Cancel
+                                    </a>
+
                                     <button @if(!$is_super_admin) disabled @endif type="submit" class="btn btn-primary">
                                         <i class="fa fa-pencil fa-fw"></i>
                                         Update

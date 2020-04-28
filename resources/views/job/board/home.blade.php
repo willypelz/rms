@@ -66,7 +66,7 @@
                                           <div class="col-xs-3">
                                           <h5>Share this link</h5>
                                           @php $job_text= str_slug($job->title);
-                                          $job_url = route('job-view',['job_id' => $job->id,'str_slug'=>$job_text]);
+                                          $job_url = route('job-view',[$job->id, $job_text]);
                                           @endphp
                                             <ul class="list-inline">
                                                    <li class="no-pad no-margin">

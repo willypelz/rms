@@ -72,6 +72,22 @@
                                     <label for="requireApproval">Requires Approval</label>
                                 </div>
 
+                                <div class="form-group" id="approvalUsersBlock">
+                                    <label for="approvalUsers">Approval Users</label>
+                                    <select class="select2"
+                                            name="approval_users[]"
+                                            id="approvalUsers"
+                                            multiple
+                                            style="width: 100%;">
+                                        @foreach($currentCompanyUsers as $currentCompanyUser)
+                                            <option @if(in_array($currentCompanyUser->id, $step_approvals->toArray())) selected @endif value="{{ $currentCompanyUser->id }}">
+                                                {{ $currentCompanyUser->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+
                                 <div class="form-group">
                                     <input type="hidden"
                                            name="visible_to_applicant"

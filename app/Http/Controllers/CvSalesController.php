@@ -554,7 +554,6 @@ class CvSalesController extends Controller
 
 
 
-
         if( @$request->age ){
 
             //2015-09-16T00:00:00Z
@@ -596,6 +595,8 @@ class CvSalesController extends Controller
         } else {
             $application_statuses['ALL'] = $result['facet_counts'] = $end = null;
         }
+
+
      
         $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $application_statuses['ALL'], 'type'=>'Cvs', 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();
 
@@ -632,6 +633,7 @@ class CvSalesController extends Controller
 
         }
         else{
+
             return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query,'showing'=>$showing, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 5, 85 ], 'exp_years' => [ 0, 60 ], 'myJobs' => Job::getMyJobs(), 'myFolders' => $myFolders, 'application_statuses' => $application_statuses, 'states' => $states, 'qualifications' => $qualifications, 'grades' => $grades ]);
         }
     }

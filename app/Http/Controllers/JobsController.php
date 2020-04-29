@@ -245,7 +245,7 @@ class JobsController extends Controller
 
 
                 if($check_email)
-                    return back()->with('warning', "The email you enter already exist");
+                    return back()->with('warning', "The email you entered already exists.");
 
                 $token = hash_hmac('sha256', str_random(40), config('app.key'));
                 

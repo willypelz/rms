@@ -139,12 +139,13 @@
                                     <h5 class="no-margin">Add New Team member <span class="pull-right"><i
                                                     class="fa fa-lg fa-user-plus"></i></span></h5>
                                     <hr>
+                                    
 
-                                    @permission('can-add-job-team-members')
+                                    @if($user->is_super_admin || $user->can('can-add-job-team-members'))
                                     <a aria-controls="AddTeamMember" aria-expanded="false" class="btn btn-warning"
                                        data-toggle="collapse" data-target="#AddTeamMember" href="#AddTeamMember"><i
                                                 class="fa fa-user-plus"></i> Add New Member</a>
-                                    @endpermission
+                                    @endif
 
 
                                     <div id="AddTeamMember" class="collapse">

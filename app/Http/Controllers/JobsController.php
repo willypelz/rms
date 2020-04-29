@@ -1487,7 +1487,7 @@ class JobsController extends Controller
             $jobs = $jobs->whereIn('id', $job_access);
         }
 
-        $jobs = $jobs->get();
+        $jobs = $jobs->with('workflow.workflowSteps.users')->get();
 
         $active = 0;
         $suspended = 0;

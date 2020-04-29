@@ -1800,6 +1800,7 @@ class JobApplicationsController extends Controller
     {
         // $interview_note_options = InterviewNoteOptions::where('company_id',get_current_company()->id )->get();
 
+        $interview_note_option = NULL;
 
         if ($request->isMethod('post')) {
             InterviewNoteTemplates::create([

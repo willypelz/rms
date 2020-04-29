@@ -34,7 +34,7 @@
                                                 <hr>
 
                                                 <div class="text-muted panel-desc"
-                                                     title="{!! $interview_note_template->description !!}">
+                                                     >
                                                     {!! $interview_note_template->description !!}
                                                 </div>
 
@@ -102,4 +102,3 @@
 
 
 @endsection
-n

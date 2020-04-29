@@ -216,7 +216,7 @@ class CandidateController extends Controller
             $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->get();
         }
 
-        return view('candidate.job-list', compact('application_id', 'ignore_list', 'jobs'));
+        return view('candidate.job-list', compact('jobs'));
     }
 
 

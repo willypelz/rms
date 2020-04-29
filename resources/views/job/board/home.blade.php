@@ -70,7 +70,7 @@
                                           @endphp
                                             <ul class="list-inline">
                                                    <li class="no-pad no-margin">
-                                                       <a href="{{env('FACEBOOK_URL')}}sharer/sharer.php?u={{$job_url}}" class="btn-disabled" target="_blank" >
+                                                       <a href="{{env('FACEBOOK_URL', 'https://www.facebook.com/')}}sharer/sharer.php?u={{$job_url}}" class="btn-disabled" target="_blank" >
                                                                <span class="fa-stack fa-lg">
                                                                  <i class="fa fa-square fa-stack-2x text-"></i>
                                                                  <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
@@ -79,7 +79,7 @@
                                                    </li>
                                                                                   
                                                    <li class="no-pad no-margin">
-                                                       <a href="{{env('TWITTER_URL')}}intent/tweet?url={{$job_url}}" class="btn-disabled" target="_blank" >
+                                                       <a href="{{env('TWITTER_URL', 'https://www.twitter.com/')}}intent/tweet?url={{$job_url}}" class="btn-disabled" target="_blank" >
                                                                <span class="fa-stack fa-lg">
                                                                  <i class="fa fa-square fa-stack-2x text-"></i>
                                                                  <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
@@ -88,7 +88,7 @@
                                                    </li>
                                                                                   
                                                    <li class="no-pad no-margin">
-                                                       <a href="{{env('LINKEDIN_URL')}}shareArticle?mini=true&url={{$job_url}}&title={{$job->title}}&summary=&source=Seamlesshiring" class="btn-disabled" target="_blank" >
+                                                       <a href="{{env('LINKEDIN_URL', 'https://www.linkedin.com/')}}shareArticle?mini=true&url={{$job_url}}&title={{$job->title}}&summary=&source=Seamlesshiring" class="btn-disabled" target="_blank" >
                                                                <span class="fa-stack fa-lg">
                                                                  <i class="fa fa-square fa-stack-2x text-"></i>
                                                                  <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>

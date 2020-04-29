@@ -167,17 +167,13 @@
                                                                         job on
                                                                         Social Media. </a></li>
                                                                 <li role="separator" class="divider"></li>
-                                                                @if($job['status'] == 'SUSPENDED')
-                                                                    <li><a href="#"
-                                                                           onclick="Activate( {{$job['id']}} ); return false">Activate
-                                                                            Job</a></li>
-                                                                @elseif($job['status'] == 'DRAFT')
+                                                                @if(in_array($job['status'], ['SUSPENDED', 'DRAFT'] ) && !$job->hasExpied())
                                                                     <li><a href="#"
                                                                            onclick="Activate( {{$job['id']}} ); return false">Activate
                                                                             Job</a></li>
                                                                 @elseif($job['status'] == 'EXPIRED')
                                                                     <li><a href="#" disabled>EXPIRED</a></li>
-                                                                @elseif($job['status'] == 'ACTIVE')
+                                                                @elseif($job['status'] == 'ACTIVE' && !$job->hasExpied())
                                                                     <li><a href="#"
                                                                            onclick="Suspend( {{$job['id']}} ); return false">Suspend
                                                                             Job</a></li>
@@ -209,7 +205,8 @@
                                                 <div id="job-list-data-{{ $job['id'] }}" class="job-items">
                                                     @foreach($job->workflow->workflowSteps as $workflowStep)
                                                         <div class="job-item">
-                                                            <span class="number">--</span><br/>{{ $workflowStep->name }}
+                                                            <span class="number"> @if($workflowStep->name == 'All') {{$job->workflow->workflowSteps->reduce(function ($sum, $step) { return $sum + $step->users->count(); }, 0)}} @else {{$workflowStep->users->count()}} @endif
+                                                            </span><br/>{{ $workflowStep->name }}
                                                         </div>
                                                     @endforeach
                                                 </div>
@@ -360,7 +357,7 @@
                     </div>
 
                     <div class="pull-right" style="margin-right:10px;">
-                        <a href="javascript://" id="closeRejectModal" class="btn btn-danger pull-right">No</a>
+                        <a href="javascript://" id="closeRejectModal" onclick = "$('#deleteJob').modal('hide');"class="btn btn-danger pull-right">No</a>
                         <div class="separator separator-small"></div>
                     </div>
 

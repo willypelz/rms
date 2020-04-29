@@ -1850,7 +1850,7 @@ class JobApplicationsController extends Controller
                 'company_id' => get_current_company()->id
             ]);
 
-            \Session::flash('status', 'Create Successfully');
+            \Session::flash('status', 'New Template has been created');
         }
 
 

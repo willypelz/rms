@@ -205,7 +205,7 @@
                                                 <div id="job-list-data-{{ $job['id'] }}" class="job-items">
                                                     @foreach($job->workflow->workflowSteps as $workflowStep)
                                                         <div class="job-item">
-                                                            <span class="number"> @if($workflowStep->name == 'All') {{$job->workflow->workflowSteps->reduce(function ($sum, $step) { return $sum + $step->users->count(); }, 0)}} @else {{$workflowStep->users->count()}} @endif
+                                                            <span class="number"> @if($workflowStep->name == 'All') - @else - @endif
                                                             </span><br/>{{ $workflowStep->name }}
                                                         </div>
                                                     @endforeach

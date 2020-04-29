@@ -30,6 +30,7 @@
         "sentry/sentry-laravel": "^1.0",
         "wemersonjanuario/wkhtmltopdf-windows": "0.12.2.3",
         "laravel/helpers": "^1.2",
+        "jdavidbakr/mail-tracker": "^3.0.0",
         "seamlesshr/solrpackage": "develop-dev",
         "solarium/solarium": "^5.1"
     },

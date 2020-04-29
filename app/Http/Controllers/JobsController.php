@@ -2454,7 +2454,7 @@ class JobsController extends Controller
 
         $last_cv = Cv::where('candidate_id', $candidate->id);
         if ($last_cv->count()) {
-            $last_cv = $last_cv->orderBy('id', 'DSC')->first();
+            $last_cv = $last_cv->orderBy('id', 'desc')->first();
         } else {
             $last_cv = [];
         }

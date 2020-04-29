@@ -299,6 +299,33 @@
                                         });
                                 }
                             </script>
+
+
+                            <script>
+                                $(function () {
+
+                                    $.ajax
+                                    ({
+                                        type: "POST",
+                                        url: "{{ route('get-one-job-data') }}",
+                                        data: ({
+                                            rnd: Math.random() * 100000,
+                                            jobs_ids: {!! $job->id !!} }),
+                                        success: function (response) {
+
+                                            console.log(response)
+
+                                            response.forEach(function (v) {
+                                                $("#job-list-data-" + v.id).html(v.html_data);
+                                            });
+
+                                        }
+                                    });
+
+                                });
+
+                            </script>
+
                         @endforeach
 
                     @else
@@ -308,28 +335,7 @@
                     @endif
                 @endforeach
 
-                <script>
-                    $(function () {
-
-                        $.ajax
-                        ({
-                            type: "POST",
-                            url: "{{ route('get-job-data') }}",
-                            data: ({
-                                rnd: Math.random() * 100000,
-                                jobs_ids: {!! $jobs->pluck('id')->toJson() !!} }),
-                            success: function (response) {
-
-                                response.forEach(function (v) {
-                                    $("#job-list-data-" + v.id).html(v.html_data);
-                                });
-
-                            }
-                        });
-
-                    });
-
-                </script>
+               
                 <span class="col-xs-6"></span>
             </div>
 

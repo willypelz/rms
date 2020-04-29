@@ -10,6 +10,7 @@
 <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" type="text/css" href="{{ secure_asset('css/jquery.growl.css') }}"/>
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.js"></script>
 
 <script type="text/javascript">
     $(function () {

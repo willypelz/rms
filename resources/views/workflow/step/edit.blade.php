@@ -121,6 +121,22 @@
                                         <textarea name="message_template" id="messageTemplate" placeholder="... ... .."
                                             class="form-control">{{ old('message_template', $workflowStep->message_template) }}</textarea>
                                     </div>
+
+                                    <div class="msg-template-placeholders" style="margin: 10px auto;">
+                                            <button type="button" class="btn btn-sm btn-secondary templateBtn" value="{applicant_name}">
+                                                Applicant Name
+                                            </button>
+                                            |
+                                            <button type="button" class="btn btn-sm btn-secondary templateBtn" value="{company_name}">
+                                                Company Name
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-secondary templateBtn" value="{job_detail}">
+                                                Job Detail
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-secondary templateBtn" value="{job_title}">
+                                                Job Title
+                                            </button>
+                                        </div>
                                 </div>
                                 <div class="form-group">
                                     <a href="#" class="btn btn-warning"

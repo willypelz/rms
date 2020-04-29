@@ -372,6 +372,9 @@ Route::get('/one_applicant', 'JobApplication@oneApplicantData');
     Route::match(['get', 'post'], 'get-job-data',
         'JobApplicationsController@getJobsData')->name('get-job-data');
 
+    Route::match(['get', 'post'], 'get-one-job-data',
+        'JobApplicationsController@getOneJobsData')->name('get-one-job-data');
+
     Route::match(['get', 'post'], 'job-view-data',
         ['uses' => 'JobApplicationsController@JobViewData', 'as' => 'job-view-data']);
     Route::match(['get', 'post'], 'download-applicant-spreadsheet',

@@ -973,6 +973,46 @@ class JobApplicationsController extends Controller
         return response()->json($jobs_data);
     }
 
+
+    public function getOneJobsData(Request $request)
+    {
+        $jobs_data = [];
+
+            $job_id = $request->jobs_ids;
+            
+                $job_response_data = [
+                    'id' => $job_id,
+                    'html_data' => ''
+                ];
+
+                $job = Job::with([
+                    'workflow.workflowSteps' => function ($q) {
+                        return $q->orderBy('order', 'asc');
+                    }
+                ])->find($job_id);
+
+                $result = SolrPackage::get_applicants($this->search_params, $job_id,
+                    ''); // status parater value is formerly : @$request->status
+
+
+                $application_statuses = isset($result['facet_counts']) ? get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$job_id,
+                    $statuses = $job->workflow->workflowSteps()->pluck('slug')) : [];
+
+
+                foreach ($application_statuses as $key => $value) {
+                    $job_response_data['html_data'] .= '<div class="job-item">'
+                        . '<span class="number">' . $value . '</span>'
+                        . '<br/>'
+                        . $key
+                        . '</div>';
+                }
+
+                $jobs_data[] = $job_response_data;
+
+        return response()->json($jobs_data);
+    }
+
+
     public function JobViewData(Request $request)
     {
 
@@ -1772,7 +1812,8 @@ class JobApplicationsController extends Controller
     {
 
         $interview_note_templates = InterviewNoteTemplates::with('options')->where('company_id',
-            get_current_company()->id)->get();
+            get_current_company()->id)->orderBy('name', 'asc')->get();
+
         return view('job.interview-note-templates', compact('interview_note_templates'));
     }
 

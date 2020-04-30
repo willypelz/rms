@@ -1922,7 +1922,7 @@ class JobApplicationsController extends Controller
 
 
         return view('job.interview-note-option-create',
-            compact('interview_note_option', 'interview_template_id', 'interview_template'));
+            compact('interview_template_id', 'interview_template'));
     }
 
 

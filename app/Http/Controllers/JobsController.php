@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use  App\Http\Controllers\CvSalesController;
 use Alchemy\Zippy\Zippy;
 use App\Http\Requests;
+use App\Jobs\UploadApplicant;
 use App\Jobs\UploadZipCv;
 use App\Libraries\Solr;
 use App\Libraries\Utilities;
@@ -1557,11 +1558,6 @@ class JobsController extends Controller
         $qualifications = $this->qualifications;
         $grades = grades();
 
-        // $free_boards = JobBoard::where('type', 'free')->get()->toArray();
-
-        // $job_boards = JobBoard::where('type', 'paid')->where('avi', null)->get()->toArray();
-
-        // $newspapers = JobBoard::where('type', 'paid')->where('avi', 1)->get();
 
         $subscribed_boards = $job->boards()->get()->toArray();
 
@@ -2437,7 +2433,9 @@ class JobsController extends Controller
 
 
             try {
-                SolrPackage::update_core();
+                $job_application = JobApplication::with('cv')->find($appl->id);
+                
+                UploadApplicant::dispatch($job_application)->onQueue('solr');
             } catch (Exception $e) {
                 Log::info(json_encode($e));
             }

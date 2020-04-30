@@ -233,7 +233,6 @@
     </section>
 
 <div class="separator separator-small"><br></div>
-@endsection
 
 
 
@@ -318,3 +317,5 @@
   });
   
 </script>
+
+@endsection

@@ -1698,7 +1698,7 @@ class JobsController extends Controller
                 case "APPLIED":
 
                     if (is_null($ac->application)) {
-                        continue;
+                        break;
                     }
                     $applicant = $ac->application->cv;
                     $job = $ac->application->job;
@@ -1753,7 +1753,7 @@ class JobsController extends Controller
                 case "TEST_ORDER":
 
                     if (is_null($ac->application)) {
-                        continue;
+                        break;
                     }
                     $applicant = $ac->application->cv;
                     $content .= '<li role="candidate-application" class="list-group-item">
@@ -1774,7 +1774,7 @@ class JobsController extends Controller
                 case "TEST_RESULT":
 
                     if (is_null($ac->application)) {
-                        continue;
+                        break;
                     }
                     $applicant = $ac->application->cv;
                     $content .= '<li role="candidate-application" class="list-group-item">
@@ -1795,7 +1795,7 @@ class JobsController extends Controller
                 case "PENDING":
 
                     if (is_null($ac->application)) {
-                        continue;
+                        break;
                     }
                     $applicant = $ac->application->cv;
                     $content .= '<li role="candidate-application" class="list-group-item">
@@ -1885,7 +1885,7 @@ class JobsController extends Controller
                 case "COMMENT":
 
                     if (is_null($ac->application)) {
-                        continue;
+                        break;
                     }
                     $applicant = $ac->application->cv;
 
@@ -1908,7 +1908,7 @@ class JobsController extends Controller
                 case "REVIEW":
 
                     if (is_null($ac->application)) {
-                        continue;
+                        break;
                     }
                     $applicant = $ac->application->cv;
 
@@ -1984,7 +1984,7 @@ class JobsController extends Controller
 
                 default:
                     if (is_null($ac->application)) {
-                        continue;
+                        break;
                     }
                     $applicant = $ac->application->cv;
                     $content .= '<li role="candidate-application" class="list-group-item">

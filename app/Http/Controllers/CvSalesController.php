@@ -206,11 +206,9 @@ class CvSalesController extends Controller
         $cv['dob'] = @$cv['date_of_birth'];
         $is_applicant = $request->is_applicant;
         $is_embedded = $request->is_embedded;
+        $appl = NULL;
         if(isset($request->appl_id)){
             $appl = JobApplication::find($request->appl_id);
-             // dd( $appl->custom_fields );
-
-
         }
 
         // dd( FormFieldValues::where('job_application_id') )

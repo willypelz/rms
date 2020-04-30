@@ -2259,7 +2259,6 @@ class JobsController extends Controller
             } else {
                 $data['cv_file'] = null;
             }
-            // dd( $custom_fields[0] );
 
             if ($fields->date_of_birth->is_visible) {
                 $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));

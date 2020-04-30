@@ -31,18 +31,13 @@
         @if($application->job->status == "ACTIVE")
           <li role="candidate-application" class="list-group-item">
             
-            <!-- <span class="fa-stack fa-lg i-notify">
-              <i class="fa fa-circle fa-stack-2x text-info"></i>
-              <i class="fa fa-hourglass-half fa-stack-1x fa-inverse"></i>
-            </span> -->
-            
             <a href="{{ route('candidate-activities', ['application_id' => $application->id ]) }}"><h4 class="no-margin text-info">{{ $application->job->title }}</h4></a>
             <p class="text-uppercase">at <span>{{ $application->job->company->name }}</span></p>
             <div class="hr-xs"></div>
             <p>
               <a href="{{ url($application->job->company->slug.'/job/'.$application->job->id.'/'.str_slug($application->job->title)) }}" target="_blank" style="margin-right: 10px;"> View Job</a>
               <label class="label label-lg label-info pull-right"> {{ $application->status }}</label>
-              <b>Applied</b>: {{ date('D. j M, Y', strtotime( $application->job->created_at)) }}
+              <b>Applied</b>: {{ date('D. j M, Y', strtotime( $application->created)) }}
             </p>
           </li>
           @endif

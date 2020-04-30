@@ -9,7 +9,6 @@
     <title> @if(isset($pageTitle)){{ $pageTitle }}&middot;@endif SeamlessHiring</title>
 
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/seamless.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-social.css') }}" rel="stylesheet">
@@ -34,9 +33,17 @@
         }
     </style>
 
-    <link rel="stylesheet" href="{{ secure_asset('css/update-2018.css')  }}">
+
     <!-- Add Custom CSS for brand white listing here -->
-    @if(env('CUSTOM_BRAND_STYLE'))
-    <link href="{{ asset('css/'.env('CUSTOM_BRAND_STYLE')) }}" rel="stylesheet">
+    @if(env('CUSTOM_STYLE'))
+        <link href="{{ secure_asset('css/'.env('CUSTOM_STYLE').'.theme.css') }}" rel="stylesheet">
+    @else
+        <link href="{{ secure_asset('css/seamlesshiring.css') }}" rel="stylesheet">
     @endif
+
+    {{--
+    @if(env('CUSTOM_BRAND_STYLE'))
+        <link href="{{ secure_asset('css/'.env('CUSTOM_BRAND_STYLE')) }}" rel="stylesheet">
+    @endif
+    --}}
 </head>

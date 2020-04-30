@@ -156,7 +156,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('/invoice-pop', ['as' => 'show-invoice-pop', 'uses' => 'PaymentController@createInvoice']);
 
 
-    route::get('error', [
+    Route::get('error', [
         'as' => 'errors.defaultError',
         function () {
             return view('errors.500');
@@ -170,10 +170,10 @@ Route::group(['middleware' => 'web'], function () {
     });
 
     Route::post('/contact', function () {
+        $request = request();
         $data = $request->all();
 
-
-        $mail = Mail::queue('emails.new.contact', [$data => $data], function ($m) use ($data) {
+        $mail = Mail::queue('emails.new.contact', $data, function ($m) use ($data) {
             $m->from($data->email, 'New Job Paid');
             // $m->to('babatopeoni@gnmail.com')->subject('Contact');
             $m->to('support@seamlesshiring.com')->subject('Contact');

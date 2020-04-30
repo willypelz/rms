@@ -1,0 +1,130 @@
+@import 'seamlesshiring';
+
+// Variables
+$c-body-bg-color: #e0e0e0;
+
+$c-white: #fff;
+$c-primary: #2e2260;
+$c-secondary: #6f63a0;
+$c-success: #1eff5a;
+
+$c-primary-hover: #231a4a;
+$c-secondary-hover: #534686;
+$c-success-hover: #19d14a;
+
+body {
+  background: $c-body-bg-color;
+}
+
+.nav.navbar-nav-sp > li > a,
+.navbar-nav > li > a {
+  color: $c-primary;
+}
+
+section.s-div {
+  background-color: $c-primary;
+}
+
+section.s-div.dashboard {
+  background-position: center 50px;
+  background-image: url('/img/green-africa/dashboard-bg.png');
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-color: $c-primary;
+
+  h4 {
+    font-weight: bold;
+    //font-size: 28px;
+  }
+}
+
+.navbar .nav > li > a:focus, .navbar .nav > li > a:hover {
+  background-color: $c-primary-hover;
+}
+
+.btn-group-justified.btn-dash > .btn-group .btn {
+
+  & {
+    background-color: $c-white;
+
+    span {
+      color: $c-primary;
+    }
+
+    small {
+      //color: $c-white;
+    }
+
+    border-color: $c-white;
+  }
+
+  &.btn-success {
+    background-color: $c-primary;
+
+    span {
+      color: $c-success;
+    }
+
+    small {
+      color: $c-white;
+    }
+
+  }
+
+  &:hover {
+    background-color: $c-primary-hover;
+
+    span {
+      color: $c-success;
+    }
+
+    small {
+      color: $c-white;
+    }
+
+  }
+
+}
+
+//.shr-auth-form-button {
+//  color: #ffffff;
+//  box-shadow: 0 2px 2px 0 #F2F2F2;
+//  background-color: #4BB779;
+//}
+
+.shr-auth .shr-auth-form .shr-auth-form-inner .shr-auth-form-toggle .toggle-button.active {
+  background-color: $c-primary;
+  color: $c-white;
+  border-color: $c-primary;
+}
+
+.btn.btn-primary {
+  background-color: $c-secondary;
+  color: $c-white;
+  border-color: $c-primary;
+
+  &:hover {
+    background-color: $c-secondary-hover;
+    color: $c-white;
+  }
+}
+
+.btn.btn-success, .centre.btn.btn-default,
+.shr-auth .shr-auth-form .shr-auth-form-inner .btn.shr-auth-form-button {
+  background-color: $c-success;
+  color: $c-primary;
+
+  &:hover {
+    background-color: $c-success-hover;
+    color: $c-primary;
+  }
+}
+
+.ga-text-primary {
+  color: $c-primary;
+}
+
+.ga-text-success {
+  color: $c-success;
+}
+

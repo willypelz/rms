@@ -1253,15 +1253,22 @@ class JobsController extends Controller
     public function AddCandidates($jobid = null)
     {
 
+        $myFolders = [];
+
         if (!empty($jobid)) {
             $job = Job::find($jobid);
         }
 
         $myJobs = Job::getMyJobs();
-        $myFolders = array_unique(array_pluck(Solr::get_all_my_cvs($this->search_params, null, null)['response']['docs'], 'cv_source'));
+        $cv_array = Solr::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
-        if (($key = array_search('Direct Application', $myFolders)) !== false) {
-            unset($myFolders[$key]);
+        if(!empty($cv_array)){
+            $myFolders = array_unique(array_pluck($cv_array, 'cv_source'));
+
+            if (($key = array_search('Direct Application', $myFolders)) !== false) {
+                unset($myFolders[$key]);
+            }
+
         }
 
         $states = $this->states;

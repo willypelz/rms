@@ -2247,7 +2247,7 @@ class JobsController extends Controller
 
 
             if ($owned_applicataions_count > 0) {
-                return redirect()->route('job-applied', ['jobid' => $jobID, 'slug' => $slug, 'already_applied' => true]);
+                return redirect()->route('job-applied', [$jobID, $slug, true]);
             }
 
 
@@ -2441,7 +2441,7 @@ class JobsController extends Controller
             }
 
 
-            return redirect()->route('job-applied', ['jobid' => $jobID, 'slug' => $slug]);
+            return redirect()->route('job-applied', [$jobID, $slug]);
 
 
         }
@@ -2497,7 +2497,7 @@ class JobsController extends Controller
             $app->video_application_score = $score;
             $app->save();
 
-            return redirect()->route('job-applied', ['jobid' => $jobID, 'slug' => $job_slug]);
+            return redirect()->route('job-applied', [$jobID, $job_slug]);
         }
 
         return view('job.video-application', compact('job', 'company', 'video_options'));

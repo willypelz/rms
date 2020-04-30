@@ -307,7 +307,7 @@
                                     <div class="col-xs-12"><hr></div>
                                         
                                         @if( count($custom_fields) > 0 )
-                                            {{-- */$index=0;/* --}}
+                                            @php $index=0; @endphp
                                             @foreach( $custom_fields as $custom_field )
                                                 
                                                 <div class="col-sm-6 custom-field">
@@ -370,7 +370,7 @@
                                                 @if( $index % 2  )
                                                     <div class="clearfix"></div>
                                                 @endif
-                                                {{-- */$index++;/* --}}
+                                                @php $index++;  @endphp
                                             @endforeach
                                         @endif
 

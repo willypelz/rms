@@ -140,8 +140,7 @@
                                                     class="fa fa-lg fa-user-plus"></i></span></h5>
                                     <hr>
                                     
-
-                                    @if($user->is_super_admin || $user->can('can-add-job-team-members'))
+                                    @if(Auth::user()->is_super_admin || $user->can('can-add-job-team-members'))
                                     <a aria-controls="AddTeamMember" aria-expanded="false" class="btn btn-warning"
                                        data-toggle="collapse" data-target="#AddTeamMember" href="#AddTeamMember"><i
                                                 class="fa fa-user-plus"></i> Add New Member</a>

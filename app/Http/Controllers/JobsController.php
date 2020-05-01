@@ -496,7 +496,7 @@ class JobsController extends Controller
 
         }
 
-        return view('job.accept-invite', compact('job_team_invite', 'job', 'status', 'is_new_user', 'user', 'is_internal', 'company'));
+        return view('job.accept-invite', compact('job_team_invite', 'job', 'is_new_user', 'user', 'is_internal', 'company'));
 
     }
 
@@ -1546,12 +1546,7 @@ class JobsController extends Controller
         $job = Job::find($id);
         $company = $job->company()->first();
 
-        $result = SolrPackage::get_applicants($this->search_params, $id, '');
-
-        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id);
-
         $active_tab = 'promote';
-
 
         $job_id = $id;
         $states = $this->states;
@@ -1575,7 +1570,8 @@ class JobsController extends Controller
         $myJobs = Job::getMyJobs();
         $myFolders = array_unique(array_pluck(SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'], 'cv_source'));
 
-        return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'result', 'application_statuses', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
+
+        return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
     }
 
     public function JobTeam($id, Request $request)
@@ -1592,16 +1588,13 @@ class JobsController extends Controller
         $job = Job::with('workflow.workflowSteps')->find($id);
         $active_tab = 'team';
 
-        $result = SolrPackage::get_applicants($this->search_params, $id, '');
-
-        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id);
 
         $roles = Role::select('id', 'display_name', 'name')->get();
 
         $job_team_invites = JobTeamInvite::where('job_id', $job->id)->where('is_accepted', 0)->where('is_declined', 0)->get();
         $interviewer_id = $roles->where('name','interviewer')->first()->id;
 
-        return view('job.board.team', compact('job', 'active_tab', 'company', 'result', 'application_statuses', 'owner', 'job_team_invites', 'roles', 'interviewer_id'));
+        return view('job.board.team', compact('job', 'active_tab', 'company', 'owner', 'job_team_invites', 'roles', 'interviewer_id'));
     }
 
 

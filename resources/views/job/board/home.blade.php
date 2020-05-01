@@ -30,6 +30,11 @@
                                   </div>
                                   <div class="panel-body" style="height: 720px; overflow: auto;">
                                   <p class="text-muted">You can copy the link of your job or share them from here.</p>
+
+                                    @php 
+                                      $job_text= str_slug($job->title);
+                                      $job_url = route('job-view',[$job->id, $job_text]);
+                                    @endphp
                                     
 
                                     @foreach($subscribed_boards as $subscribed_board)
@@ -65,9 +70,7 @@
                                           </div>
                                           <div class="col-xs-3">
                                           <h5>Share this link</h5>
-                                          @php $job_text= str_slug($job->title);
-                                          $job_url = route('job-view',[$job->id, $job_text]);
-                                          @endphp
+
                                             <ul class="list-inline">
                                                    <li class="no-pad no-margin">
                                                        <a href="{{env('FACEBOOK_URL', 'https://www.facebook.com/')}}sharer/sharer.php?u={{$job_url}}" class="btn-disabled" target="_blank" >

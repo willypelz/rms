@@ -2234,6 +2234,13 @@ class JobsController extends Controller
             $data = $request->all();
 
 
+            $validatedData = $request->validate([
+                'g-recaptcha-response' => 'required|captcha'
+                ], [
+                'g-recaptcha-response.required' => 'Please fill the Captcha'
+            ]);
+
+
             // $has_applied = CV::where('email',$data['email'])->orWhere('phone',$data['phone'])->first();
             $owned_cvs = CV::where('email', $data['email'])->orWhere('phone', $data['phone'])->pluck('id');
             $owned_applicataions_count = JobApplication::whereIn('cv_id', $owned_cvs)->where('job_id', $jobID)->get()->count();
@@ -2449,7 +2456,13 @@ class JobsController extends Controller
             $last_cv = [];
         }
 
-        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations', 'grades', 'custom_fields', 'candidate', 'last_cv', 'fields'));
+
+        $google_captcha_attributes = [
+            'data-theme' => 'light',
+            'data-type' => 'audio',
+        ];
+
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'candidate', 'last_cv', 'fields'));
     }
 
     public function JobVideoApplication($jobID, $job_slug, $appl_id, Request $request)

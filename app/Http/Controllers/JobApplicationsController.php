@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Alchemy\Zippy\Adapter\ZipExtensionAdapter;
 use Alchemy\Zippy\Zippy;
 use App;
+use App\Exports\ApplicantsExport;
 use App\Http\Requests;
 use App\Libraries\Solr;
 use App\Models\AtsProduct;
@@ -34,12 +35,14 @@ use File;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
+use Madnest\Madzipper\Facades\Madzipper;
 use Mail;
 use PDF;
 use Response;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use Spatie\CalendarLinks\Link;
 use Validator;
+
 
 class JobApplicationsController extends Controller
 {
@@ -666,8 +669,12 @@ class JobApplicationsController extends Controller
 
 
 
-        $excel = App::make('excel');
-        $filename = 'Applicants Report - ' . $other_data['job_title'];
+        // $excel = App::make('excel');
+        $filename = 'Applicants Report - ' . $other_data['job_title'].'.xlsx';
+
+        // dd($filename, $excel_data, $other_data, array_keys($excel_data[0]));
+        return Excel::download(new ApplicantsExport($excel_data), $filename);
+
         Excel::create($filename,
             function ($excel) use ($excel_data, $other_data) {
                 // Set the title
@@ -693,6 +700,7 @@ class JobApplicationsController extends Controller
                         ]
                     ]);
                   
+
 
 
                 });
@@ -782,6 +790,8 @@ class JobApplicationsController extends Controller
         $cvs = array_pluck($data, 'cv_file');
         $ids = array_pluck($data, 'id');
 
+
+
         //Check for selected cvs to download and append path to it
         $cvs = array_map(function ($cv, $id) use ($request) {
 
@@ -800,22 +810,24 @@ class JobApplicationsController extends Controller
             return public_path('uploads/CVs/') . $cv;
         }, $cvs, $ids);
 
+
+
         //Remove nulls
         $cvs = array_filter($cvs, function ($var) {
             return !is_null($var);
         });
+
 
         // if cvs are empty return back
         if(empty($cvs)) {
           return redirect()->back()->with('error', 'The candidates do not have any cv\'s and can\'t be downloaded');
         }
 
-        //$archive->addMembers($cvs, $recursive = false );
+        $zipPath = $path . $filename;
 
-        $zipper = new \Madnest\Madzipper\Zipper;
-        @$zipper->make($path . $filename)->add($cvs)->close();
+        Madzipper::make($zipPath)->add($cvs)->close();
 
-        return Response::download($path . $filename, 'Cv.zip', ['Content-Type' => 'application/octet-stream']);
+        return Response::download($path . $filename, date('y-m-d').$job->title.'Cv.zip', ['Content-Type' => 'application/octet-stream']);
 
     }
 
@@ -843,10 +855,10 @@ class JobApplicationsController extends Controller
         $path = public_path('uploads/tmp/');
         $show_other_sections = false;
 
-        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML(view('modals.inc.dossier-content',
-            compact('applicant_badge', 'app_ids', 'cv_ids', 'jobID', 'appl', 'comments', 'interview_notes', 'show_other_sections'))->render());
-        $pdf->setTemporaryFolder($path);
+            compact( 'jobID', 'appl', 'comments', 'interview_notes', 'show_other_sections'))->render());
+
         $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf', true);
 
 
@@ -858,11 +870,12 @@ class JobApplicationsController extends Controller
         $timestamp = " " . time() . " ";
 
         }
-        $zipper = new \Madnest\Madzipper\Zipper;
-        @$zipper->make($path . $timestamp . $filename)->add($files_to_archive)->close();
 
+        $zipPath = $path . $timestamp . $filename;
 
-          return Response::download($path . $timestamp . $filename, $filename,
+        Madzipper::make($zipPath)->add($files_to_archive)->close();
+
+          return Response::download($zipPath, $filename,
               ['Content-Type' => 'application/octet-stream']);
     }
 
@@ -1105,10 +1118,10 @@ class JobApplicationsController extends Controller
 
         $path = public_path('uploads/tmp/');
 
-        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML(view('modals.inc.dossier-content',
             compact('applicant_badge', 'app_ids', 'cv_ids', 'jobID', 'appl', 'comments', 'interview_notes'))->render());
-        $pdf->setTemporaryFolder($path);
+        // $pdf->setTemporaryFolder($path);
         $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' dossier.pdf', true);
 
 
@@ -1131,6 +1144,7 @@ class JobApplicationsController extends Controller
             }
         }
 
+
         $test_path = "http://seamlesstesting.com/test/combined/pdf/" . $appl->id;
         $test_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' tests.pdf';
 
@@ -1144,11 +1158,11 @@ class JobApplicationsController extends Controller
         }
         $timestamp = " " . time() . " ";
 
-        $zipper = new \Madnest\Madzipper\Zipper;
-        @$zipper->make($path . $timestamp . $filename)->add($files_to_archive)->close();
+        $zipPath = $path . $filename;
 
+        Madzipper::make($zipPath)->add($files_to_archive)->close();
 
-        return Response::download($path . $timestamp . $filename, $filename,
+        return Response::download($zipPath, $filename,
             ['Content-Type' => 'application/octet-stream']);
 
     }

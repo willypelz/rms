@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2fef7679e8955e5129c72564a4938a18",
+    "content-hash": "102ddaa772d2edaff1baa9a265a89273",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -125,16 +125,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.136.0",
+            "version": "3.137.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "223e616d5eda2e60c338279c3b0136455f74f7d0"
+                "reference": "e92ed36668dd546041714d3d1c520d6206423ab3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/223e616d5eda2e60c338279c3b0136455f74f7d0",
-                "reference": "223e616d5eda2e60c338279c3b0136455f74f7d0",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e92ed36668dd546041714d3d1c520d6206423ab3",
+                "reference": "e92ed36668dd546041714d3d1c520d6206423ab3",
                 "shasum": ""
             },
             "require": {
@@ -205,7 +205,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2020-04-29T19:14:20+00:00"
+            "time": "2020-04-30T18:16:22+00:00"
         },
         {
             "name": "balping/json-raw-encoder",
@@ -4505,7 +4505,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git@bitbucket.org/insidify/solr-package.git",
-                "reference": "b1a103e727cb3957d50d22266d430aff5f0cb2c3"
+                "reference": "f89a750cbdcde2078bee79d1fe35c5b4fb9faadd"
             },
             "require": {
                 "illuminate/support": "~5|~6|~7"
@@ -4553,7 +4553,7 @@
                 "Laravel",
                 "SolrPackage"
             ],
-            "time": "2020-04-29T07:51:50+00:00"
+            "time": "2020-04-30T07:38:18+00:00"
         },
         {
             "name": "sentry/sdk",

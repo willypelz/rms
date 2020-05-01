@@ -1288,18 +1288,28 @@ class JobsController extends Controller
         return view('job.share', compact('company', 'job', 'user'));
     }
 
+   
+
+
     public function AddCandidates($jobid = null)
     {
-        $job = NULL;
+
+        $myFolders = [];
+
         if (!empty($jobid)) {
             $job = Job::find($jobid);
         }
 
         $myJobs = Job::getMyJobs();
-        $myFolders = array_unique(array_pluck(SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'], 'cv_source'));
+        $cv_array = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
-        if (($key = array_search('Direct Application', $myFolders)) !== false) {
-            unset($myFolders[$key]);
+        if(!empty($cv_array)){
+            $myFolders = array_unique(array_pluck($cv_array, 'cv_source'));
+
+            if (($key = array_search('Direct Application', $myFolders)) !== false) {
+                unset($myFolders[$key]);
+            }
+
         }
 
         $states = $this->states;
@@ -1308,24 +1318,9 @@ class JobsController extends Controller
         return view('job.add-candidates', compact('jobid', 'job', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
     }
 
+
     public function UploadCVfile(Request $request)
     {
-
-        // $zipper = new Zipper;
-        ///Applications/AMPPS/www/seamlesshiring/public_html/
-        // dd( Zipper::getFileContent( '\Applications\AMPPS\www\seamlesshiring\public_html\uploads\esimakin-twbs-pagination-1.3.1-2-g4a2f5ff.zip' ) );
-
-
-        /*array:4 [
-          "_token" => "oblmiKczvYoGWh5mhEr5PMIR1SekBtXofdc4qmFF"
-          "options" => "upToJob"
-          "job" => "90"
-          "cv-upload-file" => ""
-        ]*/
-        //'Image' =>
-        //
-        // highest qualification, sex, location, years of experience
-
 
         $validation_fields_copy = ['cv-upload-file.required' => 'Please select a file'];
 
@@ -1539,20 +1534,22 @@ class JobsController extends Controller
         return view('job.job-list', compact('jobs', 'draft', 'active', 'suspended', 'deleted', 'company', 'all_jobs', 'expired', 'q'));
     }
 
-    public function JobPromote($id, Request $request)
+
+     public function JobPromote($id, Request $request)
     {
         //Check if he  is the owner of the job
         check_if_job_owner($id);
         $job = Job::find($id);
         $company = $job->company()->first();
+        $myFolders = [];
 
         $active_tab = 'promote';
+
 
         $job_id = $id;
         $states = $this->states;
         $qualifications = $this->qualifications;
         $grades = grades();
-
 
         $subscribed_boards = $job->boards()->get()->toArray();
 
@@ -1568,11 +1565,17 @@ class JobsController extends Controller
         };
 
         $myJobs = Job::getMyJobs();
-        $myFolders = array_unique(array_pluck(SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'], 'cv_source'));
+
+        $cv_array = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
 
-        return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
+        if(!empty($cv_array))
+            $myFolders = array_unique(array_pluck($cv_array, 'cv_source'));
+
+
+        return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'result', 'application_statuses', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
     }
+
 
     public function JobTeam($id, Request $request)
     {

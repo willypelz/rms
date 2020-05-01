@@ -927,38 +927,41 @@ class JobApplicationsController extends Controller
     {
         $jobs_data = [];
 
-        if (count($jobs_ids = $request->input('jobs_ids')) > 0) {
-            foreach ($jobs_ids as $job_id) {
-                $job_response_data = [
-                    'id' => $job_id,
-                    'html_data' => ''
-                ];
+        if($request->input('jobs_ids') <> null && is_array($request->input('jobs_ids'))){
+            $jobs_ids = $request->input('jobs_ids');
+                foreach ($jobs_ids as $job_id) {
+                    $job_response_data = [
+                        'id' => $job_id,
+                        'html_data' => ''
+                    ];
 
-                $job = Job::with([
-                    'workflow.workflowSteps' => function ($q) {
-                        return $q->orderBy('order', 'asc');
+                    $job = Job::with([
+                        'workflow.workflowSteps' => function ($q) {
+                            return $q->orderBy('order', 'asc');
+                        }
+                    ])->find($job_id);
+
+                    $result = Solr::get_applicants($this->search_params, $job_id,
+                        ''); // status parater value is formerly : @$request->status
+                    $application_statuses = isset($result['facet_counts']) ? get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$job_id,
+                        $statuses = $job->workflow->workflowSteps()->pluck('slug')) : [];
+
+
+                    foreach ($application_statuses as $key => $value) {
+                        $job_response_data['html_data'] .= '<div class="job-item">'
+                            . '<span class="number">' . $value . '</span>'
+                            . '<br/>'
+                            . $key
+                            . '</div>';
                     }
-                ])->find($job_id);
 
-                $result = Solr::get_applicants($this->search_params, $job_id,
-                    ''); // status parater value is formerly : @$request->status
-                $application_statuses = isset($result['facet_counts']) ? get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$job_id,
-                    $statuses = $job->workflow->workflowSteps()->pluck('slug')) : [];
-
-
-                foreach ($application_statuses as $key => $value) {
-                    $job_response_data['html_data'] .= '<div class="job-item">'
-                        . '<span class="number">' . $value . '</span>'
-                        . '<br/>'
-                        . $key
-                        . '</div>';
+                    $jobs_data[] = $job_response_data;
                 }
 
-                $jobs_data[] = $job_response_data;
-            }
+            return response()->json($jobs_data);
         }
 
-        return response()->json($jobs_data);
+
     }
 
     public function JobViewData(Request $request)

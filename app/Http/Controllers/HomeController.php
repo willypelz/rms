@@ -151,7 +151,8 @@ class HomeController extends Controller
 
         $job_access = Job::with('users')->where('company_id',  $comp_id)->get();
         $job_access->filter(function ($item) use ($user){
-            return $item->users->where('user_id', $user->id);
+            if($item->users->where('user_id', $user->id)->count() > 0)
+                return $item;
         });
 
         $job_access->pluck('id')->toArray();

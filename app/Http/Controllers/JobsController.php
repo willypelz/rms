@@ -1514,8 +1514,10 @@ class JobsController extends Controller
         check_if_job_owner($id);
         $job = Job::find($id);
         $company = $job->company()->first();
+        $myFolders = [];
 
         $result = Solr::get_applicants($this->search_params, $id, '');
+
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id);
 
@@ -1547,7 +1549,13 @@ class JobsController extends Controller
         };
 
         $myJobs = Job::getMyJobs();
-        $myFolders = array_unique(array_pluck(Solr::get_all_my_cvs($this->search_params, null, null)['response']['docs'], 'cv_source'));
+
+        $cv_array = Solr::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
+
+
+        if(!empty($cv_array))
+            $myFolders = array_unique(array_pluck($cv_array, 'cv_source'));
+
 
         return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'result', 'application_statuses', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
     }

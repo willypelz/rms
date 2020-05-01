@@ -396,8 +396,16 @@
                                         <div class="separator separator-small"></div>
                                     </div>
 
+            @php 
 
+                $attributes = [
+    'data-theme' => 'dark',
+    'data-type' => 'audio',
+];
+
+@endphp
                                     
+                                 {!! Captcha::display($attributes) !!}
 
                                             
                                     <!-- $job->form_fields->toArray() -->

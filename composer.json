@@ -20,6 +20,7 @@
         "madnest/madzipper": "1.0.*",
         "consoletvs/charts": "6.*",
         "jenssegers/agent": "^2.5",
+        "buzz/laravel-google-captcha": "2.*",
         "aws/aws-sdk-php": "~3.0",
         "barryvdh/laravel-snappy": "^0.4.0",
         "webpatser/laravel-uuid": "^2.0",

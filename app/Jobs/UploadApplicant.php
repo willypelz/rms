@@ -65,7 +65,7 @@ class UploadApplicant implements ShouldQueue
             $cand['application_date'] = $applicant->created;
             $cand['application_modified'] = $applicant->created;
             $cand['application_id'] = $applicant->id;
-            $cand['is_approved'] = true;
+            $cand['is_approved'] = $applicant->is_approved;
             $cand['application_status'] = $applicant->status;
             $cand['job_title'] = $applicant->job->title;
 

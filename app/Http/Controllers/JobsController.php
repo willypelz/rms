@@ -1573,7 +1573,7 @@ class JobsController extends Controller
             $myFolders = array_unique(array_pluck($cv_array, 'cv_source'));
 
 
-        return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'result', 'application_statuses', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
+        return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
     }
 
 

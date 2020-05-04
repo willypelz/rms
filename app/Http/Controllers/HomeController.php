@@ -149,32 +149,23 @@ class HomeController extends Controller
         $comp_id = get_current_company()->id;
 
 
-        $job_access = Job::with('users')->where('company_id',  $comp_id)->get();
-        $job_access->filter(function ($item) use ($user){
-            if($item->users->where('user_id', $user->id)->count() > 0)
-                return $item;
-        });
+        $job_access = Job::with('users')->where('company_id',  $comp_id)->where('status','!=','DELETED');
 
-        $job_access->pluck('id')->toArray();
+        $jobs_count = $job_access->count();
 
-        
-        $jobs_count = Job::where('company_id', $comp_id);
+        if(!$user->is_super_admin){
 
-        if($user->is_super_admin){
-        } else {
-            $jobs_count = $jobs_count->whereIn('id', $job_access);
+            $jobs_count = $job_access->whereHas('users', function ($q) use ($user) {
+                        $q->where('user_id', $user->id);
+                    })->count();
+
         }
-        $jobs_count = $jobs_count->where('status','!=','DELETED')->count();
 
-        $response = Curl::to('https://api.insidify.com/articles/get-posts')
-                                ->withData(array('limit'=>6))
-                                ->post();
+
+        $response = [];
 
         $posts = @json_decode($response)->data->posts;
-
         $talent_pool_count = $saved_cvs_count = $purchased_cvs_count = '--';
-
-      
 
         return view('talent-pool.dashboard', compact('posts', 'jobs_count','talent_pool_count','saved_cvs_count','purchased_cvs_count'));
     }

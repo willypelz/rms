@@ -34,8 +34,6 @@ class UploadApplicant implements ShouldQueue
     {
 
         $applicant = $this->applicant;
-        // \Log::info('Inside the Upload App'.$applicant->cv_id );
-        // dump('dumping for '.$this->applicant->id);
 
             $cand['gender'] = $applicant->cv->gender;
             $cand['last_company_worked'] = $applicant->cv->last_company_worked;

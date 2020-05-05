@@ -549,7 +549,7 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
 	function get_interview_note_templates()
 	{
-		return \App\Models\InterviewNoteTemplates::where('company_id',get_current_company()->id )->get();
+		return \App\Models\InterviewNoteTemplates::where('company_id',get_current_company()->id )->orderBy('name')->get();
 
 	}
 

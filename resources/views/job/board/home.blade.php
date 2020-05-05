@@ -68,12 +68,13 @@
                                             <!-- <div class="clearfix"></div>
                                             <p class="small text-muted">&uarr; Link to job on insidify.com</p> -->
                                           </div>
-                                          <div class="col-xs-3">
+                                          <div class="col-xs-3" @if($job->expiry_date < date('Y-m-d')) style="display: none;" @endif>
                                           <h5>Share this link</h5>
 
                                             <ul class="list-inline">
                                                    <li class="no-pad no-margin">
-                                                       <a href="{{env('FACEBOOK_URL', 'https://www.facebook.com/')}}sharer/sharer.php?u={{$job_url}}" class="btn-disabled" target="_blank" >
+
+                                                       <a href="https://www.facebook.com/sharer/sharer.php?u={{$job_url}}" class="btn-disabled" target="_blank" >
                                                                <span class="fa-stack fa-lg">
                                                                  <i class="fa fa-square fa-stack-2x text-"></i>
                                                                  <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>

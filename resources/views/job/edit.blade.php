@@ -143,7 +143,12 @@
                                     <div class="row">
                                     <div class="col-xs-12"><hr></div>
                                         <div class="col-xs-4">
-                                            <!-- <a href="job.php" target="_blank" type="submit" class="btn btn-line"><i class="fa fa-save"></i> Save as draft</a> -->
+                                           <a style="" href="{{ route('job-list') }}" type="submit"
+                                           id="previous_step"
+                                           class="btn job-posting-text-dark">
+                                            <i class="fa fa-backward"></i>
+                                            Cancel
+                                        </a>
                                         </div>
                                         <div class="col-sm-4">
                                             <!-- <a href="job.php" target="_blank" type="submit" class="btn pull-right">Preview Job</a> -->

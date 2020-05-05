@@ -208,7 +208,7 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <button id="save-btn" data-toggle="modal" data-target="#savedAsDraft" class="btn btn-primary btn-block">
-                                                Save and continue later
+                                                Save and continue laterA
                                             </button>
                                         </div>
                                         <div class="col-sm-6">

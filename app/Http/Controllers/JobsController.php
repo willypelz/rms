@@ -1566,7 +1566,7 @@ class JobsController extends Controller
 
         $myJobs = Job::getMyJobs();
 
-        $cv_array = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
+        $cv_arrayray = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
 
         if(!empty($cv_array))

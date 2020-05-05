@@ -234,6 +234,8 @@ class JobApplicationsController extends Controller
             $appl->id)->get()->groupBy('interview_note_option.interview_note_template.name');
 
 
+
+
         return view('applicant.notes', compact('appl', 'nav_type', 'interview_note_categories'));
     }
 
@@ -1206,6 +1208,7 @@ class JobApplicationsController extends Controller
         $interviewers = User::whereHas('workflow_steps', function ($query) use ($stepId) {
           $query->where('workflow_step_id', $stepId);
         })->pluck('name', 'id');
+
 
         /**
          * [$is_a_reschedule: is this interview a reschedule]

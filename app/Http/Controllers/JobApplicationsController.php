@@ -1468,7 +1468,7 @@ class JobApplicationsController extends Controller
         $stepId = $request->stepId;
 
         return view('modals.assess',
-            compact('applicant_badge', 'app_ids', 'cv_ids', 'products', 'appl', 'test_available', 'count', 'section',
+            compact('applicant_badge', 'app_ids', 'cv_ids', 'products', 'appl', 'count', 'section',
                 'type', 'step', 'stepId'));
     }
 

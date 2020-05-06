@@ -92,7 +92,10 @@
                 @foreach( $all_jobs as  $job_section)
                     @if( count(@$job_section) > 0 )
                         @foreach($job_section as $job)
-                            @php $tag = ( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 ) ? 'expired' : strtolower($job['status']); @endphp
+                            @php $tag = ( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 ) ? 'expired' : strtolower($job['status']); 
+                            
+
+                            @endphp
 
                             <div class="col-xs-12 job-block job-all job-{{$tag}}">
                                 <div class="panel panel-default b-db">
@@ -156,16 +159,26 @@
                                                             @if($job['status'] != 'DRAFT')
                                                                 <li><a href="{{ route('job-candidates', [$job['id']]) }}">View
                                                                     Applicants</a></li>
-                                                                @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
-                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote
+                                                                @if((isset($user_role) &&  !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
+
+                                                                @if( !$job->hasExpied())
+                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote A
                                                                         this
-                                                                        Job</a></li>
-                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Get
-                                                                        Referrals </a></li>
+                                                                        Job</a></li> 
+
+
+
                                                                 <li><a href="{{ route('job-promote', [$job['id']]) }}">Share
                                                                         this
                                                                         job on
                                                                         Social Media. </a></li>
+                                                                        
+
+
+                                                                        @endif
+                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Get
+                                                                        Referrals </a></li>
+                                                                
                                                                 <li role="separator" class="divider"></li>
                                                                 @if(in_array($job['status'], ['SUSPENDED', 'DRAFT'] ) && !$job->hasExpied())
                                                                     <li><a href="#"

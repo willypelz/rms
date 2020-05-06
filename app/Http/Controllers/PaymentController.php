@@ -125,9 +125,9 @@ class PaymentController extends Controller
                         'count' => $count,
                         'type' => $request->type,
                         'type_id' => $type_id,
-                        'image' => $check->product->provider->logo,
-                        'title' => $check->product->name,
-                        'amount' => $check->product->cost
+                        'image' => @$check->product->provider->logo,
+                        'title' => @$check->product->name,
+                        'amount' => @$check->product->cost
                     ]);
                     
                 }

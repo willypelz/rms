@@ -72,12 +72,12 @@
                                         <div class="col-xs-9">
                                             <div class="media-left pull-left" style="padding-right: 20px;">
                                                 <a href="#">
-                                                    <img class="media-object" alt="64x64" src="{{ $req->product->provider->logo }}" style="width: 64px; height: 64px;">
+                                                    <img class="media-object" alt="64x64" src="{{ @$req->product->provider->logo }}" style="width: 64px; height: 64px;">
                                                 </a>
                                             </div>
                                             <div class="media-body">
-                                                <h5 class="media-heading">{{ $req->product->name }}</h5>
-                                                {{ $req->product->summary }}    
+                                                <h5 class="media-heading">{{ @$req->product->name }}</h5>
+                                                {{ @$req->product->summary }}    
                                                  <a href="#">...more</a><br/>
                                                  <span class="label label-info label-large" >{{ $req->status }}</span> | 
                                                  Requested: {{ human_time($req->created, 1) }}

@@ -162,7 +162,7 @@
                                                                 @if((isset($user_role) &&  !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
 
                                                                 @if( !$job->hasExpied())
-                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote A
+                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote 
                                                                         this
                                                                         Job</a></li> 
 
@@ -172,7 +172,7 @@
                                                                         this
                                                                         job on
                                                                         Social Media. </a></li>
-                                                                        
+
 
 
                                                                         @endif

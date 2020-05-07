@@ -1971,7 +1971,7 @@ class JobApplicationsController extends Controller
         $interview_note_options = $this->getInterviewNoteOption($appl->job->id, $request->id);
 
         $interview_template_id = $request->id;
-
+        $interview_note = NULL;
         if (@$request->readonly) {
             $readonly = true;
             $interview_note = InterviewNoteValues::with('interviewer')->where('job_application_id',

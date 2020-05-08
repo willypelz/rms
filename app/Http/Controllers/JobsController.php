@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use  App\Http\Controllers\CvSalesController;
 use Alchemy\Zippy\Zippy;
 use App\Http\Requests;
+use App\Jobs\UploadApplicant;
 use App\Jobs\UploadZipCv;
 use App\Libraries\Solr;
 use App\Libraries\Utilities;
@@ -245,7 +246,7 @@ class JobsController extends Controller
 
 
                 if($check_email)
-                    return back()->with('warning', "The email you enter already exist");
+                    return back()->with('warning', "The email you entered already exists.");
 
                 $token = hash_hmac('sha256', str_random(40), config('app.key'));
                 
@@ -495,7 +496,7 @@ class JobsController extends Controller
 
         }
 
-        return view('job.accept-invite', compact('job_team_invite', 'job', 'status', 'is_new_user', 'user', 'is_internal', 'company'));
+        return view('job.accept-invite', compact('job_team_invite', 'job', 'is_new_user', 'user', 'is_internal', 'company'));
 
     }
 
@@ -1287,18 +1288,28 @@ class JobsController extends Controller
         return view('job.share', compact('company', 'job', 'user'));
     }
 
+   
+
+
     public function AddCandidates($jobid = null)
     {
-        $job = NULL;
+
+        $myFolders = [];
+
         if (!empty($jobid)) {
             $job = Job::find($jobid);
         }
 
         $myJobs = Job::getMyJobs();
-        $myFolders = array_unique(array_pluck(SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'], 'cv_source'));
+        $cv_array = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
-        if (($key = array_search('Direct Application', $myFolders)) !== false) {
-            unset($myFolders[$key]);
+        if(!empty($cv_array)){
+            $myFolders = array_unique(array_pluck($cv_array, 'cv_source'));
+
+            if (($key = array_search('Direct Application', $myFolders)) !== false) {
+                unset($myFolders[$key]);
+            }
+
         }
 
         $states = $this->states;
@@ -1306,6 +1317,7 @@ class JobsController extends Controller
         $grades = grades();
         return view('job.add-candidates', compact('jobid', 'job', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
     }
+
 
     public function UploadCVfile(Request $request)
     {
@@ -1473,16 +1485,14 @@ class JobsController extends Controller
         return view('job.job-list', compact('jobs', 'draft', 'active', 'suspended', 'deleted', 'company', 'all_jobs', 'expired', 'q'));
     }
 
-    public function JobPromote($id, Request $request)
+
+     public function JobPromote($id, Request $request)
     {
         //Check if he  is the owner of the job
         check_if_job_owner($id);
         $job = Job::find($id);
         $company = $job->company()->first();
-
-        $result = SolrPackage::get_applicants($this->search_params, $id, '');
-
-        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id);
+        $myFolders = [];
 
         $active_tab = 'promote';
 
@@ -1491,12 +1501,6 @@ class JobsController extends Controller
         $states = $this->states;
         $qualifications = $this->qualifications;
         $grades = grades();
-
-        // $free_boards = JobBoard::where('type', 'free')->get()->toArray();
-
-        // $job_boards = JobBoard::where('type', 'paid')->where('avi', null)->get()->toArray();
-
-        // $newspapers = JobBoard::where('type', 'paid')->where('avi', 1)->get();
 
         $subscribed_boards = $job->boards()->get()->toArray();
 
@@ -1512,10 +1516,17 @@ class JobsController extends Controller
         };
 
         $myJobs = Job::getMyJobs();
-        $myFolders = array_unique(array_pluck(SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'], 'cv_source'));
 
-        return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'result', 'application_statuses', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
+        $cv_arrayray = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
+
+
+        if(!empty($cv_array))
+            $myFolders = array_unique(array_pluck($cv_array, 'cv_source'));
+
+
+        return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
     }
+
 
     public function JobTeam($id, Request $request)
     {
@@ -1531,16 +1542,13 @@ class JobsController extends Controller
         $job = Job::with('workflow.workflowSteps')->find($id);
         $active_tab = 'team';
 
-        $result = SolrPackage::get_applicants($this->search_params, $id, '');
-
-        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id);
 
         $roles = Role::select('id', 'display_name', 'name')->get();
 
         $job_team_invites = JobTeamInvite::where('job_id', $job->id)->where('is_accepted', 0)->where('is_declined', 0)->get();
         $interviewer_id = $roles->where('name','interviewer')->first()->id;
 
-        return view('job.board.team', compact('job', 'active_tab', 'company', 'result', 'application_statuses', 'owner', 'job_team_invites', 'roles', 'interviewer_id'));
+        return view('job.board.team', compact('job', 'active_tab', 'company', 'owner', 'job_team_invites', 'roles', 'interviewer_id'));
     }
 
 
@@ -2180,13 +2188,20 @@ class JobsController extends Controller
             $data = $request->all();
 
 
+            $validatedData = $request->validate([
+                'g-recaptcha-response' => 'required|captcha'
+                ], [
+                'g-recaptcha-response.required' => 'Please fill the Captcha'
+            ]);
+
+
             // $has_applied = CV::where('email',$data['email'])->orWhere('phone',$data['phone'])->first();
             $owned_cvs = CV::where('email', $data['email'])->orWhere('phone', $data['phone'])->pluck('id');
             $owned_applicataions_count = JobApplication::whereIn('cv_id', $owned_cvs)->where('job_id', $jobID)->get()->count();
 
 
             if ($owned_applicataions_count > 0) {
-                return redirect()->route('job-applied', ['jobid' => $jobID, 'slug' => $slug, 'already_applied' => true]);
+                return redirect()->route('job-applied', [$jobID, $slug, true]);
             }
 
 
@@ -2198,7 +2213,6 @@ class JobsController extends Controller
             } else {
                 $data['cv_file'] = null;
             }
-            // dd( $custom_fields[0] );
 
             if ($fields->date_of_birth->is_visible) {
                 $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
@@ -2372,13 +2386,15 @@ class JobsController extends Controller
 
 
             try {
-                SolrPackage::update_core();
+                $job_application = JobApplication::with('cv')->find($appl->id);
+                
+                UploadApplicant::dispatch($job_application)->onQueue('solr');
             } catch (Exception $e) {
                 Log::info(json_encode($e));
             }
 
 
-            return redirect()->route('job-applied', ['jobid' => $jobID, 'slug' => $slug]);
+            return redirect()->route('job-applied', [$jobID, $slug]);
 
 
         }
@@ -2389,12 +2405,18 @@ class JobsController extends Controller
 
         $last_cv = Cv::where('candidate_id', $candidate->id);
         if ($last_cv->count()) {
-            $last_cv = $last_cv->orderBy('id', 'DSC')->first();
+            $last_cv = $last_cv->orderBy('id', 'desc')->first();
         } else {
             $last_cv = [];
         }
 
-        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations', 'grades', 'custom_fields', 'candidate', 'last_cv', 'fields'));
+
+        $google_captcha_attributes = [
+            'data-theme' => 'light',
+            'data-type' => 'audio',
+        ];
+
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'candidate', 'last_cv', 'fields'));
     }
 
     public function JobVideoApplication($jobID, $job_slug, $appl_id, Request $request)
@@ -2434,7 +2456,7 @@ class JobsController extends Controller
             $app->video_application_score = $score;
             $app->save();
 
-            return redirect()->route('job-applied', ['jobid' => $jobID, 'slug' => $job_slug]);
+            return redirect()->route('job-applied', [$jobID, $job_slug]);
         }
 
         return view('job.video-application', compact('job', 'company', 'video_options'));

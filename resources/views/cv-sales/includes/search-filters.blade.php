@@ -252,21 +252,22 @@
 
 
 
-
+              
 
               <p class="border-bottom-thin text-muted">Gender<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
-                  @php  $other_gender = 0  @endphp
+                  @php  $other_gender = 0; $genderArray = [];  @endphp
                   {{--*/ $index = 0  /*--}}
                   @foreach( $result['facet_counts']['facet_fields']['gender'] as $key => $gender )
                       @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] != 0  && ( strtolower($gender) == 'male' || strtolower($gender) == 'female' ))
-
+                        
+                        @php $genderArray[] = $gender @endphp
                         {{--*/ $index++  /*--}}
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="gender" data-value="{{ $gender }}" > {{ ucwords( $gender )." (".$result['facet_counts']['facet_fields']['gender'][ $key + 1 ].")" }}</label> <br></div>
                       @else
 
-                        @php @$other_gender += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] @endphp
-
+                        @php 
+                          @$other_gender += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] @endphp
                       @endif
                   @endforeach
                   

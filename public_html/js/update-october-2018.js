@@ -20,7 +20,8 @@ $(function () {
 
 
      var requireApproval = document.getElementById("requireApproval");
-      if (requireApproval.checked) {
+     console.log(requireApproval);
+      if ( (requireApproval != null) && requireApproval.checked) {
             approvalUsers.show();
         
       } else {

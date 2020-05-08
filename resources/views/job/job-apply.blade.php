@@ -52,7 +52,9 @@
                                     </div> -->
                                 </div>
                                 <div class="clearfix"></div>
-                                
+
+
+
                             
                             
                                 </div>
@@ -84,6 +86,8 @@
                                                 <p class="text-center">This application is closed.</p>
                                             @else
                                             <p class="text-center">Please fill in the information below carefully.</p>
+                                        
+                                @include('layout.alerts')
 
 
                                 {!! Form::open(array('class'=>'job-details', 'files'=>true)) !!}
@@ -281,7 +285,7 @@
                                             @if( $fields->cover_note->is_visible )
                                             <div class="col-xs-12">
                                                 <label for="">Cover Letter @if( $fields->cover_note->is_required )<span class="text-danger">*</span>@endif</label>
-                                                <textarea name="cover_note" id="" cols="30" rows="4" class="form-control" placeholder="" @if( $fields->cover_note->is_required ) required @endif>{{ @$last_cv->cover_note }}</textarea>
+                                                <textarea name="cover_note" id="" cols="30" rows="4" class="form-control" placeholder="" @if( $fields->cover_note->is_required ) required @endif>{{ @$last_cv->cover_note ??  old('cover_note') }}</textarea>
                                             </div>
                                             @endif
                                         </div>
@@ -307,7 +311,7 @@
                                     <div class="col-xs-12"><hr></div>
                                         
                                         @if( count($custom_fields) > 0 )
-                                            {{-- */$index=0;/* --}}
+                                            @php $index=0; @endphp
                                             @foreach( $custom_fields as $custom_field )
                                                 
                                                 <div class="col-sm-6 custom-field">
@@ -370,11 +374,14 @@
                                                 @if( $index % 2  )
                                                     <div class="clearfix"></div>
                                                 @endif
-                                                {{-- */$index++;/* --}}
+                                                @php $index++;  @endphp
                                             @endforeach
                                         @endif
 
                                     </div>
+
+                                 {!! Captcha::display($google_captcha_attributes) !!}
+
 
 
                                     <div class="row">
@@ -384,6 +391,7 @@
                                         </div>
                                         <div class="col-sm-4">
                                             <!--a href="job.php" target="_blank" type="submit" class="btn pull-right">Preview Job</a-->
+
                                         </div>
 
                                         <div class="col-sm-4"> 
@@ -396,8 +404,7 @@
                                         <div class="separator separator-small"></div>
                                     </div>
 
-
-                                    
+                             
 
                                             
                                     <!-- $job->form_fields->toArray() -->

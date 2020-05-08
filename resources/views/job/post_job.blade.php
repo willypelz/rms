@@ -305,11 +305,11 @@
                                         <hr>
                                     </div>
                                     <div class="col-xs-7">
-                                        <a style="display: none;" href="/jobs/create-step2" type="submit"
+                                        <a style="" href="{{ route('job-list') }}" type="submit"
                                            id="previous_step"
                                            class="btn job-posting-text-dark">
-                                            <i class="fa fa-arrow-left"></i>
-                                            Previous step
+                                            <i class="fa fa-backward"></i>
+                                            Cancel
                                         </a>
                                     </div>
                                     <div class="col-xs-5">

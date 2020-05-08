@@ -34,7 +34,7 @@
                         target="_blank"> <i class="fa fa-paperclip"></i> Download Attachment</a>
                       @endif
                       <small
-                        class="date pull-right">{{ date('D. j M, Y', strtotime( $current_application->cv->created_at)) }}</small>
+                        class="date pull-right">{{ date('D. j M, Y', strtotime( $current_application->cv->last_modified)) }}</small>
                       <div class="clearfix"></div>
                     </div>
                   </div>

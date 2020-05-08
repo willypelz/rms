@@ -92,7 +92,10 @@
                 @foreach( $all_jobs as  $job_section)
                     @if( count(@$job_section) > 0 )
                         @foreach($job_section as $job)
-                            @php $tag = ( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 ) ? 'expired' : strtolower($job['status']); @endphp
+                            @php $tag = ( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 ) ? 'expired' : strtolower($job['status']); 
+                            
+
+                            @endphp
 
                             <div class="col-xs-12 job-block job-all job-{{$tag}}">
                                 <div class="panel panel-default b-db">
@@ -156,16 +159,26 @@
                                                             @if($job['status'] != 'DRAFT')
                                                                 <li><a href="{{ route('job-candidates', [$job['id']]) }}">View
                                                                     Applicants</a></li>
-                                                                @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
-                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote
+                                                                @if((isset($user_role) &&  !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
+
+                                                                @if( !$job->hasExpied())
+                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote 
                                                                         this
-                                                                        Job</a></li>
-                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Get
-                                                                        Referrals </a></li>
+                                                                        Job</a></li> 
+
+
+
                                                                 <li><a href="{{ route('job-promote', [$job['id']]) }}">Share
                                                                         this
                                                                         job on
                                                                         Social Media. </a></li>
+
+
+
+                                                                        @endif
+                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Get
+                                                                        Referrals </a></li>
+                                                                
                                                                 <li role="separator" class="divider"></li>
                                                                 @if(in_array($job['status'], ['SUSPENDED', 'DRAFT'] ) && !$job->hasExpied())
                                                                     <li><a href="#"
@@ -205,7 +218,7 @@
                                                 <div id="job-list-data-{{ $job['id'] }}" class="job-items">
                                                     @foreach($job->workflow->workflowSteps as $workflowStep)
                                                         <div class="job-item">
-                                                            <span class="number"> @if($workflowStep->name == 'All') {{$job->workflow->workflowSteps->reduce(function ($sum, $step) { return $sum + $step->users->count(); }, 0)}} @else {{$workflowStep->users->count()}} @endif
+                                                            <span class="number"> @if($workflowStep->name == 'All') - @else - @endif
                                                             </span><br/>{{ $workflowStep->name }}
                                                         </div>
                                                     @endforeach
@@ -299,6 +312,33 @@
                                         });
                                 }
                             </script>
+
+
+                            <script>
+                                $(function () {
+
+                                    $.ajax
+                                    ({
+                                        type: "POST",
+                                        url: "{{ route('get-one-job-data') }}",
+                                        data: ({
+                                            rnd: Math.random() * 100000,
+                                            jobs_ids: {!! $job->id !!} }),
+                                        success: function (response) {
+
+                                            console.log(response)
+
+                                            response.forEach(function (v) {
+                                                $("#job-list-data-" + v.id).html(v.html_data);
+                                            });
+
+                                        }
+                                    });
+
+                                });
+
+                            </script>
+
                         @endforeach
 
                     @else
@@ -308,28 +348,7 @@
                     @endif
                 @endforeach
 
-                <script>
-                    $(function () {
-
-                        $.ajax
-                        ({
-                            type: "POST",
-                            url: "{{ route('get-job-data') }}",
-                            data: ({
-                                rnd: Math.random() * 100000,
-                                jobs_ids: {!! $jobs->pluck('id')->toJson() !!} }),
-                            success: function (response) {
-
-                                response.forEach(function (v) {
-                                    $("#job-list-data-" + v.id).html(v.html_data);
-                                });
-
-                            }
-                        });
-
-                    });
-
-                </script>
+               
                 <span class="col-xs-6"></span>
             </div>
 

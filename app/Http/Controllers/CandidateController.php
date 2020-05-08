@@ -395,7 +395,11 @@ class CandidateController extends Controller
 
         for ($i = 0; $i < strlen($string); $i++) {
             $id .= ord($string[$i]);
+
+            if($i == 3)
+                break;
         }
+
 
         $id .= $candidate->id;
         return $id;

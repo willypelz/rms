@@ -125,9 +125,9 @@ class PaymentController extends Controller
                         'count' => $count,
                         'type' => $request->type,
                         'type_id' => $type_id,
-                        'image' => $check->product->provider->logo,
-                        'title' => $check->product->name,
-                        'amount' => $check->product->cost
+                        'image' => @$check->product->provider->logo,
+                        'title' => @$check->product->name,
+                        'amount' => @$check->product->cost
                     ]);
                     
                 }
@@ -180,7 +180,7 @@ $mail = Mail::send('emails.new.invoice', compact('invoice','invoice_type','user'
 
 
         return response()->json([
-                'html' => view('invoice.includes.inner',compact('invoice','invoice_type','count','total_multiplier'))->render(),
+                'html' => view('invoice.includes.inner',compact('invoice','invoice_type','count'))->render(),
                 'invoice_no' => $invoiceDB->id
             ]);
    }

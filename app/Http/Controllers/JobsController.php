@@ -1321,7 +1321,6 @@ class JobsController extends Controller
 
     public function UploadCVfile(Request $request)
     {
-
         $validation_fields_copy = ['cv-upload-file.required' => 'Please select a file'];
 
         if ($request->type == "single") {
@@ -1337,98 +1336,50 @@ class JobsController extends Controller
             $validation_fields['last_position'] = 'required';
             $validation_fields['willing_to_relocate'] = 'required';
             $validation_fields['graduation_grade'] = 'required';
-            $validation_fields = [
-                'cv-upload-file' => 'required|mimes:pdf,doc,docx,txt,rtf,pptx,ppt' //application/octet-stream,
-            ];
-            $validation_fields_copy = [
-                'cv-upload-file.mimes' => 'Allowed extensions are .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt',
-            ];
 
-
+            $validation_fields_copy = [];
             $validation_fields_copy['cv_first_name.required'] = 'Firstname is required';
             $validation_fields_copy['cv_last_name.required'] = 'Lastname is required';
             $validation_fields_copy['cv_email.required'] = 'Email is required';
             $validation_fields_copy['cv_phone.required'] = 'Phone number is required';
-        }else{
-            $validation_fields = [
-                'cv-upload-file' => 'required|mimes:zip' //application/octet-stream,
-            ];
-
-            $validation_fields_copy = [
-                'cv-upload-file.mimes' => 'Allowed extensions are .zip',
-            ];
-        }
-
-        $validator = Validator::make($request->all(), $validation_fields, $validation_fields_copy);
-
-        if ($validator->fails()) {
-            return ['status' => 0, 'data' => implode(', ', $validator->errors()->all())];
-            //return redirect()->back()->withErrors($validator)->withInput();
-        } else {
-            $randomName = Auth::user()->id . "_" . get_current_company()->id . "_" . time() . "_";
-            $filename = $randomName . $request->file('cv-upload-file')->getClientOriginalName();
-
-            $mimeType = $request->file('cv-upload-file')->getMimeType();
-
-            $upload = $request->file('cv-upload-file')->move(
-                public_path('uploads/CVs/'), $filename
-            );
-            $additional_data = ['job_id' => @$request->job, 'folder' => @$request->folder, 'options' => $request->options];
-
-            if ($mimeType == 'application/zip') {
-                $request_data = json_encode($request->all());
-
-                // $request_data = collect( $request->all() );
-                $this->dispatch(new UploadZipCv($filename, $randomName, $additional_data, $request_data));
-                //
-
-                /*$zippy = Zippy::load();
-
-
-                //Open File
-                  $archive = $zippy->open( public_path('uploads/CVs/') .$filename);
-
-                  //Create temporary directory
-                  $tempDir = public_path('uploads/CVs/').$randomName. '/';
-                  mkdir( $tempDir );
-
-                  //Extract zip contents to temporary directory
-                  $archive->extract( $tempDir );
-
-                  //Delete Zip file
-                  unlink(public_path('uploads/CVs/') .$filename);
-
-                  //Instantiate Cv files array
-                  $cvs = [];
-
-                  $files = scandir($tempDir);
-                foreach($files as $key => $file) {
-                   if(is_file( $tempDir . $file ))
-                   {
-                        $cv = $key."_".$randomName.$file;
-                        $cvs[] = $cv;
-                        // move_uploaded_file($tempDir . $file, $cv);
-                        rename($tempDir . $file, public_path('uploads/CVs/').$cv);
-                        echo $tempDir . $file. " is a file <br/>";
-                   }
-                   else
-                   {
-                    echo $tempDir . $file." is not a file <br/>";
-                   }
-                }
-
-                //Delete Temporary directory
-                rrmdir($tempDir);*/
-
-
-                return ['status' => 1, 'data' => "You will receive email notification once successfully uploaded"];
-            } else {
-                $cvs = [$filename];
-                saveCompanyUploadedCv($cvs, $additional_data, $request);
-                return ['status' => 1, 'data' => 'Cv(s) uploaded successfully'];
+            $validator = Validator::make($request->all(), $validation_fields, $validation_fields_copy);
+            if($validator->fails()) {
+                return ['status' => 0, 'data' => implode(', ', $validator->errors()->all())];
             }
         }
+
+        $extension = $request->file('cv-upload-file')->getClientOriginalExtension();
+        if($request->type == "single"){
+            $allowed_file_extentions = ['pdf','doc','docx','txt','rtf','pptx','ppt'];
+            if (!in_array($extension, $allowed_file_extentions)) {
+                return ['status' => 0, 'data' => 'Allowed extensions are .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt'];
+            } 
+        }else{
+            if ($extension != 'zip') {
+                return ['status' => 0, 'data' => 'Allowed extension is .zip'];
+            } 
+        }
+        $randomName = Auth::user()->id . "_" . get_current_company()->id . "_" . time() . "_";
+        $filename = $randomName . $request->file('cv-upload-file')->getClientOriginalName();
+
+        $mimeType = $request->file('cv-upload-file')->getMimeType();
+
+        $upload = $request->file('cv-upload-file')->move(
+            public_path('uploads/CVs/'), $filename
+        );
+        $additional_data = ['job_id' => @$request->job, 'folder' => @$request->folder, 'options' => $request->options];
+
+        if ($mimeType == 'application/zip') {
+            $request_data = json_encode($request->all());
+            $this->dispatch(new UploadZipCv($filename, $randomName, $additional_data, $request_data));
+            return ['status' => 1, 'data' => "You will receive email notification once successfully uploaded"];
+        } else {
+            $cvs = [$filename];
+            saveCompanyUploadedCv($cvs, $additional_data, $request);
+            return ['status' => 1, 'data' => 'Cv(s) uploaded successfully'];
+        }
     }
+
 
     public function adminUploadDocument(Request $request){
 

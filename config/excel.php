@@ -163,8 +163,8 @@ return [
         | storing reading or downloading. Here you can customize that path.
         |
         */
-        // 'local_path'  => sys_get_temp_dir(),
-        'local_path'  => '/Applications/XAMPP/xamppfiles/htdocs/insidify/seamlesshiring/public_html/uploads',
+        'local_path'  => sys_get_temp_dir(),
+        // 'local_path'  => '/Applications/XAMPP/xamppfiles/htdocs/insidify/seamlesshiring/public_html/uploads',
 
         /*
         |--------------------------------------------------------------------------

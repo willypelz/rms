@@ -28,15 +28,7 @@
 
                     </p><br>
                     
-                        <div class="progress" style="margin-bottom:0px;display:none;">
-                          <div class="progress-bar progress-bar-striped active" role="progressbar"
-                          aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-                            Uploading
-                          </div>
-                        </div>
-                        <div id="loader"></div>
-                        <div class="alert alert-danger" style="display:none;" id="u_f"></div>
-                        <div class="alert alert-success" style="display:none;" id="u_s"></div>
+                        
                         
                        <form action="{{ route('upload-file') }}" method="post" enctype="multipart/form-data" id="uploadCandidate">
                             {!! csrf_field() !!}
@@ -122,6 +114,16 @@
                                     <p class="alert alert-warning">
                                         Allowed extensions are .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt
                                     </p>
+
+                                    <div class="progress" style="margin-bottom:0px;display:none;">
+                                      <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                      aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                                        Uploading
+                                      </div>
+                                    </div>
+                                    <div id="loader"></div>
+                                    <div class="alert alert-danger" style="display:none;" id="u_f"></div>
+                                    <div class="alert alert-success" style="display:none;" id="u_s"></div>
 
                                     <div class="form-group col-xs-6">
                                         <label for="cv-name" class="pull-left">Firstname</label>

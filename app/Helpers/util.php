@@ -1,4 +1,5 @@
 <?php
+use App\Jobs\UploadApplicant;
 use App\Libraries\Solr;
 use App\Models\Candidate;
 use App\Models\Company;
@@ -637,7 +638,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 
 
         if($options == 'upToJob'){
-            JobApplication::insert([
+            $jb = JobApplication::FirstorCreate([
                 'cv_id' => $last_cv,
                 'job_id' => $job_id,
                 'created' => date('Y-m-d H:i:s'),
@@ -645,12 +646,16 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 				'status' => 'PENDING',
 				'candidate_id'=> $candidate = (isset($candidate->id)) ? $candidate->id : null
             ]);
+
+            $job_application = JobApplication::with('cv')->find($jb->id);
+
+    		UploadApplicant::dispatch($job_application)->onQueue('solr');
         }
     }
 
     // $settings->set('LAST_CV_UPLOAD_INDEX',$last_cv_upload_index);
     $user = Auth::user();
-    SolrPackage::update_core();
+    
     Mail::send('emails.new.cv_upload_successful', ['user' => $user, 'link'=> url('cv/talent-pool') ], function ($m) use ($user) {
         $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
     });

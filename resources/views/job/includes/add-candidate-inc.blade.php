@@ -121,9 +121,9 @@
                                         Uploading
                                       </div>
                                     </div>
-                                    <div id="loader"></div>
-                                    <div class="alert alert-danger" style="display:none;" id="u_f"></div>
-                                    <div class="alert alert-success" style="display:none;" id="u_s"></div>
+                                    <div class="loader"></div>
+                                    <div class="alert alert-danger u_f" style="display:none;" ></div>
+                                    <div class="alert alert-success u_s" style="display:none;" ></div>
 
                                     <div class="form-group col-xs-6">
                                         <label for="cv-name" class="pull-left">Firstname</label>
@@ -204,6 +204,17 @@
                                     <p class="">
                                         Please name each file in the archive the candidate's name
                                     </p>
+
+                                    <div class="progress" style="margin-bottom:0px;display:none;">
+                                      <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                      aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                                        Uploading
+                                      </div>
+                                    </div>
+                                    <div class="loader"></div>
+                                    <div class="alert alert-danger u_f" style="display:none;" ></div>
+                                    <div class="alert alert-success u_s" style="display:none;" ></div>
+
                                     <p class="alert alert-warning">
                                         Allowed extensions are .zip
                                     </p>
@@ -223,7 +234,7 @@
                                   
                                 </div><br>
 
-                                <button type="submit" class="btn btn-success text-capitalize">
+                                <button type="submit" class="btn btn-success text-capitalize" id="importFileButton">
                                         <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Import file</span>
                                 </button>
 
@@ -366,31 +377,33 @@
           
 
                     function beforeUpload(){
-                        $('#u_f').hide();
-                        $('#u_s').hide();
+                        $('.u_f').hide();
+                        $('.u_s').hide();
 
-                        $("#loader").html( '{!! preloader() !!}' );
+                        $(".loader").html( '{!! preloader() !!}' );
                         $(".progress").show();
+                        $('#importFileButton').prop("disabled",true);
                         
                     }
 
                     function showResponse(response){
 
-                        $("#loader").html( '' );
+                        $(".loader").html( '' );
                        
 
                         if(response.status)
                         {
                             
-                            $('#u_s').text( response.data ).show();
+                            $('.u_s').text( response.data ).show();
                             setInterval('window.location.reload()', 5000);
                         }
                         else
                         {
-                            $('#u_f').text( response.data ).show();
+                            $('.u_f').text( response.data ).show();
                         }
 
                         $(".progress").hide();
+                        $('#importFileButton').prop("disabled",false);
                         
 
                         // $.growl.notice({ message: "The file uploaded is being parsed. You will have access to it in within 48 hours" });

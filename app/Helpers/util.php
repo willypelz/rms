@@ -577,12 +577,14 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
             break;
     }
 
+    // dd($cvs, $request);
+
 
     foreach ($cvs as $key => $cv) {
 
 		$token = hash_hmac('sha256', str_random(40), config('app.key'));
 
-		if($request->willing_to_relocate == 'yes')
+		if(isset($request->willing_to_relocate) && $request->willing_to_relocate == 'yes')
 		{
 			$relocate = 1;
 		}else{

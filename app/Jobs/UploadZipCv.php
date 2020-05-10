@@ -2,16 +2,16 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Job;
-use Illuminate\Mail\Mailer;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-
 use Alchemy\Zippy\Zippy;
-use App\Models\Settings;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\JobsController;
+use App\Jobs\Job;
+use App\Models\Settings;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailer;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use VIPSoft\Unzip\Unzip;
 
 class UploadZipCv extends Job implements ShouldQueue
 {
@@ -46,28 +46,38 @@ class UploadZipCv extends Job implements ShouldQueue
     public function handle()
     {
         $zippy = Zippy::load();
+        $tempDir = public_path('uploads/CVs/') . $this->randomName . '/';
+
+
+        $unzipper  = new Unzip();
+        $filenames = $unzipper->extract(public_path('uploads/CVs/') . $this->filename, $tempDir);
+
 
         //Open File
-        $archive = $zippy->open(public_path('uploads/CVs/') . $this->filename);
+        // $archive = $zippy->open(public_path('uploads/CVs/') . $this->filename);
 
-        //Create temporary directory
-        $tempDir = public_path('uploads/CVs/') . $this->randomName . '/';
-        mkdir($tempDir);
+        // //Create temporary directory
+        // $tempDir = public_path('uploads/CVs/') . $this->randomName . '/';
+        // mkdir($tempDir);
 
-        //Extract zip contents to temporary directory
-        $archive->extract($tempDir);
+        // //Extract zip contents to temporary directory
+        // $archive->extract($tempDir);
 
-        //Delete Zip file
-        unlink(public_path('uploads/CVs/') . $this->filename);
+        // //Delete Zip file
+        // unlink(public_path('uploads/CVs/') . $this->filename);
 
         //Instantiate Cv files array
         $cvs = [];
 
+        
+
         $settings = new Settings();
         $last_cv_upload_index = intval($settings->get('LAST_CV_UPLOAD_INDEX'));
 
+        // dd('Stop', $filenames, $last_cv_upload_index);
 
         $files = scandir($tempDir);
+        // dd($files);
         foreach ($files as $key => $file) {
             if (is_file($tempDir . $file)) {
                 // $last_cv_upload_index++;
@@ -82,6 +92,8 @@ class UploadZipCv extends Job implements ShouldQueue
 
         //Delete Temporary directory
         rrmdir($tempDir);
+
+        // dd('GOT HERE');
 
         saveCompanyUploadedCv($cvs, $this->additional_data, $this->request);
 

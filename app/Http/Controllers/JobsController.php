@@ -1296,6 +1296,8 @@ class JobsController extends Controller
 
         $myFolders = [];
 
+        $job = NULL;
+        
         if (!empty($jobid)) {
             $job = Job::find($jobid);
         }

@@ -165,7 +165,7 @@
                             @if((@$applicant_step->type == 'background-check' || @$applicant_step->type == "medical-check") && (isset($permissions) && in_array('can-view-background-check', $permissions)) && $check_both_permissions)
 
                                 <span class="text-muted"> &nbsp; &middot; &nbsp;</span>
-                                <span class="dropdown">
+                                <span class="dropdown" style="display: none;">
                                     <a id="checkDrop" type="button" data-toggle="dropdown" aria-expanded="false">
                                         Checks
                                         <span class="caret"></span>

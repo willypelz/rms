@@ -7,14 +7,13 @@ use Illuminate\Mail\Mailer;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Contracts\Bus\SelfHandling;
 
 use Alchemy\Zippy\Zippy;
 use App\Models\Settings;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\JobsController;
 
-class UploadZipCv extends Job implements SelfHandling, ShouldQueue
+class UploadZipCv extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
 

@@ -11,6 +11,7 @@ use Illuminate\Mail\Mailer;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Spatie\PdfToText\Pdf;
 use VIPSoft\Unzip\Unzip;
 
 class UploadZipCv extends Job implements ShouldQueue
@@ -83,8 +84,26 @@ class UploadZipCv extends Job implements ShouldQueue
                 // $last_cv_upload_index++;
                 $cv = $key . "_" . $this->randomName . $file;
                 $cvs[$file] = $cv;
+                $filePath = public_path('uploads/CVs/').$this->randomName .'/'. $file;
                 // $cvs[] = [ 'first_name' => 'Cv ' . $last_cv_upload_index, 'cv_file' => $cv ] ;
+                // $pdf =  Pdf::getText($filePath);
 
+                // $text = (new Pdf('/usr/local/bin/pdftotext'))
+                // ->setPdf($filePath)
+                // ->text();
+                $parser = new \Smalot\PdfParser\Parser();
+                $pdf    = $parser->parseFile($filePath);
+                $details  = $pdf->getDetails();
+ 
+                    // Loop over each property to extract values (string or array).
+                    foreach ($details as $property => $value) {
+                        if (is_array($value)) {
+                            $value = implode(', ', $value);
+                        }
+                        dump( $property . ' => ' . $value . "\n" );
+                    }
+
+                dd('STOP');
                 rename($tempDir . $file, public_path('uploads/CVs/') . $cv);
 
             }
@@ -92,8 +111,6 @@ class UploadZipCv extends Job implements ShouldQueue
 
         //Delete Temporary directory
         rrmdir($tempDir);
-
-        // dd('GOT HERE');
 
         saveCompanyUploadedCv($cvs, $this->additional_data, $this->request);
 

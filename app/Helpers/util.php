@@ -563,7 +563,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 
     $options = ( is_null( $options ) ) ? 'upToJob' : $options;
 
-
+    \Log::info(json_encode($cvs));
 
     switch ($options) {
         case 'upToJob':
@@ -590,6 +590,9 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 		}else{
 			$relocate = 0;
 		}
+
+         \Log::info($request->type);
+
         switch ( $request->type ) {
             case 'single':
                 $last_cv = Cv::insertGetId([
@@ -630,7 +633,9 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 
             case 'bulk':
                 // $last_cv_upload_index++;
-                $last_cv = Cv::insertGetId([ 'first_name' => $key, 'cv_file' => $cv , 'cv_source' => $cv_source ]);
+                $emailKey = trim(strtolower($key));
+                \Log::info('Bulk uploaid');
+                $last_cv = Cv::insertGetId([ 'first_name' => $key, 'email' => $emailKey.'@seamlesshrbulk.com', 'cv_file' => $cv , 'cv_source' => $cv_source ]);
                 break;
 
             default:
@@ -655,7 +660,6 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
         }
     }
 
-    // $settings->set('LAST_CV_UPLOAD_INDEX',$last_cv_upload_index);
     $user = Auth::user();
     
     Mail::send('emails.new.cv_upload_successful', ['user' => $user, 'link'=> url('cv/talent-pool') ], function ($m) use ($user) {

@@ -106,7 +106,7 @@
 
                                 <ul class="nav nav-tabs select-type">
                                   <li class="active"><a data-toggle="tab" href="#single" data-value="single">Single Upload</a></li>
-                                  <li><a data-toggle="tab" href="#bulk" data-value="bulk">Bulk Upload</a></li>
+                                  <!-- <li><a data-toggle="tab" href="#bulk" data-value="bulk">Bulk Upload</a></li> -->
                                 </ul>
 
                                 <div class="tab-content">

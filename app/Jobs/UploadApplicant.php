@@ -33,7 +33,10 @@ class UploadApplicant implements ShouldQueue
     public function handle()
     {
 
-        $applicant = $this->applicant;
+        if(is_null($applicant->job))
+            return false;
+
+            $applicant = $this->applicant;
 
             $cand['gender'] = $applicant->cv->gender;
             $cand['last_company_worked'] = $applicant->cv->last_company_worked;

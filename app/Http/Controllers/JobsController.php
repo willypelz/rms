@@ -221,6 +221,39 @@ class JobsController extends Controller
 
         return view('modals.select-interview-step', compact('steps', 'user', 'role_id', 'job'));
     }
+
+
+    public function resendInvite(Request $request, $inviteId)
+    {
+        
+        $job_team_invite = JobTeamInvite::find($inviteId);
+            $company = Company::find(get_current_company()->id);
+
+
+            $accept_link = route('accept-invite', ['id' => $job_team_invite->id]);
+            $decline_link = route('decline-invite', ['id' => $job_team_invite->id]);
+
+            $mail_body = '&lt;p&gt;Hello,&lt;br&gt;
+
+
+                                        Regarding the ongoing recruitment process at {{ ucwords( get_current_company()->name ) }} company for the job of {{ ucwords( $job->title ) }}, this is to inform you that you have been invited to join the recruitment team.
+                                        You would be required to collaborate with your team in selecting the candidate(s) who best suit(s) the job.';
+
+
+            $job = Job::find($job_team_invite->job_id);
+            $data = (object)$job_team_invite;
+
+            //Send notification mail
+            $email_from = (Auth::user()->email) ? Auth::user()->email : env('COMPANY_EMAIL');
+
+            \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $job_team_invite, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($job_team_invite) {
+                $m->from(env('COMPANY_EMAIL'))->to($job_team_invite->email)->subject('You Have Been Exclusively Invited');
+            });
+
+
+            return back();
+    }
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse

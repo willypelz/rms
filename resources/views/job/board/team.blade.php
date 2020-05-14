@@ -123,8 +123,12 @@
                                                             <i class="fa fa-times"></i> Declined</span>
                                                         @else
                                                             <i class="fa fa-hourglass"></i> Pending</span>
+
+                                                             <a  class="btn btn-default btn-small" href="{{ route('resend-job-team-invite', $job_team_invite->id) }}">Resend Invite</a>
                                                         @endif
                                                     </div>
+
+
 
                                                     <div class="clearfix"></div>
                                                 </li>

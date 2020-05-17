@@ -385,10 +385,11 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 				return Auth::user()->companies[0];
 		}
 
-		// if( is_null( @Auth::user()->companies[0] ) || !isset( @Auth::user()->companies[0] ) )
-		// {
-		// 	return redirect()->guest('login');
-		// }
+
+		if( Auth::user()->companies && Auth::user()->companies->count() < 1 )
+		{
+			return redirect()->guest('login');
+		}
 
 		// If a company is not selected, default to the first on the list
 		return Auth::user()->companies[0];

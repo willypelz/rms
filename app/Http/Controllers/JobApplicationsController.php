@@ -287,6 +287,9 @@ class JobApplicationsController extends Controller
     public function sendMessage(Request $request)
     {
 
+        $message_content = '';
+        $user = '';
+
         if ($request->hasFile('document_file')) {
             $file_name = (@$request->document_file->getClientOriginalName());
             $fi = @$request->file('document_file')->getClientOriginalExtension();
@@ -311,7 +314,8 @@ class JobApplicationsController extends Controller
         $email_title = "Message on your job application ".$candidate->job->title;
         $application_id = $request->application_id;
         $link = route('candidate-messages', $request->application_id);
-        Mail::send('emails.new.admin_send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($candidate, $email_title) {
+
+        Mail::send('emails.new.admin_send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link'), function ($m) use ($candidate, $email_title) {
             $m->from(env('COMPANY_EMAIL'))->to($candidate->candidate->email)->subject($email_title);
         });
 

@@ -127,7 +127,7 @@ class CandidateController extends Controller
     public function forgotSent(Request $request)
     {
 
-        return view('candidate.forgot-sent', compact('redirect_to'));
+        return view('candidate.forgot-sent');
     }
 
     public function reset(Request $request, $token)
@@ -264,6 +264,7 @@ class CandidateController extends Controller
                 $attachment = '';
             }
 
+
             // Loop throgh applicants selected and dispatch message to them
             foreach ($job_applications as $key => $jb) {
 
@@ -310,6 +311,7 @@ class CandidateController extends Controller
         $application_id      = $request->application_id;
         $current_application = JobApplication::with('cv', 'job.company')->where('id', $application_id)->first();
         $messages            = Message::where('job_application_id', $request->application_id)->get();
+        
         return view('candidate.messages', compact('messages', 'application_id', 'current_application'));
     }
 

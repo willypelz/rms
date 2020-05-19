@@ -733,27 +733,39 @@ class JobsController extends Controller
                 return view('utils.staffstrength_data', compact('job_link', 'callback_url', 'requisition_id', 'api_key'));
             }
 
-             $job_boards = JobBoard::where('type', 'free')->get()->toArray();
+            $job_boards = JobBoard::where('type', 'free')->get()->toArray();
+            $urls = $bds = [];
+            
+            if(count($job_boards) > 2){
                 $c = (count($job_boards) / 2);
                 $t = array_chunk($job_boards, $c);
                 $board1 = $t[0];
                 $board2 = $t[1];
-                $urls = [];
+
                 foreach ($job_boards as $s) {
                     $bds[] = ($s['id']);
                     $urls[$s['id']] = "";
                 }
 
-                $pickd_boards = [1];
+            }else{
+                $board1 = [];
+                $board2 = [];
+            }
+
+                
+                
+
+            $pickd_boards = [];
 
 
-             $out_boards = array();
-                foreach ($pickd_boards as $p) {
-                    if (in_array($p, $bds))
-                        $job->boards()->attach($p, ['url' => $urls[$p]]);
-                    $out_boards[] = JobBoard::where('id', $p)->first()->name;
-                }
-                $flash_boards = implode(', ', $out_boards);
+            $out_boards = array();
+            foreach ($pickd_boards as $p) {
+                if (in_array($p, $bds))
+                    $job->boards()->attach($p, ['url' => $urls[$p]]);
+                $out_boards[] = JobBoard::where('id', $p)->first()->name;
+            }
+            $flash_boards = implode(', ', $out_boards);
+
 
             Job::find($id)->update(['status' => 'ACTIVE']);
 
@@ -865,22 +877,32 @@ class JobsController extends Controller
         $user = Auth::user();
         $company = get_current_company();
         $job_boards = JobBoard::where('type', 'free')->get()->toArray();
-        $c = (count($job_boards) / 2);
-        $t = array_chunk($job_boards, $c);
-        $board1 = $t[0];
-        $board2 = $t[1];
-        $urls = [];
-        foreach ($job_boards as $s) {
-            $bds[] = ($s['id']);
-            $urls[$s['id']] = "";
+
+        $urls = $bds = [];
+            
+        if(count($job_boards) > 2){
+            $c = (count($job_boards) / 2);
+            $t = array_chunk($job_boards, $c);
+            $board1 = $t[0];
+            $board2 = $t[1];
+
+            foreach ($job_boards as $s) {
+                $bds[] = ($s['id']);
+                $urls[$s['id']] = "";
+            }
+
+        }else{
+            $board1 = [];
+            $board2 = [];
         }
+
 
         //Free Job boards urls
         $insidify_url = "";
 
         if ($request->isMethod('post')) {
 
-            $pickd_boards = [1];
+            $pickd_boards = [];
 
 
             $data = [
@@ -910,7 +932,7 @@ class JobsController extends Controller
                     ->withErrors($validator)
                     ->withInput();
             } else {
-                $pickd_boards = [1];
+                $pickd_boards = [];
 
                 //get field visibilities
                 $fields = [];
@@ -1061,10 +1083,17 @@ class JobsController extends Controller
         $user = Auth::user();
         $company = get_current_company();
         $job_boards = JobBoard::where('type', 'free')->get()->toArray();
-        $c = (count($job_boards) / 2);
-        $t = array_chunk($job_boards, $c);
-        $board1 = $t[0];
-        $board2 = $t[1];
+
+        if(count($job_boards) > 2){
+            $c = (count($job_boards) / 2);
+            $t = array_chunk($job_boards, $c);
+            $board1 = $t[0];
+            $board2 = $t[1];
+        }else{
+            $board1 = [];
+            $board2 = [];
+        }
+
         $urls = [];
         foreach ($job_boards as $s) {
             $bds[] = ($s['id']);
@@ -1076,7 +1105,7 @@ class JobsController extends Controller
 
         if ($request->isMethod('post')) {
 
-            $pickd_boards = [1];
+            $pickd_boards = [];
 
             $data = [
                 'job_title' => $request->job_title,
@@ -1106,7 +1135,7 @@ class JobsController extends Controller
                     ->withErrors($validator)
                     ->withInput();
             } else {
-                $pickd_boards = [1];
+                $pickd_boards = [];
 
                 //get field visibilities
                 $fields = [];

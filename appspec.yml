@@ -3,3 +3,6 @@ os: linux
 files:
   - source: /
     destination: /var/www/staging
+hooks:
+  BeforeInstall:
+    - location: scripts/staging_setup.sh

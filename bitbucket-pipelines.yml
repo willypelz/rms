@@ -16,7 +16,7 @@ definitions:
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
           - mkdir -p bootstrap/cache
           - mkdir -p storage storage/framework storage/framework/views storage/framework/sessions storage/framework/cache
-          - echo auth.json
+          - cat auth.json
           - composer install
           - rm auth.json
           - cd ..

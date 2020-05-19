@@ -1,0 +1,82 @@
+#image: atlassian/default-image:2
+image: php:7.2-cli
+
+definitions:
+  steps:
+    - step: &Composer
+        name: Composer
+        caches:
+          - composer
+        script:
+          - apt-get update
+          - apt-get install -y zip git jq zlib1g-dev libpng-dev
+          - docker-php-ext-install gd zip pdo mysqli pdo_mysql mbstring
+          - echo ${BITBUCKET_BUILD_NUMBER} > version.txt
+          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          - composer install
+          - cd ..
+          - mkdir -p composer-build
+          - (cd build; tar cf - .) | (cd composer-build; tar xvf -)
+          - mv composer-build build
+          - chmod -R 775 build/composer-build
+        artifacts:
+          - composer-build/**
+    - step: &Npm-Node
+        name: Npm Node
+        image: node:10-alpine
+        caches:
+          - node
+        script:
+          - cp -R composer-build/* .
+          - rm -rf composer-build
+          - ls -la
+          - npm i
+          - gulp 2&1> /dev/null
+          - npm run prod
+          - cd ..
+          - mkdir -p node-build
+          - (cd build; tar cf - .) | (cd node-build; tar xvf -)
+          - mv node-build build
+          - chmod -R 775 build/node-build
+        artifacts:
+          - node-build/**
+    - step: &Code-Deploy
+        name: Code Deploy
+        script:
+          - apt-get update && apt-get install -y zip
+          - cp -R node-build/* .
+          - rm -rf node-build
+          - echo ${BITBUCKET_BUILD_NUMBER} > version.txt
+          - zip -r application.zip .
+          - pipe: atlassian/aws-code-deploy:0.5.0
+            variables:
+              AWS_DEFAULT_REGION: 'us-east-1'
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              APPLICATION_NAME: 'code-deploy-test'
+              S3_BUCKET: 'bitbucket-codedeploy-deployments'
+              COMMAND: 'upload'
+              ZIP_FILE: 'application.zip'
+              VERSION_LABEL: 'rms-build-${BITBUCKET_BUILD_NUMBER}'
+
+          - pipe: atlassian/aws-code-deploy:0.5.0
+            variables:
+              AWS_DEFAULT_REGION: 'us-east-1'
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              APPLICATION_NAME: 'code-deploy-test'
+              DEPLOYMENT_GROUP: 'code-deploy-test-deployment-group'
+              S3_BUCKET: 'bitbucket-codedeploy-deployments'
+              COMMAND: 'deploy'
+              WAIT: 'false'
+              VERSION_LABEL: 'rms-build-${BITBUCKET_BUILD_NUMBER}'
+              IGNORE_APPLICATION_STOP_FAILURES: 'true'
+              FILE_EXISTS_BEHAVIOR: 'OVERWRITE'
+  
+
+pipelines:
+  branches:
+    code-deploy:
+      - step: *Composer
+      - step: *Npm-Node
+      - step: *Code-Deploy

@@ -25,31 +25,12 @@ definitions:
           - chmod -R 775 build/composer-build
         artifacts:
           - composer-build/**
-    - step: &Npm-Node
-        name: Npm Node
-        image: node:10-alpine
-        caches:
-          - node
-        script:
-          - cp -R composer-build/* .
-          - rm -rf composer-build
-          - ls -la
-          - npm i
-          - gulp 2&1> /dev/null
-          - npm run prod
-          - cd ..
-          - mkdir -p node-build
-          - (cd build; tar cf - .) | (cd node-build; tar xvf -)
-          - mv node-build build
-          - chmod -R 775 build/node-build
-        artifacts:
-          - node-build/**
     - step: &Code-Deploy
         name: Code Deploy
         script:
           - apt-get update && apt-get install -y zip
-          - cp -R node-build/* .
-          - rm -rf node-build
+          - cp -R composer-build/* .
+          - rm -rf composer-build
           - echo ${BITBUCKET_BUILD_NUMBER} > version.txt
           - zip -r application.zip .
           - pipe: atlassian/aws-code-deploy:0.5.0
@@ -82,5 +63,4 @@ pipelines:
   branches:
     code-deploy:
       - step: *Composer
-      - step: *Npm-Node
       - step: *Code-Deploy

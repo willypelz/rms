@@ -46,8 +46,8 @@
     },
      "repositories": [
         {
-            "type": "vcs",
-            "url": "https://git@bitbucket.org/insidify/solr-package.git"
+            "type": "composer",
+            "url": "https://satis.seamlesshr.com"
         }
     ],
     "autoload": {

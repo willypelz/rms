@@ -173,7 +173,7 @@
                                
                                            <ul class="list-inline">
                                                <li>
-                                                   <a href="https://www.facebook.com/sharer/sharer.php?u={{$job_url}}" class="" target="_blank" >
+                                                   <a href="{{env('FACEBOOK_URL', 'https://www.facebook.com/')}}sharer/sharer.php?u={{$job_url}}" class="" target="_blank" >
                                                            <span class="fa-stack fa-2x">
                                                              <i class="fa fa-circle fa-stack-2x text-" style="color:#3b5998"></i>
                                                              <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>

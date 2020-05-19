@@ -14,8 +14,7 @@ definitions:
           - echo ${BITBUCKET_BUILD_NUMBER} > version.txt
           - echo '{"http-basic":{"bitbucket.org":{"username":"${BUCKET_USER}","password":"${BUCKET_PASS}"}}}' > auth.json
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-          - rm composer.lock
-          - composer install
+          - composer update
           - rm auth.json
           - cd ..
           - mkdir -p composer-build

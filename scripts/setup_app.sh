@@ -1,10 +1,13 @@
 #!/bin/bash
 
-PRODUCT='hrms'
-BASE_PATH=/var/www/subdomains
+
+#### THIS SCRIPT CURRENTLY HAS NO USE ####
+
+PRODUCT='rms'
+BASE_PATH=/var/www
 
 # LOOP THROUGH CLIENTS FOR THIS PRODUCT AND SETUP DIRECTORY STRUCTURE
-CLIENTS_IN_PRODUCT=`cat ${BASE_PATH}/${PRODUCT}/client-info.json | jq '.hrms'` # work in progress .hrms
+CLIENTS_IN_PRODUCT=`cat ${BASE_PATH}/client-info.json | jq '.hrms'` # work in progress .hrms
 
 for row in $(echo "${CLIENTS_IN_PRODUCT}" | jq -r '.[] | @base64'); do
     _jq() {
@@ -14,13 +17,13 @@ for row in $(echo "${CLIENTS_IN_PRODUCT}" | jq -r '.[] | @base64'); do
     # loop through each client
     CLIENT_NAME=`echo $(_jq '.name')`
     
-    DEPLOY_PATH=${BASE_PATH}/${PRODUCT}/${CLIENT_NAME}
-    MOUNT_PATH=${BASE_PATH}/${PRODUCT}/mnt/seamlesshr/${PRODUCT}
+    DEPLOY_PATH=${BASE_PATH}/${PRODUCT}
+    MOUNT_PATH=${BASE_PATH}/${PRODUCT}/mnt/clients
     
-    APPSPEC_DEPLOY_PATH=${BASE_PATH}/staging
+    #APPSPEC_DEPLOY_PATH=${BASE_PATH}/staging
     APP_CLIENT_PATH=${MOUNT_PATH}/${CLIENT_NAME}
-    APP_BUILD_PATH=${APP_CLIENT_PATH}/builds
-    CURRENT_BUILD_PATH=${APP_BUILD_PATH}/build-`cat ${APPSPEC_DEPLOY_PATH}/version.txt`
+    #APP_BUILD_PATH=${APP_CLIENT_PATH}/builds
+    #CURRENT_BUILD_PATH=${APP_BUILD_PATH}/build-`cat ${APPSPEC_DEPLOY_PATH}/version.txt`
 
     # remove composer.lock if it exists
     # if [[ -f "${CURRENT_BUILD_PATH}/composer.lock" ]]
@@ -32,12 +35,12 @@ for row in $(echo "${CLIENTS_IN_PRODUCT}" | jq -r '.[] | @base64'); do
     #    rm -rf ${DEPLOY_PATH}
     # fi
 
-    ln -sfn ${APP_CLIENT_PATH}/latest/ ${DEPLOY_PATH}
+    #ln -sfn ${APP_CLIENT_PATH}/latest/ ${DEPLOY_PATH}
 
 
 done
 
-rm -rf ${BASE_PATH}/staging
+#rm -rf ${BASE_PATH}/staging
 
 #COMPOSER_MEMORY_LIMIT=-1 composer.phar install -d "${APP_BUILD_PATH}"
 

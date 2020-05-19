@@ -16,6 +16,7 @@ definitions:
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
           - mkdir -p bootstrap/cache
           - mkdir -p storage storage/framework storage/framework/views storage/framework/sessions storage/framework/cache
+          - mkdir -p storage/something
           - cat auth.json
           - composer install
           - rm auth.json
@@ -54,7 +55,7 @@ definitions:
               DEPLOYMENT_GROUP: 'code-deploy-test-deployment-group'
               S3_BUCKET: 'bitbucket-codedeploy-deployments'
               COMMAND: 'deploy'
-              WAIT: 'false'
+              WAIT: 'true'
               VERSION_LABEL: 'rms-build-${BITBUCKET_BUILD_NUMBER}'
               IGNORE_APPLICATION_STOP_FAILURES: 'true'
               FILE_EXISTS_BEHAVIOR: 'OVERWRITE'

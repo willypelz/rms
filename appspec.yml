@@ -7,8 +7,6 @@ hooks:
   AfterInstall:
     - location: scripts/install_dependencies.sh
       timeout: 7200
-    - location: scripts/setup_app.sh
-      timeout: 600
     - location: scripts/start_server.sh
       timeout: 100
       runas: root

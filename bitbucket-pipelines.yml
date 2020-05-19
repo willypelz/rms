@@ -12,7 +12,7 @@ definitions:
           - apt-get install -y zip git jq zlib1g-dev libpng-dev
           - docker-php-ext-install gd zip pdo mysqli pdo_mysql mbstring
           - echo ${BITBUCKET_BUILD_NUMBER} > version.txt
-          - echo '{"http-basic":{"bitbucket.org":{"username":"${BUCKET_USER}","password":"${BUCKET_PASS}"}}}' > auth.json
+          - echo ${AUTH_JSON} > auth.json
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
           - mkdir -p bootstrap/cache
           - mkdir -p storage storage/framework storage/framework/views storage/framework/sessions storage/framework/cache

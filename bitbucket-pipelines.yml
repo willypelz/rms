@@ -12,8 +12,10 @@ definitions:
           - apt-get install -y zip git jq zlib1g-dev libpng-dev
           - docker-php-ext-install gd zip pdo mysqli pdo_mysql mbstring
           - echo ${BITBUCKET_BUILD_NUMBER} > version.txt
+          - echo '{"http-basic":{"bitbucket.org":{"username":"${BUCKET_USER}","password":"${BUCKET_PASS}"}}}' > auth.json
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
           - composer install
+          - rm auth.json
           - cd ..
           - mkdir -p composer-build
           - (cd build; tar cf - .) | (cd composer-build; tar xvf -)

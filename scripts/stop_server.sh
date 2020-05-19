@@ -1,12 +1,8 @@
 #!/bin/bash
 
-if ! [ -x "$(command -v jq)" ]; then 
-	yum install -y jq >&2;   
-fi # install jq if not installed
-
-PRODUCT="hrms"
-BASE_PATH=/var/www/subdomains
-CLIENTS_IN_PRODUCT=`cat ${BASE_PATH}/${PRODUCT}/client-info.json | jq '.hrms'` # work in progress .hrms
+PRODUCT="rms"
+BASE_PATH=/var/www
+CLIENTS_IN_PRODUCT=`cat ${BASE_PATH}/client-info.json | jq '.hrms'` # work in progress .hrms
 
 for row in $(echo "${CLIENTS_IN_PRODUCT}" | jq -r '.[] | @base64'); do
     _jq() {

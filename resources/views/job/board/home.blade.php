@@ -182,7 +182,7 @@
                                                </li>
                                                                               
                                                <li>
-                                                   <a href="{{env('TWITTER_URL', 'https://www.twitter.com/')}}intent/tweet?url={{$job_url}}" class="" target="_blank" >
+                                                   <a href="{{env('TWITTER_URL', 'https://www.twitter.com/')}}intent/tweet?url={{$job_url}}"     class="" target="_blank" >
                                                            <span class="fa-stack fa-2x">
                                                              <i class="fa fa-circle fa-stack-2x text-" style="color:#0084b4"></i>
                                                              <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
@@ -191,7 +191,7 @@
                                                </li>
                                                                               
                                                <li>
-                                                   <a href="{{{env('LINKEDIN_URL', 'https://www.linkedin.com/')}}shareArticle?mini=true&url={{$job_url}}&title={{$job->title}}&summary=&source=Seamlesshiring" class="" target="_blank" >
+                                                   <a href="{{env('LINKEDIN_URL', 'https://www.linkedin.com/')}}shareArticle?mini=true&url={{$job_url}}&title={{$job->title}}&summary=&source=Seamlesshiring" class="" target="_blank" >
                                                            <span class="fa-stack fa-2x">
                                                              <i class="fa fa-circle fa-stack-2x text-" style="color:#007bb6"></i>
                                                              <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>

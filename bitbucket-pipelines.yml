@@ -36,6 +36,8 @@ definitions:
           - mkdir -p bootstrap/cache
           - mkdir -p storage/framework storage/framework/views storage/framework/sessions storage/framework/cache
           - mkdir -p storage/something
+          - mkdir -p public_html/uploads/something
+          - mkdir -p storage/another-something
           - zip -r application.zip .
           - pipe: atlassian/aws-code-deploy:0.5.0
             variables:

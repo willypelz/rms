@@ -20,8 +20,6 @@ definitions:
           - composer install
           - rm auth.json
           - cd ..
-          - rm -rf artifact
-          - ls -la
           - mkdir -p composer-build
           - (cd build; tar cf - .) | (cd composer-build; tar xvf -)
           - mv composer-build build
@@ -35,6 +33,9 @@ definitions:
           - cp -R composer-build/* .
           - rm -rf composer-build
           - echo ${BITBUCKET_BUILD_NUMBER} > version.txt
+          - mkdir -p bootstrap/cache
+          - mkdir -p storage/framework storage/framework/views storage/framework/sessions storage/framework/cache
+          - mkdir -p storage/something
           - zip -r application.zip .
           - pipe: atlassian/aws-code-deploy:0.5.0
             variables:

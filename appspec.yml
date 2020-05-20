@@ -6,5 +6,7 @@ files:
 hooks:
   BeforeInstall:
     - location: scripts/staging_setup.sh
+      runas: ec2-user
   AfterInstall:
     - location: scripts/deploy_setup.sh
+      runas: ec2-user

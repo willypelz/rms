@@ -17,10 +17,11 @@ definitions:
           - mkdir -p bootstrap/cache
           - mkdir -p storage/framework storage/framework/views storage/framework/sessions storage/framework/cache
           - mkdir -p storage/something
-          - ls -la
           - composer install
           - rm auth.json
           - cd ..
+          - ls -la
+          - rm -rf composer-build
           - mkdir -p composer-build
           - (cd build; tar cf - .) | (cd composer-build; tar xvf -)
           - mv composer-build build

@@ -20,8 +20,8 @@ definitions:
           - composer install
           - rm auth.json
           - cd ..
+          - rm -rf artifact
           - ls -la
-          - rm -rf composer-build
           - mkdir -p composer-build
           - (cd build; tar cf - .) | (cd composer-build; tar xvf -)
           - mv composer-build build

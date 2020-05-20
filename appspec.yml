@@ -2,9 +2,11 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /var/www/rms
+    destination: /var/www/staging
 hooks:
   BeforeInstall:
+    - location: scripts/staging_setup.sh
+      runas: ec2-user
     - location: scripts/root_dir_permission.sh
       runas: ec2-user
   AfterInstall:

@@ -5,7 +5,7 @@ files:
     destination: /var/www/rms
 hooks:
   BeforeInstall:
-    - location: scripts/staging_setup.sh
+    - location: scripts/root_dir_permission.sh
       runas: ec2-user
   AfterInstall:
     - location: scripts/deploy_setup.sh

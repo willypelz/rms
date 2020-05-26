@@ -175,7 +175,7 @@ class JobController extends Controller
                 'jobs.specializations',
                 'jobs.company',
             ]
-        )->whereApiKey($req_header)
+        )
             ->first();
 
         if (!$company) {
@@ -217,7 +217,7 @@ class JobController extends Controller
             );
         }
 
-        if (!$company = Company::whereApiKey($req_header)->first()) {
+        if (!$company = Company::first()) {
             return response()->json(
                 [
                     'status' => false,
@@ -266,7 +266,7 @@ class JobController extends Controller
             $appl = $applicant;
             $pdf = App::make('snappy.pdf.wrapper');
             $pdf->loadHTML(view('modals.inc.dossier-content',
-                compact('applicant_badge', 'app_ids', 'cv_ids', 'jobID', 'appl', 'comments', 'interview_notes', 'show_other_sections'))->render());
+                compact( 'appl', 'comments', 'interview_notes', 'show_other_sections'))->render());
             $pdf->setTemporaryFolder($path);
             $pdf->save($path . $applicant->cv->first_name . ' ' . $applicant->cv->last_name . ' interview.pdf', true);
 

@@ -299,6 +299,19 @@ class LoginController extends Controller
 
     }
 
+
+    public function switchUser()
+    {
+        if(Auth::check()){
+          return redirect()->route('dashboard');
+        }
+        elseif(Auth::guard('candidate')->check()) {
+          return redirect()->route('candidate-dashboard');
+        }
+        else
+          return redirect('/');
+    }
+
     /**
      * [After Api confirmation, Log user in]
      * @param  [string] $url [url]

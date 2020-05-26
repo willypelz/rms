@@ -80,6 +80,9 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::auth();
     Route::get('user/activation/{token}', 'Auth\LoginController@activateUser')->name('user.activate');
+    
+
+    Route::get('switcher', 'Auth\LoginController@switchUser')->name('switcher');
 
     Route::post('user/auth/verify', 'Auth\LoginController@verifyUser')->name('verify-user-details');
     Route::any('', 'HomeController@home')->name('candidate-login');

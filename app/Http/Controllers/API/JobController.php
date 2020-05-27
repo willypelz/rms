@@ -264,13 +264,17 @@ class JobController extends Controller
             $show_other_sections = false;
 
             $appl = $applicant;
-            $pdf = App::make('snappy.pdf.wrapper');
+            // $pdf = App::make('snappy.pdf.wrapper');
+            $jobID = $appl->job->id;
+
+            $pdf = App::make('dompdf.wrapper');
             $pdf->loadHTML(view('modals.inc.dossier-content',
-                compact('applicant_badge', 'app_ids', 'cv_ids', 'jobID', 'appl', 'comments', 'interview_notes', 'show_other_sections'))->render());
-            $pdf->setTemporaryFolder($path);
+            compact( 'jobID', 'appl', 'comments', 'interview_notes', 'show_other_sections'))->render());
+
             $pdf->save($path . $applicant->cv->first_name . ' ' . $applicant->cv->last_name . ' interview.pdf', true);
 
             $path_to_interview_note = $path . '/' . $applicant->cv->first_name . ' ' . $applicant->cv->last_name . ' interview.pdf';
+
             $interview_note_file_content = base64_encode(file_get_contents($path_to_interview_note, false,stream_context_create($arrContextOptions)));
 
             $applicant->cv->interview_note_file_name = $applicant->cv->first_name . ' ' . $applicant->cv->last_name . ' interview.pdf';

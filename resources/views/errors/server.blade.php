@@ -14,7 +14,7 @@
         
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
-    <title>Page not found!</title>
+    <title>An internal error occured!</title>
     <style>
         body {
             background-color: white;
@@ -81,11 +81,11 @@
     
 
     <br/><br/>
-        <h3>Oh no! You have wandered too far. We can't find this page.</h3>
+        <h3>Oh no! </h3>
         <br/>
         
         <p style="font-size: 1.1rem;" class="my-3">
-            It might have expired or your might have typed the link incorrectly.
+            We just encountered an issue right now. Our denizens have been notified. It will be fixed shortly.
         </p>
 
         <div class="links">

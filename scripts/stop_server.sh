@@ -6,4 +6,4 @@ CLIENT_APP_PATH=${BASE_PATH}/${PRODUCT}
 
 php "${CLIENT_APP_PATH}"/artisan down
 
-service httpd stop
+/usr/local/bin/supervisorctl stop all

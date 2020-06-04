@@ -11,7 +11,6 @@ definitions:
           - apt-get update
           - apt-get install -y zip git jq zlib1g-dev libpng-dev
           - docker-php-ext-install gd zip pdo mysqli pdo_mysql mbstring
-          - echo ${BITBUCKET_BUILD_NUMBER} > version.txt
           - echo ${AUTH_JSON} > auth.json
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
           - mkdir -p bootstrap/cache
@@ -32,32 +31,28 @@ definitions:
           - apt-get update && apt-get install -y zip
           - cp -R composer-build/* .
           - rm -rf composer-build
-          - echo ${BITBUCKET_BUILD_NUMBER} > version.txt
           - mkdir -p bootstrap/cache
           - mkdir -p storage/framework storage/framework/views storage/framework/sessions storage/framework/cache
-          - mkdir -p storage/something
-          - mkdir -p public_html/uploads/something
-          - mkdir -p storage/another-something
           - zip -r application.zip .
           - pipe: atlassian/aws-code-deploy:0.5.0
             variables:
-              AWS_DEFAULT_REGION: 'us-east-1'
+              AWS_DEFAULT_REGION: $AWS_DEPLOYMENT_REGION
               AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
               AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-              APPLICATION_NAME: 'code-deploy-test'
-              S3_BUCKET: 'bitbucket-codedeploy-deployments'
+              APPLICATION_NAME: $AWS_APPLICATION_NAME
+              S3_BUCKET: $AWS_DEPLOYMENT_BUCKET
               COMMAND: 'upload'
               ZIP_FILE: 'application.zip'
               VERSION_LABEL: 'rms-build-${BITBUCKET_BUILD_NUMBER}'
 
           - pipe: atlassian/aws-code-deploy:0.5.0
             variables:
-              AWS_DEFAULT_REGION: 'us-east-1'
+              AWS_DEFAULT_REGION: $AWS_DEPLOYMENT_REGION
               AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
               AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-              APPLICATION_NAME: 'code-deploy-test'
-              DEPLOYMENT_GROUP: 'code-deploy-test-deployment-group'
-              S3_BUCKET: 'bitbucket-codedeploy-deployments'
+              APPLICATION_NAME: $AWS_APPLICATION_NAME
+              DEPLOYMENT_GROUP: $AWS_DEPLOYMENT_GROUP
+              S3_BUCKET: $AWS_DEPLOYMENT_BUCKET
               COMMAND: 'deploy'
               WAIT: 'true'
               VERSION_LABEL: 'rms-build-${BITBUCKET_BUILD_NUMBER}'

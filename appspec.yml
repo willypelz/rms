@@ -16,6 +16,9 @@ hooks:
     - location: scripts/file_permissions.sh
       timeout: 300
       runas: root
+    - location: scripts/dumpautoload.sh
+      timeout: 300
+      runas: ec2-user
     - location: scripts/start_server.sh
       timeout: 300
       runas: root

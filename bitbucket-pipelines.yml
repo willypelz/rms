@@ -54,7 +54,7 @@ definitions:
               DEPLOYMENT_GROUP: $AWS_DEPLOYMENT_GROUP
               S3_BUCKET: $AWS_DEPLOYMENT_BUCKET
               COMMAND: 'deploy'
-              WAIT: 'true'
+              WAIT: 'false'
               VERSION_LABEL: 'rms-build-${BITBUCKET_BUILD_NUMBER}'
               IGNORE_APPLICATION_STOP_FAILURES: 'true'
               FILE_EXISTS_BEHAVIOR: 'OVERWRITE'

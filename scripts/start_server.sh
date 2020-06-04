@@ -10,3 +10,7 @@ php artisan config:clear
 php artisan up
 
 /usr/local/bin/supervisorctl start all
+
+if [ ! $? -eq 0 ]; then #if this fails, start attempt to start supervisord
+    service supervisord start
+fi

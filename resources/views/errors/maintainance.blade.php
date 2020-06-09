@@ -14,7 +14,7 @@
         
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
-    <title>Page not found!</title>
+    <title>We are currently updating your servers.!</title>
     <style>
         body {
             background-color: white;
@@ -81,11 +81,11 @@
     
 
     <br/><br/>
-        <h3>Oh no! You have wandered too far. We can't find this page.</h3>
+        <h3>Sorry, We are down for maintenance </h3>
         <br/>
         
         <p style="font-size: 1.1rem;" class="my-3">
-            It might have expired or your might have typed the link incorrectly.
+            We are currently undergoing scheduled maintenance. Portal will be back up soon.
         </p>
 
         <div class="links">

@@ -20,6 +20,8 @@ sudo chmod 2775 ${STAGING_PATH}
 
 rm -rf ${STAGING_PATH}/storage ${STAGING_PATH}/public_html/uploads ${STAGING_PATH}/vendor
 
+cp -R ${STAGING_PATH}/public/* ${APP_PATH}/public/
+rm -rf ${STAGING_PATH}/public
 cp -R ${STAGING_PATH}/. ${APP_PATH}/
 rm -rf ${STAGING_PATH} ${APP_PATH}/composer.lock
 

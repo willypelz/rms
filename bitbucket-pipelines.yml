@@ -59,8 +59,13 @@ definitions:
               IGNORE_APPLICATION_STOP_FAILURES: 'true'
               FILE_EXISTS_BEHAVIOR: 'OVERWRITE'
   
-
 pipelines:
+
+  tags:
+    v2.*.*:
+      - step: *Composer
+      - step: *Code-Deploy
+
   branches:
     code-deploy:
       - step: *Composer

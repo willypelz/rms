@@ -18,8 +18,11 @@ echo "::::::: DEPLOY SETUP SCRIPT: [ $(timestamp) ]" >> ${DEBUG_FILE}
 sudo chown -R ec2-user:apache ${STAGING_PATH}
 sudo chmod 2775 ${STAGING_PATH}
 
+cp -R ${STAGING_PATH}/storage/. ${APP_PATH}/storage/
+cp -R ${STAGING_PATH}/public_html/uploads/. ${APP_PATH}/public_html/uploads/
 rm -rf ${STAGING_PATH}/storage ${STAGING_PATH}/public_html/uploads ${STAGING_PATH}/vendor
 
+rm -rf ${STAGING_PATH}/public
 cp -R ${STAGING_PATH}/. ${APP_PATH}/
 rm -rf ${STAGING_PATH} ${APP_PATH}/composer.lock
 

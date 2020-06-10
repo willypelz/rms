@@ -29,4 +29,4 @@ rm -rf ${STAGING_PATH} ${APP_PATH}/composer.lock
 echo "-- running composer: [ $(timestamp) ]" >> ${DEBUG_FILE}
 php /usr/local/bin/composer install -d "${APP_PATH}" --no-interaction &>> ${DEBUG_FILE}
 echo "-- running migration: [ $(timestamp) ]" >> ${DEBUG_FILE}
-php "${APP_PATH}" artisan migrate --seed --force 2>> ${DEBUG_FILE}
+php "${APP_PATH}"/artisan migrate --seed --force &>> ${DEBUG_FILE}

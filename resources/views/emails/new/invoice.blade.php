@@ -81,8 +81,7 @@
 																		</div>
 																		
 																		
-																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.3em;">Best, <br>
-																			The SeamlessHiring Team</p>
+																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.3em;">Best Regards</p>
 																		<hr style="border-width:0 0 1px">
 																		</div>
 																	<!--END OF CONTENTS SECTION -->

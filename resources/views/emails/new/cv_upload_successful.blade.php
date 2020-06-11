@@ -56,8 +56,7 @@
 																		</div>
 																		<p style="font-family:Arial,Helvetica,sans-serif; font-size:15px;line-height:1.3em;color:#afafaf">If clicking the link above does not work, kindly copy and paste it to your browser.</p>
 																		<hr style="border-width:0 0 1px">
-																		<p style="color:#666">Best,
-																			<br> The SeamlessHiring Team</p>
+																		<p style="color:#666">Best Regards</p>
 
 																	</div>
 

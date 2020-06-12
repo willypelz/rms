@@ -56,8 +56,7 @@
 																			<a href="" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:auto;padding:0px 15px;background-color: #4bb779;text-transform:uppercase" target="_blank">proceed to your dashboard</a>
 																		</div>
 
-																		<p>	Best, <br>
-																			The SeamlessHiring Team
+																		<p>	Best Regards
 																		</p>																		
 																		
 																		<hr style="border-width:0 0 1px">

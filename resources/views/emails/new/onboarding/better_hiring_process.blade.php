@@ -64,8 +64,7 @@
 																		</p>
 																		
 																		<hr style="border-width:0 0 1px">
-																		<p style="color:#666; line-height:1.5em">Best,<br>
-																		The Seamless Hiring Team.
+																		<p style="color:#666; line-height:1.5em">Best Regards
 																		</p>
 																			<div style="display:block; width:100%; margin: 5px auto">
 																				

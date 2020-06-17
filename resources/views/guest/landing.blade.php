@@ -45,6 +45,13 @@
                     </form>
                 </div>
 
+                <div class="mt-5">
+                    <small>
+                        &copy; {{date('Y')}} All Rights Reserved.
+                        Read our <a href="//seamlesshr.com/privacy">privacy policy</a>
+                    </small>
+                </div>
+
             </section>
 
             <section class="col shr-auth-jobs">
@@ -55,7 +62,8 @@
 
                 @forelse($jobs as $job)
                     <div class="job-card">
-                        <a href="{{ route('job-view', [$job->id, $job->slug]) }}"><h5 class="dark-blue-text font-weight-bold font-16">{{ $job->title }}</h5></a>
+                        <a href="{{ route('job-view', [$job->id, $job->slug]) }}"><h5
+                                    class="dark-blue-text font-weight-bold font-16">{{ $job->title }}</h5></a>
                         <p class="mb-2 job-card-content"> {{ $job->summary }} </p>
                         <div class="d-flex align-items-center">
                             <span class="d-flex align-items-center">
@@ -78,7 +86,8 @@
                 @endforelse
 
 
-                <p class="text-center dark-blue-text font-weight-bold">To see more job postings, <a href="{{ url('register') }}">create an account </a> </p>
+                <p class="text-center dark-blue-text font-weight-bold">To see more job postings, <a
+                            href="{{ url('register') }}">create an account </a></p>
             </section>
         </div>
     </div>

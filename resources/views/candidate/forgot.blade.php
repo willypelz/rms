@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@if(isset($pageTitle)){{ $pageTitle }}&middot;@endif SeamlessHiring</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,600" rel="stylesheet"> 
-    <link rel="stylesheet" href="{{ asset('homepage/css/style.css') }}">
-
-</head>
-<body>
+@extends('layout.template-new')
+@section('content')
     <div class="container-fluid shr-auth">
         <div class="h-100 row justify-content-center align-items-center">
 
@@ -18,7 +10,7 @@
                 </div>
 
                 <h4 class="my-4 dark-blue-text font-weight-bold">Enter your email to reset your password</h4>
-                
+
                 <form action="" method="POST">
                         @include('layout.alerts')
 
@@ -29,12 +21,12 @@
                             <input required="" name="email" type="email" class="shr-input">
                         </div>
                     </div>
-                    
+
                     <button class="btn btn-block shr-auth-form-button" type="submit" > Send Forgot Password Link </button>
                 </form>
             </section>
-        
+
         </div>
     </div>
-</body>
-</html>
+
+@endsection

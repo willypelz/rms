@@ -79,6 +79,13 @@
                     </div>
 
                     <button type="submit" class="btn btn-block shr-auth-form-button">Create your account</button>
+
+                    <div class="mt-5">
+                        <small>
+                            &copy; {{date('Y')}} All Rights Reserved.
+                            Read our <a href="//seamlesshr.com/privacy">privacy policy</a>
+                        </small>
+                    </div>
                 </form>
             </section>
 

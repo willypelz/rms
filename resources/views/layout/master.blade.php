@@ -29,20 +29,25 @@
 <body id="main-auth-entry">
     <!-- Navbar -->
     @section('navbar')
-    
+
     @show()
     <?php $agent = new \Jenssegers\Agent\Agent(); ?>
-    
+
     @if( $agent->isMobile() )
         <div class="alert alert-danger text-center">
             <strong>View this site on a desktop browser to get the best experience</strong>
         </div>
     @endif
-    
+
     @yield('content')
-    
+
     @section('footer')
         @include('layout.includes.footer')
+
+        @if(!Auth::check())
+            @include('layout.includes.cookie-consent')
+        @endif
+
     @show()
 
 </body>

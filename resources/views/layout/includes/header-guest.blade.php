@@ -17,7 +17,10 @@
     {{--<link href="{{ secure_asset('css/owl-carousel.css') }}" rel="stylesheet">--}}
     <link href="https://cdn.insidify.com/dist/css/owl.carousel.min.css" rel="stylesheet">
     <link href="https://cdn.insidify.com/dist/css/owl.theme.default.min.css" rel="stylesheet">
-    
+
+    <!-- Cookie Consent stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
     <script src="{{ secure_asset('js/ckeditor/ckeditor.js') }}"></script>
 
     <!--<script src="//cdn.ckeditor.com/4.5.7/basic/ckeditor.js"></script>-->

@@ -30,7 +30,7 @@
                                   <div class=" border-bottom-thin">
                                       <div class="col-xs-4">
                                           <div class="img-fixer" style="padding-left:5px">
-                                            <img src="http://dummyimage.com/300x300/ffffff/405465.jpg&text=MB" class="img-responsive">
+                                            <img src="https://dummyimage.com/300x300/ffffff/405465.jpg&text=MB" class="img-responsive">
                                           </div>
                                       </div>
                                       <div class="col-xs-8">
@@ -119,7 +119,7 @@
                             <div class="panel-body row">
                                 <div class="col-xs-3">
                                   <a class="" href="#">
-                                      <img class="media-object img-responsive" src="http://dummyimage.com/300x300/ccc/fff.jpg&text=EO" alt="">
+                                      <img class="media-object img-responsive" src="https://dummyimage.com/300x300/ccc/fff.jpg&text=EO" alt="">
                                   </a>
                                 </div>
                                 <div class="col-xs-8">
@@ -142,7 +142,7 @@
                             <div class="panel-body row">
                                 <div class="col-xs-3">
                                   <a class="" href="#">
-                                      <img class="media-object img-responsive" src="http://dummyimage.com/300x300/ccc/fff.jpg&text=EO" alt="">
+                                      <img class="media-object img-responsive" src="https://dummyimage.com/300x300/ccc/fff.jpg&text=EO" alt="">
                                   </a>
                                 </div>
                                 <div class="col-xs-8">

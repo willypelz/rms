@@ -122,7 +122,7 @@ $job_id = $appl->job->id;
       <div class="panel-body row">
         <div class="col-xs-3">
           <a class="" href="#">
-            <img class="media-object img-responsive" src="http://dummyimage.com/300x300/ccc/fff.jpg&text=EO" alt="">
+            <img class="media-object img-responsive" src="https://dummyimage.com/300x300/ccc/fff.jpg&text=EO" alt="">
           </a>
         </div>
         <div class="col-xs-8">
@@ -143,7 +143,7 @@ $job_id = $appl->job->id;
       <div class="panel-body row">
         <div class="col-xs-3">
           <a class="" href="#">
-            <img class="media-object img-responsive" src="http://dummyimage.com/300x300/ccc/fff.jpg&text=EO" alt="">
+            <img class="media-object img-responsive" src="https://dummyimage.com/300x300/ccc/fff.jpg&text=EO" alt="">
           </a>
         </div>
         <div class="col-xs-8">

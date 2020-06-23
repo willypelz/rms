@@ -281,7 +281,7 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 		}
 
 
-		return [ 'color' => '#'.$color, 'image' => 'http://dummyimage.com/300x300/'.$color.'/ffffff.jpg&text='.$text ];
+		return [ 'color' => '#'.$color, 'image' => 'https://dummyimage.com/300x300/'.$color.'/ffffff.jpg&text='.$text ];
 
 	}
 
@@ -307,41 +307,6 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
         return $status_array2;
 
-/*
-
-		for ($i=0; $i < count($status); $i = $i+2) {
-
-			$val = $status[$i];
-			$count = $status[$i + 1];
-			if(empty($val))
-				$val = "Not Specified";
-
-			if(strtolower($val) == 'choose' ||
-                strtolower(preg_replace('|[^a-z]|i', '', $val)) == 'choose' ||
-                strtolower($val) == 'select')
-				$val = "Not Specified";
-
-			if($count > 0)
-				$ret[$val] = $count;
-		}
-
-		$status_array = [];
-		if( !empty( $statuses ) )
-		{
-			foreach ($statuses as $val) {
-				$status_array[$val] = (isset($ret[$val]))?$ret[$val]:0;
-				$all += $status_array[$val];
-			}
-		}
-		else{
-			$status_array = $ret;
-			$all = array_sum( array_values( $ret ) );
-		}
-
-
-		$status_array['ALL'] = $all;
-
-		return $status_array;*/
 	}
 
 

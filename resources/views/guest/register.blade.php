@@ -78,6 +78,13 @@
                             @endif
                     </div>
 
+                    <div class="my-4 leading-sm">
+                        <small class="text-muted font-weight-light">
+                            By clicking on create your account, you agree to our <a href="//seamlesshr.com/terms">terms</a> and
+                            <a href="//seamlesshr.com/privacy">privacy policy.</a>
+                        </small>
+                    </div>
+
                     <button type="submit" class="btn btn-block shr-auth-form-button">Create your account</button>
                 </form>
             </section>

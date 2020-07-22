@@ -57,7 +57,7 @@
             <section class="col shr-auth-jobs">
                 <div class="d-flex align-items-center mb-3">
                     <img src="{{ asset('homepage/images/icon-jobs.svg') }}">
-                    <h4 class="dark-blue-text font-weight-bold ml-3">Job’s you might be interested in</h4>
+                    <h4 class="dark-blue-text font-weight-bold ml-3"> @if(count($jobs) > 1)Jobs @else Joob @endif you might be interested in</h4>
                 </div>
 
                 @forelse($jobs as $job)

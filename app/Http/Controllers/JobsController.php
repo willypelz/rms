@@ -2252,11 +2252,11 @@ class JobsController extends Controller
             $data = $request->all();
 
 
-            $validatedData = $request->validate([
-                'g-recaptcha-response' => 'required|captcha'
-                ], [
-                'g-recaptcha-response.required' => 'Please fill the Captcha'
-            ]);
+            // $validatedData = $request->validate([
+            //     'g-recaptcha-response' => 'required|captcha'
+            //     ], [
+            //     'g-recaptcha-response.required' => 'Please fill the Captcha'
+            // ]);
 
 
             // $has_applied = CV::where('email',$data['email'])->orWhere('phone',$data['phone'])->first();

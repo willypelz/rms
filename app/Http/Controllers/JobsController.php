@@ -2260,7 +2260,11 @@ class JobsController extends Controller
 
 
             // $has_applied = CV::where('email',$data['email'])->orWhere('phone',$data['phone'])->first();
-            $owned_cvs = CV::where('email', $data['email'])->orWhere('phone', $data['phone'])->pluck('id');
+            $owned_cvs = CV::where('email', $data['email'] ?? $candidate->email);
+            if(isset($data['phone'])){
+                $owned_cvs->orWhere('phone', $data['phone']);
+            }
+            $owned_cvs = $owned_cvs->pluck('id');
             $owned_applicataions_count = JobApplication::whereIn('cv_id', $owned_cvs)->where('job_id', $jobID)->get()->count();
 
 

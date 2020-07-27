@@ -280,12 +280,9 @@ class CandidateController extends Controller
                 $link = route('candidate-messages', $jb->id);
 
                 $candidate = $user;
-                $email_title = $candidate->first_name." sent you a message.";
-                $message_content = 'You just recieve message from candidate: '.$candidate->first_name;
-
-
                 $email_title = 'Feedback for your application';
-                $message_content = 'You just recieve message on your job application: '.$job->title;
+                $company = get_current_company();
+                $message_content = "You have received an update from {$company->name} on your job application: {$job->title}.";
 
 
                  Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {

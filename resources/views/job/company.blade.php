@@ -117,13 +117,12 @@
                                                                             . &nbsp;
                                                                             <strong>Posted:</strong> {{ human_time($job->created_at, 1) }}
                                                                             . &nbsp;
-                                                                            <strong>Expiry:</strong>{{ human_time($job->expiry_date, 1) }}
+                                                                            <strong>Expiry:</strong> {{ human_time($job->expiry_date, 1) }}
                                                                             . &nbsp;
                                                                         </div>
                                                                         <div class="description">
-                                                                            <p>{{ str_limit(strip_tags($job->details), 200) }}</p>
-
-                                                                            <a href="{{ url(@$company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"
+                                                                                <p>{!!str_limit($job->details, 200)!!}</p>
+                                                                            <a href="mailto: ?subject={{$job->title}}&body={{ url(@$company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"
                                                                                target="_blank"><i
                                                                                         class="fa fa-envelope"></i>
                                                                                 Email to a friend</a> &nbsp; - &nbsp;

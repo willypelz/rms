@@ -280,7 +280,7 @@ class CandidateController extends Controller
                 $link = route('candidate-messages', $jb->id);
 
                 $candidate = $user;
-                $email_title = 'Feedback for your application';
+                $email_title = 'Feedback on your application';
                 $company = get_current_company();
                 $message_content = "You have received an update from {$company->name} on your job application: {$job->title}.";
 

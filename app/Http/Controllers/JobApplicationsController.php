@@ -678,6 +678,9 @@ class JobApplicationsController extends Controller
         // $excel = App::make('excel');
         $filename = 'Applicants Report - ' . $other_data['job_title'].'.xlsx';
 
+        $filename = str_replace('/', '', $filename);
+        $filename = str_replace('\'', '', $filename);
+
         // dd($filename, $excel_data, $other_data, array_keys($excel_data[0]));
         return Excel::download(new ApplicantsExport($excel_data), $filename);
 

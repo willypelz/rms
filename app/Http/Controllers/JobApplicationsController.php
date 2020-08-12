@@ -1136,6 +1136,8 @@ class JobApplicationsController extends Controller
 
 
         $filename = $appl->cv->first_name . ' ' . $appl->cv->last_name . ".zip";
+        $filename = str_replace('/', '', $filename);
+        $filename = str_replace('\'', '', $filename);
         $dossier_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' dossier.pdf';
         $cv_local_file = @$path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' cv - ' . $appl->cv->cv_file;
 

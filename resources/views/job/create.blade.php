@@ -98,7 +98,7 @@
                                     <div class="form-group">
                                         <div class="row">
 
-                                            <div class="col-sm-12"><label for="job-loc">Position <span
+                                            <div class="col-sm-12"><label for="job-loc">Job Level <span
                                                             class="text-danger">*</span></label>
                                                 <input type="text" name="position" class="form-control"
                                                        value="{{ old('position', $thirdPartyData->get('job') ?: '')}}"

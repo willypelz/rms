@@ -103,7 +103,7 @@
                                         <div class="row">
 
                                             <div class="col-sm-12">
-                                                <label for="job-loc">Position
+                                                <label for="job-loc">Job Leve
                                                     <span class="text-danger">*</span>
                                                 </label>
                                                 <input type="text" name="position" class="form-control" required>

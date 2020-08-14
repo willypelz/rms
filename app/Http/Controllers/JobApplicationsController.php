@@ -678,6 +678,9 @@ class JobApplicationsController extends Controller
         // $excel = App::make('excel');
         $filename = 'Applicants Report - ' . $other_data['job_title'].'.xlsx';
 
+        $filename = str_replace('/', '', $filename);
+        $filename = str_replace('\'', '', $filename);
+
         // dd($filename, $excel_data, $other_data, array_keys($excel_data[0]));
         return Excel::download(new ApplicantsExport($excel_data), $filename);
 
@@ -1133,6 +1136,8 @@ class JobApplicationsController extends Controller
 
 
         $filename = $appl->cv->first_name . ' ' . $appl->cv->last_name . ".zip";
+        $filename = str_replace('/', '', $filename);
+        $filename = str_replace('\'', '', $filename);
         $dossier_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' dossier.pdf';
         $cv_local_file = @$path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' cv - ' . $appl->cv->cv_file;
 

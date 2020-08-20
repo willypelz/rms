@@ -47,7 +47,7 @@
      "repositories": [
         {
             "type": "vcs",
-            "url": "https://git@bitbucket.org/insidify/solr-package.git"
+            "url": "https://chux-seamless@bitbucket.org/insidify/solr-package.git"
         }
     ],
     "autoload": {

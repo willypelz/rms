@@ -40,6 +40,11 @@
                                 Jobs
                                 <span class="pull-right"><i class="fa fa-briefcase"></i></span>
                             </a>
+
+                            <a href="{{ route('candidate-profile') }}" class=" @if( Route::currentRouteName() == "candidate-profile" ) active @endif list-group-item">
+                                My Profile
+                                <span class="pull-right"><i class="fa fa-user"></i></span>
+                            </a>
                             {{-- <a role="presentation" href="#sec-notifications" aria-controls="sec-notifications" role="tab" data-toggle="tab" class="list-group-item">
                                 Notifications &nbsp;
 

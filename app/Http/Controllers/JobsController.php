@@ -2251,6 +2251,10 @@ class JobsController extends Controller
         if ($request->isMethod('post')) {
             $data = $request->all();
 
+            if($job->is_for == 'internal'){
+                dd('here');
+            }
+
 
             // $validatedData = $request->validate([
             //     'g-recaptcha-response' => 'required|captcha'

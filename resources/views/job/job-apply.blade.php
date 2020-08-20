@@ -380,6 +380,15 @@
 
                                     </div>
 
+                                                @if($job['is_for'])
+                                                    <div class="row">
+                                                        <div class="col-sm-6 custom-field">
+                                                            <label for="employee-code">Employee Code: </label>
+                                                            <input id="employee-code" type="text" name="employee_code" required class="form-control">
+                                                        </div>
+                                                    </div>
+                                                @endif
+
                                  {!! Captcha::display($google_captcha_attributes) !!}
 
 

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\SpecializationRequest;
 use App\Models\Specialization;
-use Illuminate\Http\Request;
 
 class SpecializationController extends Controller
 {
@@ -19,6 +19,9 @@ class SpecializationController extends Controller
         $this->middleware('auth', ['except' => []]);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index(){
 
         $specializations = Specialization::with('jobs')->orderBy('id', 'DESC')->get();
@@ -26,8 +29,11 @@ class SpecializationController extends Controller
         return view('specialization.list', compact('specializations'));
     }
 
-
-    public function store(Request $request){
+    /**
+     * @param SpecializationRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(SpecializationRequest $request){
 
         if($request->has('id')){
             $specialization = Specialization::find($request->id);
@@ -51,6 +57,10 @@ class SpecializationController extends Controller
 
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function update($id){
 
         $specialization = Specialization::find($id);
@@ -58,6 +68,10 @@ class SpecializationController extends Controller
         return view('specialization.update', compact('specialization'));
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function delete($id){
         Specialization::destroy($id);
 

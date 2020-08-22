@@ -222,6 +222,7 @@
                                                         <option value="{{ $s->id }}" {{ ( in_array($s->id, $job_specilizations) ) ? 'selected="selected"' : '' }}>{{ $s->name }}</option>
                                                     @endforeach
                                                 </select>
+                                                <span><a href="{{ route('add-specialization') }}">Add specialization to the list</a></span>
                                             </div>
                                         </div>
                                     </div>

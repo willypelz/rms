@@ -402,6 +402,12 @@ Route::get('/one_applicant', 'JobApplication@oneApplicantData');
 
     Route::post('request-a-call', ['as' => 'request-a-call', 'uses' => 'HomeController@requestACall']);
 
+    //Specialization
+    Route::get('list-job-specialization', 'SpecializationController@index')->name('specialization');;
+    Route::post('store-job-specialization', 'SpecializationController@store')->name('store-specialization');
+    Route::get('update-job-specialization/{id}', 'SpecializationController@update')->name('update-specialization');
+    Route::delete('delete-job-specialization/{id}', 'SpecializationController@delete')->name('delete-specialization');
+
 
     Route::get('about', function () {
         return view('guest.about');

@@ -286,7 +286,7 @@ class JobApplicationsController extends Controller
 
     public function sendMessage(Request $request)
     {
-
+        // dd($request->all());
         $message_content = '';
         $user = '';
 
@@ -310,12 +310,15 @@ class JobApplicationsController extends Controller
             'title' => $request->document_title,
             'description' => $request->document_description
         ]);
+
+        
         $candidate = JobApplication::find($request->application_id);
         $email_title = "Message on your job application ".$candidate->job->title;
+        $email_message = $message->message;
         $application_id = $request->application_id;
         $link = route('candidate-messages', $request->application_id);
 
-        Mail::send('emails.new.admin_send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link'), function ($m) use ($candidate, $email_title) {
+        Mail::send('emails.new.admin_send_message', compact('candidate', 'email_title', 'email_message', 'message_content', 'user', 'link'), function ($m) use ($candidate, $email_title) {
             $m->from(env('COMPANY_EMAIL'))->to($candidate->candidate->email)->subject($email_title);
         });
 
@@ -325,7 +328,7 @@ class JobApplicationsController extends Controller
 
     public function viewApplicants(Request $request)
     {
-        //Check if he  is the owner of the job
+                //Check if he  is the owner of the job
         check_if_job_owner($request->jobID);
 
 
@@ -338,7 +341,7 @@ class JobApplicationsController extends Controller
 
             }
         ])->find($request->jobID);
-
+        
 
         $active_tab = 'candidates';
         $status = '';
@@ -346,7 +349,7 @@ class JobApplicationsController extends Controller
 
         $this->search_params['filter_query'] = @$request->filter_query;
         $this->search_params['start'] = $start = ($request->start) ? ($request->start * $this->search_params['row']) : 0;
-
+        
         //If age is available
         if (@$request->age) {
 
@@ -391,6 +394,7 @@ class JobApplicationsController extends Controller
         }
 
         // dd($this->search_params);
+        
         $result = SolrPackage::get_applicants(
             $this->search_params,
             $request->jobID,
@@ -401,12 +405,10 @@ class JobApplicationsController extends Controller
             @$solr_test_score
         );
 
-
         $statuses = $job->workflow->workflowSteps()->pluck('slug');
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$request->jobID,
             $statuses);
-
 
         if (isset($request->status)) {
             $status = $request->status;
@@ -425,7 +427,7 @@ class JobApplicationsController extends Controller
             'filters' => $request->filter_query
         ])->render();
         $myJobs = Job::getMyJobs();
-        $all_my_cvs = SolrPackage::get_all_my_cvs($this->search_params, null,
+        $all_my_cvs = @SolrPackage::get_all_my_cvs($this->search_params, null,
         null)['response']['docs'];
         $myFolders = $all_my_cvs ? array_unique(array_pluck($all_my_cvs, 'cv_source')) : [];
 
@@ -437,8 +439,6 @@ class JobApplicationsController extends Controller
         $qualifications = $this->qualifications;
         $grades = grades();
         $permissions = getUserPermissions();
-
-        // dd($all_my_cvs);
 
         if ($request->ajax()) {
 

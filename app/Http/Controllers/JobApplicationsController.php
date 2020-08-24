@@ -286,7 +286,6 @@ class JobApplicationsController extends Controller
 
     public function sendMessage(Request $request)
     {
-        // dd($request->all());
         $message_content = '';
         $user = '';
 
@@ -427,7 +426,7 @@ class JobApplicationsController extends Controller
             'filters' => $request->filter_query
         ])->render();
         $myJobs = Job::getMyJobs();
-        $all_my_cvs = @SolrPackage::get_all_my_cvs($this->search_params, null,
+        $all_my_cvs = SolrPackage::get_all_my_cvs($this->search_params, null,
         null)['response']['docs'];
         $myFolders = $all_my_cvs ? array_unique(array_pluck($all_my_cvs, 'cv_source')) : [];
 

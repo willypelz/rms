@@ -345,7 +345,6 @@ class JobsController extends Controller
                     $email = $request->email;
                     //Send notification mail
                     //
-                    // dd($request->all());
 
                     if(isset($request->resend_email) || !isset($request->id)){
                         \Illuminate\Support\Facades\Mail::send('emails.new.admin_invite', ['data'=>$data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) use ($email){

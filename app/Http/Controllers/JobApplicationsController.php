@@ -286,7 +286,6 @@ class JobApplicationsController extends Controller
 
     public function sendMessage(Request $request)
     {
-        // dd($request->all());
         $message_content = '';
         $user = '';
 

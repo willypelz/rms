@@ -254,6 +254,29 @@ class JobsController extends Controller
             return back();
     }
 
+    public function cancelInvite(Request $request, $inviteId)
+    {
+        
+        $company = Company::find(get_current_company()->id);
+        
+        
+        $job_team_invite = JobTeamInvite::find($inviteId);
+        $job_team_invite->delete();
+
+        $job = Job::find($job_team_invite->job_id);
+        $data = (object)$job_team_invite;
+
+        //Send notification mail
+        $email_from = (Auth::user()->email) ? Auth::user()->email : env('COMPANY_EMAIL');
+
+        \Illuminate\Support\Facades\Mail::send('emails.new.cancel_job_team_invitation', ['data' => $job_team_invite, 'job_title' => $job->title, 'company' => $company->name], function (Message $m) use ($job_team_invite) {
+            $m->from(env('COMPANY_EMAIL'))->to($job_team_invite->email)->subject('Notice of cancellation');
+        });
+
+
+            return back();
+    }
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse

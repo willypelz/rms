@@ -295,11 +295,21 @@
                                     <div class="form-group">
                                         <div class="row">
                                             @if( $fields->cv_file->is_visible )
-                                            <div class="col-xs-12">
+                                            <div class="col-xs-4">
 
                                                 <label for="">Attach your CV @if( $fields->cv_file->is_required )<span class="text-danger">*</span>@endif</label>
 
                                                 {{ Form::file('cv_file', ( $fields->cv_file->is_required ) ? ["required"] : null ) }}
+                                            </div>
+                                            <div class="col-xs-4">
+
+                                                <label for="">Attachment 1 (Optional)</label>
+
+                                                {{ Form::file('optional_attachment_1') }}
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label for="">Attachment 2 (Optional)</label>
+                                                {{ Form::file('optional_attachment_2') }}
                                             </div>
                                             @endif
                                         </div>

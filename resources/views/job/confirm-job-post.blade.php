@@ -91,7 +91,7 @@
                                     <div class="col-sm-12">
                                         <div>JOB SPECIALIZATION <span class="text-danger">*</span></div>
                                         <h4 class="no-margin-bottom text-dark">
-                                            {{implode($job_specializations->toArray(), ', ')}}
+                                            {{implode(', ', $job_specializations->toArray())}}
                                         </h4>
                                         <br>
                                     </div>

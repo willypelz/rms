@@ -37,6 +37,33 @@
                 <h5 class="text-center">No CV attachment</h5>
               </div>
               @endif
+
+              @if( $appl->cv->optional_attachment_1 != null || $appl->cv->optional_attachment_1 != "")
+              <div class="panel panel-default panel-body">
+                <h4 class="no-margin"> <i class="fa fa-paperclip"></i>
+                  {{ ucwords( implode( '_', array_slice( explode('_', $appl->cv->optional_attachment_1) , 1) ) ) }}</h4>
+                <br>
+                <div>
+                  <a class="pull-left" href="{{ asset('uploads/CVs/'.$appl->cv->optional_attachment_1) }}" target="_blank"> <i
+                      class="fa fa-paperclip"></i> Download Attachment</a>
+                  <small class="date pull-right">{{ date('M d, Y', strtotime( $appl->cv->last_modified)) }}</small>
+                  <div class="clearfix"></div>
+                  </div>
+              </div>
+              @endif
+              @if( $appl->cv->optional_attachment_2 != null || $appl->cv->optional_attachment_2 != "")
+              <div class="panel panel-default panel-body">
+                <h4 class="no-margin"> <i class="fa fa-paperclip"></i>
+                  {{ ucwords( implode( '_', array_slice( explode('_', $appl->cv->optional_attachment_2) , 1) ) ) }}</h4>
+                <br>
+                <div>
+                  <a class="pull-left" href="{{ asset('uploads/CVs/'.$appl->cv->optional_attachment_2) }}" target="_blank"> <i
+                      class="fa fa-paperclip"></i> Download Attachment</a>
+                  <small class="date pull-right">{{ date('M d, Y', strtotime( $appl->cv->last_modified)) }}</small>
+                  <div class="clearfix"></div>
+                  </div>
+              </div>
+              @endif
               <br>
               @if( count( $documents ) )
               @foreach( $documents as $document )

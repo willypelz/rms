@@ -8,7 +8,9 @@
     <link rel="shortcut icon" href="favicon.ico" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
     <link rel="apple-touch-icon" href="apple-touch-icon-precomposed.png" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
 
-    <title style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Lateef Koshemani Doissier | Insidify.com </title>
+    <title style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
+        {{ ucwords( $appl->cv->first_name. " " . $appl->cv->last_name ) }} Doissier | Seamlesshr.com 
+    </title>
 
     <!-- <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
@@ -192,6 +194,7 @@
                                <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">3</th>
                                <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">4</th>
                                <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">5</th>
+                               <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">%</th>
                            </tr>
                            <!-- </thead> -->
                            <!-- <tbody style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"> -->
@@ -210,6 +213,13 @@
                                         <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">@if( @$option->value == 3 ) &checkmark;  @endif</td>
                                         <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">@if( @$option->value == 4 ) &checkmark;  @endif</td>
                                         <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">@if( @$option->value== 5 ) &checkmark;  @endif</td>
+                                        <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">
+                                            {{ $option->value== 1 ? "20%": "" }}
+                                            {{ $option->value== 2 ? "40%": "" }}
+                                            {{ $option->value== 3 ? "60%": "" }}
+                                            {{ $option->value== 4 ? "80%": "" }}
+                                            {{ $option->value== 5 ? "100%": "" }}
+                                        </td>
                                     </tr>
                                     <?php $index++; ?>
                                     @endif

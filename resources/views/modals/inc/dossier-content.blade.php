@@ -214,11 +214,7 @@
                                         <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">@if( @$option->value == 4 ) &checkmark;  @endif</td>
                                         <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">@if( @$option->value== 5 ) &checkmark;  @endif</td>
                                         <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">
-                                            {{ $option->value== 1 ? "20%": "" }}
-                                            {{ $option->value== 2 ? "40%": "" }}
-                                            {{ $option->value== 3 ? "60%": "" }}
-                                            {{ $option->value== 4 ? "80%": "" }}
-                                            {{ $option->value== 5 ? "100%": "" }}
+                                            {{ candidateDossierPercentage($option) }}%
                                         </td>
                                     </tr>
                                     <?php $index++; ?>

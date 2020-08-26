@@ -754,3 +754,19 @@ function get_company_email_logo(){
 		<img src='$logo' width='50%' height='' style='outline:none;text-decoration:none;display:block;min-height:31px;margin:0 auto;border:0;' class='CToWUd' alt='COMPANY_LOGO'>
 	</a>";
 }
+
+function candidateDossierPercentage($option) {
+	if($option->value == 0 || $option->value == null || $option->value == "") {
+		return 0;
+	}elseif($option->value == 1) {
+		return 20;
+	}elseif($option->value == 2) {
+		return 40;
+	}elseif($option->value == 3) {
+		return 60;
+	}elseif($option->value == 4) {
+		return 80;
+	}elseif($option->value == 5) {
+		return 100;
+	}
+}

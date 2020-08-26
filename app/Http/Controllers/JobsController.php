@@ -2242,6 +2242,7 @@ class JobsController extends Controller
 
         
         $job = Job::with('company')->where('id', $jobID)->first();
+    
         $company = $job->company;
         $specializations = Specialization::get();
 
@@ -2273,7 +2274,6 @@ class JobsController extends Controller
         if ($request->isMethod('post')) {
             $data = $request->all();
 
-
             // $validatedData = $request->validate([
             //     'g-recaptcha-response' => 'required|captcha'
             //     ], [
@@ -2302,6 +2302,25 @@ class JobsController extends Controller
                 $data['cv_file'] = $filename;
             } else {
                 $data['cv_file'] = null;
+            }
+
+
+            if ($request->hasFile('optional_attachment_1')) {
+
+                $filename = time() . '_' . str_slug($request->email) . '_' . $request->file('optional_attachment_1')->getClientOriginalName();
+
+                $data['optional_attachment_1'] = $filename;
+            } else {
+                $data['optional_attachment_1'] = null;
+            }
+
+            if ($request->hasFile('optional_attachment_2')) {
+
+                $filename = time() . '_' . str_slug($request->email) . '_' . $request->file('optional_attachment_2')->getClientOriginalName();
+
+                $data['optional_attachment_2'] = $filename;
+            } else {
+                $data['optional_attachment_2'] = null;
             }
 
             if ($fields->date_of_birth->is_visible) {
@@ -2392,6 +2411,8 @@ class JobsController extends Controller
             }
 
             $cv->candidate_id = $candidate->id;
+            $cv->optional_attachment_1 = $data['optional_attachment_1'];
+            $cv->optional_attachment_2 = $data['optional_attachment_2'];
             $cv->applicant_type = $data['applicant_type'];
             $cv->save();
 
@@ -2463,6 +2484,15 @@ class JobsController extends Controller
                 $request->file('cv_file')->move($destinationPath, $data['cv_file']);
 
             }
+            
+            if ($request->hasFile('optional_attachment_1')) {
+                $destinationPath = env('fileupload') . '/CVs';                
+                $request->file('optional_attachment_1')->move($destinationPath, $data['optional_attachment_2']);
+            }
+            if ($request->hasFile('optional_attachment_2')) {
+                $destinationPath = env('fileupload') . '/CVs';                
+                $request->file('optional_attachment_2')->move($destinationPath, $data['optional_attachment_2']);
+            }
 
 
             if ($job->video_posting_enabled) {
@@ -2485,7 +2515,6 @@ class JobsController extends Controller
 
 
             return redirect()->route('job-applied', [$jobID, $slug]);
-
 
         }
 

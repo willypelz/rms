@@ -719,8 +719,6 @@ class JobApplicationsController extends Controller
 
         $job = Job::find($request->jobId);
 
-        
-
         $this->search_params['filter_query'] = @$request->filter_query;
         $this->search_params['row'] = 2147483647;
 

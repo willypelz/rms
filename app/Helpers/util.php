@@ -65,7 +65,7 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 			}
 		}
 
-		return ($future) ? implode($unit_string_array, ', ') . ' to go' : implode($unit_string_array, ', ') . ' ago';
+		return ($future) ? implode(', ', $unit_string_array) . ' to go' : implode(', ', $unit_string_array) . ' ago';
 	}
 
 

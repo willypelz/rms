@@ -38,6 +38,42 @@
                       <div class="clearfix"></div>
                     </div>
                   </div>
+                  
+                  @if( $current_application->cv->optional_attachment_1 != "" )
+                    <div class="panel panel-default panel-body">
+                      <h4 class="no-margin"> <i class="fa fa-paperclip"></i>
+                        {{ ucwords( implode( '_', array_slice( explode('_', $current_application->cv->optional_attachment_1) , 1) ) ) }}
+                      </h4>
+                      <br>
+                      <div>
+                        
+                        <a class="pull-left" href="{{ asset('uploads/CVs/'.$current_application->cv->optional_attachment_1) }}"
+                          target="_blank"> <i class="fa fa-paperclip"></i> Download Attachment</a>                        
+                        <small
+                          class="date pull-right">{{ date('D. j M, Y', strtotime( $current_application->cv->last_modified)) }}</small>
+                        <div class="clearfix"></div>
+                      </div>
+                    </div>
+                  @endif
+                  @if( $current_application->cv->optional_attachment_2 != "" )
+                    <div class="panel panel-default panel-body">
+                      <h4 class="no-margin"> <i class="fa fa-paperclip"></i>
+                        {{ ucwords( implode( '_', array_slice( explode('_', $current_application->cv->optional_attachment_2) , 1) ) ) }}
+                      </h4>
+                      <br>
+                      <div>
+                        
+                        <a class="pull-left" href="{{ asset('uploads/CVs/'.$current_application->cv->optional_attachment_2) }}"
+                          target="_blank"> <i class="fa fa-paperclip"></i> Download Attachment</a>                        
+                        <small
+                          class="date pull-right">{{ date('D. j M, Y', strtotime( $current_application->cv->last_modified)) }}</small>
+                        <div class="clearfix"></div>
+                      </div>
+                    </div>
+                  @endif
+
+
+
                   <br>
                   @if( count( $documents ) )
                   @foreach( $documents as $document )

@@ -2251,7 +2251,6 @@ class JobsController extends Controller
         if ($request->isMethod('post')) {
             $data = $request->all();
 
-
             // $validatedData = $request->validate([
             //     'g-recaptcha-response' => 'required|captcha'
             //     ], [

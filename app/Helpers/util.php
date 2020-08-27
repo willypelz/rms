@@ -755,18 +755,18 @@ function get_company_email_logo(){
 	</a>";
 }
 
-function candidateDossierPercentage($option) {
-	if($option->value == 0 || $option->value == null || $option->value == "") {
+function candidateDossierPercentage($value) {
+	if($value == 0 || $value == null || $value == "") {
 		return 0;
-	}elseif($option->value == 1) {
+	}elseif($value == 1) {
 		return 20;
-	}elseif($option->value == 2) {
+	}elseif($value == 2) {
 		return 40;
-	}elseif($option->value == 3) {
+	}elseif($value == 3) {
 		return 60;
-	}elseif($option->value == 4) {
+	}elseif($value == 4) {
 		return 80;
-	}elseif($option->value == 5) {
+	}elseif($value == 5) {
 		return 100;
 	}
 }

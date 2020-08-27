@@ -121,10 +121,12 @@
                                                             <i class="fa fa-check"></i> Accepted</span>
                                                         @elseif($job_team_invite->is_declined)
                                                             <i class="fa fa-times"></i> Declined</span>
+                                                        @elseif($job_team_invite->is_cancelled)
+                                                            <i class="fa fa-times"></i> Cancelled</span>
                                                         @else
                                                             <i class="fa fa-hourglass"></i> Pending</span>
-
                                                              <a  class="btn btn-default btn-small" href="{{ route('resend-job-team-invite', $job_team_invite->id) }}">Resend Invite</a>
+                                                             <a  class="btn btn-warning btn-small" style="margin-top:5px;" href="{{ route('cancel-job-team-invite', $job_team_invite->id) }}">Cancel Invite</a>
                                                         @endif
                                                     </div>
 

@@ -460,6 +460,7 @@ class JobsController extends Controller
         $is_new_user = true;
         $is_internal = $job_team_invite->is_internal;
         
+        // Check if job invite has been cancelled
         if($job_team_invite->is_cancelled == true) {
             return view('job.cancelled-job-invite', compact('job_team_invite', 'job', 'company'));
         }

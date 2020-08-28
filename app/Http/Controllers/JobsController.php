@@ -2323,7 +2323,7 @@ class JobsController extends Controller
                 $data['optional_attachment_2'] = null;
             }
 
-            if ($fields->date_of_birth->is_visible) {
+            if ($fields->date_of_birth->is_visible && isset($data['date_of_birth'])) {
                 $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
             }
 

@@ -2333,21 +2333,21 @@ class JobsController extends Controller
                 $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
             }
 
-            if ($fields->willing_to_relocate->is_visible) {
+            if ($fields->willing_to_relocate->is_visible && isset($data['willing_to_relocate'])) {
                 if ($data['willing_to_relocate'] == 'yes') {
                     $data['willing_to_relocate'] = true;
                 }
             }
 
 
-            if ($fields->state_of_origin->is_visible) {
+            if ($fields->state_of_origin->is_visible && isset($data['state_of_origin'])) {
                 if ($data['state_of_origin'] != "") {
                     $data['state_of_origin'] = $states[$data['state_of_origin']];
                 }
 
             }
 
-            if ($fields->location->is_visible) {
+            if ($fields->location->is_visible && isset($data['location'])) {
                 if ($data['location'] != "") {
                     $data['location'] = $states[$data['location']];
                 }
@@ -2361,58 +2361,58 @@ class JobsController extends Controller
 
             //saving cv...
             $cv = new Cv;
-            if ($fields->first_name->is_visible) {
+            if ($fields->first_name->is_visible && isset($data['first_name'])) {
                 $cv->first_name = $data['first_name'];
             }
-            if ($fields->last_name->is_visible) {
+            if ($fields->last_name->is_visible && isset($data['last_name'])) {
                 $cv->last_name = $data['last_name'];
             }
-            if ($fields->cover_note->is_visible) {
+            if ($fields->cover_note->is_visible && isset($data['cover_note'])) {
                 $cv->headline = $data['cover_note'];
             }
-            if ($fields->email->is_visible) {
+            if ($fields->email->is_visible && isset($data['email'])) {
                 $cv->email = $data['email'];
             }
-            if ($fields->phone->is_visible) {
+            if ($fields->phone->is_visible && isset($data['phone'])) {
                 $cv->phone = $data['phone'];
             }
-            if ($fields->gender->is_visible) {
+            if ($fields->gender->is_visible && isset($data['gender'])) {
                 $cv->gender = $data['gender'];
             }
-            if ($fields->date_of_birth->is_visible) {
+            if ($fields->date_of_birth->is_visible && isset($data['date_of_birth'])) {
                 $cv->date_of_birth = $data['date_of_birth'];
             }
-            if ($fields->marital_status->is_visible) {
+            if ($fields->marital_status->is_visible && isset($data['marital_status'])) {
                 $cv->marital_status = $data['marital_status'];
             }
-            if ($fields->location->is_visible) {
+            if ($fields->location->is_visible && isset($data['location'])) {
                 $cv->state = $data['location'];
             }
-            if ($fields->highest_qualification->is_visible) {
+            if ($fields->highest_qualification->is_visible && isset($data['highest_qualification'])) {
                 if ($data['highest_qualification'] != "") {
                     $cv->highest_qualification = $qualifications[$data['highest_qualification']];
                 }
 
             }
-            if ($fields->last_position->is_visible) {
+            if ($fields->last_position->is_visible && isset($data['last_position'])) {
                 $cv->last_position = $data['last_position'];
             }
-            if ($fields->last_company_worked->is_visible) {
+            if ($fields->last_company_worked->is_visible && isset($data['last_company_worked'])) {
                 $cv->last_company_worked = $data['last_company_worked'];
             }
-            if ($fields->years_of_experience->is_visible) {
+            if ($fields->years_of_experience->is_visible && isset($data['years_of_experience'])) {
                 $cv->years_of_experience = $data['years_of_experience'];
             }
-            if ($fields->graduation_grade->is_visible) {
+            if ($fields->graduation_grade->is_visible && isset($data['date_of_birth'])) {
                 $cv->graduation_grade = $data['graduation_grade'];
             }
-            if ($fields->willing_to_relocate->is_visible) {
+            if ($fields->willing_to_relocate->is_visible && isset($data['willing_to_relocate'])) {
                 $cv->willing_to_relocate = $data['willing_to_relocate'];
             }
-            if ($fields->cv_file->is_visible) {
+            if ($fields->cv_file->is_visible && isset($data['cv_file'])) {
                 $cv->cv_file = $data['cv_file'];
             }
-            if ($fields->state_of_origin->is_visible) {
+            if ($fields->state_of_origin->is_visible && isset($data['state_of_origin'])) {
                 $cv->state_of_origin = $data['state_of_origin'];
             }
 
@@ -2428,7 +2428,7 @@ class JobsController extends Controller
             //saving job application...
             $appl = new JobApplication;
 
-            if ($fields->cover_note->is_visible) {
+            if ($fields->cover_note->is_visible && isset($data['cover_note'])) {
                 $appl->cover_note = $data['cover_note'];
             }
 

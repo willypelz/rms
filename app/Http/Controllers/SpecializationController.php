@@ -53,7 +53,7 @@ class SpecializationController extends Controller
         }
 
 
-        return redirect()->back()->with('success', $msg);
+        return redirect()->route('specialization')->with('success', $msg);
 
     }
 

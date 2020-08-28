@@ -454,7 +454,6 @@ class JobsController extends Controller
         
 
         $job_team_invite = JobTeamInvite::find($id);
-        // dd($job_team_invite);
         $companies = Company::all();
         $job = ($job_team_invite->job_id) ? Job::with('company')->find($job_team_invite->job_id) : null;
         $company = Company::find($job->company->id);

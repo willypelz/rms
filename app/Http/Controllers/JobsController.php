@@ -451,13 +451,19 @@ class JobsController extends Controller
      */
     public function acceptInvite($id, Request $request)
     {
+        
+
         $job_team_invite = JobTeamInvite::find($id);
         $companies = Company::all();
         $job = ($job_team_invite->job_id) ? Job::with('company')->find($job_team_invite->job_id) : null;
         $company = Company::find($job->company->id);
         $is_new_user = true;
         $is_internal = $job_team_invite->is_internal;
-
+        
+        // Check if job invite has been cancelled
+        if($job_team_invite->is_cancelled == true) {
+            return view('job.cancelled-job-invite', compact('job_team_invite', 'job', 'company'));
+        }
         // this is when the user is creating password.. happens to only external team members on first access
         if ($request->isMethod('post')) {
             $validator = Validator::make($request->all(), [

@@ -754,3 +754,9 @@ function get_company_email_logo(){
 		<img src='$logo' width='50%' height='' style='outline:none;text-decoration:none;display:block;min-height:31px;margin:0 auto;border:0;' class='CToWUd' alt='COMPANY_LOGO'>
 	</a>";
 }
+
+function defaultCompanyLogo()
+{
+    $company = Company::where('has_expired', 0)->first();
+    return ($company && isset($company->logo)) ? asset('uploads/' . $company->logo) : env('SEAMLESS_HIRING_LOGO');
+}

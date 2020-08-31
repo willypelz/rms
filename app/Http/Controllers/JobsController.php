@@ -2417,9 +2417,9 @@ class JobsController extends Controller
             }
 
             $cv->candidate_id = $candidate->id;
-            $cv->optional_attachment_1 = $data['optional_attachment_1'];
-            $cv->optional_attachment_2 = $data['optional_attachment_2'];
-            $cv->applicant_type = $data['applicant_type'];
+            $cv->optional_attachment_1 = $data['optional_attachment_1'] ?? null;
+            $cv->optional_attachment_2 = $data['optional_attachment_2'] ?? null;
+            $cv->applicant_type = $data['applicant_type'] ?? null;
             $cv->save();
 
             $cvExt = new CvSalesController();
@@ -2435,8 +2435,8 @@ class JobsController extends Controller
             $appl->cv_id = $cv->id;
             $appl->job_id = $job->id;
             $appl->status = 'PENDING';
-            $appl->created = $data['created'];
-            $appl->action_date = $data['action_date'];
+            $appl->created = $data['created'] ?? null;
+            $appl->action_date = $data['action_date'] ?? null;
             $appl->candidate_id = $candidate->id;
             $appl->save();
 

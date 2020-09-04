@@ -2488,7 +2488,7 @@ class JobsController extends Controller
             
             if ($request->hasFile('optional_attachment_1')) {
                 $destinationPath = env('fileupload') . '/CVs';                
-                $request->file('optional_attachment_1')->move($destinationPath, $data['optional_attachment_2']);
+                $request->file('optional_attachment_1')->move($destinationPath, $data['optional_attachment_1']);
             }
             if ($request->hasFile('optional_attachment_2')) {
                 $destinationPath = env('fileupload') . '/CVs';                

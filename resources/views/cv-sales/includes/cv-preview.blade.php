@@ -45,9 +45,9 @@
                         <div class="col-sm-12 cv-name text-center">
                             <h2>
                             @if(@$is_applicant || $page == 'pool')
-                            {{ $cv['first_name'].' '.@$cv['last_name'] }}
+                            {{ @$cv['first_name'].' '.@$cv['last_name'] }}
                             @else
-                            {{ $cv['first_name'].' '.substr(@$cv['last_name'],0,1) }}
+                            {{ @$cv['first_name'].' '.substr(@$cv['last_name'],0,1) }}
                             @endif
                             </h2>
                             <p class="text-muted">{{ @$cv['last_position'] }} at <strong>{{ @$cv['last_company_worked'] }}  </strong>

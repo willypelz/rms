@@ -18,6 +18,9 @@
             background: #eee;
             border: 2px solid #ddd; 
         }
+        .mt-20 {
+            margin-top: 20px;
+        }
     </style>
 
     <section class="no-pad">
@@ -300,6 +303,16 @@
                                                 <label for="">Attach your CV @if( $fields->cv_file->is_required )<span class="text-danger">*</span>@endif</label>
 
                                                 {{ Form::file('cv_file', ( $fields->cv_file->is_required ) ? ["required"] : null ) }}
+                                            </div>
+                                            <div class="col-xs-12 mt-20">
+
+                                                <label for="">Attachment 1 (Optional)</label>
+
+                                                {{ Form::file('optional_attachment_1') }}
+                                            </div>
+                                            <div class="col-xs-12 mt-20">
+                                                <label for="">Attachment 2 (Optional)</label>
+                                                {{ Form::file('optional_attachment_2') }}
                                             </div>
                                             @endif
                                         </div>

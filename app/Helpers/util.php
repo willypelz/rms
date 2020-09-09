@@ -65,7 +65,7 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 			}
 		}
 
-		return ($future) ? implode($unit_string_array, ', ') . ' to go' : implode($unit_string_array, ', ') . ' ago';
+		return ($future) ? implode(', ', $unit_string_array) . ' to go' : implode(', ', $unit_string_array) . ' ago';
 	}
 
 
@@ -212,7 +212,7 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
 		switch ($type) {
 			case 'cv':
-				$string1 = trim( $data['first_name'] );
+				$string1 = trim( @$data['first_name'] );
 				$string2 = trim(  @$data['last_name'] );
 
 				break;
@@ -753,4 +753,20 @@ function get_company_email_logo(){
 	"<a href='$url' style='font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2' target='_blank'>
 		<img src='$logo' width='50%' height='' style='outline:none;text-decoration:none;display:block;min-height:31px;margin:0 auto;border:0;' class='CToWUd' alt='COMPANY_LOGO'>
 	</a>";
+}
+
+function candidateDossierPercentage($value) {
+	if($value == 0 || $value == null || $value == "") {
+		return 0;
+	}elseif($value == 1) {
+		return 20;
+	}elseif($value == 2) {
+		return 40;
+	}elseif($value == 3) {
+		return 60;
+	}elseif($value == 4) {
+		return 80;
+	}elseif($value == 5) {
+		return 100;
+	}
 }

@@ -58,6 +58,12 @@
                             </a>
                         </li>
                         @if($is_super_admin)
+                            <li>
+                                <a href="{{ route('specialization') }}">
+                                    <i class="fa fa-cogs fa-fw"></i>
+                                    Specializations
+                                </a>
+                            </li>
                         <li>
                             <a href="{{ route('workflow') }}">
                                 <i class="fa fa-chain fa-fw"></i>

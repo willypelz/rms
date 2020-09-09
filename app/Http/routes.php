@@ -108,6 +108,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::match(['get', 'post'], '/login', 'HomeController@home');
 
         Route::match(['get', 'post'], '/logout', 'CandidateController@logout')->name('candidate-logout');
+        Route::match(['get', 'post'], '/profile', 'CandidateController@profile')->name('candidate-profile');
 
         // TODO
         // Route::match(['get', 'post'], '/register', 'CandidateController@register')->name('candidate-register');
@@ -325,6 +326,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'job/teams/add', ['uses' => 'JobsController@JobTeamAdd', 'as' => 'job-team-add']);
     Route::match(['get','post'],'job/teams/remove', ['uses' => 'JobsController@removeJobTeamMember', 'as' => 'remove-job-team-member']);
     Route::match(['get','post'],'job/teams/resend/invite/{id}', ['uses' => 'JobsController@resendInvite', 'as' => 'resend-job-team-invite']);
+    Route::match(['get','post'],'job/teams/cancel/invite/{id}', ['uses' => 'JobsController@cancelInvite', 'as' => 'cancel-job-team-invite']);
 
 
     
@@ -372,6 +374,7 @@ Route::get('/one_applicant', 'JobApplication@oneApplicantData');
 
     Route::match(['get', 'post'], 'job/candidates/{jobID}',
         ['uses' => 'JobApplicationsController@viewApplicants', 'as' => 'job-candidates']);
+        
     Route::match(['get', 'post'], 'job/candidates/{jobID}/{start}',
         ['uses' => 'JobApplicationsController@viewApplicants', 'as' => 'job-candidates-infinite']);
     Route::match(['get', 'post'], 'job-list-data',
@@ -401,6 +404,12 @@ Route::get('/one_applicant', 'JobApplication@oneApplicantData');
     Route::get('/pricing', ['as' => 'pricing', 'uses' => 'HomeController@pricing']);
 
     Route::post('request-a-call', ['as' => 'request-a-call', 'uses' => 'HomeController@requestACall']);
+
+    //Specialization
+    Route::get('list-job-specialization', 'SpecializationController@index')->name('specialization');;
+    Route::post('store-job-specialization', 'SpecializationController@store')->name('store-specialization');
+    Route::get('update-job-specialization/{id}', 'SpecializationController@update')->name('update-specialization');
+    Route::delete('delete-job-specialization/{id}', 'SpecializationController@delete')->name('delete-specialization');
 
 
     Route::get('about', function () {

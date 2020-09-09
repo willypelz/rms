@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use Curl;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Mail;
 use Validator;
 
@@ -423,5 +424,27 @@ class CandidateController extends Controller
         } else {
             return redirect()->route('candidate-login')->with('error', 'Account Not Found');
         }
+    }
+
+    /**
+     * @param Request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\view\view
+     */
+
+    public function profile(Request $request){
+
+        $candidate = Candidate::find(Auth::guard('candidate')->id());
+
+        if ($request->isMethod('post')) {
+
+            $candidate->update([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+            ]);
+
+            return redirect()->route('candidate-profile')->with('success', 'Profile updated successfully');
+        }
+
+        return view('candidate.profile', compact('candidate'));
     }
 }

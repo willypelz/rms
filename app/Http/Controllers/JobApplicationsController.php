@@ -286,7 +286,6 @@ class JobApplicationsController extends Controller
 
     public function sendMessage(Request $request)
     {
-
         $message_content = '';
         $user = '';
 
@@ -310,12 +309,15 @@ class JobApplicationsController extends Controller
             'title' => $request->document_title,
             'description' => $request->document_description
         ]);
+
+        
         $candidate = JobApplication::find($request->application_id);
         $email_title = "Message on your job application ".$candidate->job->title;
+        $email_message = $message->message;
         $application_id = $request->application_id;
         $link = route('candidate-messages', $request->application_id);
 
-        Mail::send('emails.new.admin_send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link'), function ($m) use ($candidate, $email_title) {
+        Mail::send('emails.new.admin_send_message', compact('candidate', 'email_title', 'email_message', 'message_content', 'user', 'link'), function ($m) use ($candidate, $email_title) {
             $m->from(env('COMPANY_EMAIL'))->to($candidate->candidate->email)->subject($email_title);
         });
 
@@ -325,7 +327,7 @@ class JobApplicationsController extends Controller
 
     public function viewApplicants(Request $request)
     {
-        //Check if he  is the owner of the job
+                //Check if he  is the owner of the job
         check_if_job_owner($request->jobID);
 
 
@@ -338,7 +340,7 @@ class JobApplicationsController extends Controller
 
             }
         ])->find($request->jobID);
-
+        
 
         $active_tab = 'candidates';
         $status = '';
@@ -346,7 +348,7 @@ class JobApplicationsController extends Controller
 
         $this->search_params['filter_query'] = @$request->filter_query;
         $this->search_params['start'] = $start = ($request->start) ? ($request->start * $this->search_params['row']) : 0;
-
+        
         //If age is available
         if (@$request->age) {
 
@@ -390,7 +392,7 @@ class JobApplicationsController extends Controller
             $solr_video_application_score = null;
         }
 
-        // dd($this->search_params);
+        
         $result = SolrPackage::get_applicants(
             $this->search_params,
             $request->jobID,
@@ -401,12 +403,10 @@ class JobApplicationsController extends Controller
             @$solr_test_score
         );
 
-
         $statuses = $job->workflow->workflowSteps()->pluck('slug');
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$request->jobID,
             $statuses);
-
 
         if (isset($request->status)) {
             $status = $request->status;
@@ -437,8 +437,6 @@ class JobApplicationsController extends Controller
         $qualifications = $this->qualifications;
         $grades = grades();
         $permissions = getUserPermissions();
-
-        // dd($all_my_cvs);
 
         if ($request->ajax()) {
 
@@ -503,8 +501,6 @@ class JobApplicationsController extends Controller
 
         $applicants = JobApplication::with('job', 'cv')->find([68825, 68824, 68827]);
 
-        // dd($applicants->toArray());
-
         foreach($applicants as $applicant){
             $cand['gender'] = $applicant->cv->gender;
             $cand['last_company_worked'] = $applicant->cv->last_company_worked;
@@ -537,7 +533,6 @@ class JobApplicationsController extends Controller
             $cand['application_status'] = [$applicant->status];
             $cand['job_title'] = [$applicant->job->title];
 
-            // dd($cand);
             App\Libraries\SolrPackage::create_new_document($cand);
 
         }
@@ -568,7 +563,7 @@ class JobApplicationsController extends Controller
             $end_dob = explode(' ', $date->subYears(@$request->age[1]))[0] . 'T00:00:00Z';
 
             $solr_age = [$start_dob, $end_dob];
-            // dd($request->age, $start_dob, $end_dob);
+            
         } else {
             $request->age = [15, 65];
             $solr_age = null;
@@ -681,7 +676,7 @@ class JobApplicationsController extends Controller
         $filename = str_replace('/', '', $filename);
         $filename = str_replace('\'', '', $filename);
 
-        // dd($filename, $excel_data, $other_data, array_keys($excel_data[0]));
+        
         return Excel::download(new ApplicantsExport($excel_data), $filename);
 
         Excel::create($filename,
@@ -724,8 +719,6 @@ class JobApplicationsController extends Controller
 
         $job = Job::find($request->jobId);
 
-        // dd( $job );
-
         $this->search_params['filter_query'] = @$request->filter_query;
         $this->search_params['row'] = 2147483647;
 
@@ -738,7 +731,7 @@ class JobApplicationsController extends Controller
             $end_dob = explode(' ', $date->subYears(@$request->age[1]))[0] . 'T00:00:00Z';
 
             $solr_age = [$start_dob, $end_dob];
-            // dd($request->age, $start_dob, $end_dob);
+            
         } else {
             $request->age = [15, 65];
             $solr_age = null;
@@ -1672,7 +1665,7 @@ class JobApplicationsController extends Controller
 
     public function Checkout(Request $request)
     {
-        // dd($request->total_amount);
+        
 
 
     }

@@ -773,7 +773,7 @@ function candidateDossierPercentage($value) {
 	}
 }
 
-
 function percentageOf($appl_id) {
+	
 	return TestRequest::where('job_application_id', $appl_id)->with('product.provider')->get();
 }

@@ -329,8 +329,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get','post'],'job/teams/cancel/invite/{id}', ['uses' => 'JobsController@cancelInvite', 'as' => 'cancel-job-team-invite']);
 
 
-    
-
     Route::get('job/teams/decline', ['uses' => 'JobsController@JobTeamDecline', 'as' => 'job-team-decline']);
 
     Route::get('/get-all-roles', 'JobsController@getAllRoles')->name('get-all-roles');
@@ -803,16 +801,12 @@ Route::group(['middleware' => 'web'], function () {
     
 });
 
-  /* Easily update Solr via URL*/
-  Route::get('/solr/update/{redirect?}', function ($redirect = '') {
-      SolrPackage::update_core(null, 'full-import');
+/* Easily update Solr via URL*/
+Route::get('/solr/update/{redirect?}', function ($redirect = '') {
+    SolrPackage::update_core(null, 'full-import');
 
-      if ($redirect == 'false') {
-          return '';
-      }
-      return redirect()->back();
-  });
-
-
-
-  
+    if ($redirect == 'false') {
+        return '';
+    }
+    return redirect()->back();
+});

@@ -19,7 +19,13 @@ class Specialization extends Model
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['name'];
+
+    public $timestamps = false;
+
+    public function jobs(){
+        return $this->belongsToMany('App\Models\Job', 'jobs_specializations');
+    }
 
     
 

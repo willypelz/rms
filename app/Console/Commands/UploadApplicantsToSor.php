@@ -41,7 +41,7 @@ class UploadApplicantsToSor extends Command
     {
         
         
-        $applicants = JobApplication::has('cv')->with('job', 'cv')->where('job_id', 557)->chunk(100, function ($applicants) {
+        $applicants = JobApplication::has('cv')->with('job', 'cv')->chunk(100, function ($applicants) {
             foreach ($applicants as $applicant) {
                 UploadApplicant::dispatch($applicant)->onQueue('solr');                
             }

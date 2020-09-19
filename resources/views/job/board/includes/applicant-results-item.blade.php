@@ -454,7 +454,7 @@
             ({
               type: "POST",
               url: url,
-              data: ({ rnd : Math.random() * 100000, cv_id: id, type:'add', name:"{{ $cv['first_name']. " " . @$cv['last_name'] }}", 'qty':1, 'price':500, "_token":"{{ csrf_token() }}"}),
+              data: ({ rnd : Math.random() * 100000, cv_id: id, type:'add', name:"{{ @$cv['first_name']. " " . @$cv['last_name'] }}", 'qty':1, 'price':500, "_token":"{{ csrf_token() }}"}),
               success: function(response){
 
                 console.log(response);

@@ -372,7 +372,8 @@ class JobController extends Controller
             $candidate = new Candidate();
             $candidate->email = isset($request->cv['email']) ? $request->cv['email'] : null;
             $candidate->first_name = isset($request->cv['first_name']) ? $request->cv['first_name'] : null;
-            $candidate->last_name = isset($request->cv['last_name']) ? $request->cv['last_name'] : null;$candidate->is_from =  'internal';
+            $candidate->last_name = isset($request->cv['last_name']) ? $request->cv['last_name'] : null;
+            $candidate->is_from =  'internal';
             $candidate->company_id = isset($request->cv['company_id']) ? $request->cv['company_id'] : null;
             $candidate->save();
         }

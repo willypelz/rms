@@ -6,6 +6,7 @@ use Alchemy\Zippy\Adapter\ZipExtensionAdapter;
 use Alchemy\Zippy\Zippy;
 use App;
 use App\Exports\ApplicantsExport;
+use App\Exports\InterviewNoteExport;
 use App\Http\Requests;
 use App\Libraries\Solr;
 use App\Models\AtsProduct;
@@ -30,11 +31,11 @@ use App\User;
 use Auth;
 use Carbon\Carbon;
 use Curl;
-use Excel;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
+use Maatwebsite\Excel\Facades\Excel;
 use Madnest\Madzipper\Facades\Madzipper;
 use Mail;
 use PDF;
@@ -190,17 +191,7 @@ class JobApplicationsController extends Controller
         return view('applicant.medicals', compact('appl', 'nav_type', 'requests'));
     }
 
-    public function interviews($appl_id)
-    {
-      $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
-      check_if_job_owner($appl->job->id);
-
-
-      $interviews = Interview::where('job_application_id', $appl->id)->get();
-      $nav_type = 'interviews';
-      return view('applicant.interviews', compact('appl', 'nav_type', 'interviews'));
-    }
 
 
     public function documents($appl_id)
@@ -228,15 +219,27 @@ class JobApplicationsController extends Controller
 
         $nav_type = 'notes';
 
-
         $interview_note_categories = InterviewNoteValues::with('interviewer',
             'interview_note_option')->where('job_application_id',
             $appl->id)->get()->groupBy('interview_note_option.interview_note_template.name');
 
 
-
-
         return view('applicant.notes', compact('appl', 'nav_type', 'interview_note_categories'));
+    }
+
+
+     public function interviews($appl_id)
+    {
+      $appl = JobApplication::with('job', 'cv')->find($appl_id);
+
+      check_if_job_owner($appl->job->id);
+
+
+      $interviews = Interview::where('job_application_id', $appl->id)->get();
+
+      // dd($interviews);
+      $nav_type = 'interviews';
+      return view('applicant.interviews', compact('appl', 'nav_type', 'interviews'));
     }
 
     public function checks($appl_id)
@@ -879,6 +882,20 @@ class JobApplicationsController extends Controller
 
           return Response::download($zipPath, $filename,
               ['Content-Type' => 'application/octet-stream']);
+    }
+
+    public function downloadInterviewNotesCSV(Request $request){
+        ini_set('memory_limit', '1024M');
+        set_time_limit(0);
+
+        $job = Job::with(['applicantsViaJAT' => function($query) use($request) { $query->whereStatus($request->status); } ])->find($request->jobId);
+
+        $application_ids = (!$request->has('app_ids')) ? $job->applicantsViaJAT->pluck('id') : $request->app_ids;
+
+        $export_file = 'interview-note ' . date('Y_m_d_H_i_s') . '.csv';
+
+        // dd($application_ids);
+        return Excel::download(new InterviewNoteExport($application_ids), $export_file);
     }
 
     public function massAction(Request $request)

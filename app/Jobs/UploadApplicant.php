@@ -32,7 +32,6 @@ class UploadApplicant implements ShouldQueue
      */
     public function handle()
     {
-
         if(is_null($this->applicant->job))
             return false;
 

@@ -59,6 +59,7 @@ $is_super_admin = auth()->user()->is_super_admin;
                                                     <li><a href="" id="downSpreadsheet">Spreadsheet</a></li>
                                                     <li><a href="" id="downCv">CVs</a></li>
                                                     <li><a href="" id="downloadInterviewNotes">Interview Notes</a></li>
+                                                    <li><a href="" id="downloadInterviewNotesInCSV">Interview Notes (CSV Format)</a></li>
                                                     <!-- <li role="separator" class="divider"></li>
                                                     <li><a href="#">Separated link</a></li> -->
                                                 </ul>
@@ -828,6 +829,22 @@ $is_super_admin = auth()->user()->is_super_admin;
                     };
                     window.open("{{ route('download-interview-notes') }}" + "?" + $.param($data), '_blank');
             });
+
+                $('body').on('click', '#downloadInterviewNotesInCSV', function () {
+                    $data = {
+                        search_query: $('#search_query').val(),
+                        filter_query: filters,
+                        status: status_filter,
+                        jobId: "{{ $jobID }}",
+                        age: age_range,
+                        test_score: test_score_range,
+                        exp_years: exp_years_range,
+                        video_application_score: video_application_score_range,
+                        cv_ids: cv_ids,
+                        app_ids: app_ids
+                    };
+                    window.open("{{ route('download-interview-notes-csv') }}" + "?" + $.param($data), '_blank');
+                });
         });
 
         function messageAllCandidates() {

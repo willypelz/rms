@@ -31,7 +31,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['web']], function () {
 Route::get('/sso/auto/login/verify/{email}/{key}', 'Auth\LoginController@singleSignOnVerify');
-  Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
+Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
+
 });
 
 
@@ -395,6 +396,9 @@ Route::get('/one_applicant', 'JobApplication@oneApplicantData');
 
     Route::match(['get', 'post'], 'download-interview-notes',
         ['uses' => 'JobApplicationsController@downloadInterviewNotes', 'as' => 'download-interview-notes']);
+
+    Route::match(['get', 'post'], 'download-interview-notes-csv',
+        ['uses' => 'JobApplicationsController@downloadInterviewNotesCSV', 'as' => 'download-interview-notes-csv']);
 
     Route::post('job/applicant/mass-action', ['uses' => 'JobApplicationsController@massAction', 'as' => 'mass-action']);
     Route::post('job/applicant/write-review',
@@ -809,4 +813,7 @@ Route::get('/one_applicant', 'JobApplication@oneApplicantData');
       }
       return redirect()->back();
   });
+
+
+
 

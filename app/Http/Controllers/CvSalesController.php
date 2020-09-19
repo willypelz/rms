@@ -594,7 +594,6 @@ class CvSalesController extends Controller
             $application_statuses['ALL'] = $result['facet_counts'] = $end = null;
         }
 
-
      
         $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $application_statuses['ALL'], 'type'=>'Cvs', 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();
 

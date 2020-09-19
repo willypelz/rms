@@ -766,7 +766,35 @@ function candidateDossierPercentage($value) {
 		return 60;
 	}elseif($value == 4) {
 		return 80;
-	}elseif($value == 5) {
+	}elseif($value > 5) {
 		return 100;
 	}
+}
+
+function candidateDossierRating($value) {
+
+    if($value > 5)
+        $value = 5;
+
+    if($value < 1)
+        $value = 1;
+
+    switch($value){
+        case 1 :
+            return 'Unsatisfactory';
+            break;
+        case 2:
+            return 'Average';
+            break;
+        case 3:
+            return 'Above Average';
+            break;
+        case 4:
+            return 'Good';
+            break;
+        case 5:
+            return 'Exceptional';
+            break;
+
+    }
 }

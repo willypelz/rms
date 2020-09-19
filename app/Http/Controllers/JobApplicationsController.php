@@ -6,6 +6,7 @@ use Alchemy\Zippy\Adapter\ZipExtensionAdapter;
 use Alchemy\Zippy\Zippy;
 use App;
 use App\Exports\ApplicantsExport;
+use App\Exports\InterviewNoteExport;
 use App\Http\Requests;
 use App\Libraries\Solr;
 use App\Models\AtsProduct;
@@ -30,11 +31,11 @@ use App\User;
 use Auth;
 use Carbon\Carbon;
 use Curl;
-use Excel;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
+use Maatwebsite\Excel\Facades\Excel;
 use Madnest\Madzipper\Facades\Madzipper;
 use Mail;
 use PDF;
@@ -854,7 +855,7 @@ class JobApplicationsController extends Controller
         $interview_notes = InterviewNoteValues::with('interviewer',
             'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
 
-        $path = public_path('uploads/tmp/');
+        $path = public_path('uploads/');
         $show_other_sections = false;
 
         $pdf = App::make('dompdf.wrapper');
@@ -879,6 +880,18 @@ class JobApplicationsController extends Controller
 
           return Response::download($zipPath, $filename,
               ['Content-Type' => 'application/octet-stream']);
+    }
+
+    public function downloadInterviewNotesCSV(Request $request){
+        ini_set('memory_limit', '1024M');
+        set_time_limit(0);
+
+        $job = Job::with('applicants')->find($request->jobId);
+        $application_ids = (!$request->has('app_ids')) ? JobApplication::where('job_id', $job->id)->pluck('id')->take(40) : $request->app_ids;
+
+        $export_file = 'interview-note ' . date('Y_m_d_H_i_s') . '.csv';
+
+        return Excel::download(new InterviewNoteExport($application_ids), $export_file);
     }
 
     public function massAction(Request $request)

@@ -855,7 +855,7 @@ class JobApplicationsController extends Controller
         $interview_notes = InterviewNoteValues::with('interviewer',
             'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
 
-        $path = public_path('uploads/');
+        $path = public_path('uploads/tmp/');
         $show_other_sections = false;
 
         $pdf = App::make('dompdf.wrapper');

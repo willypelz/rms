@@ -57,6 +57,8 @@ class InterviewNoteExport implements FromCollection, WithHeadings
             $interview_notes_count++;
         }
 
+        array_push($heading, 'Overall Average');
+
         return $heading;
     }
 
@@ -76,6 +78,7 @@ class InterviewNoteExport implements FromCollection, WithHeadings
             $interview_notes = InterviewNoteValues::with('interviewer',
                 'interview_note_option')->where('job_application_id', $appl->id)->get();
 
+
             $data[$application_count]['Name'] = $appl->cv->first_name . " " . $appl->cv->last_name;
             $data[$application_count]['Gender'] = $appl->cv->gender;
             $data[$application_count]['Email'] = $appl->cv->email;
@@ -92,17 +95,20 @@ class InterviewNoteExport implements FromCollection, WithHeadings
             $interviewers = $interview_notes->unique('interviewed_by');
 
             foreach ($interviewers as $note) {
+
                 $data[$application_count]['(Interviewer ' . $interview_notes_count . ') Name'] = $note->interviewer->name;
                 $data[$application_count]['(Interviewer ' . $interview_notes_count . ') Date'] = date('D, j-n-Y, h:i A', strtotime($note->created_at));
 
-                $total = 0;
+                $total = $ratingCount = 0;
                 foreach ($interview_notes->where('interviewed_by', $note->interviewed_by) as $option) {
 
                     if ($option->interview_note_option->type == 'rating') {
 
-                        $data[$application_count]['(Interviewer ' . $interview_notes_count . ') ' . $option->interview_note_option->name] = candidateDossierRating($option->value) . " ($option->value)";
-                        $data[$application_count]['(Interviewer ' . $interview_notes_count . ') ' . $option->interview_note_option->name . '(%)'] = candidateDossierPercentage((int)$option->value);
+                        $data[$application_count]['(Interviewer ' . $interview_notes_count . ') ' . $option->interview_note_option->name] = ($option->value);
+                        
+
                         $total += intval($option->value);
+                        $ratingCount++;
                     }
 
                     if ($option->interview_note_option->type == 'text')
@@ -110,12 +116,16 @@ class InterviewNoteExport implements FromCollection, WithHeadings
 
                 }
 
-                $avg_score = $total / count($interviewers);;
-                $data[$application_count]['(Interviewer ' . $interview_notes_count . ') Average Score'] = number_format($avg_score, 2);
+
+                // $avg_score = $total / count($interviewers);;
+                $avg_score = $total / ($ratingCount);;
                 $data[$application_count]['(Interviewer ' . $interview_notes_count . ') Total Score'] = $total;
+                $data[$application_count]['(Interviewer ' . $interview_notes_count . ') Average Score'] = number_format($avg_score, 2);
 
                 $interview_notes_count++;
             }
+
+            $data[$application_count]['Overall Average'] = $avg_score / count($interviewers);
 
             $application_count++;
 

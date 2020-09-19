@@ -1538,7 +1538,7 @@ class JobApplicationsController extends Controller
 
                 JobApplication::massAction(@$request->job_id, @$request->cv_ids, $request->step, $request->stepId);
                 
-                $testUrl = env('SEAMLESS_TESTING_APP_URL').'/test-request';
+                $testUrl = env('SEAMLESS_TESTING_APP_URL', 'http://seamlesstesting.com').'/test-request';
                 $data = [
                     'job_title' => $app->job->title,
                     'test_id' => $data['test_id'],

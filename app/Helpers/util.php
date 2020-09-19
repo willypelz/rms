@@ -8,6 +8,7 @@ use App\Models\Job;
 use App\Models\JobActivity;
 use App\Models\JobApplication;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
+use App\Models\TestRequest;
 // use Faker;
 
 	function test(){
@@ -349,7 +350,8 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 			else
 				return Auth::user()->companies[0];
 		}
-
+		
+		// dd(Auth::user()->companies[0]->tests);
 
 		if( Auth::user()->companies && Auth::user()->companies->count() < 1 )
 		{
@@ -358,7 +360,7 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
 		// If a company is not selected, default to the first on the list
 		return Auth::user()->companies[0];
-    }
+  }
 
     function get_form_field_types()
     {
@@ -769,4 +771,9 @@ function candidateDossierPercentage($value) {
 	}elseif($value == 5) {
 		return 100;
 	}
+}
+
+
+function percentageOf($appl_id) {
+	return TestRequest::where('job_application_id', $appl_id)->with('product.provider')->get();
 }

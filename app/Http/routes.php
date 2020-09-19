@@ -365,7 +365,7 @@ Route::group(['middleware' => 'web'], function () {
     //     return view('auth.login');
     // });
 
-Route::get('/one_applicant', 'JobApplication@oneApplicantData');
+    Route::get('/one_applicant', 'JobApplication@oneApplicantData');
 
     Route::match(['get', 'post'], 'one_applicant',
         ['uses' => 'JobApplicationsController@oneApplicantData']);
@@ -789,6 +789,9 @@ Route::get('/one_applicant', 'JobApplication@oneApplicantData');
     });
     Route::post('/api/v1/messages/send','CandidateController@sendMessage');
     Route::any('candidate-invite/{id}/{token}',['uses' => 'CandidateController@candidateAccept', 'as' => 'candidate-invite']);
+
+
+    
 });
 
   /* Easily update Solr via URL*/
@@ -801,3 +804,6 @@ Route::get('/one_applicant', 'JobApplication@oneApplicantData');
       return redirect()->back();
   });
 
+
+
+  

@@ -1150,7 +1150,7 @@ class JobApplicationsController extends Controller
         }
 
 
-        $test_path = env('TESTING_APP_URL'). "/test/combined/pdf/" . $appl->id;
+        $test_path = env('SEAMLESS_TESTING_APP_URL', 'http://seamlesstesting.com'). "/test/combined/pdf/" . $appl->id;
         $test_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' tests.pdf';
 
 

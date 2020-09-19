@@ -292,7 +292,6 @@ use App\Models\TestRequest;
 	{
 		$ret = array();
 		$all = 0; //total number of results
-		// dd($solr_arr);
 
         if( is_null($job_id) )
             $status_from_db = collect( \DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`cv_id`=`cvs`.`id`") );
@@ -350,8 +349,6 @@ use App\Models\TestRequest;
 			else
 				return Auth::user()->companies[0];
 		}
-		
-		// dd(Auth::user()->companies[0]->tests);
 
 		if( Auth::user()->companies && Auth::user()->companies->count() < 1 )
 		{
@@ -544,9 +541,6 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
             # code...
             break;
     }
-
-    // dd($cvs, $request);
-
 
     foreach ($cvs as $key => $cv) {
 
@@ -774,6 +768,6 @@ function candidateDossierPercentage($value) {
 }
 
 function percentageOf($appl_id) {
-	
+
 	return TestRequest::where('job_application_id', $appl_id)->with('product.provider')->get();
 }

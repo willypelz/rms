@@ -44,16 +44,16 @@ class InterviewNoteExport implements FromCollection, WithHeadings
 
         $interview_notes_count = 1;
         foreach($interviewers as $interviewer){
-            array_push($heading, '(Interviewer ' . $interview_notes_count . ') Name', '(Interviewer ' . $interview_notes_count . ') Date');
+            array_push($heading, 'Interviewer Name', 'Interview Date');
 
             $interviewer_notes = InterviewNoteValues::with('interviewer',
                 'interview_note_option')->where('interviewed_by', $interviewer->interviewed_by)->where('job_application_id', $this->application_ids)->get();
 
             foreach ($interviewer_notes as $option){
-                array_push($heading,'(Interviewer ' . $interview_notes_count . ') ' . $option->interview_note_option->name);
+                array_push($heading, $option->interview_note_option->name);
             }
 
-            array_push($heading, '(Interviewer ' . $interview_notes_count . ') Average Score', '(Interviewer ' . $interview_notes_count . ') Total Score');
+            array_push($heading, 'Average Score', 'Total Score');
             // $interview_notes_count++;
         }
 
@@ -99,8 +99,8 @@ class InterviewNoteExport implements FromCollection, WithHeadings
 
 
                 if($interview_notes_count == 1){
-                    $data[$application_count]['(Interviewer ' . $interview_notes_count . ') Name'] = $note->interviewer->name;
-                    $data[$application_count]['(Interviewer ' . $interview_notes_count . ') Date'] = date('D, j-n-Y, h:i A', strtotime($note->created_at));
+                    $data[$application_count]['Interviewer Name'] = $note->interviewer->name;
+                    $data[$application_count]['Interview Date'] = date('D, j-n-Y, h:i A', strtotime($note->created_at));
                 }else{
 
                     $application_count++;
@@ -116,8 +116,8 @@ class InterviewNoteExport implements FromCollection, WithHeadings
                     $data[$application_count]['Last Position'] = '';
                     $data[$application_count]['Last Company Worked'] = '';
                     $data[$application_count]['Willing to Relocate?'] = '';
-                    $data[$application_count]['(Interviewer ' . $interview_notes_count . ') Name'] = $note->interviewer->name;
-                    $data[$application_count]['(Interviewer ' . $interview_notes_count . ') Date'] = date('D, j-n-Y, h:i A', strtotime($note->created_at));
+                    $data[$application_count]['Interviewer Name'] = $note->interviewer->name;
+                    $data[$application_count]['Interview Date'] = date('D, j-n-Y, h:i A', strtotime($note->created_at));
                 }
                
                 $total = $ratingCount = 0;
@@ -125,7 +125,7 @@ class InterviewNoteExport implements FromCollection, WithHeadings
 
                     if ($option->interview_note_option->type == 'rating') {
 
-                        $data[$application_count]['(Interviewer ' . $interview_notes_count . ') ' . $option->interview_note_option->name] = ($option->value);
+                        $data[$application_count][$option->interview_note_option->name] = ($option->value);
                         
 
                         $total += intval($option->value);
@@ -133,14 +133,14 @@ class InterviewNoteExport implements FromCollection, WithHeadings
                     }
 
                     if ($option->interview_note_option->type == 'text')
-                        $data[$application_count]['(Interviewer ' . $interview_notes_count . ') ' . $option->interview_note_option->name] = $option->value;
+                        $data[$application_count][$option->interview_note_option->name] = $option->value;
 
                 }
 
                 $avg_score = $total / count($interviewers);;
                 $avg_score = $total / ($ratingCount);;
-                $data[$application_count]['(Interviewer ' . $interview_notes_count . ') Total Score'] = $total;
-                $data[$application_count]['(Interviewer ' . $interview_notes_count . ') Average Score'] = number_format($avg_score, 2);
+                $data[$application_count]['Total Score'] = $total;
+                $data[$application_count]['Average Score'] = number_format($avg_score, 2);
 
                 $interview_notes_count++;
             }
@@ -155,6 +155,7 @@ class InterviewNoteExport implements FromCollection, WithHeadings
 
         }
 
+        // dd($data);
         return collect($data);
     }
 }

@@ -1127,6 +1127,7 @@ class JobApplicationsController extends Controller
         } else {
             return $modalVars;
         }
+        $show_other_sections = true;
 
         $jobID = $appl->job->id;
         check_if_job_owner($jobID);
@@ -1136,12 +1137,17 @@ class JobApplicationsController extends Controller
         $interview_notes = InterviewNoteValues::with('interviewer',
             'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
 
+
         $path = public_path('uploads/tmp/');
 
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML(view('modals.inc.dossier-content',
-            compact('applicant_badge', 'app_ids', 'cv_ids', 'jobID', 'appl', 'comments', 'interview_notes'))->render());
-        // $pdf->setTemporaryFolder($path);
+            compact('applicant_badge', 'app_ids', 'cv_ids', 'jobID', 'show_other_sections', 'appl', 'comments', 'interview_notes'))->render());
+
+
+        return view('modals.inc.dossier-content',
+            compact('applicant_badge', 'app_ids', 'cv_ids', 'show_other_sections', 'jobID', 'appl', 'comments', 'interview_notes'))->render();
+
         $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' dossier.pdf', true);
 
 

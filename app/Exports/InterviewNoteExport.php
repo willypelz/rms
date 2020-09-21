@@ -138,7 +138,7 @@ class InterviewNoteExport implements FromCollection, WithHeadings
                 }
 
                 $avg_score = $total / count($interviewers);;
-                $avg_score = $total / ($ratingCount);;
+                // $avg_score = $total / ($ratingCount);;
                 $data[$application_count]['Total Score'] = $total;
                 $data[$application_count]['Average Score'] = number_format($avg_score, 2);
 

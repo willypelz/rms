@@ -29,9 +29,18 @@ $job_id = $appl->job->id;
                   <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
                 </span> {{ $appl->cv->email }}
                 <br/>
-                <span class="fa-stack">
+               
+
+                 @if($appl->cv->date_of_birth == '1970-01-01' || is_null($appl->cv->date_of_birth))
+                              
+                           @else 
+
+                            <span class="fa-stack">
                   <i class="fa fa-arrow-up fa-stack-1x fa-inverse"></i>
-                </span> {{ str_replace('ago', 'old', human_time($appl->cv->date_of_birth, 1)) }}
+                </span>   
+
+                           {{ str_replace('ago', 'old', human_time($appl->cv->date_of_birth, 1)) }} 
+                      @endif
                 <span>{{ $appl->cv->location }}</span>
               </p>
             </div>

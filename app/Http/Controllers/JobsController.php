@@ -2286,7 +2286,7 @@ class JobsController extends Controller
             //     'g-recaptcha-response.required' => 'Please fill the Captcha'
             // ]);
 
-
+            DB::beginTransaction();
             // $has_applied = CV::where('email',$data['email'])->orWhere('phone',$data['phone'])->first();
             $owned_cvs = CV::where('email', $data['email'] ?? $candidate->email);
             if(isset($data['phone'])){
@@ -2294,7 +2294,7 @@ class JobsController extends Controller
             }
             $owned_cvs = $owned_cvs->pluck('id');
             $owned_applicataions_count = JobApplication::whereIn('cv_id', $owned_cvs)->where('job_id', $jobID)->get()->count();
-
+            
 
             if ($owned_applicataions_count > 0) {
                 return redirect()->route('job-applied', [$jobID, $slug, true]);
@@ -2358,7 +2358,7 @@ class JobsController extends Controller
             $data['created'] = date('Y-m-d H:i:s');
             $data['action_date'] = date('Y-m-d H:i:s');
 
-
+            
             //saving cv...
             $cv = new Cv;
             if ($fields->first_name->is_visible && isset($data['first_name'])) {
@@ -2515,7 +2515,9 @@ class JobsController extends Controller
                 $job_application = JobApplication::with('cv')->find($appl->id);
                 
                 UploadApplicant::dispatch($job_application)->onQueue('solr');
+                DB::commit();
             } catch (Exception $e) {
+                DB::rollBack();
                 Log::info(json_encode($e));
             }
 

@@ -30,6 +30,7 @@
 
 
 </head>
+
 <body style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin-top: 50px;background: #ffffff;font-family: &quot;Segoe UI&quot; sans-serif;">
 <div class="" id="" style="margin: 0 auto;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
    <div class="row" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin-left: -15px;margin-right: -15px;">
@@ -64,7 +65,8 @@
                </p>
            </div>
        </div>
-
+     
+     
 
 
        @if(isset($show_other_sections) && ($show_other_sections == true))
@@ -388,7 +390,7 @@
 
 -->
 
-<button onclick="printPage()">PRINT</button>
+
 
 
 <script type="text/javascript">
@@ -415,8 +417,6 @@ function CreatePDFfromHTML() {
         pdf.save("{{ $appl->cv->first_name. " " . $appl->cv->last_name }}_ Doissier.pdf");
         $(".html-content").hide();
     });
-
-    window.close();
 
 }
 

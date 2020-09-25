@@ -2454,6 +2454,7 @@ class JobsController extends Controller
                 $custom_field_values = [];
 
                 foreach ($custom_fields as $custom_field) {
+                    $value = '';
                     if ($custom_field->type == "FILE") {
                         $name = 'cf_' . str_slug($custom_field->name, '_');
                         if ($request->hasFile($name)) {
@@ -2482,6 +2483,7 @@ class JobsController extends Controller
 
                 FormFieldValues::insert($custom_field_values);
             }
+
 
             if ($request->hasFile('cv_file')) {
 

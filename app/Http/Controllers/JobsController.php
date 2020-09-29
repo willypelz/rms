@@ -2281,22 +2281,8 @@ class JobsController extends Controller
         if ($request->isMethod('post')) {
             $data = $request->all();
 
-            // $validatedData = $request->validate([
-            //     'g-recaptcha-response' => 'required|captcha'
-            //     ], [
-            //     'g-recaptcha-response.required' => 'Please fill the Captcha'
-            // ]);
-
             
-            // $has_applied = CV::where('email',$data['email'])->orWhere('phone',$data['phone'])->first();
-            $owned_cvs = CV::where('email', $data['email'] ?? $candidate->email);
-            if(isset($data['phone'])){
-                $owned_cvs->orWhere('phone', $data['phone']);
-            }
-            // $owned_cvs = $owned_cvs->pluck('id');
-            $owned_cvs = $owned_cvs->pluck('id')->first();
-            
-            // $owned_applications_count = JobApplication::whereIn('cv_id', $owned_cvs)->where('job_id', $jobID)->count();
+           
             $owned_applications_count = JobApplication::where('candidate_id', $candidate->id)->where('job_id', $jobID)->count();
             
             if ($owned_applications_count > 0) {

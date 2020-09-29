@@ -2295,6 +2295,7 @@ class JobsController extends Controller
             }
             $owned_cvs = $owned_cvs->pluck('id');
             
+            // $owned_applicataions_count = JobApplication::whereIn('cv_id', $owned_cvs)->where('job_id', $jobID)->count();
             $owned_applicataions_count = JobApplication::whereIn('cv_id', $owned_cvs)->where('job_id', $jobID)->count();
             
             // dd($owned_applicataions_count);

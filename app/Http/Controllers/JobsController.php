@@ -2296,10 +2296,10 @@ class JobsController extends Controller
             // $owned_cvs = $owned_cvs->pluck('id');
             $owned_cvs = $owned_cvs->pluck('id')->first();
             
-            // $owned_applicataions_count = JobApplication::whereIn('cv_id', $owned_cvs)->where('job_id', $jobID)->count();
-            $owned_applicataions_count = JobApplication::where('candidate_id', $candidate->id)->where('job_id', $jobID)->count();
+            // $owned_applications_count = JobApplication::whereIn('cv_id', $owned_cvs)->where('job_id', $jobID)->count();
+            $owned_applications_count = JobApplication::where('candidate_id', $candidate->id)->where('job_id', $jobID)->count();
             
-            if ($owned_applicataions_count > 0) {
+            if ($owned_applications_count > 0) {
                 return redirect()->route('job-applied', [$jobID, $slug, true]);
             }
 

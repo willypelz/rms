@@ -2244,19 +2244,20 @@ class JobsController extends Controller
         if (!Auth::guard('candidate')->check()) {
             return redirect()->route('candidate-login', ['redirect_to' => url()->current()]);
         }
+        
         $candidate = Auth::guard('candidate')->user();
-
         
         $job = Job::with('company')->where('id', $jobID)->first();
-    
+        
         $company = $job->company;
         $specializations = Specialization::get();
 
         if (empty($job)) {
             abort(404);
         }
-        $candidate = Candidate::find(Auth::guard('candidate')->user()->id);
 
+        $candidate = Candidate::find(Auth::guard('candidate')->user()->id);
+        
         if($candidate->is_from == 'external' && $job->is_for == 'internal')
         {
             return redirect()->route('candidate-dashboard')
@@ -2286,16 +2287,17 @@ class JobsController extends Controller
             //     'g-recaptcha-response.required' => 'Please fill the Captcha'
             // ]);
 
-            DB::beginTransaction();
+            
             // $has_applied = CV::where('email',$data['email'])->orWhere('phone',$data['phone'])->first();
             $owned_cvs = CV::where('email', $data['email'] ?? $candidate->email);
             if(isset($data['phone'])){
                 $owned_cvs->orWhere('phone', $data['phone']);
             }
             $owned_cvs = $owned_cvs->pluck('id');
-            $owned_applicataions_count = JobApplication::whereIn('cv_id', $owned_cvs)->where('job_id', $jobID)->get()->count();
             
-
+            $owned_applicataions_count = JobApplication::whereIn('cv_id', $owned_cvs)->where('job_id', $jobID)->count();
+            
+            // dd($owned_applicataions_count);
             if ($owned_applicataions_count > 0) {
                 return redirect()->route('job-applied', [$jobID, $slug, true]);
             }
@@ -2358,7 +2360,7 @@ class JobsController extends Controller
             $data['created'] = date('Y-m-d H:i:s');
             $data['action_date'] = date('Y-m-d H:i:s');
 
-            
+
             //saving cv...
             $cv = new Cv;
             if ($fields->first_name->is_visible && isset($data['first_name'])) {
@@ -2510,14 +2512,10 @@ class JobsController extends Controller
                 $m->from(env('COMPANY_EMAIL'))->to($candidate->email)->subject('Job Application Successful');
             });
 
-
             try {
                 $job_application = JobApplication::with('cv')->find($appl->id);
-                
                 UploadApplicant::dispatch($job_application)->onQueue('solr');
-                DB::commit();
             } catch (Exception $e) {
-                DB::rollBack();
                 Log::info(json_encode($e));
             }
 

@@ -848,39 +848,41 @@ class JobApplicationsController extends Controller
 
       foreach ($application_ids as $key => $app_id) {
         $appl = JobApplication::with('job', 'cv')->find($app_id);
-        $jobID = $appl->job->id;
-        check_if_job_owner($jobID);
+        
+        if(!is_null($appl)){
+            $jobID = $appl->job->id;
+            check_if_job_owner($jobID);
 
-        $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type',
-            'REVIEW')->where('job_application_id', $appl->id)->get();
-        $notes = InterviewNotes::with('user')->where('job_application_id', $appl->id)->get();
-        $interview_notes = InterviewNoteValues::with('interviewer',
-            'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
+            $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type',
+                'REVIEW')->where('job_application_id', $appl->id)->get();
+            $notes = InterviewNotes::with('user')->where('job_application_id', $appl->id)->get();
+            $interview_notes = InterviewNoteValues::with('interviewer',
+                'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
 
-        $path = public_path('uploads/tmp/');
-        $show_other_sections = false;
+            $path = public_path('uploads/tmp/');
+            $show_other_sections = false;
 
-        $pdf = App::make('dompdf.wrapper');
-        $pdf->loadHTML(view('modals.inc.dossier-content',
-            compact( 'jobID', 'appl', 'comments', 'interview_notes', 'show_other_sections'))->render());
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->loadHTML(view('modals.inc.dossier-content',
+                compact( 'jobID', 'appl', 'comments', 'interview_notes', 'show_other_sections'))->render());
 
-        $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf', true);
+            $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf', true);
 
 
-        $filename = "Bulk Interview Notes.zip";
-        $interview_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf';
-        $cv_local_file = @$path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' cv - ' . $appl->cv->cv_file;
-        $files_to_archive[] = $interview_local_file;
+            $filename = "Bulk Interview Notes.zip";
+            $interview_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf';
+            $cv_local_file = @$path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' cv - ' . $appl->cv->cv_file;
+            $files_to_archive[] = $interview_local_file;
 
-        $timestamp = " " . time() . " ";
-
+            $timestamp = " " . time() . " ";
         }
+      }
 
         $zipPath = $path . $timestamp . $filename;
 
         Madzipper::make($zipPath)->add($files_to_archive)->close();
 
-          return Response::download($zipPath, $filename,
+        return Response::download($zipPath, $filename,
               ['Content-Type' => 'application/octet-stream']);
     }
 

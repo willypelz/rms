@@ -851,7 +851,10 @@ class JobApplicationsController extends Controller
         
         if(!is_null($appl)){
             $jobID = $appl->job->id;
-            check_if_job_owner($jobID);
+            
+            if (isset($jobID)) {
+                check_if_job_owner($jobID);
+            }
 
             $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type',
                 'REVIEW')->where('job_application_id', $appl->id)->get();

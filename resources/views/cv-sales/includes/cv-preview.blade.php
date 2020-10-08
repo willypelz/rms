@@ -74,7 +74,7 @@
                                     @endif
                                     <li>
                                         <strong>Age:</strong>&nbsp; 
-                                        @if(isset($appl))
+                                        @if(isset($appl)  || isset($appl->cv))
                                             @if($appl->cv->date_of_birth == '1970-01-01' || is_null($appl->cv->date_of_birth))
                                                 -
                                             @else

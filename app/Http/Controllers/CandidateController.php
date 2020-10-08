@@ -171,7 +171,6 @@ class CandidateController extends Controller
 
         $applicant_id = $this->generateApplicationId(Auth::guard('candidate')->user());
 
-
         return view('candidate.dashboard', compact('applicant_id'));
     }
 

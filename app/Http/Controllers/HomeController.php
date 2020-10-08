@@ -75,7 +75,7 @@ class HomeController extends Controller
         }
 
         $jobs = Job::whereStatus('ACTIVE')->where('is_for', '!=', 'internal')->where('expiry_date', '>=', date('Y-m-d'))->take(env('JOB_HOMEPAGE_LIST', 3))->orderBy('id', 'desc')->get();
-
+        
         $redirect_to = $request->redirect_to;
 
         if ($request->isMethod('post')) {

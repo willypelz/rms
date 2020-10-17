@@ -110,7 +110,7 @@
                   <i class="flaticon-diploma-1"></i>
                   <h5 class="text-uppercase text-brandon">
                   <?php $specs = array_pluck( $job->specializations->toArray(), 'name' ); ?>
-                  {{ implode( ',', $specs ) }}
+                  {{ implode( ', ', $specs ) }}
                   </h5>
                 </div>
                 

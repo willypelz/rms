@@ -191,17 +191,7 @@ class JobApplicationsController extends Controller
         return view('applicant.medicals', compact('appl', 'nav_type', 'requests'));
     }
 
-    public function interviews($appl_id)
-    {
-      $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
-      check_if_job_owner($appl->job->id);
-
-
-      $interviews = Interview::where('job_application_id', $appl->id)->get();
-      $nav_type = 'interviews';
-      return view('applicant.interviews', compact('appl', 'nav_type', 'interviews'));
-    }
 
 
     public function documents($appl_id)
@@ -229,15 +219,27 @@ class JobApplicationsController extends Controller
 
         $nav_type = 'notes';
 
-
         $interview_note_categories = InterviewNoteValues::with('interviewer',
             'interview_note_option')->where('job_application_id',
             $appl->id)->get()->groupBy('interview_note_option.interview_note_template.name');
 
 
-
-
         return view('applicant.notes', compact('appl', 'nav_type', 'interview_note_categories'));
+    }
+
+
+     public function interviews($appl_id)
+    {
+      $appl = JobApplication::with('job', 'cv')->find($appl_id);
+
+      check_if_job_owner($appl->job->id);
+
+
+      $interviews = Interview::where('job_application_id', $appl->id)->get();
+
+      // dd($interviews);
+      $nav_type = 'interviews';
+      return view('applicant.interviews', compact('appl', 'nav_type', 'interviews'));
     }
 
     public function checks($appl_id)
@@ -886,11 +888,13 @@ class JobApplicationsController extends Controller
         ini_set('memory_limit', '1024M');
         set_time_limit(0);
 
-        $job = Job::with('applicants')->find($request->jobId);
-        $application_ids = (!$request->has('app_ids')) ? JobApplication::where('job_id', $job->id)->pluck('id')->take(40) : $request->app_ids;
+        $job = Job::with(['applicantsViaJAT' => function($query) use($request) { $query->whereStatus($request->status); } ])->find($request->jobId);
+
+        $application_ids = (!$request->has('app_ids')) ? $job->applicantsViaJAT->pluck('id') : $request->app_ids;
 
         $export_file = 'interview-note ' . date('Y_m_d_H_i_s') . '.csv';
 
+        // dd($application_ids);
         return Excel::download(new InterviewNoteExport($application_ids), $export_file);
     }
 
@@ -1123,6 +1127,7 @@ class JobApplicationsController extends Controller
         } else {
             return $modalVars;
         }
+        $show_other_sections = true;
 
         $jobID = $appl->job->id;
         check_if_job_owner($jobID);
@@ -1132,12 +1137,17 @@ class JobApplicationsController extends Controller
         $interview_notes = InterviewNoteValues::with('interviewer',
             'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
 
+
         $path = public_path('uploads/tmp/');
 
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML(view('modals.inc.dossier-content',
-            compact('applicant_badge', 'app_ids', 'cv_ids', 'jobID', 'appl', 'comments', 'interview_notes'))->render());
-        // $pdf->setTemporaryFolder($path);
+            compact('applicant_badge', 'app_ids', 'cv_ids', 'jobID', 'show_other_sections', 'appl', 'comments', 'interview_notes'))->render());
+
+
+        return view('modals.inc.dossier-content',
+            compact('applicant_badge', 'app_ids', 'cv_ids', 'show_other_sections', 'jobID', 'appl', 'comments', 'interview_notes'))->render();
+
         $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' dossier.pdf', true);
 
 

@@ -2955,10 +2955,31 @@ class JobsController extends Controller
                 $app = JobApplication::with('cv', 'job')->find($app_id);
 
                 JobApplication::massAction(@$request->job_id, @$request->cv_ids, $request->step, $request->stepId);
+                
+                $testUrl = env('SEAMLESS_TESTING_APP_URL').'/test-request';
 
-                $response = Curl::to('https://seamlesstesting.com/test-request')
-                    ->withData(['job_title' => $app->job->title, 'test_id' => $data['test_id'], 'job_application_id' => $app_id, 'applicant_name' => ucwords(@$app->cv->first_name . " " . @$app->cv->last_name), 'applicant_email' => $app->cv->email, 'employer_name' => get_current_company()->name, 'employer_email' => get_current_company()->email, 'start_time' => $data['start_time'], 'end_time' => $data['end_time']])
-                    ->post();
+                $data = [
+                    'job_title' => $app->job->title, 
+                    'test_id' => $data['test_id'], 
+                    'job_application_id' => $app_id, 
+                    'applicant_name' => ucwords(@$app->cv->first_name . " " . @$app->cv->last_name), 
+                    'applicant_email' => $app->cv->email, 
+                    'employer_name' => get_current_company()->name, 
+                    'employer_email' => get_current_company()->email, 
+                    'start_time' => $data['start_time'], 
+                    'end_time' => $data['end_time']
+                ];
+
+                $ch = curl_init($testUrl);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                // execute!
+                $response = curl_exec($ch);
+                
+                // close the connection, release resources used
+                curl_close($ch);
             }
 
             // var_dump($data);

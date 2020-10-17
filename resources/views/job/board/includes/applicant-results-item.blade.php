@@ -43,8 +43,9 @@
                     <?php
                     $appl_status = $cv['application_status'][$current_app_index];
                     $applicant_step = $job->workflow->workflowSteps->where('slug', $appl_status)->first();?>
+                    
                     @if( @$applicant_step->type == 'assessment' && in_array('can-test', $permissions) && $check_both_permissions)
-
+                        
                         @if( is_array( @$cv['test_name'] ) )
                             @for($i = 0; $i < count(@$cv['test_name']); $i++)
 
@@ -60,11 +61,22 @@
                                     @endif
                                 </p>
                             @endfor
-
+                            
+                        @else
+                            
+                            <!-- <p class="text-warning">No test requested for candidate</p> -->
+                        @endif
+                        
+                        @if(sizeof(percentageOf($cv['application_id'])) > 0)
+                            <p class="text-muted">
+                                % Score(s):
+                                @foreach(percentageOf($cv['application_id']) as $percentage)
+                                    {{ $percentage->test_name }} - {{ $percentage->percentage }}%
+                                @endforeach
+                            </p>
                         @else
                             <p class="text-warning">No test requested for candidate</p>
                         @endif
-
                     @endif
 
 

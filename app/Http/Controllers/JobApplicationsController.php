@@ -160,7 +160,7 @@ class JobApplicationsController extends Controller
         $nav_type = 'assess';
 
         $requests = TestRequest::where('job_application_id', $appl_id)->with('product.provider')->get();
-
+        
 
         return view('applicant.assess', compact('appl', 'nav_type', 'requests'));
     }
@@ -348,7 +348,6 @@ class JobApplicationsController extends Controller
         $active_tab = 'candidates';
         $status = '';
         $jobID = $request->jobID;
-
         $this->search_params['filter_query'] = @$request->filter_query;
         $this->search_params['start'] = $start = ($request->start) ? ($request->start * $this->search_params['row']) : 0;
         
@@ -441,8 +440,8 @@ class JobApplicationsController extends Controller
         $grades = grades();
         $permissions = getUserPermissions();
 
-        if ($request->ajax()) {
 
+        if ($request->ajax()) {            
 
             $search_results = view('job.board.includes.applicant-results-item',
                 compact('job', 'active_tab', 'status', 'result', 'jobID', 'start', 'myJobs', 'myFolders',
@@ -471,6 +470,7 @@ class JobApplicationsController extends Controller
             $video_application_score = [env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END')];
             $test_score = [40, 160];
             $check_both_permissions = checkForBothPermissions($jobID);
+
             return view('job.board.candidates',
                 compact('job',
                     'active_tab',
@@ -848,39 +848,44 @@ class JobApplicationsController extends Controller
 
       foreach ($application_ids as $key => $app_id) {
         $appl = JobApplication::with('job', 'cv')->find($app_id);
-        $jobID = $appl->job->id;
-        check_if_job_owner($jobID);
+        
+        if(!is_null($appl)){
+            $jobID = $appl->job->id;
+            
+            if (isset($jobID)) {
+                check_if_job_owner($jobID);
+            }
 
-        $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type',
-            'REVIEW')->where('job_application_id', $appl->id)->get();
-        $notes = InterviewNotes::with('user')->where('job_application_id', $appl->id)->get();
-        $interview_notes = InterviewNoteValues::with('interviewer',
-            'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
+            $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type',
+                'REVIEW')->where('job_application_id', $appl->id)->get();
+            $notes = InterviewNotes::with('user')->where('job_application_id', $appl->id)->get();
+            $interview_notes = InterviewNoteValues::with('interviewer',
+                'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
 
-        $path = public_path('uploads/tmp/');
-        $show_other_sections = false;
+            $path = public_path('uploads/tmp/');
+            $show_other_sections = false;
 
-        $pdf = App::make('dompdf.wrapper');
-        $pdf->loadHTML(view('modals.inc.dossier-content',
-            compact( 'jobID', 'appl', 'comments', 'interview_notes', 'show_other_sections'))->render());
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->loadHTML(view('modals.inc.dossier-content',
+                compact( 'jobID', 'appl', 'comments', 'interview_notes', 'show_other_sections'))->render());
 
-        $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf', true);
+            $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf', true);
 
 
-        $filename = "Bulk Interview Notes.zip";
-        $interview_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf';
-        $cv_local_file = @$path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' cv - ' . $appl->cv->cv_file;
-        $files_to_archive[] = $interview_local_file;
+            $filename = "Bulk Interview Notes.zip";
+            $interview_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf';
+            $cv_local_file = @$path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' cv - ' . $appl->cv->cv_file;
+            $files_to_archive[] = $interview_local_file;
 
-        $timestamp = " " . time() . " ";
-
+            $timestamp = " " . time() . " ";
         }
+      }
 
         $zipPath = $path . $timestamp . $filename;
 
         Madzipper::make($zipPath)->add($files_to_archive)->close();
 
-          return Response::download($zipPath, $filename,
+        return Response::download($zipPath, $filename,
               ['Content-Type' => 'application/octet-stream']);
     }
 
@@ -1173,7 +1178,7 @@ class JobApplicationsController extends Controller
         }
 
 
-        $test_path = "http://seamlesstesting.com/test/combined/pdf/" . $appl->id;
+        $test_path = env('SEAMLESS_TESTING_APP_URL', 'http://seamlesstesting.com'). "/test/combined/pdf/" . $appl->id;
         $test_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' tests.pdf';
 
 
@@ -1523,6 +1528,7 @@ class JobApplicationsController extends Controller
         ]);
 
 
+
         foreach ($request->tests as $key => $test) {
 
             $orderItems = OrderItem::firstOrCreate([
@@ -1559,20 +1565,30 @@ class JobApplicationsController extends Controller
                 $app = JobApplication::with('cv')->find($app_id);
 
                 JobApplication::massAction(@$request->job_id, @$request->cv_ids, $request->step, $request->stepId);
-                $response = Curl::to('https://seamlesstesting.com/test-request')
-                    ->withData([
-                        'job_title' => $app->job->title,
-                        'test_id' => $data['test_id'],
-                        'job_application_id' => $app_id,
-                        'applicant_name' => ucwords(@$app->cv->first_name . " " . @$app->cv->last_name),
-                        'applicant_email' => $app->cv->email,
-                        'employer_name' => get_current_company()->name,
-                        'employer_email' => get_current_company()->email,
-                        'start_time' => $data['start_time'],
-                        'end_time' => $data['end_time'],
-                        'webhook_url' => route('save-test-result'),
-                    ])
-                    ->post();
+                
+                $testUrl = env('SEAMLESS_TESTING_APP_URL', 'http://seamlesstesting.com').'/test-request';
+                $data = [
+                    'job_title' => $app->job->title,
+                    'test_id' => $data['test_id'],
+                    'job_application_id' => $app_id,
+                    'applicant_name' => ucwords(@$app->cv->first_name . " " . @$app->cv->last_name),
+                    'applicant_email' => $app->cv->email,
+                    'employer_name' => get_current_company()->name,
+                    'employer_email' => get_current_company()->email,
+                    'start_time' => $data['start_time'],
+                    'end_time' => $data['end_time'],
+                    'webhook_url' => route('save-test-result'),
+                ];
+                $ch = curl_init($testUrl);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                // execute!
+                $response = curl_exec($ch);
+                
+                // close the connection, release resources used
+                curl_close($ch);
                 // Leave this next line untouched, its imperative
                 dump($response);
             }

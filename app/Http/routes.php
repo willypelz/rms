@@ -330,8 +330,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get','post'],'job/teams/cancel/invite/{id}', ['uses' => 'JobsController@cancelInvite', 'as' => 'cancel-job-team-invite']);
 
 
-    
-
     Route::get('job/teams/decline', ['uses' => 'JobsController@JobTeamDecline', 'as' => 'job-team-decline']);
 
     Route::get('/get-all-roles', 'JobsController@getAllRoles')->name('get-all-roles');
@@ -368,7 +366,7 @@ Route::group(['middleware' => 'web'], function () {
     //     return view('auth.login');
     // });
 
-Route::get('/one_applicant', 'JobApplication@oneApplicantData');
+    Route::get('/one_applicant', 'JobApplication@oneApplicantData');
 
     Route::match(['get', 'post'], 'one_applicant',
         ['uses' => 'JobApplicationsController@oneApplicantData']);
@@ -802,18 +800,17 @@ Route::get('/one_applicant', 'JobApplication@oneApplicantData');
     });
     Route::post('/api/v1/messages/send','CandidateController@sendMessage');
     Route::any('candidate-invite/{id}/{token}',['uses' => 'CandidateController@candidateAccept', 'as' => 'candidate-invite']);
+
+
+    
 });
 
-  /* Easily update Solr via URL*/
-  Route::get('/solr/update/{redirect?}', function ($redirect = '') {
-      SolrPackage::update_core(null, 'full-import');
+/* Easily update Solr via URL*/
+Route::get('/solr/update/{redirect?}', function ($redirect = '') {
+    SolrPackage::update_core(null, 'full-import');
 
-      if ($redirect == 'false') {
-          return '';
-      }
-      return redirect()->back();
-  });
-
-
-
-
+    if ($redirect == 'false') {
+        return '';
+    }
+    return redirect()->back();
+});

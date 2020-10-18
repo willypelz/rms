@@ -8,6 +8,7 @@ use App\Models\Job;
 use App\Models\JobActivity;
 use App\Models\JobApplication;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
+use App\Models\TestRequest;
 // use Faker;
 
 	function test(){
@@ -291,7 +292,6 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 	{
 		$ret = array();
 		$all = 0; //total number of results
-		// dd($solr_arr);
 
         if( is_null($job_id) )
             $status_from_db = collect( \DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`cv_id`=`cvs`.`id`") );
@@ -350,7 +350,6 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 				return Auth::user()->companies[0];
 		}
 
-
 		if( Auth::user()->companies && Auth::user()->companies->count() < 1 )
 		{
 			return redirect()->guest('login');
@@ -358,7 +357,7 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
 		// If a company is not selected, default to the first on the list
 		return Auth::user()->companies[0];
-    }
+  }
 
     function get_form_field_types()
     {
@@ -542,9 +541,6 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
             # code...
             break;
     }
-
-    // dd($cvs, $request);
-
 
     foreach ($cvs as $key => $cv) {
 
@@ -771,6 +767,10 @@ function candidateDossierPercentage($value) {
 	}
 }
 
+function percentageOf($appl_id) {
+
+	return TestRequest::where('job_application_id', $appl_id)->with('product.provider')->get();
+}
 function candidateDossierRating($value) {
 
     if($value > 5)

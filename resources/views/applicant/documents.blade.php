@@ -145,12 +145,20 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
+                  console.log(data);
                   $.growl.notice({ message: data.data });
                   location.reload().delay(3000);
                 },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                   $.growl.error({ message: "Error While Uploading" });
-                }
+                error: function (xhr) {
+                    console.log(xhr)
+                     if (xhr.status == 422) {
+                         var errors = JSON.parse(xhr.responseText);
+                         console.log(errors)
+                         if (errors.errors) {
+                            $.growl.error({ message: 'File must be in the following format: zip,pdf,doc,docx,txt,rtf,pptx,ppt,jpg,jpeg' });
+                         }
+                     }
+                 }
                
               });
             });

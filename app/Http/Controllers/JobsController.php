@@ -1475,7 +1475,10 @@ class JobsController extends Controller
 
     public function adminUploadDocument(Request $request){
 
-        $this->validate($request, ['document_file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt']);
+        $request->validate([
+            'document_file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt,jpg,jpeg,png',
+        ]);
+
         if ($request->hasFile('document_file')) {
 
             $file_name = (@$request->document_file->getClientOriginalName());

@@ -433,15 +433,18 @@ class CandidateController extends Controller
     public function profile(Request $request){
 
         $candidate = Candidate::find(Auth::guard('candidate')->id());
+        if ($candidate) {
+            if ($request->isMethod('post')) {
 
-        if ($request->isMethod('post')) {
+                $candidate->update([
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                ]);
 
-            $candidate->update([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-            ]);
-
-            return redirect()->route('candidate-profile')->with('success', 'Profile updated successfully');
+                return redirect()->route('candidate-profile')->with('success', 'Profile updated successfully');
+            }
+        } else {
+            return redirect()->route('candidate-login')->with('error', 'Account Not Found');
         }
 
         return view('candidate.profile', compact('candidate'));

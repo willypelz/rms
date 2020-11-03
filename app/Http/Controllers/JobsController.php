@@ -42,6 +42,7 @@ use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Mail;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use Session;
@@ -104,6 +105,7 @@ class JobsController extends Controller
     {
         $this->middleware('auth', ['except' => [
             'JobView',
+            'jobShare',
             'company',
             'jobApply',
             'JobApplied',
@@ -2221,6 +2223,23 @@ class JobsController extends Controller
     }
 
 
+    public function jobShare($jobid, $job_slug, Request $request = null)
+    {
+
+        $job = Job::with('company')->where('id', $jobid)->first();
+
+        if (empty($job) || is_null($job)) {
+            abort(404);
+        }
+        $company = $job->company;
+        $company->logo = get_company_logo($company->logo);
+
+        $closed = false;
+
+        return view('job.job-details', compact('job', 'company', 'closed'));
+    }
+
+
     public function correctHighestQualification()
     {
 
@@ -2532,7 +2551,16 @@ class JobsController extends Controller
             'data-type' => 'audio',
         ];
 
-        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'candidate', 'last_cv', 'fields'));
+        $fromShareURL = false;
+
+        $referer_url = (request()->headers->get('referer'));
+
+        if(Str::contains($referer_url, 'job/share'))
+                $fromShareURL = true;
+
+
+
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate', 'last_cv', 'fields'));
     }
 
     public function JobVideoApplication($jobID, $job_slug, $appl_id, Request $request)

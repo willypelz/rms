@@ -341,22 +341,28 @@ use App\Models\TestRequest;
 
 	function get_current_company()
 	{
-		//If a company is selected
-		if( Session::get('current_company_index')  )
-		{
-			if( isset( Auth::user()->companies[ Session::get('current_company_index') ] ) )
-				return Auth::user()->companies[ Session::get('current_company_index') ];
-			else
-				return Auth::user()->companies[0];
-		}
 
-		if( Auth::user()->companies && Auth::user()->companies->count() < 1 )
-		{
-			return redirect()->guest('login');
-		}
+	    if(!is_null(Auth::user())){
+            //If a company is selected
+            if( Session::get('current_company_index')  )
+            {
+                if( isset( Auth::user()->companies[ Session::get('current_company_index') ] ) )
+                    return Auth::user()->companies[ Session::get('current_company_index') ];
+                else
+                    return Auth::user()->companies[0];
+            }
 
-		// If a company is not selected, default to the first on the list
-		return Auth::user()->companies[0];
+            if( Auth::user()->companies && Auth::user()->companies->count() < 1 )
+            {
+                return redirect()->guest('login');
+            }
+
+            // If a company is not selected, default to the first on the list
+            return Auth::user()->companies[0];
+        } else {
+            return redirect()->guest('login');
+        }
+
   }
 
     function get_form_field_types()

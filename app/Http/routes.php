@@ -31,7 +31,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['web']], function () {
 Route::get('/sso/auto/login/verify/{email}/{key}', 'Auth\LoginController@singleSignOnVerify');
-  Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
+Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
+
 });
 
 
@@ -313,6 +314,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
     Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}', ['uses' => 'JobsController@JobView', 'as' => 'job-view']);
     Route::match(['get', 'post'], 'job/preview/{jobID}', ['uses' => 'JobsController@Preview', 'as' => 'job-preview']);
+    Route::match(['get', 'post'], 'job/share/{jobID}/{jobSlug?}', ['uses' => 'JobsController@jobShare', 'as' => 'job-share']);
 
     Route::match(['get', 'post'], 'job/activities/{jobID}',
         ['uses' => 'JobsController@JobActivities', 'as' => 'job-board']);
@@ -328,8 +330,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get','post'],'job/teams/resend/invite/{id}', ['uses' => 'JobsController@resendInvite', 'as' => 'resend-job-team-invite']);
     Route::match(['get','post'],'job/teams/cancel/invite/{id}', ['uses' => 'JobsController@cancelInvite', 'as' => 'cancel-job-team-invite']);
 
-
-    
 
     Route::get('job/teams/decline', ['uses' => 'JobsController@JobTeamDecline', 'as' => 'job-team-decline']);
 
@@ -367,7 +367,7 @@ Route::group(['middleware' => 'web'], function () {
     //     return view('auth.login');
     // });
 
-Route::get('/one_applicant', 'JobApplication@oneApplicantData');
+    Route::get('/one_applicant', 'JobApplication@oneApplicantData');
 
     Route::match(['get', 'post'], 'one_applicant',
         ['uses' => 'JobApplicationsController@oneApplicantData']);
@@ -395,6 +395,9 @@ Route::get('/one_applicant', 'JobApplication@oneApplicantData');
 
     Route::match(['get', 'post'], 'download-interview-notes',
         ['uses' => 'JobApplicationsController@downloadInterviewNotes', 'as' => 'download-interview-notes']);
+
+    Route::match(['get', 'post'], 'download-interview-notes-csv',
+        ['uses' => 'JobApplicationsController@downloadInterviewNotesCSV', 'as' => 'download-interview-notes-csv']);
 
     Route::post('job/applicant/mass-action', ['uses' => 'JobApplicationsController@massAction', 'as' => 'mass-action']);
     Route::post('job/applicant/write-review',
@@ -798,15 +801,17 @@ Route::get('/one_applicant', 'JobApplication@oneApplicantData');
     });
     Route::post('/api/v1/messages/send','CandidateController@sendMessage');
     Route::any('candidate-invite/{id}/{token}',['uses' => 'CandidateController@candidateAccept', 'as' => 'candidate-invite']);
+
+
+    
 });
 
-  /* Easily update Solr via URL*/
-  Route::get('/solr/update/{redirect?}', function ($redirect = '') {
-      SolrPackage::update_core(null, 'full-import');
+/* Easily update Solr via URL*/
+Route::get('/solr/update/{redirect?}', function ($redirect = '') {
+    SolrPackage::update_core(null, 'full-import');
 
-      if ($redirect == 'false') {
-          return '';
-      }
-      return redirect()->back();
-  });
-
+    if ($redirect == 'false') {
+        return '';
+    }
+    return redirect()->back();
+});

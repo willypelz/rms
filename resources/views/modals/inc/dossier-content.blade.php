@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
+
+<html class='html-content' style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
 <head style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
     <meta charset="utf-8" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
@@ -11,6 +12,9 @@
     <title style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
         {{ ucwords( $appl->cv->first_name. " " . $appl->cv->last_name ) }} Doissier | Seamlesshr.com 
     </title>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
 
     <!-- <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
@@ -26,6 +30,7 @@
 
 
 </head>
+
 <body style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin-top: 50px;background: #ffffff;font-family: &quot;Segoe UI&quot; sans-serif;">
 <div class="" id="" style="margin: 0 auto;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
    <div class="row" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin-left: -15px;margin-right: -15px;">
@@ -53,7 +58,6 @@
        <div class="col-xs-12" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;width: 100%;float: left;position: relative;min-height: 1px;padding-left: 15px;padding-right: 15px;">
            <div class="d-unit d-unit-cover stack" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ccc;padding-right: 50px;padding-bottom: 50px;border-radius: 3px;margin-bottom: 55px;position: relative;padding-left: 52px;"><br style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
                <h3 class="" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin-top: 20px;margin-bottom: 10px;">
-                   <!-- <i class="fa fa-file-text"></i>&nbsp; -->
                    Cover Letter
                </h3>
                <p style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
@@ -61,6 +65,9 @@
                </p>
            </div>
        </div>
+     
+     
+
 
        @if(isset($show_other_sections) && ($show_other_sections == true))
        <div class="unit-box" style="margin: 0em 0 3em 1em;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;position: relative;display: inline-block;width: 100%;">
@@ -80,8 +87,17 @@
                            <strong style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Phone:</strong>&nbsp; {{ $appl->cv->phone }}</li>
 
                        <li style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
-                           <strong style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Age:</strong>&nbsp; {{ str_replace('ago', 'old', human_time($appl->cv->date_of_birth, 1)) }}
+                           <strong style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Age:</strong>&nbsp; 
+                           
+                           @if($appl->cv->date_of_birth == '1970-01-01' || is_null($appl->cv->date_of_birth))
+                              -
+                           @else   
+
+                           {{ str_replace('ago', 'old', human_time($appl->cv->date_of_birth, 1)) }} 
+                              
                            <span class="text-muted" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;color: #999;">({{ date('M d, Y', strtotime($appl->cv->date_of_birth)) }})</span>
+
+                           @endif
                        </li>
 
                        <li style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
@@ -131,8 +147,6 @@
        </div>
        @endif
 
-
-
    </div>
    <div class="row" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin-left: -15px;margin-right: -15px;">
        <div class="message-content" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
@@ -141,7 +155,7 @@
            <div class="col-xs-12" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;width: 100%;float: left;position: relative;min-height: 1px;padding-left: 15px;padding-right: 15px;">
                    <h4 class="text-center text-uppercase" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-size: 18px;text-align: center;">
                        <i class="fa fa-comment-o" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"></i>&nbsp;
-                       Comments on Candidate
+                       Interview notes
                    </h4><br style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
                @foreach( $comments as $comment )
                  <div class="media" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin-top: 15px;overflow: hidden;zoom: 1;">
@@ -167,12 +181,12 @@
            <div class="col-xs-12" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;width: 100%;float: left;position: relative;min-height: 1px;padding-left: 15px;padding-right: 15px;">
                <hr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: content-box;box-sizing: content-box;margin-top: 20px;margin-bottom: 20px;border: 0;border-top: 1px solid #eee;height: 0;">
                <div class="" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"><br style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
-                   <h4 class="text-center text-uppercase" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-size: 18px;text-align: center;">
+                   <!-- <h4 class="text-center text-uppercase" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-size: 18px;text-align: center;">
                        <i class="fa fa-group" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"></i>&nbsp;
                        Interview Assesment
                    </h4><br style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
 
-                   <div class="unit-box" style="margin: 0em 0 3em 1em;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;position: relative;display: inline-block;width: 100%;">
+                   <div class="unit-box" style="display:none; margin: 0em 0 3em 1em;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;position: relative;display: inline-block;width: 100%;">
                    <p style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">The numerical rating system is based on the following:
                        <div class="label label-default" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">5 - Exceptional</div>
                        <div class="label label-default" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">4 - Good</div>
@@ -180,70 +194,109 @@
                        <div class="label label-default" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">2 -Average</div>
                        <div class="label label-default" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">1 - Unsatisfactory</div>
                    </p>
-                 </div>
-
-                    @foreach( $interview_notes as $note )
-                        <h4 class="text-center"> {{ $note[0]->interviewer->name }} <br><small>on {{ date('D, j-n-Y, h:i A', strtotime($note[0]->created_at)) }}</small></h4>
-                        <table class="table table-bordered" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;max-width: 100%;background-color: transparent;border-collapse: collapse;border-spacing: 0;border: 1px solid #ddd;width: 100%;margin-bottom: 20px;">
-                           <!-- <thead style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"> -->
-                           <tr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
-                               <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">#</th>
-                               <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">Assessment</th>
-                               <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">1</th>
-                               <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">2</th>
-                               <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">3</th>
-                               <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">4</th>
-                               <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">5</th>
-                               <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">%</th>
-                           </tr>
-                           <!-- </thead> -->
-                           <!-- <tbody style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"> -->
-                                <?php $index = 1; ?>
-                                @foreach( $note as $option )
-
-                                    @if( $option->interview_note_option->type == 'rating' )
-                                    <tr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
-                                        <th scope="row" style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ $index }}</th>
-                                        <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">
-                                            <b style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">{{ $option->interview_note_option->name }}</b><br style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
-                                            <!-- <i style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Rate the candidate in terms of physical looks health, Dressing , etc.</i> -->
-                                        </td>
-                                        <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">@if( @$option->value == 1 ) &checkmark; @endif</td>
-                                        <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">@if( @$option->value == 2 ) &checkmark;  @endif</td>
-                                        <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">@if( @$option->value == 3 ) &checkmark;  @endif</td>
-                                        <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">@if( @$option->value == 4 ) &checkmark;  @endif</td>
-                                        <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">@if( @$option->value== 5 ) &checkmark;  @endif</td>
-                                        <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">
-                                            {{ candidateDossierPercentage((int) $option->value) }}%
-                                        </td>
-                                    </tr>
-                                    <?php $index++; ?>
-                                    @endif
-                                 @endforeach
+                 </div> -->
+                                <?php $total_interview_score = $total_option_score = 0; ?>
+                    @if(empty($interview_notes) || is_null($interview_notes))
+                        <h4 class="text-center"> No Interview notes for this candidate</h4>
+                    @else
+                        @foreach( $interview_notes as $note )
+                            <h4 class="text-center"> {{ $note[0]->interviewer->name }} <br><small>on {{ date('D, j-n-Y, h:i A', strtotime($note[0]->created_at)) }}</small></h4>
+                            <table class="table table-bordered" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;max-width: 100%;background-color: transparent;border-collapse: collapse;border-spacing: 0;border: 1px solid #ddd;width: 100%;margin-bottom: 20px;">
+                            <!-- <thead style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"> -->
+                            <tr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
+                                <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">#</th>
+                                <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">Assessment</th>
+                                <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">Score</th>
+                                <!-- <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">2</th>
+                                <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">3</th>
+                                <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">4</th>
+                                <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">5</th> -->
+                                <th style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;"> Percentage (%)</th>
+                            </tr>
+                            <!-- </thead> -->
+                            <!-- <tbody style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"> -->
+                                    <?php $index = 1; $interview_score = $option_score  = 0; ?>
+                                    @foreach( $note as $option )
 
 
+                                        @if( $option->interview_note_option->type == 'rating' )
+                                        <tr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
+                                            <th scope="row" style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ $index }}</th>
+                                            <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">
+                                                {{ $option->interview_note_option->name }}<br style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
+                                                
+                                            </td>
+                                            <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ $option->value .' / '. $option->interview_note_option->weight  }} </td>
+                                            
+                                            
+                                            <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">  @php 
+                                                $questionPercentage = ($option->value / $option->interview_note_option->weight) * 100;
 
-                           <!-- </tbody> -->
-                       </table>
-                       <hr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: content-box;box-sizing: content-box;margin-top: 20px;margin-bottom: 20px;border: 0;border-top: 1px solid #eee;height: 0;">
+                                                $interview_score += $option->value;
+                                                $option_score += $option->interview_note_option->weight;
+                                            @endphp
+                                                {{ (int)$questionPercentage }}
 
-                       @foreach( $note as $option )
+                                            </td>
+                                        
+                                        </tr>
+                                        <?php $index++; ?>
+                                    
 
-                                    @if( $option->interview_note_option->  type == 'text' )
-                                    <div class="" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
-                                        <h4 style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-size: 18px;"><i class="fa fa-question-circle" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"></i> {{ $option->interview_note_option->name }}</h4>
-                                        <p style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">{{ @$option->value }}</p><br style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
-
-
-                                    </div>
-                                    <?php $index++; ?>
-                                    @endif
-                                 @endforeach
+                                        @endif
+                                    @endforeach
 
 
+                                        <tr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
+                                            <th scope="row" style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;"></th>
+                                            <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">
+                                                <b style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">Average Score</b><br style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
+                                                
+                                            </td>
+                                            <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">
+
+                                            <b style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
+                                            {{ $interview_score.' / '.$option_score }}</td></b>
+                                            
+                                            
+                                            <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">
+                                            <b style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
+                                                {{ (int) ( ($interview_score / $option_score) * 100 ) }}</b>
+                                            </td>
+
+                                            @php
+                                            $total_interview_score += $interview_score;
+                                            $total_option_score += $option_score;
+                                            @endphp
+                                        
+                                        </tr>
 
 
-                   @endforeach
+                        </table>
+                    
+
+                        <hr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: content-box;box-sizing: content-box;margin-top: 20px;margin-bottom: 20px;border: 0;border-top: 1px solid #eee;height: 0;">
+
+                        @foreach( $note as $option )
+
+                                        @if( $option->interview_note_option->  type == 'text' )
+                                        <div class="" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
+                                            <h4 style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-size: 18px;"><i class="fa fa-question-circle" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"></i> {{ $option->interview_note_option->name }}</h4>
+                                            <p style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">{{ @$option->value }}</p><br style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
+
+
+                                        </div>
+                                        <?php $index++; ?>
+                                        @endif
+                                    @endforeach
+
+
+                        <hr>
+
+                    @endforeach
+                   @endif
+
+
 
 
 
@@ -251,6 +304,13 @@
 
                </div>
            </div>
+
+
+           <div class="panel-body" style="margin: 0;padding: 15px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
+                       <h4 class="text-center text-uppercase" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-size: 18px;text-align: center;"><i class="fa fa-check-square" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"></i> Total Average Score: {{ $total_option_score > 0 ?  (int) $total_interview_score / count($interview_notes) : 0}}</h4>  <hr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: content-box;box-sizing: content-box;margin-top: 20px;margin-bottom: 20px;border: 0;border-top: 1px solid #eee;height: 0;">
+
+                       <h4 class="text-center text-uppercase" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;font-size: 18px;text-align: center;"><i class="fa fa-check-square" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"></i> Total Percent Score: {{ $total_option_score > 0 ? (int) ( ($total_interview_score / $total_option_score) * 100 ) : 0 }}</h4>  <hr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: content-box;box-sizing: content-box;margin-top: 20px;margin-bottom: 20px;border: 0;border-top: 1px solid #eee;height: 0;">
+          </div>
 
            <!-- <div class="col-xs-12 hidden" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;width: 100%;float: left;position: relative;min-height: 1px;padding-left: 15px;padding-right: 15px;">
                <hr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: content-box;box-sizing: content-box;margin-top: 20px;margin-bottom: 20px;border: 0;border-top: 1px solid #eee;height: 0;">
@@ -310,7 +370,7 @@
                        </div>
                    </div>
                </div>
-           </div> -->
+           </div> 
 
 
 
@@ -330,3 +390,39 @@
 </div>
 </body>
 </html>
+
+-->
+
+
+
+
+<script type="text/javascript">
+
+function CreatePDFfromHTML() {
+    var HTML_Width = $(".html-content").width();
+    var HTML_Height = $(".html-content").height();
+    var top_left_margin = 15;
+    var PDF_Width = HTML_Width + (top_left_margin * 2);
+    var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+    var canvas_image_width = HTML_Width;
+    var canvas_image_height = HTML_Height;
+
+    var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+    html2canvas($(".html-content")[0]).then(function (canvas) {
+        var imgData = canvas.toDataURL("image/jpeg", 1.0);
+        var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+        pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+        for (var i = 1; i <= totalPDFPages; i++) { 
+            pdf.addPage(PDF_Width, PDF_Height);
+            pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
+        }
+        pdf.save("{{ $appl->cv->first_name. " " . $appl->cv->last_name }}_ Doissier.pdf");
+        $(".html-content").hide();
+    });
+
+}
+
+CreatePDFfromHTML();
+
+</script>

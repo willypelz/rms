@@ -73,8 +73,19 @@
                                     <strong>Phone:</strong>&nbsp; {{ @$cv['phone'] }}</li>
                                     @endif
                                     <li>
-                                        <strong>Age:</strong>&nbsp; {{ str_replace('ago', 'old', human_time(@$cv['dob'], 1)) }}
-                                        <span class="text-muted">({{ date('M d, Y', strtotime(@$cv['dob'])) }})</span>
+                                        <strong>Age:</strong>&nbsp; 
+                                        @if(isset($appl->cv))
+                                            @if($appl->cv->date_of_birth == '1970-01-01' || is_null($appl->cv->date_of_birth))
+                                                -
+                                            @else
+                                                {{ str_replace('ago', 'old', human_time(@$cv['dob'], 1)) }}
+
+                                                <span class="text-muted">({{ date('M d, Y', strtotime(@$cv['dob'])) }})</span>
+                                            @endif
+                                        @else
+                                            {{ str_replace('ago', 'old', human_time(@$cv['dob'], 1)) }}
+                                            <span class="text-muted">({{ date('M d, Y', strtotime(@$cv['dob'])) }})</span>
+                                        @endif
                                     </li>
                                     <li><strong>Marital Status:</strong>&nbsp; {{ @$cv['marital_status'] }}.</li>
                                     <li><strong>State of Origin:</strong>&nbsp; {{ @$cv['state_of_origin'] }}.</li>

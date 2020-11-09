@@ -42,6 +42,7 @@ use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Mail;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use Session;
@@ -104,6 +105,7 @@ class JobsController extends Controller
     {
         $this->middleware('auth', ['except' => [
             'JobView',
+            'jobShare',
             'company',
             'jobApply',
             'JobApplied',
@@ -1475,7 +1477,10 @@ class JobsController extends Controller
 
     public function adminUploadDocument(Request $request){
 
-        $this->validate($request, ['document_file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt']);
+        $request->validate([
+            'document_file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt,jpg,jpeg,png',
+        ]);
+
         if ($request->hasFile('document_file')) {
 
             $file_name = (@$request->document_file->getClientOriginalName());
@@ -2218,6 +2223,23 @@ class JobsController extends Controller
     }
 
 
+    public function jobShare($jobid, $job_slug, Request $request = null)
+    {
+
+        $job = Job::with('company')->where('id', $jobid)->first();
+
+        if (empty($job) || is_null($job)) {
+            abort(404);
+        }
+        $company = $job->company;
+        $company->logo = get_company_logo($company->logo);
+
+        $closed = false;
+
+        return view('job.job-details', compact('job', 'company', 'closed'));
+    }
+
+
     public function correctHighestQualification()
     {
 
@@ -2244,19 +2266,20 @@ class JobsController extends Controller
         if (!Auth::guard('candidate')->check()) {
             return redirect()->route('candidate-login', ['redirect_to' => url()->current()]);
         }
+        
         $candidate = Auth::guard('candidate')->user();
-
         
         $job = Job::with('company')->where('id', $jobID)->first();
-    
+        
         $company = $job->company;
         $specializations = Specialization::get();
 
         if (empty($job)) {
             abort(404);
         }
-        $candidate = Candidate::find(Auth::guard('candidate')->user()->id);
 
+        $candidate = Candidate::find(Auth::guard('candidate')->user()->id);
+        
         if($candidate->is_from == 'external' && $job->is_for == 'internal')
         {
             return redirect()->route('candidate-dashboard')
@@ -2280,23 +2303,11 @@ class JobsController extends Controller
         if ($request->isMethod('post')) {
             $data = $request->all();
 
-            // $validatedData = $request->validate([
-            //     'g-recaptcha-response' => 'required|captcha'
-            //     ], [
-            //     'g-recaptcha-response.required' => 'Please fill the Captcha'
-            // ]);
-
-
-            // $has_applied = CV::where('email',$data['email'])->orWhere('phone',$data['phone'])->first();
-            $owned_cvs = CV::where('email', $data['email'] ?? $candidate->email);
-            if(isset($data['phone'])){
-                $owned_cvs->orWhere('phone', $data['phone']);
-            }
-            $owned_cvs = $owned_cvs->pluck('id');
-            $owned_applicataions_count = JobApplication::whereIn('cv_id', $owned_cvs)->where('job_id', $jobID)->get()->count();
-
-
-            if ($owned_applicataions_count > 0) {
+            
+           
+            $owned_applications_count = JobApplication::where('candidate_id', $candidate->id)->where('job_id', $jobID)->count();
+            
+            if ($owned_applications_count > 0) {
                 return redirect()->route('job-applied', [$jobID, $slug, true]);
             }
 
@@ -2454,6 +2465,7 @@ class JobsController extends Controller
                 $custom_field_values = [];
 
                 foreach ($custom_fields as $custom_field) {
+                    $value = '';
                     if ($custom_field->type == "FILE") {
                         $name = 'cf_' . str_slug($custom_field->name, '_');
                         if ($request->hasFile($name)) {
@@ -2483,6 +2495,7 @@ class JobsController extends Controller
                 FormFieldValues::insert($custom_field_values);
             }
 
+
             if ($request->hasFile('cv_file')) {
 
                 $destinationPath = env('fileupload') . '/CVs';
@@ -2510,10 +2523,8 @@ class JobsController extends Controller
                 $m->from(env('COMPANY_EMAIL'))->to($candidate->email)->subject('Job Application Successful');
             });
 
-
             try {
                 $job_application = JobApplication::with('cv')->find($appl->id);
-                
                 UploadApplicant::dispatch($job_application)->onQueue('solr');
             } catch (Exception $e) {
                 Log::info(json_encode($e));
@@ -2540,7 +2551,16 @@ class JobsController extends Controller
             'data-type' => 'audio',
         ];
 
-        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'candidate', 'last_cv', 'fields'));
+        $fromShareURL = false;
+
+        $referer_url = (request()->headers->get('referer'));
+
+        if(Str::contains($referer_url, 'job/share'))
+                $fromShareURL = true;
+
+
+
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate', 'last_cv', 'fields'));
     }
 
     public function JobVideoApplication($jobID, $job_slug, $appl_id, Request $request)
@@ -2966,10 +2986,31 @@ class JobsController extends Controller
                 $app = JobApplication::with('cv', 'job')->find($app_id);
 
                 JobApplication::massAction(@$request->job_id, @$request->cv_ids, $request->step, $request->stepId);
+                
+                $testUrl = env('SEAMLESS_TESTING_APP_URL').'/test-request';
 
-                $response = Curl::to('https://seamlesstesting.com/test-request')
-                    ->withData(['job_title' => $app->job->title, 'test_id' => $data['test_id'], 'job_application_id' => $app_id, 'applicant_name' => ucwords(@$app->cv->first_name . " " . @$app->cv->last_name), 'applicant_email' => $app->cv->email, 'employer_name' => get_current_company()->name, 'employer_email' => get_current_company()->email, 'start_time' => $data['start_time'], 'end_time' => $data['end_time']])
-                    ->post();
+                $data = [
+                    'job_title' => $app->job->title, 
+                    'test_id' => $data['test_id'], 
+                    'job_application_id' => $app_id, 
+                    'applicant_name' => ucwords(@$app->cv->first_name . " " . @$app->cv->last_name), 
+                    'applicant_email' => $app->cv->email, 
+                    'employer_name' => get_current_company()->name, 
+                    'employer_email' => get_current_company()->email, 
+                    'start_time' => $data['start_time'], 
+                    'end_time' => $data['end_time']
+                ];
+
+                $ch = curl_init($testUrl);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                // execute!
+                $response = curl_exec($ch);
+                
+                // close the connection, release resources used
+                curl_close($ch);
             }
 
             // var_dump($data);

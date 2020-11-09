@@ -83,10 +83,10 @@
                                     <div class="row">
                                         
                                         <div class="col-sm-8">
-                                            @if( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 )
-                                                <p class="text-center">This application is closed.</p>
+                                            @if( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 && !$fromShareURL )
+                                                <p class="text-center">This application is closedB.</p>
                                             @elseif ( in_array(  $job->status, ['SUSPENDED','DELETED'] ) )
-                                                <p class="text-center">This application is closed.</p>
+                                                <p class="text-center">This application is closedA.</p>
                                             @else
                                             <p class="text-center">Please fill in the information below carefully.</p>
                                         

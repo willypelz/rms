@@ -35,7 +35,6 @@ use File;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Madnest\Madzipper\Facades\Madzipper;
@@ -2095,7 +2094,6 @@ class JobApplicationsController extends Controller
                 if(!is_null($cv->email))
                 {
                     Mail::send('emails.new.step_moved', ['cv' => $cv, 'job' => $job, 'step' => $step,'message_content' => $message_content], function (Message $m) use ($cv,$job) {
-                        Log::info($cv->email);
                         $m->from($this->sender, get_current_company()->name)
                             ->replyTo($this->replyTo, get_current_company()->name)
                             ->to($cv->email)

@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Alchemy\Zippy\Adapter\ZipExtensionAdapter;
-use Alchemy\Zippy\Zippy;
 use App;
 use App\Exports\ApplicantsExport;
 use App\Exports\InterviewNoteExport;
-use App\Http\Requests;
-use App\Libraries\Solr;
 use App\Models\AtsProduct;
 use App\Models\AtsRequest;
 use App\Models\AtsService;
@@ -1775,12 +1771,12 @@ class JobApplicationsController extends Controller
             $invite = $link->ics();
 
             if ($appl->job->company->id == 96) {
-                $this->mailer->send('emails.new.interview_invitation_ibfc',
+                Mail::send('emails.new.interview_invitation_ibfc',
                     ['cv' => $cv, 'job' => $job, 'interview' => (object)$data], function (Message $m) use ($cv) {
                         $m->from(env('COMPANY_EMAIL'))->to($cv->email)->subject('Interview Invitation');
                     });
             } else {
-                $this->mailer->send('emails.new.interview_invitation',
+                Mail::send('emails.new.interview_invitation',
                     ['cv' => $cv, 'job' => $job, 'interview' => (object)$data], function (Message $m) use ($cv, $invite) {
                         $m->from($this->sender, get_current_company()->name)
                             ->replyTo($this->replyTo, get_current_company()->name)
@@ -1797,7 +1793,7 @@ class JobApplicationsController extends Controller
 
               $interviewer = User::find($interviewer_id);
               //send mail to interviewer
-              $this->mailer->send('emails.new.interviewer',
+              Mail::send('emails.new.interviewer',
                 ['cv' => $cv, 'job' => $job, 'interviewer' => $interviewer, 'interview' => (object)$data], function (Message $m) use ($cv, $interviewer) {
                     $m->from($this->sender, get_current_company()->name)
                         ->replyTo($this->replyTo, get_current_company()->name)

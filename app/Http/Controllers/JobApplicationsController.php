@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Alchemy\Zippy\Adapter\ZipExtensionAdapter;
-use Alchemy\Zippy\Zippy;
 use App;
 use App\Exports\ApplicantsExport;
 use App\Exports\InterviewNoteExport;
-use App\Http\Requests;
-use App\Libraries\Solr;
 use App\Models\AtsProduct;
 use App\Models\AtsRequest;
 use App\Models\AtsService;
@@ -35,9 +31,9 @@ use File;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Madnest\Madzipper\Facades\Madzipper;
-use Mail;
 use PDF;
 use Response;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
@@ -922,7 +918,6 @@ class JobApplicationsController extends Controller
                 $this->sendWorkflowStepNotification($request->app_ids, $request->step_id);
                 break;
         }
-        
 
         return save_activities($request->status, $request->job_id, $request->app_ids);
     }
@@ -1776,12 +1771,12 @@ class JobApplicationsController extends Controller
             $invite = $link->ics();
 
             if ($appl->job->company->id == 96) {
-                $this->mailer->send('emails.new.interview_invitation_ibfc',
+                Mail::send('emails.new.interview_invitation_ibfc',
                     ['cv' => $cv, 'job' => $job, 'interview' => (object)$data], function (Message $m) use ($cv) {
                         $m->from(env('COMPANY_EMAIL'))->to($cv->email)->subject('Interview Invitation');
                     });
             } else {
-                $this->mailer->send('emails.new.interview_invitation',
+                Mail::send('emails.new.interview_invitation',
                     ['cv' => $cv, 'job' => $job, 'interview' => (object)$data], function (Message $m) use ($cv, $invite) {
                         $m->from($this->sender, get_current_company()->name)
                             ->replyTo($this->replyTo, get_current_company()->name)
@@ -1798,7 +1793,7 @@ class JobApplicationsController extends Controller
 
               $interviewer = User::find($interviewer_id);
               //send mail to interviewer
-              $this->mailer->send('emails.new.interviewer',
+              Mail::send('emails.new.interviewer',
                 ['cv' => $cv, 'job' => $job, 'interviewer' => $interviewer, 'interview' => (object)$data], function (Message $m) use ($cv, $interviewer) {
                     $m->from($this->sender, get_current_company()->name)
                         ->replyTo($this->replyTo, get_current_company()->name)
@@ -2094,14 +2089,13 @@ class JobApplicationsController extends Controller
                 }
                 if(!is_null($cv->email))
                 {
-                    $this->mailer->send('emails.new.step_moved', ['cv' => $cv, 'job' => $job, 'step' => $step,'message_content' => $message_content],
-                        function (Message $m) use ($cv,$job) {
+                    Mail::send('emails.new.step_moved', ['cv' => $cv, 'job' => $job, 'step' => $step,'message_content' => $message_content], function (Message $m) use ($cv,$job) {
+                        $m->from($this->sender, get_current_company()->name)
+                            ->replyTo($this->replyTo, get_current_company()->name)
+                            ->to($cv->email)
+                            ->subject('Feedback on Your Application for the role of '.$job->title);
+                    });
 
-                            $m->from($this->sender, get_current_company()->name)
-                                ->replyTo($this->replyTo, get_current_company()->name)
-                                ->to($cv->email)
-                                ->subject('Feedback on Your Application for the role of '.$job->title);
-                        });
                 }
 
             }

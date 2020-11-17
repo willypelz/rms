@@ -344,7 +344,7 @@
                         
                         <p class="text-center lead"><br>
                             <i class="fa fa-check text-success"></i>
-                            <span class="text-success">Congrats! Your Job is has been posted on the free Job
+                            <span class="text-success">Congrats! Your Job has been posted on the free Job
                                 boards! </span>
                             <br> Kindly make payments for the channels below...
                         </p>

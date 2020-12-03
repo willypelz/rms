@@ -127,7 +127,7 @@
                                                         @elseif($job['status'] == 'DRAFT') Job Draft
                                                         @elseif($job['status'] == 'SUSPENDED')<i
                                                                 class="glyphicon glyphicon-ban-circle "></i> Job
-                                                        Suspendeddddd
+                                                        Suspended
                                                         @elseif($job['status'] == 'DELETED') Job Deleted
                                                         @else Job Expired @endif |
                                                         <a href="{{ route('job-board', [$job['id']]) }}">View Job</a>

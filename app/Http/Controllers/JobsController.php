@@ -1137,8 +1137,6 @@ class JobsController extends Controller
 
             $pickd_boards = [];
 
-            dd($request->all());
-
             $data = [
                 'job_title' => $request->job_title,
                 'job_location' => $request->job_location,
@@ -1550,7 +1548,6 @@ class JobsController extends Controller
         $private = count($private_jobs);
 
         foreach ($jobs as $job) {
-            // dd($job);
             if ($job->status == 'DELETED') {
                 $deleted_jobs[] = $job;
                 $deleted++;

@@ -15,6 +15,8 @@ class UploadApplicant implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     
     var $applicant;
+
+    public $timeout = 2000;
     /**
      * Create a new job instance.
      *
@@ -32,6 +34,9 @@ class UploadApplicant implements ShouldQueue
      */
     public function handle()
     {
+        ini_set('memory_limit', '1024M');
+        set_time_limit(0);
+
         if(is_null($this->applicant->job))
             return false;
 

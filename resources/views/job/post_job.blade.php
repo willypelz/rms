@@ -189,10 +189,11 @@
                                                     <span class="text-danger">*</span>
                                                 </label>
                                                  <select @if($eligibilty) readonly @endif name="eligibility" class="form-control" id="is_for" >
-                                                     <option value=""> --choose eligibility -- </option>
+                                                     <option value=""> -- choose eligibility -- </option>
                                                      <option @if ($eligibilty == 'both') selected="selected" @endif  value="both"> BOTH </option>
                                                      <option @if ($eligibilty == 'internal') selected="selected" @endif value="internal"> INTERNAL STAFF </option>
                                                      <option @if ($eligibilty == 'external') selected="selected" @endif selected value="external"> EXTERNAL STAFF </option>
+                                                     <option @if ($eligibilty == 'private') selected="selected" @endif value="private"> PRIVATE JOB </option>
                                                  </select>
                                             </div>
 
@@ -459,17 +460,25 @@
 
              $.ajax({ url: url,
                     type:'POST',
-                    data: { _token: '{{ csrf_token() }}', title: title, details: details, location: location, job_type: job_type, position: position, expiry_date: expiry_date, experience: experience, specializations:specializations, workflow_id:workflowId, job_id:"{{ $jobId }}", eligibilty:eligibilty, summary:summary, is_ajax:'true' },
-                         success:function(res){
-                            if(res.status == 200){
+                    data: { 
+                        _token: '{{ csrf_token() }}', title: title, 
+                        details: details, location: location, 
+                        job_type: job_type, position: position, 
+                        expiry_date: expiry_date, experience: experience, 
+                        specializations:specializations, workflow_id:workflowId, 
+                        job_id:"{{ $jobId }}", eligibilty:eligibilty, 
+                        summary:summary, is_ajax:'true' 
+                    },
+                    
+                    success:function(res){
+                        if(res.status == 200){
 
-                                if(!res.is_update){
-                                    setTimeout(function(){ window.location.href = res.redirect_url; }, 2000);
-                                }else{
-
-                                }
+                            if(!res.is_update){
+                                setTimeout(function(){ window.location.href = res.redirect_url; }, 2000);
+                            }else{
 
                             }
+                        }
                     }
                  });
 

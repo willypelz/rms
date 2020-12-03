@@ -13,7 +13,7 @@
                 <div class="col-xs-12 no-margin">
                     <br>
                     <h3 class="text-green-light no-margin">
-                        {{ $active + $expired + $suspended }} {{ $company->name }}  @if($active + $suspended > 1)
+                        {{ $active + $expired + $suspended + $private }} {{ $company->name }}  @if($active + $suspended > 1)
                             Jobs @else Job @endif
                         &nbsp;
                         @if($user_role == 'admin')
@@ -34,7 +34,7 @@
 
                 <div class="col-md-8 col-sm-12" id="filter">
                     <button class="btn btn-primary active" type="button" data-target="all">
-                        All <span class="badge">{{ $active + $expired + $suspended }}</span>
+                        All <span class="badge">{{ $active + $expired + $suspended + $private }}</span>
                     </button>
                     <button class="btn btn-primary" type="button" data-target="active">
                         Active <span class="badge">{{ $active }}</span>
@@ -47,6 +47,9 @@
                     </button>
                     <button class="btn btn-primary" type="button" data-target="draft">
                         Draft <span class="badge">{{ $draft }}</span>
+                    </button>
+                    <button class="btn btn-primary" type="button" data-target="private">
+                        Private <span class="badge">{{ $private }}</span>
                     </button>
                 </div>
                 <script>
@@ -89,12 +92,11 @@
 
                 @endif
 
-                @foreach( $all_jobs as  $job_section)
+                @foreach( $all_jobs as  $key => $job_section)
                     @if( count(@$job_section) > 0 )
                         @foreach($job_section as $job)
-                            @php $tag = ( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 ) ? 'expired' : strtolower($job['status']); 
-                            
-
+                            @php 
+                                $tag = $key == 'PRIVATE' ? 'private' : (( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 ) ? 'expired' : strtolower($job['status'])); 
                             @endphp
 
                             <div class="col-xs-12 job-block job-all job-{{$tag}}">
@@ -125,7 +127,7 @@
                                                         @elseif($job['status'] == 'DRAFT') Job Draft
                                                         @elseif($job['status'] == 'SUSPENDED')<i
                                                                 class="glyphicon glyphicon-ban-circle "></i> Job
-                                                        Suspended
+                                                        Suspendeddddd
                                                         @elseif($job['status'] == 'DELETED') Job Deleted
                                                         @else Job Expired @endif |
                                                         <a href="{{ route('job-board', [$job['id']]) }}">View Job</a>

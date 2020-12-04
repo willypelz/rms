@@ -92,9 +92,9 @@
 
                 @endif
 
-                @foreach( $all_jobs as  $key => $job_section)
+                @foreach( $all_jobs as $job_section)
                     @if( count(@$job_section) > 0 )
-                        @foreach($job_section as $job)
+                        @foreach($job_section as $key => $job)
                             @php 
                                 $tag = $key == 'PRIVATE' ? 'private' : (( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 ) ? 'expired' : strtolower($job['status'])); 
                             @endphp
@@ -159,6 +159,8 @@
                                                         <ul class="dropdown-menu">
 
                                                             @if($job['status'] != 'DRAFT')
+                                                                <li><a href="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}" target="_blank">Preview Job</a></li>
+                                                                
                                                                 <li><a href="{{ route('job-candidates', [$job['id']]) }}">View
                                                                     Applicants</a></li>
                                                                 @if((isset($user_role) &&  !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)

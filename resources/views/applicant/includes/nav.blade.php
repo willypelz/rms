@@ -2,8 +2,8 @@
     .container{}
     .nav-tabs > li > a{
         font-size: 12px;
-        padding-right: 16.4px;
-        padding-left: 16.4px;
+        padding-right: 12.4px;
+        padding-left: 12.4px;
     }
 </style>
 <ul class="nav nav-tabs">

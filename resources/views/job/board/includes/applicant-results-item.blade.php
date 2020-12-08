@@ -2,7 +2,8 @@
     @foreach( @$result['response']['docs'] as $cv )
 
         <?php  $pic = default_color_picture($cv);
-        $current_app_index = array_search($jobID, $cv['job_id']);
+        $current_app_index = array_search($jobID, $cv['job_id'] );
+        // dd($cv['application_id'], $current_app_index );
         $current_status = ($cv['application_status'][$current_app_index] == "ASSESSED") ? "TEST" : $cv['application_status'][$current_app_index];
         $check_both_permissions = checkForBothPermissions ($jobID);
         $is_stand_alone = env('RMS_STAND_ALONE');
@@ -13,7 +14,7 @@
                  data-app-id="{{ $cv['application_id'][ $current_app_index ] }}">
                 <hr>
                 <span class="col-md-2 col-sm-3">
-                    <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}"
+                    <a href="{{ route('applicant-profile', [$cv['application_id']][ $current_app_index ] ) }}"
                        target="_blank"
                        class="text-center">
                         <img alt="" src="{{ $pic['image'] }}" style="background:{{ $pic['color'] }};"
@@ -24,7 +25,7 @@
                 <div class="col-md-10 col-sm-9" style="padding-bottom: 10px;">
                     <input type="checkbox" class="media-body-check check-applicant pull-right">
                     <h4 class="media-heading text-muted">
-                        <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}"
+                        <a href="{{ route('applicant-profile', [$cv['application_id']][ $current_app_index ] ) }}"
                            target="_blank"><strong>{{ ucwords( @$cv['first_name']. " " . @$cv['last_name'] ) }}</strong>
                            <small>{{((!$is_stand_alone) && isset($cv['applicant_type'])) ? '('.$cv['applicant_type'].')' : ''}} </small> </a>
 
@@ -42,8 +43,9 @@
                     <?php
                     $appl_status = $cv['application_status'][$current_app_index];
                     $applicant_step = $job->workflow->workflowSteps->where('slug', $appl_status)->first();?>
+                    
                     @if( @$applicant_step->type == 'assessment' && in_array('can-test', $permissions) && $check_both_permissions)
-
+                        
                         @if( is_array( @$cv['test_name'] ) )
                             @for($i = 0; $i < count(@$cv['test_name']); $i++)
 
@@ -59,11 +61,22 @@
                                     @endif
                                 </p>
                             @endfor
-
+                            
+                        @else
+                            
+                            <!-- <p class="text-warning">No test requested for candidate</p> -->
+                        @endif
+                        
+                        @if(sizeof(percentageOf($cv['application_id'])) > 0)
+                            <p class="text-muted">
+                                % Score(s):
+                                @foreach(percentageOf($cv['application_id']) as $percentage)
+                                    {{ $percentage->test_name }} - {{ $percentage->percentage }}%
+                                @endforeach
+                            </p>
                         @else
                             <p class="text-warning">No test requested for candidate</p>
                         @endif
-
                     @endif
 
 
@@ -79,12 +92,12 @@
                         @endif
                         @if((isset($permissions) && in_array('can-view-candidates', $permissions)) || $check_both_permissions)
                         <span class="text-muted">&nbsp; &middot; &nbsp;</span>
-                        <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}">
+                        <a href="{{ route('applicant-profile', [$cv['application_id']][ $current_app_index ] ) }}">
                             View application
                         </a>
                         @endif
                     <!--span class="text-muted">·</span>
-              <a href="{{ route('applicant-profile', $cv['application_id'][ $current_app_index ] ) }}">View Application</a-->
+              <a href="{{ route('applicant-profile', [$cv['application_id']][ $current_app_index ] ) }}">View Application</a-->
 
                         <span class="text-muted">&nbsp; </span>
                         @if((isset($permissions) && in_array('can-view-application', $permissions) && $cv['is_approved']) || $check_both_permissions)
@@ -164,7 +177,7 @@
                             @if((@$applicant_step->type == 'background-check' || @$applicant_step->type == "medical-check") && (isset($permissions) && in_array('can-view-background-check', $permissions)) && $check_both_permissions)
 
                                 <span class="text-muted"> &nbsp; &middot; &nbsp;</span>
-                                <span class="dropdown">
+                                <span class="dropdown" style="display: none;">
                                     <a id="checkDrop" type="button" data-toggle="dropdown" aria-expanded="false">
                                         Checks
                                         <span class="caret"></span>
@@ -441,7 +454,7 @@
             ({
               type: "POST",
               url: url,
-              data: ({ rnd : Math.random() * 100000, cv_id: id, type:'add', name:"{{ $cv['first_name']. " " . @$cv['last_name'] }}", 'qty':1, 'price':500, "_token":"{{ csrf_token() }}"}),
+              data: ({ rnd : Math.random() * 100000, cv_id: id, type:'add', name:"{{ @$cv['first_name']. " " . @$cv['last_name'] }}", 'qty':1, 'price':500, "_token":"{{ csrf_token() }}"}),
               success: function(response){
 
                 console.log(response);

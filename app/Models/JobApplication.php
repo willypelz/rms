@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Jobs\UploadApplicant;
 use App\Libraries\Solr;
+use Illuminate\Database\Eloquent\Model;
+use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
 class JobApplication extends Model
 {
@@ -25,6 +27,8 @@ class JobApplication extends Model
 
     public static function massAction($job_id, $cv_ids, $status, $step_id)
     {
+
+        
         $step = WorkflowStep::with('approvals')->find($step_id);
 
         $data = [];
@@ -39,7 +43,11 @@ class JobApplication extends Model
             ->whereIn('cv_id', $cv_ids)
             ->update($data + ['status' => $status]);
 
-        Solr::update_core();
+        $applicants = JobApplication::where('job_id', $job_id)->whereIn('cv_id', $cv_ids)->get();
+
+        foreach ($applicants as $applicant) {
+            UploadApplicant::dispatch($applicant)->onQueue('solr');                
+        }
 
         return $app;
     }

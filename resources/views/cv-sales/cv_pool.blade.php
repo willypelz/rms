@@ -30,25 +30,7 @@
         </div>
         
 
-      <!-- <div class="col-xs-4 ">
-        <form id="form-cv-search" action="{{ url('cv/search') }}" class="form-group collapse"><br>
-          <div class="form-lg">
-            <div class="col-xs-10">
-              <div class="row"><input placeholder="e.g Accountant, Lagos" value="" class="form-control input-lg input-talent" type="text" name="search_query"></div>
-            </div>
-            <div class="col-xs-2">
-              <div class="row">
-                <button type="submit" class="btn btn-lg btn-block btn-success btn-talent">
-
-                <i class="fa fa-search fa-lg"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-          <a href="#form-cv-search" data-toggle="collapse" aria-expanded="false" aria-controls="form-cv-search" class="pull-right" style=""><i class="fa fa-close fa-inverse"></i></a>
-        </form><br>
-        <a href="#form-cv-search" data-toggle="collapse" aria-expanded="false" aria-controls="form-cv-search" class="btn btn-success pull-right"><i class="fa fa-search-plus"></i> Find New Candidate</a>
-      </div> -->
+  
 
     </div>
   </div>
@@ -58,19 +40,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="content rounded ">
-          <!-- <div class="row">
-            <div class="well well-sm pushup-sm no-shadow">
-              <div class="col-xs-10">
-                <span class="text-brandon"><i class="fa fa-folder"></i> Stats: &nbsp;</span> You have <span id="top_candidate_count"><strong>{{ $result['response']['numFound'] }}</strong></span> candidate(s) in your Talent Pool
-              </div>
-              <div class="col-xs-6">
-                <form action="" class="form-inline pull-right">
-                  <input type="text" class="form-control" placeholder="Search entire saved candidates" name="search_query" id="search_query" style="width:350px">
-                </form>
-              </div>
-              <div class="clearfix"></div>
-            </div>
-          </div> -->
+         
           <div class="row">
             <div class="col-sm-8">
               <br style="clear:both" />

@@ -3,25 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Models\Order;
-use App\User;
-use App\Models\Cv;
-use App\Models\Job;
-use App\Models\Transaction;
-use App\Models\OrderItem;
-use App\Models\CompanyFolder;
-use App\Models\FolderContent;
-use App\Models\JobApplication;
-use App\Models\FormFieldValues;
-use Illuminate\Http\Request;
+use App\Jobs\ExtractCvContent;
 use App\Libraries\Solr;
 use App\Libraries\Utilities;
-use Cart;
+use App\Models\CompanyFolder;
+use App\Models\Cv;
+use App\Models\FolderContent;
+use App\Models\FormFieldValues;
+use App\Models\Job;
+use App\Models\JobApplication;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Transaction;
+use App\User;
 use Auth;
-use Mail;
 use Carbon\Carbon;
-
-use App\Jobs\ExtractCvContent;
+use Cart;
+use Illuminate\Http\Request;
+use Mail;
+use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
 
 class CvSalesController extends Controller
@@ -142,9 +142,9 @@ class CvSalesController extends Controller
                 $this->search_params['filter_query'] = @$request->filter_query;
             }
 
-            // $response = Solr::search_resume($this->search_params);
+            // $response = SolrPackage::search_resume($this->search_params);
 
-            $result = Solr::search_resume($this->search_params, @$additional);
+            $result = SolrPackage::search_resume($this->search_params, @$additional);
             $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
             $cart = Utilities::getCartContent('cv-sales');
@@ -195,7 +195,7 @@ class CvSalesController extends Controller
             if(empty($ids))
                 $ids = null;
 
-            $response = Solr::search_resume($this->search_params);
+            $response = SolrPackage::search_resume($this->search_params);
 
             return view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids ]);*/
     }
@@ -206,11 +206,9 @@ class CvSalesController extends Controller
         $cv['dob'] = @$cv['date_of_birth'];
         $is_applicant = $request->is_applicant;
         $is_embedded = $request->is_embedded;
+        $appl = NULL;
         if(isset($request->appl_id)){
             $appl = JobApplication::find($request->appl_id);
-             // dd( $appl->custom_fields );
-
-
         }
 
         // dd( FormFieldValues::where('job_application_id') )
@@ -411,7 +409,7 @@ class CvSalesController extends Controller
 
         $user = Auth::user();
         // dd($user);
-       $emailer =  Mail::queue('emails.cv-sales.invoice', ['user' => $user], function ($m) use ($user) {
+       $emailer =  Mail::send('emails.cv-sales.invoice', ['user' => $user], function ($m) use ($user) {
             $m->from('support@seamlesshiring.com', 'Your Application');
 
             $m->to('babatopeoni@gmail.com', 'Ayo')->subject('Your Reminder!');
@@ -478,8 +476,8 @@ class CvSalesController extends Controller
 
 
         $this->search_params['filter_query'] = @$request->filter_query;
-        // $response = Solr::search_resume($this->search_params);
-        $response = Solr::get_saved_cvs($this->search_params);
+        // $response = SolrPackage::search_resume($this->search_params);
+        $response = SolrPackage::get_saved_cvs($this->search_params);
 
 
         $cart = Utilities::getCartContent('saved-cvs');
@@ -515,8 +513,8 @@ class CvSalesController extends Controller
 
 
         $this->search_params['filter_query'] = @$request->filter_query;
-        // $response = Solr::search_resume($this->search_params);
-        $response = Solr::get_purchased_cvs($this->search_params);
+        // $response = SolrPackage::search_resume($this->search_params);
+        $response = SolrPackage::get_purchased_cvs($this->search_params);
 
 
         $cart = Cart::content();
@@ -554,7 +552,6 @@ class CvSalesController extends Controller
 
 
 
-
         if( @$request->age ){
 
             //2015-09-16T00:00:00Z
@@ -588,36 +585,16 @@ class CvSalesController extends Controller
             $this->search_params['filter_query'] = @$request->filter_query;
         }
 
-        // $response = Solr::search_resume($this->search_params);
-        $response = $result = Solr::get_all_my_cvs($this->search_params, @$solr_age, @$solr_exp_years);
+        // $response = SolrPackage::search_resume($this->search_params);
+        $response = $result = SolrPackage::get_all_my_cvs($this->search_params, @$solr_age, @$solr_exp_years);
         if ((isset($result['facet_counts']))) {
             $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status']);
             $end = (($start + $this->search_params['row']) > intval($application_statuses['ALL'])) ? $application_statuses['ALL'] : ($start + $this->search_params['row']);
         } else {
             $application_statuses['ALL'] = $result['facet_counts'] = $end = null;
         }
-        // $showing = "Showing ".($start+1)." - ".$end." of ".$result['response']['numFound']." Cvs [Page ".floor($request->start + 1)."]";
 
-
-
-        // $filter_text = '';
-        // if(isset($request->filter_query)){
-
-        //     $filter_text .= "<br/>Filtering by: ";
-        //     foreach ($request->filter_query as $fq) {
-
-        //         $filter_text .= ucwords(str_ireplace("_", " ", $fq)).', ';
-        //     }
-
-        //     $filter_text .= ".";
-
-        // }
-
-        // if( !empty($request->filter_query ) )
-        // {
-        //     $showing .= $filter_text . '<a id="clearAllFilters" href="javacript://" >Clear Filter</a>';
-        // }
-
+     
         $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $application_statuses['ALL'], 'type'=>'Cvs', 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();
 
         $cart = Cart::content();
@@ -653,6 +630,7 @@ class CvSalesController extends Controller
 
         }
         else{
+
             return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query,'showing'=>$showing, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 5, 85 ], 'exp_years' => [ 0, 60 ], 'myJobs' => Job::getMyJobs(), 'myFolders' => $myFolders, 'application_statuses' => $application_statuses, 'states' => $states, 'qualifications' => $qualifications, 'grades' => $grades ]);
         }
     }

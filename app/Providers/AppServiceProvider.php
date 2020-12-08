@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,9 +24,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+
+        URL::forceScheme('https');
+        
         if ($this->app->environment() !== 'production') {
-            $this->app->register(\Way\Generators\GeneratorsServiceProvider::class);
-            $this->app->register(\Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class);
+            //$this->app->register(\Way\Generators\GeneratorsServiceProvider::class);
+            //$this->app->register(\Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class);
         }
     }
 }

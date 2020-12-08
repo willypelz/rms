@@ -6,37 +6,50 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.2.*",
-        "gloudemans/shoppingcart": "~1.3",
-        "laravelcollective/html": "5.2.*",
+        "fideloper/proxy": "^4.0",
+        "laravel/framework": "^6.0",
+        "laravel/tinker": "^1.0",
+        "bumbummen99/shoppingcart": "2.9.*",
+        "laravelcollective/html": "^6.0",
         "doctrine/dbal": "^2.5",
         "guzzlehttp/guzzle": "^6.3",
         "ixudra/curl": "^6.1",
-        "alchemy/zippy": "^0.3.5",
-        "maatwebsite/excel": "~2.1.0",
-        "barryvdh/laravel-dompdf": "^0.7.0",
-        "chumper/zipper": "0.6.x",
-        "consoletvs/charts": "3.*",
+        "alchemy/zippy": "0.4.*",
+        "maatwebsite/excel": "3.1.*",
+        "barryvdh/laravel-dompdf": "^0.8.6",
+        "madnest/madzipper": "1.0.*",
+        "consoletvs/charts": "6.*",
         "jenssegers/agent": "^2.5",
+        "buzz/laravel-google-captcha": "2.*",
         "aws/aws-sdk-php": "~3.0",
         "barryvdh/laravel-snappy": "^0.4.0",
         "webpatser/laravel-uuid": "^2.0",
-        "zizaco/entrust": "5.2.x-dev",
+        "trebol/entrust": "0.6",
         "spatie/calendar-links": "^1.2",
         "h4cc/wkhtmltopdf-amd64": "0.12.x",
         "h4cc/wkhtmltoimage-amd64": "0.12.x",
         "sentry/sentry-laravel": "^1.0",
-        "wemersonjanuario/wkhtmltopdf-windows": "0.12.2.3"
+        "wemersonjanuario/wkhtmltopdf-windows": "0.12.2.3",
+        "laravel/helpers": "^1.2",
+        "jdavidbakr/mail-tracker": "^3.0.0",
+        "seamlesshr/solrpackage": "develop-dev",
+        "solarium/solarium": "^5.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~4.0",
-        "symfony/css-selector": "2.8.*|3.0.*",
-        "symfony/dom-crawler": "2.8.*|3.0.*",
-        "barryvdh/laravel-debugbar": "^2.4",
-        "xethron/migrations-generator": "^2.0"
+        "phpunit/phpunit": "^7.0",
+        "symfony/css-selector": "3.1.*",
+        "symfony/dom-crawler": "3.1.*",
+        "barryvdh/laravel-debugbar": "^3.2",
+        "filp/whoops": "~2.0"
     },
+     "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://git@bitbucket.org/insidify/solr-package.git"
+        }
+    ],
     "autoload": {
         "classmap": [
             "database"
@@ -62,13 +75,17 @@
         ],
         "post-install-cmd": [
             "php artisan clear-compiled",
-            "php artisan optimize"
+            "php artisan config:clear"
         ],
         "pre-update-cmd": [
             "php artisan clear-compiled"
         ],
         "post-update-cmd": [
-            "php artisan optimize"
+            "php artisan config:clear"
+        ],
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover"
         ]
     },
     "config": {

@@ -174,7 +174,7 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <label for="job-loc">Position
+                                                <label for="job-loc">Job Level
                                                     <span class="text-danger">*</span>
                                                 </label>
                                                 <input type="text" name="position" class="form-control position"
@@ -222,6 +222,7 @@
                                                         <option value="{{ $s->id }}" {{ ( in_array($s->id, $job_specilizations) ) ? 'selected="selected"' : '' }}>{{ $s->name }}</option>
                                                     @endforeach
                                                 </select>
+                                                <span><a href="{{ route('specialization') }}">Add specialization to the list</a></span>
                                             </div>
                                         </div>
                                     </div>
@@ -305,11 +306,11 @@
                                         <hr>
                                     </div>
                                     <div class="col-xs-7">
-                                        <a style="display: none;" href="/jobs/create-step2" type="submit"
+                                        <a style="" href="{{ route('job-list') }}" type="submit"
                                            id="previous_step"
                                            class="btn job-posting-text-dark">
-                                            <i class="fa fa-arrow-left"></i>
-                                            Previous step
+                                            <i class="fa fa-backward"></i>
+                                            Cancel
                                         </a>
                                     </div>
                                     <div class="col-xs-5">

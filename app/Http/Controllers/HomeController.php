@@ -103,7 +103,7 @@ class HomeController extends Controller
 
         $redirect_to = $request->redirect_to;
         $jobs = Job::whereStatus('ACTIVE')->where('is_for', '!=', 'internal')->where('expiry_date', '>=', date('Y-m-d'))->take(env('JOB_HOMEPAGE_LIST', 3))->orderBy('id', 'desc')->get();
-        
+
 
         if ($request->isMethod('post')) {
 
@@ -149,39 +149,23 @@ class HomeController extends Controller
         $comp_id = get_current_company()->id;
 
 
-        $job_access = Job::with('users')->where('company_id',  $comp_id)->get();
-        $job_access->filter(function ($item) use ($user){
-            if($item->users->where('user_id', $user->id)->count() > 0)
-                return $item;
-        });
+        $job_access = Job::with('users')->where('company_id',  $comp_id)->where('status','!=','DELETED');
 
-        $job_access->pluck('id')->toArray();
+        $jobs_count = $job_access->count();
 
-        
-        $jobs_count = Job::where('company_id', $comp_id);
+        if(!$user->is_super_admin){
 
-        if($user->is_super_admin){
-        } else {
-            $jobs_count = $jobs_count->whereIn('id', $job_access);
+            $jobs_count = $job_access->whereHas('users', function ($q) use ($user) {
+                        $q->where('user_id', $user->id);
+                    })->count();
+
         }
-        $jobs_count = $jobs_count->where('status','!=','DELETED')->count();
 
-        $response = Curl::to('https://api.insidify.com/articles/get-posts')
-                                ->withData(array('limit'=>6))
-                                ->post();
+
+        $response = [];
 
         $posts = @json_decode($response)->data->posts;
-
         $talent_pool_count = $saved_cvs_count = $purchased_cvs_count = '--';
-
-        // $talent_pool_count = Solr::get_all_my_cvs($this->search_params)['response']['numFound'];
-        // $saved_cvs_count = Solr::get_saved_cvs($this->search_params)['response']['numFound'];
-        // $purchased_cvs_count = Solr::get_purchased_cvs($this->search_params)['response']['numFound'];
-
-        // Mail::queue('emails.cv-sales.invoice', [], function($message){
-        //     $message->from(env('COMPANY_EMAIL'));
-        //     $message->to('babatopeoni@gmail.com', 'SH test email');
-        // });
 
         return view('talent-pool.dashboard', compact('posts', 'jobs_count','talent_pool_count','saved_cvs_count','purchased_cvs_count'));
     }
@@ -190,7 +174,7 @@ class HomeController extends Controller
     {
         if( $request->isMethod('post') )
         {
-            $mail = Mail::queue('emails.guest.talent-sourcing', $request->all(), function($message){
+            $mail = Mail::send('emails.guest.talent-sourcing', $request->all(), function($message){
                 $message->from('support@seamlesshiring.com');
                 $message->to('support@seamlesshiring.com', 'Seamless Hiring Talent Sourcing Request');
             });
@@ -210,7 +194,7 @@ class HomeController extends Controller
 
     public function requestACall(Request $request)
     {
-        // Mail::queue('emails.welcome', $data, function($message)
+        // Mail::send('emails.welcome', $data, function($message)
         // {
         //     // $message->from('us@example.com', 'Laravel');
 
@@ -219,7 +203,7 @@ class HomeController extends Controller
         //     $message->attach($pathToFile);
         // });
 
-        Mail::queue('emails.guest.request-call', $request->all(), function($message){
+        Mail::send('emails.guest.request-call', $request->all(), function($message){
             $message->from('support@seamlesshiring.com');
             $message->to('support@seamlesshiring.com', 'Seamless Hiring Call Request');
         });

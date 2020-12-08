@@ -39,8 +39,9 @@
                                                 <script src="https://code.highcharts.com/modules/data.js"></script>
                                                 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-                                                {!! $applications_per_day_chart->render() !!}
-                                                {{-- {!! $applicantsFunnelChart->render() !!}  --}}
+
+                                                <div id="container"  style="min-width: 410px; max-width: 600px; height: 400px; margin: 0 auto"></div>
+
 
                                                 <br><br>
 
@@ -54,6 +55,44 @@
                                                 <div id="fun"  style="min-width: 410px; max-width: 600px; height: 400px; margin: 0 auto"></div>
 
                                                 <script type="text/javascript">
+
+                                                    var application_key = <?php echo json_encode(array_keys($applications)); ?>;
+                                                    var application_value = <?php echo json_encode(array_values($applications)); ?>;
+
+
+                                                    Highcharts.chart('container', {
+                                                        chart: {
+                                                            type: 'line'
+                                                        },
+                                                        title: {
+                                                            text: 'APPLICATIONS PER DAY'
+                                                        },
+                                                        subtitle: {
+                                                            text: 'RMS'
+                                                        },
+                                                        xAxis: {
+                                                            categories: application_key
+                                                        },
+                                                        yAxis: {
+                                                            title: {
+                                                                text: 'Applicants'
+                                                            }
+                                                        },
+                                                        plotOptions: {
+                                                            line: {
+                                                                dataLabels: {
+                                                                    enabled: true
+                                                                },
+                                                                enableMouseTracking: false
+                                                            }
+                                                        },
+                                                        series: [{
+                                                            name: 'Date',
+                                                            data: application_value
+                                                        }]
+                                                    });
+
+
                                                     var applicant_funnel = [<?php echo $applicant_funnel; ?>];
                                                     $(function () {
 
@@ -231,6 +270,10 @@
 
         <div class="separator separator-small"><br></div>
 
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
+
+
         <script>
             $(document).ready(function () {
 
@@ -287,4 +330,5 @@
              });*/
 
         </script>
+
 @endsection

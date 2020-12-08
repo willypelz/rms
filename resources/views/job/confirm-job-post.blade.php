@@ -66,7 +66,7 @@
                                     </div>
                                     <div class="col-sm-4">
                                         <div>JOB TYPE <span class="text-danger">*</span></div>
-                                        <h4 class="no-margin-bottom text-dark">{{ $job->job_type }}</h4>
+                                        <h4 class="no-margin-bottom text-dark">{{ strtoupper($job->job_type) }}</h4>
                                         <br>
                                     </div>
                                     <div class="col-sm-4"></div>
@@ -91,10 +91,7 @@
                                     <div class="col-sm-12">
                                         <div>JOB SPECIALIZATION <span class="text-danger">*</span></div>
                                         <h4 class="no-margin-bottom text-dark">
-                                            @foreach($job_specializations as $key => $specialization)
-                                                @if($key < count($job_specializations)-1){{ $specialization.', ' }}
-                                                @else {{ $specialization.'.' }} @endif
-                                            @endforeach
+                                            {{implode(', ', $job_specializations->toArray())}}
                                         </h4>
                                         <br>
                                     </div>

@@ -36,7 +36,7 @@
                         <!-- <hr> -->
                         <div> 
                         
-                        @if(!empty($job))    
+                        @if(!is_null($job))    
                         <div class="btn-group btn-group-justified" role="group" aria-label="...">
                           <div class="btn-group" role="group">
                             <a href="create-job.php" type="button" class="btn btn-line text-capitalize"><i class="fa fa-file-text-o"></i>

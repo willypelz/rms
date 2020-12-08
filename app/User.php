@@ -4,12 +4,13 @@ namespace App;
 
 use App\Models\WorkflowStep;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Zizaco\Entrust\Traits\EntrustUserTrait;
+use Trebol\Entrust\Traits\EntrustUserTrait;
+use Illuminate\Notifications\Notifiable;
 
 
 class User extends Authenticatable
 {
-    use EntrustUserTrait;
+    use EntrustUserTrait, Notifiable;
     /**
      * The attributes that are mass assignable.
      *

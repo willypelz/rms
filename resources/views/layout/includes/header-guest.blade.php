@@ -4,21 +4,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
+    <link rel="shortcut icon" href="{{ secure_asset('img/favicon.png') }}">
     <link rel="apple-touch-icon" href="apple-touch-icon-precomposed.png">
 
     <title> @if(isset($pageTitle)){{ $pageTitle }}&middot;@endif SeamlessHiring</title>
 
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/seamless.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/bootstrap-social.css') }}" rel="stylesheet">
-    {{--<link href="{{ asset('css/owl-carousel.css') }}" rel="stylesheet">--}}
+    <link href="{{ secure_asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('css/seamless.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('css/font-awesome.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('css/animate.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('css/bootstrap-social.css') }}" rel="stylesheet">
+    {{--<link href="{{ secure_asset('css/owl-carousel.css') }}" rel="stylesheet">--}}
     <link href="https://cdn.insidify.com/dist/css/owl.carousel.min.css" rel="stylesheet">
     <link href="https://cdn.insidify.com/dist/css/owl.theme.default.min.css" rel="stylesheet">
-    
-    <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
+
+    <!-- Cookie Consent stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
+    <script src="{{ secure_asset('js/ckeditor/ckeditor.js') }}"></script>
 
     <!--<script src="//cdn.ckeditor.com/4.5.7/basic/ckeditor.js"></script>-->
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->

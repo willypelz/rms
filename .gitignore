@@ -2,7 +2,7 @@
 /storage
 /node_modules
 /public/storage
-/bootstrap
+/bootstrap/cache
 Homestead.yaml
 Homestead.json
 LocalValetDriver.php
@@ -11,3 +11,5 @@ LocalValetDriver.php
 /.vscode
 /public_html/uploads
 /config/snappy.php
+/public_html/homepage
+/public_html/logs

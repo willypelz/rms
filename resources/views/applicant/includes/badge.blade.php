@@ -29,9 +29,18 @@ $job_id = $appl->job->id;
                   <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
                 </span> {{ $appl->cv->email }}
                 <br/>
-                <span class="fa-stack">
+               
+
+                 @if($appl->cv->date_of_birth == '1970-01-01' || is_null($appl->cv->date_of_birth))
+                              
+                           @else 
+
+                            <span class="fa-stack">
                   <i class="fa fa-arrow-up fa-stack-1x fa-inverse"></i>
-                </span> {{ str_replace('ago', 'old', human_time($appl->cv->date_of_birth, 1)) }}
+                </span>   
+
+                           {{ str_replace('ago', 'old', human_time($appl->cv->date_of_birth, 1)) }} 
+                      @endif
                 <span>{{ $appl->cv->location }}</span>
               </p>
             </div>
@@ -122,7 +131,7 @@ $job_id = $appl->job->id;
       <div class="panel-body row">
         <div class="col-xs-3">
           <a class="" href="#">
-            <img class="media-object img-responsive" src="http://dummyimage.com/300x300/ccc/fff.jpg&text=EO" alt="">
+            <img class="media-object img-responsive" src="https://dummyimage.com/300x300/ccc/fff.jpg&text=EO" alt="">
           </a>
         </div>
         <div class="col-xs-8">
@@ -143,7 +152,7 @@ $job_id = $appl->job->id;
       <div class="panel-body row">
         <div class="col-xs-3">
           <a class="" href="#">
-            <img class="media-object img-responsive" src="http://dummyimage.com/300x300/ccc/fff.jpg&text=EO" alt="">
+            <img class="media-object img-responsive" src="https://dummyimage.com/300x300/ccc/fff.jpg&text=EO" alt="">
           </a>
         </div>
         <div class="col-xs-8">

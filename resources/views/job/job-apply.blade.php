@@ -18,6 +18,9 @@
             background: #eee;
             border: 2px solid #ddd; 
         }
+        .mt-20 {
+            margin-top: 20px;
+        }
     </style>
 
     <section class="no-pad">
@@ -52,7 +55,9 @@
                                     </div> -->
                                 </div>
                                 <div class="clearfix"></div>
-                                
+
+
+
                             
                             
                                 </div>
@@ -78,12 +83,14 @@
                                     <div class="row">
                                         
                                         <div class="col-sm-8">
-                                            @if( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 )
-                                                <p class="text-center">This application is closed.</p>
+                                            @if( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 && !$fromShareURL )
+                                                <p class="text-center">This application is closedB.</p>
                                             @elseif ( in_array(  $job->status, ['SUSPENDED','DELETED'] ) )
-                                                <p class="text-center">This application is closed.</p>
+                                                <p class="text-center">This application is closedA.</p>
                                             @else
                                             <p class="text-center">Please fill in the information below carefully.</p>
+                                        
+                                @include('layout.alerts')
 
 
                                 {!! Form::open(array('class'=>'job-details', 'files'=>true)) !!}
@@ -281,7 +288,7 @@
                                             @if( $fields->cover_note->is_visible )
                                             <div class="col-xs-12">
                                                 <label for="">Cover Letter @if( $fields->cover_note->is_required )<span class="text-danger">*</span>@endif</label>
-                                                <textarea name="cover_note" id="" cols="30" rows="4" class="form-control" placeholder="" @if( $fields->cover_note->is_required ) required @endif>{{ @$last_cv->cover_note }}</textarea>
+                                                <textarea name="cover_note" id="" cols="30" rows="4" class="form-control" placeholder="" @if( $fields->cover_note->is_required ) required @endif>{{ @$last_cv->cover_note ??  old('cover_note') }}</textarea>
                                             </div>
                                             @endif
                                         </div>
@@ -297,6 +304,16 @@
 
                                                 {{ Form::file('cv_file', ( $fields->cv_file->is_required ) ? ["required"] : null ) }}
                                             </div>
+                                            <div class="col-xs-12 mt-20">
+
+                                                <label for="">Attachment 1 (Optional)</label>
+
+                                                {{ Form::file('optional_attachment_1') }}
+                                            </div>
+                                            <div class="col-xs-12 mt-20">
+                                                <label for="">Attachment 2 (Optional)</label>
+                                                {{ Form::file('optional_attachment_2') }}
+                                            </div>
                                             @endif
                                         </div>
                                         {{ Form::hidden('applicant_type', 'external') }}
@@ -307,7 +324,7 @@
                                     <div class="col-xs-12"><hr></div>
                                         
                                         @if( count($custom_fields) > 0 )
-                                            {{-- */$index=0;/* --}}
+                                            @php $index=0; @endphp
                                             @foreach( $custom_fields as $custom_field )
                                                 
                                                 <div class="col-sm-6 custom-field">
@@ -370,11 +387,14 @@
                                                 @if( $index % 2  )
                                                     <div class="clearfix"></div>
                                                 @endif
-                                                {{-- */$index++;/* --}}
+                                                @php $index++;  @endphp
                                             @endforeach
                                         @endif
 
                                     </div>
+
+                                 {!! Captcha::display($google_captcha_attributes) !!}
+
 
 
                                     <div class="row">
@@ -384,6 +404,7 @@
                                         </div>
                                         <div class="col-sm-4">
                                             <!--a href="job.php" target="_blank" type="submit" class="btn pull-right">Preview Job</a-->
+
                                         </div>
 
                                         <div class="col-sm-4"> 
@@ -396,8 +417,7 @@
                                         <div class="separator separator-small"></div>
                                     </div>
 
-
-                                    
+                             
 
                                             
                                     <!-- $job->form_fields->toArray() -->

@@ -72,6 +72,22 @@
                                     <label for="requireApproval">Requires Approval</label>
                                 </div>
 
+                                <div class="form-group" id="approvalUsersBlock">
+                                    <label for="approvalUsers">Approval Users</label>
+                                    <select class="select2"
+                                            name="approval_users[]"
+                                            id="approvalUsers"
+                                            multiple
+                                            style="width: 100%;">
+                                        @foreach($currentCompanyUsers as $currentCompanyUser)
+                                            <option @if(in_array($currentCompanyUser->id, $step_approvals->toArray())) selected @endif value="{{ $currentCompanyUser->id }}">
+                                                {{ $currentCompanyUser->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+
                                 <div class="form-group">
                                     <input type="hidden"
                                            name="visible_to_applicant"
@@ -105,6 +121,22 @@
                                         <textarea name="message_template" id="messageTemplate" placeholder="... ... .."
                                             class="form-control">{{ old('message_template', $workflowStep->message_template) }}</textarea>
                                     </div>
+
+                                    <div class="msg-template-placeholders" style="margin: 10px auto;">
+                                            <button type="button" class="btn btn-sm btn-secondary templateBtn" value="{applicant_name}">
+                                                Applicant Name
+                                            </button>
+                                            |
+                                            <button type="button" class="btn btn-sm btn-secondary templateBtn" value="{company_name}">
+                                                Company Name
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-secondary templateBtn" value="{job_detail}">
+                                                Job Detail
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-secondary templateBtn" value="{job_title}">
+                                                Job Title
+                                            </button>
+                                        </div>
                                 </div>
                                 <div class="form-group">
                                     <a href="#" class="btn btn-warning"

@@ -180,7 +180,7 @@
                 <ul class="list-unstyled footer-logo">
                     <li>
                         {{--<img src="{{env('SEAMLESS_HIRING_LOGO_WHITE')}}" alt="" width="185px"><br>--}}
-                        <small class="text-white">&copy; {{date('Y')}}. All Rights Reserved</small>
+                        <small class="text-white">&copy; {{date('Y')}}. All Rights Reserved. Read our <a href="//seamlesshr.com/privacy">privacy policy</a></small>
                     </li>
                 </ul>
             </div>
@@ -578,13 +578,13 @@
 @include('modals.template')
 
 
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
-<!-- <script src="{{ asset('js/script.js') }}"></script> -->
-{{--<script src="{{ asset('js/owl.carousel.js') }}"></script>--}}
+<script src="{{ secure_asset('js/bootstrap.min.js') }}"></script>
+<!-- <script src="{{ secure_asset('js/script.js') }}"></script> -->
+{{--<script src="{{ secure_asset('js/owl.carousel.js') }}"></script>--}}
 <script src="https://cdn.insidify.com/dist/js/owl.carousel.min.js"></script>
-<script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
-<script src="{{ asset('js/select2.min.js') }}"></script>
-<script src="{{ asset('js/jquery.growl.js') }}"></script>
+<script src="{{ secure_asset('js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ secure_asset('js/select2.min.js') }}"></script>
+<script src="{{ secure_asset('js/jquery.growl.js') }}"></script>
 
 <script type="text/javascript">
     $(window).scroll(function () {

@@ -106,8 +106,8 @@ class WorkflowController extends Controller
         ]);
 
         if ($workflow->update($request->all())) {
-            return redirect()
-                ->back()
+
+            return redirect()->route('workflow')
                 ->with('success', 'Workflow updated successfully');
         }
 

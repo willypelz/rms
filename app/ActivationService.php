@@ -5,6 +5,7 @@ namespace App;
 
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Mail;
 
 class ActivationService
 {
@@ -36,10 +37,10 @@ class ActivationService
         // $this->mailer->raw($message, function (Message $m) use ($user) {
         //     $m->to($user->email)->subject('Activation mail');
         // });
-        $this->mailer->send('emails.new.activate_account', ['user' => $user, 'link' => $link], function (Message $m) use ($user) {
+        Mail::send('emails.new.activate_account', ['user' => $user, 'link' => $link], function (Message $m) use ($user) {
             $m->from('support@seamlesshiring.com')->to($user->email)->subject('Activate your Seamlesshiring account');
         });
-        // Mail::queue('emails.cv-sales.invoice', [], function($message){
+        // Mail::send('emails.cv-sales.invoice', [], function($message){
         //     $message->from(env('COMPANY_EMAIL'));
         //     $message->to('babatopeoni@gmail.com', 'SH test email');
         // }); 
@@ -63,7 +64,7 @@ class ActivationService
 
         $this->activationRepo->deleteActivation($token);
 
-        $this->mailer->send('emails.new.onboarding.successfully_activated', ['user' => $user], function (Message $m) use ($user) {
+        Mail::send('emails.new.onboarding.successfully_activated', ['user' => $user], function (Message $m) use ($user) {
             $m->from('support@seamlesshiring.com')->to($user->email)->subject('Your Account has been Successfully Activated!');
         });
         

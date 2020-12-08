@@ -27,18 +27,25 @@
 use App\Libraries\Solr;
 use Illuminate\Support\Facades\Route;
 
-URL::forceSchema('https');
+// URL::forceSchema('https');
 
 Route::group(['middleware' => ['web']], function () {
-Route::get('/sso/auto/login/verify/{email}/{key}', 'Auth\AuthController@singleSignOnVerify');
-  Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\AuthController@loginUser');
+Route::get('/sso/auto/login/verify/{email}/{key}', 'Auth\LoginController@singleSignOnVerify');
+Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
+
 });
 
 
+
+Route::get('/ping', 'SolariumController@ping');
+
+
 Route::group(['middleware' => ['web']], function () {
 
-    Route::controller('schedule', 'ScheduleController');
+    Route::resource('schedule', 'ScheduleController');
 });
+
+
 
 Route::get('hospital-project', function () {
     $agent = new \Jenssegers\Agent\Agent();
@@ -67,15 +74,18 @@ Route::group(['middleware' => 'web'], function () {
         'prefix' => '/admin',
         'middleware' => 'admin'
     ], function () {
-        Route::get('auth/logout', 'AuthController@logout');
+        Route::get('auth/logout', 'LoginController@logout');
     });
     Route::any('admin-accept-invite/{id}/{company_id}',['uses' => 'AdminsController@adminAcceptInvite', 'as' => 'admin-accept-invite']);
     /** -- End: Administrator Panel Route -- */
 
     Route::auth();
-    Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
+    Route::get('user/activation/{token}', 'Auth\LoginController@activateUser')->name('user.activate');
+    
 
-    Route::post('user/auth/verify', 'Auth\AuthController@verifyUser')->name('verify-user-details');
+    Route::get('switcher', 'Auth\LoginController@switchUser')->name('switcher');
+
+    Route::post('user/auth/verify', 'Auth\LoginController@verifyUser')->name('verify-user-details');
     Route::any('', 'HomeController@home')->name('candidate-login');
     Route::any('register', 'HomeController@register')->name('candidate-register');
     Route::any('forgot', 'CandidateController@forgot')->name('candidate-forgot');
@@ -99,6 +109,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::match(['get', 'post'], '/login', 'HomeController@home');
 
         Route::match(['get', 'post'], '/logout', 'CandidateController@logout')->name('candidate-logout');
+        Route::match(['get', 'post'], '/profile', 'CandidateController@profile')->name('candidate-profile');
 
         // TODO
         // Route::match(['get', 'post'], '/register', 'CandidateController@register')->name('candidate-register');
@@ -121,7 +132,7 @@ Route::group(['middleware' => 'web'], function () {
     });
 
 
-    Route::get('/test', function () {
+    // Route::get('/test', function () {
 
         /* $jobs = \App\Models\Job::where('company_id',50)->where('status','ACTIVE')->orderBy('title','ASC')->get();
 
@@ -147,7 +158,7 @@ Route::group(['middleware' => 'web'], function () {
         // })->where('status','!=','PENDING')->count();
 
         // dump( $applications )
-    });
+    // });
 
     Route::get('invoice/{invoice_id}', ['as' => 'show-invoice', 'uses' => 'PaymentController@showInvoice']);
 
@@ -173,7 +184,7 @@ Route::group(['middleware' => 'web'], function () {
         $request = request();
         $data = $request->all();
 
-        $mail = Mail::queue('emails.new.contact', $data, function ($m) use ($data) {
+        $mail = Mail::send('emails.new.contact', $data, function ($m) use ($data) {
             $m->from($data->email, 'New Job Paid');
             // $m->to('babatopeoni@gnmail.com')->subject('Contact');
             $m->to('support@seamlesshiring.com')->subject('Contact');
@@ -222,7 +233,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('simple-pay', function () {
 
         $user  = 'AYolana';
-        $email = Mail::queue('emails.cv-sales.invoice', ['user' => $user], function ($message) {
+        $email = Mail::send('emails.cv-sales.invoice', ['user' => $user], function ($message) {
             $message->from('us@example.com', 'Laravel');
 
             $message->to('lanaayodele@gmail.com');
@@ -240,18 +251,19 @@ Route::group(['middleware' => 'web'], function () {
         //return view('payment.simplepay');
     });
 
-    Route::get('log-in', 'Auth\AuthController@showLoginForm');
+    Route::get('log-in', 'Auth\LoginController@showLoginForm');
+    Route::get('/logout', 'Auth\LoginController@logout');
 
-    Route::post('log-in', 'Auth\AuthController@login');
+    Route::post('log-in', 'Auth\LoginController@login');
 
-    Route::get('/auto-login/{code}', 'Auth\AuthController@autoLogin');
+    Route::get('/auto-login/{code}', 'Auth\LoginController@autoLogin');
 
 
     // Route::get('sign-up', 'Auth\AuthController@showRegistrationForm');
 
     // Route::post('sign-up', 'Auth\AuthController@register');
 
-    Route::match(['get', 'post'], 'auth/ajax_login', ['uses' => 'Auth\AuthController@AjaxLogin', 'as' => 'ajax_login']);
+    Route::match(['get', 'post'], 'auth/ajax_login', ['uses' => 'Auth\LoginController@AjaxLogin', 'as' => 'ajax_login']);
     Route::match(['get', 'post'], 'sign-up', ['uses' => 'Auth\AuthController@Registration', 'as' => 'registration']);
     Route::match(['get', 'post'], 'add-company', ['uses' => 'JobsController@AddCompany', 'as' => 'add-company']);
     // Route::match(['get', 'post'], 'edit-company', ['uses' => 'JobsController@editCompany', 'as' => 'edit-company']);
@@ -302,6 +314,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
     Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}', ['uses' => 'JobsController@JobView', 'as' => 'job-view']);
     Route::match(['get', 'post'], 'job/preview/{jobID}', ['uses' => 'JobsController@Preview', 'as' => 'job-preview']);
+    Route::match(['get', 'post'], 'job/share/{jobID}/{jobSlug?}', ['uses' => 'JobsController@jobShare', 'as' => 'job-share']);
 
     Route::match(['get', 'post'], 'job/activities/{jobID}',
         ['uses' => 'JobsController@JobActivities', 'as' => 'job-board']);
@@ -314,6 +327,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'job/settings/team/{job_id}', ['uses' => 'JobsController@jobTemSettings', 'as' => 'job-team-setting']);
     Route::match(['get', 'post'], 'job/teams/add', ['uses' => 'JobsController@JobTeamAdd', 'as' => 'job-team-add']);
     Route::match(['get','post'],'job/teams/remove', ['uses' => 'JobsController@removeJobTeamMember', 'as' => 'remove-job-team-member']);
+    Route::match(['get','post'],'job/teams/resend/invite/{id}', ['uses' => 'JobsController@resendInvite', 'as' => 'resend-job-team-invite']);
+    Route::match(['get','post'],'job/teams/cancel/invite/{id}', ['uses' => 'JobsController@cancelInvite', 'as' => 'cancel-job-team-invite']);
+
+
     Route::get('job/teams/decline', ['uses' => 'JobsController@JobTeamDecline', 'as' => 'job-team-decline']);
 
     Route::get('/get-all-roles', 'JobsController@getAllRoles')->name('get-all-roles');
@@ -350,8 +367,14 @@ Route::group(['middleware' => 'web'], function () {
     //     return view('auth.login');
     // });
 
+    Route::get('/one_applicant', 'JobApplication@oneApplicantData');
+
+    Route::match(['get', 'post'], 'one_applicant',
+        ['uses' => 'JobApplicationsController@oneApplicantData']);
+
     Route::match(['get', 'post'], 'job/candidates/{jobID}',
         ['uses' => 'JobApplicationsController@viewApplicants', 'as' => 'job-candidates']);
+        
     Route::match(['get', 'post'], 'job/candidates/{jobID}/{start}',
         ['uses' => 'JobApplicationsController@viewApplicants', 'as' => 'job-candidates-infinite']);
     Route::match(['get', 'post'], 'job-list-data',
@@ -359,6 +382,9 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'get-job-data',
         'JobApplicationsController@getJobsData')->name('get-job-data');
+
+    Route::match(['get', 'post'], 'get-one-job-data',
+        'JobApplicationsController@getOneJobsData')->name('get-one-job-data');
 
     Route::match(['get', 'post'], 'job-view-data',
         ['uses' => 'JobApplicationsController@JobViewData', 'as' => 'job-view-data']);
@@ -370,6 +396,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'download-interview-notes',
         ['uses' => 'JobApplicationsController@downloadInterviewNotes', 'as' => 'download-interview-notes']);
 
+    Route::match(['get', 'post'], 'download-interview-notes-csv',
+        ['uses' => 'JobApplicationsController@downloadInterviewNotesCSV', 'as' => 'download-interview-notes-csv']);
+
     Route::post('job/applicant/mass-action', ['uses' => 'JobApplicationsController@massAction', 'as' => 'mass-action']);
     Route::post('job/applicant/write-review',
         ['uses' => 'JobApplicationsController@writeReview', 'as' => 'write-review']);
@@ -378,6 +407,12 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/pricing', ['as' => 'pricing', 'uses' => 'HomeController@pricing']);
 
     Route::post('request-a-call', ['as' => 'request-a-call', 'uses' => 'HomeController@requestACall']);
+
+    //Specialization
+    Route::get('list-job-specialization', 'SpecializationController@index')->name('specialization');;
+    Route::post('store-job-specialization', 'SpecializationController@store')->name('store-specialization');
+    Route::get('update-job-specialization/{id}', 'SpecializationController@update')->name('update-specialization');
+    Route::delete('delete-job-specialization/{id}', 'SpecializationController@delete')->name('delete-specialization');
 
 
     Route::get('about', function () {
@@ -531,7 +566,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('/test-mail', function () {
 
-        dd(Mail::queue('emails.sample', ['name' => 'Deji Lana'], function ($m) {
+        dd(Mail::send('emails.sample', ['name' => 'Deji Lana'], function ($m) {
             $m->from('alerts@insidify.com', 'Ndidi, Insidify.com');
 
             $m->to('deji@insidify.com', 'Deji Lana')->subject('Your Reminder!');
@@ -766,15 +801,17 @@ Route::group(['middleware' => 'web'], function () {
     });
     Route::post('/api/v1/messages/send','CandidateController@sendMessage');
     Route::any('candidate-invite/{id}/{token}',['uses' => 'CandidateController@candidateAccept', 'as' => 'candidate-invite']);
+
+
+    
 });
 
-  /* Easily update Solr via URL*/
-  Route::get('/solr/update/{redirect?}', function ($redirect = '') {
-      Solr::update_core(null, 'full-import');
+/* Easily update Solr via URL*/
+Route::get('/solr/update/{redirect?}', function ($redirect = '') {
+    SolrPackage::update_core(null, 'full-import');
 
-      if ($redirect == 'false') {
-          return '';
-      }
-      return redirect()->back();
-  });
-
+    if ($redirect == 'false') {
+        return '';
+    }
+    return redirect()->back();
+});

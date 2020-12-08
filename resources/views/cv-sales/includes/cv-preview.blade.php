@@ -45,9 +45,9 @@
                         <div class="col-sm-12 cv-name text-center">
                             <h2>
                             @if(@$is_applicant || $page == 'pool')
-                            {{ $cv['first_name'].' '.@$cv['last_name'] }}
+                            {{ @$cv['first_name'].' '.@$cv['last_name'] }}
                             @else
-                            {{ $cv['first_name'].' '.substr(@$cv['last_name'],0,1) }}
+                            {{ @$cv['first_name'].' '.substr(@$cv['last_name'],0,1) }}
                             @endif
                             </h2>
                             <p class="text-muted">{{ @$cv['last_position'] }} at <strong>{{ @$cv['last_company_worked'] }}  </strong>
@@ -73,8 +73,19 @@
                                     <strong>Phone:</strong>&nbsp; {{ @$cv['phone'] }}</li>
                                     @endif
                                     <li>
-                                        <strong>Age:</strong>&nbsp; {{ str_replace('ago', 'old', human_time(@$cv['dob'], 1)) }}
-                                        <span class="text-muted">({{ date('M d, Y', strtotime(@$cv['dob'])) }})</span>
+                                        <strong>Age:</strong>&nbsp; 
+                                        @if(isset($appl->cv))
+                                            @if($appl->cv->date_of_birth == '1970-01-01' || is_null($appl->cv->date_of_birth))
+                                                -
+                                            @else
+                                                {{ str_replace('ago', 'old', human_time(@$cv['dob'], 1)) }}
+
+                                                <span class="text-muted">({{ date('M d, Y', strtotime(@$cv['dob'])) }})</span>
+                                            @endif
+                                        @else
+                                            {{ str_replace('ago', 'old', human_time(@$cv['dob'], 1)) }}
+                                            <span class="text-muted">({{ date('M d, Y', strtotime(@$cv['dob'])) }})</span>
+                                        @endif
                                     </li>
                                     <li><strong>Marital Status:</strong>&nbsp; {{ @$cv['marital_status'] }}.</li>
                                     <li><strong>State of Origin:</strong>&nbsp; {{ @$cv['state_of_origin'] }}.</li>

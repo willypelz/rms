@@ -59,7 +59,7 @@ class WorkflowStep extends Model
             'approval_workflow_step',
             'workflow_step_id',
             'user_id'
-        );
+        )->withTimestamps();
     }
 
     public function users()

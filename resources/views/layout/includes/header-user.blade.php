@@ -3,24 +3,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
+    <link rel="shortcut icon" href="{{ secure_asset('img/favicon.png') }}">
     <link rel="apple-touch-icon" href="apple-touch-icon-precomposed.png">
 
     <title> @if(isset($pageTitle)){{ $pageTitle }}&middot;@endif SeamlessHiring</title>
 
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/bootstrap-social.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('css/font-awesome.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('css/animate.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('css/bootstrap-social.css') }}" rel="stylesheet">
 
     <link href="https://cdn.insidify.com/dist/css/owl.carousel.min.css" rel="stylesheet">
     <link href="https://cdn.insidify.com/dist/css/owl.theme.default.min.css" rel="stylesheet">
 
-    <link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/select2.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('css/select2.css') }}" rel="stylesheet">
 
     <script src="//cdn.ckeditor.com/4.5.7/basic/ckeditor.js"></script>
-
+    
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>

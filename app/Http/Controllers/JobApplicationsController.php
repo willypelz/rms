@@ -2,44 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use Response;
-use App\Models\JobApplication;
+use App;
+use App\Exports\ApplicantsExport;
+use App\Exports\InterviewNoteExport;
+use App\Models\AtsProduct;
+use App\Models\AtsRequest;
+use App\Models\AtsService;
+use App\Models\Cv;
+use App\Models\Interview;
+use App\Models\InterviewNoteOptions;
+use App\Models\InterviewNoteTemplates;
+use App\Models\InterviewNoteValues;
+use App\Models\InterviewNotes;
 use App\Models\Job;
-use App\Models\Transaction;
+use App\Models\JobActivity;
+use App\Models\JobApplication;
+use App\Models\Message as CandidateMessage;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\AtsRequest;
-use App\Libraries\Solr;
-use App\Models\AtsService;
-use App\Models\AtsProduct;
 use App\Models\TestRequest;
-use App\Models\Interview;
-use App\Models\InterviewNotes;
-use App\Models\JobActivity;
-use App\Models\Cv;
-use Carbon\Carbon;
-use Auth;
-use Excel;
-use App;
-use PDF;
-use Curl;
-use Illuminate\Mail\Mailer;
-use Illuminate\Mail\Message;
-use Alchemy\Zippy\Zippy;
-use Alchemy\Zippy\Adapter\ZipExtensionAdapter;
-use Validator;
-use File;
-use App\Models\InterviewNoteOptions;
-use App\Models\InterviewNoteValues;
-use App\Models\InterviewNoteTemplates;
-use App\Models\Message as CandidateMessage;
+use App\Models\Transaction;
 use App\Models\WorkflowStep;
 use App\User;
+use Auth;
+use Carbon\Carbon;
+use Curl;
+use File;
+use Illuminate\Http\Request;
+use Illuminate\Mail\Mailer;
+use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
+use Madnest\Madzipper\Facades\Madzipper;
+use PDF;
+use Response;
+use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use Spatie\CalendarLinks\Link;
-use Mail;
+use Validator;
+
 
 class JobApplicationsController extends Controller
 {
@@ -157,7 +157,6 @@ class JobApplicationsController extends Controller
 
         $requests = TestRequest::where('job_application_id', $appl_id)->with('product.provider')->get();
 
-        // dd($appl->toArray());
 
         return view('applicant.assess', compact('appl', 'nav_type', 'requests'));
     }
@@ -169,9 +168,8 @@ class JobApplicationsController extends Controller
 
         check_if_job_owner($appl->job->id);
 
-        // dd($appl);
         $nav_type = 'activities';
-        return view('applicant.activities', compact('appl', 'nav_type', 'result', 'application_statuses'));
+        return view('applicant.activities', compact('appl', 'nav_type'));
     }
 
     public function medicals($appl_id)
@@ -189,17 +187,7 @@ class JobApplicationsController extends Controller
         return view('applicant.medicals', compact('appl', 'nav_type', 'requests'));
     }
 
-    public function interviews($appl_id)
-    {
-      $appl = JobApplication::with('job', 'cv')->find($appl_id);
 
-      check_if_job_owner($appl->job->id);
-
-
-      $interviews = Interview::where('job_application_id', $appl->id)->get();
-      $nav_type = 'interviews';
-      return view('applicant.interviews', compact('appl', 'nav_type', 'interviews'));
-    }
 
 
     public function documents($appl_id)
@@ -227,16 +215,27 @@ class JobApplicationsController extends Controller
 
         $nav_type = 'notes';
 
-        // $interview_notes = $appl->interview_notes()->with('user')->get();
-        // $interview_notes = InterviewNoteValues::with('interviewer')->where('job_application_id',
-        //     $appl->id)->groupBy('interviewed_by')->get();
-
         $interview_note_categories = InterviewNoteValues::with('interviewer',
             'interview_note_option')->where('job_application_id',
             $appl->id)->get()->groupBy('interview_note_option.interview_note_template.name');
 
 
         return view('applicant.notes', compact('appl', 'nav_type', 'interview_note_categories'));
+    }
+
+
+     public function interviews($appl_id)
+    {
+      $appl = JobApplication::with('job', 'cv')->find($appl_id);
+
+      check_if_job_owner($appl->job->id);
+
+
+      $interviews = Interview::where('job_application_id', $appl->id)->get();
+
+      // dd($interviews);
+      $nav_type = 'interviews';
+      return view('applicant.interviews', compact('appl', 'nav_type', 'interviews'));
     }
 
     public function checks($appl_id)
@@ -286,6 +285,8 @@ class JobApplicationsController extends Controller
 
     public function sendMessage(Request $request)
     {
+        $message_content = '';
+        $user = '';
 
         if ($request->hasFile('document_file')) {
             $file_name = (@$request->document_file->getClientOriginalName());
@@ -307,11 +308,15 @@ class JobApplicationsController extends Controller
             'title' => $request->document_title,
             'description' => $request->document_description
         ]);
+
+
         $candidate = JobApplication::find($request->application_id);
         $email_title = "Message on your job application ".$candidate->job->title;
+        $email_message = $message->message;
         $application_id = $request->application_id;
         $link = route('candidate-messages', $request->application_id);
-        Mail::queue('emails.new.admin_send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($candidate, $email_title) {
+
+        Mail::send('emails.new.admin_send_message', compact('candidate', 'email_title', 'email_message', 'message_content', 'user', 'link'), function ($m) use ($candidate, $email_title) {
             $m->from(env('COMPANY_EMAIL'))->to($candidate->candidate->email)->subject($email_title);
         });
 
@@ -321,8 +326,9 @@ class JobApplicationsController extends Controller
 
     public function viewApplicants(Request $request)
     {
-        //Check if he  is the owner of the job
+                //Check if he  is the owner of the job
         check_if_job_owner($request->jobID);
+
 
         $job = Job::with([
             'form_fields',
@@ -338,7 +344,6 @@ class JobApplicationsController extends Controller
         $active_tab = 'candidates';
         $status = '';
         $jobID = $request->jobID;
-
         $this->search_params['filter_query'] = @$request->filter_query;
         $this->search_params['start'] = $start = ($request->start) ? ($request->start * $this->search_params['row']) : 0;
 
@@ -385,7 +390,8 @@ class JobApplicationsController extends Controller
             $solr_video_application_score = null;
         }
 
-        $result = Solr::get_applicants(
+
+        $result = SolrPackage::get_applicants(
             $this->search_params,
             $request->jobID,
             @$request->status,
@@ -399,11 +405,6 @@ class JobApplicationsController extends Controller
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$request->jobID,
             $statuses);
-//        $statuses_grouped = JobApplication::where('job_id',53)->select('status', \solrDB::raw('count(*) as total'))
-//        ->groupBy('status')
-//        ->pluck('total','status')->all();
-
-
 
         if (isset($request->status)) {
             $status = $request->status;
@@ -412,8 +413,6 @@ class JobApplicationsController extends Controller
         }
 
         $end = (($start + $this->search_params['row']) > intval($application_statuses['ALL'])) ? $application_statuses['ALL'] : ($start + $this->search_params['row']);
-        // $showing = "Showing ".($start+1)." - ".$end." of ".$result['response']['numFound']." Applicants [Page ".floor($request->start + 1)."]";
-        // dd($result);
 
         $showing = view('cv-sales.includes.top-summary', [
             'start' => ($start + 1),
@@ -424,7 +423,7 @@ class JobApplicationsController extends Controller
             'filters' => $request->filter_query
         ])->render();
         $myJobs = Job::getMyJobs();
-        $all_my_cvs = Solr::get_all_my_cvs($this->search_params, null,
+        $all_my_cvs = SolrPackage::get_all_my_cvs($this->search_params, null,
         null)['response']['docs'];
         $myFolders = $all_my_cvs ? array_unique(array_pluck($all_my_cvs, 'cv_source')) : [];
 
@@ -436,6 +435,8 @@ class JobApplicationsController extends Controller
         $qualifications = $this->qualifications;
         $grades = grades();
         $permissions = getUserPermissions();
+
+
         if ($request->ajax()) {
 
             $search_results = view('job.board.includes.applicant-results-item',
@@ -465,6 +466,7 @@ class JobApplicationsController extends Controller
             $video_application_score = [env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END')];
             $test_score = [40, 160];
             $check_both_permissions = checkForBothPermissions($jobID);
+
             return view('job.board.candidates',
                 compact('job',
                     'active_tab',
@@ -481,7 +483,60 @@ class JobApplicationsController extends Controller
                     'myFolders', 'application_statuses', 'job',
                     'video_application_score', 'request', 'states', 'qualifications', 'grades', 'permissions', 'check_both_permissions'));
         }
+    }
 
+
+    public function uploadApplicantsToSolr()
+    {
+
+
+    }
+
+
+
+
+
+    public function oneApplicantData(Request $request){
+
+        $applicants = JobApplication::with('job', 'cv')->find([68825, 68824, 68827]);
+
+        foreach($applicants as $applicant){
+            $cand['gender'] = $applicant->cv->gender;
+            $cand['last_company_worked'] = $applicant->cv->last_company_worked;
+            $cand['dob'] = $applicant->cv->date_of_birth;
+            $cand['cv_file'] = $applicant->cv->cv_file;
+            $cand['display_picture'] = $applicant->cv->display_picture;
+            $cand['years_of_experience'] = $applicant->cv->years_of_experience;
+            $cand['extracted_content'] = [0];
+            $cand['rank'] = 1;
+            $cand['id'] = $applicant->id;
+            $cand['state'] = $applicant->cv->state;
+            $cand['first_name'] = $applicant->cv->first_name;
+            $cand['last_name'] = $applicant->cv->last_name;
+            $cand['headline'] = [$applicant->cv->headline];
+            $cand['last_modified'] = $applicant->cv->last_modified;
+            $cand['grade'] = $applicant->cv->graduation_grade;
+            $cand['willing_to_relocate'] = $applicant->cv->willing_to_relocate ? true : false;
+            $cand['email'] = $applicant->cv->email;
+            $cand['last_position'] = $applicant->cv->last_position;
+            $cand['cv_source'] = $applicant->cv->cv_source;
+            $cand['highest_qualification'] = $applicant->cv->highest_qualification;
+            $cand['marital_status'] = $applicant->cv->marital_status;
+            $cand['phone'] = $applicant->cv->phone;
+            $cand['cover_note'] = $applicant->cover_note;
+            $cand['job_id'] = [$applicant->job_id];
+            $cand['application_date'] = $applicant->created;
+            $cand['application_modified'] = $applicant->created;
+            $cand['application_id'] = [$applicant->id];
+            $cand['is_approved'] = true;
+            $cand['application_status'] = [$applicant->status];
+            $cand['job_title'] = [$applicant->job->title];
+
+            App\Libraries\SolrPackage::create_new_document($cand);
+
+        }
+
+        dd('DONE');
 
     }
 
@@ -507,7 +562,7 @@ class JobApplicationsController extends Controller
             $end_dob = explode(' ', $date->subYears(@$request->age[1]))[0] . 'T00:00:00Z';
 
             $solr_age = [$start_dob, $end_dob];
-            // dd($request->age, $start_dob, $end_dob);
+
         } else {
             $request->age = [15, 65];
             $solr_age = null;
@@ -548,7 +603,7 @@ class JobApplicationsController extends Controller
         }
 
 
-        $result = Solr::get_applicants($this->search_params, $request->jobId, @$request->status, @$solr_age,
+        $result = SolrPackage::get_applicants($this->search_params, $request->jobId, @$request->status, @$solr_age,
             @$solr_exp_years, @$solr_video_application_score, @$solr_test_score);
 
 
@@ -600,18 +655,6 @@ class JobApplicationsController extends Controller
                 "TESTS" => $tests,
 
 
-                // "JOB TITLE" => $job->title,
-
-                // "cv_file" => "1470054202_cheidiatgmailcom_Moyosoluwa's draft.docx"
-                // "display_picture" => "default-profile.png"
-                // "rank" => 1
-                // "id" => "5617"
-                // "last_modified" => "2016-09-23T05:54:57Z"
-                // "application_date" => "2016-08-01T13:23:22Z"
-                // "application_modified" => "2016-08-01T13:23:22Z"
-                // "application_id" => array:1 [▶]
-                // "application_status" => array:1 [▶]
-                // "_version_" => 1.5462453107564E+18
             ];
             if(isset($value['application_id'][0])) {
                $jobApplication = JobApplication::with('custom_fields.form_field')->find($value['application_id'][0]);
@@ -626,8 +669,15 @@ class JobApplicationsController extends Controller
 
 
 
-        $excel = App::make('excel');
-        $filename = 'Applicants Report - ' . $other_data['job_title'];
+        // $excel = App::make('excel');
+        $filename = 'Applicants Report - ' . $other_data['job_title'].'.xlsx';
+
+        $filename = str_replace('/', '', $filename);
+        $filename = str_replace('\'', '', $filename);
+
+
+        return Excel::download(new ApplicantsExport($excel_data), $filename);
+
         Excel::create($filename,
             function ($excel) use ($excel_data, $other_data) {
                 // Set the title
@@ -637,15 +687,6 @@ class JobApplicationsController extends Controller
 
                 $excel->sheet('Report', function ($sheet) use ($excel_data, $other_data) {
 
-
-                    // first row styling and writing content
-                    // $sheet->mergeCells('A1:W1');
-                    // $sheet->row(1, function ($row) {
-                    //     $row->setFontFamily('Comic Sans MS');
-                    //     $row->setFontSize(30);
-                    // });
-
-                    // $sheet->row(1, array('Some big header here'));
 
                     $sheet->fromArray($excel_data, null, 'A1', false, true);
                     $sheet->cells('A1:P1', function ($cells) {
@@ -661,13 +702,8 @@ class JobApplicationsController extends Controller
                             'horizontal' => 'left'
                         ]
                     ]);
-                    // $sheet->setVerticalAlign('text-top');
 
-                    // $sheet->setFitToPage(true);
-                    // $sheet->setFitToHeight(true);
-                    // $sheet->setFitToWidth(true);
 
-                    // $sheet->setAutoSize(true);
 
 
                 });
@@ -682,8 +718,6 @@ class JobApplicationsController extends Controller
 
         $job = Job::find($request->jobId);
 
-        // dd( $job );
-
         $this->search_params['filter_query'] = @$request->filter_query;
         $this->search_params['row'] = 2147483647;
 
@@ -696,7 +730,7 @@ class JobApplicationsController extends Controller
             $end_dob = explode(' ', $date->subYears(@$request->age[1]))[0] . 'T00:00:00Z';
 
             $solr_age = [$start_dob, $end_dob];
-            // dd($request->age, $start_dob, $end_dob);
+
         } else {
             $request->age = [15, 65];
             $solr_age = null;
@@ -736,7 +770,7 @@ class JobApplicationsController extends Controller
         }
 
 
-        $result = Solr::get_applicants($this->search_params, $request->jobId, @$request->status, @$solr_age,
+        $result = SolrPackage::get_applicants($this->search_params, $request->jobId, @$request->status, @$solr_age,
             @$solr_exp_years, @$solr_video_application_score, @$solr_test_score);
 
         $data = $result['response']['docs'];
@@ -757,6 +791,8 @@ class JobApplicationsController extends Controller
         $cvs = array_pluck($data, 'cv_file');
         $ids = array_pluck($data, 'id');
 
+
+
         //Check for selected cvs to download and append path to it
         $cvs = array_map(function ($cv, $id) use ($request) {
 
@@ -775,22 +811,24 @@ class JobApplicationsController extends Controller
             return public_path('uploads/CVs/') . $cv;
         }, $cvs, $ids);
 
+
+
         //Remove nulls
         $cvs = array_filter($cvs, function ($var) {
             return !is_null($var);
         });
+
 
         // if cvs are empty return back
         if(empty($cvs)) {
           return redirect()->back()->with('error', 'The candidates do not have any cv\'s and can\'t be downloaded');
         }
 
-        //$archive->addMembers($cvs, $recursive = false );
+        $zipPath = $path . $filename;
 
-        $zipper = new \Chumper\Zipper\Zipper;
-        @$zipper->make($path . $filename)->add($cvs)->close();
+        Madzipper::make($zipPath)->add($cvs)->close();
 
-        return Response::download($path . $filename, 'Cv.zip', ['Content-Type' => 'application/octet-stream']);
+        return Response::download($path . $filename, date('y-m-d').$job->title.'Cv.zip', ['Content-Type' => 'application/octet-stream']);
 
     }
 
@@ -806,39 +844,59 @@ class JobApplicationsController extends Controller
 
       foreach ($application_ids as $key => $app_id) {
         $appl = JobApplication::with('job', 'cv')->find($app_id);
-        $jobID = $appl->job->id;
-        check_if_job_owner($jobID);
 
-        $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type',
-            'REVIEW')->where('job_application_id', $appl->id)->get();
-        $notes = InterviewNotes::with('user')->where('job_application_id', $appl->id)->get();
-        $interview_notes = InterviewNoteValues::with('interviewer',
-            'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
+        if(!is_null($appl)){
+            $jobID = $appl->job->id;
 
-        $path = public_path('uploads/tmp/');
-        $show_other_sections = false;
+            if (isset($jobID)) {
+                check_if_job_owner($jobID);
+            }
 
-        $pdf = App::make('snappy.pdf.wrapper');
-        $pdf->loadHTML(view('modals.inc.dossier-content',
-            compact('applicant_badge', 'app_ids', 'cv_ids', 'jobID', 'appl', 'comments', 'interview_notes', 'show_other_sections'))->render());
-        $pdf->setTemporaryFolder($path);
-        $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf', true);
+            $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type',
+                'REVIEW')->where('job_application_id', $appl->id)->get();
+            $notes = InterviewNotes::with('user')->where('job_application_id', $appl->id)->get();
+            $interview_notes = InterviewNoteValues::with('interviewer',
+                'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
+
+            $path = public_path('uploads/tmp/');
+            $show_other_sections = false;
+
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->loadHTML(view('modals.inc.dossier-content',
+                compact( 'jobID', 'appl', 'comments', 'interview_notes', 'show_other_sections'))->render());
+
+            $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf', true);
 
 
-        $filename = "Bulk Interview Notes.zip";
-        $interview_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf';
-        $cv_local_file = @$path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' cv - ' . $appl->cv->cv_file;
-        $files_to_archive[] = $interview_local_file;
+            $filename = "Bulk Interview Notes.zip";
+            $interview_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf';
+            $cv_local_file = @$path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' cv - ' . $appl->cv->cv_file;
+            $files_to_archive[] = $interview_local_file;
 
-        $timestamp = " " . time() . " ";
-
+            $timestamp = " " . time() . " ";
         }
-        $zipper = new \Chumper\Zipper\Zipper;
-        @$zipper->make($path . $timestamp . $filename)->add($files_to_archive)->close();
+      }
 
+        $zipPath = $path . $timestamp . $filename;
 
-          return Response::download($path . $timestamp . $filename, $filename,
+        Madzipper::make($zipPath)->add($files_to_archive)->close();
+
+        return Response::download($zipPath, $filename,
               ['Content-Type' => 'application/octet-stream']);
+    }
+
+    public function downloadInterviewNotesCSV(Request $request){
+        ini_set('memory_limit', '1024M');
+        set_time_limit(0);
+
+        $job = Job::with(['applicantsViaJAT' => function($query) use($request) { $query->whereStatus($request->status); } ])->find($request->jobId);
+
+        $application_ids = (!$request->has('app_ids')) ? $job->applicantsViaJAT->pluck('id') : $request->app_ids;
+
+        $export_file = 'interview-note ' . date('Y_m_d_H_i_s') . '.csv';
+
+        // dd($application_ids);
+        return Excel::download(new InterviewNoteExport($application_ids), $export_file);
     }
 
     public function massAction(Request $request)
@@ -860,7 +918,7 @@ class JobApplicationsController extends Controller
                 $this->sendWorkflowStepNotification($request->app_ids, $request->step_id);
                 break;
         }
-        Solr::update_core();
+
         return save_activities($request->status, $request->job_id, $request->app_ids);
     }
 
@@ -872,19 +930,18 @@ class JobApplicationsController extends Controller
     public function getAllApplicantStatus(Request $request)
     {
         $job = Job::with(['form_fields', 'workflow.workflowSteps'])->find($request->job_id);
-//        $result = Solr::get_applicants($this->search_params,$request->job_id);
         $statuses = $job->workflow->workflowSteps()->pluck('slug');
 
         $application_statuses = get_application_statuses([],$request->job_id,
             $statuses);
 
 
-        return view('job.board.includes.applicant-status', compact('application_statuses', 'result', 'job'));
+        return view('job.board.includes.applicant-status', compact('application_statuses', 'job'));
     }
 
     public function JobListData(Request $request)
     {
-        $result = Solr::get_applicants($this->search_params, $request->job_id, @$request->status);
+        $result = SolrPackage::get_applicants($this->search_params, $request->job_id, @$request->status);
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$request->job_id,
             $statuses = $request->workflow_steps);
 
@@ -903,27 +960,11 @@ class JobApplicationsController extends Controller
                 . '</div>';
         }
 
-        /*$stats = '<div class="job-item ">
-                    <span class="number">' . $application_statuses['HIRED'] . '</span><br/>Hired
-                </div>
-                <div class="job-item ">
-                    <span class="number">' . $application_statuses['ASSESSED'] . '</span><br/>Tested
-                </div>
-                <div class="job-item ">
-                    <span class="number">' . $application_statuses['INTERVIEWED'] . '</span><br/>Interviewed
-                </div>
-                <div class="job-item ">
-                    <span class="number text-muted">' . $application_statuses['SHORTLISTED'] . '</span><br/>Shortlisted
-                </div>
-                <div class="job-item  purple">
-                    <span class="number text-muted">' . $result['response']['numFound'] . '</span><br/>All
-                </div>';*/
 
-        // dd($stats);
         echo $stats;
     }
 
-    public function getJobsData(Request $request)
+     public function getJobsData(Request $request)
     {
         $jobs_data = [];
 
@@ -941,7 +982,7 @@ class JobApplicationsController extends Controller
                         }
                     ])->find($job_id);
 
-                    $result = Solr::get_applicants($this->search_params, $job_id,
+                    $result = SolrPackage::get_applicants($this->search_params, $job_id,
                         ''); // status parater value is formerly : @$request->status
                     $application_statuses = isset($result['facet_counts']) ? get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$job_id,
                         $statuses = $job->workflow->workflowSteps()->pluck('slug')) : [];
@@ -964,11 +1005,52 @@ class JobApplicationsController extends Controller
 
     }
 
+
+
+    public function getOneJobsData(Request $request)
+    {
+        $jobs_data = [];
+
+            $job_id = $request->jobs_ids;
+
+                $job_response_data = [
+                    'id' => $job_id,
+                    'html_data' => ''
+                ];
+
+                $job = Job::with([
+                    'workflow.workflowSteps' => function ($q) {
+                        return $q->orderBy('order', 'asc');
+                    }
+                ])->find($job_id);
+
+                $result = SolrPackage::get_applicants($this->search_params, $job_id,
+                    ''); // status parater value is formerly : @$request->status
+
+
+                $application_statuses = isset($result['facet_counts']) ? get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$job_id,
+                    $statuses = $job->workflow->workflowSteps()->pluck('slug')) : [];
+
+
+                foreach ($application_statuses as $key => $value) {
+                    $job_response_data['html_data'] .= '<div class="job-item">'
+                        . '<span class="number">' . $value . '</span>'
+                        . '<br/>'
+                        . $key
+                        . '</div>';
+                }
+
+                $jobs_data[] = $job_response_data;
+
+        return response()->json($jobs_data);
+    }
+
+
     public function JobViewData(Request $request)
     {
 
 
-        $result = Solr::get_applicants($this->search_params, $request->job_id, @$request->status);
+        $result = SolrPackage::get_applicants($this->search_params, $request->job_id, @$request->status);
         $total_applicants = ($result['response']['numFound']);
         $matching = 10000;
 
@@ -1045,6 +1127,7 @@ class JobApplicationsController extends Controller
         } else {
             return $modalVars;
         }
+        $show_other_sections = true;
 
         $jobID = $appl->job->id;
         check_if_job_owner($jobID);
@@ -1054,16 +1137,23 @@ class JobApplicationsController extends Controller
         $interview_notes = InterviewNoteValues::with('interviewer',
             'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
 
+
         $path = public_path('uploads/tmp/');
 
-        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML(view('modals.inc.dossier-content',
-            compact('applicant_badge', 'app_ids', 'cv_ids', 'jobID', 'appl', 'comments', 'interview_notes'))->render());
-        $pdf->setTemporaryFolder($path);
+            compact('applicant_badge', 'app_ids', 'cv_ids', 'jobID', 'show_other_sections', 'appl', 'comments', 'interview_notes'))->render());
+
+
+        return view('modals.inc.dossier-content',
+            compact('applicant_badge', 'app_ids', 'cv_ids', 'show_other_sections', 'jobID', 'appl', 'comments', 'interview_notes'))->render();
+
         $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' dossier.pdf', true);
 
 
         $filename = $appl->cv->first_name . ' ' . $appl->cv->last_name . ".zip";
+        $filename = str_replace('/', '', $filename);
+        $filename = str_replace('\'', '', $filename);
         $dossier_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' dossier.pdf';
         $cv_local_file = @$path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' cv - ' . $appl->cv->cv_file;
 
@@ -1082,7 +1172,8 @@ class JobApplicationsController extends Controller
             }
         }
 
-        $test_path = "http://seamlesstesting.com/test/combined/pdf/" . $appl->id;
+
+        $test_path = env('SEAMLESS_TESTING_APP_URL', 'http://seamlesstesting.com'). "/test/combined/pdf/" . $appl->id;
         $test_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' tests.pdf';
 
 
@@ -1095,26 +1186,13 @@ class JobApplicationsController extends Controller
         }
         $timestamp = " " . time() . " ";
 
-        $zipper = new \Chumper\Zipper\Zipper;
-        @$zipper->make($path . $timestamp . $filename)->add($files_to_archive)->close();
+        $zipPath = $path . $filename;
 
+        Madzipper::make($zipPath)->add($files_to_archive)->close();
 
-//         File::delete( $files_to_archive );
-
-        return Response::download($path . $timestamp . $filename, $filename,
+        return Response::download($zipPath, $filename,
             ['Content-Type' => 'application/octet-stream']);
 
-
-        // $pdf = PDF::loadView('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'));
-        // return $pdf->download('dossier.pdf');
-        //
-        // $html = view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'))->render();
-        // $pdf = PDF::loadHTML($html);
-
-        // // return $pdf->download('dossier.pdf');
-        // return $pdf->stream();
-        // // echo $html;
-        // return view('modals.inc.dossier-content', compact('applicant_badge','app_ids','cv_ids','jobID','appl','comments','notes'));
     }
 
     /**
@@ -1156,6 +1234,7 @@ class JobApplicationsController extends Controller
           $query->where('workflow_step_id', $stepId);
         })->pluck('name', 'id');
 
+
         /**
          * [$is_a_reschedule: is this interview a reschedule]
          * @var boolean
@@ -1182,8 +1261,6 @@ class JobApplicationsController extends Controller
         $note = InterviewNotes::where('job_application_id', $app_id)->where('id',
             @$request->interview_id)->get()->first();
 
-
-        // dd($note, $request->interview_id, count($notes), count($note));
 
         return view('modals.interview-notes', compact('applicant_badge', 'app_id', 'cv_id', 'appl', 'notes', 'note'));
     }
@@ -1286,7 +1363,7 @@ class JobApplicationsController extends Controller
 
             $this->sendWorkflowStepNotification($request->app_ids, $stepId);
 
-            Solr::update_core();
+            SolrPackage::update_core();
 
             return ($JA) ? 'true' : 'false';
 
@@ -1416,7 +1493,7 @@ class JobApplicationsController extends Controller
         $stepId = $request->stepId;
 
         return view('modals.assess',
-            compact('applicant_badge', 'app_ids', 'cv_ids', 'products', 'appl', 'test_available', 'count', 'section',
+            compact('applicant_badge', 'app_ids', 'cv_ids', 'products', 'appl', 'count', 'section',
                 'type', 'step', 'stepId'));
     }
 
@@ -1444,6 +1521,7 @@ class JobApplicationsController extends Controller
             'status' => 'false',
             'message' => 'Transaction Not Found'
         ]);
+
 
 
         foreach ($request->tests as $key => $test) {
@@ -1482,20 +1560,30 @@ class JobApplicationsController extends Controller
                 $app = JobApplication::with('cv')->find($app_id);
 
                 JobApplication::massAction(@$request->job_id, @$request->cv_ids, $request->step, $request->stepId);
-                $response = Curl::to('https://seamlesstesting.com/test-request')
-                    ->withData([
-                        'job_title' => $app->job->title,
-                        'test_id' => $data['test_id'],
-                        'job_application_id' => $app_id,
-                        'applicant_name' => ucwords(@$app->cv->first_name . " " . @$app->cv->last_name),
-                        'applicant_email' => $app->cv->email,
-                        'employer_name' => get_current_company()->name,
-                        'employer_email' => get_current_company()->email,
-                        'start_time' => $data['start_time'],
-                        'end_time' => $data['end_time'],
-                        'webhook_url' => route('save-test-result'),
-                    ])
-                    ->post();
+
+                $testUrl = env('SEAMLESS_TESTING_APP_URL', 'http://seamlesstesting.com').'/test-request';
+                $data = [
+                    'job_title' => $app->job->title,
+                    'test_id' => $data['test_id'],
+                    'job_application_id' => $app_id,
+                    'applicant_name' => ucwords(@$app->cv->first_name . " " . @$app->cv->last_name),
+                    'applicant_email' => $app->cv->email,
+                    'employer_name' => get_current_company()->name,
+                    'employer_email' => get_current_company()->email,
+                    'start_time' => $data['start_time'],
+                    'end_time' => $data['end_time'],
+                    'webhook_url' => route('save-test-result'),
+                ];
+                $ch = curl_init($testUrl);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                // execute!
+                $response = curl_exec($ch);
+
+                // close the connection, release resources used
+                curl_close($ch);
                 // Leave this next line untouched, its imperative
                 dump($response);
             }
@@ -1539,7 +1627,7 @@ class JobApplicationsController extends Controller
                         'result_comment' => @$request->result_comment,
                         'status' => @$request->status
                     ]);
-                Solr::update_core();
+                SolrPackage::update_core();
 
             }
 
@@ -1611,7 +1699,7 @@ class JobApplicationsController extends Controller
 
     public function Checkout(Request $request)
     {
-        // dd($request->total_amount);
+
 
 
     }
@@ -1683,12 +1771,12 @@ class JobApplicationsController extends Controller
             $invite = $link->ics();
 
             if ($appl->job->company->id == 96) {
-                $this->mailer->send('emails.new.interview_invitation_ibfc',
+                Mail::send('emails.new.interview_invitation_ibfc',
                     ['cv' => $cv, 'job' => $job, 'interview' => (object)$data], function (Message $m) use ($cv) {
                         $m->from(env('COMPANY_EMAIL'))->to($cv->email)->subject('Interview Invitation');
                     });
             } else {
-                $this->mailer->send('emails.new.interview_invitation',
+                Mail::send('emails.new.interview_invitation',
                     ['cv' => $cv, 'job' => $job, 'interview' => (object)$data], function (Message $m) use ($cv, $invite) {
                         $m->from($this->sender, get_current_company()->name)
                             ->replyTo($this->replyTo, get_current_company()->name)
@@ -1705,7 +1793,7 @@ class JobApplicationsController extends Controller
 
               $interviewer = User::find($interviewer_id);
               //send mail to interviewer
-              $this->mailer->send('emails.new.interviewer',
+              Mail::send('emails.new.interviewer',
                 ['cv' => $cv, 'job' => $job, 'interviewer' => $interviewer, 'interview' => (object)$data], function (Message $m) use ($cv, $interviewer) {
                     $m->from($this->sender, get_current_company()->name)
                         ->replyTo($this->replyTo, get_current_company()->name)
@@ -1778,7 +1866,8 @@ class JobApplicationsController extends Controller
     {
 
         $interview_note_templates = InterviewNoteTemplates::with('options')->where('company_id',
-            get_current_company()->id)->get();
+            get_current_company()->id)->orderBy('name', 'asc')->get();
+
         return view('job.interview-note-templates', compact('interview_note_templates'));
     }
 
@@ -1806,6 +1895,7 @@ class JobApplicationsController extends Controller
     {
         // $interview_note_options = InterviewNoteOptions::where('company_id',get_current_company()->id )->get();
 
+        $interview_note_option = NULL;
 
         if ($request->isMethod('post')) {
             InterviewNoteTemplates::create([
@@ -1814,7 +1904,7 @@ class JobApplicationsController extends Controller
                 'company_id' => get_current_company()->id
             ]);
 
-            \Session::flash('status', 'Create Successfully');
+            \Session::flash('status', 'New Template has been created');
         }
 
 
@@ -1886,7 +1976,7 @@ class JobApplicationsController extends Controller
 
 
         return view('job.interview-note-option-create',
-            compact('interview_note_option', 'interview_template_id', 'interview_template'));
+            compact('interview_template_id', 'interview_template'));
     }
 
 
@@ -1917,7 +2007,7 @@ class JobApplicationsController extends Controller
         $interview_note_options = $this->getInterviewNoteOption($appl->job->id, $request->id);
 
         $interview_template_id = $request->id;
-
+        $interview_note = NULL;
         if (@$request->readonly) {
             $readonly = true;
             $interview_note = InterviewNoteValues::with('interviewer')->where('job_application_id',
@@ -1999,14 +2089,13 @@ class JobApplicationsController extends Controller
                 }
                 if(!is_null($cv->email))
                 {
-                    $this->mailer->send('emails.new.step_moved', ['cv' => $cv, 'job' => $job, 'step' => $step,'message_content' => $message_content],
-                        function (Message $m) use ($cv,$job) {
+                    Mail::send('emails.new.step_moved', ['cv' => $cv, 'job' => $job, 'step' => $step,'message_content' => $message_content], function (Message $m) use ($cv,$job) {
+                        $m->from($this->sender, get_current_company()->name)
+                            ->replyTo($this->replyTo, get_current_company()->name)
+                            ->to($cv->email)
+                            ->subject('Feedback on Your Application for the role of '.$job->title);
+                    });
 
-                            $m->from($this->sender, get_current_company()->name)
-                                ->replyTo($this->replyTo, get_current_company()->name)
-                                ->to($cv->email)
-                                ->subject('Feedback on Your Application for the role of '.$job->title);
-                        });
                 }
 
             }

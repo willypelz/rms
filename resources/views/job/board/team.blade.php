@@ -121,10 +121,16 @@
                                                             <i class="fa fa-check"></i> Accepted</span>
                                                         @elseif($job_team_invite->is_declined)
                                                             <i class="fa fa-times"></i> Declined</span>
+                                                        @elseif($job_team_invite->is_cancelled)
+                                                            <i class="fa fa-times"></i> Cancelled</span>
                                                         @else
                                                             <i class="fa fa-hourglass"></i> Pending</span>
+                                                             <a  class="btn btn-default btn-small" href="{{ route('resend-job-team-invite', $job_team_invite->id) }}">Resend Invite</a>
+                                                             <a  class="btn btn-warning btn-small" style="margin-top:5px;" href="{{ route('cancel-job-team-invite', $job_team_invite->id) }}">Cancel Invite</a>
                                                         @endif
                                                     </div>
+
+
 
                                                     <div class="clearfix"></div>
                                                 </li>
@@ -139,12 +145,12 @@
                                     <h5 class="no-margin">Add New Team member <span class="pull-right"><i
                                                     class="fa fa-lg fa-user-plus"></i></span></h5>
                                     <hr>
-
-                                    @permission('can-add-job-team-members')
+                                    
+                                    @if(Auth::user()->is_super_admin || $user->can('can-add-job-team-members'))
                                     <a aria-controls="AddTeamMember" aria-expanded="false" class="btn btn-warning"
                                        data-toggle="collapse" data-target="#AddTeamMember" href="#AddTeamMember"><i
                                                 class="fa fa-user-plus"></i> Add New Member</a>
-                                    @endpermission
+                                    @endif
 
 
                                     <div id="AddTeamMember" class="collapse">

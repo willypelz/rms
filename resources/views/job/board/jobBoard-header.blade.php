@@ -128,7 +128,7 @@
                         @if($user->hasRole('admin') || $user->hasRole('commenter'))
                         <div class="btn-group btn-group-justified" role="group">
                             <div  class="btn-group" role="group">
-                                <a href="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}" target="_blank" type="button" class="btn-sm btn btn-info status"><i class="fa fa-eye"></i> &nbsp;Preview</a>
+                                <a href="{{ route('job-share',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}" target="_blank" type="button" class="btn-sm btn btn-info status"><i class="fa fa-eye"></i> &nbsp;Preview</a>
                             </div>
                             <div  class="btn-group" role="group">
                                 <a href="{{ route('edit-job', [$job['id']] ) }}" type="button" class="btn-sm btn btn-info status"><i class="fa fa-pencil"></i> &nbsp;Edit Details</a>

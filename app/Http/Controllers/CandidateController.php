@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use Curl;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Mail;
 use Validator;
 
@@ -104,7 +105,7 @@ class CandidateController extends Controller
                 );
 
 
-                Mail::queue('emails.candidate-forgot-password', ['token' => $token], function ($m) use ($candidate) {
+                Mail::send('emails.candidate-forgot-password', ['token' => $token], function ($m) use ($candidate) {
                     $m->from(env('COMPANY_EMAIL'), env('APP_NAME'));
                     $m->to($candidate->email, $candidate->first_name)->subject('Your Password Reset Link!');
                 });
@@ -127,7 +128,7 @@ class CandidateController extends Controller
     public function forgotSent(Request $request)
     {
 
-        return view('candidate.forgot-sent', compact('redirect_to'));
+        return view('candidate.forgot-sent');
     }
 
     public function reset(Request $request, $token)
@@ -169,7 +170,6 @@ class CandidateController extends Controller
 
 
         $applicant_id = $this->generateApplicationId(Auth::guard('candidate')->user());
-
 
         return view('candidate.dashboard', compact('applicant_id'));
     }
@@ -216,7 +216,7 @@ class CandidateController extends Controller
             $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->get();
         }
 
-        return view('candidate.job-list', compact('application_id', 'ignore_list', 'jobs'));
+        return view('candidate.job-list', compact('jobs'));
     }
 
 
@@ -264,6 +264,7 @@ class CandidateController extends Controller
                 $attachment = '';
             }
 
+
             // Loop throgh applicants selected and dispatch message to them
             foreach ($job_applications as $key => $jb) {
 
@@ -279,15 +280,12 @@ class CandidateController extends Controller
                 $link = route('candidate-messages', $jb->id);
 
                 $candidate = $user;
-                $email_title = $candidate->first_name." sent you a message.";
-                $message_content = 'You just recieve message from candidate: '.$candidate->first_name;
+                $email_title = 'Feedback on your application';
+                $company = get_current_company();
+                $message_content = "You have received an update from {$company->name} on your job application: {$job->title}.";
 
 
-                $email_title = 'Feedback for your application';
-                $message_content = 'You just recieve message on your job application: '.$job->title;
-
-
-                 Mail::queue('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
+                 Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
                     $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
                 });
 
@@ -296,7 +294,7 @@ class CandidateController extends Controller
             return redirect()->back()->with('success', 'Message has been sent successfully to applicant(s)');
         }
 
-        return view('candidate.messaging.bulk', compact('appl', 'nav_type', 'job_applications', 'messages'));
+        return view('candidate.messaging.bulk', compact('nav_type', 'job_applications'));
 
     }
 
@@ -310,6 +308,7 @@ class CandidateController extends Controller
         $application_id      = $request->application_id;
         $current_application = JobApplication::with('cv', 'job.company')->where('id', $application_id)->first();
         $messages            = Message::where('job_application_id', $request->application_id)->get();
+        
         return view('candidate.messages', compact('messages', 'application_id', 'current_application'));
     }
 
@@ -376,7 +375,7 @@ class CandidateController extends Controller
         $message_content = 'You just recieve message from candidate: '.$candidate->first_name;
 
 
-         Mail::queue('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
+         Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
             $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
         });
         if ($candidate->is_from == 'internal') 
@@ -395,7 +394,11 @@ class CandidateController extends Controller
 
         for ($i = 0; $i < strlen($string); $i++) {
             $id .= ord($string[$i]);
+
+            if($i == 3)
+                break;
         }
+
 
         $id .= $candidate->id;
         return $id;
@@ -420,5 +423,30 @@ class CandidateController extends Controller
         } else {
             return redirect()->route('candidate-login')->with('error', 'Account Not Found');
         }
+    }
+
+    /**
+     * @param Request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\view\view
+     */
+
+    public function profile(Request $request){
+
+        $candidate = Candidate::find(Auth::guard('candidate')->id());
+        if ($candidate) {
+            if ($request->isMethod('post')) {
+
+                $candidate->update([
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                ]);
+
+                return redirect()->route('candidate-profile')->with('success', 'Profile updated successfully');
+            }
+        } else {
+            return redirect()->route('candidate-login')->with('error', 'Account Not Found');
+        }
+
+        return view('candidate.profile', compact('candidate'));
     }
 }

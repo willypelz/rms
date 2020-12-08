@@ -2,7 +2,7 @@
 
 <?php
 
-$link =  url('password/reset', $token);
+$link =  route('candidate-reset', $token);
 
 ?>
 

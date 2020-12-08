@@ -57,7 +57,7 @@
 																		</p>
 
 																		<hr style="border-width:0 0 1px">
-																		<p style="color:#666">Best,
+																		<p style="color:#666">Best regards,
 																			<br> {{ @get_current_company()->name }} Team</p>
 
 																	</div>

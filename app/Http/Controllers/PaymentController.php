@@ -125,9 +125,9 @@ class PaymentController extends Controller
                         'count' => $count,
                         'type' => $request->type,
                         'type_id' => $type_id,
-                        'image' => $check->product->provider->logo,
-                        'title' => $check->product->name,
-                        'amount' => $check->product->cost
+                        'image' => @$check->product->provider->logo,
+                        'title' => @$check->product->name,
+                        'amount' => @$check->product->cost
                     ]);
                     
                 }
@@ -168,7 +168,7 @@ class PaymentController extends Controller
         $invoice = Invoices::with('items')->where('id',$invoiceDB->id)->first();
 
         $user = Auth::user();
-$mail = Mail::queue('emails.new.invoice', compact('invoice','invoice_type','user'), function ($m) use($invoice,$invoice_type) {
+$mail = Mail::send('emails.new.invoice', compact('invoice','invoice_type','user'), function ($m) use($invoice,$invoice_type) {
                     $m->from('support@seamlesshiring.com', 'Seamlesshiring');
 
                     // $m->to('support@seamlesshiring.com')->subject('Customer Invoice: #'.$invoice->id);
@@ -180,7 +180,7 @@ $mail = Mail::queue('emails.new.invoice', compact('invoice','invoice_type','user
 
 
         return response()->json([
-                'html' => view('invoice.includes.inner',compact('invoice','invoice_type','count','total_multiplier'))->render(),
+                'html' => view('invoice.includes.inner',compact('invoice','invoice_type','count'))->render(),
                 'invoice_no' => $invoiceDB->id
             ]);
    }

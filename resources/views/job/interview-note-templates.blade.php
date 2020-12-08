@@ -34,7 +34,7 @@
                                                 <hr>
 
                                                 <div class="text-muted panel-desc"
-                                                     title="{!! $interview_note_template->description !!}">
+                                                     >
                                                     {!! $interview_note_template->description !!}
                                                 </div>
 
@@ -42,15 +42,14 @@
 
                                                 <div>
 
-
                                                     <div class="btn-group">
-                                                        <a href="{{ route('interview-note-options', ['id' => $interview_note_template->id ]) }}"
+                                                        <a href="{{ route('interview-note-options', $interview_note_template->id ) }}"
                                                            class="btn btn-line " style="">Options <span
                                                                     class="badge badge-danger text-white">{{ $interview_note_template->options->count()  }}</span>
 
                                                         </a>
                                                         @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
-                                                        <a href="{{ route('interview-note-option-create', ['interview_template_id' => $interview_note_template->id]) }}" class="btn btn-line" style="padding: 9px ;"><i
+                                                        <a href="{{ route('interview-note-option-create', ['interview_template_id' => $interview_note_template->id]) }}" class="btn btn-line" style="padding: 6px ;"><i
                                                                     class="fa fa-plus no-margin fa-lg"></i></a>
                                                         @endif
                                                     </div>
@@ -103,4 +102,3 @@
 
 
 @endsection
-n

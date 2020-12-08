@@ -681,7 +681,7 @@ class JobsController extends Controller
 
 
             if(empty($request->job_id)){
-                $job = Job::FirstorCreate($job_data);
+                $job = Job::firstOrCreate($job_data);
             }else{
                 $is_update = true;
                 $jb = Job::find($request->job_id);
@@ -1193,7 +1193,7 @@ class JobsController extends Controller
                     'experience' => $request->experience,
                 ];
 
-                $job = Job::FirstorCreate($job_data);
+                $job = Job::firstOrCreate($job_data);
 
                 //Send New job notification email
                 $to = env('COMPANY_EMAIL');
@@ -1532,21 +1532,22 @@ class JobsController extends Controller
         }
 
         $jobs = $jobs->with('workflow.workflowSteps.users')->get();
-
         $active = 0;
         $suspended = 0;
         $deleted = 0;
         $expired = 0;
         $draft = 0;
+        $private = 0;
 
         $active_jobs = [];
         $suspended_jobs = [];
         $deleted_jobs = [];
         $expired_jobs = [];
         $draft_jobs = [];
+        $private_jobs = $jobs->where('is_for', 'private');
+        $private = count($private_jobs);
 
         foreach ($jobs as $job) {
-
             if ($job->status == 'DELETED') {
                 $deleted_jobs[] = $job;
                 $deleted++;
@@ -1563,9 +1564,8 @@ class JobsController extends Controller
             } else if ($job->status == 'DRAFT') {
                 $draft_jobs[] = $job;
                 $draft++;
-            } else {
-                // $suspended++;
-            }
+            } 
+            
         }
 
         $all_jobs = [
@@ -1573,13 +1573,14 @@ class JobsController extends Controller
             'SUSPENDED' => $suspended_jobs,
             'EXPIRED' => $expired_jobs,
             'DRAFT' => $draft_jobs,
+            'PRIVATE' => $private_jobs
             //  'DELETED' => $deleted_jobs  TODO
         ];
 
 
         @$q = @$request->q;
 
-        return view('job.job-list', compact('jobs', 'draft', 'active', 'suspended', 'deleted', 'company', 'all_jobs', 'expired', 'q'));
+        return view('job.job-list', compact('jobs', 'draft', 'active', 'suspended', 'deleted', 'company', 'all_jobs', 'expired', 'q', 'private'));
     }
 
 

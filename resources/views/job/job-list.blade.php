@@ -132,14 +132,14 @@
                                                         @else Job Expired @endif |
                                                         <a href="{{ route('job-board', [$job['id']]) }}">View Job</a>
                                                         @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin','commenter'])) || $is_super_admin)
-                                                                <a href="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}"
+                                                            | <a href="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}"
                                                                     target="_blank">Preview Job</a>
                                                             @endif
                                                     </small>
                                                     <br/>
                                                     <small class="text-muted">
                                                     <i
-                                                                class="glyphicon glyphicon-bookmark "></i> {{ $job['is_for'] }} {{ $job['is_private'] == 1 ? '(PRIVATE)' : '(PUBLIC)'}}
+                                                                class="glyphicon glyphicon-bookmark "></i> {{$job['is_for']}} {{ $job['is_private'] == 1 ? '(PRIVATE)' : '(PUBLIC)'}}
                                                         &nbsp;
                                                         <i
                                                                 class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }}
@@ -176,6 +176,12 @@
                                                                         this
                                                                         job on
                                                                         Social Media. </a></li>
+                                                                
+                                                                <input type="hidden" 
+                                                                    id="copy_{{ $job->id }}" 
+                                                                    value="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}">
+
+                                                                <li><a href="#" onclick="copyToClipboard('copy_{{ $job->id }}')">Copy job Link </a></li>
 
 
 
@@ -184,6 +190,14 @@
                                                                         Referrals </a></li>
                                                                 
                                                                 <li role="separator" class="divider"></li>
+                                                                @if($job['is_private'] == 1)
+                                                                    <li><a href="#"
+                                                                           onclick="makePublic( {{$job['id']}} ); return false">Make job public</a></li>
+                                                                @elseif($job['is_private'] == 0)
+                                                                    <li><a href="#"
+                                                                           onclick="makePrivate( {{$job['id']}} ); return false">Make job private</a></li>
+                                                                @endif
+
                                                                 @if(in_array($job['status'], ['SUSPENDED', 'DRAFT'] ) && !$job->hasExpied())
                                                                     <li><a href="#"
                                                                            onclick="Activate( {{$job['id']}} ); return false">Activate
@@ -192,12 +206,10 @@
                                                                     <li><a href="#" disabled>EXPIRED</a></li>
                                                                 @elseif($job['status'] == 'ACTIVE' && !$job->hasExpied())
                                                                     <li><a href="#"
-                                                                           onclick="Suspend( {{$job['id']}} ); return false">Suspend
-                                                                            Job</a></li>
+                                                                           onclick="Suspend( {{$job['id']}} ); return false">Suspend Job</a></li>
                                                                 @endif
                                                                 <li><a href="#"
-                                                                       onclick="DuplicateJob( {{$job['id']}} ); return false">Duplicate
-                                                                        Job</a></li>
+                                                                       onclick="DuplicateJob( {{$job['id']}} ); return false">Duplicate Job</a></li>
 
                                                                 <li role="separator" class="divider"></li>
                                                                 @endif
@@ -235,6 +247,12 @@
 
                             <script type="text/javascript">
 
+                                function copyToClipboard(id) {
+                                    document.getElementById(id).select();
+                                    document.execCommand('copy');
+                                    alert("Link copied");
+                                }
+                                
                                 function Activate(id) {
                                     var url = "{{ route('job-status') }}";
 
@@ -264,6 +282,40 @@
                                             location.reload();
                                         }
                                     });
+                                }
+
+                                function makePrivate(id) {
+                                    var url = "{{ route('make-job-private') }}";
+                                    var confirmed = confirm("Are you sure you want to make this job private?");
+                                    if(confirmed == true){
+                                        $.ajax
+                                        ({
+                                            type: "POST",
+                                            url: url,
+                                            data: ({rnd: Math.random() * 100000, job_id: id, is_private: true}),
+                                            success: function (response) {
+                                                alert('Job has been made private');
+                                                location.reload();
+                                            }
+                                        });
+                                    }
+                                }
+
+                                function makePublic(id) {
+                                    var url = "{{ route('make-job-private') }}";
+                                    var confirmed = confirm("Are you sure you want to make this job private?");
+                                    if(confirmed == true){
+                                        $.ajax
+                                        ({
+                                            type: "POST",
+                                            url: url,
+                                            data: ({rnd: Math.random() * 100000, job_id: id, is_private: false}),
+                                            success: function (response) {
+                                                alert('Job has been made public');
+                                                location.reload();
+                                            }
+                                        });
+                                    }
                                 }
 
                                 function DuplicateJob(id) {

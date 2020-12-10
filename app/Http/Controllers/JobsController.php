@@ -2748,6 +2748,15 @@ class JobsController extends Controller
         
 
     }
+    
+    public function makeJobPrivateOrPublic(Request $request)
+    {
+        $job = Job::find($request->job_id);
+        $job->is_private =  $request->is_private == 'true' ? true : false;
+        $job->save();
+        if ($job)
+            return "true";
+    }
 
     public function ReferJob(Request $request)
     {

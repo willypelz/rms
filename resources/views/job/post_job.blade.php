@@ -193,8 +193,8 @@
                                                  <select @if($eligibilty) readonly @endif name="eligibility" class="form-control" id="is_for" >
                                                      <option value=""> -- choose eligibility -- </option>
                                                      <option @if ($eligibilty == 'both') selected="selected" @endif  value="both"> BOTH </option>
-                                                     <option @if ($eligibilty == 'internal') selected="selected" @endif value="internal"> INTERNAL STAFF </option>
-                                                     <option @if ($eligibilty == 'external') selected="selected" @endif selected value="external"> EXTERNAL STAFF </option>
+                                                     <option @if ($eligibilty == 'internal') selected="selected" @endif value="internal"> INTERNAL </option>
+                                                     <option @if ($eligibilty == 'external') selected="selected" @endif selected value="external"> EXTERNAL </option>
                                                  </select>
                                             </div>
 

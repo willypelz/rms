@@ -213,7 +213,7 @@
                                                 <br>
                                                 
                                                 <label for="job-loc">Make job private
-                                                <input type="checkbox" id="is_private" name="is_private" @if ($is_private == 1) checked @endif >
+                                                <input type="checkbox" id="is_private" name="is_private" value="1" @if ($is_private == 1) checked @endif >
                                                 </label>
                                             </div>
                                         </div>

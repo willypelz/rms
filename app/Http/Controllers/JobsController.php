@@ -668,7 +668,7 @@ class JobsController extends Controller
                 'location' => $request->location,
                 'summary' => $request->summary,
                 'is_for' => $request->eligibility,
-                'is_private' => ($request->is_private == 'on' ? true : false),
+                'is_private' => ($request->is_private == '1' ? true : false),
                 'details' => $request->details,
                 'job_type' => $request->job_type,
                 'position' => $request->position,
@@ -1189,7 +1189,7 @@ class JobsController extends Controller
                     'company_id' => $company->id,
                     'workflow_id' => $request->workflow_id,
                     'is_for' => $request->is_for ?: 'external',
-                    'is_private' => ($request->is_private == 'on' ? true : false),
+                    'is_private' => ($request->is_private == '1' ? true : false),
                     'fields' => json_encode($fields),
                     'experience' => $request->experience,
                 ];

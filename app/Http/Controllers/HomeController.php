@@ -75,7 +75,7 @@ class HomeController extends Controller
         }
 
         $jobs = Job::whereStatus('ACTIVE')
-            ->whereNotIn('is_for', ['internal', 'private'])
+            ->whereNotIn('is_private', true)
             ->where('expiry_date', '>=', date('Y-m-d'))
             ->take(env('JOB_HOMEPAGE_LIST', 3))
             ->orderBy('id', 'desc')

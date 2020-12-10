@@ -139,7 +139,7 @@
                                                     <br/>
                                                     <small class="text-muted">
                                                     <i
-                                                                class="glyphicon glyphicon-bookmark "></i> {{$job['is_for']}}
+                                                                class="glyphicon glyphicon-bookmark "></i> {{ $job['is_private'] == 1 ? 'Private' : $job['is_for']}}
                                                         &nbsp;
                                                         <i
                                                                 class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }}

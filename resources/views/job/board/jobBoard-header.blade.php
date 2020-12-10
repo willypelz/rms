@@ -46,7 +46,7 @@
                         <div class="badge badge-job badge-job-active">
                             <small class="">
                                 <span class="glyphicon glyphicon-bookmark"></span>
-                                <b>&nbsp; {{ ucfirst($job['is_for'])}}</b>
+                                <b>&nbsp; {{ $job['is_private'] == 1 ? 'Private' : ucfirst($job['is_for'])}}</b>
                             </small>
                         </div>
                     </div>

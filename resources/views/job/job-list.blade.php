@@ -177,15 +177,16 @@
                                                                         job on
                                                                         Social Media. </a></li>
                                                                 
-                                                                <input type="hidden" 
-                                                                    id="copy_{{ $job->id }}" 
-                                                                    value="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}">
+                                                                @if($job['is_private'] == 1)
+                                                                    <input type="text" 
+                                                                        id="copy_{{ $job->id }}" 
+                                                                        value="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}" style="display: none;">
 
-                                                                <li><a href="#" onclick="copyToClipboard('copy_{{ $job->id }}')">Copy job Link </a></li>
+                                                                    <li><a href="#" id="copyBtn" data-text="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}">Copy job Link </a></li>
+                                                                @endif
 
 
-
-                                                                        @endif
+                                                                @endif
                                                                 <li><a href="{{ route('job-promote', [$job['id']]) }}">Get
                                                                         Referrals </a></li>
                                                                 
@@ -247,11 +248,17 @@
 
                             <script type="text/javascript">
 
-                                function copyToClipboard(id) {
-                                    document.getElementById(id).select();
-                                    document.execCommand('copy');
-                                    alert("Link copied");
-                                }
+                                const copyBtn = document.querySelector('#copyBtn');
+                                copyBtn.addEventListener('click', e => {
+                                    const input = document.createElement('input');
+                                    input.value = copyBtn.dataset.text;
+                                    document.body.appendChild(input);
+                                    input.select();
+                                    if(document.execCommand('copy')) {
+                                        alert('Link Copied');
+                                        document.body.removeChild(input);
+                                    }
+                                });
                                 
                                 function Activate(id) {
                                     var url = "{{ route('job-status') }}";

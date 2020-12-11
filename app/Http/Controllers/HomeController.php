@@ -75,11 +75,11 @@ class HomeController extends Controller
         }
 
         $jobs = Job::whereStatus('ACTIVE')
-                    ->whereNotIn('is_for', ['internal', 'private'])
-                    ->where('expiry_date', '>=', date('Y-m-d'))
-                    ->take(env('JOB_HOMEPAGE_LIST', 3))
-                    ->orderBy('id', 'desc')
-                    ->get();
+            ->whereNotIn('is_private', [true])
+            ->where('expiry_date', '>=', date('Y-m-d'))
+            ->take(env('JOB_HOMEPAGE_LIST', 3))
+            ->orderBy('id', 'desc')
+            ->get();
         
         $redirect_to = $request->redirect_to;
 

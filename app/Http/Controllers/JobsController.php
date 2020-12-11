@@ -668,6 +668,7 @@ class JobsController extends Controller
                 'location' => $request->location,
                 'summary' => $request->summary,
                 'is_for' => $request->eligibility,
+                'is_private' => ($request->is_private == '1' ? true : false),
                 'details' => $request->details,
                 'job_type' => $request->job_type,
                 'position' => $request->position,
@@ -678,7 +679,6 @@ class JobsController extends Controller
                 'workflow_id' => $request->workflow_id,
                 'experience' => $request->experience,
             ];
-
 
             if(empty($request->job_id)){
                 $job = Job::firstOrCreate($job_data);
@@ -1189,10 +1189,10 @@ class JobsController extends Controller
                     'company_id' => $company->id,
                     'workflow_id' => $request->workflow_id,
                     'is_for' => $request->is_for ?: 'external',
+                    'is_private' => ($request->is_private == '1' ? true : false),
                     'fields' => json_encode($fields),
                     'experience' => $request->experience,
                 ];
-
                 $job = Job::firstOrCreate($job_data);
 
                 //Send New job notification email
@@ -1544,7 +1544,7 @@ class JobsController extends Controller
         $deleted_jobs = [];
         $expired_jobs = [];
         $draft_jobs = [];
-        $private_jobs = $jobs->where('is_for', 'private');
+        $private_jobs = $jobs->where('is_private', true)->where('status', '!=', 'DELETED');
         $private = count($private_jobs);
 
         foreach ($jobs as $job) {
@@ -2128,27 +2128,6 @@ class JobsController extends Controller
         $applications = array_map(function ($value) {
             return count($value);
         }, $applications);
-
-
-        // $chart = new SampleChart;
-        // $chart->labels($);
-        // $chart->dataset('My dataset', 'line', [1, 2, 3, 4]);
-        // $chart->dataset('My dataset 2', 'line', [4, 3, 2, 1]);
-
-        // $applications_per_day_chart = Charts::create('line', 'highcharts')
-        //     // ->view('custom.line.chart.view') // Use this if you want to use your own template
-        //     ->title(' ')
-        //     ->elementLabel("Applicants")
-        //     ->labels(array_keys($applications))
-        //     // ->labels( array_map(function($value){ return date('D. d M Y', strtotime( $value ) ); },  array_keys($applications) ) )
-        //     ->values(array_values($applications))
-        //     // ->dimensions(1000,500)
-        //     // ->width('100%')
-        //     ->credits(false)
-        //     // ->legend({ 'enabled' : false })
-        //     ->responsive(true);
-        //
-
 
 
         return view('job.board.activities', compact('job', 'active_tab', 'result', 'application_statuses', 'applications', 'applicant_funnel', 'applications'));
@@ -2768,6 +2747,15 @@ class JobsController extends Controller
                 return "true";
 
 
+    }
+    
+    public function makeJobPrivateOrPublic(Request $request)
+    {
+        $job = Job::find($request->job_id);
+        $job->is_private =  $request->is_private == 'true' ? true : false;
+        $job->save();
+        if ($job)
+            return "true";
     }
 
     public function ReferJob(Request $request)

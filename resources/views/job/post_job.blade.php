@@ -78,6 +78,7 @@
                                         $details = NULL;
                                         $experience = NULL;
                                         $eligibilty = NULL;
+                                        $is_private = NULL;
                                         $jobId = NULL;
                                         if(!is_null($job)){
                                             $job_type = $job->job_type;
@@ -90,6 +91,7 @@
                                             $details = $job->details;
                                             $experience = $job->experience;
                                             $eligibilty = $job->is_for;
+                                            $is_private = $job->is_private;
                                             $jobId = $job->id;
                                         }
 
@@ -191,9 +193,8 @@
                                                  <select @if($eligibilty) readonly @endif name="eligibility" class="form-control" id="is_for" >
                                                      <option value=""> -- choose eligibility -- </option>
                                                      <option @if ($eligibilty == 'both') selected="selected" @endif  value="both"> BOTH </option>
-                                                     <option @if ($eligibilty == 'internal') selected="selected" @endif value="internal"> INTERNAL STAFF </option>
-                                                     <option @if ($eligibilty == 'external') selected="selected" @endif selected value="external"> EXTERNAL STAFF </option>
-                                                     <option @if ($eligibilty == 'private') selected="selected" @endif value="private"> PRIVATE JOB </option>
+                                                     <option @if ($eligibilty == 'internal') selected="selected" @endif value="internal"> INTERNAL </option>
+                                                     <option @if ($eligibilty == 'external') selected="selected" @endif selected value="external"> EXTERNAL </option>
                                                  </select>
                                             </div>
 
@@ -206,6 +207,14 @@
                                                        class="datepicker form-control expiry_date"
                                                        autocomplete="off"
                                                        required>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <br>
+                                                
+                                                <label for="job-loc">Make job private
+                                                <input type="checkbox" id="is_private" name="is_private" value="1" @if ($is_private == 1) checked @endif >
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
@@ -475,8 +484,6 @@
 
                             if(!res.is_update){
                                 setTimeout(function(){ window.location.href = res.redirect_url; }, 2000);
-                            }else{
-
                             }
                         }
                     }

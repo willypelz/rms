@@ -156,7 +156,7 @@ class JobApplicationsController extends Controller
         $nav_type = 'assess';
 
         $requests = TestRequest::where('job_application_id', $appl_id)->with('product.provider')->get();
-        
+
 
         return view('applicant.assess', compact('appl', 'nav_type', 'requests'));
     }
@@ -309,7 +309,7 @@ class JobApplicationsController extends Controller
             'description' => $request->document_description
         ]);
 
-        
+
         $candidate = JobApplication::find($request->application_id);
         $email_title = "Message on your job application ".$candidate->job->title;
         $email_message = $message->message;
@@ -339,14 +339,14 @@ class JobApplicationsController extends Controller
 
             }
         ])->find($request->jobID);
-        
+
 
         $active_tab = 'candidates';
         $status = '';
         $jobID = $request->jobID;
         $this->search_params['filter_query'] = @$request->filter_query;
         $this->search_params['start'] = $start = ($request->start) ? ($request->start * $this->search_params['row']) : 0;
-        
+
         //If age is available
         if (@$request->age) {
 
@@ -390,7 +390,7 @@ class JobApplicationsController extends Controller
             $solr_video_application_score = null;
         }
 
-        
+
         $result = SolrPackage::get_applicants(
             $this->search_params,
             $request->jobID,
@@ -437,7 +437,7 @@ class JobApplicationsController extends Controller
         $permissions = getUserPermissions();
 
 
-        if ($request->ajax()) {            
+        if ($request->ajax()) {
 
             $search_results = view('job.board.includes.applicant-results-item',
                 compact('job', 'active_tab', 'status', 'result', 'jobID', 'start', 'myJobs', 'myFolders',
@@ -488,7 +488,7 @@ class JobApplicationsController extends Controller
 
     public function uploadApplicantsToSolr()
     {
-        
+
 
     }
 
@@ -562,7 +562,7 @@ class JobApplicationsController extends Controller
             $end_dob = explode(' ', $date->subYears(@$request->age[1]))[0] . 'T00:00:00Z';
 
             $solr_age = [$start_dob, $end_dob];
-            
+
         } else {
             $request->age = [15, 65];
             $solr_age = null;
@@ -675,7 +675,7 @@ class JobApplicationsController extends Controller
         $filename = str_replace('/', '', $filename);
         $filename = str_replace('\'', '', $filename);
 
-        
+
         return Excel::download(new ApplicantsExport($excel_data), $filename);
 
         Excel::create($filename,
@@ -702,7 +702,7 @@ class JobApplicationsController extends Controller
                             'horizontal' => 'left'
                         ]
                     ]);
-                  
+
 
 
 
@@ -730,7 +730,7 @@ class JobApplicationsController extends Controller
             $end_dob = explode(' ', $date->subYears(@$request->age[1]))[0] . 'T00:00:00Z';
 
             $solr_age = [$start_dob, $end_dob];
-            
+
         } else {
             $request->age = [15, 65];
             $solr_age = null;
@@ -844,10 +844,10 @@ class JobApplicationsController extends Controller
 
       foreach ($application_ids as $key => $app_id) {
         $appl = JobApplication::with('job', 'cv')->find($app_id);
-        
+
         if(!is_null($appl)){
             $jobID = $appl->job->id;
-            
+
             if (isset($jobID)) {
                 check_if_job_owner($jobID);
             }
@@ -960,7 +960,7 @@ class JobApplicationsController extends Controller
                 . '</div>';
         }
 
-      
+
         echo $stats;
     }
 
@@ -1012,7 +1012,7 @@ class JobApplicationsController extends Controller
         $jobs_data = [];
 
             $job_id = $request->jobs_ids;
-            
+
                 $job_response_data = [
                     'id' => $job_id,
                     'html_data' => ''
@@ -1560,7 +1560,7 @@ class JobApplicationsController extends Controller
                 $app = JobApplication::with('cv')->find($app_id);
 
                 JobApplication::massAction(@$request->job_id, @$request->cv_ids, $request->step, $request->stepId);
-                
+
                 $testUrl = env('SEAMLESS_TESTING_APP_URL', 'http://seamlesstesting.com').'/test-request';
                 $data = [
                     'job_title' => $app->job->title,
@@ -1581,7 +1581,7 @@ class JobApplicationsController extends Controller
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
                 // execute!
                 $response = curl_exec($ch);
-                
+
                 // close the connection, release resources used
                 curl_close($ch);
                 // Leave this next line untouched, its imperative
@@ -1699,7 +1699,7 @@ class JobApplicationsController extends Controller
 
     public function Checkout(Request $request)
     {
-        
+
 
 
     }

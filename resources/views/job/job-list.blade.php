@@ -177,14 +177,13 @@
                                                                         job on
                                                                         Social Media. </a></li>
                                                                 
-                                                                @if($job['is_private'] == 1)
-                                                                    <input type="text" 
-                                                                        id="copy_{{ $job->id }}" 
-                                                                        value="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}" style="display: none;">
+                                                                
+                                                                <input type="text" 
+                                                                    id="copy_{{ $job->id }}" 
+                                                                    value="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}" style="display: none;">
 
-                                                                    <li><a href="#" id="copyBtn" data-text="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}">Copy job Link </a></li>
-                                                                @endif
-
+                                                                <li><a href="#" id="copyBtn" data-text="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}">Copy job Link </a></li>
+                                                
 
                                                                 @endif
                                                                 <li><a href="{{ route('job-promote', [$job['id']]) }}">Get

@@ -254,7 +254,7 @@
                                     document.body.appendChild(input);
                                     input.select();
                                     if(document.execCommand('copy')) {
-                                        alert('Link Copied');
+                                        $.growl.notice({ message: "Job link copied" });
                                         document.body.removeChild(input);
                                     }
                                 });
@@ -268,9 +268,8 @@
                                         url: url,
                                         data: ({rnd: Math.random() * 100000, job_id: id, status: 'ACTIVE'}),
                                         success: function (response) {
-                                            alert('Job has been Activated');
+                                            $.growl.notice({ message: "Job has been Activated" });
                                             location.reload();
-
                                         }
                                     });
                                 }
@@ -284,7 +283,7 @@
                                         url: url,
                                         data: ({rnd: Math.random() * 100000, job_id: id, status: 'SUSPENDED'}),
                                         success: function (response) {
-                                            alert('Job has been Suspended');
+                                            $.growl.notice({ message: "Job has been Suspended" });
                                             location.reload();
                                         }
                                     });
@@ -300,7 +299,7 @@
                                             url: url,
                                             data: ({rnd: Math.random() * 100000, job_id: id, is_private: true}),
                                             success: function (response) {
-                                                alert('Job has been made private');
+                                                $.growl.notice({ message: "Job has been made private" });
                                                 location.reload();
                                             }
                                         });
@@ -317,7 +316,7 @@
                                             url: url,
                                             data: ({rnd: Math.random() * 100000, job_id: id, is_private: false}),
                                             success: function (response) {
-                                                alert('Job has been made public');
+                                                $.growl.notice({ message: "Job has been made public" });
                                                 location.reload();
                                             }
                                         });
@@ -333,7 +332,7 @@
                                         url: url,
                                         data: ({rnd: Math.random() * 100000, job_id: id}),
                                         success: function (response) {
-                                            alert('Job has been Duplicated');
+                                            $.growl.notice({ message: "Job has been Duplicated" });
                                             location.reload();
                                         }
                                     });

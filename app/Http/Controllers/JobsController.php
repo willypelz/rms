@@ -668,17 +668,18 @@ class JobsController extends Controller
                 'location' => $request->location,
                 'summary' => $request->summary,
                 'is_for' => $request->eligibility,
-                'is_private' => ($request->is_private == '1' ? true : false),
+                'is_private' => ($request->is_private  == 'true' ? 1 : 0),
                 'details' => $request->details,
                 'job_type' => $request->job_type,
                 'position' => $request->position,
                 'post_date' => date('Y-m-d'),
                 'expiry_date' => $request->expiry_date,
-                'status' => 'DRAFT',
+                // 'status' => 'DRAFT',
                 'company_id' => $company->id,
                 'workflow_id' => $request->workflow_id,
                 'experience' => $request->experience,
             ];
+
 
             if(empty($request->job_id)){
                 $job = Job::firstOrCreate($job_data);
@@ -689,7 +690,6 @@ class JobsController extends Controller
 
                 $jb->update($job_data);
             }
-
 
             if($request->specializations){
                 $job->specializations()->detach();
@@ -1188,8 +1188,8 @@ class JobsController extends Controller
                     'status' => 'ACTIVE',
                     'company_id' => $company->id,
                     'workflow_id' => $request->workflow_id,
-                    'is_for' => $request->is_for ?: 'external',
-                    'is_private' => ($request->is_private == '1' ? true : false),
+                    'is_for' => $request->is_for,
+                    'is_private' => ($request->is_private  == 'true' ? 1 : 0),
                     'fields' => json_encode($fields),
                     'experience' => $request->experience,
                 ];
@@ -1544,7 +1544,7 @@ class JobsController extends Controller
         $deleted_jobs = [];
         $expired_jobs = [];
         $draft_jobs = [];
-        $private_jobs = $jobs->where('is_private', true)->where('status', '!=', 'DELETED');
+        $private_jobs = $jobs->where('is_private', true)->whereNotIn('status', ['DELETED', 'SUSPENDED', 'DRAFT']);
         $private = count($private_jobs);
 
         foreach ($jobs as $job) {
@@ -1567,6 +1567,7 @@ class JobsController extends Controller
             } 
             
         }
+
 
         $all_jobs = [
             'ACTIVE' => $active_jobs,

@@ -34,6 +34,7 @@ class Job extends Model
         'job_level',
         'position',
         'published',
+        'is_private',
         'experience',
         'fields',
         'is_for',

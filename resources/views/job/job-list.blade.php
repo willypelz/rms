@@ -92,11 +92,14 @@
 
                 @endif
 
+
                 @foreach( $all_jobs as $job_section)
                     @if( count(@$job_section) > 0 )
                         @foreach($job_section as $key => $job)
                             @php 
-                                $tag = $key == 'PRIVATE' ? 'private' : (( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 ) ? 'expired' : strtolower($job['status'])); 
+
+                                $tag = $key = (( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 ) ? 'expired' : strtolower($job['status']));
+
                             @endphp
 
                             <div class="col-xs-12 job-block job-all job-{{$tag}}">
@@ -107,7 +110,7 @@
                                                 <div class="title-job">
                                                     <h5>
                                                         <a target="_blank"
-                                                           href="{{ route('job-board', [$job['id']]) }}"><b>{{ $job['title'] }}</b>
+                                                           href="{{ route('job-board', [$job['id']]) }}"><b>{{ $job['title'] .'- '.$tag }}</b>
                                                         </a>
                                                         <a href="{{ route('workflow-steps-add', ['id' => $job->workflow->id]) }}"
                                                            class="label label-info">
@@ -138,8 +141,9 @@
                                                     </small>
                                                     <br/>
                                                     <small class="text-muted">
+
                                                     <i
-                                                                class="glyphicon glyphicon-bookmark "></i> {{$job['is_for']}} {{ $job['is_private'] == 1 ? '(PRIVATE)' : '(PUBLIC)'}}
+                                                                class="glyphicon glyphicon-bookmark "></i> {{ $job['is_for']}} {{ $job['is_private'] == 1 ? '(PRIVATE)' : '(PUBLIC)'}}
                                                         &nbsp;
                                                         <i
                                                                 class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }}
@@ -182,10 +186,13 @@
                                                                     id="copy_{{ $job->id }}" 
                                                                     value="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}" style="display: none;">
 
-                                                                <li><a href="#" id="copyBtn" data-text="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}">Copy job Link </a></li>
+                                                                
                                                 
 
                                                                 @endif
+
+                                                                <li><a href="#" id="copyBtn" data-text="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}">Copy job Link </a></li>
+
                                                                 <li><a href="{{ route('job-promote', [$job['id']]) }}">Get
                                                                         Referrals </a></li>
                                                                 
@@ -193,7 +200,7 @@
                                                                 @if($job['is_private'] == 1)
                                                                     <li><a href="#"
                                                                            onclick="makePublic( {{$job['id']}} ); return false">Make job public</a></li>
-                                                                @elseif($job['is_private'] == 0)
+                                                                @else
                                                                     <li><a href="#"
                                                                            onclick="makePrivate( {{$job['id']}} ); return false">Make job private</a></li>
                                                                 @endif
@@ -308,7 +315,7 @@
 
                                 function makePublic(id) {
                                     var url = "{{ route('make-job-private') }}";
-                                    var confirmed = confirm("Are you sure you want to make this job private?");
+                                    var confirmed = confirm("Are you sure you want to make this job public?");
                                     if(confirmed == true){
                                         $.ajax
                                         ({

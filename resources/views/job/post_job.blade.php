@@ -213,7 +213,7 @@
                                                 <br>
                                                 
                                                 <label for="job-loc">Make job private
-                                                <input type="checkbox" id="is_private" name="is_private" value="1" @if ($is_private == 1) checked @endif >
+                                                <input type="checkbox" id="is_private" value="true" name="is_private" @if ($is_private == 1) checked @endif >
                                                 </label>
                                             </div>
                                         </div>
@@ -258,11 +258,7 @@
 
                                             </div>
                                             <div>
-                                                <input name="is_for"
-                                                       id="isFor"
-                                                       type="hidden"
-                                                       class="form-control"
-                                                       style="width: 100%;">
+                                                <!--  -->
                                             </div>
                                         </div>
                                     </div>
@@ -464,7 +460,9 @@
             var specializations = $('#specialization').val();
 
             var job_type = $('.job_type option:selected').val();
+            var is_for = $('#is_for option:selected').val();
             var position = $('.position').val();
+            var is_private = $('#is_private').is(':checked');
             var experience = exp.getData();
 
              $.ajax({ url: url,
@@ -472,10 +470,11 @@
                     data: { 
                         _token: '{{ csrf_token() }}', title: title, 
                         details: details, location: location, 
+                        eligibilty: is_for, is_private: is_private, 
                         job_type: job_type, position: position, 
                         expiry_date: expiry_date, experience: experience, 
                         specializations:specializations, workflow_id:workflowId, 
-                        job_id:"{{ $jobId }}", eligibilty:eligibilty, 
+                        job_id:"{{ $jobId }}", eligibility:eligibilty, 
                         summary:summary, is_ajax:'true' 
                     },
                     

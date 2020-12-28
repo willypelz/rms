@@ -78,6 +78,7 @@
                                         $details = NULL;
                                         $experience = NULL;
                                         $eligibilty = NULL;
+                                        $is_private = NULL;
                                         $jobId = NULL;
                                         if(!is_null($job)){
                                             $job_type = $job->job_type;
@@ -90,6 +91,7 @@
                                             $details = $job->details;
                                             $experience = $job->experience;
                                             $eligibilty = $job->is_for;
+                                            $is_private = $job->is_private;
                                             $jobId = $job->id;
                                         }
 
@@ -189,10 +191,10 @@
                                                     <span class="text-danger">*</span>
                                                 </label>
                                                  <select @if($eligibilty) readonly @endif name="eligibility" class="form-control" id="is_for" >
-                                                     <option value=""> --choose eligibility -- </option>
+                                                     <option value=""> -- choose eligibility -- </option>
                                                      <option @if ($eligibilty == 'both') selected="selected" @endif  value="both"> BOTH </option>
-                                                     <option @if ($eligibilty == 'internal') selected="selected" @endif value="internal"> INTERNAL STAFF </option>
-                                                     <option @if ($eligibilty == 'external') selected="selected" @endif selected value="external"> EXTERNAL STAFF </option>
+                                                     <option @if ($eligibilty == 'internal') selected="selected" @endif value="internal"> INTERNAL </option>
+                                                     <option @if ($eligibilty == 'external') selected="selected" @endif selected value="external"> EXTERNAL </option>
                                                  </select>
                                             </div>
 
@@ -205,6 +207,14 @@
                                                        class="datepicker form-control expiry_date"
                                                        autocomplete="off"
                                                        required>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <br>
+                                                
+                                                <label for="job-loc">Make job private
+                                                <input type="checkbox" id="is_private" value="true" name="is_private" @if ($is_private == 1) checked @endif >
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
@@ -248,11 +258,7 @@
 
                                             </div>
                                             <div>
-                                                <input name="is_for"
-                                                       id="isFor"
-                                                       type="hidden"
-                                                       class="form-control"
-                                                       style="width: 100%;">
+                                                <!--  -->
                                             </div>
                                         </div>
                                     </div>
@@ -454,22 +460,31 @@
             var specializations = $('#specialization').val();
 
             var job_type = $('.job_type option:selected').val();
+            var is_for = $('#is_for option:selected').val();
             var position = $('.position').val();
+            var is_private = $('#is_private').is(':checked');
             var experience = exp.getData();
 
              $.ajax({ url: url,
                     type:'POST',
-                    data: { _token: '{{ csrf_token() }}', title: title, details: details, location: location, job_type: job_type, position: position, expiry_date: expiry_date, experience: experience, specializations:specializations, workflow_id:workflowId, job_id:"{{ $jobId }}", eligibilty:eligibilty, summary:summary, is_ajax:'true' },
-                         success:function(res){
-                            if(res.status == 200){
+                    data: { 
+                        _token: '{{ csrf_token() }}', title: title, 
+                        details: details, location: location, 
+                        eligibilty: is_for, is_private: is_private, 
+                        job_type: job_type, position: position, 
+                        expiry_date: expiry_date, experience: experience, 
+                        specializations:specializations, workflow_id:workflowId, 
+                        job_id:"{{ $jobId }}", eligibility:eligibilty, 
+                        summary:summary, is_ajax:'true' 
+                    },
+                    
+                    success:function(res){
+                        if(res.status == 200){
 
-                                if(!res.is_update){
-                                    setTimeout(function(){ window.location.href = res.redirect_url; }, 2000);
-                                }else{
-
-                                }
-
+                            if(!res.is_update){
+                                setTimeout(function(){ window.location.href = res.redirect_url; }, 2000);
                             }
+                        }
                     }
                  });
 

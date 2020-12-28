@@ -361,6 +361,7 @@ Route::group(['middleware' => 'web'], function () {
         ['uses' => 'JobsController@JobVideoApplication', 'as' => 'job-video-application']);
 
     Route::match(['get', 'post'], 'job-status', ['uses' => 'JobsController@JobStatus', 'as' => 'job-status']);
+    Route::match(['get', 'post'], 'make-private', ['uses' => 'JobsController@makeJobPrivateOrPublic', 'as' => 'make-job-private']);
 
 
     // Route::any('log-in', function () {

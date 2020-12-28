@@ -13,7 +13,7 @@
                 <div class="col-xs-12 no-margin">
                     <br>
                     <h3 class="text-green-light no-margin">
-                        {{ $active + $expired + $suspended }} {{ $company->name }}  @if($active + $suspended > 1)
+                        {{ $active + $expired + $suspended + $private }} {{ $company->name }}  @if($active + $suspended > 1)
                             Jobs @else Job @endif
                         &nbsp;
                         @if($user_role == 'admin')
@@ -34,7 +34,7 @@
 
                 <div class="col-md-8 col-sm-12" id="filter">
                     <button class="btn btn-primary active" type="button" data-target="all">
-                        All <span class="badge">{{ $active + $expired + $suspended }}</span>
+                        All <span class="badge">{{ $active + $expired + $suspended + $private }}</span>
                     </button>
                     <button class="btn btn-primary" type="button" data-target="active">
                         Active <span class="badge">{{ $active }}</span>
@@ -47,6 +47,9 @@
                     </button>
                     <button class="btn btn-primary" type="button" data-target="draft">
                         Draft <span class="badge">{{ $draft }}</span>
+                    </button>
+                    <button class="btn btn-primary" type="button" data-target="private">
+                        Private <span class="badge">{{ $private }}</span>
                     </button>
                 </div>
                 <script>
@@ -89,11 +92,13 @@
 
                 @endif
 
-                @foreach( $all_jobs as  $job_section)
+
+                @foreach( $all_jobs as $job_section)
                     @if( count(@$job_section) > 0 )
-                        @foreach($job_section as $job)
-                            @php $tag = ( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 ) ? 'expired' : strtolower($job['status']); 
-                            
+                        @foreach($job_section as $key => $job)
+                            @php 
+
+                                $tag = $key = (( \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($job->expiry_date), false ) < 0 ) ? 'expired' : strtolower($job['status']));
 
                             @endphp
 
@@ -105,7 +110,7 @@
                                                 <div class="title-job">
                                                     <h5>
                                                         <a target="_blank"
-                                                           href="{{ route('job-board', [$job['id']]) }}"><b>{{ $job['title'] }}</b>
+                                                           href="{{ route('job-board', [$job['id']]) }}"><b>{{ $job['title'] .'- '.$tag }}</b>
                                                         </a>
                                                         <a href="{{ route('workflow-steps-add', ['id' => $job->workflow->id]) }}"
                                                            class="label label-info">
@@ -130,14 +135,15 @@
                                                         @else Job Expired @endif |
                                                         <a href="{{ route('job-board', [$job['id']]) }}">View Job</a>
                                                         @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin','commenter'])) || $is_super_admin)
-                                                                <a href="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}"
+                                                            | <a href="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}"
                                                                     target="_blank">Preview Job</a>
                                                             @endif
                                                     </small>
                                                     <br/>
                                                     <small class="text-muted">
+
                                                     <i
-                                                                class="glyphicon glyphicon-bookmark "></i> {{$job['is_for']}}
+                                                                class="glyphicon glyphicon-bookmark "></i> {{ $job['is_for']}} {{ $job['is_private'] == 1 ? '(PRIVATE)' : '(PUBLIC)'}}
                                                         &nbsp;
                                                         <i
                                                                 class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }}
@@ -157,6 +163,8 @@
                                                         <ul class="dropdown-menu">
 
                                                             @if($job['status'] != 'DRAFT')
+                                                                <li><a href="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}" target="_blank">Preview Job</a></li>
+                                                                
                                                                 <li><a href="{{ route('job-candidates', [$job['id']]) }}">View
                                                                     Applicants</a></li>
                                                                 @if((isset($user_role) &&  !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
@@ -172,14 +180,31 @@
                                                                         this
                                                                         job on
                                                                         Social Media. </a></li>
+                                                                
+                                                                
+                                                                <input type="text" 
+                                                                    id="copy_{{ $job->id }}" 
+                                                                    value="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}" style="display: none;">
 
+                                                                
+                                                
 
+                                                                @endif
 
-                                                                        @endif
+                                                                <li><a href="#" id="copyBtn" data-text="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}">Copy job Link </a></li>
+
                                                                 <li><a href="{{ route('job-promote', [$job['id']]) }}">Get
                                                                         Referrals </a></li>
                                                                 
                                                                 <li role="separator" class="divider"></li>
+                                                                @if($job['is_private'] == 1)
+                                                                    <li><a href="#"
+                                                                           onclick="makePublic( {{$job['id']}} ); return false">Make job public</a></li>
+                                                                @else
+                                                                    <li><a href="#"
+                                                                           onclick="makePrivate( {{$job['id']}} ); return false">Make job private</a></li>
+                                                                @endif
+
                                                                 @if(in_array($job['status'], ['SUSPENDED', 'DRAFT'] ) && !$job->hasExpied())
                                                                     <li><a href="#"
                                                                            onclick="Activate( {{$job['id']}} ); return false">Activate
@@ -188,12 +213,10 @@
                                                                     <li><a href="#" disabled>EXPIRED</a></li>
                                                                 @elseif($job['status'] == 'ACTIVE' && !$job->hasExpied())
                                                                     <li><a href="#"
-                                                                           onclick="Suspend( {{$job['id']}} ); return false">Suspend
-                                                                            Job</a></li>
+                                                                           onclick="Suspend( {{$job['id']}} ); return false">Suspend Job</a></li>
                                                                 @endif
                                                                 <li><a href="#"
-                                                                       onclick="DuplicateJob( {{$job['id']}} ); return false">Duplicate
-                                                                        Job</a></li>
+                                                                       onclick="DuplicateJob( {{$job['id']}} ); return false">Duplicate Job</a></li>
 
                                                                 <li role="separator" class="divider"></li>
                                                                 @endif
@@ -231,6 +254,18 @@
 
                             <script type="text/javascript">
 
+                                const copyBtn = document.querySelector('#copyBtn');
+                                copyBtn.addEventListener('click', e => {
+                                    const input = document.createElement('input');
+                                    input.value = copyBtn.dataset.text;
+                                    document.body.appendChild(input);
+                                    input.select();
+                                    if(document.execCommand('copy')) {
+                                        $.growl.notice({ message: "Job link copied" });
+                                        document.body.removeChild(input);
+                                    }
+                                });
+                                
                                 function Activate(id) {
                                     var url = "{{ route('job-status') }}";
 
@@ -240,9 +275,8 @@
                                         url: url,
                                         data: ({rnd: Math.random() * 100000, job_id: id, status: 'ACTIVE'}),
                                         success: function (response) {
-                                            alert('Job has been Activated');
+                                            $.growl.notice({ message: "Job has been Activated" });
                                             location.reload();
-
                                         }
                                     });
                                 }
@@ -256,10 +290,44 @@
                                         url: url,
                                         data: ({rnd: Math.random() * 100000, job_id: id, status: 'SUSPENDED'}),
                                         success: function (response) {
-                                            alert('Job has been Suspended');
+                                            $.growl.notice({ message: "Job has been Suspended" });
                                             location.reload();
                                         }
                                     });
+                                }
+
+                                function makePrivate(id) {
+                                    var url = "{{ route('make-job-private') }}";
+                                    var confirmed = confirm("Are you sure you want to make this job private?");
+                                    if(confirmed == true){
+                                        $.ajax
+                                        ({
+                                            type: "POST",
+                                            url: url,
+                                            data: ({rnd: Math.random() * 100000, job_id: id, is_private: true}),
+                                            success: function (response) {
+                                                $.growl.notice({ message: "Job has been made private" });
+                                                location.reload();
+                                            }
+                                        });
+                                    }
+                                }
+
+                                function makePublic(id) {
+                                    var url = "{{ route('make-job-private') }}";
+                                    var confirmed = confirm("Are you sure you want to make this job public?");
+                                    if(confirmed == true){
+                                        $.ajax
+                                        ({
+                                            type: "POST",
+                                            url: url,
+                                            data: ({rnd: Math.random() * 100000, job_id: id, is_private: false}),
+                                            success: function (response) {
+                                                $.growl.notice({ message: "Job has been made public" });
+                                                location.reload();
+                                            }
+                                        });
+                                    }
                                 }
 
                                 function DuplicateJob(id) {
@@ -271,7 +339,7 @@
                                         url: url,
                                         data: ({rnd: Math.random() * 100000, job_id: id}),
                                         success: function (response) {
-                                            alert('Job has been Duplicated');
+                                            $.growl.notice({ message: "Job has been Duplicated" });
                                             location.reload();
                                         }
                                     });

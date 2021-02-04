@@ -13,12 +13,13 @@
     </li>
     <li  @if($nav_type=='messages')class="active"@endif ><a href="{{ route('applicant-messages',  $appl->id) }}">Message</a>
     </li>
+    <!-- 
     <li  @if($nav_type=='checks')class="active"@endif ><a href="{{ route('applicant-checks',  $appl->id) }}">Background Checks</a>
     </li>
     <li  @if($nav_type=='assess')class="active"@endif ><a href="{{ route('applicant-assess',  $appl->id) }}">Test</a>
     </li>
     <li  @if($nav_type=='medicals')class="active"@endif ><a href="{{ route('applicant-medicals',  $appl->id) }}">Medicals</a>
-    </li>
+    </li> -->
 
     <li  @if($nav_type=='documents')class="active"@endif ><a href="{{ route('applicant-documents',  $appl->id) }}">Documents</a>
     </li>

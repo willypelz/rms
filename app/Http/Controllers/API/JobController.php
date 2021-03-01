@@ -131,6 +131,38 @@ class JobController extends Controller
         }
     }
 
+
+    public function listCompanies()
+    {
+        
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
+// add any additional headers you need to support here
+        header(
+            'Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With,X-Auth-Token, X-API-KEY, X-CSRF-TOKEN, Origin'
+        );
+        //validate request via company api_key
+        if (!$req_header = $request->header('X-API-KEY')) {
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => 'Bad Request, make sure your request format is correct',
+                    'data' => [],
+                ],
+                400
+            );
+        }
+
+        return response()->json(
+            [
+                'status' => true,
+                'message' => 'success',
+                'data' => Company::get(),
+            ]
+        );
+
+    }
+
     /**
      * TODO: This code so need to be refactored in the future
      *
@@ -139,15 +171,16 @@ class JobController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function company(Request $request, $jobType = 'all')
+    public function company(Request $request, $jobType = 'all', $company_id = NULL)
     {
+       
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
-// add any additional headers you need to support here
+        // add any additional headers you need to support here
         header(
             'Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With,X-Auth-Token, X-API-KEY, X-CSRF-TOKEN, Origin'
         );
-        //validate request via company api_key
+
         if (!$req_header = $request->header('X-API-KEY')) {
             return response()->json(
                 [
@@ -175,23 +208,29 @@ class JobController extends Controller
                 'jobs.specializations',
                 'jobs.company',
             ]
-        )
-            ->first();
+        );
+
+        if(is_null($company_id))
+            $company = $company->first();
+        else
+            $company = $company->find( $company_id);
 
         if (!$company) {
             return response()->json(
                 [
                     'status' => false,
-                    'message' => 'Unauthorized!.',
+                    'message' => 'Company doesn\'t exist. Please check request again.',
                     'data' => [],
                 ],
                 401
             );
         }
 
-        $company->logo = File::exists(public_path('uploads/'.@$company->logo))
-            ? asset('uploads/'.@$company->logo)
-            : $company->logo = asset('img/company.png');
+        if($company->logo){
+            $company->logo = File::exists(public_path('uploads/'.@$company->logo))
+                ? asset('uploads/'.@$company->logo)
+                : $company->logo = asset('img/company.png');
+        }
 
         return response()->json(
             [

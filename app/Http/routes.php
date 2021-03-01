@@ -791,7 +791,8 @@ Route::group(['middleware' => 'web'], function () {
         'prefix' => '/api/v1',
         'namespace' => 'API'
     ], function () {
-        Route::get('/jobs/{jobType?}', 'JobController@company');
+        Route::get('/list/companies', 'JobController@listCompanies');
+        Route::get('/jobs/{jobType?}/{company_id?}', 'JobController@company');
         Route::get('/job/{job_id}/{status_slug}/applicants', 'JobController@applicants');
         Route::post('/jobs/apply', 'JobController@apply');
         Route::get('/get/employees', 'JobController@fetchEmployees')->name('fetch-employees');

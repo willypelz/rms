@@ -635,7 +635,7 @@ class JobApplicationsController extends Controller
             }
 
             $excel_data[] = [
-                "FIRSTNAME" => $value['first_name'],
+                "FIRSTNAME" => @$value['first_name'],
                 "LASTNAME" => @$value['last_name'],
                 "LAST POSITION HELD" => @$value['last_position'],
                 "HEADLINE" => @$value['headline'][0],

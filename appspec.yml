@@ -14,7 +14,7 @@ hooks:
       runas: ec2-user
   ApplicationStart:
     - location: scripts/file_permissions.sh
-      timeout: 300
+      timeout: 900
       runas: root
     - location: scripts/dumpautoload.sh
       timeout: 300

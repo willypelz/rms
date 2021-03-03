@@ -63,7 +63,7 @@
 
 
 																		<br><br>
-																		"Please note that we will engage you to proceed with your application if shortlisted"
+																		"Please note that we will engage you to proceed with your application if shortlisted".
 
 																		</p>
 

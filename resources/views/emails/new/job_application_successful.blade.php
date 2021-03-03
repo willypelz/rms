@@ -61,7 +61,13 @@
 																		<br><br>
 																		We confirm receipt of your application which has been submitted for review.
 
+
+																		<br><br>
+																		"Please note that we will engage you to proceed with your application if shortlisted"
+
 																		</p>
+
+																		<br><br>
 																		<div style="color:#2d2d2d;" align="center">
 																			<p> To view new progress, </p> <a href="{{ $link }}" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color: #4BB779;text-transform:uppercase" target="_blank">Click here</a>
 																		</div>

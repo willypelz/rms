@@ -132,7 +132,7 @@ class JobController extends Controller
     }
 
 
-    public function listCompanies()
+    public function listCompanies(Request $request)
     {
         
         header('Access-Control-Allow-Origin: *');

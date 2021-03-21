@@ -142,22 +142,24 @@ return [
 
     'environments' => [
         'production' => [
-            'supervisor-1' => [
+            'supervisor-1-'.env('DB_DATABASE') => [
                 'connection' => 'redis',
-                'queue' => ['default', 'solr'],
-                'balance' => 'auto',
-                'processes' => env('HORIZON_PROCESS', 10),
-                'tries' => 1,
+	            'queue' => ['default', 'solr'],
+	            'balance' => 'auto',
+	            'minProcesses' => env('HORIZON_PROCESS_MIN', 1),
+	            'maxProcesses' => env('HORIZON_PROCESS_MAX', 10),
+	            'tries' => 1,
             ],
         ],
 
         'local' => [
-            'supervisor-1' => [
+            'supervisor-1-'.env('DB_DATABASE') => [
                 'connection' => 'redis',
-                'queue' => ['default', 'solr'],
-                'balance' => 'auto',
-                'processes' => env('HORIZON_PROCESS', 10),
-                'tries' => 1,
+	            'queue' => ['default', 'solr'],
+	            'balance' => 'auto',
+	            'minProcesses' => env('HORIZON_PROCESS_MIN', 1),
+	            'maxProcesses' => env('HORIZON_PROCESS_MAX', 10),
+	            'tries' => 1,
             ],
         ],
     ],

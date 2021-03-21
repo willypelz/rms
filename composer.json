@@ -33,7 +33,10 @@
         "laravel/helpers": "^1.2",
         "jdavidbakr/mail-tracker": "^3.0.0",
         "seamlesshr/solrpackage": "develop-dev",
-        "solarium/solarium": "^5.1"
+        "solarium/solarium": "^5.1",
+        "predis/predis": "^1.1",
+        "laravel/horizon": "~3.0",
+        "laravel/telescope": "^3.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

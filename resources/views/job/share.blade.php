@@ -60,7 +60,7 @@
                                           Maximize the power of Referrals by sending this job to everyone on your network. 
                                           </p><br>
 
-                                       <p>
+                                       <p style="display: none;">
                                            <a role="button" data-toggle="collapse" href="#collapseWYSIWYG" aria-expanded="false" aria-controls="collapseWYSIWYG" class="btn btn-line"><i class="fa fa-envelope"></i> &nbsp; Get Referrals for this job</a>
                                        </p>
                                        <div class="separator separator-small"></div>

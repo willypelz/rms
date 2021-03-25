@@ -117,11 +117,13 @@
                                                            </span>
                                                     </a>
 
-                                                    <a href="https://plus.google.com/share?url={{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"
+
+
+                                                    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"
                                                        class="" target="_blank">
                                                            <span class="fa-stack fa-lg">
                                                              <i class="fa fa-circle fa-stack-2x text-"></i>
-                                                             <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                                                             <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
                                                            </span>
                                                     </a>
                                                 </p>

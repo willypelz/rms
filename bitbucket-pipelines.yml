@@ -9,7 +9,7 @@ definitions:
           - composer
         script:
           - apt-get update
-          - apt-get install -y zip git jq zlib1g-dev libpng-dev
+          - apt-get install -y zip git jq zlib1g-dev libpng-dev libzip-dev
           - docker-php-ext-install gd zip pdo mysqli pdo_mysql mbstring
           - echo ${AUTH_JSON} > auth.json
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

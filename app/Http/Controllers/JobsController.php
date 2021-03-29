@@ -2282,9 +2282,8 @@ class JobsController extends Controller
         $fields = json_decode($job->fields);
 
         if ($request->isMethod('post')) {
+           
             $data = $request->all();
-
-
 
             $owned_applications_count = JobApplication::where('candidate_id', $candidate->id)->where('job_id', $jobID)->count();
 
@@ -2292,8 +2291,16 @@ class JobsController extends Controller
                 return redirect()->route('job-applied', [$jobID, $slug, true]);
             }
 
+            \Log::info(json_encode($request->file('cv_file')));
+            \Log::info(json_encode($data['email'].'cv file size....'.$request->file('cv_file')->getSize()));
+
+            
 
             if ($request->hasFile('cv_file')) {
+
+                if ($request->file('cv_file')->getSize()  < 1) {
+                    return back()->withErrors(['warning' => 'Invalid CV file. Please check and try again.']);
+                }
 
                 $filename = time() . '_' . str_slug($request->email) . '_' . $request->file('cv_file')->getClientOriginalName();
 
@@ -2303,7 +2310,13 @@ class JobsController extends Controller
             }
 
 
+
+
             if ($request->hasFile('optional_attachment_1')) {
+
+                if ($request->file('optional_attachment_1')->getSize()  < 1) {
+                    return back()->withErrors(['warning' => 'Invalid Optional atachment. Please check and try again.']);
+                }
 
                 $filename = time() . '_' . str_slug($request->email) . '_' . $request->file('optional_attachment_1')->getClientOriginalName();
 
@@ -2313,6 +2326,10 @@ class JobsController extends Controller
             }
 
             if ($request->hasFile('optional_attachment_2')) {
+
+                if ($request->file('optional_attachment_2')->getSize()  < 1) {
+                    return back()->withErrors(['warning' => 'Invalid Optional atachment. Please check and try again.']);
+                }
 
                 $filename = time() . '_' . str_slug($request->email) . '_' . $request->file('optional_attachment_2')->getClientOriginalName();
 

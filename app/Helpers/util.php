@@ -181,8 +181,6 @@ function locations()
 function countries()
 {
     return config('countries');
-
-
 }
 
 function remove_cv_contact($cv)

@@ -57,7 +57,7 @@
 																		<hr style="border-width:0 0 1px">
 																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">Dear {{ $user->first_name . " " . $user->last_name }},
 																		<br><br>
-																		Thank you for applying for the position of <strong>{{ $job->title }}</strong> at <strong>{{ $job->company->name }}</strong>.
+																		Thank you for applying for the position of <strong>{{ $job->title}}</strong> at <strong>{{ $job->company->name }}</strong>.
 																		<br><br>
 																		We confirm receipt of your application which has been submitted for review.
 

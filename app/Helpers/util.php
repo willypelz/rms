@@ -174,8 +174,6 @@ function locations()
         'Taraba' => 'Taraba',
         'Yobe' => 'Yobe',
         'Zamfara' => 'Zamfara',
-        'Nigeria' => 'Nigeria'
-
     );
 
 }

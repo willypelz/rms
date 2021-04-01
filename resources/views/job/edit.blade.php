@@ -74,12 +74,12 @@
                                                 <select name="job_location" id="location" class="select2 form-control" required>
                                                     <option value="">--choose state--</option>
                                                     @foreach($locations as $state)
-                                                            <option value="<?= $state != 'Nigeria' ? $state : 'Across Nigeria' ?>" {{ ( $state == $loc )  ? "selected" : "" }} ><?=$state != 'Nigeria' ? $state : 'Across Nigeria'?></option>
+                                                            <option value="<?= $state != 'Nigeria' ? $state : 'Across Nigeria' ?>" {{ ($state ==  str_replace('Nigeria','Across Nigeria',$loc) )  ? "selected" : "" }} ><?=$state != 'Nigeria' ? $state : 'Across Nigeria'?></option>
                                                     @endforeach
                                                 </select>
                                                 </div>
                                             </div>
-                                             <!-- <input id="job-title" type="text" name="job_title" class="form-control" {{ (Request::old('job_title')) ? ' value='. e(Request::old('job_title')) .'' : '' }}></div> -->
+                                             <!-- <input id="job-title" type="text" name="job_title" class="form-control" {{ (Request::old('job_title')) ? ' value='. (Request::old('job_title')) .'' : '' }}></div> -->
                                            
                                             <div class="col-sm-6">
                                                     <label for="job-title">job level <span class="text-danger">*</span>

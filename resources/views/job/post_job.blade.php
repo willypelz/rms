@@ -59,7 +59,7 @@
                                         <br>
                                     </div>
 
-                                     @if ($errors->any())
+                                    @if ($errors->any())
                                         <ul class="alert alert-danger">
                                             @foreach ($errors->all() as $error)
                                                 <li>{{ $error }}</li>
@@ -126,20 +126,39 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <label for="job-title">
-                                                    Location
+                                                    Country
                                                     <span class="text-danger">*</span>
                                                 </label>
                                                 <select required
-                                                        name="location"
-                                                        id="location"
-                                                        class="form-control job_location"
+                                                        name="country"
+                                                        id="country"
+                                                        class="form-control job_country"
                                                         type="text"
                                                         style="width: 303px;">
-                                                    <option value="">--choose state--</option>
-                                                    @foreach($locations as $state)
-                                                        <option value="{{ $state }}" {{ ( $job_location == $state) ? 'selected="selected"' : '' }} >{{ $state }}</option>
+                                                    <option value="">--choose country--</option>
+                                                    @foreach($countries as $country)
+                                                        <option value="{{ $country }}" {{ ( $job_location == $country || (in_array($job_location,$locations) && $country == 'Nigeria')) ? 'selected="selected"' : '' }} >{{ $country }}</option>
                                                     @endforeach
                                                 </select>
+
+                                                <div class="state_section @if($errors->has('location') || (in_array($job_location,$locations) || $job_location == 'Nigeria'))  @else hidden @endif" style="margin-top: 10px">
+                                                    <label for="job-title">
+                                                        Location
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+                                                    <select required
+                                                            name="location"
+                                                            id="location"
+                                                            class="form-control job_location"
+                                                            type="text"
+                                                            style="width: 303px;">
+                                                        <option value="">--choose state--</option>
+                                                        @foreach($locations as $state)
+                                                            <option value="{{$state != 'Nigeria' ? $state : 'Across Nigeria' }}" {{ ( $job_location == $state) ? 'selected="selected"' : '' }} >{{ $state != 'Nigeria' ? $state : 'Across Nigeria' }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
                                             </div>
 
                                             <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
@@ -186,16 +205,23 @@
                                             </div>
 
 
-                                             <div class="col-sm-6">
+                                            <div class="col-sm-6">
                                                 <label for="job-loc">Eligibility
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                 <select @if($eligibilty) readonly @endif name="eligibility" class="form-control" id="is_for" >
-                                                     <option value=""> -- choose eligibility -- </option>
-                                                     <option @if ($eligibilty == 'both') selected="selected" @endif  value="both"> BOTH </option>
-                                                     <option @if ($eligibilty == 'internal') selected="selected" @endif value="internal"> INTERNAL </option>
-                                                     <option @if ($eligibilty == 'external') selected="selected" @endif selected value="external"> EXTERNAL </option>
-                                                 </select>
+                                                <select @if($eligibilty) readonly @endif name="eligibility"
+                                                        class="form-control" id="is_for">
+                                                    <option value=""> -- choose eligibility --</option>
+                                                    <option @if ($eligibilty == 'both') selected="selected"
+                                                            @endif  value="both"> BOTH
+                                                    </option>
+                                                    <option @if ($eligibilty == 'internal') selected="selected"
+                                                            @endif value="internal"> INTERNAL
+                                                    </option>
+                                                    <option @if ($eligibilty == 'external') selected="selected"
+                                                            @endif selected value="external"> EXTERNAL
+                                                    </option>
+                                                </select>
                                             </div>
 
                                             <div class="col-sm-6">
@@ -211,9 +237,10 @@
 
                                             <div class="col-sm-6">
                                                 <br>
-                                                
+
                                                 <label for="job-loc">Make job private
-                                                <input type="checkbox" id="is_private" value="true" name="is_private" @if ($is_private == 1) checked @endif >
+                                                    <input type="checkbox" id="is_private" value="true"
+                                                           name="is_private" @if ($is_private == 1) checked @endif >
                                                 </label>
                                             </div>
                                         </div>
@@ -263,13 +290,14 @@
                                         </div>
                                     </div>
 
-                                     <div class="form-group">
+                                    <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <label for="job-loc">Job Summary
                                                     <span style="color:red" class="text-danger">*</span>
                                                 </label>
-                                                <textarea name="summary" id="job_summary" class="form-control"  required=""> {{ $job_summary }}</textarea>
+                                                <textarea name="summary" id="job_summary" class="form-control"
+                                                          required=""> {{ $job_summary }}</textarea>
                                             </div>
 
                                         </div>
@@ -350,7 +378,8 @@
                                                 <i class="fa fa-check text-success fa-4x"></i>
                                                 <h5>Your job posting has been saved as draft</h5>
                                                 <div class="pad-ft">
-                                                    <a href="{{ route('job-list') }}" class="btn btn-success">Go to job list</a>
+                                                    <a href="{{ route('job-list') }}" class="btn btn-success">Go to job
+                                                        list</a>
                                                 </div>
                                             </div>
 
@@ -370,40 +399,56 @@
     <div class="separator separator-small"></div>
 
     <script type="text/javascript">
+        $(document).ready(function () {
+            var country = $('#country');
 
-    function checkIfWorkFlowIsSelected () {
-        getWorkFlowSteps($('#workflowId').val())
-    }
+            country.change(function () {
 
-    checkIfWorkFlowIsSelected()
+                if (country.val() == 'Nigeria') {
+                    $('.state_section').removeClass('hidden');
+                    $('#location').prop('required',true)
+                } else {
+                    $('.state_section').addClass('hidden');
+                    $('#location').prop('required',false)
+                }
+            });
 
-    $('#workflowId').on('change', function () {
-        getWorkFlowSteps(this.value)
-    })
 
-    function getWorkFlowSteps (Id) {
-        if (Id.length) {
-            var url = "{{ url('settings/workflow/steps/view') }}/" + Id
-            $.ajax({
-                url: url,
-                type: 'GET', success: function (res) {
-                    $('#showWorkFlowSteps').html(res)
-                },
-            })
-        } else {
-            $('#showWorkFlowSteps').html('')
+        });
+
+        function checkIfWorkFlowIsSelected() {
+            getWorkFlowSteps($('#workflowId').val())
         }
-    }
 
-    // Field ID and FieldName
-    function isFormValid (fieldId, fieldName) {
+        checkIfWorkFlowIsSelected()
 
-        if (fieldId == null || fieldId == '') {
-            alert(fieldName + ' must be filled')
-            return false
+        $('#workflowId').on('change', function () {
+            getWorkFlowSteps(this.value)
+        })
+
+        function getWorkFlowSteps(Id) {
+            if (Id.length) {
+                var url = "{{ url('settings/workflow/steps/view') }}/" + Id
+                $.ajax({
+                    url: url,
+                    type: 'GET', success: function (res) {
+                        $('#showWorkFlowSteps').html(res)
+                    },
+                })
+            } else {
+                $('#showWorkFlowSteps').html('')
+            }
         }
-        return true
-    }
+
+        // Field ID and FieldName
+        function isFormValid(fieldId, fieldName) {
+
+            if (fieldId == null || fieldId == '') {
+                alert(fieldName + ' must be filled')
+                return false
+            }
+            return true
+        }
 
 
         $('#SaveDraft').click(function (e) {
@@ -434,12 +479,19 @@
                 return false;
             }
 
+            var country = $('.job_country option:selected').val();
+
+            if (country == null || country == "") {
+                alert("country must be selected");
+                return false;
+            }
 
             var location = $('.job_location option:selected').val();
             if (location == null || location == "") {
                 alert("location must be filled");
                 return false;
             }
+
 
             var workflowId = $('#workflowId').val();
             if (workflowId == null || workflowId == "") {
@@ -465,35 +517,38 @@
             var is_private = $('#is_private').is(':checked');
             var experience = exp.getData();
 
-             $.ajax({ url: url,
-                    type:'POST',
-                    data: { 
-                        _token: '{{ csrf_token() }}', title: title, 
-                        details: details, location: location, 
-                        eligibilty: is_for, is_private: is_private, 
-                        job_type: job_type, position: position, 
-                        expiry_date: expiry_date, experience: experience, 
-                        specializations:specializations, workflow_id:workflowId, 
-                        job_id:"{{ $jobId }}", eligibility:eligibilty, 
-                        summary:summary, is_ajax:'true' 
-                    },
-                    
-                    success:function(res){
-                        if(res.status == 200){
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}', title: title,
+                    details: details, location: location,country:country,
+                    eligibilty: is_for, is_private: is_private,
+                    job_type: job_type, position: position,
+                    expiry_date: expiry_date, experience: experience,
+                    specializations: specializations, workflow_id: workflowId,
+                    job_id: "{{ $jobId }}", eligibility: eligibilty,
+                    summary: summary, is_ajax: 'true'
+                },
 
-                            if(!res.is_update){
-                                setTimeout(function(){ window.location.href = res.redirect_url; }, 2000);
-                            }
+                success: function (res) {
+                    if (res.status == 200) {
+
+                        if (!res.is_update) {
+                            setTimeout(function () {
+                                window.location.href = res.redirect_url;
+                            }, 2000);
                         }
                     }
-                 });
+                }
+            });
 
 
         });
 
 
-    var editor = CKEDITOR.replace('editor1')
-    var exp = CKEDITOR.replace('editor3')
+        var editor = CKEDITOR.replace('editor1')
+        var exp = CKEDITOR.replace('editor3')
 
     </script>
 @endsection

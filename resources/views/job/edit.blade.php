@@ -53,13 +53,31 @@
                                         ?>
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-sm-6"><label for="job-title">Location <span class="text-danger">*</span></label>
+                                            <div class="col-sm-6">
+                                                <label for="job-title">
+                                                    Country
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <select required
+                                                        name="country"
+                                                        id="country"
+                                                        class="form-control job_country"
+                                                        type="text"
+                                                        style="width: 303px;">
+                                                    <option value="">--choose country--</option>
+                                                    @foreach($countries as $country)
+                                                        <option value="{{ $country }}" {{ ( $loc == $country || (in_array($loc,$locations) && $country == 'Nigeria')) ? 'selected="selected"' : '' }} >{{ $country }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="state_section @if($errors->has('location') || (in_array($loc,$locations) || $loc == 'Nigeria'))  @else hidden @endif" style="margin-top: 10px">
+                                                <label for="job-title">Location <span class="text-danger">*</span></label>
                                                 <select name="job_location" id="location" class="select2 form-control" required>
                                                     <option value="">--choose state--</option>
                                                     @foreach($locations as $state)
-                                                            <option value="<?= $state ?>" {{ ( $state == $loc )  ? "selected" : "" }} ><?=$state?></option>
+                                                            <option value="<?= $state != 'Nigeria' ? $state : 'Across Nigeria' ?>" {{ ( $state == $loc )  ? "selected" : "" }} ><?=$state != 'Nigeria' ? $state : 'Across Nigeria'?></option>
                                                     @endforeach
                                                 </select>
+                                                </div>
                                             </div>
                                              <!-- <input id="job-title" type="text" name="job_title" class="form-control" {{ (Request::old('job_title')) ? ' value='. e(Request::old('job_title')) .'' : '' }}></div> -->
                                            
@@ -179,6 +197,22 @@
 
 
             <script>
+                $(document).ready(function () {
+                    var country = $('#country');
+
+                    country.change(function () {
+
+                        if (country.val() == 'Nigeria') {
+                            $('.state_section').removeClass('hidden');
+                            $('#location').prop('required',true)
+                        } else {
+                            $('.state_section').addClass('hidden');
+                            $('#location').prop('required',false)
+                        }
+                    });
+
+
+                });
                 // Replace the <textarea id="editor1"> with a CKEditor
                 // instance, using default configuration.
                 $(document).ready(function(){

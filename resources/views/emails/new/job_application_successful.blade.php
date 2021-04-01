@@ -15,7 +15,7 @@
 
 
 @php
-	
+
 	$logo = env("APP_LOGO");
 	$url = env("APP_URL");
 
@@ -49,7 +49,7 @@
 
 
 
-															<div style="color:#2d2d2d;width:100%;float:none;clear:both;">
+							<div style="color:#2d2d2d;width:100%;float:none;clear:both;">
 
 																<div style="color:#5d5d5d;background-color: #fbfbfb;padding:5% 7% 7%;border: 1px dotted #cecece;border-radius: 4px;">
 																	<div style="color:#2d2d2d;width:100%;margin:0 auto;">
@@ -92,7 +92,7 @@
 														</div>
 													</td>
 												</tr>
-												
+
 											</tbody>
 										</table>
 

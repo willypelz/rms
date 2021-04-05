@@ -351,13 +351,13 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <a id="SaveDraft" data-toggle="modal" data-target="#savedAsDraft"
-                                                   class="btn btn-primary btn-block">
+                                                   class="btn btn-primary btn-block submitButton">
                                                     Save and continue later
                                                 </a>
                                             </div>
                                             <div class="col-sm-6">
                                                 <button id="post-job-next-btn" type="submit"
-                                                        class="btn btn-success btn-block">
+                                                        class="btn btn-success btn-block submitButton">
                                                     Next
                                                 </button>
                                             </div>
@@ -413,7 +413,11 @@
                 }
             });
 
-
+            $('.submitButton').click(function () {
+                if (country.val() != 'Nigeria') {
+                    $('#location').prop('required',false)
+                }
+            })
         });
 
         function checkIfWorkFlowIsSelected() {
@@ -487,7 +491,7 @@
             }
 
             var location = $('.job_location option:selected').val();
-            if (location == null || location == "") {
+            if ((location == null || location == "") && country == 'Nigeria') {
                 alert("location must be filled");
                 return false;
             }

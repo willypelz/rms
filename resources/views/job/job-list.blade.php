@@ -191,7 +191,7 @@
 
                                                                 @endif
 
-                                                                <li><a href="#" id="copyBtn" data-text="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}">Copy job Link </a></li>
+                                                                <li><a href="#" class="copyBtn" id="copyBtn" onclick="copyLink('{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}')" data-text="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}">Copy job Link </a></li>
 
                                                                 
                                                                 <li role="separator" class="divider"></li>
@@ -251,19 +251,16 @@
                             </div>
 
                             <script type="text/javascript">
+                                function copyLink(text){
+                                        var $temp = $("<input>");
+                                        $("body").append($temp);
+                                        $temp.val(text).select();
+                                        if (document.execCommand('copy')) {
+                                            $.growl.notice({message: "Job link copied"});
+                                            $temp.remove();
+                                        }
 
-                                const copyBtn = document.querySelector('#copyBtn');
-                                copyBtn.addEventListener('click', e => {
-                                    const input = document.createElement('input');
-                                    input.value = copyBtn.dataset.text;
-                                    document.body.appendChild(input);
-                                    input.select();
-                                    if(document.execCommand('copy')) {
-                                        $.growl.notice({ message: "Job link copied" });
-                                        document.body.removeChild(input);
-                                    }
-                                });
-                                
+                                }
                                 function Activate(id) {
                                     var url = "{{ route('job-status') }}";
 
@@ -414,7 +411,7 @@
                     @endif
                 @endforeach
 
-               
+
                 <span class="col-xs-6"></span>
             </div>
 
@@ -451,5 +448,4 @@
             </div>
         </div>
     </div>
-
 @endsection

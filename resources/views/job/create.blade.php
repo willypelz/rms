@@ -56,15 +56,33 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-sm-6"><label for="job-title">Location <span
+                                            <div class="col-sm-6">
+                                                <label for="job-title">
+                                                    Country
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <select required
+                                                        name="country"
+                                                        id="country"
+                                                        class="form-control job_country"
+                                                        type="text"
+                                                        style="width: 303px;">
+                                                    <option value="">--choose country--</option>
+                                                    @foreach($countries as $country)
+                                                        <option value="{{ $country }}" {{ ( @Request::old('job_location') == $country || (in_array(@Request::old('job_location'),$locations) && $country == 'Nigeria')) ? 'selected="selected"' : '' }} >{{ $country }}</option>
+                                                    @endforeach
+                                                </select>
+                                            <div class="state_section @if($errors->has('location') || (in_array(@Request::old('job_location'),$locations) || @Request::old('job_location') == 'Nigeria'))  @else hidden @endif" style="margin-top: 10px">
+                                                <label for="job-title">Location <span
                                                             class="text-danger">*</span></label>
-                                                <select required name="job_location" id="location" class="select2"
+                                                <select required name="job_location" id="location" class="select2 job_location"
                                                         style="width: 303px;">
                                                     <option value="">--choose state--</option>
                                                     @foreach($locations as $state)
-                                                        <option value="{{ $state }}" {{ ( @Request::old('job_location') == $state) ? 'selected="selected"' : '' }} >{{ $state }}</option>
+                                                        <option value="{{ $state != 'Nigeria' ? $state : 'Across Nigeria' }}" {{ ( str_replace('Nigeria','Across Nigeria',@Request::old('job_location')) == $state) ? 'selected="selected"' : '' }} >{{  $state != 'Nigeria' ? $state : 'Across Nigeria' }}</option>
                                                     @endforeach
                                                 </select>
+                                            </div>
                                             </div>
                                         <!-- <input id="job-title" type="text" name="job_title" class="form-control" {{ (Request::old('job_title')) ? ' value='. e(Request::old('job_title')) .'' : '' }}></div> -->
 
@@ -627,6 +645,21 @@
     </section>
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
     <script type="text/javascript">
+        $(document).ready(function () {
+            var country = $('#country');
+
+            country.change(function () {
+
+                if (country.val() == 'Nigeria') {
+                    $('.state_section').removeClass('hidden');
+                    $('#location').prop('required',true)
+                } else {
+                    $('.state_section').addClass('hidden');
+                    $('#location').prop('required',false)
+                }
+            });
+
+        });
         var custom_fields = [];
         $('#SaveDraft').click(function (e) {
             e.preventDefault();
@@ -636,6 +669,14 @@
                 alert("Title must be filled out");
                 return false;
             }
+
+            var country = $('.job_country option:selected').val();
+
+            if (country == null || country == "") {
+                alert("country must be selected");
+                return false;
+            }
+
             var location = $('#location').val()
             if (location == null || location == "") {
                 alert("location must be filled out");
@@ -647,7 +688,7 @@
             ({
                 type: "POST",
                 url: url,
-                data: ({rnd: Math.random() * 100000, _token: token, title: title, location: location}),
+                data: ({rnd: Math.random() * 100000, _token: token, title: title, location: location,country:country}),
                 success: function (response) {
                     console.log(response)
                 }

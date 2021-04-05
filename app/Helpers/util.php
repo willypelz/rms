@@ -137,6 +137,7 @@ function save_activities($activity_type, $job_id = false, $job_app_id = false, $
 function locations()
 {
     return array(
+        'Across Nigeria' => 'Across Nigeria',
         'Abuja FCT' => 'Abuja FCT',
         'Abia' => 'Abia',
         'Adamawa' => 'Adamawa',
@@ -173,11 +174,13 @@ function locations()
         'Taraba' => 'Taraba',
         'Yobe' => 'Yobe',
         'Zamfara' => 'Zamfara',
-        'Nigeria' => 'Nigeria',
-        'Outside Nigeria' => 'Outside Nigeria',
-
     );
 
+}
+
+function countries()
+{
+    return config('countries');
 }
 
 function remove_cv_contact($cv)
@@ -818,9 +821,9 @@ function candidateDossierRating($value)
 }
 
 
-if (!function_exists('defaultCompanyLogo'))  
-{ 
-    function defaultCompanyLogo() {
-        return get_current_company()->logo ??  env('SEAMLESS_HIRING_LOGO');
+if (!function_exists('defaultCompanyLogo')) {
+    function defaultCompanyLogo()
+    {
+        return get_current_company()->logo ?? env('SEAMLESS_HIRING_LOGO');
     }
 } 

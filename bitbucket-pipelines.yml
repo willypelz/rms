@@ -1,5 +1,5 @@
 #image: atlassian/default-image:2
-image: php:7.2-cli
+image: php:7.3-cli
 
 definitions:
   steps:
@@ -9,8 +9,8 @@ definitions:
           - composer
         script:
           - apt-get update
-          - apt-get install -y zip git jq zlib1g-dev libpng-dev
-          - docker-php-ext-install gd zip pdo mysqli pdo_mysql mbstring
+          - apt-get install -y zip git jq zlib1g-dev libpng-dev libzip-dev
+          - docker-php-ext-install gd zip pdo mysqli pdo_mysql mbstring pcntl
           - echo ${AUTH_JSON} > auth.json
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
           - mkdir -p bootstrap/cache

@@ -193,8 +193,6 @@
 
                                                                 <li><a href="#" id="copyBtn" data-text="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}">Copy job Link </a></li>
 
-                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Get
-                                                                        Referrals </a></li>
                                                                 
                                                                 <li role="separator" class="divider"></li>
                                                                 @if($job['is_private'] == 1)

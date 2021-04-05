@@ -189,9 +189,9 @@
                                                            </span>
                                                    </a>
                                                </li>
-                                                                              
+                                                   
                                                <li>
-                                                   <a href="{{env('LINKEDIN_URL', 'https://www.linkedin.com/')}}shareArticle?mini=true&url={{$job_url}}&title={{$job->title}}&summary=&source=Seamlesshiring" class="" target="_blank" >
+                                                   <a href="https://www.linkedin.com/sharing/share-offsite/?url={{$job_url}}&title={{$job->title}}" class="" target="_blank" >
                                                            <span class="fa-stack fa-2x">
                                                              <i class="fa fa-circle fa-stack-2x text-" style="color:#007bb6"></i>
                                                              <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>

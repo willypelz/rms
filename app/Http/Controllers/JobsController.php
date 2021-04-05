@@ -652,7 +652,8 @@ class JobsController extends Controller
             if(!isset($request->is_ajax)){
                 $this->validate($request, [
                     'title' => 'required',
-                    'location' => 'required',
+                    'country'=>'required',
+                    'location' => 'required_if:country,Nigeria',
                     'details' => 'required',
                     'job_type' => 'required',
                     'position' => 'required',
@@ -662,10 +663,12 @@ class JobsController extends Controller
                 ]);
             }
 
+             $location_value = ($request->country != 'Nigeria') ? $request->country :
+                 ( ($request->location == 'Across Nigeria') ? 'Nigeria' : $request->location);
 
-            $job_data = [
+             $job_data = [
                 'title' => $request->title,
-                'location' => $request->location,
+                'location' => $location_value,
                 'summary' => $request->summary,
                 'is_for' => $request->eligibility,
                 'is_private' => ($request->is_private  == 'true' ? 1 : 0),
@@ -902,6 +905,7 @@ class JobsController extends Controller
         $application_fields = config('constants.application_fields');
         $qualifications = qualifications();
         $locations = locations();
+        $countries = countries();
         $specializations = Specialization::get();
 
         $user = Auth::user();
@@ -939,6 +943,7 @@ class JobsController extends Controller
                 'job_title' => $request->job_title,
                 'job_location' => $request->job_location,
                 'details' => $request->details,
+                'country'=>$request->country,
                 'job_type' => $request->job_type,
                 'position' => $request->position,
                 'expiry_date' => $request->expiry_date,
@@ -948,7 +953,8 @@ class JobsController extends Controller
 
             $validator = Validator::make($data, [
                 'job_title' => 'required',
-                'job_location' => 'required',
+                'country'=>'required',
+                'job_location' => 'required_if:country,Nigeria',
                 'details' => 'required',
                 'job_type' => 'required',
                 'position' => 'required',
@@ -973,10 +979,12 @@ class JobsController extends Controller
                         'is_visible' => (isset($request->is_visible[$key])) ? 1 : 0,
                     ];
                 }
+                $location_value = ($request->country != 'Nigeria') ? $request->country :
+                    ( ($request->job_location == 'Across Nigeria') ? 'Nigeria' : $request->job_location);
 
                 $job_data = [
                     'title' => $request->job_title,
-                    'location' => $request->job_location,
+                    'location' => $location_value,
                     'details' => $request->details,
                     'job_type' => $request->job_type,
                     'position' => $request->position,
@@ -1081,6 +1089,7 @@ class JobsController extends Controller
             'board1',
             'board2',
             'locations',
+            'countries',
             'workflows',
             'thirdPartyData',
             'application_fields'
@@ -1108,6 +1117,7 @@ class JobsController extends Controller
         $application_fields = config('constants.application_fields');
         $qualifications = qualifications();
         $locations = locations();
+        $countries = countries();
         $specializations = Specialization::get();
 
         $user = Auth::user();
@@ -1141,6 +1151,7 @@ class JobsController extends Controller
                 'job_title' => $request->job_title,
                 'job_location' => $request->job_location,
                 'details' => $request->details,
+                'country'=>$request->country,
                 'job_type' => $request->job_type,
                 'position' => $request->position,
                 // 'post_date' => $request->post_date,
@@ -1151,7 +1162,8 @@ class JobsController extends Controller
 
             $validator = Validator::make($data, [
                 'job_title' => 'required',
-                'job_location' => 'required',
+                'country'=>'required',
+                'job_location' => 'required_if:country,Nigeria',
                 'details' => 'required',
                 'job_type' => 'required',
                 'position' => 'required',
@@ -1176,10 +1188,11 @@ class JobsController extends Controller
                         'is_visible' => (isset($request->is_visible[$key])) ? 1 : 0,
                     ];
                 }
-
+            $location_value = ($request->country != 'Nigeria') ? $request->country :
+                             ( ($request->job_location == 'Across Nigeria') ? 'Nigeria' : $request->job_location);
                 $job_data = [
                     'title' => $request->job_title,
-                    'location' => $request->job_location,
+                    'location' => $location_value,
                     'details' => $request->details,
                     'job_type' => $request->job_type,
                     'position' => $request->position,
@@ -1293,7 +1306,8 @@ class JobsController extends Controller
             'locations',
             'workflows',
             'thirdPartyData',
-            'application_fields'
+            'application_fields',
+            'countries'
         ));
     }
 
@@ -1564,8 +1578,8 @@ class JobsController extends Controller
             } else if ($job->status == 'DRAFT') {
                 $draft_jobs[] = $job;
                 $draft++;
-            } 
-            
+            }
+
         }
 
 
@@ -2282,9 +2296,8 @@ class JobsController extends Controller
         $fields = json_decode($job->fields);
 
         if ($request->isMethod('post')) {
+
             $data = $request->all();
-
-
 
             $owned_applications_count = JobApplication::where('candidate_id', $candidate->id)->where('job_id', $jobID)->count();
 
@@ -2292,8 +2305,16 @@ class JobsController extends Controller
                 return redirect()->route('job-applied', [$jobID, $slug, true]);
             }
 
+            \Log::info(json_encode($request->file('cv_file')));
+            \Log::info(json_encode($data['email'].'cv file size....'.$request->file('cv_file')->getSize()));
+
+
 
             if ($request->hasFile('cv_file')) {
+
+                if ($request->file('cv_file')->getSize()  < 1) {
+                    return back()->withErrors(['warning' => 'Invalid CV file. Please check and try again.']);
+                }
 
                 $filename = time() . '_' . str_slug($request->email) . '_' . $request->file('cv_file')->getClientOriginalName();
 
@@ -2303,7 +2324,13 @@ class JobsController extends Controller
             }
 
 
+
+
             if ($request->hasFile('optional_attachment_1')) {
+
+                if ($request->file('optional_attachment_1')->getSize()  < 1) {
+                    return back()->withErrors(['warning' => 'Invalid Optional atachment. Please check and try again.']);
+                }
 
                 $filename = time() . '_' . str_slug($request->email) . '_' . $request->file('optional_attachment_1')->getClientOriginalName();
 
@@ -2313,6 +2340,10 @@ class JobsController extends Controller
             }
 
             if ($request->hasFile('optional_attachment_2')) {
+
+                if ($request->file('optional_attachment_2')->getSize()  < 1) {
+                    return back()->withErrors(['warning' => 'Invalid Optional atachment. Please check and try again.']);
+                }
 
                 $filename = time() . '_' . str_slug($request->email) . '_' . $request->file('optional_attachment_2')->getClientOriginalName();
 
@@ -2708,12 +2739,17 @@ class JobsController extends Controller
 
         $job = Job::with('company')->findOrFail($jobid);
         $locations = locations();
+        $countries =countries();
         $qualifications = qualifications();
         if ($request->isMethod('post')) {
-
+        if(is_null($request->country)){
+             return redirect()->back()->with('errors','Country Cannot be empty')->withInput();
+        }
+            $location_value = ($request->country != 'Nigeria') ? $request->country :
+                ( ($request->job_location == 'Across Nigeria') ? 'Nigeria' : $request->job_location);
 
             $job->title = $request->title;
-            $job->location = $request->job_location;
+            $job->location = $location_value;
             $job->job_type = $request->job_type;
             $job->position = $request->position;
             // $job->post_date = $request->post_date;
@@ -2730,7 +2766,7 @@ class JobsController extends Controller
         }
 
 
-        return view('job.edit', compact('qualifications', 'job', 'locations'));
+        return view('job.edit', compact('qualifications', 'job', 'locations','countries'));
 
     }
 
@@ -2749,7 +2785,7 @@ class JobsController extends Controller
 
 
     }
-    
+
     public function makeJobPrivateOrPublic(Request $request)
     {
         $job = Job::find($request->job_id);

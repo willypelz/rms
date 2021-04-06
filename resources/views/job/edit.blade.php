@@ -173,7 +173,7 @@
                                         </div>
 
                                         <div class="col-sm-4">
-                                        <button type="submit" class="btn btn-success btn-block">Update job &raquo;</button>
+                                        <button type="submit" class="btn btn-success btn-block submitButton">Update job &raquo;</button>
                                         </div>
                                         <div class="separator separator-small"></div>
                                     </div>
@@ -211,6 +211,11 @@
                         }
                     });
 
+                    $('.submitButton').click(function () {
+                        if (country.val() != 'Nigeria') {
+                            $('#location').prop('required',false)
+                        }
+                    })
 
                 });
                 // Replace the <textarea id="editor1"> with a CKEditor

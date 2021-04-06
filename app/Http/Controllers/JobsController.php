@@ -2291,6 +2291,7 @@ class JobsController extends Controller
         $grades = grades();
 
         $states = $this->states;
+        $countries = countries();
 
         $custom_fields = (object)$job->form_fields()->where('is_visible', 1)->get();
         $fields = json_decode($job->fields);
@@ -2362,17 +2363,24 @@ class JobsController extends Controller
                 }
             }
 
+            if ($fields->state_of_origin->is_visible && (isset($data['location']) || isset($data['country']))) {
 
-            if ($fields->state_of_origin->is_visible && isset($data['state_of_origin'])) {
-                if ($data['state_of_origin'] != "") {
-                    $data['state_of_origin'] = $states[$data['state_of_origin']];
+                if ($data['location'] != "") {
+                    $location_value = ($request->country != 'Nigeria') ? $request->country :
+                        ( ($request->location == 'Across Nigeria') ? 'Nigeria' : $request->location);
+
+                    $data['state_of_origin'] = $location_value;
                 }
 
             }
 
-            if ($fields->location->is_visible && isset($data['location'])) {
+            if ($fields->location->is_visible && (isset($data['location']) || isset($data['country']))) {
+
                 if ($data['location'] != "") {
-                    $data['location'] = $states[$data['location']];
+                    $location_value = ($request->country != 'Nigeria') ? $request->country :
+                        ( ($request->location == 'Across Nigeria') ? 'Nigeria' : $request->location);
+
+                    $data['location'] = $location_value;
                 }
 
             }
@@ -2408,8 +2416,12 @@ class JobsController extends Controller
             if ($fields->marital_status->is_visible && isset($data['marital_status'])) {
                 $cv->marital_status = $data['marital_status'];
             }
-            if ($fields->location->is_visible && isset($data['location'])) {
-                $cv->state = $data['location'];
+
+            if ($fields->location->is_visible && (isset($data['location']) || isset($data['country']))) {
+                $location_value = ($request->country != 'Nigeria') ? $request->country :
+                    ( ($request->location == 'Across Nigeria') ? 'Nigeria' : $request->location);
+
+                $cv->state = $location_value;
             }
             if ($fields->highest_qualification->is_visible && isset($data['highest_qualification'])) {
                 if ($data['highest_qualification'] != "") {
@@ -2435,9 +2447,15 @@ class JobsController extends Controller
             if ($fields->cv_file->is_visible && isset($data['cv_file'])) {
                 $cv->cv_file = $data['cv_file'];
             }
-            if ($fields->state_of_origin->is_visible && isset($data['state_of_origin'])) {
-                $cv->state_of_origin = $data['state_of_origin'];
+
+            if ($fields->state_of_origin->is_visible && (isset($data['location']) || isset($data['country']))) {
+                $location_value = ($request->country != 'Nigeria') ? $request->country :
+                    ( ($request->location == 'Across Nigeria') ? 'Nigeria' : $request->location);
+
+                $cv->state_of_origin = $location_value;
             }
+
+
 
             $cv->candidate_id = $candidate->id;
             $cv->optional_attachment_1 = $data['optional_attachment_1'] ?? null;
@@ -2572,7 +2590,7 @@ class JobsController extends Controller
 
 
 
-        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate', 'last_cv', 'fields'));
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate', 'last_cv', 'fields','countries'));
     }
 
     public function JobVideoApplication($jobID, $job_slug, $appl_id, Request $request)

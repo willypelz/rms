@@ -82,7 +82,7 @@ class HomeController extends Controller
             ->get();
         
         $redirect_to = $request->redirect_to;
-
+        session()->put('redirect_to',$redirect_to);
         if ($request->isMethod('post')) {
             if (Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password])) {
                 if ($request->redirect_to) {
@@ -105,8 +105,9 @@ class HomeController extends Controller
 
       public function register(Request $request)
     {
+        $redirect_value = session()->get('redirect_to');
+        $redirect_to = $request->redirect_to ?? $redirect_value;
 
-        $redirect_to = $request->redirect_to;
         $jobs = Job::whereStatus('ACTIVE')->where('is_for', '!=', 'internal')->where('expiry_date', '>=', date('Y-m-d'))->take(env('JOB_HOMEPAGE_LIST', 3))->orderBy('id', 'desc')->get();
         
 
@@ -129,8 +130,10 @@ class HomeController extends Controller
             if ($candidate) {
 
                 if (Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password])) {
-                    if ($request->redirect_to) {
-                        return redirect($request->redirect_to);
+                    $redirect_to = $request->redirect_to ?? session()->get('redirect_to');
+                    if ($redirect_to) {
+                        session()->forget('redirect_to');
+                        return redirect($redirect_to);
                     } else {
                         return redirect()->route('candidate-dashboard');
                     }

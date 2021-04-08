@@ -48,7 +48,7 @@
                 <div class="mt-5">
                     <small>
                         &copy; {{date('Y')}} All Rights Reserved.
-                        Read our <a href="//seamlesshr.com/privacy">privacy policy</a>
+                        Read our <a href="https://seamlesshr.com/privacy-security/" target="_blank">privacy policy</a>
                     </small>
                 </div>
 

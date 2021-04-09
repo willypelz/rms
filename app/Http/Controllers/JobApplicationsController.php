@@ -542,7 +542,8 @@ class JobApplicationsController extends Controller
 
     public function downloadApplicantSpreadsheet(Request $request)
     {
-
+        set_time_limit(0);
+        ini_set("memory_limit", "10056M");
         //Check if you should have access to the excel
         check_if_job_owner($request->jobId);
 

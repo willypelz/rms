@@ -81,7 +81,7 @@
                     <div class="my-4 leading-sm">
                         <small class="text-muted font-weight-light">
                             By clicking on create your account, you agree to our <a href="//seamlesshr.com/terms">terms</a> and
-                            <a href="//seamlesshr.com/privacy">privacy policy.</a>
+                            <a href="https://seamlesshr.com/privacy-security/" target="_blank">privacy policy.</a>
                         </small>
                     </div>
 
@@ -90,7 +90,7 @@
                     <div class="mt-5">
                         <small>
                             &copy; {{date('Y')}} All Rights Reserved.
-                            Read our <a href="//seamlesshr.com/privacy">privacy policy</a>
+                            Read our <a href="https://seamlesshr.com/privacy-security/" target="_blank">privacy policy</a>
                         </small>
                     </div>
                 </form>

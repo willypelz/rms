@@ -2680,11 +2680,7 @@ class JobsController extends Controller
             })->orderBy('created_at', 'desc')
             ->get();
 
-        if (File::exists(public_path('uploads/' . @$company->logo))) {
-            $company->logo = asset('uploads/' . @$company->logo);
-        } else {
-            $company->logo = asset('img/company.png');
-        }
+        $company->logo = get_company_logo(@$company->logo);
 
         $domain_url = url('/').'/js/embed.js';
 

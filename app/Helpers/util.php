@@ -765,7 +765,7 @@ function get_company_email_logo()
 function defaultCompanyLogo()
 {
     $company = Company::where('has_expired', 0)->first();
-    return ($company && isset($company->logo)) ? asset('uploads/' . $company->logo) : env('SEAMLESS_HIRING_LOGO');
+    return ($company && isset($company->logo)) ? get_company_logo($company->logo) : env('SEAMLESS_HIRING_LOGO');
 }
 
 function candidateDossierPercentage($value)

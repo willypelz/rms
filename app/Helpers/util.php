@@ -509,8 +509,8 @@ function get_company_logo($logo)
         return asset('img/company.png');
     }
 
-    if (File::exists(public_path('uploads/' . @$logo))) {
-        return asset('uploads/' . @$logo);
+    if (File::exists(public_path('img/' . @$logo))) {
+        return asset('img/' . @$logo);
     } else {
         return asset('img/company.png');
     }

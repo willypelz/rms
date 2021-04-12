@@ -320,7 +320,7 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <label for="">Experience<span class="text-danger">*</span></label>
+                                                <label for="">Qualification, Skills and Experience<span class="text-danger">*</span></label>
                                                 <textarea name="experience"
                                                           id="editor3"
                                                           cols="30"

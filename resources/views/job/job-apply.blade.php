@@ -274,7 +274,7 @@
                                                                                 name="years_of_experience"
                                                                                 @if( $fields->years_of_experience->is_required ) required @endif>
                                                                             <option>choose one</option>
-                                                                            @for( $i = 1; $i <= 50; $i ++ )
+                                                                            @for( $i = 0; $i <= 50; $i ++ )
                                                                                 <option value="{{ $i }}"
                                                                                         @if( @$last_cv->years_of_experience == $i ) selected="selected" @endif >{{ $i }}</option>
                                                                             @endfor

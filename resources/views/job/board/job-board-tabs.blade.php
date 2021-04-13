@@ -20,7 +20,7 @@ $is_super_admin = auth()->user()->is_super_admin;
                             </a>
                           </div>
 
-                          <div class="btn-group " role="group">
+                          <div class="btn-group hidden" role="group">
                             <a href="{{ route('job-matching', [$job->id]) }}" type="button" class="btn btn-line text-capitalize text-muted @if($active_tab == 'matching') in @endif">
                             <span class="fa-lg"><i class="fa fa-user-md"></i>
                             <span class="hidden-xs"> &nbsp; Matching CVs</span></span>

@@ -212,7 +212,8 @@ function remove_cv_contact($cv)
 
 function default_picture($data, $type = 'cv')
 {
-    if (!is_array($data)) {
+
+    if (!is_array($data) && $data ) {
         $data = $data->toArray();
     }
 

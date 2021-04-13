@@ -20,13 +20,6 @@ $is_super_admin = auth()->user()->is_super_admin;
                             </a>
                           </div>
 
-                          <div class="btn-group " role="group">
-                            <a href="{{ route('job-matching', [$job->id]) }}" type="button" class="btn btn-line text-capitalize text-muted @if($active_tab == 'matching') in @endif">
-                            <span class="fa-lg"><i class="fa fa-user-md"></i>
-                            <span class="hidden-xs"> &nbsp; Matching CVs</span></span>
-                            <!-- <small class="text-muted hidden-xs">Edit your settings</small> -->
-                            </a>
-                          </div>
 
                           <div class="btn-group" role="group">
                             <a @if((isset($user_role) && !is_null($user_role) && !in_array($user_role->name, ['admin']))) href="#" @else href="{{ route('job-promote', [$job->id]) }}" @endif type="button" class="btn btn-line text-capitalize text-muted @if($active_tab == 'promote') in @endif">

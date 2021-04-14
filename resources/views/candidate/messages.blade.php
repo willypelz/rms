@@ -88,7 +88,7 @@
                                         <div class="col-xs-12" id="attachmentTemplateBlock">
                                           <label for="">Title</label>
                                           <input type="text" class="form-control" name="document_title" id="document_title">
-                                          <label for="">Decsription</label>
+                                          <label for="">Description</label>
                                           <textarea class="form-control short" name="document_description" id="document_description"
                                             rows="3"></textarea>
                                           <label for="">Document</label>

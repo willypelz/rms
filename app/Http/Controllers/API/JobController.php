@@ -227,9 +227,7 @@ class JobController extends Controller
         }
 
         if($company->logo){
-            $company->logo = File::exists(public_path('uploads/'.@$company->logo))
-                ? asset('uploads/'.@$company->logo)
-                : $company->logo = asset('img/company.png');
+            $company->logo = get_company_logo(@$company->logo);
         }
 
         return response()->json(

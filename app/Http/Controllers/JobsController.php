@@ -2707,11 +2707,9 @@ class JobsController extends Controller
 
         // $company->jobs()->orderBy('created_at','desc')->get()->toArray();
 
-        if (File::exists(public_path('uploads/' . @$company->logo))) {
-            $company->logo = asset('uploads/' . @$company->logo);
-        } else {
-            $company->logo = asset('img/company.png');
-        }
+
+            $company->logo = get_company_logo(@$company->logo);
+
 
         return view('job.account-expired', compact('company'));
 

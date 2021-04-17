@@ -6,7 +6,7 @@
     <!-- Schema.org markup for Google+ -->
     <meta itemprop="name" content="{{ $job['title'] }}">
     <meta itemprop="description" content="Apply Now / Share">
-    <meta itemprop="image" content="{{ asset('uploads/'.$company->logo) }}">
+    <meta itemprop="image" content="{{ get_company_logo($company->logo) }}">
 
     <!-- Twitter Card data -->
     <meta name="twitter:card" content="Seamless Hiring">
@@ -14,7 +14,7 @@
     <meta name="twitter:title" content="{{ $job['title'] }}">
     <meta name="twitter:description" content="Apply Now / Share">
     <!-- <meta name="twitter:creator" content="@author_handle"> -->
-    <meta name="twitter:image" content="{{ asset('uploads/'.$company->logo) }}">
+    <meta name="twitter:image" content="{{ get_company_logo($company->logo) }}">
     <!-- <meta name="twitter:data1" content="$3">
     <meta name="twitter:label1" content="Price">
     <meta name="twitter:data2" content="Black">
@@ -24,7 +24,7 @@
     <meta property="og:title" content="{{ $job['title'] }}"/>
     <meta property="og:type" content="article"/>
     <meta property="og:url" content="{{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"/>
-    <meta property="og:image" content="{{ asset('uploads/'.$company->logo) }}"/>
+    <meta property="og:image" content="{{ get_company_logo($company->logo) }}"/>
     <meta property="og:description" content="Apply Now / Share"/>
     <meta property="og:site_name" content="{{ url('') }}"/>
     <!-- <meta property="og:price:amount" content="15.00" />

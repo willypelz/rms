@@ -824,6 +824,7 @@ function candidateDossierRating($value)
 if (!function_exists('defaultCompanyLogo')) {
     function defaultCompanyLogo()
     {
-        return get_current_company()->logo ?? env('SEAMLESS_HIRING_LOGO');
+        $answer = get_current_company()->logo ?? env('SEAMLESS_HIRING_LOGO');
+        return $answer;
     }
 } 

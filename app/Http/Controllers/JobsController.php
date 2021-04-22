@@ -2307,7 +2307,7 @@ class JobsController extends Controller
             }
 
             \Log::info(json_encode($request->file('cv_file')));
-            \Log::info(json_encode($data['email'].'cv file size....'.$request->file('cv_file')->getSize()));
+            \Log::info(json_encode($request->email.'cv file size....'.$request->file('cv_file')->getSize()));
 
 
 

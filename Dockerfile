@@ -132,9 +132,10 @@ RUN  mkdir -p storage/logs && \
   mkdir -p storage/framework/views && \
   mkdir -p storage/framework/sessions && \
   mkdir -p bootstrap/cache
+
 # RUN composer dump-autoload
 
-RUN COMPOSER_MEMORY_LIMIT=-1 composer install
+RUN COMPOSER_MEMORY_LIMIT=-1 composer install --noscript
 
 # RUN npm install -g yarn gulp
 

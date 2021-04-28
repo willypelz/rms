@@ -110,7 +110,7 @@ COPY . /var/www/html/
 
 # RUN ls -la /var/www/mnt && sleep 30
 # RUN ls -la /var/www && sleep 30
-# RUN ls -la && sleep 30
+
 # RUN cd public_html && ls -la && sleep 60
 
 # RUN jq --arg satis "$SATIS_JSON" '.url=$satis' satis.json > tmp.json && mv tmp.json satis.json

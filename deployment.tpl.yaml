@@ -2,6 +2,10 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: ${KUBE_META_NAME}-pv
+  labels:
+    storage-tier: ${KUBE_META_NAME}-pv
+    aws-availability-zone: us-east-1
+  namespace: seamlesshr-hrms-uat
 spec:
   capacity:
     storage: 5Gi
@@ -14,12 +18,13 @@ spec:
     - tls
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: fs-85085b71:/clients/admin-seamlesstesting
+    volumeHandle: fs-e1688555:/clients/${KUBE_META_NAME}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: ${KUBE_META_NAME}-claim
+  namespace: seamlesshr-hrms-uat
 spec:
   accessModes:
     - ReadWriteMany
@@ -27,12 +32,16 @@ spec:
   resources:
     requests:
       storage: 5Gi
+  selector:
+    matchLabels:
+      storage-tier: ${KUBE_META_NAME}-pv
+      aws-availability-zone: us-east-1
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ${KUBE_META_NAME}
-  #namespace: staging
+  namespace: seamlesshr-hrms-uat
 spec:
   selector:
     matchLabels:
@@ -74,11 +83,14 @@ spec:
           - name:  ${KUBE_META_NAME}-storage
             persistentVolumeClaim:
               claimName: ${KUBE_META_NAME}-claim
+        nodeSelector:    
+          eks.amazonaws.com/capacityType: SPOT
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: ${KUBE_META_NAME}
+  namespace: seamlesshr-hrms-uat
 spec:
   selector:
     app: ${KUBE_META_NAME}
@@ -86,6 +98,7 @@ spec:
     - name: http
       port: 80
 ---
+
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -100,6 +113,7 @@ metadata:
   labels:
     app: ${KUBE_META_NAME}
   name: ${KUBE_META_NAME}-ingress
+  namespace: seamlesshr-hrms-uat
 spec:
   rules:
   - host: ${KUBE_META_NAME}.${DEPLOYMENT_SUFFIX}
@@ -119,6 +133,7 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: ${KUBE_META_NAME}-hpa
+  namespace: seamlesshr-hrms-uat
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

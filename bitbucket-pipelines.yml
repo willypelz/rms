@@ -42,9 +42,10 @@ options:
 pipelines:
 
   branches:
-    backend:
+    v2-kubernetes:
       - step: 
           <<: *Build-Image
           name: Build-Image
+          deployment: rms-kubernetes
         services:
           - docker

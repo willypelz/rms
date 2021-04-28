@@ -135,7 +135,7 @@ RUN  mkdir -p storage/logs && \
 
 # RUN composer dump-autoload
 
-RUN COMPOSER_MEMORY_LIMIT=-1 composer install --noscript
+RUN COMPOSER_MEMORY_LIMIT=-1 composer install --no-scripts
 
 # RUN npm install -g yarn gulp
 

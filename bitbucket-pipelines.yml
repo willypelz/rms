@@ -30,7 +30,7 @@ definitions:
               AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID_KUBERNETES}
               AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY_KUBERNETES}
               AWS_DEFAULT_REGION: "us-east-1"
-              CLUSTER_NAME: seamlesshr-kubernetes-eksctl
+              CLUSTER_NAME: ${AWS_CLUSTER_NAME_KUBERNETES}
               KUBECTL_COMMAND: "apply"
               RESOURCE_PATH: "deployment-${KUBE_META_NAME}.yaml"
               DEBUG: "true"

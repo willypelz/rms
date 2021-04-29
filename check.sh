@@ -10,5 +10,5 @@ set -x;
 if [[ "$DEPLOYMENT_TYPE" =~ .*"HRMS".* ]]; then
     export DEPLOYMENT_SUFFIX="seamlesshiring.com"
 else
-    export DEPLOYMENT_SUFFIX=$PAYDAY_HOST_SUFFIX
+    export DEPLOYMENT_SUFFIX="seamlesshiring.com"
 fi

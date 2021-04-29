@@ -150,7 +150,7 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <label for="">Experience</label>
+                                                <label for="">Qualification, Skills and Experience</label>
                                                     {!! Form::textarea('experience', null, ['class' => 'form-control', 'id'=>'editor3', 'required']) !!}
 
                                                 <!-- <textarea name="additional_info" id="editor3" cols="30" rows="4" class="form-control" placeholder="">{{ (Request::old('additional_info')) ? ' value='. e(Request::old('additional_info')) .'' : '' }}</textarea> -->

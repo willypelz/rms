@@ -154,8 +154,7 @@
 
 
                                     <div class="form-group col-xs-6">
-                                        <label for="location" class="pull-left">Current Location</label>
-                                        {{ Form::select('location', locations(), 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
+                                        @include('job.includes.include-country')
                                     </div>
 
                                     <div class="form-group col-xs-6">

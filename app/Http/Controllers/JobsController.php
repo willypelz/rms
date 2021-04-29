@@ -1437,7 +1437,8 @@ class JobsController extends Controller
             $validation_fields['cv_email'] = 'required';
             $validation_fields['cv_phone'] = 'required';
             $validation_fields['gender'] = 'required';
-            $validation_fields['location'] = 'required';
+            $validation_fields['country'] = 'required';
+            $validation_fields['location'] = 'required_if:country,Nigeria';
             $validation_fields['highest_qualification'] = 'required';
             $validation_fields['years_of_experience'] = 'required';
             $validation_fields['last_company_worked'] = 'required';
@@ -2311,7 +2312,7 @@ class JobsController extends Controller
                 \Log::info(json_encode($request->file('cv_file')));
                 \Log::info(json_encode($request->email.'cv file size....'.$request->file('cv_file')->getSize()));
 
-                if ($request->file('cv_file')->getSize()  < 1) {
+                if ($request->file('cv_file')->getSize()  < 1 || !in_array($request->file('cv_file')->getClientOriginalExtension(),['pdf','doc','docx']) ) {
                     return back()->withErrors(['warning' => 'Invalid CV file. Please check and try again.']);
                 }
 
@@ -2327,8 +2328,8 @@ class JobsController extends Controller
 
             if ($request->hasFile('optional_attachment_1')) {
 
-                if ($request->file('optional_attachment_1')->getSize()  < 1) {
-                    return back()->withErrors(['warning' => 'Invalid Optional atachment. Please check and try again.']);
+                if ($request->file('optional_attachment_1')->getSize()  < 1 || !in_array($request->file('optional_attachment_1')->getClientOriginalExtension(),['pdf','doc','docx']) ) {
+                    return back()->withErrors(['warning' => 'Invalid Optional attachment. Please check and try again.']);
                 }
 
                 $filename = time() . '_' . str_slug($request->email) . '_' . $request->file('optional_attachment_1')->getClientOriginalName();
@@ -2340,8 +2341,8 @@ class JobsController extends Controller
 
             if ($request->hasFile('optional_attachment_2')) {
 
-                if ($request->file('optional_attachment_2')->getSize()  < 1) {
-                    return back()->withErrors(['warning' => 'Invalid Optional atachment. Please check and try again.']);
+                if ($request->file('optional_attachment_2')->getSize()  < 1 || !in_array($request->file('optional_attachment_2')->getClientOriginalExtension(),['pdf','doc','docx'])) {
+                    return back()->withErrors(['warning' => 'Invalid Optional attachment. Please check and try again.']);
                 }
 
                 $filename = time() . '_' . str_slug($request->email) . '_' . $request->file('optional_attachment_2')->getClientOriginalName();

@@ -333,6 +333,9 @@ class CandidateController extends Controller
     public function sendMessage(Request $request)
     {
         if ($request->hasFile('document_file')) {
+            if ($request->file('document_file')->getSize()  < 1) {
+                return back()->withErrors(['warning' => 'Invalid file. Please check and try again.']);
+            }
             $file_name  = (@$request->document_file->getClientOriginalName());
             $fi         = @$request->file('document_file')->getClientOriginalExtension();
             $document_file = $request->application_id . '-' . time() . '-' . $file_name;
@@ -372,7 +375,7 @@ class CandidateController extends Controller
         $link = route('applicant-messages', $request->application_id);
         $candidate = Candidate::find($job_application->candidate_id);
         $email_title = $candidate->first_name." sent you a message.";
-        $message_content = 'You just recieve message from candidate: '.$candidate->first_name;
+        $message_content = 'You just received a message from candidate: '.$candidate->first_name;
 
 
          Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {

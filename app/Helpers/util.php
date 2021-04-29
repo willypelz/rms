@@ -559,13 +559,16 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 
         switch ($request->type) {
             case 'single':
+                $location_value = ($request->country != 'Nigeria') ? $request->country :
+                    ( ($request->location == 'Across Nigeria') ? 'Nigeria' : $request->location);
+
                 $last_cv = Cv::insertGetId([
                     'first_name' => $request->cv_first_name,
                     'last_name' => $request->cv_last_name,
                     'email' => $request->cv_email,
                     'phone' => $request->cv_phone,
                     'gender' => $request->gender,
-                    'state' => $request->location,
+                    'state' => $location_value,
                     'highest_qualification' => $request->highest_qualification,
                     'years_of_experience' => $request->years_of_experience,
                     'last_company_worked' => $request->last_company_worked,

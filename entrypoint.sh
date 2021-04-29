@@ -46,6 +46,9 @@ cd ~ \
     && cd .. \
     && unset ATATUS_RELEASE
 
+
+cd /var/www/html
+
 php artisan migrate --seed --force
 
 # chmod u+x fix-scripts.sh

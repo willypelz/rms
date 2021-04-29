@@ -2306,12 +2306,10 @@ class JobsController extends Controller
                 return redirect()->route('job-applied', [$jobID, $slug, true]);
             }
 
-            \Log::info(json_encode($request->file('cv_file')));
-            \Log::info(json_encode($request->email.'cv file size....'.$request->file('cv_file')->getSize()));
-
-
-
             if ($request->hasFile('cv_file')) {
+
+                \Log::info(json_encode($request->file('cv_file')));
+                \Log::info(json_encode($request->email.'cv file size....'.$request->file('cv_file')->getSize()));
 
                 if ($request->file('cv_file')->getSize()  < 1) {
                     return back()->withErrors(['warning' => 'Invalid CV file. Please check and try again.']);

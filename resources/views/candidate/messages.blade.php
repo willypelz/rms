@@ -30,7 +30,9 @@
                               <div class="col-sm-12">
                                 <div class="page no-bod-rad">
 
-
+                                    @if(session()->has('errors'))
+                                        <p class="alert alert-warning">{{ session('errors')->first() }}</p>
+                                    @endif
                                   <div class="message-content ">
                                     
                                     @if( count( $messages ) )
@@ -86,7 +88,7 @@
                                         <div class="col-xs-12" id="attachmentTemplateBlock">
                                           <label for="">Title</label>
                                           <input type="text" class="form-control" name="document_title" id="document_title">
-                                          <label for="">Decription</label>
+                                          <label for="">Description</label>
                                           <textarea class="form-control short" name="document_description" id="document_description"
                                             rows="3"></textarea>
                                           <label for="">Document</label>

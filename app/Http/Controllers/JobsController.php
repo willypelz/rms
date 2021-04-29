@@ -2313,7 +2313,7 @@ class JobsController extends Controller
 
             if ($request->hasFile('cv_file')) {
 
-                if ($request->file('cv_file')->getSize()  < 1) {
+                if ($request->file('cv_file')->getSize()  < 1 || !in_array($request->file('cv_file')->getClientOriginalExtension(),['pdf','doc','docx']) ) {
                     return back()->withErrors(['warning' => 'Invalid CV file. Please check and try again.']);
                 }
 
@@ -2329,8 +2329,8 @@ class JobsController extends Controller
 
             if ($request->hasFile('optional_attachment_1')) {
 
-                if ($request->file('optional_attachment_1')->getSize()  < 1) {
-                    return back()->withErrors(['warning' => 'Invalid Optional atachment. Please check and try again.']);
+                if ($request->file('optional_attachment_1')->getSize()  < 1 || !in_array($request->file('optional_attachment_1')->getClientOriginalExtension(),['pdf','doc','docx']) ) {
+                    return back()->withErrors(['warning' => 'Invalid Optional attachment. Please check and try again.']);
                 }
 
                 $filename = time() . '_' . str_slug($request->email) . '_' . $request->file('optional_attachment_1')->getClientOriginalName();
@@ -2342,8 +2342,8 @@ class JobsController extends Controller
 
             if ($request->hasFile('optional_attachment_2')) {
 
-                if ($request->file('optional_attachment_2')->getSize()  < 1) {
-                    return back()->withErrors(['warning' => 'Invalid Optional atachment. Please check and try again.']);
+                if ($request->file('optional_attachment_2')->getSize()  < 1 || !in_array($request->file('optional_attachment_2')->getClientOriginalExtension(),['pdf','doc','docx'])) {
+                    return back()->withErrors(['warning' => 'Invalid Optional attachment. Please check and try again.']);
                 }
 
                 $filename = time() . '_' . str_slug($request->email) . '_' . $request->file('optional_attachment_2')->getClientOriginalName();

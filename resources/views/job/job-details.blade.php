@@ -9,7 +9,7 @@
     <meta property="og:url" content="{{route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)])}}"/>
     <meta name="image" property="og:image" content="{{ ($company->logo) }}"/>
     <meta property="og:description" content="{{$job->summary}}"/>
-    <meta property="og:site_name" content="{{ url('') }}"/>
+{{--    <meta property="og:site_name" content="{{ url('') }}"/>--}}
     <!-- <meta property="og:price:amount" content="15.00" />
     <meta property="og:price:currency" content="USD" /> -->
 

@@ -109,7 +109,7 @@
                                                                 @foreach($jobs as $job)
                                                                     <li>
                                                                         <h4>
-                                                                            <a href="{{ url(@$company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"
+                                                                            <a href="{{route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)])}}"
                                                                                target="_blank">{{ $job->title }}</a>
                                                                         </h4>
                                                                         <div class="dt">

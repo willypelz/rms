@@ -3,16 +3,26 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('font/flaticon.css') }}">
 
 @section('navbar')
+    <!-- Open Graph data -->
+    <meta property="og:title" content="{{ $job->title }}"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:url" content="{{route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)])}}"/>
+    <meta name="image" property="og:image" content="{{ ($company->logo) }}"/>
+    <meta property="og:description" content="{{$job->summary}}"/>
+    <meta property="og:site_name" content="{{ url('') }}"/>
+    <!-- <meta property="og:price:amount" content="15.00" />
+    <meta property="og:price:currency" content="USD" /> -->
+
     <!-- Schema.org markup for Google+ -->
-    <meta itemprop="name" content="{{ $job['title'] }}">
-    <meta itemprop="description" content="{{$job['summary']}}">
+    <meta itemprop="name" content="{{$job->title}}">
+    <meta itemprop="description" content="{{$job->summary}}">
     <meta itemprop="image" content="{{ ($company->logo) }}">
 
     <!-- Twitter Card data -->
-    <meta name="twitter:card" content="Seamless Hiring">
+    <meta name="twitter:card" content="{{$company->name}}">
     <!-- <meta name="twitter:site" content="@publisher_handle"> -->
-    <meta name="twitter:title" content="{{ $job['title'] }}">
-    <meta name="twitter:description" content="{{$job['summary']}}">
+    <meta name="twitter:title" content="{{$job->title}}">
+    <meta name="twitter:description" content="{{$job->summary}}">
     <!-- <meta name="twitter:creator" content="@author_handle"> -->
     <meta name="twitter:image" content="{{ ($company->logo) }}">
     <!-- <meta name="twitter:data1" content="$3">
@@ -20,15 +30,7 @@
     <meta name="twitter:data2" content="Black">
     <meta name="twitter:label2" content="Color"> -->
 
-    <!-- Open Graph data -->
-    <meta property="og:title" content="{{ $job['title'] }}"/>
-    <meta property="og:type" content="article"/>
-    <meta property="og:url" content="{{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"/>
-    <meta name="image" property="og:image" content="{{ env('APP_LOGO') }}"/>
-    <meta property="og:description" content="{{$job['summary']}}"/>
-    <meta property="og:site_name" content="{{ url('') }}"/>
-    <!-- <meta property="og:price:amount" content="15.00" />
-    <meta property="og:price:currency" content="USD" /> -->
+
 @show()
 
 @section('footer')
@@ -101,7 +103,7 @@
 
                                                 <p class="pull-right no-margin">
                                                     Share on &nbsp;
-                                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"
+                                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)])}}"
                                                        class="" target="_blank">
                                                            <span class="fa-stack fa-lg">
                                                              <i class="fa fa-circle fa-stack-2x text-"></i>
@@ -109,7 +111,7 @@
                                                            </span>
                                                     </a>
 
-                                                    <a href="https://twitter.com/home?status={{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"
+                                                    <a href="https://twitter.com/home?status={{route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)])}}"
                                                        class="" target="_blank">
                                                            <span class="fa-stack fa-lg">
                                                              <i class="fa fa-circle fa-stack-2x text-"></i>
@@ -119,7 +121,7 @@
 
 
 
-                                                    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"
+                                                    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)])}}"
                                                        class="" target="_blank">
                                                            <span class="fa-stack fa-lg">
                                                              <i class="fa fa-circle fa-stack-2x text-"></i>

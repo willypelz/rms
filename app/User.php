@@ -67,4 +67,20 @@ class User extends Authenticatable
     {
       return $this->belongsToMany('App\Models\Interview');
     }
+
+    public function isAdmin()
+    {
+        $admin = $this->roles()->where("name", "admin")->first();
+        return $admin ? true:false;
+    }
+
+    public function hasAnAdminPermisson()
+    {
+        $adminRole = $this->roles()->where("name", "admin")->first();
+        if($adminRole){
+            $permissions = $adminRole->permissions;
+            return $permissions ? true:false;
+        }
+        return $admin ? true:false;
+    }
 }

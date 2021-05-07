@@ -70,7 +70,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        $admin = $this->roles()->where("name", "admin")->first();
+        $admin = $this->roles()->count();
         return $admin ? true:false;
     }
 
@@ -81,6 +81,6 @@ class User extends Authenticatable
             $permissions = $adminRole->permissions;
             return $permissions ? true:false;
         }
-        return $admin ? true:false;
+        return $adminRole ? true:false;
     }
 }

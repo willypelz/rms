@@ -20,11 +20,7 @@ class IsAdmin
             if ($request->wantsJson() || $request->ajax()) {
                 return response()->json([
                     'status' => false,
-                    'success' => false,
-                    'message' => 'You don\'t have permission to perform this action',
                     'msg' => 'You don\'t have permission to perform this action',
-                    'err' => 'You don\'t have permission to perform this action',
-                    'error' => 'You don\'t have permission to perform this action'
                 ], 403);
             }
             return url()->previous(); //TODO change this to 403 when we make a 403 error page

@@ -34,20 +34,15 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
 });
 
+/** ---------
+ * Start: Administrator Panel Routes
+ * Make admin group and apply a guard to it
+ */
 Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 
     Route::get('/ping', 'SolariumController@ping');
 
     Route::resource('schedule', 'ScheduleController');
-
-    /** ---------
-     * Start: Administrator Panel Routes
-     * ----------
-     *
-     * Make admin group and apply a guard to it
-     */
-
-    Route::auth();
 
     Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
     Route::match(['get', 'post'], '/admin/assign', 'JobsController@manageRoles')->name('change-admin-role');
@@ -412,8 +407,6 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::post('cart/get-count', ['as' => 'getCartCount', 'uses' => 'CvSalesController@getBoardCartCount']);
 
 
-
-
     Route::group([
         'prefix' => '/settings'
     ], function () {
@@ -481,6 +474,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 /*********************************/
 /* End Of Admin Routes */
 /**********************************/
+
 
 /* Easily update Solr via URL*/
 Route::get('/solr/update/{redirect?}', function ($redirect = '') {
@@ -777,12 +771,9 @@ Route::group(['middleware' => 'web'], function () {
 
     });
 
-
     /**
      * Route Group for modals
      */
-
-
     Route::get('modal/default', [
         'as' => 'get-modal',
         function () {
@@ -791,6 +782,5 @@ Route::group(['middleware' => 'web'], function () {
     ]);
 
 });
-/**********************************/
 
    

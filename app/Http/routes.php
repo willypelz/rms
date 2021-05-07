@@ -477,6 +477,8 @@ Route::get('hospital-project', function () {
 
 Route::group(['middleware' => 'web'], function () {
 
+    Route::auth();
+
     Route::match(['get', 'post'], 'talent-source',['uses' => 'HomeController@viewTalentSource', 'as' => 'talent-source']);
 
     Route::post('save/test-result', ['as' => 'save-test-result', 'uses' => 'JobApplicationsController@saveTestResult']);

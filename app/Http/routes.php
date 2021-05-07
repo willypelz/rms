@@ -44,7 +44,6 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 
     Route::resource('schedule', 'ScheduleController');
 
-    Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
     Route::match(['get', 'post'], '/admin/assign', 'JobsController@manageRoles')->name('change-admin-role');
     Route::match(['get', 'post'], '/sys/roles', 'AdminsController@manageRoles')->name('list-role');
     Route::match(['get', 'post'], '/sys/roles/create', 'AdminsController@createRole')->name('create-role');
@@ -65,17 +64,9 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 
     Route::get('/workflow-select/{job_id}/{user_id}', 'JobsController@workflowSelect')->name('workflow-select');
 
-    Route::get('embed-test', ['as' => 'embed', 'uses' => 'JobsController@getEmbedTest']);
-
-    Route::get('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
-    Route::post('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
-
     Route::get('/invoices', ['as' => 'invoice-list', 'uses' => 'PaymentController@allInvoices']);
 
     Route::get('fixQua', ['uses' => 'JobsController@correctHighestQualification']);
-
-    Route::match(['get', 'post'], 'talent-source',
-    ['uses' => 'HomeController@viewTalentSource', 'as' => 'talent-source']);
 
     Route::get('simple-pay', function () {
 
@@ -100,8 +91,6 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 
     Route::match(['get', 'post'], 'add-company', ['uses' => 'JobsController@AddCompany', 'as' => 'add-company']);
     // Route::match(['get', 'post'], 'edit-company', ['uses' => 'JobsController@editCompany', 'as' => 'edit-company']);
-    Route::match(['get', 'post'], 'select-company/{slug?}',
-    ['uses' => 'JobsController@selectCompany', 'as' => 'select-company']);
 
          //JOB
     Route::match(['get', 'post'], 'jobs/duplicate', ['uses' => 'JobsController@DuplicateJob', 'as' => 'duplicate-job']);
@@ -130,9 +119,8 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::match(['get', 'post'], 'jobs/add-candidates',
         ['uses' => 'JobsController@AddCandidates', 'as' => 'add-candidates']);
 
-    Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}', ['uses' => 'JobsController@JobView', 'as' => 'job-view']);
     Route::match(['get', 'post'], 'job/preview/{jobID}', ['uses' => 'JobsController@Preview', 'as' => 'job-preview']);
-    Route::match(['get', 'post'], 'job/share/{jobID}/{jobSlug?}', ['uses' => 'JobsController@jobShare', 'as' => 'job-share']);
+    
 
 
     Route::match(['get', 'post'], 'job/activities/{jobID}',
@@ -155,14 +143,9 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::get('/get-all-roles', 'JobsController@getAllRoles')->name('get-all-roles');
     Route::post('/persis-role', 'JobsController@persisRole')->name('persis-role');
 
-    Route::match(['get', 'post'], 'accept-invite/{id}',
-        ['uses' => 'JobsController@acceptInvite', 'as' => 'accept-invite']);
-
     Route::match(['get', 'post'], '/accept-team-invite/{id}', 'JobsController@acceptTeamInvite')
         ->name('accept-team-invite');
 
-    Route::match(['get', 'post'], 'decline-invite/{id}',
-        ['uses' => 'JobsController@declineInvite', 'as' => 'decline-invite']);
     Route::match(['get', 'post'], 'account-expired/{c_url}', 'JobsController@accountExpired');
 
     Route::match(['get', 'post'], 'job/matching/{jobID}',
@@ -391,7 +374,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::post('checkout', ['as' => 'checkout', 'uses' => 'JobApplicationsController@Checkout']);
 
     Route::post('request/test', ['as' => 'request-test', 'uses' => 'JobApplicationsController@requestTest']);
-    Route::post('save/test-result', ['as' => 'save-test-result', 'uses' => 'JobApplicationsController@saveTestResult']);
+    
     Route::post('request/check', ['as' => 'request-check', 'uses' => 'JobApplicationsController@requestCheck']);
     Route::post('invite/interview',
         ['as' => 'invite-for-interview', 'uses' => 'JobApplicationsController@inviteForInterview']);
@@ -493,6 +476,10 @@ Route::get('hospital-project', function () {
 });
 
 Route::group(['middleware' => 'web'], function () {
+
+    Route::match(['get', 'post'], 'talent-source',['uses' => 'HomeController@viewTalentSource', 'as' => 'talent-source']);
+
+    Route::post('save/test-result', ['as' => 'save-test-result', 'uses' => 'JobApplicationsController@saveTestResult']);
 
     Route::get('user/activation/{token}', 'Auth\LoginController@activateUser')->name('user.activate');
     
@@ -618,18 +605,37 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'simplepay/{type?}', ['uses' => 'JobsController@SimplePay', 'as' => 'simplepay']);
 
+    Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}', ['uses' => 'JobsController@JobView', 'as' => 'job-view']);
+
+    Route::match(['get', 'post'], 'job/share/{jobID}/{jobSlug?}', ['uses' => 'JobsController@jobShare', 'as' => 'job-share']);
+
+    Route::match(['get', 'post'], 'job/apply/{jobID}/{slug}',['uses' => 'JobsController@jobApply', 'as' => 'job-apply']);
+
+    Route::match(['get', 'post'], 'job/applied/{jobID}/{slug}',['uses' => 'JobsController@JobApplied', 'as' => 'job-applied']);
+
+    Route::match(['get', 'post'], 'job/video-application/{jobID}/{slug}/{appl_id}',['uses' => 'JobsController@JobVideoApplication', 'as' => 'job-video-application']);
+    
+    Route::get('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
+
+    Route::post('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
+
+    Route::get('embed-test', ['as' => 'embed', 'uses' => 'JobsController@getEmbedTest']);
+
+    Route::match(['get', 'post'], 'accept-invite/{id}',['uses' => 'JobsController@acceptInvite', 'as' => 'accept-invite']);
+
+    Route::match(['get', 'post'], 'decline-invite/{id}',  ['uses' => 'JobsController@declineInvite', 'as' => 'decline-invite']);
+
+    Route::match(['get', 'post'], 'select-company/{slug?}', ['uses' => 'JobsController@selectCompany', 'as' => 'select-company']);
+
+    Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
+
+    Route::get('/{c_url}', 'JobsController@company');
+
     Route::match(['get', 'post'], 'transactions', ['uses' => 'CvSalesController@Transactions', 'as' => 'transactions']);
     Route::match(['get', 'post'], 'emails-test', ['uses' => 'CvSalesController@TestEmail', 'as' => 'emails']);
 
     Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
-
     // Route::match(['get', 'post'], 'job/dashboard/{jobID}', ['uses' => 'JobsController@JobDashboard', 'as' => 'job-view']);
-    Route::match(['get', 'post'], 'job/apply/{jobID}/{slug}',
-        ['uses' => 'JobsController@jobApply', 'as' => 'job-apply']);
-    Route::match(['get', 'post'], 'job/applied/{jobID}/{slug}',
-        ['uses' => 'JobsController@JobApplied', 'as' => 'job-applied']);
-    Route::match(['get', 'post'], 'job/video-application/{jobID}/{slug}/{appl_id}',
-        ['uses' => 'JobsController@JobVideoApplication', 'as' => 'job-video-application']);
 
     Route::match(['get', 'post'], 'job-status', ['uses' => 'JobsController@JobStatus', 'as' => 'job-status']);
     Route::match(['get', 'post'], 'make-private', ['uses' => 'JobsController@makeJobPrivateOrPublic', 'as' => 'make-job-private']);
@@ -714,11 +720,6 @@ Route::group(['middleware' => 'web'], function () {
 
     // Route::get('/{c_url}/job/{job_id}', 'JobsController@JobView');
     Route::get('/{c_url}/job/{job_id}/{job_slug}', 'JobsController@JobViewOld');
-
-    Route::get('/{c_url}', 'JobsController@company');
-
-
-
 
     /**
      * Route Group for everything applicant

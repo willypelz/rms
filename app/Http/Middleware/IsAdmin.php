@@ -16,7 +16,7 @@ class IsAdmin
     public function handle($request, Closure $next)
     {
         $user = auth()->user();
-        if ( !($user &&  $user->isAdmin() && $user->hasAnAdminPermisson() ) ) {
+        if ( !( $user &&  $user->isAdmin())  ) {
             if ($request->wantsJson() || $request->ajax()) {
                 return response()->json([
                     'status' => false,

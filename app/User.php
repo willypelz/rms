@@ -74,13 +74,4 @@ class User extends Authenticatable
         return $admin ? true:false;
     }
 
-    public function hasAnAdminPermisson()
-    {
-        $adminRole = $this->roles()->where("name", "admin")->first();
-        if($adminRole){
-            $permissions = $adminRole->permissions;
-            return $permissions ? true:false;
-        }
-        return $adminRole ? true:false;
-    }
 }

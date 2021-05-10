@@ -16,15 +16,11 @@ class IsAdmin
     public function handle($request, Closure $next)
     {
         $user = auth()->user();
-        if ( !($user &&  $user->isAdmin()  ) ) {
+        if ( !( $user &&  $user->isAdmin())  ) {
             if ($request->wantsJson() || $request->ajax()) {
                 return response()->json([
                     'status' => false,
-                    'success' => false,
-                    'message' => 'You don\'t have permission to perform this action',
                     'msg' => 'You don\'t have permission to perform this action',
-                    'err' => 'You don\'t have permission to perform this action',
-                    'errors' => 'You don\'t have permission to perform this action'
                 ], 403);
             }
             return url()->previous(); //TODO change this to 403 when we make a 403 error page

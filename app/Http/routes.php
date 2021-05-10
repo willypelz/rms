@@ -30,40 +30,20 @@ use Illuminate\Support\Facades\Route;
 // URL::forceSchema('https');
 
 Route::group(['middleware' => ['web']], function () {
-Route::get('/sso/auto/login/verify/{email}/{key}', 'Auth\LoginController@singleSignOnVerify');
-Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
-
+    Route::get('/sso/auto/login/verify/{email}/{key}', 'Auth\LoginController@singleSignOnVerify');
+    Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
 });
 
+/** ---------
+ * Start: Administrator Panel Routes
+ * Make admin group and apply a guard to it
+ */
+Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 
-
-Route::get('/ping', 'SolariumController@ping');
-
-
-Route::group(['middleware' => ['web']], function () {
+    Route::get('/ping', 'SolariumController@ping');
 
     Route::resource('schedule', 'ScheduleController');
-});
 
-
-
-Route::get('hospital-project', function () {
-    $agent = new \Jenssegers\Agent\Agent();
-    return view('lifeplan', compact('agent'));
-});
-
-Route::group(['middleware' => 'web'], function () {
-
-    /** ---------
-     * Start: Administrator Panel Routes
-     * ----------
-     *
-     * Make admin group and apply a guard to it
-     */
-    // Route::get('/admin', function () {
-    //    return view('admin.dashboard');
-    // });
-    Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
     Route::match(['get', 'post'], '/admin/assign', 'JobsController@manageRoles')->name('change-admin-role');
     Route::match(['get', 'post'], '/sys/roles', 'AdminsController@manageRoles')->name('list-role');
     Route::match(['get', 'post'], '/sys/roles/create', 'AdminsController@createRole')->name('create-role');
@@ -76,159 +56,17 @@ Route::group(['middleware' => 'web'], function () {
     ], function () {
         Route::get('auth/logout', 'LoginController@logout');
     });
+
     Route::any('admin-accept-invite/{id}/{company_id}',['uses' => 'AdminsController@adminAcceptInvite', 'as' => 'admin-accept-invite']);
     /** -- End: Administrator Panel Route -- */
 
-    Route::auth();
-    Route::get('user/activation/{token}', 'Auth\LoginController@activateUser')->name('user.activate');
-    
-
     Route::get('switcher', 'Auth\LoginController@switchUser')->name('switcher');
 
-    Route::post('user/auth/verify', 'Auth\LoginController@verifyUser')->name('verify-user-details');
-    Route::any('', 'HomeController@home')->name('candidate-login');
-    Route::any('register', 'HomeController@register')->name('candidate-register');
-    Route::any('forgot', 'CandidateController@forgot')->name('candidate-forgot');
-    Route::get('forgot/sent', 'CandidateController@forgotSent')->name('candidate-forgot-sent');
-    Route::any('reset/{token}', 'CandidateController@reset')->name('candidate-reset');
     Route::get('/workflow-select/{job_id}/{user_id}', 'JobsController@workflowSelect')->name('workflow-select');
-
-    // Route::get('/', 'omeController@homepage')->name('homepage');
-
-    // Route::get('/', function () {
-    //     return view('guest.landing');
-    // });
-
-    Route::get('embed-test', ['as' => 'embed', 'uses' => 'JobsController@getEmbedTest']);
-    Route::get('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
-    Route::post('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
-
-    // Candidate
-    Route::group(['prefix' => 'candidate'], function () {
-
-        Route::match(['get', 'post'], '/login', 'HomeController@home');
-
-        Route::match(['get', 'post'], '/logout', 'CandidateController@logout')->name('candidate-logout');
-        Route::match(['get', 'post'], '/profile', 'CandidateController@profile')->name('candidate-profile');
-
-        // TODO
-        // Route::match(['get', 'post'], '/register', 'CandidateController@register')->name('candidate-register');
-        // Route::match(['get', 'post'], '/forgot', 'CandidateController@forgot')->name('candidate-reset');
-        // Route::match(['get', 'post'], '/reset', 'CandidateController@reset')->name('candidate-reset');
-
-        Route::match(['get', 'post'], '/dashboard', 'CandidateController@dashboard')->name('candidate-dashboard');
-        Route::match(['get', 'post'], '/{application_id}/activities',
-            'CandidateController@activities')->name('candidate-activities');
-        Route::match(['get', 'post'], '/jobs', 'CandidateController@jobs')->name('candidate-jobs');
-        Route::match(['get', 'post'], '/{application_id}/documents',
-            'CandidateController@documents')->name('candidate-documents');
-
-
-        Route::match(['get', 'post'], '/{application_id}/messages',
-            'CandidateController@messages')->name('candidate-messages');
-
-        Route::match(['get', 'post'], '/messages/send',
-            'CandidateController@sendMessage')->name('candidate-send-message');
-    });
-
-
-    // Route::get('/test', function () {
-
-        /* $jobs = \App\Models\Job::where('company_id',50)->where('status','ACTIVE')->orderBy('title','ASC')->get();
-
-        foreach( $jobs as $job )
-        {
-            echo $job->title . '<a href="' . url('job/apply/'.$job->id.'/'.str_slug($job->title)).'" > Apply </a><br>';
-        } */
-
-        // $applications = \App\Models\JobApplication::whereHas('job', function($query){
-        //     $query->whereNotIn('company_id',[12,50]);
-        // })->skip(1000)->take(10000)->chunk(100, function($apps){
-        //     foreach ($apps as $key => $app) {
-        //         $app = $app->toArray();
-        //         $app['job_id'] = 434;
-        //         unset( $app['id'] );
-
-        //         \App\Models\JobApplication::create($app);
-        //     }
-        // });
-
-        //  $applications = \App\Models\JobApplication::whereHas('job', function($query){
-        //     $query->where('company_id',129);
-        // })->where('status','!=','PENDING')->count();
-
-        // dump( $applications )
-    // });
-
-    Route::get('invoice/{invoice_id}', ['as' => 'show-invoice', 'uses' => 'PaymentController@showInvoice']);
 
     Route::get('/invoices', ['as' => 'invoice-list', 'uses' => 'PaymentController@allInvoices']);
 
-    Route::post('/invoice-pop', ['as' => 'show-invoice-pop', 'uses' => 'PaymentController@createInvoice']);
-
-
-    Route::get('error', [
-        'as' => 'errors.defaultError',
-        function () {
-            return view('errors.500');
-        }
-    ]);
-
-    Route::get('/contact', function () {
-
-
-        return view('guest.contact');
-    });
-
-    Route::post('/contact', function () {
-        $request = request();
-        $data = $request->all();
-
-        $mail = Mail::send('emails.new.contact', $data, function ($m) use ($data) {
-            $m->from($data->email, 'New Job Paid');
-            // $m->to('babatopeoni@gnmail.com')->subject('Contact');
-            $m->to('support@seamlesshiring.com')->subject('Contact');
-        });
-
-        $request->session()->flash('flash_message', 'You have exceeded your daily Provide Help limit.');
-        return redirect()->back();
-
-    });
-
-
-    Route::get('/faq', function () {
-
-        return view('guest.faq');
-    });
-
     Route::get('fixQua', ['uses' => 'JobsController@correctHighestQualification']);
-
-    Route::get('/whoops', function () {
-
-        return view('guest.whoops');
-    });
-
-
-    Route::match(['get', 'post'], 'talent-source',
-        ['uses' => 'HomeController@viewTalentSource', 'as' => 'talent-source']);
-
-    Route::get('/success', function () {
-
-        return view('guest.success');
-    });
-
-    Route::get('/company_success', function () {
-
-        return view('guest.company_success');
-    });
-
-    //  Route::get('embed-view', function(){
-    //     echo "good one";
-    // });
-
-    Route::get('payment_successful', function () {
-        return view('payment.payment_succes');
-    });
 
     Route::get('simple-pay', function () {
 
@@ -251,40 +89,10 @@ Route::group(['middleware' => 'web'], function () {
         //return view('payment.simplepay');
     });
 
-    Route::get('log-in', 'Auth\LoginController@showLoginForm');
-    Route::get('/logout', 'Auth\LoginController@logout');
-
-    Route::post('log-in', 'Auth\LoginController@login');
-
-    Route::get('/auto-login/{code}', 'Auth\LoginController@autoLogin');
-
-
-    // Route::get('sign-up', 'Auth\AuthController@showRegistrationForm');
-
-    // Route::post('sign-up', 'Auth\AuthController@register');
-
-    Route::match(['get', 'post'], 'auth/ajax_login', ['uses' => 'Auth\LoginController@AjaxLogin', 'as' => 'ajax_login']);
-    Route::match(['get', 'post'], 'sign-up', ['uses' => 'Auth\AuthController@Registration', 'as' => 'registration']);
     Route::match(['get', 'post'], 'add-company', ['uses' => 'JobsController@AddCompany', 'as' => 'add-company']);
     // Route::match(['get', 'post'], 'edit-company', ['uses' => 'JobsController@editCompany', 'as' => 'edit-company']);
-    Route::match(['get', 'post'], 'select-company/{slug?}',
-        ['uses' => 'JobsController@selectCompany', 'as' => 'select-company']);
 
-
-    Route::match(['get', 'post'], 'cart', ['uses' => 'CvSalesController@Cart', 'as' => 'cart']);
-    Route::match(['get', 'post'], 'cart_details', ['uses' => 'CvSalesController@CartDetails', 'as' => 'cartDe']);
-    Route::match(['get', 'post'], 'output', ['uses' => 'CvSalesController@Output', 'as' => 'out']);
-    Route::match(['get', 'post'], 'ajax_cart', ['uses' => 'CvSalesController@Ajax_cart', 'as' => 'ajax_cart']);
-    Route::match(['get', 'post'], 'ajax_checkout',
-        ['uses' => 'CvSalesController@Ajax_checkout', 'as' => 'ajax_checkout']);
-    Route::match(['get', 'post'], 'payment/{type?}', ['uses' => 'CvSalesController@Payment', 'as' => 'payment']);
-
-    Route::match(['get', 'post'], 'simplepay/{type?}', ['uses' => 'JobsController@SimplePay', 'as' => 'simplepay']);
-
-    Route::match(['get', 'post'], 'transactions', ['uses' => 'CvSalesController@Transactions', 'as' => 'transactions']);
-    Route::match(['get', 'post'], 'emails-test', ['uses' => 'CvSalesController@TestEmail', 'as' => 'emails']);
-
-    //JOB
+         //JOB
     Route::match(['get', 'post'], 'jobs/duplicate', ['uses' => 'JobsController@DuplicateJob', 'as' => 'duplicate-job']);
     Route::match(['get', 'post'], 'jobs/send-job', ['uses' => 'JobsController@SendJob', 'as' => 'send-to-friends']);
     Route::match(['get', 'post'], 'jobs/save-to-mailbox',
@@ -311,13 +119,12 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'jobs/add-candidates',
         ['uses' => 'JobsController@AddCandidates', 'as' => 'add-candidates']);
 
-    Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
-    Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}', ['uses' => 'JobsController@JobView', 'as' => 'job-view']);
     Route::match(['get', 'post'], 'job/preview/{jobID}', ['uses' => 'JobsController@Preview', 'as' => 'job-preview']);
-    Route::match(['get', 'post'], 'job/share/{jobID}/{jobSlug?}', ['uses' => 'JobsController@jobShare', 'as' => 'job-share']);
+    
+
 
     Route::match(['get', 'post'], 'job/activities/{jobID}',
-        ['uses' => 'JobsController@JobActivities', 'as' => 'job-board']);
+    ['uses' => 'JobsController@JobActivities', 'as' => 'job-board']);
     Route::match(['get', 'post'], 'job/activities-content',
         ['uses' => 'JobsController@ActivityContent', 'as' => 'get-activity-content']);
     Route::match(['get', 'post'], 'job/promote/{jobID}',
@@ -336,37 +143,16 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/get-all-roles', 'JobsController@getAllRoles')->name('get-all-roles');
     Route::post('/persis-role', 'JobsController@persisRole')->name('persis-role');
 
-    Route::match(['get', 'post'], 'accept-invite/{id}',
-        ['uses' => 'JobsController@acceptInvite', 'as' => 'accept-invite']);
-
     Route::match(['get', 'post'], '/accept-team-invite/{id}', 'JobsController@acceptTeamInvite')
         ->name('accept-team-invite');
 
-    Route::match(['get', 'post'], 'decline-invite/{id}',
-        ['uses' => 'JobsController@declineInvite', 'as' => 'decline-invite']);
     Route::match(['get', 'post'], 'account-expired/{c_url}', 'JobsController@accountExpired');
 
     Route::match(['get', 'post'], 'job/matching/{jobID}',
         ['uses' => 'JobsController@JobMatching', 'as' => 'job-matching']);
 
     Route::match(['get', 'post'], 'jobs/teamedit', ['uses' => 'JobsController@Ajax', 'as' => 'ajax-edit-team']);
-    Route::match(['get', 'post'], 'job/import-cv-file',
-        ['uses' => 'JobsController@UploadCVfile', 'as' => 'upload-file']);
-    // Route::match(['get', 'post'], 'job/dashboard/{jobID}', ['uses' => 'JobsController@JobDashboard', 'as' => 'job-view']);
-    Route::match(['get', 'post'], 'job/apply/{jobID}/{slug}',
-        ['uses' => 'JobsController@jobApply', 'as' => 'job-apply']);
-    Route::match(['get', 'post'], 'job/applied/{jobID}/{slug}',
-        ['uses' => 'JobsController@JobApplied', 'as' => 'job-applied']);
-    Route::match(['get', 'post'], 'job/video-application/{jobID}/{slug}/{appl_id}',
-        ['uses' => 'JobsController@JobVideoApplication', 'as' => 'job-video-application']);
-
-    Route::match(['get', 'post'], 'job-status', ['uses' => 'JobsController@JobStatus', 'as' => 'job-status']);
-    Route::match(['get', 'post'], 'make-private', ['uses' => 'JobsController@makeJobPrivateOrPublic', 'as' => 'make-job-private']);
-
-
-    // Route::any('log-in', function () {
-    //     return view('auth.login');
-    // });
+    Route::match(['get', 'post'], 'job/import-cv-file', ['uses' => 'JobsController@UploadCVfile', 'as' => 'upload-file']);
 
     Route::get('/one_applicant', 'JobApplication@oneApplicantData');
 
@@ -404,88 +190,19 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('job/applicant/write-review',
         ['uses' => 'JobApplicationsController@writeReview', 'as' => 'write-review']);
 
-
-    Route::get('/pricing', ['as' => 'pricing', 'uses' => 'HomeController@pricing']);
-
-    Route::post('request-a-call', ['as' => 'request-a-call', 'uses' => 'HomeController@requestACall']);
-
     //Specialization
     Route::get('list-job-specialization', 'SpecializationController@index')->name('specialization');;
     Route::post('store-job-specialization', 'SpecializationController@store')->name('store-specialization');
     Route::get('update-job-specialization/{id}', 'SpecializationController@update')->name('update-specialization');
     Route::delete('delete-job-specialization/{id}', 'SpecializationController@delete')->name('delete-specialization');
 
-
-    Route::get('about', function () {
-        return view('guest.about');
-    });
-
-    Route::get('terms', function () {
-        return view('guest.terms');
-    });
-
-    Route::get('privacy', function () {
-        return view('guest.privacy');
-    });
-
-    Route::get('register2', function () {
-        return view('auth.register2');
-    });
-
-    Route::get('dashboard', ['uses' => 'HomeController@dashbaord', 'as' => 'dashboard']);
-
-    /**
-     * Route Group for everything cv
-     */
-    Route::group(['prefix' => 'cv'], function () {
-
-        Route::get('search-results', function () {
-            return view('cv-sales.search-results');
-        });
-
-        Route::post('filter_search', 'CvSalesController@filter_search');
-        Route::post('cv-preview', ['uses' => 'CvSalesController@getCvPreview', 'as' => 'cv-preview']);
-
-
-        /**
-         * Post Variable for cv search form search box
-         */
-        Route::get('search', 'CvSalesController@search');
-
-
-        Route::get('cv_pool', function () {
-            return view('cv-sales.cv_pool');
-        });
-
-        Route::get('cv_purchased', function () {
-            return view('cv-sales.cv_purchased');
-        });
-
-
-        Route::get('cv_saved', function () {
-            return view('cv-sales.cv_saved');
-        });
-
-        Route::get('saved', 'CvSalesController@viewSaved');
-        Route::get('purchased', 'CvSalesController@viewPurchased');
-        Route::get('talent-pool', 'CvSalesController@viewTalentPool');
-
-
-        Route::post('get-my-folders', 'CvSalesController@getMyFolders');
-
-        Route::post('add-folder', 'CvSalesController@addFolders');
-
-        Route::post('save-to-folder', 'CvSalesController@saveToFolder');
-
-        Route::get('save-to-solr', 'CvSalesController@saveCvPreview');
-
-
-    });
+    Route::get('dashboard', ['uses' => 'HomeController@dashbaord', 'as' => 'dashboard'])->middleware("admin");
 
     /**
      * Route Group for everything jobs
      */
     Route::group(['prefix' => 'jobs'], function () {
+
 
         Route::get('list', function () {
             return view('job.job-list');
@@ -565,6 +282,7 @@ Route::group(['middleware' => 'web'], function () {
 
     });
 
+
     Route::get('/test-mail', function () {
 
         dd(Mail::send('emails.sample', ['name' => 'Deji Lana'], function ($m) {
@@ -574,20 +292,11 @@ Route::group(['middleware' => 'web'], function () {
         }));
     });
 
-
     Route::get('/migrate-inf', 'TalentPoolController@MigrateInfrastructure');
     Route::get('/migrate-inf2', 'TalentPoolController@InfMigrate2');
     Route::get('/migrate-inf3', 'TalentPoolController@InfMigrate3');
 
-
-    Route::get('/my-career-page', 'JobsController@MyCompany');
-
-    // Route::get('/{c_url}/job/{job_id}', 'JobsController@JobView');
-    Route::get('/{c_url}/job/{job_id}/{job_slug}', 'JobsController@JobViewOld');
-
-    Route::get('/{c_url}', 'JobsController@company');
-
-    /**
+        /**
      * Onbarding routes
      */
     Route::get('onboard/noAction1', ['as' => 'onboard-no-action-1', 'uses' => 'OnboardingController@noAction1']);
@@ -595,72 +304,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('onboard/noAction3', ['as' => 'onboard-no-action-3', 'uses' => 'OnboardingController@noAction3']);
 
 
-    /**
-     * Route Group for everything applicant
-     */
-
-    Route::group(['prefix' => 'applicant'], function () {
-
-
-        Route::get('profile/{appl_id}', ['uses' => 'JobApplicationsController@Profile', 'as' => 'applicant-profile']);
-
-        Route::get('messages/{appl_id}',
-            ['uses' => 'JobApplicationsController@Messages', 'as' => 'applicant-messages']);
-        Route::match(['get', 'post'], '/messages/send',
-            'JobApplicationsController@sendMessage')->name('admin-send-message');
-
-        Route::get('activities/{appl_id}',
-            ['uses' => 'JobApplicationsController@activities', 'as' => 'applicant-activities']);
-        Route::get('checks/{appl_id}', ['uses' => 'JobApplicationsController@checks', 'as' => 'applicant-checks']);
-        Route::get('notes/{appl_id}', ['uses' => 'JobApplicationsController@notes', 'as' => 'applicant-notes']);
-        Route::get('assess/{appl_id}', ['uses' => 'JobApplicationsController@assess', 'as' => 'applicant-assess']);
-        Route::get('medicals/{appl_id}',
-            ['uses' => 'JobApplicationsController@medicals', 'as' => 'applicant-medicals']);
-
-        Route::get('documents/{appl_id}',
-            ['uses' => 'JobApplicationsController@documents', 'as' => 'applicant-documents']);
-
-        Route::get('interviews/{appl_id}',
-            ['uses' => 'JobApplicationsController@interviews', 'as' => 'applicant-interviews']);
-
-
-        Route::get('profile', function () {
-            return view('applicant.profile');
-        });
-
-        Route::get('checks', function () {
-            return view('applicant.checks');
-        });
-
-        Route::get('view-mail', function () {
-            return view('applicant.messages');
-        });
-
-        Route::get('notes', function () {
-            return view('applicant.notes');
-        });
-
-        Route::get('activities', function () {
-            return view('applicant.activities');
-        });
-
-    });
-
-
-    /**
-     * Route Group for modals
-     */
-
-
-    Route::get('modal/default', [
-        'as' => 'get-modal',
-        function () {
-            return view('applicant.messages');
-        }
-    ]);
 
     Route::get('settings/embed',
-        ['as' => 'settings-embed', 'uses' => 'JobsController@embed']);
+    ['as' => 'settings-embed', 'uses' => 'JobsController@embed']);
 
     Route::get('cron/delete-temp-files',
         ['as' => 'delete-temp-files', 'uses' => 'JobApplicationsController@deleteTmpFiles']);
@@ -728,11 +374,11 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('checkout', ['as' => 'checkout', 'uses' => 'JobApplicationsController@Checkout']);
 
     Route::post('request/test', ['as' => 'request-test', 'uses' => 'JobApplicationsController@requestTest']);
-    Route::post('save/test-result', ['as' => 'save-test-result', 'uses' => 'JobApplicationsController@saveTestResult']);
+    
     Route::post('request/check', ['as' => 'request-check', 'uses' => 'JobApplicationsController@requestCheck']);
     Route::post('invite/interview',
         ['as' => 'invite-for-interview', 'uses' => 'JobApplicationsController@inviteForInterview']);
-    
+
     Route::post('preview/interview',
         ['as' => 'invite-for-interview-preview', 'uses' => 'JobApplicationsController@previewInterview']);
         
@@ -803,10 +449,15 @@ Route::group(['middleware' => 'web'], function () {
     });
     Route::post('/api/v1/messages/send','CandidateController@sendMessage');
     Route::any('candidate-invite/{id}/{token}',['uses' => 'CandidateController@candidateAccept', 'as' => 'candidate-invite']);
-
-
+    Route::get('/my-career-page', 'JobsController@MyCompany');
+    Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
     
 });
+
+/*********************************/
+/* End Of Admin Routes */
+/**********************************/
+
 
 /* Easily update Solr via URL*/
 Route::get('/solr/update/{redirect?}', function ($redirect = '') {
@@ -817,3 +468,319 @@ Route::get('/solr/update/{redirect?}', function ($redirect = '') {
     }
     return redirect()->back();
 });
+
+
+Route::get('hospital-project', function () {
+    $agent = new \Jenssegers\Agent\Agent();
+    return view('lifeplan', compact('agent'));
+});
+
+Route::group(['middleware' => 'web'], function () {
+
+    Route::match(['get', 'post'], 'talent-source',['uses' => 'HomeController@viewTalentSource', 'as' => 'talent-source']);
+
+    Route::post('save/test-result', ['as' => 'save-test-result', 'uses' => 'JobApplicationsController@saveTestResult']);
+
+    Route::get('user/activation/{token}', 'Auth\LoginController@activateUser')->name('user.activate');
+    
+    Route::post('user/auth/verify', 'Auth\LoginController@verifyUser')->name('verify-user-details');
+    Route::any('', 'HomeController@home')->name('candidate-login');
+    Route::any('register', 'HomeController@register')->name('candidate-register');
+    Route::any('forgot', 'CandidateController@forgot')->name('candidate-forgot');
+    Route::get('forgot/sent', 'CandidateController@forgotSent')->name('candidate-forgot-sent');
+    Route::any('reset/{token}', 'CandidateController@reset')->name('candidate-reset');
+
+    // Candidate
+    Route::group(['prefix' => 'candidate'], function () {
+
+        Route::match(['get', 'post'], '/login', 'HomeController@home');
+
+        Route::match(['get', 'post'], '/logout', 'CandidateController@logout')->name('candidate-logout');
+        Route::match(['get', 'post'], '/profile', 'CandidateController@profile')->name('candidate-profile');
+
+        // TODO
+        // Route::match(['get', 'post'], '/register', 'CandidateController@register')->name('candidate-register');
+        // Route::match(['get', 'post'], '/forgot', 'CandidateController@forgot')->name('candidate-reset');
+        // Route::match(['get', 'post'], '/reset', 'CandidateController@reset')->name('candidate-reset');
+
+        Route::match(['get', 'post'], '/dashboard', 'CandidateController@dashboard')->name('candidate-dashboard');
+        Route::match(['get', 'post'], '/{application_id}/activities',
+            'CandidateController@activities')->name('candidate-activities');
+        Route::match(['get', 'post'], '/jobs', 'CandidateController@jobs')->name('candidate-jobs');
+        Route::match(['get', 'post'], '/{application_id}/documents',
+            'CandidateController@documents')->name('candidate-documents');
+
+
+        Route::match(['get', 'post'], '/{application_id}/messages',
+            'CandidateController@messages')->name('candidate-messages');
+
+        Route::match(['get', 'post'], '/messages/send',
+            'CandidateController@sendMessage')->name('candidate-send-message');
+    });
+
+    Route::get('invoice/{invoice_id}', ['as' => 'show-invoice', 'uses' => 'PaymentController@showInvoice']);
+
+    Route::post('/invoice-pop', ['as' => 'show-invoice-pop', 'uses' => 'PaymentController@createInvoice']);
+
+
+    Route::get('error', [
+        'as' => 'errors.defaultError',
+        function () {
+            return view('errors.500');
+        }
+    ]);
+
+    Route::get('/contact', function () {
+        return view('guest.contact');
+    });
+
+    Route::post('/contact', function () {
+        $request = request();
+        $data = $request->all();
+
+        $mail = Mail::send('emails.new.contact', $data, function ($m) use ($data) {
+            $m->from($data->email, 'New Job Paid');
+            // $m->to('babatopeoni@gnmail.com')->subject('Contact');
+            $m->to('support@seamlesshiring.com')->subject('Contact');
+        });
+
+        $request->session()->flash('flash_message', 'You have exceeded your daily Provide Help limit.');
+        return redirect()->back();
+
+    });
+
+
+    Route::get('/faq', function () {
+
+        return view('guest.faq');
+    });
+
+    Route::get('/whoops', function () {
+
+        return view('guest.whoops');
+    });
+
+    Route::get('/success', function () {
+
+        return view('guest.success');
+    });
+
+    Route::get('/company_success', function () {
+
+        return view('guest.company_success');
+    });
+
+    //  Route::get('embed-view', function(){
+    //     echo "good one";
+    // });
+
+    Route::get('payment_successful', function () {
+        return view('payment.payment_succes');
+    });
+
+    Route::get('log-in', 'Auth\LoginController@showLoginForm');
+    Route::get('/logout', 'Auth\LoginController@logout');
+
+    Route::post('log-in', 'Auth\LoginController@login');
+
+    Route::get('/auto-login/{code}', 'Auth\LoginController@autoLogin');
+
+
+    // Route::get('sign-up', 'Auth\AuthController@showRegistrationForm');
+
+    // Route::post('sign-up', 'Auth\AuthController@register');
+
+    Route::match(['get', 'post'], 'auth/ajax_login', ['uses' => 'Auth\LoginController@AjaxLogin', 'as' => 'ajax_login']);
+    Route::match(['get', 'post'], 'sign-up', ['uses' => 'Auth\AuthController@Registration', 'as' => 'registration']);
+    
+
+
+    Route::match(['get', 'post'], 'cart', ['uses' => 'CvSalesController@Cart', 'as' => 'cart']);
+    Route::match(['get', 'post'], 'cart_details', ['uses' => 'CvSalesController@CartDetails', 'as' => 'cartDe']);
+    Route::match(['get', 'post'], 'output', ['uses' => 'CvSalesController@Output', 'as' => 'out']);
+    Route::match(['get', 'post'], 'ajax_cart', ['uses' => 'CvSalesController@Ajax_cart', 'as' => 'ajax_cart']);
+    Route::match(['get', 'post'], 'ajax_checkout',
+        ['uses' => 'CvSalesController@Ajax_checkout', 'as' => 'ajax_checkout']);
+    Route::match(['get', 'post'], 'payment/{type?}', ['uses' => 'CvSalesController@Payment', 'as' => 'payment']);
+
+    Route::match(['get', 'post'], 'simplepay/{type?}', ['uses' => 'JobsController@SimplePay', 'as' => 'simplepay']);
+
+    Route::match(['get', 'post'], 'job/view/{jobID}/{jobSlug?}', ['uses' => 'JobsController@JobView', 'as' => 'job-view']);
+
+    Route::match(['get', 'post'], 'job/share/{jobID}/{jobSlug?}', ['uses' => 'JobsController@jobShare', 'as' => 'job-share']);
+
+    Route::match(['get', 'post'], 'job/apply/{jobID}/{slug}',['uses' => 'JobsController@jobApply', 'as' => 'job-apply']);
+
+    Route::match(['get', 'post'], 'job/applied/{jobID}/{slug}',['uses' => 'JobsController@JobApplied', 'as' => 'job-applied']);
+
+    Route::match(['get', 'post'], 'job/video-application/{jobID}/{slug}/{appl_id}',['uses' => 'JobsController@JobVideoApplication', 'as' => 'job-video-application']);
+    
+    Route::get('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
+
+    Route::post('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
+
+    Route::get('embed-test', ['as' => 'embed', 'uses' => 'JobsController@getEmbedTest']);
+
+    Route::match(['get', 'post'], 'accept-invite/{id}',['uses' => 'JobsController@acceptInvite', 'as' => 'accept-invite']);
+
+    Route::match(['get', 'post'], 'decline-invite/{id}',  ['uses' => 'JobsController@declineInvite', 'as' => 'decline-invite']);
+
+    Route::match(['get', 'post'], 'select-company/{slug?}', ['uses' => 'JobsController@selectCompany', 'as' => 'select-company']);
+
+    Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
+
+    Route::get('/{c_url}', 'JobsController@company');
+
+    Route::match(['get', 'post'], 'transactions', ['uses' => 'CvSalesController@Transactions', 'as' => 'transactions']);
+    Route::match(['get', 'post'], 'emails-test', ['uses' => 'CvSalesController@TestEmail', 'as' => 'emails']);
+
+    // Route::match(['get', 'post'], 'job/dashboard/{jobID}', ['uses' => 'JobsController@JobDashboard', 'as' => 'job-view']);
+
+    Route::match(['get', 'post'], 'job-status', ['uses' => 'JobsController@JobStatus', 'as' => 'job-status']);
+    Route::match(['get', 'post'], 'make-private', ['uses' => 'JobsController@makeJobPrivateOrPublic', 'as' => 'make-job-private']);
+
+
+    // Route::any('log-in', function () {
+    //     return view('auth.login');
+    // });
+
+    
+    Route::get('/pricing', ['as' => 'pricing', 'uses' => 'HomeController@pricing']);
+
+    Route::post('request-a-call', ['as' => 'request-a-call', 'uses' => 'HomeController@requestACall']);
+
+    Route::get('about', function () {
+        return view('guest.about');
+    });
+
+    Route::get('terms', function () {
+        return view('guest.terms');
+    });
+
+    Route::get('privacy', function () {
+        return view('guest.privacy');
+    });
+
+    Route::get('register2', function () {
+        return view('auth.register2');
+    });
+
+    
+
+    /**
+     * Route Group for everything cv
+     */
+    Route::group(['prefix' => 'cv'], function () {
+
+        Route::get('search-results', function () {
+            return view('cv-sales.search-results');
+        });
+
+        Route::post('filter_search', 'CvSalesController@filter_search');
+        Route::post('cv-preview', ['uses' => 'CvSalesController@getCvPreview', 'as' => 'cv-preview']);
+
+
+        /**
+         * Post Variable for cv search form search box
+         */
+        Route::get('search', 'CvSalesController@search');
+
+
+        Route::get('cv_pool', function () {
+            return view('cv-sales.cv_pool');
+        });
+
+        Route::get('cv_purchased', function () {
+            return view('cv-sales.cv_purchased');
+        });
+
+
+        Route::get('cv_saved', function () {
+            return view('cv-sales.cv_saved');
+        });
+
+        Route::get('saved', 'CvSalesController@viewSaved');
+        Route::get('purchased', 'CvSalesController@viewPurchased');
+        Route::get('talent-pool', 'CvSalesController@viewTalentPool');
+
+
+        Route::post('get-my-folders', 'CvSalesController@getMyFolders');
+
+        Route::post('add-folder', 'CvSalesController@addFolders');
+
+        Route::post('save-to-folder', 'CvSalesController@saveToFolder');
+
+        Route::get('save-to-solr', 'CvSalesController@saveCvPreview');
+
+
+    });
+
+
+
+    // Route::get('/{c_url}/job/{job_id}', 'JobsController@JobView');
+    Route::get('/{c_url}/job/{job_id}/{job_slug}', 'JobsController@JobViewOld');
+
+    /**
+     * Route Group for everything applicant
+     */
+
+    Route::group(['prefix' => 'applicant'], function () {
+
+
+        Route::get('profile/{appl_id}', ['uses' => 'JobApplicationsController@Profile', 'as' => 'applicant-profile']);
+
+        Route::get('messages/{appl_id}',
+            ['uses' => 'JobApplicationsController@Messages', 'as' => 'applicant-messages']);
+        Route::match(['get', 'post'], '/messages/send',
+            'JobApplicationsController@sendMessage')->name('admin-send-message');
+
+        Route::get('activities/{appl_id}',
+            ['uses' => 'JobApplicationsController@activities', 'as' => 'applicant-activities']);
+        Route::get('checks/{appl_id}', ['uses' => 'JobApplicationsController@checks', 'as' => 'applicant-checks']);
+        Route::get('notes/{appl_id}', ['uses' => 'JobApplicationsController@notes', 'as' => 'applicant-notes']);
+        Route::get('assess/{appl_id}', ['uses' => 'JobApplicationsController@assess', 'as' => 'applicant-assess']);
+        Route::get('medicals/{appl_id}',
+            ['uses' => 'JobApplicationsController@medicals', 'as' => 'applicant-medicals']);
+
+        Route::get('documents/{appl_id}',
+            ['uses' => 'JobApplicationsController@documents', 'as' => 'applicant-documents']);
+
+        Route::get('interviews/{appl_id}',
+            ['uses' => 'JobApplicationsController@interviews', 'as' => 'applicant-interviews']);
+
+
+        Route::get('profile', function () {
+            return view('applicant.profile');
+        });
+
+        Route::get('checks', function () {
+            return view('applicant.checks');
+        });
+
+        Route::get('view-mail', function () {
+            return view('applicant.messages');
+        });
+
+        Route::get('notes', function () {
+            return view('applicant.notes');
+        });
+
+        Route::get('activities', function () {
+            return view('applicant.activities');
+        });
+
+    });
+
+    /**
+     * Route Group for modals
+     */
+    Route::get('modal/default', [
+        'as' => 'get-modal',
+        function () {
+            return view('applicant.messages');
+        }
+    ]);
+
+});
+
+   

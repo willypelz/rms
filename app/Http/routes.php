@@ -449,8 +449,8 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     });
     Route::post('/api/v1/messages/send','CandidateController@sendMessage');
     Route::any('candidate-invite/{id}/{token}',['uses' => 'CandidateController@candidateAccept', 'as' => 'candidate-invite']);
-
-
+    Route::get('/my-career-page', 'JobsController@MyCompany');
+    Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
     
 });
 
@@ -476,8 +476,6 @@ Route::get('hospital-project', function () {
 });
 
 Route::group(['middleware' => 'web'], function () {
-
-    Route::auth();
 
     Route::match(['get', 'post'], 'talent-source',['uses' => 'HomeController@viewTalentSource', 'as' => 'talent-source']);
 
@@ -636,7 +634,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'transactions', ['uses' => 'CvSalesController@Transactions', 'as' => 'transactions']);
     Route::match(['get', 'post'], 'emails-test', ['uses' => 'CvSalesController@TestEmail', 'as' => 'emails']);
 
-    Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
     // Route::match(['get', 'post'], 'job/dashboard/{jobID}', ['uses' => 'JobsController@JobDashboard', 'as' => 'job-view']);
 
     Route::match(['get', 'post'], 'job-status', ['uses' => 'JobsController@JobStatus', 'as' => 'job-status']);
@@ -718,7 +715,7 @@ Route::group(['middleware' => 'web'], function () {
 
     });
 
-    Route::get('/my-career-page', 'JobsController@MyCompany');
+
 
     // Route::get('/{c_url}/job/{job_id}', 'JobsController@JobView');
     Route::get('/{c_url}/job/{job_id}/{job_slug}', 'JobsController@JobViewOld');

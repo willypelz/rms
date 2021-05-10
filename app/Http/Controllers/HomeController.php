@@ -84,6 +84,11 @@ class HomeController extends Controller
         $redirect_to = $request->redirect_to;
         session()->put('redirect_to',$redirect_to);
         if ($request->isMethod('post')) {
+            $this->validate($request, [
+                'email' => 'required|email',
+                'password' => 'required'
+            ]);
+
             if (Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password])) {
                 if ($request->redirect_to) {
                     return redirect($request->redirect_to);

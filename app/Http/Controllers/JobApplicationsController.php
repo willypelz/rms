@@ -340,13 +340,16 @@ class JobApplicationsController extends Controller
             }
         ])->find($request->jobID);
 
-
+            
         $active_tab = 'candidates';
         $status = '';
         $jobID = $request->jobID;
         $this->search_params['filter_query'] = @$request->filter_query;
         $this->search_params['start'] = $start = ($request->start) ? ($request->start * $this->search_params['row']) : 0;
-
+        
+        if(!$job){
+            return redirect()->route("dashboard")->withErrors(['error'=> "Invalid Job Role Specified"]);
+        }
         //If age is available
         if (@$request->age) {
 
@@ -368,7 +371,7 @@ class JobApplicationsController extends Controller
             $request->exp_years = [env('EXPERIENCE_START'), env('EXPERIENCE_END')];
             $solr_exp_years = null;
         }
-
+        
         //If test score is available
         if (@$request->test_score) {
             //2015-09-16T00:00:00Z
@@ -400,7 +403,7 @@ class JobApplicationsController extends Controller
             @$solr_video_application_score,
             @$solr_test_score
         );
-
+        
         $statuses = $job->workflow->workflowSteps()->pluck('slug');
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$request->jobID,

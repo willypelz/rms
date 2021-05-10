@@ -114,8 +114,8 @@ class HomeController extends Controller
         if ($request->isMethod('post')) {
 
             $this->validate($request, [
-                'first_name' => 'required',
-                'last_name' => 'required',
+                'first_name' => 'required|regex:/^[a-zA-Z]+$/u',
+                'last_name' => 'required|regex:/^[a-zA-Z]+$/u',
                 'email' => 'required|unique:candidates,email',
                 'password' => 'required',
             ]);

@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['web']], function () {
     Route::get('/sso/auto/login/verify/{email}/{key}', 'Auth\LoginController@singleSignOnVerify');
     Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
+    Route::get('/sso/auto/login/verify/role/{email}/{key}', 'Auth\LoginController@verifyUserHasRole');
 });
 
 /** ---------

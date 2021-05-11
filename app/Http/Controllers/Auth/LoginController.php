@@ -341,11 +341,10 @@ class LoginController extends Controller
     }
 
     /**
-     * [singleSignOn login and redirect to url]
-     * @param  [string] $encoded_email [encoded email]
-     * @param  [string] $encoded_key   [encoded key]
-     * @param  [string] $encoded_url   [encoded url]
-     * @return [route]                 [redirect to url]
+     * Check if user has a role in RMS either as a user with admin roles or as an interviewer
+     * @param $encoded_email
+     * @param $encoded_key
+     * @return array [route]
      */
     public function verifyUserHasRole($encoded_email, $encoded_key)
     {
@@ -366,7 +365,7 @@ class LoginController extends Controller
             return ['status' => false, 'message' => 'API key not valid'];
         }else{
             $user_result =  $user && $user->roles->count() ? $user :
-                ($team_invite && count($team_invite->role_ids)  ? $team_invite : null);
+                ($team_invite && count(json_decode(($team_invite->role_ids)))  ? $team_invite : null);
             if($user_result) {
                 return ['status' => true, 'message' => 'API key is valid and user has a role on RMS'];
             }

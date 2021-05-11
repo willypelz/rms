@@ -431,6 +431,8 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::post('/settings/api-key', 'ApiController@update');
 
     Route::post('/third-party/entry', 'ThirdPartyEntryController@index');
+    Route::get('/my-career-page', 'JobsController@MyCompany');
+    Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
     
 });
 
@@ -455,8 +457,7 @@ Route::group([
 });
 Route::post('/api/v1/messages/send','CandidateController@sendMessage');
 Route::any('candidate-invite/{id}/{token}',['uses' => 'CandidateController@candidateAccept', 'as' => 'candidate-invite']);
-Route::get('/my-career-page', 'JobsController@MyCompany');
-Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
+
 
 
 /* Easily update Solr via URL*/

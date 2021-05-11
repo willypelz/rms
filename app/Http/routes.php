@@ -431,32 +431,32 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::post('/settings/api-key', 'ApiController@update');
 
     Route::post('/third-party/entry', 'ThirdPartyEntryController@index');
-
-    /* API Routes */
-    Route::group([
-        'prefix' => '/api/v1',
-        'namespace' => 'API'
-    ], function () {
-        Route::get('/list/companies', 'JobController@listCompanies');
-        Route::get('/jobs/{jobType?}/{company_id?}', 'JobController@company');
-        Route::get('/job/{job_id}/{status_slug}/applicants', 'JobController@applicants');
-        Route::post('/jobs/apply', 'JobController@apply');
-        Route::get('/get/employees', 'JobController@fetchEmployees')->name('fetch-employees');
-
-        Route::get('/get/user-jobs', 'JobController@getUserJobs')->name('get-user-jobs');
-        Route::get('/get/user-jobs/activities', 'JobController@getUserJobActivities');
-        Route::post('/save-super-admin', 'JobController@createSuperAdmin');
-    });
-    Route::post('/api/v1/messages/send','CandidateController@sendMessage');
-    Route::any('candidate-invite/{id}/{token}',['uses' => 'CandidateController@candidateAccept', 'as' => 'candidate-invite']);
-    Route::get('/my-career-page', 'JobsController@MyCompany');
-    Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
     
 });
 
 /*********************************/
 /* End Of Admin Routes */
 /**********************************/
+
+/* API Routes */
+Route::group([
+    'prefix' => '/api/v1',
+    'namespace' => 'API'
+], function () {
+    Route::get('/list/companies', 'JobController@listCompanies');
+    Route::get('/jobs/{jobType?}/{company_id?}', 'JobController@company');
+    Route::get('/job/{job_id}/{status_slug}/applicants', 'JobController@applicants');
+    Route::post('/jobs/apply', 'JobController@apply');
+    Route::get('/get/employees', 'JobController@fetchEmployees')->name('fetch-employees');
+
+    Route::get('/get/user-jobs', 'JobController@getUserJobs')->name('get-user-jobs');
+    Route::get('/get/user-jobs/activities', 'JobController@getUserJobActivities');
+    Route::post('/save-super-admin', 'JobController@createSuperAdmin');
+});
+Route::post('/api/v1/messages/send','CandidateController@sendMessage');
+Route::any('candidate-invite/{id}/{token}',['uses' => 'CandidateController@candidateAccept', 'as' => 'candidate-invite']);
+Route::get('/my-career-page', 'JobsController@MyCompany');
+Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
 
 
 /* Easily update Solr via URL*/
@@ -476,6 +476,8 @@ Route::get('hospital-project', function () {
 });
 
 Route::group(['middleware' => 'web'], function () {
+
+    Route::auth();
 
     Route::match(['get', 'post'], 'talent-source',['uses' => 'HomeController@viewTalentSource', 'as' => 'talent-source']);
 

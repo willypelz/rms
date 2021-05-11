@@ -1,7 +1,6 @@
 
-    <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3  col-xs-8 col-xs-offset-2" >
 
-            @if (session('status'))
+        @if (session('status'))
             <div class="alert alert-success">
                 {{ session('status') }}
             </div>
@@ -49,5 +48,3 @@
         
         <div class="alert alert-danger" id="error" style="display:none"></div>
         
-
-    </div>

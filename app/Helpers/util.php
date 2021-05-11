@@ -10,6 +10,7 @@ use App\Models\JobActivity;
 use App\Models\JobApplication;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use App\Models\TestRequest;
+use App\Models\ActivityLog;
 
 // use Faker;
 
@@ -831,3 +832,35 @@ if (!function_exists('defaultCompanyLogo')) {
         return get_current_company()->logo ?? env('SEAMLESS_HIRING_LOGO');
     }
 } 
+
+function logAction($logAction)
+{
+    $log_action = [
+        'log_name'      => @$logAction['log_name'],
+        'description'   => @$logAction['description'],
+        'action_id'     => @$logAction['action_id'],
+        'action_type'   => @$logAction['action_type'],
+        'causee_id'     => @$logAction['causee_id'],
+        'causer_id'     => isset($logAction['causer_id']) ? $logAction['causer_id'] : Auth::user()->id,
+        'causer_type'   => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType( isset($logAction['causee_id'] ) ? $logAction['causee_id'] : Null ),
+        'properties'    => @$logAction['properties'],
+    ];
+
+    if(!empty($log_action))
+    {
+        ActivityLog::create($log_action);
+    }
+}
+
+function getCauserType($user_id=null)
+{
+    if(is_null($user_id))
+    {
+        return 'admin';
+    }
+    else
+    {
+        $auth_user_id = Auth::user()->id;
+        return $auth_user_id == $user_id ? 'applicant' :  'admin';
+    }
+}

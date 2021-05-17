@@ -8,6 +8,7 @@ use App\Models\Cv;
 use App\Models\Job;
 use App\Models\JobActivity;
 use App\Models\JobApplication;
+use Illuminate\Support\Facades\File;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use App\Models\TestRequest;
 use App\Models\ActivityLog;
@@ -214,7 +215,7 @@ function remove_cv_contact($cv)
 function default_picture($data, $type = 'cv')
 {
 
-    if (!is_array($data) && $data ) {
+    if (!is_array($data) && $data) {
         $data = $data->toArray();
     }
 
@@ -562,7 +563,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
         switch ($request->type) {
             case 'single':
                 $location_value = ($request->country != 'Nigeria') ? $request->country :
-                    ( ($request->location == 'Across Nigeria') ? 'Nigeria' : $request->location);
+                    (($request->location == 'Across Nigeria') ? 'Nigeria' : $request->location);
 
                 $last_cv = Cv::insertGetId([
                     'first_name' => $request->cv_first_name,
@@ -831,36 +832,45 @@ if (!function_exists('defaultCompanyLogo')) {
     {
         return get_current_company()->logo ?? env('SEAMLESS_HIRING_LOGO');
     }
-} 
+}
 
 function logAction($logAction)
 {
     $log_action = [
-        'log_name'      => @$logAction['log_name'],
-        'description'   => @$logAction['description'],
-        'action_id'     => @$logAction['action_id'],
-        'action_type'   => @$logAction['action_type'],
-        'causee_id'     => @$logAction['causee_id'],
-        'causer_id'     => isset($logAction['causer_id']) ? $logAction['causer_id'] : Auth::user()->id,
-        'causer_type'   => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType( isset($logAction['causee_id'] ) ? $logAction['causee_id'] : Null ),
-        'properties'    => @$logAction['properties'],
+        'log_name' => @$logAction['log_name'],
+        'description' => @$logAction['description'],
+        'action_id' => @$logAction['action_id'],
+        'action_type' => @$logAction['action_type'],
+        'causee_id' => @$logAction['causee_id'],
+        'causer_id' => isset($logAction['causer_id']) ? $logAction['causer_id'] : Auth::user()->id,
+        'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+        'properties' => @$logAction['properties'],
     ];
 
-    if(!empty($log_action))
-    {
+    if (!empty($log_action)) {
         ActivityLog::create($log_action);
     }
 }
 
-function getCauserType($user_id=null)
+function getCauserType($user_id = null)
 {
-    if(is_null($user_id))
-    {
+    if (is_null($user_id)) {
         return 'admin';
-    }
-    else
-    {
+    } else {
         $auth_user_id = Auth::user()->id;
-        return $auth_user_id == $user_id ? 'applicant' :  'admin';
+        return $auth_user_id == $user_id ? 'applicant' : 'admin';
     }
+}
+
+
+/**
+ * @param $path
+ * @return bool
+ */
+function findOrMakeDirectory($path)
+{
+    if (!file_exists($path)) {
+        return File::makeDirectory($path, 0777);
+    }
+
 }

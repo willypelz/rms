@@ -1457,7 +1457,8 @@ class JobsController extends Controller
             }
         }
 
-        $extension = $request->file('cv-upload-file')->getClientOriginalExtension();
+        $extension = $request->file('cv-upload-file') ? $request->file('cv-upload-file')->getClientOriginalExtension() : null;
+
         if($request->type == "single"){
             $allowed_file_extentions = ['pdf','doc','docx','txt','rtf','pptx','ppt'];
             if (!in_array($extension, $allowed_file_extentions)) {

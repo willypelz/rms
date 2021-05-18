@@ -444,14 +444,13 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 /* API Routes */
 Route::group([
     'prefix' => '/api/v1',
-    'namespace' => 'API',
-    'middleware' =>'admin'
+    'namespace' => 'API'
 ], function () {
     Route::get('/list/companies', 'JobController@listCompanies');
     Route::get('/jobs/{jobType?}/{company_id?}', 'JobController@company');
     Route::get('/job/{job_id}/{status_slug}/applicants', 'JobController@applicants');
     Route::post('/jobs/apply', 'JobController@apply');
-    Route::get('/get/employees', 'JobController@fetchEmployees')->name('fetch-employees');
+    Route::get('/get/employees', 'JobController@fetchEmployees')->name('fetch-employees')->middleware('admin');
 
     Route::get('/get/user-jobs', 'JobController@getUserJobs')->name('get-user-jobs');
     Route::get('/get/user-jobs/activities', 'JobController@getUserJobActivities');

@@ -444,7 +444,8 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 /* API Routes */
 Route::group([
     'prefix' => '/api/v1',
-    'namespace' => 'API'
+    'namespace' => 'API',
+    'middleware' =>'admin'
 ], function () {
     Route::get('/list/companies', 'JobController@listCompanies');
     Route::get('/jobs/{jobType?}/{company_id?}', 'JobController@company');

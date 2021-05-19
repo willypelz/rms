@@ -422,6 +422,34 @@ class JobsController extends Controller
 
     }
 
+    /*
+    * To delete a job team admin user 
+    * @return Illuminate\Http\Response
+    */
+    public function JobTeamDelete(Request $request){
+
+        $data = [
+            "user_id" => "required"
+        ];
+        
+        $data = $request->validate($data);
+        $user = User::find($data["user_id"]);
+        if($user){
+            $data = $user;
+            $user->delete();
+            logAction([
+                'log_name' => 'Job Team Admin Delete',
+                'description' => 'An action that deletes a job team super admin',
+                'action_type' => 'Delete',
+                'causee_id' => $data->id,
+                'causer_id' =>  Auth::user()->id,
+            ]);
+            return redirect()->back()->with(['success' => "Super Admin Deleted Successfully"]);
+        }
+            
+        return redirect()->back()->with(['error' => "Operation delete Super Admin Not Successful"]);
+    }
+
 
     public function removeJobTeamMember(Request $request)
     {

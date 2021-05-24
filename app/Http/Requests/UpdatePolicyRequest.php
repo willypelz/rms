@@ -46,7 +46,7 @@ class UpdatePolicyRequest extends FormRequest
 
 		return [
 
-			'privacy_policy_url' => 'required|url',
+			'privacy_policy_url' => 'url',
 
 		];
 

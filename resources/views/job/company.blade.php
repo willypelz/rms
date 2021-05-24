@@ -122,11 +122,11 @@
                                                                         </div>
                                                                         <div class="description">
                                                                                 <p>{!!str_limit($job->details, 200)!!}</p>
-                                                                            <a href="mailto: ?subject={{$job->title}}&body={{route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)])}}"
+                                                                            <a href="mailto: ?subject={{$job->title}}&body={{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)])}}"
                                                                                target="_blank"><i
                                                                                         class="fa fa-envelope"></i>
                                                                                 Email to a friend</a> &nbsp; - &nbsp;
-                                                                            <a href="{{route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)])}}"
+                                                                            <a href="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)])}}"
                                                                                target="_blank"><i
                                                                                         class="fa fa-edit"></i> View Job
                                                                                 Details</a>

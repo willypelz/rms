@@ -1,10 +1,12 @@
 <?php
 
-
 namespace App\Enum;
 
 
-class Configs
+abstract class Configs
+
 {
+
+	const PRIVACY_KEY = 'privacy_policy';
 
 }

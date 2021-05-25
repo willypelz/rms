@@ -14,7 +14,7 @@ class AddBenefitAndRemunerationToJobsTable extends Migration
     public function up()
     {
         Schema::table('jobs', function (Blueprint $table) {
-	        $table->string('benefits')->nullable();
+	        $table->text('benefits')->nullable();
 	        $table->string('minimum_remuneration')->nullable();
 	        $table->string('maximum_remuneration')->nullable();
         });

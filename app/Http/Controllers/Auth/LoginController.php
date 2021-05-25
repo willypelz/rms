@@ -67,7 +67,7 @@ class LoginController extends Controller
             $is_internal = $user->is_internal;
 
 
-            if(!$is_internal){
+            if(true){
 
                 // Show password field
                 return ['status' => 200, 'is_external' => true];

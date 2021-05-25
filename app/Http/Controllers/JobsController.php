@@ -450,9 +450,32 @@ class JobsController extends Controller
         return redirect()->back()->with(['error' => "Operation delete Super Admin Not Successful"]);
     }
 
+    public function JobTeamInviteeDelete(Request $request){
+        $data = [
+            "invitee_id" => "required"
+        ];
+        
+        $data = $request->validate($data);
+        $invitee = JobTeamInvite::find($data["invitee_id"]);
+        if($invitee){
+            $data = $invitee;
+            $invitee->delete();
+            logAction([
+                'log_name' => 'Job Team Invitee Delete',
+                'description' => 'An action that deletes a job team invitee',
+                'action_type' => 'Delete',
+                'causee_id' => $data->id,
+                'causer_id' =>  Auth::user()->id,
+            ]);
+            return redirect()->back()->with(['success' => "Job Team Invitee Deleted Successfully"]);
+        }
+        return redirect()->back()->with(['error' => "Operation delete Job Team Invitee Not Successful"]);
+    }
+
 
     public function removeJobTeamMember(Request $request)
     {
+        
         $team_member = User::find($request->ref);
         $comp = $request->comp;
         $job = $request->job;

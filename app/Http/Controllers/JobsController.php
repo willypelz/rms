@@ -43,6 +43,7 @@ use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use App\Enum\Configs;
 use Mail;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use Session;
@@ -52,73 +53,75 @@ use Validator;
 
 class JobsController extends Controller
 {
-	private $search_params = ['q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false, 'sort' => 'application_date+desc', 'grouped' => FALSE];
+    private $search_params = ['q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false, 'sort' => 'application_date+desc', 'grouped' => FALSE];
 
-	protected $mailer;
-
-	private $states = [
-		'Lagos',
-		'Abia',
-		'Abuja',
-		'Adamawa',
-		'Akwa Ibom',
-		'Anambra',
-		'Bauchi',
-		'Bayelsa',
-		'Benue',
-		'Borno',
-		'Cross river',
-		'Delta',
-		'Edo',
-		'Ebonyi',
-		'Ekiti',
-		'Enugu',
-		'Gombe',
-		'Imo',
-		'Jigawa',
-		'Kaduna',
-		'Kano',
-		'Katsina',
-		'Kebbi',
-		'Kogi',
-		'Kwara',
-		'Niger',
-		'Ogun',
-		'Ondo',
-		'Osun',
-		'Oyo',
-		'Nassarawa',
-		'Plateau',
-		'Rivers',
-		'Sokoto',
-		'Taraba',
-		'Yobe',
-		'Zamfara'
-	];
+    protected $mailer;
+    protected $settings;
+    private $states = [
+        'Lagos',
+        'Abia',
+        'Abuja',
+        'Adamawa',
+        'Akwa Ibom',
+        'Anambra',
+        'Bauchi',
+        'Bayelsa',
+        'Benue',
+        'Borno',
+        'Cross river',
+        'Delta',
+        'Edo',
+        'Ebonyi',
+        'Ekiti',
+        'Enugu',
+        'Gombe',
+        'Imo',
+        'Jigawa',
+        'Kaduna',
+        'Kano',
+        'Katsina',
+        'Kebbi',
+        'Kogi',
+        'Kwara',
+        'Niger',
+        'Ogun',
+        'Ondo',
+        'Osun',
+        'Oyo',
+        'Nassarawa',
+        'Plateau',
+        'Rivers',
+        'Sokoto',
+        'Taraba',
+        'Yobe',
+        'Zamfara'
+    ];
 
 	/**
 	 * Create a new controller instance.
 	 *
-	 * @return void
+	 * @param Mailer $mailer
+	 * @param Settings $settings
 	 */
-	public function __construct(Mailer $mailer)
-	{
-		$this->middleware('auth', ['except' => [
-			'JobView',
-			'jobShare',
-			'company',
-			'jobApply',
-			'JobApplied',
-			'JobVideoApplication',
-			'getEmbed',
-			'getEmbedTest',
-			'acceptInvite',
-			'declineInvite',
-			'selectCompany',
-			'makeOldStaffsAdmin',
-		]]);
+    public function __construct(Mailer $mailer, Settings $settings)
+    {
+        $this->middleware('auth', ['except' => [
+            'JobView',
+            'jobShare',
+            'company',
+            'jobApply',
+            'JobApplied',
+            'JobVideoApplication',
+            'getEmbed',
+            'getEmbedTest',
+            'acceptInvite',
+            'declineInvite',
+            'selectCompany',
+            'makeOldStaffsAdmin',
+        ]]);
 
-		$this->qualifications = [
+        $this->settings = $settings;
+        $this->qualifications = [
 
 			'MPhil / PhD',
 			'MBA / MSc',
@@ -2201,8 +2204,8 @@ class JobsController extends Controller
 	 * @param Request|null $request
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
-	public function JobView($jobid, $job_slug, Request $request = null)
-	{
+    public function JobView($jobid, $job_slug, Request $request = null)
+    {
 
 		$job = Job::with('company')->where('id', $jobid)->first();
 
@@ -2212,13 +2215,16 @@ class JobsController extends Controller
 		$company = $job->company;
 		$company->logo = get_company_logo($company->logo);
 
-		if (Carbon::now()->diffInDays(Carbon::parse($job->expiry_date), false) < 0 || in_array($job->status, ['SUSPENDED', 'DELETED'])) {
-			$closed = true;
-		} else {
-			$closed = false;
-		}
-		return view('job.job-details', compact('job', 'company', 'closed'));
-	}
+        if (Carbon::now()->diffInDays(Carbon::parse($job->expiry_date), false) < 0 || in_array($job->status, ['SUSPENDED', 'DELETED'])) {
+            $closed = true;
+        } else {
+            $closed = false;
+        }
+	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
+
+	    return view('job.job-details', compact('job', 'company', 'closed', 'privacy_policy'));
+
+    }
 
 
 	public function jobShare($jobid, $job_slug, Request $request = null)
@@ -2585,9 +2591,13 @@ class JobsController extends Controller
 		if (Str::contains($referer_url, 'job/share'))
 			$fromShareURL = true;
 
+	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
 
-		return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate', 'last_cv', 'fields', 'countries'));
-	}
+	    return view('job.job-apply', compact('job', 'qualifications', 'states', 'company',
+		    'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate',
+		    'last_cv', 'fields','countries','privacy_policy'));
+
+    }
 
 	public function JobVideoApplication($jobID, $job_slug, $appl_id, Request $request)
 	{
@@ -3260,24 +3270,25 @@ class JobsController extends Controller
 
 		$embed_code = "<div id='SH_Embed'></div><script src='" . $domain_url . "'></script><script type='text/javascript'>document.getElementById('SH_Embed').innerHTML=SH_Embed.pull({key : '" . $key . "', base_url : '" . $base_url . "'});</script>";
 
-		return view('settings.embed', compact('embed_code'));
-	}
+        return view('settings.embed', compact('embed_code'));
+    }
 
-	public function getEmbedTest()
-	{
-		$key = Crypt::encrypt('20~&' . 'atolagbemobolaji@gmail.com~&' . '2016-05-27 16:20:10' . '~&13');
+    public function getEmbedTest()
+    {
+        $key = Crypt::encrypt('20~&' . 'atolagbemobolaji@gmail.com~&' . '2016-05-27 16:20:10' . '~&13');
 
 
-		return view('guest.embed-test', compact('key'));
-	}
 
-	public function getEmbed(Request $request)
-	{
-		// allow origin
-		header('Access-Control-Allow-Origin: *');
-		header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
-		// add any additional headers you need to support here
-		header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With,X-Auth-Token, Origin');
+        return view('guest.embed-test', compact('key'));
+    }
+
+    public function getEmbed(Request $request)
+    {
+        // allow origin
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
+        // add any additional headers you need to support here
+        header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With,X-Auth-Token, Origin');
 
 		list($id, $email, $created_at, $company_id) = explode('~&', Crypt::decrypt($request->key));
 
@@ -3310,43 +3321,42 @@ class JobsController extends Controller
 		$users = User::all();
 		$admin = Role::where('name', 'admin')->first();
 
-		foreach ($users as $user) {
-			(!$user->roles()->exists()) ? $user->roles()->attach($admin->id) : '';
-		}
-		return 'done';
-	}
+        foreach ( $users as $user ) {
+            ( !$user->roles ()->exists () ) ? $user->roles ()->attach ( $admin->id ) : '';
+        }
+        return 'done';
+    }
 
-	public function manageRoles(Request $request)
-	{
-		if ($request->isMethod('post')) {
-			$user = User::with('roles')->find($request->id);
-			if (!is_null(env('STAFFSTRENGTH_URL')) || env('RMS_STAND_ALONE')) {
-				$user->update([
-					'is_super_admin' => $request->role
-				]);
-				return response()->json(['status' => true]);
-			} else {
-				return response()->json([
-					'status' => false,
-					'message' => "you have to manage super admins from HRMS"
-				]);
-			}
-		}
-		$users = User::with('roles')->get();
-		$roles = Role::get();
-		return view('admin.roles_management.index', compact('users', 'roles'));
-	}
+    public function manageRoles ( Request $request )
+    {
+        if ( $request->isMethod ( 'post' ) ) {
+            $user = User::with('roles')->find($request->id);
+            if (!is_null(env('STAFFSTRENGTH_URL')) || env('RMS_STAND_ALONE') ) {
+                $user->update([
+                    'is_super_admin' => $request->role
+                ]);
+                return response()->json (['status' => true]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => "you have to manage super admins from HRMS"
+                ]);
+            }
+        }
+        $users = User::with('roles')->get();
+        $roles = Role::get();
+        return view ('admin.roles_management.index', compact ('users', 'roles'));
+    }
 
 
-	function searchForName($id, $array)
-	{
-		foreach ($array as $key => $val) {
-			if ($val['name'] === $id) {
-				return $key;
-			}
-		}
-		return null;
-	}
+    function searchForName($id, $array) {
+       foreach ($array as $key => $val) {
+           if ($val['name'] === $id) {
+               return $key;
+           }
+       }
+       return null;
+    }
 
 
 }

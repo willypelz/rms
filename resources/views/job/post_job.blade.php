@@ -115,6 +115,7 @@
                                             <div class="col-sm-12">
                                                 <label for="job-loc">Job Title
                                                     <span style="color:red" class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What is the job role?"></i>
                                                 </label>
                                                 <input type="text" name="title" value="{{ $job_title }}" id="job_title"
                                                        class="form-control" required>
@@ -134,6 +135,7 @@
                                                 <label for="job-title">
                                                     Country
                                                     <span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Which country is will the candidate work from?"></i>
                                                 </label>
                                                 <select required
                                                         name="country"
@@ -154,6 +156,7 @@
                                                     <label for="job-title">
                                                         Location
                                                         <span class="text-danger">*</span>
+                                                        <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Which state is will the candidate work from?"></i>
                                                     </label>
                                                     <select required
                                                             name="location"
@@ -177,6 +180,7 @@
 
                                             <div class="col-sm-6">
                                                 <label for="job-title">Job Type <span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What type of contract agreement?"></i>
                                                 </label>
 
                                                 <select name="job_type" id="job_level" required type="text"
@@ -208,6 +212,7 @@
                                             <div class="col-sm-12">
                                                 <label for="job-loc">Job Level
                                                     <span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What job level is required for this job? i.e Associate Marketer"></i>
                                                 </label>
                                                 <input type="text" name="position" class="form-control position"
                                                        value="{{ $job_position }}"
@@ -219,6 +224,7 @@
                                             <div class="col-sm-6">
                                                 <label for="job-loc">Eligibility
                                                     <span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Who can apply to this job post? Internal: Within your organization. External: outside your organization"></i>
                                                 </label>
                                                 <select @if($eligibilty) readonly @endif name="eligibility"
                                                         class="form-control" id="is_for">
@@ -237,6 +243,7 @@
 
                                             <div class="col-sm-6">
                                                 <label for="job-title">Expiry Date <span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What is the closing date for this job post?"></i>
                                                 </label>
                                                 <input type="text"
                                                        name="expiry_date"
@@ -252,6 +259,7 @@
                                                 <label for="job-loc">Make job private
                                                     <input type="checkbox" id="is_private" value="true"
                                                            name="is_private" @if ($is_private == 1) checked @endif >
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="When a job posting is private, only candidate with the link to the job post can apply"></i>
                                                 </label>
                                             </div>
                                         </div>
@@ -262,6 +270,7 @@
                                             <div class="col-sm-12">
                                                 <label for="job-title">Job Specialization
                                                     <span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What is the job specialization?"></i>
                                                 </label>
                                                 <br>
                                                 <select name="specializations[]" id="specialization" multiple required
@@ -283,6 +292,7 @@
                                                 <label for="workflowId">
                                                     Job Workflow
                                                     <span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What workflow should be attached to this job post?"></i>
                                                 </label>
                                                 <select name="workflow_id"
                                                         id="workflowId"
@@ -308,6 +318,7 @@
                                             <div class="col-sm-12">
                                                 <label for="job-loc">Job Summary
                                                     <span style="color:red" class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Job summary: a brief summary of what the job entails"></i>
                                                 </label>
                                                 <textarea name="summary" id="job_summary" class="form-control"
                                                           required=""> {{ $job_summary }}</textarea>
@@ -336,7 +347,9 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <label for="">Job Details <span class="text-danger">*</span></label>
+                                                <label for="">Job Details <span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Job details: details about this job posting"></i>
+                                                </label>
                                                 <textarea name="details"
                                                           id="editor1"
                                                           cols="30"
@@ -350,8 +363,9 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <label for="">Qualification, Skills and Experience<span
-                                                            class="text-danger">*</span></label>
+                                                <label for="">Qualification, Skills and Experience<span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Job qualification, skills and experience for this job posting"></i>
+                                                </label>
                                                 <textarea name="experience"
                                                           id="editor3"
                                                           cols="30"
@@ -607,5 +621,8 @@
         var exp = CKEDITOR.replace('editor3')
         var editor4 = CKEDITOR.replace('editor4')
 
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
     </script>
 @endsection

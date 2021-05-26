@@ -93,7 +93,16 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::match(['get', 'post'], 'add-company', ['uses' => 'JobsController@AddCompany', 'as' => 'add-company']);
     // Route::match(['get', 'post'], 'edit-company', ['uses' => 'JobsController@editCompany', 'as' => 'edit-company']);
 
-         //JOB
+
+	/************************
+	 * Data privacy routes **
+	 *************************/
+
+	Route::match(['get', 'post'], 'settings/set-privacy-policy', ['uses' => 'PrivacyPolicyController@setPrivacyPolicy', 'as' => 'set-privacy-policy']);
+	Route::match(['get', 'post'], 'settings/save-privacy-policy', ['uses' => 'PrivacyPolicyController@savePrivacyPolicy', 'as' => 'save-privacy-policy']);
+
+
+	//JOB
     Route::match(['get', 'post'], 'jobs/duplicate', ['uses' => 'JobsController@DuplicateJob', 'as' => 'duplicate-job']);
     Route::match(['get', 'post'], 'jobs/send-job', ['uses' => 'JobsController@SendJob', 'as' => 'send-to-friends']);
     Route::match(['get', 'post'], 'jobs/save-to-mailbox',
@@ -121,7 +130,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
         ['uses' => 'JobsController@AddCandidates', 'as' => 'add-candidates']);
 
     Route::match(['get', 'post'], 'job/preview/{jobID}', ['uses' => 'JobsController@Preview', 'as' => 'job-preview']);
-    
+
 
 
     Route::match(['get', 'post'], 'job/activities/{jobID}',
@@ -787,4 +796,3 @@ Route::group(['middleware' => 'web'], function () {
 
 });
 
-   

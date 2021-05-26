@@ -621,8 +621,8 @@
                     $.growl.notice({title: "Success", message: 'Specialization successfully added'})
 
                     // console.lo
-                        $( "#specialization12" ).load(window.location.href + " #specialization12" );
-                        // $( "#specialization" ).addClass('select2');
+                        $( "#specialization" ).load(window.location.href + " #specialization" );
+                        $( "#specialization").addClass('select2');
 
 
                 }

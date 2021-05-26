@@ -2,18 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Libraries\Solr;
-use App\Models\Candidate;
-use App\Models\Company;
-use App\Models\FolderContent;
-use App\Models\Job;
-use App\Models\JobActivity;
 use App\User;
-use Auth;
-use Curl;
 use Illuminate\Http\Request;
-use Mail;
 
 
 class HrmsIntegrationController extends Controller
@@ -42,8 +33,8 @@ class HrmsIntegrationController extends Controller
 
         $data = $request->validate($data);
         $apiKey = $request->header('X-API-KEY');
-
-        $user = User::where("email", $data["email"])->first();
+        
+        $user = User::where("email", base64_decode($data["email"]))->first();
         $authorized = $user->companies()->where("api_key", $apiKey)->first();
         if($user && $authorized){
             $data = $user;

@@ -131,12 +131,12 @@
                                                             <div id="hiddenForm">
                                                                 <div id="external_div">
                                                                     <label for="">Name: </label>
-                                                                    <input type="text" id="name" name="name" value="" class="form-control">
+                                                                    <input type="text" required id="name" name="name" value="" class="form-control">
                                                                     <small><em>The name of the team member</em></small>
                                                                     <br><br>
                                                                     <input type="hidden" name="email_from" value="{{ get_current_company()->email }}" class="form-control">
                                                                     <label for="">Email: </label>
-                                                                    <input type="text" name="email" id="email_to" placeholder="email addresses here" class="form-control">
+                                                                    <input type="text" required name="email" id="email_to" placeholder="email addresses here" class="form-control">
                                                                     <small><em>The email address of the team member</em>
                                                                     </small>
                                                                     <br><br>

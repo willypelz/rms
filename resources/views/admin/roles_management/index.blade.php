@@ -41,8 +41,9 @@
                                     <div onclick="removeRole({!! $user->id !!})" class="btn btn-danger">Remove super admin role</div>
                                     @else
                                     <div onclick="assignRole({!! $user->id !!})" class="btn btn-success">Assign super admin role</div> @endif 
-
-                                    <div data-toggle="modal" data-target="#deleteSuperAdminModal{{ $user->id }}" href="#deleteSuperAdminModal{{ $user->id }}" data-title="Background Check" style="margin-bottom:15px; margin-left:6px" class="btn btn-danger pull-right">Delete</div>
+                                    @if(!isHrmsIntegrated())
+                                        <div data-toggle="modal" data-target="#deleteSuperAdminModal{{ $user->id }}" href="#deleteSuperAdminModal{{ $user->id }}" data-title="Background Check" style="margin-bottom:15px; margin-left:6px" class="btn btn-danger pull-right">Delete</div>
+                                    @endif
                                     <div data-toggle="modal" data-target="#editSuperAdminModal{{ $user->id }}" href="#editSuperAdminModal{{ $user->id }}" data-title="Background Check" style="margin-bottom:15px" class="btn btn-info pull-right">Edit</div>
 
 

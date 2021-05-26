@@ -435,24 +435,49 @@ class JobsController extends Controller
         $data = $request->validate($data);
         $user = User::find($data["user_id"]);
         if($user){
+            if(!isHrmsIntegrated())
+                return redirect()->back()->with(['warning' => "You are synced with HRMS and can only delete a super admin from HRMS"]);
             $data = $user;
             $user->delete();
             logAction([
-                'log_name' => 'Job Team Admin Delete',
+                'log_name' => 'Job Team Admin Delete', 
                 'description' => 'An action that deletes a job team super admin',
                 'action_type' => 'Delete',
                 'causee_id' => $data->id,
                 'causer_id' =>  Auth::user()->id,
             ]);
-            return redirect()->back()->with(['success' => "Super Admin Deleted Successfully"]);
+            return redirect()->back()->with(['warning' => "Super Admin Deleted Successfully"]);
         }
             
-        return redirect()->back()->with(['error' => "Operation delete Super Admin Not Successful"]);
+        return redirect()->back()->with(['warning' => "Operation delete Super Admin Not Successful"]);
+    }
+
+    public function JobTeamInviteeDelete(Request $request){
+        $data = [
+            "invitee_id" => "required"
+        ];
+        
+        $data = $request->validate($data);
+        $invitee = JobTeamInvite::find($data["invitee_id"]);
+        if($invitee && $invitee->is_cancelled){
+            $data = $invitee;
+            $invitee->delete();
+            logAction([
+                'log_name' => 'Job Team Invitee Delete',
+                'description' => 'An action that deletes a job team invitee',
+                'action_type' => 'Delete',
+                'causee_id' => $data->id,
+                'causer_id' =>  Auth::user()->id,
+            ]);
+            return redirect()->back()->with(['success' => "Job Team Invitee Deleted Successfully"]);
+        }
+        return redirect()->back()->with(['error' => "Operation delete Job Team Invitee Not Successful"]);
     }
 
 
     public function removeJobTeamMember(Request $request)
     {
+
         $team_member = User::find($request->ref);
         $comp = $request->comp;
         $job = $request->job;

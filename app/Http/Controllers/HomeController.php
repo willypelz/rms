@@ -88,6 +88,7 @@ class HomeController extends Controller
                 'email' => 'required|email',
                 'password' => 'required'
             ]);
+
             if (Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password])) {
                 if ($request->redirect_to) {
                     return redirect($request->redirect_to);

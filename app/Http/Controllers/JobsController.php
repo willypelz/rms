@@ -43,6 +43,7 @@ use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use App\Enum\Configs;
 use Mail;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use Session;
@@ -55,7 +56,7 @@ class JobsController extends Controller
     private $search_params = ['q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false, 'sort' => 'application_date+desc', 'grouped' => FALSE];
 
     protected $mailer;
-
+    protected $settings;
     private $states = [
         'Lagos',
         'Abia',
@@ -96,12 +97,13 @@ class JobsController extends Controller
         'Zamfara'
     ];
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct(Mailer $mailer)
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @param Mailer $mailer
+	 * @param Settings $settings
+	 */
+    public function __construct(Mailer $mailer, Settings $settings)
     {
         $this->middleware('auth', ['except' => [
             'JobView',
@@ -118,6 +120,7 @@ class JobsController extends Controller
             'makeOldStaffsAdmin',
         ]]);
 
+        $this->settings = $settings;
         $this->qualifications = [
 
             'MPhil / PhD',
@@ -2193,13 +2196,13 @@ class JobsController extends Controller
         return redirect()->route('job-view', ['jobID' => $jobid, 'jobSlug' => str_slug($job_slug)]);
     }
 
-    /**
-     * Show a preview of a job detail
-     * @param $jobid
-     * @param $job_slug
-     * @param Request|null $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
+	/**
+	 * Show a preview of a job detail
+	 * @param $jobid
+	 * @param $job_slug
+	 * @param Request|null $request
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
     public function JobView($jobid, $job_slug, Request $request = null)
     {
 
@@ -2216,7 +2219,10 @@ class JobsController extends Controller
         } else {
             $closed = false;
         }
-        return view('job.job-details', compact('job', 'company', 'closed'));
+	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
+
+	    return view('job.job-details', compact('job', 'company', 'closed', 'privacy_policy'));
+
     }
 
 
@@ -2588,9 +2594,12 @@ class JobsController extends Controller
         if(Str::contains($referer_url, 'job/share'))
                 $fromShareURL = true;
 
+	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
 
+	    return view('job.job-apply', compact('job', 'qualifications', 'states', 'company',
+		    'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate',
+		    'last_cv', 'fields','countries','privacy_policy'));
 
-        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate', 'last_cv', 'fields','countries'));
     }
 
     public function JobVideoApplication($jobID, $job_slug, $appl_id, Request $request)

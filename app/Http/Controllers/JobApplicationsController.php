@@ -1934,11 +1934,23 @@ class JobApplicationsController extends Controller
             $request->interview_template_id)->where('company_id', get_current_company()->id)->first();
         $interview_template_id = $request->interview_template_id;
         if ($request->isMethod('post')) {
+
+            $this->validate($request, [
+                'name' => 'required',
+                'description' => 'required',
+                'type' => 'required'
+            ]);
+
+            if( (count($request->weight) > 0) && ($request->weight[0] > $request->weight[1])  ){
+                return redirect()->back()->with(["danger" => "weight min must be less than weight max"]);
+            }
+
             InterviewNoteOptions::where('id', $request->id)->where('company_id', get_current_company()->id)->update([
                 'name' => $request->name,
                 'description' => $request->description,
                 'type' => $request->type,
-                'weight' => $request->weight,
+                'weight_min' => $request->weight[0],
+                'weight_max' => $request->weight[1],
             ]);
 
             \Session::flash('status', 'Updated Successfully');
@@ -1963,14 +1975,21 @@ class JobApplicationsController extends Controller
         if ($request->isMethod('post')) {
 
           $this->validate($request, [
-            'description' => 'required'
+            'name' => 'required',
+            'description' => 'required',
+            'type' => 'required'
           ]);
+
+          if( (count($request->weight) > 0) && ($request->weight[0] > $request->weight[1])  ){
+              return redirect()->back()->with(["danger" => "weight min must be less than weight max"]);
+          }
 
             InterviewNoteOptions::create([
                 'name' => $request->name,
                 'description' => $request->description,
                 'type' => $request->type,
-                'weight' => $request->weight,
+                'weight_min' => $request->weight[0],
+                'weight_max' => $request->weight[1],
                 'company_id' => get_current_company()->id,
                 'interview_template_id' => $request->interview_template_id
             ]);

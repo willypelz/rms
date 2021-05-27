@@ -362,6 +362,9 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::match(['get', 'post'], 'settings/interview-notes/template/create',
         ['as' => 'interview-note-template-create', 'uses' => 'JobApplicationsController@createInterviewNoteTemplate']);
 
+    Route::match(['get', 'post'], 'settings/interview-notes/template/duplicate/{id}',
+        ['as' => 'interview-note-template-duplicate', 'uses' => 'JobApplicationsController@duplicateInterviewNoteTemplate']);
+
 
     Route::get('settings/interview-notes/options/{interview_template_id}',
         ['as' => 'interview-note-options', 'uses' => 'JobApplicationsController@viewInterviewNoteOptions']);

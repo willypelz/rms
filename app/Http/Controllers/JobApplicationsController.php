@@ -1928,6 +1928,18 @@ class JobApplicationsController extends Controller
             compact('interview_note_options', 'interview_template_id', 'interview_template'));
     }
 
+
+    public function duplicateInterviewNoteTemplate(Request $request, int $id){
+        if($id){
+            $interview_template = InterviewNoteTemplates::where('id', $id)->where('company_id',get_current_company()->id)->first();
+            $interview_template_duplicate = $interview_template->duplicate();
+            if($interview_template_duplicate){
+                return redirect()->back()->with(["success" => "$interview_template->name Template  duplicated successfully"]);
+            }
+        }
+        return redirect()->back()->with(["danger" => "Operation duplicate $interview_template->name Template  unsuccessful"]);
+    }
+
     public function editInterviewNoteOptions(Request $request)
     {
         $interview_template = InterviewNoteTemplates::where('id',

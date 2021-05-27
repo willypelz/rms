@@ -56,8 +56,13 @@
 
                                                     @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
 
+                                                    
+                                                    <a href="{{ route('interview-note-template-duplicate', ['id' => $interview_note_template->id ]) }}"
+                                                                    class=" btn pull-right" style=""><i
+                                                                             class="fa fa-lg no-margin fa-copy"></i></a>
+
                                                     <a href="{{ route('interview-note-template-edit', ['id' => $interview_note_template->id ]) }}"
-                                                       class=" btn pull-right" style=""><i
+                                                    class=" btn pull-right" style=""><i
                                                                 class="fa fa-lg no-margin fa-pencil"></i></a>
                                                     @endif
                                                 </div>

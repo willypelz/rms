@@ -633,9 +633,10 @@
                 },
 
                 success: function (res) {
+                    const data = res.data;
                     $('#specializationModal').modal('hide');
                     $.growl.notice({title: "Success", message: 'Specialization successfully added'})
-                    let newOption = new Option(res.name, res.id, false, false);
+                    let newOption = new Option(data.name, data.id, false, false);
                     $('.select2').append(newOption).trigger('change');
                     $(".select2-container option").remove();
                     specialization_name = '';

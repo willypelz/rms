@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SpecializationRequest;
 use App\Models\Specialization;
-use http\Client\Response;
+use Illuminate\Http\Response;
 
 class SpecializationController extends Controller
 {
@@ -51,7 +51,8 @@ class SpecializationController extends Controller
             ]);
 
             $msg = "You have successfully created a specialization";
-	        if ($request->background_callback) return response()->json($specialization);
+	        if ($request->background_callback) return response()->json(['status'=> Response::HTTP_OK,
+	           'data' => $specialization], Response::HTTP_OK);
         }
 
         return redirect()->route('specialization')->with('success', $msg);

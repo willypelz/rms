@@ -837,15 +837,16 @@ if (!function_exists('defaultCompanyLogo')) {
 function logAction($logAction)
 {
     $log_action = [
-        'log_name' => @$logAction['log_name'],
-        'description' => @$logAction['description'],
-        'action_id' => @$logAction['action_id'],
-        'action_type' => @$logAction['action_type'],
-        'causee_id' => @$logAction['causee_id'],
+        'log_name' => $logAction['log_name'],
+        'description' => $logAction['description'],
+        'action_id' => $logAction['action_id'],
+        'action_type' => $logAction['action_type'],
+        'causee_id' => $logAction['causee_id'],
         'causer_id' => isset($logAction['causer_id']) ? $logAction['causer_id'] : Auth::user()->id,
         'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
-        'properties' => @$logAction['properties'],
+        'properties' => $logAction['properties'],
     ];
+
 
     if (!empty($log_action)) {
         ActivityLog::create($log_action);

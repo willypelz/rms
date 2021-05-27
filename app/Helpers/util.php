@@ -879,5 +879,5 @@ function findOrMakeDirectory($path)
  * @return bool
  */
 function isHrmsIntegrated(){
-    return is_null(env('STAFFSTRENGTH_URL')) ? false: true;
+    return is_null(env('STAFFSTRENGTH_URL')) || (env("RMS_STAND_ALONE") == false) ? false: true;
 }

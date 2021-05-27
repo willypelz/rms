@@ -262,13 +262,19 @@
                                                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What is the job specialization?"></i>
                                                 </label>
                                                 <br>
+                                                <div id="specialization12">
                                                 <select name="specializations[]" id="specialization" multiple required
                                                         class="select2" style="width: 100%;">
                                                     @foreach($specializations as $s)
-                                                        <option value="{{ $s->id }}" {{ ( in_array($s->id, $job_specilizations) ) ? 'selected="selected"' : '' }}>{{ $s->name }}</option>
+                                                        <option value="{{ $s->id }}" {{ ( in_array($s->id, $job_specilizations) ) ? 'selected="selected"' : '' }}>
+                                                            {{ $s->name }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
-                                                <span><a href="{{ route('specialization') }}">Add specialization to the list</a></span>
+                                                </div>
+                                                <span><a data-toggle="modal" data-target="#specializationModal">Add specialization to the list</a></span>
+
+{{--                                                <span><a href="{{ route('specialization') }}">Add specialization to the list</a></span>--}}
                                             </div>
                                         </div>
                                     </div>
@@ -409,6 +415,36 @@
                 </div>
             </div>
         </div>
+        {{--        modal display for specialization creation --}}
+        <div class="modal fade" id="specializationModal" tabindex="-1" role="dialog"
+             aria-labelledby="specializationModalLabel"
+             data-backdrop="static" data-keyboard="false"
+             aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="specializationModalLabel">Create Specialization</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="name" class="col-form-label">Name:</label>
+                                <input type="text" class="form-control" name="specialization_name"
+                                       id="specialization_name">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" id="saveSpecialization" class="btn btn-primary">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
     <div class="separator separator-small"></div>
@@ -421,16 +457,16 @@
 
                 if (country.val() == 'Nigeria') {
                     $('.state_section').removeClass('hidden');
-                    $('#location').prop('required',true)
+                    $('#location').prop('required', true)
                 } else {
                     $('.state_section').addClass('hidden');
-                    $('#location').prop('required',false)
+                    $('#location').prop('required', false)
                 }
             });
 
             $('.submitButton').click(function () {
                 if (country.val() != 'Nigeria') {
-                    $('#location').prop('required',false)
+                    $('#location').prop('required', false)
                 }
             })
         });
@@ -541,7 +577,7 @@
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}', title: title,
-                    details: details, location: location,country:country,
+                    details: details, location: location, country: country,
                     eligibilty: is_for, is_private: is_private,
                     job_type: job_type, position: position,
                     expiry_date: expiry_date, experience: experience,
@@ -568,6 +604,41 @@
 
         var editor = CKEDITOR.replace('editor1')
         var exp = CKEDITOR.replace('editor3')
+
+
+        $('#saveSpecialization').click(function (e) {
+            e.preventDefault();
+
+
+            var specialization_name = $('#specialization_name').val();
+            if (specialization_name == null || specialization_name == "") {
+                $.growl.error({message: 'Please enter field name.'})
+                return false;
+            }
+
+            var token = $('#token').val();
+            var url = "{{ route('store-specialization') }}";
+
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}', name: specialization_name, background_callback: true
+                },
+
+                success: function (res) {
+                    $('#specializationModal').modal('hide');
+                    $.growl.notice({title: "Success", message: 'Specialization successfully added'})
+                    let newOption = new Option(res.name, res.id, false, false);
+                    $('.select2').append(newOption).trigger('change');
+                    $(".select2-container option").remove();
+                    specialization_name = '';
+                }
+            });
+
+
+        });
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })

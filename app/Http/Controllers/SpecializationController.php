@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SpecializationRequest;
 use App\Models\Specialization;
+use http\Client\Response;
 
 class SpecializationController extends Controller
 {
@@ -45,13 +46,13 @@ class SpecializationController extends Controller
             $msg = "You have successfully updated a specialization";
 
         } else {
-            Specialization::create([
+           $specialization = Specialization::create([
                 'name' => $request->name
             ]);
 
             $msg = "You have successfully created a specialization";
+	        if ($request->background_callback) return response()->json($specialization);
         }
-
 
         return redirect()->route('specialization')->with('success', $msg);
 

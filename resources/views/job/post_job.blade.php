@@ -251,13 +251,14 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group" id="specialization12">
+                                    <div class="form-group" >
                                         <div class="row" >
                                             <div class="col-sm-12">
                                                 <label for="job-title">Job Specialization
                                                     <span class="text-danger">*</span>
                                                 </label>
                                                 <br>
+                                                <div id="specialization12">
                                                 <select name="specializations[]" id="specialization" multiple required
                                                         class="select2" style="width: 100%;">
                                                     @foreach($specializations as $s)
@@ -266,9 +267,10 @@
                                                         </option>
                                                     @endforeach
                                                 </select>
+                                                </div>
                                                 <span><a data-toggle="modal" data-target="#specializationModal">Add specialization to the list</a></span>
 
-                                                <span><a href="{{ route('specialization') }}">Add specialization to the list</a></span>
+{{--                                                <span><a href="{{ route('specialization') }}">Add specialization to the list</a></span>--}}
                                             </div>
                                         </div>
                                     </div>
@@ -613,18 +615,16 @@
                 url: url,
                 type: 'POST',
                 data: {
-                    _token: '{{ csrf_token() }}', name: specialization_name
+                    _token: '{{ csrf_token() }}', name: specialization_name, background_callback: true
                 },
 
                 success: function (res) {
                     $('#specializationModal').modal('hide');
                     $.growl.notice({title: "Success", message: 'Specialization successfully added'})
-
-                    // console.lo
-                        $( "#specialization" ).load(window.location.href + " #specialization" );
-                        $( "#specialization").addClass('select2');
-
-
+                    let newOption = new Option(res.name, res.id, false, false);
+                    $('.select2').append(newOption).trigger('change');
+                    $(".select2-container option").remove();
+                    specialization_name = '';
                 }
             });
 

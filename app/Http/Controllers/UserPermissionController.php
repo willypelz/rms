@@ -43,10 +43,4 @@ class UserPermissionController extends Controller
 		return view('settings.user_permission', compact(  'roles', 'permissions'));
 	}
 
-	public function savePrivacyPolicy(UpdatePolicyRequest $request)
-	{
-		$this->settings->setKeyIfNotExist(Configs::PRIVACY_KEY, $request->privacy_policy_url);
-		return back()->with('success', "Configuration updated successfully.");
-	}
-
 }

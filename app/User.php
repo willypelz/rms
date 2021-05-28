@@ -74,4 +74,9 @@ class User extends Authenticatable
         return $admin ? true:false;
     }
 
+    public function company()
+    {
+        $this->companies()->where("is_default", true);
+    }
+
 }

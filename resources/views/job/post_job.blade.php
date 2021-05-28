@@ -55,7 +55,7 @@
 
 
                                     <div class="text-center">
-                                        <h4>Add your job description details here</h4>
+                                        <h4> Add your job description details here</h4>
                                         <br>
                                     </div>
 
@@ -265,14 +265,15 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <div class="row">
+                                    <div class="form-group" >
+                                        <div class="row" >
                                             <div class="col-sm-12">
                                                 <label for="job-title">Job Specialization
                                                     <span class="text-danger">*</span>
                                                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What is the job specialization?"></i>
                                                 </label>
                                                 <br>
+                                                <div id="specialization12">
                                                 <select name="specializations[]" id="specialization" multiple required
                                                         class="select2" style="width: 100%;">
                                                     @foreach($specializations as $s)
@@ -281,7 +282,10 @@
                                                         </option>
                                                     @endforeach
                                                 </select>
-                                                <span><a href="{{ route('specialization') }}">Add specialization to the list</a></span>
+                                                </div>
+                                                <span><a data-toggle="modal" data-target="#specializationModal">Add specialization to the list</a></span>
+
+{{--                                                <span><a href="{{ route('specialization') }}">Add specialization to the list</a></span>--}}
                                             </div>
                                         </div>
                                     </div>
@@ -305,6 +309,8 @@
                                                     @endforeach
                                                 </select>
                                                 <div id="showWorkFlowSteps"></div>
+                                                <span><a data-toggle="modal" data-target="#workflowModal"><i class="fa fa-plus-circle"></i> Add workflow to the list</a></span>
+
 
                                             </div>
                                             <div>
@@ -456,6 +462,9 @@
                 </div>
             </div>
         </div>
+
+        @include('workflow.includes.workflow_modal');
+
     </section>
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
     <div class="separator separator-small"></div>
@@ -624,5 +633,6 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
+
     </script>
 @endsection

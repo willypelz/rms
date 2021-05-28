@@ -435,21 +435,14 @@ class JobsController extends Controller
         $data = $request->validate($data);
         $user = User::find($data["user_id"]);
         if($user){
-            if(!isHrmsIntegrated())
-                return redirect()->back()->with(['warning' => "You are synced with HRMS and can only delete a super admin from HRMS"]);
+            if(isHrmsIntegrated())
+                return redirect()->back()->with(['danger' => "You are synced with HRMS and can only delete a super admin from HRMS"]);
             $data = $user;
             $user->delete();
-            logAction([
-                'log_name' => 'Job Team Admin Delete', 
-                'description' => 'An action that deletes a job team super admin',
-                'action_type' => 'Delete',
-                'causee_id' => $data->id,
-                'causer_id' =>  Auth::user()->id,
-            ]);
-            return redirect()->back()->with(['warning' => "Super Admin Deleted Successfully"]);
+            return redirect()->back()->with(['success' => "Super Admin Deleted Successfully"]);
         }
             
-        return redirect()->back()->with(['warning' => "Operation delete Super Admin Not Successful"]);
+        return redirect()->back()->with(['danger' => "Operation delete Super Admin Not Successful"]);
     }
 
     public function JobTeamInviteeDelete(Request $request){

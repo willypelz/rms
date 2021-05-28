@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use Mail;
 
 
+
+
 class HomeController extends Controller
 {
     private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'application_date+desc', 'grouped'=>FALSE ];
@@ -34,6 +36,7 @@ class HomeController extends Controller
           'register',
           'viewTalentSource',
       ]]);
+      
     }
 
 
@@ -88,10 +91,16 @@ class HomeController extends Controller
                 'email' => 'required|email',
                 'password' => 'required'
             ]);
+            
             if (Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password])) {
+                
+            
                 if ($request->redirect_to) {
                     return redirect($request->redirect_to);
                 } else {
+
+                    //audit trail
+                    audit_log();
                     return redirect()->route('candidate-dashboard');
                 }
 
@@ -139,6 +148,8 @@ class HomeController extends Controller
                         session()->forget('redirect_to');
                         return redirect($redirect_to);
                     } else {
+                        //audit_trail
+                        audit_log();
                         return redirect()->route('candidate-dashboard');
                     }
 
@@ -225,6 +236,8 @@ class HomeController extends Controller
     {
         return view('guest.pricing');
     }
+
+    
 
 
 }

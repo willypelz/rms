@@ -17,13 +17,13 @@ class InvoicesObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Created a Invoices Model',
+                'log_name' => 'Created a Invoices',
                 'description' => 'Created a new invoice',
                 'action_id' => $invoices->id,
-                'action_type' => 'Create',
+                'action_type' => 'App\Models\invoices',
                 'causee_id' => auth()->user()->id,
                 'causer_id' =>  auth()->user()->id,
-                //'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => '',
                 'properties' => '',
             ];
             logAction($param);

@@ -45,10 +45,10 @@ class WorkflowObserver
                 'log_name' => 'Updated a Workflow Model',
                 'description' => 'updated the workflow',
                 'action_id' => $workflow->id,
-                'action_type' => 'Update',
+                'action_type' => 'App\Models\Workflow',
                 'causee_id' => auth()->user()->id,
                 'causer_id' => auth()->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'admin',
                 'properties' => '',
             ];
             logAction($param);
@@ -67,13 +67,13 @@ class WorkflowObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Deleted a Workflow Model',
+                'log_name' => 'Deleted a Workflow',
                 'description' => 'Deleted the workflow',
                 'action_id' => $workflow->id,
-                'action_type' => 'Delete',
+                'action_type' => 'App\Models\Workflow',
                 'causee_id' => auth()->user()->id,
                 'causer_id' => auth()->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'admin',
                 'properties' => '',
             ];
             logAction($param);

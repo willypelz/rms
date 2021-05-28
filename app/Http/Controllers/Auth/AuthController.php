@@ -73,6 +73,7 @@ class AuthController extends Controller
 
                 // Show password field
                 return ['status' => 200, 'is_external' => true];
+                
 
             }else{
                 // Redirect to StaffStrength with Login
@@ -140,6 +141,8 @@ class AuthController extends Controller
 
         if( Hash::check($generated_code,$request->code) ) {
             if (Auth::attempt(['email' => $email, 'password' => $password])) {
+                //audit trail
+                admin_audit_log();
                 return redirect('/dashboard');
             }else{
                 echo 'Not Authenticated';
@@ -297,6 +300,18 @@ class AuthController extends Controller
         $token =  Crypt::encrypt($user->email.time());
         $user->user_token = $token;
         $user->save();
+        $log_action = [
+            'log_name' => "Interviewer Login",
+            'description' => "An interviewer logged In",
+            'action_id' => $user->id,
+            'action_type' => 'App\User',
+            'causee_id' => $user->id,
+            'causer_id' => $user->id,
+            'causer_type' => 'interviewer',
+            'properties'=> ''
+        ];
+        logAction($log_action);
+    
         return ['status' => true, 'message' => 'API key valid', 'user_id' => $user->id, 'token' => $token];
       }
 
@@ -320,6 +335,9 @@ class AuthController extends Controller
 
           $user->user_token = '';
           $user->save();
+
+          //audit trail
+          admin_audit_log()
 
           return redirect($url);
         }else{

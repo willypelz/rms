@@ -20,10 +20,10 @@ class CvObserver
                 'log_name' => 'Create a Cv Model',
                 'description' => 'created a candidate Cv',
                 'action_id' => $cv->id,
-                'action_type' => 'Create',
+                'action_type' => 'App\Models\Cv',
                 'causee_id' => $cv->candidate_id,
                 'causer_id' => auth()->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'admin',                
                 'properties' => '',
             ];
             logAction($param);

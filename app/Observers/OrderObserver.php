@@ -20,10 +20,10 @@ class OrderObserver
                 'log_name' => 'Create a Order Model',
                 'description' => 'created a new order',
                 'action_id' => $order->id,
-                'action_type' => 'Create',
-                'causee_id' => $order->company_id,
+                'action_type' => 'App\Models\Order',
+                'causee_id' => '' ,
                 'causer_id' => auth()->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => '',
                 'properties' => '',
             ];
             logAction($param);
@@ -45,10 +45,10 @@ class OrderObserver
                 'log_name' => 'Update a Order Model',
                 'description' => 'Update the order',
                 'action_id' => $order->id,
-                'action_type' => 'Update',
-                'causee_id' => $order->company_id,
+                'action_type' => 'App\Models\Order',
+                'causee_id' => '',
                 'causer_id' => auth()->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => '',
                 'properties' => '',
             ];
             logAction($param);

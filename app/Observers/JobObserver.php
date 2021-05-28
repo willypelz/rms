@@ -17,13 +17,13 @@ class JobObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a Job Model',
-                'description' => 'created a new Job',
+                'log_name' => 'Create a Job',
+                'description' => 'Created a new Job',
                 'action_id' => $job->id,
-                'action_type' => 'Create',
-                'causee_id' => $auth()->user()->id,
-                'causer_id' => $auth()->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'action_type' => 'App\Models\Job',
+                'causee_id' => auth()->user()->id,
+                'causer_id' => auth()->user()->id,
+                'causer_type' => 'Admin',
                 'properties' => '',
             ];
             logAction($param);
@@ -42,13 +42,13 @@ class JobObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Updated a Job Model',
+                'log_name' => 'Updated a Job',
                 'description' => 'Updated a Job',
                 'action_id' => $job->id,
-                'action_type' => 'Updated',
-                'causee_id' => $auth()->user()->id,
-                'causer_id' => $auth()->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'action_type' => 'App\Models\Job',
+                'causee_id' => auth()->user()->id,
+                'causer_id' => auth()->user()->id,
+                'causer_type' => 'Admin',
                 'properties' => '',
             ];
             logAction($param);
@@ -65,6 +65,21 @@ class JobObserver
     public function deleted(Job $job)
     {
         //
+        if(auth()->check()){
+            $param = [
+                'log_name' => 'Delete a Job',
+                'description' => 'Deleted a Job',
+                'action_id' => $job->id,
+                'action_type' => 'App\Models\Job',
+                'causee_id' => auth()->user()->id,
+                'causer_id' => auth()->user()->id,
+                'causer_type' => 'Admin',
+                'properties' => '',
+            ];
+
+            logAction($param);
+           
+        }
     }
 
     /**

@@ -17,13 +17,13 @@ class WorkflowStepObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a Workflow Model',
-                'description' => 'created the following',
+                'log_name' => 'Create a WorkflowStep',
+                'description' => 'created a new workflowstep',
                 'action_id' => $workflowStep->id,
-                'action_type' => 'Create',
+                'action_type' => 'App\Models\WorkflowStep',
                 'causee_id' => auth()->user()->id,
                 'causer_id' => auth()->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'Admin',
                 'properties' => '',
             ];
             logAction($param);
@@ -43,13 +43,13 @@ class WorkflowStepObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a Workflow Model',
-                'description' => 'created the following',
-                'action_id' => '',
-                'action_type' => 'Create',
-                'causee_id' => auth->user()->id,
-                'causer_id' => Auth::user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'log_name' => 'Update the WorkflowStep',
+                'description' => 'updated the WorkflowStep',
+                'action_id' => $workflowStep->id,
+                'action_type' => 'App\Models\WorkflowStep',
+                'causee_id' => auth()->user()->id,
+                'causer_id' => auth()->user()->id,
+                'causer_type' => 'Admin',
                 'properties' => '',
             ];
             logAction($param);

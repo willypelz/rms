@@ -33,12 +33,19 @@ class CandidateController extends Controller
             return redirect()->route('candidate-dashboard');
         }
         $redirect_to = $request->redirect_to;
+        
+        $last_login = Carbon::now()->toDateTimeString();
+        $applicant = Auth::guard('candidate')->first_name.' '.Auth::guard('candidate')->last_name;
+
+
 
         if ($request->isMethod('post')) {
             if (Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password])) {
                 if ($request->redirect_to) {
                     return redirect($request->redirect_to);
                 } else {
+                    //audit trail
+                    audit_log();
                     return redirect()->route('candidate-dashboard');
                 }
 
@@ -75,6 +82,8 @@ class CandidateController extends Controller
                     if ($request->redirect_to) {
                         return redirect($request->redirect_to);
                     } else {
+                        //audit trail
+                        audit_log();
                         return redirect()->route('candidate-dashboard');
                     }
 
@@ -152,6 +161,21 @@ class CandidateController extends Controller
 
             $candidate = Candidate::whereEmail($token_reset->email)->first();
             $candidate->update(['password' => bcrypt($request->password)]);
+
+            $name = $candidate->first_name.' '.$candidate->last_name;
+            $last_login = Carbon::now()->toDateTimeString();
+
+            $log_action = [
+                'log_name' => "password reset",
+                'description' => $name . " reset their password " . $last_login,
+                'action_id' => $candidate->id,
+                'action_type' => 'App\Models\Candidate',
+                'causee_id' => $candidate->id,
+                'causer_id' => $candidate->id,
+                'causer_type' => 'applicant',
+                'properties'=> ''
+            ];
+            logAction($log_action);
 
             DB::table('password_resets')->where('token', $token)->delete();
 

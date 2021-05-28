@@ -17,13 +17,13 @@ class JobApplicationObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a Company Model',
-                'description' => 'created the api_key',
+                'log_name' => 'Create a new job application',
+                'description' => 'created a job application',
                 'action_id' => $jobApplication->id,
-                'action_type' => 'Create',
+                'action_type' => 'App\Models\JobApplication',
                 'causee_id' => $jobApplication->candidate_id,
                 'causer_id' => auth()->guard('candidate')->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'applicant',
                 'properties' => '',
             ];
             logAction($param);

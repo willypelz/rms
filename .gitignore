@@ -13,3 +13,6 @@ LocalValetDriver.php
 /config/snappy.php
 /public_html/homepage
 /public_html/logs
+ composer.json
+ .DS_Store
+ package-lock.json

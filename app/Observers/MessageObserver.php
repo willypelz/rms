@@ -20,10 +20,9 @@ class MessageObserver
                 'log_name' => 'Create a Message Model',
                 'description' => $message->description,
                 'action_id' => $message->id,
-                'action_type' => 'Create',
-                'causee_id' => $message->user_id ?? null,
+                'action_type' => 'App\Models\Message',
+                'causee_id' => $message->user_id ? auth()->user()->id : auth()->guard('candidate')->user()->id ,
                 'causer_id' => auth()->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
                 'properties' => '',
             ];
             logAction($param);

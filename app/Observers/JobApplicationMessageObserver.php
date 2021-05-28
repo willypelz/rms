@@ -20,12 +20,13 @@ class JobApplicationMessageObserver
                 'log_name' => 'Create a JobApplication Model',
                 'description' => 'created a job application',
                 'action_id' => $jobApplicationMessage->id,
-                'action_type' => 'Create',
+                'action_type' => 'App\Models\JobApplicationMessage',
                 'causee_id' => $jobApplicationMessage>candidate_id,
                 'causer_id' => auth()->guard('candidate')->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'applicant',
                 'properties' => '',
             ];
+            dd($param);
             logAction($param);
            
         }

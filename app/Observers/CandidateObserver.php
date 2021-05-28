@@ -17,13 +17,13 @@ class CandidateObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Created a Candidate Model',
+                'log_name' => 'Created a Candidate',
                 'description' => 'A new candidate info created',
                 'action_id' => $candidate->id,
-                'action_type' => 'Create',
+                'action_type' => 'App\Models\Candidate',
                 'causee_id' => auth()->guard('candidate')->user()->id,
                 'causer_id' =>  auth()->guard('candidate')->user()->id,
-                //'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'applicant',
                 'properties' => '',
             ];
             logAction($param);
@@ -42,13 +42,13 @@ class CandidateObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Update a Candidate Model',
+                'log_name' => 'Update a Candidate',
                 'description' => 'updated the candidate info',
                 'action_id' => $candidate->id,
-                'action_type' => 'Update',
+                'action_type' => 'App\Models\Candidate',
                 'causee_id' => auth()->guard('candidate')->user()->id,
                 'causer_id' =>  auth()->guard('candidate')->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'Applicant',
                 'properties' => '',
             ];
             logAction($param);

@@ -17,13 +17,12 @@ class TransactionObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a Transaction Model',
+                'log_name' => 'Create a Transaction',
                 'description' => 'created a new transaction',
                 'action_id' => $transaction->id,
-                'action_type' => 'Create',
+                'action_type' => 'App\Models\Transaction',
                 'causee_id' => auth()->user()->id,
                 'causer_id' => auth()->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
                 'properties' => '',
             ];
             logAction($param);

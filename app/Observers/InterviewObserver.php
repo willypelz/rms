@@ -17,13 +17,13 @@ class InterviewObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Created a InterviewObserver Model',
+                'log_name' => 'Created a InterviewObserver',
                 'description' => 'Created a new Interview',
                 'action_id' => $interview->id,
-                'action_type' => 'Create',
+                'action_type' => 'App\Models\Interview',
                 'causee_id' => $interview->user->id,
                 'causer_id' =>  auth()->user()->id,
-                //'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'admin',
                 'properties' => '',
             ];
             logAction($param);

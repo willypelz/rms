@@ -17,13 +17,13 @@ class InterviewNoteValuesObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Created a InterviewNoteValues Model',
-                'description' => 'Created an Interview Note value',
+                'log_name' => 'Created a InterviewNoteValues',
+                'description' => 'Created an Interview Note',
                 'action_id' => $interviewNoteValues->id,
-                'action_type' => 'Create',
-                'causee_id' => $interviewNoteValues->job_Applications,
+                'action_type' => 'App\Models\InterviewNoteValues',
+                'causee_id' => '',
                 'causer_id' =>  auth()->user()->id,
-                //'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'admin',
                 'properties' => '',
             ];
             logAction($param);

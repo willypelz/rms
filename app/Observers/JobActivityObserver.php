@@ -17,13 +17,13 @@ class JobActivityObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a JobActivity Model',
+                'log_name' => 'Create a JobActivity',
                 'description' => 'created the a job activity',
                 'action_id' => $jobActivity->id,
-                'action_type' => 'Create',
+                'action_type' => 'App\Models\JobActivity',
                 'causee_id' => auth()->user()->id,
                 'causer_id' => auth()->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => '',
                 'properties' => '',
             ];
             logAction($param);
@@ -42,13 +42,13 @@ class JobActivityObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Update a JobActivity Model',
-                'description' => 'updated the following'.''.$request->all(),
-                'action_id' => '',
-                'action_type' => 'Update',
+                'log_name' => 'Update on JobActivity',
+                'description' => 'updated the job activity',
+                'action_id' => $jobActivity->id,
+                'action_type' => 'App\Models\JobActivity',
                 'causee_id' => $request->id,
                 'causer_id' => Auth::user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => '',
                 'properties' => '',
             ];
             logAction($param);

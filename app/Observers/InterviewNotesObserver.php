@@ -20,10 +20,10 @@ class InterviewNotesObserver
                 'log_name' => 'Created a InterviewNote Model',
                 'description' => 'Created a new Interview notes',
                 'action_id' => $interviewNotes->id,
-                'action_type' => 'Create',
+                'action_type' => 'App\Models\InterviewNotes',
                 'causee_id' => auth()->user()->id,
                 'causer_id' =>  auth()->user()->id,
-                //'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'admin',
                 'properties' => '',
             ];
             logAction($param);

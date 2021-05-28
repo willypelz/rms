@@ -20,10 +20,10 @@ class FolderContentObserver
                 'log_name' => 'Created a FolderContent Model',
                 'description' => 'Created a folder content',
                 'action_id' => $folderContent->id,
-                'action_type' => 'Create',
+                'action_type' => 'App/Models/FolderContent',
                 'causee_id' => auth()->user()->id,
                 'causer_id' =>  auth()->user()->id,
-                //'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'admin',
                 'properties' => '',
             ];
             logAction($param);

@@ -20,10 +20,10 @@ class InterviewNoteOptionsObserver
                 'log_name' => 'Created a InterviewNoteOptions Model',
                 'description' => 'Created an Interview note options',
                 'action_id' => $interviewNoteOptions->id,
-                'action_type' => 'Create',
-                'causee_id' => $interviewNoteOptions->company_id,
+                'action_type' => 'App\Models\InterviewNoteOptions',
+                'causee_id' => '',
                 'causer_id' =>  auth()->user()->id,
-                //'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => '',
                 'properties' => '',
             ];
             logAction($param);
@@ -42,13 +42,13 @@ class InterviewNoteOptionsObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Updated a InterviewNoteOptions Model',
+                'log_name' => 'Updated a InterviewNoteOptions',
                 'description' => 'Updated an Interview note options',
                 'action_id' => $interviewNoteOptions->id,
-                'action_type' => 'Update',
-                'causee_id' => $interviewNoteOptions->company_id,
+                'action_type' => 'App\Models\InterviewNoteOptions',
+                'causee_id' => '',
                 'causer_id' =>  auth()->user()->id,
-                //'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => '',
                 'properties' => '',
             ];
             logAction($param);

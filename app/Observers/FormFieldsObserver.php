@@ -17,13 +17,13 @@ class FormFieldsObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Created a FormFields Model',
+                'log_name' => 'Create a FormFields',
                 'description' => 'Created a formfield',
                 'action_id' => $formFields->id,
-                'action_type' => 'Create',
+                'action_type' => 'App\Models\FormFields',
                 'causee_id' => auth()->user()->id,
                 'causer_id' =>  auth()->user()->id,
-                //'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'admin',
                 'properties' => '',
             ];
             logAction($param);
@@ -59,7 +59,7 @@ class FormFieldsObserver
                 'action_type' => 'Delete',
                 'causee_id' => auth()->user()->id,
                 'causer_id' =>  auth()->user()->id,
-                //'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'admin',
                 'properties' => '',
             ];
             logAction($param);

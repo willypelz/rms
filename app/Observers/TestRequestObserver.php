@@ -17,10 +17,10 @@ class TestRequestObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a TestRequest Model',
+                'log_name' => 'Create a TestRequest',
                 'description' => 'Create TestRequest'.' '.$testRequest->name,
                 'action_id' => $testRequest->id,
-                'action_type' => 'Create',
+                'action_type' => 'App/Models/TestRequest',
                 'causee_id' => auth()->user()->id,
                 'causer_id' => auth()->user()->id,
                 // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
@@ -42,10 +42,10 @@ class TestRequestObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Update a TestRequest Model',
+                'log_name' => 'Update a TestRequest ',
                 'description' => 'Updated TestRequest'.' '.$testRequest->name,
                 'action_id' => $testRequest->id,
-                'action_type' => 'Update',
+                'action_type' => 'App/Models/TestRequest',
                 'causee_id' => auth()->user()->id,
                 'causer_id' => auth()->user()->id,
                 // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),

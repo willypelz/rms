@@ -17,16 +17,18 @@ class JobTeamInviteObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a JobTeamInvite Model',
-                'description' => 'created a Job team Invite',
+                'log_name' => 'Created an Invite',
+                'description' => 'created a job invite',
                 'action_id' => $jobTeamInvite->id,
-                'action_type' => 'Create',
-                'causee_id' => $jobTeamInvite->job_id,
+                'action_type' => 'App\Models\JobTeamInvite',
+                'causee_id' => '',
                 'causer_id' => auth()->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'admin',
                 'properties' => '',
             ];
+            dd($param);
             logAction($param);
+
            
         }
     }

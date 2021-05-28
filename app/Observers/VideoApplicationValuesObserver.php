@@ -17,13 +17,13 @@ class VideoApplicationValuesObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a VideoApplicationValues Model',
+                'log_name' => 'Create a VideoApplicationValues',
                 'description' => 'created the following',
                 'action_id' => $videoApplicationValues->id,
-                'action_type' => 'Create',
+                'action_type' => 'App\Models\VideoApplicationValues',
                 'causee_id' => auth()->guard('candidate')->user()->id,
                 'causer_id' => auth()->guard('candidate')->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'applicant',
                 'properties' => '',
             ];
             logAction($param);

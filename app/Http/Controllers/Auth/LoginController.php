@@ -304,9 +304,13 @@ class LoginController extends Controller
     public function switchUser()
     {
         if(Auth::check()){
+            //audit trail
+            admin_audit_log();
           return redirect()->route('dashboard');
         }
         elseif(Auth::guard('candidate')->check()) {
+            //audit trail
+            audit_log();
           return redirect()->route('candidate-dashboard');
         }
         else

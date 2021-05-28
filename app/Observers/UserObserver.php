@@ -18,11 +18,11 @@ class UserObserver
         if(auth()->check()){
             $param = [
                 'log_name' => 'Create a User Model',
-                'description' => 'created a new user'.''.$auth()->user()->name,
+                'description' => 'created a new user'.''.auth()->user()->name,
                 'action_id' => $user->id,
                 'action_type' => 'Create',
-                'causee_id' => $auth()->user()->id,
-                'causer_id' => $auth()->user()->id,
+                'causee_id' => auth()->user()->id,
+                'causer_id' => auth()->user()->id,
                 // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
                 'properties' => '',
             ];
@@ -45,10 +45,9 @@ class UserObserver
                 'log_name' => 'Updated a User Model',
                 'description' => 'update on the user'.''.$auth()->user()->name,
                 'action_id' => $user->id,
-                'action_type' => 'Update',
-                'causee_id' => $auth()->user()->id,
-                'causer_id' => $auth()->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'action_type' => 'App\User',
+                'causee_id' => auth()->user()->id,
+                'causer_id' => auth()->user()->id,
                 'properties' => '',
             ];
             logAction($param);
@@ -67,13 +66,12 @@ class UserObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Delete a User Model',
-                'description' => 'Deleted user'.''.$auth()->user()->name,
+                'log_name' => 'Delete a User',
+                'description' => 'Deleted user'.''.auth()->user()->name,
                 'action_id' => $user->id,
-                'action_type' => 'Delete',
-                'causee_id' => $auth()->user()->id,
-                'causer_id' => $auth()->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'action_type' => 'App\User',
+                'causee_id' => auth()->user()->id,
+                'causer_id' => auth()->user()->id,
                 'properties' => '',
             ];
             logAction($param);

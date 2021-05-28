@@ -17,13 +17,13 @@ class CompanyFolderObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Created a CompanyFolder Model',
+                'log_name' => 'Created a CompanyFolder',
                 'description' => 'Created a CompanyFolder',
                 'action_id' => $companyFolder->id,
-                'action_type' => 'Create',
-                'causee_id' => $companyFolder->company_id,
+                'action_type' => 'App\Models\CompanyFolder',
+                'causee_id' => '',
                 'causer_id' => auth()->user()->id,
-                //'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'admin',
                 'properties' => '',
             ];
             logAction($param);

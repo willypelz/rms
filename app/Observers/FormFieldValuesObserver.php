@@ -20,10 +20,10 @@ class FormFieldValuesObserver
                 'log_name' => 'Create a FormFieldValues Model',
                 'description' => 'Created a formfield value',
                 'action_id' => $formFieldValues->id,
-                'action_type' => 'Create',
+                'action_type' => 'App\Models\FormFieldValues',
                 'causee_id' => auth()->user()->id,
                 'causer_id' =>  auth()->user()->id,
-                //'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => '',
                 'properties' => '',
             ];
             logAction($param);

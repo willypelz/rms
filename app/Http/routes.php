@@ -365,6 +365,9 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::match(['get', 'post'], 'settings/interview-notes/template/duplicate/{id}',
         ['as' => 'interview-note-template-duplicate', 'uses' => 'JobApplicationsController@duplicateInterviewNoteTemplate']);
 
+    Route::match(['get', 'post'], 'settings/interview-notes/template/delete/',
+        ['as' => 'interview-note-template-delete', 'uses' => 'JobApplicationsController@deleteInterviewNoteTemplate']);
+
 
     Route::get('settings/interview-notes/options/{interview_template_id}',
         ['as' => 'interview-note-options', 'uses' => 'JobApplicationsController@viewInterviewNoteOptions']);
@@ -417,6 +420,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
             Route::get('/steps/view/{id}', 'WorkflowController@getSteps')->name('get-workflow-steps');
             Route::get('/create', 'WorkfelowController@create')->name('workflow-create');
             Route::get('/{id}/edit', 'WorkflowController@editView')->name('workflow-edit');
+            Route::get('/{id}/duplicate', 'WorkflowController@duplicate')->name('workflow-duplicate');
             Route::match(['put', 'patch'], '/{id}/edit', 'WorkflowController@update')->name('workflow-update');
             Route::delete('/{id}', 'WorkflowController@destroy')->name('workflow-delete');
 

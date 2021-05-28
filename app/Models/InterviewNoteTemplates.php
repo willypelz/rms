@@ -3,10 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
-interface EloquentRelationshipTypes{
-    const HAS_MANY = "hasMany";
-}
+use App\Interfaces\EloquentRelationshipTypes;
 class InterviewNoteTemplates extends Model
 {
     //
@@ -28,12 +25,16 @@ class InterviewNoteTemplates extends Model
         return $this->hasMany('App\Models\InterviewNoteOptions','interview_template_id','id');
     }
 
-    public function duplicate(){
+    /**
+     * duplicates a record with correcponding relationships
+     * @param string field_duplicate_tag The name of the field to tag a duplicate
+     * @return App\Models\InterviewNoteTemplates
+     */
+    public function duplicate(string $field_duplicate_tag){
         $relation_types = [EloquentRelationshipTypes::HAS_MANY];
         $relation_method_names = [EloquentRelationshipTypes::HAS_MANY => ["options"]];
-        //copy attributes
         $new = $this->replicate();
-        //save model before you recreate relations (so it has an id)
+        $new->$field_duplicate_tag = $new->$field_duplicate_tag . " duplicate";
         $new->push();
         $this->relations = [];
         foreach( $relation_types as  $relation_type){
@@ -46,15 +47,31 @@ class InterviewNoteTemplates extends Model
         return $new;
     }
 
-    public function duplicateHasMany($new, $relation_method_names){
-        //load relations on EXISTING MODEL
-        $this->load(implode(', ',$relation_method_names));
-        //re-sync everything
+    /**
+     * Specifc method toduplicate has many relationships
+     * @param Illuminate\Database\Eloquent\Model\InterviewNoteTemplates new
+     * @param array relation_method_names the relation method name i.e [options]
+     * @return App\Models\InterviewNoteTemplates
+     */
+    public function duplicateHasMany(InterviewNoteTemplates $new, array $relation_method_names){
+        $this->load($relation_method_names);
         foreach ($this->relations as $relations_name => $values){
-            dd($values);
-            $new->{$relations_name}()->update(['id' => null])->saveMany($values);
+            $copied_values = $values->map(function ($value, $key){
+                return $value->replicate();
+            });
+            $new->{$relations_name}()->saveMany($copied_values);
+            $new->refresh();
         }
         return $new;
+    }
+   /**
+     * Method called on app startup
+     */
+    public static function boot() {
+        parent::boot();
+        static::deleting(function($template) {
+             $template->options()->delete(); //Deleting options relation model
+        });
     }
 
 }

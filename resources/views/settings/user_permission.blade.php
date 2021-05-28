@@ -10,7 +10,7 @@
                     <div class="page">
                         <div class="row">
                             <h5 class="no-margin text-center l-sp-5 text-brandon text-uppercase">
-                                Configure Privacy Policy here.
+                                User Role and Permission Settings
                             </h5>
                             <hr>
                             <br>
@@ -22,24 +22,30 @@
                                 </ul>
                             @endif
 
-                            <div class="col-md-8 col-md-offset-2">
+                            <div class="col-md-12">
                                 @include('layout.alerts')
+
+                                <div class="row">
+                                    @foreach($roles as $key => $role)
+                                    <div class="col-md-4">
+                                        <div class="well dash-well">
+                                            <h5 class="text-uppercase lsp3">{{ $role->display_name }}</h5><hr/>
+                                            <div class="ad-mgt-scroll">
+                                                @foreach($permissions as $permission)
+                                                    <label> <input id="sys-con" type="checkbox" name="permissions[]" value="{{$permission->id}}" class="system-control" {{in_array($permission->id, $role->getRolePermission($role->id)) ? "checked" : ''}} onClick="systemControl(this, '{{$key}}')"> {{$permission->name}}</label> <br/>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+
+{{--                                {{ $roles }}--}}
                                 <form id="myForm" method="post"
                                       action="{{ route('save-privacy-policy') }}">
 
                                     <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm-12"><label for="privacy-policy-url">Privacy Policy URL
-                                                    <span class="text-danger">*</span></label>
-                                                <input  id="privacy_policy_url" type="url"
-                                                       name="privacy_policy_url"
-                                                       value=" {{old('privacy_policy_url', ($privacy_policy) ? $privacy_policy->value : '')}}"
-                                                       class="form-control">
-                                                <small>e.g. https://site_name.com</small>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                     <hr>
                                     <div class="row">
                                         <div class="col-xs-12"></div>
@@ -47,7 +53,7 @@
                                         <div class="col-sm-4"></div>
                                         <div class="col-sm-4">
                                             <button id="p-p-btn" type="submit" class="btn btn-success btn-block">
-                                                Update Configuration
+                                                Update Settings
                                             </button>
                                         </div>
                                         <div class="separator separator-small"></div>

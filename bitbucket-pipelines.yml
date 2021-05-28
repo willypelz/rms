@@ -65,20 +65,27 @@ pipelines:
       - step: 
           <<: *Build-Image
           name: Build-Image
-          deployment: non-recurring-dev-rms
+          deployment: non-recurring-dev-rms-kube
         services:
           - docker
     non-recurring-qa-rms:
       - step: 
           <<: *Build-Image
           name: Build-Image
-          deployment: non-recurring-qa-rms
+          deployment: non-recurring-qa-rms-kube
         services:
           - docker
     non-recurring-uat-rms:
       - step: 
           <<: *Build-Image
           name: Build-Image
-          deployment: non-recurring-dev-rms
+          deployment: non-recurring-dev-rms-kube
+        services:
+          - docker
+    non-recurring-standalone-rms:
+      - step: 
+          <<: *Build-Image
+          name: Build-Image
+          deployment: non-recurring-standalone-kube
         services:
           - docker

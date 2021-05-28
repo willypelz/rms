@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Workflow;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class WorkflowController extends Controller
 {
@@ -71,6 +72,8 @@ class WorkflowController extends Controller
                 ],
             ])) {
                 $msg = 'Workflow created successfully';
+	            if ($request->background_callback) return response()->json(['status'=> Response::HTTP_OK,
+		             'data' => $workflow], Response::HTTP_OK);
             } else {
                 $msg = 'Error creating default Workflow Steps, while Workflow created successfully';
             }

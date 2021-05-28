@@ -60,28 +60,28 @@ pipelines:
           deployment: rms-kubernetes
         services:
           - docker
-    non-recurring-dev-rms:
+    non-recurring-dev-kubernetes:
       - step: 
           <<: *Build-Image
           name: Build-Image
           deployment: non-recurring-dev-rms-kube
         services:
           - docker
-    non-recurring-qa-rms:
+    non-recurring-qa-kubernetes:
       - step: 
           <<: *Build-Image
           name: Build-Image
           deployment: non-recurring-qa-rms-kube
         services:
           - docker
-    non-recurring-uat-rms:
+    non-recurring-uat-kubernetes:
       - step: 
           <<: *Build-Image
           name: Build-Image
           deployment: non-recurring-dev-rms-kube
         services:
           - docker
-    non-recurring-standalone-rms:
+    non-recurring-standalone-kubernetes:
       - step: 
           <<: *Build-Image
           name: Build-Image

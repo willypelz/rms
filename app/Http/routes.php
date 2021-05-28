@@ -35,6 +35,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/sso/auto/login/verify/role/{email}/{key}', 'Auth\LoginController@verifyUserHasRole');
 });
 
+Route::post("/api/v1/delete-super-admin", "HrmsIntegrationController@deleteSuperAdmin")->name("delete-super-admin");
+
 /** ---------
  * Start: Administrator Panel Routes
  * Make admin group and apply a guard to it
@@ -46,6 +48,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::resource('schedule', 'ScheduleController');
 
     Route::match(['get', 'post'], '/admin/assign', 'JobsController@manageRoles')->name('change-admin-role');
+    Route::match(['get', 'post'], 'job/teams/delete', ['uses' => 'JobsController@JobTeamDelete', 'as' => 'job-team-admin-delete']);
     Route::match(['get', 'post'], '/sys/roles', 'AdminsController@manageRoles')->name('list-role');
     Route::match(['get', 'post'], '/sys/roles/create', 'AdminsController@createRole')->name('create-role');
     Route::match(['get', 'post'], '/sys/roles/edit/{id}', 'AdminsController@editRole')->name('role-edit');
@@ -143,6 +146,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::match(['get', 'post'], 'job/team/{jobID}', ['uses' => 'JobsController@JobTeam', 'as' => 'job-team']);
     Route::match(['get', 'post'], 'job/settings/team/{job_id}', ['uses' => 'JobsController@jobTemSettings', 'as' => 'job-team-setting']);
     Route::match(['get', 'post'], 'job/teams/add', ['uses' => 'JobsController@JobTeamAdd', 'as' => 'job-team-add']);
+    Route::match(['get', 'post'], 'job/teams/delete-invitee', ['uses' => 'JobsController@JobTeamInviteeDelete', 'as' =>  'delete-job-team-invitee']);
     Route::match(['get','post'],'job/teams/remove', ['uses' => 'JobsController@removeJobTeamMember', 'as' => 'remove-job-team-member']);
     Route::match(['get','post'],'job/teams/resend/invite/{id}', ['uses' => 'JobsController@resendInvite', 'as' => 'resend-job-team-invite']);
     Route::match(['get','post'],'job/teams/cancel/invite/{id}', ['uses' => 'JobsController@cancelInvite', 'as' => 'cancel-job-team-invite']);

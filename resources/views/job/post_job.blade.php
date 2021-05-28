@@ -55,7 +55,7 @@
 
 
                                     <div class="text-center">
-                                        <h4>Add your job description details here</h4>
+                                        <h4> Add your job description details here</h4>
                                         <br>
                                     </div>
 
@@ -268,7 +268,7 @@
                                                         <option value="{{ $s->id }}" {{ ( in_array($s->id, $job_specilizations) ) ? 'selected="selected"' : '' }}>{{ $s->name }}</option>
                                                     @endforeach
                                                 </select>
-                                                <span><a href="{{ route('specialization') }}">Add specialization to the list</a></span>
+                                                <span><a href="{{ route('specialization') }}"><i class="fa fa-plus-circle"></i> Add specialization to the list</a></span>
                                             </div>
                                         </div>
                                     </div>
@@ -292,6 +292,8 @@
                                                     @endforeach
                                                 </select>
                                                 <div id="showWorkFlowSteps"></div>
+                                                <span><a data-toggle="modal" data-target="#workflowModal"><i class="fa fa-plus-circle"></i> Add workflow to the list</a></span>
+
 
                                             </div>
                                             <div>
@@ -409,6 +411,9 @@
                 </div>
             </div>
         </div>
+
+        @include('workflow.includes.workflow_modal');
+
     </section>
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
     <div class="separator separator-small"></div>
@@ -571,5 +576,6 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
+
     </script>
 @endsection

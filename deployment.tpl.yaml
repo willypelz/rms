@@ -64,6 +64,22 @@ spec:
             value: www-data
           - name: ATATUS_LICENSE_KEY
             value: ${ATATUS_LICENSE_KEY}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 443
+              scheme: HTTPS
+            initialDelaySeconds: 15
+            timeoutSeconds: 30
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 443
+              scheme: HTTPS
+            initialDelaySeconds: 15
+            timeoutSeconds: 30
+            periodSeconds: 15
           volumeMounts:
           - name:  ${KUBE_META_NAME}-storage
             mountPath:  /var/www/mnt

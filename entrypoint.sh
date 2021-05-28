@@ -49,7 +49,11 @@ cd ~ \
 
 cd /var/www/html
 
-php artisan migrate --seed --force
+{
+    set -e
+    php artisan migrate --seed --force
+}
+# php artisan migrate --seed --force
 
 # chmod u+x fix-scripts.sh
 

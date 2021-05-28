@@ -34,6 +34,18 @@ definitions:
               KUBECTL_COMMAND: "apply"
               RESOURCE_PATH: "deployment-${KUBE_META_NAME}.yaml"
               DEBUG: "true"
+              KUBECTL_ARGS:
+                - "--dry-run"
+          - pipe: atlassian/aws-eks-kubectl-run:1.2.0
+            variables:
+              AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID_KUBERNETES}
+              AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY_KUBERNETES}
+              AWS_DEFAULT_REGION: "us-east-1"
+              CLUSTER_NAME: ${AWS_CLUSTER_NAME_KUBERNETES}
+              KUBECTL_COMMAND: "apply"
+              RESOURCE_PATH: "deployment-${KUBE_META_NAME}.yaml"
+              DEBUG: "true"
+
 
 
 options:
@@ -47,5 +59,26 @@ pipelines:
           <<: *Build-Image
           name: Build-Image
           deployment: rms-kubernetes
+        services:
+          - docker
+    non-recurring-dev-rms:
+      - step: 
+          <<: *Build-Image
+          name: Build-Image
+          deployment: non-recurring-dev-rms
+        services:
+          - docker
+    non-recurring-qa-rms:
+      - step: 
+          <<: *Build-Image
+          name: Build-Image
+          deployment: non-recurring-qa-rms
+        services:
+          - docker
+    non-recurring-uat-rms:
+      - step: 
+          <<: *Build-Image
+          name: Build-Image
+          deployment: non-recurring-dev-rms
         services:
           - docker

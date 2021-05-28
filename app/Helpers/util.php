@@ -354,11 +354,11 @@ function get_current_company()
             else
                 return Auth::user()->companies[0];
         }
-
+        
         if (Auth::user()->companies && Auth::user()->companies->count() < 1) {
             return redirect()->guest('login');
         }
-
+        
         // If a company is not selected, default to the first on the list
         return Auth::user()->companies[0];
     } else {
@@ -876,38 +876,47 @@ function findOrMakeDirectory($path)
 
 }
 
+
 function audit_log()
-    {
-        $name = auth()->guard('candidate')->user()->first_name.' '.auth()->guard('candidate')->user()->last_name;
-        $last_login = Carbon::now()->toDateTimeString();
+{
+    $name = auth()->guard('candidate')->user()->first_name.' '.auth()->guard('candidate')->user()->last_name;
+    $last_login = Carbon::now()->toDateTimeString();
 
-        $log_action = [
-            'log_name' => "Candidate Login",
-            'description' => "An applicant ". $name . " logged in. Last login was " . $last_login,
-            'action_id' => Auth::guard('candidate')->user()->id,
-            'action_type' => 'App\Models\Candidate',
-            'causee_id' => Auth::guard('candidate')->user()->id,
-            'causer_id' => Auth::guard('candidate')->user()->id,
-            'causer_type' => 'applicant',
-            'properties'=> ''
-        ];
-        logAction($log_action);
-    }
+    $log_action = [
+        'log_name' => "Candidate Login",
+        'description' => "An applicant ". $name . " logged in. Last login was " . $last_login,
+        'action_id' => Auth::guard('candidate')->user()->id,
+        'action_type' => 'App\Models\Candidate',
+        'causee_id' => Auth::guard('candidate')->user()->id,
+        'causer_id' => Auth::guard('candidate')->user()->id,
+        'causer_type' => 'applicant',
+        'properties'=> ''
+    ];
+    logAction($log_action);
+}
 
-    function admin_audit_log()
-    {
-        $name = auth()->user()->first_name.' '.auth()->user()->last_name;
-        $last_login = Carbon::now()->toDateTimeString();
+function admin_audit_log()
+{
+    $name = auth()->user()->first_name.' '.auth()->user()->last_name;
+    $last_login = Carbon::now()->toDateTimeString();
 
-        $log_action = [
-            'log_name' => "Admin Login",
-            'description' => "An applicant ". $name . " logged in. Last login was " . $last_login,
-            'action_id' => Auth::user()->id,
-            'action_type' => 'App\User',
-            'causee_id' => Auth::user()->id,
-            'causer_id' => Auth::user()->id,
-            'causer_type' => 'admin',
-            'properties'=> ''
-        ];
-        logAction($log_action);
-    }
+    $log_action = [
+        'log_name' => "Admin Login",
+        'description' => "An applicant ". $name . " logged in. Last login was " . $last_login,
+        'action_id' => Auth::user()->id,
+        'action_type' => 'App\User',
+        'causee_id' => Auth::user()->id,
+        'causer_id' => Auth::user()->id,
+        'causer_type' => 'admin',
+        'properties'=> ''
+    ];
+    logAction($log_action);
+}
+/**
+ * Checks if HRMS is synced
+ * @return bool
+ */
+function isHrmsIntegrated(){
+    return is_null(env('STAFFSTRENGTH_URL')) || (env("RMS_STAND_ALONE") == true) ? false: true;
+}
+

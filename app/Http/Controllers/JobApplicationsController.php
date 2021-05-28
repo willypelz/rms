@@ -1885,7 +1885,7 @@ class JobApplicationsController extends Controller
                 'description' => $request->description,
             ]);
 
-            \Session::flash('status', 'Updated Successfully');
+            return redirect()->route("interview-note-templates")->with(["success" => 'Templated Updated Succesfully']);
         }
 
         $interview_note_template = InterviewNoteTemplates::where('id', $request->id)->where('company_id',
@@ -1908,7 +1908,7 @@ class JobApplicationsController extends Controller
                 'company_id' => get_current_company()->id
             ]);
 
-            \Session::flash('status', 'New Template has been created');
+            return redirect()->route("interview-note-templates")->with(["success" => 'New Template has been created']);
         }
 
 
@@ -1941,7 +1941,8 @@ class JobApplicationsController extends Controller
                 'weight' => $request->weight,
             ]);
 
-            \Session::flash('status', 'Updated Successfully');
+            return redirect()->route("interview-note-options", [ "interview_template_id" => $interview_template->id ])
+                                ->with(["success" => "Updated Successfully"]);
         }
 
         $interview_note_option = InterviewNoteOptions::where('id', $request->id)->where('company_id',
@@ -1975,7 +1976,8 @@ class JobApplicationsController extends Controller
                 'interview_template_id' => $request->interview_template_id
             ]);
 
-            \Session::flash('status', 'Created Successfully');
+            return redirect()->route("interview-note-options", [ "interview_template_id" => $interview_template->id ])
+                                ->with(["success" => "Created Successfully"]);
         }
 
 

@@ -139,11 +139,14 @@
                                                         style="width: 303px;">
                                                     <option value="">--choose country--</option>
                                                     @foreach($countries as $country)
-                                                        <option value="{{ $country }}" {{ ( $job_location == $country || (in_array($job_location,$locations) && $country == 'Nigeria')) ? 'selected="selected"' : '' }} >{{ $country }}</option>
+                                                        <option value="{{ $country }}" {{ ( $job_location == $country || (in_array($job_location,$locations) && $country == 'Nigeria')) ? 'selected="selected"' : '' }} >
+                                                            {{ $country }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
 
-                                                <div class="state_section @if($errors->has('location') || (in_array($job_location,$locations) || $job_location == 'Nigeria'))  @else hidden @endif" style="margin-top: 10px">
+                                                <div class="state_section @if($errors->has('location') || (in_array($job_location,$locations) || $job_location == 'Nigeria'))  @else hidden @endif"
+                                                     style="margin-top: 10px">
                                                     <label for="job-title">
                                                         Location
                                                         <span class="text-danger">*</span>
@@ -157,7 +160,9 @@
                                                             style="width: 303px;">
                                                         <option value="">--choose state--</option>
                                                         @foreach($locations as $state)
-                                                            <option value="{{$state != 'Nigeria' ? $state : 'Across Nigeria' }}" {{ ( str_replace('Nigeria','Across Nigeria',$job_location) == $state) ? 'selected="selected"' : '' }} >{{ $state != 'Nigeria' ? $state : 'Across Nigeria' }}</option>
+                                                            <option value="{{$state != 'Nigeria' ? $state : 'Across Nigeria' }}" {{ ( str_replace('Nigeria','Across Nigeria',$job_location) == $state) ? 'selected="selected"' : '' }} >
+                                                                {{ $state != 'Nigeria' ? $state : 'Across Nigeria' }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -254,21 +259,27 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <div class="row">
+                                    <div class="form-group" >
+                                        <div class="row" >
                                             <div class="col-sm-12">
                                                 <label for="job-title">Job Specialization
                                                     <span class="text-danger">*</span>
                                                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What is the job specialization?"></i>
                                                 </label>
                                                 <br>
+                                                <div id="specialization12">
                                                 <select name="specializations[]" id="specialization" multiple required
                                                         class="select2" style="width: 100%;">
                                                     @foreach($specializations as $s)
-                                                        <option value="{{ $s->id }}" {{ ( in_array($s->id, $job_specilizations) ) ? 'selected="selected"' : '' }}>{{ $s->name }}</option>
+                                                        <option value="{{ $s->id }}" {{ ( in_array($s->id, $job_specilizations) ) ? 'selected="selected"' : '' }}>
+                                                            {{ $s->name }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
-                                                <span><a href="{{ route('specialization') }}"><i class="fa fa-plus-circle"></i> Add specialization to the list</a></span>
+                                                </div>
+                                                <span><a data-toggle="modal" data-target="#specializationModal">Add specialization to the list</a></span>
+
+{{--                                                <span><a href="{{ route('specialization') }}">Add specialization to the list</a></span>--}}
                                             </div>
                                         </div>
                                     </div>
@@ -426,16 +437,16 @@
 
                 if (country.val() == 'Nigeria') {
                     $('.state_section').removeClass('hidden');
-                    $('#location').prop('required',true)
+                    $('#location').prop('required', true)
                 } else {
                     $('.state_section').addClass('hidden');
-                    $('#location').prop('required',false)
+                    $('#location').prop('required', false)
                 }
             });
 
             $('.submitButton').click(function () {
                 if (country.val() != 'Nigeria') {
-                    $('#location').prop('required',false)
+                    $('#location').prop('required', false)
                 }
             })
         });
@@ -546,7 +557,7 @@
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}', title: title,
-                    details: details, location: location,country:country,
+                    details: details, location: location, country: country,
                     eligibilty: is_for, is_private: is_private,
                     job_type: job_type, position: position,
                     expiry_date: expiry_date, experience: experience,
@@ -573,6 +584,7 @@
 
         var editor = CKEDITOR.replace('editor1')
         var exp = CKEDITOR.replace('editor3')
+
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })

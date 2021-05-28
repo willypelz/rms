@@ -124,7 +124,9 @@ class LoginController extends Controller
 
     public function AjaxLogin(Request $request){
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            admin_audit_log();
             echo 'True';
+
         }else{
             echo 'Failed';
         }
@@ -165,6 +167,8 @@ class LoginController extends Controller
 
         if ($user = $this->activationService->activateUser($token)) {
             auth()->login($user);
+            //audit trails
+            admin_audit_log();
             return redirect($this->redirectPath());
         }
         abort(404);

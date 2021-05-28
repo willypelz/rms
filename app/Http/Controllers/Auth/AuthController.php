@@ -127,6 +127,7 @@ class AuthController extends Controller
 
     public function AjaxLogin(Request $request){
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            admin_audit_log();
             echo 'True';
         }else{
             echo 'Failed';
@@ -337,7 +338,7 @@ class AuthController extends Controller
           $user->save();
 
           //audit trail
-          admin_audit_log()
+          admin_audit_log();
 
           return redirect($url);
         }else{

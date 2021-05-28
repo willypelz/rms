@@ -412,7 +412,7 @@
             </div>
         </div>
 
-        @include('specialization.includes.specialization_modal');
+        @include('workflow.includes.workflow_modal');
 
     </section>
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>

@@ -65,6 +65,7 @@
                                                                     </a>
     
                                                         <form id="{{'interview_note_template_id'. $interview_note_template->id}}" action="{{route('interview-note-template-delete')}}" method="post" >
+                                                            @csrf
                                                             <input type="hidden" name="interview_note_template_id" value="{{$interview_note_template->id}}" id="">
                                                         </form>
                                                         

@@ -18,12 +18,12 @@ class UserObserver
         if(auth()->check()){
             $param = [
                 'log_name' => 'Create a User Model',
-                'description' => 'created a new user'.''.auth()->user()->name,
+                'description' => 'created a new user'.' '.auth()->user()->name,
                 'action_id' => $user->id,
                 'action_type' => 'Create',
                 'causee_id' => auth()->user()->id,
                 'causer_id' => auth()->user()->id,
-                // 'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+                'causer_type' => 'admin',
                 'properties' => '',
             ];
             logAction($param);
@@ -43,11 +43,12 @@ class UserObserver
         if(auth()->check()){
             $param = [
                 'log_name' => 'Updated a User Model',
-                'description' => 'update on the user'.''.$auth()->user()->name,
+                'description' => 'update on the user'.' '.auth()->user()->name,
                 'action_id' => $user->id,
                 'action_type' => 'App\User',
                 'causee_id' => auth()->user()->id,
                 'causer_id' => auth()->user()->id,
+                'causer_type' => 'admin',
                 'properties' => '',
             ];
             logAction($param);
@@ -72,6 +73,7 @@ class UserObserver
                 'action_type' => 'App\User',
                 'causee_id' => auth()->user()->id,
                 'causer_id' => auth()->user()->id,
+                'causer_type' => 'admin',
                 'properties' => '',
             ];
             logAction($param);

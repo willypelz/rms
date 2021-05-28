@@ -50,6 +50,7 @@ class LoginController extends Controller
     {
         //$this->middleware($this->guestMiddleware(), ['except' => 'logout']);
         $this->activationService = $activationService;
+
     }
 
     /**
@@ -124,7 +125,7 @@ class LoginController extends Controller
 
     public function AjaxLogin(Request $request){
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            admin_audit_log();
+        
             echo 'True';
 
         }else{
@@ -167,8 +168,6 @@ class LoginController extends Controller
 
         if ($user = $this->activationService->activateUser($token)) {
             auth()->login($user);
-            //audit trails
-            admin_audit_log();
             return redirect($this->redirectPath());
         }
         abort(404);
@@ -338,7 +337,6 @@ class LoginController extends Controller
         $user = User::find($user_id);
         if($token == $user->user_token){
           Auth::login($user);
-
           $user->user_token = '';
           $user->save();
 

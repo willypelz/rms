@@ -897,12 +897,11 @@ function audit_log()
 
 function admin_audit_log()
 {
-    $name = auth()->user()->first_name.' '.auth()->user()->last_name;
     $last_login = Carbon::now()->toDateTimeString();
 
     $log_action = [
         'log_name' => "Admin Login",
-        'description' => "An applicant ". $name . " logged in. Last login was " . $last_login,
+        'description' => "Admin ". Auth::user()->name . " logged in. Last login was "  .$last_login,
         'action_id' => Auth::user()->id,
         'action_type' => 'App\User',
         'causee_id' => Auth::user()->id,

@@ -44,8 +44,6 @@ class CandidateController extends Controller
                 if ($request->redirect_to) {
                     return redirect($request->redirect_to);
                 } else {
-                    //audit trail
-                    audit_log();
                     return redirect()->route('candidate-dashboard');
                 }
 
@@ -82,8 +80,6 @@ class CandidateController extends Controller
                     if ($request->redirect_to) {
                         return redirect($request->redirect_to);
                     } else {
-                        //audit trail
-                        audit_log();
                         return redirect()->route('candidate-dashboard');
                     }
 

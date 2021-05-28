@@ -69,6 +69,7 @@ use App\Observers\InvoiceItemsObserver;
 
 
 
+
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -79,6 +80,11 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'App\Events\SomeEvent' => [
             'App\Listeners\EventListener',
+        ],
+        'Illuminate\Auth\Events\Login' => ['App\Listeners\LoginSuccessful'],
+        
+        'Illuminate\Auth\Events\PasswordReset' => [
+            'App\Listeners\LogPasswordReset',
         ],
     ];
 

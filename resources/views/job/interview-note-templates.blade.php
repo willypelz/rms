@@ -15,7 +15,7 @@
             <div class="row">
 
                 <div class="col-sm-12"><br>
-
+                    @include('layout.alerts')
                     <!-- <h4>Interview Templates</h4> -->
 
                     <div class="row">

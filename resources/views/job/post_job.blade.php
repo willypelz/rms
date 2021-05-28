@@ -55,7 +55,7 @@
 
 
                                     <div class="text-center">
-                                        <h4>Add your job description details here</h4>
+                                        <h4> Add your job description details here</h4>
                                         <br>
                                     </div>
 
@@ -303,6 +303,8 @@
                                                     @endforeach
                                                 </select>
                                                 <div id="showWorkFlowSteps"></div>
+                                                <span><a data-toggle="modal" data-target="#workflowModal"><i class="fa fa-plus-circle"></i> Add workflow to the list</a></span>
+
 
                                             </div>
                                             <div>
@@ -421,6 +423,7 @@
             </div>
         </div>
 
+        @include('workflow.includes.workflow_modal');
 
     </section>
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
@@ -585,5 +588,6 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
+
     </script>
 @endsection

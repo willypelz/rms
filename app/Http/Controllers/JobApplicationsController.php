@@ -1928,6 +1928,32 @@ class JobApplicationsController extends Controller
             compact('interview_note_options', 'interview_template_id', 'interview_template'));
     }
 
+
+    public function duplicateInterviewNoteTemplate(Request $request, int $id){
+        if($id){
+            $interview_template = InterviewNoteTemplates::where('id', $id)->where('company_id',get_current_company()->id)->first();
+            $interview_template_duplicate = $interview_template->duplicate("name");
+            if($interview_template_duplicate){
+                return redirect()->back()->with(["success" => "$interview_template->name template  duplicated successfully"]);
+            }
+        }
+        return redirect()->back()->with(["danger" => "Operation duplicate $interview_template->name template  unsuccessful"]);
+    }
+
+    function deleteInterviewNoteTemplate(Request $request){
+        $data = [
+            "interview_note_template_id" => "required"
+        ];
+        $data = $request->validate($data);
+        $interview_template = InterviewNoteTemplates::where('id', $data["interview_note_template_id"])->where('company_id',get_current_company()->id)->first();
+        if($interview_template){
+            $deleted = $interview_template->delete();
+            if ($deleted)
+                return redirect()->back()->with(["success" => "$interview_template->name template  deleted successfully"]);
+        }
+        return redirect()->back()->with(["danger" => "Operation delete $interview_template->name template  unsuccessful"]);
+    }
+
     public function editInterviewNoteOptions(Request $request)
     {
         $interview_template = InterviewNoteTemplates::where('id',

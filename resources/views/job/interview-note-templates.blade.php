@@ -19,7 +19,7 @@
                     <!-- <h4>Interview Templates</h4> -->
 
                     <div class="row">
-
+                        
                         @forelse( $interview_note_templates as $interview_note_template )
                             <div class="col-xs-4">
                                 <div class="job-block">
@@ -40,25 +40,44 @@
 
                                                 <hr>
 
-                                                <div>
-
-                                                    <div class="btn-group">
-                                                        <a href="{{ route('interview-note-options', $interview_note_template->id ) }}"
-                                                           class="btn btn-line " style="">Options <span
-                                                                    class="badge badge-danger text-white">{{ $interview_note_template->options->count()  }}</span>
-
-                                                        </a>
-                                                        @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
-                                                        <a href="{{ route('interview-note-option-create', ['interview_template_id' => $interview_note_template->id]) }}" class="btn btn-line" style="padding: 6px ;"><i
-                                                                    class="fa fa-plus no-margin fa-lg"></i></a>
-                                                        @endif
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <div class="btn-group">
+                                                            <a href="{{ route('interview-note-options', $interview_note_template->id ) }}"
+                                                               class="btn btn-line " style="">Options <span
+                                                                        class="badge badge-danger text-white">{{ $interview_note_template->options->count()  }}</span>
+    
+                                                            </a>
+                                                            @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
+                                                            <a href="{{ route('interview-note-option-create', ['interview_template_id' => $interview_note_template->id]) }}" class="btn btn-line" style="padding: 6px ;"><i
+                                                                        class="fa fa-plus no-margin fa-lg"></i></a>
+                                                            @endif
+                                                        </div>
                                                     </div>
+                                                   
 
                                                     @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
-
-                                                    <a href="{{ route('interview-note-template-edit', ['id' => $interview_note_template->id ]) }}"
-                                                       class=" btn pull-right" style=""><i
-                                                                class="fa fa-lg no-margin fa-pencil"></i></a>
+                                                    
+                                                    <div class="col-xs-6" >
+                                                        <a href="javascript:;"   onclick="event.preventDefault(); confirm('Are you sure you want to delete this template?') ? document.getElementById('{{ 'interview_note_template_id'. $interview_note_template->id }}').submit() : false"
+                                                            class=" btn text-danger pull-right" style=""><i
+                                                                     class="fa fa-lg no-margin fa-trash" data-toggle="tooltip" data-placement="top" title="Delete this template?"></i>
+                                                                    </a>
+    
+                                                        <form id="{{'interview_note_template_id'. $interview_note_template->id}}" action="{{route('interview-note-template-delete')}}" method="post" >
+                                                            @csrf
+                                                            <input type="hidden" name="interview_note_template_id" value="{{$interview_note_template->id}}" id="">
+                                                        </form>
+                                                        
+                                                        <a href="{{ route('interview-note-template-duplicate', ['id' => $interview_note_template->id ]) }}"
+                                                                        class=" btn text-info pull-right" style=""><i
+                                                                                 class="fa fa-lg no-margin fa-copy" data-toggle="tooltip" data-placement="top" title="Duplicate this template?"></i></a>
+    
+                                                        <a href="{{ route('interview-note-template-edit', ['id' => $interview_note_template->id ]) }}"
+                                                        class=" btn text-success pull-right" style=""><i
+                                                                    class="fa fa-lg no-margin fa-pencil" data-toggle="tooltip" data-placement="top" title="Edit this template?"></i></a>
+                                                    </div>
+                                                    
                                                     @endif
                                                 </div>
 
@@ -99,6 +118,12 @@
         </div>
         <br>
     </div>
+<script>
+            $(function () {
 
+                $('[data-toggle="tooltip"]').tooltip()
+
+            })
+</script>
 
 @endsection

@@ -84,15 +84,14 @@
                                                     @endif
                                                     </a>
                                                 </li>
+                                                <li role="separator" class="divider"></li>
                                                 <li>
                                                     <a href="#">
                                                         @if(!isHrmsIntegrated())
-                                                            <div data-toggle="modal" data-target="#deleteSuperAdminModal{{ $user->id }}" href="#deleteSuperAdminModal{{ $user->id }}" data-title="Background Check" style="margin-bottom:15px; margin-left:6px" class="btn btn-danger pull-right">Delete</div>
+                                                            <div data-toggle="modal" data-target="#deleteSuperAdminModal{{ $user->id }}" href="#deleteSuperAdminModal{{ $user->id }}" data-title="Background Check"><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
                                                         @else
-                                                            <div disabled data-toggle="tooltip" data-placement="top" title="Your RMS is integrated with HRMS and as such you are only allowed to delete a super admin from HRMS"  data-title="Background Check" style="margin-bottom:15px; margin-left:6px" class="btn btn-danger pull-right">Delete</div>
+                                                            <div disabled data-toggle="tooltip" data-placement="top" title="Your RMS is integrated with HRMS and as such you are only allowed to delete a super admin from HRMS"  data-title="Background Check" ><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
                                                         @endif
-                                                        <div data-toggle="modal" data-target="#editSuperAdminModal{{ $user->id }}" href="#editSuperAdminModal{{ $user->id }}" data-title="Background Check" style="margin-bottom:15px" class="btn btn-info pull-right">Edit</div>
-
                                                     </a>
                                                 </li>
                                             </ul>

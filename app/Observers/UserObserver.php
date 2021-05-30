@@ -20,7 +20,7 @@ class UserObserver
                 'log_name' => 'Create a User Model',
                 'description' => 'created a new user'.' '.auth()->user()->name,
                 'action_id' => $user->id,
-                'action_type' => 'Create',
+                'action_type' => 'App\User',
                 'causee_id' => auth()->user()->id,
                 'causer_id' => auth()->user()->id,
                 'causer_type' => 'admin',

@@ -28,8 +28,7 @@ class LoginSuccessful
     public function handle(Login $event)
     {
         if(Auth::check()){
-            //audit trail
-            // admin_audit_log();
+            //audit trail for admin
             $last_login = Carbon::now()->toDateTimeString();
 
             $log_action = [
@@ -46,8 +45,7 @@ class LoginSuccessful
             logAction($log_action);
         }
         elseif(Auth::guard('candidate')->check()) {
-            //audit trail
-            //audit_log();
+            //audit trail for applicant
             $name = Auth::guard('candidate')->user()->first_name.' '.Auth::guard('candidate')->user()->last_name;
             $last_login = Carbon::now()->toDateTimeString();
             $log_action = [

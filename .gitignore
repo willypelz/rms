@@ -1,0 +1,8 @@
+.DS_Store
+.env
+bootstrap/cache/
+node_modules/
+storage/
+vendor/
+composer.lock
+package-lock.json

@@ -225,7 +225,7 @@
                     <h4 class="modal-title" id="myModalLabel">Invite Super Admin</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('job-team-add') }}" method="post" id="SuperAdmin">
+                    <form action="{{ route('user-permission') }}" method="post" id="SuperAdmin">
                         {!! csrf_field() !!}
                         <input type="hidden" name="mod" value="1">
                         <div class="form-group">

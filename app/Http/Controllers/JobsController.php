@@ -43,6 +43,7 @@ use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use App\Enum\Configs;
 use Mail;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use Session;
@@ -55,7 +56,7 @@ class JobsController extends Controller
     private $search_params = ['q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false, 'sort' => 'application_date+desc', 'grouped' => FALSE];
 
     protected $mailer;
-
+    protected $settings;
     private $states = [
         'Lagos',
         'Abia',
@@ -96,12 +97,13 @@ class JobsController extends Controller
         'Zamfara'
     ];
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct(Mailer $mailer)
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @param Mailer $mailer
+	 * @param Settings $settings
+	 */
+    public function __construct(Mailer $mailer, Settings $settings)
     {
         $this->middleware('auth', ['except' => [
             'JobView',
@@ -118,6 +120,7 @@ class JobsController extends Controller
             'makeOldStaffsAdmin',
         ]]);
 
+        $this->settings = $settings;
         $this->qualifications = [
 
             'MPhil / PhD',
@@ -422,9 +425,55 @@ class JobsController extends Controller
 
     }
 
+    /*
+    * To delete a job team admin user 
+    * @return Illuminate\Http\Response
+    */
+    public function JobTeamDelete(Request $request){
+
+        $data = [
+            "user_id" => "required"
+        ];
+        
+        $data = $request->validate($data);
+        $user = User::find($data["user_id"]);
+        if($user){
+            if(isHrmsIntegrated())
+                return redirect()->back()->with(['danger' => "You are synced with HRMS and can only delete a super admin from HRMS"]);
+            $data = $user;
+            $user->delete();
+            return redirect()->back()->with(['success' => "Super Admin Deleted Successfully"]);
+        }
+            
+        return redirect()->back()->with(['danger' => "Operation delete Super Admin Not Successful"]);
+    }
+
+    public function JobTeamInviteeDelete(Request $request){
+        $data = [
+            "invitee_id" => "required"
+        ];
+        
+        $data = $request->validate($data);
+        $invitee = JobTeamInvite::find($data["invitee_id"]);
+        if($invitee && $invitee->is_cancelled){
+            $data = $invitee;
+            $invitee->delete();
+            logAction([
+                'log_name' => 'Job Team Invitee Delete',
+                'description' => 'An action that deletes a job team invitee',
+                'action_type' => 'Delete',
+                'causee_id' => $data->id,
+                'causer_id' =>  Auth::user()->id,
+            ]);
+            return redirect()->back()->with(['success' => "Job Team Invitee Deleted Successfully"]);
+        }
+        return redirect()->back()->with(['error' => "Operation delete Job Team Invitee Not Successful"]);
+    }
+
 
     public function removeJobTeamMember(Request $request)
     {
+
         $team_member = User::find($request->ref);
         $comp = $request->comp;
         $job = $request->job;
@@ -2193,13 +2242,13 @@ class JobsController extends Controller
         return redirect()->route('job-view', ['jobID' => $jobid, 'jobSlug' => str_slug($job_slug)]);
     }
 
-    /**
-     * Show a preview of a job detail
-     * @param $jobid
-     * @param $job_slug
-     * @param Request|null $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
+	/**
+	 * Show a preview of a job detail
+	 * @param $jobid
+	 * @param $job_slug
+	 * @param Request|null $request
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
     public function JobView($jobid, $job_slug, Request $request = null)
     {
 
@@ -2216,7 +2265,10 @@ class JobsController extends Controller
         } else {
             $closed = false;
         }
-        return view('job.job-details', compact('job', 'company', 'closed'));
+	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
+
+	    return view('job.job-details', compact('job', 'company', 'closed', 'privacy_policy'));
+
     }
 
 
@@ -2588,9 +2640,12 @@ class JobsController extends Controller
         if(Str::contains($referer_url, 'job/share'))
                 $fromShareURL = true;
 
+	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
 
+	    return view('job.job-apply', compact('job', 'qualifications', 'states', 'company',
+		    'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate',
+		    'last_cv', 'fields','countries','privacy_policy'));
 
-        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate', 'last_cv', 'fields','countries'));
     }
 
     public function JobVideoApplication($jobID, $job_slug, $appl_id, Request $request)

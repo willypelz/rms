@@ -35,6 +35,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/sso/auto/login/verify/role/{email}/{key}', 'Auth\LoginController@verifyUserHasRole');
 });
 
+Route::post("/api/v1/delete-super-admin", "HrmsIntegrationController@deleteSuperAdmin")->name("delete-super-admin");
+
 /** ---------
  * Start: Administrator Panel Routes
  * Make admin group and apply a guard to it
@@ -46,6 +48,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::resource('schedule', 'ScheduleController');
 
     Route::match(['get', 'post'], '/admin/assign', 'JobsController@manageRoles')->name('change-admin-role');
+    Route::match(['get', 'post'], 'job/teams/delete', ['uses' => 'JobsController@JobTeamDelete', 'as' => 'job-team-admin-delete']);
     Route::match(['get', 'post'], '/sys/roles', 'AdminsController@manageRoles')->name('list-role');
     Route::match(['get', 'post'], '/sys/roles/create', 'AdminsController@createRole')->name('create-role');
     Route::match(['get', 'post'], '/sys/roles/edit/{id}', 'AdminsController@editRole')->name('role-edit');
@@ -93,7 +96,16 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::match(['get', 'post'], 'add-company', ['uses' => 'JobsController@AddCompany', 'as' => 'add-company']);
     // Route::match(['get', 'post'], 'edit-company', ['uses' => 'JobsController@editCompany', 'as' => 'edit-company']);
 
-         //JOB
+
+	/************************
+	 * Data privacy routes **
+	 *************************/
+
+	Route::match(['get', 'post'], 'settings/set-privacy-policy', ['uses' => 'PrivacyPolicyController@setPrivacyPolicy', 'as' => 'set-privacy-policy']);
+	Route::match(['get', 'post'], 'settings/save-privacy-policy', ['uses' => 'PrivacyPolicyController@savePrivacyPolicy', 'as' => 'save-privacy-policy']);
+
+
+	//JOB
     Route::match(['get', 'post'], 'jobs/duplicate', ['uses' => 'JobsController@DuplicateJob', 'as' => 'duplicate-job']);
     Route::match(['get', 'post'], 'jobs/send-job', ['uses' => 'JobsController@SendJob', 'as' => 'send-to-friends']);
     Route::match(['get', 'post'], 'jobs/save-to-mailbox',
@@ -121,7 +133,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
         ['uses' => 'JobsController@AddCandidates', 'as' => 'add-candidates']);
 
     Route::match(['get', 'post'], 'job/preview/{jobID}', ['uses' => 'JobsController@Preview', 'as' => 'job-preview']);
-    
+
 
 
     Route::match(['get', 'post'], 'job/activities/{jobID}',
@@ -134,6 +146,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::match(['get', 'post'], 'job/team/{jobID}', ['uses' => 'JobsController@JobTeam', 'as' => 'job-team']);
     Route::match(['get', 'post'], 'job/settings/team/{job_id}', ['uses' => 'JobsController@jobTemSettings', 'as' => 'job-team-setting']);
     Route::match(['get', 'post'], 'job/teams/add', ['uses' => 'JobsController@JobTeamAdd', 'as' => 'job-team-add']);
+    Route::match(['get', 'post'], 'job/teams/delete-invitee', ['uses' => 'JobsController@JobTeamInviteeDelete', 'as' =>  'delete-job-team-invitee']);
     Route::match(['get','post'],'job/teams/remove', ['uses' => 'JobsController@removeJobTeamMember', 'as' => 'remove-job-team-member']);
     Route::match(['get','post'],'job/teams/resend/invite/{id}', ['uses' => 'JobsController@resendInvite', 'as' => 'resend-job-team-invite']);
     Route::match(['get','post'],'job/teams/cancel/invite/{id}', ['uses' => 'JobsController@cancelInvite', 'as' => 'cancel-job-team-invite']);
@@ -375,7 +388,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::post('checkout', ['as' => 'checkout', 'uses' => 'JobApplicationsController@Checkout']);
 
     Route::post('request/test', ['as' => 'request-test', 'uses' => 'JobApplicationsController@requestTest']);
-    
+
     Route::post('request/check', ['as' => 'request-check', 'uses' => 'JobApplicationsController@requestCheck']);
     Route::post('invite/interview',
         ['as' => 'invite-for-interview', 'uses' => 'JobApplicationsController@inviteForInterview']);
@@ -434,7 +447,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::post('/third-party/entry', 'ThirdPartyEntryController@index');
     Route::get('/my-career-page', 'JobsController@MyCompany');
     Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
-    
+
 });
 
 /*********************************/
@@ -486,7 +499,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('save/test-result', ['as' => 'save-test-result', 'uses' => 'JobApplicationsController@saveTestResult']);
 
     Route::get('user/activation/{token}', 'Auth\LoginController@activateUser')->name('user.activate');
-    
+
     Route::post('user/auth/verify', 'Auth\LoginController@verifyUser')->name('verify-user-details');
     Route::any('', 'HomeController@home')->name('candidate-login');
     Route::any('register', 'HomeController@register')->name('candidate-register');
@@ -596,7 +609,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'auth/ajax_login', ['uses' => 'Auth\LoginController@AjaxLogin', 'as' => 'ajax_login']);
     Route::match(['get', 'post'], 'sign-up', ['uses' => 'Auth\AuthController@Registration', 'as' => 'registration']);
-    
+
 
 
     Route::match(['get', 'post'], 'cart', ['uses' => 'CvSalesController@Cart', 'as' => 'cart']);
@@ -618,7 +631,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'job/applied/{jobID}/{slug}',['uses' => 'JobsController@JobApplied', 'as' => 'job-applied']);
 
     Route::match(['get', 'post'], 'job/video-application/{jobID}/{slug}/{appl_id}',['uses' => 'JobsController@JobVideoApplication', 'as' => 'job-video-application']);
-    
+
     Route::get('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
 
     Route::post('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
@@ -648,7 +661,7 @@ Route::group(['middleware' => 'web'], function () {
     //     return view('auth.login');
     // });
 
-    
+
     Route::get('/pricing', ['as' => 'pricing', 'uses' => 'HomeController@pricing']);
 
     Route::post('request-a-call', ['as' => 'request-a-call', 'uses' => 'HomeController@requestACall']);
@@ -669,7 +682,7 @@ Route::group(['middleware' => 'web'], function () {
         return view('auth.register2');
     });
 
-    
+
 
     /**
      * Route Group for everything cv
@@ -787,4 +800,3 @@ Route::group(['middleware' => 'web'], function () {
 
 });
 
-   

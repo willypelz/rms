@@ -41,7 +41,11 @@
                                     <div onclick="removeRole({!! $user->id !!})" class="btn btn-danger">Remove super admin role</div>
                                     @else
                                     <div onclick="assignRole({!! $user->id !!})" class="btn btn-success">Assign super admin role</div> @endif 
-
+                                    @if(!isHrmsIntegrated())
+                                        <div data-toggle="modal" data-target="#deleteSuperAdminModal{{ $user->id }}" href="#deleteSuperAdminModal{{ $user->id }}" data-title="Background Check" style="margin-bottom:15px; margin-left:6px" class="btn btn-danger pull-right">Delete</div>
+                                    @else
+                                        <div disabled data-toggle="tooltip" data-placement="top" title="Your RMS is integrated with HRMS and as such you are only allowed to delete a super admin from HRMS"  data-title="Background Check" style="margin-bottom:15px; margin-left:6px" class="btn btn-danger pull-right">Delete</div>
+                                    @endif
                                     <div data-toggle="modal" data-target="#editSuperAdminModal{{ $user->id }}" href="#editSuperAdminModal{{ $user->id }}" data-title="Background Check" style="margin-bottom:15px" class="btn btn-info pull-right">Edit</div>
 
 
@@ -102,6 +106,40 @@
                                     </div>
                                 </div>
 
+                                <div class="modal widemodal fade" id="deleteSuperAdminModal{{ $user->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 class="modal-title" id="myModalLabel">Delete Super Admin</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{{ route('job-team-admin-delete') }}" method="post"  id="SuperAdmin">
+                                                    {!! csrf_field() !!}
+                                                    <input type="hidden" name="mod" value="1">
+                                                    <div class="form-group">
+                                                        <div class="form-group">
+                                                            <div id="hiddenForm">
+                                                                <div id="external_div">
+                                                                    <label for="">Are you sure you want to delete the {{ $user->name }} as super admin</label>
+                                                                </div>
+                                                                <input type="hidden" name="user_id" value="{{ $user->id }}">
+
+                                                            </div>
+                                                            <div class="common-fields">
+                                                                <p>
+                                                                    <a aria-controls="superAdminModal" aria-expanded="false" class="btn btn-line btn-sm" data-toggle="collapse" data-target="#superAdminModal" href="">
+                                                                        Cancel</a>
+                                                                    <input class="btn btn-danger btn-sm pull-right" id="sendMail" type="submit" value="Delete">
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
 
                                 @endforeach 
@@ -131,12 +169,12 @@
                                                             <div id="hiddenForm">
                                                                 <div id="external_div">
                                                                     <label for="">Name: </label>
-                                                                    <input type="text" id="name" name="name" value="" class="form-control">
+                                                                    <input type="text" required id="name" name="name" value="" class="form-control">
                                                                     <small><em>The name of the team member</em></small>
                                                                     <br><br>
                                                                     <input type="hidden" name="email_from" value="{{ get_current_company()->email }}" class="form-control">
                                                                     <label for="">Email: </label>
-                                                                    <input type="text" name="email" id="email_to" placeholder="email addresses here" class="form-control">
+                                                                    <input type="text" required name="email" id="email_to" placeholder="email addresses here" class="form-control">
                                                                     <small><em>The email address of the team member</em>
                                                                     </small>
                                                                     <br><br>
@@ -166,6 +204,9 @@
                 <script>
                     $(document).ready(function() {
                         $('#myTable').DataTable();
+                        $(function () {
+                            $('[data-toggle="tooltip"]').tooltip()
+                        })
                     });
 
                     function assignRole(userId) {

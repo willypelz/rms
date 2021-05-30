@@ -41,12 +41,12 @@
                                     </td>
                                     <td>
                                         @if($user->is_super_admin)
-                                            <span  data-toggle="tooltip" data-placement="top" title="You can remove this user as a super-admin by clicking on this active button or details in actions"
+                                            <span  data-toggle="tooltip" data-placement="top" title="You can remove this user as a super-admin by clicking on this active button or details in action"
                                                    onclick="removeRole({!! $user->id !!})"
                                                  class="btn btn-sm btn-success">Active
                                             </span>
                                         @else
-                                            <span  data-toggle="tooltip" data-placement="top" title="You can assign this user a super-admin privilege by clicking on this disable button or details in actions"
+                                            <span  data-toggle="tooltip" data-placement="top" title="You can assign this user a super-admin privilege by clicking on this disable button or details in action"
                                                    onclick="assignRole({!! $user->id !!})"
                                                  class="btn btn-sm btn-danger">Disabled
                                             </span> @endif
@@ -56,7 +56,7 @@
                                             <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button"
                                                     id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
                                                     aria-expanded="true">
-                                                details
+                                                Action
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -64,12 +64,12 @@
                                                     <span data-toggle="modal"
                                                          data-target="#editSuperAdminModal{{ $user->id }}"
                                                          href="#editSuperAdminModal{{ $user->id }}"
-                                                         data-title="Background Check"> <i class="fa fa-edit"></i> Edit
+                                                         data-title="Background Check"> <i class="fa fa-edit"></i> Edit Super Admin
                                                     </span>
                                                     </a>
                                                 </li>
                                                 <li role="separator" class="divider"></li>
-                                                <li><a href="{{ route('user-permission') }}"><i class="fa fa-key"></i> Permission</a></li>
+                                                <li><a href="{{ route('user-permission') }}"><i class="fa fa-key"></i>Role & Permission</a></li>
                                                 <li role="separator" class="divider"></li>
                                                 <li>
                                                     <a href="#">
@@ -80,7 +80,18 @@
                                                     @else
                                                         <div onclick="assignRole({!! $user->id !!})"
                                                             ><i class="fa fa-plus-circle"></i> Assign super admin role
-                                                        </div> @endif
+                                                        </div>
+                                                    @endif
+                                                    </a>
+                                                </li>
+                                                <li role="separator" class="divider"></li>
+                                                <li>
+                                                    <a href="#">
+                                                        @if(!isHrmsIntegrated())
+                                                            <div data-toggle="modal" data-target="#deleteSuperAdminModal{{ $user->id }}" href="#deleteSuperAdminModal{{ $user->id }}" data-title="Background Check"><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
+                                                        @else
+                                                            <div disabled data-toggle="tooltip" data-placement="top" title="Your RMS is integrated with HRMS and as such you are only allowed to delete a super admin from HRMS"  data-title="Background Check" ><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
+                                                        @endif
                                                     </a>
                                                 </li>
                                             </ul>
@@ -263,6 +274,9 @@
     <script>
         $(document).ready(function () {
             $('#myTable').DataTable();
+                        $(function () {
+                            $('[data-toggle="tooltip"]').tooltip()
+                        })
         });
 
         function assignRole(userId) {

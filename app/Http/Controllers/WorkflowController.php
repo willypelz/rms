@@ -135,4 +135,15 @@ class WorkflowController extends Controller
             ->back()
             ->with('error', 'Can not delete Workflow, try again!!');
     }
+
+    public function duplicate(Request $request, int $id){
+        if($id){
+            $workflow = Workflow::where('id', $id)->where('company_id',get_current_company()->id)->first();
+            $workflow_duplicate = $workflow->duplicate("name");
+            if($workflow_duplicate){
+                return redirect()->back()->with(["success" => "$workflow->name workflow  duplicated successfully"]);
+            }
+        }
+        return redirect()->back()->with(["danger" => "Operation duplicate $workflow->name workflow  unsuccessful"]);
+    }
 }

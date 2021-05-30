@@ -39,8 +39,29 @@ class UserPermissionController extends Controller
 	public function userPermissionPage()
 	{
 	    $roles = Role::with('permissions')->get();
+	    $user_roles = RoleUser::whereUserId(Auth()->user()->id)->with("role")->get()->unique("role_id");
 	    $permissions = Permission::all();
-		return view('settings.user_permission', compact(  'roles', 'permissions'));
+		return view('settings.user_permission', compact(  'user_roles','roles', 'permissions'));
+	}
+
+	/**
+	 * Show the application dashboard.
+	 *
+	 * @param Request $request
+	 * @param Role $role
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function userPermissionUpdate(Request $request)
+	{
+		$role = Role::find($request->id);
+//		dd($request->permissions);
+
+		 $role->perms()->sync($request->permissions);
+
+		session()->flash('message', 'Role edited');
+
+		return redirect()->back()
+			->with('success', 'Role updated successfully');
 	}
 
 }

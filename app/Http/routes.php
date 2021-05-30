@@ -35,6 +35,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/sso/auto/login/verify/role/{email}/{key}', 'Auth\LoginController@verifyUserHasRole');
 });
 
+Route::post("/api/v1/delete-super-admin", "HrmsIntegrationController@deleteSuperAdmin")->name("delete-super-admin");
+
 /** ---------
  * Start: Administrator Panel Routes
  * Make admin group and apply a guard to it
@@ -46,6 +48,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::resource('schedule', 'ScheduleController');
 
     Route::match(['get', 'post'], '/admin/assign', 'JobsController@manageRoles')->name('change-admin-role');
+    Route::match(['get', 'post'], 'job/teams/delete', ['uses' => 'JobsController@JobTeamDelete', 'as' => 'job-team-admin-delete']);
     Route::match(['get', 'post'], '/sys/roles', 'AdminsController@manageRoles')->name('list-role');
     Route::match(['get', 'post'], '/sys/roles/create', 'AdminsController@createRole')->name('create-role');
     Route::match(['get', 'post'], '/sys/roles/edit/{id}', 'AdminsController@editRole')->name('role-edit');
@@ -143,6 +146,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::match(['get', 'post'], 'job/team/{jobID}', ['uses' => 'JobsController@JobTeam', 'as' => 'job-team']);
     Route::match(['get', 'post'], 'job/settings/team/{job_id}', ['uses' => 'JobsController@jobTemSettings', 'as' => 'job-team-setting']);
     Route::match(['get', 'post'], 'job/teams/add', ['uses' => 'JobsController@JobTeamAdd', 'as' => 'job-team-add']);
+    Route::match(['get', 'post'], 'job/teams/delete-invitee', ['uses' => 'JobsController@JobTeamInviteeDelete', 'as' =>  'delete-job-team-invitee']);
     Route::match(['get','post'],'job/teams/remove', ['uses' => 'JobsController@removeJobTeamMember', 'as' => 'remove-job-team-member']);
     Route::match(['get','post'],'job/teams/resend/invite/{id}', ['uses' => 'JobsController@resendInvite', 'as' => 'resend-job-team-invite']);
     Route::match(['get','post'],'job/teams/cancel/invite/{id}', ['uses' => 'JobsController@cancelInvite', 'as' => 'cancel-job-team-invite']);
@@ -363,6 +367,12 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::match(['get', 'post'], 'settings/interview-notes/template/create',
         ['as' => 'interview-note-template-create', 'uses' => 'JobApplicationsController@createInterviewNoteTemplate']);
 
+    Route::match(['get', 'post'], 'settings/interview-notes/template/duplicate/{id}',
+        ['as' => 'interview-note-template-duplicate', 'uses' => 'JobApplicationsController@duplicateInterviewNoteTemplate']);
+
+    Route::match(['get', 'post'], 'settings/interview-notes/template/delete/',
+        ['as' => 'interview-note-template-delete', 'uses' => 'JobApplicationsController@deleteInterviewNoteTemplate']);
+
 
     Route::get('settings/interview-notes/options/{interview_template_id}',
         ['as' => 'interview-note-options', 'uses' => 'JobApplicationsController@viewInterviewNoteOptions']);
@@ -415,6 +425,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
             Route::get('/steps/view/{id}', 'WorkflowController@getSteps')->name('get-workflow-steps');
             Route::get('/create', 'WorkfelowController@create')->name('workflow-create');
             Route::get('/{id}/edit', 'WorkflowController@editView')->name('workflow-edit');
+            Route::get('/{id}/duplicate', 'WorkflowController@duplicate')->name('workflow-duplicate');
             Route::match(['put', 'patch'], '/{id}/edit', 'WorkflowController@update')->name('workflow-update');
             Route::delete('/{id}', 'WorkflowController@destroy')->name('workflow-delete');
 

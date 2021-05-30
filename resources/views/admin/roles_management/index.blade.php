@@ -159,6 +159,40 @@
                                     </div>
                                 </div>
 
+                                <div class="modal widemodal fade" id="deleteSuperAdminModal{{ $user->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 class="modal-title" id="myModalLabel">Delete Super Admin</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{{ route('job-team-admin-delete') }}" method="post"  id="SuperAdmin">
+                                                    {!! csrf_field() !!}
+                                                    <input type="hidden" name="mod" value="1">
+                                                    <div class="form-group">
+                                                        <div class="form-group">
+                                                            <div id="hiddenForm">
+                                                                <div id="external_div">
+                                                                    <label for="">Are you sure you want to delete the {{ $user->name }} as super admin</label>
+                                                                </div>
+                                                                <input type="hidden" name="user_id" value="{{ $user->id }}">
+
+                                                            </div>
+                                                            <div class="common-fields">
+                                                                <p>
+                                                                    <a aria-controls="superAdminModal" aria-expanded="false" class="btn btn-line btn-sm" data-toggle="collapse" data-target="#superAdminModal" href="">
+                                                                        Cancel</a>
+                                                                    <input class="btn btn-danger btn-sm pull-right" id="sendMail" type="submit" value="Delete">
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
 
                             @endforeach

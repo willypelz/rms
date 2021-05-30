@@ -1885,7 +1885,7 @@ class JobApplicationsController extends Controller
                 'description' => $request->description,
             ]);
 
-            \Session::flash('status', 'Updated Successfully');
+            return redirect()->route("interview-note-templates")->with(["success" => 'Templated Updated Succesfully']);
         }
 
         $interview_note_template = InterviewNoteTemplates::where('id', $request->id)->where('company_id',
@@ -1908,7 +1908,7 @@ class JobApplicationsController extends Controller
                 'company_id' => get_current_company()->id
             ]);
 
-            \Session::flash('status', 'New Template has been created');
+            return redirect()->route("interview-note-templates")->with(["success" => 'New Template has been created']);
         }
 
 
@@ -1928,6 +1928,32 @@ class JobApplicationsController extends Controller
             compact('interview_note_options', 'interview_template_id', 'interview_template'));
     }
 
+
+    public function duplicateInterviewNoteTemplate(Request $request, int $id){
+        if($id){
+            $interview_template = InterviewNoteTemplates::where('id', $id)->where('company_id',get_current_company()->id)->first();
+            $interview_template_duplicate = $interview_template->duplicate("name");
+            if($interview_template_duplicate){
+                return redirect()->back()->with(["success" => "$interview_template->name template  duplicated successfully"]);
+            }
+        }
+        return redirect()->back()->with(["danger" => "Operation duplicate $interview_template->name template  unsuccessful"]);
+    }
+
+    function deleteInterviewNoteTemplate(Request $request){
+        $data = [
+            "interview_note_template_id" => "required"
+        ];
+        $data = $request->validate($data);
+        $interview_template = InterviewNoteTemplates::where('id', $data["interview_note_template_id"])->where('company_id',get_current_company()->id)->first();
+        if($interview_template){
+            $deleted = $interview_template->delete();
+            if ($deleted)
+                return redirect()->back()->with(["success" => "$interview_template->name template  deleted successfully"]);
+        }
+        return redirect()->back()->with(["danger" => "Operation delete $interview_template->name template  unsuccessful"]);
+    }
+
     public function editInterviewNoteOptions(Request $request)
     {
         $interview_template = InterviewNoteTemplates::where('id',
@@ -1941,7 +1967,8 @@ class JobApplicationsController extends Controller
                 'weight' => $request->weight,
             ]);
 
-            \Session::flash('status', 'Updated Successfully');
+            return redirect()->route("interview-note-options", [ "interview_template_id" => $interview_template->id ])
+                                ->with(["success" => "Updated Successfully"]);
         }
 
         $interview_note_option = InterviewNoteOptions::where('id', $request->id)->where('company_id',
@@ -1975,7 +2002,8 @@ class JobApplicationsController extends Controller
                 'interview_template_id' => $request->interview_template_id
             ]);
 
-            \Session::flash('status', 'Created Successfully');
+            return redirect()->route("interview-note-options", [ "interview_template_id" => $interview_template->id ])
+                                ->with(["success" => "Created Successfully"]);
         }
 
 

@@ -353,11 +353,11 @@ function get_current_company()
             else
                 return Auth::user()->companies[0];
         }
-
+        
         if (Auth::user()->companies && Auth::user()->companies->count() < 1) {
             return redirect()->guest('login');
         }
-
+        
         // If a company is not selected, default to the first on the list
         return Auth::user()->companies[0];
     } else {
@@ -873,4 +873,11 @@ function findOrMakeDirectory($path)
         return File::makeDirectory($path, 0777);
     }
 
+}
+/**
+ * Checks if HRMS is synced
+ * @return bool
+ */
+function isHrmsIntegrated(){
+    return is_null(env('STAFFSTRENGTH_URL')) ? false: true;
 }

@@ -235,8 +235,8 @@ class CandidateController extends Controller
         }else{
             $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->get();
         }
-
-        return view('candidate.job-list', compact('jobs'));
+	    $subsidiaries =   Company::whereIsDefault(false)->get();
+        return view('candidate.job-list', compact('jobs', 'subsidiaries'));
     }
 
 

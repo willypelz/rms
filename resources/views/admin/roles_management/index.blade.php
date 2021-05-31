@@ -202,6 +202,9 @@
                 <script>
                     $(document).ready(function() {
                         $('#myTable').DataTable();
+                        $(function () {
+                            $('[data-toggle="tooltip"]').tooltip()
+                        })
                     });
 
                     function assignRole(userId) {

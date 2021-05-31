@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\JobTeamInvite;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;
 use App\Models\Company;
@@ -49,6 +50,7 @@ class LoginController extends Controller
     {
         //$this->middleware($this->guestMiddleware(), ['except' => 'logout']);
         $this->activationService = $activationService;
+
     }
 
     /**
@@ -123,7 +125,9 @@ class LoginController extends Controller
 
     public function AjaxLogin(Request $request){
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        
             echo 'True';
+
         }else{
             echo 'Failed';
         }
@@ -303,9 +307,13 @@ class LoginController extends Controller
     public function switchUser()
     {
         if(Auth::check()){
+            //audit trail
+            admin_audit_log();
           return redirect()->route('dashboard');
         }
         elseif(Auth::guard('candidate')->check()) {
+            //audit trail
+            audit_log();
           return redirect()->route('candidate-dashboard');
         }
         else
@@ -329,7 +337,6 @@ class LoginController extends Controller
         $user = User::find($user_id);
         if($token == $user->user_token){
           Auth::login($user);
-
           $user->user_token = '';
           $user->save();
 
@@ -338,4 +345,39 @@ class LoginController extends Controller
           return ['status' => false, 'message' => 'Token not valid'];
         }
     }
+
+    /**
+     * Check if user has a role in RMS either as a user with admin roles or as an interviewer
+     * @param $encoded_email
+     * @param $encoded_key
+     * @return array [route]
+     */
+    public function verifyUserHasRole($encoded_email, $encoded_key)
+    {
+
+        $decoded_email = base64_decode($encoded_email);
+        $decoded_key = base64_decode($encoded_key);
+
+        $user = User::where('email', $decoded_email)->first();
+        $team_invite = JobTeamInvite::where('email', $decoded_email)->first();
+        if(!$user && !$team_invite){
+            return ['status' => false, 'message' => 'User/Job Team member email does not exist'];
+        }
+
+        $api_key = $user ? $user->companies()->where('api_key', $decoded_key)->first() :
+            ($team_invite ? Company::where('api_key', $decoded_key)->first() : null);
+
+        if($api_key == null){
+            return ['status' => false, 'message' => 'API key not valid'];
+        }else{
+            $user_result =  $user && $user->roles->count() ? $user :
+                ($team_invite && count(json_decode(($team_invite->role_ids)))  ? $team_invite : null);
+            if($user_result) {
+                return ['status' => true, 'message' => 'API key is valid and user has a role on RMS'];
+            }
+            return ['status' => false, 'message' => 'No User Found'];
+        }
+
+    }
+
 }

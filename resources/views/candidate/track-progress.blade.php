@@ -35,7 +35,7 @@
             <p class="text-uppercase">at <span>{{ $application->job->company->name }}</span></p>
             <div class="hr-xs"></div>
             <p>
-              <a href="{{ url($application->job->company->slug.'/job/'.$application->job->id.'/'.str_slug($application->job->title)) }}" target="_blank" style="margin-right: 10px;"> View Job</a>
+              <a href="{{ route('job-view',['jobID'=>$application->job->id,'jobSlug'=>str_slug($application->job->title)]) }}" target="_blank" style="margin-right: 10px;"> View Job</a>
               <label class="label label-lg label-info pull-right"> {{ $application->status }}</label>
               <b>Applied</b>: {{ date('D. j M, Y', strtotime( $application->created)) }}
             </p>

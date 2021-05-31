@@ -10,6 +10,7 @@ definitions:
         services:
           - docker
         script:
+
           - source ./check.sh
           - IMAGE="seamlesshr/${KUBE_META_NAME}"
           - VERSION="HRMS-${BITBUCKET_BUILD_NUMBER}"
@@ -21,6 +22,7 @@ definitions:
           - envsubst < deployment.tpl.yaml > deployment-${KUBE_META_NAME}.yaml
           - mkdir -p s3/products && cp deployment-${KUBE_META_NAME}.yaml s3/products/deployment-${KUBE_META_NAME}.yaml
           - pipe: atlassian/aws-s3-deploy:0.4.5
+
             variables:
               S3_BUCKET: 'seamlesshrms-kubernetes-deployments'
               LOCAL_PATH: 's3'

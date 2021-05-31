@@ -8,8 +8,11 @@ use App\Models\Cv;
 use App\Models\Job;
 use App\Models\JobActivity;
 use App\Models\JobApplication;
+use Illuminate\Support\Facades\File;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use App\Models\TestRequest;
+use App\Models\ActivityLog;
+use Carbon\Carbon;
 
 // use Faker;
 
@@ -212,7 +215,8 @@ function remove_cv_contact($cv)
 
 function default_picture($data, $type = 'cv')
 {
-    if (!is_array($data)) {
+
+    if (!is_array($data) && $data) {
         $data = $data->toArray();
     }
 
@@ -350,11 +354,11 @@ function get_current_company()
             else
                 return Auth::user()->companies[0];
         }
-
+        
         if (Auth::user()->companies && Auth::user()->companies->count() < 1) {
             return redirect()->guest('login');
         }
-
+        
         // If a company is not selected, default to the first on the list
         return Auth::user()->companies[0];
     } else {
@@ -559,13 +563,16 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 
         switch ($request->type) {
             case 'single':
+                $location_value = ($request->country != 'Nigeria') ? $request->country :
+                    (($request->location == 'Across Nigeria') ? 'Nigeria' : $request->location);
+
                 $last_cv = Cv::insertGetId([
                     'first_name' => $request->cv_first_name,
                     'last_name' => $request->cv_last_name,
                     'email' => $request->cv_email,
                     'phone' => $request->cv_phone,
                     'gender' => $request->gender,
-                    'state' => $request->location,
+                    'state' => $location_value,
                     'highest_qualification' => $request->highest_qualification,
                     'years_of_experience' => $request->years_of_experience,
                     'last_company_worked' => $request->last_company_worked,
@@ -827,4 +834,88 @@ if (!function_exists('defaultCompanyLogo')) {
         $answer = get_current_company()->logo ?? env('SEAMLESS_HIRING_LOGO');
         return $answer;
     }
-} 
+}
+
+function logAction($logAction)
+{
+    $log_action = [
+        'log_name' => @$logAction['log_name'],
+        'description' => @$logAction['description'],
+        'action_id' => @$logAction['action_id'],
+        'action_type' => @$logAction['action_type'],
+        'causee_id' => @$logAction['causee_id'],
+        'causer_id' => isset($logAction['causer_id']) ? $logAction['causer_id'] : Auth::user()->id,
+        'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
+        'properties' => @$logAction['properties'],
+    ];
+
+    if (!empty($log_action)) {
+        ActivityLog::create($log_action);
+    }
+}
+
+function getCauserType($user_id = null)
+{
+    if (is_null($user_id)) {
+        return 'admin';
+    } else {
+        $auth_user_id = Auth::user()->id;
+        return $auth_user_id == $user_id ? 'applicant' : 'admin';
+    }
+}
+
+
+/**
+ * @param $path
+ * @return bool
+ */
+function findOrMakeDirectory($path)
+{
+    if (!file_exists($path)) {
+        return File::makeDirectory($path, 0777);
+    }
+
+}
+
+
+function audit_log()
+{
+    $name = auth()->guard('candidate')->user()->first_name.' '.auth()->guard('candidate')->user()->last_name;
+    $last_login = Carbon::now()->toDateTimeString();
+
+    $log_action = [
+        'log_name' => "Candidate Login",
+        'description' => "An applicant ". $name . " logged in. Last login was " . $last_login,
+        'action_id' => Auth::guard('candidate')->user()->id,
+        'action_type' => 'App\Models\Candidate',
+        'causee_id' => Auth::guard('candidate')->user()->id,
+        'causer_id' => Auth::guard('candidate')->user()->id,
+        'causer_type' => 'applicant',
+        'properties'=> ''
+    ];
+    logAction($log_action);
+}
+
+function admin_audit_log()
+{
+    $last_login = Carbon::now()->toDateTimeString();
+
+    $log_action = [
+        'log_name' => "Admin Login",
+        'description' => "Admin ". Auth::user()->name . " logged in. Last login was "  .$last_login,
+        'action_id' => Auth::user()->id,
+        'action_type' => 'App\User',
+        'causee_id' => Auth::user()->id,
+        'causer_id' => Auth::user()->id,
+        'causer_type' => 'admin',
+        'properties'=> ''
+    ];
+    logAction($log_action);
+}
+/**
+ * Checks if HRMS is synced
+ * @return bool
+ */
+function isHrmsIntegrated(){
+    return is_null(env('STAFFSTRENGTH_URL')) ? false: true;
+}

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Workflow;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class WorkflowController extends Controller
 {
@@ -71,6 +72,8 @@ class WorkflowController extends Controller
                 ],
             ])) {
                 $msg = 'Workflow created successfully';
+	            if ($request->background_callback) return response()->json(['status'=> Response::HTTP_OK,
+		             'data' => $workflow], Response::HTTP_OK);
             } else {
                 $msg = 'Error creating default Workflow Steps, while Workflow created successfully';
             }
@@ -131,5 +134,16 @@ class WorkflowController extends Controller
         return redirect()
             ->back()
             ->with('error', 'Can not delete Workflow, try again!!');
+    }
+
+    public function duplicate(Request $request, int $id){
+        if($id){
+            $workflow = Workflow::where('id', $id)->where('company_id',get_current_company()->id)->first();
+            $workflow_duplicate = $workflow->duplicate("name");
+            if($workflow_duplicate){
+                return redirect()->back()->with(["success" => "$workflow->name workflow  duplicated successfully"]);
+            }
+        }
+        return redirect()->back()->with(["danger" => "Operation duplicate $workflow->name workflow  unsuccessful"]);
     }
 }

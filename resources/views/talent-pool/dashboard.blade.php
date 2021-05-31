@@ -3,11 +3,14 @@
 @section('content')
 
     <!-- <div class="container text-brandon text-uppercase h5 separator separator-small" style=""><i class="fa fa-tachometer"></i> Your Dashboard</div> -->
-
-    <section class="s-div dashboard">
+   
+    <section class="s-div dashboard" style="background-position: center 73px;">
         <div class="container">
+           
             <div class="row">
+                @include('layout.alerts')
                 <div class="col-sm-12 "><br>
+
                     <h4 class="text-white">
                         Welcome Admin, <span class="small pull-right text-white">
                             <i class="fa fa-calendar"></i> <?php echo date("l, d/m/Y") . "<br>"; ?>
@@ -20,7 +23,7 @@
                                 <a href="{{ route('post-job') }}" type="button"
                                    class="btn btn-success text-capitalize in">
                                     <span class="fa-lg"><i class="fa fa-briefcase"></i>
-                                        <span class="hidden-xs text-brandon"> Post a Job</span><br></span>
+                                        <span class="hidden-xs text-brandon">Create a job</span><br></span>
                                     <small class="text-white hidden-xs">
                                         Broadcast Jobs everywhere
                                     </small>

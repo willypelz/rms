@@ -3,32 +3,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('font/flaticon.css') }}">
 
 @section('navbar')
-    <!-- Schema.org markup for Google+ -->
-    <meta itemprop="name" content="{{ $job['title'] }}">
-    <meta itemprop="description" content="Apply Now / Share">
-    <meta itemprop="image" content="{{ asset('uploads/'.$company->logo) }}">
 
-    <!-- Twitter Card data -->
-    <meta name="twitter:card" content="Seamless Hiring">
-    <!-- <meta name="twitter:site" content="@publisher_handle"> -->
-    <meta name="twitter:title" content="{{ $job['title'] }}">
-    <meta name="twitter:description" content="Apply Now / Share">
-    <!-- <meta name="twitter:creator" content="@author_handle"> -->
-    <meta name="twitter:image" content="{{ asset('uploads/'.$company->logo) }}">
-    <!-- <meta name="twitter:data1" content="$3">
-    <meta name="twitter:label1" content="Price">
-    <meta name="twitter:data2" content="Black">
-    <meta name="twitter:label2" content="Color"> -->
-
-    <!-- Open Graph data -->
-    <meta property="og:title" content="{{ $job['title'] }}"/>
-    <meta property="og:type" content="article"/>
-    <meta property="og:url" content="{{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"/>
-    <meta property="og:image" content="{{ asset('uploads/'.$company->logo) }}"/>
-    <meta property="og:description" content="Apply Now / Share"/>
-    <meta property="og:site_name" content="{{ url('') }}"/>
-    <!-- <meta property="og:price:amount" content="15.00" />
-    <meta property="og:price:currency" content="USD" /> -->
 @show()
 
 @section('footer')
@@ -101,7 +76,7 @@
 
                                                 <p class="pull-right no-margin">
                                                     Share on &nbsp;
-                                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"
+                                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)])}}"
                                                        class="" target="_blank">
                                                            <span class="fa-stack fa-lg">
                                                              <i class="fa fa-circle fa-stack-2x text-"></i>
@@ -109,7 +84,7 @@
                                                            </span>
                                                     </a>
 
-                                                    <a href="https://twitter.com/home?status={{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"
+                                                    <a href="https://twitter.com/home?status={{route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)])}}"
                                                        class="" target="_blank">
                                                            <span class="fa-stack fa-lg">
                                                              <i class="fa fa-circle fa-stack-2x text-"></i>
@@ -119,7 +94,7 @@
 
 
 
-                                                    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ url($company->slug.'/job/'.$job->id.'/'.str_slug($job->title)) }}"
+                                                    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)])}}"
                                                        class="" target="_blank">
                                                            <span class="fa-stack fa-lg">
                                                              <i class="fa fa-circle fa-stack-2x text-"></i>
@@ -218,23 +193,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-4">
-                                                    <h6 class="text-brandon text-uppercase l-sp-5 no-margin">company
-                                                        details</h6><br>
-                                                    <p class="text-muted">{{ $company->name }}</p>
-                                                    <p><img src="{{ $company->logo }}" alt="logo" width="60%"></p><br>
-                                                    <p class="small text-brandon">{{ $company->about }}</p>
-                                                    <p><i class="fa fa-map-marker"></i> {{ $company->address }}</p>
-                                                    <!--p>
-                                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4448.570052456479!2d3.3791209324273184!3d6.618898622434336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b93a899b7c9b7%3A0x8630de71dbc44ffd!2sMagodo+GRA+Phase+II%2C+Lagos!5e0!3m2!1sen!2sng!4v1457754339276" frameborder="0" width="100%" height="200px" allowfullscreen></iframe>
-                                                    </p-->
-                                                    <p>
-                                                        @if( $company->is_email_visible )<i
-                                                                class="fa fa-envelope"></i> {{ $company->email }}
-                                                        <br> @endif
-                                                        <i class="fa fa-globe"></i> {{ $company->website }}
-                                                    </p>
-                                                </div>
+                                                @include('settings.includes.company-details')
                                                 <div class="col-sm-6 col-sm-offset-3 text-center hidden"><!-- <hr> -->
                                                     <p>Powered by <a href="http://www.seamlesshiring.com"><i
                                                                     class="fa fa-skype"></i> SeamlessHiring</a> <br>

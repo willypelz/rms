@@ -54,9 +54,7 @@ class UserPermissionController extends Controller
 	public function userPermissionUpdate(Request $request)
 	{
 		$role = Role::find($request->id);
-//		dd($request->permissions);
-
-		 $role->perms()->sync($request->permissions);
+		$role->perms()->sync($request->permissions);
 
 		session()->flash('message', 'Role edited');
 

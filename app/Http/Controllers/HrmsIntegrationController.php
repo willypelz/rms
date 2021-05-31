@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Libraries\Solr;
 use App\User;
 use Illuminate\Http\Request;
 

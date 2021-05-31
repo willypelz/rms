@@ -716,6 +716,10 @@ class JobsController extends Controller
                     'expiry_date' => 'required',
                     'workflow_id' => 'required|integer',
                     'experience' => 'required',
+	                'minimum_remuneration' => 'numeric|min:0',
+	                'maximum_remuneration' => 'numeric|min:0|gt:minimum_remuneration'
+                ], [
+                	'maximum_remuneration.gt' => 'maximum remuneration should be greater than minimum remuneration'
                 ]);
             }
 
@@ -737,6 +741,9 @@ class JobsController extends Controller
                 'company_id' => $company->id,
                 'workflow_id' => $request->workflow_id,
                 'experience' => $request->experience,
+                'minimum_remuneration' => $request->minimum_remuneration,
+                'maximum_remuneration' => $request->maximum_remuneration,
+                'benefits' => $request->benefits,
             ];
 
 

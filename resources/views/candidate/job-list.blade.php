@@ -1,12 +1,13 @@
 @extends('layout.template-guest')
 <link rel="stylesheet" type="text/css" href="{{ asset('font/flaticon.css') }}">
+<link href="{{ asset('css/select2.css') }}" rel="stylesheet">
 @section('navbar')
 
 @show()
 @section('footer')
 @show()
 @section('content')
-<section class="no-pad">
+    <section class="no-pad">
     <div class="container-fluid">
         <div class="row">
                     <div class="col-sm-10 col-sm-offset-1">
@@ -40,19 +41,27 @@
                                                     <li>
                                                         <strong>&nbsp;{{ count( $jobs ) }}</strong>&nbsp; Job Opening(s)</li>
                                                 </ul>
-                                        
+
                                                 <!-- <div class="badge badge-job badge-job-active">
                                                     <small class="">
                                                         <span class="glyphicon glyphicon-ok"></span>
                                                         &nbsp; Job is active
                                                     </small>
                                                 </div> -->
+
                                             </div>
                                             <div class="clearfix"></div>
-                                            
-                                        
-                                        
+
+                                            <div class="pull-right">
+                                                <label for="" class="text-white">Filter: </label>    <select name="specializations[]" id="specialization"
+                                                        class="select2" >
+                                                    @foreach($subsidiaries as $s)
+                                                        <option value="{{ $s->id }}">{{ $s->name }}</option>
+                                                    @endforeach
+                                                    <option value="">--choose specialization</option>
+                                                </select>
                                             </div>
+                                        </div>
                                     </div>
                                             
                                         </section>
@@ -138,7 +147,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <div class="separator separator-small"><br></div>
 
-
+<script src="{{ asset('js/select2.min.js') }}"></script>
+<script type="text/javascript">
+        $('.select2').select2({
+            maximumInputLength: 1
+        });
+</script>
 @endsection
 
 

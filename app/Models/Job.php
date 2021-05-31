@@ -38,7 +38,10 @@ class Job extends Model
         'experience',
         'fields',
         'is_for',
-        'job_type'
+        'job_type',
+	    'benefits',
+	    'minimum_remuneration',
+	    'maximum_remuneration'
     ];
 
 

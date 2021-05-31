@@ -551,8 +551,34 @@ $is_super_admin = auth()->user()->is_super_admin;
 
                     });
                 });
+                //on page refresh, retain the current tab you were in previously
+                if(localStorage.getItem("current_step")) {
+                    var tab_name = localStorage.getItem("current_step");
+                    $("a[data-value='" + tab_name + "']").attr('id', tab_name);
+
+                    setTimeout(function () {
+                        $("#" + tab_name).trigger('click')
+                    }, 2000);
+
+                    $('body').on('click', '#' + tab_name, function () {
+                        status_filter = tab_name;
+
+                        $('#status_filters li').removeClass('active');
+                        $(this).closest('li').addClass('active');
+
+                        $(this).reloadResult();
+
+                        $('.select-all input[type="checkbox"]').removeAttr('checked');
+                        $('.media-body-check').removeAttr('checked');
+
+                    });
+                }
+
                 $('body').on('click', '#status_filters a', function () {
-                    status_filter = $(this).attr('data-value');
+                    var filter = $(this).attr('data-value');
+                    localStorage.setItem("current_step", filter );
+                    status_filter = filter;
+
                     $('#status_filters li').removeClass('active');
                     $(this).closest('li').addClass('active');
 

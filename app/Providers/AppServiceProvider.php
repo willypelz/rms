@@ -25,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
         $this->commands([
            UpdateNullCandidate::class,
         ]);
+        
     }
 
     /**

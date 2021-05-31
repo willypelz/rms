@@ -3227,6 +3227,7 @@ class JobsController extends Controller
                 ['ats_product_id' => 27, 'company_id' => $comp->id]
             ]);
 
+            if ($request->subsidiary_creation_page)	return redirect('company/subsidiaries')->with('success', "Subsidiary created successfully.");
 
             // if($upload){
             return redirect('select-company/' . $request->slug);
@@ -3240,18 +3241,16 @@ class JobsController extends Controller
     public function editCompany(Request $request)
     {
 
-
-
         if ($request->isMethod('post')) {
 
 
-            $validator = Validator::make($request->all(), [
-                'slug' => 'unique:companies'
-            ]);
-
-            if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
+//            $validator = Validator::make($request->all(), [
+//                'slug' => 'unique:companies'
+//            ]);
+//
+//            if ($validator->fails()) {
+//                return redirect()->back()->withErrors($validator)->withInput();
+//            }
 
 
             if (isset($request->logo)) {
@@ -3266,39 +3265,23 @@ class JobsController extends Controller
             }
 
 
-            $comp = Company::FirstorCreate([
-                'name' => $request->company_name,
-                'email' => $request->company_email,
-                'slug' => $request->slug,
-                'phone' => $request->phone,
-                'website' => $request->website,
-                'address' => $request->address,
-                'about' => $request->about_company,
-                'logo' => $logo,
-                'date_added' => date('Y-m-d H:i:s'),
-            ]);
+             $company = Company::whereId($request->company_id)->first();
 
-            $assoc = DB::table('company_users')->insert([
-                ['user_id' => Auth::user()->id, 'company_id' => $comp->id]
-            ]);
+                $company->name = $request->company_name;
+                $company->email = $request->company_email;
+                $company->slug = $request->slug;
+                $company->phone = $request->phone;
+                $company->website = $request->website;
+                $company->address = $request->address;
+                $company->about = $request->about_company;
+                $company->logo = $logo;
+                $company->date_added = date('Y-m-d H:i:s');
 
-            $tests = DB::table('company_tests')->insert([
-                ['ats_product_id' => 23, 'company_id' => $comp->id],
-                ['ats_product_id' => 24, 'company_id' => $comp->id],
-                ['ats_product_id' => 25, 'company_id' => $comp->id],
-                ['ats_product_id' => 27, 'company_id' => $comp->id]
-            ]);
+                $company->save();
 
-
-            // if($upload){
-            return redirect('select-company/' . $request->slug);
-            // }
+                return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
 
         }
-
-        $company = Company::find($request->id);
-
-        return view('company.edit', compact('company'));
     }
 
     public function selectCompany(Request $request)

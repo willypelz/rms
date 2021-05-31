@@ -67,4 +67,16 @@ class User extends Authenticatable
     {
       return $this->belongsToMany('App\Models\Interview');
     }
+
+    public function isAdmin()
+    {
+        $admin = $this->roles()->count();
+        return $admin ? true:false;
+    }
+
+    public function company()
+    {
+        $this->companies()->where("is_default", true);
+    }
+
 }

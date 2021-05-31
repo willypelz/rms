@@ -30,7 +30,7 @@
                         <div class="row text-center">
                           <div class="col-xs-10 col-xs-offset-1">
                           <h2><i class="fa fa-check-circle fa-2x text-success"></i></h2>
-                          <p class="lead">Your Job has been succesfully posted to these job sites.</p><hr>
+                          <p class="lead">Your Job has been successfully posted to these job sites.</p><hr>
                           <div class="well"><ul class="list-inline">
                             <li><img src="{{ url('/') }}/img/linkedin-logo.png" alt="" width="100px" align="right"> &nbsp; </li>
                             <li><img src="{{ url('/') }}/img/logo-full.png" alt="" width="100px" align="right"> &nbsp; </li>

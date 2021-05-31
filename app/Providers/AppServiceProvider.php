@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Console\Commands\UpdateNullCandidate;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,7 +16,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->booted(function () {
+            $schedule = $this->app->make(Schedule::class);
+           $schedule->command('update:nullCandidates')->daily();
+
+        });
+
+        $this->commands([
+           UpdateNullCandidate::class,
+        ]);
+        
     }
 
     /**

@@ -48,6 +48,11 @@
                                                 <i class="fa fa-pencil fa-fw"></i>
                                                 Edit
                                             </a>
+                                            <a href="{{ route('workflow-duplicate', ['id' => $workflow->id]) }}"
+                                                class="btn btn-info btn-sm">
+                                                 <i class="fa fa-copy fa-fw"></i>
+                                                 Duplicate
+                                             </a>
                                             @endif
                                             @if(!$workflow->jobs()->exists())
                                                 <form action="{{ route('workflow-delete', ['id' => $workflow->id]) }}"

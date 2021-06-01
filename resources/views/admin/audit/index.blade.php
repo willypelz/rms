@@ -1,55 +1,48 @@
 @extends('layout.template-user')
 @section('content')
 
-    <div class="container" style="padding-top: 150px;">
+    <div class="container" style="padding-top: 50px;">
         <div class="row">
             <div class="col">
                 <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2 class="text-center"> Roles </h2>
-                    </div>
+                    <!-- <div class="panel-heading">
+                        <h2 class="text-center"> Audit</h2>
+                    </div> -->
 
                     @include('layout.alerts')
 
                     <div class="panel-body">
-                        <a href="{{ route('create-role') }}" class="btn btn-success pull-right">Create Role</a>
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th></th>
-                                    <th>Name</th>
-                                    <th>Display Name</th>
+                                    <th>#</th>
+                                    <th>Initiator</th>
+                                    <th>Actions</th>
                                     <th>Description </th>
-                                    <th>Action </th>
+                                    <th>Subject</th>
+                                    <th>Date Created </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($roles as $key => $role)
+                                @foreach($audits as $key => $audit)
                                     <tr>
                                         <td>{{$key + 1}}</td>
-                                        <td>
-                                            {{ $role->name }}
-                                        </td>
-                                        <td>
-                                            {{ $role->display_name }}
-                                        </td>
-                                        <td>
-                                            {{ $role->description}}
-                                        </td>
 
-                                        <td> 
-                                            <div class="btn-group pull-right">
-                                                <a href="{{ route('role-edit', $role->id) }}" type="button" class="btn btn-default">Edit</a>
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                  <span class="caret"></span>
-                                                  <span class="sr-only">Toggle Dropdown</span>
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                  <li><a href="{{ route('role-edit', $role->id) }}">Edit</a></li>
-                                                  <li role="separator" class="divider"></li>
-                                                  <li><a onclick="if (!confirm('Are you sure you want to delete this role?')) return false;" href="{{ route('role-delete', $role->id) }}">Delete</a></li>
-                                                </ul>
-                                              </div>
+                                        <td>
+                                            {{ $audit->causer->name ?? $audit->candidate->name()}}
+                                        </td>
+                    
+                                        <td>
+                                            {{ $audit->action_type }}
+                                        </td>
+                                        <td>
+                                            {{ $audit->description}}
+                                        </td>
+                                        <td>
+                                            {{ $audit->subject->name ?? $audit->subjectCandidate->name()}}
+                                        </td>
+                                        <td>
+                                            {{ $audit->created_at->toDayDateTimeString()}}
                                         </td>
                                        
                                     </tr>
@@ -63,7 +56,7 @@
     </div>
     <script src="{{ secure_asset('js/jquery.form.js') }}"></script>
 
-    <script>
+    <!-- <script>
         $('.roles').on('change', function () {
             var userId = $(this).data('id');
             var role = $('#' + userId + 'roles').val();
@@ -81,5 +74,5 @@
                 });
         });
 
-    </script>
+    </script> -->
 @endsection

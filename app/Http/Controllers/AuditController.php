@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ActivityLog;
 
 class AuditController extends Controller
 {
@@ -14,7 +15,8 @@ class AuditController extends Controller
     public function index()
     {
         //
-        return view('admin.audit.index');
+        $audits = ActivityLog::all();
+        return view('admin.audit.index',compact('audits'));
     }
 
     /**

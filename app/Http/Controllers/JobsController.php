@@ -118,21 +118,7 @@ class JobsController extends Controller
             'makeOldStaffsAdmin',
         ]]);
 
-        $this->qualifications = [
-
-            'MPhil / PhD',
-            'MBA / MSc',
-            'MBBS',
-            'B.Sc',
-            'HND',
-            'OND',
-            'N.C.E',
-            'Diploma',
-            'High School (S.S.C.E)',
-            'Vocational',
-            'Others'
-
-        ];
+        $this->qualifications = qualifications();
 
         $this->mailer = $mailer;
 

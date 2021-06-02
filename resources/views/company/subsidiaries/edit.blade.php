@@ -63,28 +63,11 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-12">
-                                            <div class="form-group{{ $errors->has('slug') ? ' has-error' : '' }}">
-                                                <label for="">Subsidiary Company url</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">http://</span>
-                                                    <input type="text" class="form-control slug" id="" placeholder=""
-                                                           name="slug" value="{{  $company->slug }}" required>
-                                                    <span class="input-group-addon">.seamlesshiring.com</span>
-
-                                                </div>
-                                                @if ($errors->has('slug'))
-                                                    <span class="help-block">
-                                                <strong>{{ $errors->first('slug') }}</strong>
-                                            </span>
-                                                @endif
-                                            </div>
-                                        </div>
                                         <div class="col-sm-6">
                                             <div class="form-group{{ $errors->has('company_email') ? ' has-error' : '' }}">
                                                 <label for="">Subsidiary Company Email</label>
                                                 <input type="text" class="form-control" id="" placeholder=""
-                                                       name="company_email" value="{{  $company->email }}" required>
+                                                       name="company_email" value="{{  $company->email }}" readonly>
                                                 @if ($errors->has('company_email'))
                                                     <span class="help-block">
                                                 <strong>{{ $errors->first('company_email') }}</strong>
@@ -120,12 +103,11 @@
                                             </div>
                                         </div>
 
-
                                         <div class="col-sm-12">
                                             <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
                                                 <label for="">Subsidiary Company Address</label>
                                                 <textarea name="address" class="form-control" id="" cols="30" rows="10"
-                                                          required>   {{ $company->address }} </textarea>
+                                                          required>{{ $company->address }}</textarea>
                                                 @if ($errors->has('address'))
                                                     <span class="help-block">
                                                 <strong>{{ $errors->first('address') }}</strong>

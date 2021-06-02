@@ -3253,13 +3253,6 @@ class JobsController extends Controller
 
     public function editCompany(UpdateCompanyRequest $request)
     {
-
-
-		if ($request->isMethod('post')) {
-
-
-
-
             if (isset($request->logo)) {
                 $file_name = ($request->logo->getClientOriginalName());
                 $fi = $request->file('logo')->getClientOriginalExtension();
@@ -3270,16 +3263,8 @@ class JobsController extends Controller
             } else {
                 $logo = "";
             }
-
 	        seamlessSave(Configs::COMPANY_MODEL,  $request->toArray(), $request->company_id);
-
           return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
-
-        }
-
-        $company = Company::find($request->id);
-
-        return view('company.edit', compact('company'));
     }
 
     public function selectCompany(Request $request)

@@ -60,24 +60,6 @@
                                                 @endif
                                             </div>
                                         </div>
-
-                                        <div class="col-sm-12">
-                                            <div class="form-group{{ $errors->has('slug') ? ' has-error' : '' }}">
-                                                <label for="">Subsidiary Company url</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">http://</span>
-                                                    <input type="text" class="form-control slug" id="" placeholder=""
-                                                           name="slug" value="{{ old('slug') }}" required>
-                                                    <span class="input-group-addon">.seamlesshiring.com</span>
-
-                                                </div>
-                                                @if ($errors->has('slug'))
-                                                    <span class="help-block">
-                                                <strong>{{ $errors->first('slug') }}</strong>
-                                            </span>
-                                                @endif
-                                            </div>
-                                        </div>
                                         <div class="col-sm-6">
                                             <div class="form-group{{ $errors->has('company_email') ? ' has-error' : '' }}">
                                                 <label for="">Subsidiary Company Email</label>
@@ -123,7 +105,7 @@
                                             <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
                                                 <label for="">Subsidiary Company Address</label>
                                                 <textarea name="address" class="form-control" id="" cols="30" rows="10"
-                                                          required>   {{ old('address') }} </textarea>
+                                                          required>{{ old('address') }} </textarea>
                                                 @if ($errors->has('address'))
                                                     <span class="help-block">
                                                 <strong>{{ $errors->first('address') }}</strong>

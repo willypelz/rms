@@ -3241,19 +3241,6 @@ class JobsController extends Controller
 
     public function editCompany(UpdateCompanyRequest $request)
     {
-
-        if ($request->isMethod('post')) {
-
-
-//            $validator = Validator::make($request->all(), [
-//                'slug' => 'unique:companies'
-//            ]);
-//
-//            if ($validator->fails()) {
-//                return redirect()->back()->withErrors($validator)->withInput();
-//            }
-
-
             if (isset($request->logo)) {
                 $file_name = ($request->logo->getClientOriginalName());
                 $fi = $request->file('logo')->getClientOriginalExtension();
@@ -3264,12 +3251,8 @@ class JobsController extends Controller
             } else {
                 $logo = "";
             }
-
 	        seamlessSave(Configs::COMPANY_MODEL,  $request->toArray(), $request->company_id);
-
           return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
-
-        }
     }
 
     public function selectCompany(Request $request)

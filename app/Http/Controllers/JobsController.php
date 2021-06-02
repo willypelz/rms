@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use  App\Http\Controllers\CvSalesController;
 use Alchemy\Zippy\Zippy;
 use App\Http\Requests;
+use App\Http\Requests\UpdateCompanyRequest;
 use App\Jobs\UploadApplicant;
 use App\Jobs\UploadZipCv;
 use App\Libraries\Solr;
@@ -3250,7 +3251,7 @@ class JobsController extends Controller
         return view('company.add');
     }
 
-    public function editCompany(Request $request)
+    public function editCompany(UpdateCompanyRequest $request)
     {
 
 
@@ -3270,22 +3271,9 @@ class JobsController extends Controller
                 $logo = "";
             }
 
+	        seamlessSave(Configs::COMPANY_MODEL,  $request->toArray(), $request->company_id);
 
-             $company = Company::whereId($request->company_id)->first();
-
-                $company->name = $request->company_name;
-                $company->email = $request->company_email;
-                $company->slug = $request->slug;
-                $company->phone = $request->phone;
-                $company->website = $request->website;
-                $company->address = $request->address;
-                $company->about = $request->about_company;
-                $company->logo = $logo;
-                $company->date_added = date('Y-m-d H:i:s');
-
-                $company->save();
-
-                return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
+          return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
 
         }
 

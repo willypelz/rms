@@ -48,6 +48,7 @@ class LoginSuccessful
             //audit trail for applicant
             $name = Auth::guard('candidate')->user()->first_name.' '.Auth::guard('candidate')->user()->last_name;
             $last_login = Carbon::now()->toDateTimeString();
+            
             $log_action = [
                 'log_name' => "Candidate Login",
                 'description' => "An applicant ". $name . " logged in. Last login was " . $last_login,

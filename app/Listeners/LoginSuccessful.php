@@ -41,13 +41,14 @@ class LoginSuccessful
                 'causer_type' => 'admin',
                 'properties'=> ''
             ];
-            dd($log_action);
+
             logAction($log_action);
         }
         elseif(Auth::guard('candidate')->check()) {
             //audit trail for applicant
             $name = Auth::guard('candidate')->user()->first_name.' '.Auth::guard('candidate')->user()->last_name;
             $last_login = Carbon::now()->toDateTimeString();
+            
             $log_action = [
                 'log_name' => "Candidate Login",
                 'description' => "An applicant ". $name . " logged in. Last login was " . $last_login,

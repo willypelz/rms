@@ -211,6 +211,8 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::delete('delete-job-specialization/{id}', 'SpecializationController@delete')->name('delete-specialization');
 
     Route::get('dashboard', ['uses' => 'HomeController@dashbaord', 'as' => 'dashboard'])->middleware("admin");
+    Route::get('user-permission', ['uses' => 'UserPermissionController@userPermissionPage', 'as' => 'user-permission'])->middleware("admin");
+    Route::post('user-permission/{id}', ['uses' => 'UserPermissionController@userPermissionUpdate', 'as' => 'update-user-permission'])->middleware("admin");
 
     /**
      * Route Group for everything jobs

@@ -15,7 +15,7 @@ class AuditController extends Controller
     public function index()
     {
         //
-        $audits = ActivityLog::all();
+        $audits = ActivityLog::orderBy('created_at', 'DESC')->get();
         return view('admin.audit.index',compact('audits'));
     }
 

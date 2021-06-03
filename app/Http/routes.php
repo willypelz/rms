@@ -44,7 +44,7 @@ Route::post("/api/v1/delete-super-admin", "HrmsIntegrationController@deleteSuper
 Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 
     Route::get('/ping', 'SolariumController@ping');
-    Route::get('/audit-trails', 'AuditController@index');
+    Route::get('/audit-trails', 'AuditController@index')->name('audit-trails');
     Route::resource('schedule', 'ScheduleController');
 
     Route::match(['get', 'post'], '/admin/assign', 'JobsController@manageRoles')->name('change-admin-role');

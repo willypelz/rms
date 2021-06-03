@@ -41,7 +41,6 @@ class LoginSuccessful
                 'causer_type' => 'admin',
                 'properties'=> ''
             ];
-
             logAction($log_action);
         }
         elseif(Auth::guard('candidate')->check()) {

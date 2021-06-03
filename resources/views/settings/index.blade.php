@@ -29,32 +29,33 @@
                             @endif
                             <div class="col-md-10 col-md-offset-1">
                                 @include('layout.alerts')
-                                <form id="myForm" method="post"
-                                      action="{{ route('edit-company') }}">
+                                {!! Form::open(array('route'=>'edit-company','method'=>'POST', 'id'=>'SignUPform', 'files'=>true, 'class'=>'form-signup', 'role'=>'form')) !!}
 
-                                    <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
-                                    <div class="row">
+                                {!! csrf_field() !!}
+                                <input type="hidden" name="company_creation_page" value="true">
+                                <input type="hidden" name="company_id" value="{{$company->id}}">
+                                 <div class="row">
                                           <div class="col-sm-12">
-                                            <div class="form-group{{ $errors->has('company_name') ? ' has-error' : '' }}">
+                                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                                                 <label for=""> Company name</label>
-                                                <input type="text" class="form-control" id="company_name" placeholder=""
-                                                       name="company_name" value="{{ $company->name }}" required>
-                                                @if ($errors->has('company_name'))
+                                                <input type="text" class="form-control" id="name" placeholder=""
+                                                       name="name" value="{{ $company->name }}" required>
+                                                @if ($errors->has('name'))
                                                     <span class="help-block">
-                                                <strong>{{ $errors->first('company_name') }}</strong>
+                                                <strong>{{ $errors->first('name') }}</strong>
                                             </span>
                                                 @endif
                                             </div>
                                         </div>
 
                                         <div class="col-sm-6">
-                                            <div class="form-group{{ $errors->has('company_email') ? ' has-error' : '' }}">
+                                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                                 <label for=""> Company Email</label>
                                                 <input type="text" class="form-control" id="" placeholder=""
-                                                       name="company_email" value="{{  $company->email }}" readonly>
-                                                @if ($errors->has('company_email'))
+                                                       name="email" value="{{  $company->email }}" readonly>
+                                                @if ($errors->has('email'))
                                                     <span class="help-block">
-                                                <strong>{{ $errors->first('company_email') }}</strong>
+                                                <strong>{{ $errors->first('email') }}</strong>
                                             </span>
                                                 @endif
                                             </div>
@@ -101,13 +102,13 @@
                                         </div>
 
                                         <div class="col-sm-12">
-                                            <div class="form-group{{ $errors->has('about_company') ? ' has-error' : '' }}">
+                                            <div class="form-group{{ $errors->has('about') ? ' has-error' : '' }}">
                                                 <label for="">About  Company</label>
-                                                <textarea name="about_company" class="form-control" id="" cols="30"
+                                                <textarea name="about" class="form-control" id="" cols="30"
                                                           rows="10" required>{{ $company->about }}</textarea>
-                                                @if ($errors->has('about_company'))
+                                                @if ($errors->has('about'))
                                                     <span class="help-block">
-                                                <strong>{{ $errors->first('about_company') }}</strong>
+                                                <strong>{{ $errors->first('about') }}</strong>
                                             </span>
                                                 @endif
                                             </div>

@@ -2827,6 +2827,15 @@ class JobsController extends Controller
         if(is_null($request->country)){
              return redirect()->back()->with('errors','Country Cannot be empty')->withInput();
         }
+
+			$this->validate($request, [
+				'minimum_remuneration' => 'numeric|min:0',
+				'maximum_remuneration' => 'numeric|min:0|gt:minimum_remuneration'
+			], [
+				'maximum_remuneration.gt' => 'maximum remuneration should be greater than minimum remuneration'
+			]);
+
+
             $location_value = ($request->country != 'Nigeria') ? $request->country :
                 ( ($request->job_location == 'Across Nigeria') ? 'Nigeria' : $request->job_location);
 
@@ -2834,6 +2843,9 @@ class JobsController extends Controller
             $job->location = $location_value;
             $job->job_type = $request->job_type;
             $job->position = $request->position;
+			$job->benefits = $request->benefits;
+			$job->minimum_remuneration = $request->minimum_remuneration;
+			$job->maximum_remuneration = $request->maximum_remuneration;
             // $job->post_date = $request->post_date;
             $job->expiry_date = Carbon::createFromFormat('m/d/Y', $request->expiry_date)->format("Y-m-d H:m:s");
             $job->details = $request->details;
@@ -3364,7 +3376,6 @@ class JobsController extends Controller
        }
        return null;
     }
-
 
 
 }

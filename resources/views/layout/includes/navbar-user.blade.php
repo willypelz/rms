@@ -77,6 +77,12 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('audit-trails') }}">
+                                <i class="fa fa-history fa-fw"></i>
+                                Audit Trails
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('settings-embed') }}">
                                 <i class="fa fa-code fa-fw"></i>
                                 Embed

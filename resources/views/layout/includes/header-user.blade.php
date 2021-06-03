@@ -18,6 +18,9 @@
 
     <link href="{{ secure_asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('css/select2.css') }}" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.js"></script>
 
     <script src="//cdn.ckeditor.com/4.5.7/basic/ckeditor.js"></script>
     

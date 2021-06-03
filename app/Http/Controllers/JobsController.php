@@ -3234,7 +3234,6 @@ class JobsController extends Controller
 
     public function editCompany(UpdateCompanyRequest $request)
 	{
-    {
             if (isset($request->logo)) {
                 $file_name = ($request->logo->getClientOriginalName());
                 $fi = $request->file('logo')->getClientOriginalExtension();

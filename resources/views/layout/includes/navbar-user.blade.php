@@ -173,6 +173,7 @@
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ route('page-settings') }}"><i class="fa fa-key"> </i> Settings</a></li>
                         <li><a href="{{ route('set-privacy-policy') }}"><i class="fa fa-lock"> </i> Privacy Policy</a></li>
+                        <li><a href="{{ url('company/subsidiaries') }}"><i class="fa fa-users "></i> Subsidiaries</a></li>
                         <li> <a href="{{ url('logout') }}"><i class="fa fa-sign-out"> </i> Logout</a></li>
                     </ul>
                 </li>

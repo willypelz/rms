@@ -94,7 +94,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     });
 
     Route::match(['get', 'post'], 'add-company', ['uses' => 'JobsController@AddCompany', 'as' => 'add-company']);
-    // Route::match(['get', 'post'], 'edit-company', ['uses' => 'JobsController@editCompany', 'as' => 'edit-company']);
+     Route::match(['get', 'post'], 'edit-company', ['uses' => 'JobsController@editCompany', 'as' => 'edit-company']);
 
 
 	/************************
@@ -103,6 +103,12 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 
 	Route::match(['get', 'post'], 'settings/set-privacy-policy', ['uses' => 'PrivacyPolicyController@setPrivacyPolicy', 'as' => 'set-privacy-policy']);
 	Route::match(['get', 'post'], 'settings/save-privacy-policy', ['uses' => 'PrivacyPolicyController@savePrivacyPolicy', 'as' => 'save-privacy-policy']);
+
+	/************************
+	 * Subsidiaries routes **
+	 *************************/
+
+	Route::resource('company/subsidiaries',  'SubsidiariesController');
 
 	/************************
 	 * Settings  routes    **

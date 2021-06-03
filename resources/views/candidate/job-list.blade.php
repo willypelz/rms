@@ -51,14 +51,16 @@
 
                                             </div>
                                             <div class="clearfix"></div>
-
-                                            <div class="pull-right">
-                                                <label for="" class="text-white">Filter: </label>    <select name="specializations[]" id="specialization"
-                                                        class="select2" >
+                                                <div class="pull-right">
+                                                <label for="" class="text-white">Filter: </label>
+                                                <select name="specializations[]" style="width:200px"
+                                                        onchange="javascript:location.href = this.value;"
+                                                        id="specialization"
+                                                        class="select2 company-filter" >
+                                                    <option value="">--choose sub company</option>
                                                     @foreach($subsidiaries as $s)
-                                                        <option value="{{ $s->id }}">{{ $s->name }}</option>
+                                                        <option value="{{ route('job-listing', ['company_id' => $s->id])}}">{{ $s->name }}</option>
                                                     @endforeach
-                                                    <option value="">--choose specialization</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -153,6 +155,7 @@
             maximumInputLength: 1
         });
 </script>
+
 @endsection
 
 

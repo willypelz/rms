@@ -104,6 +104,11 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 	Route::match(['get', 'post'], 'settings/set-privacy-policy', ['uses' => 'PrivacyPolicyController@setPrivacyPolicy', 'as' => 'set-privacy-policy']);
 	Route::match(['get', 'post'], 'settings/save-privacy-policy', ['uses' => 'PrivacyPolicyController@savePrivacyPolicy', 'as' => 'save-privacy-policy']);
 
+	/************************
+	 * Settings  routes    **
+	 *************************/
+	Route::get('settings', ['uses' => 'SettingsController@showSettings', 'as' => 'page-settings']);
+
 
 	//JOB
     Route::match(['get', 'post'], 'jobs/duplicate', ['uses' => 'JobsController@DuplicateJob', 'as' => 'duplicate-job']);

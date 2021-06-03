@@ -33,7 +33,7 @@
                         @foreach($job->workflow->workflowSteps as $workflowStep)
                             @if($workflowStep->slug == $current_status && !$cv['is_approved'] && $workflowStep->requires_approval)
                                 <span class=" text-danger" style="font-size: 12px;">
-                                    (Requires Approval of {{ implode(" or ", $workflowStep->approvals->map(function($user){return $user->name;})->toArray() )}})
+                                    (Requires Approval of {{ implode(" or ", $workflowStep->approvals->pluck("name")->toArray() )}})
                                 </span>
                             @endif
                         @endforeach

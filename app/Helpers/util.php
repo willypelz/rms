@@ -9,6 +9,7 @@ use App\Models\Job;
 use App\Models\JobActivity;
 use App\Models\JobApplication;
 use Illuminate\Support\Facades\File;
+use phpDocumentor\Reflection\Types\Object_;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use App\Models\TestRequest;
 use App\Models\ActivityLog;
@@ -917,4 +918,18 @@ function admin_audit_log()
  */
 function isHrmsIntegrated(){
     return is_null(env('STAFFSTRENGTH_URL')) ? false: true;
+}
+
+/**
+ * Mass save
+ * @param $modelName
+ * @param array $data
+ * @param $id
+ * @return \Illuminate\Http\JsonResponse
+ */
+function seamlessSave( $modelName, array $data, $id)
+{
+	$instance = $modelName::find($id);
+	$instance->fill($data)->save();
+	return $instance;
 }

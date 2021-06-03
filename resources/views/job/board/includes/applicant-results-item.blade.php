@@ -31,9 +31,15 @@
 
                         <span class="span-stage">{{ $current_status }}</span>
                         @foreach($job->workflow->workflowSteps as $workflowStep)
+                            {{-- {{\Log::info( $workflowStep->slug)}}
+                            {{\Log::info( $workflowStep->slug == $current_status)}}
+                            {{\Log::info( !$cv['is_approved'])}}
+                            {{\Log::info( $workflowStep->requires_approval)}}
+                            {{\Log::info( "Step")}} --}}
+                            {{-- {{\SeamlessHR\SolrPackage\Facades\SolrPackage::update_core()}} --}}
                             @if($workflowStep->slug == $current_status && !$cv['is_approved'] && $workflowStep->requires_approval)
-                                <span class="span-stage text-danger" style="font-size: 12px;">
-                                    (Requires Approval)
+                                <span class=" text-danger" style="font-size: 12px;">
+                                    (Requires Approval of {{ implode(" or ", $workflowStep->approvals->map(function($user){return $user->name;})->toArray() )}})
                                 </span>
                             @endif
                         @endforeach
@@ -118,20 +124,26 @@
                                         @endif
 
                                         <li>
-                                            <a data-toggle="modal"
-                                               data-target="#viewModal"
-                                               id="modalButton"
-                                               data-title="Move to {{ $workflowStep->name }}"
-                                               data-view="{{ route('modal-step-action', [
-                                               'step' => $workflowStep->name,
-                                               'stepSlug' => $workflowStep->slug,
-                                               'stepId' => $workflowStep->id
-                                               ]) }}"
-                                               data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
-                                               data-cv="{{ $cv['id'] }}"
-                                               data-type="normal">
-                                                {{ $workflowStep->name }}
-                                            </a>
+                                            @if( !$workflowStep->requires_approval ||  ($cv['is_approved']))
+                                                <a data-toggle="modal"
+                                                data-target="#viewModal"
+                                                id="modalButton"
+                                                data-title="Move to {{ $workflowStep->name }}"
+                                                data-view="{{ route('modal-step-action', [
+                                                'step' => $workflowStep->name,
+                                                'stepSlug' => $workflowStep->slug,
+                                                'stepId' => $workflowStep->id
+                                                ]) }}"
+                                                data-app-id="{{ $cv['application_id'][ $current_app_index ] }}"
+                                                data-cv="{{ $cv['id'] }}"
+                                                data-type="normal">
+                                                    {{ $workflowStep->name }}
+                                                </a>
+                                            @else
+                                                <a href="javascript:;" data-toggle="tooltip" data-placement="top" title="Requires approval before you can move to the next step">
+                                                    {{ $workflowStep->name }}
+                                                </a>
+                                            @endif
                                         </li>
                                     @endforeach
 
@@ -510,6 +522,9 @@
             if ($('#pagination').data("twbs-pagination")) {
                 $('#pagination').twbsPagination('destroy');
             }
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
 
             $('#pagination').twbsPagination({
                 totalPages: "{{ ceil( $application_statuses['ALL'] / 20 ) }}",

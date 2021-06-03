@@ -7,15 +7,15 @@
         <div class="container">
         <div class="section_card">
             <div class="section_title">
-                Nestle PLC / <b>Page Settings</b>
+               <b>Page Settings</b>
             </div>
             <hr class="hr_divider">
 
             <div class="section_content row">
                 <div class="dash_navigation_pane col-md-4">
                     <div class="sub-menu"><a href="">Company info</a></div>
-                    <div><a href="">Password</a></div>
-                    <div><a href="">Roles and Permissions</a></div>
+                    <div class="sub-menu"><a href="">Password</a></div>
+                    <div class="sub-menu"><a href="">Roles and Permissions</a></div>
                 </div>
                 <div class="col-md-8">
                     <div class="content">
@@ -27,34 +27,102 @@
                                     @endforeach
                                 </ul>
                             @endif
-                            <div class="col-md-8 col-md-offset-2">
+                            <div class="col-md-10 col-md-offset-1">
                                 @include('layout.alerts')
                                 <form id="myForm" method="post"
-                                      action="{{ route('save-privacy-policy') }}">
+                                      action="{{ route('edit-company') }}">
 
                                     <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-sm-12"><label for="privacy-policy-url">Privacy Policy URL
-                                                    <span class="text-danger">*</span></label>
-                                                <input  id="privacy_policy_url" type="url"
-                                                        name="privacy_policy_url"
-                                                        class="form-control">
-                                                <small>e.g. https://site_name.com</small>
+                                    <div class="row">
+                                          <div class="col-sm-12">
+                                            <div class="form-group{{ $errors->has('company_name') ? ' has-error' : '' }}">
+                                                <label for=""> Company name</label>
+                                                <input type="text" class="form-control" id="company_name" placeholder=""
+                                                       name="company_name" value="{{ $company->name }}" required>
+                                                @if ($errors->has('company_name'))
+                                                    <span class="help-block">
+                                                <strong>{{ $errors->first('company_name') }}</strong>
+                                            </span>
+                                                @endif
                                             </div>
                                         </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-xs-12"></div>
-                                        <div class="col-xs-4"></div>
-                                        <div class="col-sm-4"></div>
-                                        <div class="col-sm-4">
-                                            <button id="p-p-btn" type="submit" class="btn btn-success btn-block">
-                                                Update Configuration
-                                            </button>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group{{ $errors->has('company_email') ? ' has-error' : '' }}">
+                                                <label for=""> Company Email</label>
+                                                <input type="text" class="form-control" id="" placeholder=""
+                                                       name="company_email" value="{{  $company->email }}" readonly>
+                                                @if ($errors->has('company_email'))
+                                                    <span class="help-block">
+                                                <strong>{{ $errors->first('company_email') }}</strong>
+                                            </span>
+                                                @endif
+                                            </div>
                                         </div>
-                                        <div class="separator separator-small"></div>
+
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
+                                                <label for=""> Company Phone</label>
+                                                <input type="text" class="form-control" id="" placeholder=""
+                                                       name="phone" value="{{ $company->phone }}" required>
+                                                @if ($errors->has('phone'))
+                                                    <span class="help-block">
+                                                <strong>{{ $errors->first('phone') }}</strong>
+                                            </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group{{ $errors->has('website') ? ' has-error' : '' }}">
+                                                <label for=""> Company Website</label>
+                                                <input type="text" class="form-control" id="" placeholder=""
+                                                       name="website" value="{{ $company->website }}" required>
+                                                @if ($errors->has('website'))
+                                                    <span class="help-block">
+                                                <strong>{{ $errors->first('website') }}</strong>
+                                            </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
+                                                <label for=""> Company Address</label>
+                                                <textarea name="address" class="form-control" id="" cols="30" rows="10"
+                                                          required>{{ $company->address }}</textarea>
+                                                @if ($errors->has('address'))
+                                                    <span class="help-block">
+                                                <strong>{{ $errors->first('address') }}</strong>
+                                            </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group{{ $errors->has('about_company') ? ' has-error' : '' }}">
+                                                <label for="">About  Company</label>
+                                                <textarea name="about_company" class="form-control" id="" cols="30"
+                                                          rows="10" required>{{ $company->about }}</textarea>
+                                                @if ($errors->has('about_company'))
+                                                    <span class="help-block">
+                                                <strong>{{ $errors->first('about_company') }}</strong>
+                                            </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-sm-4 col-sm-offset-8">
+                                            <button type="submit" class="btn btn-success btn-block">Update  Company</button>
+                                        </div>
+
+
                                     </div>
                                 </form>
                             </div>
@@ -74,7 +142,6 @@
     <style>
         .section_card {
             background: #FFFFFF;
-            /* Dropdown Shadows */
             box-shadow: 0px 5px 14px rgba(19, 50, 82, 0.15);
             border-radius: 10px;
             overflow: hidden;
@@ -85,7 +152,6 @@
         }
 
         .hr_divider {
-            /* Blue/LT2 */
             height: 1px;
             border-width: 0;
             color: #607a96;
@@ -100,11 +166,12 @@
             border: 1px solid #D8E4F1;
             box-sizing: border-box;
             padding-left: 55px;
+            height: 100%;
+            position: absolute;
         }
 
         .section_content>div {
-            padding-top: 30px;
-            padding-bottom: 60px;
+           position: relative;
         }
 
 
@@ -113,6 +180,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            padding-bottom: 80%;
         }
 
         .dash_navigation_pane>div>a{
@@ -124,10 +192,13 @@
         }
         .content{
           border: 1px solid #e1e1e1;
-            margin-right: 10px;
-        }
-        .sub-menu:hover{
-            /*color: ;*/
+          margin-right: 30px;
+            display: flex;
+            flex-direction: column;
+            -webkit-box-shadow: 3px 3px 3px 3px #ccc;
+            -moz-box-shadow:    3px 3px 3px 3px #ccc;
+            box-shadow:         1px 2px 3px 1px #ccc;
+            border-radius: 5px;
         }
     </style>
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>

@@ -149,7 +149,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <div class="separator separator-small"><br></div>
 
-<script src="{{ asset('js/select2.min.js') }}"></script>
 <script type="text/javascript">
         $('.select2').select2({
             maximumInputLength: 1

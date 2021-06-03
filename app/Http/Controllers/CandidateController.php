@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use Curl;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
 use Mail;
 use Validator;
@@ -239,6 +240,22 @@ class CandidateController extends Controller
         return view('candidate.job-list', compact('jobs', 'subsidiaries'));
     }
 
+    public function jobList($company_id){
+	    $candidate = Auth::guard('candidate')->user();
+
+	    if($candidate->is_from == 'external')
+	    {
+		    $jobs = Job::whereCompanyId($company_id)->with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->where('is_private', false)
+			    ->where(function($q){
+				    $q->where('is_for','external')->orWhere('is_for', 'both');
+			    })->get();
+	    }else{
+		    $jobs = Job::whereCompanyId($company_id)->with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->get();
+	    }
+
+	    $subsidiaries =   Company::whereIsDefault(false)->get();
+	    return view('candidate.job-list', compact('jobs', 'subsidiaries'));
+    }
 
      /**
      * Bulk message modal to show applicants number and show to accept ot decline

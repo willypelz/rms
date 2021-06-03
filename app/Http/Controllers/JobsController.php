@@ -3245,6 +3245,7 @@ class JobsController extends Controller
                 $logo = "";
             }
 	        seamlessSave(Configs::COMPANY_MODEL,  $request->toArray(), $request->company_id);
+            if ($request->company_creation_page) return back()->with('success', "Company updated successfully.");
           return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
 	}
 

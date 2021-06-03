@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use  App\Http\Controllers\CvSalesController;
 use Alchemy\Zippy\Zippy;
 use App\Http\Requests;
+use App\Http\Requests\UpdateCompanyRequest;
 use App\Jobs\UploadApplicant;
 use App\Jobs\UploadZipCv;
 use App\Libraries\Solr;
@@ -123,17 +124,17 @@ class JobsController extends Controller
         $this->settings = $settings;
         $this->qualifications = [
 
-			'MPhil / PhD',
-			'MBA / MSc',
-			'MBBS',
-			'B.Sc',
-			'HND',
-			'OND',
-			'N.C.E',
-			'Diploma',
-			'High School (S.S.C.E)',
-			'Vocational',
-			'Others'
+            'MPhil / PhD',
+            'MBA / MSc',
+            'MBBS',
+            'B.Sc',
+            'HND',
+            'OND',
+            'N.C.E',
+            'Diploma',
+            'High School (S.S.C.E)',
+            'Vocational',
+            'Others'
 
 		];
 
@@ -1536,7 +1537,7 @@ class JobsController extends Controller
 		return view('modals.job-team-remove', compact('team_member', 'comp', 'job', 'ref'));
 
 
-	}
+		}
 
 	public function adminUploadDocument(Request $request)
 	{
@@ -2535,49 +2536,49 @@ class JobsController extends Controller
 			}
 
 
-			$appl_activities = (save_activities('APPLIED', $jobID, $appl->id, ''));
+            $appl_activities = (save_activities('APPLIED', $jobID, $appl->id, ''));
 
-			if (count($custom_fields) > 0) {
+            if (count($custom_fields) > 0) {
 
-				$custom_field_values = [];
+                $custom_field_values = [];
 
-				foreach ($custom_fields as $custom_field) {
-					$value = '';
-					if ($custom_field->type == "FILE") {
-						$name = 'cf_' . str_slug($custom_field->name, '_');
-						if ($request->hasFile($name)) {
+                foreach ($custom_fields as $custom_field) {
+                    $value = '';
+                    if ($custom_field->type == "FILE") {
+                        $name = 'cf_' . str_slug($custom_field->name, '_');
+                        if ($request->hasFile($name)) {
 
-							$filename = time() . '_' . str_slug($request->email) . '_' . $request->file($name)->getClientOriginalName();
-							$destinationPath = env('fileupload') . '/Others';
+                            $filename = time() . '_' . str_slug($request->email) . '_' . $request->file($name)->getClientOriginalName();
+                            $destinationPath = env('fileupload') . '/Others';
 
-							$request->file($name)->move($destinationPath, $filename);
+                            $request->file($name)->move($destinationPath, $filename);
 
-							$value = $filename;
-						}
-					} else if ($custom_field->type == 'MULTIPLE_OPTION') {
-						$value = implode(',', $request['cf_' . str_slug($custom_field->name, '_')]);
-					} else if ($custom_field->type == 'CHECKBOX') {
-						$value = implode(',', $request['cf_' . str_slug($custom_field->name, '_')]);
-					} else {
-						$value = $request['cf_' . str_slug($custom_field->name, '_')];
-					}
+                            $value = $filename;
+                        }
+                    } else if ($custom_field->type == 'MULTIPLE_OPTION') {
+                        $value = implode(',', $request['cf_' . str_slug($custom_field->name, '_')]);
+                    } else if ($custom_field->type == 'CHECKBOX') {
+                        $value = implode(',', $request['cf_' . str_slug($custom_field->name, '_')]);
+                    } else {
+                        $value = $request['cf_' . str_slug($custom_field->name, '_')];
+                    }
 
-					$custom_field_values[] = [
-						'form_field_id' => $custom_field->id,
-						'value' => $value,
-						'job_application_id' => @$appl->id
-					];
-				}
+                    $custom_field_values[] = [
+                        'form_field_id' => $custom_field->id,
+                        'value' => $value,
+                        'job_application_id' => @$appl->id
+                    ];
+                }
 
-				FormFieldValues::insert($custom_field_values);
-			}
+                FormFieldValues::insert($custom_field_values);
+            }
 
 
-			if ($request->hasFile('cv_file')) {
+            if ($request->hasFile('cv_file')) {
 
-				$destinationPath = env('fileupload') . '/CVs';
+                $destinationPath = env('fileupload') . '/CVs';
 
-				$request->file('cv_file')->move($destinationPath, $data['cv_file']);
+                $request->file('cv_file')->move($destinationPath, $data['cv_file']);
 
 			}
 
@@ -3220,77 +3221,31 @@ class JobsController extends Controller
 				['ats_product_id' => 27, 'company_id' => $comp->id]
 			]);
 
+            if ($request->subsidiary_creation_page)	return redirect('company/subsidiaries')->with('success', "Subsidiary created successfully.");
 
-			// if($upload){
-			return redirect('select-company/' . $request->slug);
-			// }
+            // if($upload){
+            return redirect('select-company/' . $request->slug);
+            // }
 
 
-		}
-		return view('company.add');
-	}
+        }
+        return view('company.add');
+    }
 
-	public function editCompany(Request $request)
+    public function editCompany(UpdateCompanyRequest $request)
 	{
-
-
-		if ($request->isMethod('post')) {
-
-
-			$validator = Validator::make($request->all(), [
-				'slug' => 'unique:companies'
-			]);
-
-			if ($validator->fails()) {
-				return redirect()->back()->withErrors($validator)->withInput();
-			}
-
-
-			if (isset($request->logo)) {
-				$file_name = ($request->logo->getClientOriginalName());
-				$fi = $request->file('logo')->getClientOriginalExtension();
-				$logo = $request->company_name . '-' . $file_name;
-				$upload = $request->file('logo')->move(
-					env('fileupload'), $logo
-				);
-			} else {
-				$logo = "";
-			}
-
-
-			$comp = Company::FirstorCreate([
-				'name' => $request->company_name,
-				'email' => $request->company_email,
-				'slug' => $request->slug,
-				'phone' => $request->phone,
-				'website' => $request->website,
-				'address' => $request->address,
-				'about' => $request->about_company,
-				'logo' => $logo,
-				'date_added' => date('Y-m-d H:i:s'),
-			]);
-
-			$assoc = DB::table('company_users')->insert([
-				['user_id' => Auth::user()->id, 'company_id' => $comp->id]
-			]);
-
-			$tests = DB::table('company_tests')->insert([
-				['ats_product_id' => 23, 'company_id' => $comp->id],
-				['ats_product_id' => 24, 'company_id' => $comp->id],
-				['ats_product_id' => 25, 'company_id' => $comp->id],
-				['ats_product_id' => 27, 'company_id' => $comp->id]
-			]);
-
-
-			// if($upload){
-			return redirect('select-company/' . $request->slug);
-			// }
-
-		}
-
-		$company = Company::find($request->id);
-
-		return view('company.edit', compact('company'));
+            if (isset($request->logo)) {
+                $file_name = ($request->logo->getClientOriginalName());
+                $fi = $request->file('logo')->getClientOriginalExtension();
+                $logo = $request->company_name . '-' . $file_name;
+                $upload = $request->file('logo')->move(
+                    env('fileupload'), $logo
+                );
+            } else {
+                $logo = "";
+            }
+	        seamlessSave(Configs::COMPANY_MODEL,  $request->toArray(), $request->company_id);
+          return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
 	}
 
 	public function selectCompany(Request $request)

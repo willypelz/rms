@@ -533,6 +533,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::match(['get', 'post'], '/{application_id}/activities',
             'CandidateController@activities')->name('candidate-activities');
         Route::match(['get', 'post'], '/jobs', 'CandidateController@jobs')->name('candidate-jobs');
+        Route::get('job-listing/{company_id}', 'CandidateController@jobList')->name('job-listing');
         Route::match(['get', 'post'], '/{application_id}/documents',
             'CandidateController@documents')->name('candidate-documents');
 

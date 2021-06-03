@@ -22,9 +22,19 @@ class ActivityLog extends Model
         return $this->hasOne('App\User', 'id', 'causee_id');
     }
 
+    public function subjectCandidate()
+    {
+        return $this->hasOne('App\Models\Candidate', 'id', 'causee_id');
+    }
+
     public function causer()
     {
         return $this->hasOne('App\User', 'id', 'causer_id');
+    }
+
+    public function candidate()
+    {
+        return $this->hasOne('App\Models\Candidate', 'id', 'causer_id');
     }
 
     public function employee()

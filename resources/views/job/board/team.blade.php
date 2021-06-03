@@ -15,6 +15,7 @@
                 <div class="page no-bod-rad">
                     <div class="row">
 
+                        @include('layout.alerts')
                         @include('job.board.job-board-tabs')
 
                         <div class="tab-content">
@@ -123,6 +124,10 @@
                                                             <i class="fa fa-times"></i> Declined</span>
                                                         @elseif($job_team_invite->is_cancelled)
                                                             <i class="fa fa-times"></i> Cancelled</span>
+                                                            <a href="javascript:;" onclick="event.preventDefault(); document.getElementById('{{'jobteaminvitee' . $job_team_invite->id}}').submit();" class="text-danger"> <i class="fa fa-trash"> Delete </i> </a>
+                                                            <form   id='{{'jobteaminvitee' . $job_team_invite->id}}' action="{{route('delete-job-team-invitee')}}" method="post">
+                                                                <input type="hidden" name="invitee_id" value="{{$job_team_invite->id}}" >
+                                                            </form>
                                                         @else
                                                             <i class="fa fa-hourglass"></i> Pending</span>
                                                              <a  class="btn btn-default btn-small" href="{{ route('resend-job-team-invite', $job_team_invite->id) }}">Resend Invite</a>

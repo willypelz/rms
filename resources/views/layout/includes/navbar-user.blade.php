@@ -77,6 +77,12 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('audit-trails') }}">
+                                <i class="fa fa-history fa-fw"></i>
+                                Audit Trails
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('settings-embed') }}">
                                 <i class="fa fa-code fa-fw"></i>
                                 Embed
@@ -161,13 +167,12 @@
                                 <a href="{{ route('select-company',['slug'=>$company->slug]) }}"> @if( $company->id == get_current_company()->id )
                                         <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>
                         @endforeach
-                        <li role="separator" class="divider"></li>
+                        <hr role="separator" class="divider pt-4 mt-5"/>
 
-                        
-                        </li>
                     <!-- <li><a href="{{-- route('edit-company', ['id' => get_current_company()->id ]) --}}">Edit <strong>{{ get_current_company()->name }}</strong> </a></li> -->
                         <li role="separator" class="divider"></li>
-                        <li><a href="{{ url('logout') }}">Logout</a></li>
+                        <li><a href="{{ route('set-privacy-policy') }}"><i class="fa fa-lock"> </i> Privacy Policy</a></li>
+                        <li> <a href="{{ url('logout') }}"><i class="fa fa-sign-out"> </i> Logout</a></li>
                     </ul>
                 </li>
             </ul>

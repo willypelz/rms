@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use Curl;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
 use Mail;
 use Validator;
@@ -33,6 +34,11 @@ class CandidateController extends Controller
             return redirect()->route('candidate-dashboard');
         }
         $redirect_to = $request->redirect_to;
+        
+        $last_login = Carbon::now()->toDateTimeString();
+        $applicant = Auth::guard('candidate')->first_name.' '.Auth::guard('candidate')->last_name;
+
+
 
         if ($request->isMethod('post')) {
             if (Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password])) {
@@ -153,6 +159,21 @@ class CandidateController extends Controller
             $candidate = Candidate::whereEmail($token_reset->email)->first();
             $candidate->update(['password' => bcrypt($request->password)]);
 
+            $name = $candidate->first_name.' '.$candidate->last_name;
+            $last_login = Carbon::now()->toDateTimeString();
+
+            $log_action = [
+                'log_name' => "password reset",
+                'description' => $name . " reset their password " . $last_login,
+                'action_id' => $candidate->id,
+                'action_type' => 'App\Models\Candidate',
+                'causee_id' => $candidate->id,
+                'causer_id' => $candidate->id,
+                'causer_type' => 'applicant',
+                'properties'=> ''
+            ];
+            logAction($log_action);
+
             DB::table('password_resets')->where('token', $token)->delete();
 
             return redirect()->route('candidate-login')->with('success', 'Password has been successfully update. You can login now.');
@@ -215,10 +236,26 @@ class CandidateController extends Controller
         }else{
             $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->get();
         }
-
-        return view('candidate.job-list', compact('jobs'));
+	    $companies =   Company::all();
+        return view('candidate.job-list', compact('jobs', 'companies'));
     }
 
+    public function jobList($company_id){
+	    $candidate = Auth::guard('candidate')->user();
+
+	    if($candidate->is_from == 'external')
+	    {
+		    $jobs = Job::whereCompanyId($company_id)->with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->where('is_private', false)
+			    ->where(function($q){
+				    $q->where('is_for','external')->orWhere('is_for', 'both');
+			    })->get();
+	    }else{
+		    $jobs = Job::whereCompanyId($company_id)->with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->get();
+	    }
+
+	    $companies =   Company::all();
+	    return view('candidate.job-list', compact('jobs', 'companies'));
+    }
 
      /**
      * Bulk message modal to show applicants number and show to accept ot decline

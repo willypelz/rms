@@ -55,7 +55,7 @@
 
 
                                     <div class="text-center">
-                                        <h4>Add your job description details here</h4>
+                                        <h4> Add your job description details here</h4>
                                         <br>
                                     </div>
 
@@ -79,6 +79,9 @@
                                         $experience = NULL;
                                         $eligibilty = NULL;
                                         $is_private = NULL;
+                                        $benefits = NULL;
+                                        $minimum_remuneration = NULL;
+                                        $maximum_remuneration = NULL;
                                         $jobId = NULL;
                                         if(!is_null($job)){
                                             $job_type = $job->job_type;
@@ -92,6 +95,9 @@
                                             $experience = $job->experience;
                                             $eligibilty = $job->is_for;
                                             $is_private = $job->is_private;
+                                            $benefits = $job->benefits;
+                                            $minimum_remuneration = $job->minimum_remuneration;
+                                            $maximum_remuneration = $job->maximum_remuneration;
                                             $jobId = $job->id;
                                         }
 
@@ -109,6 +115,7 @@
                                             <div class="col-sm-12">
                                                 <label for="job-loc">Job Title
                                                     <span style="color:red" class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What is the job role?"></i>
                                                 </label>
                                                 <input type="text" name="title" value="{{ $job_title }}" id="job_title"
                                                        class="form-control" required>
@@ -128,6 +135,7 @@
                                                 <label for="job-title">
                                                     Country
                                                     <span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Which country is will the candidate work from?"></i>
                                                 </label>
                                                 <select required
                                                         name="country"
@@ -137,14 +145,18 @@
                                                         style="width: 303px;">
                                                     <option value="">--choose country--</option>
                                                     @foreach($countries as $country)
-                                                        <option value="{{ $country }}" {{ ( $job_location == $country || (in_array($job_location,$locations) && $country == 'Nigeria')) ? 'selected="selected"' : '' }} >{{ $country }}</option>
+                                                        <option value="{{ $country }}" {{ ( $job_location == $country || (in_array($job_location,$locations) && $country == 'Nigeria')) ? 'selected="selected"' : '' }} >
+                                                            {{ $country }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
 
-                                                <div class="state_section @if($errors->has('location') || (in_array($job_location,$locations) || $job_location == 'Nigeria'))  @else hidden @endif" style="margin-top: 10px">
+                                                <div class="state_section @if($errors->has('location') || (in_array($job_location,$locations) || $job_location == 'Nigeria'))  @else hidden @endif"
+                                                     style="margin-top: 10px">
                                                     <label for="job-title">
                                                         Location
                                                         <span class="text-danger">*</span>
+                                                        <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Which state is will the candidate work from?"></i>
                                                     </label>
                                                     <select required
                                                             name="location"
@@ -154,7 +166,9 @@
                                                             style="width: 303px;">
                                                         <option value="">--choose state--</option>
                                                         @foreach($locations as $state)
-                                                            <option value="{{$state != 'Nigeria' ? $state : 'Across Nigeria' }}" {{ ( str_replace('Nigeria','Across Nigeria',$job_location) == $state) ? 'selected="selected"' : '' }} >{{ $state != 'Nigeria' ? $state : 'Across Nigeria' }}</option>
+                                                            <option value="{{$state != 'Nigeria' ? $state : 'Across Nigeria' }}" {{ ( str_replace('Nigeria','Across Nigeria',$job_location) == $state) ? 'selected="selected"' : '' }} >
+                                                                {{ $state != 'Nigeria' ? $state : 'Across Nigeria' }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -166,6 +180,7 @@
 
                                             <div class="col-sm-6">
                                                 <label for="job-title">Job Type <span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What type of contract agreement?"></i>
                                                 </label>
 
                                                 <select name="job_type" id="job_level" required type="text"
@@ -197,6 +212,7 @@
                                             <div class="col-sm-12">
                                                 <label for="job-loc">Job Level
                                                     <span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What job level is required for this job? i.e Associate Marketer"></i>
                                                 </label>
                                                 <input type="text" name="position" class="form-control position"
                                                        value="{{ $job_position }}"
@@ -208,6 +224,7 @@
                                             <div class="col-sm-6">
                                                 <label for="job-loc">Eligibility
                                                     <span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Who can apply to this job post? Internal: Within your organization. External: outside your organization"></i>
                                                 </label>
                                                 <select @if($eligibilty) readonly @endif name="eligibility"
                                                         class="form-control" id="is_for">
@@ -226,6 +243,7 @@
 
                                             <div class="col-sm-6">
                                                 <label for="job-title">Expiry Date <span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What is the closing date for this job post?"></i>
                                                 </label>
                                                 <input type="text"
                                                        name="expiry_date"
@@ -241,25 +259,33 @@
                                                 <label for="job-loc">Make job private
                                                     <input type="checkbox" id="is_private" value="true"
                                                            name="is_private" @if ($is_private == 1) checked @endif >
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="When a job posting is private, only candidate with the link to the job post can apply"></i>
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <div class="row">
+                                    <div class="form-group" >
+                                        <div class="row" >
                                             <div class="col-sm-12">
                                                 <label for="job-title">Job Specialization
                                                     <span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What is the job specialization?"></i>
                                                 </label>
                                                 <br>
+                                                <div id="specialization12">
                                                 <select name="specializations[]" id="specialization" multiple required
                                                         class="select2" style="width: 100%;">
                                                     @foreach($specializations as $s)
-                                                        <option value="{{ $s->id }}" {{ ( in_array($s->id, $job_specilizations) ) ? 'selected="selected"' : '' }}>{{ $s->name }}</option>
+                                                        <option value="{{ $s->id }}" {{ ( in_array($s->id, $job_specilizations) ) ? 'selected="selected"' : '' }}>
+                                                            {{ $s->name }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
-                                                <span><a href="{{ route('specialization') }}">Add specialization to the list</a></span>
+                                                </div>
+                                                <span><a data-toggle="modal" data-target="#specializationModal">Add specialization to the list</a></span>
+
+{{--                                                <span><a href="{{ route('specialization') }}">Add specialization to the list</a></span>--}}
                                             </div>
                                         </div>
                                     </div>
@@ -270,6 +296,7 @@
                                                 <label for="workflowId">
                                                     Job Workflow
                                                     <span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What workflow should be attached to this job post?"></i>
                                                 </label>
                                                 <select name="workflow_id"
                                                         id="workflowId"
@@ -282,6 +309,8 @@
                                                     @endforeach
                                                 </select>
                                                 <div id="showWorkFlowSteps"></div>
+                                                <span><a data-toggle="modal" data-target="#workflowModal"><i class="fa fa-plus-circle"></i> Add workflow to the list</a></span>
+
 
                                             </div>
                                             <div>
@@ -295,6 +324,7 @@
                                             <div class="col-sm-12">
                                                 <label for="job-loc">Job Summary
                                                     <span style="color:red" class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Job summary: a brief summary of what the job entails"></i>
                                                 </label>
                                                 <textarea name="summary" id="job_summary" class="form-control"
                                                           required=""> {{ $job_summary }}</textarea>
@@ -302,11 +332,30 @@
 
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="job-loc">Remuneration</label>
+                                        <div class="row ">
+                                                <div class="col-sm-6">
+                                                    <label for="">Minimum</label>
+                                                    <input type="number" name="minimum_remuneration" value="{{ $minimum_remuneration }}"
+                                                           id="minimum_remuneration"
+                                                           class="form-control" >
+                                                </div>
+                                                <div class="col-sm-6">
 
+                                                    <label for="">Maximum</label>
+                                                    <input type="number" name="maximum_remuneration" value="{{ $maximum_remuneration }}"
+                                                           id="maximum_remuneration"
+                                                           class="form-control" >
+                                                </div>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <label for="">Job Details <span class="text-danger">*</span></label>
+                                                <label for="">Job Details <span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Job details: details about this job posting"></i>
+                                                </label>
                                                 <textarea name="details"
                                                           id="editor1"
                                                           cols="30"
@@ -320,7 +369,9 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <label for="">Qualification, Skills and Experience<span class="text-danger">*</span></label>
+                                                <label for="">Qualification, Skills and Experience<span class="text-danger">*</span>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Job qualification, skills and experience for this job posting"></i>
+                                                </label>
                                                 <textarea name="experience"
                                                           id="editor3"
                                                           cols="30"
@@ -329,6 +380,23 @@
                                                           placeholder=""
                                                           required>
                                                     {!! $experience !!}
+                                                </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <label for="">Benefits</label>
+                                                <textarea name="benefits"
+                                                          id="editor4"
+                                                          cols="20"
+                                                          rows="6"
+                                                          class="form-control experience"
+                                                          placeholder=""
+                                                          required>
+                                                    {!! $benefits !!}
                                                 </textarea>
                                             </div>
                                         </div>
@@ -394,6 +462,9 @@
                 </div>
             </div>
         </div>
+
+        @include('workflow.includes.workflow_modal');
+
     </section>
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
     <div class="separator separator-small"></div>
@@ -406,16 +477,16 @@
 
                 if (country.val() == 'Nigeria') {
                     $('.state_section').removeClass('hidden');
-                    $('#location').prop('required',true)
+                    $('#location').prop('required', true)
                 } else {
                     $('.state_section').addClass('hidden');
-                    $('#location').prop('required',false)
+                    $('#location').prop('required', false)
                 }
             });
 
             $('.submitButton').click(function () {
                 if (country.val() != 'Nigeria') {
-                    $('#location').prop('required',false)
+                    $('#location').prop('required', false)
                 }
             })
         });
@@ -514,24 +585,28 @@
             var url = "{{ route('job-draft') }}";
 
             var specializations = $('#specialization').val();
-
+            var minimum_remuneration  = $('#minimum_remuneration').val();
+            var maximum_remuneration = $('#maximum_remuneration').val();
             var job_type = $('.job_type option:selected').val();
             var is_for = $('#is_for option:selected').val();
             var position = $('.position').val();
             var is_private = $('#is_private').is(':checked');
             var experience = exp.getData();
+            var benefits = editor4.getData();
 
             $.ajax({
                 url: url,
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}', title: title,
-                    details: details, location: location,country:country,
+                    details: details, location: location, country: country,
                     eligibilty: is_for, is_private: is_private,
                     job_type: job_type, position: position,
                     expiry_date: expiry_date, experience: experience,
                     specializations: specializations, workflow_id: workflowId,
                     job_id: "{{ $jobId }}", eligibility: eligibilty,
+                    minimum_remuneration : minimum_remuneration,
+                    maximum_remuneration: maximum_remuneration,
                     summary: summary, is_ajax: 'true'
                 },
 
@@ -553,6 +628,11 @@
 
         var editor = CKEDITOR.replace('editor1')
         var exp = CKEDITOR.replace('editor3')
+        var editor4 = CKEDITOR.replace('editor4')
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
 
     </script>
 @endsection

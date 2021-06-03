@@ -236,8 +236,8 @@ class CandidateController extends Controller
         }else{
             $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->get();
         }
-	    $subsidiaries =   Company::all();
-        return view('candidate.job-list', compact('jobs', 'subsidiaries'));
+	    $companies =   Company::all();
+        return view('candidate.job-list', compact('jobs', 'companies'));
     }
 
     public function jobList($company_id){
@@ -253,8 +253,8 @@ class CandidateController extends Controller
 		    $jobs = Job::whereCompanyId($company_id)->with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->get();
 	    }
 
-	    $subsidiaries =   Company::all();
-	    return view('candidate.job-list', compact('jobs', 'subsidiaries'));
+	    $companies =   Company::all();
+	    return view('candidate.job-list', compact('jobs', 'companies'));
     }
 
      /**

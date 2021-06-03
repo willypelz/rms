@@ -31,12 +31,6 @@
 
                         <span class="span-stage">{{ $current_status }}</span>
                         @foreach($job->workflow->workflowSteps as $workflowStep)
-                            {{-- {{\Log::info( $workflowStep->slug)}}
-                            {{\Log::info( $workflowStep->slug == $current_status)}}
-                            {{\Log::info( !$cv['is_approved'])}}
-                            {{\Log::info( $workflowStep->requires_approval)}}
-                            {{\Log::info( "Step")}} --}}
-                            {{-- {{\SeamlessHR\SolrPackage\Facades\SolrPackage::update_core()}} --}}
                             @if($workflowStep->slug == $current_status && !$cv['is_approved'] && $workflowStep->requires_approval)
                                 <span class=" text-danger" style="font-size: 12px;">
                                     (Requires Approval of {{ implode(" or ", $workflowStep->approvals->map(function($user){return $user->name;})->toArray() )}})

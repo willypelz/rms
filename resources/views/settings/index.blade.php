@@ -7,15 +7,15 @@
         <div class="container">
         <div class="section_card">
             <div class="section_title">
-               <b>Page Settings</b>
+                Nestle PLC / <b>Page Settings</b>
             </div>
             <hr class="hr_divider">
 
             <div class="section_content row">
                 <div class="dash_navigation_pane col-md-4">
                     <div class="sub-menu"><a href="">Company info</a></div>
-                    <div class="sub-menu"><a href="">Password</a></div>
-                    <div class="sub-menu"><a href="">Roles and Permissions</a></div>
+                    <div><a href="">Password</a></div>
+                    <div><a href="">Roles and Permissions</a></div>
                 </div>
                 <div class="col-md-8">
                     <div class="content">
@@ -27,103 +27,34 @@
                                     @endforeach
                                 </ul>
                             @endif
-                            <div class="col-md-10 col-md-offset-1">
+                            <div class="col-md-8 col-md-offset-2">
                                 @include('layout.alerts')
-                                {!! Form::open(array('route'=>'edit-company','method'=>'POST', 'id'=>'SignUPform', 'files'=>true, 'class'=>'form-signup', 'role'=>'form')) !!}
+                                <form id="myForm" method="post"
+                                      action="{{ route('save-privacy-policy') }}">
 
-                                {!! csrf_field() !!}
-                                <input type="hidden" name="company_creation_page" value="true">
-                                <input type="hidden" name="company_id" value="{{$company->id}}">
-                                 <div class="row">
-                                          <div class="col-sm-12">
-                                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                                <label for=""> Company name</label>
-                                                <input type="text" class="form-control" id="name" placeholder=""
-                                                       name="name" value="{{ $company->name }}" required>
-                                                @if ($errors->has('name'))
-                                                    <span class="help-block">
-                                                <strong>{{ $errors->first('name') }}</strong>
-                                            </span>
-                                                @endif
+                                    <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-12"><label for="privacy-policy-url">Privacy Policy URL
+                                                    <span class="text-danger">*</span></label>
+                                                <input  id="privacy_policy_url" type="url"
+                                                        name="privacy_policy_url"
+                                                        class="form-control">
+                                                <small>e.g. https://site_name.com</small>
                                             </div>
                                         </div>
-
-                                        <div class="col-sm-6">
-                                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                                <label for=""> Company Email</label>
-                                                <input type="text" class="form-control" id="" placeholder=""
-                                                       name="email" value="{{  $company->email }}" readonly>
-                                                @if ($errors->has('email'))
-                                                    <span class="help-block">
-                                                <strong>{{ $errors->first('email') }}</strong>
-                                            </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-sm-6">
-                                            <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
-                                                <label for=""> Company Phone</label>
-                                                <input type="text" class="form-control" id="" placeholder=""
-                                                       name="phone" value="{{ $company->phone }}" required>
-                                                @if ($errors->has('phone'))
-                                                    <span class="help-block">
-                                                <strong>{{ $errors->first('phone') }}</strong>
-                                            </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-12">
-                                            <div class="form-group{{ $errors->has('website') ? ' has-error' : '' }}">
-                                                <label for=""> Company Website</label>
-                                                <input type="text" class="form-control" id="" placeholder=""
-                                                       name="website" value="{{ $company->website }}" required>
-                                                @if ($errors->has('website'))
-                                                    <span class="help-block">
-                                                <strong>{{ $errors->first('website') }}</strong>
-                                            </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-12">
-                                            <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
-                                                <label for=""> Company Address</label>
-                                                <textarea name="address" class="form-control" id="" cols="30" rows="10"
-                                                          required>{{ $company->address }}</textarea>
-                                                @if ($errors->has('address'))
-                                                    <span class="help-block">
-                                                <strong>{{ $errors->first('address') }}</strong>
-                                            </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-12">
-                                            <div class="form-group{{ $errors->has('about') ? ' has-error' : '' }}">
-                                                <label for="">About  Company</label>
-                                                <textarea name="about" class="form-control" id="" cols="30"
-                                                          rows="10" required>{{ $company->about }}</textarea>
-                                                @if ($errors->has('about'))
-                                                    <span class="help-block">
-                                                <strong>{{ $errors->first('about') }}</strong>
-                                            </span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-
                                     </div>
-
+                                    <hr>
                                     <div class="row">
-
-                                        <div class="col-sm-4 col-sm-offset-8">
-                                            <button type="submit" class="btn btn-success btn-block">Update  Company</button>
+                                        <div class="col-xs-12"></div>
+                                        <div class="col-xs-4"></div>
+                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-4">
+                                            <button id="p-p-btn" type="submit" class="btn btn-success btn-block">
+                                                Update Configuration
+                                            </button>
                                         </div>
-
-
+                                        <div class="separator separator-small"></div>
                                     </div>
                                 </form>
                             </div>
@@ -167,6 +98,11 @@
             border: 1px solid #D8E4F1;
             box-sizing: border-box;
             padding-left: 55px;
+        }
+
+        .section_content>div {
+            padding-top: 30px;
+            padding-bottom: 60px;
             height: 100%;
             position: absolute;
         }

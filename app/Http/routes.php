@@ -816,3 +816,7 @@ Route::group(['middleware' => 'web'], function () {
 
 });
 
+
+Route::group(['prefix' => 'api/v2', 'namespace' => 'Api'], function () {
+    Route::get('rms-company-subsidiaries', ['uses' => 'SyncController@companyAndSubsidiaries', 'as' => 'rms-company-subsidiaries']);
+});

@@ -13,7 +13,7 @@ class SyncController extends Controller
     public function companyAndSubsidiaries()
     {
         $rmsCompany = Company::whereNotNull('api_key')->first();
-        if(config('app.staff_strength_url') env('STAFFSTRENGTH_URL') && env('RMS_STAND_ALONE')==false && $rmsCompany)
+        if(config('app.staff_strength_url') && env('RMS_STAND_ALONE')==false && $rmsCompany)
         {
 	        $response = Curl::to(env('STAFFSTRENGTH_URL') . 'api/v2/company-subsidiaries/'. base64_encode($rmsCompany->api_key))
             ->get();

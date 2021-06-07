@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class HrmsIntegrationController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * Create    a new controller instance.
      *
      * @return void
      */

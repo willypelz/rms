@@ -1,58 +1,40 @@
-@extends('layout.template-default')
+@extends('settings.base')
 
-@section('content')
-    <script src="{{ asset('js/jquery.slugify.js') }}"></script>
-    <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
-    <div class="separator separator-small"></div>
+@section('main-content')
 
     <section class="no-pad">
         <div class="container">
-            <div class="row">
+            <div class="section_card">
+                <div class="section_title">
+                    <b>Page Settings</b>
+                </div>
+                <hr class="hr_divider">
 
-                <div class="col-sm-12">
-                    <div class="page">
-                        <div class="row">
-                            <h5 class="no-margin text-center l-sp-5 text-brandon text-uppercase">
-                                Edit Subsidiary Company
-                            </h5>
-                            <hr>
-                            <br>
-                            <div class="col-sm-8 col-sm-offset-2">
-                                <div>
-                                <!-- <form role="form" class="form-signup" method="POST" action="{{ route('registration') }}" type='file'> -->
+                <div class="section_content row">
+                    <div class="dash_navigation_pane col-md-4">
+                     @include('settings.includes.navigation')
+                    </div>
+                    <div class="col-md-8">
+                        <div class="content">
+                            <div class="row">
+                                @if ($errors->any())
+                                    <ul class="alert alert-danger">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                                <div class="col-md-10 col-md-offset-1">
+                                    @include('layout.alerts')
                                     {!! Form::open(array('route'=>'edit-company','method'=>'POST', 'id'=>'SignUPform', 'files'=>true, 'class'=>'form-signup', 'role'=>'form')) !!}
 
                                     {!! csrf_field() !!}
-                                    <input type="hidden" name="subsidiary_creation_page" value="true">
+                                    <input type="hidden" name="company_creation_page" value="true">
                                     <input type="hidden" name="company_id" value="{{$company->id}}">
-
                                     <div class="row">
-
-                                        <div class="col-sm-6 col-sm-offset-3 text-center">
-                                            <div class="form-group{{ $errors->has('about_company') ? ' has-error' : '' }}">
-                                                <label class="col-md-12" for="">Subsidiary Logo</label>
-                                                <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                    <div class="fileinput-preview thumbnail" data-trigger="fileinput"
-                                                         style="width: 200px; height: 150px;"></div>
-                                                    <div>
-                                                <span class="btn btn-default btn-file">
-                                                    <span class="fileinput-new">Select image</span><span
-                                                            class="fileinput-exists">Change</span>
-                                                 <?php  echo Form::file('logo'); ?>
-                                                </span>
-                                                        <a href="#" class="btn btn-default fileinput-exists"
-                                                           data-dismiss="fileinput">Remove</a>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-
                                         <div class="col-sm-12">
                                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                                <label for="">Subsidiary Company name</label>
+                                                <label for=""> Company name</label>
                                                 <input type="text" class="form-control" id="name" placeholder=""
                                                        name="name" value="{{ $company->name }}" required>
                                                 @if ($errors->has('name'))
@@ -65,7 +47,7 @@
 
                                         <div class="col-sm-6">
                                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                                <label for="">Subsidiary Company Email</label>
+                                                <label for=""> Company Email</label>
                                                 <input type="text" class="form-control" id="" placeholder=""
                                                        name="email" value="{{  $company->email }}" readonly>
                                                 @if ($errors->has('email'))
@@ -79,7 +61,7 @@
 
                                         <div class="col-sm-6">
                                             <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
-                                                <label for="">Subsidiary Company Phone</label>
+                                                <label for=""> Company Phone</label>
                                                 <input type="text" class="form-control" id="" placeholder=""
                                                        name="phone" value="{{ $company->phone }}" required>
                                                 @if ($errors->has('phone'))
@@ -92,7 +74,7 @@
 
                                         <div class="col-sm-12">
                                             <div class="form-group{{ $errors->has('website') ? ' has-error' : '' }}">
-                                                <label for="">Subsidiary Company Website</label>
+                                                <label for=""> Company Website</label>
                                                 <input type="text" class="form-control" id="" placeholder=""
                                                        name="website" value="{{ $company->website }}" required>
                                                 @if ($errors->has('website'))
@@ -105,7 +87,7 @@
 
                                         <div class="col-sm-12">
                                             <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
-                                                <label for="">Subsidiary Company Address</label>
+                                                <label for=""> Company Address</label>
                                                 <textarea name="address" class="form-control" id="" cols="30" rows="10"
                                                           required>{{ $company->address }}</textarea>
                                                 @if ($errors->has('address'))
@@ -118,7 +100,7 @@
 
                                         <div class="col-sm-12">
                                             <div class="form-group{{ $errors->has('about') ? ' has-error' : '' }}">
-                                                <label for="">About Subsidiary Company</label>
+                                                <label for="">About  Company</label>
                                                 <textarea name="about" class="form-control" id="" cols="30"
                                                           rows="10" required>{{ $company->about }}</textarea>
                                                 @if ($errors->has('about'))
@@ -135,24 +117,21 @@
                                     <div class="row">
 
                                         <div class="col-sm-4 col-sm-offset-8">
-                                            <button type="submit" class="btn btn-primary btn-block">Update Subsidiary Company</button>
+                                            <button type="submit" class="btn btn-success btn-block">Update  Company</button>
                                         </div>
 
 
                                     </div>
                                     </form>
-
                                 </div>
-
+                                <div class="clearfix"></div>
                             </div>
-
                         </div>
+
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
 @endsection
-

@@ -110,6 +110,11 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 
 	Route::resource('company/subsidiaries',  'SubsidiariesController');
 
+	/************************
+	 * Settings  routes    **
+	 *************************/
+	Route::get('settings', ['uses' => 'SettingsController@showSettings', 'as' => 'page-settings']);
+
 
 	//JOB
     Route::match(['get', 'post'], 'jobs/duplicate', ['uses' => 'JobsController@DuplicateJob', 'as' => 'duplicate-job']);
@@ -813,6 +818,10 @@ Route::group(['middleware' => 'web'], function () {
             return view('applicant.messages');
         }
     ]);
+
+	Route::group(['prefix' => 'api/v2', 'namespace' => 'Api'], function () {
+		Route::get('rms-company-subsidiaries', ['uses' => 'SyncController@companyAndSubsidiaries', 'as' => 'rms-company-subsidiaries']);
+	});
 
 });
 

@@ -19,6 +19,8 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
+	'staff_strength_url' => env('STAFFSTRENGTH_URL'),
+    'rms_stand_alone' => env('RMS_STAND_ALONE'),
 
     /*
     |--------------------------------------------------------------------------

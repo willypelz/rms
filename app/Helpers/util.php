@@ -934,3 +934,19 @@ function seamlessSave( $modelName, array $data, $id)
 	$instance->fill($data)->save();
 	return $instance;
 }
+
+
+function getResponseFromHrmsByGET(string $url, array $data = []){
+    $rmsCompany = Company::whereNotNull('api_key')->first();
+    if(isHrmsIntegrated() && $rmsCompany) {
+        // \Log::info(env('STAFFSTRENGTH_URL'));
+        $response = Curl::to(env('STAFFSTRENGTH_URL') . $url )
+                        ->withHeader("X-API-KEY: " . $rmsCompany->api_key)
+                        ->withData($data)
+                        ->asJson()
+                        ->get();
+        return $response;
+
+    }  
+    return null;
+}

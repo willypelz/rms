@@ -6,7 +6,9 @@ use App\Models\WorkflowStep;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Trebol\Entrust\Traits\EntrustUserTrait;
 use Illuminate\Notifications\Notifiable;
-
+use App\Models\Company;
+use Ixudra\Curl\Facades\Curl;
+use App\Enum\Configs;
 
 class User extends Authenticatable
 {
@@ -38,9 +40,9 @@ class User extends Authenticatable
 
     ];
 
-    public function companies()
+    public function companies(bool $withPivot = false)
     {
-        return $this->belongsToMany('App\Models\Company', 'company_users')->withPivot('role');
+        return $this->belongsToMany('App\Models\Company', 'company_users')->withPivot('role', 'is_default');
     }
 
     public function roles()
@@ -76,7 +78,30 @@ class User extends Authenticatable
 
     public function company()
     {
-        $this->companies()->where("is_default", true);
+        $this->getDefaultCompany();
+    }
+
+    public function getDefaultCompany(){
+        if(isHrmsIntegrated())
+            return $this->getDefaultCompanyFromHrms();
+        else
+            return $this->getDefaultCompanyFromRms();
+    }
+
+    private function getDefaultCompanyFromHrms(string $employeeEmail = null){
+        $response = getResponseFromHrmsByGET(Configs::GET_USER_DEFAULT_COMPANY,  ["employeeEmail" => $employeeEmail ?: \Auth::user()->email] );
+        if($response){
+            $userHrmsDefaultCompany = $response->data;
+            $rmsCompany = Company::where(["hrms_id" => $userHrmsDefaultCompany->id])->first();
+            $company = $this->companies()->where(["company_users.company_id" => $rmsCompany->id])->wherePivot('is_default', 1)->first() ?: 
+                       $this->companies()->updateExistingPivot( $rmsCompany->id, ["is_default" => 1]);
+            return $company ? $rmsCompany  : null;
+        }
+        return null;
+    }
+
+    private function getDefaultCompanyFromRms(){
+        return $this->companies()->first();
     }
 
 }

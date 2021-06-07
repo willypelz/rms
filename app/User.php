@@ -6,11 +6,20 @@ use App\Models\WorkflowStep;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Trebol\Entrust\Traits\EntrustUserTrait;
 use Illuminate\Notifications\Notifiable;
-
+use App\Models\Company;
+use Ixudra\Curl\Facades\Curl;
+use App\Enum\Configs;
+use \App\Interfaces\UserContract;
 
 class User extends Authenticatable
 {
     use EntrustUserTrait, Notifiable;
+
+    protected $userService;
+
+    public function __construct(){
+        $this->userService = app()->make(UserContract::class);
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -38,9 +47,9 @@ class User extends Authenticatable
 
     ];
 
-    public function companies()
+    public function companies(bool $withPivot = false)
     {
-        return $this->belongsToMany('App\Models\Company', 'company_users')->withPivot('role');
+        return $this->belongsToMany('App\Models\Company', 'company_users')->withPivot('role', 'is_default');
     }
 
     public function roles()
@@ -74,9 +83,19 @@ class User extends Authenticatable
         return $admin ? true:false;
     }
 
-    public function company()
-    {
-        $this->companies()->where("is_default", true);
+     /**
+     * TO GET THE DEFAULT COMPANY FOR A USER
+     * @return App\Model\Company
+    */
+    public function defaultCompany(){
+        return $this->userService->getDefaultCompany($this);
+    }
+
+    public static function boot() {
+        parent::boot();
+        static::created(function (User $user) {
+            $user->defaultCompany();
+        });
     }
 
 }

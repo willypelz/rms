@@ -18,7 +18,7 @@
 
     <link href="{{ secure_asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
     <link href="{{ secure_asset('css/select2.css') }}" rel="stylesheet">
-
+    
     <script src="//cdn.ckeditor.com/4.5.7/basic/ckeditor.js"></script>
     
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.css" rel="stylesheet">

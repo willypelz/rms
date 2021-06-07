@@ -20,5 +20,7 @@
 				'graduation_grade' => 'Graduation grade',
 				'cover_note' => 'Cover note',
 				'cv_file' => 'Cv file',
- 		]
+		],
+		'pagination' => env('PAGINATION',100),
 	];
+

@@ -9,9 +9,11 @@ use App\Models\Job;
 use App\Models\JobActivity;
 use App\Models\JobApplication;
 use Illuminate\Support\Facades\File;
+use phpDocumentor\Reflection\Types\Object_;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use App\Models\TestRequest;
 use App\Models\ActivityLog;
+use Carbon\Carbon;
 
 // use Faker;
 
@@ -24,7 +26,8 @@ function test()
 
 function qualifications()
 {
-    return $options = array('MPhil / PhD' => 'MPhil / PhD', 'MBA / MSc' => 'MBA / MSc', 'MBBS' => 'MBBS', 'Degree' => 'Degree', 'HND' => 'HND', 'OND' => 'OND', 'N.C.E' => 'N.C.E', 'Diploma' => 'Diploma', 'High School (S.S.C.E)' => 'High School (S.S.C.E)', 'Vocational' => 'Vocational', 'Others' => 'Others');
+    return $options = array('MPhil / PhD' => 'MPhil / PhD', 'MBA / MSc' => 'MBA / MSc', 'MBBS' => 'MBBS', 'B.Sc'=>'B.Sc','Degree' => 'Degree', 'HND' => 'HND', 'OND' => 'OND', 'N.C.E' => 'N.C.E', 'Diploma' => 'Diploma', 'High School (S.S.C.E)' => 'High School (S.S.C.E)', 'Vocational' => 'Vocational', 'Others' => 'Others',
+                             'B.Eng'=>'B.Eng','LLM'=>'LLM','LLB'=>'LLB','B.Ed.'=>'B.Ed.','M.Ed'=>'M.Ed','B.A'=>'B.A');
 }
 
 function grades()
@@ -353,11 +356,11 @@ function get_current_company()
             else
                 return Auth::user()->companies[0];
         }
-
+        
         if (Auth::user()->companies && Auth::user()->companies->count() < 1) {
             return redirect()->guest('login');
         }
-
+        
         // If a company is not selected, default to the first on the list
         return Auth::user()->companies[0];
     } else {
@@ -873,4 +876,61 @@ function findOrMakeDirectory($path)
         return File::makeDirectory($path, 0777);
     }
 
+}
+
+
+function audit_log()
+{
+    $name = auth()->guard('candidate')->user()->first_name.' '.auth()->guard('candidate')->user()->last_name;
+    $last_login = Carbon::now()->toDateTimeString();
+
+    $log_action = [
+        'log_name' => "Candidate Login",
+        'description' => "An applicant ". $name . " logged in. Last login was " . $last_login,
+        'action_id' => Auth::guard('candidate')->user()->id,
+        'action_type' => 'App\Models\Candidate',
+        'causee_id' => Auth::guard('candidate')->user()->id,
+        'causer_id' => Auth::guard('candidate')->user()->id,
+        'causer_type' => 'applicant',
+        'properties'=> ''
+    ];
+    logAction($log_action);
+}
+
+function admin_audit_log()
+{
+    $last_login = Carbon::now()->toDateTimeString();
+
+    $log_action = [
+        'log_name' => "Admin Login",
+        'description' => "Admin ". Auth::user()->name . " logged in. Last login was "  .$last_login,
+        'action_id' => Auth::user()->id,
+        'action_type' => 'App\User',
+        'causee_id' => Auth::user()->id,
+        'causer_id' => Auth::user()->id,
+        'causer_type' => 'admin',
+        'properties'=> ''
+    ];
+    logAction($log_action);
+}
+/**
+ * Checks if HRMS is synced
+ * @return bool
+ */
+function isHrmsIntegrated(){
+    return is_null(env('STAFFSTRENGTH_URL')) ? false: true;
+}
+
+/**
+ * Mass save
+ * @param $modelName
+ * @param array $data
+ * @param $id
+ * @return \Illuminate\Http\JsonResponse
+ */
+function seamlessSave( $modelName, array $data, $id)
+{
+	$instance = $modelName::find($id);
+	$instance->fill($data)->save();
+	return $instance;
 }

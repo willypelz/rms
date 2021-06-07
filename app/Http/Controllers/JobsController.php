@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use  App\Http\Controllers\CvSalesController;
 use Alchemy\Zippy\Zippy;
 use App\Http\Requests;
+use App\Http\Requests\UpdateCompanyRequest;
 use App\Jobs\UploadApplicant;
 use App\Jobs\UploadZipCv;
 use App\Libraries\Solr;
@@ -425,9 +426,62 @@ class JobsController extends Controller
 
     }
 
+    /*
+    * To delete a job team admin user 
+    * @return Illuminate\Http\Response
+    */
+    public function JobTeamDelete(Request $request){
+
+        $data = [
+            "user_id" => "required"
+        ];
+        
+        $data = $request->validate($data);
+        $user = User::find($data["user_id"]);
+        if($user){
+            if(!isHrmsIntegrated())
+                return redirect()->back()->with(['warning' => "You are synced with HRMS and can only delete a super admin from HRMS"]);
+            $data = $user;
+            $user->delete();
+            logAction([
+                'log_name' => 'Job Team Admin Delete', 
+                'description' => 'An action that deletes a job team super admin',
+                'action_type' => 'Delete',
+                'causee_id' => $data->id,
+                'causer_id' =>  Auth::user()->id,
+            ]);
+            return redirect()->back()->with(['warning' => "Super Admin Deleted Successfully"]);
+        }
+            
+        return redirect()->back()->with(['warning' => "Operation delete Super Admin Not Successful"]);
+    }
+
+    public function JobTeamInviteeDelete(Request $request){
+        $data = [
+            "invitee_id" => "required"
+        ];
+        
+        $data = $request->validate($data);
+        $invitee = JobTeamInvite::find($data["invitee_id"]);
+        if($invitee && $invitee->is_cancelled){
+            $data = $invitee;
+            $invitee->delete();
+            logAction([
+                'log_name' => 'Job Team Invitee Delete',
+                'description' => 'An action that deletes a job team invitee',
+                'action_type' => 'Delete',
+                'causee_id' => $data->id,
+                'causer_id' =>  Auth::user()->id,
+            ]);
+            return redirect()->back()->with(['success' => "Job Team Invitee Deleted Successfully"]);
+        }
+        return redirect()->back()->with(['error' => "Operation delete Job Team Invitee Not Successful"]);
+    }
+
 
     public function removeJobTeamMember(Request $request)
     {
+
         $team_member = User::find($request->ref);
         $comp = $request->comp;
         $job = $request->job;
@@ -663,6 +717,10 @@ class JobsController extends Controller
                     'expiry_date' => 'required',
                     'workflow_id' => 'required|integer',
                     'experience' => 'required',
+	                'minimum_remuneration' => 'numeric|min:0',
+	                'maximum_remuneration' => 'numeric|min:0|gt:minimum_remuneration'
+                ], [
+                	'maximum_remuneration.gt' => 'maximum remuneration should be greater than minimum remuneration'
                 ]);
             }
 
@@ -684,6 +742,9 @@ class JobsController extends Controller
                 'company_id' => $company->id,
                 'workflow_id' => $request->workflow_id,
                 'experience' => $request->experience,
+                'minimum_remuneration' => $request->minimum_remuneration,
+                'maximum_remuneration' => $request->maximum_remuneration,
+                'benefits' => $request->benefits,
             ];
 
 
@@ -2766,6 +2827,15 @@ class JobsController extends Controller
         if(is_null($request->country)){
              return redirect()->back()->with('errors','Country Cannot be empty')->withInput();
         }
+
+			$this->validate($request, [
+				'minimum_remuneration' => 'numeric|min:0',
+				'maximum_remuneration' => 'numeric|min:0|gt:minimum_remuneration'
+			], [
+				'maximum_remuneration.gt' => 'maximum remuneration should be greater than minimum remuneration'
+			]);
+
+
             $location_value = ($request->country != 'Nigeria') ? $request->country :
                 ( ($request->job_location == 'Across Nigeria') ? 'Nigeria' : $request->job_location);
 
@@ -2773,6 +2843,9 @@ class JobsController extends Controller
             $job->location = $location_value;
             $job->job_type = $request->job_type;
             $job->position = $request->position;
+			$job->benefits = $request->benefits;
+			$job->minimum_remuneration = $request->minimum_remuneration;
+			$job->maximum_remuneration = $request->maximum_remuneration;
             // $job->post_date = $request->post_date;
             $job->expiry_date = Carbon::createFromFormat('m/d/Y', $request->expiry_date)->format("Y-m-d H:m:s");
             $job->details = $request->details;
@@ -3167,6 +3240,7 @@ class JobsController extends Controller
                 ['ats_product_id' => 27, 'company_id' => $comp->id]
             ]);
 
+            if ($request->subsidiary_creation_page)	return redirect('company/subsidiaries')->with('success', "Subsidiary created successfully.");
 
             // if($upload){
             return redirect('select-company/' . $request->slug);
@@ -3177,23 +3251,8 @@ class JobsController extends Controller
         return view('company.add');
     }
 
-    public function editCompany(Request $request)
+    public function editCompany(UpdateCompanyRequest $request)
     {
-
-
-
-        if ($request->isMethod('post')) {
-
-
-            $validator = Validator::make($request->all(), [
-                'slug' => 'unique:companies'
-            ]);
-
-            if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
-
-
             if (isset($request->logo)) {
                 $file_name = ($request->logo->getClientOriginalName());
                 $fi = $request->file('logo')->getClientOriginalExtension();
@@ -3204,41 +3263,9 @@ class JobsController extends Controller
             } else {
                 $logo = "";
             }
-
-
-            $comp = Company::FirstorCreate([
-                'name' => $request->company_name,
-                'email' => $request->company_email,
-                'slug' => $request->slug,
-                'phone' => $request->phone,
-                'website' => $request->website,
-                'address' => $request->address,
-                'about' => $request->about_company,
-                'logo' => $logo,
-                'date_added' => date('Y-m-d H:i:s'),
-            ]);
-
-            $assoc = DB::table('company_users')->insert([
-                ['user_id' => Auth::user()->id, 'company_id' => $comp->id]
-            ]);
-
-            $tests = DB::table('company_tests')->insert([
-                ['ats_product_id' => 23, 'company_id' => $comp->id],
-                ['ats_product_id' => 24, 'company_id' => $comp->id],
-                ['ats_product_id' => 25, 'company_id' => $comp->id],
-                ['ats_product_id' => 27, 'company_id' => $comp->id]
-            ]);
-
-
-            // if($upload){
-            return redirect('select-company/' . $request->slug);
-            // }
-
-        }
-
-        $company = Company::find($request->id);
-
-        return view('company.edit', compact('company'));
+	        seamlessSave(Configs::COMPANY_MODEL,  $request->toArray(), $request->company_id);
+            if ($request->company_creation_page) return back()->with('success', "Company updated successfully.");
+          return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
     }
 
     public function selectCompany(Request $request)
@@ -3350,7 +3377,6 @@ class JobsController extends Controller
        }
        return null;
     }
-
 
 
 }

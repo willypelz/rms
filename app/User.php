@@ -9,10 +9,17 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Company;
 use Ixudra\Curl\Facades\Curl;
 use App\Enum\Configs;
+use \App\Interfaces\UserContract;
 
 class User extends Authenticatable
 {
     use EntrustUserTrait, Notifiable;
+
+    protected $userService;
+
+    public function __construct(){
+        $this->userService = app()->make(UserContract::class);
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -76,32 +83,19 @@ class User extends Authenticatable
         return $admin ? true:false;
     }
 
-    public function company()
-    {
-        $this->getDefaultCompany();
+     /**
+     * TO GET THE DEFAULT COMPANY FOR A USER
+     * @return App\Model\Company
+    */
+    public function defaultCompany(){
+        return $this->userService->getDefaultCompany($this);
     }
 
-    public function getDefaultCompany(){
-        if(isHrmsIntegrated())
-            return $this->getDefaultCompanyFromHrms();
-        else
-            return $this->getDefaultCompanyFromRms();
-    }
-
-    private function getDefaultCompanyFromHrms(string $employeeEmail = null){
-        $response = getResponseFromHrmsByGET(Configs::GET_USER_DEFAULT_COMPANY,  ["employeeEmail" => $employeeEmail ?: \Auth::user()->email] );
-        if($response){
-            $userHrmsDefaultCompany = $response->data;
-            $rmsCompany = Company::where(["hrms_id" => $userHrmsDefaultCompany->id])->first();
-            $company = $this->companies()->where(["company_users.company_id" => $rmsCompany->id])->wherePivot('is_default', 1)->first() ?: 
-                       $this->companies()->updateExistingPivot( $rmsCompany->id, ["is_default" => 1]);
-            return $company ? $rmsCompany  : null;
-        }
-        return null;
-    }
-
-    private function getDefaultCompanyFromRms(){
-        return $this->companies()->first();
+    public static function boot() {
+        parent::boot();
+        static::created(function (User $user) {
+            $user->defaultCompany();
+        });
     }
 
 }

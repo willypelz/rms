@@ -935,18 +935,21 @@ function seamlessSave( $modelName, array $data, $id)
 	return $instance;
 }
 
-
+/**
+ * TO ACCESS HRMS USING GET HTTP PROTOCOL
+ * @param string $url the path segment excluding the base url i.e api/v2/get_user_default_company/
+ * @param array $data the payload to be used in the request
+ * @return array | null
+ */
 function getResponseFromHrmsByGET(string $url, array $data = []){
     $rmsCompany = Company::whereNotNull('api_key')->first();
     if(isHrmsIntegrated() && $rmsCompany) {
-        // \Log::info(env('STAFFSTRENGTH_URL'));
         $response = Curl::to(env('STAFFSTRENGTH_URL') . $url )
                         ->withHeader("X-API-KEY: " . $rmsCompany->api_key)
                         ->withData($data)
                         ->asJson()
                         ->get();
         return $response;
-
     }  
     return null;
 }

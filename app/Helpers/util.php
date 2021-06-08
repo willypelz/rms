@@ -14,6 +14,8 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use App\Models\TestRequest;
 use App\Models\ActivityLog;
 use Carbon\Carbon;
+use Ixudra\Curl\Facades\Curl;
+use App\User;
 
 // use Faker;
 
@@ -950,6 +952,22 @@ function getResponseFromHrmsByGET(string $url, array $data = []){
                         ->asJson()
                         ->get();
         return $response;
-    }  
+    } 
     return null;
+}
+
+/*
+ * Gets Company User ID
+ * @param int $user
+ * @return int
+ */
+function getCompanyId($userId = null) {
+
+	if (is_null($userId)) {
+		$company_id = is_null(session('active_company')) ? optional(auth()->user())->defaultCompany()->id : session('active_company')->id;
+	} else {
+		$company_id = User::find($userId)->first()->defaultCompany()->id;
+	}
+
+	return $company_id;
 }

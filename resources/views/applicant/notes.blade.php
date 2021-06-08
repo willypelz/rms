@@ -52,6 +52,7 @@
                                             <h3 style="padding:10px;">{{ $template_name }}</h3>
 
                                             <?php $interview_notes_groups = $interview_notes->groupBy('interview_note_option_id');?>
+                                            {{-- {{dd( $interview_notes_groups)}} --}}
 
                                             @foreach( $interview_notes_groups as $key => $interview_notes_group )
                                                 <li class="list-group-item" role="candidate-comments">
@@ -63,10 +64,10 @@
                                                     <div data-toggle="collapse" data-target="#question-{{$key}}" style="cursor: pointer;">
                                                         <div class="clearfix">
                                                             <h4 class="pull-left">{{ $interview_notes_group->first()->interview_note_option->name  }}</h4>
-                                                            @if($interview_notes_group->first()->interview_note_option->type == "rating")
+                                                            {{-- @if($interview_notes_group->first()->interview_note_option->type == "rating")
                                                                 <h2 class="pull-right" style="margin-top: 5px;">{{ round( $interview_notes_group->sum('value') / $interview_notes_group->count() , 2 ) }}
                                                                     / {{ $interview_notes_group->first()->interview_note_option->weight }}</h2>
-                                                            @endif
+                                                            @endif --}}
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -91,7 +92,7 @@
                                                                             <td>{{ $interview_note->interviewer->name }}</td>
                                                                             <td>{{ date('D, j-n-Y, h:i A', strtotime( $interview_note->created_at ))  }}</td>
                                                                             <td>{{ $interview_note->value }}
-                                                                                / {{ $interview_note->interview_note_option->weight }}</td>
+                                                                                / {{ $interview_note->interview_note_option->weight_max }}</td>
                                                                         </tr>
                                                                     @endforeach
 
@@ -99,7 +100,7 @@
                                                                         <td></td>
                                                                         <td><strong>Total</strong></td>
                                                                         <td>{{ round( $interview_notes_group->sum('value') / $interview_notes_group->count() , 2 ) }}
-                                                                            / {{ $interview_notes_group->first()->interview_note_option->weight }}</td>
+                                                                            / {{ $interview_notes_group->first()->interview_note_option->weight_max }}</td>
                                                                     </tr>
 
                                                                     </tbody>

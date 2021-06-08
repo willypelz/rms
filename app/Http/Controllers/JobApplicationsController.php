@@ -2050,14 +2050,15 @@ class JobApplicationsController extends Controller
 
     public function takeInterviewNote(Request $request)
     {
+        
         $app_id = @$request->app_id;
         $cv_id = @$request->cv_id;
         $appl = JobApplication::with('job', 'cv')->find($app_id);
         $applicant_badge = @$this->getApplicantBadge($appl->cv);
 
         $interview_note_options = $this->getInterviewNoteOption($appl->job->id, $request->id);
-
         $interview_template_id = $request->id;
+
         $interview_note = NULL;
         if (@$request->readonly) {
             $readonly = true;
@@ -2074,21 +2075,18 @@ class JobApplicationsController extends Controller
             $interview_note_values = [];
             $score = 0;
             $correct_count = 0;
+            
             foreach ($interview_note_options as $key => $option) {
+                $rating = $data['option_' . $option->id];
                 $interview_note_values[] = [
                     'interview_note_option_id' => $option->id,
-                    'value' =>($option->type == 'rating') ? ($data['option_' . $option->id] / 5)*$option->weight : $data['option_' . $option->id],
+                    'value' =>    ($option->type == 'rating') && ( ($option->weight_min <= $rating) && ($rating >= $option->weight_min) ) ||  (!empty($data['option_' . $option->id] )) ?  $data['option_' . $option->id]  : assert(false, "Text or Rating Field Cannot Be null") ,
                     'job_application_id' => $appl->id,
                     'interviewed_by' => @Auth::user()->id,
                     'created_at' => Carbon::now(),
                 ];
-
-
             }
-
             InterviewNoteValues::insert($interview_note_values);
-
-
         }
 
         return view('modals.interview-notes',

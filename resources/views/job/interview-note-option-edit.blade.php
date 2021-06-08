@@ -113,11 +113,13 @@
         function hideWeight(e) {
           if(e.value == 'rating'){
             document.getElementById('weightDiv').style.display = 'block';
-            document.getElementById('weight').setAttribute("required", "");
+            document.getElementById('weight_min').setAttribute("required", "");
+            document.getElementById('weight_max').setAttribute("required", "");
           }else{
             $('#weight').val('');
             document.getElementById('weightDiv').style.display = 'none';
-            document.getElementById('weight').removeAttribute("required");
+            document.getElementById('weight_min') ? document.getElementById('weight_min').removeAttribute("required") : false;
+            document.getElementById('weight_max') ? document.getElementById('weight_max').removeAttribute("required") : false;
           }
         }
     </script>

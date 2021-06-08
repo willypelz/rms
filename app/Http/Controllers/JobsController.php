@@ -1523,157 +1523,94 @@ class JobsController extends Controller
 
         $extension = $request->file('cv-upload-file') ? $request->file('cv-upload-file')->getClientOriginalExtension() : null;
 
-        if($request->type == "single"){
-            $allowed_file_extentions = ['pdf','doc','docx','txt','rtf','pptx','ppt'];
-            if (!in_array($extension, $allowed_file_extentions)) {
-                return ['status' => 0, 'data' => 'Allowed extensions are .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt'];
-            }
-        }else{
-            if ($extension != 'zip') {
-                return ['status' => 0, 'data' => 'Allowed extension is .zip'];
-            }
-        }
-        $randomName = Auth::user()->id . "_" . get_current_company()->id . "_" . time() . "_";
-        $filename = $randomName . $request->file('cv-upload-file')->getClientOriginalName();
+		if ($request->isMethod('post')) {
+			$company = Company::find($request->comp);
+			$job = Job::find($request->job);
 
-        $mimeType = $request->file('cv-upload-file')->getMimeType();
+			// $company->users()->detach($request->ref);
 
-        $upload = $request->file('cv-upload-file')->move(
-            public_path('uploads/CVs/'), $filename
-        );
-        $additional_data = ['job_id' => @$request->job, 'folder' => @$request->folder, 'options' => $request->options];
+			$job->users()->detach($request->ref);
+			JobTeamInvite::where('job_id', $job->id)->where('email', $team_member->email)->delete();
+			return response()->json(['status' => true, 'message' => 'Removed successfully']);
+		}
 
-        if ($mimeType == 'application/zip') {
-            $request_data = json_encode($request->all());
-            $this->dispatch(new UploadZipCv($filename, $randomName, $additional_data, $request_data));
-            return ['status' => 1, 'data' => "You will receive email notification once successfully uploaded"];
-        } else {
-            $cvs = [$filename];
-            saveCompanyUploadedCv($cvs, $additional_data, $request);
-            return ['status' => 1, 'data' => 'Cv(s) uploaded successfully'];
-        }
-    }
+		return view('modals.job-team-remove', compact('team_member', 'comp', 'job', 'ref'));
 
 
-    public function adminUploadDocument(Request $request){
+		}
 
-        $request->validate([
-            'document_file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt,jpg,jpeg,png',
-        ]);
+	public function adminUploadDocument(Request $request)
+	{
 
-        if ($request->hasFile('document_file')) {
+		$request->validate([
+			'document_file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt,jpg,jpeg,png',
+		]);
 
-            $file_name = (@$request->document_file->getClientOriginalName());
-            $fi = @$request->file('document_file')->getClientOriginalExtension();
-            $document_file = $request->application_id . '-' . time() . '-' . $file_name;
+		if ($request->hasFile('document_file')) {
 
-            $upload = $request->file('document_file')->move(
-                env('fileupload'), $document_file
-            );
-        } else {
-            $document_file = '';
-        }
-        $message = CandidateMessage::create([
-            'job_application_id' => $request->appl_id,
-            'description' => $request->document_description,
-            'title' => $request->document_title,
-            'attachment' => $document_file,
-        ]);
-        return ['status' => 1, 'data' => 'Documents Uploaded successfully'];
-    }
+			$file_name = (@$request->document_file->getClientOriginalName());
+			$fi = @$request->file('document_file')->getClientOriginalExtension();
+			$document_file = $request->application_id . '-' . time() . '-' . $file_name;
 
-    public function JobList(Request $request)
-    {
-        $user = User::with([
-            'companies.jobs'
-        ])->where('id', Auth::user()->id)
-            ->first();
+			$upload = $request->file('document_file')->move(
+				env('fileupload'), $document_file
+			);
+		} else {
+			$document_file = '';
+		}
+		$message = CandidateMessage::create([
+			'job_application_id' => $request->appl_id,
+			'description' => $request->document_description,
+			'title' => $request->document_title,
+			'attachment' => $document_file,
+		]);
+		return ['status' => 1, 'data' => 'Documents Uploaded successfully'];
+	}
 
-        $company = get_current_company();
-        $jobsOrm = $company->jobs()->with([
-            'workflow.workflowSteps' => function ($q) {
-                return $q->orderBy('order', 'asc');
-            }
-        ]);
+	public function JobList(Request $request)
+	{
+		$user = User::with([
+			'companies.jobs'
+		])->where('id', Auth::user()->id)
+			->first();
 
-        $jobs = $jobsOrm->orderBy('created_at', 'desc');
+		$company = get_current_company();
+		$jobsOrm = $company->jobs()->with([
+			'workflow.workflowSteps' => function ($q) {
+				return $q->orderBy('order', 'asc');
+			}
+		]);
 
-        $job_access = Job::where('company_id', $company->id)->whereHas('users', function ($q) use ($user) {
-            $q->where('user_id', $user->id);
-        })->get()->pluck('id')->toArray();
+		$jobs = $jobsOrm->orderBy('created_at', 'desc');
 
-        $is_super_admin = $user->is_super_admin;
+		$job_access = Job::where('company_id', $company->id)->whereHas('users', function ($q) use ($user) {
+			$q->where('user_id', $user->id);
+		})->get()->pluck('id')->toArray();
 
-        if (isset($request->q)) {
-            $jobs = $jobs->where('title', 'LIKE', '%' . $request->q . '%');
-        }
-        if (!$is_super_admin) {
-            $jobs = $jobs->whereIn('id', $job_access);
-        }
+		$is_super_admin = $user->is_super_admin;
 
-        $jobs = $jobs->with('workflow.workflowSteps.users')->get();
-        $active = 0;
-        $suspended = 0;
-        $deleted = 0;
-        $expired = 0;
-        $draft = 0;
-        $private = 0;
+		if (isset($request->q)) {
+			$jobs = $jobs->where('title', 'LIKE', '%' . $request->q . '%');
+		}
+		if (!$is_super_admin) {
+			$jobs = $jobs->whereIn('id', $job_access);
+		}
 
-        $active_jobs = [];
-        $suspended_jobs = [];
-        $deleted_jobs = [];
-        $expired_jobs = [];
-        $draft_jobs = [];
-        $private_jobs = $jobs->where('is_private', true)->whereNotIn('status', ['DELETED', 'SUSPENDED', 'DRAFT']);
-        $private = count($private_jobs);
+		$jobs = $jobs->with('workflow.workflowSteps.users')->get();
+		$active = 0;
+		$suspended = 0;
+		$deleted = 0;
+		$expired = 0;
+		$draft = 0;
+		$private = 0;
 
-        foreach ($jobs as $job) {
-            if ($job->status == 'DELETED') {
-                $deleted_jobs[] = $job;
-                $deleted++;
-            } else if (Carbon::now()->diffInDays(Carbon::parse($job->expiry_date), false) < 0) {
-
-                $expired_jobs[] = $job;
-                $expired++;
-            } else if ($job->status == 'ACTIVE') {
-                $active_jobs[] = $job;
-                $active++;
-            } else if ($job->status == 'SUSPENDED') {
-                $suspended_jobs[] = $job;
-                $suspended++;
-            } else if ($job->status == 'DRAFT') {
-                $draft_jobs[] = $job;
-                $draft++;
-            }
-
-        }
-
-
-        $all_jobs = [
-            'ACTIVE' => $active_jobs,
-            'SUSPENDED' => $suspended_jobs,
-            'EXPIRED' => $expired_jobs,
-            'DRAFT' => $draft_jobs,
-            'PRIVATE' => $private_jobs
-            //  'DELETED' => $deleted_jobs  TODO
-        ];
-
-
-        @$q = @$request->q;
-
-        return view('job.job-list', compact('jobs', 'draft', 'active', 'suspended', 'deleted', 'company', 'all_jobs', 'expired', 'q', 'private'));
-    }
-
-
-     public function JobPromote($id, Request $request)
-    {
-        //Check if he  is the owner of the job
-        check_if_job_owner($id);
-        $job = Job::find($id);
-        $company = $job->company()->first();
-        $myFolders = [];
-
-        $active_tab = 'promote';
+		$active_jobs = [];
+		$suspended_jobs = [];
+		$deleted_jobs = [];
+		$expired_jobs = [];
+		$draft_jobs = [];
+		$private_jobs = $jobs->where('is_private', true)->whereNotIn('status', ['DELETED', 'SUSPENDED', 'DRAFT']);
+		$private = count($private_jobs);
 
 
         $job_id = $id;
@@ -2555,6 +2492,103 @@ class JobsController extends Controller
             }
 
 
+			//saving cv...
+			$cv = new Cv;
+			if ($fields->first_name->is_visible && isset($data['first_name'])) {
+				$cv->first_name = $data['first_name'];
+			}
+			if ($fields->last_name->is_visible && isset($data['last_name'])) {
+				$cv->last_name = $data['last_name'];
+			}
+			if ($fields->cover_note->is_visible && isset($data['cover_note'])) {
+				$cv->headline = $data['cover_note'];
+			}
+			if ($fields->email->is_visible && isset($data['email'])) {
+				$cv->email = $data['email'];
+			}
+			if ($fields->phone->is_visible && isset($data['phone'])) {
+				$cv->phone = $data['phone'];
+			}
+			if ($fields->gender->is_visible && isset($data['gender'])) {
+				$cv->gender = $data['gender'];
+			}
+			if ($fields->date_of_birth->is_visible && isset($data['date_of_birth'])) {
+				$cv->date_of_birth = $data['date_of_birth'];
+			}
+			if ($fields->marital_status->is_visible && isset($data['marital_status'])) {
+				$cv->marital_status = $data['marital_status'];
+			}
+
+			if ($fields->location->is_visible && (isset($data['location']) || isset($data['country']))) {
+				$location_value = ($request->country != 'Nigeria') ? $request->country :
+					(($request->location == 'Across Nigeria') ? 'Nigeria' : $request->location);
+
+				$cv->state = $location_value;
+			}
+			if ($fields->highest_qualification->is_visible && isset($data['highest_qualification'])) {
+				if ($data['highest_qualification'] != "") {
+					$cv->highest_qualification = $qualifications[$data['highest_qualification']];
+				}
+
+			}
+			if ($fields->last_position->is_visible && isset($data['last_position'])) {
+				$cv->last_position = $data['last_position'];
+			}
+			if ($fields->last_company_worked->is_visible && isset($data['last_company_worked'])) {
+				$cv->last_company_worked = $data['last_company_worked'];
+			}
+			if ($fields->years_of_experience->is_visible && isset($data['years_of_experience'])) {
+				$cv->years_of_experience = $data['years_of_experience'];
+			}
+			if ($fields->graduation_grade->is_visible && isset($data['date_of_birth'])) {
+				$cv->graduation_grade = $data['graduation_grade'];
+			}
+			if ($fields->willing_to_relocate->is_visible && isset($data['willing_to_relocate'])) {
+				$cv->willing_to_relocate = $data['willing_to_relocate'];
+			}
+			if ($fields->cv_file->is_visible && isset($data['cv_file'])) {
+				$cv->cv_file = $data['cv_file'];
+			}
+
+			if ($fields->state_of_origin->is_visible && (isset($data['location']) || isset($data['country']))) {
+				$location_value = ($request->country != 'Nigeria') ? $request->country :
+					(($request->location == 'Across Nigeria') ? 'Nigeria' : $request->location);
+
+				$cv->state_of_origin = $location_value;
+			}
+
+
+			$cv->candidate_id = $candidate->id;
+			$cv->optional_attachment_1 = $data['optional_attachment_1'] ?? null;
+			$cv->optional_attachment_2 = $data['optional_attachment_2'] ?? null;
+			$cv->applicant_type = $data['applicant_type'] ?? null;
+			$cv->save();
+
+			$cvExt = new CvSalesController();
+			$cvExt->ExtractCv($cv);
+
+			//saving job application...
+			$appl = new JobApplication;
+
+			if ($fields->cover_note->is_visible && isset($data['cover_note'])) {
+				$appl->cover_note = $data['cover_note'];
+			}
+
+			$appl->cv_id = $cv->id;
+			$appl->job_id = $job->id;
+			$appl->status = 'PENDING';
+			$appl->created = $data['created'] ?? null;
+			$appl->action_date = $data['action_date'] ?? null;
+			$appl->candidate_id = $candidate->id;
+			$appl->save();
+
+			if ($request->specializations) {
+				foreach ($request->specializations as $e) {
+					$cv->specializations()->attach($e);
+				}
+			}
+
+
             $appl_activities = (save_activities('APPLIED', $jobID, $appl->id, ''));
 
             if (count($custom_fields) > 0) {
@@ -2581,6 +2615,28 @@ class JobsController extends Controller
                     } else {
                         $value = $request['cf_' . str_slug($custom_field->name, '_')];
                     }
+
+                    $custom_field_values[] = [
+                        'form_field_id' => $custom_field->id,
+                        'value' => $value,
+                        'job_application_id' => @$appl->id
+                    ];
+                }
+
+                FormFieldValues::insert($custom_field_values);
+            }
+
+                foreach ($custom_fields as $custom_field) {
+                    $value = '';
+                    if ($custom_field->type == "FILE") {
+                        $name = 'cf_' . str_slug($custom_field->name, '_');
+                        if ($request->hasFile($name)) {
+
+            if ($request->hasFile('cv_file')) {
+
+                $destinationPath = env('fileupload') . '/CVs';
+
+                $request->file('cv_file')->move($destinationPath, $data['cv_file']);
 
                     $custom_field_values[] = [
                         'form_field_id' => $custom_field->id,
@@ -3181,78 +3237,20 @@ class JobsController extends Controller
     public function DuplicateJob(Request $request)
     {
 
-        $newJob = Job::find($request->job_id)->replicate();
-        $newJob->save();
-        $newJob->status = "DRAFT";
-        $newJob->save();
-        if ($newJob) {
-            echo true;
-        }
-    }
-
-    public function addCompany(Request $request)
-    {
-
-        if ($request->isMethod('post')) {
-
-
-            $validator = Validator::make($request->all(), [
-                'slug' => 'unique:companies'
-            ]);
-
-            if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
-
-
-            if (isset($request->logo)) {
-                $file_name = ($request->logo->getClientOriginalName());
-                $fi = $request->file('logo')->getClientOriginalExtension();
-                $logo = $request->company_name . '-' . $file_name;
-                $upload = $request->file('logo')->move(
-                    env('fileupload'), $logo
-                );
-            } else {
-                $logo = "";
-            }
-
-
-            $comp = Company::FirstorCreate([
-                'name' => $request->company_name,
-                'email' => $request->company_email,
-                'slug' => $request->slug,
-                'phone' => $request->phone,
-                'website' => $request->website,
-                'address' => $request->address,
-                'about' => $request->about_company,
-                'logo' => $logo,
-                'date_added' => date('Y-m-d H:i:s'),
-            ]);
-
-            $assoc = DB::table('company_users')->insert([
-                ['user_id' => Auth::user()->id, 'company_id' => $comp->id]
-            ]);
-
-            $tests = DB::table('company_tests')->insert([
-                ['ats_product_id' => 23, 'company_id' => $comp->id],
-                ['ats_product_id' => 24, 'company_id' => $comp->id],
-                ['ats_product_id' => 25, 'company_id' => $comp->id],
-                ['ats_product_id' => 27, 'company_id' => $comp->id]
-            ]);
-
             if ($request->subsidiary_creation_page)	return redirect('company/subsidiaries')->with('success', "Subsidiary created successfully.");
 
             // if($upload){
             return redirect('select-company/' . $request->slug);
             // }
 
+        if ($request->isMethod('post')) {
 
         }
         return view('company.add');
     }
 
     public function editCompany(UpdateCompanyRequest $request)
-    {
+	{
             if (isset($request->logo)) {
                 $file_name = ($request->logo->getClientOriginalName());
                 $fi = $request->file('logo')->getClientOriginalExtension();
@@ -3266,7 +3264,7 @@ class JobsController extends Controller
 	        seamlessSave(Configs::COMPANY_MODEL,  $request->toArray(), $request->company_id);
             if ($request->company_creation_page) return back()->with('success', "Company updated successfully.");
           return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
-    }
+	}
 
     public function selectCompany(Request $request)
     {

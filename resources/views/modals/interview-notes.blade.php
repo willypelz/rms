@@ -53,21 +53,7 @@
                       </div>
                     </div>
                   </div>
-                  {{-- <div class="col-sm-5">
-                    <select id="rating" name="option_{{ $option->id }}" id="option_{{ $option->id }}" required>
-                      <option value></option>
-                      <option value="1" @if( @$interview_note[$option->id] == 1) selected="selected" @endif>Very Poor</option>
-                      <option value="2" @if( @$interview_note[$option->id] == 2) selected="selected" @endif>Poor</option>
-                      <option value="3" @if( @$interview_note[$option->id] == 3) selected="selected" @endif>Fair</option>
-                      <option value="4" @if( @$interview_note[$option->id] == 4) selected="selected" @endif>Good</option>
-                      <option value="5" @if( @$interview_note[$option->id] == 5) selected="selected" @endif>Very Good</option>
-                    </select>
-                    <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="1" > 1 </label>
-                    <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="2" > 2 </label>
-                    <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="3" > 3 </label>
-                    <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="4" > 4 </label>
-                    <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="5" > 5 </label> -->
-                  </div> --}}
+                  
                   
               <div class="clearfix"></div>
               </div>

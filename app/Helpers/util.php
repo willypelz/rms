@@ -14,6 +14,8 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use App\Models\TestRequest;
 use App\Models\ActivityLog;
 use Carbon\Carbon;
+use Ixudra\Curl\Facades\Curl;
+use App\User;
 
 // use Faker;
 
@@ -933,4 +935,39 @@ function seamlessSave( $modelName, array $data, $id)
 	$instance = $modelName::find($id);
 	$instance->fill($data)->save();
 	return $instance;
+}
+
+/**
+ * TO ACCESS HRMS USING GET HTTP PROTOCOL
+ * @param string $url the path segment excluding the base url i.e api/v2/get_user_default_company/
+ * @param array $data the payload to be used in the request
+ * @return array | null
+ */
+function getResponseFromHrmsByGET(string $url, array $data = []){
+    $rmsCompany = Company::whereNotNull('api_key')->first();
+    if(isHrmsIntegrated() && $rmsCompany) {
+        $response = Curl::to(env('STAFFSTRENGTH_URL') . $url )
+                        ->withHeader("X-API-KEY: " . $rmsCompany->api_key)
+                        ->withData($data)
+                        ->asJson()
+                        ->get();
+        return $response;
+    } 
+    return null;
+}
+
+/*
+ * Gets Company User ID
+ * @param int $user
+ * @return int
+ */
+function getCompanyId($userId = null) {
+
+	if (is_null($userId)) {
+		$company_id = is_null(session('active_company')) ? optional(auth()->user())->defaultCompany()->id : session('active_company')->id;
+	} else {
+		$company_id = User::find($userId)->first()->defaultCompany()->id;
+	}
+
+	return $company_id;
 }

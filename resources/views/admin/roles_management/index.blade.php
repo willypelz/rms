@@ -90,7 +90,7 @@
                                                         @if(!isHrmsIntegrated())
                                                             <div data-toggle="modal" data-target="#deleteSuperAdminModal{{ $user->id }}" href="#deleteSuperAdminModal{{ $user->id }}" data-title="Background Check"><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
                                                         @else
-                                                            <div disabled data-toggle="tooltip" data-placement="top" title="Your RMS is integrated with HRMS and as such you are only allowed to delete a super admin from HRMS"  data-title="Background Check" ><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
+                                                            <div disabled data-toggle="tooltip" class="faint" data-placement="top" title="Your RMS is integrated with HRMS and as such you are only allowed to delete a super admin from HRMS"  data-title="Background Check" ><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
                                                         @endif
                                                     </a>
                                                 </li>
@@ -347,4 +347,9 @@
             $('[data-toggle="tooltip"]').tooltip()
         })
     </script>
+    <style>
+        .faint{
+            opacity: 0.5;
+        }
+    </style>
 @endsection

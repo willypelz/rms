@@ -32,15 +32,18 @@ class HrmsIntegrationController extends Controller
 
         $data = $request->validate($data);
         $apiKey = $request->header('X-API-KEY');
-        
+    
         $user = User::where("email", base64_decode($data["email"]))->first();
-        $authorized = $user->companies()->where("api_key", $apiKey)->first();
-        if($user && $authorized){
-            $data = $user;
-            $user->delete();
-            return response()->json(["status"=>"success", "msg"=>"Admin Deleted Successfully"], 200);
+        if($user){
+            $authorized = $user->companies()->where("api_key", $apiKey)->first();
+            if($authorized){
+                $data = $user;
+                $user->delete();
+                return response()->json(["status"=>"success", "msg"=>"Admin Deleted Successfully"], 200);
+            }
+            return response()->json(["status"=>"error", "msg"=>"Invalid Api Key"], 400);
         }
-        return response()->json(["status"=>"error", "msg"=>"Operation Admin Delete Not Successful"], 401);
+        return response()->json(["status"=>"error", "msg"=>"Super Admin Does not exist on Rms"], 400);
     }
 
 }

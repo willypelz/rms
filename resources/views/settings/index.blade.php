@@ -1,7 +1,9 @@
 @extends('settings.base')
 
 @section('main-content')
-
+    <script src="{{ asset('js/jquery.slugify.js') }}"></script>
+    <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
     <section class="no-pad">
         <div class="container">
             <div class="section_card">
@@ -32,6 +34,25 @@
                                     <input type="hidden" name="company_creation_page" value="true">
                                     <input type="hidden" name="company_id" value="{{$company->id}}">
                                     <div class="row">
+                                        <div class="col-sm-6 col-sm-offset-3 text-center">
+                                            <div class="form-group{{ $errors->has('logo') ? ' has-error' : '' }}">
+                                                <label class="col-md-12" for="">Company Logo</label>
+                                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                    <div class="fileinput-preview thumbnail" data-trigger="fileinput"
+                                                         style="width: 200px; height: 150px;"></div>
+                                                    <div>
+                                                <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span
+                                                            class="fileinput-exists">Change</span>
+                                                 <?php  echo Form::file('logo'); ?>
+                                                </span>
+                                                        <a href="#" class="btn btn-default fileinput-exists"
+                                                           data-dismiss="fileinput">Remove</a>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
                                         <div class="col-sm-12">
                                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                                                 <label for=""> Company name</label>
@@ -134,4 +155,5 @@
 
         </div>
     </section>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
 @endsection

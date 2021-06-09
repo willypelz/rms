@@ -91,7 +91,7 @@
                                             <div class="form-group{{ $errors->has('website') ? ' has-error' : '' }}">
                                                 <label for="">Subsidiary Company Website</label>
                                                 <input type="text" class="form-control" id="" placeholder=""
-                                                       name="website" value="{{ old('website') }}" required>
+                                                       name="website" value="{{ old('website') }}" readonly>
                                                 @if ($errors->has('website'))
                                                     <span class="help-block">
                                                 <strong>{{ $errors->first('website') }}</strong>

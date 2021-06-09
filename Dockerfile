@@ -99,6 +99,8 @@ RUN apt-get -yq update && apt-get install -y supervisor
 
 RUN mv supervisord.conf /etc/supervisord.conf
 
+RUN chmod u+x ./fix-scripts.sh
+
 RUN ./fix-scripts.sh
 
 RUN apt-get -yq update && apt-get install -y cron && mkdir -p /etc/cron.d

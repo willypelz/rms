@@ -49,20 +49,24 @@ cd ~ \
 
 cd /var/www/html
 
-{
-    set -e
-    php artisan migrate --seed --force
-}
-# php artisan migrate --seed --force
+# {
+#     set -e
+#     php artisan migrate --seed --force
+# }
+php artisan migrate --seed --force
+composer dump-autoload
 
-# chmod u+x fix-scripts.sh
+chmod u+x fix-scripts.sh
 
-# ./fix-scripts.sh
+./fix-scripts.sh
 
-# cd /etc && /usr/bin/supervisord
+cd /etc && /usr/bin/supervisord
 
-# supervisorctl reread && supervisorctl reload && supervisorctl stop all && supervisorctl start all
+supervisorctl reread && supervisorctl reload && supervisorctl stop all && supervisorctl start all
 
-# crontab /etc/cron.d/laravel-cron
+crontab /etc/cron.d/laravel-cron
+
+/usr/sbin/apache2ctl -D FOREGROUND
+
 
 /usr/sbin/apache2ctl -D FOREGROUND

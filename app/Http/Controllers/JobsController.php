@@ -121,22 +121,10 @@ class JobsController extends Controller
             'makeOldStaffsAdmin',
         ]]);
 
+
         $this->settings = $settings;
-        $this->qualifications = [
+        $this->qualifications = qualifications();
 
-            'MPhil / PhD',
-            'MBA / MSc',
-            'MBBS',
-            'B.Sc',
-            'HND',
-            'OND',
-            'N.C.E',
-            'Diploma',
-            'High School (S.S.C.E)',
-            'Vocational',
-            'Others'
-
-        ];
 
         $this->mailer = $mailer;
 
@@ -424,58 +412,6 @@ class JobsController extends Controller
         }
     }
 
-    }
-
-    /*
-    * To delete a job team admin user 
-    * @return Illuminate\Http\Response
-    */
-    public function JobTeamDelete(Request $request){
-
-        $data = [
-            "user_id" => "required"
-        ];
-        
-        $data = $request->validate($data);
-        $user = User::find($data["user_id"]);
-        if($user){
-            if(!isHrmsIntegrated())
-                return redirect()->back()->with(['warning' => "You are synced with HRMS and can only delete a super admin from HRMS"]);
-            $data = $user;
-            $user->delete();
-            logAction([
-                'log_name' => 'Job Team Admin Delete', 
-                'description' => 'An action that deletes a job team super admin',
-                'action_type' => 'Delete',
-                'causee_id' => $data->id,
-                'causer_id' =>  Auth::user()->id,
-            ]);
-            return redirect()->back()->with(['warning' => "Super Admin Deleted Successfully"]);
-        }
-            
-        return redirect()->back()->with(['warning' => "Operation delete Super Admin Not Successful"]);
-    }
-
-    public function JobTeamInviteeDelete(Request $request){
-        $data = [
-            "invitee_id" => "required"
-        ];
-        
-        $data = $request->validate($data);
-        $invitee = JobTeamInvite::find($data["invitee_id"]);
-        if($invitee && $invitee->is_cancelled){
-            $data = $invitee;
-            $invitee->delete();
-            logAction([
-                'log_name' => 'Job Team Invitee Delete',
-                'description' => 'An action that deletes a job team invitee',
-                'action_type' => 'Delete',
-                'causee_id' => $data->id,
-                'causer_id' =>  Auth::user()->id,
-            ]);
-            return redirect()->back()->with(['success' => "Job Team Invitee Deleted Successfully"]);
-        }
-        return redirect()->back()->with(['error' => "Operation delete Job Team Invitee Not Successful"]);
     }
 
 
@@ -1569,48 +1505,96 @@ class JobsController extends Controller
 
 	public function JobList(Request $request)
 	{
-		$user = User::with([
-			'companies.jobs'
-		])->where('id', Auth::user()->id)
-			->first();
+        $user = User::with([
+            'companies.jobs'
+        ])->where('id', Auth::user()->id)
+            ->first();
 
-		$company = get_current_company();
-		$jobsOrm = $company->jobs()->with([
-			'workflow.workflowSteps' => function ($q) {
-				return $q->orderBy('order', 'asc');
-			}
-		]);
+        $company = get_current_company();
+        $jobsOrm = $company->jobs()->with([
+            'workflow.workflowSteps' => function ($q) {
+                return $q->orderBy('order', 'asc');
+            }
+        ]);
 
-		$jobs = $jobsOrm->orderBy('created_at', 'desc');
+        $jobs = $jobsOrm->orderBy('created_at', 'desc');
 
-		$job_access = Job::where('company_id', $company->id)->whereHas('users', function ($q) use ($user) {
-			$q->where('user_id', $user->id);
-		})->get()->pluck('id')->toArray();
+        $job_access = Job::where('company_id', $company->id)->whereHas('users', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
+        })->get()->pluck('id')->toArray();
 
-		$is_super_admin = $user->is_super_admin;
+        $is_super_admin = $user->is_super_admin;
 
-		if (isset($request->q)) {
-			$jobs = $jobs->where('title', 'LIKE', '%' . $request->q . '%');
-		}
-		if (!$is_super_admin) {
-			$jobs = $jobs->whereIn('id', $job_access);
-		}
+        if (isset($request->q)) {
+            $jobs = $jobs->where('title', 'LIKE', '%' . $request->q . '%');
+        }
+        if (!$is_super_admin) {
+            $jobs = $jobs->whereIn('id', $job_access);
+        }
 
-		$jobs = $jobs->with('workflow.workflowSteps.users')->get();
-		$active = 0;
-		$suspended = 0;
-		$deleted = 0;
-		$expired = 0;
-		$draft = 0;
-		$private = 0;
+        $jobs = $jobs->with('workflow.workflowSteps.users')->get();
+        $active = 0;
+        $suspended = 0;
+        $deleted = 0;
+        $expired = 0;
+        $draft = 0;
+        $private = 0;
 
-		$active_jobs = [];
-		$suspended_jobs = [];
-		$deleted_jobs = [];
-		$expired_jobs = [];
-		$draft_jobs = [];
-		$private_jobs = $jobs->where('is_private', true)->whereNotIn('status', ['DELETED', 'SUSPENDED', 'DRAFT']);
-		$private = count($private_jobs);
+        $active_jobs = [];
+        $suspended_jobs = [];
+        $deleted_jobs = [];
+        $expired_jobs = [];
+        $draft_jobs = [];
+        $private_jobs = $jobs->where('is_private', true)->whereNotIn('status', ['DELETED', 'SUSPENDED', 'DRAFT']);
+        $private = count($private_jobs);
+
+        foreach ($jobs as $job) {
+            if ($job->status == 'DELETED') {
+                $deleted_jobs[] = $job;
+                $deleted++;
+            } else if (Carbon::now()->diffInDays(Carbon::parse($job->expiry_date), false) < 0) {
+
+                $expired_jobs[] = $job;
+                $expired++;
+            } else if ($job->status == 'ACTIVE') {
+                $active_jobs[] = $job;
+                $active++;
+            } else if ($job->status == 'SUSPENDED') {
+                $suspended_jobs[] = $job;
+                $suspended++;
+            } else if ($job->status == 'DRAFT') {
+                $draft_jobs[] = $job;
+                $draft++;
+            }
+
+        }
+
+
+        $all_jobs = [
+            'ACTIVE' => $active_jobs,
+            'SUSPENDED' => $suspended_jobs,
+            'EXPIRED' => $expired_jobs,
+            'DRAFT' => $draft_jobs,
+            'PRIVATE' => $private_jobs
+            //  'DELETED' => $deleted_jobs  TODO
+        ];
+
+
+        @$q = @$request->q;
+
+        return view('job.job-list', compact('jobs', 'draft', 'active', 'suspended', 'deleted', 'company', 'all_jobs', 'expired', 'q', 'private'));
+    }
+
+
+    public function JobPromote($id, Request $request)
+    {
+        //Check if he  is the owner of the job
+        check_if_job_owner($id);
+        $job = Job::find($id);
+        $company = $job->company()->first();
+        $myFolders = [];
+
+        $active_tab = 'promote';
 
 
         $job_id = $id;
@@ -1642,7 +1626,6 @@ class JobsController extends Controller
 
         return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
     }
-
 
     public function JobTeam($id, Request $request)
     {
@@ -2284,7 +2267,7 @@ class JobsController extends Controller
         if($candidate->is_from == 'external' && $job->is_for == 'internal')
         {
             return redirect()->route('candidate-dashboard')
-            ->withErrors(['warning' => 'You can not apply for this job, It is meant for Internal candidate']);
+                ->withErrors(['warning' => 'You can not apply for this job, It is meant for Internal candidate']);
         }
 
         // disavow internal staff from applying to external jobs
@@ -2492,103 +2475,6 @@ class JobsController extends Controller
             }
 
 
-			//saving cv...
-			$cv = new Cv;
-			if ($fields->first_name->is_visible && isset($data['first_name'])) {
-				$cv->first_name = $data['first_name'];
-			}
-			if ($fields->last_name->is_visible && isset($data['last_name'])) {
-				$cv->last_name = $data['last_name'];
-			}
-			if ($fields->cover_note->is_visible && isset($data['cover_note'])) {
-				$cv->headline = $data['cover_note'];
-			}
-			if ($fields->email->is_visible && isset($data['email'])) {
-				$cv->email = $data['email'];
-			}
-			if ($fields->phone->is_visible && isset($data['phone'])) {
-				$cv->phone = $data['phone'];
-			}
-			if ($fields->gender->is_visible && isset($data['gender'])) {
-				$cv->gender = $data['gender'];
-			}
-			if ($fields->date_of_birth->is_visible && isset($data['date_of_birth'])) {
-				$cv->date_of_birth = $data['date_of_birth'];
-			}
-			if ($fields->marital_status->is_visible && isset($data['marital_status'])) {
-				$cv->marital_status = $data['marital_status'];
-			}
-
-			if ($fields->location->is_visible && (isset($data['location']) || isset($data['country']))) {
-				$location_value = ($request->country != 'Nigeria') ? $request->country :
-					(($request->location == 'Across Nigeria') ? 'Nigeria' : $request->location);
-
-				$cv->state = $location_value;
-			}
-			if ($fields->highest_qualification->is_visible && isset($data['highest_qualification'])) {
-				if ($data['highest_qualification'] != "") {
-					$cv->highest_qualification = $qualifications[$data['highest_qualification']];
-				}
-
-			}
-			if ($fields->last_position->is_visible && isset($data['last_position'])) {
-				$cv->last_position = $data['last_position'];
-			}
-			if ($fields->last_company_worked->is_visible && isset($data['last_company_worked'])) {
-				$cv->last_company_worked = $data['last_company_worked'];
-			}
-			if ($fields->years_of_experience->is_visible && isset($data['years_of_experience'])) {
-				$cv->years_of_experience = $data['years_of_experience'];
-			}
-			if ($fields->graduation_grade->is_visible && isset($data['date_of_birth'])) {
-				$cv->graduation_grade = $data['graduation_grade'];
-			}
-			if ($fields->willing_to_relocate->is_visible && isset($data['willing_to_relocate'])) {
-				$cv->willing_to_relocate = $data['willing_to_relocate'];
-			}
-			if ($fields->cv_file->is_visible && isset($data['cv_file'])) {
-				$cv->cv_file = $data['cv_file'];
-			}
-
-			if ($fields->state_of_origin->is_visible && (isset($data['location']) || isset($data['country']))) {
-				$location_value = ($request->country != 'Nigeria') ? $request->country :
-					(($request->location == 'Across Nigeria') ? 'Nigeria' : $request->location);
-
-				$cv->state_of_origin = $location_value;
-			}
-
-
-			$cv->candidate_id = $candidate->id;
-			$cv->optional_attachment_1 = $data['optional_attachment_1'] ?? null;
-			$cv->optional_attachment_2 = $data['optional_attachment_2'] ?? null;
-			$cv->applicant_type = $data['applicant_type'] ?? null;
-			$cv->save();
-
-			$cvExt = new CvSalesController();
-			$cvExt->ExtractCv($cv);
-
-			//saving job application...
-			$appl = new JobApplication;
-
-			if ($fields->cover_note->is_visible && isset($data['cover_note'])) {
-				$appl->cover_note = $data['cover_note'];
-			}
-
-			$appl->cv_id = $cv->id;
-			$appl->job_id = $job->id;
-			$appl->status = 'PENDING';
-			$appl->created = $data['created'] ?? null;
-			$appl->action_date = $data['action_date'] ?? null;
-			$appl->candidate_id = $candidate->id;
-			$appl->save();
-
-			if ($request->specializations) {
-				foreach ($request->specializations as $e) {
-					$cv->specializations()->attach($e);
-				}
-			}
-
-
             $appl_activities = (save_activities('APPLIED', $jobID, $appl->id, ''));
 
             if (count($custom_fields) > 0) {
@@ -2615,28 +2501,6 @@ class JobsController extends Controller
                     } else {
                         $value = $request['cf_' . str_slug($custom_field->name, '_')];
                     }
-
-                    $custom_field_values[] = [
-                        'form_field_id' => $custom_field->id,
-                        'value' => $value,
-                        'job_application_id' => @$appl->id
-                    ];
-                }
-
-                FormFieldValues::insert($custom_field_values);
-            }
-
-                foreach ($custom_fields as $custom_field) {
-                    $value = '';
-                    if ($custom_field->type == "FILE") {
-                        $name = 'cf_' . str_slug($custom_field->name, '_');
-                        if ($request->hasFile($name)) {
-
-            if ($request->hasFile('cv_file')) {
-
-                $destinationPath = env('fileupload') . '/CVs';
-
-                $request->file('cv_file')->move($destinationPath, $data['cv_file']);
 
                     $custom_field_values[] = [
                         'form_field_id' => $custom_field->id,
@@ -2709,15 +2573,13 @@ class JobsController extends Controller
         $referer_url = (request()->headers->get('referer'));
 
         if(Str::contains($referer_url, 'job/share'))
-                $fromShareURL = true;
+            $fromShareURL = true;
 
-	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
 
-	    return view('job.job-apply', compact('job', 'qualifications', 'states', 'company',
-		    'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate',
-		    'last_cv', 'fields','countries','privacy_policy'));
 
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate', 'last_cv', 'fields','countries'));
     }
+
 
     public function JobVideoApplication($jobID, $job_slug, $appl_id, Request $request)
     {
@@ -3237,13 +3099,70 @@ class JobsController extends Controller
     public function DuplicateJob(Request $request)
     {
 
-            if ($request->subsidiary_creation_page)	return redirect('company/subsidiaries')->with('success', "Subsidiary created successfully.");
+        $newJob = Job::find($request->job_id)->replicate();
+        $newJob->save();
+        $newJob->status = "DRAFT";
+        $newJob->save();
+        if ($newJob) {
+            echo true;
+        }
+    }
+
+    public function addCompany(Request $request)
+    {
+
+        if ($request->isMethod('post')) {
+
+
+            $validator = Validator::make($request->all(), [
+                'slug' => 'unique:companies'
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+
+            if (isset($request->logo)) {
+                $file_name = ($request->logo->getClientOriginalName());
+                $fi = $request->file('logo')->getClientOriginalExtension();
+                $logo = $request->company_name . '-' . $file_name;
+                $upload = $request->file('logo')->move(
+                    env('fileupload'), $logo
+                );
+            } else {
+                $logo = "";
+            }
+
+
+            $comp = Company::FirstorCreate([
+                'name' => $request->company_name,
+                'email' => $request->company_email,
+                'slug' => $request->slug,
+                'phone' => $request->phone,
+                'website' => $request->website,
+                'address' => $request->address,
+                'about' => $request->about_company,
+                'logo' => $logo,
+                'date_added' => date('Y-m-d H:i:s'),
+            ]);
+
+            $assoc = DB::table('company_users')->insert([
+                ['user_id' => Auth::user()->id, 'company_id' => $comp->id]
+            ]);
+
+            $tests = DB::table('company_tests')->insert([
+                ['ats_product_id' => 23, 'company_id' => $comp->id],
+                ['ats_product_id' => 24, 'company_id' => $comp->id],
+                ['ats_product_id' => 25, 'company_id' => $comp->id],
+                ['ats_product_id' => 27, 'company_id' => $comp->id]
+            ]);
+
 
             // if($upload){
             return redirect('select-company/' . $request->slug);
             // }
 
-        if ($request->isMethod('post')) {
 
         }
         return view('company.add');
@@ -3376,5 +3295,56 @@ class JobsController extends Controller
        return null;
     }
 
+            /*
+         * To delete a job team admin user
+         * @return Illuminate\Http\Response
+         */
+            public function JobTeamDelete(Request $request){
+
+                $data = [
+                    "user_id" => "required"
+                ];
+
+                $data = $request->validate($data);
+                $user = User::find($data["user_id"]);
+                if($user){
+                    if(!isHrmsIntegrated())
+                        return redirect()->back()->with(['warning' => "You are synced with HRMS and can only delete a super admin from HRMS"]);
+                    $data = $user;
+                    $user->delete();
+                    logAction([
+                        'log_name' => 'Job Team Admin Delete',
+                        'description' => 'An action that deletes a job team super admin',
+                        'action_type' => 'Delete',
+                        'causee_id' => $data->id,
+                        'causer_id' =>  Auth::user()->id,
+                    ]);
+                    return redirect()->back()->with(['warning' => "Super Admin Deleted Successfully"]);
+                }
+
+                return redirect()->back()->with(['warning' => "Operation delete Super Admin Not Successful"]);
+            }
+
+            public function JobTeamInviteeDelete(Request $request){
+                $data = [
+                    "invitee_id" => "required"
+                ];
+
+                $data = $request->validate($data);
+                $invitee = JobTeamInvite::find($data["invitee_id"]);
+                if($invitee && $invitee->is_cancelled){
+                    $data = $invitee;
+                    $invitee->delete();
+                    logAction([
+                        'log_name' => 'Job Team Invitee Delete',
+                        'description' => 'An action that deletes a job team invitee',
+                        'action_type' => 'Delete',
+                        'causee_id' => $data->id,
+                        'causer_id' =>  Auth::user()->id,
+                    ]);
+                    return redirect()->back()->with(['success' => "Job Team Invitee Deleted Successfully"]);
+                }
+                return redirect()->back()->with(['error' => "Operation delete Job Team Invitee Not Successful"]);
+            }
 
 }

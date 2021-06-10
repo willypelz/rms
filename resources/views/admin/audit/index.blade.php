@@ -34,7 +34,7 @@
                                             {{ $audit->description}}
                                         </td>
                                         <td>
-                                            {{ $audit->subject->name ?? $audit->subjectCandidate->name()}}
+                                            {{ $audit->subject->name ?? $audit->candidateSubject->first_name.' '.$audit->candidateSubject->last_name }}
                                         </td>
                                         <td>
                                             {{ $audit->created_at->toDayDateTimeString()}}

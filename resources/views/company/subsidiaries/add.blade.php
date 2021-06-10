@@ -60,6 +60,25 @@
                                                 @endif
                                             </div>
                                         </div>
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group{{ $errors->has('slug') ? ' has-error' : '' }}">
+                                                <label for="">Subsidiary Company url</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">http://</span>
+                                                    <input type="text" class="form-control slug" id="" placeholder=""
+                                                           name="slug" value="{{ old('slug') }}" required>
+                                                    <span class="input-group-addon">.seamlesshiring.com</span>
+
+                                                </div>
+                                                @if ($errors->has('slug'))
+                                                    <span class="help-block">
+                                                <strong>{{ $errors->first('slug') }}</strong>
+                                            </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
                                         <div class="col-sm-6">
                                             <div class="form-group{{ $errors->has('company_email') ? ' has-error' : '' }}">
                                                 <label for="">Subsidiary Company Email</label>
@@ -91,7 +110,7 @@
                                             <div class="form-group{{ $errors->has('website') ? ' has-error' : '' }}">
                                                 <label for="">Subsidiary Company Website</label>
                                                 <input type="text" class="form-control" id="" placeholder=""
-                                                       name="website" value="{{ old('website') }}" required>
+                                                       name="website" value="{{ old('website') }}" readonly>
                                                 @if ($errors->has('website'))
                                                     <span class="help-block">
                                                 <strong>{{ $errors->first('website') }}</strong>

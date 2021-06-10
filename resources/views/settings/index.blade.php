@@ -65,6 +65,23 @@
                                                 @endif
                                             </div>
                                         </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group{{ $errors->has('slug') ? ' has-error' : '' }}">
+                                                <label for="">Subsidiary Company url</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">http://</span>
+                                                    <input type="text" class="form-control slug" id="" placeholder=""
+                                                           name="slug" value="{{  $company->slug }}" required>
+                                                    <span class="input-group-addon">.seamlesshiring.com</span>
+
+                                                </div>
+                                                @if ($errors->has('slug'))
+                                                    <span class="help-block">
+                                                <strong>{{ $errors->first('slug') }}</strong>
+                                            </span>
+                                                @endif
+                                            </div>
+                                        </div>
 
                                         <div class="col-sm-6">
                                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">

@@ -351,6 +351,10 @@ function get_current_company()
 {
 
     if (!is_null(Auth::user())) {
+        if(!is_null(auth()->user()->defaultCompany())){
+            return auth()->user()->defaultCompany();
+        }
+
         //If a company is selected
         if (Session::get('current_company_index')) {
             if (isset(Auth::user()->companies[Session::get('current_company_index')]))

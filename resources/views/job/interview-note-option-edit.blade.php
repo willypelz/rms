@@ -14,7 +14,6 @@
     <section class="">
         <div class="container">
             <div class="row">
-
                 <div class="col-sm-8 col-sm-offset-2">
                     <a href="{{ route('interview-note-options', ['interview_template_id' => $interview_template_id]) }}" class=""><i class="fa fa-chevron-left"></i> Back to options</a>
 
@@ -95,7 +94,7 @@
             }
 
             const validate = (e)=>{
-                if ( document.getElementById("weight_min").value > document.getElementById("weight_max").value ) {
+                if (  parseInt(document.getElementById("weight_min").value) > parseInt(document.getElementById("weight_max").value) ) {
                     e.preventDefault();
                     alertBox("error", "weight min must be less than weight max")
                     return false;

@@ -1968,7 +1968,7 @@ class JobApplicationsController extends Controller
             ]);
 
             if( (count($request->weight) > 0) && ($request->weight[0] > $request->weight[1])  ){
-                return redirect()->back()->with(["danger" => "weight min must be less than weight max"]);
+                return redirect()->back()->with(["error" => "weight min must be less than weight max"]);
             }
 
             InterviewNoteOptions::where('id', $request->id)->where('company_id', get_current_company()->id)->update([
@@ -2007,8 +2007,8 @@ class JobApplicationsController extends Controller
             'type' => 'required'
           ]);
 
-          if( (count($request->weight) > 0) && ($request->weight[0] > $request->weight[1])  ){
-              return redirect()->back()->with(["danger" => "weight min must be less than weight max"]);
+          if( (count($request->weight) > 0) && ($request->weight[0] > $request->weight[0])  ){
+              return redirect()->back()->with(["error" => "weight min must be less than weight max"]);
           }
 
             InterviewNoteOptions::create([

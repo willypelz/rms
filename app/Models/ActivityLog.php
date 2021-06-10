@@ -22,7 +22,7 @@ class ActivityLog extends Model
         return $this->hasOne('App\User', 'id', 'causee_id');
     }
 
-    public function subjectCandidate()
+    public function candidateSubject()
     {
         return $this->hasOne('App\Models\Candidate', 'id', 'causee_id');
     }

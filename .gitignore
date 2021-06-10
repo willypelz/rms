@@ -7,7 +7,6 @@ Homestead.yaml
 Homestead.json
 LocalValetDriver.php
 .env
-/public_html
 /.idea
 /.vscode
 /public_html/uploads

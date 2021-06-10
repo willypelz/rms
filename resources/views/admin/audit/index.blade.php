@@ -24,7 +24,7 @@
                                         <td>{{$key + 1}}</td>
 
                                         <td>
-                                            {{ $audit->causer->name ?? $audit->candidate->name()}}
+                                            {{ $audit->causer->name ?? $audit->candidate->name() ?? 'N/A'}}
                                         </td>
                     
                                         <td>
@@ -34,7 +34,7 @@
                                             {{ $audit->description}}
                                         </td>
                                         <td>
-                                            {{ $audit->subject->name ?? $audit->subjectCandidate->name()}}
+                                            {{ $audit->subject->name ?? $audit->candidateSubject->name() ?? 'N/A'}}
                                         </td>
                                         <td>
                                             {{ $audit->created_at->toDayDateTimeString()}}

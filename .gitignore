@@ -13,4 +13,5 @@ LocalValetDriver.php
 /config/snappy.php
 /public_html/homepage
 /public_html/logs
+/public_html/public_html
 .DS_Store

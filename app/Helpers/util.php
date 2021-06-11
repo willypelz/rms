@@ -351,10 +351,6 @@ function get_current_company()
 {
 
     if (!is_null(Auth::user())) {
-        if(!is_null(auth()->user()->defaultCompany())){
-            return auth()->user()->defaultCompany();
-        }
-
         //If a company is selected
         if (Session::get('current_company_index')) {
             if (isset(Auth::user()->companies[Session::get('current_company_index')]))
@@ -924,7 +920,7 @@ function admin_audit_log()
  * @return bool
  */
 function isHrmsIntegrated(){
-    return is_null(env('STAFFSTRENGTH_URL')) ? false: true;
+    return (!is_null(env('STAFFSTRENGTH_URL'))) && env('RMS_STAND_ALONE')==false ? true: false;
 }
 
 /**

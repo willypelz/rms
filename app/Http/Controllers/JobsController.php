@@ -275,141 +275,145 @@ class JobsController extends Controller
      */
     public function JobTeamAdd(Request $request)
     {
-        if ($request->mod) {
-            $validator = Validator::make($request->all(), [
-                'email' => 'required|email',
-                'name' => 'required|string',
-            ], [
-                'email.required' => 'Email is required. If you selected an employee, check that they have a valid email',
-                'name.required' => 'Name is required',
-            ]);
-            if ($validator->fails()) {
-                return back()->with('errors', $validator->getMessageBag()->toArray());
-            } else{
 
-                if($request->id)
-                    $check_email = User::whereEmail($request->email)->where('email', '!=', $request->email)->count();
-                else
-                    $check_email = User::whereEmail($request->email)->count();
+        try {
+            if ($request->mod) {
+                $validator = Validator::make($request->all(), [
+                    'email' => 'required|email',
+                    'name' => 'required|string',
+                ], [
+                    'email.required' => 'Email is required. If you selected an employee, check that they have a valid email',
+                    'name.required' => 'Name is required',
+                ]);
+
+                if ($validator->fails()) {
+                    return back()->with('errors', $validator->getMessageBag()->toArray());
+                } else {
+
+                    if ($request->id)
+                        $check_email = User::whereEmail($request->email)->where('email', '!=', $request->email)->count();
+                    else
+                        $check_email = User::whereEmail($request->email)->count();
 
 
-                if($check_email)
-                    return back()->with('warning', "The email you entered already exists.");
+                    if ($check_email)
+                        return back()->with('warning', "The email you entered already exists.");
 
-                $token = hash_hmac('sha256', str_random(40), config('app.key'));
+                    $token = hash_hmac('sha256', str_random(40), config('app.key'));
 
-                if(isset($request->id)){
+                    if (isset($request->id)) {
 
-                     $user = User::find($request->id)->update([
-                        'email' => $request->email,
-                        'name' => $request->name,
-                      ]);
+                        $user = User::find($request->id)->update([
+                            'email' => $request->email,
+                            'name' => $request->name,
+                        ]);
 
-                    $user = User::find($request->id);
+                        $user = User::find($request->id);
 
-                }else{
+                    } else {
+                        //formerly firstOrCreate but  started failing hence get user in db that already has the email , otherwise create one
+                        $user = User::whereEmail($request->email)->first() ?: new User();
+                        $user->email = $request->email;
+                        $user->name = $request->name;
+                        $user->is_super_admin = 1;
+                        $user->user_token = $token;
+                        $user->save();
+                    }
 
-                    $user = User::FirstorCreate([
-                        'email' => $request->email,
-                        'name' => $request->name,
-                        'is_super_admin' => '1',
-                        'user_token'=> $token
-                      ]);
 
+                    if ($user) {
+
+                        $company = Company::find(get_current_company()->id);
+
+                        $accept_link = route('admin-accept-invite', ['id' => $token, 'company_id' => $company->id]);
+
+                        $mail_body = $request->body_mail;
+
+                        $data = [
+                            'email' => $request->email,
+                            'name' => $request->name,
+                            'token' => $token
+                        ];
+
+                        $data = (object)$data;
+                        $email = $request->email;
+                        //Send notification mail
+                        //
+
+                        if (isset($request->resend_email) || !isset($request->id)) {
+                            \Illuminate\Support\Facades\Mail::send('emails.new.admin_invite', ['data' => $data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) use ($email) {
+                                $m->from(env('COMPANY_EMAIL'))->to($email)->subject('You Have Been Exclusively Invited');
+                            });
+
+                            return back()->with('success', "Invite Sent successfully");
+
+                        }
+
+                        return back()->with('success', "Details updated successfully");
+
+
+                    }
                 }
+            } else {
+                $validator = Validator::make($request->all(), [
+                    'email' => 'required|email',
+                    'name' => 'required|string',
+                    'role' => 'required|array',
+                    'role_name' => 'required|string'
+                ], [
+                    'email.required' => 'Email is required. If you selected an employee, check that they have a valid email',
+                    'name.required' => 'Name is required',
+                    'role.required' => 'Role is required',
+                    'role.numeric' => 'Please select a valid role',
+                ]);
+
+                if ($validator->fails()) {
+                    return response()->json(['status' => 'false', 'message' => $validator->getMessageBag()->toArray()]);
+                } else {
+                    //Create User
 
 
-                  if($user){
+                    $data = [
+                        'name' => $request->name,
+                        'email' => $request->email,
+                        'username' => $request->username,
+                        'job_id' => $request->job_id,
+                        'role_ids' => json_encode($request->role),
+                        'step_ids' => is_null($request->steps) ? json_encode([]) : json_encode($request->steps),
+                        'is_internal' => $request->internal ? 1 : 0,
+                        'role_name' => $request->role_name
+                    ];
 
+                    if (JobTeamInvite::where('job_id', $data['job_id'])->where('email', $data['email'])->count()) {
+                        return response()->json(['status' => false, 'message' => $data['name'] . ' has been invited already']);
+                    }
+
+                    $job_team_invite = JobTeamInvite::firstOrCreate($data);
                     $company = Company::find(get_current_company()->id);
 
-                    $accept_link = route('admin-accept-invite', ['id' => $token,'company_id'=>$company->id]);
+
+                    $accept_link = route('accept-invite', ['id' => $job_team_invite->id]);
+                    $decline_link = route('decline-invite', ['id' => $job_team_invite->id]);
 
                     $mail_body = $request->body_mail;
 
-                    $data = [
-                        'email'=>$request->email,
-                        'name' => $request->name,
-                        'token' => $token
-                    ];
 
+                    $job = Job::find($request->job_id);
                     $data = (object)$data;
-                    $email = $request->email;
+
                     //Send notification mail
-                    //
+                    $email_from = (Auth::user()->email) ? Auth::user()->email : env('COMPANY_EMAIL');
 
-                    if(isset($request->resend_email) || !isset($request->id)){
-                        \Illuminate\Support\Facades\Mail::send('emails.new.admin_invite', ['data'=>$data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) use ($email){
-                            $m->from(env('COMPANY_EMAIL'))->to($email)->subject('You Have Been Exclusively Invited');
-                        });
+                    \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $data, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
+                        $m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
+                    });
 
-                         return back()->with('success', "Invite Sent successfully");
-
-                    }
-
-                         return back()->with('success', "Details updated successfully");
-
-
-                  }
+                    return response()->json(['status' => true, 'message' => 'Email was sent successfully']);
+                }
             }
-        }else{
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'name' => 'required|string',
-            'role' => 'required|array',
-            'role_name' => 'required|string'
-        ], [
-            'email.required' => 'Email is required. If you selected an employee, check that they have a valid email',
-            'name.required' => 'Name is required',
-            'role.required' => 'Role is required',
-            'role.numeric' => 'Please select a valid role',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['status' => 'false', 'message' => $validator->getMessageBag()->toArray()]);
-        } else {
-            //Create User
-
-
-            $data = [
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'username' => $request->username,
-                    'job_id' => $request->job_id,
-                    'role_ids' => json_encode($request->role),
-                    'step_ids' => is_null($request->steps) ? json_encode([]) : json_encode($request->steps),
-                    'is_internal' => $request->internal ? 1 : 0,
-                    'role_name' => $request->role_name
-                ];
-
-            if (JobTeamInvite::where('job_id', $data['job_id'])->where('email', $data['email'])->count()) {
-                return response()->json(['status' => false, 'message' => $data['name'] . ' has been invited already']);
-            }
-
-            $job_team_invite = JobTeamInvite::firstOrCreate($data);
-            $company = Company::find(get_current_company()->id);
-
-
-            $accept_link = route('accept-invite', ['id' => $job_team_invite->id]);
-            $decline_link = route('decline-invite', ['id' => $job_team_invite->id]);
-
-            $mail_body = $request->body_mail;
-
-
-            $job = Job::find($request->job_id);
-            $data = (object)$data;
-
-            //Send notification mail
-            $email_from = (Auth::user()->email) ? Auth::user()->email : env('COMPANY_EMAIL');
-
-            \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $data, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
-                $m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
-            });
-
-            return response()->json(['status' => true, 'message' => 'Email was sent successfully']);
+        }catch(\Exception $e){
+            return back()->with('error','Action failed');
         }
-    }
-
     }
 
 
@@ -3417,8 +3421,9 @@ class JobsController extends Controller
         $data = $request->validate($data);
         $user = User::find($data["user_id"]);
         if($user){
-            if(!isHrmsIntegrated())
+            if(isHrmsIntegrated()) {
                 return redirect()->back()->with(['warning' => "You are synced with HRMS and can only delete a super admin from HRMS"]);
+            }
             $data = $user;
             $user->delete();
             logAction([

@@ -85,7 +85,7 @@
         });
 
         const validate = (e)=>{
-            if ( document.getElementById("weight_min").value > document.getElementById("weight_max").value ) {
+            if ( parseInt(document.getElementById("weight_min").value) > parseInt(document.getElementById("weight_max").value)) {
                 e.preventDefault();
                 alertBox("error", "weight min must be less than weight max")
                 return false;

@@ -54,13 +54,13 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-12">
-                                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                                            <div class="form-group{{ $errors->has('company_name') ? ' has-error' : '' }}">
                                                 <label for=""> Company name</label>
-                                                <input type="text" class="form-control" id="name" placeholder=""
-                                                       name="name" value="{{ $company->name }}" required>
-                                                @if ($errors->has('name'))
+                                                <input type="text" class="form-control" id="company_name" placeholder=""
+                                                       name="company_name" value="{{ $company->name }}" required>
+                                                @if ($errors->has('company_name'))
                                                     <span class="help-block">
-                                                <strong>{{ $errors->first('name') }}</strong>
+                                                <strong>{{ $errors->first('company_name') }}</strong>
                                             </span>
                                                 @endif
                                             </div>
@@ -71,7 +71,7 @@
                                                 <div class="input-group">
                                                     <span class="input-group-addon">http://</span>
                                                     <input type="text" class="form-control slug" id="" placeholder=""
-                                                           name="slug" value="{{  $company->slug }}" required>
+                                                           name="slug" value="{{  $company->slug }}" readonly>
                                                     <span class="input-group-addon">.seamlesshiring.com</span>
 
                                                 </div>
@@ -84,13 +84,13 @@
                                         </div>
 
                                         <div class="col-sm-6">
-                                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                            <div class="form-group{{ $errors->has('company_email') ? ' has-error' : '' }}">
                                                 <label for=""> Company Email</label>
-                                                <input type="text" class="form-control" id="" placeholder=""
-                                                       name="email" value="{{  $company->email }}" readonly>
-                                                @if ($errors->has('email'))
+                                                <input type="email" class="form-control" id="" placeholder=""
+                                                       name="company_email" value="{{  $company->email }}" required>
+                                                @if ($errors->has('company_email'))
                                                     <span class="help-block">
-                                                <strong>{{ $errors->first('email') }}</strong>
+                                                <strong>{{ $errors->first('company_email') }}</strong>
                                             </span>
                                                 @endif
                                             </div>

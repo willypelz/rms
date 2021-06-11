@@ -157,6 +157,7 @@
                         <!-- <li><a href="setting.php">Account Setting</a></li>  -->
                         <?php $companies = Auth::user()->companies->unique(); ?>
                         @foreach( $companies as $key => $company )
+
                             <li>
                                 <a href="{{ route('select-company',['slug'=>$company->slug]) }}"> @if( $company->id == get_current_company()->id )
                                         <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>

@@ -87,7 +87,7 @@
                                                 <li role="separator" class="divider"></li>
                                                 <li>
                                                     <a href="#">
-                                                        @if(!isHrmsIntegrated())
+                                                        @if(!(isHrmsIntegrated()))
                                                             <div data-toggle="modal" data-target="#deleteSuperAdminModal{{ $user->id }}" href="#deleteSuperAdminModal{{ $user->id }}" data-title="Background Check"><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
                                                         @else
                                                             <div disabled data-toggle="tooltip" class="faint" data-placement="top" title="Your RMS is integrated with HRMS and as such you are only allowed to delete a super admin from HRMS"  data-title="Background Check" ><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
@@ -225,7 +225,7 @@
                     <h4 class="modal-title" id="myModalLabel">Invite Super Admin</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('user-permission') }}" method="post" id="SuperAdmin">
+                    <form action="{{ route('job-team-add') }}" method="post" id="SuperAdmin">
                         {!! csrf_field() !!}
                         <input type="hidden" name="mod" value="1">
                         <div class="form-group">

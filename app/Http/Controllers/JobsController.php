@@ -3225,7 +3225,9 @@ class JobsController extends Controller
 
 
             $validator = Validator::make($request->all(), [
-                'slug' => 'unique:companies'
+                'slug' => 'unique:companies',
+                'company_email' => 'required',
+                'company_name' => 'required'
             ]);
 
             if ($validator->fails()) {

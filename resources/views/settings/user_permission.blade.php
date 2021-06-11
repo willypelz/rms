@@ -121,6 +121,7 @@
 
               success: function (res) {
                   $.growl.notice({title: "Success", message: 'Role and permission settings updated successfully'})
+                  window.location.reload()
               }
           });
         }

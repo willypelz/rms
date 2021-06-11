@@ -19,6 +19,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
+    'company_name' => env('COMPANY_NAME', 'Seamless Hiring'),
 
     /*
     |--------------------------------------------------------------------------

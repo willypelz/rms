@@ -3197,7 +3197,9 @@ class JobsController extends Controller
 
 
             $validator = Validator::make($request->all(), [
-                'slug' => 'unique:companies'
+                'slug' => 'unique:companies',
+                'company_email' => 'required',
+                'company_name' => 'required'
             ]);
 
             if ($validator->fails()) {
@@ -3253,7 +3255,7 @@ class JobsController extends Controller
 
     public function editCompany(UpdateCompanyRequest $request)
     {
-            if (isset($request->logo)) {
+	    if (isset($request->logo)) {
                 $file_name = ($request->logo->getClientOriginalName());
                 $fi = $request->file('logo')->getClientOriginalExtension();
                 $logo = $request->company_name . '-' . $file_name;

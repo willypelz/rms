@@ -121,22 +121,10 @@ class JobsController extends Controller
             'makeOldStaffsAdmin',
         ]]);
 
+
         $this->settings = $settings;
-        $this->qualifications = [
+        $this->qualifications = qualifications();
 
-            'MPhil / PhD',
-            'MBA / MSc',
-            'MBBS',
-            'B.Sc',
-            'HND',
-            'OND',
-            'N.C.E',
-            'Diploma',
-            'High School (S.S.C.E)',
-            'Vocational',
-            'Others'
-
-        ];
 
         $this->mailer = $mailer;
 
@@ -424,58 +412,6 @@ class JobsController extends Controller
         }
     }
 
-    }
-
-    /*
-    * To delete a job team admin user 
-    * @return Illuminate\Http\Response
-    */
-    public function JobTeamDelete(Request $request){
-
-        $data = [
-            "user_id" => "required"
-        ];
-        
-        $data = $request->validate($data);
-        $user = User::find($data["user_id"]);
-        if($user){
-            if(!isHrmsIntegrated())
-                return redirect()->back()->with(['warning' => "You are synced with HRMS and can only delete a super admin from HRMS"]);
-            $data = $user;
-            $user->delete();
-            logAction([
-                'log_name' => 'Job Team Admin Delete', 
-                'description' => 'An action that deletes a job team super admin',
-                'action_type' => 'Delete',
-                'causee_id' => $data->id,
-                'causer_id' =>  Auth::user()->id,
-            ]);
-            return redirect()->back()->with(['warning' => "Super Admin Deleted Successfully"]);
-        }
-            
-        return redirect()->back()->with(['warning' => "Operation delete Super Admin Not Successful"]);
-    }
-
-    public function JobTeamInviteeDelete(Request $request){
-        $data = [
-            "invitee_id" => "required"
-        ];
-        
-        $data = $request->validate($data);
-        $invitee = JobTeamInvite::find($data["invitee_id"]);
-        if($invitee && $invitee->is_cancelled){
-            $data = $invitee;
-            $invitee->delete();
-            logAction([
-                'log_name' => 'Job Team Invitee Delete',
-                'description' => 'An action that deletes a job team invitee',
-                'action_type' => 'Delete',
-                'causee_id' => $data->id,
-                'causer_id' =>  Auth::user()->id,
-            ]);
-            return redirect()->back()->with(['success' => "Job Team Invitee Deleted Successfully"]);
-        }
-        return redirect()->back()->with(['error' => "Operation delete Job Team Invitee Not Successful"]);
     }
 
 
@@ -1523,67 +1459,53 @@ class JobsController extends Controller
 
         $extension = $request->file('cv-upload-file') ? $request->file('cv-upload-file')->getClientOriginalExtension() : null;
 
-        if($request->type == "single"){
-            $allowed_file_extentions = ['pdf','doc','docx','txt','rtf','pptx','ppt'];
-            if (!in_array($extension, $allowed_file_extentions)) {
-                return ['status' => 0, 'data' => 'Allowed extensions are .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt'];
-            }
-        }else{
-            if ($extension != 'zip') {
-                return ['status' => 0, 'data' => 'Allowed extension is .zip'];
-            }
+		if ($request->isMethod('post')) {
+			$company = Company::find($request->comp);
+			$job = Job::find($request->job);
+
+			// $company->users()->detach($request->ref);
+
+			$job->users()->detach($request->ref);
+			JobTeamInvite::where('job_id', $job->id)->where('email', $team_member->email)->delete();
+			return response()->json(['status' => true, 'message' => 'Removed successfully']);
         }
-        $randomName = Auth::user()->id . "_" . get_current_company()->id . "_" . time() . "_";
-        $filename = $randomName . $request->file('cv-upload-file')->getClientOriginalName();
+		}
 
-        $mimeType = $request->file('cv-upload-file')->getMimeType();
-
-        $upload = $request->file('cv-upload-file')->move(
-            public_path('uploads/CVs/'), $filename
-        );
-        $additional_data = ['job_id' => @$request->job, 'folder' => @$request->folder, 'options' => $request->options];
-
-        if ($mimeType == 'application/zip') {
-            $request_data = json_encode($request->all());
-            $this->dispatch(new UploadZipCv($filename, $randomName, $additional_data, $request_data));
-            return ['status' => 1, 'data' => "You will receive email notification once successfully uploaded"];
-        } else {
-            $cvs = [$filename];
-            saveCompanyUploadedCv($cvs, $additional_data, $request);
-            return ['status' => 1, 'data' => 'Cv(s) uploaded successfully'];
-        }
-    }
+		return view('modals.job-team-remove', compact('team_member', 'comp', 'job', 'ref'));
 
 
-    public function adminUploadDocument(Request $request){
+		}
 
-        $request->validate([
-            'document_file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt,jpg,jpeg,png',
-        ]);
+	public function adminUploadDocument(Request $request)
+	{
 
-        if ($request->hasFile('document_file')) {
+		$request->validate([
+			'document_file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt,jpg,jpeg,png',
+		]);
 
-            $file_name = (@$request->document_file->getClientOriginalName());
-            $fi = @$request->file('document_file')->getClientOriginalExtension();
-            $document_file = $request->application_id . '-' . time() . '-' . $file_name;
+		if ($request->hasFile('document_file')) {
 
-            $upload = $request->file('document_file')->move(
-                env('fileupload'), $document_file
-            );
-        } else {
-            $document_file = '';
-        }
-        $message = CandidateMessage::create([
-            'job_application_id' => $request->appl_id,
-            'description' => $request->document_description,
-            'title' => $request->document_title,
-            'attachment' => $document_file,
-        ]);
-        return ['status' => 1, 'data' => 'Documents Uploaded successfully'];
-    }
+			$file_name = (@$request->document_file->getClientOriginalName());
+			$fi = @$request->file('document_file')->getClientOriginalExtension();
+			$document_file = $request->application_id . '-' . time() . '-' . $file_name;
 
-    public function JobList(Request $request)
-    {
+			$upload = $request->file('document_file')->move(
+				env('fileupload'), $document_file
+			);
+		} else {
+			$document_file = '';
+		}
+		$message = CandidateMessage::create([
+			'job_application_id' => $request->appl_id,
+			'description' => $request->document_description,
+			'title' => $request->document_title,
+			'attachment' => $document_file,
+		]);
+		return ['status' => 1, 'data' => 'Documents Uploaded successfully'];
+	}
+
+	public function JobList(Request $request)
+	{
         $user = User::with([
             'companies.jobs'
         ])->where('id', Auth::user()->id)
@@ -1665,7 +1587,7 @@ class JobsController extends Controller
     }
 
 
-     public function JobPromote($id, Request $request)
+    public function JobPromote($id, Request $request)
     {
         //Check if he  is the owner of the job
         check_if_job_owner($id);
@@ -1705,7 +1627,6 @@ class JobsController extends Controller
 
         return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
     }
-
 
     public function JobTeam($id, Request $request)
     {
@@ -2347,7 +2268,7 @@ class JobsController extends Controller
         if($candidate->is_from == 'external' && $job->is_for == 'internal')
         {
             return redirect()->route('candidate-dashboard')
-            ->withErrors(['warning' => 'You can not apply for this job, It is meant for Internal candidate']);
+                ->withErrors(['warning' => 'You can not apply for this job, It is meant for Internal candidate']);
         }
 
         // disavow internal staff from applying to external jobs
@@ -2653,15 +2574,13 @@ class JobsController extends Controller
         $referer_url = (request()->headers->get('referer'));
 
         if(Str::contains($referer_url, 'job/share'))
-                $fromShareURL = true;
+            $fromShareURL = true;
 
-	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
 
-	    return view('job.job-apply', compact('job', 'qualifications', 'states', 'company',
-		    'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate',
-		    'last_cv', 'fields','countries','privacy_policy'));
 
+        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate', 'last_cv', 'fields','countries'));
     }
+
 
     public function JobVideoApplication($jobID, $job_slug, $appl_id, Request $request)
     {
@@ -3242,7 +3161,6 @@ class JobsController extends Controller
                 ['ats_product_id' => 27, 'company_id' => $comp->id]
             ]);
 
-            if ($request->subsidiary_creation_page)	return redirect('company/subsidiaries')->with('success', "Subsidiary created successfully.");
 
             // if($upload){
             return redirect('select-company/' . $request->slug);
@@ -3254,8 +3172,8 @@ class JobsController extends Controller
     }
 
     public function editCompany(UpdateCompanyRequest $request)
-    {
-	    if (isset($request->logo)) {
+	{
+            if (isset($request->logo)) {
                 $file_name = ($request->logo->getClientOriginalName());
                 $fi = $request->file('logo')->getClientOriginalExtension();
                 $logo = $request->company_name . '-' . $file_name;
@@ -3268,7 +3186,7 @@ class JobsController extends Controller
 	        seamlessSave(Configs::COMPANY_MODEL,  $request->toArray(), $request->company_id);
             if ($request->company_creation_page) return back()->with('success', "Company updated successfully.");
           return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
-    }
+	}
 
     public function selectCompany(Request $request)
     {
@@ -3380,5 +3298,56 @@ class JobsController extends Controller
        return null;
     }
 
+            /*
+         * To delete a job team admin user
+         * @return Illuminate\Http\Response
+         */
+            public function JobTeamDelete(Request $request){
+
+                $data = [
+                    "user_id" => "required"
+                ];
+
+                $data = $request->validate($data);
+                $user = User::find($data["user_id"]);
+                if($user){
+                    if(!isHrmsIntegrated())
+                        return redirect()->back()->with(['warning' => "You are synced with HRMS and can only delete a super admin from HRMS"]);
+                    $data = $user;
+                    $user->delete();
+                    logAction([
+                        'log_name' => 'Job Team Admin Delete',
+                        'description' => 'An action that deletes a job team super admin',
+                        'action_type' => 'Delete',
+                        'causee_id' => $data->id,
+                        'causer_id' =>  Auth::user()->id,
+                    ]);
+                    return redirect()->back()->with(['warning' => "Super Admin Deleted Successfully"]);
+                }
+
+                return redirect()->back()->with(['warning' => "Operation delete Super Admin Not Successful"]);
+            }
+
+            public function JobTeamInviteeDelete(Request $request){
+                $data = [
+                    "invitee_id" => "required"
+                ];
+
+                $data = $request->validate($data);
+                $invitee = JobTeamInvite::find($data["invitee_id"]);
+                if($invitee && $invitee->is_cancelled){
+                    $data = $invitee;
+                    $invitee->delete();
+                    logAction([
+                        'log_name' => 'Job Team Invitee Delete',
+                        'description' => 'An action that deletes a job team invitee',
+                        'action_type' => 'Delete',
+                        'causee_id' => $data->id,
+                        'causer_id' =>  Auth::user()->id,
+                    ]);
+                    return redirect()->back()->with(['success' => "Job Team Invitee Deleted Successfully"]);
+                }
+                return redirect()->back()->with(['error' => "Operation delete Job Team Invitee Not Successful"]);
+            }
 
 }

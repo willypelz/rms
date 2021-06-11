@@ -20,6 +20,7 @@ class Company extends Model
      * @var array
      */
     protected $fillable = [
+    	'hrms_id',
         'name',
         'logo',
         'email',
@@ -32,7 +33,9 @@ class Company extends Model
         'date_added',
         'has_expired',
         'valid_till',
-        'api_key'
+        'api_key',
+	    'is_active',
+	    'is_default'
     ];
 
     public $timestamps = false;

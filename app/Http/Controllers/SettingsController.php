@@ -35,7 +35,9 @@ class SettingsController extends Controller
 
 	public function showSettings()
 	{
-		$company = Company::whereIsDefault(true)->first();
+
+		$company = get_current_company();
+
 		return view('settings.index', compact('company'));
 	}
 

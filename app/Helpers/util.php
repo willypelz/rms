@@ -14,6 +14,8 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use App\Models\TestRequest;
 use App\Models\ActivityLog;
 use Carbon\Carbon;
+use Ixudra\Curl\Facades\Curl;
+use App\User;
 
 // use Faker;
 
@@ -26,7 +28,8 @@ function test()
 
 function qualifications()
 {
-    return $options = array('MPhil / PhD' => 'MPhil / PhD', 'MBA / MSc' => 'MBA / MSc', 'MBBS' => 'MBBS', 'Degree' => 'Degree', 'HND' => 'HND', 'OND' => 'OND', 'N.C.E' => 'N.C.E', 'Diploma' => 'Diploma', 'High School (S.S.C.E)' => 'High School (S.S.C.E)', 'Vocational' => 'Vocational', 'Others' => 'Others');
+    return $options = array('MPhil / PhD' => 'MPhil / PhD', 'MBA / MSc' => 'MBA / MSc', 'MBBS' => 'MBBS', 'B.Sc'=>'B.Sc','Degree' => 'Degree', 'HND' => 'HND', 'OND' => 'OND', 'N.C.E' => 'N.C.E', 'Diploma' => 'Diploma', 'High School (S.S.C.E)' => 'High School (S.S.C.E)', 'Vocational' => 'Vocational', 'Others' => 'Others',
+                             'B.Eng'=>'B.Eng','LLM'=>'LLM','LLB'=>'LLB','B.Ed.'=>'B.Ed.','M.Ed'=>'M.Ed','B.A'=>'B.A');
 }
 
 function grades()
@@ -348,6 +351,10 @@ function get_current_company()
 {
 
     if (!is_null(Auth::user())) {
+        if(!is_null(auth()->user()->defaultCompany())){
+            return auth()->user()->defaultCompany();
+        }
+
         //If a company is selected
         if (Session::get('current_company_index')) {
             if (isset(Auth::user()->companies[Session::get('current_company_index')]))
@@ -932,4 +939,39 @@ function seamlessSave( $modelName, array $data, $id)
 	$instance = $modelName::find($id);
 	$instance->fill($data)->save();
 	return $instance;
+}
+
+/**
+ * TO ACCESS HRMS USING GET HTTP PROTOCOL
+ * @param string $url the path segment excluding the base url i.e api/v2/get_user_default_company/
+ * @param array $data the payload to be used in the request
+ * @return array | null
+ */
+function getResponseFromHrmsByGET(string $url, array $data = []){
+    $rmsCompany = Company::whereNotNull('api_key')->first();
+    if(isHrmsIntegrated() && $rmsCompany) {
+        $response = Curl::to(env('STAFFSTRENGTH_URL') . $url )
+                        ->withHeader("X-API-KEY: " . $rmsCompany->api_key)
+                        ->withData($data)
+                        ->asJson()
+                        ->get();
+        return $response;
+    } 
+    return null;
+}
+
+/*
+ * Gets Company User ID
+ * @param int $user
+ * @return int
+ */
+function getCompanyId($userId = null) {
+
+	if (is_null($userId)) {
+		$company_id = is_null(session('active_company')) ? optional(auth()->user())->defaultCompany()->id : session('active_company')->id;
+	} else {
+		$company_id = User::find($userId)->first()->defaultCompany()->id;
+	}
+
+	return $company_id;
 }

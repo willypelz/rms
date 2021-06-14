@@ -57,7 +57,7 @@ class UserPermissionController extends Controller
 		$role->perms()->sync($request->permissions);
 
 		session()->flash('message', 'Role edited');
-
+		userPermissionsArray(false);
 		return redirect()->back()
 			->with('success', 'Role updated successfully');
 	}

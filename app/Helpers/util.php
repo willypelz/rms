@@ -8,6 +8,8 @@ use App\Models\Cv;
 use App\Models\Job;
 use App\Models\JobActivity;
 use App\Models\JobApplication;
+use App\Models\Permission;
+use App\Models\PermissionRole;
 use Illuminate\Support\Facades\File;
 use phpDocumentor\Reflection\Types\Object_;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
@@ -16,6 +18,7 @@ use App\Models\ActivityLog;
 use Carbon\Carbon;
 use Ixudra\Curl\Facades\Curl;
 use App\User;
+use App\Enum\Configs;
 
 // use Faker;
 
@@ -351,10 +354,6 @@ function get_current_company()
 {
 
     if (!is_null(Auth::user())) {
-        if(!is_null(auth()->user()->defaultCompany())){
-            return auth()->user()->defaultCompany();
-        }
-
         //If a company is selected
         if (Session::get('current_company_index')) {
             if (isset(Auth::user()->companies[Session::get('current_company_index')]))
@@ -925,7 +924,7 @@ function admin_audit_log()
  * @return bool
  */
 function isHrmsIntegrated(){
-    return is_null(env('STAFFSTRENGTH_URL')) ? false: true;
+    return (!is_null(env('STAFFSTRENGTH_URL'))) && env('RMS_STAND_ALONE')==false ? true: false;
 }
 
 /**
@@ -975,4 +974,24 @@ function getCompanyId($userId = null) {
 	}
 
 	return $company_id;
+}
+
+function userPermissionsArray($useSession=true){
+
+	if ($useSession && session()->has('user_permissions')) return session()->get('user_permissions');
+
+	$role_ids = auth()->user()->roles()->pluck('id')->unique()->toArray();
+	$permission_role = PermissionRole::whereIn('role_id',$role_ids)->pluck('permission_id')->toArray();
+	$permission_array =Permission::find(array_unique($permission_role))->pluck('name')->toArray();
+	session()->put('user_permissions', $permission_array);
+
+	return $permission_array;
+}
+
+function canSwitchBetweenPage(){
+
+   	$user = auth()->user();
+	if($user->name === configs::DEFAULT_ADMIN_NAME  && $user->email === configs::DEFAULT_ADMIN_EMAIL) return true;
+
+	return in_array(configs::CAN_SWITCH_BETWEEN_COMPANY, userPermissionsArray());
 }

@@ -156,12 +156,14 @@
                     <ul class="dropdown-menu top-user-menu" aria-labelledby="drop3">
                         <!-- <li><a href="setting.php">Account Setting</a></li>  -->
                         <?php $companies = Auth::user()->companies->unique(); ?>
+                        @if (canSwitchBetweenPage())
                         @foreach( $companies as $key => $company )
                             <li>
                                 <a href="{{ route('select-company',['slug'=>$company->slug]) }}"> @if( $company->id == get_current_company()->id )
                                         <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>
                         @endforeach
                         <hr role="separator" class="divider pt-4 mt-5"/>
+                    @endif
 
                     <!-- <li><a href="{{-- route('edit-company', ['id' => get_current_company()->id ]) --}}">Edit <strong>{{ get_current_company()->name }}</strong> </a></li> -->
                         <li role="separator" class="divider"></li>

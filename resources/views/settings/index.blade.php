@@ -110,7 +110,7 @@
                                             <div class="form-group{{ $errors->has('website') ? ' has-error' : '' }}">
                                                 <label for=""> Company Website</label>
                                                 <input type="text" class="form-control" id="" placeholder=""
-                                                       name="website" value="{{ $company->website }}" required>
+                                                       name="website" value="{{ $company->website }}" >
                                                 <small>e.g. https://site_name.com</small>
                                                 @if ($errors->has('website'))
                                                     <span class="help-block">

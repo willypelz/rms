@@ -22,6 +22,7 @@
                                 <div>
                                 <!-- <form role="form" class="form-signup" method="POST" action="{{ route('registration') }}" type='file'> -->
                                     {!! Form::open(array('route'=>'edit-company','method'=>'POST', 'id'=>'SignUPform', 'files'=>true, 'class'=>'form-signup', 'role'=>'form')) !!}
+                                    @include('layout.alerts')
 
                                     {!! csrf_field() !!}
                                     <input type="hidden" name="subsidiary_creation_page" value="true">
@@ -52,7 +53,7 @@
 
                                         <div class="col-sm-12">
                                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                                <label for="">Subsidiary Company name</label>
+                                                <label for="">Subsidiary Company Name <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="name" placeholder=""
                                                        name="name" value="{{ $company->name }}" required>
                                                 @if ($errors->has('name'))
@@ -65,7 +66,7 @@
 
                                         <div class="col-sm-6">
                                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                                <label for="">Subsidiary Company Email</label>
+                                                <label for="">Subsidiary Company Email <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="" placeholder=""
                                                        name="email" value="{{  $company->email }}" >
                                                 @if ($errors->has('email'))
@@ -79,7 +80,7 @@
 
                                         <div class="col-sm-6">
                                             <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
-                                                <label for="">Subsidiary Company Phone</label>
+                                                <label for="">Subsidiary Company Phone <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="" placeholder=""
                                                        name="phone" value="{{ $company->phone }}" required>
                                                 @if ($errors->has('phone'))
@@ -95,6 +96,7 @@
                                                 <label for="">Subsidiary Company Website</label>
                                                 <input type="url" class="form-control" id="" placeholder=""
                                                        name="website" value="{{ $company->website }}" >
+                                                <small>e.g. https://site_name.com</small>
                                                 @if ($errors->has('website'))
                                                     <span class="help-block">
                                                 <strong>{{ $errors->first('website') }}</strong>
@@ -105,7 +107,7 @@
 
                                         <div class="col-sm-12">
                                             <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
-                                                <label for="">Subsidiary Company Address</label>
+                                                <label for="">Subsidiary Company Address <span class="text-danger">*</span></label>
                                                 <textarea name="address" class="form-control" id="" cols="30" rows="10"
                                                           required>{{ $company->address }}</textarea>
                                                 @if ($errors->has('address'))
@@ -118,7 +120,7 @@
 
                                         <div class="col-sm-12">
                                             <div class="form-group{{ $errors->has('about') ? ' has-error' : '' }}">
-                                                <label for="">About Subsidiary Company</label>
+                                                <label for="">About Subsidiary Company <span class="text-danger">*</span></label>
                                                 <textarea name="about" class="form-control" id="" cols="30"
                                                           rows="10" required>{{ $company->about }}</textarea>
                                                 @if ($errors->has('about'))

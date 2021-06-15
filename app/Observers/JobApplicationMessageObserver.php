@@ -26,7 +26,6 @@ class JobApplicationMessageObserver
                 'causer_type' => 'applicant',
                 'properties' => '',
             ];
-            dd($param);
             logAction($param);
            
         }

@@ -290,7 +290,7 @@
                         $('#AjaxLogin').ajaxForm({
                             beforeSubmit: genPreSubmit,
                             success: function (response) {
-                                console.log(response);
+
                                 if (response == 'Failed') {
                                     $('#mssg').html("<span class='alert alert-danger' > Your login credentials are incorrect. </span>");
                                     $("#SubBtn").html('Proceed');
@@ -310,7 +310,7 @@
                         });
 
                         function genPreSubmit() {
-                            console.log("We are here....");
+
                             $("#SubBtn").html('please wait...');
 
                         }

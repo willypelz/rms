@@ -35,7 +35,7 @@
                                             {{ $audit->description}}
                                         </td>
                                         <td>
-                                            {{ (isset($audit->causer) ? $audit->causer->companies[0gi]['name'] : 'N/A')}}
+                                            {{ (isset($audit->causer) ? $audit->causer->companies[0]['name'] : 'N/A')}}
                                         </td>
 
                                         <td>

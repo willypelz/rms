@@ -26,7 +26,6 @@ class JobTeamInviteObserver
                 'causer_type' => 'admin',
                 'properties' => '',
             ];
-            dd($param);
             logAction($param);
 
            

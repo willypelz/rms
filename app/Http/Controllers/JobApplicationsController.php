@@ -1616,7 +1616,7 @@ class JobApplicationsController extends Controller
             ]);
 
             if ($validator->fails()) {
-                dd($validator->messages());
+                return back()->with('error',($validator->messages()));
             } else {
                 $app = JobApplication::with('job')->where('id', $request->job_application_id)->first();
 

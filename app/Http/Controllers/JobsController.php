@@ -3286,17 +3286,21 @@ class JobsController extends Controller
     }
     public function editCompany(UpdateCompanyRequest $request)
 	{
-            if (isset($request->logo)) {
+		$collect = collect($request);
+		if (isset($request->logo)) {
                 $file_name = ($request->logo->getClientOriginalName());
-                $fi = $request->file('logo')->getClientOriginalExtension();
-                $logo = $request->company_name . '-' . $file_name;
+                $file_extension = $request->file('logo')->getClientOriginalExtension();
+                $logo = str_slug($request->name) . '-' . $file_name;
                 $upload = $request->file('logo')->move(
                     env('fileupload'), $logo
                 );
+	            $collect['logo'] = $logo ;
+
             } else {
-                $logo = "";
+			   $collect['logo'] = "" ;
             }
-	        seamlessSave(Configs::COMPANY_MODEL,  $request->toArray(), $request->company_id);
+
+	      seamlessSave(Configs::COMPANY_MODEL,  $collect->toArray(), $request->company_id);
             if ($request->company_creation_page) return back()->with('success', "Company updated successfully.");
           return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
 	}

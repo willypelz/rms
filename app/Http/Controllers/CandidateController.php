@@ -243,6 +243,7 @@ class CandidateController extends Controller
     public function jobList($company_id){
 	    $candidate = Auth::guard('candidate')->user();
 
+	    $company_details  = Company::find($company_id);
 	    if($candidate->is_from == 'external')
 	    {
 		    $jobs = Job::whereCompanyId($company_id)->with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->where('is_private', false)
@@ -254,7 +255,7 @@ class CandidateController extends Controller
 	    }
 
 	    $companies =   Company::all();
-	    return view('candidate.job-list', compact('jobs', 'companies'));
+	    return view('candidate.job-list', compact('jobs', 'companies','company_details'));
     }
 
      /**

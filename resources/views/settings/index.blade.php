@@ -32,9 +32,12 @@
                                                 <label class="col-md-12" for="">Company Logo</label>
                                                 <div class="fileinput fileinput-new" data-provides="fileinput">
                                                     <div class="fileinput-preview thumbnail" data-trigger="fileinput"
-                                                         style="width: 200px; height: 150px;"></div>
+                                                         style="width: 200px; height: 150px;">
+                                                        <img src="{{ url( env('fileupload') ).'/'.$company->logo }}" alt="Logo" style="width: 200px; height: 150px;">
+
+                                                    </div>
                                                     <div>
-                                                <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span
+                                                        <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span
                                                             class="fileinput-exists">Change</span>
                                                  <?php  echo Form::file('logo'); ?>
                                                 </span>

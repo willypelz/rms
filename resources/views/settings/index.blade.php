@@ -65,7 +65,7 @@
                                             <div class="form-group{{ $errors->has('slug') ? ' has-error' : '' }}">
                                                 <label for="">Company url</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-addon">http://</span>
+                                                    <span class="input-group-addon">https://</span>
                                                     <input type="text" class="form-control slug" id="" placeholder=""
                                                            name="slug" value="{{  $company->slug }}" readonly>
                                                     <span class="input-group-addon">.seamlesshiring.com</span>

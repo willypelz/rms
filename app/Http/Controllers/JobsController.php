@@ -3229,11 +3229,12 @@ class JobsController extends Controller
 
 
             $validator = Validator::make($request->all(), [
-			'company_email' => 'required|unique:companies,email',
-			'company_name' => 'required',
-			'phone' => 'required',
-			'about_company' => 'required',
-			'website' => 'regex:/^https:\/\/\w+(\.\w+)*(:[0-9]+)?\/?$/',
+            	'slug' => 'unique:companies',
+				'company_email' => 'required|unique:companies,email',
+				'company_name' => 'required',
+				'phone' => 'required',
+				'about_company' => 'required',
+				'website' => 'regex:/^https:\/\/\w+(\.\w+)*(:[0-9]+)?\/?$/',
             ]);
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();

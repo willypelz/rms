@@ -51,13 +51,13 @@
                                         </div>
 
                                         <div class="col-sm-12">
-                                            <div class="form-group{{ $errors->has('company_name') ? ' has-error' : '' }}">
+                                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                                                 <label for="">Subsidiary Company name</label>
-                                                <input type="text" class="form-control" id="company_name" placeholder=""
-                                                       name="company_name" value="{{ $company->name }}" required>
-                                                @if ($errors->has('company_name'))
+                                                <input type="text" class="form-control" id="name" placeholder=""
+                                                       name="name" value="{{ $company->name }}" required>
+                                                @if ($errors->has('name'))
                                                     <span class="help-block">
-                                                <strong>{{ $errors->first('company_name') }}</strong>
+                                                <strong>{{ $errors->first('name') }}</strong>
                                             </span>
                                                 @endif
                                             </div>
@@ -67,7 +67,7 @@
                                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                                 <label for="">Subsidiary Company Email</label>
                                                 <input type="text" class="form-control" id="" placeholder=""
-                                                       name="company_email" value="{{  $company->email }}" >
+                                                       name="email" value="{{  $company->email }}" >
                                                 @if ($errors->has('email'))
                                                     <span class="help-block">
                                                 <strong>{{ $errors->first('email') }}</strong>

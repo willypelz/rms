@@ -39,9 +39,12 @@
                                                 <ul class="list-inline text-white">
                                                     <!--<li><strong>Company:</strong>&nbsp; JobAcess</li>-->
                                                     <li>
-                                                        <strong>&nbsp;{{ count( $jobs ) }}</strong>&nbsp; Job Opening(s)</li>
-                                                </ul>
+                                                        <strong>&nbsp;{{ count( $jobs ) }}</strong>&nbsp; Job Opening(s)
 
+                                                    @if($company_details)  <br>  in  {{$company_details->name}} Company @endif
+
+                                                    </li>
+                                                </ul>
                                                 <!-- <div class="badge badge-job badge-job-active">
                                                     <small class="">
                                                         <span class="glyphicon glyphicon-ok"></span>

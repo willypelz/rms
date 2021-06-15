@@ -41,7 +41,7 @@
                                                     <li>
                                                         <strong>&nbsp;{{ count( $jobs ) }}</strong>&nbsp; Job Opening(s)
 
-                                                    @if($company_details)  <br>  in  {{$company_details->name}} Company @endif
+                                                    @if(isset($company_details))  <br>  in  {{$company_details->name}} Company @endif
 
                                                     </li>
                                                 </ul>

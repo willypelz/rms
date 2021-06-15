@@ -28,11 +28,11 @@ class UpdateCompanyRequest extends FormRequest
 	{
 		return [
 			'slug' => 'unique:companies,slug,' . $this->company_id,
-			'email' => 'required:unique:companies,email,' . $this->company_id,
+			'email' => 'required|unique:companies,email,' . $this->company_id,
 			'name' => 'required',
 			'phone' => 'required',
 			'about' => 'required',
-			'website' => 'regex:/^http:\/\/\w+(\.\w+)*(:[0-9]+)?\/?$/',
+			'website' => 'regex:/^https:\/\/\w+(\.\w+)*(:[0-9]+)?\/?$/',
 		];
 	}
 

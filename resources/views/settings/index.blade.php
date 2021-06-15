@@ -19,15 +19,9 @@
                     <div class="col-md-8">
                         <div class="content">
                             <div class="row">
-                                @if ($errors->any())
-                                    <ul class="alert alert-danger">
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                @endif
                                 <div class="col-md-10 col-md-offset-1">
                                     {!! Form::open(array('route'=>'edit-company','method'=>'POST', 'id'=>'SignUPform', 'files'=>true, 'class'=>'form-signup', 'role'=>'form')) !!}
+                                    @include('layout.alerts')
 
                                     {!! csrf_field() !!}
                                     <input type="hidden" name="company_creation_page" value="true">
@@ -114,6 +108,7 @@
                                                 <label for=""> Company Website</label>
                                                 <input type="text" class="form-control" id="" placeholder=""
                                                        name="website" value="{{ $company->website }}" required>
+                                                <small>e.g. https://site_name.com</small>
                                                 @if ($errors->has('website'))
                                                     <span class="help-block">
                                                 <strong>{{ $errors->first('website') }}</strong>

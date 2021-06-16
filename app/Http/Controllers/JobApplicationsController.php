@@ -1878,8 +1878,14 @@ class JobApplicationsController extends Controller
     public function editInterviewNoteTemplate(Request $request)
     {
 
-
         if ($request->isMethod('post')) {
+
+            $this->validate($request, [
+                'name' => 'required|unique:interview_note_templates,name',
+            ],[
+                'name.unique' => "Template already exist, Try creating template with another name"
+            ]);
+
             InterviewNoteTemplates::where('id', $request->id)->where('company_id', get_current_company()->id)->update([
                 'name' => $request->name,
                 'description' => $request->description,
@@ -1897,11 +1903,16 @@ class JobApplicationsController extends Controller
 
     public function createInterviewNoteTemplate(Request $request)
     {
-        // $interview_note_options = InterviewNoteOptions::where('company_id',get_current_company()->id )->get();
-
         $interview_note_option = NULL;
 
         if ($request->isMethod('post')) {
+
+            $this->validate($request, [
+                'name' => 'required|unique:interview_note_templates,name',
+            ],[
+                'name.unique' => "Template already exist, Try creating template with another name"
+            ]);
+            
             InterviewNoteTemplates::create([
                 'name' => $request->name,
                 'description' => $request->description,
@@ -1932,7 +1943,7 @@ class JobApplicationsController extends Controller
     public function duplicateInterviewNoteTemplate(Request $request, int $id){
         if($id){
             $interview_template = InterviewNoteTemplates::where('id', $id)->where('company_id',get_current_company()->id)->first();
-            $interview_template_duplicate = $interview_template->duplicate("name");
+            $interview_template_duplicate = $interview_template->duplicate();
             if($interview_template_duplicate){
                 return redirect()->back()->with(["success" => "$interview_template->name template  duplicated successfully"]);
             }

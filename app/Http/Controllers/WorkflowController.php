@@ -47,7 +47,9 @@ class WorkflowController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|unique:workflows,name',
+        ],[
+            'name.unique' => "Workflow already exist, Try creating workflow with another name"
         ]);
 
         if ($workflow = Workflow::create($request->all() + ['company_id' => get_current_company()->id])) {
@@ -105,7 +107,9 @@ class WorkflowController extends Controller
         }
 
         $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|unique:workflows,name',
+        ],[
+            'name.unique' => "Workflow already exist, Try updating workflow with another name"
         ]);
 
         if ($workflow->update($request->all())) {
@@ -139,7 +143,7 @@ class WorkflowController extends Controller
     public function duplicate(Request $request, int $id){
         if($id){
             $workflow = Workflow::where('id', $id)->where('company_id',get_current_company()->id)->first();
-            $workflow_duplicate = $workflow->duplicate("name");
+            $workflow_duplicate = $workflow->duplicate();
             if($workflow_duplicate){
                 return redirect()->back()->with(["success" => "$workflow->name workflow  duplicated successfully"]);
             }

@@ -851,7 +851,6 @@ function logAction($logAction)
         'action_type' => @$logAction['action_type'],
         'causee_id' => @$logAction['causee_id'],
         'company_id'=> get_current_company()->id ?? Null,
-        //'company_name' => get_current_company()->name ?? 'N/A',
         'causer_id' => isset($logAction['causer_id']) ? $logAction['causer_id'] : Auth::user()->id,
         'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
         'properties' => @$logAction['properties'],

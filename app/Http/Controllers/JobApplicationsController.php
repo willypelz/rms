@@ -1886,8 +1886,6 @@ class JobApplicationsController extends Controller
                 'name.unique' => "Template already exist, Try creating template with another name"
             ]);
 
-            $template = InterviewNoteTemplates::where(['name' => $request->name])->first();
-            if( $template)  return back()->with(["error" => "Template $template->name already exist, Try modifying template with another name"]);
             InterviewNoteTemplates::where('id', $request->id)->where('company_id', get_current_company()->id)->update([
                 'name' => $request->name,
                 'description' => $request->description,

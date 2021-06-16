@@ -1880,6 +1880,8 @@ class JobApplicationsController extends Controller
 
 
         if ($request->isMethod('post')) {
+            $template = InterviewNoteTemplates::where(['name' => $request->name])->first();
+            if( $template)  return back()->with(["error" => "Template $template->name already exist, Try modifying template with another name"]);
             InterviewNoteTemplates::where('id', $request->id)->where('company_id', get_current_company()->id)->update([
                 'name' => $request->name,
                 'description' => $request->description,
@@ -1902,6 +1904,8 @@ class JobApplicationsController extends Controller
         $interview_note_option = NULL;
 
         if ($request->isMethod('post')) {
+            $template = InterviewNoteTemplates::where(['name' => $request->name])->first();
+            if( $template)  return back()->with(["error" => "Template $template->name already exist, Try creating templste with another name"]);
             InterviewNoteTemplates::create([
                 'name' => $request->name,
                 'description' => $request->description,
@@ -1932,7 +1936,7 @@ class JobApplicationsController extends Controller
     public function duplicateInterviewNoteTemplate(Request $request, int $id){
         if($id){
             $interview_template = InterviewNoteTemplates::where('id', $id)->where('company_id',get_current_company()->id)->first();
-            $interview_template_duplicate = $interview_template->duplicate("name");
+            $interview_template_duplicate = $interview_template->duplicate();
             if($interview_template_duplicate){
                 return redirect()->back()->with(["success" => "$interview_template->name template  duplicated successfully"]);
             }

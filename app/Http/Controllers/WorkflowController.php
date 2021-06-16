@@ -50,6 +50,8 @@ class WorkflowController extends Controller
             'name' => 'required',
         ]);
 
+        $workflow = Workflow::where(['name' => $request->name])->first();
+        if( $doesAlreadyExist)  return back()->with(["error" => "Workflow  $workflow->name already exist, Try creating workflow with another name"]);
         if ($workflow = Workflow::create($request->all() + ['company_id' => get_current_company()->id])) {
             $msg = '';
             // Create default readonly step
@@ -108,6 +110,8 @@ class WorkflowController extends Controller
             'name' => 'required',
         ]);
 
+        $workflow = Workflow::where(['name' => $request->name])->first();
+        if( $workflow)  return back()->with(["error" => "Workflow $workflow->name already exist, Try creating workflow with another name"]);
         if ($workflow->update($request->all())) {
 
             return redirect()->route('workflow')
@@ -139,7 +143,7 @@ class WorkflowController extends Controller
     public function duplicate(Request $request, int $id){
         if($id){
             $workflow = Workflow::where('id', $id)->where('company_id',get_current_company()->id)->first();
-            $workflow_duplicate = $workflow->duplicate("name");
+            $workflow_duplicate = $workflow->duplicate();
             if($workflow_duplicate){
                 return redirect()->back()->with(["success" => "$workflow->name workflow  duplicated successfully"]);
             }

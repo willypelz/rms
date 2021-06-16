@@ -1878,8 +1878,14 @@ class JobApplicationsController extends Controller
     public function editInterviewNoteTemplate(Request $request)
     {
 
-
         if ($request->isMethod('post')) {
+
+            $this->validate($request, [
+                'name' => 'required|unique:interview_note_templates,name',
+            ],[
+                'name.unique' => "Template already exist, Try creating template with another name"
+            ]);
+
             $template = InterviewNoteTemplates::where(['name' => $request->name])->first();
             if( $template)  return back()->with(["error" => "Template $template->name already exist, Try modifying template with another name"]);
             InterviewNoteTemplates::where('id', $request->id)->where('company_id', get_current_company()->id)->update([
@@ -1899,13 +1905,16 @@ class JobApplicationsController extends Controller
 
     public function createInterviewNoteTemplate(Request $request)
     {
-        // $interview_note_options = InterviewNoteOptions::where('company_id',get_current_company()->id )->get();
-
         $interview_note_option = NULL;
 
         if ($request->isMethod('post')) {
-            $template = InterviewNoteTemplates::where(['name' => $request->name])->first();
-            if( $template)  return back()->with(["error" => "Template $template->name already exist, Try creating templste with another name"]);
+
+            $this->validate($request, [
+                'name' => 'required|unique:interview_note_templates,name',
+            ],[
+                'name.unique' => "Template already exist, Try creating template with another name"
+            ]);
+            
             InterviewNoteTemplates::create([
                 'name' => $request->name,
                 'description' => $request->description,

@@ -44,7 +44,7 @@ Route::post("/api/v1/delete-super-admin", "HrmsIntegrationController@deleteSuper
 Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 
     Route::get('/ping', 'SolariumController@ping');
-
+    Route::get('/audit-trails', 'AuditController@index')->name('audit-trails');
     Route::resource('schedule', 'ScheduleController');
 
     Route::match(['get', 'post'], '/admin/assign', 'JobsController@manageRoles')->name('change-admin-role');
@@ -94,7 +94,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     });
 
     Route::match(['get', 'post'], 'add-company', ['uses' => 'JobsController@AddCompany', 'as' => 'add-company']);
-    // Route::match(['get', 'post'], 'edit-company', ['uses' => 'JobsController@editCompany', 'as' => 'edit-company']);
+     Route::match(['get', 'post'], 'edit-company', ['uses' => 'JobsController@editCompany', 'as' => 'edit-company']);
 
 
 	/************************
@@ -103,6 +103,17 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 
 	Route::match(['get', 'post'], 'settings/set-privacy-policy', ['uses' => 'PrivacyPolicyController@setPrivacyPolicy', 'as' => 'set-privacy-policy']);
 	Route::match(['get', 'post'], 'settings/save-privacy-policy', ['uses' => 'PrivacyPolicyController@savePrivacyPolicy', 'as' => 'save-privacy-policy']);
+
+	/************************
+	 * Subsidiaries routes **
+	 *************************/
+
+	Route::resource('company/subsidiaries',  'SubsidiariesController');
+
+	/************************
+	 * Settings  routes    **
+	 *************************/
+	Route::get('settings', ['uses' => 'SettingsController@showSettings', 'as' => 'page-settings']);
 
 
 	//JOB
@@ -211,6 +222,8 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::delete('delete-job-specialization/{id}', 'SpecializationController@delete')->name('delete-specialization');
 
     Route::get('dashboard', ['uses' => 'HomeController@dashbaord', 'as' => 'dashboard'])->middleware("admin");
+    Route::match(['get','post'],'user-permission', ['uses' => 'UserPermissionController@userPermissionPage', 'as' => 'user-permission'])->middleware("admin");
+    Route::post('user-permission/{id}', ['uses' => 'UserPermissionController@userPermissionUpdate', 'as' => 'update-user-permission'])->middleware("admin");
 
     /**
      * Route Group for everything jobs
@@ -531,6 +544,7 @@ Route::group(['middleware' => 'web'], function () {
         Route::match(['get', 'post'], '/{application_id}/activities',
             'CandidateController@activities')->name('candidate-activities');
         Route::match(['get', 'post'], '/jobs', 'CandidateController@jobs')->name('candidate-jobs');
+        Route::get('job-listing/{company_id}', 'CandidateController@jobList')->name('job-listing');
         Route::match(['get', 'post'], '/{application_id}/documents',
             'CandidateController@documents')->name('candidate-documents');
 
@@ -807,3 +821,7 @@ Route::group(['middleware' => 'web'], function () {
 
 });
 
+
+Route::group(['prefix' => 'api/v2', 'namespace' => 'API'], function () {
+    Route::get('rms-company-subsidiaries', ['uses' => 'SyncController@companyAndSubsidiaries', 'as' => 'rms-company-subsidiaries']);
+});

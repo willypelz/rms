@@ -156,16 +156,22 @@
                     <ul class="dropdown-menu top-user-menu" aria-labelledby="drop3">
                         <!-- <li><a href="setting.php">Account Setting</a></li>  -->
                         <?php $companies = Auth::user()->companies->unique(); ?>
+                        @if (canSwitchBetweenPage())
                         @foreach( $companies as $key => $company )
                             <li>
                                 <a href="{{ route('select-company',['slug'=>$company->slug]) }}"> @if( $company->id == get_current_company()->id )
                                         <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>
                         @endforeach
                         <hr role="separator" class="divider pt-4 mt-5"/>
+                    @endif
 
                     <!-- <li><a href="{{-- route('edit-company', ['id' => get_current_company()->id ]) --}}">Edit <strong>{{ get_current_company()->name }}</strong> </a></li> -->
                         <li role="separator" class="divider"></li>
-                        <li><a href="{{ route('set-privacy-policy') }}"><i class="fa fa-lock"> </i> Privacy Policy</a></li>
+                        <li><a href="{{ route('page-settings') }}"><i class="fa fa-key"> </i> Settings</a></li>
+                        <li><a href="{{ route('audit-trails') }}"><i class="fa fa-history fa-fw"></i>Audit Trails</a></li>
+                        @if(isHrmsIntegrated())
+                        <li><a href="{{ url('company/subsidiaries') }}"><i class="fa fa-users "></i> Subsidiaries</a></li>
+                        @endif
                         <li> <a href="{{ url('logout') }}"><i class="fa fa-sign-out"> </i> Logout</a></li>
                     </ul>
                 </li>

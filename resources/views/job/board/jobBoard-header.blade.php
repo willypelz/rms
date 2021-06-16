@@ -161,7 +161,7 @@
 <script>
 
     function Publish(id){
-        console.log(id)
+
         $('#statusBtn').text('Please wait... ')
 
         var url = "{{ route('job-status') }}"

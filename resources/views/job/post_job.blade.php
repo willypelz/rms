@@ -79,6 +79,9 @@
                                         $experience = NULL;
                                         $eligibilty = NULL;
                                         $is_private = NULL;
+                                        $benefits = NULL;
+                                        $minimum_remuneration = NULL;
+                                        $maximum_remuneration = NULL;
                                         $jobId = NULL;
                                         if(!is_null($job)){
                                             $job_type = $job->job_type;
@@ -92,6 +95,9 @@
                                             $experience = $job->experience;
                                             $eligibilty = $job->is_for;
                                             $is_private = $job->is_private;
+                                            $benefits = $job->benefits;
+                                            $minimum_remuneration = $job->minimum_remuneration;
+                                            $maximum_remuneration = $job->maximum_remuneration;
                                             $jobId = $job->id;
                                         }
 
@@ -139,11 +145,14 @@
                                                         style="width: 303px;">
                                                     <option value="">--choose country--</option>
                                                     @foreach($countries as $country)
-                                                        <option value="{{ $country }}" {{ ( $job_location == $country || (in_array($job_location,$locations) && $country == 'Nigeria')) ? 'selected="selected"' : '' }} >{{ $country }}</option>
+                                                        <option value="{{ $country }}" {{ ( $job_location == $country || (in_array($job_location,$locations) && $country == 'Nigeria')) ? 'selected="selected"' : '' }} >
+                                                            {{ $country }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
 
-                                                <div class="state_section @if($errors->has('location') || (in_array($job_location,$locations) || $job_location == 'Nigeria'))  @else hidden @endif" style="margin-top: 10px">
+                                                <div class="state_section @if($errors->has('location') || (in_array($job_location,$locations) || $job_location == 'Nigeria'))  @else hidden @endif"
+                                                     style="margin-top: 10px">
                                                     <label for="job-title">
                                                         Location
                                                         <span class="text-danger">*</span>
@@ -157,7 +166,9 @@
                                                             style="width: 303px;">
                                                         <option value="">--choose state--</option>
                                                         @foreach($locations as $state)
-                                                            <option value="{{$state != 'Nigeria' ? $state : 'Across Nigeria' }}" {{ ( str_replace('Nigeria','Across Nigeria',$job_location) == $state) ? 'selected="selected"' : '' }} >{{ $state != 'Nigeria' ? $state : 'Across Nigeria' }}</option>
+                                                            <option value="{{$state != 'Nigeria' ? $state : 'Across Nigeria' }}" {{ ( str_replace('Nigeria','Across Nigeria',$job_location) == $state) ? 'selected="selected"' : '' }} >
+                                                                {{ $state != 'Nigeria' ? $state : 'Across Nigeria' }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -254,8 +265,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <div class="row">
+                                    <div class="form-group" >
+                                        <div class="row" >
                                             <div class="col-sm-12">
                                                 <label for="job-title">Job Specialization
                                                     <span class="text-danger">*</span>
@@ -321,7 +332,24 @@
 
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="job-loc">Remuneration</label>
+                                        <div class="row ">
+                                                <div class="col-sm-6">
+                                                    <label for="">Minimum</label>
+                                                    <input type="number" name="minimum_remuneration" value="{{ $minimum_remuneration }}"
+                                                           id="minimum_remuneration"
+                                                           class="form-control" >
+                                                </div>
+                                                <div class="col-sm-6">
 
+                                                    <label for="">Maximum</label>
+                                                    <input type="number" name="maximum_remuneration" value="{{ $maximum_remuneration }}"
+                                                           id="maximum_remuneration"
+                                                           class="form-control" >
+                                                </div>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
@@ -352,6 +380,23 @@
                                                           placeholder=""
                                                           required>
                                                     {!! $experience !!}
+                                                </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <label for="">Benefits</label>
+                                                <textarea name="benefits"
+                                                          id="editor4"
+                                                          cols="20"
+                                                          rows="6"
+                                                          class="form-control experience"
+                                                          placeholder=""
+                                                          required>
+                                                    {!! $benefits !!}
                                                 </textarea>
                                             </div>
                                         </div>
@@ -419,6 +464,7 @@
         </div>
 
         @include('workflow.includes.workflow_modal');
+        @include('specialization.includes.specialization_modal');
 
     </section>
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
@@ -540,12 +586,14 @@
             var url = "{{ route('job-draft') }}";
 
             var specializations = $('#specialization').val();
-
+            var minimum_remuneration  = $('#minimum_remuneration').val();
+            var maximum_remuneration = $('#maximum_remuneration').val();
             var job_type = $('.job_type option:selected').val();
             var is_for = $('#is_for option:selected').val();
             var position = $('.position').val();
             var is_private = $('#is_private').is(':checked');
             var experience = exp.getData();
+            var benefits = editor4.getData();
 
             $.ajax({
                 url: url,
@@ -558,6 +606,8 @@
                     expiry_date: expiry_date, experience: experience,
                     specializations: specializations, workflow_id: workflowId,
                     job_id: "{{ $jobId }}", eligibility: eligibilty,
+                    minimum_remuneration : minimum_remuneration,
+                    maximum_remuneration: maximum_remuneration,
                     summary: summary, is_ajax: 'true'
                 },
 
@@ -579,6 +629,7 @@
 
         var editor = CKEDITOR.replace('editor1')
         var exp = CKEDITOR.replace('editor3')
+        var editor4 = CKEDITOR.replace('editor4')
 
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()

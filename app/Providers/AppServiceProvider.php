@@ -25,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
         $this->commands([
            UpdateNullCandidate::class,
         ]);
+        
+        $this->app->singleton( \App\Interfaces\UserContract::class, function ($app){
+            return new \App\Services\UserService();
+        });
     }
 
     /**
@@ -34,7 +38,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
         URL::forceScheme('https');
         
         if ($this->app->environment() !== 'production') {

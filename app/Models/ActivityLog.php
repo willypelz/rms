@@ -31,7 +31,10 @@ class ActivityLog extends Model
     {
         return $this->hasOne('App\User', 'id', 'causer_id');
     }
-
+    public function company(){
+        
+        return $this->hasOne('App\Models\Company', 'id', 'company_id');
+    }
     public function candidate()
     {
         return $this->hasOne('App\Models\Candidate', 'id', 'causer_id');

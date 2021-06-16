@@ -14,6 +14,7 @@
                                     <th>Initiator</th>
                                     <th>Actions</th>
                                     <th>Description </th>
+                                    <th>Company </th>
                                     <th>Subject</th>
                                     <th>Date Created </th>
                                 </tr>
@@ -32,6 +33,9 @@
                                         </td>
                                         <td>
                                             {{ $audit->description}}
+                                        </td>
+                                        <td>
+                                            {{ (isset($audit->causer) ? $audit->causer->companies[0]['name'] : 'N/A')}}
                                         </td>
 
                                         <td>

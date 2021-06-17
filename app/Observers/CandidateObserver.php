@@ -21,8 +21,8 @@ class CandidateObserver
                 'description' => 'A new candidate info created',
                 'action_id' => $candidate->id,
                 'action_type' => 'App\Models\Candidate',
-                'causee_id' => auth()->guard('candidate')->user()->id,
-                'causer_id' =>  auth()->guard('candidate')->user()->id,
+                'causee_id' => auth()->guard('candidate')->id ?? null,
+                'causer_id' =>  auth()->guard('candidate')->id ?? null,
                 'causer_type' => 'applicant',
                 'properties' => '',
             ];
@@ -46,8 +46,8 @@ class CandidateObserver
                 'description' => 'updated the candidate info',
                 'action_id' => $candidate->id,
                 'action_type' => 'App\Models\Candidate',
-                'causee_id' => auth()->guard('candidate')->user()->id,
-                'causer_id' =>  auth()->guard('candidate')->user()->id,
+                'causee_id' => auth()->guard('candidate')->id ?? null,
+                'causer_id' =>  auth()->guard('candidate')->id ?? null,
                 'causer_type' => 'Applicant',
                 'properties' => '',
             ];

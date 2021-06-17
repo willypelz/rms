@@ -21,7 +21,7 @@ class InterviewObserver
                 'description' => 'Created a new Interview',
                 'action_id' => $interview->id,
                 'action_type' => 'App\Models\Interview',
-                'causee_id' => $interview->user->first()->id,
+                'causee_id' => $interview->user->first()->id ?? null,
                 'causer_id' =>  auth()->user()->id,
                 'causer_type' => 'admin',
                 'properties' => '',

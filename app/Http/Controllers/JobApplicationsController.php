@@ -862,19 +862,20 @@ class JobApplicationsController extends Controller
             $interview_notes = InterviewNoteValues::with('interviewer',
                 'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
 
-            $path = public_path('uploads/tmp/');
+            $path = public_path('uploads/tmp');
+            findOrMakeDirectory($path);
             $show_other_sections = false;
 
             $pdf = App::make('dompdf.wrapper');
             $pdf->loadHTML(view('modals.inc.dossier-content',
                 compact( 'jobID', 'appl', 'comments', 'interview_notes', 'show_other_sections'))->render());
 
-            $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf', true);
+            $pdf->save($path.'/'. $appl->cv->first_name . '_' . $appl->cv->last_name . '_interview.pdf', true);
 
 
             $filename = "Bulk Interview Notes.zip";
-            $interview_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf';
-            $cv_local_file = @$path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' cv - ' . $appl->cv->cv_file;
+            $interview_local_file = $path .'/'. $appl->cv->first_name . '_' . $appl->cv->last_name . '_interview.pdf';
+            $cv_local_file = @$path .'/'. $appl->cv->first_name . '_' . $appl->cv->last_name . '_cv-' . $appl->cv->cv_file;
             $files_to_archive[] = $interview_local_file;
 
             $timestamp = " " . time() . " ";

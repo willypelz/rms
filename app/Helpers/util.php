@@ -927,6 +927,7 @@ function isHrmsIntegrated(){
     return (!is_null(env('STAFFSTRENGTH_URL'))) && env('RMS_STAND_ALONE')==false ? true: false;
 }
 
+
 /**
  * Mass save
  * @param $modelName

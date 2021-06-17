@@ -1875,13 +1875,17 @@ class JobApplicationsController extends Controller
         return view('job.interview-note-templates', compact('interview_note_templates'));
     }
 
-    public function editInterviewNoteTemplate(Request $request)
+    public function editInterviewNoteTemplate(Request $request, InterviewNoteTemplates $id)
     {
 
-
         if ($request->isMethod('post')) {
-            $template = InterviewNoteTemplates::where(['name' => $request->name])->first();
-            if( $template)  return back()->with(["error" => "Template $template->name already exist, Try modifying template with another name"]);
+
+            $this->validate($request, [
+                'name' => 'required|unique:interview_note_templates,name,' .$request->id,
+            ],[
+                'name.unique' => "Template already exist, Try creating template with another name"
+            ]);
+
             InterviewNoteTemplates::where('id', $request->id)->where('company_id', get_current_company()->id)->update([
                 'name' => $request->name,
                 'description' => $request->description,
@@ -1899,13 +1903,16 @@ class JobApplicationsController extends Controller
 
     public function createInterviewNoteTemplate(Request $request)
     {
-        // $interview_note_options = InterviewNoteOptions::where('company_id',get_current_company()->id )->get();
-
         $interview_note_option = NULL;
 
         if ($request->isMethod('post')) {
-            $template = InterviewNoteTemplates::where(['name' => $request->name])->first();
-            if( $template)  return back()->with(["error" => "Template $template->name already exist, Try creating templste with another name"]);
+
+            $this->validate($request, [
+                'name' => 'required|unique:interview_note_templates,name,' .$request->id,
+            ],[
+                'name.unique' => "Template already exist, Try creating template with another name"
+            ]);
+            
             InterviewNoteTemplates::create([
                 'name' => $request->name,
                 'description' => $request->description,

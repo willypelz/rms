@@ -47,11 +47,11 @@ class WorkflowController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|unique:workflows,name',
+        ],[
+            'name.unique' => "Workflow already exist, Try creating workflow with another name"
         ]);
 
-        $workflow = Workflow::where(['name' => $request->name])->first();
-        if( $doesAlreadyExist)  return back()->with(["error" => "Workflow  $workflow->name already exist, Try creating workflow with another name"]);
         if ($workflow = Workflow::create($request->all() + ['company_id' => get_current_company()->id])) {
             $msg = '';
             // Create default readonly step
@@ -107,11 +107,11 @@ class WorkflowController extends Controller
         }
 
         $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|unique:workflows,name,' . $id,
+        ],[
+            'name.unique' => "Workflow already exist, Try updating workflow with another name"
         ]);
 
-        $workflow = Workflow::where(['name' => $request->name])->first();
-        if( $workflow)  return back()->with(["error" => "Workflow $workflow->name already exist, Try creating workflow with another name"]);
         if ($workflow->update($request->all())) {
 
             return redirect()->route('workflow')

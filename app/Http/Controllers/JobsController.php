@@ -2487,7 +2487,8 @@ class JobsController extends Controller
                         if ($request->hasFile($name)) {
 
                             $filename = time() . '_' . str_slug($request->email) . '_' . $request->file($name)->getClientOriginalName();
-                            $destinationPath = env('fileupload') . '/Others';
+                            $destinationPath = env('fileupload','uploads') . '/Others';
+                            findOrMakeDirectory($destinationPath);
 
                             $request->file($name)->move($destinationPath, $filename);
 

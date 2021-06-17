@@ -995,3 +995,9 @@ function canSwitchBetweenPage(){
 
 	return in_array(configs::CAN_SWITCH_BETWEEN_COMPANY, userPermissionsArray());
 }
+
+
+function isHrmsCompaniesSyncedWithRms(){
+	$rmsDefaultCompany = Company::whereNotNull('hrms_id')->whereIsDefault(true)->first();
+	return $rmsDefaultCompany ? true : false;
+}

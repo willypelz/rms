@@ -156,7 +156,7 @@ $is_super_admin = auth()->user()->is_super_admin;
                                                                 class="btn btn-line status-1 dropdown-toggle"
                                                                 data-toggle="dropdown" aria-haspopup="true"
                                                                 aria-expanded="false">
-                                                            ChecksAAA
+                                                            Checks
                                                             <span class="caret"></span>
                                                         </button>
 

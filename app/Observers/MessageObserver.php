@@ -21,7 +21,7 @@ class MessageObserver
                 'description' => $message->description,
                 'action_id' => $message->id,
                 'action_type' => 'App\Models\Message',
-                'causee_id' => $message->user_id ? auth()->user()->id : auth()->guard('candidate')->user()->id ,
+                'causee_id' => $message->user_id ? auth()->user()->id : auth()->guard('candidate')->id ,
                 'causer_id' => auth()->user()->id,
                 'properties' => '',
             ];

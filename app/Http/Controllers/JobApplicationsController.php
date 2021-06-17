@@ -881,7 +881,7 @@ class JobApplicationsController extends Controller
             $timestamp = " " . time() . " ";
         }
       }
-dd($files_to_archive);
+
         $zipPath = $path . $timestamp . $filename;
 
         Madzipper::make($zipPath)->add($files_to_archive)->close();

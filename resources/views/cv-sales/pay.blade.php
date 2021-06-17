@@ -48,7 +48,6 @@
                         data: ({ rnd : Math.random() * 100000, token:token }),
                         success: function(response){
 
-
                              if(response != null){
                                  var oldurl = "{{ route('transactions') }}";
 

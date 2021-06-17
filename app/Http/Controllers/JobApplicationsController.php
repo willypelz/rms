@@ -1875,13 +1875,13 @@ class JobApplicationsController extends Controller
         return view('job.interview-note-templates', compact('interview_note_templates'));
     }
 
-    public function editInterviewNoteTemplate(Request $request)
+    public function editInterviewNoteTemplate(Request $request, InterviewNoteTemplates $id)
     {
 
         if ($request->isMethod('post')) {
 
             $this->validate($request, [
-                'name' => 'required|unique:interview_note_templates,name',
+                'name' => 'required|unique:interview_note_templates,name,' .$request->id,
             ],[
                 'name.unique' => "Template already exist, Try creating template with another name"
             ]);
@@ -1908,7 +1908,7 @@ class JobApplicationsController extends Controller
         if ($request->isMethod('post')) {
 
             $this->validate($request, [
-                'name' => 'required|unique:interview_note_templates,name',
+                'name' => 'required|unique:interview_note_templates,name,' .$request->id,
             ],[
                 'name.unique' => "Template already exist, Try creating template with another name"
             ]);

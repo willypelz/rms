@@ -15,7 +15,9 @@ class RequestEmptySpaceTrimmer
      */
     public function handle($request, Closure $next)
     {
-        $request->merge(array_map('trim', $request->all()));
+        $request->merge(array_map(function ($value) {
+            return is_string($value) ? trim($value) : $value;
+        }, $request->all()));
         return $next($request);
     }
 }

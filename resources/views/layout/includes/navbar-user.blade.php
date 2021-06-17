@@ -142,11 +142,11 @@
                     @endif
                 
                 @endif
-                
+
                 <li id="fat-menu" class="dropdown" title="{{ get_current_company()->name }}">
                     <a class="a-user" id="drop3" href="#" class="dropdown-toggle" style="" data-toggle="dropdown"
                        role="button" aria-haspopup="true" aria-expanded="false">
-                        
+
                         <span class="ellipsis comp-name"><i
                                     class="fa fa-bookmark"></i> {{ get_current_company()->name }} &nbsp;</span>
                         
@@ -169,9 +169,7 @@
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ route('page-settings') }}"><i class="fa fa-key"> </i> Settings</a></li>
                         <li><a href="{{ route('audit-trails') }}"><i class="fa fa-history fa-fw"></i>Audit Trails</a></li>
-                        @if(isHrmsIntegrated())
                         <li><a href="{{ url('company/subsidiaries') }}"><i class="fa fa-users "></i> Subsidiaries</a></li>
-                        @endif
                         <li> <a href="{{ url('logout') }}"><i class="fa fa-sign-out"> </i> Logout</a></li>
                     </ul>
                 </li>

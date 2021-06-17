@@ -108,8 +108,10 @@
                                                         <div class="row">
                                                             <div class="separator separator-small"></div>
                                                         </div>
+                                @if(isset($fields))
                                                         <div class="form-group">
                                                             <div class="row">
+
                                                                 @if( $fields->first_name->is_visible )
                                                                     <div class="col-sm-6"><label for="job-title">first
                                                                             name @if( $fields->first_name->is_required )
@@ -543,7 +545,9 @@
                                                             <div class="separator separator-small"></div>
                                                         </div>
 
-
+                                                        @else
+                                                            <div>Something went wrong with this job posting, please contact support</div>
+                                                        @endif
 
 
                                                         <!-- $job->form_fields->toArray() -->

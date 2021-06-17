@@ -10,7 +10,7 @@ use App\Enum\Configs;
 
 class SyncController extends Controller
 {
-    public function companyAndSubsidiaries()
+    public function companyAndSubsidiaries(Request $request)
     {
         try {
             $rmsCompany = Company::whereNotNull('api_key')->first();
@@ -35,8 +35,8 @@ class SyncController extends Controller
                     self::createCompanyWithHrmsDetails($hrmsCompany);
                 }
             }
-
-            return response()->json($hrmsCompanies);
+	        if($request->json) return response()->json($hrmsCompanies);
+	        return back()->with('success', 'Syncing successful');
         }catch(\Exception $e){
             return back()->with('error',$e->getMessage());
         }

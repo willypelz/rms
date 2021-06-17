@@ -107,7 +107,7 @@ class WorkflowController extends Controller
         }
 
         $this->validate($request, [
-            'name' => 'required|unique:workflows,name',
+            'name' => 'required|unique:workflows,name,' . $id,
         ],[
             'name.unique' => "Workflow already exist, Try updating workflow with another name"
         ]);

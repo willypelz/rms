@@ -14,6 +14,7 @@
                                     <th>Initiator</th>
                                     <th>Actions</th>
                                     <th>Description </th>
+                                    <th>Company </th>
                                     <th>Subject</th>
                                     <th>Date Created </th>
                                 </tr>
@@ -33,7 +34,10 @@
                                         <td>
                                             {{ $audit->description}}
                                         </td>
-
+                                        <td>
+                                         {{ $audit->company->name ?? 'N/A'}}
+                                        </td>
+                                    
                                         <td>
                                             {{ isset($audit->subject) ? $audit->subject->name : (isset($audit->candidateSubject) ? $audit->candidateSubject->name() : 'N/A')}}
                                         </td>

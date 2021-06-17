@@ -142,11 +142,11 @@
                     @endif
                 
                 @endif
-                
+
                 <li id="fat-menu" class="dropdown" title="{{ get_current_company()->name }}">
                     <a class="a-user" id="drop3" href="#" class="dropdown-toggle" style="" data-toggle="dropdown"
                        role="button" aria-haspopup="true" aria-expanded="false">
-                        
+
                         <span class="ellipsis comp-name"><i
                                     class="fa fa-bookmark"></i> {{ get_current_company()->name }} &nbsp;</span>
                         

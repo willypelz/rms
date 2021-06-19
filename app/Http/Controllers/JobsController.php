@@ -2487,7 +2487,8 @@ class JobsController extends Controller
                         if ($request->hasFile($name)) {
 
                             $filename = time() . '_' . str_slug($request->email) . '_' . $request->file($name)->getClientOriginalName();
-                            $destinationPath = env('fileupload') . '/Others';
+                            $destinationPath = env('fileupload','uploads') . '/Others';
+                            findOrMakeDirectory($destinationPath);
 
                             $request->file($name)->move($destinationPath, $filename);
 
@@ -2515,17 +2516,19 @@ class JobsController extends Controller
             if ($request->hasFile('cv_file')) {
 
                 $destinationPath = env('fileupload') . '/CVs';
-
+                findOrMakeDirectory($destinationPath);
                 $request->file('cv_file')->move($destinationPath, $data['cv_file']);
 
             }
 
             if ($request->hasFile('optional_attachment_1')) {
                 $destinationPath = env('fileupload') . '/CVs';
+                findOrMakeDirectory($destinationPath);
                 $request->file('optional_attachment_1')->move($destinationPath, $data['optional_attachment_1']);
             }
             if ($request->hasFile('optional_attachment_2')) {
                 $destinationPath = env('fileupload') . '/CVs';
+                findOrMakeDirectory($destinationPath);
                 $request->file('optional_attachment_2')->move($destinationPath, $data['optional_attachment_2']);
             }
 

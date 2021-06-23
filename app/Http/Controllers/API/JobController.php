@@ -493,7 +493,7 @@ class JobController extends Controller
             );
         }
 
-        $company = Company::first();
+        $company = Company::where('hrms_id',$request->company_id)->first() ?? Company::first();
 
         if (is_null($company)) {
             return response()->json([
@@ -547,7 +547,11 @@ class JobController extends Controller
 
         $role = Role::whereName('admin')->first()->id;
 
-        $company->users()->attach($user->id, ['role' => $role[0]['id']]);
+        //attach the superadmin to all company instance
+        $all_companies = Company::all();
+        foreach($all_companies as $company){
+            $company->users()->attach($user->id, ['role' => $role[0]['id']]);
+        }
 
         $user->roles()->attach([$role]);
 

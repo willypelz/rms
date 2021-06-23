@@ -2236,8 +2236,9 @@ class JobsController extends Controller
         $company->logo = get_company_logo($company->logo);
 
         $closed = false;
+        $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
 
-        return view('job.job-details', compact('job', 'company', 'closed'));
+        return view('job.job-details', compact('job', 'company', 'closed','privacy_policy'));
     }
 
 

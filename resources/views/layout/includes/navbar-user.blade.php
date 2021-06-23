@@ -157,17 +157,16 @@
                         <!-- <li><a href="setting.php">Account Setting</a></li>  -->
                         <?php $companies = Auth::user()->companies->unique(); ?>
                         @if (canSwitchBetweenPage())
-                        @foreach( $companies as $key => $company )
-                            <li>
-                                <a href="{{ route('select-company',['slug'=>$company->slug]) }}"> @if( $company->id == get_current_company()->id )
-                                        <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>
-                                @if(count($companies)-1 != $key)
-                                        <hr role="separator" class="divider pt-4 mt-5"/>
-                                 @endif
-                        @endforeach
+                            @foreach( $companies as $key => $company )
+                                <li>
+                                    <a href="{{ route('select-company',['slug'=>$company->slug]) }}"> @if( $company->id == get_current_company()->id )
+                                            <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>
+                                    @if(count($companies)-1 != $key)
+                                            <hr role="separator" class="divider pt-4 mt-5"/>
+                                    @endif
+                            @endforeach
                        
-                        
-                    @endif
+                        @endif
 
                     <!-- <li><a href="{{-- route('edit-company', ['id' => get_current_company()->id ]) --}}">Edit <strong>{{ get_current_company()->name }}</strong> </a></li> -->
                         <li role="separator" class="divider"></li>

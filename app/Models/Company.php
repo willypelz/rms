@@ -34,6 +34,7 @@ class Company extends Model
         'has_expired',
         'valid_till',
         'api_key',
+        'license_type',
 	    'is_active',
 	    'is_default'
     ];

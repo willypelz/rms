@@ -54,7 +54,8 @@ class SyncController extends Controller
 		    'date_added' => now(),
 		    'is_active' => $hrmsCompany->is_active,
 		    'is_default' => $hrmsCompany->is_default,
-		    'hrms_id' => $hrmsCompany->id,
+            'hrms_id' => $hrmsCompany->id,
+            'license_type'=>'PREMIUM'
 	    ]);
     }
 }

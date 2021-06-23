@@ -142,11 +142,11 @@
                     @endif
                 
                 @endif
-                
+
                 <li id="fat-menu" class="dropdown" title="{{ get_current_company()->name }}">
                     <a class="a-user" id="drop3" href="#" class="dropdown-toggle" style="" data-toggle="dropdown"
                        role="button" aria-haspopup="true" aria-expanded="false">
-                        
+
                         <span class="ellipsis comp-name"><i
                                     class="fa fa-bookmark"></i> {{ get_current_company()->name }} &nbsp;</span>
                         
@@ -157,13 +157,16 @@
                         <!-- <li><a href="setting.php">Account Setting</a></li>  -->
                         <?php $companies = Auth::user()->companies->unique(); ?>
                         @if (canSwitchBetweenPage())
-                        @foreach( $companies as $key => $company )
-                            <li>
-                                <a href="{{ route('select-company',['slug'=>$company->slug]) }}"> @if( $company->id == get_current_company()->id )
-                                        <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>
-                        @endforeach
-                        <hr role="separator" class="divider pt-4 mt-5"/>
-                    @endif
+                            @foreach( $companies as $key => $company )
+                                <li>
+                                    <a href="{{ route('select-company',['slug'=>$company->slug]) }}"> @if( $company->id == get_current_company()->id )
+                                            <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>
+                                    @if(count($companies)-1 != $key)
+                                            <hr role="separator" class="divider pt-4 mt-5"/>
+                                    @endif
+                            @endforeach
+                       
+                        @endif
 
                     <!-- <li><a href="{{-- route('edit-company', ['id' => get_current_company()->id ]) --}}">Edit <strong>{{ get_current_company()->name }}</strong> </a></li> -->
                         <li role="separator" class="divider"></li>
@@ -173,7 +176,7 @@
                         <li> <a href="{{ url('logout') }}"><i class="fa fa-sign-out"> </i> Logout</a></li>
                     </ul>
                 </li>
-            </ul
+            </ul>
             </ul>
         </div>
         <!-- /.navbar-collapse -->

@@ -3131,7 +3131,6 @@ class JobsController extends Controller
 
 
             $validator = Validator::make($request->all(), [
-            	'slug' => 'unique:companies',
 				'company_email' => 'required|unique:companies,email',
 				'company_name' => 'required',
 				'phone' => 'required',
@@ -3158,12 +3157,13 @@ class JobsController extends Controller
             $comp = Company::FirstorCreate([
                 'name' => $request->company_name,
                 'email' => $request->company_email,
-                'slug' => $request->slug,
+                'slug' => str_slug($request->company_name),
                 'phone' => $request->phone,
                 'website' => $request->website,
                 'address' => $request->address,
                 'about' => $request->about_company,
                 'logo' => $logo,
+                'license_type'=>'PREMIUM',
                 'date_added' => date('Y-m-d H:i:s'),
             ]);
 
@@ -3216,6 +3216,7 @@ class JobsController extends Controller
                 return redirect('dashboard');
             }
         }
+    
     }
 
     public function embed()

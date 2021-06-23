@@ -937,7 +937,8 @@ function isHrmsIntegrated(){
  */
 function seamlessSave( $modelName, array $data, $id)
 {
-	$instance = $modelName::find($id);
+    $instance = $modelName::find($id);
+    $data['slug'] = ($instance->slug) ?: str_slug($instance->name); //add slug if missing
 	$instance->fill($data)->save();
 	return $instance;
 }

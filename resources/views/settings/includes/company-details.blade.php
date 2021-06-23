@@ -12,7 +12,7 @@
     <p>
         <i class="fa fa-envelope"></i> {{ $company->email }} <br>
         <i class="fa fa-globe"></i> {{ $company->website }}
-    @if($privacy_policy)
+    @if(isset($privacy_policy))
         <p>
             <i class="fa fa-lock"></i>
             By applying to this job, you are agreeing to our

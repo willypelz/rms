@@ -214,6 +214,8 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::post('job/applicant/mass-action', ['uses' => 'JobApplicationsController@massAction', 'as' => 'mass-action']);
     Route::post('job/applicant/write-review',
         ['uses' => 'JobApplicationsController@writeReview', 'as' => 'write-review']);
+    //PrivateJobs
+    Route::delete('privatejob-email/remove/{id}','PrivateJobController@destroy')->name('remove-attached-email');
 
     //Specialization
     Route::get('list-job-specialization', 'SpecializationController@index')->name('specialization');;

@@ -29,6 +29,7 @@ use App\Models\TestRequest;
 use App\Models\VideoApplicationOptions;
 use App\Models\VideoApplicationValues;
 use App\Models\Workflow;
+use App\Models\PrivateJob;
 use App\User;
 use Auth;
 use Carbon\Carbon;
@@ -690,12 +691,124 @@ class JobsController extends Controller
 
             if(empty($request->job_id)){
                 $job = Job::firstOrCreate($job_data);
+
+                //attach emails to private jobs
+                if($request->is_private){
+
+                    if($request->attach_email){
+                        $attached_emails = $request->attach_email;
+                        $arr = explode(",",$attached_emails);
+    
+                        foreach ($arr as $value) {
+                            PrivateJob::create(['job_id' => $request->job_id,'attached_email'=> $value]);
+                        }                        
+                    }
+                    
+                    if($request->hasFile('bulk')){
+                        //
+                        $csv = $request->hasFile('bulk');
+                        $filepath = $csv->getRealPath();
+                        
+                        $read = fopen($filepath, 'r');
+                        $header = fgetcsv($read);
+                        $escapeHeaders = [];
+
+                        foreach($header as $key => &$value){
+                            $lheader = strtolower($value);
+                            $escapedItem = preg_replace('/[^a-z]/','',$lheader);
+                            array_push($escapeHeaders,$escapedItem);
+                        }
+
+                        while($column = fgetcsv($file)) {
+
+                            if($column[0] == ''){
+                                continue;
+                            }
+                            foreach($column as $key => &$value){
+                                $value = preg_replace('/\'D','',$value);
+                                
+                            }
+                            $data = array_combine($escapeHeaders,$column);
+
+                            foreach($data as $key => &$value){
+                                $value = ($key == 'email')?(string)$value : (float)$value;
+                            }
+
+                            $arr = data['email'];
+
+                            PrivateJob::UpdateOrCreate([
+                                'job_id'=>$job->id,
+                                'attach'=>$arr
+                            ]);
+
+                        }
+
+                    }
+                    
+                }
+                
+
             }else{
                 $is_update = true;
                 $jb = Job::find($request->job_id);
                 $job = $jb;
 
                 $jb->update($job_data);
+
+                if($request->is_private){
+
+                    if($request->attach_email){
+                        $attached_emails = $request->attach_email;
+                        $arr = explode(",",$attached_emails);
+    
+                        foreach ($arr as $value) {
+                            PrivateJob::UpdateOrCreate(['job_id' => $request->job_id,'attached_email'=> $value]);
+                        }
+                            
+                    }
+                    
+                    if($request->hasFile('bulk')){
+                        //bulk upload
+                        $csv = $request->hasFile('bulk');
+                        $filepath = $csv->getRealPath();
+                        
+                        $read = fopen($filepath, 'r');
+                        $header = fgetcsv($read);
+                        $escapeHeaders = [];
+
+                        foreach($header as $key => &$value){
+                            $lheader = strtolower($value);
+                            $escapedItem = preg_replace('/[^a-z]/','',$lheader);
+                            array_push($escapeHeaders,$escapedItem);
+                        }
+
+                        while($column = fgetcsv($file)) {
+
+                            if($column[0] == ''){
+                                continue;
+                            }
+                            foreach($column as $key => &$value){
+                                $value = preg_replace('/\'D','',$value);
+                                
+                            }
+                            $data = array_combine($escapeHeaders,$column);
+
+                            foreach($data as $key => &$value){
+                                $value = ($key == 'email')?(string)$value : (float)$value;
+                            }
+
+                            $arr = data['email'];
+
+                            PrivateJob::UpdateOrCreate([
+                                'job_id'=>$job->id,
+                                'attach'=>$arr
+                            ]);
+
+                        }
+
+                    }
+                    
+                }
             }
 
             if($request->specializations){
@@ -2209,6 +2322,7 @@ class JobsController extends Controller
         if (empty($job) || is_null($job)) {
             abort(404);
         }
+
         $company = $job->company;
         $company->logo = get_company_logo($company->logo);
 
@@ -2272,6 +2386,18 @@ class JobsController extends Controller
         $candidate = Auth::guard('candidate')->user();
 
         $job = Job::with('company')->where('id', $jobID)->first();
+
+        if($job->is_private && $candidate){
+            
+            $checkEmail = PrivateJob::with('job')->where('attached_email', $candidate->email)->first();
+            
+            if (empty($checkEmail) || is_null($checkEmail)) {
+    
+                return redirect()->to('/dashboard')->with('error','you are not listed to apply for this job');
+            }
+        }
+
+        
 
         $company = $job->company;
         $specializations = Specialization::get();

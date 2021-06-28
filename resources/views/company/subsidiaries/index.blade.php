@@ -20,7 +20,7 @@
                                 @if(env('RMS_STAND_ALONE'))
                                     <a  href="{{ url('company/subsidiaries/create') }}"
                                          style="margin-bottom:15px"
-                                         class="btn btn-primary pull-right"><i class="fa fa-plus-circle"></i> Subsidiaries
+                                         class="btn btn-primary pull-right"><i class="fa fa-plus-circle"></i> Add Subsidiaries
                                     </a>
                                 @endif
                                 <table class="table" id="myTable">

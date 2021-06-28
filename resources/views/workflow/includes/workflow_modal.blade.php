@@ -65,7 +65,7 @@
                 console.log('ssss', data)
                 console.log('ssss', data)
                 $('#workflowModal').modal('hide');
-                $.growl.notice({title: "Success", message: `Workflow successfully created. If you want to Customise this workflow created click <a href="${workflow_url}"> here </a>`})
+                $.growl.notice({title: "Success",  message: `Workflow successfully created. If you want to Customise this workflow created click <a target="_blank" href="${workflow_url}"> here </a>`})
                 let newOption = new Option(data.name, data.id, false, false);
                 $('#workflowId').append(newOption).trigger('change');
                 // $(".select2-container option").remove();

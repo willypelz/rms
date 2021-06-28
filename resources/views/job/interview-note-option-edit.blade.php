@@ -51,7 +51,7 @@
 
                                 <div class="form-group row" id="weightDiv">
                                     <div class="col-xs-12">
-                                        <label for="weight">Weight</label>
+                                        <label for="weight">Weight Range</label>
                                     </div>
                                     <div class="col-xs-5">
                                         <input type="number" min="0" placeholder="1" name="weight[0]" value="{{ @$interview_note_option->weight_min }}" class="form-control" id="weight_min" required>

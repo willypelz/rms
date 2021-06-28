@@ -17,8 +17,8 @@ class VideoApplicationValuesObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a VideoApplicationValues',
-                'description' => 'created the following',
+                'log_name' => 'Create a Video Application Values',
+                'description' => 'Video Application',
                 'action_id' => $videoApplicationValues->id,
                 'action_type' => 'App\Models\VideoApplicationValues',
                 'causee_id' => auth()->guard('candidate')->user()->id,

@@ -19,7 +19,7 @@ class CompanyObserver
         if(auth()->check()){
             $param = [
                 'log_name' => 'Create a Company',
-                'description' => 'created a new company ',
+                'description' => 'Added company',
                 'action_id' => $company->id,
                 'action_type' => 'App\Models\Company',
                 'causee_id' => auth()->user()->id,
@@ -44,7 +44,7 @@ class CompanyObserver
         if(auth()->check()){
             $param = [
                 'log_name' => 'Update a Company',
-                'description' => 'updated the company info',
+                'description' => 'Updated the company info',
                 'action_id' => $company->id,
                 'action_type' => 'App\Models\Company',
                 'causee_id' => auth()->user()->id,

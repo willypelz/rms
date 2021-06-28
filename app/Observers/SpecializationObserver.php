@@ -17,7 +17,7 @@ class SpecializationObserver
         // 
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a Specialization',
+                'log_name' => 'Created Specialization',
                 'description' => 'Created specialization'.' '.request()->name,
                 'action_id' => $specialization->id,
                 'action_type' => 'App\Models\Specialization',
@@ -42,9 +42,10 @@ class SpecializationObserver
     {
         //
         if(auth()->check()){
+            $old = $specialization->getOriginal('name');
             $param = [
-                'log_name' => 'Update a Specialization ',
-                'description' => 'Updated specialization'.' '.request()->name,
+                'log_name' => 'Updated Specialization ',
+                'description' => $old.' '.'was updated to'.' '.request()->name,
                 'action_id' => $specialization->id,
                 'action_type' => 'App\Models\Specialization',
                 'causee_id' => auth()->user()->id,

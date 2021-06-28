@@ -18,7 +18,7 @@ class RoleObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Created a Roles Model',
+                'log_name' => 'Created Role',
                 'description' => 'created'.' '.request()->name.' '.'role',
                 'action_id' => $role->id,
                 'action_type' => 'App\Models\Role',
@@ -43,7 +43,7 @@ class RoleObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Update Roles Model',
+                'log_name' => 'Updated Role',
                 'description' => 'updated the role to'.' '.request()->name.' '.'role',
                 'action_id' => $role->id,
                 'action_type' => 'App\Models\Role',

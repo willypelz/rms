@@ -17,7 +17,7 @@ class InterviewNoteOptionsObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Created a InterviewNoteOptions Model',
+                'log_name' => 'Created Interview Note Options',
                 'description' => 'Created an Interview note options',
                 'action_id' => $interviewNoteOptions->id,
                 'action_type' => 'App\Models\InterviewNoteOptions',

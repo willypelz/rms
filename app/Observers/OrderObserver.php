@@ -17,7 +17,7 @@ class OrderObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a Order Model',
+                'log_name' => 'Created Order',
                 'description' => 'created a new order',
                 'action_id' => $order->id,
                 'action_type' => 'App\Models\Order',

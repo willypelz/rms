@@ -45,7 +45,7 @@ class JobObserver
             if($job->isDirty('title'))
             $param = [
                 'log_name' => 'Updated Job',
-                'description' => 'Updated Job '.$old.' to'.$job->title,
+                'description' => 'Updated Job '.$old.' to '.$job->title,
                 'action_id' => $job->id,
                 'action_type' => 'App\Models\Job',
                 'causee_id' => auth()->user()->id,

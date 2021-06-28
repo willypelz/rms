@@ -135,7 +135,7 @@
                                                 <label for="job-title">
                                                     Country
                                                     <span class="text-danger">*</span>
-                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Which country is will the candidate work from?"></i>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Which country will the candidate work from?"></i>
                                                 </label>
                                                 <select required
                                                         name="country"
@@ -156,7 +156,7 @@
                                                     <label for="job-title">
                                                         Location
                                                         <span class="text-danger">*</span>
-                                                        <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Which state is will the candidate work from?"></i>
+                                                        <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Which state will the candidate work from?"></i>
                                                     </label>
                                                     <select required
                                                             name="location"
@@ -180,7 +180,7 @@
 
                                             <div class="col-sm-6">
                                                 <label for="job-title">Job Type <span class="text-danger">*</span>
-                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What type of contract agreement?"></i>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What type of contract ?"></i>
                                                 </label>
 
                                                 <select name="job_type" id="job_level" required type="text"

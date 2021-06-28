@@ -18,8 +18,8 @@ class CompanyObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a Company',
-                'description' => 'Added company',
+                'log_name' => 'Create Company',
+                'description' => 'Added company '.$company->name,
                 'action_id' => $company->id,
                 'action_type' => 'App\Models\Company',
                 'causee_id' => auth()->user()->id,
@@ -42,9 +42,11 @@ class CompanyObserver
     {
         //
         if(auth()->check()){
+            $old = $company->getOriginal('name');
+            if($company->isDirty('name'))
             $param = [
-                'log_name' => 'Update a Company',
-                'description' => 'Updated the company info',
+                'log_name' => 'Updated Company',
+                'description' => 'Updated the company '.$old.' name to '.$company->name,
                 'action_id' => $company->id,
                 'action_type' => 'App\Models\Company',
                 'causee_id' => auth()->user()->id,
@@ -52,6 +54,18 @@ class CompanyObserver
                 'causer_type' => 'admin',
                 'properties' => '',
             ];
+            else
+            $param = [
+                'log_name' => 'Updated Company',
+                'description' => 'Updated the company '.$company->name.' info',
+                'action_id' => $company->id,
+                'action_type' => 'App\Models\Company',
+                'causee_id' => auth()->user()->id,
+                'causer_id' => auth()->user()->id,
+                'causer_type' => 'admin',
+                'properties' => '',
+            ];
+
             logAction($param);
             
            

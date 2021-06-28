@@ -333,7 +333,9 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="job-loc">Remuneration</label>
+                                        <label for="job-loc">Remuneration
+                                            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Job Remuneration: proposed salary range."></i>
+                                        </label>
                                         <div class="row ">
                                                 <div class="col-sm-6">
                                                     <label for="">Minimum</label>
@@ -388,7 +390,9 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <label for="">Benefits</label>
+                                                <label for="">Benefits
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Job Benefits: other perks for this Job role in addition to their normal wages or salaries"></i>
+                                                </label>
                                                 <textarea name="benefits"
                                                           id="editor4"
                                                           cols="20"

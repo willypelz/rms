@@ -17,8 +17,8 @@ class CvObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a Cv Model',
-                'description' => 'created a candidate Cv',
+                'log_name' => 'Uploaded a Cv',
+                'description' => 'Uploaded a candidate Cv',
                 'action_id' => $cv->id,
                 'action_type' => 'App\Models\Cv',
                 'causee_id' => $cv->candidate_id,

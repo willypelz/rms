@@ -17,7 +17,7 @@ class JobActivityObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a JobActivity',
+                'log_name' => 'Created Job Activity',
                 'description' => 'created the a job activity',
                 'action_id' => $jobActivity->id,
                 'action_type' => 'App\Models\JobActivity',

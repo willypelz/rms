@@ -17,8 +17,8 @@ class TestRequestObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a TestRequest',
-                'description' => 'Create TestRequest'.' '.$testRequest->name,
+                'log_name' => 'Created a TestbRequest',
+                'description' => 'Create Test Request'.' '.$testRequest->name,
                 'action_id' => $testRequest->id,
                 'action_type' => 'App/Models/TestRequest',
                 'causee_id' => auth()->user()->id,

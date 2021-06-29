@@ -17,7 +17,7 @@ class InterviewObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Created a InterviewObserver',
+                'log_name' => 'Created Interview',
                 'description' => 'Created a new Interview',
                 'action_id' => $interview->id,
                 'action_type' => 'App\Models\Interview',

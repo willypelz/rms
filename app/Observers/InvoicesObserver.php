@@ -17,8 +17,8 @@ class InvoicesObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Created a Invoices',
-                'description' => 'Created a new invoice',
+                'log_name' => 'Created Invoice Items',
+                'description' => 'Created a new invoice item',
                 'action_id' => $invoices->id,
                 'action_type' => 'App\Models\invoices',
                 'causee_id' => auth()->user()->id,

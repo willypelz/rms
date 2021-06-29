@@ -14,9 +14,9 @@ class AuditController extends Controller
      */
     public function index()
     {
-        //
         $page = config('constants.pagination');
-        $audits = ActivityLog::orderBy('created_at', 'DESC')->paginate($page);
+        $current_company = get_current_company()->id;
+        $audits = ActivityLog::where('company_id',$current_company)->orWhere('company_id', null)->orderBy('created_at', 'DESC')->paginate($page);
         return view('admin.audit.index',compact('audits'));
     }
 

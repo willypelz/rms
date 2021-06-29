@@ -17,7 +17,7 @@ class TransactionObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a Transaction',
+                'log_name' => 'Created a Transaction',
                 'description' => 'created a new transaction',
                 'action_id' => $transaction->id,
                 'action_type' => 'App\Models\Transaction',

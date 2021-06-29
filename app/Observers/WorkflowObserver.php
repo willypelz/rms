@@ -17,8 +17,8 @@ class WorkflowObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a Workflow Model',
-                'description' => 'created a workflow',
+                'log_name' => 'Created Workflow',
+                'description' => 'Created a workflow'.' '.$workflow->name,
                 'action_id' => $workflow->id,
                 'action_type' => 'Create',
                 'causee_id' => auth()->user()->id,
@@ -41,15 +41,16 @@ class WorkflowObserver
     {
         //
         if(auth()->check()){
+            $old = $workflow->getOriginal('name');
             $param = [
-                'log_name' => 'Updated a Workflow Model',
-                'description' => 'updated the workflow',
-                'action_id' => $workflow->id,
-                'action_type' => 'App\Models\Workflow',
-                'causee_id' => auth()->user()->id,
-                'causer_id' => auth()->user()->id,
-                'causer_type' => 'admin',
-                'properties' => '',
+                    'log_name' => 'Updated Workflow',
+                    'description' => 'The workflow'.' '.$old.' '.'was updated to'.' '.$workflow->name,
+                    'action_id' => $workflow->id,
+                    'action_type' => 'App\Models\Workflow',
+                    'causee_id' => auth()->user()->id,
+                    'causer_id' => auth()->user()->id,
+                    'causer_type' => 'admin',
+                    'properties' => '',
             ];
             logAction($param);
            
@@ -66,9 +67,10 @@ class WorkflowObserver
     {
         //
         if(auth()->check()){
+            $old = $workflow->getOriginal('name');
             $param = [
-                'log_name' => 'Deleted a Workflow',
-                'description' => 'Deleted the workflow',
+                'log_name' => 'Deleted Workflow',
+                'description' => 'Deleted the workflow'.' '.$old,
                 'action_id' => $workflow->id,
                 'action_type' => 'App\Models\Workflow',
                 'causee_id' => auth()->user()->id,

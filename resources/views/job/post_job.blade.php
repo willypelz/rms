@@ -135,7 +135,7 @@
                                                 <label for="job-title">
                                                     Country
                                                     <span class="text-danger">*</span>
-                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Which country is will the candidate work from?"></i>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Which country will the candidate work from?"></i>
                                                 </label>
                                                 <select required
                                                         name="country"
@@ -156,7 +156,7 @@
                                                     <label for="job-title">
                                                         Location
                                                         <span class="text-danger">*</span>
-                                                        <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Which state is will the candidate work from?"></i>
+                                                        <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Which state will the candidate work from?"></i>
                                                     </label>
                                                     <select required
                                                             name="location"
@@ -180,7 +180,7 @@
 
                                             <div class="col-sm-6">
                                                 <label for="job-title">Job Type <span class="text-danger">*</span>
-                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What type of contract agreement?"></i>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What type of contract ?"></i>
                                                 </label>
 
                                                 <select name="job_type" id="job_level" required type="text"
@@ -333,7 +333,9 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="job-loc">Remuneration</label>
+                                        <label for="job-loc">Remuneration
+                                            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Job Remuneration: proposed salary range."></i>
+                                        </label>
                                         <div class="row ">
                                                 <div class="col-sm-6">
                                                     <label for="">Minimum</label>
@@ -388,7 +390,9 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <label for="">Benefits</label>
+                                                <label for="">Benefits
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Job Benefits: other perks for this Job role in addition to their normal wages or salaries"></i>
+                                                </label>
                                                 <textarea name="benefits"
                                                           id="editor4"
                                                           cols="20"

@@ -16,16 +16,30 @@ class WorkflowStepObserver
     {
         //
         if(auth()->check()){
-            $param = [
-                'log_name' => 'Create a WorkflowStep',
-                'description' => 'created a new workflowstep',
-                'action_id' => $workflowStep->id,
-                'action_type' => 'App\Models\WorkflowStep',
-                'causee_id' => auth()->user()->id,
-                'causer_id' => auth()->user()->id,
-                'causer_type' => 'Admin',
-                'properties' => '',
-            ];
+            if(request()->name){
+                $param = [
+                    'log_name' => 'Created a Workflow Step',
+                    'description' => 'Added a workflow step for '.$workflowStep->workflow->name.' Step '.$workflowStep->order,
+                    'action_id' => $workflowStep->id,
+                    'action_type' => 'App\Models\WorkflowStep',
+                    'causee_id' => auth()->user()->id,
+                    'causer_id' => auth()->user()->id,
+                    'causer_type' => 'Admin',
+                    'properties' => '',
+                ];
+            }else{
+                $param = [
+                    'log_name' => 'Created a Workflow Step',
+                    'description' => 'Added a workflow step for '.$workflowStep->workflow->name.'Step 1 & 2',
+                    'action_id' => $workflowStep->id,
+                    'action_type' => 'App\Models\WorkflowStep',
+                    'causee_id' => auth()->user()->id,
+                    'causer_id' => auth()->user()->id,
+                    'causer_type' => 'Admin',
+                    'properties' => '',
+                ];
+            }
+            
             logAction($param);
            
         }
@@ -42,18 +56,34 @@ class WorkflowStepObserver
     {
         //
         if(auth()->check()){
-            $param = [
-                'log_name' => 'Update the WorkflowStep',
-                'description' => 'updated the WorkflowStep',
+            $old = $workflowStep->getOriginal('name');
+            if($workflowStep->isDirty('name')){
+                $param = [
+                'log_name' => 'Updated WorkflowStep',
+                'description' => 'Updated the WorkflowStep'.' '.$old.' to '.request()->name.' for '.$workflowStep->workflow->name.'' ,
                 'action_id' => $workflowStep->id,
                 'action_type' => 'App\Models\WorkflowStep',
                 'causee_id' => auth()->user()->id,
                 'causer_id' => auth()->user()->id,
                 'causer_type' => 'Admin',
                 'properties' => '',
-            ];
+              ];
+
+            }else{
+                $param = [
+                    'log_name' => 'Updated WorkflowStep',
+                    'description' => 'Updated the WorkflowStep'.' '.$workflowStep->name.' for '.$workflowStep->workflow->name.'' ,
+                    'action_id' => $workflowStep->id,
+                    'action_type' => 'App\Models\WorkflowStep',
+                    'causee_id' => auth()->user()->id,
+                    'causer_id' => auth()->user()->id,
+                    'causer_type' => 'Admin',
+                    'properties' => '',
+                ];
+                
+            }
+            
             logAction($param);
-           
         }
     }
 

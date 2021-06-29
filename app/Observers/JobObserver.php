@@ -17,8 +17,8 @@ class JobObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a Job',
-                'description' => 'Created a new Job',
+                'log_name' => 'Created Job',
+                'description' => 'Created a Job'.' '.$job->title,
                 'action_id' => $job->id,
                 'action_type' => 'App\Models\Job',
                 'causee_id' => auth()->user()->id,
@@ -41,16 +41,32 @@ class JobObserver
     {
         //
         if(auth()->check()){
-            $param = [
-                'log_name' => 'Updated a Job',
-                'description' => 'Updated a Job',
-                'action_id' => $job->id,
-                'action_type' => 'App\Models\Job',
-                'causee_id' => auth()->user()->id,
-                'causer_id' => auth()->user()->id,
-                'causer_type' => 'Admin',
-                'properties' => '',
-            ];
+            $old = $job->getOriginal('title');
+            if($job->isDirty('title')){
+                $param = [
+                    'log_name' => 'Updated Job',
+                    'description' => 'Updated Job '.$old.' to '.$job->title,
+                    'action_id' => $job->id,
+                    'action_type' => 'App\Models\Job',
+                    'causee_id' => auth()->user()->id,
+                    'causer_id' => auth()->user()->id,
+                    'causer_type' => 'Admin',
+                    'properties' => '',
+                ];
+            }else{
+                $param = [
+                    'log_name' => 'Updated Job',
+                    'description' => 'Updated Job '.$job->title,
+                    'action_id' => $job->id,
+                    'action_type' => 'App\Models\Job',
+                    'causee_id' => auth()->user()->id,
+                    'causer_id' => auth()->user()->id,
+                    'causer_type' => 'Admin',
+                    'properties' => '',
+                ];
+            }
+            
+
             logAction($param);
            
         }

@@ -17,8 +17,8 @@ class CompanyFolderObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Created a CompanyFolder',
-                'description' => 'Created a CompanyFolder',
+                'log_name' => 'Created CompanyFolder',
+                'description' => 'Created CompanyFolder',
                 'action_id' => $companyFolder->id,
                 'action_type' => 'App\Models\CompanyFolder',
                 'causee_id' => '',

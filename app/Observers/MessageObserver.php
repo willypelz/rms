@@ -17,7 +17,7 @@ class MessageObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a Message Model',
+                'log_name' => 'Created Message',
                 'description' => $message->description,
                 'action_id' => $message->id,
                 'action_type' => 'App\Models\Message',

@@ -516,7 +516,12 @@
             })
         });
         var attachEmail = $(".attach_emails");
-        attachEmail.hide();
+        
+        if($('#is_private').is(":checked"))
+            attachEmail.show();
+        else
+            attachEmail.hide();
+
 
         function checkedPrivate(){
             if($('#is_private').is(":checked"))

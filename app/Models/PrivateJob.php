@@ -10,6 +10,6 @@ class PrivateJob extends Model
     protected $guarded = [];
 
     public function job(){
-        return $this->belongsTo('App/Models/Job', 'job_id');
+        return $this->belongsTo('App\Models\Job', 'job_id');
     }
 }

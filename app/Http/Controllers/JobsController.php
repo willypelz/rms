@@ -2356,11 +2356,9 @@ class JobsController extends Controller
             
             if (empty($checkEmail) || is_null($checkEmail)) {
     
-                return redirect()->to('/dashboard')->with('error','you are not listed to apply for this job');
+                return redirect()->to('/candidate/dashboard')->with('error','You are not listed to apply for this job');
             }
         }
-
-        
 
         $company = $job->company;
         $specializations = Specialization::get();

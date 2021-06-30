@@ -50,6 +50,9 @@ use Mail;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use Session;
 use Validator;
+use App\Rules\PrivateEmailRule;
+use App\Imports\PrivateJobEmail;
+use Maatwebsite\Excel\Facades\Excel;
 
 // use Zipper;
 
@@ -690,125 +693,85 @@ class JobsController extends Controller
 
 
             if(empty($request->job_id)){
-                $job = Job::firstOrCreate($job_data);
 
-                //attach emails to private jobs
-                if($request->is_private){
+                DB::beginTransaction();
 
-                    if($request->attach_email){
-                        $attached_emails = $request->attach_email;
-                        $arr = explode(",",$attached_emails);
-    
-                        foreach ($arr as $value) {
-                            PrivateJob::create(['job_id' => $request->job_id,'attached_email'=> $value]);
-                        }                        
-                    }
-                    
-                    if($request->hasFile('bulk')){
-                        //
-                        $csv = $request->hasFile('bulk');
-                        $filepath = $csv->getRealPath();
-                        
-                        $read = fopen($filepath, 'r');
-                        $header = fgetcsv($read);
-                        $escapeHeaders = [];
-
-                        foreach($header as $key => &$value){
-                            $lheader = strtolower($value);
-                            $escapedItem = preg_replace('/[^a-z]/','',$lheader);
-                            array_push($escapeHeaders,$escapedItem);
-                        }
-
-                        while($column = fgetcsv($file)) {
-
-                            if($column[0] == ''){
-                                continue;
-                            }
-                            foreach($column as $key => &$value){
-                                $value = preg_replace('/\'D','',$value);
-                                
-                            }
-                            $data = array_combine($escapeHeaders,$column);
-
-                            foreach($data as $key => &$value){
-                                $value = ($key == 'email')?(string)$value : (float)$value;
-                            }
-
-                            $arr = data['email'];
-
-                            PrivateJob::UpdateOrCreate([
-                                'job_id'=>$job->id,
-                                'attach'=>$arr
+                try{
+                    $job = Job::firstOrCreate($job_data);
+                    //attach emails to private jobs
+                    if($request->is_private){
+                        if($request->attach_email){
+                            $request->validate([
+                                'attach_email' => ['nullable', new PrivateEmailRule],
                             ]);
-
+                            
+                            $attached_emails = $request->attach_email;
+                            $arr = explode(",",$attached_emails);
+        
+                            foreach ($arr as $value) {
+                                PrivateJob::create(['job_id' => $request->job_id,'attached_email'=> $value]);
+                            }                        
                         }
-
+                        
+                        if($request->hasFile('bulk')){
+                            //bulk upload
+                            $request->validate([
+                                'bulk' => 'required|mimes:csv,txt'
+                            ]);
+        
+                            $path = $request->file('bulk');
+                            $data = Excel::import(new PrivateJobEmail($job->id), $path);
+                            
+                        }
+                        
                     }
+                    DB::commit();
+
+                }catch(\Exception $e){
                     
+                    DB::rollback();
+                    
+                    return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+
                 }
-                
 
             }else{
                 $is_update = true;
                 $jb = Job::find($request->job_id);
                 $job = $jb;
 
-                $jb->update($job_data);
-
+                //attach emails to private jobs
                 if($request->is_private){
 
                     if($request->attach_email){
+
+                        $request->validate([
+                            'attach_email' => ['nullable', new PrivateEmailRule],
+                        ]);
+                        
                         $attached_emails = $request->attach_email;
                         $arr = explode(",",$attached_emails);
-    
+
                         foreach ($arr as $value) {
-                            PrivateJob::UpdateOrCreate(['job_id' => $request->job_id,'attached_email'=> $value]);
+                            PrivateJob::UpdateOrCreate(['job_id' => $job->id,'attached_email'=> $value]);
                         }
                             
                     }
                     
                     if($request->hasFile('bulk')){
                         //bulk upload
-                        $csv = $request->hasFile('bulk');
-                        $filepath = $csv->getRealPath();
+                        $request->validate([
+                            'bulk' => 'required|mimes:csv,txt'
+                        ]);
+    
+                        $path = $request->file('bulk');
+                        $data = Excel::import(new PrivateJobEmail($job->id), $path);
                         
-                        $read = fopen($filepath, 'r');
-                        $header = fgetcsv($read);
-                        $escapeHeaders = [];
-
-                        foreach($header as $key => &$value){
-                            $lheader = strtolower($value);
-                            $escapedItem = preg_replace('/[^a-z]/','',$lheader);
-                            array_push($escapeHeaders,$escapedItem);
-                        }
-
-                        while($column = fgetcsv($file)) {
-
-                            if($column[0] == ''){
-                                continue;
-                            }
-                            foreach($column as $key => &$value){
-                                $value = preg_replace('/\'D','',$value);
-                                
-                            }
-                            $data = array_combine($escapeHeaders,$column);
-
-                            foreach($data as $key => &$value){
-                                $value = ($key == 'email')?(string)$value : (float)$value;
-                            }
-
-                            $arr = data['email'];
-
-                            PrivateJob::UpdateOrCreate([
-                                'job_id'=>$job->id,
-                                'attach'=>$arr
-                            ]);
-
-                        }
-
                     }
                     
                 }
+
+                $jb->update($job_data);  
             }
 
             if($request->specializations){
@@ -2912,7 +2875,39 @@ class JobsController extends Controller
             // $job->post_date = $request->post_date;
             $job->expiry_date = Carbon::createFromFormat('m/d/Y', $request->expiry_date)->format("Y-m-d H:m:s");
             $job->details = $request->details;
+            $private = ($request->is_private  == 'true' ? 1 : 0);
+            $job->is_private = $private;
             $job->experience = $request->experience;
+
+            //attach emails to private jobs
+            if($request->is_private){
+
+                if($request->attach_email){
+                    $request->validate([
+                        'attach_email' => ['nullable', new PrivateEmailRule],
+                    ]);
+                    $attached_emails = $request->attach_email;
+                    $arr = explode(",",$attached_emails);
+
+                    foreach ($arr as $value) {
+
+                        PrivateJob::UpdateOrCreate(['job_id' => $job->id,'attached_email'=> $value]);
+                    }
+                        
+                }
+                
+                if($request->hasFile('bulk')){
+                    //bulk upload
+                    $request->validate([
+                        'bulk' => 'required|mimes:csv,txt'
+                    ]);
+
+                    $path = $request->file('bulk');
+                    $data = Excel::import(new PrivateJobEmail($job->id), $path);
+                    
+                }
+                
+            }
 
             $job->save();
             // $job->update($request->all());

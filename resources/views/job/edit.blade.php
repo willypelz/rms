@@ -23,6 +23,10 @@
                                 </ul>
                             @endif
 
+                            @php
+                            $is_private = $job->is_private;
+                            @endphp
+
                             <div class="col-md-8 col-md-offset-2">
                                 <p class="text-center"></p>
 
@@ -30,7 +34,8 @@
                                                    'method' => 'POST',
                                                    'url' => ['edit-job', $job->id],
                                                    'class' => 'form-horizontal',
-                                                   'role'=>'form'
+                                                   'role'=>'form',
+                                                   'enctype'=>'multipart/form-data'
                                                ]) !!}
 
 
@@ -144,7 +149,43 @@
                                             <input type="hidden" name="status" value="ACTIVE">
                                         </div>
                                     </div>
-
+                                    
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <br>
+                                                <label for="job-loc">Make job private
+                                                    <input type="checkbox" id="is_private" value="true" onchange="checkedPrivate()"
+                                                           name="is_private" @if ($is_private == 1) checked @endif >
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="When a job posting is private, only candidate with the link to the job post can apply"></i>
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-6 attach_emails">                                        
+                                                <label for="job-title">Attach Emails
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Attach Emails to these private jobs"></i>
+                                                </label>
+                                                <input type="text"
+                                                        name="attach_email"
+                                                        value=""
+                                                        placeholder="you are required to seperate emails by commas"
+                                                        class="form-control"
+                                                        autocomplete="off"
+                                                        >
+                                            </div>
+                                            <div class="col-sm-6 attach_emails">
+                                                <label for="job-title">Bulk Upload Emails
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Bulk Upload Emails to these private jobs"></i>
+                                                </label>
+                                                <input type="file"
+                                                        name="bulk"
+                                                        class="form-control"
+                                                >
+                                                <small>NB:csv should contain a column "emails"</small>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="form-group">
                                         <label for="job-loc">Remuneration</label>
                                         <div class="row ">
@@ -267,6 +308,22 @@
             })
 
         });
+        var attachEmail = $(".attach_emails");
+
+        if($('#is_private').is(":checked"))
+            attachEmail.show();
+        else
+            attachEmail.hide();
+
+        function checkedPrivate(){
+            if($('#is_private').is(":checked"))
+                $(".attach_emails").show();
+                // $('.bulk_upload_emails').show();
+            else
+                $(".attach_emails").hide();
+                // $('.bulk_upload_emails').hide();
+
+        }
         // Replace the <textarea id="editor1"> with a CKEditor
         // instance, using default configuration.
         $(document).ready(function () {
@@ -279,6 +336,10 @@
 
             format: 'mm/dd/yyyy'
         });
+        
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
 
     </script>
 

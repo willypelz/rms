@@ -253,7 +253,7 @@
                                                        required>
                                             </div>
 
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-12">
                                                 <br>
 
                                                 <label for="job-loc">Make job private
@@ -263,8 +263,7 @@
                                                 </label>
                                             </div>
                                             <div class="col-sm-6 attach_emails">
-                                                <br>
-
+                                                
                                                 <label for="job-title">Attach Emails
                                                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Attach Emails to these private jobs"></i>
                                                 </label>
@@ -622,10 +621,10 @@
             var bulk_email = $('#bulk_email').val();
             var checked = $('#is_private');
 
-            if (checked.is(':checked') && (attached_email == "" && bulk_email == "" ) && (attached_email == null && bulk_email == null)){
-                alert("Email must be attached");
-                return false;
-            }
+            // if (checked.is(':checked') && (attached_email == "" && bulk_email == "" ) && (attached_email == null && bulk_email == null)){
+            //     alert("Email must be attached");
+            //     return false;
+            // }
 
 
             var token = $('#token').val();
@@ -653,7 +652,7 @@
                 data: {
                     _token: '{{ csrf_token() }}', title: title,
                     details: details, location: location, country: country,
-                    eligibilty: is_for, is_private: is_private, attach_email: attach_email,
+                    eligibilty: is_for, is_private: is_private, attach_email: attach_email, bulk: bulk_email,
                     job_type: job_type, position: position,
                     expiry_date: expiry_date, experience: experience,
                     specializations: specializations, workflow_id: workflowId,

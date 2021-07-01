@@ -224,7 +224,10 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::get('dashboard', ['uses' => 'HomeController@dashbaord', 'as' => 'dashboard'])->middleware("admin");
     Route::match(['get','post'],'user-permission', ['uses' => 'UserPermissionController@userPermissionPage', 'as' => 'user-permission'])->middleware("admin");
     Route::post('user-permission/{id}', ['uses' => 'UserPermissionController@userPermissionUpdate', 'as' => 'update-user-permission'])->middleware("admin");
-
+    Route::get('sync-user-to-company-index', ['uses' => 'SyncUserToCompanyController@syncUserToCompanyIndex', 'as' => 'sync-user-to-company-index'])->middleware("admin");
+    Route::post('sync-user-to-company', ['uses' => 'SyncUserToCompanyController@syncUserToCompany', 'as' => 'sync-user-to-company'])->middleware("admin");
+    
+   
     /**
      * Route Group for everything jobs
      */
@@ -683,7 +686,7 @@ Route::group(['middleware' => 'web'], function () {
     // });
 
 
-    Route::get('/pricing', ['as' => 'pricing', 'uses' => 'HomeController@pricing']);
+    Route::get('/pricing/page', ['as' => 'pricing-page', 'uses' => 'HomeController@pricing']);
 
     Route::post('request-a-call', ['as' => 'request-a-call', 'uses' => 'HomeController@requestACall']);
 

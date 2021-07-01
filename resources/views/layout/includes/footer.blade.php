@@ -140,7 +140,7 @@
                         </li>
                         <li><a href="{{ url('about') }}">About SeamlessHiring</a>
                         </li>
-                        <li><a href="{{ url('pricing') }}">Pricing</a>
+                        <li><a href="{{--{{ route('pricing-page') }}--}}">Pricing</a>
                         </li>
                         <li class=""><a class="" href="{{ url('talentSource') }}">Talent Sourcing </a>
                         </li>

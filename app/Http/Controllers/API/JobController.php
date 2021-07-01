@@ -548,10 +548,10 @@ class JobController extends Controller
         $role = Role::whereName('admin')->first()->id;
 
         //attach the superadmin to all company instance
-        $all_companies = Company::all();
-        foreach($all_companies as $company){
+        // $all_companies = Company::all();
+        // foreach($all_companies as $company){
             $company->users()->attach($user->id, ['role' => $role[0]['id']]);
-        }
+        // }
 
         $user->roles()->attach([$role]);
 

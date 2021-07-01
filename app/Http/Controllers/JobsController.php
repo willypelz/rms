@@ -3164,7 +3164,7 @@ class JobsController extends Controller
                 'address' => $request->address,
                 'about' => $request->about_company,
                 'logo' => $logo,
-                'license_type'=>'PREMIUM',
+                //'license_type'=>'PREMIUM',
                 'date_added' => date('Y-m-d H:i:s'),
             ]);
 

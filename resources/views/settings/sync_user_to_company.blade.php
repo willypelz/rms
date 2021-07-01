@@ -31,7 +31,7 @@
                                                      @php continue; @endphp
                                                  @endif --}}
                                                         <option value="{{$company->id}}" @if(in_array($company->id,$userCompanies)) selected @endif>
-                                                            {{$company->name}}</option>
+                                                            {{$company->name}} @if( $company->id == get_current_company()->id) (current company) @endif</option>
                                                   @empty
                                                         <option value="">No additional company found</option>
                                                   @endforelse

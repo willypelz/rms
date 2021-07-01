@@ -40,7 +40,7 @@ class UserPermissionController extends Controller
 	{
 	    $roles = Role::with('permissions')->get();
 	    $user_roles = RoleUser::whereUserId(Auth()->user()->id)->with("role")->get()->unique("role_id");
-	    $permissions = Permission::all();
+		$permissions = Permission::all();
 		return view('settings.user_permission', compact(  'user_roles','roles', 'permissions'));
 	}
 

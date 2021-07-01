@@ -72,7 +72,7 @@
                                                 <li><a href="{{ route('user-permission') }}"><i class="fa fa-key"></i>Role & Permission</a></li>
                                                 <li role="separator" class="divider"></li>
                                                 @if($user->is_super_admin)
-                                                    <li><a href="{{ route('sync-user-to-company-index',['user_id'=>$user->id]) }}"><i class="fa fa-home"></i>Attach/Detach User from a company</a></li>
+                                                    <li><a href="{{ route('sync-user-to-company-index',[base64_encode($user->id)]) }}"><i class="fa fa-home"></i>Attach/Detach User from a company</a></li>
                                                     <li role="separator" class="divider"></li>
                                                 @endif
                                                 <li>

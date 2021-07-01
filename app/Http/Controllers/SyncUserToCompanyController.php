@@ -58,12 +58,12 @@ class SyncUserToCompanyController extends Controller
 		$role = Role::whereName('admin')->first();
 		$user = User::find($request->user_id);
 		$companies = Company::find($request->companies)->pluck('id')->toArray();
-		
+		$action = $user->companies()->count() > count($companies) ? 'detached from company' : 'attached to more companies';
 		//attach the user to all selected companies
 		$user->companies()->sync(array_fill_keys($companies,['role' => $role->id, 'role_id'=>$role->id]),true);
 		// $user->roles()->sync([$role->id]);
 		
-		return redirect()->back()->with('success', $user->name.' attached to company successfully');
+		return redirect()->back()->with('success', "{$user->name} $action successfully");
 
 		}catch(\Exception $e){
 			return redirect()->back()->with('error', 'Something went wrong, please try again');

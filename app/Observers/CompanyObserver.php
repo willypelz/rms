@@ -18,8 +18,8 @@ class CompanyObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a Company',
-                'description' => 'created a new company ',
+                'log_name' => 'Create Company',
+                'description' => 'Added company '.$company->name,
                 'action_id' => $company->id,
                 'action_type' => 'App\Models\Company',
                 'causee_id' => auth()->user()->id,
@@ -42,19 +42,33 @@ class CompanyObserver
     {
         //
         if(auth()->check()){
-            $param = [
-                'log_name' => 'Update a Company',
-                'description' => 'updated the company info',
-                'action_id' => $company->id,
-                'action_type' => 'App\Models\Company',
-                'causee_id' => auth()->user()->id,
-                'causer_id' => auth()->user()->id,
-                'causer_type' => 'admin',
-                'properties' => '',
-            ];
+            $old = $company->getOriginal('name');
+            if($company->isDirty('name')){
+                $param = [
+                    'log_name' => 'Updated Company',
+                    'description' => 'Updated the company '.$old.' name to '.$company->name,
+                    'action_id' => $company->id,
+                    'action_type' => 'App\Models\Company',
+                    'causee_id' => auth()->user()->id,
+                    'causer_id' => auth()->user()->id,
+                    'causer_type' => 'admin',
+                    'properties' => '',
+                ];
+            }else{
+                $param = [
+                    'log_name' => 'Updated Company',
+                    'description' => 'Updated the company '.$company->name.' info',
+                    'action_id' => $company->id,
+                    'action_type' => 'App\Models\Company',
+                    'causee_id' => auth()->user()->id,
+                    'causer_id' => auth()->user()->id,
+                    'causer_type' => 'admin',
+                    'properties' => '',
+                ];
+            }
+            
             logAction($param);
             
-           
         }
     }
 

@@ -32,6 +32,9 @@
             max-width: none !important;
             width: 1140px;
         }
+        .text-decoration-none{
+            text-decoration: none !important;
+        }
     </style>
 
 

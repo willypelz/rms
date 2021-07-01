@@ -17,8 +17,8 @@ class CandidateObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Created a Candidate',
-                'description' => 'A new candidate info created',
+                'log_name' => 'Candidate Registration',
+                'description' => $candidate->name().''.'registered',
                 'action_id' => $candidate->id,
                 'action_type' => 'App\Models\Candidate',
                 'causee_id' => auth()->guard('candidate')->id ?? null,
@@ -42,8 +42,8 @@ class CandidateObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Update a Candidate',
-                'description' => 'updated the candidate info',
+                'log_name' => 'Updated Candidate Info',
+                'description' => $candidate->name().' '.'profile was updated',
                 'action_id' => $candidate->id,
                 'action_type' => 'App\Models\Candidate',
                 'causee_id' => auth()->guard('candidate')->id ?? null,

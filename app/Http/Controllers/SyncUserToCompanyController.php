@@ -38,12 +38,11 @@ class SyncUserToCompanyController extends Controller
 
 	public function syncUserToCompanyIndex(Request $request)
 	{
-		
 		$companies = Company::where('is_active',1)->get();
+		$user = User::find(base64_decode($request->user_id));
+		$userCompanies = $user->companies->pluck('id')->toArray();
 		
-		$userCompanies = User::find($request->user_id)->companies->pluck('id')->toArray();
-		$userId = $request->user_id;
-		return view('settings.sync_user_to_company', compact('companies','userCompanies','userId'));
+		return view('settings.sync_user_to_company', compact('companies','userCompanies','user'));
 	}
 
 	/**

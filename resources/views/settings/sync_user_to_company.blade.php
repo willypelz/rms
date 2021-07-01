@@ -13,7 +13,7 @@
                                 <span><i class="fa fa-arrow-left"></i> <a href="{{route('change-admin-role')}}">Go Back To Manage Super Admin</a></span>
                                     </h5>
                             <h5 class="no-margin text-center l-sp-5 text-brandon text-uppercase">
-                                Attach Admin To Other Companies
+                                Attach  <b class="text-warning">{{$user->name}}</b> To Other Companies
                             </h5>
                             <hr>
                             <br>
@@ -21,7 +21,7 @@
 
                             <div class="col-md-12">
                                 @include('layout.alerts')
-                            <form method="POST" action="{{route('sync-user-to-company',['user_id'=>$userId])}}" >
+                            <form method="POST" action="{{route('sync-user-to-company',['user_id'=>$user->id])}}" >
                                    
                                         
                                      <select class="form-control select-multiple" name="companies[]" id="company" multiple="multiple"> 
@@ -31,7 +31,7 @@
                                                      @php continue; @endphp
                                                  @endif --}}
                                                         <option value="{{$company->id}}" @if(in_array($company->id,$userCompanies)) selected @endif>
-                                                            {{$company->name}}</option>
+                                                            {{$company->name}} @if( $company->id == get_current_company()->id) (current company) @endif</option>
                                                   @empty
                                                         <option value="">No additional company found</option>
                                                   @endforelse

@@ -33,6 +33,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/sso/auto/login/verify/{email}/{key}', 'Auth\LoginController@singleSignOnVerify');
     Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
     Route::get('/sso/auto/login/verify/role/{email}/{key}', 'Auth\LoginController@verifyUserHasRole');
+    Route::any('admin-accept-invite/{id}/{company_id}',['uses' => 'AdminsController@adminAcceptInvite', 'as' => 'admin-accept-invite']);
+   
 });
 
 Route::post("/api/v1/delete-super-admin", "HrmsIntegrationController@deleteSuperAdmin")->name("delete-super-admin");
@@ -61,7 +63,6 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
         Route::get('auth/logout', 'LoginController@logout');
     });
 
-    Route::any('admin-accept-invite/{id}/{company_id}',['uses' => 'AdminsController@adminAcceptInvite', 'as' => 'admin-accept-invite']);
     /** -- End: Administrator Panel Route -- */
 
     Route::get('switcher', 'Auth\LoginController@switchUser')->name('switcher');
@@ -224,7 +225,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::get('dashboard', ['uses' => 'HomeController@dashbaord', 'as' => 'dashboard'])->middleware("admin");
     Route::match(['get','post'],'user-permission', ['uses' => 'UserPermissionController@userPermissionPage', 'as' => 'user-permission'])->middleware("admin");
     Route::post('user-permission/{id}', ['uses' => 'UserPermissionController@userPermissionUpdate', 'as' => 'update-user-permission'])->middleware("admin");
-    Route::get('sync-user-to-company-index/{user_id}', ['uses' => 'SyncUserToCompanyController@syncUserToCompanyIndex', 'as' => 'sync-user-to-company-index'])->middleware("admin");
+    Route::get('sync-user-to-company-index', ['uses' => 'SyncUserToCompanyController@syncUserToCompanyIndex', 'as' => 'sync-user-to-company-index'])->middleware("admin");
     Route::post('sync-user-to-company', ['uses' => 'SyncUserToCompanyController@syncUserToCompany', 'as' => 'sync-user-to-company'])->middleware("admin");
     
    

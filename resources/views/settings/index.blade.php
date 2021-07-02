@@ -33,9 +33,10 @@
                                                 <div class="fileinput fileinput-new" data-provides="fileinput">
                                                     <div class="fileinput-preview thumbnail" data-trigger="fileinput"
                                                          style="width: 200px; height: 150px;">
-                                                        <img src="{{ url( env('fileupload') ).'/'.$company->logo }}" alt="Logo" style="width: 200px; height: 150px;">
+                                                        <img src="{{ url( 'img' ).'/'.$company->logo }}" alt="Logo" style="width: 200px; height: 150px;">
 
                                                     </div>
+                                                    <div style="font-size:10px; padding:5px;"><b>Recommmended Size - 1200(W) x 627(H)</b></div>
                                                     <div>
                                                         <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span
                                                             class="fileinput-exists">Change</span>

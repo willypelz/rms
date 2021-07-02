@@ -3148,7 +3148,7 @@ class JobsController extends Controller
                 $fi = $request->file('logo')->getClientOriginalExtension();
                 $logo = $request->company_name . '-' . $file_name;
                 $upload = $request->file('logo')->move(
-                    env('fileupload'), $logo
+                    'img', $logo
                 );
             } else {
                 $logo = "";
@@ -3196,7 +3196,7 @@ class JobsController extends Controller
                 $file_extension = $request->file('logo')->getClientOriginalExtension();
                 $logo = str_slug($request->name) . '-' . $file_name;
                 $upload = $request->file('logo')->move(
-                    env('fileupload'), $logo
+                    'img', $logo
                 );
 	            $collect['logo'] = $logo ;
 

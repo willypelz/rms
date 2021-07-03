@@ -10,7 +10,7 @@ class WorkflowController extends Controller
 {
     public function index(Request $request)
     {
-        $workflows = Workflow::where('company_id',get_current_company()->id)
+        $workflows = Workflow::whereCompanyId(get_current_company()->id)
             ->with('jobs')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -97,12 +97,12 @@ class WorkflowController extends Controller
         $workflow = Workflow::find($id);
 
 //        when workflow is not-right but company is not correct
-        if (!$workflow && $workflow->id != get_current_company()->id) {
+        if (!$workflow && $workflow->company_id != get_current_company()->id) {
             return redirect()->route('workflow');
         }
 
 //        when workflow is right and company is wrong
-        if ($workflow && $workflow->id != get_current_company()->id) {
+        if ($workflow && $workflow->company_id != get_current_company()->id) {
             return redirect()->route('workflow');
         }
 

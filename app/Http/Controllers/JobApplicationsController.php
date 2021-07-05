@@ -862,19 +862,20 @@ class JobApplicationsController extends Controller
             $interview_notes = InterviewNoteValues::with('interviewer',
                 'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
 
-            $path = public_path('uploads/tmp/');
+            $path = public_path('uploads/tmp');
+            findOrMakeDirectory($path);
             $show_other_sections = false;
 
             $pdf = App::make('dompdf.wrapper');
             $pdf->loadHTML(view('modals.inc.dossier-content',
                 compact( 'jobID', 'appl', 'comments', 'interview_notes', 'show_other_sections'))->render());
 
-            $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf', true);
+            $pdf->save($path.'/'. $appl->cv->first_name . '_' . $appl->cv->last_name . '_interview.pdf', true);
 
 
             $filename = "Bulk Interview Notes.zip";
-            $interview_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf';
-            $cv_local_file = @$path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' cv - ' . $appl->cv->cv_file;
+            $interview_local_file = $path .'/'. $appl->cv->first_name . '_' . $appl->cv->last_name . '_interview.pdf';
+            $cv_local_file = @$path .'/'. $appl->cv->first_name . '_' . $appl->cv->last_name . '_cv-' . $appl->cv->cv_file;
             $files_to_archive[] = $interview_local_file;
 
             $timestamp = " " . time() . " ";
@@ -1616,7 +1617,7 @@ class JobApplicationsController extends Controller
             ]);
 
             if ($validator->fails()) {
-                dd($validator->messages());
+                return back()->with('error',($validator->messages()));
             } else {
                 $app = JobApplication::with('job')->where('id', $request->job_application_id)->first();
 
@@ -1875,17 +1876,23 @@ class JobApplicationsController extends Controller
         return view('job.interview-note-templates', compact('interview_note_templates'));
     }
 
-    public function editInterviewNoteTemplate(Request $request)
+    public function editInterviewNoteTemplate(Request $request, InterviewNoteTemplates $id)
     {
 
-
         if ($request->isMethod('post')) {
+
+            $this->validate($request, [
+                'name' => 'required|unique:interview_note_templates,name,' .$request->id,
+            ],[
+                'name.unique' => "Template already exist, Try creating template with another name"
+            ]);
+
             InterviewNoteTemplates::where('id', $request->id)->where('company_id', get_current_company()->id)->update([
                 'name' => $request->name,
                 'description' => $request->description,
             ]);
 
-            \Session::flash('status', 'Updated Successfully');
+            return redirect()->route("interview-note-templates")->with(["success" => 'Templated Updated Succesfully']);
         }
 
         $interview_note_template = InterviewNoteTemplates::where('id', $request->id)->where('company_id',
@@ -1897,18 +1904,23 @@ class JobApplicationsController extends Controller
 
     public function createInterviewNoteTemplate(Request $request)
     {
-        // $interview_note_options = InterviewNoteOptions::where('company_id',get_current_company()->id )->get();
-
         $interview_note_option = NULL;
 
         if ($request->isMethod('post')) {
+
+            $this->validate($request, [
+                'name' => 'required|unique:interview_note_templates,name,' .$request->id,
+            ],[
+                'name.unique' => "Template already exist, Try creating template with another name"
+            ]);
+            
             InterviewNoteTemplates::create([
                 'name' => $request->name,
                 'description' => $request->description,
                 'company_id' => get_current_company()->id
             ]);
 
-            \Session::flash('status', 'New Template has been created');
+            return redirect()->route("interview-note-templates")->with(["success" => 'New Template has been created']);
         }
 
 
@@ -1928,20 +1940,59 @@ class JobApplicationsController extends Controller
             compact('interview_note_options', 'interview_template_id', 'interview_template'));
     }
 
+
+    public function duplicateInterviewNoteTemplate(Request $request, int $id){
+        if($id){
+            $interview_template = InterviewNoteTemplates::where('id', $id)->where('company_id',get_current_company()->id)->first();
+            $interview_template_duplicate = $interview_template->duplicate();
+            if($interview_template_duplicate){
+                return redirect()->back()->with(["success" => "$interview_template->name template  duplicated successfully"]);
+            }
+        }
+        return redirect()->back()->with(["danger" => "Operation duplicate $interview_template->name template  unsuccessful"]);
+    }
+
+    function deleteInterviewNoteTemplate(Request $request){
+        $data = [
+            "interview_note_template_id" => "required"
+        ];
+        $data = $request->validate($data);
+        $interview_template = InterviewNoteTemplates::where('id', $data["interview_note_template_id"])->where('company_id',get_current_company()->id)->first();
+        if($interview_template){
+            $deleted = $interview_template->delete();
+            if ($deleted)
+                return redirect()->back()->with(["success" => "$interview_template->name template  deleted successfully"]);
+        }
+        return redirect()->back()->with(["danger" => "Operation delete $interview_template->name template  unsuccessful"]);
+    }
+
     public function editInterviewNoteOptions(Request $request)
     {
         $interview_template = InterviewNoteTemplates::where('id',
             $request->interview_template_id)->where('company_id', get_current_company()->id)->first();
         $interview_template_id = $request->interview_template_id;
         if ($request->isMethod('post')) {
+
+            $this->validate($request, [
+                'name' => 'required',
+                'description' => 'required',
+                'type' => 'required'
+            ]);
+
+            if( (count($request->weight) > 0) && ($request->weight[0] > $request->weight[1])  ){
+                return redirect()->back()->with(["error" => "weight min must be less than weight max"]);
+            }
+
             InterviewNoteOptions::where('id', $request->id)->where('company_id', get_current_company()->id)->update([
                 'name' => $request->name,
                 'description' => $request->description,
                 'type' => $request->type,
-                'weight' => $request->weight,
+                'weight_min' => $request->weight[0],
+                'weight_max' => $request->weight[1],
             ]);
 
-            \Session::flash('status', 'Updated Successfully');
+            return redirect()->route("interview-note-options", [ "interview_template_id" => $interview_template->id ])
+                                ->with(["success" => "Updated Successfully"]);
         }
 
         $interview_note_option = InterviewNoteOptions::where('id', $request->id)->where('company_id',
@@ -1963,19 +2014,27 @@ class JobApplicationsController extends Controller
         if ($request->isMethod('post')) {
 
           $this->validate($request, [
-            'description' => 'required'
+            'name' => 'required',
+            'description' => 'required',
+            'type' => 'required'
           ]);
+
+          if( (count($request->weight) > 0) && ($request->weight[0] > $request->weight[0])  ){
+              return redirect()->back()->with(["error" => "weight min must be less than weight max"]);
+          }
 
             InterviewNoteOptions::create([
                 'name' => $request->name,
                 'description' => $request->description,
                 'type' => $request->type,
-                'weight' => $request->weight,
+                'weight_min' => $request->weight[0],
+                'weight_max' => $request->weight[1],
                 'company_id' => get_current_company()->id,
                 'interview_template_id' => $request->interview_template_id
             ]);
 
-            \Session::flash('status', 'Created Successfully');
+            return redirect()->route("interview-note-options", [ "interview_template_id" => $interview_template->id ])
+                                ->with(["success" => "Created Successfully"]);
         }
 
 
@@ -2003,14 +2062,15 @@ class JobApplicationsController extends Controller
 
     public function takeInterviewNote(Request $request)
     {
+        
         $app_id = @$request->app_id;
         $cv_id = @$request->cv_id;
         $appl = JobApplication::with('job', 'cv')->find($app_id);
         $applicant_badge = @$this->getApplicantBadge($appl->cv);
 
         $interview_note_options = $this->getInterviewNoteOption($appl->job->id, $request->id);
-
         $interview_template_id = $request->id;
+
         $interview_note = NULL;
         if (@$request->readonly) {
             $readonly = true;
@@ -2027,21 +2087,18 @@ class JobApplicationsController extends Controller
             $interview_note_values = [];
             $score = 0;
             $correct_count = 0;
+            
             foreach ($interview_note_options as $key => $option) {
+                $rating = $data['option_' . $option->id];
                 $interview_note_values[] = [
                     'interview_note_option_id' => $option->id,
-                    'value' =>($option->type == 'rating') ? ($data['option_' . $option->id] / 5)*$option->weight : $data['option_' . $option->id],
+                    'value' =>    ($option->type == 'rating') && ( ($option->weight_min <= $rating) && ($rating >= $option->weight_min) ) ||  (!empty($data['option_' . $option->id] )) ?  $data['option_' . $option->id]  : assert(false, "Text or Rating Field Cannot Be null") ,
                     'job_application_id' => $appl->id,
                     'interviewed_by' => @Auth::user()->id,
                     'created_at' => Carbon::now(),
                 ];
-
-
             }
-
             InterviewNoteValues::insert($interview_note_values);
-
-
         }
 
         return view('modals.interview-notes',

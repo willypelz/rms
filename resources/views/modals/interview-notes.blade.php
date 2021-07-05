@@ -41,26 +41,19 @@
                   </div>
 
                   <div class="col-sm-2">
-                    <p class="text-center">
-                    {{ $option->weight }}
+                    <p class="text-center" style="font-size: 17px;font-weight:500">
+                    {{ $option->weight_min }} to {{ $option->weight_max }} 
                     </p>
                   </div>
                   
                   <div class="col-sm-5">
-                    <select id="rating" name="option_{{ $option->id }}" id="option_{{ $option->id }}" required>
-                      <option value></option>
-                      <option value="1" @if( @$interview_note[$option->id] == 1) selected="selected" @endif>Very Poor</option>
-                      <option value="2" @if( @$interview_note[$option->id] == 2) selected="selected" @endif>Poor</option>
-                      <option value="3" @if( @$interview_note[$option->id] == 3) selected="selected" @endif>Fair</option>
-                      <option value="4" @if( @$interview_note[$option->id] == 4) selected="selected" @endif>Good</option>
-                      <option value="5" @if( @$interview_note[$option->id] == 5) selected="selected" @endif>Very Good</option>
-                    </select>
-                    <!-- <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="1" > 1 </label>
-                    <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="2" > 2 </label>
-                    <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="3" > 3 </label>
-                    <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="4" > 4 </label>
-                    <label class="" style="padding: 0px 10px;  font-size: 17px;"><input type="radio" class="form-control" style="height:auto;" name="general_appearance" id="general_appearance" value="5" > 5 </label> -->
+                    <div class="row">
+                      <div class="col-sm-8">
+                        <input type="number" min="{{$option->weight_min}}" max="{{$option->weight_max}}" name="option_{{ $option->id }}" id="option_{{ $option->id }}" class="form-control" required>
+                      </div>
+                    </div>
                   </div>
+                  
                   
               <div class="clearfix"></div>
               </div>
@@ -181,7 +174,7 @@
       //        message:  $('#interview-message').val()
       //      };
           $field = $(this);
-          radios = JSON.stringify($('body  #interview-note-form select').serializeObject());
+          radios = JSON.stringify($('body  #interview-note-form input').serializeObject());
           texts = JSON.stringify($('body  #interview-note-form textarea').serializeObject());
           app_id = {{ $app_id }};
           interview_template_id = {{ $interview_template_id }};

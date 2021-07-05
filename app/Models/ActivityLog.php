@@ -19,12 +19,25 @@ class ActivityLog extends Model
 
     public function subject()
     {
-        return $this->hasOne('App\User', 'id', 'causee_id');
+        return $this->belongsTo('App\User','causee_id');
+    }
+
+    public function candidateSubject()
+    {
+        return $this->belongsTo('App\Models\Candidate', 'causee_id');
     }
 
     public function causer()
     {
-        return $this->hasOne('App\User', 'id', 'causer_id');
+        return $this->belongsTo('App\User','causer_id');
+    }
+    public function company(){
+        
+        return $this->belongsTo('App\Models\Company','company_id');
+    }
+    public function candidate()
+    {
+        return $this->belongsTo('App\Models\Candidate','causer_id');
     }
 
     public function employee()

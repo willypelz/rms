@@ -80,6 +80,7 @@ class AdminsController extends Controller
        
         $user = User::where('user_token', $request->id)->first();
         $company = Company::find($request->company_id);
+        $role = Role::whereName('admin')->first();
         if ($user) {
             if ($request->isMethod('post')) {
                 $validator = Validator::make($request->all(), [
@@ -94,11 +95,14 @@ class AdminsController extends Controller
                 $user->password = bcrypt($request->password);
                 $user->activated = 1;
                 $user->save();
+                
                 $assoc = DB::table('company_users')->insert([
                     ['user_id' => $user->id, 'company_id' => $request->company_id, 'role_id' => '1']
                 ]);
+                
+                $user->roles()->sync([$role->id]);
                 User::where('user_token', $request->id)->update(['user_token' => null]);
-                return redirect()->route('dashboard');
+                return redirect()->route('login');
             } else {
                 return view('job.admin-accept', compact('user', 'company'));
             }

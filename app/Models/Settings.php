@@ -43,4 +43,18 @@ class Settings extends Model
     }
 
 
+	public function  getWithoutPluck($key)
+	{
+		return $this->where('key', $key)->first();
+	}
+
+
+	public function setKeyIfNotExist($key, $value)
+	{
+		if ($this->getWithoutPluck($key)) {
+			return $this->set($key, $value);
+		}
+
+		return $this->create(['key' => $key, 'value' => $value]);
+	}
 }

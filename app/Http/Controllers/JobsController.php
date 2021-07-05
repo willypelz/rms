@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use  App\Http\Controllers\CvSalesController;
 use Alchemy\Zippy\Zippy;
 use App\Http\Requests;
+use App\Http\Requests\UpdateCompanyRequest;
 use App\Jobs\UploadApplicant;
 use App\Jobs\UploadZipCv;
 use App\Libraries\Solr;
@@ -43,6 +44,7 @@ use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use App\Enum\Configs;
 use Mail;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use Session;
@@ -55,7 +57,7 @@ class JobsController extends Controller
     private $search_params = ['q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false, 'sort' => 'application_date+desc', 'grouped' => FALSE];
 
     protected $mailer;
-
+    protected $settings;
     private $states = [
         'Lagos',
         'Abia',
@@ -96,12 +98,13 @@ class JobsController extends Controller
         'Zamfara'
     ];
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct(Mailer $mailer)
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @param Mailer $mailer
+	 * @param Settings $settings
+	 */
+    public function __construct(Mailer $mailer, Settings $settings)
     {
         $this->middleware('auth', ['except' => [
             'JobView',
@@ -118,6 +121,7 @@ class JobsController extends Controller
             'makeOldStaffsAdmin',
         ]]);
 
+        $this->settings = $settings;
         $this->qualifications = qualifications();
 
         $this->mailer = $mailer;
@@ -271,146 +275,153 @@ class JobsController extends Controller
      */
     public function JobTeamAdd(Request $request)
     {
-        if ($request->mod) {
-            $validator = Validator::make($request->all(), [
-                'email' => 'required|email',
-                'name' => 'required|string',
-            ], [
-                'email.required' => 'Email is required. If you selected an employee, check that they have a valid email',
-                'name.required' => 'Name is required',
-            ]);
-            if ($validator->fails()) {
-                return back()->with('errors', $validator->getMessageBag()->toArray());
-            } else{
 
-                if($request->id)
-                    $check_email = User::whereEmail($request->email)->where('email', '!=', $request->email)->count();
-                else
-                    $check_email = User::whereEmail($request->email)->count();
+        try {
+            if ($request->mod) {
+                $validator = Validator::make($request->all(), [
+                    'email' => 'required|email',
+                    'name' => 'required|string',
+                ], [
+                    'email.required' => 'Email is required. If you selected an employee, check that they have a valid email',
+                    'name.required' => 'Name is required',
+                ]);
+
+                if ($validator->fails()) {
+                    return back()->with('errors', $validator->getMessageBag()->toArray());
+                } else {
+
+                    if ($request->id)
+                        $check_email = User::whereEmail($request->email)->where('email', '!=', $request->email)->count();
+                    else
+                        $check_email = User::whereEmail($request->email)->count();
 
 
-                if($check_email)
-                    return back()->with('warning', "The email you entered already exists.");
+                    if ($check_email)
+                        return back()->with('warning', "The email you entered already exists.");
 
-                $token = hash_hmac('sha256', str_random(40), config('app.key'));
+                    $token = hash_hmac('sha256', str_random(40), config('app.key'));
 
-                if(isset($request->id)){
+                    if (isset($request->id)) {
 
-                     $user = User::find($request->id)->update([
-                        'email' => $request->email,
-                        'name' => $request->name,
-                      ]);
+                        $user = User::find($request->id)->update([
+                            'email' => $request->email,
+                            'name' => $request->name,
+                        ]);
 
-                    $user = User::find($request->id);
+                        $user = User::find($request->id);
 
-                }else{
+                    } else {
+                        //formerly firstOrCreate but  started failing hence get user in db that already has the email , otherwise create one
+                        $user = User::whereEmail($request->email)->first() ?: new User();
+                        $user->email = $request->email;
+                        $user->name = $request->name;
+                        $user->is_super_admin = 1;
+                        $user->user_token = $token;
+                        $user->save();
+                    }
 
-                    $user = User::FirstorCreate([
-                        'email' => $request->email,
-                        'name' => $request->name,
-                        'is_super_admin' => '1',
-                        'user_token'=> $token
-                      ]);
 
+                    if ($user) {
+
+                        $company = Company::find(get_current_company()->id);
+
+                        $accept_link = route('admin-accept-invite', ['id' => $token, 'company_id' => $company->id]);
+
+                        $mail_body = $request->body_mail;
+
+                        $data = [
+                            'email' => $request->email,
+                            'name' => $request->name,
+                            'token' => $token
+                        ];
+
+                        $data = (object)$data;
+                        $email = $request->email;
+                        //Send notification mail
+                        //
+
+                        if (isset($request->resend_email) || !isset($request->id)) {
+                            \Illuminate\Support\Facades\Mail::send('emails.new.admin_invite', ['data' => $data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) use ($email) {
+                                $m->from(env('COMPANY_EMAIL'))->to($email)->subject('You Have Been Exclusively Invited');
+                            });
+
+                            return back()->with('success', "Invite Sent successfully");
+
+                        }
+
+                        return back()->with('success', "Details updated successfully");
+
+
+                    }
                 }
+            } else {
+                $validator = Validator::make($request->all(), [
+                    'email' => 'required|email',
+                    'name' => 'required|string',
+                    'role' => 'required|array',
+                    'role_name' => 'required|string'
+                ], [
+                    'email.required' => 'Email is required. If you selected an employee, check that they have a valid email',
+                    'name.required' => 'Name is required',
+                    'role.required' => 'Role is required',
+                    'role.numeric' => 'Please select a valid role',
+                ]);
+
+                if ($validator->fails()) {
+                    return response()->json(['status' => 'false', 'message' => $validator->getMessageBag()->toArray()]);
+                } else {
+                    //Create User
 
 
-                  if($user){
+                    $data = [
+                        'name' => $request->name,
+                        'email' => $request->email,
+                        'username' => $request->username,
+                        'job_id' => $request->job_id,
+                        'role_ids' => json_encode($request->role),
+                        'step_ids' => is_null($request->steps) ? json_encode([]) : json_encode($request->steps),
+                        'is_internal' => $request->internal ? 1 : 0,
+                        'role_name' => $request->role_name
+                    ];
 
+                    if (JobTeamInvite::where('job_id', $data['job_id'])->where('email', $data['email'])->count()) {
+                        return response()->json(['status' => false, 'message' => $data['name'] . ' has been invited already']);
+                    }
+
+                    $job_team_invite = JobTeamInvite::firstOrCreate($data);
                     $company = Company::find(get_current_company()->id);
 
-                    $accept_link = route('admin-accept-invite', ['id' => $token,'company_id'=>$company->id]);
+
+                    $accept_link = route('accept-invite', ['id' => $job_team_invite->id]);
+                    $decline_link = route('decline-invite', ['id' => $job_team_invite->id]);
 
                     $mail_body = $request->body_mail;
 
-                    $data = [
-                        'email'=>$request->email,
-                        'name' => $request->name,
-                        'token' => $token
-                    ];
 
+                    $job = Job::find($request->job_id);
                     $data = (object)$data;
-                    $email = $request->email;
+
                     //Send notification mail
-                    //
+                    $email_from = (Auth::user()->email) ? Auth::user()->email : env('COMPANY_EMAIL');
 
-                    if(isset($request->resend_email) || !isset($request->id)){
-                        \Illuminate\Support\Facades\Mail::send('emails.new.admin_invite', ['data'=>$data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) use ($email){
-                            $m->from(env('COMPANY_EMAIL'))->to($email)->subject('You Have Been Exclusively Invited');
-                        });
+                    \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $data, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
+                        $m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
+                    });
 
-                         return back()->with('success', "Invite Sent successfully");
-
-                    }
-
-                         return back()->with('success', "Details updated successfully");
-
-
-                  }
+                    return response()->json(['status' => true, 'message' => 'Email was sent successfully']);
+                }
             }
-        }else{
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'name' => 'required|string',
-            'role' => 'required|array',
-            'role_name' => 'required|string'
-        ], [
-            'email.required' => 'Email is required. If you selected an employee, check that they have a valid email',
-            'name.required' => 'Name is required',
-            'role.required' => 'Role is required',
-            'role.numeric' => 'Please select a valid role',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['status' => 'false', 'message' => $validator->getMessageBag()->toArray()]);
-        } else {
-            //Create User
-
-
-            $data = [
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'username' => $request->username,
-                    'job_id' => $request->job_id,
-                    'role_ids' => json_encode($request->role),
-                    'step_ids' => is_null($request->steps) ? json_encode([]) : json_encode($request->steps),
-                    'is_internal' => $request->internal ? 1 : 0,
-                    'role_name' => $request->role_name
-                ];
-
-            if (JobTeamInvite::where('job_id', $data['job_id'])->where('email', $data['email'])->count()) {
-                return response()->json(['status' => false, 'message' => $data['name'] . ' has been invited already']);
-            }
-
-            $job_team_invite = JobTeamInvite::firstOrCreate($data);
-            $company = Company::find(get_current_company()->id);
-
-
-            $accept_link = route('accept-invite', ['id' => $job_team_invite->id]);
-            $decline_link = route('decline-invite', ['id' => $job_team_invite->id]);
-
-            $mail_body = $request->body_mail;
-
-
-            $job = Job::find($request->job_id);
-            $data = (object)$data;
-
-            //Send notification mail
-            $email_from = (Auth::user()->email) ? Auth::user()->email : env('COMPANY_EMAIL');
-
-            \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $data, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
-                $m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
-            });
-
-            return response()->json(['status' => true, 'message' => 'Email was sent successfully']);
+        }catch(\Exception $e){
+            return back()->with('error','Action failed');
         }
     }
 
-    }
+
 
 
     public function removeJobTeamMember(Request $request)
     {
+
         $team_member = User::find($request->ref);
         $comp = $request->comp;
         $job = $request->job;
@@ -646,6 +657,10 @@ class JobsController extends Controller
                     'expiry_date' => 'required',
                     'workflow_id' => 'required|integer',
                     'experience' => 'required',
+	                'minimum_remuneration' => 'numeric|min:0',
+	                'maximum_remuneration' => 'numeric|min:0|gt:minimum_remuneration'
+                ], [
+                	'maximum_remuneration.gt' => 'maximum remuneration should be greater than minimum remuneration'
                 ]);
             }
 
@@ -667,6 +682,9 @@ class JobsController extends Controller
                 'company_id' => $company->id,
                 'workflow_id' => $request->workflow_id,
                 'experience' => $request->experience,
+                'minimum_remuneration' => $request->minimum_remuneration,
+                'maximum_remuneration' => $request->maximum_remuneration,
+                'benefits' => $request->benefits,
             ];
 
 
@@ -1444,7 +1462,6 @@ class JobsController extends Controller
         }
 
         $extension = $request->file('cv-upload-file') ? $request->file('cv-upload-file')->getClientOriginalExtension() : null;
-
         if($request->type == "single"){
             $allowed_file_extentions = ['pdf','doc','docx','txt','rtf','pptx','ppt'];
             if (!in_array($extension, $allowed_file_extentions)) {
@@ -1477,35 +1494,36 @@ class JobsController extends Controller
     }
 
 
-    public function adminUploadDocument(Request $request){
+	public function adminUploadDocument(Request $request)
+	{
 
-        $request->validate([
-            'document_file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt,jpg,jpeg,png',
-        ]);
+		$request->validate([
+			'document_file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt,jpg,jpeg,png',
+		]);
 
-        if ($request->hasFile('document_file')) {
+		if ($request->hasFile('document_file')) {
 
-            $file_name = (@$request->document_file->getClientOriginalName());
-            $fi = @$request->file('document_file')->getClientOriginalExtension();
-            $document_file = $request->application_id . '-' . time() . '-' . $file_name;
+			$file_name = (@$request->document_file->getClientOriginalName());
+			$fi = @$request->file('document_file')->getClientOriginalExtension();
+			$document_file = $request->application_id . '-' . time() . '-' . $file_name;
 
-            $upload = $request->file('document_file')->move(
-                env('fileupload'), $document_file
-            );
-        } else {
-            $document_file = '';
-        }
-        $message = CandidateMessage::create([
-            'job_application_id' => $request->appl_id,
-            'description' => $request->document_description,
-            'title' => $request->document_title,
-            'attachment' => $document_file,
-        ]);
-        return ['status' => 1, 'data' => 'Documents Uploaded successfully'];
-    }
+			$upload = $request->file('document_file')->move(
+				env('fileupload'), $document_file
+			);
+		} else {
+			$document_file = '';
+		}
+		$message = CandidateMessage::create([
+			'job_application_id' => $request->appl_id,
+			'description' => $request->document_description,
+			'title' => $request->document_title,
+			'attachment' => $document_file,
+		]);
+		return ['status' => 1, 'data' => 'Documents Uploaded successfully'];
+	}
 
-    public function JobList(Request $request)
-    {
+	public function JobList(Request $request)
+	{
         $user = User::with([
             'companies.jobs'
         ])->where('id', Auth::user()->id)
@@ -1580,14 +1598,12 @@ class JobsController extends Controller
             //  'DELETED' => $deleted_jobs  TODO
         ];
 
-
         @$q = @$request->q;
 
         return view('job.job-list', compact('jobs', 'draft', 'active', 'suspended', 'deleted', 'company', 'all_jobs', 'expired', 'q', 'private'));
     }
 
-
-     public function JobPromote($id, Request $request)
+    public function JobPromote($id, Request $request)
     {
         //Check if he  is the owner of the job
         check_if_job_owner($id);
@@ -1627,7 +1643,6 @@ class JobsController extends Controller
 
         return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
     }
-
 
     public function JobTeam($id, Request $request)
     {
@@ -2179,13 +2194,13 @@ class JobsController extends Controller
         return redirect()->route('job-view', ['jobID' => $jobid, 'jobSlug' => str_slug($job_slug)]);
     }
 
-    /**
-     * Show a preview of a job detail
-     * @param $jobid
-     * @param $job_slug
-     * @param Request|null $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
+	/**
+	 * Show a preview of a job detail
+	 * @param $jobid
+	 * @param $job_slug
+	 * @param Request|null $request
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
     public function JobView($jobid, $job_slug, Request $request = null)
     {
 
@@ -2202,7 +2217,10 @@ class JobsController extends Controller
         } else {
             $closed = false;
         }
-        return view('job.job-details', compact('job', 'company', 'closed'));
+	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
+
+	    return view('job.job-details', compact('job', 'company', 'closed', 'privacy_policy'));
+
     }
 
 
@@ -2218,8 +2236,9 @@ class JobsController extends Controller
         $company->logo = get_company_logo($company->logo);
 
         $closed = false;
+        $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
 
-        return view('job.job-details', compact('job', 'company', 'closed'));
+        return view('job.job-details', compact('job', 'company', 'closed','privacy_policy'));
     }
 
 
@@ -2473,7 +2492,6 @@ class JobsController extends Controller
                 }
             }
 
-
             $appl_activities = (save_activities('APPLIED', $jobID, $appl->id, ''));
 
             if (count($custom_fields) > 0) {
@@ -2577,9 +2595,12 @@ class JobsController extends Controller
         if(Str::contains($referer_url, 'job/share'))
                 $fromShareURL = true;
 
+	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
 
+	    return view('job.job-apply', compact('job', 'qualifications', 'states', 'company',
+		    'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate',
+		    'last_cv', 'fields','countries','privacy_policy'));
 
-        return view('job.job-apply', compact('job', 'qualifications', 'states', 'company', 'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate', 'last_cv', 'fields','countries'));
     }
 
     public function JobVideoApplication($jobID, $job_slug, $appl_id, Request $request)
@@ -2746,6 +2767,15 @@ class JobsController extends Controller
         if(is_null($request->country)){
              return redirect()->back()->with('errors','Country Cannot be empty')->withInput();
         }
+
+			$this->validate($request, [
+				'minimum_remuneration' => 'numeric|min:0',
+				'maximum_remuneration' => 'numeric|min:0|gt:minimum_remuneration'
+			], [
+				'maximum_remuneration.gt' => 'maximum remuneration should be greater than minimum remuneration'
+			]);
+
+
             $location_value = ($request->country != 'Nigeria') ? $request->country :
                 ( ($request->job_location == 'Across Nigeria') ? 'Nigeria' : $request->job_location);
 
@@ -2753,6 +2783,9 @@ class JobsController extends Controller
             $job->location = $location_value;
             $job->job_type = $request->job_type;
             $job->position = $request->position;
+			$job->benefits = $request->benefits;
+			$job->minimum_remuneration = $request->minimum_remuneration;
+			$job->maximum_remuneration = $request->maximum_remuneration;
             // $job->post_date = $request->post_date;
             $job->expiry_date = Carbon::createFromFormat('m/d/Y', $request->expiry_date)->format("Y-m-d H:m:s");
             $job->details = $request->details;
@@ -3087,7 +3120,6 @@ class JobsController extends Controller
 
     public function DuplicateJob(Request $request)
     {
-
         $newJob = Job::find($request->job_id)->replicate();
         $newJob->save();
         $newJob->status = "DRAFT";
@@ -3096,7 +3128,6 @@ class JobsController extends Controller
             echo true;
         }
     }
-
     public function addCompany(Request $request)
     {
 
@@ -3104,9 +3135,12 @@ class JobsController extends Controller
 
 
             $validator = Validator::make($request->all(), [
-                'slug' => 'unique:companies'
+				'company_email' => 'required|unique:companies,email',
+				'company_name' => 'required',
+				'phone' => 'required',
+				'about_company' => 'required',
+				'website' => 'regex:/^https:\/\/\w+(\.\w+)*(:[0-9]+)?\/?$/',
             ]);
-
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
@@ -3117,7 +3151,7 @@ class JobsController extends Controller
                 $fi = $request->file('logo')->getClientOriginalExtension();
                 $logo = $request->company_name . '-' . $file_name;
                 $upload = $request->file('logo')->move(
-                    env('fileupload'), $logo
+                    'img', $logo
                 );
             } else {
                 $logo = "";
@@ -3127,12 +3161,13 @@ class JobsController extends Controller
             $comp = Company::FirstorCreate([
                 'name' => $request->company_name,
                 'email' => $request->company_email,
-                'slug' => $request->slug,
+                'slug' => str_slug($request->company_name),
                 'phone' => $request->phone,
                 'website' => $request->website,
                 'address' => $request->address,
                 'about' => $request->about_company,
                 'logo' => $logo,
+                //'license_type'=>'PREMIUM',
                 'date_added' => date('Y-m-d H:i:s'),
             ]);
 
@@ -3156,70 +3191,26 @@ class JobsController extends Controller
         }
         return view('company.add');
     }
-
-    public function editCompany(Request $request)
-    {
-
-
-
-        if ($request->isMethod('post')) {
-
-
-            $validator = Validator::make($request->all(), [
-                'slug' => 'unique:companies'
-            ]);
-
-            if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
-
-
-            if (isset($request->logo)) {
+    public function editCompany(UpdateCompanyRequest $request)
+	{
+		$collect = collect($request);
+		if (isset($request->logo)) {
                 $file_name = ($request->logo->getClientOriginalName());
-                $fi = $request->file('logo')->getClientOriginalExtension();
-                $logo = $request->company_name . '-' . $file_name;
+                $file_extension = $request->file('logo')->getClientOriginalExtension();
+                $logo = str_slug($request->name) . '-' . $file_name;
                 $upload = $request->file('logo')->move(
-                    env('fileupload'), $logo
+                    'img', $logo
                 );
+	            $collect['logo'] = $logo ;
+
             } else {
-                $logo = "";
+			   $collect['logo'] = "" ;
             }
 
-
-            $comp = Company::FirstorCreate([
-                'name' => $request->company_name,
-                'email' => $request->company_email,
-                'slug' => $request->slug,
-                'phone' => $request->phone,
-                'website' => $request->website,
-                'address' => $request->address,
-                'about' => $request->about_company,
-                'logo' => $logo,
-                'date_added' => date('Y-m-d H:i:s'),
-            ]);
-
-            $assoc = DB::table('company_users')->insert([
-                ['user_id' => Auth::user()->id, 'company_id' => $comp->id]
-            ]);
-
-            $tests = DB::table('company_tests')->insert([
-                ['ats_product_id' => 23, 'company_id' => $comp->id],
-                ['ats_product_id' => 24, 'company_id' => $comp->id],
-                ['ats_product_id' => 25, 'company_id' => $comp->id],
-                ['ats_product_id' => 27, 'company_id' => $comp->id]
-            ]);
-
-
-            // if($upload){
-            return redirect('select-company/' . $request->slug);
-            // }
-
-        }
-
-        $company = Company::find($request->id);
-
-        return view('company.edit', compact('company'));
-    }
+	      seamlessSave(Configs::COMPANY_MODEL,  $collect->toArray(), $request->company_id);
+            if ($request->company_creation_page) return back()->with('success', "Company updated successfully.");
+          return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
+	}
 
     public function selectCompany(Request $request)
     {
@@ -3229,6 +3220,7 @@ class JobsController extends Controller
                 return redirect('dashboard');
             }
         }
+    
     }
 
     public function embed()
@@ -3331,6 +3323,56 @@ class JobsController extends Controller
        return null;
     }
 
+    /*
+       * To delete a job team admin user
+       * @return Illuminate\Http\Response
+       */
+    public function JobTeamDelete(Request $request){
 
+        $data = [
+            "user_id" => "required"
+        ];
 
+        $data = $request->validate($data);
+        $user = User::find($data["user_id"]);
+        if($user){
+            if(isHrmsIntegrated()) {
+                return redirect()->back()->with(['warning' => "You are synced with HRMS and can only delete a super admin from HRMS"]);
+            }
+            $data = $user;
+            $user->delete();
+            logAction([
+                'log_name' => 'Job Team Admin Delete',
+                'description' => 'An action that deletes a job team super admin',
+                'action_type' => 'Delete',
+                'causee_id' => $data->id,
+                'causer_id' =>  Auth::user()->id,
+            ]);
+            return redirect()->back()->with(['warning' => "Super Admin Deleted Successfully"]);
+        }
+
+        return redirect()->back()->with(['warning' => "Operation delete Super Admin Not Successful"]);
+    }
+
+    public function JobTeamInviteeDelete(Request $request){
+        $data = [
+            "invitee_id" => "required"
+        ];
+
+        $data = $request->validate($data);
+        $invitee = JobTeamInvite::find($data["invitee_id"]);
+        if($invitee && $invitee->is_cancelled){
+            $data = $invitee;
+            $invitee->delete();
+            logAction([
+                'log_name' => 'Job Team Invitee Delete',
+                'description' => 'An action that deletes a job team invitee',
+                'action_type' => 'Delete',
+                'causee_id' => $data->id,
+                'causer_id' =>  Auth::user()->id,
+            ]);
+            return redirect()->back()->with(['success' => "Job Team Invitee Deleted Successfully"]);
+        }
+        return redirect()->back()->with(['error' => "Operation delete Job Team Invitee Not Successful"]);
+    }
 }

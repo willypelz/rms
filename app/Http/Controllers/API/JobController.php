@@ -493,7 +493,7 @@ class JobController extends Controller
             );
         }
 
-        $company = Company::first();
+        $company = Company::where('hrms_id',$request->company_id)->first() ?? Company::first();
 
         if (is_null($company)) {
             return response()->json([
@@ -524,16 +524,6 @@ class JobController extends Controller
 
         $user = User::whereName($request->name)->whereEmail($request->email)->first();
 
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'username' => $request->username,
-            'is_internal' => 1,
-            'activated' => 1,
-            'is_super_admin' => 1,
-        ];
-
-
         if (!is_null($user)) {
             return response()->json([
                 'status' => false,
@@ -544,11 +534,22 @@ class JobController extends Controller
 
         }
 
-        $user = User::firstOrCreate($data);
+        //formerly firstOrCreate but  started failing hence get user in db that already has the email , otherwise create one
+        $user = User::whereEmail($request->email)->first() ?: new User();
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->username = $request->username;
+        $user->is_internal = 1;
+        $user->activated = 1;
+        $user->is_super_admin = 1;
+        $user->save();
 
         $role = Role::whereName('admin')->first()->id;
 
-        $company->users()->attach($user->id, ['role' => $role[0]['id']]);
+        
+            $company->users()->attach($user->id, ['role' => $role]);
+        
 
         $user->roles()->attach([$role]);
 

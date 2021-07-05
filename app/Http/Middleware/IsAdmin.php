@@ -23,7 +23,8 @@ class IsAdmin
                     'msg' => 'You don\'t have permission to perform this action',
                 ], 403);
             }
-            return url()->previous(); //TODO change this to 403 when we make a 403 error page
+            session()->flush();
+            return redirect()->guest('/');
         }
         return $next($request);
     }

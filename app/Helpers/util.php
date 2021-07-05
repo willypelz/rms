@@ -8,10 +8,17 @@ use App\Models\Cv;
 use App\Models\Job;
 use App\Models\JobActivity;
 use App\Models\JobApplication;
+use App\Models\Permission;
+use App\Models\PermissionRole;
 use Illuminate\Support\Facades\File;
+use phpDocumentor\Reflection\Types\Object_;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use App\Models\TestRequest;
 use App\Models\ActivityLog;
+use Carbon\Carbon;
+use Ixudra\Curl\Facades\Curl;
+use App\User;
+use App\Enum\Configs;
 
 // use Faker;
 
@@ -354,11 +361,11 @@ function get_current_company()
             else
                 return Auth::user()->companies[0];
         }
-
+        
         if (Auth::user()->companies && Auth::user()->companies->count() < 1) {
             return redirect()->guest('login');
         }
-
+        
         // If a company is not selected, default to the first on the list
         return Auth::user()->companies[0];
     } else {
@@ -843,6 +850,7 @@ function logAction($logAction)
         'action_id' => @$logAction['action_id'],
         'action_type' => @$logAction['action_type'],
         'causee_id' => @$logAction['causee_id'],
+        'company_id'=> get_current_company()->id ?? Null,
         'causer_id' => isset($logAction['causer_id']) ? $logAction['causer_id'] : Auth::user()->id,
         'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
         'properties' => @$logAction['properties'],
@@ -874,4 +882,123 @@ function findOrMakeDirectory($path)
         return File::makeDirectory($path, 0777);
     }
 
+}
+
+
+function audit_log()
+{
+    $name = auth()->guard('candidate')->user()->first_name.' '.auth()->guard('candidate')->user()->last_name;
+    $last_login = Carbon::now()->toDateTimeString();
+
+    $log_action = [
+        'log_name' => "Candidate Login",
+        'description' => "An applicant ". $name . " logged in. Last login was " . $last_login,
+        'action_id' => Auth::guard('candidate')->user()->id,
+        'action_type' => 'App\Models\Candidate',
+        'causee_id' => Auth::guard('candidate')->user()->id,
+        'causer_id' => Auth::guard('candidate')->user()->id,
+        'causer_type' => 'applicant',
+        'properties'=> ''
+    ];
+    logAction($log_action);
+}
+
+function admin_audit_log()
+{
+    $last_login = Carbon::now()->toDateTimeString();
+
+    $log_action = [
+        'log_name' => "Admin Login",
+        'description' => "Admin ". Auth::user()->name . " logged in. Last login was "  .$last_login,
+        'action_id' => Auth::user()->id,
+        'action_type' => 'App\User',
+        'causee_id' => Auth::user()->id,
+        'causer_id' => Auth::user()->id,
+        'causer_type' => 'admin',
+        'properties'=> ''
+    ];
+    logAction($log_action);
+}
+/**
+ * Checks if HRMS is synced
+ * @return bool
+ */
+function isHrmsIntegrated(){
+    return (!is_null(env('STAFFSTRENGTH_URL'))) && env('RMS_STAND_ALONE')==false ? true: false;
+}
+
+/**
+ * Mass save
+ * @param $modelName
+ * @param array $data
+ * @param $id
+ * @return \Illuminate\Http\JsonResponse
+ */
+function seamlessSave( $modelName, array $data, $id)
+{
+    $instance = $modelName::find($id);
+    $data['slug'] = ($instance->slug) ?: str_slug($instance->name); //add slug if missing
+	$instance->fill($data)->save();
+	return $instance;
+}
+
+/**
+ * TO ACCESS HRMS USING GET HTTP PROTOCOL
+ * @param string $url the path segment excluding the base url i.e api/v2/get_user_default_company/
+ * @param array $data the payload to be used in the request
+ * @return array | null
+ */
+function getResponseFromHrmsByGET(string $url, array $data = []){
+    $rmsCompany = Company::whereNotNull('api_key')->first();
+    if(isHrmsIntegrated() && $rmsCompany) {
+        $response = Curl::to(env('STAFFSTRENGTH_URL') . $url )
+                        ->withHeader("X-API-KEY: " . $rmsCompany->api_key)
+                        ->withData($data)
+                        ->asJson()
+                        ->get();
+        return $response;
+    } 
+    return null;
+}
+
+/*
+ * Gets Company User ID
+ * @param int $user
+ * @return int
+ */
+function getCompanyId($userId = null) {
+
+	if (is_null($userId)) {
+		$company_id = is_null(session('active_company')) ? optional(auth()->user())->defaultCompany()->id : session('active_company')->id;
+	} else {
+		$company_id = User::find($userId)->first()->defaultCompany()->id;
+	}
+
+	return $company_id;
+}
+
+function userPermissionsArray($useSession=true){
+
+	if ($useSession && session()->has('user_permissions')) return session()->get('user_permissions');
+
+	$role_ids = auth()->user()->roles()->pluck('id')->unique()->toArray();
+	$permission_role = PermissionRole::whereIn('role_id',$role_ids)->pluck('permission_id')->toArray();
+	$permission_array =Permission::find(array_unique($permission_role))->pluck('name')->toArray();
+	session()->put('user_permissions', $permission_array);
+
+	return $permission_array;
+}
+
+function canSwitchBetweenPage(){
+
+   	$user = auth()->user();
+	if($user->name === configs::DEFAULT_ADMIN_NAME  && $user->email === configs::DEFAULT_ADMIN_EMAIL) return true;
+
+	return in_array(configs::CAN_SWITCH_BETWEEN_COMPANY, userPermissionsArray());
+}
+
+
+function isHrmsCompaniesSyncedWithRms(){
+	$rmsDefaultCompany = Company::whereNotNull('hrms_id')->whereIsDefault(true)->first();
+	return $rmsDefaultCompany ? true : false;
 }

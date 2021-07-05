@@ -27,7 +27,7 @@
                         <span class="text-muted">
                             
                         </span>
-                        <a href="{{ route('workflow') }}" class="text-muted">Workflows</a>
+                        <a href="{{ route('workflow') }}"  class="text-muted text-decoration-none">Back to Workflows</a>
                     </p>
                     <h3>
                         {{ $workflow->name }}

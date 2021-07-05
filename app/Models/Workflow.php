@@ -12,10 +12,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use App\Interfaces\EloquentRelationshipTypes;
+use App\Traits\CanDuplicate;;
 class Workflow extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, CanDuplicate;
 
     protected $fillable = [
         'name',
@@ -24,6 +25,24 @@ class Workflow extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
+    /*
+    * Has many relationnships partaking in model duplication
+    * @var array
+    */
+    protected  $has_many = ["workflowSteps"];
+
+    /**
+    * Duplicate format tag when duplication a model
+    * @var string
+    */
+    protected  $duplicate_format = "duplicate";
+
+    /**
+    * Field name in model to which the duplicate format tag is applied to
+    * @var string
+    */
+    protected  $field_duplicate_tag = "name";
 
     public function workflowSteps()
     {

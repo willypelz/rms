@@ -22,11 +22,11 @@
 
         //var cv_cart = 0;
         var p_total = 0;
-        var cart_count = <?php \App\Libraries\Utilities::getBoardCartCount(); ?>
+        var cart_count = {{ \App\Libraries\Utilities::getBoardCartCount() }};
 
         $('.btn-cv-buy').on('click', function (e) {
 
-            console.log('Using thuis');
+            console.log('Using thuis')
 
             cart_count = Number(cart_count) + 1;
             p_total = 500 * cart_count;
@@ -67,33 +67,33 @@
         });
 
 
-        // $("#owl-posts").owlCarousel({
-        //     navigation: true,
-        //     items: 4,
-        //     responsive: false,
-        //     scrollPerPage: false,
-        //     pagination: true,
-        //     autoPlay: false,
-        //     navigationText: [
-        //         "<span class='fa fa-chevron-left'></span>",
-        //         "<span class='fa fa-chevron-right'></span>"
-        //     ],
+        $("#owl-posts").owlCarousel({
+            navigation: true,
+            items: 4,
+            responsive: false,
+            scrollPerPage: false,
+            pagination: true,
+            autoPlay: false,
+            navigationText: [
+                "<span class='fa fa-chevron-left'></span>",
+                "<span class='fa fa-chevron-right'></span>"
+            ],
 
-        // });
+        });
 
-        // $("#owl-posts2").owlCarousel({
-        //     navigation: true,
-        //     items: 3,
-        //     responsive: false,
-        //     scrollPerPage: false,
-        //     pagination: true,
-        //     autoPlay: false,
-        //     navigationText: [
-        //         "<span class='fa fa-chevron-left'></span>",
-        //         "<span class='fa fa-chevron-right'></span>"
-        //     ],
+        $("#owl-posts2").owlCarousel({
+            navigation: true,
+            items: 3,
+            responsive: false,
+            scrollPerPage: false,
+            pagination: true,
+            autoPlay: false,
+            navigationText: [
+                "<span class='fa fa-chevron-left'></span>",
+                "<span class='fa fa-chevron-right'></span>"
+            ],
 
-        // });
+        });
 
     });
 </script>
@@ -140,7 +140,7 @@
                         </li>
                         <li><a href="{{ url('about') }}">About SeamlessHiring</a>
                         </li>
-                        <li><a href="{{ url('pricing') }}">Pricing</a>
+                        <li><a href="{{--{{ route('pricing-page') }}--}}">Pricing</a>
                         </li>
                         <li class=""><a class="" href="{{ url('talentSource') }}">Talent Sourcing </a>
                         </li>
@@ -290,7 +290,6 @@
                         $('#AjaxLogin').ajaxForm({
                             beforeSubmit: genPreSubmit,
                             success: function (response) {
-                                console.log(response);
                                 if (response == 'Failed') {
                                     $('#mssg').html("<span class='alert alert-danger' > Your login credentials are incorrect. </span>");
                                     $("#SubBtn").html('Proceed');
@@ -310,7 +309,6 @@
                         });
 
                         function genPreSubmit() {
-                            console.log("We are here....");
                             $("#SubBtn").html('please wait...');
 
                         }

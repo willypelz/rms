@@ -308,21 +308,21 @@
             })
 
         });
-        var attachEmail = $(".attach_emails");
+        let attachEmail = $(".attach_emails");
 
-        if($('#is_private').is(":checked"))
+        if($('#is_private').is(":checked")){
             attachEmail.show();
-        else
+        }else{
             attachEmail.hide();
-
+        }
+            
         function checkedPrivate(){
-            if($('#is_private').is(":checked"))
+            if($('#is_private').is(":checked")){
                 $(".attach_emails").show();
-                // $('.bulk_upload_emails').show();
-            else
+            }
+            else{
                 $(".attach_emails").hide();
-                // $('.bulk_upload_emails').hide();
-
+            }
         }
         // Replace the <textarea id="editor1"> with a CKEditor
         // instance, using default configuration.

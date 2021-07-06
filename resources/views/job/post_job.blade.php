@@ -515,22 +515,20 @@
                 }
             })
         });
-        var attachEmail = $(".attach_emails");
+        let attachEmail = $(".attach_emails");
         
-        if($('#is_private').is(":checked"))
+        if($('#is_private').is(":checked")){
             attachEmail.show();
-        else
+        }else{
             attachEmail.hide();
-
+        }
 
         function checkedPrivate(){
-            if($('#is_private').is(":checked"))
+            if($('#is_private').is(":checked")){
                 $(".attach_emails").show();
-                // $('.bulk_upload_emails').show();
-            else
+            }else{
                 $(".attach_emails").hide();
-                // $('.bulk_upload_emails').hide();
-
+            }
         }
 
         function checkIfWorkFlowIsSelected() {
@@ -626,18 +624,8 @@
             var bulk_email = $('#bulk_email').val();
             var checked = $('#is_private');
 
-            // if (checked.is(':checked') && (attached_email == "" && bulk_email == "" ) && (attached_email == null && bulk_email == null)){
-            //     alert("Email must be attached");
-            //     return false;
-            // }
-
-
             var token = $('#token').val();
             var url = "{{ route('job-draft') }}";
-
-            // var formData = new FormData();
-            // var csv = $('#file').val();
-            // formData.append('file', csv);
 
             var specializations = $('#specialization').val();
             var minimum_remuneration  = $('#minimum_remuneration').val();
@@ -652,8 +640,6 @@
             $.ajax({
                 url: url,
                 type: 'POST',
-                // processData: false,
-                // contentType: false, 
                 data: {
                     _token: '{{ csrf_token() }}', title: title,
                     details: details, location: location, country: country,

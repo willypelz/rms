@@ -29,6 +29,7 @@ use App\Models\TestRequest;
 use App\Models\VideoApplicationOptions;
 use App\Models\VideoApplicationValues;
 use App\Models\Workflow;
+use App\Models\PrivateJob;
 use App\User;
 use Auth;
 use Carbon\Carbon;
@@ -49,6 +50,9 @@ use Mail;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use Session;
 use Validator;
+use App\Rules\PrivateEmailRule;
+use App\Imports\PrivateJobEmail;
+use Maatwebsite\Excel\Facades\Excel;
 
 // use Zipper;
 
@@ -689,13 +693,85 @@ class JobsController extends Controller
 
 
             if(empty($request->job_id)){
-                $job = Job::firstOrCreate($job_data);
+
+                DB::beginTransaction();
+
+                try{
+                    $job = Job::firstOrCreate($job_data);
+                    //attach emails to private jobs
+                    if($request->is_private){
+                        if($request->attach_email){
+                            $request->validate([
+                                'attach_email' => ['nullable', new PrivateEmailRule],
+                            ]);
+                            
+                            $attached_emails = $request->attach_email;
+                            $arr = explode(",",$attached_emails);
+        
+                            foreach ($arr as $value) {
+                                PrivateJob::create(['job_id' => $request->job_id,'attached_email'=> $value]);
+                            }                        
+                        }
+                        
+                        if($request->hasFile('bulk')){
+                            //bulk upload
+                            $request->validate([
+                                'bulk' => 'required|mimes:csv,txt'
+                            ]);
+        
+                            $path = $request->file('bulk');
+                            $data = Excel::import(new PrivateJobEmail($job->id), $path);
+                            
+                        }
+                        
+                    }
+                    DB::commit();
+
+                }catch(\Exception $e){
+                    
+                    DB::rollback();
+                    
+                    return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+
+                }
+
             }else{
                 $is_update = true;
                 $jb = Job::find($request->job_id);
                 $job = $jb;
 
-                $jb->update($job_data);
+                //attach emails to private jobs
+                if($request->is_private){
+
+                    if($request->attach_email){
+
+                        $request->validate([
+                            'attach_email' => ['nullable', new PrivateEmailRule],
+                        ]);
+                        
+                        $attached_emails = $request->attach_email;
+                        $arr = explode(",",$attached_emails);
+
+                        foreach ($arr as $value) {
+                            PrivateJob::UpdateOrCreate(['job_id' => $job->id,'attached_email'=> $value]);
+                        }
+                            
+                    }
+                    
+                    if($request->hasFile('bulk')){
+                        //bulk upload
+                        $request->validate([
+                            'bulk' => 'required|mimes:csv,txt'
+                        ]);
+    
+                        $path = $request->file('bulk');
+                        $data = Excel::import(new PrivateJobEmail($job->id), $path);
+                        
+                    }
+                    
+                }
+
+                $jb->update($job_data);  
             }
 
             if($request->specializations){
@@ -2209,6 +2285,7 @@ class JobsController extends Controller
         if (empty($job) || is_null($job)) {
             abort(404);
         }
+
         $company = $job->company;
         $company->logo = get_company_logo($company->logo);
 
@@ -2272,6 +2349,16 @@ class JobsController extends Controller
         $candidate = Auth::guard('candidate')->user();
 
         $job = Job::with('company')->where('id', $jobID)->first();
+
+        if($job->is_private && $candidate){
+            
+            $checkEmail = PrivateJob::with('job')->where('attached_email', $candidate->email)->first();
+            
+            if (empty($checkEmail) || is_null($checkEmail)) {
+    
+                return redirect()->to('/candidate/dashboard')->with('error','You are not listed to apply for this job');
+            }
+        }
 
         $company = $job->company;
         $specializations = Specialization::get();
@@ -2505,7 +2592,8 @@ class JobsController extends Controller
                         if ($request->hasFile($name)) {
 
                             $filename = time() . '_' . str_slug($request->email) . '_' . $request->file($name)->getClientOriginalName();
-                            $destinationPath = env('fileupload') . '/Others';
+                            $destinationPath = env('fileupload','uploads') . '/Others';
+                            findOrMakeDirectory($destinationPath);
 
                             $request->file($name)->move($destinationPath, $filename);
 
@@ -2533,17 +2621,19 @@ class JobsController extends Controller
             if ($request->hasFile('cv_file')) {
 
                 $destinationPath = env('fileupload') . '/CVs';
-
+                findOrMakeDirectory($destinationPath);
                 $request->file('cv_file')->move($destinationPath, $data['cv_file']);
 
             }
 
             if ($request->hasFile('optional_attachment_1')) {
                 $destinationPath = env('fileupload') . '/CVs';
+                findOrMakeDirectory($destinationPath);
                 $request->file('optional_attachment_1')->move($destinationPath, $data['optional_attachment_1']);
             }
             if ($request->hasFile('optional_attachment_2')) {
                 $destinationPath = env('fileupload') . '/CVs';
+                findOrMakeDirectory($destinationPath);
                 $request->file('optional_attachment_2')->move($destinationPath, $data['optional_attachment_2']);
             }
 
@@ -2786,7 +2876,39 @@ class JobsController extends Controller
             // $job->post_date = $request->post_date;
             $job->expiry_date = Carbon::createFromFormat('m/d/Y', $request->expiry_date)->format("Y-m-d H:m:s");
             $job->details = $request->details;
+            $private = ($request->is_private  == 'true' ? 1 : 0);
+            $job->is_private = $private;
             $job->experience = $request->experience;
+
+            //attach emails to private jobs
+            if($request->is_private){
+
+                if($request->attach_email){
+                    $request->validate([
+                        'attach_email' => ['nullable', new PrivateEmailRule],
+                    ]);
+                    $attached_emails = $request->attach_email;
+                    $arr = explode(",",$attached_emails);
+
+                    foreach ($arr as $value) {
+
+                        PrivateJob::UpdateOrCreate(['job_id' => $job->id,'attached_email'=> $value]);
+                    }
+                        
+                }
+                
+                if($request->hasFile('bulk')){
+                    //bulk upload
+                    $request->validate([
+                        'bulk' => 'required|mimes:csv,txt'
+                    ]);
+
+                    $path = $request->file('bulk');
+                    $data = Excel::import(new PrivateJobEmail($job->id), $path);
+                    
+                }
+                
+            }
 
             $job->save();
             // $job->update($request->all());
@@ -3148,7 +3270,7 @@ class JobsController extends Controller
                 $fi = $request->file('logo')->getClientOriginalExtension();
                 $logo = $request->company_name . '-' . $file_name;
                 $upload = $request->file('logo')->move(
-                    env('fileupload'), $logo
+                    'img', $logo
                 );
             } else {
                 $logo = "";
@@ -3196,7 +3318,7 @@ class JobsController extends Controller
                 $file_extension = $request->file('logo')->getClientOriginalExtension();
                 $logo = str_slug($request->name) . '-' . $file_name;
                 $upload = $request->file('logo')->move(
-                    env('fileupload'), $logo
+                    'img', $logo
                 );
 	            $collect['logo'] = $logo ;
 

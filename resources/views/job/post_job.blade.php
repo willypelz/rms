@@ -49,7 +49,7 @@
                             </div>
                             <br>
                             <form action="{{ route('job-draft') }}" class="job-details" id="myForm"
-                                  role="job-details" method="post">
+                                  role="job-details" method="post" enctype="multipart/form-data">
                                 <div class="col-md-8 col-md-offset-2">
                                     <!-- <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio voluptatibus magni officiis id error numquam.</p> -->
 
@@ -253,14 +253,38 @@
                                                        required>
                                             </div>
 
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-12">
                                                 <br>
 
                                                 <label for="job-loc">Make job private
-                                                    <input type="checkbox" id="is_private" value="true"
+                                                    <input type="checkbox" id="is_private" value="true" onchange="checkedPrivate()"
                                                            name="is_private" @if ($is_private == 1) checked @endif >
                                                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="When a job posting is private, only candidate with the link to the job post can apply"></i>
                                                 </label>
+                                            </div>
+                                            <div class="col-sm-6 attach_emails">
+                                                
+                                                <label for="job-title">Attach Emails
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Attach Emails to these private jobs"></i>
+                                                </label>
+                                                <input type="text"
+                                                       name="attach_email"
+                                                       value=""
+                                                       placeholder="you are required to seperate emails by commas"
+                                                       class="form-control"
+                                                       autocomplete="off"
+                                                       >
+                                            </div>
+                                            <div class="col-sm-6 attach_emails">
+                                                <label for="job-title">Bulk Upload Emails
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Bulk Upload Emails to these private jobs"></i>
+                                                </label>
+                                                <input type="file"
+                                                       name="bulk"
+                                                       value=""
+                                                       class="form-control"
+                                                >
+                                                <small>NB:csv should contain a column "emails"</small>
                                             </div>
                                         </div>
                                     </div>
@@ -495,6 +519,21 @@
                 }
             })
         });
+        let attachEmail = $(".attach_emails");
+        
+        if($('#is_private').is(":checked")){
+            attachEmail.show();
+        }else{
+            attachEmail.hide();
+        }
+
+        function checkedPrivate(){
+            if($('#is_private').is(":checked")){
+                $(".attach_emails").show();
+            }else{
+                $(".attach_emails").hide();
+            }
+        }
 
         function checkIfWorkFlowIsSelected() {
             getWorkFlowSteps($('#workflowId').val())
@@ -585,6 +624,9 @@
                 return false;
             }
 
+            var attached_email = $('#attach_email').val();
+            var bulk_email = $('#bulk_email').val();
+            var checked = $('#is_private');
 
             var token = $('#token').val();
             var url = "{{ route('job-draft') }}";
@@ -605,7 +647,7 @@
                 data: {
                     _token: '{{ csrf_token() }}', title: title,
                     details: details, location: location, country: country,
-                    eligibilty: is_for, is_private: is_private,
+                    eligibilty: is_for, is_private: is_private, attach_email: attach_email, bulk: bulk_email,
                     job_type: job_type, position: position,
                     expiry_date: expiry_date, experience: experience,
                     specializations: specializations, workflow_id: workflowId,

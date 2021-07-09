@@ -31,11 +31,10 @@ class Plans
     {
         foreach($this->exceptRoutes as $route) {
 
-          if ( $request->route()->getName() == $route ) {
+          if ( $request->route()->getName() == $route || $request->route()->uri == $route) {
             return $next($request);
           }
         }
-
         if( Auth::check() )
         {
             $current_company = get_current_company();

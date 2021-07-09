@@ -55,11 +55,11 @@ class Plans
                 if( $diff > 14 )
                 {
                     $additional_request["has_expired"] = true;
-                    
-                    if( url('pricing') != url()->current() )
+
+                    if( url('pricing/page') != url()->current() )
                     {
 
-                       return redirect()->to('pricing');   
+                       return redirect()->route('pricing-page');
                     }
                     $trial_time = 0;
 

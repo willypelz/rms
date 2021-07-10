@@ -697,8 +697,10 @@ class JobsController extends Controller
             if(empty($request->job_id)){
 
                 $job = Job::firstOrCreate($job_data);
-                    //attach emails to private jobs
+
+                //attach emails to private jobs
                 if($request->is_private){
+                    
                     if($request->attach_email){
                         $attached_emails = $request->attach_email;
                         $arr = explode(",",$attached_emails);

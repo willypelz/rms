@@ -53,6 +53,6 @@ class PrivateEmailRule implements Rule
     public function message()
     {
         //return 'The :attribute must contain valid email addresses.';
-        return 'The attached email must be a valid email addresses';
+        return 'Invalid email address attached to job';
     }
 }

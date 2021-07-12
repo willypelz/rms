@@ -117,7 +117,7 @@
                                                     <span style="color:red" class="text-danger">*</span>
                                                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What is the job role?"></i>
                                                 </label>
-                                                <input type="text" name="title" value="{{ $job_title }}" id="job_title"
+                                                <input type="text" name="title" value="{{ $job_title ? $job_title : old('title') }}" id="job_title"
                                                        class="form-control" required>
                                                 <small>e.g. Marketer at {{ get_current_company()->name }}</small>
                                             </div>
@@ -215,7 +215,7 @@
                                                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What job level is required for this job? i.e Associate Marketer"></i>
                                                 </label>
                                                 <input type="text" name="position" class="form-control position"
-                                                       value="{{ $job_position }}"
+                                                       value="{{ $job_position ? $job_position : old('position')}}"
                                                        required>
                                                 <small>e.g. Associate Marketer</small>
                                             </div>
@@ -247,7 +247,7 @@
                                                 </label>
                                                 <input type="text"
                                                        name="expiry_date"
-                                                       value="{{ $expiry_date }}"
+                                                       value="{{ $expiry_date ? $expiry_date : old('expiry_date')}}"
                                                        class="datepicker form-control expiry_date"
                                                        autocomplete="off"
                                                        required>
@@ -257,7 +257,7 @@
                                                 <br>
 
                                                 <label for="job-loc">Make job private
-                                                    <input type="checkbox" id="is_private" value="true" onchange="checkedPrivate()"
+                                                    <input type="checkbox" id="is_private" value="true" {{(old('is_private') == "true") ? 'checked': ''}} onchange="checkedPrivate()"
                                                            name="is_private" @if ($is_private == 1) checked @endif >
                                                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="When a job posting is private, only candidate with the link to the job post can apply"></i>
                                                 </label>
@@ -269,11 +269,12 @@
                                                 </label>
                                                 <input type="text"
                                                        name="attach_email"
-                                                       value=""
+                                                       value="{{old('attach_email')}}"
                                                        placeholder="you are required to seperate emails by commas"
                                                        class="form-control"
                                                        autocomplete="off"
                                                        >
+                                                       <small>example: email@gmail.com,email@yahoo.com</small>
                                             </div>
                                             <div class="col-sm-6 attach_emails">
                                                 <label for="job-title">Bulk Upload Emails
@@ -284,7 +285,7 @@
                                                        value=""
                                                        class="form-control"
                                                 >
-                                                <small>NB:csv should contain a column "emails"</small>
+                                                <small>NB: csv should contain a column "emails"</small>
                                             </div>
                                         </div>
                                     </div>
@@ -363,14 +364,14 @@
                                         <div class="row ">
                                                 <div class="col-sm-6">
                                                     <label for="">Minimum</label>
-                                                    <input type="number" name="minimum_remuneration" value="{{ $minimum_remuneration }}"
+                                                    <input type="number" name="minimum_remuneration" value="{{$minimum_remuneration}}"
                                                            id="minimum_remuneration"
                                                            class="form-control" >
                                                 </div>
                                                 <div class="col-sm-6">
 
                                                     <label for="">Maximum</label>
-                                                    <input type="number" name="maximum_remuneration" value="{{ $maximum_remuneration }}"
+                                                    <input type="number" name="maximum_remuneration" value="{{$maximum_remuneration}}"
                                                            id="maximum_remuneration"
                                                            class="form-control" >
                                                 </div>

@@ -371,7 +371,7 @@
                                                 <div class="col-sm-6">
 
                                                     <label for="">Maximum</label>
-                                                    <input type="number" name="maximum_remuneration" value="{{$maximum_remuneration)}}"
+                                                    <input type="number" name="maximum_remuneration" value="{{$maximum_remuneration}}"
                                                            id="maximum_remuneration"
                                                            class="form-control" >
                                                 </div>

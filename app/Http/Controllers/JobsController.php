@@ -662,7 +662,9 @@ class JobsController extends Controller
                     'workflow_id' => 'required|integer',
                     'experience' => 'required',
 	                'minimum_remuneration' => 'numeric|min:0',
-	                'maximum_remuneration' => 'numeric|min:0|gt:minimum_remuneration'
+	                'maximum_remuneration' => 'numeric|min:0|gt:minimum_remuneration',
+                    'attach_email' => ['nullable', new PrivateEmailRule],
+                    'bulk' => 'nullabe|mimes:csv,txt'
                 ], [
                 	'maximum_remuneration.gt' => 'maximum remuneration should be greater than minimum remuneration'
                 ]);
@@ -694,45 +696,27 @@ class JobsController extends Controller
 
             if(empty($request->job_id)){
 
-                DB::beginTransaction();
+                $job = Job::firstOrCreate($job_data);
 
-                try{
-                    $job = Job::firstOrCreate($job_data);
-                    //attach emails to private jobs
-                    if($request->is_private){
-                        if($request->attach_email){
-                            $request->validate([
-                                'attach_email' => ['nullable', new PrivateEmailRule],
-                            ]);
-                            
-                            $attached_emails = $request->attach_email;
-                            $arr = explode(",",$attached_emails);
-        
-                            foreach ($arr as $value) {
-                                PrivateJob::create(['job_id' => $request->job_id,'attached_email'=> $value]);
-                            }                        
-                        }
-                        
-                        if($request->hasFile('bulk')){
-                            //bulk upload
-                            $request->validate([
-                                'bulk' => 'required|mimes:csv,txt'
-                            ]);
-        
-                            $path = $request->file('bulk');
-                            $data = Excel::import(new PrivateJobEmail($job->id), $path);
-                            
-                        }
+                //attach emails to private jobs
+                if($request->is_private){
+                    
+                    if($request->attach_email){
+                        $attached_emails = $request->attach_email;
+                        $arr = explode(",",$attached_emails);
+    
+                        foreach ($arr as $value) {
+                            PrivateJob::create(['job_id' => $request->job_id,'attached_email'=> $value]);
+                        }                        
+                    }
+                    
+                    if($request->hasFile('bulk')){
+                        //bulk upload
+                        $path = $request->file('bulk');
+                        $data = Excel::import(new PrivateJobEmail($job->id), $path);
                         
                     }
-                    DB::commit();
-
-                }catch(\Exception $e){
                     
-                    DB::rollback();
-                    
-                    return redirect()->back()->withErrors(['error' => $e->getMessage()]);
-
                 }
 
             }else{
@@ -3255,7 +3239,7 @@ class JobsController extends Controller
 
             $validator = Validator::make($request->all(), [
 				'company_email' => 'required|unique:companies,email',
-				'company_name' => 'required',
+				'company_name' => 'required|unique:companies,name',
 				'phone' => 'required',
 				'about_company' => 'required',
 				'website' => 'regex:/^https:\/\/\w+(\.\w+)*(:[0-9]+)?\/?$/',
@@ -3301,9 +3285,23 @@ class JobsController extends Controller
                 ['ats_product_id' => 27, 'company_id' => $comp->id]
             ]);
 
+            $email_title = 'New Subsidiary Created on RMS for '.get_current_company()->name;
+            $user = Auth::user();
+            $subsidiary = $request->company_name;
+            //mail to cs and sales
+            $mail = Mail::send('emails.subsidiary.cs-sales-notify', compact('email_title','user', 'subsidiary'), function ($m) use ($email_title) {
+                $m->from(env('COMPANY_EMAIL'))->to('support-team@seamlesshr.com')->cc('sales@seamlesshr.com')->subject($email_title);
+            });
+            
+            Mail::send('emails.subsidiary.admin-notify', compact('email_title','user', 'subsidiary'), function ($m) use ($user, $email_title) {
+                $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
+            });
+            
+            
+            
 
             // if($upload){
-            return redirect('select-company/' . $request->slug);
+            return redirect('select-company/' . str_slug($request->company_name));
             // }
 
 

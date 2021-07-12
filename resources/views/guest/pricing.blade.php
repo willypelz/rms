@@ -70,7 +70,7 @@
                             <div class="col-sm-12">
                                 <h4 class="text-brandon text-green-light">1. You Will Reach the Highest Number of High Quality Candidates Through SeamlessHiring.</h4>
 
-                                <p>Since you can broadcast your jobs on over 30 channels including Insidify.com, Jobberman, myjobmag, ngcareers, Newspapers (Guardian, Punch, Vanguard and TheNation), facebook, twitter and Linked-In. You will reach far more candidates than any job platform in Nigeria.</p>
+                                <p>Since you can broadcast your jobs on over 30 channels including Jobberman, myjobmag, ngcareers, facebook, twitter and LinkedIn. You will reach far more candidates than any job platform in Nigeria.</p>
                                 <p>Of course, this means you don’t need to have employer accounts everywhere.   </p>
                             </div>
                             <div class="col-sm-6 col-sm-offset-3"><hr class="pull-left"></div>
@@ -125,34 +125,6 @@
 
 
 
-    <section class="s-div homepage">
-        <div class="container">
-
-            <div class="">
-              <div class="row">
-                <div class="col-sm-8 col-sm-offset-2">
-                  <i class="fa fa-smile-o fa-5em text-center block text-white"></i>
-                    <p class="lead text-center text-white">Do you need to convince your boss or your team on why you need SeamlessHiring? We have put a customizable, four-page power-point presentation together for you.
-                    </p>
-                      <form action="">
-                        <div class="form-group">
-                          <div class="col-sm-6"><input type="text" class="form-control input-lg" placeholder="Enter your company name"></div>
-                          <div class="col-sm-6"><input type="email" class="form-control input-lg" placeholder="Your email address"></div>
-                          <div class="clearfix"></div>
-                        </div>
-                        <div class="form-group">
-                          <div class="col-sm-6"><input type="text" class="form-control input-lg" placeholder="Your name"></div>
-                          <div class="col-sm-6"><input type="submit" class="btn btn-success btn-block btn-lg" value="Download your Pitch Deck"></div>
-                          <div class="clearfix"></div>
-                        </div>
-                      </form>
-                </div>
-                </div>
-                <br>
-            </div>
-
-        </div>
-    </section>
 
 <div class="modal widemodal fade" id="requestCall" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
   <div class="modal-dialog modal-md">

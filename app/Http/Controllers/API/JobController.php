@@ -547,9 +547,7 @@ class JobController extends Controller
 
         $role = Role::whereName('admin')->first()->id;
 
-        
-            $company->users()->attach($user->id, ['role' => $role]);
-        
+        $company->users()->attach($user->id, ['role' => $role]);
 
         $user->roles()->attach([$role]);
 

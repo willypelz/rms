@@ -662,7 +662,9 @@ class JobsController extends Controller
                     'workflow_id' => 'required|integer',
                     'experience' => 'required',
 	                'minimum_remuneration' => 'numeric|min:0',
-	                'maximum_remuneration' => 'numeric|min:0|gt:minimum_remuneration'
+	                'maximum_remuneration' => 'numeric|min:0|gt:minimum_remuneration',
+                    'attach_email' => ['nullable', new PrivateEmailRule],
+                    'bulk' => 'nullabe|mimes:csv,txt'
                 ], [
                 	'maximum_remuneration.gt' => 'maximum remuneration should be greater than minimum remuneration'
                 ]);
@@ -694,45 +696,27 @@ class JobsController extends Controller
 
             if(empty($request->job_id)){
 
-                DB::beginTransaction();
+                $job = Job::firstOrCreate($job_data);
 
-                try{
-                    $job = Job::firstOrCreate($job_data);
-                    //attach emails to private jobs
-                    if($request->is_private){
-                        if($request->attach_email){
-                            $request->validate([
-                                'attach_email' => ['nullable', new PrivateEmailRule],
-                            ]);
-                            
-                            $attached_emails = $request->attach_email;
-                            $arr = explode(",",$attached_emails);
-        
-                            foreach ($arr as $value) {
-                                PrivateJob::create(['job_id' => $request->job_id,'attached_email'=> $value]);
-                            }                        
-                        }
-                        
-                        if($request->hasFile('bulk')){
-                            //bulk upload
-                            $request->validate([
-                                'bulk' => 'required|mimes:csv,txt'
-                            ]);
-        
-                            $path = $request->file('bulk');
-                            $data = Excel::import(new PrivateJobEmail($job->id), $path);
-                            
-                        }
+                //attach emails to private jobs
+                if($request->is_private){
+                    
+                    if($request->attach_email){
+                        $attached_emails = $request->attach_email;
+                        $arr = explode(",",$attached_emails);
+    
+                        foreach ($arr as $value) {
+                            PrivateJob::create(['job_id' => $request->job_id,'attached_email'=> $value]);
+                        }                        
+                    }
+                    
+                    if($request->hasFile('bulk')){
+                        //bulk upload
+                        $path = $request->file('bulk');
+                        $data = Excel::import(new PrivateJobEmail($job->id), $path);
                         
                     }
-                    DB::commit();
-
-                }catch(\Exception $e){
                     
-                    DB::rollback();
-                    
-                    return redirect()->back()->withErrors(['error' => $e->getMessage()]);
-
                 }
 
             }else{

@@ -3239,7 +3239,7 @@ class JobsController extends Controller
 
             $validator = Validator::make($request->all(), [
 				'company_email' => 'required|unique:companies,email',
-				'company_name' => 'required',
+				'company_name' => 'required|unique:companies,name',
 				'phone' => 'required',
 				'about_company' => 'required',
 				'website' => 'regex:/^https:\/\/\w+(\.\w+)*(:[0-9]+)?\/?$/',
@@ -3285,9 +3285,23 @@ class JobsController extends Controller
                 ['ats_product_id' => 27, 'company_id' => $comp->id]
             ]);
 
+            $email_title = 'New Subsidiary Created on RMS for '.get_current_company()->name;
+            $user = Auth::user();
+            $subsidiary = $request->company_name;
+            //mail to cs and sales
+            $mail = Mail::send('emails.subsidiary.cs-sales-notify', compact('email_title','user', 'subsidiary'), function ($m) use ($email_title) {
+                $m->from(env('COMPANY_EMAIL'))->to('support-team@seamlesshr.com')->cc('sales@seamlesshr.com')->subject($email_title);
+            });
+            
+            Mail::send('emails.subsidiary.admin-notify', compact('email_title','user', 'subsidiary'), function ($m) use ($user, $email_title) {
+                $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
+            });
+            
+            
+            
 
             // if($upload){
-            return redirect('select-company/' . $request->slug);
+            return redirect('select-company/' . str_slug($request->company_name));
             // }
 
 

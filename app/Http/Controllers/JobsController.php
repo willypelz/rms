@@ -664,7 +664,7 @@ class JobsController extends Controller
 	                'minimum_remuneration' => 'numeric|min:0',
 	                'maximum_remuneration' => 'numeric|min:0|gt:minimum_remuneration',
                     'attach_email' => ['nullable', new PrivateEmailRule],
-                    'bulk' => 'nullabe|mimes:csv,txt'
+                    'bulk' => 'sometimes|required|mimes:csv,txt'
                 ], [
                 	'maximum_remuneration.gt' => 'maximum remuneration should be greater than minimum remuneration'
                 ]);

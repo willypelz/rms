@@ -2166,4 +2166,18 @@ class JobApplicationsController extends Controller
 
 
     }
+
+    function deleteInterviewNoteOptions(Request $request){
+        $data = [
+            "interview_note_option_id" => "required"
+        ];
+        $data = $request->validate($data);
+        $interview_note_option = InterviewNoteOptions::where('id', $data["interview_note_option_id"])->where('company_id',get_current_company()->id)->first();
+        if($interview_note_option){
+            $deleted = $interview_note_option->delete();
+            if ($deleted)
+                return redirect()->back()->with(["success" => "$interview_note_option->name template  deleted successfully"]);
+        }
+        return redirect()->back()->with(["danger" => "Operation delete $interview_note_option->name template  unsuccessful"]);
+    }
 }

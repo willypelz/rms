@@ -202,13 +202,13 @@
                             </tr>
                             </thead>
                             <tbody style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;"> 
-                                    <?php $interview_score = $option_score  = 0; ?>
+                                    <?php $interview_score = $option_score  = 0; $count = 0 ?>
                                     @foreach( $note as $index => $option )
 
                                         @if( $option->interview_note_option->type == 'rating' )
-                                        
+                                            @if(!$option->interview_note_option->weight_max)  @continue  @endif
                                         <tr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
-                                            <th scope="row" style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ $index + 1 }}</th>
+                                            <th scope="row" style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">{{ ++$count }}</th>
                                             <td style="margin: 0;padding: 8px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border: 1px solid #ddd;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;">
                                                 {{ $option->interview_note_option->name }}<br style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
                                                 

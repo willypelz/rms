@@ -37,7 +37,7 @@ class LogPasswordReset
             'description' => "Admin". $name . " reset their password ",
             'action_id' => $user->id,
             'action_type' => 'App\User',
-            'causee_id' => $user->id->id,
+            'causee_id' => $user->id,
             'causer_id' => $user->id,
             'causer_type' => 'admin',
             'properties'=> ''

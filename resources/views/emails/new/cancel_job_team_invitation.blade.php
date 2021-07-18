@@ -39,7 +39,7 @@
 																		<br><br>
 																		Regarding the ongoing recruitment process at {{ $company }} for the job of {{ $job_title }}, this is to inform you that your invitation to join the recruitment team has been cancelled.
 																		<br><br>
-																		Sorry for any inconvenience this may caused you.
+																		Sorry for any inconvenience this may have caused you.
 																		</p>
 																		
 																		<hr style="border-width:0 0 1px">

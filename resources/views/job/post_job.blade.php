@@ -285,7 +285,7 @@
                                                        value=""
                                                        class="form-control"
                                                 >
-                                                <small>NB: csv should contain a column "emails"</small>
+                                                <small>NB: csv should contain a column "emails" <a href="{{ route('download-privatejob-template')}}">Download Template</a></small>
                                             </div>
                                         </div>
                                     </div>

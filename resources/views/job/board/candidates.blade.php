@@ -38,7 +38,7 @@ $is_super_admin = auth()->user()->is_super_admin;
 
                                 <!-- applicant -->
                                 <div class="col-xs-9 ">
-                                  @include('layout.alerts');
+                                  @include('layout.alerts')
 
                                     <div class="row">
 

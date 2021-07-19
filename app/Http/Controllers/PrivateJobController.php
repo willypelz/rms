@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PrivateJob;
-use App\Exports\PrivateJobEmailTemplateExport;
-use Maatwebsite\Excel\Facades\Excel;
+
 
 class PrivateJobController extends Controller
 {

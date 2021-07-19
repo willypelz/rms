@@ -49,7 +49,7 @@
                             </div>
                             <br>
                             <form action="{{ route('job-draft') }}" class="job-details" id="myForm"
-                                  role="job-details" method="post">
+                                  role="job-details" method="post" enctype="multipart/form-data">
                                 <div class="col-md-8 col-md-offset-2">
                                     <!-- <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio voluptatibus magni officiis id error numquam.</p> -->
 
@@ -117,7 +117,7 @@
                                                     <span style="color:red" class="text-danger">*</span>
                                                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What is the job role?"></i>
                                                 </label>
-                                                <input type="text" name="title" value="{{ $job_title }}" id="job_title"
+                                                <input type="text" name="title" value="{{ $job_title ? $job_title : old('title') }}" id="job_title"
                                                        class="form-control" required>
                                                 <small>e.g. Marketer at {{ get_current_company()->name }}</small>
                                             </div>
@@ -186,7 +186,7 @@
                                                 <select name="job_type" id="job_level" required type="text"
                                                         class="form-control job_type">
                                                     <option value=""> --Choose--</option>
-                                                    <option value="full-time"
+                                                    <option {{old('job_type') ? 'selected':'' }} value="full-time"
                                                             @if ($job_type == 'full-time') selected="selected" @endif>
                                                         Full-Time
                                                     </option>
@@ -215,7 +215,7 @@
                                                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="What job level is required for this job? i.e Associate Marketer"></i>
                                                 </label>
                                                 <input type="text" name="position" class="form-control position"
-                                                       value="{{ $job_position }}"
+                                                       value="{{ $job_position ? $job_position : old('position')}}"
                                                        required>
                                                 <small>e.g. Associate Marketer</small>
                                             </div>
@@ -247,20 +247,45 @@
                                                 </label>
                                                 <input type="text"
                                                        name="expiry_date"
-                                                       value="{{ $expiry_date }}"
+                                                       value="{{ $expiry_date ? $expiry_date : old('expiry_date')}}"
                                                        class="datepicker form-control expiry_date"
                                                        autocomplete="off"
                                                        required>
                                             </div>
 
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-12">
                                                 <br>
 
                                                 <label for="job-loc">Make job private
-                                                    <input type="checkbox" id="is_private" value="true"
+                                                    <input type="checkbox" id="is_private" value="true" {{(old('is_private') == "true") ? 'checked': ''}} onchange="checkedPrivate()"
                                                            name="is_private" @if ($is_private == 1) checked @endif >
                                                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="When a job posting is private, only candidate with the link to the job post can apply"></i>
                                                 </label>
+                                            </div>
+                                            <div class="col-sm-6 attach_emails">
+                                                
+                                                <label for="job-title">Attach Emails
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Attach Emails to these private jobs"></i>
+                                                </label>
+                                                <input type="text"
+                                                       name="attach_email"
+                                                       value="{{old('attach_email')}}"
+                                                       placeholder="you are required to seperate emails by commas"
+                                                       class="form-control"
+                                                       autocomplete="off"
+                                                       >
+                                                       <small>example: email@gmail.com,email@yahoo.com</small>
+                                            </div>
+                                            <div class="col-sm-6 attach_emails">
+                                                <label for="job-title">Bulk Upload Emails
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Bulk Upload Emails to these private jobs"></i>
+                                                </label>
+                                                <input type="file"
+                                                       name="bulk"
+                                                       value=""
+                                                       class="form-control"
+                                                >
+                                                <small>NB: csv should contain a column "emails" <a href="{{ route('download-privatejob-template')}}"> Download Template</a> here </small>
                                             </div>
                                         </div>
                                     </div>
@@ -277,7 +302,7 @@
                                                 <select name="specializations[]" id="specialization" multiple required
                                                         class="select2" style="width: 100%;">
                                                     @foreach($specializations as $s)
-                                                        <option value="{{ $s->id }}" {{ ( in_array($s->id, $job_specilizations) ) ? 'selected="selected"' : '' }}>
+                                                        <option value="{{ $s->id }}" {{ ( in_array($s->id, $job_specilizations) ) ? 'selected="selected"' : '' }} {{ (collect(old('specializations'))->contains($s->id)) ? 'selected':'' }}>
                                                             {{ $s->name }}
                                                         </option>
                                                     @endforeach
@@ -305,7 +330,7 @@
                                                         required>
                                                     <option value="">- Select Workflow -</option>
                                                     @foreach($workflows as $workflow)
-                                                        <option {{ ( $workflowId == $workflow->id) ? 'selected="selected"' : '' }} value="{{ $workflow->id }}">{{ $workflow->name }}</option>
+                                                        <option {{ ( $workflowId == $workflow->id) ? 'selected="selected"' : '' }} value="{{ $workflow->id }}" {{ (collect(old('workflow_id'))->contains($workflow->id)) ? 'selected':'' }}>{{ $workflow->name }}</option>
                                                     @endforeach
                                                 </select>
                                                 <div id="showWorkFlowSteps"></div>
@@ -327,7 +352,7 @@
                                                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Job summary: a brief summary of what the job entails"></i>
                                                 </label>
                                                 <textarea name="summary" id="job_summary" class="form-control"
-                                                          required=""> {{ $job_summary }}</textarea>
+                                                          required=""> {{ $job_summary ? $job_summary : old('summary')}}</textarea>
                                             </div>
 
                                         </div>
@@ -339,14 +364,14 @@
                                         <div class="row ">
                                                 <div class="col-sm-6">
                                                     <label for="">Minimum</label>
-                                                    <input type="number" name="minimum_remuneration" value="{{ $minimum_remuneration }}"
+                                                    <input type="number" name="minimum_remuneration" value="{{ $minimum_remuneration ? $minimum_remuneration : old('minimum_renumeration') }}"
                                                            id="minimum_remuneration"
                                                            class="form-control" >
                                                 </div>
                                                 <div class="col-sm-6">
 
                                                     <label for="">Maximum</label>
-                                                    <input type="number" name="maximum_remuneration" value="{{ $maximum_remuneration }}"
+                                                    <input type="number" name="maximum_remuneration" value="{{ $maximum_remuneration ? $maximum_remuneration : old('maximum_renumeration') }}"
                                                            id="maximum_remuneration"
                                                            class="form-control" >
                                                 </div>
@@ -364,7 +389,7 @@
                                                           rows="6"
                                                           class="form-control job_details"
                                                           placeholder=""
-                                                          required>{!! $details !!}</textarea>
+                                                          required> {{$details ? $details  : old('details')}}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -381,7 +406,7 @@
                                                           class="form-control experience"
                                                           placeholder=""
                                                           required>
-                                                    {!! $experience !!}
+                                                    {{$experience ? $experience : old('experience')}}
                                                 </textarea>
                                             </div>
                                         </div>
@@ -400,7 +425,7 @@
                                                           class="form-control experience"
                                                           placeholder=""
                                                           required>
-                                                    {!! $benefits !!}
+                                                    {{ $benefits ? $benefits : old('benefits')}}
                                                 </textarea>
                                             </div>
                                         </div>
@@ -495,6 +520,21 @@
                 }
             })
         });
+        let attachEmail = $(".attach_emails");
+        
+        if($('#is_private').is(":checked")){
+            attachEmail.show();
+        }else{
+            attachEmail.hide();
+        }
+
+        function checkedPrivate(){
+            if($('#is_private').is(":checked")){
+                $(".attach_emails").show();
+            }else{
+                $(".attach_emails").hide();
+            }
+        }
 
         function checkIfWorkFlowIsSelected() {
             getWorkFlowSteps($('#workflowId').val())
@@ -585,6 +625,9 @@
                 return false;
             }
 
+            var attached_email = $('#attach_email').val();
+            var bulk_email = $('#bulk_email').val();
+            var checked = $('#is_private');
 
             var token = $('#token').val();
             var url = "{{ route('job-draft') }}";
@@ -605,7 +648,7 @@
                 data: {
                     _token: '{{ csrf_token() }}', title: title,
                     details: details, location: location, country: country,
-                    eligibilty: is_for, is_private: is_private,
+                    eligibilty: is_for, is_private: is_private, attach_email: attach_email, bulk: bulk_email,
                     job_type: job_type, position: position,
                     expiry_date: expiry_date, experience: experience,
                     specializations: specializations, workflow_id: workflowId,

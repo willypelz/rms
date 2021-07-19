@@ -38,7 +38,7 @@ $is_super_admin = auth()->user()->is_super_admin;
 
                                 <!-- applicant -->
                                 <div class="col-xs-9 ">
-                                  @include('layout.alerts');
+                                  @include('layout.alerts')
 
                                     <div class="row">
 
@@ -47,6 +47,16 @@ $is_super_admin = auth()->user()->is_super_admin;
                                                    id="showing"> {!! $showing !!} </small>
                                         </div>
                                         @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
+                                        
+                                        @if($job->is_private)
+                                        <div class="col-xs-2">
+                                            <button data-toggle="modal" data-target="#diplayEmailModal"
+                                                class="btn btn-sm btn-line ">
+                                                Attached Emails
+                                            </button>
+                                        </div>
+                                        @endif
+                                        
                                         <div class="col-xs-2">
                                             <div class="dropdown">
                                                 <button class="btn btn-line btn-sm dropdown-toggle" type="button"
@@ -299,6 +309,50 @@ $is_super_admin = auth()->user()->is_super_admin;
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="modal widemodal fade" id="diplayEmailModal" tabindex="-1" role="dialog"
+                                         aria-labelledby="myModalLabel" aria-hidden="false">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-hidden="true">×
+                                                        </button>
+                                                        <h4 class="modal-title">Attached Emails</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    <table id="job" class="table table-striped" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Email</th>
+                                                                <th>Date Attached</th>
+                                                                <th>Actions</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                                @foreach($job->privateJobEmails as $key => $fetch)
+                                                                <tr> 
+                                                                    <td>{{$key + 1}}</td>
+                                                                    <td>{{ $fetch->attached_email}}</td>
+                                                                    <td>{{$fetch->created_at ? $fetch->created_at->toDayDateTimeString(): 'N/A'}}</td>
+                                                                    <td>
+                                                                    <form action="{{url('privatejob-email/remove/'.$fetch->id)}}" method="POST">
+                                                                    {{ csrf_field() }}
+                                                                    {{ method_field('DELETE') }}
+                                                                    <button type="submit" class="btn btn-danger"> Remove
+                                                                    </button>
+                                                                    </form>
+                                                                    
+                                                                    </td>
+                                                                </tr>
+                                                                @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </div>
                                     <a href="javascript://" class="btn btn-line btn-block disabled"
                                        style="display:none;" disabled id="genSpreadsheet">
                                         <i class="fa fa-spin fa-refresh"></i>
@@ -324,6 +378,9 @@ $is_super_admin = auth()->user()->is_super_admin;
         </section>
         <div class="separator separator-small"><br></div>
         <script type="text/javascript">
+            $(document).ready(function() {
+                $('#job').DataTable();
+            } );
             var folders = [];
             var filters = [];
             var status_filter = "";

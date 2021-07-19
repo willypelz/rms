@@ -52,6 +52,7 @@ class WorkflowController extends Controller
             'name.unique' => "Workflow already exist, Try creating workflow with another name"
         ]);
 
+//        create workflow when successful, then create default steps
         if ($workflow = Workflow::create($request->all() + ['company_id' => get_current_company()->id])) {
             $msg = '';
             // Create default readonly step
@@ -85,6 +86,7 @@ class WorkflowController extends Controller
                 ->with('success', $msg);
         }
 
+//        if workflow fails
         return redirect()
             ->back()
             ->with('error', 'Can not create Workflow, try again!!');
@@ -92,10 +94,19 @@ class WorkflowController extends Controller
 
     public function editView(Request $request, $id)
     {
-        if (!$workflow = Workflow::find($id)) {
+        $workflow = Workflow::find($id);
+
+//        when workflow is not-right but company is not correct
+        if (!$workflow && $workflow->company_id != get_current_company()->id) {
             return redirect()->route('workflow');
         }
 
+//        when workflow is right and company is wrong
+        if ($workflow && $workflow->company_id != get_current_company()->id) {
+            return redirect()->route('workflow');
+        }
+
+//        when workflow and company id right
         return view('workflow.edit')
             ->with('workflow', $workflow);
     }

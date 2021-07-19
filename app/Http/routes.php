@@ -215,6 +215,8 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::post('job/applicant/mass-action', ['uses' => 'JobApplicationsController@massAction', 'as' => 'mass-action']);
     Route::post('job/applicant/write-review',
         ['uses' => 'JobApplicationsController@writeReview', 'as' => 'write-review']);
+    //PrivateJobs
+    Route::delete('privatejob-email/remove/{id}','PrivateJobController@destroy')->name('remove-attached-email');
 
     //Specialization
     Route::get('list-job-specialization', 'SpecializationController@index')->name('specialization');;
@@ -575,6 +577,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/contact', function () {
         return view('guest.contact');
     });
+
+    Route::get('download-csv-template',
+    ['uses' => 'PrivateJobController@exportCsvTemplate', 
+    'as' => 'download-privatejob-template']);
 
     Route::post('/contact', function () {
         $request = request();

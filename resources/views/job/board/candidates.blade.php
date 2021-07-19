@@ -782,8 +782,6 @@ $is_super_admin = auth()->user()->is_super_admin;
 
                 });
                 $('body').on('click', '#downSpreadsheet', function () {
-                    // $('#downSpreadsheet').hide();
-                    // $('#genSpreadsheet').show();
                     $data = {
                         search_query: $('#search_query').val(),
                         filter_query: filters,
@@ -796,23 +794,13 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-                    window.open("{{ route('download-applicant-spreadsheet') }}" + "?" + $.param($data), '_blank');
-                    // window.open("{{ route('download-applicant-spreadsheet'," + $('#search_query').val() + "," + filters + "," + status_filter + ") }}", '_blank');
-                    /*$.get("{{ route('download-applicant-spreadsheet') }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
-            //console.log(response);
-            // var response = JSON.parse(data);
-            // console.log(data.search_results);
-            $('#genSpreadsheet').hide();
-            $('#downSpreadsheet').show();
-            console.log(data);
-            window.open('google.com', '_blank');
-
-            });*/
+                    $.get("{{ route('download-applicant-spreadsheet') }}" + "?" + $.param($data), {
+                    }, function (data) {
+                        displayReponseFromData(data)
+                    });
                 });
 
                 $('body').on('click', '#downCv', function () {
-                    // $('#downSpreadsheet').hide();
-                    // $('#genSpreadsheet').show();
                     $data = {
                         search_query: $('#search_query').val(),
                         filter_query: filters,
@@ -825,18 +813,10 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-                    window.open("{{ route('download-applicant-cv') }}" + "?" + $.param($data), '_blank');
-                    // window.open("{{ route('download-applicant-spreadsheet'," + $('#search_query').val() + "," + filters + "," + status_filter + ") }}", '_blank');
-                    /*$.get("{{ route('download-applicant-spreadsheet') }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
-            //console.log(response);
-            // var response = JSON.parse(data);
-            // console.log(data.search_results);
-            $('#genSpreadsheet').hide();
-            $('#downSpreadsheet').show();
-            console.log(data);
-            window.open('google.com', '_blank');
-
-            });*/
+                    $.get("{{ route('download-applicant-cv') }}" + "?" + $.param($data), {
+                    }, function (data) {
+                        displayReponseFromData(data)
+                    });
                 });
 
 
@@ -853,7 +833,11 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-                    window.open("{{ route('download-interview-notes') }}" + "?" + $.param($data), '_blank');
+                    $.get("{{ route('download-interview-notes') }}" + "?" + $.param($data), {
+                    }, function (data) {
+                        displayReponseFromData(data)
+                    });
+
             });
 
                 $('body').on('click', '#downloadInterviewNotesInCSV', function () {
@@ -869,9 +853,29 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-                    window.open("{{ route('download-interview-notes-csv') }}" + "?" + $.param($data), '_blank');
+                    $.get("{{ route('download-interview-notes-csv') }}" + "?" + $.param($data), {
+                    }, function (data) {
+                        displayReponseFromData(data)
+                    });
+
                 });
         });
+
+        /*
+        * Simple helper method to display response messages
+        8 @param array data eg [status:success,msg: operation successful]
+        * @return void
+        */
+        function displayReponseFromData(data) {
+            switch(data.status){
+                case "success":
+                    $.growl.notice({message: data.msg} , {delay: 10000});
+                    break;
+                case "error":
+                    $.growl.error({message: data.msg} , {delay: 10000});
+                    break;
+            }
+        }
 
         function messageAllCandidates() {
           // body...

@@ -708,7 +708,7 @@ class JobsController extends Controller
                         $arr = explode(",",$attached_emails);
     
                         foreach ($arr as $value) {
-                            PrivateJob::create(['job_id' => $request->job_id,'attached_email'=> $value]);
+                            PrivateJob::create(['job_id' => $job->id,'attached_email'=> $value]);
                         }                        
                     }
                     

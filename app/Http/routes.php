@@ -578,6 +578,10 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.contact');
     });
 
+    Route::get('download-csv-template',
+    ['uses' => 'PrivateJobController@exportCsvTemplate', 
+    'as' => 'download-privatejob-template']);
+
     Route::post('/contact', function () {
         $request = request();
         $data = $request->all();

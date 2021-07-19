@@ -16,7 +16,7 @@ class PrivateJobController extends Controller
     }
 
     public function exportCsvTemplate(){
-    $file= public_path()."/downloads/email-template.csv";
+    $file = public_path()."/downloads/email-template.csv";
 
     $headers = array(
               'Content-Type: text/csv',

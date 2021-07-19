@@ -515,13 +515,13 @@ class JobsController extends Controller
             } else {
                 if (empty($user) or is_null($user)) {
                     // create user if a first time visitor with link
-                    //NOTE: Changed firstOrCreate to save() since it was failing
-                    $user = new User();
-                    $user->email = $job_team_invite->email;
-                    $user->name = $job_team_invite->name;
-                    $user->username = $job_team_invite->username;
-                    $user->is_internal = $is_internal;
-                    $user->save();
+                     //NOTE: Changed firstOrCreate to save() since it was failing
+                     $user = new User();
+                     $user->email = $job_team_invite->email;
+                     $user->name = $job_team_invite->name;
+                     $user->username = $job_team_invite->username;
+                     $user->is_internal = $is_internal;
+                     $user->save();
                 } else {
                     $is_new_user = false;
                 }

@@ -130,7 +130,7 @@
                                             @foreach($appl->custom_fields as $key => $form)
 
                                                 <li>
-                                                    @if ($form->form_field->type == 'FILE')
+                                                    @if (isset($form->form_field->type) && $form->form_field->type == 'FILE')
                                                       <a href="{{asset('uploads/Others/'.$form->value)}}">
                                                         <strong>{{ @$form->form_field->name }}</strong>
                                                       </a>

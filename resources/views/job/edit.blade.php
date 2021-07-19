@@ -180,7 +180,7 @@
                                                         name="bulk"
                                                         class="form-control"
                                                 >
-                                                <small>NB:csv should contain a column "emails"</small>
+                                                <small>NB: csv should contain a column "emails" <a href="{{route('download-privatejob-template')}}">Download Template</a> here </small>
                                                 
                                             </div>
                                         </div>
@@ -339,7 +339,7 @@
         
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
-        })
+        });
 
     </script>
 

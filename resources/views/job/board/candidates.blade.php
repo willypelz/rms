@@ -38,7 +38,7 @@ $is_super_admin = auth()->user()->is_super_admin;
 
                                 <!-- applicant -->
                                 <div class="col-xs-9 ">
-                                  @include('layout.alerts');
+                                  @include('layout.alerts')
 
                                     <div class="row">
 
@@ -49,9 +49,9 @@ $is_super_admin = auth()->user()->is_super_admin;
                                         @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
                                         
                                         @if($job->is_private)
-                                        <div class="col-xs-4">
+                                        <div class="col-xs-2">
                                             <button data-toggle="modal" data-target="#diplayEmailModal"
-                                                class="btn btn-line">
+                                                class="btn btn-sm btn-line ">
                                                 Attached Emails
                                             </button>
                                         </div>

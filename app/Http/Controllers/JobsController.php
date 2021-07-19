@@ -53,6 +53,7 @@ use Validator;
 use App\Rules\PrivateEmailRule;
 use App\Imports\PrivateJobEmail;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\HeadingRowImport;
 
 // use Zipper;
 
@@ -714,6 +715,11 @@ class JobsController extends Controller
                     if($request->hasFile('bulk')){
                         //bulk upload
                         $path = $request->file('bulk');
+                        $headings = (new HeadingRowImport)->toArray($path);
+                        $emails = $headings[0][0];
+                        if (!in_array("emails", $emails)) {
+                            return redirect()->back()->withInput()->withErrors(['Header row emails not found']);
+                        }
                         $data = Excel::import(new PrivateJobEmail($job->id), $path);
                         
                     }
@@ -750,6 +756,11 @@ class JobsController extends Controller
                         ]);
     
                         $path = $request->file('bulk');
+                        $headings = (new HeadingRowImport)->toArray($path);
+                        $emails = $headings[0][0];
+                        if (!in_array("emails", $emails)) {
+                            return redirect()->back()->withInput()->withErrors(['Header row emails not found']);
+                        }
                         $data = Excel::import(new PrivateJobEmail($job->id), $path);
                         
                     }
@@ -2889,6 +2900,11 @@ class JobsController extends Controller
                     ]);
 
                     $path = $request->file('bulk');
+                    $headings = (new HeadingRowImport)->toArray($path);
+                    $emails = $headings[0][0];
+                    if (!in_array("emails", $emails)) {
+                        return redirect()->back()->withInput()->withErrors(['Header row emails not found']);
+                    }
                     $data = Excel::import(new PrivateJobEmail($job->id), $path);
                     
                 }

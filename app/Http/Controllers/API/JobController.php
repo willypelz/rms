@@ -404,6 +404,11 @@ class JobController extends Controller
         $cv->state = isset($request->cv['state']) ? $request->cv['state'] : null;
         $cv->cv_source = isset($request->cv['cv_source']) ? $request->cv['cv_source'] : null;
         $cv->applicant_type = $request->cv['applicant_type'];
+        $cv->hrms_staff_id = isset($request->cv['staff_id']) ? $request->cv['staff_id'] : null;
+        $cv->hrms_grade = isset($request->cv['grade']) ? $request->cv['grade'] : null;
+        $cv->hrms_dept = isset($request->cv['dept']) ? $request->cv['dept'] : null;
+        $cv->hrms_location = isset($request->cv['location']) ? $request->cv['location'] : null;
+        $cv->hrms_length_of_stay = isset($request->cv['length_of_stay']) ? $request->cv['length_of_stay'] : null;
         $cv->save();
 
         $candidate = Candidate::where('email', $request->cv['email'])->first();

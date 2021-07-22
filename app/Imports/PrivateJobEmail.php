@@ -3,11 +3,13 @@
 namespace App\Imports;
 
 use App\Models\PrivateJob;
+use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-class PrivateJobEmail implements ToModel, WithHeadingRow
+class PrivateJobEmail implements ToModel, WithHeadingRow, withValidation
 {
     use Importable;
     /**
@@ -21,7 +23,7 @@ class PrivateJobEmail implements ToModel, WithHeadingRow
         $this->jobID = $job_id;
     }
     public function model(array $row)
-    {
+    {   
         return new PrivateJob([
             //
             'job_id' => $this->jobID,
@@ -32,10 +34,10 @@ class PrivateJobEmail implements ToModel, WithHeadingRow
     public function rules(): array
     {
         return [
-            'attached_email' => Rule::in(['patrick@maatwebsite.nl']),
+            'emails' => 'required|email',
 
              // Above is alias for as it always validates in batches
-             '*.email' => Rule::in(['patrick@maatwebsite.nl']),
+             '*.emails' => 'required|email',
         ];
     }
 }

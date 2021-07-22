@@ -28,7 +28,6 @@ use App\Libraries\Solr;
 use Illuminate\Support\Facades\Route;
 
 // URL::forceSchema('https');
-
 Route::group(['middleware' => ['web']], function () {
     Route::get('/sso/auto/login/verify/{email}/{key}', 'Auth\LoginController@singleSignOnVerify');
     Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
@@ -181,6 +180,10 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::match(['get', 'post'], 'job/import-cv-file', ['uses' => 'JobsController@UploadCVfile', 'as' => 'upload-file']);
 
     Route::get('/one_applicant', 'JobApplication@oneApplicantData');
+    
+    Route::resource('schedule', 'JobApplicationsController');
+
+    Route::get('/download_applicants_interview_file/{disk}/{filename}', 'JobApplicationsController@downloadApplicantsInterviewFile')->name("download_applicants_interview_file");
 
     Route::match(['get', 'post'], 'one_applicant',
         ['uses' => 'JobApplicationsController@oneApplicantData']);
@@ -583,6 +586,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/contact', function () {
         return view('guest.contact');
     });
+
+    Route::get('download-csv-template',
+    ['uses' => 'PrivateJobController@exportCsvTemplate', 
+    'as' => 'download-privatejob-template']);
 
     Route::post('/contact', function () {
         $request = request();

@@ -53,6 +53,7 @@ use Validator;
 use App\Rules\PrivateEmailRule;
 use App\Imports\PrivateJobEmail;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\HeadingRowImport;
 
 // use Zipper;
 
@@ -515,12 +516,13 @@ class JobsController extends Controller
             } else {
                 if (empty($user) or is_null($user)) {
                     // create user if a first time visitor with link
-                    $user = User::FirstorCreate([
-                      'email' => $job_team_invite->email,
-                      'name' => $job_team_invite->name,
-                      'username' => $job_team_invite->username,
-                      'is_internal' => $is_internal
-                    ]);
+                    //NOTE: Changed firstOrCreate to save() since it was failing
+                    $user = new User();
+                    $user->email = $job_team_invite->email;
+                    $user->name = $job_team_invite->name;
+                    $user->username = $job_team_invite->username;
+                    $user->is_internal = $is_internal;
+                    $user->save();
                 } else {
                     $is_new_user = false;
                 }
@@ -706,13 +708,18 @@ class JobsController extends Controller
                         $arr = explode(",",$attached_emails);
     
                         foreach ($arr as $value) {
-                            PrivateJob::create(['job_id' => $request->job_id,'attached_email'=> $value]);
+                            PrivateJob::create(['job_id' => $job->id,'attached_email'=> $value]);
                         }                        
                     }
                     
                     if($request->hasFile('bulk')){
                         //bulk upload
                         $path = $request->file('bulk');
+                        $headings = (new HeadingRowImport)->toArray($path);
+                        $emails = $headings[0][0];
+                        if (!in_array("emails", $emails)) {
+                            return redirect()->back()->withInput()->withErrors(['Header row emails not found']);
+                        }
                         $data = Excel::import(new PrivateJobEmail($job->id), $path);
                         
                     }
@@ -749,6 +756,11 @@ class JobsController extends Controller
                         ]);
     
                         $path = $request->file('bulk');
+                        $headings = (new HeadingRowImport)->toArray($path);
+                        $emails = $headings[0][0];
+                        if (!in_array("emails", $emails)) {
+                            return redirect()->back()->withInput()->withErrors(['Header row emails not found']);
+                        }
                         $data = Excel::import(new PrivateJobEmail($job->id), $path);
                         
                     }
@@ -2888,6 +2900,11 @@ class JobsController extends Controller
                     ]);
 
                     $path = $request->file('bulk');
+                    $headings = (new HeadingRowImport)->toArray($path);
+                    $emails = $headings[0][0];
+                    if (!in_array("emails", $emails)) {
+                        return redirect()->back()->withInput()->withErrors(['Header row emails not found']);
+                    }
                     $data = Excel::import(new PrivateJobEmail($job->id), $path);
                     
                 }

@@ -15,7 +15,7 @@
     @if(isset($privacy_policy))
         <p>
             <i class="fa fa-lock"></i>
-            By applying to this job, you are agreeing to our
+            By applying for this job, you are agreeing to our
             <a target="_blank" href="{{$privacy_policy->value}}">
                 data privacy </a> terms and conditions
         </p>

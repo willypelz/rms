@@ -350,6 +350,24 @@ function check_if_job_owner($job_id)
 
 }
 
+function check_if_job_owner_on_queue($job_id, $current_company, $user)
+{
+    $job_access = Job::where('id', $job_id)->whereHas('users', function ($q) use ($user) {
+        $q->where('user_id', $user->id);
+    })->get()->pluck('id')->toArray();
+
+    $company_role = $current_company->users()->wherePivot('user_id', $user->id)->first()->pivot->role;
+
+
+    if (!$company_role && $user->is_super_admin != 1) {
+
+        if (!in_array($job_id, $job_access)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 function get_current_company()
 {
 

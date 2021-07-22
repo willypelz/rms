@@ -186,7 +186,7 @@
                                                 <select name="job_type" id="job_level" required type="text"
                                                         class="form-control job_type">
                                                     <option value=""> --Choose--</option>
-                                                    <option value="full-time"
+                                                    <option {{old('job_type') ? 'selected':'' }} value="full-time"
                                                             @if ($job_type == 'full-time') selected="selected" @endif>
                                                         Full-Time
                                                     </option>
@@ -285,7 +285,7 @@
                                                        value=""
                                                        class="form-control"
                                                 >
-                                                <small>NB: csv should contain a column "emails"</small>
+                                                <small>NB: csv should contain a column "emails" <a href="{{ route('download-privatejob-template')}}"> Download Template</a> here </small>
                                             </div>
                                         </div>
                                     </div>
@@ -302,7 +302,7 @@
                                                 <select name="specializations[]" id="specialization" multiple required
                                                         class="select2" style="width: 100%;">
                                                     @foreach($specializations as $s)
-                                                        <option value="{{ $s->id }}" {{ ( in_array($s->id, $job_specilizations) ) ? 'selected="selected"' : '' }}>
+                                                        <option value="{{ $s->id }}" {{ ( in_array($s->id, $job_specilizations) ) ? 'selected="selected"' : '' }} {{ (collect(old('specializations'))->contains($s->id)) ? 'selected':'' }}>
                                                             {{ $s->name }}
                                                         </option>
                                                     @endforeach
@@ -330,7 +330,7 @@
                                                         required>
                                                     <option value="">- Select Workflow -</option>
                                                     @foreach($workflows as $workflow)
-                                                        <option {{ ( $workflowId == $workflow->id) ? 'selected="selected"' : '' }} value="{{ $workflow->id }}">{{ $workflow->name }}</option>
+                                                        <option {{ ( $workflowId == $workflow->id) ? 'selected="selected"' : '' }} value="{{ $workflow->id }}" {{ (collect(old('workflow_id'))->contains($workflow->id)) ? 'selected':'' }}>{{ $workflow->name }}</option>
                                                     @endforeach
                                                 </select>
                                                 <div id="showWorkFlowSteps"></div>
@@ -352,7 +352,7 @@
                                                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Job summary: a brief summary of what the job entails"></i>
                                                 </label>
                                                 <textarea name="summary" id="job_summary" class="form-control"
-                                                          required=""> {{ $job_summary }}</textarea>
+                                                          required=""> {{ $job_summary ? $job_summary : old('summary')}}</textarea>
                                             </div>
 
                                         </div>
@@ -364,14 +364,14 @@
                                         <div class="row ">
                                                 <div class="col-sm-6">
                                                     <label for="">Minimum</label>
-                                                    <input type="number" name="minimum_remuneration" value="{{$minimum_remuneration}}"
+                                                    <input type="number" name="minimum_remuneration" value="{{ $minimum_remuneration ? $minimum_remuneration : old('minimum_renumeration') }}"
                                                            id="minimum_remuneration"
                                                            class="form-control" >
                                                 </div>
                                                 <div class="col-sm-6">
 
                                                     <label for="">Maximum</label>
-                                                    <input type="number" name="maximum_remuneration" value="{{$maximum_remuneration}}"
+                                                    <input type="number" name="maximum_remuneration" value="{{ $maximum_remuneration ? $maximum_remuneration : old('maximum_renumeration') }}"
                                                            id="maximum_remuneration"
                                                            class="form-control" >
                                                 </div>
@@ -389,7 +389,7 @@
                                                           rows="6"
                                                           class="form-control job_details"
                                                           placeholder=""
-                                                          required>{!! $details !!}</textarea>
+                                                          required> {{$details ? $details  : old('details')}}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -406,7 +406,7 @@
                                                           class="form-control experience"
                                                           placeholder=""
                                                           required>
-                                                    {!! $experience !!}
+                                                    {{$experience ? $experience : old('experience')}}
                                                 </textarea>
                                             </div>
                                         </div>
@@ -425,7 +425,7 @@
                                                           class="form-control experience"
                                                           placeholder=""
                                                           required>
-                                                    {!! $benefits !!}
+                                                    {{ $benefits ? $benefits : old('benefits')}}
                                                 </textarea>
                                             </div>
                                         </div>

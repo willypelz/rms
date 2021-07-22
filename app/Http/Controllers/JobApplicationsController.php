@@ -2181,4 +2181,21 @@ class JobApplicationsController extends Controller
         }
         return redirect()->back()->with(["danger" => "Operation delete $interview_note_option->name template  unsuccessful"]);
     }
+
+    public function sortInterviewNoteOptions(){
+        
+        $id_array = request()->id;
+        $sorting = 1;
+
+        foreach ($id_array as $id){
+            $add = InterviewNoteOptions::where('id','=', $id)->first();
+            $add->sort_order = $sorting;
+            $add->save();
+            $sorting++;
+        }
+        return response()->json([
+            'message' => "reorderder successfully"
+        ]);
+        
+    }
 }

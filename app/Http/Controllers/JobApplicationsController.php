@@ -1891,7 +1891,7 @@ class JobApplicationsController extends Controller
 
     }
 
-    function deleteInterviewNoteOptions(Request $request){
+    public function deleteInterviewNoteOptions(Request $request){
         $data = [
             "interview_note_option_id" => "required"
         ];
@@ -1905,23 +1905,20 @@ class JobApplicationsController extends Controller
         return redirect()->back()->with(["danger" => "Operation delete $interview_note_option->name template  unsuccessful"]);
     }
 
-    function sortInterviewNoteOptions(){
-        $interview = request()->interview;
-        $id = request()->id;
-        $data = request()->data;
-
-        return $data;
-        //$sorting = request()->sorting;
+    public function sortInterviewNoteOptions(){
+        
+        $id_array = request()->id;
         $sorting = 1;
-        $notes = InterViewNoteOptions::where('interview_template_id',$interview)->orderBy('sort_order', 'ASC')->get();
 
-        foreach ($notes as $key => $note){
-            $add = InterviewNoteOptions::where('id','=', $id)->update(array('sort_order'=> $key));
-            // $add->sort_order = $sorting;
-            // $add->save();
-            // $sorting++;
+        foreach ($id_array as $id){
+            $add = InterviewNoteOptions::where('id','=', $id)->first();
+            $add->sort_order = $sorting;
+            $add->save();
+            $sorting++;
         }
-        return $key;
+        return response()->json([
+            'message' => "reorderder successfully"
+        ]);
         
     }
 }

@@ -123,7 +123,6 @@
             stop: function() {
                 let data = $.map($(this).find('.sorting'), function(x) {
                     return id = x.id;
-                    // var sorting = $(x).index;
                 });
                 $.ajax({
                     url: "{{ route('interview-note-option-sort')}}",
@@ -131,12 +130,7 @@
                     dataType: 'json',
                     data: {
                         id: data,
-                        // sorting: sorting,
-                        interview: "{{ $interview_template_id}}",
                     },
-                    // success: function(data) {
-                    //    alert('reordered successfully')
-                    // }
                 })
             }
         });

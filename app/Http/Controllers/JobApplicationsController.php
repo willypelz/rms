@@ -2182,8 +2182,8 @@ class JobApplicationsController extends Controller
         return redirect()->back()->with(["danger" => "Operation delete $interview_note_option->name template  unsuccessful"]);
     }
 
-    public function sortInterviewNoteOptions(){
-        
+    public function sortInterviewNoteOptions()
+    {
         $id_array = request()->id;
         $sorting = 1;
 
@@ -2196,6 +2196,6 @@ class JobApplicationsController extends Controller
         return response()->json([
             'message' => "reorderder successfully"
         ]);
-        
     }
+
 }

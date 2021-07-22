@@ -1933,7 +1933,7 @@ class JobApplicationsController extends Controller
             get_current_company()->id)->first();
 
         $interview_note_options = InterviewNoteOptions::where('company_id',
-            get_current_company()->id)->where('interview_template_id', $request->interview_template_id)->get();
+            get_current_company()->id)->where('interview_template_id', $request->interview_template_id)->orderBy('sort_order','ASC')->get();
 
         $interview_template_id = $request->interview_template_id;
         return view('job.interview-note-options',

@@ -2474,6 +2474,14 @@ class JobsController extends Controller
             }
 
 
+            if ($fields->completed_nysc->is_visible && (isset($data['completed_nysc']))) {
+
+                if ($data['completed_nysc'] == 'yes') {
+                    $data['completed_nysc'] = true;
+                }
+
+            }
+
             $data['created'] = date('Y-m-d H:i:s');
             $data['action_date'] = date('Y-m-d H:i:s');
 
@@ -2528,6 +2536,15 @@ class JobsController extends Controller
             }
             if ($fields->graduation_grade->is_visible && isset($data['date_of_birth'])) {
                 $cv->graduation_grade = $data['graduation_grade'];
+            }
+            if ($fields->school->is_visible && isset($data['school'])) {
+                $cv->school = $data['school'];
+            }
+            if ($fields->course_of_study->is_visible && isset($data['course_of_study'])) {
+                $cv->course_of_study = $data['course_of_study'];
+            }
+            if ($fields->completed_nysc->is_visible && isset($data['completed_nysc'])) {
+                $cv->completed_nysc = $data['completed_nysc'];
             }
             if ($fields->willing_to_relocate->is_visible && isset($data['willing_to_relocate'])) {
                 $cv->willing_to_relocate = $data['willing_to_relocate'];

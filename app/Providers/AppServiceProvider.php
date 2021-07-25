@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Console\Commands\UpdateNullCandidate;
+use App\Console\Commands\SubsidiaryExpireNotify;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;

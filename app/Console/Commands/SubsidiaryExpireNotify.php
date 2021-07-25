@@ -37,12 +37,8 @@ class SubsidiaryExpireNotify extends Command
      */
     public function handle()
     {
-        //
-        $days = 13;
         $title = '14-Day Free Trial Expiration';
-        $data= Company::where('license_type','TRIAL')->whereRaw('DATEDIFF(now(),date_added) = ?')
-            ->setBindings([$days])
-            ->get();
+        $data= Company::where('license_type','TRIAL')->whereRaw("DATEDIFF(NOW(), date_added) > ?", [13])->get();
 
         foreach ($data as $company) {
             Mail::send('emails.subsidiary.expire-notify',['subsidiary'=> $company->name, 'email_title' => $title], function ($m) use ($company) {

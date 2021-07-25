@@ -19,11 +19,13 @@ class AppServiceProvider extends ServiceProvider
         $this->app->booted(function () {
             $schedule = $this->app->make(Schedule::class);
            $schedule->command('update:nullCandidates')->daily();
+           $schedule->command('subsidiary:notify-admin')->daily();
 
         });
 
         $this->commands([
            UpdateNullCandidate::class,
+           SubsidiaryExpireNotify::class,
         ]);
         
         $this->app->singleton( \App\Interfaces\UserContract::class, function ($app){

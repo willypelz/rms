@@ -100,10 +100,10 @@
                                 <p class="text-muted">{{-- @$cv['headline'] --}}</p>
                                 <ul class="list-unstyled">
                                     <li>
-                                    <strong>School:</strong>&nbsp; {{ @$cv['school'] }}</li>
+                                    <strong>School:</strong>&nbsp; {{ @$cv['school'] ?? 'N/A'}}</li>
                                     <li>
                                     <li>
-                                    <strong>Course of Study:</strong>&nbsp; {{ @$cv['course_of_study'] }}</li>
+                                    <strong>Course of Study:</strong>&nbsp; {{ @$cv['course_of_study'] ?? 'N/A'}}</li>
                                     <li>
                                     <li>
                                     <strong>Highest Qualification:</strong>&nbsp; {{ @$cv['highest_qualification'] }}</li>
@@ -120,9 +120,9 @@
                                     <li>
                                     <strong>Last Company Worked:</strong>&nbsp; {{ @$cv['last_company_worked'] }}.</li>
                                     <li>
-                                    <strong>Minimum Remuneration:</strong>&nbsp; {{ @$cv['minimum_remuneration'] }}.</li>
+                                    <strong>Minimum Remuneration:</strong>&nbsp; {{ @$cv['minimum_remuneration'] ?? 'N/A' }}</li>
                                     <li>
-                                    <strong>Maximum Remuneration:</strong>&nbsp; {{ @$cv['maximum_remuneration'] }}.</li>
+                                    <strong>Maximum Remuneration:</strong>&nbsp; {{ @$cv['maximum_remuneration'] ?? 'N/A' }}</li>
                                     <li>
                                     <strong>Willing to Relocate?:</strong>&nbsp; @if(@$cv['willing_to_relocate']) Yes @else No @endif.</li>
                                 </ul>

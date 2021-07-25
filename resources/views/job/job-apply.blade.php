@@ -318,6 +318,62 @@
                                                             </div>
                                                         </div>
 
+                                                        
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                @if( $fields->school->is_visible )
+                                                                    <div class="col-sm-6">
+                                                                        <label for="job-title">School @if( $fields->school->is_required )
+                                                                                <span class="text-danger">*</span>@endif
+                                                                        </label>
+                                                                        {{ Form::text('school', @$last_cv->school, array('class'=>'form-control',  ( $fields->school->is_required ) ? "required" : "" )) }}
+
+                                                                    </div>
+                                                                @endif
+
+                                                                @if( $fields->course_of_study->is_visible )
+                                                                    <div class="col-sm-6">
+                                                                        <label for="">
+                                                                            <!-- <i class="fa fa-lock"></i>&nbsp;  -->
+                                                                            Course of Study @if( $fields->course_of_study->is_required )
+                                                                                <span class="text-danger">*</span>@endif
+                                                                        </label>
+                                                                        {{ Form::text('course_of_study', @$last_cv->course_of_study, array('class'=>'form-control',  ( $fields->course_of_study->is_required ) ? "required" : "" )) }}
+
+                                                                    </div>
+                                                                @endif
+
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                @if( $fields->completed_nysc->is_visible )
+                                                                    <div class="col-sm-6">
+                                                                        <label for="job-title">Completed NYSC
+                                                                             @if( $fields->completed_nysc->is_required )
+                                                                                <span class="text-danger">*</span>@endif
+                                                                        </label>
+                                                                        <select class="form-control"
+                                                                                name="completed_nysc"
+                                                                                @if( $fields->completed_nysc->is_required ) required @endif>
+                                                                            <option>--choose--</option>
+                                                                            
+                                                                            <option value="yes"
+                                                                                        @if( @$last_cv->completed_nysc == 1 ) selected="selected" @endif >Yes</option>
+                                                                            <option value="no"
+                                                                                        @if( @$last_cv->completed_nysc == 0 ) selected="selected" @endif > No</option>
+                                                                        
+
+                                                                        </select>
+
+                                                                    </div>
+                                                                @endif
+
+                                                            </div>
+                                                        </div>
+
 
                                                     <!--div class="form-group">
                                         <div class="row">
@@ -354,6 +410,32 @@
                                                                 @endif
                                                             </div>
                                                         </div>
+
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                @if( $fields->remuneration->is_visible )
+                                                                    <div class="col-sm-6">
+                                                                        <label for="job-title">Minimum Remuneration @if( $fields->remuneration->is_required )
+                                                                                <span class="text-danger">*</span>@endif
+                                                                        </label>
+                                                                        {{ Form::number('minimum_remuneration', @$last_cv->minimum_remuneration, array('class'=>'form-control',  ( $fields->remuneration->is_required ) ? "required" : "" )) }}
+
+                                                                    </div>
+                                                                
+                                                                    <div class="col-sm-6">
+                                                                        <label for="">
+                                                                            Maximum Remuneration @if( $fields->remuneration->is_required )
+                                                                                <span class="text-danger">*</span>@endif
+                                                                        </label>
+                                                                        {{ Form::number('maximum_remuneration', @$last_cv->maximum_remuneration, array('class'=>'form-control',  ( $fields->remuneration->is_required ) ? "required" : "" )) }}
+
+                                                                    </div>
+                                                                @endif
+
+
+                                                            </div>
+                                                        </div>
+
 
                                                         <div class="form-group">
                                                             <div class="row">

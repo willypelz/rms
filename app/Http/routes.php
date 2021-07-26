@@ -44,6 +44,8 @@ Route::post("/api/v1/delete-super-admin", "HrmsIntegrationController@deleteSuper
  */
 Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 
+    Route::get('/download-bulk-upload-applicant-to-workflow-stage-template', "BulkUploadApplicantsToWorkflowStepContoller@downloadBulkApplicantsToWorkflowStagesTemplate")->name("download-bulk-upload-applicant-to-workflow-stage-template");
+
     Route::get('/ping', 'SolariumController@ping');
     Route::get('/audit-trails', 'AuditController@index')->name('audit-trails');
     Route::resource('schedule', 'ScheduleController');
@@ -467,6 +469,8 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
             ->name('modal-step-action');
 
         Route::match(['get', 'post'], 'modal/approve', 'JobApplicationsController@modalApprove')->name('modal-approve');
+
+        Route::match(['get', 'post'], 'modal/approve-bulk-upload-to-current-workflow-stage', 'BulkUploadApplicantsToWorkflowStepContoller@modalBulkUploadToCurrentWorkflowStage')->name('modal-bulk-upload-to-current-workflow-stage');
 
     });
 

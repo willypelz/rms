@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App;
+use App\Imports\BulkImportOfApplicantsToWorkflowStage;
 use App\Exports\ApplicantsExport;
 use App\Exports\InterviewNoteExport;
 use App\Models\AtsProduct;
@@ -39,8 +40,6 @@ use Response;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use Spatie\CalendarLinks\Link;
 use Validator;
-
-
 class JobApplicationsController extends Controller
 {
     private $search_params = [

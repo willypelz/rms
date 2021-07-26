@@ -28,7 +28,7 @@ class AddRenumerationToCvsTable extends Migration
     public function down()
     {
         Schema::table('cvs', function (Blueprint $table) {
-            //
+            $table->dropColumn(['minimum_remuneration','maximum_remuneration']);
         });
     }
 }

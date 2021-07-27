@@ -134,7 +134,6 @@
                 })
             }
         });
-        //$(".sortable").disableSelection();
     })
     </script>
 

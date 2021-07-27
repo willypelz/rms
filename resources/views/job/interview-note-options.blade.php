@@ -129,7 +129,14 @@
                     type: "GET",
                     dataType: 'json',
                     data: {
-                        id: data,
+                        ids: data,
+                    },
+                    success: function(response) {
+                        if (response.status == true) {
+                            $.growl.notice({message: response.message});
+                        }else{
+                            $.growl.error({message: 'Reordering failed'});
+                        }
                     },
                 })
             }

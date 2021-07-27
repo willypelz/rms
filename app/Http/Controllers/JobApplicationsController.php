@@ -1907,7 +1907,7 @@ class JobApplicationsController extends Controller
 
     public function sortInterviewNoteOptions(){
         
-        $id_array = request()->id;
+        $id_array = request()->ids;
         $sorting = 1;
 
         foreach ($id_array as $id){
@@ -1917,7 +1917,8 @@ class JobApplicationsController extends Controller
             $sorting++;
         }
         return response()->json([
-            'message' => "reorderder successfully"
+            'status' => true,
+            'message' => "reordered successfully"
         ]);
         
     }

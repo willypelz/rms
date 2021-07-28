@@ -465,7 +465,8 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 
         Route::match(['get', 'post'], 'modal/approve', 'JobApplicationsController@modalApprove')->name('modal-approve');
 
-        Route::match(['get', 'post'], 'modal/approve-bulk-upload-to-current-workflow-stage', 'BulkUploadApplicantsToWorkflowStepContoller@modalBulkUploadToCurrentWorkflowStage')->name('modal-bulk-upload-to-current-workflow-stage');
+        Route::get('modal/approve-bulk-upload-to-current-workflow-stage', 'BulkUploadApplicantsToWorkflowStepContoller@getBulkUploadToCurrentWorkflowStage')->name('get-modal-bulk-upload-to-current-workflow-stage');
+        Route::post('modal/approve-bulk-upload-to-current-workflow-stage', 'BulkUploadApplicantsToWorkflowStepContoller@postBulkUploadToCurrentWorkflowStage')->name('post-modal-bulk-upload-to-current-workflow-stage');
 
     });
 

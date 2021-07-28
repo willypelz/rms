@@ -19,13 +19,25 @@ class BulkUploadApplicantsToWorkflowStepContoller extends Controller
     private const DOWNLOAD_FILE_NAME = "Bulk Upload Applicants To Workflow Stage.xlsx";
 
     /**
+     * Show bulk upload applicants to workflow stage modal view
+     * @param  Illuminate\Http\Request $request
+     * @return Illuminate\View\View
+     */
+    public function getBulkUploadToCurrentWorkflowStage(Request $request){
+        $stepId = $request->stepId;
+        $app_id = (int)explode(",", $request->app_id)[0];
+        $appl = JobApplication::with('job', 'cv')->find($app_id);
+        return view('modals.bulk_upload_to_current_workflow_stage', compact('appl', 'stepId'));
+    }
+
+    /**
      * Handle request related to bulk uploading of applicants to workflow stage [post, get]
      * @param  Illuminate\Http\Request $request
      * @return Illuminate\View\View | Illuminate\Http\Response
      */
-    public function modalBulkUploadToCurrentWorkflowStage(Request $request)
+    public function postBulkUploadToCurrentWorkflowStage(Request $request)
     {
-        if ($request->isMethod('post') && $request->has("bulk_upload_applicants_to_workflow_stage_file")) {
+        if ($request->has("bulk_upload_applicants_to_workflow_stage_file")) {
             try{
                 $this->validate(request(), [
                     "bulk_upload_applicants_to_workflow_stage_file" => "required|file|mimes:xlsx"
@@ -36,7 +48,7 @@ class BulkUploadApplicantsToWorkflowStepContoller extends Controller
                         return response()->json(["status"=>false, "msg"=>"Excel file must contain 'EMAIL' and 'WORKFLOW STEP' headers. NB: headers are case insensitive "]);
                     }
                     (new BulkImportOfApplicantsToWorkflowStage($request->job_id))->import($bulk_upload_applicants_to_workflow_stage_file);
-                    return response()->json(["status"=>true, "msg"=>"Operation Bulk Upload Applicants To Workflow Stages Successful"]);
+                    return response()->json(["status"=>true, "msg"=>"Operation Bulk Upload Successful"]);
                 }catch(ExcelValidationException  $e){
                     return response()->json(["status"=>false, "msg"=> $this->formatExcelValidationMessageExceptionMessage($e)]); 
                 }catch(ApplicantsWorkflowStepsUpdateException  $e){
@@ -46,10 +58,7 @@ class BulkUploadApplicantsToWorkflowStepContoller extends Controller
                 return response()->json(["status"=>false, "msg"=> "File type must be of type xlsx"]); 
             }
         }
-        $stepId = $request->stepId;
-        $app_id = (int)explode(",", $request->app_id)[0];
-        $appl = JobApplication::with('job', 'cv')->find($app_id);
-        return view('modals.bulk_upload_to_current_workflow_stage', compact('appl', 'stepId'));
+        return response()->json(["status"=>false, "msg"=> "No bulk upload applicants to workflow stage file uploaded"]); 
     }
 
     /**

@@ -102,8 +102,8 @@ $is_super_admin = auth()->user()->is_super_admin;
                                                         data-toggle="modal"
                                                        data-target="#viewModal"
                                                        id="modalButton"
-                                                       data-title="Bulk Upload Applicant To Current Workflow Stage"
-                                                       data-view="{{ route('modal-bulk-upload-to-current-workflow-stage', [
+                                                       data-title="Bulk Upload Applicant To Workflow Stages"
+                                                       data-view="{{ route('get-modal-bulk-upload-to-current-workflow-stage', [
                                                        'stepSlug' => $workflowStep->slug,
                                                        'stepId' => $workflowStep->id
                                                        ]) }}"

@@ -28,6 +28,7 @@ class AddSortOrderToInterviewNoteOptionsTable extends Migration
     {
         Schema::table('interview_note_options', function (Blueprint $table) {
             //
+            $table->dropColumn('sort_order');
         });
     }
 }

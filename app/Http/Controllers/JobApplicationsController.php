@@ -1891,7 +1891,8 @@ class JobApplicationsController extends Controller
 
     }
 
-    public function deleteInterviewNoteOptions(Request $request){
+    public function deleteInterviewNoteOptions(Request $request)
+    {
         $data = [
             "interview_note_option_id" => "required"
         ];

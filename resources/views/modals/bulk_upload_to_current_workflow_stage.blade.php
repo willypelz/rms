@@ -42,7 +42,7 @@
             formData.append("job_id" , "{{$appl->job->id}}") 
             $.ajax({
                 type: 'POST',
-                url: "{{ route('modal-bulk-upload-to-current-workflow-stage') }}",
+                url: "{{ route('post-modal-bulk-upload-to-current-workflow-stage') }}",
                 contentType: false, 
                 processData: false,
                 data: formData,

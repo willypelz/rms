@@ -1657,7 +1657,7 @@ class JobApplicationsController extends Controller
             get_current_company()->id)->first();
 
         $interview_note_options = InterviewNoteOptions::where('company_id',
-            get_current_company()->id)->where('interview_template_id', $request->interview_template_id)->get();
+            get_current_company()->id)->where('interview_template_id', $request->interview_template_id)->orderBy('sort_order','ASC')->get();
 
         $interview_template_id = $request->interview_template_id;
         return view('job.interview-note-options',
@@ -1889,5 +1889,38 @@ class JobApplicationsController extends Controller
         }
 
 
+    }
+
+    public function deleteInterviewNoteOptions(Request $request)
+    {
+        $data = [
+            "interview_note_option_id" => "required"
+        ];
+        $data = $request->validate($data);
+        $interview_note_option = InterviewNoteOptions::where('id', $data["interview_note_option_id"])->where('company_id',get_current_company()->id)->first();
+        if($interview_note_option){
+            $deleted = $interview_note_option->delete();
+            if ($deleted)
+                return redirect()->back()->with(["success" => "$interview_note_option->name template  deleted successfully"]);
+        }
+        return redirect()->back()->with(["danger" => "Operation delete $interview_note_option->name template  unsuccessful"]);
+    }
+
+    public function sortInterviewNoteOptions(){
+        
+        $id_array = request()->ids;
+        $sorting = 1;
+
+        foreach ($id_array as $id){
+            $add = InterviewNoteOptions::where('id','=', $id)->first();
+            $add->sort_order = $sorting;
+            $add->save();
+            $sorting++;
+        }
+        return response()->json([
+            'status' => true,
+            'message' => "reordered successfully"
+        ]);
+        
     }
 }

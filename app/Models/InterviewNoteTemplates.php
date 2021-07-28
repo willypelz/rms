@@ -41,7 +41,7 @@ class InterviewNoteTemplates extends Model
 
     public function options()
     {
-        return $this->hasMany('App\Models\InterviewNoteOptions','interview_template_id','id');
+        return $this->hasMany('App\Models\InterviewNoteOptions','interview_template_id','id')->orderBy('sort_order','ASC');
     }
 
    

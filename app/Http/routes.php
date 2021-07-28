@@ -404,6 +404,12 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::match(['get', 'post'], 'settings/interview-notes/options/create/{interview_template_id}',
         ['as' => 'interview-note-option-create', 'uses' => 'JobApplicationsController@createInterviewNoteOptions']);
 
+    Route::match(['get', 'post'], 'settings/interview-notes/options/template/delete/',
+        ['as' => 'interview-note-option-delete', 'uses' => 'JobApplicationsController@deleteInterviewNoteOptions']);
+
+    Route::get('settings/interview-notes/options/template/sort/',
+        ['as' => 'interview-note-option-sort', 'uses' => 'JobApplicationsController@sortInterviewNoteOptions']);
+
     Route::get('modal/background-check',
         ['as' => 'modal-background-check', 'uses' => 'JobApplicationsController@modalBackgroundCheck']);
     Route::get('modal/medical-check',

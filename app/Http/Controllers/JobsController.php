@@ -2359,7 +2359,7 @@ class JobsController extends Controller
         $candidate_cvs = CV::where('email', $candidate->email)->pluck('id');
         $candidate_applied_jobs = JobApplication::whereIn('cv_id', $candidate_cvs)->where(
             'job_id', $job->id
-        )->get()->count();
+        )->count();
 
         if ($candidate_applied_jobs > 0) {
             return redirect()->to('/candidate/dashboard')->with('error','You have already applied for this job');

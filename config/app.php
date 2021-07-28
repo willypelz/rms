@@ -238,5 +238,6 @@ return [
         'Uuid' => Webpatser\Uuid\Uuid::class,
         'Entrust'   => Trebol\Entrust\EntrustFacade::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
+        'Str' =>  \Illuminate\Support\Str::class
     ],
 ];

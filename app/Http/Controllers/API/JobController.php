@@ -375,7 +375,7 @@ class JobController extends Controller
             );
         }
 
-        $job = Job::with('company')->where('job_id',$request->application['job_id'])->first();
+        $job = Job::with('company')->where('id',$request->application['job_id'])->first();
 
         if ($job->is_private) {
             

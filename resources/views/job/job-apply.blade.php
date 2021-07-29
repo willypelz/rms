@@ -326,11 +326,39 @@
                                                                         <label for="job-title">School @if( $fields->school->is_required )
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label>
-                                                                        {{ Form::text('school', @$last_cv->school, array('class'=>'form-control',  ( $fields->school->is_required ) ? "required" : "" )) }}
+                                                                        <select class="form-control"
+                                                                                name="school"
+                                                                                id="select-school"
+                                                                                placeholder="Select your school..."
+                                                                                @if( $fields->school->is_required ) required @endif>
+                                                                            <option>Choose one</option>
+                                                                            <option value="others">Others</option>
+                                                                            @foreach($schools as $school)
+                                                                                <option value="{{ $school->id }}"
+                                                                                        @if( @$last_cv->school == $school->name ) selected="selected" @endif >{{ $school->name }}</option>
+                                                                            @endforeach
+
+                                                                        </select>
+                                                                        <span>I can't find my school, select others </span>
 
                                                                     </div>
                                                                 @endif
 
+                                                                
+                                                                <div class="col-sm-6 others hidden">
+                                                                    <label for="">
+                                                                        Others @if( $fields->school->is_required )
+                                                                            <span class="text-danger">*</span>@endif
+                                                                    </label>
+                                                                    {{ Form::text('others',null, array('class'=>'form-control otherSchool',( $fields->school->is_required ) ? "required" : "" )) }}
+
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <div class="row">
                                                                 @if( $fields->course_of_study->is_visible )
                                                                     <div class="col-sm-6">
                                                                         <label for="">
@@ -343,12 +371,6 @@
                                                                     </div>
                                                                 @endif
 
-
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <div class="row">
                                                                 @if( $fields->completed_nysc->is_visible )
                                                                     <div class="col-sm-6">
                                                                         <label for="job-title">Completed NYSC
@@ -675,6 +697,8 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#datepicker2').datepicker({
@@ -704,6 +728,22 @@
                     $('#location').prop('required', false)
                 }
             })
+
+            $('#select-school').selectize({
+                sortField: 'text'
+            });
+
+            let school = $('#select-school');
+            school.change(function () {
+                if (school.val() == 'others') {
+                    $('.others').removeClass('hidden');
+                    $('.otherSchools').prop('required', true)
+                } else {
+                    $('.others').addClass('hidden');
+                    $('.otherSchools').prop('required', false)
+                }
+                console.log(school.val())
+            });
         });
     </script>
 

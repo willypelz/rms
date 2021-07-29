@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App;
+use App\Imports\BulkImportOfApplicantsToWorkflowStage;
 use App\Exports\ApplicantsExport;
 use App\Exports\InterviewNoteExport;
 use App\Jobs\AddApplicantToExportInBits;

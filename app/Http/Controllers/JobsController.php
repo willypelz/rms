@@ -2478,7 +2478,8 @@ class JobsController extends Controller
 
                 if ($data['completed_nysc'] == 'yes') {
                     $nysc = 1;
-
+                }else{
+                    $nysc = 0;
                 }
 
             }

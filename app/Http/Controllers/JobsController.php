@@ -54,7 +54,7 @@ use App\Rules\PrivateEmailRule;
 use App\Imports\PrivateJobEmail;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\HeadingRowImport;
-use App\Models\School;
+
 // use Zipper;
 
 class JobsController extends Controller
@@ -2391,7 +2391,6 @@ class JobsController extends Controller
 
         $states = $this->states;
         $countries = countries();
-        $schools = School::get();
 
         $custom_fields = (object)$job->form_fields()->where('is_visible', 1)->get();
         $fields = json_decode($job->fields);
@@ -2483,35 +2482,6 @@ class JobsController extends Controller
 
             }
 
-            if ($fields->completed_nysc->is_visible && (isset($data['completed_nysc']))) {
-
-                if ($data['completed_nysc'] == 'yes') {
-                    $nysc = 1;
-                }else{
-                    $nysc = 0;
-                }
-
-            }
-
-            if ($fields->school->is_visible && (isset($data['school']))) {
-
-                if($data['school']=='others'){
-                    $school = School::FirstOrCreate([
-                        'name' => $data['others']
-                    ]);
-                }
-            
-                $school_id = isset($data['others']) ? $school->id : $data['shool'];
-            }
-
-            if ($fields->remuneration->is_visible && (isset($data['maximum_renumeration'])) &&  (isset($data['minimum_renumeration']))) {
-
-                if ($request->maximum_remuneration <= $request->minimum_remuneration ) {
-                    
-                    return back()->withErrors(['warning' => 'Maximum Remuneration cannot be less than Minimum Renumeration.']);
-                }
-
-            }
 
             $data['created'] = date('Y-m-d H:i:s');
             $data['action_date'] = date('Y-m-d H:i:s');
@@ -2568,28 +2538,11 @@ class JobsController extends Controller
             if ($fields->graduation_grade->is_visible && isset($data['date_of_birth'])) {
                 $cv->graduation_grade = $data['graduation_grade'];
             }
-
-            if ($fields->school->is_visible && isset($data['school'])) {
-                $cv->school = $school_id;
-
-            }
-            if ($fields->course_of_study->is_visible && isset($data['course_of_study'])) {
-                $cv->course_of_study = $data['course_of_study'];
-            }
-            if ($fields->completed_nysc->is_visible && isset($data['completed_nysc'])) {
-
-                $cv->completed_nysc = $nysc;
-            }
-
             if ($fields->willing_to_relocate->is_visible && isset($data['willing_to_relocate'])) {
                 $cv->willing_to_relocate = $data['willing_to_relocate'];
             }
             if ($fields->cv_file->is_visible && isset($data['cv_file'])) {
                 $cv->cv_file = $data['cv_file'];
-            }
-            if ($fields->remuneration->is_visible && isset($data['maximum_remuneration']) && isset($data['minimum_remuneration'])) {
-                $cv->cv_file = $data['minimum_remuneration'];
-                $cv->cv_file = $data['maximum_remuneration'];
             }
 
             if ($fields->state_of_origin->is_visible && (isset($data['location']) || isset($data['country']))) {
@@ -2738,7 +2691,7 @@ class JobsController extends Controller
 
 	    return view('job.job-apply', compact('job', 'qualifications', 'states', 'company',
 		    'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate',
-		    'last_cv', 'fields','countries','privacy_policy','schools'));
+		    'last_cv', 'fields','countries','privacy_policy'));
 
     }
 

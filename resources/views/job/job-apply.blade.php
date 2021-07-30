@@ -742,7 +742,6 @@
                     $('.others').addClass('hidden');
                     $('.otherSchools').prop('required', false)
                 }
-                console.log(school.val())
             });
         });
     </script>

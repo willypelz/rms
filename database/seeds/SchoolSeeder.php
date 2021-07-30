@@ -13,13 +13,20 @@ class SchoolSeeder extends Seeder
     public function run()
     {
         // Read the JSON file 
-        $path = public_path().'/school.json';
+        $path = public_path().'/uploads/school.json';
         $json = file_get_contents($path);
         $json_data = json_decode($json,true);
-        foreach($json_data as $data){
-            School::FirstOrCreate([
-                'name' => $data['name'],
-            ]);
-        };
+        $school_exist = School::where('name','Abu Dhabi University')->first();
+        
+        if(is_null($school_exist)){
+            foreach($json_data as $data){
+                School::FirstOrCreate([
+                    'name' => $data['name'],
+                ]);
+            };
+        }else{
+            echo 'Record Exists';
+        }
+        
     }
 }

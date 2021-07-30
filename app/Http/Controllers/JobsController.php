@@ -2505,6 +2505,15 @@ class JobsController extends Controller
                 $school_id = isset($data['others']) ? $school->id : $data['shool'];
             }
 
+            if ($fields->remuneration->is_visible && (isset($data['maximum_renumeration'])) &&  (isset($data['minimum_renumeration']))) {
+
+                if ($request->maximum_remuneration <= $request->minimum_remuneration ) {
+                    
+                    return back()->withErrors(['warning' => 'Maximum Remuneration cannot be less than Minimum Renumeration.']);
+                }
+            }
+            
+
             $data['created'] = date('Y-m-d H:i:s');
             $data['action_date'] = date('Y-m-d H:i:s');
 
@@ -2574,6 +2583,10 @@ class JobsController extends Controller
             }
             if ($fields->cv_file->is_visible && isset($data['cv_file'])) {
                 $cv->cv_file = $data['cv_file'];
+            }
+            if ($fields->remuneration->is_visible && isset($data['maximum_remuneration']) && isset($data['minimum_remuneration'])) {
+                $cv->cv_file = $data['minimum_remuneration'];
+                $cv->cv_file = $data['maximum_remuneration'];
             }
 
             if ($fields->state_of_origin->is_visible && (isset($data['location']) || isset($data['country']))) {

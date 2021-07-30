@@ -435,6 +435,32 @@
 
                                                         <div class="form-group">
                                                             <div class="row">
+                                                                @if( $fields->remuneration->is_visible )
+                                                                    <div class="col-sm-6">
+                                                                        <label for="job-title">Minimum Remuneration @if( $fields->remuneration->is_required )
+                                                                                <span class="text-danger">*</span>@endif
+                                                                        </label>
+                                                                        {{ Form::number('minimum_remuneration', @$last_cv->minimum_remuneration, array('class'=>'form-control',  ( $fields->remuneration->is_required ) ? "required" : "" )) }}
+
+                                                                    </div>
+                                                                
+                                                                    <div class="col-sm-6">
+                                                                        <label for="">
+                                                                            Maximum Remuneration @if( $fields->remuneration->is_required )
+                                                                                <span class="text-danger">*</span>@endif
+                                                                        </label>
+                                                                        {{ Form::number('maximum_remuneration', @$last_cv->maximum_remuneration, array('class'=>'form-control',  ( $fields->remuneration->is_required ) ? "required" : "" )) }}
+
+                                                                    </div>
+                                                                @endif
+
+
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group">
+                                                            <div class="row">
                                                                 @if( $fields->specializations->is_visible )
                                                                     <div class="col-sm-6"><label for="job-title">Your
                                                                             Specialization @if( $fields->specializations->is_required )

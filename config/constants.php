@@ -23,6 +23,7 @@
 				'school'=> 'School',
 				'course_of_study' => 'Course of Study',
 				'completed_nysc' => 'Completed NYSC',
+				'remuneration' => 'Remuneration (min/max)'
 		],
 		'pagination' => env('PAGINATION',100),
 	];

@@ -100,15 +100,10 @@
                                 <p class="text-muted">{{-- @$cv['headline'] --}}</p>
                                 <ul class="list-unstyled">
                                     <li>
-                                    <strong>School:</strong>&nbsp; {{ $school }}</li>
-                                    <li>
-                                    <strong>Course of Study:</strong>&nbsp; {{ @$cv['course_of_study'] }}</li>
-                                    <li>
                                     <strong>Highest Qualification:</strong>&nbsp; {{ @$cv['highest_qualification'] }}</li>
                                     <li>
-                                    <strong>Grade:</strong>&nbsp; {{ @getGrade( $cv['graduation_grade'] ) }}</li>
                                     <li>
-                                    <strong>Completed NYSC:</strong>&nbsp; @if(@$cv['completed_nysc']) Yes @else No @endif.</li>
+                                    <strong>Grade:</strong>&nbsp; {{ @getGrade( $cv['graduation_grade'] ) }}</li>
                                     <li>
                                     <strong>Years of Experience:</strong>&nbsp; {{ @$cv['years_of_experience'] }} {{ (@$cv['years_of_experience'] == 1 ) ? 'year' : 'years' }}</li>
                                     <li>

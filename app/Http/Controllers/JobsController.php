@@ -54,7 +54,7 @@ use App\Rules\PrivateEmailRule;
 use App\Imports\PrivateJobEmail;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\HeadingRowImport;
-use App\Models\School;
+
 // use Zipper;
 
 class JobsController extends Controller
@@ -2391,7 +2391,6 @@ class JobsController extends Controller
 
         $states = $this->states;
         $countries = countries();
-        $schools = School::get();
 
         $custom_fields = (object)$job->form_fields()->where('is_visible', 1)->get();
         $fields = json_decode($job->fields);
@@ -2738,7 +2737,7 @@ class JobsController extends Controller
 
 	    return view('job.job-apply', compact('job', 'qualifications', 'states', 'company',
 		    'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate',
-		    'last_cv', 'fields','countries','privacy_policy','schools'));
+		    'last_cv', 'fields','countries','privacy_policy'));
 
     }
 

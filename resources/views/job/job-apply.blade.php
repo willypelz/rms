@@ -318,8 +318,6 @@
                                                             </div>
                                                         </div>
 
-<<<<<<< Updated upstream
-=======
                                                         <!-- New fields I added -->
                                                         <div class="form-group">
                                                             <div class="row">
@@ -337,7 +335,7 @@
                                                                             <option value="others">Others</option>
                                                                             @foreach($schools as $school)
                                                                                 <option value="{{ $school->id }}"
-                                                                                        @if( @$last_cv->school == $school->name ) selected="selected" @endif >{{ $school->name }}</option>
+                                                                                        @if( @$last_cv->school->name == $school->name ) selected="selected" @endif >{{ $school->name }}</option>
                                                                             @endforeach
 
                                                                         </select>
@@ -398,7 +396,6 @@
                                                             </div>
                                                         </div>
 
->>>>>>> Stashed changes
 
                                                     <!--div class="form-group">
                                         <div class="row">
@@ -435,6 +432,32 @@
                                                                 @endif
                                                             </div>
                                                         </div>
+
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                @if( $fields->remuneration->is_visible )
+                                                                    <div class="col-sm-6">
+                                                                        <label for="job-title">Minimum Remuneration @if( $fields->remuneration->is_required )
+                                                                                <span class="text-danger">*</span>@endif
+                                                                        </label>
+                                                                        {{ Form::number('minimum_remuneration', @$last_cv->minimum_remuneration, array('class'=>'form-control',  ( $fields->remuneration->is_required ) ? "required" : "" )) }}
+
+                                                                    </div>
+                                                                
+                                                                    <div class="col-sm-6">
+                                                                        <label for="">
+                                                                            Maximum Remuneration @if( $fields->remuneration->is_required )
+                                                                                <span class="text-danger">*</span>@endif
+                                                                        </label>
+                                                                        {{ Form::number('maximum_remuneration', @$last_cv->maximum_remuneration, array('class'=>'form-control',  ( $fields->remuneration->is_required ) ? "required" : "" )) }}
+
+                                                                    </div>
+                                                                @endif
+
+
+                                                            </div>
+                                                        </div>
+
 
                                                         <div class="form-group">
                                                             <div class="row">
@@ -745,7 +768,6 @@
                     $('.others').addClass('hidden');
                     $('.otherSchools').prop('required', false)
                 }
-                console.log(school.val())
             });
         });
     </script>

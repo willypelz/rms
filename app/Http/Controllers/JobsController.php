@@ -2356,6 +2356,15 @@ class JobsController extends Controller
             }
         }
 
+        $candidate_cvs = CV::where('email', $candidate->email)->pluck('id');
+        $candidate_applied_jobs = JobApplication::whereIn('cv_id', $candidate_cvs)->where(
+            'job_id', $job->id
+        )->count();
+
+        if ($candidate_applied_jobs > 0) {
+            return redirect()->to('/candidate/dashboard')->with('error','You have already applied for this job');
+        }
+
         $company = $job->company;
         $specializations = Specialization::get();
 
@@ -2474,13 +2483,12 @@ class JobsController extends Controller
 
             }
 
-
-<<<<<<< Updated upstream
-=======
             if ($fields->completed_nysc->is_visible && (isset($data['completed_nysc']))) {
 
                 if ($data['completed_nysc'] == 'yes') {
                     $nysc = 1;
+                }else{
+                    $nysc = 0;
                 }
 
             }
@@ -2496,7 +2504,15 @@ class JobsController extends Controller
                 $school_id = isset($data['others']) ? $school->id : $data['shool'];
             }
 
->>>>>>> Stashed changes
+            if ($fields->remuneration->is_visible && (isset($data['maximum_renumeration'])) &&  (isset($data['minimum_renumeration']))) {
+
+                if ($request->maximum_remuneration <= $request->minimum_remuneration ) {
+                    
+                    return back()->withErrors(['warning' => 'Maximum Remuneration cannot be less than Minimum Renumeration.']);
+                }
+
+            }
+
             $data['created'] = date('Y-m-d H:i:s');
             $data['action_date'] = date('Y-m-d H:i:s');
 
@@ -2552,23 +2568,28 @@ class JobsController extends Controller
             if ($fields->graduation_grade->is_visible && isset($data['date_of_birth'])) {
                 $cv->graduation_grade = $data['graduation_grade'];
             }
-<<<<<<< Updated upstream
-=======
+
             if ($fields->school->is_visible && isset($data['school'])) {
                 $cv->school = $school_id;
+
             }
             if ($fields->course_of_study->is_visible && isset($data['course_of_study'])) {
                 $cv->course_of_study = $data['course_of_study'];
             }
             if ($fields->completed_nysc->is_visible && isset($data['completed_nysc'])) {
+
                 $cv->completed_nysc = $nysc;
             }
->>>>>>> Stashed changes
+
             if ($fields->willing_to_relocate->is_visible && isset($data['willing_to_relocate'])) {
                 $cv->willing_to_relocate = $data['willing_to_relocate'];
             }
             if ($fields->cv_file->is_visible && isset($data['cv_file'])) {
                 $cv->cv_file = $data['cv_file'];
+            }
+            if ($fields->remuneration->is_visible && isset($data['maximum_remuneration']) && isset($data['minimum_remuneration'])) {
+                $cv->cv_file = $data['minimum_remuneration'];
+                $cv->cv_file = $data['maximum_remuneration'];
             }
 
             if ($fields->state_of_origin->is_visible && (isset($data['location']) || isset($data['country']))) {

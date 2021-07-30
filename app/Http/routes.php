@@ -28,7 +28,6 @@ use App\Libraries\Solr;
 use Illuminate\Support\Facades\Route;
 
 // URL::forceSchema('https');
-
 Route::group(['middleware' => ['web']], function () {
     Route::get('/sso/auto/login/verify/{email}/{key}', 'Auth\LoginController@singleSignOnVerify');
     Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
@@ -44,6 +43,8 @@ Route::post("/api/v1/delete-super-admin", "HrmsIntegrationController@deleteSuper
  * Make admin group and apply a guard to it
  */
 Route::group(['middleware' => ['web',"auth", 'admin']], function () {
+
+    Route::get('/download-bulk-upload-applicant-to-workflow-stage-template', "BulkUploadApplicantsToWorkflowStepContoller@downloadBulkApplicantsToWorkflowStagesTemplate")->name("download-bulk-upload-applicant-to-workflow-stage-template");
 
     Route::get('/ping', 'SolariumController@ping');
     Route::get('/audit-trails', 'AuditController@index')->name('audit-trails');
@@ -181,6 +182,10 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::match(['get', 'post'], 'job/import-cv-file', ['uses' => 'JobsController@UploadCVfile', 'as' => 'upload-file']);
 
     Route::get('/one_applicant', 'JobApplication@oneApplicantData');
+    
+    Route::resource('schedule', 'JobApplicationsController');
+
+    Route::get('/download_applicants_interview_file/{disk}/{filename}', 'JobApplicationsController@downloadApplicantsInterviewFile')->name("download_applicants_interview_file");
 
     Route::match(['get', 'post'], 'one_applicant',
         ['uses' => 'JobApplicationsController@oneApplicantData']);
@@ -401,7 +406,13 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::match(['get', 'post'], 'settings/interview-notes/options/create/{interview_template_id}',
         ['as' => 'interview-note-option-create', 'uses' => 'JobApplicationsController@createInterviewNoteOptions']);
 
-    Route::get('modal/background-check',
+    Route::match(['get', 'post'], 'settings/interview-notes/options/template/delete/',
+      ['as' => 'interview-note-option-delete', 'uses' => 'JobApplicationsController@deleteInterviewNoteOptions']);
+    
+      Route::get('settings/interview-notes/options/template/sort/',
+      ['as' => 'interview-note-option-sort', 'uses' => 'JobApplicationsController@sortInterviewNoteOptions']);
+    
+      Route::get('modal/background-check',
         ['as' => 'modal-background-check', 'uses' => 'JobApplicationsController@modalBackgroundCheck']);
     Route::get('modal/medical-check',
         ['as' => 'modal-medical-check', 'uses' => 'JobApplicationsController@modalMedicalCheck']);
@@ -464,6 +475,9 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
             ->name('modal-step-action');
 
         Route::match(['get', 'post'], 'modal/approve', 'JobApplicationsController@modalApprove')->name('modal-approve');
+
+        Route::get('modal/approve-bulk-upload-to-current-workflow-stage', 'BulkUploadApplicantsToWorkflowStepContoller@getBulkUploadToCurrentWorkflowStage')->name('get-modal-bulk-upload-to-current-workflow-stage');
+        Route::post('modal/approve-bulk-upload-to-current-workflow-stage', 'BulkUploadApplicantsToWorkflowStepContoller@postBulkUploadToCurrentWorkflowStage')->name('post-modal-bulk-upload-to-current-workflow-stage');
 
     });
 

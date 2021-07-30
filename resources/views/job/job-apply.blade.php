@@ -318,8 +318,6 @@
                                                             </div>
                                                         </div>
 
-<<<<<<< Updated upstream
-=======
                                                         <!-- New fields I added -->
                                                         <div class="form-group">
                                                             <div class="row">
@@ -337,7 +335,7 @@
                                                                             <option value="others">Others</option>
                                                                             @foreach($schools as $school)
                                                                                 <option value="{{ $school->id }}"
-                                                                                        @if( @$last_cv->school == $school->name ) selected="selected" @endif >{{ $school->name }}</option>
+                                                                                        @if( @$last_cv->school->name == $school->name ) selected="selected" @endif >{{ $school->name }}</option>
                                                                             @endforeach
 
                                                                         </select>
@@ -398,7 +396,6 @@
                                                             </div>
                                                         </div>
 
->>>>>>> Stashed changes
 
                                                     <!--div class="form-group">
                                         <div class="row">
@@ -745,7 +742,6 @@
                     $('.others').addClass('hidden');
                     $('.otherSchools').prop('required', false)
                 }
-                console.log(school.val())
             });
         });
     </script>

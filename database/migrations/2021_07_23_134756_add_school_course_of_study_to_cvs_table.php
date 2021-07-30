@@ -14,7 +14,7 @@ class AddSchoolCourseOfStudyToCvsTable extends Migration
     public function up()
     {
         Schema::table('cvs', function (Blueprint $table) {
-            $table->string('school')->nullable()->after('agency_id');
+            $table->integer('school_id')->unsigned()->nullable()->after('agency_id');
             $table->string('course_of_study')->nullable()->after('school');
         });
     }

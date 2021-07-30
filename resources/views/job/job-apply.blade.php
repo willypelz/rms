@@ -335,7 +335,7 @@
                                                                             <option value="others">Others</option>
                                                                             @foreach($schools as $school)
                                                                                 <option value="{{ $school->id }}"
-                                                                                        @if( @$last_cv->school == $school->name ) selected="selected" @endif >{{ $school->name }}</option>
+                                                                                        @if( @$last_cv->school->name == $school->name ) selected="selected" @endif >{{ $school->name }}</option>
                                                                             @endforeach
 
                                                                         </select>

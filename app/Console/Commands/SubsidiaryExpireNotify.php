@@ -3,9 +3,10 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Notifications\Notifiable;
 
 class SubsidiaryExpireNotify extends Command
-{
+{    use Notifiable;
     /**
      * The name and signature of the console command.
      *
@@ -45,7 +46,7 @@ class SubsidiaryExpireNotify extends Command
             if(now() > $date ){
             $company_name = $company->name;
             $company_email = $company->email;
-            auth()->user()->notify(new SubsidiaryExpirationNotification($company_name,$company_email,$title));
+            $company->notify(new SubsidiaryExpirationNotification($company_name,$company_email,$title));
             }
             
         }

@@ -339,7 +339,7 @@
                                                                             @endforeach
 
                                                                         </select>
-                                                                        <span>I can't find my school, select others </span>
+                                                                        <span>Can't find your school? Select Others </span>
 
                                                                     </div>
                                                                 @endif

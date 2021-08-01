@@ -14,7 +14,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\UploadApplicantsToSor::class,
-        Commands\SubsidiaryExpireNotify::class,
     ];
 
     /**

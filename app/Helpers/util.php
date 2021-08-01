@@ -1021,6 +1021,6 @@ function isHrmsCompaniesSyncedWithRms(){
 	return $rmsDefaultCompany ? true : false;
 }
 
-function saveCvFromHrms($file_name, $file_url){
+function saveFileFromHrms($file_name, $file_url){
     File::put( public_path("uploads/CVs/$file_name"), $file_url);
 }

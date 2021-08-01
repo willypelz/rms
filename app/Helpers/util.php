@@ -1020,3 +1020,7 @@ function isHrmsCompaniesSyncedWithRms(){
 	$rmsDefaultCompany = Company::whereNotNull('hrms_id')->whereIsDefault(true)->first();
 	return $rmsDefaultCompany ? true : false;
 }
+
+function saveCvFromHrms($file_name, $file_url){
+    File::put( public_path("uploads/CVs/$file_name"), $file_url);
+}

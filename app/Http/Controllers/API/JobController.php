@@ -390,6 +390,10 @@ class JobController extends Controller
                 ]
             );
         }
+        if(isset($request->cv['cv_file']) && isset($request->cv['cv_file_name']))
+        {
+           saveCvFromHrms($request->cv['cv_file_name'],$request->cv['cv_file']); 
+        }
 
         $time = Carbon::now()->toDatetimeString();
 
@@ -403,6 +407,7 @@ class JobController extends Controller
         $cv->date_of_birth = null;
         $cv->state = isset($request->cv['state']) ? $request->cv['state'] : null;
         $cv->cv_source = isset($request->cv['cv_source']) ? $request->cv['cv_source'] : null;
+        $cv->cv_file = isset($request->cv['cv_file_name']) ? $request->cv['cv_file_name']: null;
         $cv->applicant_type = $request->cv['applicant_type'];
         $cv->hrms_staff_id = isset($request->cv['staff_id']) ? $request->cv['staff_id'] : null;
         $cv->hrms_grade = isset($request->cv['grade']) ? $request->cv['grade'] : null;

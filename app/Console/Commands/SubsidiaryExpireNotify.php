@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Notifications\Notifiable;
 use App\Models\Company;
 use carbon\Carbon;
 use App\Notifications\SubsidiaryExpirationNotification;

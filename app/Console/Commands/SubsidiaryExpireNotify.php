@@ -55,7 +55,7 @@ class SubsidiaryExpireNotify extends Command
             $user_email = $user->email;
             $user = User::where('email',$user->email)->get();
             $date = Carbon::parse($company->date_added)->addDays(13);
-            if(now() > $date ){
+            if(now() > $date && $date->diffInDays(now())== 1){
                 $company_name = $company->name;
                 $company_email = $company->email;
                 Notification::send($user,new SubsidiaryExpirationNotification($company_name,$company_email,$title,$user_name,$user_email));

@@ -12,17 +12,18 @@ class FormFieldValuesObserver
      * @param  \App\Models\FormFieldsValues  $formFieldValues
      * @return void
      */
-    public function created(FormFieldsValues $formFieldValues)
+     /**TODO: Figur out why it breaks when running create in a loop inside app/Http/Controllers/API/JobController.php line 445 */
+       
+    /* public function created(FormFieldsValues $formFieldValues)
     {
-        //
         if(auth()->check()){
             $param = [
                 'log_name' => 'Created a FormFieldValues',
                 'description' => 'Created a formfield value',
                 'action_id' => $formFieldValues->id,
                 'action_type' => 'App\Models\FormFieldValues',
-                'causee_id' => auth()->user()->id,
-                'causer_id' =>  auth()->user()->id,
+                'causee_id' => auth()->user()->id ?? null,
+                'causer_id' =>  auth()->user()->id ?? null,
                 'causer_type' => '',
                 'properties' => '',
             ];
@@ -30,48 +31,5 @@ class FormFieldValuesObserver
            
         }
     }
-
-    /**
-     * Handle the form fields values "updated" event.
-     *
-     * @param  \App\Models\FormFieldValues  $formFieldValues
-     * @return void
-     */
-    public function updated(FormFieldValues $formFieldValues)
-    {
-        //
-    }
-
-    /**
-     * Handle the form fields values "deleted" event.
-     *
-     * @param  \App\Models\FormFieldValues  $formFieldValues
-     * @return void
-     */
-    public function deleted(FormFieldValues $formFieldValues)
-    {
-        //
-    }
-
-    /**
-     * Handle the form fields values "restored" event.
-     *
-     * @param  \App\Models\FormFieldValues  $formFieldValues
-     * @return void
-     */
-    public function restored(FormFieldValues $formFieldValues)
-    {
-        //
-    }
-
-    /**
-     * Handle the form fields values "force deleted" event.
-     *
-     * @param  \App\Models\FormFieldsValues  $formFieldValues
-     * @return void
-     */
-    public function forceDeleted(FormFieldValues $formFieldValues)
-    {
-        //
-    }
+    */
 }

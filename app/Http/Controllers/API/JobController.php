@@ -32,7 +32,6 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
-use App\Models\PrivateJob;
 
 class JobController extends Controller
 {
@@ -375,27 +374,11 @@ class JobController extends Controller
             );
         }
 
-        $job = Job::with('company')->where('id',$request->application['job_id'])->first();
-
-        if ($job->is_private) {
-            
-            $checkEmail = PrivateJob::with('job')->where('attached_email', $request->cv['email'])->first();
-            
-            if (empty($checkEmail) || is_null($checkEmail)) {
-    
-                return response()->json([
-                    'status' => false,
-                    'message' => 'You are not listed to apply for this job',
-                    'data' => null,
-                ]);
-            }
-        }
-
         $owned_cvs = CV::where('email', $request->cv['email'])->pluck('id');
         $owned_applicataions_count = JobApplication::whereIn('cv_id', $owned_cvs)->where(
             'job_id',
             $request->application['job_id']
-        )->count();
+        )->get()->count();
 
 
         if ($owned_applicataions_count > 0) {
@@ -406,6 +389,10 @@ class JobController extends Controller
                     'data' => null,
                 ]
             );
+        }
+        if(isset($request->cv['cv_file']) && isset($request->cv['cv_file_name']))//save cv
+        {
+            saveFileFromHrms($request->cv['cv_file_name'],$request->cv['cv_file']); 
         }
 
         $time = Carbon::now()->toDatetimeString();
@@ -420,6 +407,7 @@ class JobController extends Controller
         $cv->date_of_birth = null;
         $cv->state = isset($request->cv['state']) ? $request->cv['state'] : null;
         $cv->cv_source = isset($request->cv['cv_source']) ? $request->cv['cv_source'] : null;
+        $cv->cv_file = isset($request->cv['cv_file_name']) ? $request->cv['cv_file_name']: null;
         $cv->applicant_type = $request->cv['applicant_type'];
         $cv->hrms_staff_id = isset($request->cv['staff_id']) ? $request->cv['staff_id'] : null;
         $cv->hrms_grade = isset($request->cv['grade']) ? $request->cv['grade'] : null;
@@ -457,7 +445,13 @@ class JobController extends Controller
             foreach ($request->form_fields as $form_field) {
                 $form_field_value = new FormFieldValues();
                 $form_field_value->form_field_id = $form_field['form_field_id'];
-                $form_field_value->value = $form_field['value'];
+
+                if($form_field['is_file'] == true){ //save the file coming from hrms and then save the filename as value
+                    saveFileFromHrms($form_field['file_name'],$form_field['value']);
+                    $form_field_value->value =  $form_field['file_name'];
+                }else{
+                    $form_field_value->value = $form_field['value'];
+                } 
                 $form_field_value->job_application_id = $job_application->id;
                 $form_field_value->save();
             }

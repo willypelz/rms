@@ -407,6 +407,10 @@ class JobController extends Controller
                 ]
             );
         }
+        if(isset($request->cv['cv_file']) && isset($request->cv['cv_file_name']))//save cv
+        {
+            saveFileFromHrms($request->cv['cv_file_name'],$request->cv['cv_file']); 
+        }
 
         $time = Carbon::now()->toDatetimeString();
 
@@ -420,6 +424,7 @@ class JobController extends Controller
         $cv->date_of_birth = null;
         $cv->state = isset($request->cv['state']) ? $request->cv['state'] : null;
         $cv->cv_source = isset($request->cv['cv_source']) ? $request->cv['cv_source'] : null;
+        $cv->cv_file = isset($request->cv['cv_file_name']) ? $request->cv['cv_file_name']: null;
         $cv->applicant_type = $request->cv['applicant_type'];
         $cv->hrms_staff_id = isset($request->cv['staff_id']) ? $request->cv['staff_id'] : null;
         $cv->hrms_grade = isset($request->cv['grade']) ? $request->cv['grade'] : null;
@@ -457,7 +462,13 @@ class JobController extends Controller
             foreach ($request->form_fields as $form_field) {
                 $form_field_value = new FormFieldValues();
                 $form_field_value->form_field_id = $form_field['form_field_id'];
-                $form_field_value->value = $form_field['value'];
+
+                if($form_field['is_file'] == true){ //save the file coming from hrms and then save the filename as value
+                    saveFileFromHrms($form_field['file_name'],$form_field['value']);
+                    $form_field_value->value =  $form_field['file_name'];
+                }else{
+                    $form_field_value->value = $form_field['value'];
+                } 
                 $form_field_value->job_application_id = $job_application->id;
                 $form_field_value->save();
             }

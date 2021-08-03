@@ -574,12 +574,7 @@ class JobApplicationsController extends Controller
     public function downloadApplicantCv(DownloadApplicantCvRequest $request)
     {
         $data = array_merge($request->all(), [ "search_params" => $this->search_params]);
-<<<<<<< Updated upstream
-        $downloadApplicantCvDto = app()->make(DownloadApplicantCvDto::class)->initialize($data);
-        $this->applicantService->downloadCv($downloadApplicantCvDto);
-=======
         $this->applicantService->downloadCv(\Auth::user(), $data);
->>>>>>> Stashed changes
         return response()->json(["status" => "success" , 
                                 "msg" => " Successfully initiated, Applicant CVs will been sent to your email when processing is completed,  Thank you"]);
     }

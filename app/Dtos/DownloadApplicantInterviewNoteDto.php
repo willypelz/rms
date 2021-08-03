@@ -45,7 +45,7 @@ class DownloadApplicantInterviewNoteDto extends DownloadApplicantDto {
         $this->setType($type);
         $this->setFilename();
         $this->setPath( time() . $this->getFilename());
-        $this->setApplicationIds();
+        // $this->setApplicationIds();
         return $this;
     }
 
@@ -76,33 +76,26 @@ class DownloadApplicantInterviewNoteDto extends DownloadApplicantDto {
     }
 
     /**
-     * Set the applicants ids
+    * Set the applicants ids
     * @return void 
     */
-    public function setApplicationIds()
+    public function setAndGetApplicationIdsPaginated($start, $length)
     {
         switch($this->getType()){
             case DownloadApplicantSpreadsheetDtoType::ZIP:
                 if(!isset($this->getData()['app_ids'])){
-                    $this->application_ids = JobApplication::where('job_id', $this->getData()["jobId"])->pluck('id');
+                    $this->application_ids = JobApplication::where('job_id', $this->getData()["jobId"])->offset($start)->limit($length)->pluck('id');
                 }else {
-                    $this->application_ids = $this->getData()['app_ids'];
+                    $this->application_ids = collect($this->getData()['app_ids'])->offset($start)->limit($length)->toArray();
                 }
-                if(count($this->application_ids) < 1)
-                    throw new DownloadApplicantsInterviewException ("There are no Applicant Interviews");
-                break;
+                if(count($this->application_ids) < 1) throw new DownloadApplicantsInterviewException("There are no Applicant Interviews");
+                break ;
             case DownloadApplicantSpreadsheetDtoType::CSV:
                 $requestData = $this->getData();
-<<<<<<< Updated upstream
-                $job = Job::with(['applicantsViaJAT' => function($query) use($requestData) { 
-                                                            empty($requestData["status"]) ?? $query->whereStatus($requestData["status"]); 
-                                                        } ])->find($requestData["jobId"]);
-=======
-                $job = Job::whereHas("applicantsViaJAT")->with('applicantsViaJAT')->find($requestData["jobId"]);
->>>>>>> Stashed changes
-                $this->application_ids = !isset( $requestData['app_ids'] ) ? $job->applicantsViaJAT->pluck('id') : $requestData['app_ids'];
+                $job = Job::whereHas("applicantsViaJAT")->with('applicantsViaJAT')->offset($start)->limit($length)->find($requestData["jobId"]);
+                $this->application_ids = !isset( $requestData['app_ids'] ) ? $job->applicantsViaJAT->pluck('id') : collect($requestData['app_ids'])->offset($start)->limit($length)->toArray();
                 if(count($this->application_ids) < 1) throw new DownloadApplicantsInterviewException ("There are no Applicant Interview Cvs");
-                break;
+                break ;
         }
     }
 
@@ -193,17 +186,47 @@ class DownloadApplicantInterviewNoteDto extends DownloadApplicantDto {
     public function getCsvInterviewNotes()
     {
 	    return $this->application_ids;
-	}
+    }
+
+    public function getApplicantsCount() : int
+    {
+        switch($this->getType()){
+            case DownloadApplicantSpreadsheetDtoType::ZIP:
+                if(!isset($this->getData()['app_ids'])){
+                   return JobApplication::where('job_id', $this->getData()["jobId"])->count();
+                }else {
+                    return  collect($this->getData()['app_ids'])->count();
+                }
+                break ;
+            case DownloadApplicantSpreadsheetDtoType::CSV:
+                $requestData = $this->getData();
+                $job = Job::whereHas("applicantsViaJAT")->with('applicantsViaJAT')->offset($start)->limit($length)->find($requestData["jobId"]);
+                return !isset( $requestData['app_ids'] ) ? $job->applicantsViaJAT->count() : collect($requestData['app_ids'])->count();
+                break ;
+        }
+    }
+    
+    protected function handleCsvInterviewNotes(\Closure $next){
+        $default_row_size = 2000;
+	    // $applicants = $this->setAndGetApplicationIdsPaginated(0, $default_row_size);
+	    $total_count = $this->getApplicantsCount();
+	    \Log::info("Retrieving Applicants...");
+	    if( $total_count > $default_row_size  ){
+		    $current_count = 0;
+		    while( ($start = $current_count * $default_row_size )  < $total_count){
+			    ++$current_count;
+			    $this->setAndGetApplicationIdsPaginated($start, $default_row_size - 1);
+			    $next( ($this->all_applicants ? $this->all_applicants["response"] : null) , ( ( ($start +  $default_row_size) > $total_count) ? true : false ) );
+		    }
+		    \Log::info("Applicants Retrieved. inner");
+		    return;
+	    }
+	    $next( $this->all_applicants ? $this->all_applicants["response"] : null, true );
+	    \Log::info("Applicants Retrieved.");
+    }
 	
 	public function processCsvInterviewNotes(\Closure $next){
-		$chunkedApplicationIds = collect($this->getCsvInterviewNotes())->chunk(100)->toArray();
-		foreach($chunkedApplicationIds as $index => $applicationIds){
-			if($index == array_key_last($chunkedApplicationIds)){
-				$next($applicationIds, true);
-				return;
-			}
-			$next($applicationIds, false);
-		}
+		$this->handleCsvInterviewNotes($next);
 	}
 
 }

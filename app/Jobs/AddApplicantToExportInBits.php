@@ -12,11 +12,13 @@ use Illuminate\Queue\SerializesModels;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\InterviewNoteExport;
 use App\Notifications\NotifyAdminOfApplicantsInterviewNoteExportCompleted;
+use App\Notifications\NotifyAdminOfApplicantsInterviewNotesCompleted;
+use Madnest\Madzipper\Facades\Madzipper;
 
 class AddApplicantToExportInBits implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected $csv_interview_notes_excel_file, $company, $admin, $disk, $link, $last_loop, $filename;
+    protected $payload, $company, $admin, $disk, $link, $last_loop, $filename, $type, $sheetInstance;
 
     /**
      * Create a new job instance.
@@ -27,15 +29,17 @@ class AddApplicantToExportInBits implements ShouldQueue
      * @param $disk
      * @param $excelData
      */
-    public function __construct($csv_interview_notes_excel_file, $company, $admin, $link , $disk, $filename,  $last_loop)
+    public function __construct($payload, $company, $admin, $link , $disk, $filename,  $last_loop, $type, $sheetInstance = null)
     {
-        $this->csv_interview_notes_excel_file = $csv_interview_notes_excel_file;
+        $this->payload = $payload;
         $this->company = $company;
         $this->admin = $admin;
         $this->link = $link;
         $this->disk = $disk;
         $this->last_loop = $last_loop;
         $this->filename = $filename;
+        $this->type = $type;
+		$this->sheetInstance = $sheetInstance;
 
      }
 
@@ -46,12 +50,21 @@ class AddApplicantToExportInBits implements ShouldQueue
      * @return void
      */
     public function handle(){
-		\Log::info("AddApplicantToExportInBits handle");
-		Excel::store( new InterviewNoteExport($this->csv_interview_notes_excel_file, $this->company, $this->admin), $this->link , $this->disk);
-		$csv_interview_notes_excel_file = \Storage::disk($this->disk)->get($this->link);
-		if($this->last_loop){
-			\Log::info("lastloop");
-    		$this->admin->notify( new NotifyAdminOfApplicantsInterviewNoteExportCompleted($this->csv_interview_notes_excel_file, $this->filename, $this->disk, $this->link));
-		}
+		switch($this->type){
+            case \App\Dtos\DownloadApplicantType::CSV :
+        			Excel::store( new InterviewNoteExport($this->csv_interview_notes_excel_file, $this->company, $this->admin), $this->link , $this->disk);
+					$payload = \Storage::disk($this->disk)->get($this->link);
+            		if($this->last_loop){
+			    		$this->admin->notify( new NotifyAdminOfApplicantsInterviewNoteExportCompleted($this->payload, $this->filename, $this->disk, $this->link));
+					}
+                break;
+            case \App\Dtos\DownloadApplicantType::ZIP :
+            		$interview_note_files = $this->sheetInstance->getInterviewNotesFiles($this->payload);
+            		Madzipper::make($this->sheetInstance->getZipPath())->add($interview_note_files)->close();
+            		if($this->last_loop){
+			    		$this->admin->notify( new NotifyAdminOfApplicantsInterviewNotesCompleted($this->filename, $this->disk, $this->link));
+					}
+                break;
+        }
     }
 }

@@ -95,7 +95,6 @@ class DownloadApplicantInterviewNoteDto extends DownloadApplicantDto {
             case \App\Dtos\DownloadApplicantType::ZIP:
                 if(!isset($this->getData()['app_ids'])){
                     $app_ids =  $this->application_ids = JobApplication::where('job_id', $this->getData()["jobId"])->offset($start)->limit($length)->pluck('id')->toArray();
-                    \Log::info(["ist" => $app_ids]);
                     return $app_ids;
                 }else {
                     $app_ids = $this->application_ids = collect($this->getData()['app_ids'])->offset($start)->limit($length)->toArray();
@@ -108,7 +107,6 @@ class DownloadApplicantInterviewNoteDto extends DownloadApplicantDto {
                 $requestData = $this->getData();
                 $job = Job::whereHas("applicantsViaJAT")->with('applicantsViaJAT')->find($requestData["jobId"]);
                 $app_ids = $this->application_ids = !isset( $requestData['app_ids'] ) ? $job->applicantsViaJAT()->offset($start)->limit($length)->pluck('id')->toArray() : collect($requestData['app_ids'])->offset($start)->limit($length)->toArray();
-//                 \Log::info(["3rd" => $app_ids]);
 				return $app_ids;
                 if(count($this->application_ids) < 1) throw new DownloadApplicantsInterviewException ("There are no Applicant Interview Cvs");
                 break ;
@@ -187,11 +185,8 @@ class DownloadApplicantInterviewNoteDto extends DownloadApplicantDto {
     */
     public function getZippedInterviewNotes()
     {
-        $chunked_interview_notes = collect($this->getCsvInterviewNotes())->chunk(100)->toArray();
-        foreach($chunked_interview_notes as $index => $interview_notes){
-            $interview_note_files = $this->getInterviewNotesFiles($interview_notes);
-            Madzipper::make($this->getZipPath())->add($interview_note_files)->close();
-        }
+        $interview_note_files = $this->getInterviewNotesFiles($interview_notes);
+        Madzipper::make($this->getZipPath())->add($interview_note_files)->close();
         $file = new \Illuminate\Http\File( $this->getStorageRealPath() );
         return $file;
     }
@@ -223,20 +218,17 @@ class DownloadApplicantInterviewNoteDto extends DownloadApplicantDto {
         return 0;
     }
     
-    protected function handleCsvInterviewNotes(\Closure $next){
-        $default_row_size = 1000;
-	    // $applicants = $this->setAndGetApplicationIdsPaginated(0, $default_row_size);
+    protected function handleInterviewNotes(\Closure $next){
+        $default_row_size = 100;
 	    $total_count = $this->getApplicantsCount();
-//  		$total_count = 5000;
-	    \Log::info(["total"=> $total_count]);
 	    \Log::info("Retrieving Applicants...");
 	    if( $total_count > $default_row_size  ){
 		    $current_count = 0;
 		    while( ($start = $current_count * $default_row_size )  < $total_count){
 			    ++$current_count;
 			    $result = $this->setAndGetApplicationIdsPaginated($start, $default_row_size - 1);
-// 			    \Log::info(["applicants" => $result]);
-			    $next( ($result ? $result: null) , ( ( ($start +  $default_row_size) > $total_count) ? true : false ) );
+				$last_loop = ( ($start +  $default_row_size) >= $total_count) ? true : false;;
+			    $next( ($result ? $result: null) , $last_loop );
 		    }
 		    \Log::info("Applicants Retrieved. inner");
 		    return;
@@ -245,9 +237,14 @@ class DownloadApplicantInterviewNoteDto extends DownloadApplicantDto {
 	    $next( $result ? $result : null, true );
 	    \Log::info("Applicants Retrieved.");
     }
-	
+   
+    			  
 	public function processCsvInterviewNotes(\Closure $next){
-		$this->handleCsvInterviewNotes($next);
+		$this->handleInterviewNotes($next);
+	}
+	
+	public function processZipInterviewNotes(\Closure $next){
+		$this->handleInterviewNotes($next);
 	}
 
 }

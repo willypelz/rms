@@ -49,25 +49,30 @@ class SendApplicantsInterviewNotes implements ShouldQueue
      */
     public function handle()
     {
+	    \Log::info(["handle"=> $this->type]);
 	    $sheetInstance = app()->make(DownloadApplicantInterviewNoteDto::class)->initialize($this->data, $this->type);
+	    $sheetInstance->setUser($this->admin);
+	    $sheetInstance->setCompany($this->company);
         $filename  = $sheetInstance ->getFilename();
         $link = $sheetInstance ->getDownloadLink();
         $disk = $sheetInstance ->getStorageDisk();
         $company =  $this->company;
         $admin = $this->admin;
+         \Log::info(["type"=> $sheetInstance->getType()]);
         switch($sheetInstance->getType()){
-            case DownloadApplicantSpreadsheetDtoType::CSV :
+	        
+            case \App\Dtos\DownloadApplicantType::CSV :
+            	\Log::info("csv");
 				$sheetInstance->processCsvInterviewNotes(function($csv_interview_notes_excel_file, $last_loop) use ($filename, $disk, $link, $company, $admin){
-					 \Log::info('interview note CSV running');
+					 \Log::info('interview note CSV running closure');
 					$filename = $filename .  "." . ConcreteExcel::CSV;
 					$link = $link .  "." . ConcreteExcel::CSV;
-					Excel::store( new InterviewNoteExport($csv_interview_notes_excel_file,$company,$admin), $link , $disk);
-					$csv_interview_notes_excel_file = \Storage::disk($disk)->get($link);
-					if($last_loop)
-                		$this->admin->notify( new NotifyAdminOfApplicantsInterviewNoteExportCompleted($csv_interview_notes_excel_file , $filename, $disk, $link));
+					AddApplicantToExportInBits::dispatch($csv_interview_notes_excel_file, $company, $admin, $link , $disk, $filename, $last_loop);
 				});
                 break;
-            case DownloadApplicantSpreadsheetDtoType::ZIP :
+            case \App\Dtos\DownloadApplicantType::ZIP :
+            	\Log::info("zip");
+            	$sheetInstance->setAndGetApplicationIdsPaginated(0, $sheetInstance->getApplicantsCount());
                 $interview_notes = $sheetInstance->getZippedInterviewNotes()->getRealPath();
                 \Log::info('interview note ZIP running');
                 $this->admin->notify( new NotifyAdminOfApplicantsInterviewNotesCompleted($interview_notes , $filename, $disk, $link));

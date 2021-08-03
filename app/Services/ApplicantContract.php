@@ -19,11 +19,7 @@ interface ApplicantContract {
      * The Download Applicants Spreedsheet Data to object instance
      * @param App\Dtos\DownloadApplicantSpreadsheetDto the downloadApplicantSpreadsheetDto
      */
-<<<<<<< Updated upstream
-    public function downloadCv($downloadApplicantCvDto);
-=======
     public function downloadCv(User $admin,  $data);
->>>>>>> Stashed changes
 
     /**
      * The Download Applicants Spreedsheet Data to object instance

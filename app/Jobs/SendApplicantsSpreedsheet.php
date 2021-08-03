@@ -20,13 +20,9 @@ class SendApplicantsSpreedsheet implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 
-<<<<<<< Updated upstream
-    protected $downloadApplicantSpreadsheetDto, $admin;
-=======
     protected $admin;
     
     protected $data;
->>>>>>> Stashed changes
 
     public $timeout = 0;
 
@@ -38,17 +34,10 @@ class SendApplicantsSpreedsheet implements ShouldQueue
      * @param $link
      * @param $disk
      */
-<<<<<<< Updated upstream
-    public function __construct(User $admin, DownloadApplicantSpreadsheetDto $downloadApplicantSpreadsheetDto)
-    {
-	    $this->admin = $admin;
-	    $this->downloadApplicantSpreadsheetDto = $downloadApplicantSpreadsheetDto;
-=======
     public function __construct(User $admin, array $data)
     {
 	    $this->admin = $admin;
 	    $this->data = $data;
->>>>>>> Stashed changes
     }
 
     /**
@@ -58,20 +47,6 @@ class SendApplicantsSpreedsheet implements ShouldQueue
      */
     public function handle()
     {
-<<<<<<< Updated upstream
-        $sheetInstance = $this->downloadApplicantSpreadsheetDto;
-        $applicantData = collect($sheetInstance->getApplicantsData())->chunk(1000)->toArray();
-        $filename = $sheetInstance->getFilename();
-        $link = $sheetInstance->getDownloadLink();
-        $disk = $sheetInstance->getStorageDisk();
-        $excel_file = storage_path($disk.'/'.$link);
-
-        foreach ($applicantData as $data) {
-            $excelData = $sheetInstance->formatDataForExcelPresentation($data);
-            Excel::store( new ApplicantsExport($excelData, $link) , $link, $disk);
-        }
-        $this->admin->notify( new NotifyAdminOfApplicantsSpreedsheetExportCompleted($excel_file , $filename, $disk, $link));
-=======
 		$admin = $this->admin;
 		$sheetInstance = app()->make(DownloadApplicantSpreadsheetDto::class)->initialize($this->data);
 		$sheetInstance->processApplicantsSpreedsheet(function($applicantsResponse, $lastLoop) use ($sheetInstance, $admin){
@@ -87,7 +62,6 @@ class SendApplicantsSpreedsheet implements ShouldQueue
 				 $admin->notify( new NotifyAdminOfApplicantsSpreedsheetExportCompleted($excel_file , $filename, $disk, $link));
 			 }
 		});
->>>>>>> Stashed changes
     }
 
 }

@@ -57,18 +57,6 @@ class SendApplicantsInterviewNotes implements ShouldQueue
         $admin = $this->admin;
         switch($sheetInstance->getType()){
             case DownloadApplicantSpreadsheetDtoType::CSV :
-<<<<<<< Updated upstream
-                $filename = $filename .  "." . ConcreteExcel::CSV;
-                $link = $link .  "." . ConcreteExcel::CSV;
-                $csv_interview_notes_excel_file = $this->downloadApplicantInterviewNoteDto->getCsvInterviewNotes();
-                Excel::store( new InterviewNoteExport($csv_interview_notes_excel_file,$company,$admin), $link , $disk);
-                $csv_interview_notes_excel_file = \Storage::disk($disk)->get($link);
-                $this->admin->notify( new NotifyAdminOfApplicantsInterviewNoteExportCompleted($csv_interview_notes_excel_file , $filename, $disk, $link));
-                break;
-            case DownloadApplicantSpreadsheetDtoType::ZIP :
-                $this->downloadApplicantInterviewNoteDto->getZippedInterviewNotes();
-                $this->admin->notify( new NotifyAdminOfApplicantsInterviewNotesCompleted( $filename, $disk, $link));
-=======
 				$sheetInstance->processCsvInterviewNotes(function($csv_interview_notes_excel_file, $last_loop) use ($filename, $disk, $link, $company, $admin){
 					 \Log::info('interview note CSV running');
 					$filename = $filename .  "." . ConcreteExcel::CSV;
@@ -83,7 +71,6 @@ class SendApplicantsInterviewNotes implements ShouldQueue
                 $interview_notes = $sheetInstance->getZippedInterviewNotes()->getRealPath();
                 \Log::info('interview note ZIP running');
                 $this->admin->notify( new NotifyAdminOfApplicantsInterviewNotesCompleted($interview_notes , $filename, $disk, $link));
->>>>>>> Stashed changes
                 break;
         }
 

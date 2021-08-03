@@ -17,6 +17,8 @@ class SendApplicantsCv implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $admin;
+    protected $data;
+
 
     protected $downloadApplicantCvDto;
 
@@ -28,10 +30,17 @@ class SendApplicantsCv implements ShouldQueue
      * @param App\Dtos\DownloadApplicantCvDto
      * @return void
      */
+<<<<<<< Updated upstream
     public function __construct(User $admin, $downloadApplicantCvDto)
     {
         $this->admin = $admin;
         $this->downloadApplicantCvDto = $downloadApplicantCvDto;
+=======
+    public function __construct(User $admin, $data)
+    {
+	    $this->admin = $admin;
+	    $this->data = $data;
+>>>>>>> Stashed changes
     }
 
     /**
@@ -41,6 +50,7 @@ class SendApplicantsCv implements ShouldQueue
      */
     public function handle()
     {
+<<<<<<< Updated upstream
         $cvChunked = collect($this->downloadApplicantCvDto->getCvs())->chunk(1000)->toArray();
         if(count($cvChunked)){
             $zipper =  Madzipper::make($this->downloadApplicantCvDto->getZipPath());
@@ -54,6 +64,19 @@ class SendApplicantsCv implements ShouldQueue
             return true;
         }
         $this->admin->notify( new NotifyAdminOfApplicantsCvCompleted( null, null,  null));
+=======
+	    $admin = $this->admin;
+		$sheetInstance = app()->make(DownloadApplicantCvDto::class)->initialize($this->data);
+		$sheetInstance->processApplicantsCvs(function($applicantsResponse, $lastLoop) use ($sheetInstance, $admin){
+			$sheetInstance->setAllApplicants($applicantsResponse);
+			$cvs = $sheetInstance->initCvsComponents()->getCvs();
+            Madzipper::make($sheetInstance->getZipPath())->add( $cvs )->close();
+            $file = new \Illuminate\Http\File( $sheetInstance->getStorageRealPath());
+            $relative_filename = $sheetInstance->getDownloadLink();
+            if( $lastLoop)
+                  $admin->notify( new NotifyAdminOfApplicantsCvCompleted($file, "Applicant CV", 'public', $relative_filename)); 
+    	});
+>>>>>>> Stashed changes
     }
 
 }

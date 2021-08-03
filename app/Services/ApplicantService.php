@@ -13,6 +13,7 @@ use App\Jobs\SendApplicantsInterviewNotes;
 use App\Dtos\DownloadApplicantInterviewNoteDto;
 use App\Dtos\DownloadApplicantSpreadsheetDtoType;
 use Illuminate\Support\Facades\Storage;
+use App\User;
 
 class ApplicantService implements ApplicantContract
 {
@@ -23,26 +24,39 @@ class ApplicantService implements ApplicantContract
      * The Download Applicants Spreedsheet Data to object instance
      * @param App\Dtos\DownloadApplicantSpreadsheetDto the downloadApplicantSpreadsheetDto
      */
-    public function downloadSpreadsheet(DownloadApplicantSpreadsheetDto $downloadApplicantSpreadsheetDto)
+    public function downloadSpreadsheet(User $admin,  $data)
     {
+<<<<<<< Updated upstream
         $this->dispatch(new SendApplicantsSpreedsheet(\Auth::user(), $downloadApplicantSpreadsheetDto));
+=======
+		SendApplicantsSpreedsheet::dispatch($admin, $data);
+>>>>>>> Stashed changes
     }
 
     /**
      * The Download Applicants Spreedsheet Data to object instance
      * @param App\Dtos\DownloadApplicantSpreadsheetDto the downloadApplicantSpreadsheetDto
      */
+<<<<<<< Updated upstream
     public function downloadCv($downloadApplicantCvDto)
     {
         $this->dispatch(new SendApplicantsCv(\Auth::user(), $downloadApplicantCvDto) );
+=======
+    public function downloadCv(User $admin,  $data)
+    {
+        SendApplicantsCv::dispatch($admin, $data);
+>>>>>>> Stashed changes
     }
 
     /**
      * The Download Applicants Spreedsheet Data to object instance
      * @param App\Dtos\DownloadApplicantSpreadsheetDto the downloadApplicantSpreadsheetDto
      */
-    public function downloadInterviewNotes(DownloadApplicantInterviewNoteDto $downloadApplicantInterviewNoteDto)
+    public function downloadInterviewNotes($admin, $data, $type)
     {
+	    SendApplicantsInterviewNotes::dispatch($admin, get_current_company(), $data, $type);
+
+/*
 	    try{
 	        if ($downloadApplicantInterviewNoteDto->isType(DownloadApplicantSpreadsheetDtoType::ZIP))
 	            $this->dispatch(new SendApplicantsInterviewNotes(\Auth::user(),get_current_company(), $downloadApplicantInterviewNoteDto));
@@ -53,8 +67,8 @@ class ApplicantService implements ApplicantContract
 	        }
         }catch(\Exception $e){
 	         throw new \Exception("Something went wrong");
-
         }
+*/
     }
 
 

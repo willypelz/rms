@@ -142,7 +142,11 @@ class DownloadApplicantSpreadsheetDto extends DownloadApplicantDto {
         $filename = $filename ?? 'Applicants Report - ' . $this->job->title .".". ConcreteExcel::XLSX;
         $filename = str_replace('/', '', $filename);
         $filename = str_replace('\'', '', $filename);
-        return \Auth::user()->id . "_" . get_current_company()->id . "_" . time() .$filename;
+        return time() .$filename;
+    }
+    
+    public function processApplicantsSpreedsheet(\Closure $next){
+	    $this->getAllApplicantsFromSolr($next);
     }
 
 }

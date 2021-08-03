@@ -88,12 +88,18 @@ class DownloadApplicantInterviewNoteDto extends DownloadApplicantDto {
                 }else {
                     $this->application_ids = $this->getData()['app_ids'];
                 }
+                if(count($this->application_ids) < 1)
+                    throw new DownloadApplicantsInterviewException ("There are no Applicant Interviews");
                 break;
             case DownloadApplicantSpreadsheetDtoType::CSV:
                 $requestData = $this->getData();
+<<<<<<< Updated upstream
                 $job = Job::with(['applicantsViaJAT' => function($query) use($requestData) { 
                                                             empty($requestData["status"]) ?? $query->whereStatus($requestData["status"]); 
                                                         } ])->find($requestData["jobId"]);
+=======
+                $job = Job::whereHas("applicantsViaJAT")->with('applicantsViaJAT')->find($requestData["jobId"]);
+>>>>>>> Stashed changes
                 $this->application_ids = !isset( $requestData['app_ids'] ) ? $job->applicantsViaJAT->pluck('id') : $requestData['app_ids'];
                 if(count($this->application_ids) < 1) throw new DownloadApplicantsInterviewException ("There are no Applicant Interview Cvs");
                 break;
@@ -186,8 +192,19 @@ class DownloadApplicantInterviewNoteDto extends DownloadApplicantDto {
     */
     public function getCsvInterviewNotes()
     {
-        return $this->application_ids;
-    }
+	    return $this->application_ids;
+	}
+	
+	public function processCsvInterviewNotes(\Closure $next){
+		$chunkedApplicationIds = collect($this->getCsvInterviewNotes())->chunk(100)->toArray();
+		foreach($chunkedApplicationIds as $index => $applicationIds){
+			if($index == array_key_last($chunkedApplicationIds)){
+				$next($applicationIds, true);
+				return;
+			}
+			$next($applicationIds, false);
+		}
+	}
 
 }
 

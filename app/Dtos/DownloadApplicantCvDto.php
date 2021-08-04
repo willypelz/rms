@@ -32,9 +32,9 @@ class DownloadApplicantCvDto extends DownloadApplicantDto {
     public function initialize($data) : object
     {
         parent::initialize($data);
-        $this->setPath(\Auth::user()->id . "_" . get_current_company()->id . "_" . time() . ".zip");
+        $this->setPath(time() . ".zip");
         $this->setFilename( date('y-m-d'). $this->getJob()->title .'Cv.zip');
-        $this->initCvsComponents();
+//         $this->initCvsComponents();
         return $this;
     }
 
@@ -47,6 +47,7 @@ class DownloadApplicantCvDto extends DownloadApplicantDto {
         $cvs = array_pluck($this->getDataFromApplicants("docs"), 'cv_file');
         $ids = array_pluck($this->getDataFromApplicants("docs"), 'id');
         $this->appendPathToSelectedCvs($cvs, $ids);
+        return $this;
     }
 
     /**
@@ -91,6 +92,10 @@ class DownloadApplicantCvDto extends DownloadApplicantDto {
   
         $this->cvs = $cvs;
     }
+    
+    public function processApplicantsCvs(\Closure $next){
+	     $this->getAllApplicantsFromSolr($next);
+	}
 
 
 }

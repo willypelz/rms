@@ -516,13 +516,13 @@ class JobsController extends Controller
             } else {
                 if (empty($user) or is_null($user)) {
                     // create user if a first time visitor with link
-                     //NOTE: Changed firstOrCreate to save() since it was failing
-                     $user = new User();
-                     $user->email = $job_team_invite->email;
-                     $user->name = $job_team_invite->name;
-                     $user->username = $job_team_invite->username;
-                     $user->is_internal = $is_internal;
-                     $user->save();
+                    //NOTE: Changed firstOrCreate to save() since it was failing
+                    $user = new User();
+                    $user->email = $job_team_invite->email;
+                    $user->name = $job_team_invite->name;
+                    $user->username = $job_team_invite->username;
+                    $user->is_internal = $is_internal;
+                    $user->save();
                 } else {
                     $is_new_user = false;
                 }
@@ -2483,35 +2483,6 @@ class JobsController extends Controller
 
             }
 
-            if ($fields->completed_nysc->is_visible && (isset($data['completed_nysc']))) {
-
-                if ($data['completed_nysc'] == 'yes') {
-                    $nysc = 1;
-                }else{
-                    $nysc = 0;
-                }
-
-            }
-
-            if ($fields->school->is_visible && (isset($data['school']))) {
-
-                if($data['school']=='others'){
-                    $school = School::FirstOrCreate([
-                        'name' => $data['others']
-                    ]);
-                }
-            
-                $school_id = isset($data['others']) ? $school->id : $data['shool'];
-            }
-
-            if ($fields->remuneration->is_visible && (isset($data['maximum_renumeration'])) &&  (isset($data['minimum_renumeration']))) {
-
-                if ($request->maximum_remuneration <= $request->minimum_remuneration ) {
-                    
-                    return back()->withErrors(['warning' => 'Maximum Remuneration cannot be less than Minimum Renumeration.']);
-                }
-
-            }
 
             if ($fields->completed_nysc->is_visible && (isset($data['completed_nysc']))) {
 
@@ -2598,10 +2569,8 @@ class JobsController extends Controller
             if ($fields->graduation_grade->is_visible && isset($data['date_of_birth'])) {
                 $cv->graduation_grade = $data['graduation_grade'];
             }
-
             if ($fields->school->is_visible && isset($data['school'])) {
                 $cv->school = $school_id;
-
             }
             if ($fields->course_of_study->is_visible && isset($data['course_of_study'])) {
                 $cv->course_of_study = $data['course_of_study'];
@@ -2609,7 +2578,6 @@ class JobsController extends Controller
             if ($fields->completed_nysc->is_visible && isset($data['completed_nysc'])) {
                 $cv->completed_nysc = $nysc;
             }
-
             if ($fields->willing_to_relocate->is_visible && isset($data['willing_to_relocate'])) {
                 $cv->willing_to_relocate = $data['willing_to_relocate'];
             }

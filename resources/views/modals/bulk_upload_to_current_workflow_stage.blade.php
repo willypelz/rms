@@ -1,7 +1,11 @@
+@if(!isset($appl->job->id))
+ <div class="text-danger"> <h5>Cannot proceed! No applicants found for this job </h5></div>
+@else
 <div class="pull-left">
     Download Applicants To Workflow Stage Bulk Upload Template? <a target="_blank" href="{{route('download-bulk-upload-applicant-to-workflow-stage-template')}}" id="downloadBulkUploadApplicantToWorkflowStageTemplateBtn" class="">Click Here</a>
 </div>
 <br><br>
+
 <div>
     {!! Form::open(array('class'=>'', 'files'=>true)) !!}
 
@@ -59,3 +63,4 @@
             });
     }
 </script>
+@endif

@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
+use App\Models\PrivateJob;
 
 class JobController extends Controller
 {
@@ -374,11 +375,27 @@ class JobController extends Controller
             );
         }
 
+        $job = Job::with('company')->where('id',$request->application['job_id'])->first();
+
+        if ($job->is_private) {
+            
+            $checkEmail = PrivateJob::with('job')->where('attached_email', $request->cv['email'])->first();
+            
+            if (empty($checkEmail) || is_null($checkEmail)) {
+    
+                return response()->json([
+                    'status' => false,
+                    'message' => 'You are not listed to apply for this job',
+                    'data' => null,
+                ]);
+            }
+        }
+
         $owned_cvs = CV::where('email', $request->cv['email'])->pluck('id');
         $owned_applicataions_count = JobApplication::whereIn('cv_id', $owned_cvs)->where(
             'job_id',
             $request->application['job_id']
-        )->get()->count();
+        )->count();
 
 
         if ($owned_applicataions_count > 0) {

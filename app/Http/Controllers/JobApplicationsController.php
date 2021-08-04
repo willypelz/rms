@@ -562,10 +562,9 @@ class JobApplicationsController extends Controller
     public function downloadApplicantSpreadsheet(DownloadApplicantSpreedsheetRequest $request)
     {
 	        $data = array_merge($request->all(), [ "search_params" => $this->search_params]);
-            $downloadApplicantSpreadsheetDto = app()->make(DownloadApplicantSpreadsheetDto::class)->initialize($data);
-            $this->applicantService->downloadSpreadsheet($downloadApplicantSpreadsheetDto);
-            return response()->json(["status" => "success" ,
-                                    "msg" => "Applicant spreadsheet data has been exported to your email, kindly check your official email. Thank you"]);
+            $this->applicantService->downloadSpreadsheet(\Auth::user(), $data);
+            return response()->json([ "status" => "success" , 
+            						  "msg" => "Applicant spreadsheet data has been exported to your email, kindly check your official email. Thank you"]);
 
     }
     /**
@@ -575,13 +574,10 @@ class JobApplicationsController extends Controller
      */
     public function downloadApplicantCv(DownloadApplicantCvRequest $request)
     {
-        set_time_limit(0);
         $data = array_merge($request->all(), [ "search_params" => $this->search_params]);
-        $downloadApplicantCvDto = app()->make(DownloadApplicantCvDto::class)->initialize($data);
-        $this->applicantService->downloadCv($downloadApplicantCvDto);
+        $this->applicantService->downloadCv(\Auth::user(), $data);
         return response()->json(["status" => "success" , 
                                 "msg" => " Successfully initiated, Applicant CVs will been sent to your email when processing is completed,  Thank you"]);
-
     }
 
     /**
@@ -590,18 +586,17 @@ class JobApplicationsController extends Controller
      * @param DownloadApplicantInterviewNoteDto $downloadApplicantInterviewNotesDto
      * @return Illuminate\Http\Response
      */
-    public function downloadInterviewNotes(Request $request, DownloadApplicantInterviewNoteDto $downloadApplicantInterviewNotesDto)
+    public function downloadInterviewNotes(Request $request)
     {
         try{
-            $downloadApplicantInterviewNotesDto->initialize($request->all());
-            $this->applicantService->downloadInterviewNotes($downloadApplicantInterviewNotesDto);
-    
+            $data = $request->all();
+	        $this->applicantService->downloadInterviewNotes(\Auth::user(), $data, \App\Dtos\DownloadApplicantType::ZIP);
             return response()->json(["status" => "success" , 
                                     "msg" => "Applicant interview notes has been sent to your email, kindly check your official email. Thank you"]);
         }catch(DownloadApplicantsInterviewException $e){
             return response()->json(["status"=> "error", "msg" => $e->getMessage()]);
         }
-    
+
     }
 
     /**
@@ -610,13 +605,13 @@ class JobApplicationsController extends Controller
      * @param  DownloadApplicantInterviewNoteDto $downloadApplicantInterviewNotesDto
      * @return Illuminate\Http\Response
      */
-    public function downloadInterviewNotesCSV(Request $request, DownloadApplicantInterviewNoteDto $downloadApplicantInterviewNotesDto){
-        
-        try{
-            $downloadApplicantInterviewNotesDto->initialize($request->all(), App\Dtos\DownloadApplicantSpreadsheetDtoType::CSV);
-            $this->applicantService->downloadInterviewNotes($downloadApplicantInterviewNotesDto);
-            return response()->json(["status" => "success" , 
-                                    "msg" => "Applicant csv interview notes has been sent to your email, kindly check your official email. Thank you"]);
+    public function downloadInterviewNotesCSV(Request $request)
+    {
+	    try{
+            $data = $request->all();
+	        $this->applicantService->downloadInterviewNotes(\Auth::user(), $data, \App\Dtos\DownloadApplicantType::CSV);
+	        return response()->json(["status" => "success" , 
+	                                    "msg" => "Applicant csv interview notes has been sent to your email, kindly check your official email. Thank you"]);
         }catch(DownloadApplicantsInterviewException $e){
             return response()->json(["status"=> "error", "msg" => $e->getMessage()]);
         }

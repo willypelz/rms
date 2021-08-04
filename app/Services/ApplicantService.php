@@ -13,6 +13,7 @@ use App\Jobs\SendApplicantsInterviewNotes;
 use App\Dtos\DownloadApplicantInterviewNoteDto;
 use App\Dtos\DownloadApplicantSpreadsheetDtoType;
 use Illuminate\Support\Facades\Storage;
+use App\User;
 
 class ApplicantService implements ApplicantContract
 {
@@ -23,38 +24,27 @@ class ApplicantService implements ApplicantContract
      * The Download Applicants Spreedsheet Data to object instance
      * @param App\Dtos\DownloadApplicantSpreadsheetDto the downloadApplicantSpreadsheetDto
      */
-    public function downloadSpreadsheet(DownloadApplicantSpreadsheetDto $downloadApplicantSpreadsheetDto)
+    public function downloadSpreadsheet(User $admin,  $data)
     {
-        $this->dispatch(new SendApplicantsSpreedsheet(\Auth::user(), $downloadApplicantSpreadsheetDto));
+		SendApplicantsSpreedsheet::dispatch($admin, $data);
     }
 
     /**
      * The Download Applicants Spreedsheet Data to object instance
      * @param App\Dtos\DownloadApplicantSpreadsheetDto the downloadApplicantSpreadsheetDto
      */
-    public function downloadCv($downloadApplicantCvDto)
+    public function downloadCv(User $admin,  $data)
     {
-        $this->dispatch(new SendApplicantsCv(\Auth::user(), $downloadApplicantCvDto) );
+        SendApplicantsCv::dispatch($admin, $data);
     }
 
     /**
      * The Download Applicants Spreedsheet Data to object instance
      * @param App\Dtos\DownloadApplicantSpreadsheetDto the downloadApplicantSpreadsheetDto
      */
-    public function downloadInterviewNotes(DownloadApplicantInterviewNoteDto $downloadApplicantInterviewNoteDto)
+    public function downloadInterviewNotes($admin, $data, $type)
     {
-	    try{
-	        if ($downloadApplicantInterviewNoteDto->isType(DownloadApplicantSpreadsheetDtoType::ZIP))
-	            $this->dispatch(new SendApplicantsInterviewNotes(\Auth::user(),get_current_company(), $downloadApplicantInterviewNoteDto));
-	        else if ($downloadApplicantInterviewNoteDto->isType(DownloadApplicantSpreadsheetDtoType::CSV))
-	            $this->dispatch(new SendApplicantsInterviewNotes(\Auth::user(),get_current_company(), $downloadApplicantInterviewNoteDto));
-	        else {
-	            throw new \Exception("Interview note operation not implemented yet");
-	        }
-        }catch(\Exception $e){
-	         throw new \Exception("Something went wrong");
-
-        }
+	    SendApplicantsInterviewNotes::dispatch($admin, get_current_company(), $data, $type);
     }
 
 

@@ -20,7 +20,9 @@ class SendApplicantsSpreedsheet implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 
-    protected $downloadApplicantSpreadsheetDto, $admin;
+    protected $admin;
+    
+    protected $data;
 
     public $timeout = 0;
 
@@ -32,10 +34,10 @@ class SendApplicantsSpreedsheet implements ShouldQueue
      * @param $link
      * @param $disk
      */
-    public function __construct(User $admin, DownloadApplicantSpreadsheetDto $downloadApplicantSpreadsheetDto)
+    public function __construct(User $admin, array $data)
     {
 	    $this->admin = $admin;
-	    $this->downloadApplicantSpreadsheetDto = $downloadApplicantSpreadsheetDto;
+	    $this->data = $data;
     }
 
     /**
@@ -45,19 +47,21 @@ class SendApplicantsSpreedsheet implements ShouldQueue
      */
     public function handle()
     {
-        $sheetInstance = $this->downloadApplicantSpreadsheetDto;
-        $applicantData = collect($sheetInstance->getApplicantsData())->chunk(1000)->toArray();
-        $filename = $sheetInstance->getFilename();
-        $link = $sheetInstance->getDownloadLink();
-        $disk = $sheetInstance->getStorageDisk();
-        $excel_file = storage_path($disk.'/'.$link);
-
-        foreach ($applicantData as $data) {
-            $excelData = $sheetInstance->formatDataForExcelPresentation($data);
-            Excel::store( new ApplicantsExport($excelData, $link) , $link, $disk);
-        }
-        $this->admin->notify( new NotifyAdminOfApplicantsSpreedsheetExportCompleted($excel_file , $filename, $disk, $link));
+		$admin = $this->admin;
+		$sheetInstance = app()->make(DownloadApplicantSpreadsheetDto::class)->initialize($this->data);
+		$sheetInstance->processApplicantsSpreedsheet(function($applicantsResponse, $lastLoop) use ($sheetInstance, $admin){
+			 $sheetInstance->setAllApplicants($applicantsResponse);
+			 $filename = $sheetInstance->getFilename();
+	         $link = $sheetInstance->getDownloadLink();
+	         $disk = $sheetInstance->getStorageDisk();
+	         $excel_file = storage_path($disk.'/'.$link);
+			 $data = $sheetInstance->getApplicantsData();
+			 $excelData = $sheetInstance->formatDataForExcelPresentation($data);
+			 Excel::store( new ApplicantsExport($excelData, $link) , $link, $disk);
+			 if($lastLoop){
+				 $admin->notify( new NotifyAdminOfApplicantsSpreedsheetExportCompleted($excel_file , $filename, $disk, $link));
+			 }
+		});
     }
-
 
 }

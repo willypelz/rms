@@ -38,7 +38,7 @@ class InterviewNoteExport implements FromCollection, WithHeadings
             'Willing to Relocate?',
         ];
 
-        $interview_notes = InterviewNoteValues::where('job_application_id', $this->application_ids)->groupBy('interviewed_by')->get();
+        $interview_notes = InterviewNoteValues::whereIn('job_application_id', $this->application_ids)->groupBy('interviewed_by')->get();
 
         $interviewers = $interview_notes->unique('interviewed_by')->take(1);
 

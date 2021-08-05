@@ -20,11 +20,11 @@ class SendApplicantsInterviewNotes implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $filename;
-
     protected $admin,$company;
 
-    protected $downloadApplicantInterviewNoteDto;
+    protected $data;
+    
+    protected $type;
 
     public $timeout = 0;
 
@@ -34,11 +34,12 @@ class SendApplicantsInterviewNotes implements ShouldQueue
      * @param App\Dtos\DownloadApplicantInterviewNoteDto
      * @return void
      */
-    public function __construct(User $admin,$company, DownloadApplicantInterviewNoteDto $downloadApplicantInterviewNoteDto)
+    public function __construct(User $admin,$company, $data, $type)
     {
         $this->admin = $admin;
         $this->company = $company;
-        $this->downloadApplicantInterviewNoteDto  = $downloadApplicantInterviewNoteDto;
+        $this->data  = $data;
+        $this->type  = $type;
     }
 
     /**
@@ -48,24 +49,30 @@ class SendApplicantsInterviewNotes implements ShouldQueue
      */
     public function handle()
     {
-        $filename  = $this->downloadApplicantInterviewNoteDto->getFilename();
-        $link = $this->downloadApplicantInterviewNoteDto->getDownloadLink();
-        $disk = $this->downloadApplicantInterviewNoteDto->getStorageDisk();
+	    $sheetInstance = app()->make(DownloadApplicantInterviewNoteDto::class)->initialize($this->data, $this->type);
+	    $sheetInstance->setUser($this->admin);
+	    $sheetInstance->setCompany($this->company);
+        $filename  = $sheetInstance ->getFilename();
+        $link = $sheetInstance ->getDownloadLink();
+        $disk = $sheetInstance ->getStorageDisk();
         $company =  $this->company;
         $admin = $this->admin;
-        switch($this->downloadApplicantInterviewNoteDto->getType()){
-            case DownloadApplicantSpreadsheetDtoType::CSV :
-                $filename = $filename .  "." . ConcreteExcel::CSV;
-                $link = $link .  "." . ConcreteExcel::CSV;
-                $csv_interview_notes_excel_file = $this->downloadApplicantInterviewNoteDto->getCsvInterviewNotes();
-                Excel::store( new InterviewNoteExport($csv_interview_notes_excel_file,$company,$admin), $link , $disk);
-                $csv_interview_notes_excel_file = \Storage::disk($disk)->get($link);
-                $this->admin->notify( new NotifyAdminOfApplicantsInterviewNoteExportCompleted($csv_interview_notes_excel_file , $filename, $disk, $link));
+        switch($sheetInstance->getType()){
+	        
+            case \App\Dtos\DownloadApplicantType::CSV :
+				$sheetInstance->processCsvInterviewNotes(function($csv_interview_notes_excel_file, $last_loop) use ($filename, $disk, $link, $company, $admin){
+					$filename = $filename .  "." . ConcreteExcel::CSV;
+					$link = $link .  "." . ConcreteExcel::CSV;
+					AddApplicantToExportInBits::dispatch($csv_interview_notes_excel_file, $company, $admin, $link , $disk, $filename, $last_loop, \App\Dtos\DownloadApplicantType::CSV );
+				});
                 break;
-            case DownloadApplicantSpreadsheetDtoType::ZIP :
-                $this->downloadApplicantInterviewNoteDto->getZippedInterviewNotes();
-                $this->admin->notify( new NotifyAdminOfApplicantsInterviewNotesCompleted( $filename, $disk, $link));
+            case \App\Dtos\DownloadApplicantType::ZIP :
+                $sheetInstance->processZipInterviewNotes(function($interview_notes, $last_loop) use ($sheetInstance, $filename, $disk, $link, $company, $admin){
+					AddApplicantToExportInBits::dispatch($interview_notes, $company, $admin, $link , $disk, $filename, $last_loop, \App\Dtos\DownloadApplicantType::ZIP, $sheetInstance);
+				});
                 break;
         }
+
+        
     }
 }

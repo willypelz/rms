@@ -113,7 +113,7 @@ class DownloadApplicantDto  {
         $this->initializeSolrExpYears();
         $this->initializeTestScores();
         $this->initializeVideoApplicationScores();
-        $this->getAllApplicantsFromSolr();
+//         $this->getAllApplicantsFromSolr();
         return $this;
     }
 
@@ -239,9 +239,30 @@ class DownloadApplicantDto  {
      * Get All Applicants from Solr
     * @return array | null 
     */
-    protected function getAllApplicantsFromSolr()
+    protected function getAllApplicantsFromSolr($next)
     {
-        $all_applicants = SolrPackage::get_applicants( $this->search_params,
+	    $default_solr_row_size = 2000;
+	    $applicants = $this->getApplicantsByPagination(0, $default_solr_row_size);
+	    $total_count = $applicants["response"]["numFound"];
+	    \Log::info("Retrieving Applicants From Solr...");
+	    if( $total_count > $default_solr_row_size  ){
+		    $current_count = 0;
+		    while( ($start = $current_count * $default_solr_row_size )  < $total_count){
+			    ++$current_count;
+			    $this->all_applicants = $this->getApplicantsByPagination($start, $default_solr_row_size - 1);
+			    $next( ($this->all_applicants ? $this->all_applicants["response"] : null) , ( ( ($start +  $default_solr_row_size) > $total_count) ? true : false ) );
+		    }
+		    \Log::info("Applicants Retrieved Successfully from Solr.");
+		    return;
+	    }
+	    $next( $this->all_applicants ? $this->all_applicants["response"] : null, true );
+	    \Log::info("Applicants Retrieved Successfully from Solr.");
+	}
+    
+    protected function getApplicantsByPagination($start, $size){
+	    $this->search_params["start"] = $start;
+	    $this->search_params["rows"] = $size;
+	    return SolrPackage::get_applicants( $this->search_params,
                                             $this->getData()["jobId"],
                                             $this->getData()["status"],
                                             $this->solr_age,
@@ -249,7 +270,6 @@ class DownloadApplicantDto  {
                                             $this->solr_video_application_score, 
                                             $this->solr_test_score
                                         );
-        $this->all_applicants = $all_applicants ? $all_applicants["response"] : null;
     }
 
     /**
@@ -259,6 +279,15 @@ class DownloadApplicantDto  {
     public function getAllApplicants()
     {
         return $this->all_applicants;
+    }
+    
+    /**
+    * Set All Applicants
+    * @return array | null 
+    */
+    public function setAllApplicants($all_applicants)
+    {
+        $this->all_applicants = $all_applicants;
     }
 
      /**

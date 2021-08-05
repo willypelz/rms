@@ -892,6 +892,7 @@ class JobApplicationsController extends Controller
   
           return Response::download($zipPath, $filename,
                 ['Content-Type' => 'application/octet-stream']);
+
     }
 
     /**

@@ -908,7 +908,6 @@ class JobApplicationsController extends Controller
 
         $export_file = 'interview-note ' . date('Y_m_d_H_i_s') . '.csv';
 
-        // dd($application_ids);
         return Excel::download(new InterviewNoteExport($application_ids), $export_file);
     
     }

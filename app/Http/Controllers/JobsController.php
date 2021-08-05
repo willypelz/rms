@@ -2396,8 +2396,17 @@ class JobsController extends Controller
                 return redirect()->route('job-applied', [$jobID, $slug, true]);
             }
 
-            if ($request->hasFile('cv_file')) {
+            if ($request->hasFile('cv_file') ) {
 
+                if($fields->cv_file->is_required){
+                    $this->validate($request, [
+                        'cv_file' => 'required',
+                    ],
+                    $message =[
+                        'cv_file.required' => 'No CV file attached'
+                    ]
+                );
+                }
                 \Log::info(json_encode($request->file('cv_file')));
                 \Log::info(json_encode($request->email.'cv file size....'.$request->file('cv_file')->getSize()));
 
@@ -2472,8 +2481,62 @@ class JobsController extends Controller
                 }
 
             }
+            if (count($custom_fields) > 0) {
 
+                foreach ($custom_fields as $custom_field) {
+                    $name = 'cf_' . str_slug($custom_field->name, '_');
+                    $attr = $custom_field->name;
 
+                    if ($custom_field->type == "FILE" && $custom_field->is_required) {
+                        $this->validate($request, [
+                            $name => 'required|file|mimes:pdf,docx,doc',
+                        ],
+                        $message = [
+                            "$name.required" => "$attr file is required",
+                        ]
+                        );
+                    }
+                    if ($custom_field->type == 'MULTIPLE_OPTION' && $custom_field->is_required) {
+                        $this->validate($request, [
+                           $name  => 'required|array|min:1',
+                        ],
+                        $message = [
+                            "$name.required" => "$attr field is required",
+                        ]
+                        );
+                    } 
+                    if ($custom_field->type == 'CHECKBOX' && $custom_field->is_required) {
+                        $this->validate($request, [
+                            $name => ' required_without_all',
+                        ],
+                        $message = [
+                            "$name.required" => "$attr must be checked",
+                        ]
+                        );
+                    }
+                    if ($custom_field->type == 'DROPDOWN' || $custom_field->type == 'RADIO' && $custom_field->is_required) {
+                        $this->validate($request, [
+                            $name => 'required',
+                        ],
+                        $message = [
+                            "$name.required" => "$attr field is required",
+                        ]
+                        );
+                    
+                    }
+                    if ($custom_field->type == 'TEXTAREA' || $custom_field->type == 'TEXT'  && $custom_field->is_required) {
+                        $this->validate($request, [
+                            $name => 'required',
+                        ],
+                        $message = [
+                            "$name.required" => "$attr field is required",
+                        ]
+                        );
+                    } 
+                }
+
+            }
+            
             $data['created'] = date('Y-m-d H:i:s');
             $data['action_date'] = date('Y-m-d H:i:s');
 
@@ -2615,7 +2678,6 @@ class JobsController extends Controller
 
 
             if ($request->hasFile('cv_file')) {
-
                 $destinationPath = env('fileupload') . '/CVs';
                 findOrMakeDirectory($destinationPath);
                 $request->file('cv_file')->move($destinationPath, $data['cv_file']);

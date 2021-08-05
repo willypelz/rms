@@ -18,15 +18,12 @@ class ApplicantsExport implements FromCollection, WithHeadings, WithEvents
 {
     use Exportable, RegistersEventListeners;
 
-	private $data,$link;
-    protected static $static_file_name;
+	private $data;
 
 
-	public function __construct($data,$link)
+	public function __construct($data)
 	{
 	    $this->data = $data;
-        $this->link = $link;
-        self::$static_file_name = $this->link;
 	}
 
 
@@ -69,22 +66,4 @@ class ApplicantsExport implements FromCollection, WithHeadings, WithEvents
         return collect($this->data);
     }
 
-    /**
-     * Before exporting, make sure the correct
-     * existing sheet is retrieved
-     *
-     * @param mixed $event
-     * @return \Maatwebsite\Excel\Sheet
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
-     */
-
-     public static function beforeWriting(BeforeWriting $event)
-     {
-         $file = new LocalTemporaryFile(storage_path('app/public').self::$static_file_name);
-         $event->writer->reopen($file, \Maatwebsite\Excel\Excel::XLSX);
-         $sheet = $event->writer->getSheetByIndex(0);
-         $sheet->export($event->getConcernable());
-         return $sheet;
-     }
 }

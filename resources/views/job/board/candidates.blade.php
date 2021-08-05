@@ -851,10 +851,7 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-                    $.get("{{ route('download-applicant-spreadsheet') }}" + "?" + $.param($data), {
-                    }, function (data) {
-                        displayReponseFromData(data)
-                    });
+                    window.open("{{ route('download-applicant-spreadsheet') }}" + "?" + $.param($data), '_blank');
                 });
 
                 $('body').on('click', '#downCv', function () {
@@ -870,10 +867,8 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-                    $.get("{{ route('download-applicant-cv') }}" + "?" + $.param($data), {
-                    }, function (data) {
-                        displayReponseFromData(data)
-                    });
+
+                    window.open("{{ route('download-applicant-cv') }}" + "?" + $.param($data), '_blank');
                 });
 
 
@@ -890,11 +885,7 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-                    $.get("{{ route('download-interview-notes') }}" + "?" + $.param($data), {
-                    }, function (data) {
-                        displayReponseFromData(data)
-                    });
-
+                    window.open("{{ route('download-interview-notes') }}" + "?" + $.param($data), '_blank');
             });
 
                 $('body').on('click', '#downloadInterviewNotesInCSV', function () {
@@ -910,11 +901,7 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-                    $.get("{{ route('download-interview-notes-csv') }}" + "?" + $.param($data), {
-                    }, function (data) {
-                        displayReponseFromData(data)
-                    });
-
+                    window.open("{{ route('download-interview-notes-csv') }}" + "?" + $.param($data), '_blank');
                 });
         });
 

@@ -2502,7 +2502,7 @@ class JobsController extends Controller
                     ]);
                 }
             
-                $school_id = isset($data['others']) ? $school->id : $data['shool'];
+                $school_id = isset($data['others']) ? $school->id : $data['school'];
             }
 
             if ($fields->remuneration->is_visible && (isset($data['maximum_renumeration'])) &&  (isset($data['minimum_renumeration']))) {
@@ -2570,7 +2570,7 @@ class JobsController extends Controller
                 $cv->graduation_grade = $data['graduation_grade'];
             }
             if ($fields->school->is_visible && isset($data['school'])) {
-                $cv->school = $school_id;
+                $cv->school_id = $school_id;
             }
             if ($fields->course_of_study->is_visible && isset($data['course_of_study'])) {
                 $cv->course_of_study = $data['course_of_study'];

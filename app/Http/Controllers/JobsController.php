@@ -2396,14 +2396,14 @@ class JobsController extends Controller
                 return redirect()->route('job-applied', [$jobID, $slug, true]);
             }
 
-            if ($request->hasFile('cv_file') ) {
+            if ($request->hasFile('cv_file') || $fields->cv_file->is_required ) {
 
                 if($fields->cv_file->is_required){
                     $this->validate($request, [
                         'cv_file' => 'required',
                     ],
                     $message =[
-                        'cv_file.required' => 'No CV file attached'
+                        'cv_file.required' => 'No CV file was attached'
                     ]
                 );
                 }
@@ -2481,6 +2481,7 @@ class JobsController extends Controller
                 }
 
             }
+
             if (count($custom_fields) > 0) {
 
                 foreach ($custom_fields as $custom_field) {
@@ -2493,6 +2494,7 @@ class JobsController extends Controller
                         ],
                         $message = [
                             "$name.required" => "$attr file is required",
+                            "$name.mimes" => "$attr must be a docx, doc or pdf file"
                         ]
                         );
                     }

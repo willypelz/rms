@@ -2395,7 +2395,7 @@ class JobsController extends Controller
             if ($owned_applications_count > 0) {
                 return redirect()->route('job-applied', [$jobID, $slug, true]);
             }
-
+            //validate if request has cv_file or cv_file is a required field
             if ($request->hasFile('cv_file') || $fields->cv_file->is_required) {
 
                 if($fields->cv_file->is_required){
@@ -2487,57 +2487,23 @@ class JobsController extends Controller
                 foreach ($custom_fields as $custom_field) {
                     $name = 'cf_' . str_slug($custom_field->name, '_');
                     $attr = $custom_field->name;
-
-                    if ($custom_field->type == "FILE" && $custom_field->is_required) {
-                        $this->validate($request, [
-                            $name => 'required|file|mimes:pdf,docx,doc',
-                        ],
-                        $message = [
-                            "$name.required" => "$attr file is required",
-                            "$name.mimes" => "$attr must be a docx, doc or pdf file"
-                        ]
-                        );
-                    }
-                    if ($custom_field->type == 'MULTIPLE_OPTION' && $custom_field->is_required) {
-                        $this->validate($request, [
-                           $name  => 'required|array|min:1',
-                        ],
-                        $message = [
-                            "$name.required" => "$attr field is required",
-                        ]
-                        );
-                    } 
-                    if ($custom_field->type == 'CHECKBOX' && $custom_field->is_required) {
-                        $this->validate($request, [
-                            $name => ' required_without_all',
-                        ],
-                        $message = [
-                            "$name.required" => "$attr must be checked",
-                        ]
-                        );
-                    }
-                    if ($custom_field->type == 'DROPDOWN' || $custom_field->type == 'RADIO' && $custom_field->is_required) {
-                        $this->validate($request, [
-                            $name => 'required',
-                        ],
-                        $message = [
-                            "$name.required" => "$attr field is required",
-                        ]
-                        );
+                    $field_type = $custom_field->type;
+                    $required = $custom_field->is_required;
                     
+                    if($required){
+                        $validate = validateCustomFields($name,$attr,$field_type, $required,$request);
+                        $validate->validate(); 
                     }
-                    if ($custom_field->type == 'TEXTAREA' || $custom_field->type == 'TEXT'  && $custom_field->is_required) {
-                        $this->validate($request, [
-                            $name => 'required',
-                        ],
-                        $message = [
-                            "$name.required" => "$attr field is required",
-                        ]
-                        );
-                    } 
+                    if($request->hasFile("$name") && $field_type == "FILE"){
+                        if ($request->file("$name")->getSize()  < 1 || !in_array($request->file("$name")->getClientOriginalExtension(),['pdf','doc','docx']) ) {
+                            return back()->withErrors(['warning' => "Invalid file was attached. Please check and try again."])->withInput();
+                        }
+                    }
+                    
                 }
 
             }
+            dd("No failure");
             
             $data['created'] = date('Y-m-d H:i:s');
             $data['action_date'] = date('Y-m-d H:i:s');

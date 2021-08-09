@@ -2496,14 +2496,13 @@ class JobsController extends Controller
                     }
                     if($request->hasFile("$name") && $field_type == "FILE"){
                         if ($request->file("$name")->getSize()  < 1 || !in_array($request->file("$name")->getClientOriginalExtension(),['pdf','doc','docx']) ) {
-                            return back()->withErrors(['warning' => "Invalid file was attached. Please check and try again."])->withInput();
+                            return redirect()->back()->withInput()->withErrors(['warning' => "Invalid file was attached. Please check and try again."]);
                         }
                     }
                     
                 }
 
             }
-            dd("No failure");
             
             $data['created'] = date('Y-m-d H:i:s');
             $data['action_date'] = date('Y-m-d H:i:s');

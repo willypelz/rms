@@ -602,7 +602,7 @@
                                                                             }
                                                                             ?>
                                                                             {{ Form::file('cf_'.str_slug($custom_field->name,'_'),array('class'=>'form-control', ( $custom_field->is_required ) ? "required" : "" )) }}
-
+                                                                            <small>Allowed files are doc, docx and pdf</small>
                                                                         @endif
 
 

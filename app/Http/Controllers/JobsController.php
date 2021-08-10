@@ -2405,9 +2405,18 @@ class JobsController extends Controller
             if ($owned_applications_count > 0) {
                 return redirect()->route('job-applied', [$jobID, $slug, true]);
             }
+            //validate if request has cv_file or cv_file is a required field
+            if ($request->hasFile('cv_file') || $fields->cv_file->is_required) {
 
-            if ($request->hasFile('cv_file')) {
-
+                if($fields->cv_file->is_required){
+                    $this->validate($request, [
+                        'cv_file' => 'required',
+                    ],
+                    $message =[
+                        'cv_file.required' => 'No CV file was attached'
+                    ]
+                );
+                }
                 \Log::info(json_encode($request->file('cv_file')));
                 \Log::info(json_encode($request->email.'cv file size....'.$request->file('cv_file')->getSize()));
 
@@ -2483,7 +2492,6 @@ class JobsController extends Controller
 
             }
 
-
             if ($fields->completed_nysc->is_visible && (isset($data['completed_nysc']))) {
 
                 if ($data['completed_nysc'] == 'yes') {
@@ -2513,7 +2521,27 @@ class JobsController extends Controller
                 }
             }
             
+            if (count($custom_fields) > 0) {
+                foreach ($custom_fields as $custom_field) {
+                    $name = 'cf_' . str_slug($custom_field->name, '_');
+                    $attr = $custom_field->name;
+                    $field_type = $custom_field->type;
+                    $required = $custom_field->is_required;
+                    
+                    if($required){
+                        $validate = validateCustomFields($name,$attr,$field_type, $required,$request);
+                        $validate->validate(); 
+                    }
+                    if($request->hasFile("$name") && $field_type == "FILE"){
+                        if ($request->file("$name")->getSize()  < 1 || !in_array($request->file("$name")->getClientOriginalExtension(),['pdf','doc','docx']) ) {
+                            return redirect()->back()->withInput()->withErrors(['warning' => "Invalid file was attached. Please check and try again."]);
+                        }
+                    }
+                    
+                }
 
+            }
+            
             $data['created'] = date('Y-m-d H:i:s');
             $data['action_date'] = date('Y-m-d H:i:s');
 
@@ -2668,7 +2696,6 @@ class JobsController extends Controller
 
 
             if ($request->hasFile('cv_file')) {
-
                 $destinationPath = env('fileupload') . '/CVs';
                 findOrMakeDirectory($destinationPath);
                 $request->file('cv_file')->move($destinationPath, $data['cv_file']);

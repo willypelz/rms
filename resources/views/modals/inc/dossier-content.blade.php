@@ -265,7 +265,7 @@
 
                                 <hr style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: content-box;box-sizing: content-box;margin-top: 20px;margin-bottom: 20px;border: 0;border-top: 1px solid #eee;height: 0;">
 
-                                @foreach( $note as $option )
+                                            @foreach( $note as $option )
 
                                                 @if( $option->interview_note_option->type == 'text' )
                                                 <div class="" style="margin: 0;padding: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">
@@ -274,7 +274,7 @@
 
 
                                                 </div>
-                                                <?php $index++; ?>
+                                                
                                                 @endif
                                             @endforeach
 

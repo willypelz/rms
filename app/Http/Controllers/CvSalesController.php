@@ -203,7 +203,7 @@ class CvSalesController extends Controller
     public function getCvPreview(Request $request)
     {
         $cv = Cv::find($request->cv_id);
-        $school = $cv->school->name;
+        $cv_school = $cv;
         $cv = $cv->toArray();
         $cv['dob'] = @$cv['date_of_birth'];
         $is_applicant = $request->is_applicant;
@@ -214,7 +214,7 @@ class CvSalesController extends Controller
         }
 
         // dd( FormFieldValues::where('job_application_id') )
-        return view('cv-sales.includes.cv-preview',compact("cv", "is_applicant", "appl", 'is_embedded','school'));
+        return view('cv-sales.includes.cv-preview',compact("cv", "is_applicant", "appl", 'is_embedded','cv_school'));
     }
 
     public function saveCvPreview(){ // to solr

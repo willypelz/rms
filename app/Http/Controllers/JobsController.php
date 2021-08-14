@@ -54,7 +54,7 @@ use App\Rules\PrivateEmailRule;
 use App\Imports\PrivateJobEmail;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\HeadingRowImport;
-
+use App\Models\School;
 // use Zipper;
 
 class JobsController extends Controller
@@ -516,13 +516,13 @@ class JobsController extends Controller
             } else {
                 if (empty($user) or is_null($user)) {
                     // create user if a first time visitor with link
-                     //NOTE: Changed firstOrCreate to save() since it was failing
-                     $user = new User();
-                     $user->email = $job_team_invite->email;
-                     $user->name = $job_team_invite->name;
-                     $user->username = $job_team_invite->username;
-                     $user->is_internal = $is_internal;
-                     $user->save();
+                    //NOTE: Changed firstOrCreate to save() since it was failing
+                    $user = new User();
+                    $user->email = $job_team_invite->email;
+                    $user->name = $job_team_invite->name;
+                    $user->username = $job_team_invite->username;
+                    $user->is_internal = $is_internal;
+                    $user->save();
                 } else {
                     $is_new_user = false;
                 }
@@ -2356,6 +2356,15 @@ class JobsController extends Controller
             }
         }
 
+        $candidate_cvs = CV::where('email', $candidate->email)->pluck('id');
+        $candidate_applied_jobs = JobApplication::whereIn('cv_id', $candidate_cvs)->where(
+            'job_id', $job->id
+        )->count();
+
+        if ($candidate_applied_jobs > 0) {
+            return redirect()->to('/candidate/dashboard')->with('error','You have already applied for this job');
+        }
+
         $company = $job->company;
         $specializations = Specialization::get();
 
@@ -2382,6 +2391,7 @@ class JobsController extends Controller
 
         $states = $this->states;
         $countries = countries();
+        $schools = School::get();
 
         $custom_fields = (object)$job->form_fields()->where('is_visible', 1)->get();
         $fields = json_decode($job->fields);
@@ -2482,6 +2492,36 @@ class JobsController extends Controller
 
             }
 
+
+            if ($fields->completed_nysc->is_visible && (isset($data['completed_nysc']))) {
+
+                if ($data['completed_nysc'] == 'yes') {
+                    $nysc = 1;
+                }else{
+                    $nysc = 0;
+                }
+
+            }
+
+            if ($fields->school->is_visible && (isset($data['school']))) {
+
+                if($data['school']=='others'){
+                    $school = School::FirstOrCreate([
+                        'name' => $data['others']
+                    ]);
+                }
+            
+                $school_id = isset($data['others']) ? $school->id : $data['school'];
+            }
+
+            if ($fields->remuneration->is_visible && (isset($data['maximum_renumeration'])) &&  (isset($data['minimum_renumeration']))) {
+
+                if ($request->maximum_remuneration <= $request->minimum_remuneration ) {
+                    
+                    return back()->withErrors(['warning' => 'Maximum Remuneration cannot be less than Minimum Renumeration.']);
+                }
+            }
+            
             if (count($custom_fields) > 0) {
 
                 foreach ($custom_fields as $custom_field) {
@@ -2559,11 +2599,24 @@ class JobsController extends Controller
             if ($fields->graduation_grade->is_visible && isset($data['date_of_birth'])) {
                 $cv->graduation_grade = $data['graduation_grade'];
             }
+            if ($fields->school->is_visible && isset($data['school'])) {
+                $cv->school_id = $school_id;
+            }
+            if ($fields->course_of_study->is_visible && isset($data['course_of_study'])) {
+                $cv->course_of_study = $data['course_of_study'];
+            }
+            if ($fields->completed_nysc->is_visible && isset($data['completed_nysc'])) {
+                $cv->completed_nysc = $nysc;
+            }
             if ($fields->willing_to_relocate->is_visible && isset($data['willing_to_relocate'])) {
                 $cv->willing_to_relocate = $data['willing_to_relocate'];
             }
             if ($fields->cv_file->is_visible && isset($data['cv_file'])) {
                 $cv->cv_file = $data['cv_file'];
+            }
+            if ($fields->remuneration->is_visible && isset($data['maximum_remuneration']) && isset($data['minimum_remuneration'])) {
+                $cv->cv_file = $data['minimum_remuneration'];
+                $cv->cv_file = $data['maximum_remuneration'];
             }
 
             if ($fields->state_of_origin->is_visible && (isset($data['location']) || isset($data['country']))) {
@@ -2711,7 +2764,7 @@ class JobsController extends Controller
 
 	    return view('job.job-apply', compact('job', 'qualifications', 'states', 'company',
 		    'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate',
-		    'last_cv', 'fields','countries','privacy_policy'));
+		    'last_cv', 'fields','countries','privacy_policy','schools'));
 
     }
 

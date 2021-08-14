@@ -113,7 +113,9 @@ class DownloadApplicantDto  {
         $this->initializeSolrExpYears();
         $this->initializeTestScores();
         $this->initializeVideoApplicationScores();
+
 //         $this->getAllApplicantsFromSolr();
+
         return $this;
     }
 
@@ -239,6 +241,7 @@ class DownloadApplicantDto  {
      * Get All Applicants from Solr
     * @return array | null 
     */
+
     protected function getAllApplicantsFromSolr($next)
     {
 	    $default_solr_row_size = 2000;
@@ -280,6 +283,16 @@ class DownloadApplicantDto  {
     {
         return $this->all_applicants;
     }
+    
+    /**
+    * Set All Applicants
+    * @return array | null 
+    */
+    public function setAllApplicants($all_applicants)
+    {
+        $this->all_applicants = $all_applicants;
+    }
+
     
     /**
     * Set All Applicants

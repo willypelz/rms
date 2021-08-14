@@ -48,6 +48,7 @@ class DownloadApplicantCvDto extends DownloadApplicantDto {
         $ids = array_pluck($this->getDataFromApplicants("docs"), 'id');
         $this->appendPathToSelectedCvs($cvs, $ids);
         return $this;
+
     }
 
     /**
@@ -96,6 +97,12 @@ class DownloadApplicantCvDto extends DownloadApplicantDto {
     public function processApplicantsCvs(\Closure $next){
 	     $this->getAllApplicantsFromSolr($next);
 	}
+
+    
+    public function processApplicantsCvs(\Closure $next){
+	     $this->getAllApplicantsFromSolr($next);
+	}
+
 
 
 }

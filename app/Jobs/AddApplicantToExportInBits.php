@@ -15,10 +15,12 @@ use App\Notifications\NotifyAdminOfApplicantsInterviewNoteExportCompleted;
 use App\Notifications\NotifyAdminOfApplicantsInterviewNotesCompleted;
 use Madnest\Madzipper\Facades\Madzipper;
 
+
 class AddApplicantToExportInBits implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     protected $payload, $company, $admin, $disk, $link, $last_loop, $filename, $type, $sheetInstance;
+
 
     /**
      * Create a new job instance.
@@ -29,6 +31,7 @@ class AddApplicantToExportInBits implements ShouldQueue
      * @param $disk
      * @param $excelData
      */
+
     public function __construct($payload, $company, $admin, $link , $disk, $filename,  $last_loop, $type, $sheetInstance = null)
     {
         $this->payload = $payload;
@@ -50,6 +53,7 @@ class AddApplicantToExportInBits implements ShouldQueue
      * @return void
      */
     public function handle(){
+
 		switch($this->type){
             case \App\Dtos\DownloadApplicantType::CSV :
         			Excel::store( new InterviewNoteExport($this->csv_interview_notes_excel_file, $this->company, $this->admin), $this->link , $this->disk);

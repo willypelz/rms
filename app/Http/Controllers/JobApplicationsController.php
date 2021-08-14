@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App;
+use App\Imports\BulkImportOfApplicantsToWorkflowStage;
 use App\Exports\ApplicantsExport;
 use App\Exports\InterviewNoteExport;
 use App\Jobs\AddApplicantToExportInBits;
@@ -560,6 +561,7 @@ class JobApplicationsController extends Controller
      */
     public function downloadApplicantSpreadsheet(Request $request)
     {
+
         set_time_limit(0);
         
         //Check if you should have access to the excel
@@ -708,6 +710,7 @@ class JobApplicationsController extends Controller
 
         return Excel::download(new ApplicantsExport($excel_data), $filename);
 
+
     }
 
     
@@ -718,6 +721,7 @@ class JobApplicationsController extends Controller
      */
     public function downloadApplicantCv(Request $request)
     {
+
     //Check if you should have access to the excel
     check_if_job_owner($request->jobId);
 
@@ -835,6 +839,7 @@ class JobApplicationsController extends Controller
 
     return Response::download($path . $filename, date('y-m-d').$job->title.'Cv.zip', ['Content-Type' => 'application/octet-stream']);
 
+
     }
 
     /**
@@ -842,6 +847,7 @@ class JobApplicationsController extends Controller
      * @param Illuminate\Http\Request $request
      * @return Illuminate\Http\Response
      */
+
     public function downloadInterviewNotes(Request $request)
     {
         $job = Job::with('applicants')->find($request->jobId);
@@ -895,10 +901,12 @@ class JobApplicationsController extends Controller
 
     }
 
+
     /**
      * @param  Illuminate\Http\Request $request
      * @return Illuminate\Http\Response
      */
+
     public function downloadInterviewNotesCSV(Request $request){
         ini_set('memory_limit', '1024M');
         set_time_limit(0);
@@ -911,6 +919,7 @@ class JobApplicationsController extends Controller
 
         return Excel::download(new InterviewNoteExport($application_ids), $export_file);
     
+
     }
 
     public function downloadApplicantsInterviewFile(string $disk, string $filename)
@@ -1949,7 +1958,7 @@ class JobApplicationsController extends Controller
             get_current_company()->id)->first();
 
         $interview_note_options = InterviewNoteOptions::where('company_id',
-            get_current_company()->id)->where('interview_template_id', $request->interview_template_id)->get();
+            get_current_company()->id)->where('interview_template_id', $request->interview_template_id)->orderBy('sort_order','ASC')->get();
 
         $interview_template_id = $request->interview_template_id;
         return view('job.interview-note-options',
@@ -2181,5 +2190,38 @@ class JobApplicationsController extends Controller
         }
 
 
+    }
+
+    public function deleteInterviewNoteOptions(Request $request)
+    {
+        $data = [
+            "interview_note_option_id" => "required"
+        ];
+        $data = $request->validate($data);
+        $interview_note_option = InterviewNoteOptions::where('id', $data["interview_note_option_id"])->where('company_id',get_current_company()->id)->first();
+        if($interview_note_option){
+            $deleted = $interview_note_option->delete();
+            if ($deleted)
+                return redirect()->back()->with(["success" => "$interview_note_option->name template  deleted successfully"]);
+        }
+        return redirect()->back()->with(["danger" => "Operation delete $interview_note_option->name template  unsuccessful"]);
+    }
+
+    public function sortInterviewNoteOptions(){
+        
+        $id_array = request()->ids;
+        $sorting = 1;
+
+        foreach ($id_array as $id){
+            $add = InterviewNoteOptions::where('id','=', $id)->first();
+            $add->sort_order = $sorting;
+            $add->save();
+            $sorting++;
+        }
+        return response()->json([
+            'status' => true,
+            'message' => "reordered successfully"
+        ]);
+        
     }
 }

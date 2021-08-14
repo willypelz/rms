@@ -43,6 +43,7 @@ class AddApplicantToExportInBits implements ShouldQueue
         $this->filename = $filename;
         $this->type = $type;
 		$this->sheetInstance = $sheetInstance;
+
      }
 
 

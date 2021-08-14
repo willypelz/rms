@@ -2492,6 +2492,7 @@ class JobsController extends Controller
 
             }
 
+
             if ($fields->completed_nysc->is_visible && (isset($data['completed_nysc']))) {
 
                 if ($data['completed_nysc'] == 'yes') {
@@ -2522,6 +2523,7 @@ class JobsController extends Controller
             }
             
             if (count($custom_fields) > 0) {
+
                 foreach ($custom_fields as $custom_field) {
                     $name = 'cf_' . str_slug($custom_field->name, '_');
                     $attr = $custom_field->name;

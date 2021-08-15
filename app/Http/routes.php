@@ -44,6 +44,8 @@ Route::post("/api/v1/delete-super-admin", "HrmsIntegrationController@deleteSuper
  */
 Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 
+    Route::get('/download-bulk-upload-applicant-to-workflow-stage-template', "BulkUploadApplicantsToWorkflowStepContoller@downloadBulkApplicantsToWorkflowStagesTemplate")->name("download-bulk-upload-applicant-to-workflow-stage-template");
+
     Route::get('/ping', 'SolariumController@ping');
     Route::get('/audit-trails', 'AuditController@index')->name('audit-trails');
     Route::resource('schedule', 'ScheduleController');
@@ -404,6 +406,12 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::match(['get', 'post'], 'settings/interview-notes/options/create/{interview_template_id}',
         ['as' => 'interview-note-option-create', 'uses' => 'JobApplicationsController@createInterviewNoteOptions']);
 
+    Route::match(['get', 'post'], 'settings/interview-notes/options/template/delete/',
+        ['as' => 'interview-note-option-delete', 'uses' => 'JobApplicationsController@deleteInterviewNoteOptions']);
+
+    Route::get('settings/interview-notes/options/template/sort/',
+        ['as' => 'interview-note-option-sort', 'uses' => 'JobApplicationsController@sortInterviewNoteOptions']);
+
     Route::get('modal/background-check',
         ['as' => 'modal-background-check', 'uses' => 'JobApplicationsController@modalBackgroundCheck']);
     Route::get('modal/medical-check',
@@ -467,6 +475,9 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
             ->name('modal-step-action');
 
         Route::match(['get', 'post'], 'modal/approve', 'JobApplicationsController@modalApprove')->name('modal-approve');
+
+        Route::get('modal/approve-bulk-upload-to-current-workflow-stage', 'BulkUploadApplicantsToWorkflowStepContoller@getBulkUploadToCurrentWorkflowStage')->name('get-modal-bulk-upload-to-current-workflow-stage');
+        Route::post('modal/approve-bulk-upload-to-current-workflow-stage', 'BulkUploadApplicantsToWorkflowStepContoller@postBulkUploadToCurrentWorkflowStage')->name('post-modal-bulk-upload-to-current-workflow-stage');
 
     });
 
@@ -676,7 +687,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'decline-invite/{id}',  ['uses' => 'JobsController@declineInvite', 'as' => 'decline-invite']);
 
-    Route::match(['get', 'post'], 'select-company/{slug?}', ['uses' => 'JobsController@selectCompany', 'as' => 'select-company']);
+    Route::match(['get', 'post'], 'select-company/{slug?}', ['uses' => 'JobsController@selectCompany', 'as' => 'select-company'])->middleware('auth');
 
     Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
 

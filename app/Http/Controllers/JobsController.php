@@ -2492,7 +2492,7 @@ class JobsController extends Controller
 
             }
 
-            if ($fields->completed_nysc->is_visible && (isset($data['completed_nysc']))) {
+            if (isset($fields->completed_nysc->is_visible) && $fields->completed_nysc->is_visible && (isset($data['completed_nysc']))) {
 
                 if ($data['completed_nysc'] == 'yes') {
                     $nysc = 1;
@@ -2502,7 +2502,7 @@ class JobsController extends Controller
 
             }
 
-            if ($fields->school->is_visible && (isset($data['school']))) {
+            if (isset($fields->school->is_visible) && $fields->school->is_visible && (isset($data['school']))) {
 
                 if($data['school']=='others'){
                     $school = School::FirstOrCreate([
@@ -2510,10 +2510,10 @@ class JobsController extends Controller
                     ]);
                 }
             
-                $school_id = isset($data['others']) ? $school->id : $data['school'];
+                $school_id = isset($data['others']) && isset($school) ? $school->id : $data['school'];
             }
 
-            if ($fields->remuneration->is_visible && (isset($data['maximum_renumeration'])) &&  (isset($data['minimum_renumeration']))) {
+            if (isset($fields->remuneration->is_visible) && $fields->remuneration->is_visible && (isset($data['maximum_renumeration'])) &&  (isset($data['minimum_renumeration']))) {
 
                 if ($request->maximum_remuneration <= $request->minimum_remuneration ) {
                     
@@ -2597,13 +2597,13 @@ class JobsController extends Controller
             if ($fields->graduation_grade->is_visible && isset($data['date_of_birth'])) {
                 $cv->graduation_grade = $data['graduation_grade'];
             }
-            if ($fields->school->is_visible && isset($data['school'])) {
+            if (isset($fields->school->is_visible) && $fields->school->is_visible && isset($data['school'])) {
                 $cv->school_id = $school_id;
             }
-            if ($fields->course_of_study->is_visible && isset($data['course_of_study'])) {
+            if (isset($fields->course_of_study->is_visible) && $fields->course_of_study->is_visible && isset($data['course_of_study'])) {
                 $cv->course_of_study = $data['course_of_study'];
             }
-            if ($fields->completed_nysc->is_visible && isset($data['completed_nysc'])) {
+            if (isset($fields->completed_nysc->is_visible) && $fields->completed_nysc->is_visible && isset($data['completed_nysc'])) {
                 $cv->completed_nysc = $nysc;
             }
             if ($fields->willing_to_relocate->is_visible && isset($data['willing_to_relocate'])) {
@@ -2612,7 +2612,7 @@ class JobsController extends Controller
             if ($fields->cv_file->is_visible && isset($data['cv_file'])) {
                 $cv->cv_file = $data['cv_file'];
             }
-            if ($fields->remuneration->is_visible && isset($data['maximum_remuneration']) && isset($data['minimum_remuneration'])) {
+            if (isset($fields->remuneration->is_visible) && $fields->remuneration->is_visible && isset($data['maximum_remuneration']) && isset($data['minimum_remuneration'])) {
                 $cv->cv_file = $data['minimum_remuneration'];
                 $cv->cv_file = $data['maximum_remuneration'];
             }

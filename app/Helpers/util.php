@@ -19,6 +19,7 @@ use Carbon\Carbon;
 use Ixudra\Curl\Facades\Curl;
 use App\User;
 use App\Enum\Configs;
+use Illuminate\Support\Facades\Validator;
 
 // use Faker;
 
@@ -348,6 +349,24 @@ function check_if_job_owner($job_id)
     }
 
 
+}
+
+function check_if_job_owner_on_queue($job_id, $current_company, $user)
+{
+    $job_access = Job::where('id', $job_id)->whereHas('users', function ($q) use ($user) {
+        $q->where('user_id', $user->id);
+    })->get()->pluck('id')->toArray();
+
+    $company_role = $current_company->users()->wherePivot('user_id', $user->id)->first()->pivot->role;
+
+
+    if (!$company_role && $user->is_super_admin != 1) {
+
+        if (!in_array($job_id, $job_access)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 function get_current_company()
@@ -1001,4 +1020,54 @@ function canSwitchBetweenPage(){
 function isHrmsCompaniesSyncedWithRms(){
 	$rmsDefaultCompany = Company::whereNotNull('hrms_id')->whereIsDefault(true)->first();
 	return $rmsDefaultCompany ? true : false;
+}
+
+function saveFileFromHrms($file_name, $file_url){
+    File::put( public_path("uploads/CVs/$file_name"), $file_url);
+}
+
+function validateCustomFields($name,$attr,$field_type,$required,$request){
+   
+    if ($field_type == "FILE" && $required) {
+        $rule = [
+            $name => 'required|file'
+        ];
+        $message = [
+            "$name.required" => "$attr file is required",
+        ];
+        
+    }elseif($field_type == 'MULTIPLE_OPTION' && $required) {
+        $rule = [
+            $name => 'required|array|min:1'
+        ];
+        $message = [
+            "$name.required" => "$attr field is required",
+        ];
+            
+    }elseif($field_type == 'CHECKBOX' && $required) {
+        $rule = [
+            $name => 'required_without_all',
+        ];
+        $message = [
+            "$name.required_without_all" => "$attr field is required",
+        ];
+        
+    }elseif($field_type == 'DROPDOWN' || $field_type == 'RADIO' && $required) {
+        $rule = [
+            $name => 'required'
+        ];
+        $message = [
+            "$name.required" => "$attr field is required",
+        ];
+    }elseif ($field_type == 'TEXTAREA' || $field_type == 'TEXT'  && $required) {
+        $rule = [
+            $name => 'required'
+        ];
+        $message = [
+            "$name.required" => "$attr field is required",
+        ];
+        
+    }
+    $validator = Validator::make($request->all(),$rule,$message);
+    return $validator;
 }

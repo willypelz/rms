@@ -3,17 +3,22 @@
 namespace App\Exports;
 
 use App\JobApplication;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Events\BeforeWriting;
+use Maatwebsite\Excel\Files\LocalTemporaryFile;
 
 class ApplicantsExport implements FromCollection, WithHeadings, WithEvents
 {
+    use Exportable, RegistersEventListeners;
 
 	private $data;
-
 
 
 	public function __construct($data)
@@ -49,7 +54,7 @@ class ApplicantsExport implements FromCollection, WithHeadings, WithEvents
 
 	public function headings(): array
     {
-        return array_keys($this->data[0]);
+        return array_keys(collect($this->data)->toArray()[0]);
     }
 
 
@@ -60,4 +65,5 @@ class ApplicantsExport implements FromCollection, WithHeadings, WithEvents
     {
         return collect($this->data);
     }
+
 }

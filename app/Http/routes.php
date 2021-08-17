@@ -28,7 +28,6 @@ use App\Libraries\Solr;
 use Illuminate\Support\Facades\Route;
 
 // URL::forceSchema('https');
-
 Route::group(['middleware' => ['web']], function () {
     Route::get('/sso/auto/login/verify/{email}/{key}', 'Auth\LoginController@singleSignOnVerify');
     Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
@@ -183,6 +182,10 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::match(['get', 'post'], 'job/import-cv-file', ['uses' => 'JobsController@UploadCVfile', 'as' => 'upload-file']);
 
     Route::get('/one_applicant', 'JobApplication@oneApplicantData');
+    
+    Route::resource('schedule', 'JobApplicationsController');
+
+    Route::get('/download_applicants_interview_file/{disk}/{filename}', 'JobApplicationsController@downloadApplicantsInterviewFile')->name("download_applicants_interview_file");
 
     Route::match(['get', 'post'], 'one_applicant',
         ['uses' => 'JobApplicationsController@oneApplicantData']);
@@ -217,6 +220,8 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::post('job/applicant/mass-action', ['uses' => 'JobApplicationsController@massAction', 'as' => 'mass-action']);
     Route::post('job/applicant/write-review',
         ['uses' => 'JobApplicationsController@writeReview', 'as' => 'write-review']);
+    //PrivateJobs
+    Route::delete('privatejob-email/remove/{id}','PrivateJobController@destroy')->name('remove-attached-email');
 
     //Specialization
     Route::get('list-job-specialization', 'SpecializationController@index')->name('specialization');;
@@ -401,6 +406,12 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::match(['get', 'post'], 'settings/interview-notes/options/create/{interview_template_id}',
         ['as' => 'interview-note-option-create', 'uses' => 'JobApplicationsController@createInterviewNoteOptions']);
 
+    Route::match(['get', 'post'], 'settings/interview-notes/options/template/delete/',
+        ['as' => 'interview-note-option-delete', 'uses' => 'JobApplicationsController@deleteInterviewNoteOptions']);
+
+    Route::get('settings/interview-notes/options/template/sort/',
+        ['as' => 'interview-note-option-sort', 'uses' => 'JobApplicationsController@sortInterviewNoteOptions']);
+
     Route::get('modal/background-check',
         ['as' => 'modal-background-check', 'uses' => 'JobApplicationsController@modalBackgroundCheck']);
     Route::get('modal/medical-check',
@@ -581,6 +592,10 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.contact');
     });
 
+    Route::get('download-csv-template',
+    ['uses' => 'PrivateJobController@exportCsvTemplate', 
+    'as' => 'download-privatejob-template']);
+
     Route::post('/contact', function () {
         $request = request();
         $data = $request->all();
@@ -672,7 +687,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'decline-invite/{id}',  ['uses' => 'JobsController@declineInvite', 'as' => 'decline-invite']);
 
-    Route::match(['get', 'post'], 'select-company/{slug?}', ['uses' => 'JobsController@selectCompany', 'as' => 'select-company']);
+    Route::match(['get', 'post'], 'select-company/{slug?}', ['uses' => 'JobsController@selectCompany', 'as' => 'select-company'])->middleware('auth');
 
     Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
 

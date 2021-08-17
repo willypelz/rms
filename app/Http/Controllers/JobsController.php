@@ -29,6 +29,7 @@ use App\Models\TestRequest;
 use App\Models\VideoApplicationOptions;
 use App\Models\VideoApplicationValues;
 use App\Models\Workflow;
+use App\Models\PrivateJob;
 use App\User;
 use Auth;
 use Carbon\Carbon;
@@ -49,7 +50,11 @@ use Mail;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use Session;
 use Validator;
-
+use App\Rules\PrivateEmailRule;
+use App\Imports\PrivateJobEmail;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\HeadingRowImport;
+use App\Models\School;
 // use Zipper;
 
 class JobsController extends Controller
@@ -511,12 +516,13 @@ class JobsController extends Controller
             } else {
                 if (empty($user) or is_null($user)) {
                     // create user if a first time visitor with link
-                    $user = User::FirstorCreate([
-                      'email' => $job_team_invite->email,
-                      'name' => $job_team_invite->name,
-                      'username' => $job_team_invite->username,
-                      'is_internal' => $is_internal
-                    ]);
+                    //NOTE: Changed firstOrCreate to save() since it was failing
+                    $user = new User();
+                    $user->email = $job_team_invite->email;
+                    $user->name = $job_team_invite->name;
+                    $user->username = $job_team_invite->username;
+                    $user->is_internal = $is_internal;
+                    $user->save();
                 } else {
                     $is_new_user = false;
                 }
@@ -658,7 +664,9 @@ class JobsController extends Controller
                     'workflow_id' => 'required|integer',
                     'experience' => 'required',
 	                'minimum_remuneration' => 'numeric|min:0',
-	                'maximum_remuneration' => 'numeric|min:0|gt:minimum_remuneration'
+	                'maximum_remuneration' => 'numeric|min:0|gt:minimum_remuneration',
+                    'attach_email' => ['nullable', new PrivateEmailRule],
+                    'bulk' => 'sometimes|required|mimes:csv,txt'
                 ], [
                 	'maximum_remuneration.gt' => 'maximum remuneration should be greater than minimum remuneration'
                 ]);
@@ -689,13 +697,77 @@ class JobsController extends Controller
 
 
             if(empty($request->job_id)){
+
                 $job = Job::firstOrCreate($job_data);
+
+                //attach emails to private jobs
+                if($request->is_private){
+                    
+                    if($request->attach_email){
+                        $attached_emails = $request->attach_email;
+                        $arr = explode(",",$attached_emails);
+    
+                        foreach ($arr as $value) {
+                            PrivateJob::create(['job_id' => $job->id,'attached_email'=> $value]);
+                        }                        
+                    }
+                    
+                    if($request->hasFile('bulk')){
+                        //bulk upload
+                        $path = $request->file('bulk');
+                        $headings = (new HeadingRowImport)->toArray($path);
+                        $emails = $headings[0][0];
+                        if (!in_array("emails", $emails)) {
+                            return redirect()->back()->withInput()->withErrors(['Header row emails not found']);
+                        }
+                        $data = Excel::import(new PrivateJobEmail($job->id), $path);
+                        
+                    }
+                    
+                }
+
             }else{
                 $is_update = true;
                 $jb = Job::find($request->job_id);
                 $job = $jb;
 
-                $jb->update($job_data);
+                //attach emails to private jobs
+                if($request->is_private){
+
+                    if($request->attach_email){
+
+                        $request->validate([
+                            'attach_email' => ['nullable', new PrivateEmailRule],
+                        ]);
+                        
+                        $attached_emails = $request->attach_email;
+                        $arr = explode(",",$attached_emails);
+
+                        foreach ($arr as $value) {
+                            PrivateJob::UpdateOrCreate(['job_id' => $job->id,'attached_email'=> $value]);
+                        }
+                            
+                    }
+                    
+                    if($request->hasFile('bulk')){
+                        //bulk upload
+                        $request->validate([
+                            'bulk' => 'required|mimes:csv,txt'
+                        ]);
+    
+                        $path = $request->file('bulk');
+                        $headings = (new HeadingRowImport)->toArray($path);
+                        $emails = $headings[0][0];
+                        if (!in_array("emails", $emails)) {
+                            return redirect()->back()->withInput()->withErrors(['Header row emails not found']);
+                        }
+                        $data = Excel::import(new PrivateJobEmail($job->id), $path);
+                        
+                    }
+                    
+                }
+
+                $jb->update($job_data);  
             }
 
             if($request->specializations){
@@ -2209,6 +2281,7 @@ class JobsController extends Controller
         if (empty($job) || is_null($job)) {
             abort(404);
         }
+
         $company = $job->company;
         $company->logo = get_company_logo($company->logo);
 
@@ -2273,6 +2346,25 @@ class JobsController extends Controller
 
         $job = Job::with('company')->where('id', $jobID)->first();
 
+        if($job->is_private && $candidate){
+            
+            $checkEmail = PrivateJob::with('job')->where('attached_email', $candidate->email)->first();
+            
+            if (empty($checkEmail) || is_null($checkEmail)) {
+    
+                return redirect()->to('/candidate/dashboard')->with('error','You are not listed to apply for this job');
+            }
+        }
+
+        $candidate_cvs = CV::where('email', $candidate->email)->pluck('id');
+        $candidate_applied_jobs = JobApplication::whereIn('cv_id', $candidate_cvs)->where(
+            'job_id', $job->id
+        )->count();
+
+        if ($candidate_applied_jobs > 0) {
+            return redirect()->to('/candidate/dashboard')->with('error','You have already applied for this job');
+        }
+
         $company = $job->company;
         $specializations = Specialization::get();
 
@@ -2299,6 +2391,7 @@ class JobsController extends Controller
 
         $states = $this->states;
         $countries = countries();
+        $schools = School::get();
 
         $custom_fields = (object)$job->form_fields()->where('is_visible', 1)->get();
         $fields = json_decode($job->fields);
@@ -2312,9 +2405,18 @@ class JobsController extends Controller
             if ($owned_applications_count > 0) {
                 return redirect()->route('job-applied', [$jobID, $slug, true]);
             }
+            //validate if request has cv_file or cv_file is a required field
+            if ($request->hasFile('cv_file') || $fields->cv_file->is_required) {
 
-            if ($request->hasFile('cv_file')) {
-
+                if($fields->cv_file->is_required){
+                    $this->validate($request, [
+                        'cv_file' => 'required',
+                    ],
+                    $message =[
+                        'cv_file.required' => 'No CV file was attached'
+                    ]
+                );
+                }
                 \Log::info(json_encode($request->file('cv_file')));
                 \Log::info(json_encode($request->email.'cv file size....'.$request->file('cv_file')->getSize()));
 
@@ -2390,7 +2492,56 @@ class JobsController extends Controller
 
             }
 
+            if (isset($fields->completed_nysc->is_visible) && $fields->completed_nysc->is_visible && (isset($data['completed_nysc']))) {
 
+                if ($data['completed_nysc'] == 'yes') {
+                    $nysc = 1;
+                }else{
+                    $nysc = 0;
+                }
+
+            }
+
+            if (isset($fields->school->is_visible) && $fields->school->is_visible && (isset($data['school']))) {
+
+                if($data['school']=='others'){
+                    $school = School::FirstOrCreate([
+                        'name' => $data['others']
+                    ]);
+                }
+            
+                $school_id = isset($data['others']) && isset($school) ? $school->id : $data['school'];
+            }
+
+            if (isset($fields->remuneration->is_visible) && $fields->remuneration->is_visible && (isset($data['maximum_renumeration'])) &&  (isset($data['minimum_renumeration']))) {
+
+                if ($request->maximum_remuneration <= $request->minimum_remuneration ) {
+                    
+                    return back()->withErrors(['warning' => 'Maximum Remuneration cannot be less than Minimum Renumeration.']);
+                }
+            }
+            
+            if (count($custom_fields) > 0) {
+                foreach ($custom_fields as $custom_field) {
+                    $name = 'cf_' . str_slug($custom_field->name, '_');
+                    $attr = $custom_field->name;
+                    $field_type = $custom_field->type;
+                    $required = $custom_field->is_required;
+                    
+                    if($required){
+                        $validate = validateCustomFields($name,$attr,$field_type, $required,$request);
+                        $validate->validate(); 
+                    }
+                    if($request->hasFile("$name") && $field_type == "FILE"){
+                        if ($request->file("$name")->getSize()  < 1 || !in_array($request->file("$name")->getClientOriginalExtension(),['pdf','doc','docx']) ) {
+                            return redirect()->back()->withInput()->withErrors(['warning' => "Invalid file was attached. Please check and try again."]);
+                        }
+                    }
+                    
+                }
+
+            }
+            
             $data['created'] = date('Y-m-d H:i:s');
             $data['action_date'] = date('Y-m-d H:i:s');
 
@@ -2446,11 +2597,24 @@ class JobsController extends Controller
             if ($fields->graduation_grade->is_visible && isset($data['date_of_birth'])) {
                 $cv->graduation_grade = $data['graduation_grade'];
             }
+            if (isset($fields->school->is_visible) && $fields->school->is_visible && isset($data['school'])) {
+                $cv->school_id = $school_id;
+            }
+            if (isset($fields->course_of_study->is_visible) && $fields->course_of_study->is_visible && isset($data['course_of_study'])) {
+                $cv->course_of_study = $data['course_of_study'];
+            }
+            if (isset($fields->completed_nysc->is_visible) && $fields->completed_nysc->is_visible && isset($data['completed_nysc'])) {
+                $cv->completed_nysc = $nysc;
+            }
             if ($fields->willing_to_relocate->is_visible && isset($data['willing_to_relocate'])) {
                 $cv->willing_to_relocate = $data['willing_to_relocate'];
             }
             if ($fields->cv_file->is_visible && isset($data['cv_file'])) {
                 $cv->cv_file = $data['cv_file'];
+            }
+            if (isset($fields->remuneration->is_visible) && $fields->remuneration->is_visible && isset($data['maximum_remuneration']) && isset($data['minimum_remuneration'])) {
+                $cv->cv_file = $data['minimum_remuneration'];
+                $cv->cv_file = $data['maximum_remuneration'];
             }
 
             if ($fields->state_of_origin->is_visible && (isset($data['location']) || isset($data['country']))) {
@@ -2505,7 +2669,8 @@ class JobsController extends Controller
                         if ($request->hasFile($name)) {
 
                             $filename = time() . '_' . str_slug($request->email) . '_' . $request->file($name)->getClientOriginalName();
-                            $destinationPath = env('fileupload') . '/Others';
+                            $destinationPath = env('fileupload','uploads') . '/Others';
+                            findOrMakeDirectory($destinationPath);
 
                             $request->file($name)->move($destinationPath, $filename);
 
@@ -2531,19 +2696,20 @@ class JobsController extends Controller
 
 
             if ($request->hasFile('cv_file')) {
-
                 $destinationPath = env('fileupload') . '/CVs';
-
+                findOrMakeDirectory($destinationPath);
                 $request->file('cv_file')->move($destinationPath, $data['cv_file']);
 
             }
 
             if ($request->hasFile('optional_attachment_1')) {
                 $destinationPath = env('fileupload') . '/CVs';
+                findOrMakeDirectory($destinationPath);
                 $request->file('optional_attachment_1')->move($destinationPath, $data['optional_attachment_1']);
             }
             if ($request->hasFile('optional_attachment_2')) {
                 $destinationPath = env('fileupload') . '/CVs';
+                findOrMakeDirectory($destinationPath);
                 $request->file('optional_attachment_2')->move($destinationPath, $data['optional_attachment_2']);
             }
 
@@ -2596,7 +2762,7 @@ class JobsController extends Controller
 
 	    return view('job.job-apply', compact('job', 'qualifications', 'states', 'company',
 		    'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate',
-		    'last_cv', 'fields','countries','privacy_policy'));
+		    'last_cv', 'fields','countries','privacy_policy','schools'));
 
     }
 
@@ -2786,7 +2952,44 @@ class JobsController extends Controller
             // $job->post_date = $request->post_date;
             $job->expiry_date = Carbon::createFromFormat('m/d/Y', $request->expiry_date)->format("Y-m-d H:m:s");
             $job->details = $request->details;
+            $private = ($request->is_private  == 'true' ? 1 : 0);
+            $job->is_private = $private;
             $job->experience = $request->experience;
+
+            //attach emails to private jobs
+            if($request->is_private){
+
+                if($request->attach_email){
+                    $request->validate([
+                        'attach_email' => ['nullable', new PrivateEmailRule],
+                    ]);
+                    $attached_emails = $request->attach_email;
+                    $arr = explode(",",$attached_emails);
+
+                    foreach ($arr as $value) {
+
+                        PrivateJob::UpdateOrCreate(['job_id' => $job->id,'attached_email'=> $value]);
+                    }
+                        
+                }
+                
+                if($request->hasFile('bulk')){
+                    //bulk upload
+                    $request->validate([
+                        'bulk' => 'required|mimes:csv,txt'
+                    ]);
+
+                    $path = $request->file('bulk');
+                    $headings = (new HeadingRowImport)->toArray($path);
+                    $emails = $headings[0][0];
+                    if (!in_array("emails", $emails)) {
+                        return redirect()->back()->withInput()->withErrors(['Header row emails not found']);
+                    }
+                    $data = Excel::import(new PrivateJobEmail($job->id), $path);
+                    
+                }
+                
+            }
 
             $job->save();
             // $job->update($request->all());
@@ -3133,7 +3336,7 @@ class JobsController extends Controller
 
             $validator = Validator::make($request->all(), [
 				'company_email' => 'required|unique:companies,email',
-				'company_name' => 'required',
+				'company_name' => 'required|unique:companies,name',
 				'phone' => 'required',
 				'about_company' => 'required',
 				'website' => 'regex:/^https:\/\/\w+(\.\w+)*(:[0-9]+)?\/?$/',
@@ -3179,9 +3382,23 @@ class JobsController extends Controller
                 ['ats_product_id' => 27, 'company_id' => $comp->id]
             ]);
 
+            $email_title = 'New Subsidiary Created on RMS for '.get_current_company()->name;
+            $user = Auth::user();
+            $subsidiary = $request->company_name;
+            //mail to cs and sales
+            $mail = Mail::send('emails.subsidiary.cs-sales-notify', compact('email_title','user', 'subsidiary'), function ($m) use ($email_title) {
+                $m->from(env('COMPANY_EMAIL'))->to('support-team@seamlesshr.com')->cc('sales@seamlesshr.com')->subject($email_title);
+            });
+            
+            Mail::send('emails.subsidiary.admin-notify', compact('email_title','user', 'subsidiary'), function ($m) use ($user, $email_title) {
+                $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
+            });
+            
+            
+            
 
             // if($upload){
-            return redirect('select-company/' . $request->slug);
+            return redirect('select-company/' . str_slug($request->company_name));
             // }
 
 

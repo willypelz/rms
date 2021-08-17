@@ -1,7 +1,17 @@
+<<<<<<< HEAD
+=======
+@if(!isset($appl->job->id))
+ <div class="text-danger"> <h5>Cannot proceed! No applicants found for this job </h5></div>
+@else
+>>>>>>> 2aed286afb06097ff6539df8c66b4efaeae52662
 <div class="pull-left">
     Download Applicants To Workflow Stage Bulk Upload Template? <a target="_blank" href="{{route('download-bulk-upload-applicant-to-workflow-stage-template')}}" id="downloadBulkUploadApplicantToWorkflowStageTemplateBtn" class="">Click Here</a>
 </div>
 <br><br>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2aed286afb06097ff6539df8c66b4efaeae52662
 <div>
     {!! Form::open(array('class'=>'', 'files'=>true)) !!}
 
@@ -51,6 +61,7 @@
                         $('#viewModal').modal('toggle');
                         $.growl.notice({message: response.msg});
                         sh.reloadStatus();
+<<<<<<< HEAD
                         setTimeout(function() { location.reload() }, 50000);
                     }else{
                         $.growl.error({message: response.msg}, {delay: 100000});
@@ -58,7 +69,17 @@
                 },
                 error : function (xhr, textStatus, errorThrown){
                     $.growl.error({message: xhr.responseText});
+=======
+                        setTimeout(function() { location.reload() }, 3000);
+                    }else{
+                        $.growl.error({message: response.msg});
+                    }
+>>>>>>> 2aed286afb06097ff6539df8c66b4efaeae52662
                 }
             });
     }
 </script>
+<<<<<<< HEAD
+=======
+@endif
+>>>>>>> 2aed286afb06097ff6539df8c66b4efaeae52662

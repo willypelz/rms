@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Exceptions\ApplicantsWorkflowStepsUpdateException;;
 use App\Models\JobApplication;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+use \App\Jobs\UploadSolrFromCode;
 
 class BulkUploadApplicantsToWorkflowStepContoller extends Controller
 {
@@ -48,6 +49,7 @@ class BulkUploadApplicantsToWorkflowStepContoller extends Controller
                         return response()->json(["status"=>false, "msg"=>"Excel file must contain 'EMAIL' and 'WORKFLOW STEP' headers. NB: headers are case insensitive "]);
                     }
                     (new BulkImportOfApplicantsToWorkflowStage($request->job_id))->import($bulk_upload_applicants_to_workflow_stage_file);
+                    UploadSolrFromCode::dispatch();
                     return response()->json(["status"=>true, "msg"=>"Operation Bulk Upload Successful"]);
                 }catch(ExcelValidationException  $e){
                     return response()->json(["status"=>false, "msg"=> $this->formatExcelValidationMessageExceptionMessage($e)]); 

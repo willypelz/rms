@@ -321,9 +321,9 @@
                                                         <!-- New fields I added -->
                                                         <div class="form-group">
                                                             <div class="row">
-                                                                @if( $fields->school->is_visible )
+                                                                @if( isset($fields->school->is_visible) && $fields->school->is_visible )
                                                                     <div class="col-sm-6">
-                                                                        <label for="job-title">School @if( $fields->school->is_required )
+                                                                        <label for="job-title">School @if( isset($fields->school->is_required) && $fields->school->is_required )
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label>
                                                                         <select class="form-control"
@@ -347,10 +347,10 @@
                                                                 
                                                                 <div class="col-sm-6 others hidden">
                                                                     <label for="">
-                                                                        Others @if( $fields->school->is_required )
+                                                                        Others @if( isset($fields->school->is_required) && $fields->school->is_required )
                                                                             <span class="text-danger">*</span>@endif
                                                                     </label>
-                                                                    {{ Form::text('others',null, array('class'=>'form-control otherSchool',( $fields->school->is_required ) ? "required" : "" )) }}
+                                                                    {{ Form::text('others',null, array('class'=>'form-control otherSchool',( isset($fields->school->is_required) && $fields->school->is_required  ) ? "" : "" )) }}
 
                                                                 </div>
                                                                 
@@ -359,7 +359,7 @@
 
                                                         <div class="form-group">
                                                             <div class="row">
-                                                                @if( $fields->course_of_study->is_visible )
+                                                                @if( isset($fields->course_of_study->is_visible) && $fields->course_of_study->is_visible  )
                                                                     <div class="col-sm-6">
                                                                         <label for="">
                                                                             <!-- <i class="fa fa-lock"></i>&nbsp;  -->
@@ -371,7 +371,7 @@
                                                                     </div>
                                                                 @endif
 
-                                                                @if( $fields->completed_nysc->is_visible )
+                                                                @if( isset($fields->completed_nysc->is_visible) && $fields->completed_nysc->is_visible  )
                                                                     <div class="col-sm-6">
                                                                         <label for="job-title">Completed NYSC
                                                                              @if( $fields->completed_nysc->is_required )
@@ -435,7 +435,7 @@
 
                                                         <div class="form-group">
                                                             <div class="row">
-                                                                @if( $fields->remuneration->is_visible )
+                                                                @if( isset($fields->remuneration->is_visible) && $fields->remuneration->is_visible )
                                                                     <div class="col-sm-6">
                                                                         <label for="job-title">Minimum Remuneration @if( $fields->remuneration->is_required )
                                                                                 <span class="text-danger">*</span>@endif

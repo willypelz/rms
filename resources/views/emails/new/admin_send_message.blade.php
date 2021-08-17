@@ -56,16 +56,15 @@
 																			Trust this meets you well.
 																			<br><br>
 																			<p> You have a new message based on your job application for the post of {{ $candidate->job->title}} </p>
-									                  	<br><br>	
-																			MESSAGE BODY:
+											
 									                  	<br><br>
 																			{!! $email_message !!}
                                    
-                                    	<a href="{{ $link }}" download>Login to reply</a>
+                                    	<a href="{{ $link }}" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color: #4BB779;text-transform:uppercase" download>Login to reply</a>
 																		</p>
 
 																		<hr style="border-width:0 0 1px">
-																		<p style="color:#666">Best,
+																		<p style="color:#666">Best Regards,
 																			<br> {{ @get_current_company()->name }} Team</p>
 
 																	</div>

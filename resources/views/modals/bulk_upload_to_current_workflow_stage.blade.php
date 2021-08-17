@@ -51,10 +51,13 @@
                         $('#viewModal').modal('toggle');
                         $.growl.notice({message: response.msg});
                         sh.reloadStatus();
-                        setTimeout(function() { location.reload() }, 3000);
+                        setTimeout(function() { location.reload() }, 50000);
                     }else{
-                        $.growl.error({message: response.msg});
+                        $.growl.error({message: response.msg}, {delay: 100000});
                     }
+                },
+                error : function (xhr, textStatus, errorThrown){
+                    $.growl.error({message: xhr.responseText});
                 }
             });
     }

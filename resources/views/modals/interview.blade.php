@@ -1,3 +1,6 @@
+@if(!isset($appl->job->id))
+ <div class="text-danger"> <h5>Cannot proceed! No applicants found</h5></div>
+@else
 {!! @$applicant_badge !!}
 <!-- <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script> -->
 <script src="{{ asset('js/moment.min.js') }}"></script>
@@ -136,3 +139,4 @@
     // });
   }
 </script>
+@endif

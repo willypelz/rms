@@ -12,7 +12,7 @@ class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
 {
     use Queueable;
 
-    protected $excel_file,$filename, $disk, $link ;
+    protected $filename;
 
 
 
@@ -24,12 +24,10 @@ class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
      * @param string $disk
      * @param string $link
      */
-    public function __construct($excel_file, string  $filename, string $disk,  string $link )
+    public function __construct(string  $filename)
     {
         $this->filename = $filename;
-        $this->excel_file = $excel_file;
-        $this->disk = $disk;
-        $this->link = $link;
+        session()->forget('exportCompleted');
     }
 
     /**
@@ -54,9 +52,10 @@ class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
         $data = [
             "filename" => $this->filename,
             "name" => $notifiable->name,
-            "route" => route( "download_applicants_interview_file", ["disk" => $this->disk ,"filename" => encrypt($this->link) ])
+            "route" => route( "download_applicants_interview_file", ["disk" => 'public' ,"filename" => encrypt(asset('uploads/tmp/').$this->filename) ])
         ];
         return (new MailMessage())
+             ->subject('Applicant spreadsheet export completed')
              ->view("emails.new.applicant_interview_downloads", $data);
     }
 

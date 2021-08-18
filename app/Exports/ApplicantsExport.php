@@ -18,12 +18,15 @@ class ApplicantsExport implements FromCollection, WithHeadings, WithEvents
 {
     use Exportable, RegistersEventListeners;
 
-	private $data;
+    private $data,$file_name;
+    protected static $static_file_name;
 
 
-	public function __construct($data)
+	public function __construct($data,$file_name)
 	{
-	    $this->data = $data;
+        $this->data = $data;
+        $this->file_name = $file_name;
+        self::$static_file_name = $this->file_name;
 	}
 
 
@@ -65,5 +68,17 @@ class ApplicantsExport implements FromCollection, WithHeadings, WithEvents
     {
         return collect($this->data);
     }
+
+    // public static function beforeWriting(BeforeWriting $event)
+    //  {
+    //      info('got here for export');
+    //      info((asset('uploads/tmp/').self::$static_file_name));
+    //      info(storage_path('app/public/uploads/tmp').self::$static_file_name);
+    //      $file = new LocalTemporaryFile(storage_path('app/public/uploads/tmp').self::$static_file_name);
+    //      $event->writer->reopen($file, \Maatwebsite\Excel\Excel::XLSX);
+    //      $sheet = $event->writer->getSheetByIndex(0);
+    //      $sheet->export($event->getConcernable());
+    //      return $sheet;
+    //  }
 
 }

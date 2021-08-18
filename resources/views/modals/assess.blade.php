@@ -1,3 +1,6 @@
+@if(!isset($appl->job->id))
+ <div class="text-danger"> <h5>Cannot proceed! No applicants found</h5></div>
+@else
 <style type="text/css">
   .bootstrap-datetimepicker-widget.dropdown-menu {
     width: auto !important;
@@ -450,3 +453,4 @@
   </script>
 
   <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+@endif

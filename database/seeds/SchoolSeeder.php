@@ -12,8 +12,8 @@ class SchoolSeeder extends Seeder
      */
     public function run()
     {
-        // Read the JSON file 
-        $path = asset('public_html/uploads/school_template/school.json');
+        // Read the JSON file
+        $path = public_path().'/uploads/school_template/school.json';
         $json = file_get_contents($path);
         $json_data = json_decode($json,true);
         $school_exist = School::where('name','Abu Dhabi University')->first();

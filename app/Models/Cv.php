@@ -31,8 +31,4 @@ class Cv extends Model
         return $this->belongsTo('App\Models\School', 'school_id');
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 379e96a6f29522f102b4a049e1ed1d02988e349c
 }

@@ -2,23 +2,18 @@
 
 namespace App\Jobs;
 
-use App\Models\JobApplication;
+
+use App\User;
+use App\Models\Company;
 use Illuminate\Bus\Queueable;
+use App\Jobs\CreateSheetHeader;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use App\Exports\ApplicantsExport;
-use App\Exports\ApplicantsExportHeader;
-use App\Dtos\DownloadApplicantSpreadsheetDto;
-use SeamlessHR\SolrPackage\Facades\SolrPackage;
-use App\User;
-use App\Jobs\CreateSheetHeader;
 use App\Jobs\NotifyAdminOfCompletedExportJob;
-use App\Models\Company;
-use Maatwebsite\Excel\Facades\Excel;
-use Storage;
-use App\Notifications\NotifyAdminOfApplicantsSpreedsheetExportCompleted;
+use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
 class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
 {
@@ -77,7 +72,7 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
                         $t+=$perc;
                         info('percentage is - '. $t);
                 }
-                NotifyAdminOfCompletedExportJob::dispatch($this->filename,$this->admin)->delay(\Carbon\Carbon::now()->addSeconds(60)); 
+                NotifyAdminOfCompletedExportJob::dispatch($this->filename,$this->admin)->delay(\Carbon\Carbon::now()->addSeconds($total_count < 4000 ? 60 : 240)); 
                     
                      info("Applicants Retrieved Successfully from Solr.");   
     }

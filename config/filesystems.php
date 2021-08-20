@@ -61,7 +61,19 @@ return [
             'region' => 'your-region',
             'bucket' => 'your-bucket',
         ],
-
+        'Xlsx' => [
+            'driver' => 'local',
+            'root' => public_path('exports'),
+            'url' => '',
+            'visibility' => 'public',
+            
+        ],
+        'Csv' => [
+            'driver' => 'local',
+            'root' => public_path('exports'),
+            'url' => '',
+            'visibility' => 'public',
+        ],
     ],
 
 ];

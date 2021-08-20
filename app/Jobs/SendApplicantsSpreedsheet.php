@@ -21,7 +21,7 @@ class SendApplicantsSpreedsheet implements ShouldQueue
 
     protected $admin,$data,$company,$filename;
 
-    public $timeout = 0;
+    public $timeout = 2500;
 
     /**
      * Create a new job instance.
@@ -85,6 +85,7 @@ class SendApplicantsSpreedsheet implements ShouldQueue
               "YEARS OF EXPERIENCE" => @$value['years_of_experience'],
               "WILLING TO RELOCATE?" => (array_key_exists('willing_to_relocate', $value) && $value['willing_to_relocate'] == "true") ? 'Yes' : 'No',
               "TESTS" => $tests,
+              
 
 
           ];
@@ -106,18 +107,19 @@ class SendApplicantsSpreedsheet implements ShouldQueue
                   $excel_data[$key]['LOCATION'] = $application->hrms_location;
                   $excel_data[$key]['LENGTH OF STAY'] = $application->hrms_length_of_stay;
               }
-          }
+              else{
+                $excel_data[$key]['INTERNAL STAFF'] = 'NA';
+                $excel_data[$key]['STAFF ID'] = 'NA';
+                $excel_data[$key]['GRADE'] = 'NA';
+                $excel_data[$key]['DEPARTMENT'] = 'NA';
+                $excel_data[$key]['LOCATION'] = 'NA';
+                $excel_data[$key]['LENGTH OF STAY'] = 'NA';
+              }
+           }
 
        }
-       info('excel sheet is stored here'. $this->filename);
-       Excel::store( new ApplicantsExport($excel_data, $this->filename), $this->filename);
-       while(session('exportCompleted')){
-         info('session has value');
-         $this->admin->notify( new NotifyAdminOfApplicantsSpreedsheetExportCompleted($this->filename));
-       }
-
-    //return Excel::download(new ApplicantsExport($excel_data), $filename);
-			 
+       info('excel sheet is stored here'. asset($this->filename));
+        (new ApplicantsExport($excel_data, $this->filename))->store($this->filename,\Maatwebsite\Excel\Excel::CSV);	
     }
 
 }

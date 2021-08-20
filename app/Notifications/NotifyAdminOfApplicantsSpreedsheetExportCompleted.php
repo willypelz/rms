@@ -27,7 +27,6 @@ class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
     public function __construct(string  $filename)
     {
         $this->filename = $filename;
-        session()->forget('exportCompleted');
     }
 
     /**
@@ -52,7 +51,7 @@ class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
         $data = [
             "filename" => $this->filename,
             "name" => $notifiable->name,
-            "route" => route( "download_applicants_interview_file", ["disk" => 'public' ,"filename" => encrypt(asset('uploads/tmp/').$this->filename) ])
+            "route" => route( "download_applicants_interview_file", ["filename" => encrypt(asset('exports').'/'.$this->filename) ])
         ];
         return (new MailMessage())
              ->subject('Applicant spreadsheet export completed')

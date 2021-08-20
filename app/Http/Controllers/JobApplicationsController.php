@@ -48,8 +48,8 @@ use App\Dtos\DownloadApplicantInterviewNoteDto;
 use App\Services\ApplicantService;
 use App\Http\Requests\DownloadApplicantCvRequest;
 use App\Exceptions\DownloadApplicantsInterviewException;
-use App\Jobs\SendApplicantsSpreedsheet;
-use App\Notifications\NotifyAdminOfApplicantsSpreedsheetExportCompleted;
+use App\Jobs\CommenceProcessingForApplicantsSpreedsheet;
+
 
 
 class JobApplicationsController extends Controller
@@ -624,41 +624,14 @@ class JobApplicationsController extends Controller
             $solr_video_application_score = null;
         }
 
-        $other_data = [
-            'company' => get_current_company()->name,
-            'user' => Auth::user()->name,
-            'job_title' => $job->title
-            ];
-        $filename = 'Applicants Report - ' . $other_data['job_title'].'.xlsx';
+        $filename = "Applicants Report -".$job->title.".csv";
         $filename = str_replace('/', '', $filename);
         $filename = str_replace('\'', '', $filename);
-
-        $default_solr_row_size = 10;
-        // $applicants = $this->getApplicantsByPagination(0, $default_solr_row_size);
-        $applicants = SolrPackage::get_applicants($this->search_params, $request->jobId, @$request->status,
-                                @$solr_age, @$solr_exp_years, @$solr_video_application_score, @$solr_test_score);
-                        
-        $total_count = $applicants["response"]["numFound"]; 
-        $current_count = 0;
-        $start = 0;
-       
-                while(($start = $current_count * $default_solr_row_size )  < $total_count){
-                        ++$current_count;
-                        $this->search_params["start"] = $start;
-                        $this->search_params["rows"] = $default_solr_row_size;
-                        $result = SolrPackage::get_applicants($this->search_params, $request->jobId, @$request->status,
-                                @$solr_age, @$solr_exp_years, @$solr_video_application_score, @$solr_test_score);
-                        info($start);
-                        $data = $result['response']['docs'];
-                        SendApplicantsSpreedsheet::dispatch($data,get_current_company(),Auth::user(),$filename);
-                    }
-                    if($start > $total_count){
-                        session()->put(['exportCompleted'=>1]);
-                       info('got here when start was greater');
-                    
-                    } 
-                     info("Applicants Retrieved Successfully from Solr.");
-                    
+        $filename = str_replace(' ', '', $filename);
+    
+        CommenceProcessingForApplicantsSpreedsheet::dispatch($this->search_params, $request->jobId, @$request->status,
+                                                            @$solr_age, @$solr_exp_years, @$solr_video_application_score, 
+                                                            @$solr_test_score, get_current_company(),Auth::user(),$filename);
         return back()->with('msg','Exported started successfully, Sheet will be sent to your inbox upon completion');
     }
 
@@ -865,11 +838,10 @@ class JobApplicationsController extends Controller
     
     }
 
-    public function downloadApplicantsInterviewFile(string $disk, string $filename)
+    public function downloadApplicantsInterviewFile(string $filename)
     {
         $decrypted_file_name = decrypt($filename);
-        return response()->download(\Storage::disk($disk)->path($decrypted_file_name));
-      
+        return redirect($decrypted_file_name);
     }
 
     public function massAction(Request $request)

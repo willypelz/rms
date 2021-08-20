@@ -49,6 +49,8 @@ class SendApplicantsSpreedsheet implements ShouldQueue
     {
 	    
       $excel_data = [];
+      ini_set('memory_limit', '1024M');
+      set_time_limit(0);
       $data_chunk = collect($this->data)->chunk(100);
       foreach($data_chunk as $data){
             foreach ($data as $key => $value) {

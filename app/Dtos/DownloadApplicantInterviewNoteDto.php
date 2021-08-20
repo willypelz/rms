@@ -12,6 +12,7 @@ use App\Exceptions\DownloadApplicantsInterviewException;
 use App\User;
 
 
+
 interface DownloadApplicantSpreadsheetDtoType{
     const CSV = "CSV";
     const ZIP = "ZIP";
@@ -57,6 +58,7 @@ class DownloadApplicantInterviewNoteDto extends DownloadApplicantDto {
     public function setCompany($company){
 	    $this->current_company	 = $company;
     }
+
 
     /**
      * Set the type of operation being carries out

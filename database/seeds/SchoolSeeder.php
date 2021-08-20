@@ -17,22 +17,16 @@ class SchoolSeeder extends Seeder
         $json = file_get_contents($path);
         $json_data = json_decode($json,true);
         $school_exist = School::where('name','Abu Dhabi University')->first();
+        
         if(is_null($school_exist)){
-
             foreach($json_data as $data){
-
                 School::FirstOrCreate([
-
                     'name' => $data['name'],
-
                 ]);
-
             };
-
         }else{
-
             echo 'Record Exists';
-
         }
+        
     }
 }

@@ -50,9 +50,9 @@ class SendApplicantsSpreedsheet implements ShouldQueue
 
       ini_set('memory_limit', '1024M');
       set_time_limit(0);
-      $data_chunk = collect($this->data)->chunk(100);
+      $data_chunk = collect($this->data)->chunk(100)->toArray();
         foreach($data_chunk as $data){
-            SendApplicantsSpreedsheetInBits::dispatch($dat,$this->company,$this->admin,$this->filename);
+            SendApplicantsSpreedsheetInBits::dispatch($data,$this->company,$this->admin,$this->filename);
         }
     }
 

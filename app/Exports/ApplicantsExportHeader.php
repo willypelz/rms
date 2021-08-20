@@ -25,7 +25,7 @@ class ApplicantsExportHeader implements  WithHeadings
 
 	public function __construct($data,$file_name)
 	{
-        $this->data = collect($data)->toArray()[0];
+        $this->data = collect($data)->toArray();
         $this->file_name = $file_name;
         self::$static_file_name = $this->file_name;
 

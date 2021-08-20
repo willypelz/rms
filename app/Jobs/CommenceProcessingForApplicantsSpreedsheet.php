@@ -60,7 +60,7 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
      */
     public function handle()
     {
-        $default_solr_row_size = 50;
+        $default_solr_row_size = 500;
         $applicants =  $this->getPaginatedApplicants(0, $default_solr_row_size); 
         $header = $applicants['response']['docs'];      
         $total_count = $applicants["response"]["numFound"]; 

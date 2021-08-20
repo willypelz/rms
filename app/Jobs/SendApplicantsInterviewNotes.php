@@ -34,6 +34,7 @@ class SendApplicantsInterviewNotes implements ShouldQueue
      * @param App\Dtos\DownloadApplicantInterviewNoteDto
      * @return void
      */
+
     public function __construct(User $admin,$company, $data, $type)
     {
         $this->admin = $admin;
@@ -73,6 +74,6 @@ class SendApplicantsInterviewNotes implements ShouldQueue
                 break;
         }
 
-        
+
     }
 }

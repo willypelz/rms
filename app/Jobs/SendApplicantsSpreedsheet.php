@@ -34,10 +34,12 @@ class SendApplicantsSpreedsheet implements ShouldQueue
      * @param $link
      * @param $disk
      */
+
     public function __construct(User $admin, array $data)
     {
 	    $this->admin = $admin;
 	    $this->data = $data;
+
     }
 
     /**

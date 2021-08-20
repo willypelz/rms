@@ -561,6 +561,7 @@ class JobApplicationsController extends Controller
      */
     public function downloadApplicantSpreadsheet(Request $request)
     {
+
         set_time_limit(0);
         
         //Check if you should have access to the excel
@@ -709,6 +710,7 @@ class JobApplicationsController extends Controller
 
         return Excel::download(new ApplicantsExport($excel_data), $filename);
 
+
     }
 
     
@@ -719,6 +721,7 @@ class JobApplicationsController extends Controller
      */
     public function downloadApplicantCv(Request $request)
     {
+
     //Check if you should have access to the excel
     check_if_job_owner($request->jobId);
 
@@ -836,6 +839,7 @@ class JobApplicationsController extends Controller
 
     return Response::download($path . $filename, date('y-m-d').$job->title.'Cv.zip', ['Content-Type' => 'application/octet-stream']);
 
+
     }
 
     /**
@@ -843,6 +847,7 @@ class JobApplicationsController extends Controller
      * @param Illuminate\Http\Request $request
      * @return Illuminate\Http\Response
      */
+
     public function downloadInterviewNotes(Request $request)
     {
         $job = Job::with('applicants')->find($request->jobId);
@@ -896,10 +901,12 @@ class JobApplicationsController extends Controller
 
     }
 
+
     /**
      * @param  Illuminate\Http\Request $request
      * @return Illuminate\Http\Response
      */
+
     public function downloadInterviewNotesCSV(Request $request){
         ini_set('memory_limit', '1024M');
         set_time_limit(0);
@@ -912,6 +919,7 @@ class JobApplicationsController extends Controller
 
         return Excel::download(new InterviewNoteExport($application_ids), $export_file);
     
+
     }
 
     public function downloadApplicantsInterviewFile(string $disk, string $filename)

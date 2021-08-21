@@ -2,40 +2,36 @@
 
 namespace App\Jobs;
 
-use App\Models\JobApplication;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Exports\ApplicantsExportHeader;
-use App\Dtos\DownloadApplicantSpreadsheetDto;
 use App\User;
-use App\Models\Company;
 use App\Notifications\NotifyAdminOfApplicantsSpreedsheetExportCompleted;
 use Maatwebsite\Excel\Facades\Excel;
-use Storage;
 
 class NotifyAdminOfCompletedExportJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $filename, $admin;
+    protected $filename, $admin,$type,$jobId;
 
-    public $timeout = 0;
+    public $timeout = 2500;
 
     /**
      * Create a new job instance.
      * @param User $admin
-     * @param array $data
+     * @param  $jobId
      * @param $filename
-     * @param $link
-     * @param $disk
      */
-    public function __construct($filename, User $admin)
+    public function __construct($filename, User $admin,$type, $jobId=null)
     {
       $this->filename = $filename;
       $this->admin = $admin; 
+      $this->jobId = $jobId; 
+      $this->type = $type; 
     }
 
     /**
@@ -45,7 +41,7 @@ class NotifyAdminOfCompletedExportJob implements ShouldQueue
      */
     public function handle()
     {
-      $this->admin->notify( new NotifyAdminOfApplicantsSpreedsheetExportCompleted($this->filename));
+      $this->admin->notify( new NotifyAdminOfApplicantsSpreedsheetExportCompleted($this->filename,$this->type,$this->jobId));
                           
     }
 }

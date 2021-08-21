@@ -7,26 +7,28 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use \Maatwebsite\Excel\Excel;
+use App\Models\Job;
 
 class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
 {
     use Queueable;
 
-    protected $filename;
+    protected $filename,$type,$job;
 
 
 
     /**
      * Create a new notification instance.
      *
-     * @param $excel_file
+     * @param $type
+     * @param $job
      * @param string $filename
-     * @param string $disk
-     * @param string $link
      */
-    public function __construct(string  $filename)
+    public function __construct(string  $filename, string $type, $jobId)
     {
-        $this->filename = $filename;
+        $this->filename = $filename; 
+        $this->type = $type;
+        $this->job = Job::find($jobId) ?? '';
     }
 
     /**
@@ -54,7 +56,7 @@ class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
             "route" => route( "download_applicants_interview_file", ["filename" => encrypt(asset('exports').'/'.$this->filename) ])
         ];
         return (new MailMessage())
-             ->subject('Applicant spreadsheet export completed')
+             ->subject(ucwords("{$this->job->title} {$this->type} export completed"))
              ->view("emails.new.applicant_interview_downloads", $data);
     }
 

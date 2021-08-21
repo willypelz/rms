@@ -32,12 +32,18 @@ class ApplicantsExport implements ShouldAutoSize, FromCollection, WithEvents
     */
     public function collection()
     {
-      $sn = static::$next_sn;
-
         return collect($this->data);
     }
 
-    
+    /**
+    * Before exporting, open the sheet you want to 
+    * add additional data to.
+    * 
+    * @param Maatwebsite\Excel\Events\BeforeExport $event 
+    * @param Maatwebsite\Excel\Files\LocalTemporaryFile $file
+    * 
+    * @return mixed
+    */ 
     public static function beforeWriting(BeforeWriting $event)
      {
         $file = new LocalTemporaryFile(public_path('exports/' . self::$static_file_name));
@@ -48,22 +54,5 @@ class ApplicantsExport implements ShouldAutoSize, FromCollection, WithEvents
         return $sheet;
      
      }
-
-     /**
-* Before exporting, open the sheet you want to 
-* add additional data to.
-* 
-* @param Maatwebsite\Excel\Events\BeforeExport $event 
-* @param Maatwebsite\Excel\Files\LocalTemporaryFile $file
-* 
-* @return mixed
-*/
-// protected static function sheet($event, $file)
-// {
-//     $event->writer->reopen($file, \Maatwebsite\Excel\Excel::CSV);
-//     $event->writer->getSheetByIndex(0);
-//     $event->writer->getSheetByIndex(0)->export($event->getConcernable());
-//     return $event->getWriter()->getSheetByIndex(0);
-// }
 
 }

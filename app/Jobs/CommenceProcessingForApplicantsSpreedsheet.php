@@ -19,22 +19,26 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $admin,$company,$filename,$search_params, $jobId, $status,$solr_age, $solr_exp_years, 
-                $solr_video_application_score, $solr_test_score;
+    protected $admin,$company,$filename,$search_params, 
+              $jobId, $status,$solr_age, $solr_exp_years, 
+              $solr_video_application_score, $solr_test_score,$cv_ids;
 
     public $timeout = 2500;
 
     /**
      * Create a new job instance.
-     * @param User $admin
+     * @param array $search_params
+     * @param int $jobId
+     * @param string $status
+     * @param Company $company
      * @param array $data
      * @param $filename
      * @param $link
      * @param $disk
      */
-    public function __construct(array $search_params, $jobId, $status,$solr_age=null, $solr_exp_years=null, 
-                                $solr_video_application_score=null, $solr_test_score=null,
-                                Company $company, User $admin, $filename)
+    public function __construct(Company $company, User $admin, $filename, array $search_params, 
+                                int $jobId, $status, $solr_age=null, $solr_exp_years=null, 
+                                $solr_video_application_score=null, $solr_test_score=null,$cv_ids=null)
     {
       $this->company = $company;
       $this->admin = $admin;
@@ -42,10 +46,11 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
       $this->search_params = $search_params;
       $this->jobId = $jobId;
       $this->status = $status;
-      $solr_age = $solr_age;
-      $solr_exp_years = $solr_exp_years;
-      $solr_video_application_score = $solr_video_application_score;
-      $solr_test_score = $solr_test_score;
+      $this->solr_age = $solr_age;
+      $this->solr_exp_years = $solr_exp_years;
+      $this->solr_video_application_score = $solr_video_application_score;
+      $this->solr_test_score = $solr_test_score;
+      $this->cv_ids = $cv_ids;
     }
 
     /**
@@ -55,31 +60,30 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
      */
     public function handle()
     {
-        $default_solr_row_size = 500;
-        $applicants =  $this->getPaginatedApplicants(0, $default_solr_row_size); 
-        $header = $applicants['response']['docs'][0];      
-        $total_count = $applicants["response"]["numFound"]; 
-        $current_count = 0;
-        $perc = (100/($total_count/$default_solr_row_size));
-        $t =0;
-                CreateSheetHeader::dispatch($this->filename, $header);
-                while(($start = $current_count * $default_solr_row_size )  < $total_count){
-                        ++$current_count;
-                        $result=  $this->getPaginatedApplicants($start, $default_solr_row_size);
-                        info($start);
-                        $data = $result['response']['docs'];
-                        SendApplicantsSpreedsheet::dispatch($data,$this->company,$this->admin,$this->filename)->delay(\Carbon\Carbon::now()->addSeconds(10));
-                        $t+=$perc;
-                        info('percentage is - '. $t);
-                }
-                NotifyAdminOfCompletedExportJob::dispatch($this->filename,$this->admin)->delay(\Carbon\Carbon::now()->addSeconds($total_count < 4000 ? 60 : 240)); 
-                    
-                     info("Applicants Retrieved Successfully from Solr.");   
-    }
+        
+        $applicants =  $this->getApplicants(); 
+        $response = $applicants['response'];
+        $number_found = $response["numFound"];
+        $header = $response['docs'][0];   
 
-    private function getPaginatedApplicants($start, $default_solr_row_size){
-            $this->search_params["start"] = $start;
-            $this->search_params["rows"] = $default_solr_row_size;
+       //create excel sheet header in readiness for the excel data insertion 
+        CreateSheetHeader::dispatch($this->filename, $header);
+        $chunked_applicants =  collect($response['docs'])->chunk(1000)->toArray();
+        $chunk_count = count($chunked_applicants);
+        $counter = 1;
+
+        foreach($chunked_applicants as $data){
+           SendApplicantsSpreedsheet::dispatch($data,$this->company,$this->admin,$this->filename,$this->cv_ids);
+           $counter++;
+        }
+        if($counter == $chunk_count){
+                $type = "Applicant Spreadsheet";
+                NotifyAdminOfCompletedExportJob::dispatch($this->filename,$this->admin,$type,$this->jobId)->delay(\Carbon\Carbon::now()->addSeconds($number_found < 4000 ? 60 : 240)); 
+        }
+     }
+
+
+    private function getApplicants(){
           return SolrPackage::get_applicants($this->search_params, $this->jobId, @$this->status,
                                              @$this->solr_age, @$this->solr_exp_years,
                                              @$this->solr_video_application_score, @$this->solr_test_score);

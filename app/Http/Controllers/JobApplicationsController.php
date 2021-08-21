@@ -564,14 +564,10 @@ class JobApplicationsController extends Controller
     public function downloadApplicantSpreadsheet(Request $request)
     {
         set_time_limit(0);
-        
         //Check if you should have access to the excel
-        check_if_job_owner($request->jobId);
-        
+        check_if_job_owner($request->jobId); 
+
         $job = Job::find($request->jobId);
-
-
-
         $this->search_params['filter_query'] = @$request->filter_query;
         $this->search_params['row'] = 2147483647;
 
@@ -579,12 +575,9 @@ class JobApplicationsController extends Controller
         //If age is available
         if (@$request->age) {
             $date = Carbon::now();
-            //2015-09-16T00:00:00Z
             $start_dob = explode(' ', $date->subYears(@$request->age[0]))[0] . 'T23:59:59Z';
             $end_dob = explode(' ', $date->subYears(@$request->age[1]))[0] . 'T00:00:00Z';
-
             $solr_age = [$start_dob, $end_dob];
-
         } else {
             $request->age = [15, 65];
             $solr_age = null;
@@ -593,8 +586,6 @@ class JobApplicationsController extends Controller
 
         //If years of experience is available
         if (@$request->exp_years) {
-            //2015-09-16T00:00:00Z
-
             $solr_exp_years = [@$request->exp_years[0], @$request->exp_years[1]];
         } else {
             $request->exp_years = [0, 40];
@@ -603,8 +594,6 @@ class JobApplicationsController extends Controller
 
         //If test score is available
         if (@$request->test_score) {
-            //2015-09-16T00:00:00Z
-
             $solr_test_score = [@$request->test_score[0], @$request->test_score[1]];
         } else {
             $request->test_score = [40, 160];
@@ -613,26 +602,24 @@ class JobApplicationsController extends Controller
 
         //If video application score is available
         if (@$request->video_application_score) {
-            //2015-09-16T00:00:00Z
-
             $solr_video_application_score = [
-                @$request->video_application_score[0],
-                @$request->video_application_score[1]
+            @$request->video_application_score[0],
+            @$request->video_application_score[1]
             ];
         } else {
             $request->video_application_score = [env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END')];
             $solr_video_application_score = null;
         }
 
-        $filename = "Applicants Report -".$job->title.".csv";
-        $filename = str_replace('/', '', $filename);
-        $filename = str_replace('\'', '', $filename);
-        $filename = str_replace(' ', '', $filename);
-    
-        CommenceProcessingForApplicantsSpreedsheet::dispatch($this->search_params, $request->jobId, @$request->status,
+        $filename = str_replace(['/','\'',' '], '', "Applicants Report - {$job->title}.csv");
+        findOrMakeDirectory('public_html/exports');
+  
+        CommenceProcessingForApplicantsSpreedsheet::dispatch(get_current_company(),Auth::user(),$filename,$this->search_params, $request->jobId, @$request->status,
                                                             @$solr_age, @$solr_exp_years, @$solr_video_application_score, 
-                                                            @$solr_test_score, get_current_company(),Auth::user(),$filename);
-        return back()->with('msg','Exported started successfully, Sheet will be sent to your inbox upon completion');
+                                                            @$solr_test_score,@$request->cv_ids);
+        $link = asset("exports/{$filename}");                                  
+        return response()->json(["status" => "success",
+                                "msg"=>'Exported started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
     }
 
     

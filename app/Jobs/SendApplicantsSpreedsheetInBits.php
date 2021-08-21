@@ -9,18 +9,15 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Exports\ApplicantsExport;
-use App\Dtos\DownloadApplicantSpreadsheetDto;
 use App\User;
 use App\Models\Company;
 use Maatwebsite\Excel\Facades\Excel;
-use Storage;
 
 class SendApplicantsSpreedsheetInBits implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $admin,$data,$company,$filename;
-
+    protected $admin,$data,$company,$filename,$cv_ids;
     public $timeout = 2500;
 
     /**
@@ -28,15 +25,16 @@ class SendApplicantsSpreedsheetInBits implements ShouldQueue
      * @param User $admin
      * @param array $data
      * @param $filename
-     * @param $link
-     * @param $disk
+     * @param $cv_ids
+     * @param Company $company
      */
-    public function __construct(array $data, Company $company, User $admin, $filename)
+    public function __construct(array $data, Company $company, User $admin, $filename, $cv_ids)
     {
       $this->data = $data;
       $this->company = $company;
       $this->admin = $admin;
       $this->filename = $filename;
+      $this->cv_ids = $cv_ids;
 	    
     }
 
@@ -50,7 +48,7 @@ class SendApplicantsSpreedsheetInBits implements ShouldQueue
 	    
       $excel_data = [];
             foreach ($this->data as $key => $value) {
-                if (!empty($request->cv_ids) && !in_array($value['id'], $request->cv_ids)) {
+                if (!empty($this->cv_ids) && !in_array($value['id'], $this->cv_ids)) {
                     continue;
                 }
                 $tests = "";
@@ -89,34 +87,35 @@ class SendApplicantsSpreedsheetInBits implements ShouldQueue
                 ];
                 if(isset($value['application_id'][0])) {
                     $jobApplication = JobApplication::with('custom_fields.form_field')->find($value['application_id'][0]);
-                    foreach ($jobApplication->custom_fields as $value) {
-                    if($value->form_field != null){
-                        $excel_data[$key][$value->form_field->name] = $value->value;
-                    }
-                    }
+                    if($jobApplication){
+                        foreach ($jobApplication->custom_fields as $value) {
+                            if($value->form_field != null){
+                                $excel_data[$key][$value->form_field->name] = $value->value;
+                            }
+                        }
 
-                    //If applicant is an intenral staff
-                    if(isset($jobApplication->cv) && $jobApplication->cv->applicant_type == 'internal') {
-                        $application = $jobApplication->cv;
-                        $excel_data[$key]['INTERNAL STAFF'] = $application->applicant_type == 'internal' ? 'Yes' : 'No' ;
-                        $excel_data[$key]['STAFF ID'] = $application->hrms_staff_id;
-                        $excel_data[$key]['GRADE'] = $application->hrms_grade;
-                        $excel_data[$key]['DEPARTMENT'] = $application->hrms_dept;
-                        $excel_data[$key]['LOCATION'] = $application->hrms_location;
-                        $excel_data[$key]['LENGTH OF STAY'] = $application->hrms_length_of_stay;
-                    }
-                    else{
-                        $excel_data[$key]['INTERNAL STAFF'] = 'NA';
-                        $excel_data[$key]['STAFF ID'] = 'NA';
-                        $excel_data[$key]['GRADE'] = 'NA';
-                        $excel_data[$key]['DEPARTMENT'] = 'NA';
-                        $excel_data[$key]['LOCATION'] = 'NA';
-                        $excel_data[$key]['LENGTH OF STAY'] = 'NA';
+                        //If applicant is an intenral staff
+                        if(isset($jobApplication->cv) && $jobApplication->cv->applicant_type == 'internal') {
+                            $application = $jobApplication->cv;
+                            $excel_data[$key]['INTERNAL STAFF'] = $application->applicant_type == 'internal' ? 'Yes' : 'No' ;
+                            $excel_data[$key]['STAFF ID'] = $application->hrms_staff_id;
+                            $excel_data[$key]['GRADE'] = $application->hrms_grade;
+                            $excel_data[$key]['DEPARTMENT'] = $application->hrms_dept;
+                            $excel_data[$key]['LOCATION'] = $application->hrms_location;
+                            $excel_data[$key]['LENGTH OF STAY'] = $application->hrms_length_of_stay;
+                        }
+                        else{
+                            $excel_data[$key]['INTERNAL STAFF'] = 'NA';
+                            $excel_data[$key]['STAFF ID'] = 'NA';
+                            $excel_data[$key]['GRADE'] = 'NA';
+                            $excel_data[$key]['DEPARTMENT'] = 'NA';
+                            $excel_data[$key]['LOCATION'] = 'NA';
+                            $excel_data[$key]['LENGTH OF STAY'] = 'NA';
+                        }
                     }
                 }
             }
-        
-            info('excel sheet is stored here'. asset($this->filename));
+
             (new ApplicantsExport($excel_data, $this->filename))->store($this->filename,\Maatwebsite\Excel\Excel::CSV);	
     }
 

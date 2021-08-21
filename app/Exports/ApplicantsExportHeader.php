@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\JobApplication;
+use App\Models\Job;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -44,22 +44,21 @@ class ApplicantsExportHeader implements WithHeadings
             "LAST COMPANY WORKED AT" ,
             "YEARS OF EXPERIENCE" ,
             "WILLING TO RELOCATE?", 
-            "TESTS"
+            "TESTS", 
         ];
 
-            if(isset($this->data['application_id'][0])) {
-                $jobApplication = JobApplication::with('custom_fields.form_field')->find($this->data['application_id'][0]);
-                if($jobApplication){
-                    foreach ($jobApplication->custom_fields as $value) {
-                        if($value->form_field != null){
-                            $excel_data[] = $value->form_field->name;
-                        }
-                    }    
+            if(isset($this->data['job_id'][0])) {
+                $job = Job::find($this->data['job_id'][0]);
+                if($job){
+                    foreach ($job->form_fields as $value) {
+                            $excel_data[] = $value->name;
+                    }   
+                     
                 }
-
-                $excel_data = array_merge($excel_data,['INTERNAL STAFF','STAFF ID','GRADE','DEPARTMENT','LOCATION','LENGTH OF STAY']);      
             }   
 
+        $excel_data = array_merge($excel_data,['INTERNAL STAFF','STAFF ID','GRADE','DEPARTMENT','LOCATION','LENGTH OF STAY']);      
+        
         return $excel_data;
     }
 

@@ -70,11 +70,11 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
         CreateSheetHeader::dispatch($this->filename, $header);
         $chunked_applicants =  collect($response['docs'])->chunk(1000)->toArray();
         $chunk_count = count($chunked_applicants);
-        $counter = 1;
+        $counter = 0;
 
         foreach($chunked_applicants as $data){
-           SendApplicantsSpreedsheet::dispatch($data,$this->company,$this->admin,$this->filename,$this->cv_ids);
-           $counter++;
+                ++$counter;
+           SendApplicantsSpreedsheet::dispatch($data,$this->company,$this->admin,$this->filename,$this->cv_ids);  
         }
         if($counter == $chunk_count){
                 $type = "Applicant Spreadsheet";

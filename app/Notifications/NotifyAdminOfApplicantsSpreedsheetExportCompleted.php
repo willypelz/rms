@@ -51,7 +51,7 @@ class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
     public function toMail($notifiable)
     {
         $data = [
-            "filename" => $this->filename,
+            "filename" => $this->job->title,
             "name" => $notifiable->name,
             "route" => route( "download_applicants_interview_file", ["filename" => encrypt(asset('exports').'/'.$this->filename) ])
         ];

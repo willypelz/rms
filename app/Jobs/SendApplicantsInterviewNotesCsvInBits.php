@@ -24,13 +24,13 @@ class SendApplicantsInterviewNotesCsvInBits implements ShouldQueue
     /**
      * Create a new job instance.
      * @param User $admin
-     * @param Object $applicant_ids
+     * @param array $applicant_ids
      * @param $filename
      * @param $cv_ids
      * @param Company $company
      */
 
-    public function __construct(Object $applicant_ids, Company $company, User $admin, $filename)
+    public function __construct(array $applicant_ids, Company $company, User $admin, $filename)
     {
       $this->applicant_ids = $applicant_ids;
       $this->company = $company;

@@ -24,13 +24,13 @@ class SendApplicantsInterviewNotesCsv implements ShouldQueue
     /**
      * Create a new job instance.
      * @param User $admin
-     * @param Object $application_ids
+     * @param array $application_ids
      * @param $filename
      * @param $cv_ids
      * @param Company $company
      */
 
-    public function __construct(Object $application_ids, Company $company, User $admin, $filename)
+    public function __construct(array $application_ids, Company $company, User $admin, $filename)
     {
       $this->application_ids = $application_ids;
       $this->company = $company;

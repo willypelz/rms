@@ -80,7 +80,7 @@ class CommenceProcessingForInterviewNotes implements ShouldQueue
               $counter = 0;
               foreach($chunked_applicants as $data){
                       ++$counter;
-                SendApplicantsInterviewNotesCsv::dispatch($application_ids,$this->company,$this->admin,$this->filename)->delay(10);  
+                SendApplicantsInterviewNotesCsv::dispatch($data,$this->company,$this->admin,$this->filename)->delay(10);  
               }
               if($counter == $chunk_count){
                       $type = "Applicant Notes CSV";

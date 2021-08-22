@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Files\LocalTemporaryFile;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
+use Maatwebsite\Excel\Concerns\Exportable;
 
 class InterviewNoteExport implements FromArray, WithEvents
 {

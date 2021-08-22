@@ -13,12 +13,12 @@ class InterviewNoteExportHeader implements WithHeadings
 {
     use Exportable;
 
-    private $application_id;
+    private $application_ids;
 
 
 	public function __construct($application_id)
 	{
-        $this->application_id = $application_id;
+        $this->application_ids = $application_id;
 	}
 
 	public function headings(): array

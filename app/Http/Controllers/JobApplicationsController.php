@@ -735,7 +735,7 @@ class JobApplicationsController extends Controller
 
         $application_ids = (!$request->has('app_ids')) ? $job->applicantsViaJAT->pluck('id') : $request->app_ids;
 
-        $export_file = 'interview-note ' . date('Y_m_d_H_i_s') . '.csv';
+        $export_file = "interview-note-".time().".csv";
         findOrMakeDirectory('exports');
         $download_type = 'Interview Notes CSV';
         if(count($application_ids)){

@@ -18,7 +18,7 @@ class SendApplicantsInterviewNotesCsvInBits implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $admin,$applicant_ids,$company,$filename,$cv_ids;
+    protected $admin,$applicant_ids,$company,$filename;
     public $timeout = 2500;
 
     /**
@@ -26,7 +26,6 @@ class SendApplicantsInterviewNotesCsvInBits implements ShouldQueue
      * @param User $admin
      * @param array $applicant_ids
      * @param $filename
-     * @param $cv_ids
      * @param Company $company
      */
 
@@ -36,8 +35,6 @@ class SendApplicantsInterviewNotesCsvInBits implements ShouldQueue
       $this->company = $company;
       $this->admin = $admin;
       $this->filename = $filename;
-      $this->cv_ids = $cv_ids;
-	    
     }
 
     /**

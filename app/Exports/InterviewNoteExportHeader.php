@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Job;
+use App\Models\InterviewNoteValues;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -18,7 +19,6 @@ class InterviewNoteExportHeader implements WithHeadings
 	public function __construct($application_id)
 	{
         $this->application_id = $application_id;
-        self::$static_file_name = $this->file_name;
 	}
 
 	public function headings(): array

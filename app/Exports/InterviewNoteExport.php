@@ -124,7 +124,7 @@ class InterviewNoteExport implements FromArray, WithEvents
 
         }
 
-        return collect($data);
+        return ($data);
     }
     /**
     * Before exporting, open the sheet you want to 

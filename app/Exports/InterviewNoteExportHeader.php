@@ -18,7 +18,7 @@ class InterviewNoteExportHeader implements WithHeadings
 
 	public function __construct($application_id)
 	{
-        $this->application_ids = $application_id;
+        $this->application_ids = [$application_id];
 	}
 
 	public function headings(): array

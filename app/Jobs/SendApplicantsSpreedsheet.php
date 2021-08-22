@@ -50,7 +50,7 @@ class SendApplicantsSpreedsheet implements ShouldQueue
       set_time_limit(0);
       $data_chunk = collect($this->data)->chunk(300)->toArray();
         foreach($data_chunk as $data){
-            SendApplicantsSpreedsheetInBits::dispatch($data,$this->company,$this->admin,$this->filename,$this->cv_ids);
+            SendApplicantsSpreedsheetInBits::dispatch($data,$this->company,$this->admin,$this->filename,$this->cv_ids)->delay(\Carbon\Carbon::now()->addSeconds(10));
         }
     }
 

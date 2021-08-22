@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
 
-class ApplicantsExportHeader implements WithHeadings
+class InterviewNoteExportHeader implements WithHeadings
 {
     use Exportable;
 

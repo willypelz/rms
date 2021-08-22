@@ -18,7 +18,7 @@ class SendApplicantsInterviewNotesCsvInSmallerBits implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $admin,$application_ids,$company,$filename,$cv_ids;
+    protected $admin,$application_ids,$company,$filename;
     public $timeout = 2500;
 
     /**
@@ -35,7 +35,6 @@ class SendApplicantsInterviewNotesCsvInSmallerBits implements ShouldQueue
       $this->company = $company;
       $this->admin = $admin;
       $this->filename = $filename;
-      $this->cv_ids = $cv_ids;
 	    
     }
 

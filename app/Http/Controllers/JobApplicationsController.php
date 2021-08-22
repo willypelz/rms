@@ -49,6 +49,7 @@ use App\Services\ApplicantService;
 use App\Http\Requests\DownloadApplicantCvRequest;
 use App\Exceptions\DownloadApplicantsInterviewException;
 use App\Jobs\CommenceProcessingForApplicantsSpreedsheet;
+use App\Jobs\CommenceProcessingForApplicantsCV;
 
 
 
@@ -685,68 +686,16 @@ class JobApplicationsController extends Controller
         $request->video_application_score = [env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END')];
         $solr_video_application_score = null;
     }
-
-
-    $result = SolrPackage::get_applicants($this->search_params, $request->jobId, @$request->status, @$solr_age,
-        @$solr_exp_years, @$solr_video_application_score, @$solr_test_score);
-
-    $data = $result['response']['docs'];
-    $other_data = [
-
-        'company' => get_current_company()->name,
-        'user' => Auth::user()->name,
-        'job_title' => $job->title,
-    ];
-
-    // $zippy = Zippy::load();
-
-    $path = public_path('uploads/tmp/');
-
     $filename = Auth::user()->id . "_" . get_current_company()->id . "_" . time() . ".zip";
-    //$archive = $zippy->create(  $path.$filename );
+    findOrMakeDirectory('exports');
+    
+    CommenceProcessingForApplicantsCV::dispatch(get_current_company(),Auth::user(),$filename,$this->search_params, $request->jobId, @$request->status,
+    @$solr_age, @$solr_exp_years, @$solr_video_application_score, 
+    @$solr_test_score,@$request->cv_ids);
 
-    $cvs = array_pluck($data, 'cv_file');
-    $ids = array_pluck($data, 'id');
-
-
-
-    //Check for selected cvs to download and append path to it
-    $cvs = array_map(function ($cv, $id) use ($request) {
-
-        if (!empty($request->cv_ids) && !in_array($id, $request->cv_ids)) {
-            return null;
-        }
-
-        if (!file_exists(public_path('uploads/CVs/') . $cv)) {
-            return null;
-        }
-
-        if (is_null($cv) or $cv == "") {
-            return null;
-        }
-
-        return public_path('uploads/CVs/') . $cv;
-    }, $cvs, $ids);
-
-
-
-    //Remove nulls
-    $cvs = array_filter($cvs, function ($var) {
-        return !is_null($var);
-    });
-
-
-    // if cvs are empty return back
-    if(empty($cvs)) {
-      return redirect()->back()->with('error', 'The candidates do not have any cv\'s and can\'t be downloaded');
-    }
-
-    $zipPath = $path . $filename;
-
-    Madzipper::make($zipPath)->add($cvs)->close();
-
-    return Response::download($path . $filename, date('y-m-d').$job->title.'Cv.zip', ['Content-Type' => 'application/octet-stream']);
-
+    $link = asset("exports/{$filename}");                                  
+    return response()->json(["status" => "success",
+                            "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
     }
 
     /**
@@ -827,8 +776,12 @@ class JobApplicationsController extends Controller
 
     public function downloadApplicantsInterviewFile(string $filename)
     {
+        try{
         $decrypted_file_name = decrypt($filename);
         return redirect($decrypted_file_name);
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','File not found');
+        }
     }
 
     public function massAction(Request $request)

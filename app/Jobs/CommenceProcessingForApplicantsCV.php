@@ -13,9 +13,10 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Jobs\NotifyAdminOfCompletedExportJob;
+use App\Jobs\SaveApplicantCVJob;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
-class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
+class CommenceProcessingForApplicantsCV implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -32,7 +33,6 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
      * @param string $status
      * @param Company $company
      * @param User $admin
-     * @param array $data
      * @param $filename
      * 
      */
@@ -60,26 +60,46 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
      */
     public function handle()
     {
-        
-        $applicants =  $this->getApplicants(); 
-        $response = $applicants['response'];
-        $number_found = $response["numFound"];
-        $header = $response['docs'][0];   
+            $result =  $this->getApplicants();   
+            $data = $result['response']['docs'];
+            $path = public_path('exports/');
+            $cvs = array_pluck($data, 'cv_file');
+            $ids = array_pluck($data, 'id');
 
-       //create excel sheet header in readiness for the excel data insertion 
-        CreateSheetHeader::dispatch($this->filename, $header);
-        $chunked_applicants =  collect($response['docs'])->chunk(500)->toArray();
-        $chunk_count = count($chunked_applicants);
-        $counter = 0;
 
-        foreach($chunked_applicants as $data){
-                ++$counter;
-           SendApplicantsSpreedsheet::dispatch($data,$this->company,$this->admin,$this->filename,$this->cv_ids)->delay(\Carbon\Carbon::now()->addSeconds(10));  
-        }
-        if($counter == $chunk_count){
-                $type = "Applicant Spreadsheet";
-                NotifyAdminOfCompletedExportJob::dispatch($this->filename,$this->admin,$type,$this->jobId)->delay(\Carbon\Carbon::now()->addSeconds($number_found < 4000 ? 60 : 240)); 
-        }
+        //Check for selected cvs to download and append path to it
+        $cvs = array_map(function ($cv, $id) {
+
+            if (!empty($this->cv_ids) && !in_array($id, $this->cv_ids)) {
+                return null;
+            }
+
+            if (!file_exists(public_path('uploads/CVs/') . $cv)) {
+                return null;
+            }
+
+            if (is_null($cv) or $cv == "") {
+                return null;
+            }
+
+            return public_path('uploads/CVs/') . $cv;
+            }, $cvs, $ids);
+
+
+
+          //Remove nulls
+          $cvs = array_values(array_filter($cvs));
+
+          //TODO: Implement DB flag whne cv is empty
+          // if cvs are empty return back
+          if(empty($cvs)) {
+            dd('empty');
+            // return redirect()->back()->with('error', 'The candidates do not have any cv\'s and can\'t be downloaded');
+          }else{
+            $zipPath = $path . $this->filename;
+            SaveApplicantCVJob::dispatch($zipPath,$cvs,$this->filename,$this->admin,$this->jobId);
+          }
+
      }
 
 

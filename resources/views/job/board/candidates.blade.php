@@ -885,8 +885,10 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-
-                    window.open("{{ route('download-applicant-cv') }}" + "?" + $.param($data), '_blank');
+                    $.get("{{ route('download-applicant-cv') }}" + "?" + $.param($data), {
+                    }, function (data) {
+                        displayReponseFromData(data)
+                    });
                 });
 
 

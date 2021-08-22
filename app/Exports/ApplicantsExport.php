@@ -6,12 +6,11 @@ namespace App\Exports;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeWriting;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Files\LocalTemporaryFile;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 
-class ApplicantsExport implements ShouldAutoSize, FromCollection, WithEvents
+class ApplicantsExport implements FromArray, WithEvents
 {
     use Exportable, RegistersEventListeners;
 
@@ -30,9 +29,9 @@ class ApplicantsExport implements ShouldAutoSize, FromCollection, WithEvents
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function collection()
+    public function array():array
     {
-        return collect($this->data);
+        return ($this->data);
     }
 
     /**

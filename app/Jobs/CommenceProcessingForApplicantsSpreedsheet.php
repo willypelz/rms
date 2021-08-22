@@ -71,7 +71,6 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
         $chunked_applicants =  collect($response['docs'])->chunk(500)->toArray();
         $chunk_count = count($chunked_applicants);
         $counter = 0;
-
         foreach($chunked_applicants as $data){
                 ++$counter;
            SendApplicantsSpreedsheet::dispatch($data,$this->company,$this->admin,$this->filename,$this->cv_ids)->delay(\Carbon\Carbon::now()->addSeconds(10));  

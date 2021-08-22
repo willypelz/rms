@@ -736,9 +736,20 @@ class JobApplicationsController extends Controller
         $application_ids = (!$request->has('app_ids')) ? $job->applicantsViaJAT->pluck('id') : $request->app_ids;
 
         $export_file = 'interview-note ' . date('Y_m_d_H_i_s') . '.csv';
+        findOrMakeDirectory('exports');
+        $download_type = 'Interview Notes CSV';
+        if(count($application_ids)){
+            CommenceProcessingForInterviewNotes::dispatch(get_current_company(),Auth::user(),$application_ids,$request->jobId,$export_file,$download_type);
 
-        return Excel::download(new InterviewNoteExport($application_ids), $export_file);
-    
+            $link = asset("exports/{$export_file}");                                  
+            return response()->json(["status" => "success",
+                                    "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
+            
+        }
+        return response()->json(["status" => "error","msg"=>"Export could not start,plese try again"]);
+            
+       
+       
     }
 
     public function downloadApplicantsInterviewFile(string $filename)

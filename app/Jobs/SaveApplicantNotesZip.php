@@ -51,6 +51,8 @@ class SaveApplicantNotesZip implements ShouldQueue
      */
     public function handle()
     {
+        ini_set('memory_limit', '1024M');
+        set_time_limit(0);
         foreach ($this->notes as $key => $app_id) {
             $appl = JobApplication::with('job', 'cv')->find($app_id);
                 if(is_null($appl)){
@@ -84,7 +86,7 @@ class SaveApplicantNotesZip implements ShouldQueue
         }
 
         $zipPath = public_path('exports/') . $timestamp . $this->filename;
-        $chunked_files = collect($files_to_archive)->chunk(200)->toArray();
+        $chunked_files = collect($files_to_archive)->chunk(100)->toArray();
         foreach($chunked_files as $files){
             SaveApplicantNotesInBitsJob::dispatch($zipPath,$files);
         }

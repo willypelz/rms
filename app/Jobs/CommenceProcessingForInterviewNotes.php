@@ -15,6 +15,9 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Jobs\NotifyAdminOfCompletedExportJob;
 use App\Jobs\SaveApplicantCVJob;
 use App\Jobs\SaveApplicantNotesZip;
+use App\Jobs\SendApplicantsInterviewNotesCsv;
+use App\Jobs\CreateInterviewNoteSheetHeader;
+
 
 class CommenceProcessingForInterviewNotes implements ShouldQueue
 {
@@ -53,7 +56,9 @@ class CommenceProcessingForInterviewNotes implements ShouldQueue
     {
       switch($this->download_type){
         case "Interview Notes ZIP":
-          $chunk = collect($this->application_ids)->chunk(500)->toArray();
+        ini_set('memory_limit', '1024M');
+        set_time_limit(0);
+          $chunk = collect($this->application_ids)->chunk(300)->toArray();
            foreach($chunk as $notes){
               $batch_count = 1;
               SaveApplicantNotesZip::dispatch($notes,$this->filename,$this->jobId,$this->company,$this->admin);
@@ -65,14 +70,27 @@ class CommenceProcessingForInterviewNotes implements ShouldQueue
           }
         break;
         case "Interview Notes CSV":
+        //create excel sheet header in readiness for the excel data insertion 
+        
+        $header = collect($this->application_ids)->toArray()[0] ?? null;
+              CreateInterviewNoteSheetHeader::dispatch($this->filename, $header);
+
+              $chunked_applicants =  collect($this->application_ids)->chunk(500)->toArray();
+              $chunk_count = count($chunked_applicants);
+              $counter = 0;
+              foreach($chunked_applicants as $data){
+                      ++$counter;
+                SendApplicantsInterviewNotesCsv::dispatch($application_ids,$this->company,$this->admin,$this->filename)->delay(10);  
+              }
+              if($counter == $chunk_count){
+                      $type = "Applicant Notes CSV";
+                      NotifyAdminOfCompletedExportJob::dispatch($this->filename,$this->admin,$type,$this->jobId)->delay(120); 
+              }
+        
         break;
         default:
-        return null;
+        //implement null action
       }
-     
-            // $zipPath = $path . $this->filename;
-            // SaveApplicantCVJob::dispatch($zipPath,$cvs,$this->filename,$this->admin,$this->jobId);
-          
 
      }
 

@@ -619,7 +619,7 @@ class JobApplicationsController extends Controller
                                                             @$solr_test_score,@$request->cv_ids);
         $link = asset("exports/{$filename}");                                  
         return response()->json(["status" => "success",
-                                "msg"=>'Exported started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
+                                "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
     }
 
     

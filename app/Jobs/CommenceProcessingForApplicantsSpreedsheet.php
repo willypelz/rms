@@ -68,7 +68,7 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
 
        //create excel sheet header in readiness for the excel data insertion 
         CreateSheetHeader::dispatch($this->filename, $header);
-        $chunked_applicants =  collect($response['docs'])->chunk(1000)->toArray();
+        $chunked_applicants =  collect($response['docs'])->chunk(500)->toArray();
         $chunk_count = count($chunked_applicants);
         $counter = 0;
 

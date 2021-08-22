@@ -35,6 +35,8 @@ class SaveApplicantCVJob implements ShouldQueue
 	    $this->zipPath = $zipPath;
         $this->cvs = $cvs;
         $this->filename = $filename;
+        $this->admin = $admin;
+        $this->jobId = $jobId;
     }
 
     /**
@@ -51,9 +53,9 @@ class SaveApplicantCVJob implements ShouldQueue
                 $batch_count ++;
                     if($batch_count == count($cvChunked)){ //This ensures email sends only in the last batch loop
                         $type = "Applicant CVs"; 
-                        NotifyAdminOfCompletedExportJob::dispatch($this->filename,$this->admin,$type,$this->jobId)->delay(10); 
+                        NotifyAdminOfCompletedExportJob::dispatch($this->filename,$this->admin,$type,$this->jobId)->delay(120); 
                     }
-                }
+                
             }
     }
 

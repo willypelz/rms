@@ -905,7 +905,10 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-                    window.open("{{ route('download-interview-notes') }}" + "?" + $.param($data), '_blank');
+                    $.get("{{ route('download-interview-notes') }}" + "?" + $.param($data), {
+                    }, function (data) {
+                        displayReponseFromData(data)
+                    });
             });
 
                 $('body').on('click', '#downloadInterviewNotesInCSV', function () {

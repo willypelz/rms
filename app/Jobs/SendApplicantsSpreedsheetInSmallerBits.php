@@ -45,7 +45,8 @@ class SendApplicantsSpreedsheetInSmallerBits implements ShouldQueue
      */
     public function handle()
     {
-	    
+        ini_set('memory_limit', '1024M');
+        set_time_limit(0);
       $excel_data = [];
             foreach ($this->data as $key => $value) {
                 if (!empty($this->cv_ids) && !in_array($value['id'], $this->cv_ids)) {

@@ -50,12 +50,12 @@
 																			</span>
 																		</h3>
 																		<hr style="border-width:0 0 1px">
-																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">
-																			Dear {{ $candidate->candidate->last_name}},
+																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:16px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">
+																			Dear {{ ucfirst($candidate->candidate->last_name)}},
 																			<br><br>
 																			Trust this meets you well.
 																			<br><br>
-																			<p> You have a new message based on your job application for the post of {{ $candidate->job->title}} </p>
+																			You have a new message based on your job application for the post of {{ $candidate->job->title}}, see below:
 											
 									                  	<br><br>
 																			{!! $email_message !!}

@@ -24,6 +24,7 @@ class PermissionsSeeder extends Seeder
             \App\Models\Permission::firstOrCreate(['name' => 'can-post-job', 'display_name' => 'can post job', 'description' => 'can post job']);
             \App\Models\Permission::firstOrCreate(['name' => 'can-add-job-team-members', 'display_name' => 'can add job team members', 'description' => 'can add job team members']);
             \App\Models\Permission::firstOrCreate(['name' => 'can-switch-across-companies', 'display_name' => 'can switch across companies', 'description' => 'can switch across companies']);
+            \App\Models\Permission::firstOrCreate(['name' => 'can-add-subsidiaries', 'display_name' => 'can add subsidiaries', 'description' => 'can add subsidiaries']);
 
     }
 }

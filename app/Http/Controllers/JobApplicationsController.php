@@ -699,6 +699,7 @@ class JobApplicationsController extends Controller
     $link = asset("exports/{$filename}");                                  
     return response()->json(["status" => "success",
                             "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
+
     }
 
     /**

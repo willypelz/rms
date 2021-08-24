@@ -697,6 +697,7 @@ class JobApplicationsController extends Controller
     $link = asset("exports/{$filename}");                                  
     return response()->json(["status" => "success",
                             "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
+
     }
 
     /**
@@ -747,9 +748,7 @@ class JobApplicationsController extends Controller
             
         }
         return response()->json(["status" => "error","msg"=>"Export could not start,plese try again"]);
-            
-       
-       
+
     }
 
     public function downloadApplicantsInterviewFile(string $filename)

@@ -2,41 +2,39 @@
 
 namespace App\Jobs;
 
+use App\Models\JobApplication;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Jobs\SendApplicantsSpreedsheetInBits;
+use App\Exports\ApplicantsExport;
+use App\Jobs\SendApplicantsInterviewNotesCsvInSmallerBits;
 use App\User;
 use App\Models\Company;
 use Maatwebsite\Excel\Facades\Excel;
 
-
-class SendApplicantsSpreedsheet implements ShouldQueue
+class SendApplicantsInterviewNotesCsvInBits implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $admin,$data,$company,$filename,$cv_ids;
-
+    protected $admin,$applicant_ids,$company,$filename;
     public $timeout = 2500;
 
     /**
      * Create a new job instance.
      * @param User $admin
-     * @param array $data
+     * @param array $applicant_ids
      * @param $filename
-     * @param $cv_ids
      * @param Company $company
      */
-    public function __construct(array $data, Company $company, User $admin, $filename,$cv_ids)
+
+    public function __construct(array $applicant_ids, Company $company, User $admin, $filename)
     {
-      $this->data = $data;
+      $this->applicant_ids = $applicant_ids;
       $this->company = $company;
       $this->admin = $admin;
       $this->filename = $filename;
-      $this->cv_ids = $cv_ids;
-	    
     }
 
     /**
@@ -46,11 +44,11 @@ class SendApplicantsSpreedsheet implements ShouldQueue
      */
     public function handle()
     {
-      ini_set('memory_limit', '1024M');
-      set_time_limit(0);
-      $data_chunk = collect($this->data)->chunk(300)->toArray();
+        ini_set('memory_limit', '1024M');
+        set_time_limit(0);
+	    $data_chunk = collect($this->applicant_ids)->chunk(100)->toArray();
         foreach($data_chunk as $data){
-            SendApplicantsSpreedsheetInBits::dispatch($data,$this->company,$this->admin,$this->filename,$this->cv_ids)->delay(\Carbon\Carbon::now()->addSeconds(10));
+            SendApplicantsInterviewNotesCsvInSmallerBits::dispatch($data,$this->company,$this->admin,$this->filename)->delay(10);
         }
     }
 

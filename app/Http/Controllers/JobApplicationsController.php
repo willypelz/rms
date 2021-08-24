@@ -48,6 +48,10 @@ use App\Dtos\DownloadApplicantInterviewNoteDto;
 use App\Services\ApplicantService;
 use App\Http\Requests\DownloadApplicantCvRequest;
 use App\Exceptions\DownloadApplicantsInterviewException;
+use App\Jobs\CommenceProcessingForApplicantsSpreedsheet;
+use App\Jobs\CommenceProcessingForApplicantsCV;
+use App\Jobs\CommenceProcessingForInterviewNotes;
+
 
 
 class JobApplicationsController extends Controller
@@ -563,14 +567,10 @@ class JobApplicationsController extends Controller
     {
 
         set_time_limit(0);
-        
         //Check if you should have access to the excel
-        check_if_job_owner($request->jobId);
-        
+        check_if_job_owner($request->jobId); 
+
         $job = Job::find($request->jobId);
-
-
-
         $this->search_params['filter_query'] = @$request->filter_query;
         $this->search_params['row'] = 2147483647;
 
@@ -578,12 +578,9 @@ class JobApplicationsController extends Controller
         //If age is available
         if (@$request->age) {
             $date = Carbon::now();
-            //2015-09-16T00:00:00Z
             $start_dob = explode(' ', $date->subYears(@$request->age[0]))[0] . 'T23:59:59Z';
             $end_dob = explode(' ', $date->subYears(@$request->age[1]))[0] . 'T00:00:00Z';
-
             $solr_age = [$start_dob, $end_dob];
-
         } else {
             $request->age = [15, 65];
             $solr_age = null;
@@ -592,8 +589,6 @@ class JobApplicationsController extends Controller
 
         //If years of experience is available
         if (@$request->exp_years) {
-            //2015-09-16T00:00:00Z
-
             $solr_exp_years = [@$request->exp_years[0], @$request->exp_years[1]];
         } else {
             $request->exp_years = [0, 40];
@@ -602,8 +597,6 @@ class JobApplicationsController extends Controller
 
         //If test score is available
         if (@$request->test_score) {
-            //2015-09-16T00:00:00Z
-
             $solr_test_score = [@$request->test_score[0], @$request->test_score[1]];
         } else {
             $request->test_score = [40, 160];
@@ -612,105 +605,24 @@ class JobApplicationsController extends Controller
 
         //If video application score is available
         if (@$request->video_application_score) {
-            //2015-09-16T00:00:00Z
-
             $solr_video_application_score = [
-                @$request->video_application_score[0],
-                @$request->video_application_score[1]
+            @$request->video_application_score[0],
+            @$request->video_application_score[1]
             ];
         } else {
             $request->video_application_score = [env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END')];
             $solr_video_application_score = null;
         }
 
-
-        $result = SolrPackage::get_applicants($this->search_params, $request->jobId, @$request->status, @$solr_age,
-            @$solr_exp_years, @$solr_video_application_score, @$solr_test_score);
-
-
-        $data = $result['response']['docs'];
-        $other_data = [
-
-            'company' => get_current_company()->name,
-            'user' => Auth::user()->name,
-            'job_title' => $job->title,
-        ];
-
-        $excel_data = [];
-
-        foreach ($data as $key => $value) {
-
-
-            if (!empty($request->cv_ids) && !in_array($value['id'], $request->cv_ids)) {
-                continue;
-            }
-            $tests = "";
-
-            if (@$value['test_status']) {
-                foreach (@$value['test_status'] as $key2 => $test_status) {
-
-                    if ($test_status == 'COMPLETED') {
-                        $tests .= @$value['test_name'][$key2] . "(" . @$value['test_score'][$key2] . ') ';
-                    }
-                }
-            }
-
-            $excel_data[] = [
-                "FIRSTNAME" => @$value['first_name'],
-                "LASTNAME" => @$value['last_name'],
-                "LAST POSITION HELD" => @$value['last_position'],
-                "HEADLINE" => @$value['headline'][0],
-                "GENDER" => @$value['gender'],
-                "MARITAL STATUS" => @$value['marital_status'],
-                "DATE OF BIRTH" => substr(@$value['dob'], 0, 10),
-                // "AGE" => '',
-                "LOCATION" => @$value['state'],
-                "EMAIL" => @$value['email'],
-                "PHONE" => @$value['phone'],
-                "COVER NOTE" => @$value['cover_note'][0],
-                "HIGHEST EDUCATION" => @$value['highest_qualification'],
-                "GRADUATION GRADE" => @getGrade($value['grade']),
-                "LAST COMPANY WORKED AT" => @$value['last_company_worked'],
-                "YEARS OF EXPERIENCE" => @$value['years_of_experience'],
-                "WILLING TO RELOCATE?" => (array_key_exists('willing_to_relocate', $value) && $value['willing_to_relocate'] == "true") ? 'Yes' : 'No',
-                "TESTS" => $tests,
-
-
-            ];
-            if(isset($value['application_id'][0])) {
-                $jobApplication = JobApplication::with('custom_fields.form_field')->find($value['application_id'][0]);
-                foreach ($jobApplication->custom_fields as $value) {
-                if($value->form_field != null){
-                    $excel_data[$key][$value->form_field->name] = $value->value;
-                }
-                }
-
-                //If applicant is an intenral staff
-                if(isset($jobApplication->cv) && $jobApplication->cv->applicant_type == 'internal') {
-                    $application = $jobApplication->cv;
-                    $excel_data[$key]['INTERNAL STAFF'] = $application->applicant_type == 'internal' ? 'Yes' : 'No' ;
-                    $excel_data[$key]['STAFF ID'] = $application->hrms_staff_id;
-                    $excel_data[$key]['GRADE'] = $application->hrms_grade;
-                    $excel_data[$key]['DEPARTMENT'] = $application->hrms_dept;
-                    $excel_data[$key]['LOCATION'] = $application->hrms_location;
-                    $excel_data[$key]['LENGTH OF STAY'] = $application->hrms_length_of_stay;
-                }
-            }
-
-        }
-
-
-
-        // $excel = App::make('excel');
-        $filename = 'Applicants Report - ' . $other_data['job_title'].'.xlsx';
-
-        $filename = str_replace('/', '', $filename);
-        $filename = str_replace('\'', '', $filename);
-
-
-        return Excel::download(new ApplicantsExport($excel_data), $filename);
-
-
+        $filename = str_replace(['/','\'',' '], '', "Applicants Report - {$job->title}.csv");
+        findOrMakeDirectory('exports');
+  
+        CommenceProcessingForApplicantsSpreedsheet::dispatch(get_current_company(),Auth::user(),$filename,$this->search_params, $request->jobId, @$request->status,
+                                                            @$solr_age, @$solr_exp_years, @$solr_video_application_score, 
+                                                            @$solr_test_score,@$request->cv_ids);
+        $link = asset("exports/{$filename}");                                  
+        return response()->json(["status" => "success",
+                                "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
     }
 
     
@@ -777,69 +689,16 @@ class JobApplicationsController extends Controller
         $request->video_application_score = [env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END')];
         $solr_video_application_score = null;
     }
-
-
-    $result = SolrPackage::get_applicants($this->search_params, $request->jobId, @$request->status, @$solr_age,
-        @$solr_exp_years, @$solr_video_application_score, @$solr_test_score);
-
-    $data = $result['response']['docs'];
-    $other_data = [
-
-        'company' => get_current_company()->name,
-        'user' => Auth::user()->name,
-        'job_title' => $job->title,
-    ];
-
-    // $zippy = Zippy::load();
-
-    $path = public_path('uploads/tmp/');
-
     $filename = Auth::user()->id . "_" . get_current_company()->id . "_" . time() . ".zip";
-    //$archive = $zippy->create(  $path.$filename );
+    findOrMakeDirectory('exports');
+    
+    CommenceProcessingForApplicantsCV::dispatch(get_current_company(),Auth::user(),$filename,$this->search_params, $request->jobId, @$request->status,
+    @$solr_age, @$solr_exp_years, @$solr_video_application_score, 
+    @$solr_test_score,@$request->cv_ids);
 
-    $cvs = array_pluck($data, 'cv_file');
-    $ids = array_pluck($data, 'id');
-
-
-
-    //Check for selected cvs to download and append path to it
-    $cvs = array_map(function ($cv, $id) use ($request) {
-
-        if (!empty($request->cv_ids) && !in_array($id, $request->cv_ids)) {
-            return null;
-        }
-
-        if (!file_exists(public_path('uploads/CVs/') . $cv)) {
-            return null;
-        }
-
-        if (is_null($cv) or $cv == "") {
-            return null;
-        }
-
-        return public_path('uploads/CVs/') . $cv;
-    }, $cvs, $ids);
-
-
-
-    //Remove nulls
-    $cvs = array_filter($cvs, function ($var) {
-        return !is_null($var);
-    });
-
-
-    // if cvs are empty return back
-    if(empty($cvs)) {
-      return redirect()->back()->with('error', 'The candidates do not have any cv\'s and can\'t be downloaded');
-    }
-
-    $zipPath = $path . $filename;
-
-    Madzipper::make($zipPath)->add($cvs)->close();
-
-    return Response::download($path . $filename, date('y-m-d').$job->title.'Cv.zip', ['Content-Type' => 'application/octet-stream']);
-
-
+    $link = asset("exports/{$filename}");                                  
+    return response()->json(["status" => "success",
+                            "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
     }
 
     /**
@@ -856,49 +715,15 @@ class JobApplicationsController extends Controller
         }else {
           $application_ids = $request->app_ids;
         }
-  
-        foreach ($application_ids as $key => $app_id) {
-          $appl = JobApplication::with('job', 'cv')->find($app_id);
-  
-          if(!is_null($appl)){
-              $jobID = $appl->job->id;
-  
-              if (isset($jobID)) {
-                  check_if_job_owner($jobID);
-              }
-  
-              $comments = JobActivity::with('user', 'application.cv', 'job')->where('activity_type',
-                  'REVIEW')->where('job_application_id', $appl->id)->get();
-              $notes = InterviewNotes::with('user')->where('job_application_id', $appl->id)->get();
-              $interview_notes = InterviewNoteValues::with('interviewer',
-                  'interview_note_option')->where('job_application_id', $appl->id)->get()->groupBy('interviewed_by');
-  
-              $path = public_path('uploads/tmp/');
-              $show_other_sections = false;
-  
-              $pdf = App::make('dompdf.wrapper');
-              $pdf->loadHTML(view('modals.inc.dossier-content',
-                  compact( 'jobID', 'appl', 'comments', 'interview_notes', 'show_other_sections'))->render());
-  
-              $pdf->save($path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf', true);
-  
-  
-              $filename = "Bulk Interview Notes.zip";
-              $interview_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' interview.pdf';
-              $cv_local_file = @$path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' cv - ' . $appl->cv->cv_file;
-              $files_to_archive[] = $interview_local_file;
-  
-              $timestamp = " " . time() . " ";
-          }
-        }
-  
-          $zipPath = $path . $timestamp . $filename;
-  
-          Madzipper::make($zipPath)->add($files_to_archive)->close();
-  
-          return Response::download($zipPath, $filename,
-                ['Content-Type' => 'application/octet-stream']);
-
+        $filename = "Bulk Interview Notes.zip";
+        findOrMakeDirectory('exports');
+        $download_type = 'Interview Notes ZIP';
+        CommenceProcessingForInterviewNotes::dispatch(get_current_company(),Auth::user(),$application_ids,$request->jobId,$filename,$download_type);
+ 
+        $link = asset("exports/{$filename}");                                  
+        return response()->json(["status" => "success",
+                                "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
+        
     }
 
 
@@ -915,18 +740,29 @@ class JobApplicationsController extends Controller
 
         $application_ids = (!$request->has('app_ids')) ? $job->applicantsViaJAT->pluck('id') : $request->app_ids;
 
-        $export_file = 'interview-note ' . date('Y_m_d_H_i_s') . '.csv';
+        $export_file = "interview-note-".time().".csv";
+        findOrMakeDirectory('exports');
+        $download_type = 'Interview Notes CSV';
+        if(count($application_ids)){
+            CommenceProcessingForInterviewNotes::dispatch(get_current_company(),Auth::user(),$application_ids,$request->jobId,$export_file,$download_type);
 
-        return Excel::download(new InterviewNoteExport($application_ids), $export_file);
-    
+            $link = asset("exports/{$export_file}");                                  
+            return response()->json(["status" => "success",
+                                    "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
+            
+        }
+        return response()->json(["status" => "error","msg"=>"Export could not start,plese try again"]);
 
     }
 
-    public function downloadApplicantsInterviewFile(string $disk, string $filename)
+    public function downloadApplicantsInterviewFile(string $filename)
     {
+        try{
         $decrypted_file_name = decrypt($filename);
-        return response()->download(\Storage::disk($disk)->path($decrypted_file_name));
-      
+        return redirect($decrypted_file_name);
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','File not found');
+        }
     }
 
     public function massAction(Request $request)
@@ -940,12 +776,8 @@ class JobApplicationsController extends Controller
             case 'ALL':
 
                 break;
-            case 'PENDING':
-
-                break;
 
             default:
-                $this->sendWorkflowStepNotification($request->app_ids, $request->step_id);
                 break;
         }
 

@@ -19,6 +19,7 @@ interface ApplicantContract {
      * The Download Applicants Spreedsheet Data to object instance
      * @param App\Dtos\DownloadApplicantSpreadsheetDto the downloadApplicantSpreadsheetDto
      */
+
     public function downloadCv(User $admin,  $data);
 
     /**
@@ -26,6 +27,7 @@ interface ApplicantContract {
      * @param App\Dtos\DownloadApplicantSpreadsheetDto the downloadApplicantSpreadsheetDto
      */
     public function downloadInterviewNotes(User $admin, $data, $type);
+
     
 }
 

@@ -30,6 +30,7 @@ class SendApplicantsCv implements ShouldQueue
      * @param App\Dtos\DownloadApplicantCvDto
      * @return void
      */
+
     public function __construct(User $admin, $data)
     {
 	    $this->admin = $admin;

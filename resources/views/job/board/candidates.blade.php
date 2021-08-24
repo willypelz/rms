@@ -39,7 +39,7 @@ $is_super_admin = auth()->user()->is_super_admin;
                                 <!-- applicant -->
                                 <div class="col-xs-9 ">
                                   @include('layout.alerts')
-
+                                  <div class="download-info alert alert-success" style="color:black;display:none"></div>
                                     <div class="row">
 
                                         <div class="col-xs-8">
@@ -866,7 +866,10 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-                    window.open("{{ route('download-applicant-spreadsheet') }}" + "?" + $.param($data), '_blank');
+                    $.get("{{ route('download-applicant-spreadsheet') }}" + "?" + $.param($data), {
+                    }, function (data) {
+                        displayReponseFromData(data)
+                    });
                 });
 
                 $('body').on('click', '#downCv', function () {
@@ -882,8 +885,10 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-
-                    window.open("{{ route('download-applicant-cv') }}" + "?" + $.param($data), '_blank');
+                    $.get("{{ route('download-applicant-cv') }}" + "?" + $.param($data), {
+                    }, function (data) {
+                        displayReponseFromData(data)
+                    });
                 });
 
 
@@ -900,7 +905,10 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-                    window.open("{{ route('download-interview-notes') }}" + "?" + $.param($data), '_blank');
+                    $.get("{{ route('download-interview-notes') }}" + "?" + $.param($data), {
+                    }, function (data) {
+                        displayReponseFromData(data)
+                    });
             });
 
                 $('body').on('click', '#downloadInterviewNotesInCSV', function () {
@@ -916,7 +924,10 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-                    window.open("{{ route('download-interview-notes-csv') }}" + "?" + $.param($data), '_blank');
+                    $.get("{{ route('download-interview-notes-csv') }}" + "?" + $.param($data), {
+                    }, function (data) {
+                        displayReponseFromData(data)
+                    });
                 });
         });
 
@@ -928,7 +939,8 @@ $is_super_admin = auth()->user()->is_super_admin;
         function displayReponseFromData(data) {
             switch(data.status){
                 case "success":
-                    $.growl.notice({message: data.msg} , {delay: 10000});
+                   $('.download-info').show().html(data.msg);
+                    window.stop();
                     break;
                 case "error":
                     $.growl.error({message: data.msg} , {delay: 10000});

@@ -31,5 +31,4 @@ class Cv extends Model
         return $this->belongsTo('App\Models\School', 'school_id');
     }
 
-
 }

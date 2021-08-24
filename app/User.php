@@ -83,6 +83,12 @@ class User extends Authenticatable
         return $admin ? true:false;
     }
 
+    public function isInterviewer()
+    {
+        $interviewer = $this->roles()->where("name", "interviewer")->first();
+        return $interviewer ? true:false;
+    }
+
      /**
      * TO GET THE DEFAULT COMPANY FOR A USER
      * @return App\Model\Company

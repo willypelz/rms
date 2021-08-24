@@ -565,7 +565,6 @@ class JobApplicationsController extends Controller
      */
     public function downloadApplicantSpreadsheet(Request $request)
     {
-
         set_time_limit(0);
         //Check if you should have access to the excel
         check_if_job_owner($request->jobId); 
@@ -633,7 +632,6 @@ class JobApplicationsController extends Controller
      */
     public function downloadApplicantCv(Request $request)
     {
-
     //Check if you should have access to the excel
     check_if_job_owner($request->jobId);
 
@@ -706,7 +704,6 @@ class JobApplicationsController extends Controller
      * @param Illuminate\Http\Request $request
      * @return Illuminate\Http\Response
      */
-
     public function downloadInterviewNotes(Request $request)
     {
         $job = Job::with('applicants')->find($request->jobId);
@@ -726,12 +723,10 @@ class JobApplicationsController extends Controller
         
     }
 
-
     /**
      * @param  Illuminate\Http\Request $request
      * @return Illuminate\Http\Response
      */
-
     public function downloadInterviewNotesCSV(Request $request){
         ini_set('memory_limit', '1024M');
         set_time_limit(0);
@@ -752,7 +747,9 @@ class JobApplicationsController extends Controller
             
         }
         return response()->json(["status" => "error","msg"=>"Export could not start,plese try again"]);
-
+            
+       
+       
     }
 
     public function downloadApplicantsInterviewFile(string $filename)

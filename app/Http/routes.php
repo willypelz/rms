@@ -50,7 +50,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::get('/audit-trails', 'AuditController@index')->name('audit-trails');
     Route::resource('schedule', 'ScheduleController');
 
-    Route::match(['get', 'post'], '/admin/assign', 'JobsController@manageRoles')->name('change-admin-role');
+    Route::middleware(["admin:interviewer"])->match(['get', 'post'], '/admin/assign', 'JobsController@manageRoles')->name('change-admin-role');
     Route::match(['get', 'post'], 'job/teams/delete', ['uses' => 'JobsController@JobTeamDelete', 'as' => 'job-team-admin-delete']);
     Route::match(['get', 'post'], '/sys/roles', 'AdminsController@manageRoles')->name('list-role');
     Route::match(['get', 'post'], '/sys/roles/create', 'AdminsController@createRole')->name('create-role');
@@ -672,6 +672,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::match(['get', 'post'], 'job/share/{jobID}/{jobSlug?}', ['uses' => 'JobsController@jobShare', 'as' => 'job-share']);
 
     Route::match(['get', 'post'], 'job/apply/{jobID}/{slug}',['uses' => 'JobsController@jobApply', 'as' => 'job-apply']);
+
+    Route::get('fetch/schools', ['uses'=>'JobsController@fetchSchools', 'as' => 'ajax-fetch-schools']);
 
     Route::match(['get', 'post'], 'job/applied/{jobID}/{slug}',['uses' => 'JobsController@JobApplied', 'as' => 'job-applied']);
 

@@ -331,12 +331,9 @@
                                                                                 id="select-school"
                                                                                 placeholder="Select your school..."
                                                                                 @if( $fields->school->is_required ) required @endif>
-                                                                            <option>Choose one</option>
+
+                                                                            <option id="loading">Choose one</option>
                                                                             <option value="others">Others</option>
-                                                                            @foreach($schools as $school)
-                                                                                <option value="{{ $school->id }}"
-                                                                                        @if( @$last_cv->school->name == $school->name ) selected="selected" @endif >{{ $school->name }}</option>
-                                                                            @endforeach
 
                                                                         </select>
                                                                         <span>Can't find your school? Select Others </span>
@@ -755,10 +752,24 @@
                 }
             })
 
-            $('#select-school').selectize({
-                sortField: 'text'
+            $.ajax({
+                url: '{{route("ajax-fetch-schools")}}',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data){
+                    let school = data; 
+                    $.each(school, function(key, modelName){
+                        let option = new Option(school[key].name, school[key].id);
+                        $(option).html();
+                        $('#select-school').append(option);
+                    });
+                    
+                    $('#select-school').selectize({
+                       sortField: 'text'
+                    });
+                }
             });
-
+            
             let school = $('#select-school');
             school.change(function () {
                 if (school.val() == 'others') {

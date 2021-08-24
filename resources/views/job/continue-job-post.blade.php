@@ -94,7 +94,7 @@
                                                            class="is_required" style="margin:10px"
 
                                                            @if(!is_null($selected_fields))
-                                                           @if($selected_fields->$key->is_required)
+                                                           @if(isset($selected_fields->$key) && $selected_fields->$key->is_required)
                                                            checked="checked"
                                                             @endif
                                                             @endif
@@ -106,7 +106,7 @@
                                                     <input type="checkbox" name="is_visible[{{ $key }}][]"
                                                            class="is_visible" style="margin:10px"
                                                            @if(!is_null($selected_fields))
-                                                           @if($selected_fields->$key->is_visible)
+                                                           @if(isset($selected_fields->$key) && $selected_fields->$key->is_visible)
                                                            checked="checked"
                                                            @endif
                                                            @else

@@ -697,6 +697,7 @@ class JobApplicationsController extends Controller
     $link = asset("exports/{$filename}");                                  
     return response()->json(["status" => "success",
                             "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
+
     }
 
     /**
@@ -747,9 +748,7 @@ class JobApplicationsController extends Controller
             
         }
         return response()->json(["status" => "error","msg"=>"Export could not start,plese try again"]);
-            
-       
-       
+
     }
 
     public function downloadApplicantsInterviewFile(string $filename)
@@ -773,12 +772,8 @@ class JobApplicationsController extends Controller
             case 'ALL':
 
                 break;
-            case 'PENDING':
-
-                break;
 
             default:
-                $this->sendWorkflowStepNotification($request->app_ids, $request->step_id);
                 break;
         }
 

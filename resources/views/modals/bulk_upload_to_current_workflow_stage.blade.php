@@ -5,7 +5,6 @@
     Download Applicants To Workflow Stage Bulk Upload Template? <a target="_blank" href="{{route('download-bulk-upload-applicant-to-workflow-stage-template')}}" id="downloadBulkUploadApplicantToWorkflowStageTemplateBtn" class="">Click Here</a>
 </div>
 <br><br>
-
 <div>
     {!! Form::open(array('class'=>'', 'files'=>true)) !!}
 
@@ -55,10 +54,13 @@
                         $('#viewModal').modal('toggle');
                         $.growl.notice({message: response.msg});
                         sh.reloadStatus();
-                        setTimeout(function() { location.reload() }, 3000);
+                        setTimeout(function() { location.reload() }, 50000);
                     }else{
-                        $.growl.error({message: response.msg});
+                        $.growl.error({message: response.msg}, {delay: 100000});
                     }
+                },
+                error : function (xhr, textStatus, errorThrown){
+                    $.growl.error({message: xhr.responseText});
                 }
             });
     }

@@ -107,7 +107,7 @@
                                           $eligibilty = isset($thirdPartyData['request_type']) ? $thirdPartyData['request_type'] : NULL;
                                           $details = isset($thirdPartyData['job_description']) ? $thirdPartyData['job_description'] : NULL;
                                         }
-                                        $eligibilty = (env('RMS_STAND_ALONE')) ? "external" : NULL;
+                                        $eligibilty = (@isset($job->is_for) ? $eligibilty : ((env('RMS_STAND_ALONE')) ? "external" : NULL));
                                     @endphp
 
                                     <div class="form-group">
@@ -236,7 +236,7 @@
                                                             @endif value="internal"> INTERNAL
                                                     </option>
                                                     <option @if ($eligibilty == 'external') selected="selected"
-                                                            @endif selected value="external"> EXTERNAL
+                                                            @endif value="external"> EXTERNAL
                                                     </option>
                                                 </select>
                                             </div>

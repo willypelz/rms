@@ -930,7 +930,7 @@ class JobApplicationsController extends Controller
                             <tbody>
                         <tr>
                             <td class="text-center"><h1 class="no-margin text-bold"><a href="' . route('job-candidates',
-                [$job->id]) . ' ">' . $db_total_applicants . '</a></h1><small class="hidden">'. $solr_total_applicants .'</small><small class="text-muted">Applicants</small></td>
+                [$job->id]) . ' ">' . ($solr_total_applicants ?: 0) . '</a></h1><small class="hidden">'. $db_total_applicants .'</small><small class="text-muted">Applicants</small></td>
                             <!--td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">' . $matching . '</a></h1><small class="text-muted">Matching Candidates</small></td-->
                         </tr>
                         <tr>

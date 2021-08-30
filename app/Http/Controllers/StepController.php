@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Models\WorkflowStep;
 use Illuminate\Http\Request;
+use App\Models\JobApplication;
 
 class StepController extends Controller
 {
@@ -60,8 +61,16 @@ class StepController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        if (!$workflowStep = WorkflowStep::with('workflow')->find($id)) {
+        $workflowStep = WorkflowStep::with('workflow')->find($id);
+        if (!$workflowStep) {
             return redirect()->route('workflow');
+        }
+        $status = JobApplication::where('status',$workflowStep->slug)->count();
+        
+        if ($status) {
+            return redirect()
+                ->route('workflow-steps-add', ['id' => $workflowStep->workflow->id])
+                ->with('error', 'Cannot delete a step an applicant is attached to');
         }
 
         if ($workflowStep->delete()) {

@@ -159,10 +159,10 @@
                                                         <i class="glyphicon glyphicon-calendar"></i> Date Posted
                                                         : {{ date('D. j M, Y', strtotime($job['post_date'])) }}</small>
 
-                                                    <div class="btn-group btn-abs-ad">
+                                                    <div class="btn-group btn-abs-ad button-top">
                                                         <a href="{{ route('job-board', [$job['id']]) }}" type="button"
-                                                           class="btn btn-success">View Job</a>
-                                                        <button type="button" class="btn btn-success dropdown-toggle"
+                                                           class="btn btn-sm btn-success">View Job</a>
+                                                        <button type="button" class="btn btn-sm btn-success dropdown-toggle"
                                                                 data-toggle="dropdown" aria-haspopup="true"
                                                                 aria-expanded="false">
                                                             <span class="caret"></span>

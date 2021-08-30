@@ -234,7 +234,7 @@
                                 </div><br>
 
                                 <button type="submit" class="btn btn-success text-capitalize" id="importFileButton">
-                                        <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Import file</span>
+                                        <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Upload File</span>
                                 </button>
 
                             </div>

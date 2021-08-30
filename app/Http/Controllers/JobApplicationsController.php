@@ -907,12 +907,12 @@ class JobApplicationsController extends Controller
     public function JobViewData(Request $request)
     {
 
-
         $result = SolrPackage::get_applicants($this->search_params, $request->job_id, @$request->status);
-        $total_applicants = ($result['response']['numFound']);
+        $solr_total_applicants = ($result['response']['numFound']);
         $matching = 10000;
 
-        $job = Job::find($request->job_id);
+        $job = Job::with("applicants")->find($request->job_id);
+        $db_total_applicants = $job->applicants->count();
 
         $now = time(); // or your date as well
         $your_date = strtotime($job->post_date);
@@ -925,7 +925,7 @@ class JobApplicationsController extends Controller
                             <tbody>
                         <tr>
                             <td class="text-center"><h1 class="no-margin text-bold"><a href="' . route('job-candidates',
-                [$job->id]) . ' ">' . $total_applicants . '</a></h1><small class="text-muted">Applicants</small></td>
+                [$job->id]) . ' ">' . ($solr_total_applicants ?: 0) . '</a></h1><small class="hidden">'. $db_total_applicants .'</small><small class="text-muted">Applicants</small></td>
                             <!--td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">' . $matching . '</a></h1><small class="text-muted">Matching Candidates</small></td-->
                         </tr>
                         <tr>

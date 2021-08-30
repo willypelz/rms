@@ -17,6 +17,7 @@ use App\Models\Job;
 use App\Models\Role;
 use App\Enum\Configs;
 use App\Http\Requests;
+use App\Jobs\UploadSolrFromCode;
 use App\Models\School;
 use App\Libraries\Solr;
 use App\Models\Company;
@@ -1559,12 +1560,14 @@ class JobsController extends Controller
         if ($mimeType == 'application/zip') {
             $request_data = json_encode($request->all());
             $this->dispatch(new UploadZipCv($filename, $randomName, $additional_data, $request_data));
-            return ['status' => 1, 'data' => "You will receive email notification once successfully uploaded"];
+            $response = ['status' => 1, 'data' => "You will receive email notification once successfully uploaded"];
         } else {
             $cvs = [$filename];
             saveCompanyUploadedCv($cvs, $additional_data, $request);
-            return ['status' => 1, 'data' => 'Cv(s) uploaded successfully'];
+            $response =  ['status' => 1, 'data' => 'Cv(s) uploaded successfully'];
         }
+        UploadSolrFromCode::dispatch();
+        return $response;
     }
 
 

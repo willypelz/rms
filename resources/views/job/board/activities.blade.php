@@ -27,9 +27,6 @@
 
                                             <div class="col-xs-12">
 
-                                                <h6 class="no-margin " id="your-statistics" style="display:none;">
-                                                    <span class="text-brandon text-uppercase"> Applications per day</span>
-                                                </h6>
                                                 <div class="clearfix">
                                                     <hr>
                                                 </div>

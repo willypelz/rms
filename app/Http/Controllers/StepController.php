@@ -70,7 +70,7 @@ class StepController extends Controller
         if ($status) {
             return redirect()
                 ->route('workflow-steps-add', ['id' => $workflowStep->workflow->id])
-                ->with('error', 'Can not delete a step applicants are attached to');
+                ->with('error', 'Cannot delete a step an applicant is attached to');
         }
 
         if ($workflowStep->delete()) {

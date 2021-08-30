@@ -1,4 +1,12 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+<style>
+
+  .li-msg li {
+    text-align: left;
+
+  }
+
+</style>
 
 <div class="row">
                             
@@ -211,7 +219,8 @@
                                       </div>
                                     </div>
                                     <div class="loader"></div>
-                                    <div class="alert alert-danger u_f" style="display:none;" ></div>
+                                    <div class="alert alert-danger u_f" style="display:none;" >
+                                    </div>
                                     <div class="alert alert-success u_s" style="display:none;" ></div>
 
                                     <p class="alert alert-warning">
@@ -387,22 +396,28 @@
 
     function showResponse(response){
 
-    $(".loader").html( '' );
-    
-
-    if(response.status)
-    {
+        $(".loader").html( '' );
         
-        $('.u_s').text( response.data ).show();
-        setInterval('window.location.reload()', 5000);
-    }
-    else
-    {
-        $('.u_f').text( response.data ).show();
-    }
 
-    $(".progress").hide();
-    $('#importFileButton').prop("disabled",false);
+        if(response.status)
+        {
+            
+            $('.u_s').text( response.data ).show();
+            setInterval('window.location.reload()', 5000);
+        }
+        else
+        {
+            let showError = "";
+            for (let index = 0; index < response.data.length; index++) {
+                showError += "<div class='li-msg'><li>"+(response.data[index]) +"</li></div>"
+            }
+            
+            $('.u_f').html(showError).show(); 
+            
+        }
+
+        $(".progress").hide();
+        $('#importFileButton').prop("disabled",false);
                         
 
     // $.growl.notice({ message: "The file uploaded is being parsed. You will have access to it in within 48 hours" });

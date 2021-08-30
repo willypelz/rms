@@ -912,7 +912,6 @@ class JobApplicationsController extends Controller
     public function JobViewData(Request $request)
     {
 
-        //"amala"
         $result = SolrPackage::get_applicants($this->search_params, $request->job_id, @$request->status);
         $solr_total_applicants = ($result['response']['numFound']);
         $matching = 10000;

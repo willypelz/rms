@@ -6,6 +6,7 @@ use  App\Http\Controllers\CvSalesController;
 use Alchemy\Zippy\Zippy;
 use App\Http\Requests;
 use App\Http\Requests\UpdateCompanyRequest;
+use App\Jobs\UploadSolrFromCode;
 use App\Jobs\UploadApplicant;
 use App\Jobs\UploadZipCv;
 use App\Libraries\Solr;
@@ -1558,12 +1559,14 @@ class JobsController extends Controller
         if ($mimeType == 'application/zip') {
             $request_data = json_encode($request->all());
             $this->dispatch(new UploadZipCv($filename, $randomName, $additional_data, $request_data));
-            return ['status' => 1, 'data' => "You will receive email notification once successfully uploaded"];
+            $response = ['status' => 1, 'data' => "You will receive email notification once successfully uploaded"];
         } else {
             $cvs = [$filename];
             saveCompanyUploadedCv($cvs, $additional_data, $request);
-            return ['status' => 1, 'data' => 'Cv(s) uploaded successfully'];
+            $response =  ['status' => 1, 'data' => 'Cv(s) uploaded successfully'];
         }
+        UploadSolrFromCode::dispatch();
+        return $response;
     }
 
 

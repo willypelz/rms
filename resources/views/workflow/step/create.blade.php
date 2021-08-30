@@ -67,7 +67,7 @@
                                                     <i class="fa fa-pencil fa-fw"></i>
                                                     Edit
                                                 </a>
-                                                {{--
+                                                
                                                 <form action="{{ route('step-delete', ['id' => $workflowStep->id]) }}"
                                                       method="post"
                                                       class="delete-spoof">
@@ -75,10 +75,10 @@
 
                                                     <input type="hidden" name="_method" value="delete">
 
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fa fa-times-circle fa-fw"></i>
+                                                    <button onclick="return confirm('Are you sure you want to delete workflow?');" type="submit" class="btn btn-danger btn-sm">
+                                                        <i class="fa fa-trash fa-fw"></i> Delete
                                                     </button>
-                                                </form>--}}
+                                                </form>
                                             </div>
                                         @endif
                                     </div>

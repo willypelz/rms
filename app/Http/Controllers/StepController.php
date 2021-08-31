@@ -28,10 +28,16 @@ class StepController extends Controller
         }
 
         $this->validate($request, [
-            'name' => 'required',
+            'name' => array(
+                'required',
+                'regex:/(^([a-zA-Z ]+)(\d+)?$)/u'
+            ),
             // 'order' => 'required|integer', // Disable order modification on update
             'type' => 'required',
             'approval_users' => 'required_if:requires_approval,1',
+        ],
+        $message = [
+            'name.regex' => 'Special characters are not allowed'
         ]);
 
         // dd($request->all(), $approval_users);

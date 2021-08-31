@@ -144,7 +144,6 @@
                                                 </label>
                                                 <input type="text" name="expiry_date" autocomplete="off"
                                                        class="datepicker form-control expire-date"
-                                                       min="{{ $job->post_date }}"
                                                        value="{{ ( $job->expiry_date != 0000-00-00 ) ?   $job->expiry_date  : '' }}">
                                             </div>
 

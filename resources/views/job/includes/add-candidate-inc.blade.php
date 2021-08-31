@@ -1,4 +1,12 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+<style>
+
+  .li-msg li {
+    text-align: left;
+
+  }
+
+</style>
 
 <div class="row">
                             
@@ -126,12 +134,12 @@
                                     <div class="alert alert-success u_s" style="display:none;" ></div>
 
                                     <div class="form-group col-xs-6">
-                                        <label for="cv-name" class="pull-left">Firstname</label>
+                                        <label for="cv-name" class="pull-left">First name</label>
                                         <input type="text" name="cv_first_name" id="cv-first_name" class="form-control" />
                                     </div>
 
                                     <div class="form-group col-xs-6">
-                                        <label for="cv-name" class="pull-left">Lastname</label>
+                                        <label for="cv-name" class="pull-left">Last name</label>
                                         <input type="text" name="cv_last_name" id="cv-last_name" class="form-control" />
                                     </div>
 
@@ -211,7 +219,8 @@
                                       </div>
                                     </div>
                                     <div class="loader"></div>
-                                    <div class="alert alert-danger u_f" style="display:none;" ></div>
+                                    <div class="alert alert-danger u_f" style="display:none;" >
+                                    </div>
                                     <div class="alert alert-success u_s" style="display:none;" ></div>
 
                                     <p class="alert alert-warning">
@@ -375,40 +384,46 @@
     });
           
 
-                    function beforeUpload(){
-                        $('.u_f').hide();
-                        $('.u_s').hide();
+    function beforeUpload(){
+        $('.u_f').hide();
+        $('.u_s').hide();
 
-                        $(".loader").html( '{!! preloader() !!}' );
-                        $(".progress").show();
-                        $('#importFileButton').prop("disabled",true);
+        $(".loader").html( '{!! preloader() !!}' );
+        $(".progress").show();
+        $('#importFileButton').prop("disabled",true);
+        
+    }
+
+    function showResponse(response){
+
+        $(".loader").html( '' );
+        
+
+        if(response.status)
+        {
+            
+            $('.u_s').text( response.data ).show();
+            setInterval('window.location.reload()', 5000);
+        }
+        else
+        {
+            let showError = "";
+            for (let index = 0; index < response.data.length; index++) {
+                showError += "<div class='li-msg'><li>"+(response.data[index]) +"</li></div>"
+            }
+            
+            $('.u_f').html(showError).show(); 
+            
+        }
+
+        $(".progress").hide();
+        $('#importFileButton').prop("disabled",false);
                         
-                    }
 
-                    function showResponse(response){
+    // $.growl.notice({ message: "The file uploaded is being parsed. You will have access to it in within 48 hours" });
 
-                        $(".loader").html( '' );
-                       
-
-                        if(response.status)
-                        {
-                            
-                            $('.u_s').text( response.data ).show();
-                            setInterval('window.location.reload()', 5000);
-                        }
-                        else
-                        {
-                            $('.u_f').text( response.data ).show();
-                        }
-
-                        $(".progress").hide();
-                        $('#importFileButton').prop("disabled",false);
-                        
-
-                        // $.growl.notice({ message: "The file uploaded is being parsed. You will have access to it in within 48 hours" });
-
-                        // $('#u_s').text( "You will receive email notification once successfully uploaded" ).show();
-                    }
+    // $('#u_s').text( "You will receive email notification once successfully uploaded" ).show();
+    }
 
 
 </script>

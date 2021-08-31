@@ -144,7 +144,7 @@
                                                 </label>
                                                 <input type="text" name="expiry_date" autocomplete="off"
                                                        class="datepicker form-control"
-                                                       value="{{ ( $job->expiry_date != 0000-00-00 ) ?   $job->expiry_date  : '' }}">
+                                                       value="{{ ( $job->expiry_date != 0000-00-00 ) ? $job->expiry_date  : '' }}">
                                             </div>
 
                                             <input type="hidden" name="status" value="ACTIVE">

@@ -81,7 +81,7 @@
                                         </div>
                                         
                                         <div class="pull-right text-warning">
-                                            Attached to <strong>{{ ($attachments_count = $workflow->jobs()->count()) > 0 ? $attachments_count : 'No' }} Jobs</strong>
+                                            Attached to <strong>{{ ($attachments_count = $workflow->jobs()->count()) > 0 ? $attachments_count : 'No' }}  @if($workflow->jobs()->count() > 1) Jobs @else Job @endif</strong>
                                         </div>
                                     
                                     </div>

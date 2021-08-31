@@ -40,10 +40,16 @@ class WorkflowStepController extends Controller
         $workflowLastStep = $workflow->workflowSteps->last();
 
         $this->validate($request, [
-            'name' => 'required',
+            'name' => array(
+                'required',
+                'regex:/(^([a-zA-Z ]+)(\d+)?$)/u'
+            ),
             // 'order' => 'required|integer|min:1', // Order default to last +1, disable user ability to set order on create
             'type' => 'required',
             'approval_users' => 'required_if:requires_approval,1',
+        ],
+        $message = [
+            'name.regex' => 'Special characters are not allowed'
         ]);
         if($request->message_to_applicant && empty($request->message_template)){
             return redirect()->back()->withInput()->with('error', 'Message Template is Empty');

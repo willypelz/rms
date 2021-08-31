@@ -428,7 +428,7 @@
         $('body').on('click', '#remove-custom-field', function (e) {
             e.preventDefault()
             key = parseInt($(this).data('key'))
-            $.growl.notice({ message: custom_fields[key].name + ' custom field removed.' })
+            $.growl.notice({ message: custom_fields[key].name + ' custom field removed from list. Kindly click next  or (save and continue later) to save changes' })
             custom_fields.splice(key, 1)
             $(this).loadCustomFields()
         })

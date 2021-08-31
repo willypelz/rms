@@ -130,20 +130,22 @@
 
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-sm-6"><label for="job-title">Post Date <span
+                                        <div class="col-sm-6"><label for="job-title">Post Date <span
                                                             class="text-danger">*</span></label>
-                                                <input type="text" class="datepicker form-control"
+                                                <input type="text" class="datepicker form-control post-date"
                                                        value="{{ $job->post_date }}" disabled>
 
 
                                             </div>
+                                            
 
                                             <div class="col-sm-6">
                                                 <label for="job-title">Expiry Date <span class="text-danger">*</span>
                                                 </label>
                                                 <input type="text" name="expiry_date" autocomplete="off"
-                                                       class="datepicker form-control"
-                                                       value="{{ ( $job->expiry_date != 0000-00-00 ) ? @Carbon::createFromFormat( 'Y-m-d',  $job->expiry_date)->format('m/d/Y') : '' }}">
+                                                       class="datepicker form-control expire-date"
+                                                       min="{{ $job->post_date }}"
+                                                       value="{{ ( $job->expiry_date != 0000-00-00 ) ?   $job->expiry_date  : '' }}">
                                             </div>
 
                                             <input type="hidden" name="status" value="ACTIVE">
@@ -324,6 +326,10 @@
                 $(".attach_emails").hide();
             }
         }
+
+        var post_date = <?php echo json_encode($job->post_date) ?>;
+        var splice_date = post_date.split("-");
+        
         // Replace the <textarea id="editor1"> with a CKEditor
         // instance, using default configuration.
         $(document).ready(function () {
@@ -333,8 +339,8 @@
             CKEDITOR.replace('editor4')
         })
         $('body .datepicker').datepicker({
-
-            format: 'mm/dd/yyyy'
+            format: 'yyyy-mm-dd',
+            startDate: new Date(splice_date)
         });
         
         $(function () {

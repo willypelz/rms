@@ -575,7 +575,7 @@
                         </div><br>
                         <small style="margin-top: -20px;display: block;">*Allowed extensions are .zip, .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt</small><br>
                         <button type="submit" class="btn btn-success text-capitalize">
-                        <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Import file</span>
+                        <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Upload File</span>
                         </button>
                       </div>
                     </form>

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\UploadApplicant;
+use App\Jobs\UploadSolrFromCode;
 use App\Models\CV;
 use Illuminate\Console\Command;
 
@@ -56,7 +56,7 @@ class FixNullCvs extends Command
                 continue;               
             }
             dump('CV Fix is done');
-              // UploadSolrFromCode::dispatch();
+              UploadSolrFromCode::dispatch();
         }else{
             dump('No CV to fix');
         }

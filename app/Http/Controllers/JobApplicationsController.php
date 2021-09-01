@@ -920,7 +920,7 @@ class JobApplicationsController extends Controller
         $db_total_applicants = $job->applicants->count();
 
         $now = time(); // or your date as well
-        $your_date = strtotime($job->created_at);
+        $your_date = strtotime($job->post_date);
         $datediff = $now - $your_date;
         $open_days = floor($datediff / (60 * 60 * 24));
 

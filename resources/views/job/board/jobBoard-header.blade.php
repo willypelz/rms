@@ -23,7 +23,7 @@
                                 <a href="create-job.php" class="btn btn-danger btn-sm"><i class="fa fa-pencil"></i> Edit Job</a>
                             </li> -->
                             <li>
-                                <strong>&nbsp;Posted:</strong>&nbsp;<?php echo date('F d, Y', strtotime($job['created_at'])) ?></li>
+                                <strong>&nbsp;Posted:</strong>&nbsp;<?php echo date('F d, Y', strtotime($job['post_date'])) ?></li>
                             <li>
                                 <strong>&nbsp;Expires:</strong>&nbsp; <?php echo date('F d, Y', strtotime($job['expiry_date'])) ?></li>
                         </ul>

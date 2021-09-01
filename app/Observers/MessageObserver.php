@@ -37,7 +37,7 @@ class MessageObserver
                'action_id' => $message->id,
                'action_type' => 'App\Models\Message',
                'causee_id' =>  null,
-               'causer_id' => auth()->guard('candidate')->user()->id,
+               'causer_id' => auth()->guard('candidate')->id(),
                'properties' => '',
            ];
            logAction($param);  

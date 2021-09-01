@@ -22,7 +22,7 @@ class MessageObserver
                 'description' => isset($message->job_application->candidate) ? 'Message was sent to '.$message->job_application->candidate->name() : 'Message was sent to Candidate',
                 'action_id' => $message->id,
                 'action_type' => 'App\Models\Message',
-                'causee_id' => $message->job_application->candidate_id,
+                'causee_id' => isset($message->job_application->candidate) ? $message->job_application->candidate_id : null,
                 'causer_id' => auth()->user()->id,
                 'properties' => '',
             ];

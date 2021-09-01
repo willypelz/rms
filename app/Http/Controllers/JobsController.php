@@ -2617,8 +2617,8 @@ class JobsController extends Controller
                 $cv->cv_file = $data['cv_file'];
             }
             if (isset($fields->remuneration->is_visible) && $fields->remuneration->is_visible && isset($data['maximum_remuneration']) && isset($data['minimum_remuneration'])) {
-                $cv->cv_file = $data['minimum_remuneration'];
-                $cv->cv_file = $data['maximum_remuneration'];
+                $cv->minimum_remuneration = $data['minimum_remuneration'];
+                $cv->cv_maximum_remuneration = $data['maximum_remuneration'];
             }
 
             if ($fields->state_of_origin->is_visible && (isset($data['location']) || isset($data['country']))) {

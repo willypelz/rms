@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Models\WorkflowStep;
 use Illuminate\Http\Request;
+use App\Models\JobApplication;
 
 class StepController extends Controller
 {
@@ -27,10 +28,16 @@ class StepController extends Controller
         }
 
         $this->validate($request, [
-            'name' => 'required',
+            'name' => array(
+                'required',
+                'regex:/(^([a-zA-Z ]+)(\d+)?$)/u'
+            ),
             // 'order' => 'required|integer', // Disable order modification on update
             'type' => 'required',
             'approval_users' => 'required_if:requires_approval,1',
+        ],
+        $message = [
+            'name.regex' => 'Special characters are not allowed'
         ]);
 
         // dd($request->all(), $approval_users);
@@ -60,8 +67,16 @@ class StepController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        if (!$workflowStep = WorkflowStep::with('workflow')->find($id)) {
+        $workflowStep = WorkflowStep::with('workflow')->find($id);
+        if (!$workflowStep) {
             return redirect()->route('workflow');
+        }
+        $status = JobApplication::where('status',$workflowStep->slug)->count();
+        
+        if ($status) {
+            return redirect()
+                ->route('workflow-steps-add', ['id' => $workflowStep->workflow->id])
+                ->with('error', 'Cannot delete a step an applicant is attached to');
         }
 
         if ($workflowStep->delete()) {

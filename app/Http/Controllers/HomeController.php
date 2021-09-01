@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use Mail;
 
 
+
+
 class HomeController extends Controller
 {
     private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'application_date+desc', 'grouped'=>FALSE ];
@@ -34,6 +36,7 @@ class HomeController extends Controller
           'register',
           'viewTalentSource',
       ]]);
+      
     }
 
 
@@ -75,6 +78,7 @@ class HomeController extends Controller
         }
 
         $jobs = Job::whereStatus('ACTIVE')
+	        ->where('is_for', '!=', 'internal')
             ->whereNotIn('is_private', [true])
             ->where('expiry_date', '>=', date('Y-m-d'))
             ->take(env('JOB_HOMEPAGE_LIST', 3))
@@ -88,11 +92,16 @@ class HomeController extends Controller
                 'email' => 'required|email',
                 'password' => 'required'
             ]);
-
+            
             if (Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password])) {
+                
+            
                 if ($request->redirect_to) {
                     return redirect($request->redirect_to);
                 } else {
+
+                    //audit trail
+                    audit_log();
                     return redirect()->route('candidate-dashboard');
                 }
 
@@ -140,6 +149,8 @@ class HomeController extends Controller
                         session()->forget('redirect_to');
                         return redirect($redirect_to);
                     } else {
+                        //audit_trail
+                        audit_log();
                         return redirect()->route('candidate-dashboard');
                     }
 
@@ -177,7 +188,7 @@ class HomeController extends Controller
 
         $response = [];
 
-        $posts = @json_decode($response)->data->posts;
+        $posts =  @json_decode($response)->data->posts;
         $talent_pool_count = $saved_cvs_count = $purchased_cvs_count = '--';
 
         return view('talent-pool.dashboard', compact('posts', 'jobs_count','talent_pool_count','saved_cvs_count','purchased_cvs_count'));
@@ -226,6 +237,8 @@ class HomeController extends Controller
     {
         return view('guest.pricing');
     }
+
+    
 
 
 }

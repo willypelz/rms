@@ -25,7 +25,7 @@ class Authenticate
                 return redirect()->guest('/');
             }
         }
-
+        session(['active_company' => auth()->user()->defaultCompany()]);
         return $next($request);
     }
 }

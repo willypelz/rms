@@ -54,11 +54,19 @@
                 </div>
                 <script>
                     $(document).ready(function () {
+                        //on page refresh, retain the current tab you were in previously
+                        if(localStorage.getItem("current_tab")){
+                            var tab_name = localStorage.getItem("current_tab");
+                            $('#filter button').removeClass('active');
+                            $('body .job-block').hide();
+                            $("body .job-" + tab_name).fadeIn();
+                        }
                         $('#filter button').on('click', function () {
                             $('#filter button').removeClass('active');
                             $('body .job-block').hide();
                             $(this).addClass('active');
                             $("body .job-" + $(this).data('target')).fadeIn();
+                            localStorage.setItem("current_tab",$(this).data('target'));
                         })
                     });
                 </script>
@@ -151,10 +159,10 @@
                                                         <i class="glyphicon glyphicon-calendar"></i> Date Posted
                                                         : {{ date('D. j M, Y', strtotime($job['post_date'])) }}</small>
 
-                                                    <div class="btn-group btn-abs-ad">
+                                                    <div class="btn-group btn-abs-ad button-top">
                                                         <a href="{{ route('job-board', [$job['id']]) }}" type="button"
-                                                           class="btn btn-success">View Job</a>
-                                                        <button type="button" class="btn btn-success dropdown-toggle"
+                                                           class="btn btn-sm btn-success">View Job</a>
+                                                        <button type="button" class="btn btn-sm btn-success dropdown-toggle"
                                                                 data-toggle="dropdown" aria-haspopup="true"
                                                                 aria-expanded="false">
                                                             <span class="caret"></span>
@@ -164,15 +172,15 @@
 
                                                             @if($job['status'] != 'DRAFT')
                                                                 <li><a href="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}" target="_blank">Preview Job</a></li>
-                                                                
+
                                                                 <li><a href="{{ route('job-candidates', [$job['id']]) }}">View
                                                                     Applicants</a></li>
                                                                 @if((isset($user_role) &&  !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
 
                                                                 @if( !$job->hasExpied())
-                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote 
+                                                                <li><a href="{{ route('job-promote', [$job['id']]) }}">Promote
                                                                         this
-                                                                        Job</a></li> 
+                                                                        Job</a></li>
 
 
 
@@ -180,20 +188,20 @@
                                                                         this
                                                                         job on
                                                                         Social Media. </a></li>
-                                                                
-                                                                
-                                                                <input type="text" 
-                                                                    id="copy_{{ $job->id }}" 
+
+
+                                                                <input type="text"
+                                                                    id="copy_{{ $job->id }}"
                                                                     value="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}" style="display: none;">
 
-                                                                
-                                                
+
+
 
                                                                 @endif
 
                                                                 <li><a href="#" class="copyBtn" id="copyBtn" onclick="copyLink('{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}')" data-text="{{ route('job-view',['jobID'=>$job->id,'jobSlug'=>str_slug($job->title)]) }}">Copy job Link </a></li>
 
-                                                                
+
                                                                 <li role="separator" class="divider"></li>
                                                                 @if($job['is_private'] == 1)
                                                                     <li><a href="#"

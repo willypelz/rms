@@ -47,7 +47,6 @@
                         url: url,
                         data: ({ rnd : Math.random() * 100000, token:token }),
                         success: function(response){
-                             console.log(response)
 
                              if(response != null){
                                  var oldurl = "{{ route('transactions') }}";
@@ -58,7 +57,7 @@
                                       url: oldurl,
                                       data: ({order_id:"{{ $order_id }}", status:true, message:'Transaction Successful', "_token":"{{ csrf_token() }}"}),
                                       success: function(response){
-                                         console.log(response);
+
                                         $("#paymemt-success").html('Payment Successful');
 
                                       }
@@ -87,7 +86,7 @@
                       url: url,
                       data: ({order_id: "{{ $order_id }}", status:false, message:'Transaction Not Found', "_token":"{{ csrf_token() }}"}),
                       success: function(response){
-                        console.log(response) 
+
                         // loadPaystack();
                       }
                   });

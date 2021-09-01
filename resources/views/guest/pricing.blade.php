@@ -17,7 +17,7 @@
                 <h5 class="text-uppercase l-sp-5"> 14 days of free and unlimited Access on all plans</h5><br>
             </div>
           @endif
-          
+
           @if(  @$account->status == 'TRIAL')
 
             @if( @$account->has_expired == true )
@@ -26,7 +26,6 @@
                   <h1>Hey! We bet you did <br>enjoy your 14 days experience!</h1>
                   <div class="col-xs-2 col-xs-offset-5"><hr></div>
                   <div class="clearfix"></div>
-                  <h5 class="text-uppercase l-sp-5"> Choose a plan below that will best suit your needs</h5><br>
               </div>
 
             @else
@@ -36,7 +35,6 @@
                   <h1>Keep <br>enjoying your 14 days experience!</h1>
                   <div class="col-xs-2 col-xs-offset-5"><hr></div>
                   <div class="clearfix"></div>
-                  <h5 class="text-uppercase l-sp-5"> Choose a plan below that will best suit your needs</h5><br>
               </div>
 
 
@@ -44,198 +42,7 @@
           @endif
 
         </div>
-        
-    </section>
 
-
-    <section class="white min" style="">
-        <div class="container">
-            <div class="row">
-
-                <div class="col-sm-12">
-
-                    <div class="">
-
-
-
-                      <!-- Tab panes -->
-                      <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane in active animated zoomIn" id="monthly">
-                              <div class="row" style="margin-bottom:0em">
-                                  <br>
-                                <div class="col-sm-4 text-center no-pad">
-                                  <!-- <img src="img/rope.png" width="100px" class="rope"> -->
-                                    @if( @@$account->has_expired == true or @$account->status == 'TRIAL')
-                                      <div class="panel panel-default panel-pricing panel-basic trial-over">
-                                    @else
-                                      <div class="panel panel-default panel-pricing panel-basic">
-                                    @endif
-                                    
-                                        <div class="panel-heading">
-                                            <!-- <i class="fa fa-star"></i> -->
-                                            <h3 class="text-brandon">FREE</h3>
-                                            <small> For you to get a feel of the <br>SeamlessHiring magic.</small>
-                                        </div>
-                                        <div class="panel-body text-center text-brandon">
-                                            <p class=" no-margin"><strong>14-days Access <br> to All Features:</strong></p>
-                                        </div>
-                                        <ul class="list-group text-center">
-                                                   <li class="list-group-item">Applicant Tracking System</li>
-
-                                                   <li class="list-group-item">Team Member Collaboration</li>
-
-                                                   <li class="list-group-item">Background Check</li>
-
-                                                   <li class="list-group-item">Online Tests</li>
-
-                                                   <li class="list-group-item">Video Job Posting</li>
-
-                                                   <li class="list-group-item">Extensive Job Broadcast</li>
-
-                                                   <li class="list-group-item">Medical Check</li>
-
-                                                   <li class="list-group-item">Dossier</li>
-
-                                                   <li class="list-group-item">Customer Support</li>
-
-                                        </ul>
-                                        <div class="panel-footer">
-                                            @if( @@$account->has_expired == true or @$account->status == 'TRIAL')
-                                              <a class="btn btn-lg btn-line " href="{{ url('register') }}" disabled>BEGIN TRIAL</a>
-                                            @else
-                                              <a class="btn btn-lg btn-line " href="{{ url('register') }}">BEGIN TRIAL</a>
-                                            @endif
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /item -->
-
-                                <!-- item -->
-                                <div class="col-sm-4 text-center no-pad">
-                                  <!-- <img src="img/rope-big.png" width="300px" class="rope big"> -->
-                                    <div class="panel panel-default panel-pricing panel-sme">
-                                        <div class="panel-heading">
-                                            <!-- <i class="fa fa-star"></i><i class="fa fa-star"></i> -->
-                                            <div class="label label-default">&nbsp; MOST POPULAR &nbsp;</div>
-                                            <h3 class="text-brandon">SME</h3>
-
-                                            <small>For companies that post 1-3 jobs per month and hire between 5-10 candidates in a year.</small>
-                                        </div>
-                                        <div class="panel-body no-margin text-center text-brandon" style="
-                                                background: #2889ce;
-                                            ">
-                                            <p class=" no-margin no-pad" style="
-                                                background: #2889ce;
-                                            "><strong>3Months - &#8358;90,000</strong></p>
-                                        </div>
-                                        <div class="panel-body no-margin text-center text-brandon">
-                                            <p class=" no-margin no-pad"><strong>1 year - &#8358;330,000</strong></p>
-                                            <!-- <small>20% Discount</small> -->
-                                        </div>
-                                        <ul class="list-group text-center">
-                                            <li class="list-group-item"> Full access to SeamlessHiring database for candidate search</li>
-                                            <li class="list-group-item"> 5% off Video Job Posting</li>
-                                            <li class="list-group-item">3 Team Members</li>                                            
-                                            <li class="list-group-item">Unlimited Job Posting on Free Job Boards</li>
-                                            <li class="list-group-item">5% off Online Tests, Background & Medical Checks, Discount on Newspaper Ads</li>
-                                            <li class="list-group-item">Dedicated Relationship Manager for Resource Support</li>
-
-<!--                                            <li class="list-group-item">3 Team Members</li>-->
-
-                                        </ul>
-                                        <div class="panel-footer">
-                                            <a class="btn btn-lg btn-block btn-success " href="{{ url('register') }}">START HERE!</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /item -->
-
-
-                                <!-- item -->
-                                <div class="col-sm-4 text-center no-pad">
-                                  <!-- <img src="img/rope.png" width="100px" class="rope"> -->
-                                    <div class="panel panel-default panel-pricing panel-premium">
-                                        <div class="panel-heading">
-                                            <!-- <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> -->
-                                            <h3 class="text-brandon">PREMIUM</h3>
-                                            <small> For companies that post more than 3 jobs per month and hire over 10 candidates in a year. </small>
-                                        </div>
-                                        <div class="panel-body text-center">
-                                            <p class=" no-margin text-brandon" style=" font-size: 17px;    padding: 12px;"><strong>CALL US ON 08068873719</strong></p>                                        
-                                        </div>
-                                        <ul class="list-group text-center">
-                                            <!-- <li class="list-group-item"> Unlimited free job posting.</li>
-                                            <li class="list-group-item"> Unlimited processing access unlimited jobs/month.</li>
-                                            <li class="list-group-item"> 24/7 dedicated staff support</li>
-                                            <li class="list-group-item"> Free embed on your career site. </li>
-                                            <li class="list-group-item"> Discounts on value added services. </li> -->
-
-                                            <li class="list-group-item">Full access to SeamlessHiring database for candidate search</li>
-                                            <li class="list-group-item">20% off Video Job Posting </li>
-                                            <li class="list-group-item"> Analytics Reporting</li>
-                                            <li class="list-group-item">Different Access Levels for Admin</li>
-                                            <li class="list-group-item">Unlimited Team Collaboration</li>
-                                            <li class="list-group-item">Unlimited Job Posting on Paid/Free Job Boards</li>
-                                            <li class="list-group-item">10% off Online Tests, Background & Medical Checks, Discount on Newspaper Ads </li>
-                                            <li class="list-group-item">Company In-House Talent Resource  and Periodic Refresher Training on Portal Updates</li>
-                                            <li class="list-group-item">Dedicated  Relationship Manager for 24/7 Resource Support </li>
-                                        </ul>
-                                        <div class="panel-footer">
-                                            <a class="btn btn-lg btn-line text-uppercase" data-toggle="modal" data-target="#requestCall" id="modalButton" href="#requestCall" data-title="Request a call">Request a call</a>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /item -->
-
-                            </div>
-                        </div>
-
-
-                      </div>
-                      <!-- End of Tab panes -->
-
-
-
-                      <!-- <div id="" class="col-sm-12">
-                        <div class="text-center">
-                            <div class="col-sm-4 col-sm-offset-4">
-                            <br>
-                                <a href="{{ url('register') }}" class="btn btn-lg btn-block btn-success btn-trial">
-                                    Get Started for free
-                                </a>
-                            </div>
-                        </div>
-                      </div> -->
-                        <div class="clearfix"></div>
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="container hidden">
-          <hr>
-           <div class="row">
-               <div class="col-xs-12"><h4 class="text-center">All Plans include all of these features:</h4> <br></div>
-               <div class="col-xs-4 col-xs-offset-2">
-                   <ul class="list-unstyled">
-                       <li>Applicant Tracking System</li>
-                       <li>Team Member Collaboration</li>
-                       <li>Background Check</li>
-                       <li>Online Tests</li>
-                       <li>Video Job Posting</li>
-                       <li>Extensive Job Broadcast</li>
-                       <li>Medical Check</li>
-                       <li>Dossier</li>
-                       <li>Customer Support</li>
-                   </ul>
-               </div>
-           </div>
-       </div>
     </section>
 
 <!--
@@ -243,8 +50,8 @@
 
    </section>
 -->
-   
-   
+
+
     <section class="s-div no-margin blue dark">
         <div class="container">
 
@@ -263,7 +70,7 @@
                             <div class="col-sm-12">
                                 <h4 class="text-brandon text-green-light">1. You Will Reach the Highest Number of High Quality Candidates Through SeamlessHiring.</h4>
 
-                                <p>Since you can broadcast your jobs on over 30 channels including Insidify.com, Jobberman, myjobmag, ngcareers, Newspapers (Guardian, Punch, Vanguard and TheNation), facebook, twitter and Linked-In. You will reach far more candidates than any job platform in Nigeria.</p>
+                                <p>Since you can broadcast your jobs on over 30 channels including Jobberman, myjobmag, ngcareers, facebook, twitter and LinkedIn. You will reach far more candidates than any job platform in Nigeria.</p>
                                 <p>Of course, this means you don’t need to have employer accounts everywhere.   </p>
                             </div>
                             <div class="col-sm-6 col-sm-offset-3"><hr class="pull-left"></div>
@@ -290,7 +97,7 @@
                                 <h4 class="text-brandon text-green-light">5.  SeamlessHiring Saves you Money.</h4>
 
                                 <p>Because we use very intelligent technology, we are able to deliver high value to you at a very cheap price. SeamlessHiring cuts the real value of finding great talent by over 65%. </p>
-                                
+
                             </div>
                             <div class="col-sm-6 col-sm-offset-3"><hr class="pull-left"></div>
                       </div>
@@ -318,34 +125,6 @@
 
 
 
-    <section class="s-div homepage">
-        <div class="container">
-
-            <div class="">
-              <div class="row">
-                <div class="col-sm-8 col-sm-offset-2">
-                  <i class="fa fa-smile-o fa-5em text-center block text-white"></i>
-                    <p class="lead text-center text-white">Do you need to convince your boss or your team on why you need SeamlessHiring? We have put a customizable, four-page power-point presentation together for you.  
-                    </p>
-                      <form action="">
-                        <div class="form-group">
-                          <div class="col-sm-6"><input type="text" class="form-control input-lg" placeholder="Enter your company name"></div>
-                          <div class="col-sm-6"><input type="email" class="form-control input-lg" placeholder="Your email address"></div>
-                          <div class="clearfix"></div>
-                        </div>
-                        <div class="form-group">
-                          <div class="col-sm-6"><input type="text" class="form-control input-lg" placeholder="Your name"></div>
-                          <div class="col-sm-6"><input type="submit" class="btn btn-success btn-block btn-lg" value="Download your Pitch Deck"></div>
-                          <div class="clearfix"></div>
-                        </div>
-                      </form>
-                </div>
-                </div>
-                <br>
-            </div>
-
-        </div>
-    </section>
 
 <div class="modal widemodal fade" id="requestCall" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
   <div class="modal-dialog modal-md">
@@ -357,7 +136,7 @@
       <div class="modal-body">
           <form role="form" class="form-signin" method="POST" id="request-form" action="">
                 {!! csrf_field() !!}
-                
+
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="form-group">
@@ -392,7 +171,7 @@
                         </div>
                     </div>
 
-              
+
 
                 </div>
 
@@ -402,7 +181,7 @@
                         <button type="submit" class="btn btn-success btn-block">Request &raquo;</button>
                     </div>
 
-                    
+
 
                 </div>
             </form>
@@ -423,7 +202,7 @@
 
                         $.post("{{ route('request-a-call') }}", params,function(data){
                                 // $('#reviewBtn-' + $field.data('app-id') ).trigger('click');
-                                
+
                                 $( '#requestCall' ).modal('toggle');
 
                                 $('#company_name').val("");

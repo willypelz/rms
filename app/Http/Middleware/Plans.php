@@ -31,11 +31,10 @@ class Plans
     {
         foreach($this->exceptRoutes as $route) {
 
-          if ( $request->route()->getName() == $route ) {
+          if ( $request->route()->getName() == $route || $request->route()->uri == $route) {
             return $next($request);
           }
         }
-
         if( Auth::check() )
         {
             $current_company = get_current_company();
@@ -55,11 +54,11 @@ class Plans
                 if( $diff > 14 )
                 {
                     $additional_request["has_expired"] = true;
-                    
-                    if( url('pricing') != url()->current() )
+
+                    if( url('pricing/page') != url()->current() )
                     {
 
-                       return redirect()->to('pricing');   
+                       return redirect()->route('pricing-page');
                     }
                     $trial_time = 0;
 

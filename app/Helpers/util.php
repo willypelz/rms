@@ -8,10 +8,18 @@ use App\Models\Cv;
 use App\Models\Job;
 use App\Models\JobActivity;
 use App\Models\JobApplication;
+use App\Models\Permission;
+use App\Models\PermissionRole;
 use Illuminate\Support\Facades\File;
+use phpDocumentor\Reflection\Types\Object_;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use App\Models\TestRequest;
 use App\Models\ActivityLog;
+use Carbon\Carbon;
+use Ixudra\Curl\Facades\Curl;
+use App\User;
+use App\Enum\Configs;
+use Illuminate\Support\Facades\Validator;
 
 // use Faker;
 
@@ -24,7 +32,8 @@ function test()
 
 function qualifications()
 {
-    return $options = array('MPhil / PhD' => 'MPhil / PhD', 'MBA / MSc' => 'MBA / MSc', 'MBBS' => 'MBBS', 'Degree' => 'Degree', 'HND' => 'HND', 'OND' => 'OND', 'N.C.E' => 'N.C.E', 'Diploma' => 'Diploma', 'High School (S.S.C.E)' => 'High School (S.S.C.E)', 'Vocational' => 'Vocational', 'Others' => 'Others');
+    return $options = array('MPhil / PhD' => 'MPhil / PhD', 'MBA / MSc' => 'MBA / MSc', 'MBBS' => 'MBBS', 'B.Sc'=>'B.Sc','Degree' => 'Degree', 'HND' => 'HND', 'OND' => 'OND', 'N.C.E' => 'N.C.E', 'Diploma' => 'Diploma', 'High School (S.S.C.E)' => 'High School (S.S.C.E)', 'Vocational' => 'Vocational', 'Others' => 'Others',
+                             'B.Eng'=>'B.Eng','LLM'=>'LLM','LLB'=>'LLB','B.Ed.'=>'B.Ed.','M.Ed'=>'M.Ed','B.A'=>'B.A');
 }
 
 function grades()
@@ -342,6 +351,24 @@ function check_if_job_owner($job_id)
 
 }
 
+function check_if_job_owner_on_queue($job_id, $current_company, $user)
+{
+    $job_access = Job::where('id', $job_id)->whereHas('users', function ($q) use ($user) {
+        $q->where('user_id', $user->id);
+    })->get()->pluck('id')->toArray();
+
+    $company_role = $current_company->users()->wherePivot('user_id', $user->id)->first()->pivot->role;
+
+
+    if (!$company_role && $user->is_super_admin != 1) {
+
+        if (!in_array($job_id, $job_access)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 function get_current_company()
 {
 
@@ -353,11 +380,11 @@ function get_current_company()
             else
                 return Auth::user()->companies[0];
         }
-
+        
         if (Auth::user()->companies && Auth::user()->companies->count() < 1) {
             return redirect()->guest('login');
         }
-
+        
         // If a company is not selected, default to the first on the list
         return Auth::user()->companies[0];
     } else {
@@ -842,6 +869,7 @@ function logAction($logAction)
         'action_id' => @$logAction['action_id'],
         'action_type' => @$logAction['action_type'],
         'causee_id' => @$logAction['causee_id'],
+        'company_id'=> get_current_company()->id ?? Null,
         'causer_id' => isset($logAction['causer_id']) ? $logAction['causer_id'] : Auth::user()->id,
         'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
         'properties' => @$logAction['properties'],
@@ -873,4 +901,173 @@ function findOrMakeDirectory($path)
         return File::makeDirectory($path, 0777);
     }
 
+}
+
+
+function audit_log()
+{
+    $name = auth()->guard('candidate')->user()->first_name.' '.auth()->guard('candidate')->user()->last_name;
+    $last_login = Carbon::now()->toDateTimeString();
+
+    $log_action = [
+        'log_name' => "Candidate Login",
+        'description' => "An applicant ". $name . " logged in. Last login was " . $last_login,
+        'action_id' => Auth::guard('candidate')->user()->id,
+        'action_type' => 'App\Models\Candidate',
+        'causee_id' => Auth::guard('candidate')->user()->id,
+        'causer_id' => Auth::guard('candidate')->user()->id,
+        'causer_type' => 'applicant',
+        'properties'=> ''
+    ];
+    logAction($log_action);
+}
+
+function admin_audit_log()
+{
+    $last_login = Carbon::now()->toDateTimeString();
+
+    $log_action = [
+        'log_name' => "Admin Login",
+        'description' => "Admin ". Auth::user()->name . " logged in. Last login was "  .$last_login,
+        'action_id' => Auth::user()->id,
+        'action_type' => 'App\User',
+        'causee_id' => Auth::user()->id,
+        'causer_id' => Auth::user()->id,
+        'causer_type' => 'admin',
+        'properties'=> ''
+    ];
+    logAction($log_action);
+}
+/**
+ * Checks if HRMS is synced
+ * @return bool
+ */
+function isHrmsIntegrated(){
+    return (!is_null(env('STAFFSTRENGTH_URL'))) && env('RMS_STAND_ALONE')==false ? true: false;
+}
+
+/**
+ * Mass save
+ * @param $modelName
+ * @param array $data
+ * @param $id
+ * @return \Illuminate\Http\JsonResponse
+ */
+function seamlessSave( $modelName, array $data, $id)
+{
+    $instance = $modelName::find($id);
+    $data['slug'] = ($instance->slug) ?: str_slug($instance->name); //add slug if missing
+	$instance->fill($data)->save();
+	return $instance;
+}
+
+/**
+ * TO ACCESS HRMS USING GET HTTP PROTOCOL
+ * @param string $url the path segment excluding the base url i.e api/v2/get_user_default_company/
+ * @param array $data the payload to be used in the request
+ * @return array | null
+ */
+function getResponseFromHrmsByGET(string $url, array $data = []){
+    $rmsCompany = Company::whereNotNull('api_key')->first();
+    if(isHrmsIntegrated() && $rmsCompany) {
+        $response = Curl::to(env('STAFFSTRENGTH_URL') . $url )
+                        ->withHeader("X-API-KEY: " . $rmsCompany->api_key)
+                        ->withData($data)
+                        ->asJson()
+                        ->get();
+        return $response;
+    } 
+    return null;
+}
+
+/*
+ * Gets Company User ID
+ * @param int $user
+ * @return int
+ */
+function getCompanyId($userId = null) {
+
+	if (is_null($userId)) {
+		$company_id = is_null(session('active_company')) ? optional(auth()->user())->defaultCompany()->id : session('active_company')->id;
+	} else {
+		$company_id = User::find($userId)->first()->defaultCompany()->id;
+	}
+
+	return $company_id;
+}
+
+function userPermissionsArray($useSession=true){
+
+	if ($useSession && session()->has('user_permissions')) return session()->get('user_permissions');
+
+	$role_ids = auth()->user()->roles()->pluck('id')->unique()->toArray();
+	$permission_role = PermissionRole::whereIn('role_id',$role_ids)->pluck('permission_id')->toArray();
+	$permission_array =Permission::find(array_unique($permission_role))->pluck('name')->toArray();
+	session()->put('user_permissions', $permission_array);
+
+	return $permission_array;
+}
+
+function canSwitchBetweenPage(){
+
+   	$user = auth()->user();
+	if($user->name === configs::DEFAULT_ADMIN_NAME  && $user->email === configs::DEFAULT_ADMIN_EMAIL) return true;
+
+	return in_array(configs::CAN_SWITCH_BETWEEN_COMPANY, userPermissionsArray());
+}
+
+
+function isHrmsCompaniesSyncedWithRms(){
+	$rmsDefaultCompany = Company::whereNotNull('hrms_id')->whereIsDefault(true)->first();
+	return $rmsDefaultCompany ? true : false;
+}
+
+function saveFileFromHrms($file_name, $file_url){
+    File::put( public_path("uploads/CVs/$file_name"), $file_url);
+}
+
+function validateCustomFields($name,$attr,$field_type,$required,$request){
+   
+    if ($field_type == "FILE" && $required) {
+        $rule = [
+            $name => 'required|file'
+        ];
+        $message = [
+            "$name.required" => "$attr file is required",
+        ];
+        
+    }elseif($field_type == 'MULTIPLE_OPTION' && $required) {
+        $rule = [
+            $name => 'required|array|min:1'
+        ];
+        $message = [
+            "$name.required" => "$attr field is required",
+        ];
+            
+    }elseif($field_type == 'CHECKBOX' && $required) {
+        $rule = [
+            $name => 'required_without_all',
+        ];
+        $message = [
+            "$name.required_without_all" => "$attr field is required",
+        ];
+        
+    }elseif($field_type == 'DROPDOWN' || $field_type == 'RADIO' && $required) {
+        $rule = [
+            $name => 'required'
+        ];
+        $message = [
+            "$name.required" => "$attr field is required",
+        ];
+    }elseif ($field_type == 'TEXTAREA' || $field_type == 'TEXT'  && $required) {
+        $rule = [
+            $name => 'required'
+        ];
+        $message = [
+            "$name.required" => "$attr field is required",
+        ];
+        
+    }
+    $validator = Validator::make($request->all(),$rule,$message);
+    return $validator;
 }

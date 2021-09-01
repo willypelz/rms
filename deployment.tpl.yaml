@@ -64,6 +64,8 @@ spec:
             value: www-data
           - name: ATATUS_LICENSE_KEY
             value: ${ATATUS_LICENSE_KEY}
+          - name: ENABLE_ATATUS
+            value: "false"
           livenessProbe:
             httpGet:
               path: /

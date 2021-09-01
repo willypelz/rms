@@ -38,14 +38,15 @@ chown -R www-data:www-data /var/www/html/public/uploads
 # chown -R root:www-data /tmp
 # chown -R root:www-data /storage
 
-cd ~ \
-    && export ATATUS_RELEASE="atatus-php-1.10.3-x64-debian" \
-    && curl -sS "https://s3.amazonaws.com/atatus-artifacts/atatus-php/downloads/${ATATUS_RELEASE}.tar.gz" | tar xvzf - \
-    && cd "${ATATUS_RELEASE}" \
-    && ATATUS_LICENSE_KEY="${ATATUS_LICENSE_KEY}" ATATUS_APP_NAME="${CLIENT_NAME}" bash install.sh \
-    && cd .. \
-    && unset ATATUS_RELEASE
-
+if [ $ENABLE_ATATUS -eq "true" ]; then
+    cd ~ \
+        && export ATATUS_RELEASE="atatus-php-1.10.3-x64-debian" \
+        && curl -sS "https://s3.amazonaws.com/atatus-artifacts/atatus-php/downloads/${ATATUS_RELEASE}.tar.gz" | tar xvzf - \
+        && cd "${ATATUS_RELEASE}" \
+        && ATATUS_LICENSE_KEY="${ATATUS_LICENSE_KEY}" ATATUS_APP_NAME="${CLIENT_NAME}" bash install.sh \
+        && cd .. \
+        && unset ATATUS_RELEASE
+fi
 
 cd /var/www/html
 

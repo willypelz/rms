@@ -16,9 +16,10 @@ class MessageObserver
     {
         //
         if(auth()->check()){
-             $param = [
+    
+            $param = [
                 'log_name' => 'Admin sent a message ',
-                'description' => 'Message was sent to '.$message->job_application->candidate->name(),
+                'description' => isset($message->job_application->candidate) ? 'Message was sent to '.$message->job_application->candidate->name() : 'Message was sent to Candidate',
                 'action_id' => $message->id,
                 'action_type' => 'App\Models\Message',
                 'causee_id' => $message->job_application->candidate_id,

@@ -2954,7 +2954,7 @@ class JobsController extends Controller
 			$job->minimum_remuneration = $request->minimum_remuneration;
 			$job->maximum_remuneration = $request->maximum_remuneration;
             // $job->post_date = $request->post_date;
-            $job->expiry_date = Carbon::createFromFormat('m/d/Y', $request->expiry_date)->format("Y-m-d H:m:s");
+            $job->expiry_date = Carbon::createFromFormat('Y-m-d', $request->expiry_date)->format("Y-m-d H:m:s");
             $job->details = $request->details;
             $private = ($request->is_private  == 'true' ? 1 : 0);
             $job->is_private = $private;

@@ -14,6 +14,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Jobs\NotifyAdminOfCompletedExportJob;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
+use App\Notifications\NotifyAdminOfFailedDownload;
 
 class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
 {
@@ -86,6 +87,11 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
           return SolrPackage::get_applicants($this->search_params, $this->jobId, @$this->status,
                                              @$this->solr_age, @$this->solr_exp_years,
                                              @$this->solr_video_application_score, @$this->solr_test_score);
+    }
+
+    public function failed(){
+      $type = "Applicant Spreadsheet";
+      $this->fail($this->admin->notify(new NotifyAdminOfFailedDownload($this->admin, $type, $this->jobId)));
     }
 
 }

@@ -909,7 +909,7 @@ $is_super_admin = auth()->user()->is_super_admin;
                     }, function (data) {
                         displayReponseFromData(data)
                     });
-            });
+                });
 
                 $('body').on('click', '#downloadInterviewNotesInCSV', function () {
                     $data = {

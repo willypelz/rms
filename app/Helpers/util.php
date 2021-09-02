@@ -1,25 +1,30 @@
 <?php
 
-use App\Jobs\UploadApplicant;
-use App\Libraries\Solr;
-use App\Models\Candidate;
-use App\Models\Company;
+use App\User;
 use App\Models\Cv;
+use Carbon\Carbon;
 use App\Models\Job;
-use App\Models\JobActivity;
-use App\Models\JobApplication;
+use App\Enum\Configs;
+use App\Libraries\Solr;
+use App\Models\Company;
+use App\Models\Candidate;
 use App\Models\Permission;
+use App\Models\ActivityLog;
+use App\Models\JobActivity;
+use App\Models\TestRequest;
+use App\Jobs\UploadApplicant;
+use Ixudra\Curl\Facades\Curl;
+use App\Models\JobApplication;
 use App\Models\PermissionRole;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Types\Object_;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
-use App\Models\TestRequest;
-use App\Models\ActivityLog;
-use Carbon\Carbon;
-use Ixudra\Curl\Facades\Curl;
-use App\User;
-use App\Enum\Configs;
-use Illuminate\Support\Facades\Validator;
 
 // use Faker;
 
@@ -308,9 +313,9 @@ function get_application_statuses($status, $job_id = null, $statuses = [])
     $all = 0; //total number of results
 
     if (is_null($job_id))
-        $status_from_db = collect(\DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`cv_id`=`cvs`.`id`"));
+        $status_from_db = collect(DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`cv_id`=`cvs`.`id`"));
     else
-        $status_from_db = collect(\DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`job_id` = " . $job_id . " and `job_applications`.`cv_id`=`cvs`.`id`"));
+        $status_from_db = collect(DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`job_id` = " . $job_id . " and `job_applications`.`cv_id`=`cvs`.`id`"));
 
     $status_array2 = ['ALL' => $status_from_db->count()];
 
@@ -561,7 +566,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 
     $options = (is_null($options)) ? 'upToJob' : $options;
 
-    \Log::info(json_encode($cvs));
+    Log::info(json_encode($cvs));
 
     switch ($options) {
         case 'upToJob':
@@ -585,7 +590,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
             $relocate = 0;
         }
 
-        \Log::info($request->type);
+        Log::info($request->type);
 
         switch ($request->type) {
             case 'single':
@@ -631,7 +636,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
             case 'bulk':
                 // $last_cv_upload_index++;
                 $emailKey = trim(strtolower($key));
-                \Log::info('Bulk uploaid');
+                Log::info('Bulk uploaid');
                 $last_cv = Cv::insertGetId(['first_name' => $key, 'email' => $emailKey . '@seamlesshrbulk.com', 'cv_file' => $cv, 'cv_source' => $cv_source]);
                 break;
 
@@ -1070,4 +1075,24 @@ function validateCustomFields($name,$attr,$field_type,$required,$request){
     }
     $validator = Validator::make($request->all(),$rule,$message);
     return $validator;
+}
+
+function mixPanelRecord($nameOfPoint, $candidate)
+{
+    $email = $candidate->email;
+    $companyName = get_current_company()->name ?: null;
+    $name = isset($candidate->first_name) ? $candidate->first_name . " " . $candidate->last_name : $candidate->name;
+    $mp = Mixpanel::getInstance(config('mixpanel.key'));
+    $mp->track($nameOfPoint, ['email' => $email]);
+    $mp->identify($email);
+    $mp->people->set(
+        $candidate->email,
+        array(
+            '$name' => "$name",
+            '$email' => "$email",
+            '$company_name' => "$companyName"
+        ),
+        $ip = 0,
+        $ignore_time = true
+    );
 }

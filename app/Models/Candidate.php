@@ -9,6 +9,14 @@ class Candidate extends Authenticatable
 
     protected $fillable = ['first_name', 'last_name', 'email', 'password', 'remember_token','token','is_from','company_id'];
 
+    public function name()
+    {
+        $first = ucfirst($this->first_name);
+        $last = ucfirst($this->last_name);
+        
+        return "{$first} {$last}";
+    }
+
     public function cvs()
     {
         return $this->HasMany('App\Models\Cv');

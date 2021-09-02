@@ -38,7 +38,10 @@ class Job extends Model
         'experience',
         'fields',
         'is_for',
-        'job_type'
+        'job_type',
+	    'benefits',
+	    'minimum_remuneration',
+	    'maximum_remuneration'
     ];
 
 
@@ -62,7 +65,11 @@ class Job extends Model
     {
         return $this->belongsTo('App\Models\Company', 'company_id');
     }
-
+    
+    public function privateJobEmails()
+    {
+        return $this->hasMany('App\Models\PrivateJob');
+    }
     public function form_fields()
     {
         return $this->hasMany('App\Models\FormFields');

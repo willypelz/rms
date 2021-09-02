@@ -38,8 +38,8 @@ $is_super_admin = auth()->user()->is_super_admin;
 
                                 <!-- applicant -->
                                 <div class="col-xs-9 ">
-                                  @include('layout.alerts');
-
+                                  @include('layout.alerts')
+                                  <div class="download-info alert alert-success" style="color:black;display:none"></div>
                                     <div class="row">
 
                                         <div class="col-xs-8">
@@ -47,6 +47,16 @@ $is_super_admin = auth()->user()->is_super_admin;
                                                    id="showing"> {!! $showing !!} </small>
                                         </div>
                                         @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
+                                        
+                                        @if($job->is_private)
+                                        <div class="col-xs-2">
+                                            <button data-toggle="modal" data-target="#diplayEmailModal"
+                                                class="btn btn-sm btn-line ">
+                                                Attached Emails
+                                            </button>
+                                        </div>
+                                        @endif
+                                        
                                         <div class="col-xs-2">
                                             <div class="dropdown">
                                                 <button class="btn btn-line btn-sm dropdown-toggle" type="button"
@@ -97,6 +107,21 @@ $is_super_admin = auth()->user()->is_super_admin;
                                                            data-type="normal">{{ $workflowStep->name }} All</a>
 
                                                     @endforeach
+
+                                                    <a  class="btn btn-line status-1 text-success"
+                                                        data-toggle="modal"
+                                                       data-target="#viewModal"
+                                                       id="modalButton"
+                                                       data-title="Bulk Upload Applicant To A Workflow Stage"
+                                                       data-view="{{ route('get-modal-bulk-upload-to-current-workflow-stage', [
+                                                       'stepSlug' => $workflowStep->slug,
+                                                       'stepId' => $workflowStep->id
+                                                       ]) }}"
+                                                       data-app-id=""
+                                                       data-cv=""
+                                                       data-type="normal">
+                                                        Bulk Upload Applicants To Workflow Steps
+                                                    </a>
 
                                                     <a  class="btn btn-line status-1 text-success"
                                                         data-toggle="modal"
@@ -156,7 +181,7 @@ $is_super_admin = auth()->user()->is_super_admin;
                                                                 class="btn btn-line status-1 dropdown-toggle"
                                                                 data-toggle="dropdown" aria-haspopup="true"
                                                                 aria-expanded="false">
-                                                            ChecksAAA
+                                                            Checks
                                                             <span class="caret"></span>
                                                         </button>
 
@@ -299,6 +324,50 @@ $is_super_admin = auth()->user()->is_super_admin;
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="modal widemodal fade" id="diplayEmailModal" tabindex="-1" role="dialog"
+                                         aria-labelledby="myModalLabel" aria-hidden="false">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-hidden="true">×
+                                                        </button>
+                                                        <h4 class="modal-title">Attached Emails</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    <table id="job" class="table table-striped" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Email</th>
+                                                                <th>Date Attached</th>
+                                                                <th>Actions</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                                @foreach($job->privateJobEmails as $key => $fetch)
+                                                                <tr> 
+                                                                    <td>{{$key + 1}}</td>
+                                                                    <td>{{ $fetch->attached_email}}</td>
+                                                                    <td>{{$fetch->created_at ? $fetch->created_at->toDayDateTimeString(): 'N/A'}}</td>
+                                                                    <td>
+                                                                    <form action="{{url('privatejob-email/remove/'.$fetch->id)}}" method="POST">
+                                                                    {{ csrf_field() }}
+                                                                    {{ method_field('DELETE') }}
+                                                                    <button type="submit" class="btn btn-danger"> Remove
+                                                                    </button>
+                                                                    </form>
+                                                                    
+                                                                    </td>
+                                                                </tr>
+                                                                @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </div>
                                     <a href="javascript://" class="btn btn-line btn-block disabled"
                                        style="display:none;" disabled id="genSpreadsheet">
                                         <i class="fa fa-spin fa-refresh"></i>
@@ -324,6 +393,9 @@ $is_super_admin = auth()->user()->is_super_admin;
         </section>
         <div class="separator separator-small"><br></div>
         <script type="text/javascript">
+            $(document).ready(function() {
+                $('#job').DataTable();
+            } );
             var folders = [];
             var filters = [];
             var status_filter = "";
@@ -551,8 +623,34 @@ $is_super_admin = auth()->user()->is_super_admin;
 
                     });
                 });
+                //on page refresh, retain the current tab you were in previously
+                if(localStorage.getItem("current_step")) {
+                    var tab_name = localStorage.getItem("current_step");
+                    $("a[data-value='" + tab_name + "']").attr('id', tab_name);
+
+                    setTimeout(function () {
+                        $("#" + tab_name).trigger('click')
+                    }, 2000);
+
+                    $('body').on('click', '#' + tab_name, function () {
+                        status_filter = tab_name;
+
+                        $('#status_filters li').removeClass('active');
+                        $(this).closest('li').addClass('active');
+
+                        $(this).reloadResult();
+
+                        $('.select-all input[type="checkbox"]').removeAttr('checked');
+                        $('.media-body-check').removeAttr('checked');
+
+                    });
+                }
+
                 $('body').on('click', '#status_filters a', function () {
-                    status_filter = $(this).attr('data-value');
+                    var filter = $(this).attr('data-value');
+                    localStorage.setItem("current_step", filter );
+                    status_filter = filter;
+
                     $('#status_filters li').removeClass('active');
                     $(this).closest('li').addClass('active');
 
@@ -756,8 +854,6 @@ $is_super_admin = auth()->user()->is_super_admin;
 
                 });
                 $('body').on('click', '#downSpreadsheet', function () {
-                    // $('#downSpreadsheet').hide();
-                    // $('#genSpreadsheet').show();
                     $data = {
                         search_query: $('#search_query').val(),
                         filter_query: filters,
@@ -770,23 +866,13 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-                    window.open("{{ route('download-applicant-spreadsheet') }}" + "?" + $.param($data), '_blank');
-                    // window.open("{{ route('download-applicant-spreadsheet'," + $('#search_query').val() + "," + filters + "," + status_filter + ") }}", '_blank');
-                    /*$.get("{{ route('download-applicant-spreadsheet') }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
-            //console.log(response);
-            // var response = JSON.parse(data);
-            // console.log(data.search_results);
-            $('#genSpreadsheet').hide();
-            $('#downSpreadsheet').show();
-            console.log(data);
-            window.open('google.com', '_blank');
-
-            });*/
+                    $.get("{{ route('download-applicant-spreadsheet') }}" + "?" + $.param($data), {
+                    }, function (data) {
+                        displayReponseFromData(data)
+                    });
                 });
 
                 $('body').on('click', '#downCv', function () {
-                    // $('#downSpreadsheet').hide();
-                    // $('#genSpreadsheet').show();
                     $data = {
                         search_query: $('#search_query').val(),
                         filter_query: filters,
@@ -799,18 +885,10 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-                    window.open("{{ route('download-applicant-cv') }}" + "?" + $.param($data), '_blank');
-                    // window.open("{{ route('download-applicant-spreadsheet'," + $('#search_query').val() + "," + filters + "," + status_filter + ") }}", '_blank');
-                    /*$.get("{{ route('download-applicant-spreadsheet') }}", {search_query: $('#search_query').val(), filter_query : filters, status : status_filter },function(data){
-            //console.log(response);
-            // var response = JSON.parse(data);
-            // console.log(data.search_results);
-            $('#genSpreadsheet').hide();
-            $('#downSpreadsheet').show();
-            console.log(data);
-            window.open('google.com', '_blank');
-
-            });*/
+                    $.get("{{ route('download-applicant-cv') }}" + "?" + $.param($data), {
+                    }, function (data) {
+                        displayReponseFromData(data)
+                    });
                 });
 
 
@@ -827,7 +905,10 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-                    window.open("{{ route('download-interview-notes') }}" + "?" + $.param($data), '_blank');
+                    $.get("{{ route('download-interview-notes') }}" + "?" + $.param($data), {
+                    }, function (data) {
+                        displayReponseFromData(data)
+                    });
             });
 
                 $('body').on('click', '#downloadInterviewNotesInCSV', function () {
@@ -843,9 +924,29 @@ $is_super_admin = auth()->user()->is_super_admin;
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
-                    window.open("{{ route('download-interview-notes-csv') }}" + "?" + $.param($data), '_blank');
+                    $.get("{{ route('download-interview-notes-csv') }}" + "?" + $.param($data), {
+                    }, function (data) {
+                        displayReponseFromData(data)
+                    });
                 });
         });
+
+        /*
+        * Simple helper method to display response messages
+        8 @param array data eg [status:success,msg: operation successful]
+        * @return void
+        */
+        function displayReponseFromData(data) {
+            switch(data.status){
+                case "success":
+                   $('.download-info').show().html(data.msg);
+                    window.stop();
+                    break;
+                case "error":
+                    $.growl.error({message: data.msg} , {delay: 10000});
+                    break;
+            }
+        }
 
         function messageAllCandidates() {
           // body...

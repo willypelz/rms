@@ -17,19 +17,25 @@
         @endif
         
         @if (session('error'))
-            <div class="alert alert-error">
+            <div class="alert alert-danger">
                 {{ session('error') }}
             </div>
         @endif
+
+        @if (session('danger'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
         
         @if (session('warning'))
             <div class="alert alert-warning">
                 {{ session('warning') }}
             </div>
         @endif
-        
-        
-        
+
+
+@if(isset($errors))
         @if (count($errors) > 0)
             <div class="alert alert-danger">
                 <ul>
@@ -39,7 +45,7 @@
                 </ul>
             </div>
         @endif
-        
+@endif
         <!-- For Ajax Requests -->
         <div class="alert alert-success" id="success" style="display:none"></div>
         

@@ -19,6 +19,9 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
+	'staff_strength_url' => env('STAFFSTRENGTH_URL'),
+    'rms_stand_alone' => env('RMS_STAND_ALONE'),
+    'company_name' => env('COMPANY_NAME', 'Seamless Hiring'),
 
     /*
     |--------------------------------------------------------------------------
@@ -235,5 +238,6 @@ return [
         'Uuid' => Webpatser\Uuid\Uuid::class,
         'Entrust'   => Trebol\Entrust\EntrustFacade::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
+        'Str' =>  \Illuminate\Support\Str::class
     ],
 ];

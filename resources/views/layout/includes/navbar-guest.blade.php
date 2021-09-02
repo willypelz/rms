@@ -39,7 +39,7 @@
                 </li>
                 
                 <li class="{{ Request::is('pricing') ? 'active' : '' }}">
-                    <a class="" href="{{ url('pricing') }}">Pricing</a>
+                    <a class="" href="{{--{{ route('pricing-page') }}--}}">Pricing</a>
                 </li>
             
             <!-- <li class="{{ Request::is('cv/search*') ? 'active' : '' }}">

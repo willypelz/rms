@@ -193,23 +193,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-4">
-                                                    <h6 class="text-brandon text-uppercase l-sp-5 no-margin">company
-                                                        details</h6><br>
-                                                    <p class="text-muted">{{ $company->name }}</p>
-                                                    <p><img src="{{ $company->logo }}" alt="logo" width="60%"></p><br>
-                                                    <p class="small text-brandon">{{ $company->about }}</p>
-                                                    <p><i class="fa fa-map-marker"></i> {{ $company->address }}</p>
-                                                    <!--p>
-                                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4448.570052456479!2d3.3791209324273184!3d6.618898622434336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b93a899b7c9b7%3A0x8630de71dbc44ffd!2sMagodo+GRA+Phase+II%2C+Lagos!5e0!3m2!1sen!2sng!4v1457754339276" frameborder="0" width="100%" height="200px" allowfullscreen></iframe>
-                                                    </p-->
-                                                    <p>
-                                                        @if( $company->is_email_visible )<i
-                                                                class="fa fa-envelope"></i> {{ $company->email }}
-                                                        <br> @endif
-                                                        <i class="fa fa-globe"></i> {{ $company->website }}
-                                                    </p>
-                                                </div>
+                                                @include('settings.includes.company-details')
                                                 <div class="col-sm-6 col-sm-offset-3 text-center hidden"><!-- <hr> -->
                                                     <p>Powered by <a href="http://www.seamlesshiring.com"><i
                                                                     class="fa fa-skype"></i> SeamlessHiring</a> <br>

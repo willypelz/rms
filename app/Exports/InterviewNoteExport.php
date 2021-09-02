@@ -5,68 +5,37 @@ namespace App\Exports;
 
 use App\Models\InterviewNoteValues;
 use App\Models\JobApplication;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\BeforeWriting;
+use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Files\LocalTemporaryFile;
+use Maatwebsite\Excel\Concerns\RegistersEventListeners;
+use Maatwebsite\Excel\Concerns\Exportable;
 
-
-class InterviewNoteExport implements FromCollection, WithHeadings
+class InterviewNoteExport implements FromArray, WithEvents
 {
+    use Exportable, RegistersEventListeners;
 
-	private $application_ids;
+	private $application_ids,$file_name,$company,$admin;
+    protected static $static_file_name, $next_sn;
 
-
-
-	public function __construct($application_ids)
+	public function __construct($application_ids,$file_name,$company,$admin)
 	{
-	    $this->application_ids = $application_ids;
+        $this->application_ids = $application_ids;
+        $this->company = $company;
+        $this->admin = $admin;
+        $this->file_name = $file_name;
+        self::$static_file_name = $this->file_name;
+        
 	}
 
 
-	public function headings(): array
-    {
-        $heading = [
-            'Name',
-            'Gender',
-            'Email',
-            'Phone',
-            'Age',
-            'Address',
-            'Highest Qualification',
-            'Years of Experience',
-            'Last Position',
-            'Last Company Worked',
-            'Willing to Relocate?',
-        ];
-
-        $interview_notes = InterviewNoteValues::where('job_application_id', $this->application_ids)->groupBy('interviewed_by')->get();
-
-        $interviewers = $interview_notes->unique('interviewed_by')->take(1);
-
-        $interview_notes_count = 1;
-        foreach($interviewers as $interviewer){
-            array_push($heading, 'Interviewer Name', 'Interview Date');
-
-            $interviewer_notes = InterviewNoteValues::with('interviewer',
-                'interview_note_option')->where('interviewed_by', $interviewer->interviewed_by)->where('job_application_id', $this->application_ids)->get();
-
-            foreach ($interviewer_notes as $option){
-                array_push($heading, $option->interview_note_option->name);
-            }
-
-            array_push($heading, 'Average Score', 'Total Score');
-            // $interview_notes_count++;
-        }
-
-        array_push($heading, 'Overall Average');
-
-        return $heading;
-    }
-
+	
 
     /**
-    * @return \Illuminate\Support\Collection
+    * @return \Illuminate\Support\Array
     */
-    public function collection()
+    public function array():array
     {
         $data = [];
         $application_count = 1;
@@ -74,7 +43,7 @@ class InterviewNoteExport implements FromCollection, WithHeadings
 
         foreach ($this->application_ids as $key => $app_id) {
             $appl = JobApplication::with('job', 'cv')->find($app_id);
-            check_if_job_owner($appl->job->id);
+            check_if_job_owner_on_queue($appl->job->id,$this->company,$this->admin);
 
             $interview_notes = InterviewNoteValues::with('interviewer',
                 'interview_note_option')->where('job_application_id', $appl->id)->get();
@@ -155,7 +124,25 @@ class InterviewNoteExport implements FromCollection, WithHeadings
 
         }
 
-        // dd($data);
-        return collect($data);
+        return ($data);
     }
+    /**
+    * Before exporting, open the sheet you want to 
+    * add additional data to.
+    * 
+    * @param Maatwebsite\Excel\Events\BeforeExport $event 
+    * @param Maatwebsite\Excel\Files\LocalTemporaryFile $file
+    * 
+    * @return mixed
+    */ 
+    public static function beforeWriting(BeforeWriting $event)
+     {
+        $file = new LocalTemporaryFile(public_path('exports/' . self::$static_file_name));
+        $event->writer->reopen($file, \Maatwebsite\Excel\Excel::CSV);
+        $sheet = $event->writer->getSheetByIndex(0);
+        static::$next_sn = $sheet->getHighestRow();
+        $sheet->export($event->getConcernable());
+        return $sheet;
+     
+     }
 }

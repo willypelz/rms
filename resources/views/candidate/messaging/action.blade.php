@@ -1,4 +1,5 @@
-Are you sure you want to send message to {{ $count_applicants }} applicants?
+
+Are you sure you want to send message to {{ $count_applicants }} @if($count_applicants > 1) applicants @else applicant @endif ?
 
 
 <div class="pull-right">

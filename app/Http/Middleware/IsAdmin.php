@@ -13,18 +13,29 @@ class IsAdmin
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $excludedRole=null)
     {
         $user = auth()->user();
-        if ( !( $user &&  $user->isAdmin())  ) {
-            if ($request->wantsJson() || $request->ajax()) {
-                return response()->json([
-                    'status' => false,
-                    'msg' => 'You don\'t have permission to perform this action',
-                ], 403);
+        if($user){
+            $shouldProceed = false;
+            if(is_null($excludedRole)){
+                $shouldProceed = $user->isAdmin();
+            }else if ($excludedRole == "interviewer"){
+                $shouldProceed = !$user->isInterviewer();
             }
-            return url()->previous(); //TODO change this to 403 when we make a 403 error page
+            return ((bool)$shouldProceed) ?  $next($request) : $this->isApiRequest($request);
         }
         return $next($request);
+    }
+
+    private function isApiRequest($request){
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'status' => false,
+                'msg' => 'You don\'t have permission to perform this action',
+            ], 403);
+        }
+        session()->flush();
+        return redirect()->guest('/');
     }
 }

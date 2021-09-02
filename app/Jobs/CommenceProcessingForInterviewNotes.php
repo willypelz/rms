@@ -42,7 +42,7 @@ class CommenceProcessingForInterviewNotes implements ShouldQueue
       $this->company = $company;
       $this->admin = $admin;
       $this->filename = $filename;
-      $this->application_ids = $application_ids;
+      $this->application_ids = $application_ids->get();
       $this->jobId = $jobId;
       $this->download_type = $download_type;
     }
@@ -93,6 +93,8 @@ class CommenceProcessingForInterviewNotes implements ShouldQueue
       }
 
      }
-
-
+     public function failed(){
+      $type = "Interview Notes";
+      $this->fail($this->admin->notify(new NotifyAdminOfFailedDownload($this->admin, $type, $this->jobId)));
+    }
 }

@@ -88,4 +88,9 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
                                              @$this->solr_video_application_score, @$this->solr_test_score);
     }
 
+    public function failed(){
+      $type = "Applicant Spreadsheet";
+      $this->fail($this->admin->notify(new NotifyAdminOfFailedDownload($this->admin, $type, $this->jobId)));
+    }
+
 }

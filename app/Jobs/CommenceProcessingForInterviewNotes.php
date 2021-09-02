@@ -17,7 +17,7 @@ use App\Jobs\SaveApplicantCVJob;
 use App\Jobs\SaveApplicantNotesZip;
 use App\Jobs\SendApplicantsInterviewNotesCsv;
 use App\Jobs\CreateInterviewNoteSheetHeader;
-
+use App\Notifications\NotifyAdminOfFailedDownload;
 
 class CommenceProcessingForInterviewNotes implements ShouldQueue
 {
@@ -42,7 +42,7 @@ class CommenceProcessingForInterviewNotes implements ShouldQueue
       $this->company = $company;
       $this->admin = $admin;
       $this->filename = $filename;
-      $this->application_ids = $application_ids->get();
+      $this->application_ids = $application_ids;
       $this->jobId = $jobId;
       $this->download_type = $download_type;
     }

@@ -14,6 +14,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Jobs\NotifyAdminOfCompletedExportJob;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
+use App\Notifications\NotifyAdminOfFailedDownload;
 
 class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
 {

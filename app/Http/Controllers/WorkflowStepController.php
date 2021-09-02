@@ -20,6 +20,7 @@ class WorkflowStepController extends Controller
 
         $currentCompanyUsers = Company::with('users')->find(get_current_company()->id)->users;
 
+        mixPanelRecord("Adding Step to workflow Start (Admin)", auth()->user());
         return view('workflow.step.create')
             ->with(compact([
                 'workflow',
@@ -52,6 +53,7 @@ class WorkflowStepController extends Controller
             'name.regex' => 'Special characters are not allowed'
         ]);
         if($request->message_to_applicant && empty($request->message_template)){
+            mixPanelRecord("Adding Step to workflow Failed due to Empty Template (Admin)", auth()->user());
             return redirect()->back()->withInput()->with('error', 'Message Template is Empty');
         }
 
@@ -65,12 +67,12 @@ class WorkflowStepController extends Controller
                 $newWorkflowStep->approvals()
                     ->attach($approval_users);
             }
-
+            mixPanelRecord("Adding Step to workflow successful (Admin)", auth()->user());
             return redirect()
                 ->back()
                 ->with('success', 'Step added successfully');
         }
-
+        mixPanelRecord("Adding Step to workflow failed (Admin)", auth()->user());
         return redirect()
             ->back()
             ->with('error', 'Can not step to Workflow, try again!!');

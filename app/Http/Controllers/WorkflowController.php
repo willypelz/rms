@@ -52,6 +52,7 @@ class WorkflowController extends Controller
             'name.unique' => "Workflow already exist, Try creating workflow with another name"
         ]);
 
+        mixPanelRecord("Create workflow Started (Admin)", auth()->user());
 //        create workflow when successful, then create default steps
         if ($workflow = Workflow::create($request->all() + ['company_id' => get_current_company()->id])) {
             $msg = '';
@@ -75,6 +76,7 @@ class WorkflowController extends Controller
                 ],
             ])) {
                 $msg = 'Workflow created successfully';
+                mixPanelRecord("Create workflow Successful (Admin)", auth()->user());
 	            if ($request->background_callback) return response()->json(['status'=> Response::HTTP_OK,
 		             'data' => $workflow], Response::HTTP_OK);
             } else {
@@ -86,6 +88,7 @@ class WorkflowController extends Controller
                 ->with('success', $msg);
         }
 
+        mixPanelRecord("Create workflow failed (Admin)", auth()->user());
 //        if workflow fails
         return redirect()
             ->back()
@@ -106,7 +109,8 @@ class WorkflowController extends Controller
             return redirect()->route('workflow');
         }
 
-//        when workflow and company id right
+        //        when workflow and company id right
+        mixPanelRecord("Update workflow Started (Admin)", auth()->user());
         return view('workflow.edit')
             ->with('workflow', $workflow);
     }
@@ -124,11 +128,12 @@ class WorkflowController extends Controller
         ]);
 
         if ($workflow->update($request->all())) {
-
+            mixPanelRecord("Update workflow successful (Admin)", auth()->user());
             return redirect()->route('workflow')
                 ->with('success', 'Workflow updated successfully');
         }
 
+        mixPanelRecord("Update workflow failed (Admin)", auth()->user());
         return redirect()
             ->back()
             ->with('error', 'Can not update Workflow, try again!!');
@@ -136,29 +141,34 @@ class WorkflowController extends Controller
 
     public function destroy(Request $request, $id)
     {
+        mixPanelRecord("Delete workflow Start (Admin)", auth()->user());
         if (!$workflow = Workflow::find($id)) {
             return redirect()->route('workflow');
         }
 
         if ($workflow->delete()) {
+            mixPanelRecord("Delete workflow successful (Admin)", auth()->user());
             return redirect()
                 ->back()
                 ->with('success', 'Workflow deleted successfully');
         }
-
+        mixPanelRecord("Delete workflow failed (Admin)", auth()->user());
         return redirect()
             ->back()
             ->with('error', 'Can not delete Workflow, try again!!');
     }
 
     public function duplicate(Request $request, int $id){
+        mixPanelRecord("Duplicate workflow Start (Admin)", auth()->user());
         if($id){
             $workflow = Workflow::where('id', $id)->where('company_id',get_current_company()->id)->first();
             $workflow_duplicate = $workflow->duplicate();
             if($workflow_duplicate){
+                mixPanelRecord("Delete workflow successful (Admin)", auth()->user());
                 return redirect()->back()->with(["success" => "$workflow->name workflow  duplicated successfully"]);
             }
         }
+        mixPanelRecord("Delete workflow failed (Admin)", auth()->user());
         return redirect()->back()->with(["danger" => "Operation duplicate $workflow->name workflow  unsuccessful"]);
     }
 }

@@ -9,7 +9,6 @@ use File;
 use Mail;
 use Crypt;
 use Charts;
-use Session;
 use App\User;
 use App\Models\Cv;
 use Carbon\Carbon;
@@ -17,7 +16,6 @@ use App\Models\Job;
 use App\Models\Role;
 use App\Enum\Configs;
 use App\Http\Requests;
-use App\Jobs\UploadSolrFromCode;
 use App\Models\School;
 use App\Libraries\Solr;
 use App\Models\Company;
@@ -44,12 +42,14 @@ use App\Models\Specialization;
 use App\Models\FormFieldValues;
 use App\Rules\PrivateEmailRule;
 use App\Imports\PrivateJobEmail;
+use App\Jobs\UploadSolrFromCode;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\VideoApplicationValues;
 use App\Models\VideoApplicationOptions;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\HeadingRowImport;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\CvSalesController;
@@ -3518,8 +3518,10 @@ class JobsController extends Controller
                 $user->update([
                     'is_super_admin' => $request->role
                 ]);
+                mixPanelRecord("made is Admin successful (Admin)", auth()->user());
                 return response()->json (['status' => true]);
             } else {
+                mixPanelRecord("made is Admin failed (Admin)", $user);
                 return response()->json([
                     'status' => false,
                     'message' => "you have to manage super admins from HRMS"

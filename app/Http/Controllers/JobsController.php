@@ -1531,7 +1531,7 @@ class JobsController extends Controller
             $validation_fields_copy['cv_phone.required'] = 'Phone number is required';
             $validator = Validator::make($request->all(), $validation_fields, $validation_fields_copy);
             if($validator->fails()) {
-                return ['status' => 0, 'data' => implode(" \n", $validator->errors()->all())];
+                return ['status' => 0, 'data' => $validator->errors()->all()];
             }
         }
 

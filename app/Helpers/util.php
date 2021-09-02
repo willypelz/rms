@@ -737,6 +737,20 @@ function getUserPermissions()
 
 }
 
+function checkIfUserHasPermission(string $permission) : bool
+{
+    if(!empty($permission)){
+        $roles = auth()->user()->roles;
+        foreach ($roles as $role) {
+            $results = collect($role->perms)->filter(function($perm, $index) use ($permission) {
+                return $perm->name == $permission;
+            });
+            if( !$results->isEmpty() ) return true;
+        }
+    }
+    return false;
+}
+
 /**
  * @param $roleName
  * @return string

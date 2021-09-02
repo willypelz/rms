@@ -47,8 +47,7 @@ class FixNullCvs extends Command
                     continue;
                 }
                 $email_slug = str_slug($cv->email);
-                $get_file = glob(public_path()."/uploads/Cvs/*{$email_slug}*"); //get the file that matches the email slug
-                
+                $get_file = glob("public_html/uploads/CVs/*$email_slug*"); //get the file that matches the email slug
                 if(count($get_file)){
                     $get_file = substr(strrchr($get_file[0], "/"), 1); //strip all the file paths before the actual file name
                     $cv->update(['cv_file' => $get_file]);

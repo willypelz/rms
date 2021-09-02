@@ -18,12 +18,14 @@ class StepController extends Controller
         $step_approvals = $workflowStep->approvals->pluck('id');
         $currentCompanyUsers = Company::with('users')->find(get_current_company()->id)->users;
 
+        mixPanelRecord("workflow Step edit started (Admin)", auth()->user());
         return view('workflow.step.edit', compact('currentCompanyUsers', 'step_approvals', 'workflowStep'));
     }
 
     public function update(Request $request, $id)
     {
         if (!$workflowStep = WorkflowStep::with('workflow')->find($id)) {
+            mixPanelRecord("workflow Step update Failed cause it is in use (Admin)", auth()->user());
             return redirect()->route('workflow');
         }
 
@@ -54,12 +56,12 @@ class StepController extends Controller
                 $workflowStep->approvals()
                     ->sync($approval_users);
             }
-
+            mixPanelRecord("work flow steps updated Successful (Admin)", auth()->user());
             return redirect()
                 ->route('workflow-steps-add', ['id' => $workflowStep->workflow->id])
                 ->with('success', 'Step updated successfully');
         }
-
+        mixPanelRecord("work flow steps update Failed ()", auth()->user());
         return redirect()
             ->back()
             ->with('error', 'Can not update Step, try again!!');
@@ -69,6 +71,7 @@ class StepController extends Controller
     {
         $workflowStep = WorkflowStep::with('workflow')->find($id);
         if (!$workflowStep) {
+            mixPanelRecord("workflow Step Detele Failed cause it is in use (Admin)", auth()->user());
             return redirect()->route('workflow');
         }
         $status = JobApplication::where('status',$workflowStep->slug)->count();
@@ -80,11 +83,12 @@ class StepController extends Controller
         }
 
         if ($workflowStep->delete()) {
+            mixPanelRecord("workflow Step Detele Successful (Admin)", auth()->user());
             return redirect()
                 ->route('workflow-steps-add', ['id' => $workflowStep->workflow->id])
                 ->with('success', 'Step deleted successfully');
         }
-
+        mixPanelRecord("workflow Step Detele Failed (Admin)", auth()->user());
         return redirect()
             ->back()
             ->with('error', 'Can not delete Step, try again!!');

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Services;
-use App\Interfaces\UserContract;
+use App\Services\UserContract;
 use App\User;
 use App\Enum\Configs;
 use App\Models\Company;

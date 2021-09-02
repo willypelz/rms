@@ -17,7 +17,7 @@ use App\Jobs\SaveApplicantCVJob;
 use App\Jobs\SaveApplicantNotesZip;
 use App\Jobs\SendApplicantsInterviewNotesCsv;
 use App\Jobs\CreateInterviewNoteSheetHeader;
-
+use App\Notifications\NotifyAdminOfFailedDownload;
 
 class CommenceProcessingForInterviewNotes implements ShouldQueue
 {
@@ -93,6 +93,8 @@ class CommenceProcessingForInterviewNotes implements ShouldQueue
       }
 
      }
-
-
+     public function failed(){
+      $type = "Interview Notes";
+      $this->fail($this->admin->notify(new NotifyAdminOfFailedDownload($this->admin, $type, $this->jobId)));
+    }
 }

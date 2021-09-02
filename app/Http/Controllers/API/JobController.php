@@ -364,6 +364,12 @@ class JobController extends Controller
 
     public function apply(Request $request)
     {
+        $applyForJob = "Start Internal Candidate Job Application(Candidate)";
+        $internalapplicant = (object) [
+            'email' => $request->cv['email'],
+            'name' => $request->cv['first_name']." ".$request->cv['last_name'],
+        ];
+        mixPanelRecord($applyForJob, $internalapplicant);
         //validate request via company api_key
         if (!$req_header = $request->header('X-API-KEY')) {
             return response()->json(
@@ -383,7 +389,10 @@ class JobController extends Controller
             $checkEmail = PrivateJob::with('job')->where('attached_email', $request->cv['email'])->first();
             
             if (empty($checkEmail) || is_null($checkEmail)) {
-    
+
+                $jobPrivate = "Internal Candidate Job Application is for private(Candidate)";
+                mixPanelRecord($jobPrivate,$internalapplicant);
+
                 return response()->json([
                     'status' => false,
                     'message' => 'You are not listed to apply for this job',
@@ -400,6 +409,10 @@ class JobController extends Controller
 
 
         if ($owned_applicataions_count > 0) {
+
+            $oldCandidate = "Internal Candidate Has Applied Previously(Candidate)";
+            mixPanelRecord($oldCandidate,$internalapplicant);
+
             return response()->json(
                 [
                     'status' => false,
@@ -475,6 +488,8 @@ class JobController extends Controller
             }
         }
 
+        $jobApplied = "Internal Candidate Job Application was Successful(Candidate)";
+        mixPanelRecord($jobApplied, $candidate);
 
         UploadApplicant::dispatch($job_application)->onQueue('solr');
 

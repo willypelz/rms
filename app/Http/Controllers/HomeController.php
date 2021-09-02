@@ -127,6 +127,9 @@ class HomeController extends Controller
 
         if ($request->isMethod('post')) {
 
+            $registerCandidate = "Initiate Candidate Register(Candidate)";
+            mixPanelRecord($registerCandidate, $request);
+
             $this->validate($request, [
                 'first_name' => 'required|regex:/^[a-zA-Z]+$/u',
                 'last_name' => 'required|regex:/^[a-zA-Z]+$/u',
@@ -140,6 +143,9 @@ class HomeController extends Controller
             ])->update($request->only(['first_name', 'last_name']) + [
                     'password' => bcrypt($request->input('password'))
                 ]);
+
+            $registerSuccess = "Candidate Registered Successfully(Candidate)";
+            mixPanelRecord($registerSuccess, $candidate);
 
             if ($candidate) {
 

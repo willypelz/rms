@@ -59,6 +59,9 @@ class LoginSuccessful
                 'properties'=> ''
             ];
             logAction($log_action);
+
+            $registerSuccess = "Candidate logged in Successfully(Candidate)";
+            mixPanelRecord($registerSuccess, Auth::guard('candidate')->user());
           
         }
     }

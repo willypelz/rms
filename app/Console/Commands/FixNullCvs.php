@@ -39,7 +39,7 @@ class FixNullCvs extends Command
      */
     public function handle()
     {
-        $cvs = Cv::where('cv_file', 'not like', "%_%" )
+        $cvs = Cv::where('cv_file', 'not like', "%-%" )
                 ->whereBetween('last_modified',['2021-07-31','2021-09-02']); //only dates between Aug 1 and Sep 1
         if($cvs->count()){
             foreach ($cvs->get() as $cv) { 

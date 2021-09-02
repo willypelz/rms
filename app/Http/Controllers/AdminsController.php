@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
-use App\Models\Permission;
-use App\Models\Role;
 use App\User;
-use Illuminate\Http\Request;
-use Auth;
+use App\Models\Role;
+use App\Http\Requests;
 use App\Models\Company;
+use App\Models\Permission;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AdminsController extends Controller
 {
@@ -42,7 +42,7 @@ class AdminsController extends Controller
         }
 
 
-     	
+        mixPanelRecord("Create Role successful (Admin)", auth()->user());
         return view ('admin.roles.create', compact ('permissions', 'rolePermissions', 'role'));
      }
 
@@ -55,13 +55,13 @@ class AdminsController extends Controller
         $rolePermissions = $role->perms()->pluck('id')->toArray();
 
         $user = Auth::user();
-
+        mixPanelRecord("Edit role Started (Admin)", auth()->user());
         if($request->isMethod('post')){
         	$role->perms()->detach();
             $role->perms()->attach($request->permissions);
 
             $role->update(['name' => $request->name, 'display_name' =>$request->display_name, 'description' => $request->description ]);
-            
+            mixPanelRecord("Edit Role successful (Admin)", $user);
             return redirect()->route('list-role')->with('success', 'Successfully updated');
         }
 

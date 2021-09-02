@@ -36,12 +36,14 @@ class PrivacyPolicyController extends Controller
 	public function setPrivacyPolicy()
 	{
 		$privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
+		mixPanelRecord("Set Privacy Policy Started (Admin)", auth()->user());
 		return view('settings.privacy_policy', compact('privacy_policy'));
 	}
 
 	public function savePrivacyPolicy(UpdatePolicyRequest $request)
 	{
 		$this->settings->setKeyIfNotExist(Configs::PRIVACY_KEY, $request->privacy_policy_url);
+		mixPanelRecord("Set Privacy Policy Updated Successful (Admin)", auth()->user());
 		return back()->with('success', "Configuration updated successfully.");
 	}
 

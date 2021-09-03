@@ -55,7 +55,7 @@
      "repositories": [
         {
             "type": "vcs",
-            "url": "git@bitbucket.org:insidify/solr-package.git"
+            "url": "https://@bitbucket.org/insidify/solr-package.git"
 
         }
     ],

@@ -1071,3 +1071,8 @@ function validateCustomFields($name,$attr,$field_type,$required,$request){
     $validator = Validator::make($request->all(),$rule,$message);
     return $validator;
 }
+
+
+function substring($string, $start=0, $length=5){
+ return (strlen($string) > $length) ?	substr($string, $start, $length) . '...' : $string;
+}

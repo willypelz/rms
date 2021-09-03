@@ -15,4 +15,3 @@ LocalValetDriver.php
 /public_html/homepage
 /public_html/logs
 .DS_Store
-composer.lock

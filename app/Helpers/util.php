@@ -1072,3 +1072,25 @@ function validateCustomFields($name,$attr,$field_type,$required,$request){
     $validator = Validator::make($request->all(),$rule,$message);
     return $validator;
 }
+
+function mixPanelRecord($nameOfPoint, $candidate)
+{
+
+    $email = $candidate->email;
+    $companyName = get_current_company()->name ?: null;
+    $name = isset($candidate->first_name) ? $candidate->first_name . " " . $candidate->last_name : $candidate->name;
+    $name = $name ?: $candidate->full_name ;
+    $mp = Mixpanel::getInstance(config('mixpanel.key'));
+    $mp->track($nameOfPoint, ['email' => $email]);
+    $mp->identify($email);
+    $mp->people->set(
+        $candidate->email,
+        array(
+            '$name' => "$name",
+            '$email' => "$email",
+            '$company_name' => "$companyName"
+        ),
+        $ip = 0,
+        $ignore_time = true
+    );
+}

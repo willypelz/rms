@@ -1,4 +1,4 @@
-<ul class="nav nav-pills nav-justified option-aps" id="status_filters" style="overflow:visible">
+<ul class="nav nav-pills nav-justified option-aps" id="status_filters" style="overflow: scroll">
     @php
         $firstActive = 'active';
     @endphp

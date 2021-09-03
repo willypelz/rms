@@ -2,14 +2,14 @@
 
 namespace App;
 
-use App\Models\WorkflowStep;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Trebol\Entrust\Traits\EntrustUserTrait;
-use Illuminate\Notifications\Notifiable;
-use App\Models\Company;
-use Ixudra\Curl\Facades\Curl;
 use App\Enum\Configs;
-use \App\Interfaces\UserContract;
+use App\Models\Company;
+use App\Models\WorkflowStep;
+use App\Services\UserService;
+use Ixudra\Curl\Facades\Curl;
+use Illuminate\Notifications\Notifiable;
+use Trebol\Entrust\Traits\EntrustUserTrait;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -18,7 +18,7 @@ class User extends Authenticatable
     protected $userService;
 
     public function __construct(){
-        $this->userService = app()->make(UserContract::class);
+        $this->userService = app()->make(UserService::class);
     }
     /**
      * The attributes that are mass assignable.

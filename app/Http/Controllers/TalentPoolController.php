@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use DB;
-use App\Models\Job;
 use App\Models\Cv;
-use App\Models\JobApplication;
+
+use App\Models\Job;
+use App\Http\Requests;
 use App\Models\JobActivity;
+use Illuminate\Http\Request;
+use App\Models\JobApplication;
+use Illuminate\Support\Facades\DB;
 use App\Models\JobApplicationMessage;
 
 
@@ -24,7 +24,7 @@ class TalentPoolController extends Controller
 
 
     public function AddCandidates($id){
-
+        mixPanelRecord("Talent Pool Add Candidate Started (Admin)", auth()->user());
         return view ('talent-pool.add-candidates');
     }
 
@@ -99,8 +99,8 @@ class TalentPoolController extends Controller
                 'job_application_id'=>$app->id,
                 'created_at'=>$app->created
                 ]);
- 
 
+            mixPanelRecord("Talent Pool Job Activity Created Successfully (Admin)", auth()->user());
     	}
 
 

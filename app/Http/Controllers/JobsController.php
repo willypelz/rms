@@ -2,59 +2,61 @@
 
 namespace App\Http\Controllers;
 
-use  App\Http\Controllers\CvSalesController;
-use Alchemy\Zippy\Zippy;
-use App\Http\Requests;
-use App\Http\Requests\UpdateCompanyRequest;
-use App\Jobs\UploadApplicant;
-use App\Jobs\UploadZipCv;
-use App\Libraries\Solr;
-use App\Libraries\Utilities;
-use App\Models\Candidate;
-use App\Models\Company;
-use App\Models\Cv;
-use App\Models\FormFieldValues;
-use App\Models\FormFields;
-use App\Models\Invoices;
-use App\Models\Job;
-use App\Models\JobActivity;
-use App\Models\JobApplication;
-use App\Models\JobBoard;
-use App\Models\JobTeamInvite;
-use App\Models\Message as CandidateMessage;
-use App\Models\Role;
-use App\Models\Settings;
-use App\Models\Specialization;
-use App\Models\TestRequest;
-use App\Models\VideoApplicationOptions;
-use App\Models\VideoApplicationValues;
-use App\Models\Workflow;
-use App\Models\PrivateJob;
-use App\User;
-use Auth;
-use Carbon\Carbon;
-use Cart;
-use Charts;
-use Crypt;
-use Curl;
 use DB;
+use Cart;
+use Curl;
 use File;
-use Illuminate\Http\Request;
-use Illuminate\Mail\Mailer;
-use Illuminate\Mail\Message;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
-use App\Enum\Configs;
 use Mail;
-use SeamlessHR\SolrPackage\Facades\SolrPackage;
-use Session;
-use Validator;
+use Crypt;
+use Charts;
+use App\User;
+use App\Models\Cv;
+use Carbon\Carbon;
+use App\Models\Job;
+use App\Models\Role;
+use App\Enum\Configs;
+use App\Http\Requests;
+use App\Models\School;
+use App\Libraries\Solr;
+use App\Models\Company;
+use Alchemy\Zippy\Zippy;
+use App\Models\Invoices;
+use App\Models\JobBoard;
+use App\Models\Settings;
+use App\Models\Workflow;
+use App\Jobs\UploadZipCv;
+use App\Models\Candidate;
+use App\Models\FormFields;
+use App\Models\PrivateJob;
+use App\Models\JobActivity;
+use App\Models\TestRequest;
+use Illuminate\Mail\Mailer;
+use Illuminate\Support\Str;
+use App\Libraries\Utilities;
+use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
+use App\Jobs\UploadApplicant;
+use App\Models\JobTeamInvite;
+use App\Models\JobApplication;
+use App\Models\Specialization;
+use App\Models\FormFieldValues;
 use App\Rules\PrivateEmailRule;
 use App\Imports\PrivateJobEmail;
+use App\Jobs\UploadSolrFromCode;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\VideoApplicationValues;
+use App\Models\VideoApplicationOptions;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\HeadingRowImport;
-use App\Models\School;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\CvSalesController;
+use App\Http\Requests\UpdateCompanyRequest;
+use App\Models\Message as CandidateMessage;
+use GeneaLabs\LaravelMixpanel\Facades\Mixpanel;
+use SeamlessHR\SolrPackage\Facades\SolrPackage;
 // use Zipper;
 
 class JobsController extends Controller
@@ -281,6 +283,8 @@ class JobsController extends Controller
      */
     public function JobTeamAdd(Request $request)
     {
+        $start = "Initiated Create Job Team(Admin)";
+        mixPanelRecord($start, auth()->user());
 
         try {
             if ($request->mod) {
@@ -391,6 +395,8 @@ class JobsController extends Controller
                     ];
 
                     if (JobTeamInvite::where('job_id', $data['job_id'])->where('email', $data['email'])->count()) {
+                        $jobteam = "Failed! Invitee has been added previously (Admin)";
+                        mixPanelRecord($jobteam, auth()->user());
                         return response()->json(['status' => false, 'message' => $data['name'] . ' has been invited already']);
                     }
 
@@ -414,10 +420,15 @@ class JobsController extends Controller
                         $m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
                     });
 
+                    $jobteam = "Successfully added a member to the Job team(Admin)";
+                    mixPanelRecord($jobteam, auth()->user());
+
                     return response()->json(['status' => true, 'message' => 'Email was sent successfully']);
                 }
             }
         }catch(\Exception $e){
+            $jobteam = "Failed! Could not add a member to the Job team (Admin)";
+            mixPanelRecord($jobteam, auth()->user());
             return back()->with('error','Action failed');
         }
     }
@@ -784,15 +795,21 @@ class JobsController extends Controller
                 $user->roles()->attach($admin_role);
             }
 
-            if(!isset($request->is_ajax))
-                return redirect()->route('continue-draft', $job->id);
-            else
+            if(!isset($request->is_ajax)){
+                $jobSuccess = "Step 1: Job Created Successfully (Admin)";
+                mixPanelRecord($jobSuccess, $user);
+                 return redirect()->route('continue-draft', $job->id);
+            }else
                 $redirect_url = route('job-list');
 
 
             if($job){
+                $jobSuccess = "Job Saved As Draft Successfully (Admin)";
+                mixPanelRecord($jobSuccess, $user);
                 return ['status' => 200, 'message' => ' Your job has been saved as DRAFT', 'is_update' => $is_update, 'redirect_url'=> $redirect_url ];
             }else
+                $jobfailed = "Could not Save Job As Draft(Admin)";
+                mixPanelRecord($jobfailed, $user);
                 return ['status' => 500, 'message'=>'Your job cannot be saved as DRAFT. Please try again later'];
 
 
@@ -880,6 +897,9 @@ class JobsController extends Controller
             Job::find($id)->update(['status' => 'ACTIVE']);
 
             Session::flash('flash_message', 'Congratulations! Your job has been posted on ' . $flash_boards . '. You will begin to receive applications from those job boards shortly - <i>this is definite</i>.');
+            
+            $jobApproved = "Step 4: Job Confirmed and Approved successfully Page(Admin)";
+            mixPanelRecord($jobApproved, auth()->user());
 
             return redirect()->route('job-candidates', $job->id);
     }
@@ -891,6 +911,9 @@ class JobsController extends Controller
         $selected_form_fields = $job->form_fields;
 
         $job_specializations = $job->specializations->take(3)->pluck('name');
+
+        $jobConfirm = "Step 3: Proceeded to Job Confirmation Page(Admin)";
+        mixPanelRecord($jobConfirm, auth()->user());
 
         return view('job.confirm-job-post', compact('job', 'selected_fields', 'job_specializations', 'selected_form_fields'));
     }
@@ -963,8 +986,12 @@ class JobsController extends Controller
             $redirect_url = route('confirm-job-post', $id);
 
             if($request->ajax()){
+                $continue = "Step 2: Job Saved as Draft Successfully(Admin)";
+                mixPanelRecord($continue, auth()->user());
                 return ['status' => 200, 'message' => ' Your job details has been updated and saved as DRAFT', 'is_update' => true, 'redirect_url' => $redirect_url ];
             }else
+                $continue = "Step 2: Job Updated with Custom Fields and Form Fields Successfully(Admin)";
+                mixPanelRecord($continue, auth()->user());
                 return redirect()->route('confirm-job-post', $id);
         }
 
@@ -1524,13 +1551,13 @@ class JobsController extends Controller
             $validation_fields['graduation_grade'] = 'required';
 
             $validation_fields_copy = [];
-            $validation_fields_copy['cv_first_name.required'] = 'Firstname is required';
-            $validation_fields_copy['cv_last_name.required'] = 'Lastname is required';
+            $validation_fields_copy['cv_first_name.required'] = 'First name is required';
+            $validation_fields_copy['cv_last_name.required'] = 'Last name is required';
             $validation_fields_copy['cv_email.required'] = 'Email is required';
             $validation_fields_copy['cv_phone.required'] = 'Phone number is required';
             $validator = Validator::make($request->all(), $validation_fields, $validation_fields_copy);
             if($validator->fails()) {
-                return ['status' => 0, 'data' => implode(', ', $validator->errors()->all())];
+                return ['status' => 0, 'data' =>  $validator->errors()->all()];
             }
         }
 
@@ -1558,12 +1585,14 @@ class JobsController extends Controller
         if ($mimeType == 'application/zip') {
             $request_data = json_encode($request->all());
             $this->dispatch(new UploadZipCv($filename, $randomName, $additional_data, $request_data));
-            return ['status' => 1, 'data' => "You will receive email notification once successfully uploaded"];
+            $response = ['status' => 1, 'data' => "You will receive email notification once successfully uploaded"];
         } else {
             $cvs = [$filename];
             saveCompanyUploadedCv($cvs, $additional_data, $request);
-            return ['status' => 1, 'data' => 'Cv(s) uploaded successfully'];
+            $response =  ['status' => 1, 'data' => 'Cv(s) uploaded successfully'];
         }
+        UploadSolrFromCode::dispatch();
+        return $response;
     }
 
 
@@ -2293,6 +2322,13 @@ class JobsController extends Controller
         }
 	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
 
+        if(auth()->guard('candidate')->check()){
+
+            $candidate = auth()->guard('candidate')->user();
+            $application = "Candidate Viewed Job(Candidate)";
+            mixPanelRecord($application, $candidate);
+        }
+
 	    return view('job.job-details', compact('job', 'company', 'closed', 'privacy_policy'));
 
     }
@@ -2352,6 +2388,9 @@ class JobsController extends Controller
             $checkEmail = PrivateJob::with('job')->where('attached_email', $candidate->email)->first();
             
             if (empty($checkEmail) || is_null($checkEmail)) {
+
+                $notPrivateCandidate = "Candidate was not attached to the private job (Candidate)";
+                mixPanelRecord($notPrivateCandidate, $candidate);
     
                 return redirect()->to('/candidate/dashboard')->with('error','You are not listed to apply for this job');
             }
@@ -2363,6 +2402,8 @@ class JobsController extends Controller
         )->count();
 
         if ($candidate_applied_jobs > 0) {
+            $oldCandidate = "Candidate has applied for the job previously (Candidate)";
+            mixPanelRecord($oldCandidate, $candidate);
             return redirect()->to('/candidate/dashboard')->with('error','You have already applied for this job');
         }
 
@@ -2377,12 +2418,16 @@ class JobsController extends Controller
 
         if($candidate->is_from == 'external' && $job->is_for == 'internal')
         {
+            $externalCandidate = "Job is for internal candidate only(Candidate)";
+            mixPanelRecord($externalCandidate, $candidate);
             return redirect()->route('candidate-dashboard')
             ->withErrors(['warning' => 'You can not apply for this job, It is meant for Internal candidate']);
         }
 
         // disavow internal staff from applying to external jobs
         if ($job->is_for == 'external' && $candidate->company_id == $company->id) {
+            $internalCandidate = "Job is for internal candidate only(Candidate)";
+            mixPanelRecord($internalCandidate, $candidate);
             return redirect()->route('candidate-dashboard')
                 ->withErrors(['warning' => 'You can not apply for this job, It is meant for external candidate']);
         }
@@ -2613,8 +2658,8 @@ class JobsController extends Controller
                 $cv->cv_file = $data['cv_file'];
             }
             if (isset($fields->remuneration->is_visible) && $fields->remuneration->is_visible && isset($data['maximum_remuneration']) && isset($data['minimum_remuneration'])) {
-                $cv->cv_file = $data['minimum_remuneration'];
-                $cv->cv_file = $data['maximum_remuneration'];
+                $cv->minimum_remuneration = $data['minimum_remuneration'];
+                $cv->cv_maximum_remuneration = $data['maximum_remuneration'];
             }
 
             if ($fields->state_of_origin->is_visible && (isset($data['location']) || isset($data['country']))) {
@@ -2730,7 +2775,8 @@ class JobsController extends Controller
                 Log::info(json_encode($e));
             }
 
-
+            $application = "Candidate Job Application was Successful(Candidate)";
+            mixPanelRecord($application, $candidate);
             return redirect()->route('job-applied', [$jobID, $slug]);
 
         }
@@ -2759,6 +2805,9 @@ class JobsController extends Controller
                 $fromShareURL = true;
 
 	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
+
+        $application = "Candidate Opened Job Application Form(Candidate)";
+        mixPanelRecord($application, $candidate);
 
 	    return view('job.job-apply', compact('job', 'qualifications', 'states', 'company',
 		    'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate',
@@ -3514,8 +3563,10 @@ class JobsController extends Controller
                 $user->update([
                     'is_super_admin' => $request->role
                 ]);
+                mixPanelRecord("made is Admin successful (Admin)", auth()->user());
                 return response()->json (['status' => true]);
             } else {
+                mixPanelRecord("made is Admin failed (Admin)", $user);
                 return response()->json([
                     'status' => false,
                     'message' => "you have to manage super admins from HRMS"

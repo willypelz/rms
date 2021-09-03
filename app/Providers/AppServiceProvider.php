@@ -2,11 +2,12 @@
 
 namespace App\Providers;
 
-use App\Console\Commands\UpdateNullCandidate;
-use App\Console\Commands\SubsidiaryExpireNotify;
-use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Console\Scheduling\Schedule;
+use App\Console\Commands\UpdateNullCandidate;
+use App\Console\Commands\SubsidiaryExpireNotify;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
            SubsidiaryExpireNotify::class,
         ]);
         
-        $this->app->singleton( \App\Interfaces\UserContract::class, function ($app){
+        $this->app->singleton(\App\Services\UserService::class, function ($app){
             return new \App\Services\UserService();
         });
         
@@ -51,7 +52,12 @@ class AppServiceProvider extends ServiceProvider
         }
         //Registering a Custom excel headings formatter with name uppercase_sluged
         HeadingRowFormatter::extend('uppercase_sluged', function($value) {
-            return strtoupper(\Str::slug($value, "-"));
+            return strtoupper(Str::slug($value, "-"));
         });
+    }
+
+    public function provides()
+    {
+        return [\App\Services\UserService::class]; 
     }
 }

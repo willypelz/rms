@@ -737,7 +737,7 @@ function getUserPermissions()
 
 }
 
-function checkIfUserHasPermission(string $permission) : bool
+function hasPermissionInCompany(string $permission) : bool
 {
     if(!empty($permission)){
         $roles = auth()->user()->roles;

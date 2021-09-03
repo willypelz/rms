@@ -41,6 +41,7 @@ class UserPermissionController extends Controller
 	    $roles = Role::with('permissions')->get();
 	    $user_roles = RoleUser::whereUserId(Auth()->user()->id)->with("role")->get()->unique("role_id");
 		$permissions = Permission::all();
+		mixPanelRecord("User Permission Started (Admin)", auth()->user());
 		return view('settings.user_permission', compact(  'user_roles','roles', 'permissions'));
 	}
 
@@ -58,6 +59,7 @@ class UserPermissionController extends Controller
 
 		session()->flash('message', 'Role edited');
 		userPermissionsArray(false);
+		mixPanelRecord("User Permission Updated Successful (Admin)", auth()->user());
 		return redirect()->back()
 			->with('success', 'Role updated successfully');
 	}

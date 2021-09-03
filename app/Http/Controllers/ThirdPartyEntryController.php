@@ -12,13 +12,16 @@ class ThirdPartyEntryController extends Controller
 {
     public function index(Request $request)
     {
+        mixPanelRecord("third Party Entry Started (Admin)", $request);
         if (!$req_header = $request->input('_api_key')) {
+            mixPanelRecord("wrong API key for third Party Entry (Admin)", $request);
             return redirect('/login', 301)->withErrors([
                 'warning' => 'Bad Request, make sure your request format is correct'
             ]);
         }
 
         if (!$company = Company::whereApiKey($req_header)->first()) {
+            mixPanelRecord("wrong API key for third Party Entry (Admin)", $request);
             return redirect('/login', 301)->withErrors([
                 'warning' => 'Invalid third-party login, please login with your account details'
             ]);
@@ -61,7 +64,7 @@ class ThirdPartyEntryController extends Controller
 
         // store the form_data in session for retrival on job posting page
         session(['third_party_data' => $formData]);
-
+        mixPanelRecord("third Party Entry Successful (Admin)", $request);
         return redirect($redirect_url);
     }
 }

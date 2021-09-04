@@ -22,7 +22,6 @@ class AppServiceProvider extends ServiceProvider
             $schedule = $this->app->make(Schedule::class);
            $schedule->command('update:nullCandidates')->daily();
            $schedule->command('subsidiary:notify-admin')->daily();
-           $schedule->command('fix:cvs')->everyMinute();
 
         });
 

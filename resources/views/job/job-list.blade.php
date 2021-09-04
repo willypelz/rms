@@ -154,7 +154,7 @@
                                                                 class="glyphicon glyphicon-bookmark "></i> {{ $job['is_for']}} {{ $job['is_private'] == 1 ? '(PRIVATE)' : '(PUBLIC)'}}
                                                         &nbsp;
                                                         <i
-                                                                class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }}
+                                                                class="glyphicon glyphicon-map-marker "></i> {{ substring($job['location'], 0, 9) }}
                                                         &nbsp;
                                                         <i class="glyphicon glyphicon-calendar"></i> Date Posted
                                                         : {{ date('F d, Y', strtotime($job['post_date'])) }}</small>

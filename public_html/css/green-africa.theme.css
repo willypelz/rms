@@ -3767,7 +3767,7 @@ div.baser {
 .job-item {
     border-right: 1px solid #ccc;
     padding: 40px 10px;
-    /*width: 115px;*/
+    width: inherit !important;
     height: 121px;
     display: inline-block;
     text-align: center;

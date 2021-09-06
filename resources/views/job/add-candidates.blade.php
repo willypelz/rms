@@ -11,16 +11,6 @@
             <div class="row">
 
                 <div class="col-sm-12">
-                   
-<!--
-                    <h4 class="no-margin text-center text-brandon text-uppercase l-sp-5">
-                        @if(!empty($job))   
-                            Job Creation
-                        @else
-                            Upload CVs to Your Talent Pool
-                        @endif    
-                    </h4><br>
--->
                     <div class="page">
                           <div class="btn-group btn-group-justified hidden" role="group" aria-label="...">
                           

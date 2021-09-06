@@ -622,7 +622,7 @@ class JobApplicationsController extends Controller
                                                             @$solr_test_score,@$request->cv_ids);
         $link = asset("exports/{$filename}");                                  
         return response()->json(["status" => "success",
-                                "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
+                                "msg"=>'Export started, Please check your email in few minutes.']);
     }
 
     
@@ -698,7 +698,7 @@ class JobApplicationsController extends Controller
 
     $link = asset("exports/{$filename}");                                  
     return response()->json(["status" => "success",
-                            "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
+                            "msg"=>'Export started, Please check your email in few minutes.']);
 
     }
 
@@ -716,14 +716,17 @@ class JobApplicationsController extends Controller
         }else {
           $application_ids = $request->app_ids;
         }
-        $filename = "Bulk Interview Notes.zip";
-        findOrMakeDirectory('exports');
-        $download_type = 'Interview Notes ZIP';
-        CommenceProcessingForInterviewNotes::dispatch(get_current_company(),Auth::user(),$application_ids,$request->jobId,$filename,$download_type);
- 
-        $link = asset("exports/{$filename}");                                  
-        return response()->json(["status" => "success",
-                                "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
+        if($application_ids->count()){
+            $filename = "Bulk Interview Notes.zip";
+            findOrMakeDirectory('exports');
+            $download_type = 'Interview Notes ZIP';
+            CommenceProcessingForInterviewNotes::dispatch(get_current_company(),Auth::user(),$application_ids,$request->jobId,$filename,$download_type);
+    
+            $link = asset("exports/{$filename}");                                  
+            return response()->json(["status" => "success",
+                                    "msg"=>'Export started, Please check your email in few minutes.']);
+        }
+        return response()->json(["status" => "error","msg"=>"Export could not start,plese try again"]);
         
     }
 
@@ -749,7 +752,7 @@ class JobApplicationsController extends Controller
 
             $link = asset("exports/{$export_file}");                                  
             return response()->json(["status" => "success",
-                                    "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
+                                    "msg"=>'Export started, Please check your email in few minutes.']);
             
         }
         return response()->json(["status" => "error","msg"=>"Export could not start,plese try again"]);
@@ -912,12 +915,12 @@ class JobApplicationsController extends Controller
     public function JobViewData(Request $request)
     {
 
-
         $result = SolrPackage::get_applicants($this->search_params, $request->job_id, @$request->status);
-        $total_applicants = ($result['response']['numFound']);
+        $solr_total_applicants = ($result['response']['numFound']);
         $matching = 10000;
 
-        $job = Job::find($request->job_id);
+        $job = Job::with("applicants")->find($request->job_id);
+        $db_total_applicants = $job->applicants->count();
 
         $now = time(); // or your date as well
         $your_date = strtotime($job->post_date);
@@ -930,7 +933,7 @@ class JobApplicationsController extends Controller
                             <tbody>
                         <tr>
                             <td class="text-center"><h1 class="no-margin text-bold"><a href="' . route('job-candidates',
-                [$job->id]) . ' ">' . $total_applicants . '</a></h1><small class="text-muted">Applicants</small></td>
+                [$job->id]) . ' ">' . ($solr_total_applicants ?: 0) . '</a></h1><small class="hidden">'. $db_total_applicants .'</small><small class="text-muted">Applicants</small></td>
                             <!--td class="text-center"><h1 class="no-margin text-bold"><a href="cv/cv_saved">' . $matching . '</a></h1><small class="text-muted">Matching Candidates</small></td-->
                         </tr>
                         <tr>

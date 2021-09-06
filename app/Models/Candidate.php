@@ -11,7 +11,10 @@ class Candidate extends Authenticatable
 
     public function name()
     {
-       return "{$this->first_name} {$this->last_name}";
+        $first = ucfirst($this->first_name);
+        $last = ucfirst($this->last_name);
+        
+        return "{$first} {$last}";
     }
 
     public function cvs()

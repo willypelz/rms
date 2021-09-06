@@ -17,6 +17,7 @@ use App\Models\Job;
 use App\Models\Role;
 use App\Enum\Configs;
 use App\Http\Requests;
+use App\Jobs\UploadSolrFromCode;
 use App\Models\School;
 use App\Libraries\Solr;
 use App\Models\Company;
@@ -1567,6 +1568,8 @@ class JobsController extends Controller
             saveCompanyUploadedCv($cvs, $additional_data, $request);
             return ['status' => 1, 'data' => ['Cv(s) uploaded successfully']];
         }
+        UploadSolrFromCode::dispatch();
+        return $response;
     }
 
 
@@ -2616,8 +2619,8 @@ class JobsController extends Controller
                 $cv->cv_file = $data['cv_file'];
             }
             if (isset($fields->remuneration->is_visible) && $fields->remuneration->is_visible && isset($data['maximum_remuneration']) && isset($data['minimum_remuneration'])) {
-                $cv->cv_file = $data['minimum_remuneration'];
-                $cv->cv_file = $data['maximum_remuneration'];
+                $cv->minimum_remuneration = $data['minimum_remuneration'];
+                $cv->maximum_remuneration = $data['maximum_remuneration'];
             }
 
             if ($fields->state_of_origin->is_visible && (isset($data['location']) || isset($data['country']))) {
@@ -2953,7 +2956,7 @@ class JobsController extends Controller
 			$job->minimum_remuneration = $request->minimum_remuneration;
 			$job->maximum_remuneration = $request->maximum_remuneration;
             // $job->post_date = $request->post_date;
-            $job->expiry_date = Carbon::createFromFormat('m/d/Y', $request->expiry_date)->format("Y-m-d H:m:s");
+            $job->expiry_date = Carbon::createFromFormat('Y-m-d', $request->expiry_date)->format("Y-m-d H:m:s");
             $job->details = $request->details;
             $private = ($request->is_private  == 'true' ? 1 : 0);
             $job->is_private = $private;

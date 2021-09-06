@@ -737,6 +737,20 @@ function getUserPermissions()
 
 }
 
+function hasPermissionInCompany(string $permission) : bool
+{
+    if(!empty($permission)){
+        $roles = auth()->user()->roles;
+        foreach ($roles as $role) {
+            $results = collect($role->perms)->filter(function($perm, $index) use ($permission) {
+                return $perm->name == $permission;
+            });
+            if( !$results->isEmpty() ) return true;
+        }
+    }
+    return false;
+}
+
 /**
  * @param $roleName
  * @return string
@@ -1070,4 +1084,9 @@ function validateCustomFields($name,$attr,$field_type,$required,$request){
     }
     $validator = Validator::make($request->all(),$rule,$message);
     return $validator;
+}
+
+
+function substring($string, $start=0, $length=5){
+ return (strlen($string) > $length) ?	substr($string, $start, $length) . '...' : $string;
 }

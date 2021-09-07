@@ -1531,6 +1531,8 @@ class JobsController extends Controller
             $validation_fields_copy['cv_email.required'] = 'Email is required';
             $validation_fields_copy['cv_phone.required'] = 'Phone number is required';
             $validator = Validator::make($request->all(), $validation_fields, $validation_fields_copy);
+            
+            
             if($validator->fails()) {
                 return ['status' => 0, 'data' => $validator->errors()->all()];
             }
@@ -1540,11 +1542,11 @@ class JobsController extends Controller
         if($request->type == "single"){
             $allowed_file_extentions = ['pdf','doc','docx','txt','rtf','pptx','ppt'];
             if (!in_array($extension, $allowed_file_extentions)) {
-                return ['status' => 0, 'data' => 'Allowed extensions are .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt'];
+                return ['status' => 0, 'data' => ['Allowed extensions are .pdf, .doc, .docx, .txt, .rtf, .pptx, .ppt']];
             }
         }else{
             if ($extension != 'zip') {
-                return ['status' => 0, 'data' => 'Allowed extension is .zip'];
+                return ['status' => 0, 'data' => ['Allowed extension is .zip']];
             }
         }
         $randomName = Auth::user()->id . "_" . get_current_company()->id . "_" . time() . "_";
@@ -1560,11 +1562,11 @@ class JobsController extends Controller
         if ($mimeType == 'application/zip') {
             $request_data = json_encode($request->all());
             $this->dispatch(new UploadZipCv($filename, $randomName, $additional_data, $request_data));
-            $response = ['status' => 1, 'data' => "You will receive email notification once successfully uploaded"];
+            return ['status' => 1, 'data' => ["You will receive email notification once successfully uploaded"]];
         } else {
             $cvs = [$filename];
             saveCompanyUploadedCv($cvs, $additional_data, $request);
-            $response =  ['status' => 1, 'data' => 'Cv(s) uploaded successfully'];
+            return ['status' => 1, 'data' => ['Cv(s) uploaded successfully']];
         }
         UploadSolrFromCode::dispatch();
         return $response;
@@ -1596,7 +1598,7 @@ class JobsController extends Controller
 			'title' => $request->document_title,
 			'attachment' => $document_file,
 		]);
-		return ['status' => 1, 'data' => 'Documents Uploaded successfully'];
+		return ['status' => 1, 'data' => ['Documents Uploaded successfully']];
 	}
 
 	public function JobList(Request $request)

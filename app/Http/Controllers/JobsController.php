@@ -1213,6 +1213,9 @@ class JobsController extends Controller
         }else{
             $job = NULL;
             $job_specilizations = [];
+
+            $start = "Initiated Create Job(Admin)";
+            mixPanelRecord($start, auth()->user());
         }
 
         // Another approach.. Get data from session

@@ -145,7 +145,7 @@ class HomeController extends Controller
                 ]);
 
             $registerSuccess = "Candidate Registered Successfully(Candidate)";
-            mixPanelRecord($registerSuccess, $candidate);
+            mixPanelRecord($registerSuccess, $request);
 
             if ($candidate) {
 

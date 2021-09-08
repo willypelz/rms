@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Types\Object_;
+use GeneaLabs\LaravelMixpanel\Facades\Mixpanel;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
 // use Faker;
@@ -1078,12 +1079,11 @@ function validateCustomFields($name,$attr,$field_type,$required,$request){
 }
 
 function mixPanelRecord($nameOfPoint, $candidate)
-{
-
+{  
     $email = $candidate->email;
-    $companyName = get_current_company()->name ?: null;
+    $companyName = get_current_company()->name ?? null;
     $name = isset($candidate->first_name) ? $candidate->first_name . " " . $candidate->last_name : $candidate->name;
-    $name = $name ?: $candidate->full_name ;
+    $name = $name ?? $candidate->full_name ;
     $mp = Mixpanel::getInstance(config('mixpanel.key'));
     $mp->track($nameOfPoint, ['email' => $email]);
     $mp->identify($email);

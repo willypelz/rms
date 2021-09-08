@@ -137,8 +137,8 @@
                                         <div class="col-sm-12">
                                             <div class="form-group{{ $errors->has('about') ? ' has-error' : '' }}">
                                                 <label for="">About Company  <span class="text-danger">*</span></label>
-                                                <textarea name="about" class="form-control" id="" cols="30"
-                                                          rows="10" required>{{ $company->about }}</textarea>
+                                                <textarea name="about" class="form-control" id="about" cols="30"
+                                                          rows="6" required>{{ $company->about }}</textarea>
                                                 @if ($errors->has('about'))
                                                     <span class="help-block">
                                                 <strong>{{ $errors->first('about') }}</strong>
@@ -171,4 +171,7 @@
         </div>
     </section>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+    <script>
+        var editor = CKEDITOR.replace('about')
+    </script>
 @endsection

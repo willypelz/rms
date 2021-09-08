@@ -126,6 +126,7 @@ class HomeController extends Controller
         
 
         if ($request->isMethod('post')) {
+        
 
             $registerCandidate = "Initiate Candidate Register(Candidate)";
             mixPanelRecord($registerCandidate, $request);
@@ -145,7 +146,7 @@ class HomeController extends Controller
                 ]);
 
             $registerSuccess = "Candidate Registered Successfully(Candidate)";
-            mixPanelRecord($registerSuccess, $candidate);
+            mixPanelRecord($registerSuccess, $request);
 
             if ($candidate) {
 

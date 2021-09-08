@@ -2,37 +2,37 @@
 
 namespace App\Http\Controllers\API;
 
-use App;
-use App\Http\Controllers\Controller;
-use App\Jobs\UploadApplicant;
-use App\Libraries\Solr;
-use App\Models\Candidate;
-use App\Models\Company;
-use App\Models\Cv;
-use App\Models\FormFieldValues;
-use App\Models\FormFields;
-use App\Models\InterviewNoteOptions;
-use App\Models\InterviewNoteValues;
-use App\Models\InterviewNotes;
-use App\Models\Job;
-use App\Models\JobActivity;
-use App\Models\JobApplication;
-use App\Models\JobBoard;
-use App\Models\Message;
-use App\Models\Role;
-use App\Models\Specialization;
-use App\Models\Workflow;
 use App\User;
+use App\Models\Cv;
 use Carbon\Carbon;
+use App\Models\Job;
+use App\Models\Role;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Http\Request;
+use App\Libraries\Solr;
+use App\Models\Company;
+use App\Models\Message;
+use App\Models\JobBoard;
+use App\Models\Workflow;
+use App\Models\Candidate;
+use App\Models\FormFields;
+use App\Models\PrivateJob;
+use App\Models\JobActivity;
 use Illuminate\Mail\Mailer;
-use Illuminate\Support\Facades\File;
+use Illuminate\Http\Request;
+use App\Jobs\UploadApplicant;
+use App\Models\InterviewNotes;
+use App\Models\JobApplication;
+use App\Models\Specialization;
+use App\Models\FormFieldValues;
+use App\Models\InterviewNoteValues;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use App\Models\InterviewNoteOptions;
+use Illuminate\Support\Facades\File;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Validator;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
-use App\Models\PrivateJob;
 
 class JobController extends Controller
 {
@@ -196,10 +196,12 @@ class JobController extends Controller
         // Get company and its jobs
         $company = Company::with(
             [
-                'jobs' => function ($query) use ($jobType) {
+                'jobs' => function ($query) use ($jobType, $request) {
                     $query->with(['workflow.workflowSteps'])
                         ->whereStatus("ACTIVE")
-                        ->where('expiry_date','>=',Carbon::now()->toDateString())
+                        ->when($request->with_expiry, function($q){
+                            return $q->where('expiry_date','>=',Carbon::now()->toDateString());
+                        })
                         ->orderBy('created_at', 'desc');
                     if ($jobType != 'all') {
                         $query->whereIsFor($jobType); // default $jobType == external
@@ -268,11 +270,11 @@ class JobController extends Controller
         }
 
         $status_slug = strtoupper($status_slug);
-
+        
         $applicants = Job::with(
             [
-                'applicantsViaJAT' => function ($q) use ($status_slug
-                ) { // applicant via JAT, JAT - Job Applications Table
+                'applicantsViaJAT' => function ($q) use ($status_slug) { 
+                    // applicant via JAT, JAT - Job Applications Table
                     if ($status_slug != 'ALL') {
                         $q->whereStatus($status_slug);
                     }

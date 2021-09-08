@@ -157,7 +157,7 @@
                                                                 class="glyphicon glyphicon-map-marker "></i> {{ $job['location'] }}
                                                         &nbsp;
                                                         <i class="glyphicon glyphicon-calendar"></i> Date Posted
-                                                        : {{ date('D. j M, Y', strtotime($job['post_date'])) }}</small>
+                                                        : {{ date('F d, Y', strtotime($job['post_date'])) }}</small>
 
                                                     <div class="btn-group btn-abs-ad button-top">
                                                         <a href="{{ route('job-board', [$job['id']]) }}" type="button"

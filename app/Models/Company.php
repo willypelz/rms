@@ -55,11 +55,6 @@ class Company extends Model
         return $this->belongsToMany('App\\Models\AtsProduct', 'company_tests');
     }
 
-    public function permissions()
-    {
-        return $this->belongsToMany('App\\Models\AtsProduct', 'company_tests');
-    }
-
     public function roles()
     {
         return $this->belongsToMany('App\Models\Role', 'company_users',  "company_id", "role_id");

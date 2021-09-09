@@ -117,7 +117,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 @php
-                                                    mixPanelRecord("Edit Super Admin Accessed (Admin)", auth()->user());
+                                                    // mixPanelRecord("Edit Super Admin Accessed (Admin)", auth()->user());
                                                 @endphp
                                                 <form action="{{ route('job-team-add') }}" method="post"
                                                       id="SuperAdmin">

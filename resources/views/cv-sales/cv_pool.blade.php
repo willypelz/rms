@@ -400,6 +400,9 @@
             <h4 class="modal-title" id="myModalLabel">Upload Cvs to your talent pool</h4>
           </div>
           <div class="modal-body">
+            @php
+                mixPanelRecord("talent-pool Add Candidate CV accessed (Admin)", auth()->user());
+            @endphp
             @include('job.includes.add-candidate-inc')
           </div>
         </div>

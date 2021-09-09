@@ -115,7 +115,7 @@
 
                             <div class="col-xs-4">
                           
-                          <div class="well text-center">
+                          <div class="well text-center hidden">
                             <h1 class="no-margin"><i class="fa-2x fa fa-send"></i></h1><br>
                             <p class="h4">For a wider and better reach, you can promote this job on more job boards and <i>newspapers.</i></p>
                             <p>

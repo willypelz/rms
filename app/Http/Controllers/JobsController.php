@@ -1742,10 +1742,11 @@ class JobsController extends Controller
         $cv_arrayray = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
 
-        if(!empty($cv_array))
+        if(!empty($cv_array)){
             $myFolders = array_unique(array_pluck($cv_array, 'cv_source'));
+        }
 
-
+        mixPanelRecord("Job promote page accessed", auth()->user());
         return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
     }
 
@@ -3566,7 +3567,7 @@ class JobsController extends Controller
                 $user->update([
                     'is_super_admin' => $request->role
                 ]);
-                mixPanelRecord("Admin Created successfully (Admin)", auth()->user());
+                mixPanelRecord("Admin Role Updated successfully (Admin)", auth()->user());
                 return response()->json (['status' => true]);
             } else {
                 mixPanelRecord("Admin Creation failed (Admin)", auth()->user());

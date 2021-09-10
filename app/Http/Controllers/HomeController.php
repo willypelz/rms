@@ -125,7 +125,7 @@ class HomeController extends Controller
         $jobs = Job::whereStatus('ACTIVE')->where('is_for', '!=', 'internal')->where('expiry_date', '>=', date('Y-m-d'))->take(env('JOB_HOMEPAGE_LIST', 3))->orderBy('id', 'desc')->get();
         
 
-        if ($request->isMethod('post')) {
+        if ($request->isMethod('post')) {        
 
             $registerCandidate = "Initiate Candidate Register(Candidate)";
             mixPanelRecord($registerCandidate, $request);

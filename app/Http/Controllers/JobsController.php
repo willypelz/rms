@@ -7,7 +7,6 @@ use Cart;
 use Curl;
 use File;
 use Mail;
-use Crypt;
 use Charts;
 use App\User;
 use App\Models\Cv;
@@ -47,6 +46,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Crypt;
 use App\Models\VideoApplicationValues;
 use App\Models\VideoApplicationOptions;
 use Illuminate\Support\Facades\Session;
@@ -1213,6 +1213,9 @@ class JobsController extends Controller
         }else{
             $job = NULL;
             $job_specilizations = [];
+
+            $start = "Initiated Create Job(Admin)";
+            mixPanelRecord($start, auth()->user());
         }
 
         // Another approach.. Get data from session
@@ -3497,7 +3500,7 @@ class JobsController extends Controller
         $base_url = url('/').'/';
 
         $embed_code = "<div id='SH_Embed'></div><script src='" .$domain_url. "'></script><script type='text/javascript'>document.getElementById('SH_Embed').innerHTML=SH_Embed.pull({key : '" . $key . "', base_url : '" . $base_url . "'});</script>";
-
+        mixPanelRecord("Embed Page Accessed (Admin)", auth()->user());
         return view('settings.embed', compact('embed_code'));
     }
 
@@ -3564,10 +3567,10 @@ class JobsController extends Controller
                 $user->update([
                     'is_super_admin' => $request->role
                 ]);
-                mixPanelRecord("made is Admin successful (Admin)", auth()->user());
+                mixPanelRecord("Admin Role Updated successfully (Admin)", auth()->user());
                 return response()->json (['status' => true]);
             } else {
-                mixPanelRecord("made is Admin failed (Admin)", $user);
+                mixPanelRecord("Admin creation failed (Admin)", $user);
                 return response()->json([
                     'status' => false,
                     'message' => "you have to manage super admins from HRMS"

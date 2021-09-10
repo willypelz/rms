@@ -41,7 +41,6 @@ class UserPermissionController extends Controller
 	    $roles = Role::with('permissions')->get();
 	    $user_roles = RoleUser::whereUserId(Auth()->user()->id)->with("role")->get()->unique("role_id");
 		$permissions = Permission::all();
-		mixPanelRecord("User Permission Started (Admin)", auth()->user());
 		return view('settings.user_permission', compact(  'user_roles','roles', 'permissions'));
 	}
 

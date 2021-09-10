@@ -58,16 +58,16 @@ class CommenceProcessingForInterviewNotes implements ShouldQueue
         case "Interview Notes ZIP":
         ini_set('memory_limit', '1024M');
         set_time_limit(0);
+        $batch_count = 0;
           $chunk = collect($this->application_ids)->chunk(300)->toArray();
            foreach($chunk as $notes){
-              $batch_count = 1;
               SaveApplicantNotesZip::dispatch($notes,$this->filename,$this->jobId,$this->company,$this->admin);
-              $batch_count ++;
-              if($batch_count == count($chunk)){ //This ensures email sends only in the last batch loop
-                $type = "Applicant Notes ZIP"; 
-                NotifyAdminOfCompletedExportJob::dispatch($this->filename,$this->admin,$type,$this->jobId)->delay(120); 
-              }
-          }
+              ++$batch_count;
+            }
+            if($batch_count == count($chunk)){ //This ensures email sends only in the last batch loop
+              $type = "Applicant Notes ZIP"; 
+              NotifyAdminOfCompletedExportJob::dispatch($this->filename,$this->admin,$type,$this->jobId)->delay(120); 
+            }
         break;
         case "Interview Notes CSV":
         //create excel sheet header in readiness for the excel data insertion 

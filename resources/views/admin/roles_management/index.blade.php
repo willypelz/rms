@@ -116,6 +116,9 @@
                                                 <h4 class="modal-title" id="myModalLabel">Edit Super Admin</h4>
                                             </div>
                                             <div class="modal-body">
+                                                @php
+                                                    // mixPanelRecord("Edit Super Admin Accessed (Admin)", auth()->user());
+                                                @endphp
                                                 <form action="{{ route('job-team-add') }}" method="post"
                                                       id="SuperAdmin">
                                                     {!! csrf_field() !!}

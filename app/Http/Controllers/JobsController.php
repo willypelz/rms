@@ -3499,7 +3499,7 @@ class JobsController extends Controller
         $base_url = url('/').'/';
 
         $embed_code = "<div id='SH_Embed'></div><script src='" .$domain_url. "'></script><script type='text/javascript'>document.getElementById('SH_Embed').innerHTML=SH_Embed.pull({key : '" . $key . "', base_url : '" . $base_url . "'});</script>";
-
+        mixPanelRecord("Embed Page Accessed (Admin)", auth()->user());
         return view('settings.embed', compact('embed_code'));
     }
 

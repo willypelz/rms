@@ -41,7 +41,7 @@ class SyncUserToCompanyController extends Controller
 		$companies = Company::where('is_active',1)->get();
 		$user = User::find(base64_decode($request->user_id));
 		$userCompanies = $user->companies->pluck('id')->toArray();
-		
+		mixPanelRecord('Attach New User Start (Admin)', auth()->user());
 		return view('settings.sync_user_to_company', compact('companies','userCompanies','user'));
 	}
 
@@ -61,8 +61,8 @@ class SyncUserToCompanyController extends Controller
 		$action = $user->companies()->count() > count($companies) ? 'detached from company' : 'attached to more companies';
 		//attach the user to all selected companies
 		$user->companies()->sync(array_fill_keys($companies,['role' => $role->id, 'role_id'=>$role->id]),true);
-		// $user->roles()->sync([$role->id]);
-		
+			// $user->roles()->sync([$role->id]);
+		mixPanelRecord('Attach New User Successfully (Admin)', auth()->user());
 		return redirect()->back()->with('success', ucwords("{$user->name} $action successfully"));
 
 		}catch(\Exception $e){

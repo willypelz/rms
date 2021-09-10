@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
            SubsidiaryExpireNotify::class,
         ]);
         
-        $this->app->singleton(\App\Services\UserService::class, function ($app){
+        $this->app->singleton( \App\Services\UserService::class, function ($app){
             return new \App\Services\UserService();
         });
         
@@ -58,6 +58,10 @@ class AppServiceProvider extends ServiceProvider
 
     public function provides()
     {
+<<<<<<< HEAD
         return [\App\Services\UserService::class]; 
+=======
+        return [\App\Services\UserService::class];
+>>>>>>> 8f4d5e2a1d2bc6991c5d9d94c30c143f9f9dcf94
     }
 }

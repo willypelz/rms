@@ -64,7 +64,7 @@ class CommenceProcessingForApplicantsCV implements ShouldQueue
     {
             $result =  $this->getApplicants();   
             $data = $result['response']['docs'];
-            $path = public_path('exports/');
+            $path = storage_path('app/public/uploads/export/'); //public_path('exports/');
             $cvs = array_pluck($data, 'cv_file');
             $ids = array_pluck($data, 'id');
 

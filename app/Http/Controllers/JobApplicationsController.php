@@ -770,7 +770,6 @@ class JobApplicationsController extends Controller
               ->header('Cache-Control', 'public')
               ->header('Content-Description', 'File Transfer')
               ->header('Content-Disposition', 'attachment; filename='.$decrypted_file_name);
-        return redirect($decrypted_file_name);
         }catch(\Exception $e){
             return redirect()->back()->with('error','File not found');
         }

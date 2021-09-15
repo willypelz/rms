@@ -1883,7 +1883,11 @@ class JobApplicationsController extends Controller
           $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-            'type' => 'required'
+            'type' => 'required',
+            'check' => array(
+                'sometimes',
+                'regex:/(^([a-zA-Z, ]+)(\d+)?$)/u'
+            )
           ]);
 
           if( (count($request->weight) > 0) && ($request->weight[0] > $request->weight[0])  ){
@@ -1895,6 +1899,7 @@ class JobApplicationsController extends Controller
                 'description' => $request->description,
                 'type' => $request->type,
                 'weight_min' => $request->weight[0],
+                'check_box'=> $request->check,
                 'weight_max' => $request->weight[1],
                 'company_id' => get_current_company()->id,
                 'interview_template_id' => $request->interview_template_id

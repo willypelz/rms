@@ -42,6 +42,7 @@
                                         <option value="">--select one--</option>
                                         <option value="text" >Text</option>
                                         <option value="rating" >Rating</option>
+                                        <option value="check_box" >Checkbox</option>
                                     </select>
                                 </div>
 
@@ -57,6 +58,15 @@
                                     </div>
                                     <div class="col-xs-5">
                                         <input type="number" min="1" placeholder="100" name="weight[1]" class="form-control " id="weight_max" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row" id="checkDiv" style="display:none">
+                                    <div class="col-xs-12">
+                                        <label for="check">Checkbox</label>
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <input type="text"  placeholder="input required values" name="check" class="form-control " id="check" required>
+                                        <small><span style="color:red">seperate each checkbox values with commas.</span></small>
                                     </div>
                                 </div>
                             </div>
@@ -102,13 +112,22 @@
     <script>
     function hideWeight(e) {
       if(e.value == 'rating'){
+        document.getElementById('checkDiv').style.display = 'none';
         document.getElementById('weightDiv').style.display = 'block';
         document.getElementById('weight_min').setAttribute("required", "");
         document.getElementById('weight_max').setAttribute("required", "");
-      }else{
+      }else if(e.value =='check_box'){
         document.getElementById('weightDiv').style.display = 'none';
+        document.getElementById('checkDiv').style.display = 'block';
+        document.getElementById('check').setAttribute("required", "");
         document.getElementById('weight_min') ? document.getElementById('weight_min').removeAttribute("required") : false;
         document.getElementById('weight_max') ? document.getElementById('weight_max').removeAttribute("required") : false;
+      }else{
+        document.getElementById('weightDiv').style.display = 'none';
+        document.getElementById('checkDiv').style.display = 'none';
+        document.getElementById('weight_min') ? document.getElementById('weight_min').removeAttribute("required") : false;
+        document.getElementById('weight_max') ? document.getElementById('weight_max').removeAttribute("required") : false;
+        document.getElementById('check') ? document.getElementById('check').removeAttribute("required") : false;
       }
     }
     </script>

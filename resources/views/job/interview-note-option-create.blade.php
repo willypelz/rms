@@ -42,7 +42,7 @@
                                         <option value="">--select one--</option>
                                         <option value="text" >Text</option>
                                         <option value="rating" >Rating</option>
-                                        <option value="check_box" >Checkbox</option>
+                                        <option value="checkbox" >Checkbox</option>
                                     </select>
                                 </div>
 
@@ -116,7 +116,7 @@
         document.getElementById('weightDiv').style.display = 'block';
         document.getElementById('weight_min').setAttribute("required", "");
         document.getElementById('weight_max').setAttribute("required", "");
-      }else if(e.value =='check_box'){
+      }else if(e.value =='checkbox'){
         document.getElementById('weightDiv').style.display = 'none';
         document.getElementById('checkDiv').style.display = 'block';
         document.getElementById('check').setAttribute("required", "");

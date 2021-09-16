@@ -49,7 +49,7 @@
                   <div class="col-sm-5">
                     <div class="row">
                       <div class="col-sm-8">
-                        <input type="number" min="{{$option->weight_min}}" max="{{$option->weight_max}}" name="option_{{ $option->id }}" id="option_{{ $option->id }}" class="form-control" required>
+                        <input type="number" min="{{$option->weight_min}}" max="{{$option->weight_max}}" name="option_{{ $option->id }}" id="option_{{ $option->id }}" class="form-control weight" required>
                       </div>
                     </div>
                   </div>
@@ -87,6 +87,39 @@
                   
                   <div class="col-sm-12">
                     <textarea  class="form-control"  name="option_{{ $option->id }}" id="option_{{ $option->id }}" @if($readonly) "disabled" = "disabled" readonly @endif>{{ @$interview_note[$option->id] }}</textarea>
+                  </div>
+                  
+              <div class="clearfix"></div>
+              </div>
+            @endif
+
+          @endforeach
+
+          @foreach( @$interview_note_options as $option )
+
+            @if( $option->type == "checkbox" )
+              <div class="form-group">
+                  <div class="col-sm-7">
+                    <div style="font-size:18px; font-weight:bold;">
+                    {!! $option->header !!}
+                    </div>
+                    
+                    <label for="" style="font-size: 17px;">{!! $option->name !!} <span class="text-danger">*</span></label>
+                    <p>
+                    {!! $option->description !!}
+                    </p>
+                  </div>
+
+                  
+                  <div class="col-sm-5">
+                  @php $options = explode(',', $option->check_box) @endphp
+                  @foreach($options as $key => $check)
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input checks" type="checkbox" id="check_{{ $check.$key }}" name="option_check_{{ $option->id }}" value="{{ $check }}">
+                      <label class="form-check-label" for="check_{{ $check.$key }}">{{ $check}}</label>
+                    </div>
+                  @endforeach
+
                   </div>
                   
               <div class="clearfix"></div>
@@ -174,12 +207,13 @@
       //        message:  $('#interview-message').val()
       //      };
           $field = $(this);
-          radios = JSON.stringify($('body  #interview-note-form input').serializeObject());
+          radios = JSON.stringify($('body .weight').serializeObject());
           texts = JSON.stringify($('body  #interview-note-form textarea').serializeObject());
+          checks = JSON.stringify($('body .checks').serializeObject());
           app_id = {{ $app_id }};
           interview_template_id = {{ $interview_template_id }};
           interviewer_id ={{ Auth::user()->id }};
-      $.post("{{ route('save-interview-note') }}", { radios : radios, texts : texts, app_id:app_id,interviewer_id:interviewer_id, id : interview_template_id } ,function(data){
+      $.post("{{ route('save-interview-note') }}", { radios : radios, checks: checks, texts : texts, app_id:app_id,interviewer_id:interviewer_id, id : interview_template_id } ,function(data){
 
           $( '#viewModal' ).modal('toggle');
           $.growl.notice({ message: "You have interviewed " + $field.closest('.modal-body').find('.media-heading a').text() });

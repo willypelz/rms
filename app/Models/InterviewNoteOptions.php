@@ -14,7 +14,7 @@ class InterviewNoteOptions extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','description','header' ,'type', 'options', 'weight_min', 'weight_max', 'job_id', 'created_at', 'updated_at','company_id','interview_template_id'];
+    protected $fillable = ['name','description','header' ,'type', 'options', 'weight_min', 'weight_max', 'job_id', 'created_at', 'updated_at','company_id','interview_template_id','check_box'];
 
     // public $timestamps = false;
 

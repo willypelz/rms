@@ -50,7 +50,7 @@
      "repositories": [
         {
             "type": "vcs",
-            "url": "https://git@bitbucket.org/insidify/solr-package.git"
+            "url": "git@bitbucket.org:insidify/solr-package.git"
         }
     ],
     "autoload": {

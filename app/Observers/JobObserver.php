@@ -2,7 +2,11 @@
 
 namespace App\Observers;
 
+use App\Mail\JobCreatedNotice;
+use App\User;
 use App\Models\Job;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class JobObserver
 {
@@ -27,8 +31,20 @@ class JobObserver
                 'properties' => '',
             ];
             logAction($param);
-           
+
+            if ($job->is_for == 'both' || $job->is_for == 'internal') {
+                $employees = User::where('activated', 1)->get();
+                foreach($employees as $employee){
+                    Mail::to($employee->email)->send(
+                        new JobCreatedNotice($employee, $job)
+                    );
+                    // $this->sendMailable($employee, $job, ::class);
+                    // dd($employee);
+                }
+            }
         }
+
+        
     }
 
     /**
@@ -118,5 +134,12 @@ class JobObserver
     public function forceDeleted(Job $job)
     {
         //
+    }
+
+    private function sendMailable(User $user, Job $job, $mailable)
+    {
+        Mail::to($user->email)->send(
+            new $mailable($user, $job)
+        );
     }
 }

@@ -51,7 +51,7 @@
 																			<strong>Job Title: </strong> {{ $data->title }} <br>
                                                                             <strong>Expiry Date: </strong>{{ $data->expiry_date }}<br>
                                                                             <strong>Position: </strong>{{ $data->position }} <br>
-																			<strong>Message: </strong> {{ $data->summary }} <br>
+																			<strong>Description: </strong> {{ $data->summary }} <br>
 
 																		</p>
 																	</div>

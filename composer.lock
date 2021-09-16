@@ -5521,7 +5521,7 @@
             "version": "dev-develop",
             "source": {
                 "type": "git",
-                "url": "git@bitbucket.org:insidify/solr-package.git",
+                "url": "https://git@bitbucket.org/insidify/solr-package.git",
                 "reference": "2d5cd7b0177d9f1a03757ab6eefa8814d8b283e5"
             },
             "require": {

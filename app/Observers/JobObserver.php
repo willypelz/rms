@@ -33,15 +33,10 @@ class JobObserver
             ];
             logAction($param);
 
-            
-                if ($job->is_for == 'both' || $job->is_for == 'internal') {
-                    $employees = User::where('activated', 1)->get();
-                    foreach ($employees as $employee) {
-                        dispatch(new SendJobNotice($employee, $job));
-                    }
-                }
-            
-            
+            if ($job->is_for == 'both' || $job->is_for == 'internal') {
+                $employees = User::where('activated', 1)->get();
+                dispatch(new SendJobNotice($employees, $job)); 
+            }            
         }
 
         
@@ -134,12 +129,5 @@ class JobObserver
     public function forceDeleted(Job $job)
     {
         //
-    }
-
-    private function sendMailable(User $user, Job $job, $mailable)
-    {
-        Mail::to($user->email)->send(
-            new $mailable($user, $job)
-        );
     }
 }

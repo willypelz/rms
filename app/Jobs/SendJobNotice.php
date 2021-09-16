@@ -14,16 +14,16 @@ class SendJobNotice implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $user;
+    public $employees;
     public $createdJobInfor;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($user, $createdJobInfor)
+    public function __construct($employees, $createdJobInfor)
     {
-        $this->user = $user;
+        $this->employees = $employees;
         $this->createdJobInfor = $createdJobInfor;
     }
 
@@ -34,8 +34,10 @@ class SendJobNotice implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->user->email)->send(
-            new JobCreatedNotice($this->user, $this->createdJobInfor)
-        );
+        foreach ($this->employees as $employee) {
+            Mail::to($employee->email)->send(
+                new JobCreatedNotice($employee, $this->createdJobInfor)
+            );
+        }
     }
 }

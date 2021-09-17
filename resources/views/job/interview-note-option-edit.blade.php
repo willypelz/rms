@@ -97,12 +97,6 @@
         $(document).ready(function() {
             $('#summernote').summernote();
 
-            if($('#type').val() == "text"){
-              $('#weight').val('');
-              document.getElementById('weightDiv').style.display = 'none';
-              document.getElementById('weight').removeAttribute("required");
-            }
-
             const validate = (e)=>{
                 if (  parseInt(document.getElementById("weight_min").value) > parseInt(document.getElementById("weight_max").value) ) {
                     e.preventDefault();

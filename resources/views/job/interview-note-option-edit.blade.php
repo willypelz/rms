@@ -47,6 +47,7 @@
                                         <option value="text" @if( $interview_note_option->type == 'text' ) selected="selected" @endif >Text</option>
                                         <option value="rating" @if( $interview_note_option->type == 'rating' ) selected="selected" @endif>Rating</option>
                                         <option value="checkbox" @if( $interview_note_option->type == 'checkbox' ) selected="selected" @endif>Checkbox</option>
+                                        <option value="dropdown" @if( $interview_note_option->type == 'dropdown' ) selected="selected" @endif>Dropdown</option>
                                     </select>
                                 </div>
 
@@ -71,6 +72,15 @@
                                     <div class="col-xs-5">
                                         <input type="text" value="{{ @$interview_note_option->check_box }}" name="check" class="form-control" id="check" required>
                                         <small><span style="color:red">seperate each checkbox values with commas.</span></small>
+                                    </div>
+                                </div>
+                                <div class="form-group row" id="dropdownDiv" style="display:none">
+                                    <div class="col-xs-12">
+                                        <label for="drop">Dropdown</label>
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <input type="text"  value="{{ @$interview_note_option->dropdown }}" name="drop" class="form-control " id="drop" required>
+                                        <small><span style="color:red">seperate each dropdown values with commas.</span></small>
                                     </div>
                                 </div>
                             </div>
@@ -114,19 +124,31 @@
             if($('#type').val() == 'rating'){
                 document.getElementById('weightDiv').style.display = 'block';
                 document.getElementById('checkDiv').style.display = 'none';
+                document.getElementById('dropdownDiv').style.display = 'none';
                 document.getElementById('check').removeAttribute("required", "");
                 document.getElementById('weight_min').setAttribute("required", "");
                 document.getElementById('weight_max').setAttribute("required", "");
             }else if($('#type').val() == 'checkbox'){
                 document.getElementById('checkDiv').style.display = 'block';
                 document.getElementById('weightDiv').style.display = 'none';
+                document.getElementById('dropdownDiv').style.display = 'none';
                 document.getElementById('check').setAttribute("required", "");
+                document.getElementById('drop') ? document.getElementById('drop').removeAttribute("required") : false;
+                document.getElementById('weight_min') ? document.getElementById('weight_min').removeAttribute("required") : false;
+                document.getElementById('weight_max') ? document.getElementById('weight_max').removeAttribute("required") : false;
+            }else if($('#type').val() == 'dropdown'){
+                document.getElementById('dropdownDiv').style.display = 'block';
+                document.getElementById('weightDiv').style.display = 'none';
+                document.getElementById('checkDiv').style.display = 'none';
+                document.getElementById('drop').setAttribute("required", "");
+                document.getElementById('check') ? document.getElementById('check').removeAttribute("required", "") : false;
                 document.getElementById('weight_min') ? document.getElementById('weight_min').removeAttribute("required") : false;
                 document.getElementById('weight_max') ? document.getElementById('weight_max').removeAttribute("required") : false;
             }else{
                 $('#weight').val('');
                 document.getElementById('weightDiv').style.display = 'none';
                 document.getElementById('checkDiv').style.display = 'none';
+                document.getElementById('dropdownDiv').style.display = 'none';
                 document.getElementById('check').removeAttribute("required", "");
                 document.getElementById('weight_min') ? document.getElementById('weight_min').removeAttribute("required") : false;
                 document.getElementById('weight_max') ? document.getElementById('weight_max').removeAttribute("required") : false; 
@@ -143,15 +165,28 @@
           }else if(e.value == 'checkbox'){
             document.getElementById('checkDiv').style.display = 'block';
             document.getElementById('weightDiv').style.display = 'none';
+            document.getElementById('dropdownDiv').style.display = 'none';
             document.getElementById('check').setAttribute("required", "");
+            document.getElementById('weight_min') ? document.getElementById('weight_min').removeAttribute("required") : false;
+            document.getElementById('weight_max') ? document.getElementById('weight_max').removeAttribute("required") : false;
+            document.getElementById('drop') ? document.getElementById('drop').removeAttribute("required", "") : false;
+          }else if(e.value == 'dropdown'){
+            document.getElementById('dropdownDiv').style.display = 'block';
+            document.getElementById('weightDiv').style.display = 'none';
+            document.getElementById('checkDiv').style.display = 'none';
+            document.getElementById('drop').setAttribute("required", "");
+            document.getElementById('check') ? document.getElementById('check').removeAttribute("required", "") : false;
             document.getElementById('weight_min') ? document.getElementById('weight_min').removeAttribute("required") : false;
             document.getElementById('weight_max') ? document.getElementById('weight_max').removeAttribute("required") : false;
           }else{
             $('#weight').val('');
             document.getElementById('weightDiv').style.display = 'none';
             document.getElementById('checkDiv').style.display = 'none';
+            document.getElementById('dropdownDiv').style.display = 'none';
             document.getElementById('weight_min') ? document.getElementById('weight_min').removeAttribute("required") : false;
-            document.getElementById('weight_max') ? document.getElementById('weight_max').removeAttribute("required") : false; 
+            document.getElementById('weight_max') ? document.getElementById('weight_max').removeAttribute("required") : false;
+            document.getElementById('check') ? document.getElementById('check').removeAttribute("required") : false;
+            document.getElementById('drop') ? document.getElementById('drop').removeAttribute("required", "") : false;
           }
         }
     </script>

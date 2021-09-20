@@ -1847,6 +1847,10 @@ class JobApplicationsController extends Controller
                 'check' => array(
                     'sometimes',
                     'regex:/(^([a-zA-Z, ]+)(\d+)?$)/u'
+                ),
+                'drop' => array(
+                    'sometimes',
+                    'regex:/(^([a-zA-Z, ]+)(\d+)?$)/u'
                 )
             ]);
 
@@ -1861,6 +1865,7 @@ class JobApplicationsController extends Controller
                 'weight_min' => $request->weight[0],
                 'weight_max' => $request->weight[1],
                 'check_box'=> $request->check,
+                'dropdown'=> $request->drop
             ]);
 
             return redirect()->route("interview-note-options", [ "interview_template_id" => $interview_template->id ])
@@ -1892,6 +1897,10 @@ class JobApplicationsController extends Controller
             'check' => array(
                 'sometimes',
                 'regex:/(^([a-zA-Z, ]+)(\d+)?$)/u'
+            ),
+            'drop' => array(
+                'sometimes',
+                'regex:/(^([a-zA-Z, ]+)(\d+)?$)/u'
             )
           ]);
 
@@ -1907,7 +1916,8 @@ class JobApplicationsController extends Controller
                 'weight_max' => $request->weight[1],
                 'company_id' => get_current_company()->id,
                 'interview_template_id' => $request->interview_template_id,
-                'check_box'=> $request->check
+                'check_box'=> $request->check,
+                'dropdown'=>$request->drop
             ]);
 
             return redirect()->route("interview-note-options", [ "interview_template_id" => $interview_template->id ])
@@ -1959,7 +1969,7 @@ class JobApplicationsController extends Controller
         }
 
         if ($request->isMethod('post')) {
-            $data = array_merge(json_decode($request->radios, true), json_decode($request->texts, true), json_decode($request->checks, true));
+            $data = array_merge(json_decode($request->radios, true), json_decode($request->texts, true), json_decode($request->checks, true), json_decode($request->drop, true));
             $interview_note_values = [];
             $score = 0;
             $correct_count = 0;

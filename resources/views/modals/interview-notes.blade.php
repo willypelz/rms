@@ -127,6 +127,42 @@
             @endif
 
           @endforeach
+
+          @foreach( @$interview_note_options as $option )
+
+            @if( $option->type == "dropdown" )
+              <div class="form-group">
+                  <div class="col-sm-7">
+                    <div style="font-size:18px; font-weight:bold;">
+                    {!! $option->header !!}
+                    </div>
+                    
+                    <label for="" style="font-size: 17px;">{!! $option->name !!} <span class="text-danger">*</span></label>
+                    <p>
+                    {!! $option->description !!}
+                    </p>
+                  </div>
+
+                  
+                  <div class="col-sm-5">
+                    <label for="option_{{ $option->id }}">Options</label>
+                    <select name="option_{{ $option->id }}" class="form-control drop" id="option_{{ $option->id }}" required>
+                        <option value="none">--select one--</option>
+                        @php $options = explode(',', $option->dropdown) @endphp
+                        @foreach($options as $key => $drop)
+                        <option value="{{$drop}}">{{$drop}}</option>
+                        @endforeach
+                    </select>
+                    <span style="display:none" id="error">
+                         <small style="color:red">select an option<small>
+                    </span>
+                  </div>
+                  
+              <div class="clearfix"></div>
+              </div>
+            @endif
+
+          @endforeach
             
             
             
@@ -210,10 +246,15 @@
           radios = JSON.stringify($('body .weight').serializeObject());
           texts = JSON.stringify($('body  #interview-note-form textarea').serializeObject());
           checks = JSON.stringify($('body .checks').serializeObject());
+          drop = JSON.stringify($('body .drop').serializeObject());
           app_id = {{ $app_id }};
           interview_template_id = {{ $interview_template_id }};
           interviewer_id ={{ Auth::user()->id }};
-      $.post("{{ route('save-interview-note') }}", { radios : radios, checks: checks, texts : texts, app_id:app_id,interviewer_id:interviewer_id, id : interview_template_id } ,function(data){
+          if($('body  #interview-note-form select').val()== 'none')){
+            document.getElementById('error').style.display = 'block';
+            return false;
+       }
+      $.post("{{ route('save-interview-note') }}", { radios : radios, checks: checks, texts : texts, drop: drop,app_id:app_id,interviewer_id:interviewer_id, id : interview_template_id } ,function(data){
 
           $( '#viewModal' ).modal('toggle');
           $.growl.notice({ message: "You have interviewed " + $field.closest('.modal-body').find('.media-heading a').text() });

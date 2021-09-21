@@ -67,22 +67,45 @@
                                 </div>
                                 <div class="form-group row" id="checkDiv" style="display:none">
                                     <div class="col-xs-12">
-                                        <label for="check">Checkbox</label>
+                                        <label for="check">Options </label> 
                                     </div>
-                                    <div class="col-xs-5">
-                                        <input type="text" value="{{ @$interview_note_option->check_box }}" name="check" class="form-control" id="check" required>
-                                        <small><span style="color:red">seperate each checkbox values with commas.</span></small>
+                                    <div class="col-xs-6" id="new_chq"> 
+                                        <div  class="form-inline" style="margin-bottom:10px">
+                                        <a href="javascript:void(0)" class="add btn"><i class="fa fa-plus"></i></a>
+                                        <a href="javascript:void(0)" class="remove btn"><i class="fa fa-trash"></i></a>
+                                        </div>
+                                        @if($interview_note_option->check_box)
+                                        @php $check = json_decode($interview_note_option->check_box, true) @endphp
+                                        @foreach($check as $key => $data)
+                                        <input type="text" @if($key > 0) style="margin-top:10px" @endif class="form-control check" value="{{ $data }}" name="check[{{$key}}]" required>
+                                        @endforeach
+                                        @else
+                                        <input type="text" class="form-control check" name="check[0]" required>
+                                        @endif
+                                        <input type="hidden" value="1" id="total_chq">
                                     </div>
                                 </div>
                                 <div class="form-group row" id="dropdownDiv" style="display:none">
                                     <div class="col-xs-12">
-                                        <label for="drop">Dropdown</label>
+                                        <label for="drop">Options</label>
                                     </div>
-                                    <div class="col-xs-5">
-                                        <input type="text"  value="{{ @$interview_note_option->dropdown }}" name="drop" class="form-control " id="drop" required>
-                                        <small><span style="color:red">seperate each dropdown values with commas.</span></small>
+                                    <div class="col-xs-6" id="new_drop"> 
+                                        <div  class="form-inline" style="margin-bottom:10px">
+                                        <a href="javascript:void(0)" class="add btn"><i class="fa fa-plus"></i></a>
+                                        <a href="javascript:void(0)" class="remove btn"><i class="fa fa-trash"></i></a>
+                                        </div>
+                                        @if($interview_note_option->dropdown)
+                                        @php $check = json_decode($interview_note_option->dropdown, true) @endphp
+                                        @foreach($check as $key => $data)
+                                        <input type="text" @if($key > 0) style="margin-top:10px" @endif class="form-control drop" value="{{ $data }}" name="drop[{{$key}}]" required>
+                                        @endforeach
+                                        @else
+                                        <input type="text" class="form-control drop" id="drop" name="drop[0]" required>
+                                        @endif
+                                        <input type="hidden" value="1" id="total_drop">
                                     </div>
                                 </div>
+
                             </div>
 
 
@@ -107,12 +130,56 @@
         $(document).ready(function() {
             $('#summernote').summernote();
 
+            $('.add').on('click', add);
+            $('.remove').on('click', remove);
+
+            function add() {
+                if($('#type').val() == 'checkbox'){
+                    var new_chq_no = parseInt($('#total_chq').val()) + 1;
+                    tchecks = $('.check').length;
+                    var new_input = "<input type='text' style='margin-top:10px' class='form-control check' id='new_" + new_chq_no + "' name='check["+ tchecks + "]' required>";
+                    $('#new_chq').append(new_input);
+                    $('#total_chq').val(new_chq_no);
+
+                }else if($('#type').val() == 'dropdown'){
+                    var new_chq_no = parseInt($('#total_drop').val()) + 1;
+                    tdrops = $('.drop').length;
+                    var new_input = "<input type='text' style='margin-top:10px' class='form-control drop' id='new_" + new_chq_no + "' name='drop["+ tdrops + "]' required>";
+                    $('#new_drop').append(new_input);
+                    $('#total_drop').val(new_chq_no);
+                }
+                
+            }
+
+            function remove() {
+                if($('#type').val() == 'checkbox'){
+                    var last_chq_no = $('#total_chq').val();
+                    if (last_chq_no > 1) {
+                        $('#new_' + last_chq_no).remove();
+                        $('#total_chq').val(last_chq_no - 1);
+                    }
+                }
+
+                if($('#type').val() == 'dropdown'){
+                    var last_chq_no = $('#total_drop').val();
+                    if (last_chq_no > 1) {
+                        $('#new_' + last_chq_no).remove();
+                        $('#total_drop').val(last_chq_no - 1);
+                    }
+                }
+                
+            }
+
             const validate = (e)=>{
-                if (  parseInt(document.getElementById("weight_min").value) > parseInt(document.getElementById("weight_max").value) ) {
-                    e.preventDefault();
-                    alertBox("error", "weight min must be less than weight max")
-                    return false;
-                }  
+                console.log('emirok');
+                if($('#type').val() == 'rating'){
+                    if (  parseInt(document.getElementById("weight_min").value) > parseInt(document.getElementById("weight_max").value) ) {
+                        e.preventDefault();
+                        alertBox("error", "weight min must be less than weight max")
+                        return false;
+                    }
+                    
+                }    
             }   
 
             const alertBox = (status, msg)=>{
@@ -120,73 +187,118 @@
                 $("#"+status).show()
                 setTimeout(function(){$("#error").hide();}, 10000);
             }
+            var  weightDiv = document.getElementById('weightDiv');
+            var  checkDiv = document.getElementById('checkDiv');
+            var  dropdownDiv = document.getElementById('dropdownDiv');
+            var  weightMax = document.getElementById('weight_max');
+            var  weightMin = document.getElementById('weight_min');
+            var  check =  document.getElementsByClassName('check');
+            var  drop =  document.getElementsByClassName('drop');
+            var i ;
 
             if($('#type').val() == 'rating'){
-                document.getElementById('weightDiv').style.display = 'block';
-                document.getElementById('checkDiv').style.display = 'none';
-                document.getElementById('dropdownDiv').style.display = 'none';
-                document.getElementById('check').removeAttribute("required", "");
-                document.getElementById('weight_min').setAttribute("required", "");
-                document.getElementById('weight_max').setAttribute("required", "");
+                weightDiv.style.display = 'block';
+                checkDiv.style.display = 'none';
+                dropdownDiv.style.display = 'none';
+                for(i = 0; i < check.length; ++i){
+                    check ? check[i].removeAttribute("required"):false;
+                }
+                for(i = 0; i < drop.length; ++i){
+                    drop ? drop[i].removeAttribute("required"):false;
+                }
+                weightMin.setAttribute("required", "");
+                weightMax.setAttribute("required", "");
             }else if($('#type').val() == 'checkbox'){
-                document.getElementById('checkDiv').style.display = 'block';
-                document.getElementById('weightDiv').style.display = 'none';
-                document.getElementById('dropdownDiv').style.display = 'none';
-                document.getElementById('check').setAttribute("required", "");
-                document.getElementById('drop') ? document.getElementById('drop').removeAttribute("required") : false;
-                document.getElementById('weight_min') ? document.getElementById('weight_min').removeAttribute("required") : false;
-                document.getElementById('weight_max') ? document.getElementById('weight_max').removeAttribute("required") : false;
+                checkDiv.style.display = 'block';
+                weightDiv.style.display = 'none';
+                dropdownDiv.style.display = 'none';
+                for(i = 0; i < check.length; ++i){
+                    check[i].setAttribute("required", "");
+                };
+                for(i = 0; i < drop.length; ++i){
+                    drop ? drop[i].removeAttribute("required"):false;
+                }
+                weightMin ? weightMin.removeAttribute("required"):false;
+                weightMax ? weightMax.removeAttribute("required"):false;
             }else if($('#type').val() == 'dropdown'){
-                document.getElementById('dropdownDiv').style.display = 'block';
-                document.getElementById('weightDiv').style.display = 'none';
-                document.getElementById('checkDiv').style.display = 'none';
-                document.getElementById('drop').setAttribute("required", "");
-                document.getElementById('check') ? document.getElementById('check').removeAttribute("required", "") : false;
-                document.getElementById('weight_min') ? document.getElementById('weight_min').removeAttribute("required") : false;
-                document.getElementById('weight_max') ? document.getElementById('weight_max').removeAttribute("required") : false;
+                dropdownDiv.style.display = 'block';
+                weightDiv.style.display = 'none';
+                checkDiv.style.display = 'none';
+                for(i = 0; i < drop.length; ++i){
+                    drop[i].setAttribute("required", "");
+                }
+                for(i = 0; i < check.length; ++i){
+                    check ? check[i].removeAttribute("required"):false;
+                }
+                weightMin ? weightMin.removeAttribute("required") : false;
+                weightMax ? weightMax.removeAttribute("required") : false;
             }else{
                 $('#weight').val('');
-                document.getElementById('weightDiv').style.display = 'none';
-                document.getElementById('checkDiv').style.display = 'none';
-                document.getElementById('dropdownDiv').style.display = 'none';
-                document.getElementById('check').removeAttribute("required", "");
-                document.getElementById('weight_min') ? document.getElementById('weight_min').removeAttribute("required") : false;
-                document.getElementById('weight_max') ? document.getElementById('weight_max').removeAttribute("required") : false; 
+                weightDiv.style.display = 'none';
+                checkDiv.style.display = 'none';
+                dropdownDiv.style.display = 'none';
+                for(i = 0; i < check.length; ++i){
+                    check ? check[i].removeAttribute("required"):false;
+                }
+                for(i = 0; i < drop.length; ++i){
+                    drop ? drop[i].removeAttribute("required"):false;
+                }
+                weightMin ? weightMin.removeAttribute("required") : false;
+                weightMax ? weightMax.removeAttribute("required") : false; 
             }
 
         });
     
         function hideWeight(e) {
           if(e.value == 'rating'){
-            document.getElementById('weightDiv').style.display = 'block';
-            document.getElementById('checkDiv').style.display = 'none';
-            document.getElementById('weight_min').setAttribute("required", "");
-            document.getElementById('weight_max').setAttribute("required", "");
+            weightDiv.style.display = 'block';
+            checkDiv.style.display = 'none';
+            dropdownDiv.style.display = 'none';
+            for(i = 0; i < check.length; ++i){
+                check ? check[i].removeAttribute("required"):false;
+            };
+            for(i = 0; i < drop.length; ++i){
+                drop ? drop[i].removeAttribute("required"):false;
+            };
+            weightMin.setAttribute("required", "");
+            weightMax.setAttribute("required", "");
           }else if(e.value == 'checkbox'){
-            document.getElementById('checkDiv').style.display = 'block';
-            document.getElementById('weightDiv').style.display = 'none';
-            document.getElementById('dropdownDiv').style.display = 'none';
-            document.getElementById('check').setAttribute("required", "");
-            document.getElementById('weight_min') ? document.getElementById('weight_min').removeAttribute("required") : false;
-            document.getElementById('weight_max') ? document.getElementById('weight_max').removeAttribute("required") : false;
-            document.getElementById('drop') ? document.getElementById('drop').removeAttribute("required", "") : false;
+            checkDiv.style.display = 'block';
+            weightDiv.style.display = 'none';
+            dropdownDiv.style.display = 'none';
+            for(i = 0; i < check.length; ++i){
+                check[i].setAttribute("required", "");
+            }
+            for(i = 0; i < drop.length; ++i){
+                drop ? drop[i].removeAttribute("required"):false;
+            }
+            weightMin ? weightMin.removeAttribute("required"):false;
+            weightMax ? weightMax.removeAttribute("required"):false;
           }else if(e.value == 'dropdown'){
-            document.getElementById('dropdownDiv').style.display = 'block';
-            document.getElementById('weightDiv').style.display = 'none';
-            document.getElementById('checkDiv').style.display = 'none';
-            document.getElementById('drop').setAttribute("required", "");
-            document.getElementById('check') ? document.getElementById('check').removeAttribute("required", "") : false;
-            document.getElementById('weight_min') ? document.getElementById('weight_min').removeAttribute("required") : false;
-            document.getElementById('weight_max') ? document.getElementById('weight_max').removeAttribute("required") : false;
+            dropdownDiv.style.display = 'block';
+            weightDiv.style.display = 'none';
+            checkDiv.style.display = 'none';
+            for(i = 0; i < drop.length; ++i){
+                drop[i].setAttribute("required", "");
+            }
+            for(i = 0; i < check.length; ++i){
+                check ? check[i].removeAttribute("required"):false;
+            }
+            weightMin ? weightMin.removeAttribute("required") : false;
+            weightMax ? weightMax.removeAttribute("required") : false;
           }else{
             $('#weight').val('');
-            document.getElementById('weightDiv').style.display = 'none';
-            document.getElementById('checkDiv').style.display = 'none';
-            document.getElementById('dropdownDiv').style.display = 'none';
-            document.getElementById('weight_min') ? document.getElementById('weight_min').removeAttribute("required") : false;
-            document.getElementById('weight_max') ? document.getElementById('weight_max').removeAttribute("required") : false;
-            document.getElementById('check') ? document.getElementById('check').removeAttribute("required") : false;
-            document.getElementById('drop') ? document.getElementById('drop').removeAttribute("required", "") : false;
+            weightDiv.style.display = 'none';
+            checkDiv.style.display = 'none';
+            dropdownDiv.style.display = 'none';
+            for(i = 0; i < check.length; ++i){
+                check ? check[i].removeAttribute("required"):false;
+            }
+            for(i = 0; i < drop.length; ++i){
+                drop ? drop[i].removeAttribute("required"):false;
+            }
+            weightMin ? weightMin.removeAttribute("required") : false;
+            weightMax ? weightMax.removeAttribute("required") : false; 
           }
         }
     </script>

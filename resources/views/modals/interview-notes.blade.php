@@ -112,7 +112,7 @@
 
                   
                   <div class="col-sm-5">
-                  @php $options = explode(',', $option->check_box) @endphp
+                  @php $options = json_decode($option->check_box, true) @endphp
                   @foreach($options as $key => $check)
                     <div class="form-check form-check-inline">
                       <input class="form-check-input checks" type="checkbox" id="check_{{ $check.$key }}" name="option_check_{{ $option->id }}" value="{{ $check }}">
@@ -148,7 +148,7 @@
                     <label for="option_{{ $option->id }}">Options</label>
                     <select name="option_{{ $option->id }}" class="form-control drop" id="option_{{ $option->id }}" required>
                         <option value="none">--select one--</option>
-                        @php $options = explode(',', $option->dropdown) @endphp
+                        @php $options = json_decode($option->dropdown, true) @endphp
                         @foreach($options as $key => $drop)
                         <option value="{{$drop}}">{{$drop}}</option>
                         @endforeach
@@ -250,10 +250,7 @@
           app_id = {{ $app_id }};
           interview_template_id = {{ $interview_template_id }};
           interviewer_id ={{ Auth::user()->id }};
-          if($('body  #interview-note-form select').val()== 'none')){
-            document.getElementById('error').style.display = 'block';
-            return false;
-       }
+          
       $.post("{{ route('save-interview-note') }}", { radios : radios, checks: checks, texts : texts, drop: drop,app_id:app_id,interviewer_id:interviewer_id, id : interview_template_id } ,function(data){
 
           $( '#viewModal' ).modal('toggle');

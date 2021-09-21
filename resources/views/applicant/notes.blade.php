@@ -49,7 +49,7 @@
 
                                     @if( count($interview_note_categories) > 0 )
                                         @foreach( $interview_note_categories as $template_name => $interview_notes )
-                                            <h3 style="padding:10px;">{{ $template_name }} </h3>
+                                            <h3 style="padding:10px;">{{ $template_name }}</h3>
 
                                             <?php $interview_notes_groups = $interview_notes->groupBy('interview_note_option_id');?>
 

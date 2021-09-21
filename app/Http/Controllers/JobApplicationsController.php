@@ -1843,7 +1843,7 @@ class JobApplicationsController extends Controller
             $this->validate($request, [
                 'name' => 'required',
                 'description' => 'required',
-                'type' => 'required',
+                'type' => 'required'
             ]);
 
             if( (count($request->weight) > 0) && ($request->weight[0] > $request->weight[1])  ){
@@ -1888,7 +1888,7 @@ class JobApplicationsController extends Controller
           $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-            'type' => 'required',
+            'type' => 'required'
           ]);
 
           if( (count($request->weight) > 0) && ($request->weight[0] > $request->weight[0])  ){

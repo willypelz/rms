@@ -42,7 +42,7 @@
 
                                 <div class="form-group">
                                    <label for="type">Type</label>
-                                    <select name="type" class="form-control" onchange="hideWeight(this)" id="type" required>
+                                    <select name="type" class="form-control" onchange="hideWeight(this.value)" id="type" required>
                                         <option value="">--select one--</option>
                                         <option value="text" @if( $interview_note_option->type == 'text' ) selected="selected" @endif >Text</option>
                                         <option value="rating" @if( $interview_note_option->type == 'rating' ) selected="selected" @endif>Rating</option>
@@ -51,18 +51,18 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group row" id="weightDiv">
+                                <div class="form-group row" id="weightDiv" style="display:none">
                                     <div class="col-xs-12">
                                         <label for="weight">Weight Range</label>
                                     </div>
                                     <div class="col-xs-5">
-                                        <input type="number" min="0" placeholder="1" name="weight[0]" value="{{ @$interview_note_option->weight_min }}" class="form-control" id="weight_min" required>
+                                        <input type="number" placeholder="1" name="weight[0]" value="{{ @$interview_note_option->weight_min }}" class="form-control" id="weight_min" >
                                     </div>
                                     <div class="col-xs-2 text-center">
                                         <label for="weight">To</label>
                                     </div>
                                     <div class="col-xs-5">
-                                        <input type="number" min="1" placeholder="100" name="weight[1]" value="{{ @$interview_note_option->weight_max }}" class="form-control " id="weight_max" required>
+                                        <input type="number" placeholder="100" name="weight[1]" value="{{ @$interview_note_option->weight_max }}" class="form-control " id="weight_max">
                                     </div>
                                 </div>
                                 <div class="form-group row" id="checkDiv" style="display:none">
@@ -130,127 +130,46 @@
         $(document).ready(function() {
             $('#summernote').summernote();
 
-            $('.add').on('click', add);
-            $('.remove').on('click', remove);
-
-            function add() {
-                if($('#type').val() == 'checkbox'){
-                    var new_chq_no = parseInt($('#total_chq').val()) + 1;
-                    tchecks = $('.check').length;
-                    var new_input = "<input type='text' style='margin-top:10px' class='form-control check' id='new_" + new_chq_no + "' name='check["+ tchecks + "]' required>";
-                    $('#new_chq').append(new_input);
-                    $('#total_chq').val(new_chq_no);
-
-                }else if($('#type').val() == 'dropdown'){
-                    var new_chq_no = parseInt($('#total_drop').val()) + 1;
-                    tdrops = $('.drop').length;
-                    var new_input = "<input type='text' style='margin-top:10px' class='form-control drop' id='new_" + new_chq_no + "' name='drop["+ tdrops + "]' required>";
-                    $('#new_drop').append(new_input);
-                    $('#total_drop').val(new_chq_no);
-                }
-                
-            }
-
-            function remove() {
-                if($('#type').val() == 'checkbox'){
-                    var last_chq_no = $('#total_chq').val();
-                    if (last_chq_no > 1) {
-                        $('#new_' + last_chq_no).remove();
-                        $('#total_chq').val(last_chq_no - 1);
-                    }
-                }
-
-                if($('#type').val() == 'dropdown'){
-                    var last_chq_no = $('#total_drop').val();
-                    if (last_chq_no > 1) {
-                        $('#new_' + last_chq_no).remove();
-                        $('#total_drop').val(last_chq_no - 1);
-                    }
-                }
-                
-            }
+            hideWeight($('#type').val());
 
             const validate = (e)=>{
-                console.log('emirok');
-                if($('#type').val() == 'rating'){
-                    if (  parseInt(document.getElementById("weight_min").value) > parseInt(document.getElementById("weight_max").value) ) {
-                        e.preventDefault();
-                        alertBox("error", "weight min must be less than weight max")
-                        return false;
-                    }
-                    
-                }    
-            }   
+                if (  parseInt(document.getElementById("weight_min").value) > parseInt(document.getElementById("weight_max").value) ) {
+                    e.preventDefault();
+                    alertBox("error", "weight min must be less than weight max")
+                    return false;
+                }
+            }      
 
             const alertBox = (status, msg)=>{
                 $("#"+status).text(msg)
                 $("#"+status).show()
                 setTimeout(function(){$("#error").hide();}, 10000);
             }
-            var  weightDiv = document.getElementById('weightDiv');
-            var  checkDiv = document.getElementById('checkDiv');
-            var  dropdownDiv = document.getElementById('dropdownDiv');
-            var  weightMax = document.getElementById('weight_max');
-            var  weightMin = document.getElementById('weight_min');
-            var  check =  document.getElementsByClassName('check');
-            var  drop =  document.getElementsByClassName('drop');
-            var i ;
-
-            if($('#type').val() == 'rating'){
-                weightDiv.style.display = 'block';
-                checkDiv.style.display = 'none';
-                dropdownDiv.style.display = 'none';
-                for(i = 0; i < check.length; ++i){
-                    check ? check[i].removeAttribute("required"):false;
-                }
-                for(i = 0; i < drop.length; ++i){
-                    drop ? drop[i].removeAttribute("required"):false;
-                }
-                weightMin.setAttribute("required", "");
-                weightMax.setAttribute("required", "");
-            }else if($('#type').val() == 'checkbox'){
-                checkDiv.style.display = 'block';
-                weightDiv.style.display = 'none';
-                dropdownDiv.style.display = 'none';
-                for(i = 0; i < check.length; ++i){
-                    check[i].setAttribute("required", "");
-                };
-                for(i = 0; i < drop.length; ++i){
-                    drop ? drop[i].removeAttribute("required"):false;
-                }
-                weightMin ? weightMin.removeAttribute("required"):false;
-                weightMax ? weightMax.removeAttribute("required"):false;
-            }else if($('#type').val() == 'dropdown'){
-                dropdownDiv.style.display = 'block';
-                weightDiv.style.display = 'none';
-                checkDiv.style.display = 'none';
-                for(i = 0; i < drop.length; ++i){
-                    drop[i].setAttribute("required", "");
-                }
-                for(i = 0; i < check.length; ++i){
-                    check ? check[i].removeAttribute("required"):false;
-                }
-                weightMin ? weightMin.removeAttribute("required") : false;
-                weightMax ? weightMax.removeAttribute("required") : false;
-            }else{
-                $('#weight').val('');
-                weightDiv.style.display = 'none';
-                checkDiv.style.display = 'none';
-                dropdownDiv.style.display = 'none';
-                for(i = 0; i < check.length; ++i){
-                    check ? check[i].removeAttribute("required"):false;
-                }
-                for(i = 0; i < drop.length; ++i){
-                    drop ? drop[i].removeAttribute("required"):false;
-                }
-                weightMin ? weightMin.removeAttribute("required") : false;
-                weightMax ? weightMax.removeAttribute("required") : false; 
-            }
-
         });
+
+        function setAttributes(el, attrs) {
+            for(var key in attrs) {
+                el.setAttribute(key, attrs[key]);
+            }
+        }
+
+        function removeAttributes(el, attrs) {
+            for(var key in attrs) {
+                el.removeAttribute(key, attrs[key]);
+            }
+        }
+        
+        var  weightDiv = document.getElementById('weightDiv');
+        var  checkDiv = document.getElementById('checkDiv');
+        var  dropdownDiv = document.getElementById('dropdownDiv');
+        var  weightMax = document.getElementById('weight_max');
+        var  weightMin = document.getElementById('weight_min');
+        var  check =  document.getElementsByClassName('check');
+        var  drop =  document.getElementsByClassName('drop');
+        var i ;
     
-        function hideWeight(e) {
-          if(e.value == 'rating'){
+        function hideWeight(value) {
+          if(value == 'rating'){
             weightDiv.style.display = 'block';
             checkDiv.style.display = 'none';
             dropdownDiv.style.display = 'none';
@@ -260,9 +179,9 @@
             for(i = 0; i < drop.length; ++i){
                 drop ? drop[i].removeAttribute("required"):false;
             };
-            weightMin.setAttribute("required", "");
-            weightMax.setAttribute("required", "");
-          }else if(e.value == 'checkbox'){
+            setAttributes(weightMax,{"required":"","min":1,});
+            setAttributes(weightMin,{"required": "", "min":0});
+          }else if(value == 'checkbox'){
             checkDiv.style.display = 'block';
             weightDiv.style.display = 'none';
             dropdownDiv.style.display = 'none';
@@ -272,9 +191,10 @@
             for(i = 0; i < drop.length; ++i){
                 drop ? drop[i].removeAttribute("required"):false;
             }
-            weightMin ? weightMin.removeAttribute("required"):false;
-            weightMax ? weightMax.removeAttribute("required"):false;
-          }else if(e.value == 'dropdown'){
+            weightMin ? removeAttributes(weightMin,{"required":"","min":0}):false;
+            weightMax ? removeAttributes(weightMax,{"required":"","min":1}):false;
+
+          }else if(value == 'dropdown'){
             dropdownDiv.style.display = 'block';
             weightDiv.style.display = 'none';
             checkDiv.style.display = 'none';
@@ -284,10 +204,9 @@
             for(i = 0; i < check.length; ++i){
                 check ? check[i].removeAttribute("required"):false;
             }
-            weightMin ? weightMin.removeAttribute("required") : false;
-            weightMax ? weightMax.removeAttribute("required") : false;
+            weightMin ? removeAttributes(weightMin,{"required":"","min":0}):false;
+            weightMax ? removeAttributes(weightMax,{"required":"","min":1}):false;
           }else{
-            $('#weight').val('');
             weightDiv.style.display = 'none';
             checkDiv.style.display = 'none';
             dropdownDiv.style.display = 'none';
@@ -297,10 +216,52 @@
             for(i = 0; i < drop.length; ++i){
                 drop ? drop[i].removeAttribute("required"):false;
             }
-            weightMin ? weightMin.removeAttribute("required") : false;
-            weightMax ? weightMax.removeAttribute("required") : false; 
+            weightMin ? removeAttributes(weightMin,{"required":"","min":0}):false;
+            weightMax ? removeAttributes(weightMax,{"required":"","min":1}):false; 
           }
+        
         }
+
+        $('.add').on('click', add);
+        $('.remove').on('click', remove);
+
+        function add() {
+            if($('#type').val() == 'checkbox'){
+                var new_chq_no = parseInt($('#total_chq').val()) + 1;
+                tchecks = $('.check').length;
+                var new_input = "<input type='text' style='margin-top:10px' class='form-control check' id='new_" + new_chq_no + "' name='check["+ tchecks + "]'>";
+                $('#new_chq').append(new_input);
+                $('#total_chq').val(new_chq_no);
+
+            }else if($('#type').val() == 'dropdown'){
+                var new_chq_no = parseInt($('#total_drop').val()) + 1;
+                tdrops = $('.drop').length;
+                var new_input = "<input type='text' style='margin-top:10px' class='form-control drop' id='new_" + new_chq_no + "' name='drop["+ tdrops + "]'>";
+                $('#new_drop').append(new_input);
+                $('#total_drop').val(new_chq_no);
+            }
+            
+        }
+
+        function remove() {
+            if($('#type').val() == 'checkbox'){
+                var last_chq_no = $('#total_chq').val();
+                if (last_chq_no > 1) {
+                    $('#new_' + last_chq_no).remove();
+                    $('#total_chq').val(last_chq_no - 1);
+                }
+            }
+
+            if($('#type').val() == 'dropdown'){
+                var last_chq_no = $('#total_drop').val();
+                if (last_chq_no > 1) {
+                    $('#new_' + last_chq_no).remove();
+                    $('#total_drop').val(last_chq_no - 1);
+                }
+            }
+            
+        }
+
     </script>
 
 

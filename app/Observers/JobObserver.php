@@ -5,6 +5,8 @@ namespace App\Observers;
 use App\User;
 use App\Models\Job;
 use App\Jobs\SendJobNotice;
+use GuzzleHttp\Client as HttpClient;
+use App\Models\Company;
 
 class JobObserver
 {
@@ -17,10 +19,10 @@ class JobObserver
     public function created(Job $job)
     {
         //
-        if(auth()->check()){
+        if (auth()->check()) {
             $param = [
                 'log_name' => 'Created Job',
-                'description' => 'Created a Job'.' '.$job->title,
+                'description' => 'Created a Job' . ' ' . $job->title,
                 'action_id' => $job->id,
                 'action_type' => 'App\Models\Job',
                 'causee_id' => auth()->user()->id,
@@ -30,10 +32,28 @@ class JobObserver
             ];
             logAction($param);
         }
-
-        if ($job->is_for == 'both' || $job->is_for == 'internal') {
-            $employees = User::where('activated', 1)->get();
-            dispatch(new SendJobNotice($employees, $job)); 
+        if (isHrmsIntegrated()) {
+            $company = Company::where('id', $job->company_id)->first();
+            if ($job->is_for == 'both' || $job->is_for == 'internal') {
+                $sendJob = (object) [
+                    'title' => $job->title,
+                    'summary' => $job->summary,
+                    'expiry_date' => $job->expiry_date,
+                    'position' => $job->position,
+                    'hrms_id' => $company->hrms_id
+                ];
+                $client = new HttpClient();
+                $client->request('POST', config('app.staff_strength_url') . '/api/v1/send/notification', [
+                    'verify' => false,
+                    'job' => $sendJob,
+                    'with_expiry' => true
+                ]);
+            }
+        } else {
+            if ($job->is_for == 'both' || $job->is_for == 'internal') {
+                $employees = User::where('activated', 1)->get();
+                dispatch(new SendJobNotice($employees, $job));
+            }
         }
     }
 
@@ -46,12 +66,12 @@ class JobObserver
     public function updated(Job $job)
     {
         //
-        if(auth()->check()){
+        if (auth()->check()) {
             $old = $job->getOriginal('title');
-            if($job->isDirty('title')){
+            if ($job->isDirty('title')) {
                 $param = [
                     'log_name' => 'Updated Job',
-                    'description' => 'Updated Job '.$old.' to '.$job->title,
+                    'description' => 'Updated Job ' . $old . ' to ' . $job->title,
                     'action_id' => $job->id,
                     'action_type' => 'App\Models\Job',
                     'causee_id' => auth()->user()->id,
@@ -59,10 +79,10 @@ class JobObserver
                     'causer_type' => 'Admin',
                     'properties' => '',
                 ];
-            }else{
+            } else {
                 $param = [
                     'log_name' => 'Updated Job',
-                    'description' => 'Updated Job '.$job->title,
+                    'description' => 'Updated Job ' . $job->title,
                     'action_id' => $job->id,
                     'action_type' => 'App\Models\Job',
                     'causee_id' => auth()->user()->id,
@@ -71,10 +91,9 @@ class JobObserver
                     'properties' => '',
                 ];
             }
-            
+
 
             logAction($param);
-           
         }
     }
 
@@ -87,7 +106,7 @@ class JobObserver
     public function deleted(Job $job)
     {
         //
-        if(auth()->check()){
+        if (auth()->check()) {
             $param = [
                 'log_name' => 'Delete a Job',
                 'description' => 'Deleted a Job',
@@ -100,7 +119,6 @@ class JobObserver
             ];
 
             logAction($param);
-           
         }
     }
 

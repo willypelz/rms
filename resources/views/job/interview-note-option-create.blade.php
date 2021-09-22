@@ -68,7 +68,7 @@
                                     <div class="col-xs-6" id="new_chq"> 
                                         <div  class="form-inline" style="margin-bottom:10px">
                                         <a href="javascript:void(0)" class="add btn"><i class="fa fa-plus"></i></a>
-                                        <a href="javascript:void(0)" class="remove btn"><i class="fa fa-trash"></i></a>
+                                        <a href="javascript:void(0)" class="remove btn" id="add-btn-check" style="display:none"><i class="fa fa-trash"></i></a>
                                         </div>
                                         <input type="text" class="form-control check" name="check[0]" required>
                                         <input type="hidden" value="1" id="total_chq">
@@ -81,7 +81,7 @@
                                     <div class="col-xs-6" id="new_drop"> 
                                         <div  class="form-inline" style="margin-bottom:10px">
                                         <a href="javascript:void(0)" class="add btn"><i class="fa fa-plus"></i></a>
-                                        <a href="javascript:void(0)" class="remove btn"><i class="fa fa-trash"></i></a>
+                                        <a href="javascript:void(0)" class="remove btn" id="add-btn" style="display:none"><i class="fa fa-trash"></i></a>
                                         </div>
                                         <input type="text" class="form-control drop" name="drop[0]" required>
                                         <input type="hidden" value="1" id="total_drop">
@@ -127,6 +127,8 @@
         }
         $('.add').on('click', add);
         $('.remove').on('click', remove);
+        var btn = document.getElementById('add-btn');
+        var btnCheck = document.getElementById('add-btn-check');
 
         function add() {
             if($('#type').val() == 'checkbox'){
@@ -135,6 +137,7 @@
                 var new_input = "<input type='text' style='margin-top:10px' class='form-control check' id='new_" + new_chq_no + "' name='check["+ tchecks + "]' required>";
                 $('#new_chq').append(new_input);
                 $('#total_chq').val(new_chq_no);
+                btnCheck.style = 'block';
 
             }else if($('#type').val() == 'dropdown'){
                 var new_chq_no = parseInt($('#total_drop').val()) + 1;
@@ -143,6 +146,7 @@
                 var new_input = "<input type='text' style='margin-top:10px' class='form-control drop' id='new_" + new_chq_no + "' name='drop["+ tdrops + "]' required>";
                 $('#new_drop').append(new_input);
                 $('#total_drop').val(new_chq_no);
+                btn.style = 'block';
             }
             
         }
@@ -153,6 +157,10 @@
                 if (last_chq_no > 1) {
                     $('#new_' + last_chq_no).remove();
                     $('#total_chq').val(last_chq_no - 1);
+
+                    if(last_chq_no == 2){
+                        btnCheck.style.display = "none";
+                    }
                 }
             }
 
@@ -161,10 +169,17 @@
                 if (last_chq_no > 1) {
                     $('#new_' + last_chq_no).remove();
                     $('#total_drop').val(last_chq_no - 1);
+                    
+                    if(last_chq_no == 2){
+                        btn.style.display = "none";
+                    }
                 }
+                
+                
             }
             
         }
+        
     </script>
 
     <script>

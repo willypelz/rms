@@ -37,7 +37,7 @@ class WorkflowStepWithEmailJob implements ShouldQueue
      */
     public function handle()
     {
-        $title = "Update on your Job Application";
+        $title = "Update On Your Job Application";
         $emailTemplate = $this->stepEmail;
         $job = Job::where('id',$this->job_id)->first();
 

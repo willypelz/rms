@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\InterviewNoteOptions;
 use Illuminate\Support\Facades\File;
+use App\Jobs\JobApplicationSuccessful;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Validator;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
@@ -495,7 +496,7 @@ class JobController extends Controller
 
         $jobApplied = "Internal Candidate Job Application was Successful(Candidate)";
         mixPanelRecord($jobApplied, $candidate);
-
+        dispatch(new JobApplicationSuccessful($candidate));
         UploadApplicant::dispatch($job_application)->onQueue('solr');
 
         return response()->json(

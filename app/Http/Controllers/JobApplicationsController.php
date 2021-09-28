@@ -1794,7 +1794,7 @@ class JobApplicationsController extends Controller
         }
 
         $createInterviewNotes = "Initiated Create Interview Notes Template (Admin)";
-        mixPanelRecord($createInterviewNotes, auth()->user);
+        mixPanelRecord($createInterviewNotes, auth()->user());
         return view('job.interview-note-template-create', compact('interview_note_option'));
     }
 

@@ -1,25 +1,26 @@
 <?php
 
-use App\Jobs\UploadApplicant;
-use App\Libraries\Solr;
-use App\Models\Candidate;
-use App\Models\Company;
+use App\User;
 use App\Models\Cv;
+use Carbon\Carbon;
 use App\Models\Job;
-use App\Models\JobActivity;
-use App\Models\JobApplication;
+use App\Enum\Configs;
+use App\Libraries\Solr;
+use App\Models\Company;
+use App\Models\Candidate;
 use App\Models\Permission;
+use App\Models\ActivityLog;
+use App\Models\JobActivity;
+use App\Models\TestRequest;
+use App\Jobs\UploadApplicant;
+use Ixudra\Curl\Facades\Curl;
+use App\Models\JobApplication;
 use App\Models\PermissionRole;
 use Illuminate\Support\Facades\File;
-use phpDocumentor\Reflection\Types\Object_;
-use SeamlessHR\SolrPackage\Facades\SolrPackage;
-use App\Models\TestRequest;
-use App\Models\ActivityLog;
-use Carbon\Carbon;
-use Ixudra\Curl\Facades\Curl;
-use App\User;
-use App\Enum\Configs;
 use Illuminate\Support\Facades\Validator;
+use phpDocumentor\Reflection\Types\Object_;
+use GeneaLabs\LaravelMixpanel\Facades\Mixpanel;
+use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
 // use Faker;
 
@@ -1088,11 +1089,10 @@ function validateCustomFields($name,$attr,$field_type,$required,$request){
 
 function mixPanelRecord($nameOfPoint, $candidate)
 {
-
     $email = $candidate->email;
-    $companyName = get_current_company()->name ?: null;
+    $companyName = get_current_company()->name ?? null;
     $name = isset($candidate->first_name) ? $candidate->first_name . " " . $candidate->last_name : $candidate->name;
-    $name = $name ?: $candidate->full_name ;
+    $name = $name ?? $candidate->full_name ;
     $mp = Mixpanel::getInstance(config('mixpanel.key'));
     $mp->track($nameOfPoint, ['email' => $email]);
     $mp->identify($email);

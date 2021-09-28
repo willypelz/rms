@@ -13,11 +13,12 @@ class SessionExpired {
      
     public function __construct(Store $session){
         $this->session = $session;
-        $this->timeout = 900; // 15 minutes
+        $this->timeout = config("session.idle_period_session_timeout"); // 15 default minutes
     }
 
     public function handle($request, Closure $next){
-        $isLoggedIn = $request->path() != 'logout';
+        $un_authenticated_urls = ['logout', 'register', 'forgot', '/'];
+        $isLoggedIn = !in_array($request->path(), $un_authenticated_urls);
         if(! session('lastActivityTime'))
             $this->session->put('lastActivityTime', time());
         elseif(time() - $this->session->get('lastActivityTime') > $this->timeout){

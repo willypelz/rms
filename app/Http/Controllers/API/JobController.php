@@ -198,7 +198,10 @@ class JobController extends Controller
         $company = Company::with(
             [
                 'jobs' => function ($query) use ($jobType, $request) {
-                    $query->with(['workflow.workflowSteps'])
+                    $query
+                    ->with(['workflow.workflowSteps'=>function($sort){
+                        $sort->orderBy('order', 'asc');
+                    }])
                         ->whereStatus("ACTIVE")
                         ->when($request->with_expiry, function($q){
                             return $q->where('expiry_date','>=',Carbon::now()->toDateString());

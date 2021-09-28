@@ -101,8 +101,12 @@
                     <a class="" href="{{ url('my-career-page') }}" target="_blank">My Career Page <i
                                 class="fa fa-building mask"></i></a>
                 </li>
-            
-
+                @if( env('RMS_STAND_ALONE',true) == false)
+                    <li class="">
+                            <a class="" href="{{url(env('STAFFSTRENGTH_URL'))}}" target="_blank">HRMS Portal <i
+                                        class="fa fa-building mask"></i></a>
+                    </li>
+                @endif
 
             <!--li class="">
                     <a class="" href="">Mail <span class="badge badge-danger animated bounce">3</span></a>

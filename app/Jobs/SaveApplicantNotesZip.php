@@ -85,7 +85,7 @@ class SaveApplicantNotesZip implements ShouldQueue
                 $timestamp = " " . time() . " ";  
         }
 
-        $zipPath = public_path('exports/') . $timestamp . $this->filename;
+        $zipPath = storage_path('app/public/uploads/export/') . $this->filename;
         $chunked_files = collect($files_to_archive)->chunk(100)->toArray();
         foreach($chunked_files as $files){
             SaveApplicantNotesInBitsJob::dispatch($zipPath,$files);

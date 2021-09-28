@@ -737,6 +737,20 @@ function getUserPermissions()
 
 }
 
+function hasPermissionInCompany(string $permission) : bool
+{
+    if(!empty($permission)){
+        $company = auth()->user()->companies()->where("company_users.company_id", Session::get('current_company_index'))->first();
+        foreach ($company->roles as $role) {
+            $results = collect($role->perms)->filter(function($perm, $index) use ($permission) {
+                return $perm->name == $permission;
+            });
+            if( !$results->isEmpty() ) return true;
+        }
+    }
+    return false;
+}
+
 /**
  * @param $roleName
  * @return string
@@ -1092,4 +1106,8 @@ function mixPanelRecord($nameOfPoint, $candidate)
         $ip = 0,
         $ignore_time = true
     );
+}
+
+function substring($string, $start=0, $length=5){
+ return (strlen($string) > $length) ?	substr($string, $start, $length) . '...' : $string;
 }

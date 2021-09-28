@@ -150,4 +150,6 @@ return [
 
     'secure' => false,
 
+    'idle_period_session_timeout' => env("IDLE_PERIOD_SESSION_TIMEOUT", 900)
+
 ];

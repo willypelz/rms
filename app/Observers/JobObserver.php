@@ -2,7 +2,12 @@
 
 namespace App\Observers;
 
+use App\User;
 use App\Models\Job;
+use App\Jobs\SendJobNotice;
+use App\Mail\JobCreatedNotice;
+use GuzzleHttp\Client as HttpClient;
+use Illuminate\Support\Facades\Mail;
 
 class JobObserver
 {
@@ -27,8 +32,14 @@ class JobObserver
                 'properties' => '',
             ];
             logAction($param);
-           
+
+            if ($job->is_for == 'both' || $job->is_for == 'internal') {
+                $employees = User::where('activated', 1)->get();
+                dispatch(new SendJobNotice($employees, $job)); 
+            }            
         }
+
+        
     }
 
     /**

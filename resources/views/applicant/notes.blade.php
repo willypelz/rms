@@ -62,7 +62,7 @@
                                                     </span>
                                                     <div data-toggle="collapse" data-target="#question-{{$key}}" style="cursor: pointer;">
                                                         <div class="clearfix">
-                                                            <h4 class="pull-left">{{ $interview_notes_group->first()->interview_note_option->name  }}</h4>
+                                                            <h4 class="pull-left">{{ $interview_notes_group->first()->interview_note_option->name }}</h4>
                                                             @if($interview_notes_group->first()->interview_note_option->type == "rating")
                                                                 <h2 class="pull-right" style="margin-top: 5px;">{{ round( $interview_notes_group->sum('value') / $interview_notes_group->count() , 2 ) }}
                                                                     / {{ $interview_notes_group->first()->interview_note_option->weight_max }}</h2>
@@ -116,7 +116,24 @@
                                                                         </span>
                                                                     </blockquote>
                                                                 @endforeach
-
+                                                            @elseif($interview_notes_group->first()->interview_note_option->type == "checkbox")
+                                                                @foreach( $interview_notes_group as $interview_note )
+                                                                    <blockquote class="h5">
+                                                                        <span role="comment-body text-muted">
+                                                                            <strong>{{ $interview_note->interviewer->name }}</strong><br>
+                                                                            {{ $interview_note->value }}
+                                                                        </span>
+                                                                    </blockquote>
+                                                                @endforeach
+                                                            @elseif($interview_notes_group->first()->interview_note_option->type == "dropdown")
+                                                                @foreach( $interview_notes_group as $interview_note )
+                                                                    <blockquote class="h5">
+                                                                        <span role="comment-body text-muted">
+                                                                            <strong>{{ $interview_note->interviewer->name }}</strong><br>
+                                                                            {{ $interview_note->value }}
+                                                                        </span>
+                                                                    </blockquote>
+                                                                @endforeach
                                                             @endif
 
                                                         </div>

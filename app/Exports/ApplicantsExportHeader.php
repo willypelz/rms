@@ -45,6 +45,14 @@ class ApplicantsExportHeader implements WithHeadings
             "YEARS OF EXPERIENCE" ,
             "WILLING TO RELOCATE?", 
             "TESTS", 
+            "COURSE OF STUDY",
+            "SCHOOL",
+            "APPLICANT TYPE",
+            "STAFF ID",
+            "GRADE",
+            "DEPARTMENT",
+            "LOCATION",
+            "LENGTH OF STAY"
         ];
 
             if(isset($this->data['job_id'][0])) {
@@ -57,8 +65,6 @@ class ApplicantsExportHeader implements WithHeadings
                 }
             }   
 
-        $excel_data = array_merge($excel_data,['INTERNAL STAFF','STAFF ID','GRADE','DEPARTMENT','LOCATION','LENGTH OF STAY']);      
-        
         return $excel_data;
     }
 

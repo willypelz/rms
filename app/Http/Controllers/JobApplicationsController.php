@@ -565,7 +565,6 @@ class JobApplicationsController extends Controller
      */
     public function downloadApplicantSpreadsheet(Request $request)
     {
-
         set_time_limit(0);
         //Check if you should have access to the excel
         check_if_job_owner($request->jobId); 
@@ -633,7 +632,6 @@ class JobApplicationsController extends Controller
      */
     public function downloadApplicantCv(Request $request)
     {
-
     //Check if you should have access to the excel
     check_if_job_owner($request->jobId);
 
@@ -707,7 +705,6 @@ class JobApplicationsController extends Controller
      * @param Illuminate\Http\Request $request
      * @return Illuminate\Http\Response
      */
-
     public function downloadInterviewNotes(Request $request)
     {
         $job = Job::with('applicants')->find($request->jobId);
@@ -730,12 +727,10 @@ class JobApplicationsController extends Controller
         
     }
 
-
     /**
      * @param  Illuminate\Http\Request $request
      * @return Illuminate\Http\Response
      */
-
     public function downloadInterviewNotesCSV(Request $request){
         ini_set('memory_limit', '1024M');
         set_time_limit(0);
@@ -1854,12 +1849,17 @@ class JobApplicationsController extends Controller
                 return redirect()->back()->with(["error" => "weight min must be less than weight max"]);
             }
 
+            $check = !is_null($request->check[0]) ? json_encode($request->check) : null;
+            $drop = !is_null($request->drop[0]) ? json_encode($request->drop) : null;
+
             InterviewNoteOptions::where('id', $request->id)->where('company_id', get_current_company()->id)->update([
                 'name' => $request->name,
                 'description' => $request->description,
                 'type' => $request->type,
                 'weight_min' => $request->weight[0],
                 'weight_max' => $request->weight[1],
+                'check_box'=> $check,
+                'dropdown'=> $drop
             ]);
 
             return redirect()->route("interview-note-options", [ "interview_template_id" => $interview_template->id ])
@@ -1893,6 +1893,8 @@ class JobApplicationsController extends Controller
           if( (count($request->weight) > 0) && ($request->weight[0] > $request->weight[0])  ){
               return redirect()->back()->with(["error" => "weight min must be less than weight max"]);
           }
+          $check_box = !is_null($request->check[0]) ? json_encode($request->check) : null;
+          $drop = !is_null($request->drop[0]) ? json_encode($request->drop) : null;
 
             InterviewNoteOptions::create([
                 'name' => $request->name,
@@ -1901,7 +1903,9 @@ class JobApplicationsController extends Controller
                 'weight_min' => $request->weight[0],
                 'weight_max' => $request->weight[1],
                 'company_id' => get_current_company()->id,
-                'interview_template_id' => $request->interview_template_id
+                'interview_template_id' => $request->interview_template_id,
+                'check_box'=> $check_box,
+                'dropdown'=>$drop
             ]);
 
             return redirect()->route("interview-note-options", [ "interview_template_id" => $interview_template->id ])
@@ -1953,17 +1957,16 @@ class JobApplicationsController extends Controller
         }
 
         if ($request->isMethod('post')) {
-            $data = array_merge(json_decode($request->radios, true), json_decode($request->texts, true));
-
+            $data = array_merge(json_decode($request->radios, true), json_decode($request->texts, true), json_decode($request->checks, true), json_decode($request->drop, true));
             $interview_note_values = [];
             $score = 0;
             $correct_count = 0;
             
             foreach ($interview_note_options as $key => $option) {
-                $rating = $data['option_' . $option->id];
+                $rating = @isset($data['option_' . $option->id]) ? $data['option_' . $option->id] : null;
                 $interview_note_values[] = [
                     'interview_note_option_id' => $option->id,
-                    'value' =>    ($option->type == 'rating') && ( ($option->weight_min <= $rating) && ($rating >= $option->weight_min) ) ||  (!empty($data['option_' . $option->id] )) ?  $data['option_' . $option->id]  : assert(false, "Text or Rating Field Cannot Be null") ,
+                    'value' =>    (@isset($data['option_check_' . $option->id]) ? $data['option_check_' . $option->id] :(($option->type == 'rating') && ( ($option->weight_min <= $rating) && ($rating >= $option->weight_min) ) ||  (!empty($data['option_' . $option->id] )) ?  $data['option_' . $option->id]  : assert(false, "Text or Rating Field Cannot Be null"))),
                     'job_application_id' => $appl->id,
                     'interviewed_by' => @Auth::user()->id,
                     'created_at' => Carbon::now(),

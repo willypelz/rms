@@ -15,6 +15,7 @@ class AddCheckboxToInterviewNoteOptions extends Migration
     {
         Schema::table('interview_note_options', function (Blueprint $table) {
             $table->string('check_box')->nullable();
+            $table->string('dropdown')->nullable();
         });
     }
 
@@ -27,6 +28,7 @@ class AddCheckboxToInterviewNoteOptions extends Migration
     {
         Schema::table('interview_note_options', function (Blueprint $table) {
             $table->dropColumn('check_box');
+            $table->dropColumn('dropdown');
         });
     }
 }

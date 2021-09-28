@@ -9,11 +9,11 @@ use Illuminate\Notifications\Notification;
 use \Maatwebsite\Excel\Excel;
 use App\Models\Job;
 
-class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
+class NotifyAdminOfFailedDownload extends Notification
 {
     use Queueable;
 
-    protected $filename,$type,$job;
+    protected $admin,$type,$jobId;
 
 
 
@@ -21,14 +21,14 @@ class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
      * Create a new notification instance.
      *
      * @param $type
-     * @param $job
-     * @param string $filename
+     * @param $jobId
+     * @param string $admin
      */
-    public function __construct(string  $filename, string $type, $jobId)
+    public function __construct($admin, string $type, $jobId)
     {
-        $this->filename = $filename; 
+        $this->admin = $admin; 
         $this->type = $type;
-        $this->job = Job::find($jobId) ?? '';
+        $this->jobId = Job::find($jobId) ?? '';
     }
 
     /**
@@ -50,14 +50,13 @@ class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
      */
     public function toMail($notifiable)
     {
-        $data = [
-            "filename" => $this->job->title,
-            "name" => $notifiable->name,
-            "route" => route( "download_applicants_interview_file", ["filename" => encrypt($this->filename) ])
-        ];
-        return (new MailMessage())
-             ->subject(ucwords("{$this->job->title} {$this->type} export completed"))
-             ->view("emails.new.applicant_interview_downloads", $data);
+       return (new MailMessage)
+             ->subject(ucwords("{$this->jobId->title} {$this->type} export failed"))
+             ->greeting('Hello '.$this->admin->name.'!')
+             ->line("Your attempt to export {$this->type} failed. Please try again")
+             ->line("We are sorry you had to experience this!")
+             ->line('Thank you!');
+            
     }
 
     /**
@@ -69,8 +68,8 @@ class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
     public function toArray($notifiable)
     {
         return [
-            'link' => $this->link,
-            'title' => 'Applicant Spreedsheet Export for ' . $this->filename . ' is Ready',
+            'link' => null,
+            'title' => 'Applicant Spreedsheet Export for ' . $this->jobId->title . ' failed',
             'type' => 'export'
         ];
     }

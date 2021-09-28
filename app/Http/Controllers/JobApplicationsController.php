@@ -615,14 +615,14 @@ class JobApplicationsController extends Controller
         }
 
         $filename = str_replace(['/','\'',' '], '', "Applicants Report - {$job->title}.csv");
-        findOrMakeDirectory('exports');
+        // findOrMakeDirectory('exports');
   
         CommenceProcessingForApplicantsSpreedsheet::dispatch(get_current_company(),Auth::user(),$filename,$this->search_params, $request->jobId, @$request->status,
                                                             @$solr_age, @$solr_exp_years, @$solr_video_application_score, 
                                                             @$solr_test_score,@$request->cv_ids);
         $link = asset("exports/{$filename}");                                  
         return response()->json(["status" => "success",
-                                "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
+                                "msg"=>'Export started, Please check your email in few minutes.']);
     }
 
     
@@ -690,7 +690,7 @@ class JobApplicationsController extends Controller
         $solr_video_application_score = null;
     }
     $filename = Auth::user()->id . "_" . get_current_company()->id . "_" . time() . ".zip";
-    findOrMakeDirectory('exports');
+    // findOrMakeDirectory('exports');
     
     CommenceProcessingForApplicantsCV::dispatch(get_current_company(),Auth::user(),$filename,$this->search_params, $request->jobId, @$request->status,
     @$solr_age, @$solr_exp_years, @$solr_video_application_score, 
@@ -698,7 +698,7 @@ class JobApplicationsController extends Controller
 
     $link = asset("exports/{$filename}");                                  
     return response()->json(["status" => "success",
-                            "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
+                            "msg"=>'Export started, Please check your email in few minutes.']);
 
     }
 
@@ -716,14 +716,17 @@ class JobApplicationsController extends Controller
         }else {
           $application_ids = $request->app_ids;
         }
-        $filename = "Bulk Interview Notes.zip";
-        findOrMakeDirectory('exports');
-        $download_type = 'Interview Notes ZIP';
-        CommenceProcessingForInterviewNotes::dispatch(get_current_company(),Auth::user(),$application_ids,$request->jobId,$filename,$download_type);
- 
-        $link = asset("exports/{$filename}");                                  
-        return response()->json(["status" => "success",
-                                "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
+        if($application_ids->count()){
+            $filename = "Bulk Interview Notes.zip";
+            // findOrMakeDirectory('exports');
+            $download_type = 'Interview Notes ZIP';
+            CommenceProcessingForInterviewNotes::dispatch(get_current_company(),Auth::user(),$application_ids,$request->jobId,$filename,$download_type);
+    
+            $link = asset("exports/{$filename}");                                  
+            return response()->json(["status" => "success",
+                                    "msg"=>'Export started, Please check your email in few minutes.']);
+        }
+        return response()->json(["status" => "error","msg"=>"Export could not start,plese try again"]);
         
     }
 
@@ -742,14 +745,14 @@ class JobApplicationsController extends Controller
         $application_ids = (!$request->has('app_ids')) ? $job->applicantsViaJAT->pluck('id') : $request->app_ids;
 
         $export_file = "interview-note-".time().".csv";
-        findOrMakeDirectory('exports');
+        // findOrMakeDirectory('exports');
         $download_type = 'Interview Notes CSV';
         if(count($application_ids)){
             CommenceProcessingForInterviewNotes::dispatch(get_current_company(),Auth::user(),$application_ids,$request->jobId,$export_file,$download_type);
 
             $link = asset("exports/{$export_file}");                                  
             return response()->json(["status" => "success",
-                                    "msg"=>'Export started, Please check your email in few minutes. If nothing happens, click '."<a href=$link>here</a>"]);
+                                    "msg"=>'Export started, Please check your email in few minutes.']);
             
         }
         return response()->json(["status" => "error","msg"=>"Export could not start,plese try again"]);
@@ -760,7 +763,13 @@ class JobApplicationsController extends Controller
     {
         try{
         $decrypted_file_name = decrypt($filename);
-        return redirect($decrypted_file_name);
+        $file = \Storage::disk('Csv')->get($decrypted_file_name);
+
+        return (new \Illuminate\Http\Response($file, 200))
+              ->header('Content-Type', 'application/*')
+              ->header('Cache-Control', 'public')
+              ->header('Content-Description', 'File Transfer')
+              ->header('Content-Disposition', 'attachment; filename='.$decrypted_file_name);
         }catch(\Exception $e){
             return redirect()->back()->with('error','File not found');
         }

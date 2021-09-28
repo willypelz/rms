@@ -15,6 +15,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Jobs\NotifyAdminOfCompletedExportJob;
 use App\Jobs\SaveApplicantCVJob;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
+use App\Notifications\NotifyAdminOfFailedDownload;
+
 
 class CommenceProcessingForApplicantsCV implements ShouldQueue
 {
@@ -62,7 +64,7 @@ class CommenceProcessingForApplicantsCV implements ShouldQueue
     {
             $result =  $this->getApplicants();   
             $data = $result['response']['docs'];
-            $path = public_path('exports/');
+            $path = storage_path('app/public/uploads/export/'); //public_path('exports/');
             $cvs = array_pluck($data, 'cv_file');
             $ids = array_pluck($data, 'id');
 
@@ -92,10 +94,13 @@ class CommenceProcessingForApplicantsCV implements ShouldQueue
 
           //TODO: Implement DB flag whne cv is empty
           // if cvs are empty return back
-          if(empty($cvs)) {
-            dd('empty');
+         
+          if(count($cvs) < 1) {
+            info('cv is empty');
+            $type = "Applicant CVs";
+            $this->fail($this->admin->notify(new NotifyAdminOfFailedDownload($this->admin, $type, $this->jobId)));
             // return redirect()->back()->with('error', 'The candidates do not have any cv\'s and can\'t be downloaded');
-          }else{
+          }elseif(count($cvs) > 0){
             $zipPath = $path . $this->filename;
             SaveApplicantCVJob::dispatch($zipPath,$cvs,$this->filename,$this->admin,$this->jobId);
           }
@@ -108,5 +113,8 @@ class CommenceProcessingForApplicantsCV implements ShouldQueue
                                              @$this->solr_age, @$this->solr_exp_years,
                                              @$this->solr_video_application_score, @$this->solr_test_score);
     }
-
+    public function failed(){
+      $type = "Applicant CVs";
+      $this->fail($this->admin->notify(new NotifyAdminOfFailedDownload($this->admin, $type, $this->jobId)));
+    }
 }

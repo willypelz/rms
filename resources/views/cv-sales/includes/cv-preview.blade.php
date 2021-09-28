@@ -100,9 +100,9 @@
                                 <p class="text-muted">{{-- @$cv['headline'] --}}</p>
                                 <ul class="list-unstyled">
                                     <li>
-                                    <strong>School:</strong>&nbsp; {{ !is_null(@$cv['school_id']) ? $cv_school->school->name  : 'N/A' }}</li>
+                                    <strong>School:</strong>&nbsp; {{ !is_null(@$cv['school_id']) ? (isset($cv_school->school->name) ? $cv_school->school->name :'N/A' )  : 'N/A' }}</li>
                                     <li>
-                                    <strong>Course of Study:</strong>&nbsp; {{ @$cv['course_of_study'] }}</li>
+                                    <strong>Course of Study:</strong>&nbsp; {{ @$cv['course_of_study'] ?? "N/A" }}</li>
                                     <li>
                                     <strong>Highest Qualification:</strong>&nbsp; {{ @$cv['highest_qualification'] }}</li>
                                     <li>

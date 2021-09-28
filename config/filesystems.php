@@ -63,14 +63,14 @@ return [
         ],
         'Xlsx' => [
             'driver' => 'local',
-            'root' => public_path('exports'),
+            'root' => storage_path('app/public/uploads/export/'), //base_path('public_html/exports'),
             'url' => '',
             'visibility' => 'public',
             
         ],
         'Csv' => [
             'driver' => 'local',
-            'root' => public_path('exports'),
+            'root' => storage_path('app/public/uploads/export/'),//base_path('public_html/exports'),
             'url' => '',
             'visibility' => 'public',
         ],

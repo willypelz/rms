@@ -45,7 +45,7 @@ class ApplicantsExport implements FromArray, WithEvents
     */ 
     public static function beforeWriting(BeforeWriting $event)
      {
-        $file = new LocalTemporaryFile(public_path('exports/' . self::$static_file_name));
+        $file = new LocalTemporaryFile(storage_path('app/public/uploads/export/') . self::$static_file_name);
         $event->writer->reopen($file, \Maatwebsite\Excel\Excel::CSV);
         $sheet = $event->writer->getSheetByIndex(0);
         static::$next_sn = $sheet->getHighestRow();

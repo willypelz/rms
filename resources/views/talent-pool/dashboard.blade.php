@@ -232,7 +232,7 @@
     }
 
     function actionOnNoMoreActivitiesToShow(){
-        $("#errorShowMoreActivities").text("No recent activities to display");
+        $("#errorShowMoreActivities").text("No recent activity to display");
         $("#errorShowMoreActivities").show();
         return ;
     }

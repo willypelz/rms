@@ -30,6 +30,7 @@ class UserService implements UserContract {
      * @return App\Model\Company | null
     */
     private function getDefaultCompanyFromHrms(User $user){
+        try{
         $response = getResponseFromHrmsByGET(Configs::GET_USER_DEFAULT_COMPANY,  ["employeeEmail" =>  $user->email] );
         if($response){
             $userHrmsDefaultCompany = $response->data;
@@ -39,6 +40,9 @@ class UserService implements UserContract {
             return $company ? $rmsCompany  : null;
         }
         return null;
+    }catch(\Exception $e){
+        return null;
+    }
     }
     /**
      * TO GET THE DEFAULT COMPANY FOR A USER FROM RMS

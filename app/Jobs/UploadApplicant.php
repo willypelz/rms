@@ -75,18 +75,18 @@ class UploadApplicant implements ShouldQueue
             $cand['application_status'] = $applicant->status ?? null;
             $cand['job_title'] = $applicant->job->title ?? null;
             $cand['course_of_study'] = $applicant->cv->course_of_study ?? null;
-            $cand['school'] = $applicant->cv->school->name ?? null;
-            $cand['applicant_type'] = $applicant->cv->applicant_type ?? null;
-            $cand['hrms_staff_id'] = $applicant->cv->hrms_staff_id ?? null;
-            $cand['hrms_grade'] = $applicant->cv->hrms_grade ?? null;
-            $cand['hrms_dept'] = $applicant->cv->hrms_dept ?? null;
-            $cand['hrms_location'] = $applicant->cv->hrms_location ?? null;
-            $cand['hrms_length_of_stay'] = $applicant->cv->hrms_length_of_stay ?? null;
+            $cand['school'] = $applicant->cv->school->name ?? 'NA';
+            $cand['applicant_type'] = $applicant->cv->applicant_type ?? 'NA';
+            $cand['hrms_staff_id'] = $applicant->cv->hrms_staff_id ?? 'NA';
+            $cand['hrms_grade'] = $applicant->cv->hrms_grade ?? 'NA';
+            $cand['hrms_dept'] = $applicant->cv->hrms_dept ?? 'NA';
+            $cand['hrms_location'] = $applicant->cv->hrms_location ?? 'NA';
+            $cand['hrms_length_of_stay'] = $applicant->cv->hrms_length_of_stay ?? 'NA';
             
             //custom fields
             foreach ($this->applicant->custom_fields as $value) {
-                if($value->form_field != null){
-                    $cand[$value->form_field->name] = $value->value;
+                if($value->form_field != null && isset($value->form_field->name)){
+                    $cand[str_slug($value->form_field->name,'_')] = $value->value;
                 }
             }
 

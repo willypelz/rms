@@ -82,22 +82,22 @@ class SendApplicantsSpreedsheetInSmallerBits implements ShouldQueue
                     "YEARS OF EXPERIENCE" => @$value['years_of_experience'],
                     "WILLING TO RELOCATE?" => (array_key_exists('willing_to_relocate', $value) && $value['willing_to_relocate'] == "true") ? 'Yes' : 'No',
                     "TESTS" => $tests,
-                    "COURSE OF STUDY"=> @$value['course_of_study'],
-                    "SCHOOL"=> @$value['school'],
-                    "APPLICANT TYPE" => @$value['applicant_type'],
-                    "STAFF ID" => @$value['hrms_staff_id'],
-                    "GRADE" => @$value['hrms_grade'],
-                    "DEPARTMENT" => @$value['hrms_dept'],
-                    "LOCATION" => @$value['hrms_location'],
-                    "LENGTH OF STAY" => @$value['hrms_length_of_stay'],
+                    "COURSE OF STUDY"=> @$value['course_of_study'] ?? 'NA',
+                    "SCHOOL"=> @$value['school'] ?? 'NA',
+                    "APPLICANT TYPE" => @$value['applicant_type'] ?? 'NA',
+                    "STAFF ID" => @$value['hrms_staff_id'] ?? 'NA',
+                    "GRADE" => @$value['hrms_grade'] ?? 'NA',
+                    "DEPARTMENT" => @$value['hrms_dept'] ?? 'NA',
+                    "LOCATION" => @$value['hrms_location'] ?? 'NA',
+                    "LENGTH OF STAY" => @$value['hrms_length_of_stay'] ?? 'NA'
              
                 ];
                 if(isset($value['application_id'][0])) {
                     $jobApplication = JobApplication::with('custom_fields.form_field')->find($value['application_id'][0]);
                     if($jobApplication){
                         foreach ($jobApplication->custom_fields as $value) {
-                            if($value->form_field != null){
-                                $excel_data[$key][$value->form_field->name] = $value->value;
+                            if($value->form_field != null && isset($value->form_field->name)){
+                                $excel_data[$key][strtoupper(str_slug($value->form_field->name,'_'))] = $value->value;
                             }
                         }
                     }

@@ -59,7 +59,7 @@ class ApplicantsExportHeader implements WithHeadings
                 $job = Job::find($this->data['job_id'][0]);
                 if($job){
                     foreach ($job->form_fields as $value) {
-                            $excel_data[] = $value->name;
+                            $excel_data[] = str_slug(strtoupper($value->name),'_');
                     }   
                      
                 }

@@ -51,6 +51,8 @@ use App\Exceptions\DownloadApplicantsInterviewException;
 use App\Jobs\CommenceProcessingForApplicantsSpreedsheet;
 use App\Jobs\CommenceProcessingForApplicantsCV;
 use App\Jobs\CommenceProcessingForInterviewNotes;
+use App\Jobs\WorkflowStepWithEmailJob;
+
 
 
 
@@ -784,6 +786,11 @@ class JobApplicationsController extends Controller
 
             default:
                 break;
+        }
+        //check if the step has message
+        $getStep = WorkflowStep::where('id',$request->step_id)->where('message_template','!=',null)->first();
+        if($getStep){
+            dispatch(new WorkflowstepWithEmailJob($request->cv_ids,$getStep->message_template,$request->job_id));
         }
 
         return save_activities($request->status, $request->job_id, $request->app_ids);

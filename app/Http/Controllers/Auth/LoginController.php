@@ -50,6 +50,7 @@ class LoginController extends Controller
     {
         //$this->middleware($this->guestMiddleware(), ['except' => 'logout']);
         $this->activationService = $activationService;
+
     }
 
     /**
@@ -124,7 +125,9 @@ class LoginController extends Controller
 
     public function AjaxLogin(Request $request){
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        
             echo 'True';
+
         }else{
             echo 'Failed';
         }
@@ -304,9 +307,13 @@ class LoginController extends Controller
     public function switchUser()
     {
         if(Auth::check()){
+            //audit trail
+            admin_audit_log();
           return redirect()->route('dashboard');
         }
         elseif(Auth::guard('candidate')->check()) {
+            //audit trail
+            audit_log();
           return redirect()->route('candidate-dashboard');
         }
         else
@@ -330,7 +337,6 @@ class LoginController extends Controller
         $user = User::find($user_id);
         if($token == $user->user_token){
           Auth::login($user);
-
           $user->user_token = '';
           $user->save();
 
@@ -374,4 +380,11 @@ class LoginController extends Controller
 
     }
 
+    public function logout(){
+        auth()->logout();
+        if(env('RMS_STAND_ALONE',true) == false){ //redirect to hrms if rms is not stand alone
+            return redirect(env('STAFFSTRENGTH_URL'));
+        }
+        return redirect('/');
+    }
 }

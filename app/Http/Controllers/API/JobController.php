@@ -2,34 +2,35 @@
 
 namespace App\Http\Controllers\API;
 
-use App;
-use App\Http\Controllers\Controller;
-use App\Jobs\UploadApplicant;
-use App\Libraries\Solr;
-use App\Models\Candidate;
-use App\Models\Company;
-use App\Models\Cv;
-use App\Models\FormFieldValues;
-use App\Models\FormFields;
-use App\Models\InterviewNoteOptions;
-use App\Models\InterviewNoteValues;
-use App\Models\InterviewNotes;
-use App\Models\Job;
-use App\Models\JobActivity;
-use App\Models\JobApplication;
-use App\Models\JobBoard;
-use App\Models\Message;
-use App\Models\Role;
-use App\Models\Specialization;
-use App\Models\Workflow;
 use App\User;
+use App\Models\Cv;
 use Carbon\Carbon;
+use App\Models\Job;
+use App\Models\Role;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Http\Request;
+use App\Libraries\Solr;
+use App\Models\Company;
+use App\Models\Message;
+use App\Models\JobBoard;
+use App\Models\Workflow;
+use App\Models\Candidate;
+use App\Models\FormFields;
+use App\Models\PrivateJob;
+use App\Models\JobActivity;
 use Illuminate\Mail\Mailer;
-use Illuminate\Support\Facades\File;
+use Illuminate\Http\Request;
+use App\Jobs\UploadApplicant;
+use App\Models\InterviewNotes;
+use App\Models\JobApplication;
+use App\Models\Specialization;
+use App\Models\FormFieldValues;
+use App\Models\InterviewNoteValues;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use App\Models\InterviewNoteOptions;
+use Illuminate\Support\Facades\File;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Validator;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
@@ -195,9 +196,15 @@ class JobController extends Controller
         // Get company and its jobs
         $company = Company::with(
             [
-                'jobs' => function ($query) use ($jobType) {
-                    $query->with(['workflow.workflowSteps'])
+                'jobs' => function ($query) use ($jobType, $request) {
+                    $query
+                    ->with(['workflow.workflowSteps'=>function($sort){
+                        $sort->orderBy('order', 'asc');
+                    }])
                         ->whereStatus("ACTIVE")
+                        ->when($request->with_expiry, function($q){
+                            return $q->where('expiry_date','>=',Carbon::now()->toDateString());
+                        })
                         ->orderBy('created_at', 'desc');
                     if ($jobType != 'all') {
                         $query->whereIsFor($jobType); // default $jobType == external
@@ -266,11 +273,11 @@ class JobController extends Controller
         }
 
         $status_slug = strtoupper($status_slug);
-
+        
         $applicants = Job::with(
             [
-                'applicantsViaJAT' => function ($q) use ($status_slug
-                ) { // applicant via JAT, JAT - Job Applications Table
+                'applicantsViaJAT' => function ($q) use ($status_slug) { 
+                    // applicant via JAT, JAT - Job Applications Table
                     if ($status_slug != 'ALL') {
                         $q->whereStatus($status_slug);
                     }
@@ -374,11 +381,27 @@ class JobController extends Controller
             );
         }
 
+        $job = Job::with('company')->where('id',$request->application['job_id'])->first();
+
+        if ($job->is_private) {
+            
+            $checkEmail = PrivateJob::with('job')->where('attached_email', $request->cv['email'])->first();
+            
+            if (empty($checkEmail) || is_null($checkEmail)) {
+    
+                return response()->json([
+                    'status' => false,
+                    'message' => 'You are not listed to apply for this job',
+                    'data' => null,
+                ]);
+            }
+        }
+
         $owned_cvs = CV::where('email', $request->cv['email'])->pluck('id');
         $owned_applicataions_count = JobApplication::whereIn('cv_id', $owned_cvs)->where(
             'job_id',
             $request->application['job_id']
-        )->get()->count();
+        )->count();
 
 
         if ($owned_applicataions_count > 0) {
@@ -389,6 +412,10 @@ class JobController extends Controller
                     'data' => null,
                 ]
             );
+        }
+        if(isset($request->cv['cv_file']) && isset($request->cv['cv_file_name']))//save cv
+        {
+            saveFileFromHrms($request->cv['cv_file_name'],$request->cv['cv_file']); 
         }
 
         $time = Carbon::now()->toDatetimeString();
@@ -403,7 +430,13 @@ class JobController extends Controller
         $cv->date_of_birth = null;
         $cv->state = isset($request->cv['state']) ? $request->cv['state'] : null;
         $cv->cv_source = isset($request->cv['cv_source']) ? $request->cv['cv_source'] : null;
+        $cv->cv_file = isset($request->cv['cv_file_name']) ? $request->cv['cv_file_name']: null;
         $cv->applicant_type = $request->cv['applicant_type'];
+        $cv->hrms_staff_id = isset($request->cv['staff_id']) ? $request->cv['staff_id'] : null;
+        $cv->hrms_grade = isset($request->cv['grade']) ? $request->cv['grade'] : null;
+        $cv->hrms_dept = isset($request->cv['dept']) ? $request->cv['dept'] : null;
+        $cv->hrms_location = isset($request->cv['location']) ? $request->cv['location'] : null;
+        $cv->hrms_length_of_stay = isset($request->cv['length_of_stay']) ? $request->cv['length_of_stay'] : null;
         $cv->save();
 
         $candidate = Candidate::where('email', $request->cv['email'])->first();
@@ -435,7 +468,13 @@ class JobController extends Controller
             foreach ($request->form_fields as $form_field) {
                 $form_field_value = new FormFieldValues();
                 $form_field_value->form_field_id = $form_field['form_field_id'];
-                $form_field_value->value = $form_field['value'];
+
+                if($form_field['is_file'] == true){ //save the file coming from hrms and then save the filename as value
+                    saveFileFromHrms($form_field['file_name'],$form_field['value']);
+                    $form_field_value->value =  $form_field['file_name'];
+                }else{
+                    $form_field_value->value = $form_field['value'];
+                } 
                 $form_field_value->job_application_id = $job_application->id;
                 $form_field_value->save();
             }
@@ -493,7 +532,7 @@ class JobController extends Controller
             );
         }
 
-        $company = Company::first();
+        $company = Company::where('hrms_id',$request->company_id)->first() ?? Company::first();
 
         if (is_null($company)) {
             return response()->json([
@@ -524,16 +563,6 @@ class JobController extends Controller
 
         $user = User::whereName($request->name)->whereEmail($request->email)->first();
 
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'username' => $request->username,
-            'is_internal' => 1,
-            'activated' => 1,
-            'is_super_admin' => 1,
-        ];
-
-
         if (!is_null($user)) {
             return response()->json([
                 'status' => false,
@@ -544,12 +573,21 @@ class JobController extends Controller
 
         }
 
-        $user = User::firstOrCreate($data);
+        //formerly firstOrCreate but  started failing hence get user in db that already has the email , otherwise create one
+        $user = User::whereEmail($request->email)->first() ?: new User();
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->username = $request->username;
+        $user->is_internal = 1;
+        $user->activated = 1;
+        $user->is_super_admin = 1;
+        $user->save();
 
         $role = Role::whereName('admin')->first()->id;
 
-        $company->users()->attach($user->id, ['role' => $role[0]['id']]);
-
+        $company->users()->attach($user->id, ['role' => $role]);
+    
         $user->roles()->attach([$role]);
 
         return response()->json([

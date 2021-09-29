@@ -108,8 +108,10 @@
                                                         <div class="row">
                                                             <div class="separator separator-small"></div>
                                                         </div>
+                                @if(isset($fields))
                                                         <div class="form-group">
                                                             <div class="row">
+
                                                                 @if( $fields->first_name->is_visible )
                                                                     <div class="col-sm-6"><label for="job-title">first
                                                                             name @if( $fields->first_name->is_required )
@@ -316,6 +318,81 @@
                                                             </div>
                                                         </div>
 
+                                                        <!-- New fields I added -->
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                @if( isset($fields->school->is_visible) && $fields->school->is_visible )
+                                                                    <div class="col-sm-6">
+                                                                        <label for="job-title">School @if( isset($fields->school->is_required) && $fields->school->is_required )
+                                                                                <span class="text-danger">*</span>@endif
+                                                                        </label>
+                                                                        <select class="form-control"
+                                                                                name="school"
+                                                                                id="select-school"
+                                                                                placeholder="Select your school..."
+                                                                                @if( $fields->school->is_required ) required @endif>
+
+                                                                            <option id="loading">Choose one</option>
+                                                                            <option value="others">Others</option>
+
+                                                                        </select>
+                                                                        <span>Can't find your school? Select Others </span>
+
+                                                                    </div>
+                                                                @endif
+
+                                                                
+                                                                <div class="col-sm-6 others hidden">
+                                                                    <label for="">
+                                                                        Others @if( isset($fields->school->is_required) && $fields->school->is_required )
+                                                                            <span class="text-danger">*</span>@endif
+                                                                    </label>
+                                                                    {{ Form::text('others',null, array('class'=>'form-control otherSchool',( isset($fields->school->is_required) && $fields->school->is_required  ) ? "" : "" )) }}
+
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                @if( isset($fields->course_of_study->is_visible) && $fields->course_of_study->is_visible  )
+                                                                    <div class="col-sm-6">
+                                                                        <label for="">
+                                                                            <!-- <i class="fa fa-lock"></i>&nbsp;  -->
+                                                                            Course of Study @if( $fields->course_of_study->is_required )
+                                                                                <span class="text-danger">*</span>@endif
+                                                                        </label>
+                                                                        {{ Form::text('course_of_study', @$last_cv->course_of_study, array('class'=>'form-control',  ( $fields->course_of_study->is_required ) ? "required" : "" )) }}
+
+                                                                    </div>
+                                                                @endif
+
+                                                                @if( isset($fields->completed_nysc->is_visible) && $fields->completed_nysc->is_visible  )
+                                                                    <div class="col-sm-6">
+                                                                        <label for="job-title">Completed NYSC
+                                                                             @if( $fields->completed_nysc->is_required )
+                                                                                <span class="text-danger">*</span>@endif
+                                                                        </label>
+                                                                        <select class="form-control"
+                                                                                name="completed_nysc"
+                                                                                @if( $fields->completed_nysc->is_required ) required @endif>
+                                                                            <option>--choose--</option>
+                                                                            
+                                                                            <option value="yes"
+                                                                                        @if( @$last_cv->completed_nysc == 1 ) selected="selected" @endif >Yes</option>
+                                                                            <option value="no"
+                                                                                        @if( @$last_cv->completed_nysc == 0 ) selected="selected" @endif > No</option>
+                                                                        
+
+                                                                        </select>
+
+                                                                    </div>
+                                                                @endif
+
+                                                            </div>
+                                                        </div>
+
 
                                                     <!--div class="form-group">
                                         <div class="row">
@@ -352,6 +429,32 @@
                                                                 @endif
                                                             </div>
                                                         </div>
+
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                @if( isset($fields->remuneration->is_visible) && $fields->remuneration->is_visible )
+                                                                    <div class="col-sm-6">
+                                                                        <label for="job-title">Minimum Remuneration @if( $fields->remuneration->is_required )
+                                                                                <span class="text-danger">*</span>@endif
+                                                                        </label>
+                                                                        {{ Form::number('minimum_remuneration', @$last_cv->minimum_remuneration, array('class'=>'form-control',  ( $fields->remuneration->is_required ) ? "required" : "" )) }}
+
+                                                                    </div>
+                                                                
+                                                                    <div class="col-sm-6">
+                                                                        <label for="">
+                                                                            Maximum Remuneration @if( $fields->remuneration->is_required )
+                                                                                <span class="text-danger">*</span>@endif
+                                                                        </label>
+                                                                        {{ Form::number('maximum_remuneration', @$last_cv->maximum_remuneration, array('class'=>'form-control',  ( $fields->remuneration->is_required ) ? "required" : "" )) }}
+
+                                                                    </div>
+                                                                @endif
+
+
+                                                            </div>
+                                                        </div>
+
 
                                                         <div class="form-group">
                                                             <div class="row">
@@ -496,7 +599,7 @@
                                                                             }
                                                                             ?>
                                                                             {{ Form::file('cf_'.str_slug($custom_field->name,'_'),array('class'=>'form-control', ( $custom_field->is_required ) ? "required" : "" )) }}
-
+                                                                            <small>Allowed files are doc, docx and pdf</small>
                                                                         @endif
 
 
@@ -543,7 +646,9 @@
                                                             <div class="separator separator-small"></div>
                                                         </div>
 
-
+                                                        @else
+                                                            <div>Something went wrong with this job posting, please contact support</div>
+                                                        @endif
 
 
                                                         <!-- $job->form_fields->toArray() -->
@@ -553,22 +658,8 @@
                                                     @endif
                                                 </div>
 
-                                                <div class="col-sm-4">
-                                                    <h6 class="text-brandon text-uppercase l-sp-5 no-margin">company
-                                                        details</h6><br>
-                                                    <p class="text-muted">{{ $company->name }}</p>
+                                                @include('settings.includes.company-details')
 
-                                                    <p><img src="{{ $company->logo }}" alt="" width="60%"></p><br>
-                                                    <p class="small">{{ $company->about }}</p>
-                                                    <p><i class="fa fa-map-marker"></i> {{ $company->address }}</p>
-                                                    <!--p>
-                                                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4448.570052456479!2d3.3791209324273184!3d6.618898622434336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b93a899b7c9b7%3A0x8630de71dbc44ffd!2sMagodo+GRA+Phase+II%2C+Lagos!5e0!3m2!1sen!2sng!4v1457754339276" frameborder="0" width="100%" height="200px" allowfullscreen></iframe>
-                                                    </p-->
-                                                    <p>
-                                                        <i class="fa fa-envelope"></i> {{ $company->email }} <br>
-                                                        <i class="fa fa-globe"></i> {{ $company->website }}
-                                                    </p>
-                                                </div>
                                                 <div class="col-sm-6 col-sm-offset-3 text-center hidden"><!-- <hr> -->
                                                     <p>Powered by <a href="http://www.seamlesshiring.com"><i
                                                                     class="fa fa-skype"></i> SeamlessHiring</a> <br>
@@ -629,6 +720,8 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#datepicker2').datepicker({
@@ -658,6 +751,35 @@
                     $('#location').prop('required', false)
                 }
             })
+
+            $.ajax({
+                url: '{{route("ajax-fetch-schools")}}',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data){
+                    let school = data; 
+                    $.each(school, function(key, modelName){
+                        let option = new Option(school[key].name, school[key].id);
+                        $(option).html();
+                        $('#select-school').append(option);
+                    });
+                    
+                    $('#select-school').selectize({
+                       sortField: 'text'
+                    });
+                }
+            });
+            
+            let school = $('#select-school');
+            school.change(function () {
+                if (school.val() == 'others') {
+                    $('.others').removeClass('hidden');
+                    $('.otherSchools').prop('required', true)
+                } else {
+                    $('.others').addClass('hidden');
+                    $('.otherSchools').prop('required', false)
+                }
+            });
         });
     </script>
 

@@ -23,7 +23,7 @@
                                 <a href="{{ route('post-job') }}" type="button"
                                    class="btn btn-success text-capitalize in">
                                     <span class="fa-lg"><i class="fa fa-briefcase"></i>
-                                        <span class="hidden-xs text-brandon"> Post a Job</span><br></span>
+                                        <span class="hidden-xs text-brandon">Create a job</span><br></span>
                                     <small class="text-white hidden-xs">
                                         Broadcast Jobs everywhere
                                     </small>

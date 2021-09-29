@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
-
     /**
      * The database table used by the model.
      *
@@ -20,6 +19,7 @@ class Company extends Model
      * @var array
      */
     protected $fillable = [
+    	'hrms_id',
         'name',
         'logo',
         'email',
@@ -32,7 +32,10 @@ class Company extends Model
         'date_added',
         'has_expired',
         'valid_till',
-        'api_key'
+        'api_key',
+        'license_type',
+	    'is_active',
+	    'is_default'
     ];
 
     public $timestamps = false;
@@ -51,5 +54,11 @@ class Company extends Model
     {
         return $this->belongsToMany('App\\Models\AtsProduct', 'company_tests');
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany('App\Models\Role', 'company_users',  "company_id", "role_id");
+    }
+
 
 }

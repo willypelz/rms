@@ -222,7 +222,6 @@
                         $('#ActivityContent').append(response.content);
                     } else {
                         $('#ActivityContent').html(response.content);
-
                     }
                     $('#showAll').show();
                 },

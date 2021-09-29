@@ -187,7 +187,7 @@
                                                 allActivities: allActivities
                                             }),
                                             success: function (response) {
-                                                $("#ActivityContent").html(response);
+                                                $("#ActivityContent").html(response.content);
                                                 $('#showAll').show();
                                             }
                                         });

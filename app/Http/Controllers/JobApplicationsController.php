@@ -1111,7 +1111,8 @@ class JobApplicationsController extends Controller
         if($interview_record != null){
           $is_a_reschedule = true;
         }
-        return view('modals.interview', compact('applicant_badge', 'app_ids', 'cv_ids', 'appl', 'step', 'stepId', 'interviewers', 'is_a_reschedule', 'interview_record'));
+        $interview_notes = InterviewNoteTemplates::get();
+        return view('modals.interview', compact('applicant_badge', 'app_ids', 'cv_ids', 'appl', 'step', 'stepId', 'interviewers', 'is_a_reschedule', 'interview_record','interview_notes'));
     }
 
     public function modalInterviewNotes(Request $request)
@@ -1579,6 +1580,7 @@ class JobApplicationsController extends Controller
               'message' => 'required',
               'duration' => 'required',
               'interviewer_id' => 'required',
+              'interview_note_template_id' => 'required|array',
           ]);
           if ($validator->fails()) {
             return response()->json([
@@ -1616,6 +1618,10 @@ class JobApplicationsController extends Controller
             ];
 
             $interview = Interview::create($data);
+
+            foreach($request->interview_note_template_id as $interviewNoteTemplateId){
+                $interview->interviewNoteTemplate()->attach($interviewNoteTemplateId);
+            }
 
             // attach interviews to interview
             $interviewer_ids = explode(",", $request->interviewer_id[0]);

@@ -17,4 +17,9 @@ class Interview extends Model
     {
       return $this->belongsToMany('App\User');
     }
+
+    public function interviewNoteTemplate()
+    {
+      return $this->belongsToMany('App\Models\InterviewNoteTemplate', 'interview_interview_note_templates');
+    }
 }

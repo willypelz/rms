@@ -222,9 +222,7 @@
                         $('#ActivityContent').append(response.content);
                     } else {
                         $('#ActivityContent').html(response.content);
-                        if(!response.isThereMoreActivities){
-                            actionOnNoMoreActivitiesToShow();
-                        }
+
                     }
                     $('#showAll').show();
                 },

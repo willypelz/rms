@@ -82,9 +82,15 @@ class SendApplicantsSpreedsheetInSmallerBits implements ShouldQueue
                     "YEARS OF EXPERIENCE" => @$value['years_of_experience'],
                     "WILLING TO RELOCATE?" => (array_key_exists('willing_to_relocate', $value) && $value['willing_to_relocate'] == "true") ? 'Yes' : 'No',
                     "TESTS" => $tests,
-                    
-
-
+                    "COURSE OF STUDY"=> @$value['course_of_study'],
+                    "SCHOOL"=> @$value['school'],
+                    "APPLICANT TYPE" => @$value['applicant_type'],
+                    "STAFF ID" => @$value['hrms_staff_id'],
+                    "GRADE" => @$value['hrms_grade'],
+                    "DEPARTMENT" => @$value['hrms_dept'],
+                    "LOCATION" => @$value['hrms_location'],
+                    "LENGTH OF STAY" => @$value['hrms_length_of_stay'],
+             
                 ];
                 if(isset($value['application_id'][0])) {
                     $jobApplication = JobApplication::with('custom_fields.form_field')->find($value['application_id'][0]);
@@ -93,25 +99,6 @@ class SendApplicantsSpreedsheetInSmallerBits implements ShouldQueue
                             if($value->form_field != null){
                                 $excel_data[$key][$value->form_field->name] = $value->value;
                             }
-                        }
-
-                        //If applicant is an intenral staff
-                        if(isset($jobApplication->cv) && $jobApplication->cv->applicant_type == 'internal') {
-                            $application = $jobApplication->cv;
-                            $excel_data[$key]['INTERNAL STAFF'] = $application->applicant_type == 'internal' ? 'Yes' : 'No' ;
-                            $excel_data[$key]['STAFF ID'] = $application->hrms_staff_id;
-                            $excel_data[$key]['GRADE'] = $application->hrms_grade;
-                            $excel_data[$key]['DEPARTMENT'] = $application->hrms_dept;
-                            $excel_data[$key]['LOCATION'] = $application->hrms_location;
-                            $excel_data[$key]['LENGTH OF STAY'] = $application->hrms_length_of_stay;
-                        }
-                        else{
-                            $excel_data[$key]['INTERNAL STAFF'] = 'NA';
-                            $excel_data[$key]['STAFF ID'] = 'NA';
-                            $excel_data[$key]['GRADE'] = 'NA';
-                            $excel_data[$key]['DEPARTMENT'] = 'NA';
-                            $excel_data[$key]['LOCATION'] = 'NA';
-                            $excel_data[$key]['LENGTH OF STAY'] = 'NA';
                         }
                     }
                 }

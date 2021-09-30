@@ -57,7 +57,7 @@
 <div class="form-group">
   <div class="input-group">
     <span class="input-group-addon"><i class="fa fa-file"></i></span>
-    <select placeholder="Choose Interview Note" class="select2" name="interview_note_template_id[]" id="interview_notes" multiple="multiple" required style="width: 100% !important;">
+    <select placeholder="Choose Interview Note" class="select2" name="interview_template_ids[]" id="interview_notes" multiple="multiple" required style="width: 100% !important;">
       <option disabled value="">--choose interview note--</option>
       @foreach($interview_notes as $key => $interview_note)
       <option value="{{$interview_note->id}}">{{$interview_note->name}}</option>
@@ -110,10 +110,10 @@
     } else {
       form_data.append('interviewer_id[]', $('#interviewer_id').val());
     }
-    if ($('#interview_note').val() == null) {
-      form_data.append('interview_note_template_id[]', '');
+    if ($('#interview_notes').val() == null) {
+      form_data.append('interview_template_ids[]', '');
     } else {
-      form_data.append('interview_note_template_id[]', $('#interview_note').val());
+      form_data.append('interview_template_ids[]', $('#interview_notes').val());
     }
     form_data.append('reschedule', reschedule);
     $field = $(this);

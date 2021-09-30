@@ -1580,7 +1580,7 @@ class JobApplicationsController extends Controller
               'message' => 'required',
               'duration' => 'required',
               'interviewer_id' => 'required',
-              'interview_note_template_id' => 'required|array',
+              'interview_template_ids' => 'required|array',
           ]);
           if ($validator->fails()) {
             return response()->json([
@@ -1619,9 +1619,15 @@ class JobApplicationsController extends Controller
 
             $interview = Interview::create($data);
 
-            foreach($request->interview_note_template_id as $interviewNoteTemplateId){
-                $interview->interviewNoteTemplate()->attach($interviewNoteTemplateId);
+            \Log::info($request->interview_template_ids);
+
+            foreach($request->interview_template_ids as $interview_template_id){
+                $interview->templates()->attach($interview_template_id);
             }
+            // attach interviews to interview
+            // $interview_template_id = explode(",", $request->interview_template_ids[0]);
+
+            // $interview->interviewNoteTemplates()->attach($interview_template_id);
 
             // attach interviews to interview
             $interviewer_ids = explode(",", $request->interviewer_id[0]);

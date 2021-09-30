@@ -52,7 +52,7 @@ class ApplicantsExportHeader implements WithHeadings
             "STAFF ID",
             "GRADE",
             "DEPARTMENT",
-            "LOCATION",
+            "BRANCH",
             "LENGTH OF STAY"
         ];
 

@@ -94,6 +94,7 @@
                                 <div class="col-sm-6 col-sm-offset-3 text-center">
                                     <div id="act_loader"
                                          style="display:none">{!! preloader() !!}</div>
+                                    <div class="alert alert-danger" id="errorShowMoreActivities" style="display:none"></div>
                                     <button onclick="getCon(true); activities_index++"
                                             class="btn btn-default">Show more activities 
                                     </button>
@@ -222,9 +223,6 @@
                         $('#ActivityContent').append(response.content);
                     } else {
                         $('#ActivityContent').html(response.content);
-                        if(!response.isThereMoreActivities){
-                            actionOnNoMoreActivitiesToShow();
-                        }
                     }
                     $('#showAll').show();
                 },
@@ -234,7 +232,8 @@
     }
 
     function actionOnNoMoreActivitiesToShow(){
-        $.growl.error({message: "No more activities"});
+        $("#errorShowMoreActivities").text("No recent activity to display");
+        $("#errorShowMoreActivities").show();
         return ;
     }
     </script>

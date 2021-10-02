@@ -4,10 +4,10 @@ namespace App\Jobs;
 
 use App\Libraries\Solr;
 use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
 class UploadApplicant implements ShouldQueue
@@ -24,6 +24,7 @@ class UploadApplicant implements ShouldQueue
      */
     public function __construct($applicant)
     {
+        //$applicant refers to JobApplication table
         $this->applicant = $applicant;
     }
 
@@ -73,6 +74,21 @@ class UploadApplicant implements ShouldQueue
             $cand['is_approved'] = $applicant->is_approved ?? null;
             $cand['application_status'] = $applicant->status ?? null;
             $cand['job_title'] = $applicant->job->title ?? null;
+            $cand['course_of_study'] = $applicant->cv->course_of_study ?? null;
+            $cand['school'] = $applicant->cv->school->name ?? 'NA';
+            $cand['applicant_type'] = $applicant->cv->applicant_type ?? 'NA';
+            $cand['hrms_staff_id'] = $applicant->cv->hrms_staff_id ?? 'NA';
+            $cand['hrms_grade'] = $applicant->cv->hrms_grade ?? 'NA';
+            $cand['hrms_dept'] = $applicant->cv->hrms_dept ?? 'NA';
+            $cand['hrms_location'] = $applicant->cv->hrms_location ?? 'NA';
+            $cand['hrms_length_of_stay'] = $applicant->cv->hrms_length_of_stay ?? 'NA';
+            
+            //custom fields
+            foreach ($this->applicant->custom_fields as $value) {
+                if($value->form_field != null && isset($value->form_field->name)){
+                    $cand[str_slug($value->form_field->name,'_')] = $value->value;
+                }
+            }
 
             SolrPackage::create_new_document($cand);
     }

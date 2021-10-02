@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-// use App\Models\Job;
 use App\Models\JobApplication;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\Exportable;

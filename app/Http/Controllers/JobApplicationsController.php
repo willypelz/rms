@@ -1118,7 +1118,7 @@ class JobApplicationsController extends Controller
         if($interview_record != null){
           $is_a_reschedule = true;
         }
-        $interview_notes = InterviewNoteTemplates::get();
+        $interview_notes = InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
         return view('modals.interview', compact('applicant_badge', 'app_ids', 'cv_ids', 'appl', 'step', 'stepId', 'interviewers', 'is_a_reschedule', 'interview_record','interview_notes'));
     }
 

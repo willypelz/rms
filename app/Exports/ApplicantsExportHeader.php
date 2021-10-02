@@ -56,16 +56,6 @@ class ApplicantsExportHeader implements WithHeadings
             "LENGTH OF STAY"
         ];
 
-            // if(isset($this->data['job_id'][0])) {
-            //     $job = Job::find($this->data['job_id'][0]);
-            //     if($job){
-            //         foreach ($job->form_fields as $value) {
-            //                 $excel_data[] = str_slug(strtoupper($value->name),'_');
-            //         }   
-                     
-            //     }
-            // }   
-
             if(isset($this->data['application_id'][0])) {
                 $jobApplication = JobApplication::with('custom_fields.form_field')->find($this->data['application_id'][0]);
                 if($jobApplication){

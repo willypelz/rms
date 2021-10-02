@@ -60,5 +60,9 @@ class Company extends Model
         return $this->belongsToMany('App\Models\Role', 'company_users',  "company_id", "role_id");
     }
 
+    public function companyAtsProductTests()
+    {
+        return $this->hasMany('App\Models\CompanyTest', "company_id");
+    }
 
 }

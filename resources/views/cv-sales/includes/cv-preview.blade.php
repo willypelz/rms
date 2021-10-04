@@ -1,3 +1,11 @@
+@if(!isset($cv['cv_file']))
+<div class="">
+<div class="container">
+<div class="row">
+<div class="col-sm-10 col-sm-offset-1 view">
+<div class="row"><h3>CV file is not present</h3></div>
+</div></div></div></div>
+@else
 <div class="">
     <div class="container">
         <div class="row">
@@ -102,7 +110,7 @@
                                     <li>
                                     <strong>School:</strong>&nbsp; {{ !is_null(@$cv['school_id']) ? (isset($cv_school->school->name) ? $cv_school->school->name :'N/A' )  : 'N/A' }}</li>
                                     <li>
-                                    <strong>Course of Study:</strong>&nbsp; {{ @$cv['course_of_study'] ?? "N/A" }}</li>
+                                    <strong>Course of Study:</strong>&nbsp; {{ @$cv['course_of_study'][0] ?? "N/A" }}</li>
                                     <li>
                                     <strong>Highest Qualification:</strong>&nbsp; {{ @$cv['highest_qualification'] }}</li>
                                     <li>
@@ -233,3 +241,4 @@
         </div>
     </div>
 </div>
+@endif

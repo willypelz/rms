@@ -35,6 +35,7 @@ class SendApplicantsSpreedsheetInSmallerBits implements ShouldQueue
       $this->admin = $admin;
       $this->filename = $filename;
       $this->cv_ids = $cv_ids;
+      $this->queue = "export";
 	    
     }
 
@@ -47,6 +48,7 @@ class SendApplicantsSpreedsheetInSmallerBits implements ShouldQueue
     {
         ini_set('memory_limit', '1024M');
         set_time_limit(0);
+
       $excel_data = [];
             foreach ($this->data as $key => $value) {
                 if (!empty($this->cv_ids) && !in_array($value['id'], $this->cv_ids)) {
@@ -81,15 +83,15 @@ class SendApplicantsSpreedsheetInSmallerBits implements ShouldQueue
                     "LAST COMPANY WORKED AT" => @$value['last_company_worked'],
                     "YEARS OF EXPERIENCE" => @$value['years_of_experience'],
                     "WILLING TO RELOCATE?" => (array_key_exists('willing_to_relocate', $value) && $value['willing_to_relocate'] == "true") ? 'Yes' : 'No',
-                    "TESTS" => $tests,
+                    "TESTS" => !empty($tests) ? $tests : 'NA',
                     "COURSE OF STUDY"=> @$value['course_of_study'][0] ?? 'NA',
                     "SCHOOL"=> @$value['school'][0] ?? 'NA',
                     "APPLICANT TYPE" => @$value['applicant_type'] ?? 'NA',
-                    "STAFF ID" => @$value['hrms_staff_id'] ?? 'NA',
-                    "GRADE" => @$value['hrms_grade'] ?? 'NA',
-                    "DEPARTMENT" => @$value['hrms_dept'] ?? 'NA',
-                    "LOCATION" => @$value['hrms_location'] ?? 'NA',
-                    "LENGTH OF STAY" => @$value['hrms_length_of_stay'] ?? 'NA'
+                    "STAFF ID" => @$value['hrms_staff_id'][0] ?? 'NA',
+                    "GRADE" => @$value['hrms_grade'][0] ?? 'NA',
+                    "DEPARTMENT" => @$value['hrms_dept'][0] ?? 'NA',
+                    "BRANCH" => @$value['hrms_location'][0] ?? 'NA',
+                    "LENGTH OF STAY" => @$value['hrms_length_of_stay'][0] ?? 'NA'
              
                 ];
                 if(isset($value['application_id'][0])) {
@@ -97,7 +99,7 @@ class SendApplicantsSpreedsheetInSmallerBits implements ShouldQueue
                     if($jobApplication){
                         foreach ($jobApplication->custom_fields as $value) {
                             if($value->form_field != null && isset($value->form_field->name)){
-                                $excel_data[$key][strtoupper(str_slug($value->form_field->name,'_'))] = $value->value;
+                                $excel_data[$key][strtoupper(str_slug($value->form_field->name,'_'))] = $value->value ?? 'NA';
                             }
                         }
                     }

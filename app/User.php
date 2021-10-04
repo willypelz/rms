@@ -88,6 +88,7 @@ class User extends Authenticatable
         $interviewer = $this->roles()->where("name", "interviewer")->first();
         return $interviewer ? true:false;
     }
+    
     public function isCommenter()
     {
         $commenter = $this->roles()->where("name", "commenter")->first();

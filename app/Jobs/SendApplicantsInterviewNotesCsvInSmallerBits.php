@@ -35,6 +35,7 @@ class SendApplicantsInterviewNotesCsvInSmallerBits implements ShouldQueue
       $this->company = $company;
       $this->admin = $admin;
       $this->filename = $filename;
+      $this->queue = "export";
 	    
     }
 

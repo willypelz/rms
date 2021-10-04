@@ -1848,12 +1848,14 @@ class JobsController extends Controller
 
 
         $content = '<ul class="list-group list-notify">';
+        $shouldAppend = true;
+        $activities_pager = 20;
+        $isThereMoreActivities = false;
 
-
+       
         if (!empty($request->appl_id)) {
             $activities = JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('id', 'desc');
         } elseif ($request->type == 'dashboard') {
-
             $jobs = ($user->is_super_admin) ? Job::where('company_id', $comp_id)->get(['id'])->toArray() : $job_access;
             $activities = JobActivity::with('user', 'application.cv', 'job')->whereIn('job_id', $jobs)->orderBy('id', 'desc');
 
@@ -1861,19 +1863,20 @@ class JobsController extends Controller
         } else {
             $activities = JobActivity::with('user', 'application.cv', 'job', 'job.company')->where('job_id', $request->jobid)->orderBy('id', 'desc');
         }
-
+        
         if (@$request->allActivities == "true") {
             // echo "activity count - " .$activities->count();
-            if ($activities->count() > 20) {
-                $take = $activities->count() - 20;
-                $activities = $activities->skip(20)->take($take)->get();
+            if ($activities->count() > $activities_pager) {
+                $take = $activities->count() - $activities_pager;
+                $activities = $activities->skip($activities_pager)->take($take)->get();
             } else {
                 $activities = $activities->get();
+                $shouldAppend = false;
             }
 
-
         } else if (@$request->allActivities == "false") {
-            $activities = $activities->take(20)->get();
+            $isThereMoreActivities = $activities->count() > $activities_pager;
+            $activities = $activities->take($activities_pager)->get();
             // $activities = $activities->skip( 20 * intval(@$request->activities_index) )->take(20)->get();
         }
 
@@ -1914,7 +1917,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-info">Job Application</h5>
                                   <p>
                                       <small class="text-muted pull-right">[' . date('D, j-n-Y, h:i A', strtotime($ac->created_at)) . ']</small>
-                                      <a href="' . url('applicant/activities/' . $ac->application->id) . '" target="_blank">' . $applicant->first_name . ' ' . $applicant->last_name . '</a> applied for <strong><a href="' . url('job/candidates/' . $ac->application->job->id) . '" target="_blank">' . $job->title . '</a></strong>
+                                      <a href="' . url('applicant/activities/' . $ac->application->id) . '" target="_blank">' . @$applicant->first_name . ' ' . @$applicant->last_name . '</a> applied for <strong><a href="' . url('job/candidates/' . $ac->application->job->id) . '" target="_blank">' . $job->title . '</a></strong>
                                   </p>
                                 </li>';
                     }
@@ -2214,7 +2217,7 @@ class JobsController extends Controller
                         </div>';
         }
 
-        return $content;
+        return response()->json(["content" => $content, "shouldAppend" => $shouldAppend, "isThereMoreActivities" => $isThereMoreActivities ]) ;
     }
 
     public function JobActivities($id, Request $request)

@@ -51,6 +51,8 @@ use App\Exceptions\DownloadApplicantsInterviewException;
 use App\Jobs\CommenceProcessingForApplicantsSpreedsheet;
 use App\Jobs\CommenceProcessingForApplicantsCV;
 use App\Jobs\CommenceProcessingForInterviewNotes;
+use App\Jobs\WorkflowStepWithEmailJob;
+
 
 
 
@@ -785,6 +787,11 @@ class JobApplicationsController extends Controller
             default:
                 break;
         }
+        //check if the step has message
+        $getStep = WorkflowStep::where('id',$request->step_id)->where('message_template','!=',null)->first();
+        if($getStep){
+            dispatch(new WorkflowstepWithEmailJob($request->cv_ids,$getStep->message_template,$request->job_id));
+        }
 
         return save_activities($request->status, $request->job_id, $request->app_ids);
     }
@@ -1111,7 +1118,8 @@ class JobApplicationsController extends Controller
         if($interview_record != null){
           $is_a_reschedule = true;
         }
-        return view('modals.interview', compact('applicant_badge', 'app_ids', 'cv_ids', 'appl', 'step', 'stepId', 'interviewers', 'is_a_reschedule', 'interview_record'));
+        $interview_notes = InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
+        return view('modals.interview', compact('applicant_badge', 'app_ids', 'cv_ids', 'appl', 'step', 'stepId', 'interviewers', 'is_a_reschedule', 'interview_record','interview_notes'));
     }
 
     public function modalInterviewNotes(Request $request)
@@ -1579,6 +1587,7 @@ class JobApplicationsController extends Controller
               'message' => 'required',
               'duration' => 'required',
               'interviewer_id' => 'required',
+              'interview_template_ids' => 'required|array',
           ]);
           if ($validator->fails()) {
             return response()->json([
@@ -1617,7 +1626,12 @@ class JobApplicationsController extends Controller
 
             $interview = Interview::create($data);
 
-            // attach interviews to interview
+            //attach interview notes to interview
+            foreach($request->interview_template_ids as $interview_template_id){
+                $interview->templates()->attach($interview_template_id);
+            }
+
+            // attach interviewers to interview
             $interviewer_ids = explode(",", $request->interviewer_id[0]);
 
             $interview->users()->attach($interviewer_ids);

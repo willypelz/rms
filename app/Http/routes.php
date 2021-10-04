@@ -592,6 +592,9 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.contact');
     });
 
+    Route::get('/test/setup', ['as' => 'test-setup', 'uses' => 'TestSetupController@index']);
+    Route::post('/test/setup/create', ['as' => 'test-setup-create', 'uses' => 'TestSetupController@create']);
+
     Route::get('download-csv-template',
     ['uses' => 'PrivateJobController@exportCsvTemplate', 
     'as' => 'download-privatejob-template']);

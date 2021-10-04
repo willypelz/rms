@@ -35,6 +35,7 @@ class SendApplicantsSpreedsheetInSmallerBits implements ShouldQueue
       $this->admin = $admin;
       $this->filename = $filename;
       $this->cv_ids = $cv_ids;
+      $this->queue = "export";
 	    
     }
 
@@ -47,6 +48,7 @@ class SendApplicantsSpreedsheetInSmallerBits implements ShouldQueue
     {
         ini_set('memory_limit', '1024M');
         set_time_limit(0);
+
       $excel_data = [];
             foreach ($this->data as $key => $value) {
                 if (!empty($this->cv_ids) && !in_array($value['id'], $this->cv_ids)) {
@@ -63,7 +65,7 @@ class SendApplicantsSpreedsheetInSmallerBits implements ShouldQueue
                     }
                 }
 
-                $excel_data[] = [
+                $excel_data[$key] = [
                     "FIRSTNAME" => @$value['first_name'],
                     "LASTNAME" => @$value['last_name'],
                     "LAST POSITION HELD" => @$value['last_position'],
@@ -81,37 +83,24 @@ class SendApplicantsSpreedsheetInSmallerBits implements ShouldQueue
                     "LAST COMPANY WORKED AT" => @$value['last_company_worked'],
                     "YEARS OF EXPERIENCE" => @$value['years_of_experience'],
                     "WILLING TO RELOCATE?" => (array_key_exists('willing_to_relocate', $value) && $value['willing_to_relocate'] == "true") ? 'Yes' : 'No',
-                    "TESTS" => $tests,
-                    
-
-
+                    "TESTS" => !empty($tests) ? $tests : 'NA',
+                    "COURSE OF STUDY"=> @$value['course_of_study'][0] ?? 'NA',
+                    "SCHOOL"=> @$value['school'][0] ?? 'NA',
+                    "APPLICANT TYPE" => @$value['applicant_type'] ?? 'NA',
+                    "STAFF ID" => @$value['hrms_staff_id'][0] ?? 'NA',
+                    "GRADE" => @$value['hrms_grade'][0] ?? 'NA',
+                    "DEPARTMENT" => @$value['hrms_dept'][0] ?? 'NA',
+                    "BRANCH" => @$value['hrms_location'][0] ?? 'NA',
+                    "LENGTH OF STAY" => @$value['hrms_length_of_stay'][0] ?? 'NA'
+             
                 ];
                 if(isset($value['application_id'][0])) {
                     $jobApplication = JobApplication::with('custom_fields.form_field')->find($value['application_id'][0]);
                     if($jobApplication){
                         foreach ($jobApplication->custom_fields as $value) {
-                            if($value->form_field != null){
-                                $excel_data[$key][$value->form_field->name] = $value->value;
+                            if($value->form_field != null && isset($value->form_field->name)){
+                                $excel_data[$key][strtoupper(str_slug($value->form_field->name,'_'))] = $value->value ?? 'NA';
                             }
-                        }
-
-                        //If applicant is an intenral staff
-                        if(isset($jobApplication->cv) && $jobApplication->cv->applicant_type == 'internal') {
-                            $application = $jobApplication->cv;
-                            $excel_data[$key]['INTERNAL STAFF'] = $application->applicant_type == 'internal' ? 'Yes' : 'No' ;
-                            $excel_data[$key]['STAFF ID'] = $application->hrms_staff_id;
-                            $excel_data[$key]['GRADE'] = $application->hrms_grade;
-                            $excel_data[$key]['DEPARTMENT'] = $application->hrms_dept;
-                            $excel_data[$key]['LOCATION'] = $application->hrms_location;
-                            $excel_data[$key]['LENGTH OF STAY'] = $application->hrms_length_of_stay;
-                        }
-                        else{
-                            $excel_data[$key]['INTERNAL STAFF'] = 'NA';
-                            $excel_data[$key]['STAFF ID'] = 'NA';
-                            $excel_data[$key]['GRADE'] = 'NA';
-                            $excel_data[$key]['DEPARTMENT'] = 'NA';
-                            $excel_data[$key]['LOCATION'] = 'NA';
-                            $excel_data[$key]['LENGTH OF STAY'] = 'NA';
                         }
                     }
                 }

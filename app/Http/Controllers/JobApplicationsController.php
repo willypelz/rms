@@ -42,10 +42,6 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use Spatie\CalendarLinks\Link;
 use Validator;
 use App\Http\Requests\DownloadApplicantSpreedsheetRequest;
-use App\Dtos\DownloadApplicantSpreadsheetDto;
-use App\Dtos\DownloadApplicantCvDto;
-use App\Dtos\DownloadApplicantInterviewNoteDto;
-use App\Services\ApplicantService;
 use App\Http\Requests\DownloadApplicantCvRequest;
 use App\Exceptions\DownloadApplicantsInterviewException;
 use App\Jobs\CommenceProcessingForApplicantsSpreedsheet;
@@ -126,7 +122,6 @@ class JobApplicationsController extends Controller
 
     protected $mailer;
 
-    protected $applicantService;
 
     private $sender;
 
@@ -154,7 +149,7 @@ class JobApplicationsController extends Controller
             $this->replyTo = env('COMPANY_EMAIL');
         }
 
-        $this->applicantService = app()->make(ApplicantService::class);
+        
         /*$cv = (object) [ "first_name" => "Emmanuel", "last_name" => "Okeleji", "email" => "emmanuel@insidify.com" ];
 
         $job = (object) [ "title" => "CEO", "company" => (object) [ "name" => "Insidify" ] ];

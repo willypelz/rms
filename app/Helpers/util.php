@@ -549,7 +549,8 @@ function get_company_logo($logo)
 function get_interview_note_templates($appl_id)
 {
     $templates = null;
-    if(auth()->user()->is_super_admin){
+    $user = User::find(auth()->id());
+    if(!$user->isInterviewer() && !$user->isCommenter()){
         return \App\Models\InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
     } 
     $interview = App\Models\Interview::where('job_application_id', $appl_id)->first();
@@ -561,8 +562,6 @@ function get_interview_note_templates($appl_id)
     }
 
     return $templates;
-      
-
 }
 
 function saveCompanyUploadedCv($cvs, $additional_data, $request)

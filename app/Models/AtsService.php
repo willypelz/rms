@@ -8,6 +8,7 @@ class AtsService extends Model
 {
     //
     public $guarded = [];
+    public $timestamps = false;
 
 
     public function product()

@@ -154,7 +154,7 @@ class JobApplicationsController extends Controller
             $this->replyTo = env('COMPANY_EMAIL');
         }
 
-        $this->applicantService = app()->make(ApplicantService::class);
+        
         /*$cv = (object) [ "first_name" => "Emmanuel", "last_name" => "Okeleji", "email" => "emmanuel@insidify.com" ];
 
         $job = (object) [ "title" => "CEO", "company" => (object) [ "name" => "Insidify" ] ];

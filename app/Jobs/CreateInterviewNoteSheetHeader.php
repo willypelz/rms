@@ -27,6 +27,7 @@ class CreateInterviewNoteSheetHeader implements ShouldQueue
     {
       $this->filename = $filename;
       $this->data = $data; 
+      $this->queue = "export";
     }
 
     /**

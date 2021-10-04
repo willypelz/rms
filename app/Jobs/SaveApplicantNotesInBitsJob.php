@@ -29,6 +29,7 @@ class SaveApplicantNotesInBitsJob implements ShouldQueue
     {
 	    $this->zipPath = $zipPath;
         $this->files = $files;
+        $this->queue = "export";
     }
 
     /**

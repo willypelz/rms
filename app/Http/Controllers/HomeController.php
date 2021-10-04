@@ -192,9 +192,9 @@ class HomeController extends Controller
         }
 
 
-        $response = [];
+        $response = null;
 
-        $posts =  @json_decode($response)->data->posts;
+        $posts =   @json_decode($response)->data->posts;
         $talent_pool_count = $saved_cvs_count = $purchased_cvs_count = '--';
 
         return view('talent-pool.dashboard', compact('posts', 'jobs_count','talent_pool_count','saved_cvs_count','purchased_cvs_count'));

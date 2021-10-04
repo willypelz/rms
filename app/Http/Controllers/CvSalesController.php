@@ -204,7 +204,7 @@ class CvSalesController extends Controller
     {
         $cv = Cv::find($request->cv_id);
         $cv_school = $cv;
-        $cv = $cv->toArray();
+        $cv = isset($cv) ? $cv->toArray() : [];
         $cv['dob'] = @$cv['date_of_birth'];
         $is_applicant = $request->is_applicant;
         $is_embedded = $request->is_embedded;

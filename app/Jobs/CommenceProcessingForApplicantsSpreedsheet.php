@@ -52,6 +52,7 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
       $this->solr_video_application_score = $solr_video_application_score;
       $this->solr_test_score = $solr_test_score;
       $this->cv_ids = $cv_ids;
+      $this->queue = "export";
     }
 
     /**

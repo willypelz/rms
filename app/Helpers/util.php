@@ -562,8 +562,6 @@ function get_interview_note_templates($appl_id)
     }
 
     return $templates;
-      
-
 }
 
 function saveCompanyUploadedCv($cvs, $additional_data, $request)

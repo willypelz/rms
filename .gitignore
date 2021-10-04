@@ -11,3 +11,12 @@ LocalValetDriver.php
 /.idea
 /.vscode
 /public_html/uploads
+/config/snappy.php
+/public_html/homepage
+/public_html/logs
+composer.lock
+dock-dev.yaml
+dock-qa.yaml
+dock-uat.yaml
+bit.yaml
+auth.json

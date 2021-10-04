@@ -546,10 +546,22 @@ function get_company_logo($logo)
     }
 }
 
-function get_interview_note_templates()
+function get_interview_note_templates($appl_id)
 {
-    return \App\Models\InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
+    $templates = null;
+    $user = User::find(auth()->id());
+    if(!$user->isInterviewer() && !$user->isCommenter()){
+        return \App\Models\InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
+    } 
+    $interview = App\Models\Interview::where('job_application_id', $appl_id)->first();
+    if($interview){
+        $check = $interview->users->where('id',auth()->id())->first();
+        if($check){
+            return $interview->templates;
+        } 
+    }
 
+    return $templates;
 }
 
 function saveCompanyUploadedCv($cvs, $additional_data, $request)

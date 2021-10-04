@@ -45,6 +45,7 @@ class CommenceProcessingForInterviewNotes implements ShouldQueue
       $this->application_ids = $application_ids;
       $this->jobId = $jobId;
       $this->download_type = $download_type;
+      $this->queue = "export";
     }
 
     /**

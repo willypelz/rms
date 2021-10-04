@@ -92,7 +92,7 @@
                                                 @forelse($test_names as $test_name)
                                                      <option value="{{$test_name->name}}">{{$test_name->name}}</option>
                                                 @empty
-                                                  <option>No question is setup on the question platform, contact admin to help you create one </option>
+                                                  <option value="">No question is setup on the question platform, contact admin to help you create one </option>
                                                 @endforelse
                                             </select>
                                               

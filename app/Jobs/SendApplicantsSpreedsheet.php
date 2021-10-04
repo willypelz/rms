@@ -36,6 +36,7 @@ class SendApplicantsSpreedsheet implements ShouldQueue
       $this->admin = $admin;
       $this->filename = $filename;
       $this->cv_ids = $cv_ids;
+      $this->queue = "export";
 	    
     }
 

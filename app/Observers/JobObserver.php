@@ -32,7 +32,7 @@ class JobObserver
             ];
             logAction($param);            
         }
-        if (config('app.rms_stand_alone') == false && config('app.staff_strength_url')) {
+        if (isHrmsIntegrated()) {
             $company = Company::where('id', $job->company_id)->first();
             if ($job->is_for == 'both' || $job->is_for == 'internal') {
                 $sendJob = (object) [

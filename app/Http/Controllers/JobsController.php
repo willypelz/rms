@@ -2470,7 +2470,7 @@ class JobsController extends Controller
             }
 
             if ($fields->date_of_birth->is_visible && isset($data['date_of_birth'])) {
-                $data['date_of_birth'] = Carbon::createFromFormat('Y-m-d', $data['date_of_birth'])->format("Y-m-d"); 
+                $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
             }
 
             if ($fields->willing_to_relocate->is_visible && isset($data['willing_to_relocate'])) {

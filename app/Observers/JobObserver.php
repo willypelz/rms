@@ -4,10 +4,9 @@ namespace App\Observers;
 
 use App\User;
 use App\Models\Job;
+use App\Models\Company;
 use App\Jobs\SendJobNotice;
-use App\Mail\JobCreatedNotice;
 use GuzzleHttp\Client as HttpClient;
-use Illuminate\Support\Facades\Mail;
 
 class JobObserver
 {
@@ -31,12 +30,30 @@ class JobObserver
                 'causer_type' => 'Admin',
                 'properties' => '',
             ];
-            logAction($param);
-
+            logAction($param);            
+        }
+        if (config('app.rms_stand_alone') == false && config('app.staff_strength_url')) {
+            $company = Company::where('id', $job->company_id)->first();
+            if ($job->is_for == 'both' || $job->is_for == 'internal') {
+                $sendJob = (object) [
+                    'title' => $job->title,
+                    'summary' => $job->summary,
+                    'expiry_date' => $job->expiry_date,
+                    'position' => $job->position,
+                    'hrms_id' => $company->hrms_id
+                ];
+                $client = new HttpClient();
+                $client->request('POST', config('app.staff_strength_url') . '/api/v1/send/notification', [
+                    'verify' => false,
+                    'job' => $sendJob,
+                    'with_expiry' => true
+                ]);
+            }
+        } else {
             if ($job->is_for == 'both' || $job->is_for == 'internal') {
                 $employees = User::where('activated', 1)->get();
-                dispatch(new SendJobNotice($employees, $job)); 
-            }            
+                dispatch(new SendJobNotice($employees, $job));
+            }
         }
 
         

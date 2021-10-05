@@ -269,14 +269,15 @@ class JobApplicationsController extends Controller
     {
 
         $appl = JobApplication::with('job', 'cv')->find($appl_id);
-
+    if(isset($appl->job->id)){
         check_if_job_owner($appl->job->id);
         $job_id = $appl->job->id;
         $nav_type = 'profile';
 
         $permissions = getUserPermissions();
         return view('applicant.profile', compact('appl', 'nav_type', 'permissions', 'job_id'));
-
+    }
+    return back()->with('error','Something went wrong, please try again');
     }
 
 

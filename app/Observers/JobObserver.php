@@ -45,8 +45,7 @@ class JobObserver
                 $client = new HttpClient();
                 $client->request('POST', config('app.staff_strength_url') . '/api/v1/send/notification', [
                     'verify' => false,
-                    'job' => $sendJob,
-                    'with_expiry' => true
+                    'job' => $sendJob
                 ]);
             }
         } else {

@@ -78,7 +78,6 @@ class TestSetupController extends Controller
             });
             return back()->with('success', 'Test setup successfully');
         }catch(\Exception $e){
-            dd($e);
             return back()->with('error','Something went wrong during creation, pleae try again');
         }
            

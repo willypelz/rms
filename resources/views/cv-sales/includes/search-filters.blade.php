@@ -302,7 +302,10 @@
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="cv_source" data-value="{{ $cv_source }}"> {{ ucwords( $cv_source )." (".$result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ].")" }}</label> <br></div>
                       @else
 
-                        @php @$other_highest_qualification += $result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ] @endphp
+                        @php @$other_highest_qualification += isset($result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ]) &&
+                        is_numeric($result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ]) ?
+                        $result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ] : 0;
+                        @endphp
 
                       @endif
                   @endforeach

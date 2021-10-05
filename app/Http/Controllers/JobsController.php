@@ -2470,7 +2470,7 @@ class JobsController extends Controller
             }
 
             if ($fields->date_of_birth->is_visible && isset($data['date_of_birth'])) {
-                $data['date_of_birth'] = date('Y-m-d', strtotime($data['date_of_birth']));
+                $data['date_of_birth'] = Carbon::createFromFormat('Y-m-d', $data['date_of_birth'])->format("Y-m-d"); 
             }
 
             if ($fields->willing_to_relocate->is_visible && isset($data['willing_to_relocate'])) {
@@ -2603,7 +2603,7 @@ class JobsController extends Controller
             if ($fields->years_of_experience->is_visible && isset($data['years_of_experience'])) {
                 $cv->years_of_experience = $data['years_of_experience'];
             }
-            if ($fields->graduation_grade->is_visible && isset($data['date_of_birth'])) {
+            if ($fields->graduation_grade->is_visible && isset($data['graduation_grade'])) {
                 $cv->graduation_grade = $data['graduation_grade'];
             }
             if (isset($fields->school->is_visible) && $fields->school->is_visible && isset($data['school'])) {

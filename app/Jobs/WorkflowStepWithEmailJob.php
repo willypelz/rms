@@ -40,6 +40,7 @@ class WorkflowStepWithEmailJob implements ShouldQueue
         $title = "Update On Your Job Application";
         $emailTemplate = $this->stepEmail;
         $job = Job::where('id',$this->job_id)->first();
+        $company_name = $job->company->name;
 
         foreach($this->cv_id as $id ){
             $sendMail = Cv::where('id',$id)->first();
@@ -49,13 +50,13 @@ class WorkflowStepWithEmailJob implements ShouldQueue
                 'applicant_name' => ucwords($sendMail->first_name),
                 'job_title' => $job->title,
                 'job_detail' => $job->detail,
-                'company_name' => get_current_company()->name
+                'company_name' => $company_name,
             ];
             foreach($transformables as $key => $transformable){
                 $new = str_replace('{' . $key . '}', $transformable, $emailTemplate);
                 $emailTemplate = $new;
             }
-            Mail::send('emails.new.workflowstepemail', compact('emailTemplate','mail'), function ($m) use ($sendMail, $title) {
+            Mail::send('emails.new.workflowstepemail', compact('emailTemplate','mail','company_name'), function ($m) use ($sendMail, $title) {
                 $m->from(env('COMPANY_EMAIL'))->to($sendMail->email)->subject($title);
             });
         }

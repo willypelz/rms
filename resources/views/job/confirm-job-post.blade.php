@@ -53,36 +53,36 @@
                                 </p>
 
                                 <div class="row">
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div>JOB TITLE <span class="text-danger">*</span></div>
                                         <h4 class="no-margin-bottom text-dark">{{ $job->title }}</h4>
                                         <br>
                                     </div>
-                                    <div class="col-sm-4"></div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6"></div>
+                                    <div class="col-sm-6">
                                         <div>LOCATION <span class="text-danger">*</span></div>
                                         <h4 class="no-margin-bottom text-dark">{{ $job->location }}</h4>
                                         <br>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div>JOB TYPE <span class="text-danger">*</span></div>
-                                        <h4 class="no-margin-bottom text-dark">{{ strtoupper($job->job_type) }}</h4>
+                                        <h4 class="no-margin-bottom text-dark">{{ ucfirst($job->job_type) }}</h4>
                                         <br>
                                     </div>
-                                    <div class="col-sm-4"></div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6"></div>
+                                    <div class="col-sm-6">
                                         <div>POSITION <span class="text-danger">*</span></div>
                                         <h4 class="no-margin-bottom text-dark"> {{ $job->position }} </h4>
                                         <br>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div>JOB WORKFLOW <span class="text-danger">*</span></div>
                                         <h4 class="no-margin-bottom text-dark">{{ $job->workflow->name }}</h4>
                                         <br>
                                     </div>
-                                    <div class="col-sm-4"> </div>
+                                    <div class="col-sm-6"> </div>
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div>EXPIRY DATE <span class="text-danger">*</span></div>
                                         <h4 class="no-margin-bottom text-dark">{{ $job->expiry_date }}</h4>
                                         <br>

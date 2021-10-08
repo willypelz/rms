@@ -2648,7 +2648,7 @@ class JobsController extends Controller
             if ($fields->years_of_experience->is_visible && isset($data['years_of_experience'])) {
                 $cv->years_of_experience = $data['years_of_experience'];
             }
-            if ($fields->graduation_grade->is_visible && isset($data['date_of_birth'])) {
+            if ($fields->graduation_grade->is_visible && isset($data['graduation_grade'])) {
                 $cv->graduation_grade = $data['graduation_grade'];
             }
             if (isset($fields->school->is_visible) && $fields->school->is_visible && isset($data['school'])) {

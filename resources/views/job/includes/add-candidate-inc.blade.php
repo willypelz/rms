@@ -134,30 +134,30 @@
                                     <div class="alert alert-success u_s" style="display:none;" ></div>
 
                                     <div class="form-group col-xs-6">
-                                        <label for="cv-name" class="pull-left">First name</label>
-                                        <input type="text" name="cv_first_name" id="cv-first_name" class="form-control" />
+                                        <label for="cv-name" class="pull-left">First name <span class="text-danger">*</span></label>
+                                        <input type="text" name="cv_first_name" id="cv-first_name" class="form-control" required/>
                                     </div>
 
                                     <div class="form-group col-xs-6">
-                                        <label for="cv-name" class="pull-left">Last name</label>
-                                        <input type="text" name="cv_last_name" id="cv-last_name" class="form-control" />
+                                        <label for="cv-name" class="pull-left">Last name <span class="text-danger">*</span></label>
+                                        <input type="text" name="cv_last_name" id="cv-last_name" class="form-control" required />
                                     </div>
 
                                     
 
                                     <div class="form-group col-xs-6">
-                                        <label for="cv-email" class="pull-left">Email</label>
-                                        <input type="email" name="cv_email" id="cv-email" class="form-control" />
+                                        <label for="cv-email" class="pull-left">Email <span class="text-danger">*</span></label>
+                                        <input type="email" name="cv_email" id="cv-email" class="form-control" required/>
                                     </div>
 
                                     <div class="form-group col-xs-6">
-                                        <label for="cv-phone" class="pull-left">Phone</label>
-                                        <input type="text" name="cv_phone" id="cv-phone" class="form-control" />
+                                        <label for="cv-phone" class="pull-left">Phone <span class="text-danger">*</span></label>
+                                        <input type="text" name="cv_phone" id="cv-phone" class="form-control" required />
                                     </div>
 
                                     <div class="form-group col-xs-6">
-                                        <label for="gender" class="pull-left">Gender</label>
-                                        {{ Form::select('gender', array('Male' => 'Male', 'Female' => 'Female'), 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
+                                        <label for="gender" class="pull-left">Gender <span class="text-danger">*</span></label>
+                                        {{ Form::select('gender', array('Male' => 'Male', 'Female' => 'Female'), 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
                                     </div>
 
 
@@ -166,18 +166,18 @@
                                     </div>
 
                                     <div class="form-group col-xs-6">
-                                        <label for="highest_qualification" class="pull-left">Highest Qualification</label>
-                                        {{ Form::select('highest_qualification', qualifications(), 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
+                                        <label for="highest_qualification" class="pull-left">Highest Qualification <span class="text-danger">*</span></label>
+                                        {{ Form::select('highest_qualification', qualifications(), 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
                                     </div>
 
                                     <div class="form-group col-xs-6">
-                                        <label for="graduation_grade" class="pull-left">Graduation Grade</label>
-                                        {{ Form::select('graduation_grade', grades(), 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
+                                        <label for="graduation_grade" class="pull-left">Graduation Grade <span class="text-danger">*</span></label>
+                                        {{ Form::select('graduation_grade', grades(), 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
                                     </div>
 
                                     <div class="form-group col-xs-6">
-                                        <label for="years_of_experience" class="pull-left">Years of experience</label>
-                                        <select name="years_of_experience" class="form-control">
+                                        <label for="years_of_experience" class="pull-left">Years of experience <span class="text-danger">*</span></label>
+                                        <select required name="years_of_experience" class="form-control">
                                             @for($i = 1; $i <= 50; $i++)
                                                 <option value="{{ $i }}">{{ $i }}</option>
                                             @endfor
@@ -186,18 +186,18 @@
 
 
                                     <div class="form-group col-xs-6">
-                                        <label for="last_company_worked" class="pull-left">Last Company Worked</label>
-                                        {{ Form::text('last_company_worked', null, array('class'=>'form-control')) }}
+                                        <label for="last_company_worked" class="pull-left">Last Company Worked <span class="text-danger">*</span></label>
+                                        {{ Form::text('last_company_worked', null, array('class'=>'form-control', 'required')) }}
                                     </div>
 
 
                                     <div class="form-group col-xs-6">
-                                        <label for="last_position" class="pull-left">Last Position</label>
-                                        {{ Form::text('last_position', null, array('class'=>'form-control')) }}
+                                        <label for="last_position" class="pull-left">Last Position <span class="text-danger">*</span></label>
+                                        {{ Form::text('last_position', null, array('class'=>'form-control', 'required')) }}
                                     </div>
 
                                     <div class="form-group text-left col-xs-6">
-                                        <label for="willing_to_relocate">Willing to relocate?</label><br/>
+                                        <label for="willing_to_relocate">Willing to relocate? <span class="text-danger">*</span></label><br/>
                                         <label>{{ Form::radio('willing_to_relocate', 'yes',  false) }} Yes</label>
                                         <label>{{ Form::radio('willing_to_relocate', 'no',  false) }} No </label>
                                     </div>

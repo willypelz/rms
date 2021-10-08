@@ -84,14 +84,14 @@ class SendApplicantsSpreedsheetInSmallerBits implements ShouldQueue
                     "YEARS OF EXPERIENCE" => @$value['years_of_experience'],
                     "WILLING TO RELOCATE?" => (array_key_exists('willing_to_relocate', $value) && $value['willing_to_relocate'] == "true") ? 'Yes' : 'No',
                     "TESTS" => !empty($tests) ? $tests : 'NA',
-                    "COURSE OF STUDY"=> @$value['course_of_study'] ?? 'NA',
-                    "SCHOOL"=> @$value['school'] ?? 'NA',
+                    "COURSE OF STUDY"=> @$value['course_of_study'][0] ?? 'NA',
+                    "SCHOOL"=> @$value['school'][0] ?? 'NA',
                     "APPLICANT TYPE" => @$value['applicant_type'] ?? 'NA',
-                    "STAFF ID" => @$value['hrms_staff_id'] ?? 'NA',
-                    "GRADE" => @$value['hrms_grade'] ?? 'NA',
-                    "DEPARTMENT" => @$value['hrms_dept'] ?? 'NA',
-                    "BRANCH" => @$value['hrms_location'] ?? 'NA',
-                    "LENGTH OF STAY" => @$value['hrms_length_of_stay'] ?? 'NA'
+                    "STAFF ID" => @$value['hrms_staff_id'][0] ?? 'NA',
+                    "GRADE" => @$value['hrms_grade'][0] ?? 'NA',
+                    "DEPARTMENT" => @$value['hrms_dept'][0] ?? 'NA',
+                    "BRANCH" => @$value['hrms_location'][0] ?? 'NA',
+                    "LENGTH OF STAY" => @$value['hrms_length_of_stay'][0] ?? 'NA'
              
                 ];
                 if(isset($value['application_id'][0])) {

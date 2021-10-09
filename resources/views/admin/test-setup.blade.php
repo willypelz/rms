@@ -48,12 +48,12 @@
                                     <p>For any enquiries, questions or suggestions. <!-- Visit our FAQs to browse popular support topics --></p>
                                     <hr>
                                     <p class="">
-                                        <!-- <i class="fa fa-envelope"></i> --> Mail Address: <b>support@seamlesshiring.com</b>
+                                        <!-- <i class="fa fa-envelope"></i> --> Mail Address: <b>support@seamlesshr.com</b>
                                     </p>
                                     <hr>
-                                    <p>
+                                    {{-- <p>
                                         <!-- <i class="fa fa-phone"></i> --> Put a call to us on <b>01-2911091</b> or <b>08167134495</b> (Mon - Fri, 8:30am - 5:00pm)
-                                    </p>
+                                    </p> --}}
                                     </div>
                                 
                                            

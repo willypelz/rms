@@ -70,7 +70,7 @@
 
                                         <span class="col-xs-11">
                                            
-                                            <div class="form-group">
+                                            {{-- <div class="form-group">
                                             <label for="test_id">Test category</label>
                                             <select name="test_id" id="test_id" class="form-control angular">
                                                 <option value="">--select option--</option>
@@ -78,19 +78,20 @@
                                                 <option value="{{$test->name}}">{{$test->name}}</option>
                                               @endforeach
                                             </select>
-                                            </div>
-                                            <div class="form-group">
+                                            </div> --}}
+                                            {{-- <div class="form-group">
                                                     <label for="test_type">Test Category not found? Create one below</label>
                                                     <input type="text" value="{{old('test_type')}}"" id="test_type" name="test_type" class="form-control angular" placeholder="enter test category e.g Aptitude Test">
-                                            </div>
+                                            </div> --}}
 
                                             <div class="form-group">
-                                                <label>Select Test</label>
+                                                <label>Select Test (Test type displayed here is fetched from the category created on the question platform)</label>
                                                 <br>
                                             <select class="form-control" name="test_name">
                                                     <option value="">--select test name--</option>
                                                 @forelse($test_names as $test_name)
                                                      <option value="{{$test_name->name}}">{{$test_name->name}}</option>
+                                                     <input type="hidden" value="{{$test_name->id}}"" name="test_name_id">
                                                 @empty
                                                   <option value="">No question is setup on the question platform, contact admin to help you create one </option>
                                                 @endforelse

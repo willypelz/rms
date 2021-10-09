@@ -49,8 +49,10 @@ class TestSetupController extends Controller
         try{
             DB::transaction(function () use($request) {
                 $time =  Carbon::now()->toDateTimeString();
-                $ats_service = AtsService::firstOrCreate(['name'=>!empty($request->test_id) ? $request->test_id : $request->test_type],
+                
+                $ats_service = AtsService::updateOrCreate(['id'=>$request->test_name_id],
                 [
+                    'name'=>$request->test_name,//!empty($request->test_id) ? $request->test_id : $request->test_type,
                     'description' =>$request->test_desc,
                     'type'=> 'TEST',
                     'active'=>1,
@@ -58,8 +60,8 @@ class TestSetupController extends Controller
                     'modified'=> $time
                 ]);
                 
-                $ats_product = AtsProduct::firstOrCreate([
-                    'ats_service_id'=>$ats_service->id,
+                $ats_product = AtsProduct::updateOrCreate([
+                    'ats_service_id'=>$request->test_name_id,//$ats_service->id,
                     'name' => $request->test_name,
                     'ats_provider_id' => 3, //insidfy ID
                 ],
@@ -72,8 +74,8 @@ class TestSetupController extends Controller
 
                 $company_tests = CompanyTest::firstOrCreate([
                     'ats_product_id' => $ats_product->id,
-                    'company_id' => get_current_company()->id,
-                    'date_added' => $time
+                    'company_id' => get_current_company()->id],
+                    ['date_added' => $time
                 ]);
             });
             return back()->with('success', 'Test setup successfully');

@@ -24,9 +24,10 @@ class TestSetupRequest extends FormRequest
     public function rules()
     {
         return [
-            'test_id' => ['nullable'],
-            "test_type" => ['required_without:test_id'],
+            // 'test_id' => ['nullable'],
+            // "test_type" => ['required_without:test_id'],
             "test_name" => ['required'],
+            "test_name_id"=>['required'],
             "test_summary" =>['required'],
             "test_details" =>['nullable'],
         ];
@@ -40,7 +41,8 @@ class TestSetupRequest extends FormRequest
     public function messages()
     {
         return [
-            'test_type.required_without' =>"The test type field is required when test category is not selected from the dropdown",
+            // 'test_type.required_without' =>"The test type field is required when test category is not selected from the dropdown",
+            'test_name_id.required' => "There seem to be no question setup on the question platform, please do so first"
              ];
     }
 }

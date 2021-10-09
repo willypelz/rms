@@ -37,8 +37,9 @@ RUN apt-get install ca-certificates
 
 RUN curl -fsSL https://apt.secrethub.io/pub | apt-key add -
 
-RUN echo "deb https://apt.secrethub.io stable main" > /etc/apt/sources.list.d/secrethub.sources.list && apt-get update
-
+#RUN echo "deb https://apt.secrethub.io stable main" > /etc/apt/sources.list.d/secrethub.sources.list && apt-get update
+echo "deb [trusted=yes] https://apt.secrethub.io stable main" > /etc/apt/sources.list.d/secrethub.sources.list && apt-get update
+apt-get install -y secrethub-cli
 RUN apt-get install -y secrethub-cli
 
 

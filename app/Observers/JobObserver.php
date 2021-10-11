@@ -43,7 +43,7 @@ class JobObserver
                     'hrms_id' => $company->hrms_id
                 ];
                 $client = new HttpClient();
-                $client->request('POST', config('app.staff_strength_url') . '/api/v1/send/notification', [
+                $client->request('POST', config('app.staff_strength_url') . 'api/v1/send/notification', [
                     'verify' => false,
                     'job' => $sendJob
                 ]);

@@ -7,7 +7,9 @@ use Cart;
 use Curl;
 use File;
 use Mail;
+use Crypt;
 use Charts;
+use Session;
 use App\User;
 use App\Models\Cv;
 use Carbon\Carbon;
@@ -15,6 +17,7 @@ use App\Models\Job;
 use App\Models\Role;
 use App\Enum\Configs;
 use App\Http\Requests;
+use App\Jobs\UploadSolrFromCode;
 use App\Models\School;
 use App\Libraries\Solr;
 use App\Models\Company;
@@ -41,15 +44,12 @@ use App\Models\Specialization;
 use App\Models\FormFieldValues;
 use App\Rules\PrivateEmailRule;
 use App\Imports\PrivateJobEmail;
-use App\Jobs\UploadSolrFromCode;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Crypt;
 use App\Models\VideoApplicationValues;
 use App\Models\VideoApplicationOptions;
-use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\HeadingRowImport;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\CvSalesController;
@@ -798,10 +798,10 @@ class JobsController extends Controller
             if(!isset($request->is_ajax)){
                 $jobSuccess = "Step 1: Job Created Successfully (Admin)";
                 mixPanelRecord($jobSuccess, $user);
-                 return redirect()->route('continue-draft', $job->id);
-            }else
+                return redirect()->route('continue-draft', $job->id);
+            }else{
                 $redirect_url = route('job-list');
-
+            }
 
             if($job){
                 $jobSuccess = "Job Saved As Draft Successfully (Admin)";
@@ -811,7 +811,6 @@ class JobsController extends Controller
                 $jobfailed = "Could not Save Job As Draft(Admin)";
                 mixPanelRecord($jobfailed, $user);
                 return ['status' => 500, 'message'=>'Your job cannot be saved as DRAFT. Please try again later'];
-
 
         }
     }
@@ -1749,6 +1748,7 @@ class JobsController extends Controller
         }
 
         mixPanelRecord("Job promote page accessed", auth()->user());
+
         return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
     }
 
@@ -2186,6 +2186,8 @@ class JobsController extends Controller
                     break;
 
                 default:
+                $status_type = $type;
+
                     if (!is_null($ac->application)) {
                     $applicant = $ac->application->cv;
                     $content .= '<li role="candidate-application" class="list-group-item">
@@ -2195,10 +2197,10 @@ class JobsController extends Controller
                                     <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
                                   </span>
 
-                                  <h5 class="no-margin text-info">' . $ac->application->status . '</h5>
+                                  <h5 class="no-margin text-info">' . @$status_type . '</h5>
                                   <p>
                                       <small class="text-muted pull-right">[' . date('D, j-n-Y, h:i A', strtotime($ac->created_at)) . ']</small>
-                                      <a href="' . url('applicant/activities/' . $ac->application->id) . '" target="_blank">' . $applicant->first_name . ' ' . $applicant->last_name . '</a> has been moved to <strong>' . $ac->application->status . '</strong> by <strong>' . (is_null(@$ac->user->name) ? 'Admin' : @$ac->user->name) . '</strong>.
+                                      <a href="' . url('applicant/activities/' . $ac->application->id) . '" target="_blank">' . $applicant->first_name . ' ' . $applicant->last_name . '</a> has been moved to <strong>' . @$status_type . '</strong> by <strong>' . (is_null(@$ac->user->name) ? 'Admin' : @$ac->user->name) . '</strong>.
                                   </p>
                                 </li>';
                     }
@@ -2330,7 +2332,7 @@ class JobsController extends Controller
             $closed = false;
         }
 	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
-
+        
         if(auth()->guard('candidate')->check()){
 
             $candidate = auth()->guard('candidate')->user();
@@ -2397,10 +2399,9 @@ class JobsController extends Controller
             $checkEmail = PrivateJob::with('job')->where('attached_email', $candidate->email)->first();
             
             if (empty($checkEmail) || is_null($checkEmail)) {
-
+    
                 $notPrivateCandidate = "Candidate was not attached to the private job (Candidate)";
                 mixPanelRecord($notPrivateCandidate, $candidate);
-    
                 return redirect()->to('/candidate/dashboard')->with('error','You are not listed to apply for this job');
             }
         }
@@ -2435,7 +2436,7 @@ class JobsController extends Controller
 
         // disavow internal staff from applying to external jobs
         if ($job->is_for == 'external' && $candidate->company_id == $company->id) {
-            $internalCandidate = "Job is for internal candidate only(Candidate)";
+            $internalCandidate = "Job is for external candidate only(Candidate)";
             mixPanelRecord($internalCandidate, $candidate);
             return redirect()->route('candidate-dashboard')
                 ->withErrors(['warning' => 'You can not apply for this job, It is meant for external candidate']);
@@ -2621,7 +2622,8 @@ class JobsController extends Controller
                 $cv->gender = $data['gender'];
             }
             if ($fields->date_of_birth->is_visible && isset($data['date_of_birth'])) {
-                $cv->date_of_birth = $data['date_of_birth'];
+                $dob = !empty($request->date_of_birth) ? $data['date_of_birth'] : null;
+                $cv->date_of_birth = $dob;
             }
             if ($fields->marital_status->is_visible && isset($data['marital_status'])) {
                 $cv->marital_status = $data['marital_status'];
@@ -2648,7 +2650,7 @@ class JobsController extends Controller
             if ($fields->years_of_experience->is_visible && isset($data['years_of_experience'])) {
                 $cv->years_of_experience = $data['years_of_experience'];
             }
-            if ($fields->graduation_grade->is_visible && isset($data['date_of_birth'])) {
+            if ($fields->graduation_grade->is_visible && isset($data['graduation_grade'])) {
                 $cv->graduation_grade = $data['graduation_grade'];
             }
             if (isset($fields->school->is_visible) && $fields->school->is_visible && isset($data['school'])) {
@@ -2786,6 +2788,7 @@ class JobsController extends Controller
 
             $application = "Candidate Job Application was Successful(Candidate)";
             mixPanelRecord($application, $candidate);
+
             return redirect()->route('job-applied', [$jobID, $slug]);
 
         }
@@ -2813,8 +2816,8 @@ class JobsController extends Controller
         if(Str::contains($referer_url, 'job/share'))
                 $fromShareURL = true;
 
-	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
-
+        $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
+        
         $application = "Candidate Opened Job Application Form(Candidate)";
         mixPanelRecord($application, $candidate);
 
@@ -3506,6 +3509,7 @@ class JobsController extends Controller
 
         $embed_code = "<div id='SH_Embed'></div><script src='" .$domain_url. "'></script><script type='text/javascript'>document.getElementById('SH_Embed').innerHTML=SH_Embed.pull({key : '" . $key . "', base_url : '" . $base_url . "'});</script>";
         mixPanelRecord("Embed Page Accessed (Admin)", auth()->user());
+
         return view('settings.embed', compact('embed_code'));
     }
 

@@ -267,7 +267,11 @@
                       @else
 
                         @php 
-                          @$other_gender += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] @endphp
+                          @$other_gender += isset($result['facet_counts']['facet_fields']['gender'][ $key + 1 ]) &&
+                          is_numeric($result['facet_counts']['facet_fields']['gender'][ $key + 1 ]) ?
+                          $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] : 0;
+                          
+                          @endphp
                       @endif
                   @endforeach
                   
@@ -298,7 +302,10 @@
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="cv_source" data-value="{{ $cv_source }}"> {{ ucwords( $cv_source )." (".$result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ].")" }}</label> <br></div>
                       @else
 
-                        @php @$other_highest_qualification += $result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ] @endphp
+                        @php @$other_highest_qualification += isset($result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ]) &&
+                        is_numeric($result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ]) ?
+                        $result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ] : 0;
+                        @endphp
 
                       @endif
                   @endforeach
@@ -445,7 +452,10 @@
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="highest_qualification" data-value="{{ $highest_qualification }}"> {{ ucwords( $highest_qualification )." (".$result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ].")" }}</label> <br></div>
                       @else
 
-                        @php @$other_highest_qualification += $result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ] @endphp
+                        @php @$other_highest_qualification += isset($result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ])
+                        && is_numeric($result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ]) ? 
+                        $result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ] : 0 ;
+                        @endphp
 
                       @endif
                   @endforeach
@@ -496,7 +506,11 @@
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="state" data-value="{{ $state }}"> {{ ucwords( $state )." (".$result['facet_counts']['facet_fields']['state'][ $key + 1 ].")" }}</label> <br></div>
                       @else
 
-                        @php @$other_state += $result['facet_counts']['facet_fields']['state'][ $key + 1 ] @endphp
+                        @php @$other_state += isset($result['facet_counts']['facet_fields']['state'][ $key + 1 ]) &&
+                        is_numeric($result['facet_counts']['facet_fields']['state'][ $key + 1 ]) ? 
+                        $result['facet_counts']['facet_fields']['state'][ $key + 1 ] : 0;
+                        
+                        @endphp
 
                       @endif
                   @endforeach
@@ -576,7 +590,9 @@
                         </label> <br></div>
                       @else
 
-                        @php @$other_willing_to_relocate += $result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ] @endphp
+                        @php @$other_willing_to_relocate += isset($result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ]) &&
+                        is_numeric($result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ]) ?
+                        $result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ] : 0; @endphp
 
                       @endif
                   @endforeach
@@ -601,7 +617,9 @@
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="last_position" data-value="{{ $last_position }}"> {{ ucwords( $last_position )." (".$result['facet_counts']['facet_fields']['last_position'][ $key + 1 ].")" }}</label> <br></div>
                       @else
 
-                        @php @$other_edu_school += $result['facet_counts']['facet_fields']['last_position'][ $key + 1 ] @endphp
+                        @php @$other_edu_school += isset($result['facet_counts']['facet_fields']['last_position'][ $key + 1 ]) &&
+                        is_numeric($result['facet_counts']['facet_fields']['last_position'][ $key + 1 ]) ? 
+                        $result['facet_counts']['facet_fields']['last_position'][ $key + 1 ] : 0; @endphp
 
                       @endif
                   @endforeach
@@ -627,7 +645,9 @@
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="last_company_worked" data-value="{{ $last_company_worked }}"> {{ ucwords( $last_company_worked )." (".$result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ].")" }}</label> <br></div>
                       @else
 
-                        @php @$other_exp_company += $result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ] @endphp
+                        @php @$other_exp_company += isset($result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ]) &&
+                        is_numeric($result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ]) ?
+                        $result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ] : 0; @endphp
 
                       @endif
                   @endforeach

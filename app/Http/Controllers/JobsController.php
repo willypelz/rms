@@ -2186,6 +2186,8 @@ class JobsController extends Controller
                     break;
 
                 default:
+                $status_type = $type;
+
                     if (!is_null($ac->application)) {
                     $applicant = $ac->application->cv;
                     $content .= '<li role="candidate-application" class="list-group-item">
@@ -2195,10 +2197,10 @@ class JobsController extends Controller
                                     <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
                                   </span>
 
-                                  <h5 class="no-margin text-info">' . $ac->application->status . '</h5>
+                                  <h5 class="no-margin text-info">' . @$status_type . '</h5>
                                   <p>
                                       <small class="text-muted pull-right">[' . date('D, j-n-Y, h:i A', strtotime($ac->created_at)) . ']</small>
-                                      <a href="' . url('applicant/activities/' . $ac->application->id) . '" target="_blank">' . $applicant->first_name . ' ' . $applicant->last_name . '</a> has been moved to <strong>' . $ac->application->status . '</strong> by <strong>' . (is_null(@$ac->user->name) ? 'Admin' : @$ac->user->name) . '</strong>.
+                                      <a href="' . url('applicant/activities/' . $ac->application->id) . '" target="_blank">' . $applicant->first_name . ' ' . $applicant->last_name . '</a> has been moved to <strong>' . @$status_type . '</strong> by <strong>' . (is_null(@$ac->user->name) ? 'Admin' : @$ac->user->name) . '</strong>.
                                   </p>
                                 </li>';
                     }

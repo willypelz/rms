@@ -283,6 +283,8 @@ class JobsController extends Controller
      */
     public function JobTeamAdd(Request $request)
     {
+        $start = "Initiated Create Job Team(Admin)";
+        mixPanelRecord($start, auth()->user());
 
         try {
             if ($request->mod) {
@@ -393,6 +395,8 @@ class JobsController extends Controller
                     ];
 
                     if (JobTeamInvite::where('job_id', $data['job_id'])->where('email', $data['email'])->count()) {
+                        $jobteam = "Failed! Invitee has been added previously (Admin)";
+                        mixPanelRecord($jobteam, auth()->user());
                         return response()->json(['status' => false, 'message' => $data['name'] . ' has been invited already']);
                     }
 
@@ -416,10 +420,15 @@ class JobsController extends Controller
                         $m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
                     });
 
+                    $jobteam = "Successfully added a member to the Job team(Admin)";
+                    mixPanelRecord($jobteam, auth()->user());
+
                     return response()->json(['status' => true, 'message' => 'Email was sent successfully']);
                 }
             }
         }catch(\Exception $e){
+            $jobteam = "Failed! Could not add a member to the Job team (Admin)";
+            mixPanelRecord($jobteam, auth()->user());
             return back()->with('error','Action failed');
         }
     }
@@ -786,17 +795,22 @@ class JobsController extends Controller
                 $user->roles()->attach($admin_role);
             }
 
-            if(!isset($request->is_ajax))
+            if(!isset($request->is_ajax)){
+                $jobSuccess = "Step 1: Job Created Successfully (Admin)";
+                mixPanelRecord($jobSuccess, $user);
                 return redirect()->route('continue-draft', $job->id);
-            else
+            }else{
                 $redirect_url = route('job-list');
-
+            }
 
             if($job){
+                $jobSuccess = "Job Saved As Draft Successfully (Admin)";
+                mixPanelRecord($jobSuccess, $user);
                 return ['status' => 200, 'message' => ' Your job has been saved as DRAFT', 'is_update' => $is_update, 'redirect_url'=> $redirect_url ];
             }else
+                $jobfailed = "Could not Save Job As Draft(Admin)";
+                mixPanelRecord($jobfailed, $user);
                 return ['status' => 500, 'message'=>'Your job cannot be saved as DRAFT. Please try again later'];
-
 
         }
     }

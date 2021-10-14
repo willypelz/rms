@@ -55,6 +55,18 @@
   <input type="hidden" name="">
 </div>
 <div class="form-group">
+  <div class="input-group">
+    <span class="input-group-addon"><i class="fa fa-file"></i></span>
+    <select placeholder="Choose Interview Note" class="select2" name="interview_template_ids[]" id="interview_notes" multiple="multiple" required style="width: 100% !important;">
+      <option disabled value="">--choose interview note--</option>
+      @foreach($interview_notes as $key => $interview_note)
+      <option value="{{$interview_note->id}}">{{$interview_note->name}}</option>
+      @endforeach
+    </select>
+  </div>
+  <input type="hidden" name="">
+</div>
+<div class="form-group">
   <br>
   <label><strong>Message: </strong></label>
   <textarea class="form-control" id="interview-message" placeholder="Message" required> </textarea>
@@ -67,6 +79,7 @@
 <div class="clearfix"></div>
 <script type="text/javascript">
   $('#interviewer_id').select2();
+  $('#interview_notes').select2();
   $('.datepicker').datetimepicker();
   var form_data = new FormData();
   var app_ids = <?php echo json_encode($app_ids); ?>;
@@ -96,6 +109,11 @@
       form_data.append('interviewer_id', '');
     } else {
       form_data.append('interviewer_id[]', $('#interviewer_id').val());
+    }
+    if ($('#interview_notes').val() == null) {
+      form_data.append('interview_template_ids[]', '');
+    } else {
+      form_data.append('interview_template_ids[]', $('#interview_notes').val());
     }
     form_data.append('reschedule', reschedule);
     $field = $(this);

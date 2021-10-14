@@ -94,8 +94,9 @@
                                 <div class="col-sm-6 col-sm-offset-3 text-center">
                                     <div id="act_loader"
                                          style="display:none">{!! preloader() !!}</div>
-                                    <button onclick="getCon(true); $('#act_loader').show(); activities_index++"
-                                            class="btn btn-default">Show more activities
+                                    <div class="alert alert-danger" id="errorShowMoreActivities" style="display:none"></div>
+                                    <button onclick="getCon(true); activities_index++"
+                                            class="btn btn-default">Show more activities 
                                     </button>
                                 </div>
                             </div>
@@ -195,6 +196,7 @@
 
     <script>
     var activities_index = 1;
+    let counterShowActivitiesClicked = 0;
     $('#ActivityContent').html('{!! preloader() !!}');
 
     var url = "{{ route('get-activity-content') }}";
@@ -202,29 +204,37 @@
     setTimeout(function () { getCon(); }, 2000);
 
     function getCon(allActivities = false) {
-        $.ajax
-        ({
-            type: 'POST',
-            url: url,
-            data: ({
-                rnd: Math.random() * 100000,
-                type: 'dashboard',
-                allActivities: allActivities,
-                activities_index: activities_index,
-            }),
-            success: function (response) {
-                if (allActivities) {
-                    $('#ActivityContent').append(response);
-                } else {
-                    $('#ActivityContent').html(response);
-                }
-
-                $('#showAll').show();
-                $('#act_loader').hide();
-            },
-        });
+        if(++counterShowActivitiesClicked > 2){
+            actionOnNoMoreActivitiesToShow();
+        }else{
+            $('#act_loader').show()
+            $.ajax
+            ({
+                type: 'POST',
+                url: url,
+                data: ({
+                    rnd: Math.random() * 100000,
+                    type: 'dashboard',
+                    allActivities: allActivities,
+                    activities_index: activities_index,
+                }),
+                success: function (response) {
+                    if (allActivities && (response.shouldAppend)) {
+                        $('#ActivityContent').append(response.content);
+                    } else {
+                        $('#ActivityContent').html(response.content);
+                    }
+                    $('#showAll').show();
+                },
+            });
+        }
+        $('#act_loader').hide();
     }
 
-
+    function actionOnNoMoreActivitiesToShow(){
+        $("#errorShowMoreActivities").text("No recent activity to display");
+        $("#errorShowMoreActivities").show();
+        return ;
+    }
     </script>
 @endsection

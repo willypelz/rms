@@ -43,21 +43,21 @@ class UploadApplicant implements ShouldQueue
 
             $applicant = $this->applicant;
 
-            $cand['gender'] = $applicant->cv->gender ?? null;
-            $cand['last_company_worked'] = $applicant->cv->last_company_worked ?? null;
-            $cand['dob'] = $applicant->cv->date_of_birth ?? null;
-            $cand['cv_file'] = $applicant->cv->cv_file ?? null;
-            $cand['display_picture'] = $applicant->cv->display_picture ?? null;
-            $cand['years_of_experience'] = $applicant->cv->years_of_experience ?? null;
+            $cand['gender'] = $applicant->cv->gender ?? 'NA';
+            $cand['last_company_worked'] = $applicant->cv->last_company_worked ?? 'NA';
+            $cand['dob'] = $applicant->cv->date_of_birth ?? 'NA';
+            $cand['cv_file'] = $applicant->cv->cv_file ?? 'NA';
+            $cand['display_picture'] = $applicant->cv->display_picture ?? 'NA';
+            $cand['years_of_experience'] = $applicant->cv->years_of_experience ?? 'NA';
             $cand['extracted_content'] = [0];
             $cand['rank'] = 1;
-            $cand['id'] = $applicant->cv_id ?? null;
-            $cand['state'] = $applicant->cv->state ?? null;
-            $cand['first_name'] = $applicant->cv->first_name ?? null;
-            $cand['last_name'] = $applicant->cv->last_name ?? null;
-            $cand['headline'] = $applicant->cv->headline ?? null;
-            $cand['last_modified'] = $applicant->cv->last_modified ?? null;
-            $cand['grade'] = $applicant->cv->graduation_grade ?? null;
+            $cand['id'] = $applicant->cv_id ?? 'NA';
+            $cand['state'] = $applicant->cv->state ?? 'NA';
+            $cand['first_name'] = $applicant->cv->first_name ?? 'NA';
+            $cand['last_name'] = $applicant->cv->last_name ?? 'NA';
+            $cand['headline'] = $applicant->cv->headline ?? 'NA';
+            $cand['last_modified'] = $applicant->cv->last_modified ?? 'NA';
+            $cand['grade'] = $applicant->cv->graduation_grade ?? 'NA';
             $cand['willing_to_relocate'] = $applicant->cv->willing_to_relocate ? true : false;
             $cand['email'] = $applicant->cv->email ?? null;
             $cand['last_position'] = $applicant->cv->last_position ?? null;

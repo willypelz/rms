@@ -42,6 +42,7 @@ class SaveApplicantNotesZip implements ShouldQueue
         $this->jobId = $jobId;
         $this->company = $company;
         $this->admin = $admin;
+        $this->queue = "export";
     }
 
     /**

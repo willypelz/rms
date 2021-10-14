@@ -32,6 +32,7 @@ class NotifyAdminOfCompletedExportJob implements ShouldQueue
       $this->admin = $admin; 
       $this->jobId = $jobId; 
       $this->type = $type; 
+      $this->queue = "export";
     }
 
     /**

@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Curl;
+use Mail;
+use App\Models\Job;
 use App\Http\Requests;
 use App\Libraries\Solr;
-use App\Models\Candidate;
 use App\Models\Company;
-use App\Models\FolderContent;
-use App\Models\Job;
+use App\Models\Candidate;
 use App\Models\JobActivity;
-use Auth;
-use Curl;
 use Illuminate\Http\Request;
-use Mail;
+use App\Models\FolderContent;
+use Illuminate\Support\Facades\Auth;
 
 
 
@@ -93,7 +93,7 @@ class HomeController extends Controller
                 'password' => 'required'
             ]);
             
-            if (Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password])) {
+            if (Auth::guard('candidate')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
                 
             
                 if ($request->redirect_to) {

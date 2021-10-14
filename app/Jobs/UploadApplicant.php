@@ -59,37 +59,38 @@ class UploadApplicant implements ShouldQueue
             $cand['last_modified'] = $applicant->cv->last_modified ?? 'NA';
             $cand['grade'] = $applicant->cv->graduation_grade ?? 'NA';
             $cand['willing_to_relocate'] = $applicant->cv->willing_to_relocate ? true : false;
-            $cand['email'] = $applicant->cv->email ?? 'NA';
-            $cand['last_position'] = $applicant->cv->last_position ?? 'NA';
-            $cand['cv_source'] = $applicant->cv->cv_source ?? 'NA';
-            $cand['highest_qualification'] = $applicant->cv->highest_qualification ?? 'NA';
-            $cand['marital_status'] = $applicant->cv->marital_status ?? 'NA';
-            $cand['phone'] = $applicant->cv->phone ?? 'NA';
-            $cand['state_of_origin'] = $applicant->cv->state_of_origin ?? 'NA';
-            $cand['cover_note'] = $applicant->cover_note ?? 'NA';
-            $cand['job_id'] = $applicant->job_id ?? 'NA';
-            $cand['application_date'] = $applicant->created ?? 'NA';
-            $cand['application_modified'] = $applicant->created ?? 'NA';
-            $cand['application_id'] = $applicant->id ?? 'NA';
-            $cand['is_approved'] = $applicant->is_approved ?? 'NA';
-            $cand['application_status'] = $applicant->status ?? 'NA';
-            $cand['job_title'] = $applicant->job->title ?? 'NA';
-            $cand['course_of_study'] = $applicant->cv->course_of_study ?? 'NA';
-            $cand['school'] = $applicant->cv->school->name ?? 'NA';
-            $cand['applicant_type'] = $applicant->cv->applicant_type ?? 'NA';
-            $cand['hrms_staff_id'] = $applicant->cv->hrms_staff_id ?? 'NA';
-            $cand['hrms_grade'] = $applicant->cv->hrms_grade ?? 'NA';
-            $cand['hrms_dept'] = $applicant->cv->hrms_dept ?? 'NA';
-            $cand['hrms_location'] = $applicant->cv->hrms_location ?? 'NA';
-            $cand['hrms_length_of_stay'] = $applicant->cv->hrms_length_of_stay ?? 'NA';
+            $cand['email'] = $applicant->cv->email ?? null;
+            $cand['last_position'] = $applicant->cv->last_position ?? null;
+            $cand['cv_source'] = $applicant->cv->cv_source ?? null;
+            $cand['highest_qualification'] = $applicant->cv->highest_qualification ?? null;
+            $cand['marital_status'] = $applicant->cv->marital_status ?? null;
+            $cand['phone'] = $applicant->cv->phone ?? null;
+            $cand['state_of_origin'] = $applicant->cv->state_of_origin ?? null;
+            $cand['cover_note'] = $applicant->cover_note ?? null;
+            $cand['job_id'] = $applicant->job_id ?? null;
+            $cand['application_date'] = $applicant->created ?? null;
+            $cand['application_modified'] = $applicant->created ?? null;
+            $cand['application_id'] = $applicant->id ?? null;
+            $cand['is_approved'] = $applicant->is_approved ?? null;
+            $cand['application_status'] = $applicant->status ?? null;
+            $cand['job_title'] = $applicant->job->title ?? null;
+            $cand['course_of_study'] = $applicant->cv->course_of_study ?? null;
+            $cand['school'] = $applicant->cv->school->name ?? null;
+            $cand['applicant_type'] = $applicant->cv->applicant_type ?? null;
+            $cand['hrms_staff_id'] = $applicant->cv->hrms_staff_id ?? null;
+            $cand['hrms_grade'] = $applicant->cv->hrms_grade ?? null;
+            $cand['hrms_dept'] = $applicant->cv->hrms_dept ?? null;
+            $cand['hrms_location'] = $applicant->cv->hrms_location ?? null;
+            $cand['hrms_length_of_stay'] = $applicant->cv->hrms_length_of_stay ?? null;
             
             //custom fields
             foreach ($this->applicant->custom_fields as $key=>$value) {
-                if($value->form_field != null && isset($value->form_field->name)){
-                    $cand[str_slug($value->form_field->name,'_')] = ($value->value ?? 'NA');
+                if($value->form_field != null && isset($value->form_field->name) && isset($value->value)){
+                    $cand['custom_field_name'][] = str_slug($value->form_field->name,'_');
+                    $cand['custom_field_value'][] = ($value->value ?? null);
                 }
             }
-
+            info('commenced push to solr');
             SolrPackage::create_new_document($cand);
     }
 }

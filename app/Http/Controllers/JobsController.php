@@ -896,6 +896,9 @@ class JobsController extends Controller
             Job::find($id)->update(['status' => 'ACTIVE']);
 
             Session::flash('flash_message', 'Congratulations! Your job has been posted on ' . $flash_boards . '. You will begin to receive applications from those job boards shortly - <i>this is definite</i>.');
+            
+            $jobApproved = "Step 4: Job Confirmed and Approved successfully Page(Admin)";
+            mixPanelRecord($jobApproved, auth()->user());
 
             return redirect()->route('job-candidates', $job->id);
     }
@@ -907,6 +910,9 @@ class JobsController extends Controller
         $selected_form_fields = $job->form_fields;
 
         $job_specializations = $job->specializations->take(3)->pluck('name');
+
+        $jobConfirm = "Step 3: Proceeded to Job Confirmation Page(Admin)";
+        mixPanelRecord($jobConfirm, auth()->user());
 
         return view('job.confirm-job-post', compact('job', 'selected_fields', 'job_specializations', 'selected_form_fields'));
     }
@@ -979,8 +985,12 @@ class JobsController extends Controller
             $redirect_url = route('confirm-job-post', $id);
 
             if($request->ajax()){
+                $continue = "Step 2: Job Saved as Draft Successfully(Admin)";
+                mixPanelRecord($continue, auth()->user());
                 return ['status' => 200, 'message' => ' Your job details has been updated and saved as DRAFT', 'is_update' => true, 'redirect_url' => $redirect_url ];
             }else
+                $continue = "Step 2: Job Updated with Custom Fields and Form Fields Successfully(Admin)";
+                mixPanelRecord($continue, auth()->user());
                 return redirect()->route('confirm-job-post', $id);
         }
 
@@ -1202,6 +1212,9 @@ class JobsController extends Controller
         }else{
             $job = NULL;
             $job_specilizations = [];
+
+            $start = "Initiated Create Job(Admin)";
+            mixPanelRecord($start, auth()->user());
         }
 
         // Another approach.. Get data from session
@@ -1730,9 +1743,11 @@ class JobsController extends Controller
         $cv_arrayray = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
 
-        if(!empty($cv_array))
+        if(!empty($cv_array)){
             $myFolders = array_unique(array_pluck($cv_array, 'cv_source'));
+        }
 
+        mixPanelRecord("Job promote page accessed", auth()->user());
 
         return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
     }
@@ -2315,6 +2330,13 @@ class JobsController extends Controller
             $closed = false;
         }
 	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
+        
+        if(auth()->guard('candidate')->check()){
+
+            $candidate = auth()->guard('candidate')->user();
+            $application = "Candidate Viewed Job(Candidate)";
+            mixPanelRecord($application, $candidate);
+        }
 
 	    return view('job.job-details', compact('job', 'company', 'closed', 'privacy_policy'));
 
@@ -2376,6 +2398,8 @@ class JobsController extends Controller
             
             if (empty($checkEmail) || is_null($checkEmail)) {
     
+                $oldCandidate = "Candidate has applied for the job previously (Candidate)";
+                mixPanelRecord($oldCandidate, $candidate);
                 return redirect()->to('/candidate/dashboard')->with('error','You are not listed to apply for this job');
             }
         }
@@ -2400,12 +2424,16 @@ class JobsController extends Controller
 
         if($candidate->is_from == 'external' && $job->is_for == 'internal')
         {
+            $externalCandidate = "Job is for internal candidate only(Candidate)";
+            mixPanelRecord($externalCandidate, $candidate);
             return redirect()->route('candidate-dashboard')
             ->withErrors(['warning' => 'You can not apply for this job, It is meant for Internal candidate']);
         }
 
         // disavow internal staff from applying to external jobs
         if ($job->is_for == 'external' && $candidate->company_id == $company->id) {
+            $internalCandidate = "Job is for external candidate only(Candidate)";
+            mixPanelRecord($internalCandidate, $candidate);
             return redirect()->route('candidate-dashboard')
                 ->withErrors(['warning' => 'You can not apply for this job, It is meant for external candidate']);
         }

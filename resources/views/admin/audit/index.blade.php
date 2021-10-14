@@ -25,7 +25,7 @@
                                         <td>{{$key + 1}}</td>
 
                                         <td>
-                                            {{ isset($audit->causer) ? $audit->causer->name : (isset($audit->candidate) ? $audit->candidate->getNameA : 'N/A')}}
+                                            {{ isset($audit->causer) ? $audit->causer->name : (isset($audit->candidate) ? $audit->candidate->getNameAttribute() : 'N/A')}}
                                         </td>
 
                                         <td>

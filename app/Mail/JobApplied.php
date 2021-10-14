@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 class JobApplied extends Mailable
 {
     use Queueable, SerializesModels;
-
+    
     public $user;
     /**
      * Create a new message instance.
@@ -30,6 +30,6 @@ class JobApplied extends Mailable
     public function build()
     {
         return $this->subject('Thank you for applying')
-            ->markdown('emails.job-application-success');
+                    ->markdown('emails.job-application-success');
     }
 }

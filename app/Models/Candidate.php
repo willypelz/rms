@@ -7,9 +7,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Candidate extends Authenticatable
 {
 
-    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'remember_token','token','is_from','company_id'];
+    protected $fillable = [
+        'first_name', 'last_name', 'email', 
+        'password', 'remember_token','token',
+        'is_from','company_id'
+    ];
 
-    public function name()
+    public function getNameAttribute()
     {
         $first = ucfirst($this->first_name);
         $last = ucfirst($this->last_name);

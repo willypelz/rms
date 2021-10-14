@@ -19,7 +19,7 @@ class MessageObserver
     
             $param = [
                 'log_name' => 'Admin sent a message ',
-                'description' => isset($message->job_application->candidate) ? 'Message was sent to '.$message->job_application->candidate->name() : 'Message was sent to Candidate',
+                'description' => isset($message->job_application->candidate) ? 'Message was sent to '.$message->job_application->candidate->getNameAttribute() : 'Message was sent to Candidate',
                 'action_id' => $message->id,
                 'action_type' => 'App\Models\Message',
                 'causee_id' => isset($message->job_application->candidate) ? $message->job_application->candidate_id : null,
@@ -33,7 +33,7 @@ class MessageObserver
         if(auth()->guard('candidate')->check()){
             $param = [
                'log_name' => 'Applicant sent a message',
-               'description' => 'Message was sent from '.auth()->guard('candidate')->user()->name(),
+               'description' => 'Message was sent from '.auth()->guard('candidate')->user()->getNameAttribute(),
                'action_id' => $message->id,
                'action_type' => 'App\Models\Message',
                'causee_id' =>  null,

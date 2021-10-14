@@ -25,7 +25,7 @@
                                         <td>{{$key + 1}}</td>
 
                                         <td>
-                                            {{ isset($audit->causer) ? $audit->causer->name : (isset($audit->candidate) ? $audit->candidate->name() : 'N/A')}}
+                                            {{ isset($audit->causer) ? $audit->causer->name : (isset($audit->candidate) ? $audit->candidate->getNameAttribute() : 'N/A')}}
                                         </td>
 
                                         <td>
@@ -39,7 +39,7 @@
                                         </td>
                                     
                                         <td>
-                                            {{ isset($audit->subject) ? $audit->subject->name : (isset($audit->candidateSubject) ? $audit->candidateSubject->name() : 'N/A')}}
+                                            {{ isset($audit->subject) ? $audit->subject->name : (isset($audit->candidateSubject) ? $audit->candidateSubject->getNameAttribute() : 'N/A')}}
                                         </td>
 
                                         <td>

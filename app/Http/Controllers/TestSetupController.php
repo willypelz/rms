@@ -63,10 +63,6 @@ class TestSetupController extends Controller
                 $ats_product = AtsProduct::updateOrCreate([
                     'ats_service_id'=>$request->test_name_id,//$ats_service->id,
                     'name' => $request->test_name,
-                    'ats_provider_id' => 3, //insidfy ID
-                ],
-                [
-                    'summary' => $request->test_summary,
                     'details' => $request->test_details ?? null,
                     'active' => 1,
                     'modified' => $time 

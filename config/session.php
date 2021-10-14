@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'lifetime' => 120,
+    'lifetime' => env("IDLE_PERIOD_SESSION_TIMEOUT", 1500),
 
     'expire_on_close' => false,
 
@@ -150,6 +150,6 @@ return [
 
     'secure' => false,
 
-    'idle_period_session_timeout' => env("IDLE_PERIOD_SESSION_TIMEOUT", 900)
+    'idle_period_session_timeout' => env("IDLE_PERIOD_SESSION_TIMEOUT", 1500)
 
 ];

@@ -78,6 +78,7 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
            SendApplicantsSpreedsheet::dispatch($data,$this->company,$this->admin,$this->filename,$this->cv_ids)->delay(\Carbon\Carbon::now()->addSeconds(10));  
         }
         if($counter == $chunk_count){
+          info('initiated admin notification of export job');
                 $type = "Applicant Spreadsheet";
                 NotifyAdminOfCompletedExportJob::dispatch($this->filename,$this->admin,$type,$this->jobId)->delay(\Carbon\Carbon::now()->addSeconds($number_found < 4000 ? 60 : 240)); 
         }

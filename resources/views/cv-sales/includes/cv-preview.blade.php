@@ -102,7 +102,7 @@
                                     <li>
                                     <strong>School:</strong>&nbsp; {{ !is_null(@$cv['school_id']) ? (isset($cv_school->school->name) ? $cv_school->school->name :'N/A' )  : 'N/A' }}</li>
                                     <li>
-                                    <strong>Course of Study:</strong>&nbsp; {{ (isset($cv['course_of_study']) && is_array($cv['course_of_study'])) ? @$cv['course_of_study'][0] : (@$cv['course_of_study'] ?? "N/A") }}</li>
+                                    <strong>Course of Study:</strong>&nbsp; {{(!is_null(@$cv['course_of_study'])) ? (is_array($cv['course_of_study']) ? $cv['course_of_study'][0] : $cv['course_of_study'] )  : 'N/A' }}</li>
                                     <li>
                                     <strong>Highest Qualification:</strong>&nbsp; {{ @$cv['highest_qualification'] }}</li>
                                     <li>
@@ -214,7 +214,7 @@
                                     <iframe src="https://docs.google.com/viewer?embedded=true&url={{ url( env('fileupload') ).'/CVs/'.($cv['cv_file'] ?? '') }}" style="width:100%;padding-left: 8px;height:600px" frameborder="1"  allowfullscreen webkitallowfullscreen>
                                     {!! preloader() !!}
                                     </iframe>
-
+                                    
                                     @endif
                                 @endif
                                 @if((@$is_applicant || $page == 'pool') && (isset($cv['cv_file']) && $cv['cv_file'] != ""))

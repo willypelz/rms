@@ -2398,8 +2398,8 @@ class JobsController extends Controller
             
             if (empty($checkEmail) || is_null($checkEmail)) {
     
-                $oldCandidate = "Candidate has applied for the job previously (Candidate)";
-                mixPanelRecord($oldCandidate, $candidate);
+                $notPrivateCandidate = "Candidate was not attached to the private job (Candidate)";
+                mixPanelRecord($notPrivateCandidate, $candidate);
                 return redirect()->to('/candidate/dashboard')->with('error','You are not listed to apply for this job');
             }
         }
@@ -2410,6 +2410,8 @@ class JobsController extends Controller
         )->count();
 
         if ($candidate_applied_jobs > 0) {
+            $oldCandidate = "Candidate has applied for the job previously (Candidate)";
+            mixPanelRecord($oldCandidate, $candidate);
             return redirect()->to('/candidate/dashboard')->with('error','You have already applied for this job');
         }
 
@@ -2782,6 +2784,8 @@ class JobsController extends Controller
                 Log::info(json_encode($e));
             }
 
+            $application = "Candidate Job Application was Successful(Candidate)";
+            mixPanelRecord($application, $candidate);
 
             return redirect()->route('job-applied', [$jobID, $slug]);
 
@@ -2810,7 +2814,10 @@ class JobsController extends Controller
         if(Str::contains($referer_url, 'job/share'))
                 $fromShareURL = true;
 
-	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
+        $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
+        
+        $application = "Candidate Opened Job Application Form(Candidate)";
+        mixPanelRecord($application, $candidate);
 
 	    return view('job.job-apply', compact('job', 'qualifications', 'states', 'company',
 		    'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate',
@@ -3499,6 +3506,7 @@ class JobsController extends Controller
         $base_url = url('/').'/';
 
         $embed_code = "<div id='SH_Embed'></div><script src='" .$domain_url. "'></script><script type='text/javascript'>document.getElementById('SH_Embed').innerHTML=SH_Embed.pull({key : '" . $key . "', base_url : '" . $base_url . "'});</script>";
+        mixPanelRecord("Embed Page Accessed (Admin)", auth()->user());
 
         return view('settings.embed', compact('embed_code'));
     }
@@ -3566,8 +3574,10 @@ class JobsController extends Controller
                 $user->update([
                     'is_super_admin' => $request->role
                 ]);
+                mixPanelRecord("Admin Role Updated successfully (Admin)", auth()->user());
                 return response()->json (['status' => true]);
             } else {
+                mixPanelRecord("Admin creation failed (Admin)", $user);
                 return response()->json([
                     'status' => false,
                     'message' => "you have to manage super admins from HRMS"

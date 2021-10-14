@@ -496,7 +496,9 @@ class JobController extends Controller
 
         $jobApplied = "Internal Candidate Job Application was Successful(Candidate)";
         mixPanelRecord($jobApplied, $candidate);
+        // send email for new job email
         dispatch(new JobApplicationSuccessful($candidate));
+
         UploadApplicant::dispatch($job_application)->onQueue('solr');
 
         return response()->json(

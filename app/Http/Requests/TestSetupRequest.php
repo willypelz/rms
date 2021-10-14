@@ -17,6 +17,19 @@ class TestSetupRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $result = explode('|', $this->test_name);
+        $this->merge([ 
+            "test_name_id"  => trim($result[0] ?? null),
+            "test_name" => trim($result[1] ?? null) 
+        ]);
+    }
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array

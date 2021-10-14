@@ -21,10 +21,10 @@ class JobObserver
     public function created(Job $job)
     {
         //
-        if (auth()->check()) {
+        if(auth()->check()){
             $param = [
                 'log_name' => 'Created Job',
-                'description' => 'Created a Job' . ' ' . $job->title,
+                'description' => 'Created a Job'.' '.$job->title,
                 'action_id' => $job->id,
                 'action_type' => 'App\Models\Job',
                 'causee_id' => auth()->user()->id,
@@ -53,9 +53,11 @@ class JobObserver
         } else {
             if ($job->is_for == 'both' || $job->is_for == 'internal') {
                 $employees = User::where('activated', 1)->get();
-                dispatch(new SendJobNotice($employees, $job));
-            }
+                dispatch(new SendJobNotice($employees, $job)); 
+            }            
         }
+
+        
     }
 
     /**
@@ -67,12 +69,12 @@ class JobObserver
     public function updated(Job $job)
     {
         //
-        if (auth()->check()) {
+        if(auth()->check()){
             $old = $job->getOriginal('title');
-            if ($job->isDirty('title')) {
+            if($job->isDirty('title')){
                 $param = [
                     'log_name' => 'Updated Job',
-                    'description' => 'Updated Job ' . $old . ' to ' . $job->title,
+                    'description' => 'Updated Job '.$old.' to '.$job->title,
                     'action_id' => $job->id,
                     'action_type' => 'App\Models\Job',
                     'causee_id' => auth()->user()->id,
@@ -80,10 +82,10 @@ class JobObserver
                     'causer_type' => 'Admin',
                     'properties' => '',
                 ];
-            } else {
+            }else{
                 $param = [
                     'log_name' => 'Updated Job',
-                    'description' => 'Updated Job ' . $job->title,
+                    'description' => 'Updated Job '.$job->title,
                     'action_id' => $job->id,
                     'action_type' => 'App\Models\Job',
                     'causee_id' => auth()->user()->id,
@@ -92,9 +94,10 @@ class JobObserver
                     'properties' => '',
                 ];
             }
-
+            
 
             logAction($param);
+           
         }
     }
 
@@ -107,7 +110,7 @@ class JobObserver
     public function deleted(Job $job)
     {
         //
-        if (auth()->check()) {
+        if(auth()->check()){
             $param = [
                 'log_name' => 'Delete a Job',
                 'description' => 'Deleted a Job',
@@ -120,6 +123,7 @@ class JobObserver
             ];
 
             logAction($param);
+           
         }
     }
 

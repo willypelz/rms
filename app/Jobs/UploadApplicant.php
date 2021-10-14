@@ -90,7 +90,7 @@ class UploadApplicant implements ShouldQueue
                     $cand['custom_field_value'][] = ($value->value ?? null);
                 }
             }
-
+            info('commenced push to solr');
             SolrPackage::create_new_document($cand);
     }
 }

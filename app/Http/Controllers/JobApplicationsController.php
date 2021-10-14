@@ -1796,11 +1796,13 @@ class JobApplicationsController extends Controller
                 'description' => $request->description,
                 'company_id' => get_current_company()->id
             ]);
-
+            $createInterviewNotes = "Successfully Created Interview Notes Template(Admin)";
+            mixPanelRecord($createInterviewNotes, auth()->user());
             return redirect()->route("interview-note-templates")->with(["success" => 'New Template has been created']);
         }
 
-
+        $createInterviewNotes = "Initiated Create Interview Notes Template (Admin)";
+        mixPanelRecord($createInterviewNotes, auth()->user());
         return view('job.interview-note-template-create', compact('interview_note_option'));
     }
 

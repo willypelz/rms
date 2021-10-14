@@ -91,7 +91,7 @@
                                                     <option value="">--select test name--</option>
                                                 @forelse($test_names as $test_name)
                                                      <option value="{{$test_name->id.'|'.$test_name->name}}">{{$test_name->name}}</option>
-                                                     <input type="hidden" value="{{$test_name->id}}"" name="test_name_id">
+                                                     {{-- <input type="hidden" value="{{$test_name->id}}"" name="test_name_id"> --}}
                                                 @empty
                                                   <option value="">No question is setup on the question platform, contact admin to help you create one </option>
                                                 @endforelse

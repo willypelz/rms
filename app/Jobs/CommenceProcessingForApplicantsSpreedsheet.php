@@ -52,6 +52,7 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
       $this->solr_video_application_score = $solr_video_application_score;
       $this->solr_test_score = $solr_test_score;
       $this->cv_ids = $cv_ids;
+      $this->queue = "export";
     }
 
     /**
@@ -77,6 +78,7 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
            SendApplicantsSpreedsheet::dispatch($data,$this->company,$this->admin,$this->filename,$this->cv_ids)->delay(\Carbon\Carbon::now()->addSeconds(10));  
         }
         if($counter == $chunk_count){
+          info('initiated admin notification of export job');
                 $type = "Applicant Spreadsheet";
                 NotifyAdminOfCompletedExportJob::dispatch($this->filename,$this->admin,$type,$this->jobId)->delay(\Carbon\Carbon::now()->addSeconds($number_found < 4000 ? 60 : 240)); 
         }

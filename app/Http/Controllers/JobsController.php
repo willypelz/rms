@@ -7,7 +7,9 @@ use Cart;
 use Curl;
 use File;
 use Mail;
+use Crypt;
 use Charts;
+use Session;
 use App\User;
 use App\Models\Cv;
 use Carbon\Carbon;
@@ -15,6 +17,7 @@ use App\Models\Job;
 use App\Models\Role;
 use App\Enum\Configs;
 use App\Http\Requests;
+use App\Jobs\UploadSolrFromCode;
 use App\Models\School;
 use App\Libraries\Solr;
 use App\Models\Company;
@@ -41,15 +44,12 @@ use App\Models\Specialization;
 use App\Models\FormFieldValues;
 use App\Rules\PrivateEmailRule;
 use App\Imports\PrivateJobEmail;
-use App\Jobs\UploadSolrFromCode;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Crypt;
 use App\Models\VideoApplicationValues;
 use App\Models\VideoApplicationOptions;
-use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\HeadingRowImport;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\CvSalesController;
@@ -283,8 +283,6 @@ class JobsController extends Controller
      */
     public function JobTeamAdd(Request $request)
     {
-        $start = "Initiated Create Job Team(Admin)";
-        mixPanelRecord($start, auth()->user());
 
         try {
             if ($request->mod) {
@@ -395,8 +393,6 @@ class JobsController extends Controller
                     ];
 
                     if (JobTeamInvite::where('job_id', $data['job_id'])->where('email', $data['email'])->count()) {
-                        $jobteam = "Failed! Invitee has been added previously (Admin)";
-                        mixPanelRecord($jobteam, auth()->user());
                         return response()->json(['status' => false, 'message' => $data['name'] . ' has been invited already']);
                     }
 
@@ -420,15 +416,10 @@ class JobsController extends Controller
                         $m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
                     });
 
-                    $jobteam = "Successfully added a member to the Job team(Admin)";
-                    mixPanelRecord($jobteam, auth()->user());
-
                     return response()->json(['status' => true, 'message' => 'Email was sent successfully']);
                 }
             }
         }catch(\Exception $e){
-            $jobteam = "Failed! Could not add a member to the Job team (Admin)";
-            mixPanelRecord($jobteam, auth()->user());
             return back()->with('error','Action failed');
         }
     }
@@ -795,21 +786,15 @@ class JobsController extends Controller
                 $user->roles()->attach($admin_role);
             }
 
-            if(!isset($request->is_ajax)){
-                $jobSuccess = "Step 1: Job Created Successfully (Admin)";
-                mixPanelRecord($jobSuccess, $user);
-                 return redirect()->route('continue-draft', $job->id);
-            }else
+            if(!isset($request->is_ajax))
+                return redirect()->route('continue-draft', $job->id);
+            else
                 $redirect_url = route('job-list');
 
 
             if($job){
-                $jobSuccess = "Job Saved As Draft Successfully (Admin)";
-                mixPanelRecord($jobSuccess, $user);
                 return ['status' => 200, 'message' => ' Your job has been saved as DRAFT', 'is_update' => $is_update, 'redirect_url'=> $redirect_url ];
             }else
-                $jobfailed = "Could not Save Job As Draft(Admin)";
-                mixPanelRecord($jobfailed, $user);
                 return ['status' => 500, 'message'=>'Your job cannot be saved as DRAFT. Please try again later'];
 
 
@@ -897,9 +882,6 @@ class JobsController extends Controller
             Job::find($id)->update(['status' => 'ACTIVE']);
 
             Session::flash('flash_message', 'Congratulations! Your job has been posted on ' . $flash_boards . '. You will begin to receive applications from those job boards shortly - <i>this is definite</i>.');
-            
-            $jobApproved = "Step 4: Job Confirmed and Approved successfully Page(Admin)";
-            mixPanelRecord($jobApproved, auth()->user());
 
             return redirect()->route('job-candidates', $job->id);
     }
@@ -911,9 +893,6 @@ class JobsController extends Controller
         $selected_form_fields = $job->form_fields;
 
         $job_specializations = $job->specializations->take(3)->pluck('name');
-
-        $jobConfirm = "Step 3: Proceeded to Job Confirmation Page(Admin)";
-        mixPanelRecord($jobConfirm, auth()->user());
 
         return view('job.confirm-job-post', compact('job', 'selected_fields', 'job_specializations', 'selected_form_fields'));
     }
@@ -986,12 +965,8 @@ class JobsController extends Controller
             $redirect_url = route('confirm-job-post', $id);
 
             if($request->ajax()){
-                $continue = "Step 2: Job Saved as Draft Successfully(Admin)";
-                mixPanelRecord($continue, auth()->user());
                 return ['status' => 200, 'message' => ' Your job details has been updated and saved as DRAFT', 'is_update' => true, 'redirect_url' => $redirect_url ];
             }else
-                $continue = "Step 2: Job Updated with Custom Fields and Form Fields Successfully(Admin)";
-                mixPanelRecord($continue, auth()->user());
                 return redirect()->route('confirm-job-post', $id);
         }
 
@@ -1213,9 +1188,6 @@ class JobsController extends Controller
         }else{
             $job = NULL;
             $job_specilizations = [];
-
-            $start = "Initiated Create Job(Admin)";
-            mixPanelRecord($start, auth()->user());
         }
 
         // Another approach.. Get data from session
@@ -1744,11 +1716,10 @@ class JobsController extends Controller
         $cv_arrayray = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
 
-        if(!empty($cv_array)){
+        if(!empty($cv_array))
             $myFolders = array_unique(array_pluck($cv_array, 'cv_source'));
-        }
 
-        mixPanelRecord("Job promote page accessed", auth()->user());
+
         return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
     }
 
@@ -1848,12 +1819,14 @@ class JobsController extends Controller
 
 
         $content = '<ul class="list-group list-notify">';
+        $shouldAppend = true;
+        $activities_pager = 20;
+        $isThereMoreActivities = false;
 
-
+       
         if (!empty($request->appl_id)) {
             $activities = JobActivity::with('user', 'application.cv', 'job')->where('job_application_id', $request->appl_id)->orderBy('id', 'desc');
         } elseif ($request->type == 'dashboard') {
-
             $jobs = ($user->is_super_admin) ? Job::where('company_id', $comp_id)->get(['id'])->toArray() : $job_access;
             $activities = JobActivity::with('user', 'application.cv', 'job')->whereIn('job_id', $jobs)->orderBy('id', 'desc');
 
@@ -1861,19 +1834,20 @@ class JobsController extends Controller
         } else {
             $activities = JobActivity::with('user', 'application.cv', 'job', 'job.company')->where('job_id', $request->jobid)->orderBy('id', 'desc');
         }
-
+        
         if (@$request->allActivities == "true") {
             // echo "activity count - " .$activities->count();
-            if ($activities->count() > 20) {
-                $take = $activities->count() - 20;
-                $activities = $activities->skip(20)->take($take)->get();
+            if ($activities->count() > $activities_pager) {
+                $take = $activities->count() - $activities_pager;
+                $activities = $activities->skip($activities_pager)->take($take)->get();
             } else {
                 $activities = $activities->get();
+                $shouldAppend = false;
             }
 
-
         } else if (@$request->allActivities == "false") {
-            $activities = $activities->take(20)->get();
+            $isThereMoreActivities = $activities->count() > $activities_pager;
+            $activities = $activities->take($activities_pager)->get();
             // $activities = $activities->skip( 20 * intval(@$request->activities_index) )->take(20)->get();
         }
 
@@ -1914,7 +1888,7 @@ class JobsController extends Controller
                                   <h5 class="no-margin text-info">Job Application</h5>
                                   <p>
                                       <small class="text-muted pull-right">[' . date('D, j-n-Y, h:i A', strtotime($ac->created_at)) . ']</small>
-                                      <a href="' . url('applicant/activities/' . $ac->application->id) . '" target="_blank">' . $applicant->first_name . ' ' . $applicant->last_name . '</a> applied for <strong><a href="' . url('job/candidates/' . $ac->application->job->id) . '" target="_blank">' . $job->title . '</a></strong>
+                                      <a href="' . url('applicant/activities/' . $ac->application->id) . '" target="_blank">' . @$applicant->first_name . ' ' . @$applicant->last_name . '</a> applied for <strong><a href="' . url('job/candidates/' . $ac->application->job->id) . '" target="_blank">' . $job->title . '</a></strong>
                                   </p>
                                 </li>';
                     }
@@ -2214,7 +2188,7 @@ class JobsController extends Controller
                         </div>';
         }
 
-        return $content;
+        return response()->json(["content" => $content, "shouldAppend" => $shouldAppend, "isThereMoreActivities" => $isThereMoreActivities ]) ;
     }
 
     public function JobActivities($id, Request $request)
@@ -2328,13 +2302,6 @@ class JobsController extends Controller
         }
 	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
 
-        if(auth()->guard('candidate')->check()){
-
-            $candidate = auth()->guard('candidate')->user();
-            $application = "Candidate Viewed Job(Candidate)";
-            mixPanelRecord($application, $candidate);
-        }
-
 	    return view('job.job-details', compact('job', 'company', 'closed', 'privacy_policy'));
 
     }
@@ -2394,9 +2361,6 @@ class JobsController extends Controller
             $checkEmail = PrivateJob::with('job')->where('attached_email', $candidate->email)->first();
             
             if (empty($checkEmail) || is_null($checkEmail)) {
-
-                $notPrivateCandidate = "Candidate was not attached to the private job (Candidate)";
-                mixPanelRecord($notPrivateCandidate, $candidate);
     
                 return redirect()->to('/candidate/dashboard')->with('error','You are not listed to apply for this job');
             }
@@ -2408,8 +2372,6 @@ class JobsController extends Controller
         )->count();
 
         if ($candidate_applied_jobs > 0) {
-            $oldCandidate = "Candidate has applied for the job previously (Candidate)";
-            mixPanelRecord($oldCandidate, $candidate);
             return redirect()->to('/candidate/dashboard')->with('error','You have already applied for this job');
         }
 
@@ -2424,16 +2386,12 @@ class JobsController extends Controller
 
         if($candidate->is_from == 'external' && $job->is_for == 'internal')
         {
-            $externalCandidate = "Job is for internal candidate only(Candidate)";
-            mixPanelRecord($externalCandidate, $candidate);
             return redirect()->route('candidate-dashboard')
             ->withErrors(['warning' => 'You can not apply for this job, It is meant for Internal candidate']);
         }
 
         // disavow internal staff from applying to external jobs
         if ($job->is_for == 'external' && $candidate->company_id == $company->id) {
-            $internalCandidate = "Job is for internal candidate only(Candidate)";
-            mixPanelRecord($internalCandidate, $candidate);
             return redirect()->route('candidate-dashboard')
                 ->withErrors(['warning' => 'You can not apply for this job, It is meant for external candidate']);
         }
@@ -2618,7 +2576,8 @@ class JobsController extends Controller
                 $cv->gender = $data['gender'];
             }
             if ($fields->date_of_birth->is_visible && isset($data['date_of_birth'])) {
-                $cv->date_of_birth = $data['date_of_birth'];
+                $dob = !empty($request->date_of_birth) ? $data['date_of_birth'] : null;
+                $cv->date_of_birth = $dob;
             }
             if ($fields->marital_status->is_visible && isset($data['marital_status'])) {
                 $cv->marital_status = $data['marital_status'];
@@ -2645,7 +2604,7 @@ class JobsController extends Controller
             if ($fields->years_of_experience->is_visible && isset($data['years_of_experience'])) {
                 $cv->years_of_experience = $data['years_of_experience'];
             }
-            if ($fields->graduation_grade->is_visible && isset($data['date_of_birth'])) {
+            if ($fields->graduation_grade->is_visible && isset($data['graduation_grade'])) {
                 $cv->graduation_grade = $data['graduation_grade'];
             }
             if (isset($fields->school->is_visible) && $fields->school->is_visible && isset($data['school'])) {
@@ -2781,8 +2740,7 @@ class JobsController extends Controller
                 Log::info(json_encode($e));
             }
 
-            $application = "Candidate Job Application was Successful(Candidate)";
-            mixPanelRecord($application, $candidate);
+
             return redirect()->route('job-applied', [$jobID, $slug]);
 
         }
@@ -2811,9 +2769,6 @@ class JobsController extends Controller
                 $fromShareURL = true;
 
 	    $privacy_policy = $this->settings->getWithoutPluck(Configs::PRIVACY_KEY);
-
-        $application = "Candidate Opened Job Application Form(Candidate)";
-        mixPanelRecord($application, $candidate);
 
 	    return view('job.job-apply', compact('job', 'qualifications', 'states', 'company',
 		    'specializations', 'grades', 'custom_fields', 'google_captcha_attributes', 'fromShareURL', 'candidate',
@@ -3502,7 +3457,7 @@ class JobsController extends Controller
         $base_url = url('/').'/';
 
         $embed_code = "<div id='SH_Embed'></div><script src='" .$domain_url. "'></script><script type='text/javascript'>document.getElementById('SH_Embed').innerHTML=SH_Embed.pull({key : '" . $key . "', base_url : '" . $base_url . "'});</script>";
-        mixPanelRecord("Embed Page Accessed (Admin)", auth()->user());
+
         return view('settings.embed', compact('embed_code'));
     }
 
@@ -3569,10 +3524,8 @@ class JobsController extends Controller
                 $user->update([
                     'is_super_admin' => $request->role
                 ]);
-                mixPanelRecord("Admin Role Updated successfully (Admin)", auth()->user());
                 return response()->json (['status' => true]);
             } else {
-                mixPanelRecord("Admin creation failed (Admin)", $user);
                 return response()->json([
                     'status' => false,
                     'message' => "you have to manage super admins from HRMS"

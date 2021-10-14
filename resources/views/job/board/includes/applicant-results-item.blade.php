@@ -570,7 +570,11 @@
         <p class="lead" style="">
             <i class="fa-2x fa fa-exclamation-circle"></i><br>
             @if($request->ajax())
-                You have no applicants here.
+                @if(isset($application_statuses[$status]) && ($application_statuses[$status] > 0) )
+                Applicants are currently indexing, this may take a few minutes
+                @else
+                    You have no applicants here.
+                @endif
             @else
                 No candidate matches your search, please <a id="clearAllFilters" href="javacript://"> &nbsp; <i
                             class="fa fa-times" class="text-danger"></i>Clear Filters</a>

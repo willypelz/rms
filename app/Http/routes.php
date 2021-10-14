@@ -592,6 +592,12 @@ Route::group(['middleware' => 'web'], function () {
         return view('guest.contact');
     });
 
+    Route::get('/test/solr', ['as' => 'test-solr', 'uses' => 'TestSolrController@index']);
+    Route::post('/test/solr', ['as' => 'test-solr-create', 'uses' => 'TestSolrController@runSolrUpdate']);
+
+    Route::get('/test/setup', ['as' => 'test-setup', 'uses' => 'TestSetupController@index']);
+    Route::post('/test/setup/create', ['as' => 'test-setup-create', 'uses' => 'TestSetupController@create']);
+
     Route::get('download-csv-template',
     ['uses' => 'PrivateJobController@exportCsvTemplate', 
     'as' => 'download-privatejob-template']);

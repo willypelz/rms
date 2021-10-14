@@ -437,7 +437,7 @@
                                                                         <label for="job-title">Minimum Remuneration @if( $fields->remuneration->is_required )
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label>
-                                                                        {{ Form::number('minimum_remuneration', @$last_cv->minimum_remuneration, array('class'=>'form-control',  ( $fields->remuneration->is_required ) ? "required" : "" )) }}
+                                                                        {{ Form::number('minimum_remuneration', @$last_cv->minimum_remuneration, array('class'=>'form-control', 'min' => '0' ,( $fields->remuneration->is_required ) ? "required" : "" )) }}
 
                                                                     </div>
                                                                 
@@ -446,7 +446,7 @@
                                                                             Maximum Remuneration @if( $fields->remuneration->is_required )
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label>
-                                                                        {{ Form::number('maximum_remuneration', @$last_cv->maximum_remuneration, array('class'=>'form-control',  ( $fields->remuneration->is_required ) ? "required" : "" )) }}
+                                                                        {{ Form::number('maximum_remuneration', @$last_cv->maximum_remuneration, array('class'=>'form-control', 'min' => '0' ,( $fields->remuneration->is_required ) ? "required" : "" )) }}
 
                                                                     </div>
                                                                 @endif

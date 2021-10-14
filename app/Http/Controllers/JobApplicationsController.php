@@ -1862,12 +1862,17 @@ class JobApplicationsController extends Controller
                 return redirect()->back()->with(["error" => "weight min must be less than weight max"]);
             }
 
+            $check = !is_null($request->check[0]) ? json_encode($request->check) : null;
+            $drop = !is_null($request->drop[0]) ? json_encode($request->drop) : null;
+            
             InterviewNoteOptions::where('id', $request->id)->where('company_id', get_current_company()->id)->update([
                 'name' => $request->name,
                 'description' => $request->description,
                 'type' => $request->type,
                 'weight_min' => $request->weight[0],
                 'weight_max' => $request->weight[1],
+                'check_box'=> $check,
+                'dropdown'=> $drop
             ]);
 
             return redirect()->route("interview-note-options", [ "interview_template_id" => $interview_template->id ])
@@ -1901,6 +1906,8 @@ class JobApplicationsController extends Controller
           if( (count($request->weight) > 0) && ($request->weight[0] > $request->weight[0])  ){
               return redirect()->back()->with(["error" => "weight min must be less than weight max"]);
           }
+          $check_box = !is_null($request->check[0]) ? json_encode($request->check) : null;
+          $drop = !is_null($request->drop[0]) ? json_encode($request->drop) : null;
 
             InterviewNoteOptions::create([
                 'name' => $request->name,
@@ -1909,7 +1916,9 @@ class JobApplicationsController extends Controller
                 'weight_min' => $request->weight[0],
                 'weight_max' => $request->weight[1],
                 'company_id' => get_current_company()->id,
-                'interview_template_id' => $request->interview_template_id
+                'interview_template_id' => $request->interview_template_id,
+                'check_box'=> $check_box,
+                'dropdown'=>$drop
             ]);
 
             return redirect()->route("interview-note-options", [ "interview_template_id" => $interview_template->id ])

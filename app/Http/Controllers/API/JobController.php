@@ -216,7 +216,9 @@ class JobController extends Controller
                 'jobs.specializations',
                 'jobs.company',
             ]
-        );
+        )->when($request->hrms_id, function($q) use($request){
+            return $q->where('hrms_id', $request->hrms_id);
+        });
 
         if (is_null($company_id))
             $company = $company->first();

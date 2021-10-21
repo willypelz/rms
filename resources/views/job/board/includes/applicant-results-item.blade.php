@@ -68,12 +68,12 @@
                         @endif
                         
                         @if(sizeof(percentageOf($cv['application_id'])) > 0)
-                            <p class="text-muted">
+                            {{-- <p class="text-muted">
                                 % Score(s):
                                 @foreach(percentageOf($cv['application_id']) as $percentage)
                                     {{ $percentage->test_name }} - {{ $percentage->percentage }}%
                                 @endforeach
-                            </p>
+                            </p> --}}
                         @else
                             <p class="text-warning">No test requested for candidate</p>
                         @endif

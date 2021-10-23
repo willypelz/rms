@@ -371,7 +371,7 @@ class LoginController extends Controller
             return ['status' => false, 'message' => 'API key not valid'];
         }else{
             $user_result =  $user && $user->roles->count() ? $user :
-                ($team_invite && count(json_decode(($team_invite->role_ids)))  ? $team_invite : null);
+                ($team_invite && is_array(json_decode(($team_invite->role_ids))) && count(json_decode(($team_invite->role_ids)))  ? $team_invite : null);
             if($user_result) {
                 return ['status' => true, 'message' => 'API key is valid and user has a role on RMS'];
             }

@@ -9,11 +9,11 @@
 
                 <div class="col-sm-5 col-sm-offset-1">
                 <h2> Access Denied</h2><hr>
-                   <p class="lead text-muted">Sorry, you do not have authorised access to view this page.</p>
+                   <p class="lead text-muted">Sorry, you do not have authorised access/permission to view this page.</p>
                     
                 </div>
                 <div class="col-sm-5">
-                    <img src="{{ url('/') }}/img/denied.png" width="65%" class="pull-right" alt="">
+                    <img src="{{ url('/') }}/img/denied.png" width="65%" class="pull-right" alt="Access Denied">
                 </div>
             </div>
         </div>

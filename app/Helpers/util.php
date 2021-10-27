@@ -345,7 +345,7 @@ function check_if_job_owner($job_id)
     if (!$company_role && $user->is_super_admin != 1) {
 
         if (!in_array($job_id, $job_access)) {
-            abort(404);
+            abort(403);
         }
     }
 

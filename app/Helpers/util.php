@@ -350,7 +350,7 @@ function check_if_job_owner($job_id)
     if (!$company_role && $user->is_super_admin != 1) {
 
         if (!in_array($job_id, $job_access)) {
-            return redirect()->back()->with('error','Sorry! You do not have the permission to access this page');
+            abort(403);
         }
     }
 

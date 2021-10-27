@@ -82,7 +82,7 @@ class UploadApplicant implements ShouldQueue
             $cand['hrms_dept'] = $applicant->cv->hrms_dept ?? null;
             $cand['hrms_location'] = $applicant->cv->hrms_location ?? null;
             $cand['hrms_length_of_stay'] = $applicant->cv->hrms_length_of_stay ?? null;
-            
+            $cand['edu_school'] = $applicant->cv->school->name ?? null;
             //custom fields
             foreach ($this->applicant->custom_fields as $key=>$value) {
                 if($value->form_field != null && isset($value->form_field->name) && isset($value->value)){

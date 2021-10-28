@@ -106,6 +106,7 @@
                                           $job_title = isset($thirdPartyData['job']) ? $thirdPartyData['job'] : NULL;
                                           $eligibilty = isset($thirdPartyData['request_type']) ? $thirdPartyData['request_type'] : NULL;
                                           $details = isset($thirdPartyData['job_description']) ? $thirdPartyData['job_description'] : NULL;
+                                          $job_summary = isset($thirdPartyData['job_summary']) ? $thirdPartyData['job_summary'] : NULL;
                                         }
                                         $eligibilty = (@isset($job->is_for) ? $eligibilty : ((env('RMS_STAND_ALONE')) ? "external" : NULL));
                                     @endphp

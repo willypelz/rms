@@ -1,4 +1,27 @@
 @if( $result['response']['numFound'] > 0 )
+
+    <?php $applicant_step = $job->workflow->workflowSteps->where('slug', $status)->first() ?>
+    @if($applicant_step && ($applicant_step->type == 'assessment'))
+
+        <a  class="btn btn-line status-1 text-success"
+            data-toggle="modal"
+            data-target="#viewModal"
+            id="modalButton"
+            data-title="Bulk Send Assessment Link"
+            data-view="{{ route('modal-assess', [
+            'jobID' => $jobID,
+            'step' => $applicant_step->name,
+            'stepSlug' => $applicant_step->slug,
+            'stepId' => $applicant_step->id,
+            'operation' => "bulk_send_assessment_link",
+            'status' => $status,
+            ]) }}"
+            data-app-id=""
+            data-cv=""
+            data-type="wide">
+            Bulk Send Assessment Link
+        </a>
+    @endif
     @foreach( @$result['response']['docs'] as $cv )
 
         <?php  $pic = default_color_picture($cv);
@@ -42,7 +65,7 @@
 
                     <?php
                     $appl_status = $cv['application_status'][$current_app_index];
-                    $applicant_step = $job->workflow->workflowSteps->where('slug', $appl_status)->first();?>
+                    ?>
                     
                     @if( @$applicant_step->type == 'assessment' && in_array('can-test', $permissions) && $check_both_permissions)
                         

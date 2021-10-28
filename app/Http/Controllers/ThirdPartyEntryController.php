@@ -34,6 +34,7 @@ class ThirdPartyEntryController extends Controller
         $formData['requisition_id'] = $request->input('requisition_id');
         $formData['job_description'] = $request->input('job_description');
         $formData['hrms_id'] = $request->input('hrms_id');
+        $formData['job_summary'] = $request->input('job_summary');
         // Get all data coming in from thirdparty website
         if ($request->input('intended_action') == 'post-job') {
             // firstOrCreate user account and auth user
@@ -69,6 +70,7 @@ class ThirdPartyEntryController extends Controller
         // store the form_data in session for retrival on job posting page
         session(['third_party_data' => $formData]);
         mixPanelRecord("third Party Entry Successful (Admin)", $request);
+        
         return redirect($redirect_url);
     }
 }

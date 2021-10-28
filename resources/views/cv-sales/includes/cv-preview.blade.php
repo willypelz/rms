@@ -214,7 +214,7 @@
                                     <iframe src="https://docs.google.com/viewer?embedded=true&url={{ url( env('fileupload') ).'/CVs/'.($cv['cv_file'] ?? '') }}" style="width:100%;padding-left: 8px;height:600px" frameborder="1"  allowfullscreen webkitallowfullscreen>
                                     {!! preloader() !!}
                                     </iframe>
-
+                                    
                                     @endif
                                 @endif
                                 @if((@$is_applicant || $page == 'pool') && (isset($cv['cv_file']) && $cv['cv_file'] != ""))

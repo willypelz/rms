@@ -4,10 +4,11 @@ namespace App\Observers;
 
 use App\User;
 use App\Models\Job;
+use App\Models\Company;
 use App\Jobs\SendJobNotice;
-use App\Mail\JobCreatedNotice;
+use Ixudra\Curl\Facades\Curl;
+use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as HttpClient;
-use Illuminate\Support\Facades\Mail;
 
 class JobObserver
 {
@@ -32,7 +33,24 @@ class JobObserver
                 'properties' => '',
             ];
             logAction($param);
-
+        }
+        if (isHrmsIntegrated()) {
+            $company = Company::where('id', $job->company_id)->first();
+            if ($job->is_for == 'both' || $job->is_for == 'internal') {
+                $sendJob = [
+                    'title' => $job->title,
+                    'summary' => $job->summary,
+                    'expiry_date' => $job->expiry_date,
+                    'position' => $job->position,
+                    'hrms_id' => $company->hrms_id
+                ];
+                $response = Curl::to(config('app.staff_strength_url') . 'api/v1/send/notification')
+                    ->withData($sendJob)
+                    ->asJson()
+                    ->get();
+                Log::info($response);
+            }
+        } else {
             if ($job->is_for == 'both' || $job->is_for == 'internal') {
                 $employees = User::where('activated', 1)->get();
                 dispatch(new SendJobNotice($employees, $job)); 

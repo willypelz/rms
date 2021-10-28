@@ -427,9 +427,7 @@ class JobApplicationsController extends Controller
             if($request->status != "")
                 $application_statuses['ALL'] = $application_statuses[$status];
         }
-
         $end = (($start + $this->search_params['row']) > intval($application_statuses['ALL'])) ? $application_statuses['ALL'] : ($start + $this->search_params['row']);
-
         $showing = view('cv-sales.includes.top-summary', [
             'start' => ($start + 1),
             'end' => $end,
@@ -473,7 +471,8 @@ class JobApplicationsController extends Controller
                 'search_results' => $search_results,
                 'search_filters' => $search_filters,
                 'showing' => $showing,
-                'count' => $result['response']['numFound']
+                'count' => $result['response']['numFound'],
+                'status' => $request->status,
             ]);
 
         } else {
@@ -482,7 +481,6 @@ class JobApplicationsController extends Controller
             $video_application_score = [env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END')];
             $test_score = [40, 160];
             $check_both_permissions = checkForBothPermissions($jobID);
-
             return view('job.board.candidates',
                 compact('job',
                     'active_tab',
@@ -1264,8 +1262,8 @@ class JobApplicationsController extends Controller
         $cv_ids = explode(',', @$cv_ids);
         $appl = JobApplication::with('job', 'cv')->find($app_ids[0]);
 
-        if (count($cv_ids) > 1 && count($app_ids) > 1) {
-            $applicant_badge = @$this->getMultipleApplicantBadge($action, count($cv_ids));
+        if (count($cv_ids) > 0 && count($app_ids) > 1) {
+            $applicant_badge = @$this->getMultipleApplicantBadge($action, count($app_ids));
         } else {
             if (count($cv_ids) == 1 && count($app_ids) == 1) {
 
@@ -1287,7 +1285,24 @@ class JobApplicationsController extends Controller
 
     public function modalAssess(Request $request)
     {
-        $modalVars = $this->modalActions('Test', $request->cv_id, $request->app_id);
+        if($request->has("operation") && ($request->query("operation") == 'bulk_send_assessment_link')){
+            $job = Job::with(['form_fields','applicants','workflow.workflowSteps' => function ($q) {
+                            return $q->orderBy('order', 'asc');
+                        }
+                    ])->find($request->query("jobID"));
+            $assessments_workflows = $job->workflow->workflowSteps->filter(function($q) {
+                                        return $q->type == "assessment";
+                                    })->pluck("slug")->toArray();
+            $workflow_step = $request->status;
+            if(in_array(strtoupper($workflow_step), $assessments_workflows)){
+                $application_ids = JobApplication::where("job_id", $request->query("jobID"))->where("status", $workflow_step)->pluck("id")->toArray();
+                $modalVars = $this->modalActions("Current Step [$workflow_step] with", $request->cv_id, implode( ",", $application_ids ));
+            }else{
+                return response()->json(["status" => "error", "errors" => ["Current Workflow Step[$workflow_step] Is not an Assessment Type" ]], 422);
+            }
+        }else{
+            $modalVars = $this->modalActions('Test', $request->cv_id, $request->app_id);
+        }
         if (is_array($modalVars)) {
             extract($modalVars);
         } else {
@@ -1297,7 +1312,6 @@ class JobApplicationsController extends Controller
         $test_available = true;
         $count = count($cv_ids);
         $products = get_current_company()->tests;
-        // $products = AtsProduct::where('company_id', get_current_company()->tests)->get();
         $section = 'TEST';
         $type = "TEST";
         $done_test = array_pluck(TestRequest::whereIn('job_application_id', $app_ids)->get()->toArray(), 'id');
@@ -1935,7 +1949,7 @@ class JobApplicationsController extends Controller
     {
         return '<div class="row" >
       <div class="col-xs-12">
-          <h5 class="text-center text-info text-brandon">' . $action . ' ' . $count . ' applicants?</h5>
+          <h5 class="text-center text-info text-brandon">' . $action . ' (' . $count . ') applicants?</h5>
       </div>
     </div>';
 

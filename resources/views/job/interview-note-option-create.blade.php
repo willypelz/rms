@@ -25,25 +25,25 @@
                             </div>
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" name="name" class="form-control" required>
+                                    <label for="name">Name <span class="text-danger">*</span></label>
+                                    <input type="text" name="name" value="{{ old('name')}}" class="form-control" required>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="description">Description</label>
+                                    <label for="description">Description <span class="text-danger">*</span></label>
                                     <textarea name="description" id="summernote" class="form-control" required>
-
+                                        {{ old('description')}}
                                     </textarea>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="type">Type</label>
-                                    <select id="type" name="type" class="form-control" onchange="hideWeight(this)" required>
+                                    <label for="type">Type <span class="text-danger">*</span></label>
+                                    <select id="type" name="type" class="form-control" onchange="hideWeight(this.value)" required>
                                         <option value="">--select one--</option>
-                                        <option value="text" >Text</option>
-                                        <option value="rating" >Rating</option>
-                                        <option value="checkbox" >Checkbox</option>
-                                        <option value="dropdown" >Dropdown</option>
+                                        <option  {{ old('type') == "text" ? 'selected': '' }} value="text" >Text</option>
+                                        <option  {{ old('type') == "rating" ? 'selected':'' }} value="rating" >Rating</option>
+                                        <option  {{ old('type') == "checkbox" ? 'selected':'' }} value="checkbox" >Checkbox</option>
+                                        <option  {{ old('type') == "dropdown" ? 'selected':'' }} value="dropdown" >Dropdown</option>
                                     </select>
                                 </div>
 
@@ -110,6 +110,8 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#summernote').summernote();
+
+            hideWeight($('#type').val());
         });
 
         const validate = (e)=>{
@@ -192,8 +194,8 @@
         var  drop =  document.getElementsByClassName('drop');
         var i ;
 
-        function hideWeight(e) {
-            if(e.value == 'rating'){
+        function hideWeight(value) {
+            if(value == 'rating'){
                 weightDiv.style.display = 'block';
                 checkDiv.style.display = 'none';
                 dropdownDiv.style.display = 'none';
@@ -205,7 +207,7 @@
                 };
                 weightMin.setAttribute("required", "");
                 weightMax.setAttribute("required", "");
-            }else if(e.value == 'checkbox'){
+            }else if(value == 'checkbox'){
                 checkDiv.style.display = 'block';
                 weightDiv.style.display = 'none';
                 dropdownDiv.style.display = 'none';
@@ -217,7 +219,7 @@
                 }
                 weightMin ? weightMin.removeAttribute("required"):false;
                 weightMax ? weightMax.removeAttribute("required"):false;
-            }else if(e.value == 'dropdown'){
+            }else if(value == 'dropdown'){
                 dropdownDiv.style.display = 'block';
                 weightDiv.style.display = 'none';
                 checkDiv.style.display = 'none';

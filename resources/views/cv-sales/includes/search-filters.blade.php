@@ -18,7 +18,7 @@
               <p class="border-bottom-thin text-muted">Keyword search <i class="fa fa-filter pull-right"></i></p>
               <div class="input-group">
 
-                <input type="text" class="form-control" id="search_keyword" placeholder="keyword">
+                <input type="text" class="form-control" id="search_keyword" placeholder="Search by name">
                 <a class="btn btn-small input-group-addon" href="#" onclick="searchKeyword(); return false;" >GO</a>
               </div>
               <p></p>
@@ -625,6 +625,33 @@
                   @endforeach
 
                   <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_edu_school.")" }}</label> <br></div>
+              </div>
+
+              @if($index > 4)
+                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+              @endif
+
+            <p></p>
+            <p class="border-bottom-thin text-muted">Schools Attended <i class="fa fa-filter pull-right"></i></p>
+              <div class="checkbox-inline">
+                  @php $other_exp_company = 0;
+                   $index = 0  @endphp
+                  @foreach( $result['facet_counts']['facet_fields']['edu_school'] as $key => $school )
+
+                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ] != 0 &&  $school != ''  && $school != "0"  )
+
+                        @php $index++  @endphp
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="edu_school" data-value="{{ $school }}"> {{ ucwords( $school )." (".$result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ].")" }}</label> <br></div>
+                      @else
+
+                        @php @$other_exp_company += isset($result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ]) &&
+                        is_numeric($result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ]) ?
+                        $result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ] : 0; @endphp
+
+                      @endif
+                  @endforeach
+
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_exp_company.")" }}</label> <br></div>
               </div>
 
               @if($index > 4)

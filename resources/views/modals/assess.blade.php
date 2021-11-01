@@ -159,7 +159,7 @@
         var app_ids = <?php echo json_encode($app_ids );?>  ;
         var cv_ids = <?php echo json_encode($cv_ids );?> ;
         var step = "{{ $step }}";
-        var stepId = <?php echo $stepId ?>;
+        var stepId = "{{ $stepId }}";
         var type = "{{ $type }}";
         var has_invoice = false;
 

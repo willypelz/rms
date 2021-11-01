@@ -1123,3 +1123,22 @@ function mixPanelRecord($nameOfPoint, $candidate)
 function substring($string, $start=0, $length=5){
  return (strlen($string) > $length) ?	substr($string, $start, $length) . '...' : $string;
 }
+
+/*
+* Gets the intended company among multiple companies a user belongs to
+* when trying to post a job from HRMS
+* @param $slug company slug
+*/
+function getIntendedCompanyToPostJobTo($slug){
+    try{
+        if(Auth::check()){
+            foreach (Auth::user()->companies as $key => $company) {
+                if ($company->slug == $slug) {
+                    return Session::put('current_company_index', $key);
+                }
+            }
+        }
+    }catch(\Exception $e){
+        return null;
+    }
+}

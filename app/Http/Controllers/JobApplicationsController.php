@@ -3,51 +3,52 @@
 namespace App\Http\Controllers;
 
 use App;
-use App\Imports\BulkImportOfApplicantsToWorkflowStage;
-use App\Exports\ApplicantsExport;
-use App\Exports\InterviewNoteExport;
-use App\Jobs\AddApplicantToExportInBits;
+use PDF;
+use Auth;
+use Curl;
+use File;
+use App\User;
+use Response;
+use Validator;
+use App\Models\Cv;
+use Carbon\Carbon;
+use App\Models\Job;
+use App\Models\Order;
+use App\Models\Interview;
+use App\Models\OrderItem;
 use App\Models\AtsProduct;
 use App\Models\AtsRequest;
 use App\Models\AtsService;
-use App\Models\Cv;
-use App\Models\Interview;
-use App\Models\InterviewNoteOptions;
-use App\Models\InterviewNoteTemplates;
-use App\Models\InterviewNoteValues;
-use App\Models\InterviewNotes;
-use App\Models\Job;
 use App\Models\JobActivity;
-use App\Models\JobApplication;
-use App\Models\Message as CandidateMessage;
-use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\TestRequest;
 use App\Models\Transaction;
-use App\Models\WorkflowStep;
-use App\User;
-use Auth;
-use Carbon\Carbon;
-use Curl;
-use File;
-use Illuminate\Http\Request;
 use Illuminate\Mail\Mailer;
+use App\Models\WorkflowStep;
+use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
+use App\Models\InterviewNotes;
+use App\Models\JobApplication;
+use Spatie\CalendarLinks\Link;
+use App\Jobs\BulkRequestTestJob;
+use App\Exports\ApplicantsExport;
+use App\Models\InterviewNoteValues;
+use App\Exports\InterviewNoteExport;
+use App\Models\InterviewNoteOptions;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Jobs\WorkflowStepWithEmailJob;
+use App\Models\InterviewNoteTemplates;
+use App\Jobs\AddApplicantToExportInBits;
 use Madnest\Madzipper\Facades\Madzipper;
-use PDF;
-use Response;
+use App\Models\Message as CandidateMessage;
+use App\Jobs\CommenceProcessingForApplicantsCV;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
-use Spatie\CalendarLinks\Link;
-use Validator;
-use App\Http\Requests\DownloadApplicantSpreedsheetRequest;
 use App\Http\Requests\DownloadApplicantCvRequest;
+use App\Jobs\CommenceProcessingForInterviewNotes;
+use App\Imports\BulkImportOfApplicantsToWorkflowStage;
 use App\Exceptions\DownloadApplicantsInterviewException;
 use App\Jobs\CommenceProcessingForApplicantsSpreedsheet;
-use App\Jobs\CommenceProcessingForApplicantsCV;
-use App\Jobs\CommenceProcessingForInterviewNotes;
-use App\Jobs\WorkflowStepWithEmailJob;
+use App\Http\Requests\DownloadApplicantSpreedsheetRequest;
 
 
 
@@ -427,9 +428,7 @@ class JobApplicationsController extends Controller
             if($request->status != "")
                 $application_statuses['ALL'] = $application_statuses[$status];
         }
-
         $end = (($start + $this->search_params['row']) > intval($application_statuses['ALL'])) ? $application_statuses['ALL'] : ($start + $this->search_params['row']);
-
         $showing = view('cv-sales.includes.top-summary', [
             'start' => ($start + 1),
             'end' => $end,
@@ -473,7 +472,8 @@ class JobApplicationsController extends Controller
                 'search_results' => $search_results,
                 'search_filters' => $search_filters,
                 'showing' => $showing,
-                'count' => $result['response']['numFound']
+                'count' => $result['response']['numFound'],
+                'status' => $request->status,
             ]);
 
         } else {
@@ -482,7 +482,6 @@ class JobApplicationsController extends Controller
             $video_application_score = [env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END')];
             $test_score = [40, 160];
             $check_both_permissions = checkForBothPermissions($jobID);
-
             return view('job.board.candidates',
                 compact('job',
                     'active_tab',
@@ -1264,8 +1263,8 @@ class JobApplicationsController extends Controller
         $cv_ids = explode(',', @$cv_ids);
         $appl = JobApplication::with('job', 'cv')->find($app_ids[0]);
 
-        if (count($cv_ids) > 1 && count($app_ids) > 1) {
-            $applicant_badge = @$this->getMultipleApplicantBadge($action, count($cv_ids));
+        if (count($cv_ids) > 0 && count($app_ids) > 1) {
+            $applicant_badge = @$this->getMultipleApplicantBadge($action, count($app_ids));
         } else {
             if (count($cv_ids) == 1 && count($app_ids) == 1) {
 
@@ -1287,7 +1286,24 @@ class JobApplicationsController extends Controller
 
     public function modalAssess(Request $request)
     {
-        $modalVars = $this->modalActions('Test', $request->cv_id, $request->app_id);
+        if($request->has("operation") && ($request->query("operation") == 'bulk_send_assessment_link')){
+            $job = Job::with(['form_fields','applicants','workflow.workflowSteps' => function ($q) {
+                            return $q->orderBy('order', 'asc');
+                        }
+                    ])->find($request->query("jobID"));
+            $assessments_workflows = $job->workflow->workflowSteps->filter(function($q) {
+                                        return $q->type == "assessment";
+                                    })->pluck("slug")->toArray();
+            $workflow_step = $request->status;
+            if(in_array(strtoupper($workflow_step), $assessments_workflows)){
+                $application_ids = JobApplication::where("job_id", $request->query("jobID"))->where("status", $workflow_step)->pluck("id")->toArray();
+                $modalVars = $this->modalActions("Current Step [$workflow_step] with", $request->cv_id, implode( ",", $application_ids ));
+            }else{
+                return response()->json(["status" => "error", "errors" => ["Current Workflow Step[$workflow_step] Is not an Assessment Type" ]], 422);
+            }
+        }else{
+            $modalVars = $this->modalActions('Test', $request->cv_id, $request->app_id);
+        }
         if (is_array($modalVars)) {
             extract($modalVars);
         } else {
@@ -1297,7 +1313,6 @@ class JobApplicationsController extends Controller
         $test_available = true;
         $count = count($cv_ids);
         $products = get_current_company()->tests;
-        // $products = AtsProduct::where('company_id', get_current_company()->tests)->get();
         $section = 'TEST';
         $type = "TEST";
         $done_test = array_pluck(TestRequest::whereIn('job_application_id', $app_ids)->get()->toArray(), 'id');
@@ -1402,73 +1417,16 @@ class JobApplicationsController extends Controller
 
         foreach ($request->tests as $key => $test) {
 
-            $orderItems = OrderItem::firstOrCreate([
-                'order_id' => $order->id,
-                'itemId' => $test['id'],
-                'type' => $request->type,
-                'name' => $test['name'],
-                'price' => $test['cost']
-            ]);
-
-            foreach ($request->app_ids as $key3 => $app_id) {
-                $data = [
-                    'location' => @$request->location,
-                    'start_time' => @$request->start_time,
-                    'end_time' => @$request->end_time,
-                    'job_application_id' => $app_id,
-                    'test_id' => $test['id'],
-                    'test_name' => $test['name'],
-                    'test_owner' => $test['owner'],
-                    // 'order_id' => $order->id,
-                    'order_id' => null,
-                    // 'status'=> 'ORDER'
-                    'status' => 'PENDING'
-
-                ];
-
-                // save_activities('TEST_ORDER', @$request->job_id, $request->app_ids );
-
-                $mustBeUnique = ['job_application_id' => $app_id, 'test_id' => $test['id']];
-
-                $test_request = TestRequest::updateOrCreate($mustBeUnique, $data);
-                $test_ids[] = $test_request->id;
-
-                $app = JobApplication::with('cv')->find($app_id);
-
-                JobApplication::massAction(@$request->job_id, @$request->cv_ids, $request->step, $request->stepId);
-
-                $testUrl = env('SEAMLESS_TESTING_APP_URL', 'http://seamlesstesting.com').'/test-request';
-                $data = [
-                    'job_title' => $app->job->title,
-                    'test_id' => $data['test_id'],
-                    'job_application_id' => $app_id,
-                    'applicant_name' => ucwords(@$app->cv->first_name . " " . @$app->cv->last_name),
-                    'applicant_email' => $app->cv->email,
-                    'employer_name' => get_current_company()->name,
-                    'employer_email' => get_current_company()->email,
-                    'start_time' => $data['start_time'],
-                    'end_time' => $data['end_time'],
-                    'webhook_url' => route('save-test-result'),
-                ];
-                $ch = curl_init($testUrl);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-                // execute!
-                $response = curl_exec($ch);
-
-                // close the connection, release resources used
-                curl_close($ch);
-                // Leave this next line untouched, its imperative
-                dump($response);
-            }
-
+            info('commenced bulk test request');
+            BulkRequestTestJob::dispatch($key, $test, $order, $request->all(), get_current_company()); 
+            info('completed job');
             // var_dump($data);
         }
 
 
         $res = [];
+        //TODO: Though $test_ids is no longer in use at the front end, it
+        // needs to be extracted from job and be made available in return response whenever it is to be used in future
         $res = ['total_amount' => $request->total_amount, 'order_id' => $order->id, 'type_ids' => $test_ids];
         return $res;
 
@@ -1935,7 +1893,7 @@ class JobApplicationsController extends Controller
     {
         return '<div class="row" >
       <div class="col-xs-12">
-          <h5 class="text-center text-info text-brandon">' . $action . ' ' . $count . ' applicants?</h5>
+          <h5 class="text-center text-info text-brandon">' . $action . ' (' . $count . ') applicants?</h5>
       </div>
     </div>';
 

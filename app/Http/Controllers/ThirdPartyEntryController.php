@@ -34,6 +34,7 @@ class ThirdPartyEntryController extends Controller
         $formData['requisition_id'] = $request->input('requisition_id');
         $formData['job_description'] = $request->input('job_description');
         $formData['hrms_id'] = $request->input('hrms_id');
+        $formData['job_summary'] = $request->input('job_summary');
         // Get all data coming in from thirdparty website
         if ($request->input('intended_action') == 'post-job') {
             // firstOrCreate user account and auth user

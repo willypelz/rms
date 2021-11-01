@@ -33,7 +33,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
     Route::get('/sso/auto/login/verify/role/{email}/{key}', 'Auth\LoginController@verifyUserHasRole');
     Route::any('admin-accept-invite/{id}/{company_id}',['uses' => 'AdminsController@adminAcceptInvite', 'as' => 'admin-accept-invite']);
-   
+    Route::match( ["get", "post"],'jobs/post-a-job/{id?}', ['uses' => 'JobsController@createJob', 'as' => 'create-job']);
+    Route::post('/third-party/entry', 'ThirdPartyEntryController@index');
 });
 
 Route::post("/api/v1/delete-super-admin", "HrmsIntegrationController@deleteSuperAdmin")->name("delete-super-admin");
@@ -129,7 +130,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::match(['get', 'post'], 'job/edit/confirm/{id}', ['uses' => 'JobsController@confirmJobDetails', 'as' => 'confirm-job-post']);
     Route::match(['get', 'post'], 'jobs/refer-job', ['uses' => 'JobsController@ReferJob', 'as' => 'refer-job']);
     Route::match(['get', 'post'], 'jobs/create-a-job', ['uses' => 'JobsController@createJob', 'as' => 'post-job']);
-    Route::match(['get', 'post'], 'jobs/post-a-job/{id?}', ['uses' => 'JobsController@createJob', 'as' => 'create-job']);
+    
     Route::match(['get', 'post'], 'jobs/create-a-job/{id?}', ['uses' => 'JobsController@createJob', 'as' => 'create-job']);
     Route::match(['get', 'post'], 'jobs/approve/{id}', ['uses' => 'JobsController@approveJobPost', 'as' => 'approve-job-post']);
     Route::match(['get', 'post'], 'edit-job/{jobid}', ['uses' => 'JobsController@EditJob', 'as' => 'edit-job']);
@@ -452,7 +453,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
             // Workflow
             Route::get('/{id}/view', 'WorkflowController@show')->name('workflow-show');
             Route::get('/steps/view/{id}', 'WorkflowController@getSteps')->name('get-workflow-steps');
-            Route::get('/create', 'WorkfelowController@create')->name('workflow-create');
+            Route::get('/create', 'WorkflowController@create')->name('workflow-create');
             Route::get('/{id}/edit', 'WorkflowController@editView')->name('workflow-edit');
             Route::get('/{id}/duplicate', 'WorkflowController@duplicate')->name('workflow-duplicate');
             Route::match(['put', 'patch'], '/{id}/edit', 'WorkflowController@update')->name('workflow-update');
@@ -484,12 +485,10 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::get('/settings/api-key', 'ApiController@index')->name('view-api-key');
     Route::post('/settings/api-key', 'ApiController@update');
 
-    Route::post('/third-party/entry', 'ThirdPartyEntryController@index');
     Route::get('/my-career-page', 'JobsController@MyCompany');
     Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
 
 });
-
 /*********************************/
 /* End Of Admin Routes */
 /**********************************/

@@ -14,7 +14,7 @@ class AddClientIdToCompaniesTable extends Migration
     public function up()
     {
         Schema::table('companies', function (Blueprint $table) {
-            $table->integer('client_id')->unsigned();
+            $table->bigInteger('client_id')->unsigned();
             $table->foreign('client_id')->references('id')->on('clients')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
@@ -27,6 +27,7 @@ class AddClientIdToCompaniesTable extends Migration
     public function down()
     {
         Schema::table('companies', function (Blueprint $table) {
+            $table->dropForeign('companies_client_id_foreign');
             $table->dropColumn('client_id');
         });
     }

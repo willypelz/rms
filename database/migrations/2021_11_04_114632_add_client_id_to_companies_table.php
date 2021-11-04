@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClientsTable extends Migration
+class AddClientIdToCompaniesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateClientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('clients', function (Blueprint $table) {
-            $table->bigInteger('id');
-            $table->string('url');
-            $table->timestamps();
+        Schema::table('companies', function (Blueprint $table) {
+            $table->integer('client_id')->unsigned();
         });
     }
 
@@ -27,6 +25,8 @@ class CreateClientsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('clients');
+        Schema::table('companies', function (Blueprint $table) {
+            $table->dropColumn('client_id');
+        });
     }
 }

@@ -15,7 +15,7 @@ class ClientSeeder extends Seeder
     public function run()
     {
         Client::FirstOrCreate([
-            'name' => 'sign up',
+            'name' => 'signup client',
             'url' => 'signup.seamlesshiring.com'
         ]);
     }

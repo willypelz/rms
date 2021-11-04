@@ -15,6 +15,7 @@ class AddClientIdToCompaniesTable extends Migration
     {
         Schema::table('companies', function (Blueprint $table) {
             $table->integer('client_id')->unsigned();
+            $table->foreign('client_id')->references('id')->on('clients')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 

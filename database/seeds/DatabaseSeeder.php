@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Database\Seeders\ClientSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(EnvValuesSeeder::class);
         $this->call(ClientSeeder::class);
         // $this->call(IntegrationSeeder::class);
+        
     }
 }

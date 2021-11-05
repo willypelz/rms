@@ -9,9 +9,5 @@ class SystemSetting extends Model
 {
     use HasFactory;
 
-<<<<<<< Updated upstream
-    protected $fillable = '*';
-=======
     protected $fillables = '*';
->>>>>>> Stashed changes
 }

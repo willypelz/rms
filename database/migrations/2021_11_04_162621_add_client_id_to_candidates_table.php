@@ -14,7 +14,7 @@ class AddClientIdToCandidatesTable extends Migration
     public function up()
     {
         Schema::table('candidates', function (Blueprint $table) {
-            $table->integer('client_id')->unsigned();
+            $table->bigInteger('client_id')->unsigned();
             $table->foreign('client_id')->references('id')->on('clients')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }

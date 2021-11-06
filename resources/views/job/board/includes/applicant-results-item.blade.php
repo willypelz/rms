@@ -62,7 +62,16 @@
                         @endforeach
                     </h4>
                     <p>{{ @$cv['last_position'] }} @if( @$cv['last_company_worked'] != '' ) {{ ' at '.@$cv['last_company_worked'] }}  @endif</p>
+                    @if(sizeof(percentageOf($cv['application_id'])) > 0)
+                            <p class="text-success">
+                                {{-- % Score(s): --}}
+                                @foreach(percentageOf($cv['application_id']) as $percentage)
+                                    {{ $percentage->test_name }} - {{ $percentage->status }}
+                                @if(!$loop->last) <br/> @endif
 
+                                @endforeach
+                            </p> 
+                     @endif
                     <?php
                     $appl_status = $cv['application_status'][$current_app_index];
                     ?>

@@ -24,7 +24,7 @@ cp -R ${STAGING_PATH}/public_html/uploads/. ${APP_PATH}/public_html/uploads/
 cp -R ${STAGING_PATH}/public_html/img/. /tmp/imgers
 rm -rf ${STAGING_PATH}/storage  ${STAGING_PATH}/public_html/uploads ${STAGING_PATH}/public_html/img  ${STAGING_PATH}/vendor
 
-rm -rf ${STAGING_PATH}/public ${APP_PATH}/.git
+rm -rf ${STAGING_PATH}/public ${APP_PATH}/.git ${APP_PATH}/vendor
 cp -R ${STAGING_PATH}/. ${APP_PATH}/
 rm -rf ${STAGING_PATH}
 

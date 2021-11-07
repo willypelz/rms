@@ -65,6 +65,6 @@ pipelines:
       - step: *Code-Deploy
 
   branches:
-    code-deploy:
+    releasev2-V8:
       - step: *Composer
       - step: *Code-Deploy

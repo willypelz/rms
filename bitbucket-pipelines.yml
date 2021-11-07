@@ -60,7 +60,7 @@ definitions:
 pipelines:
 
   tags:
-    v2.*.*:
+    v3.*.*:
       - step: *Composer
       - step: *Code-Deploy
 

@@ -70,6 +70,7 @@ class ThirdPartyEntryController extends Controller
         // store the form_data in session for retrival on job posting page
         session(['third_party_data' => $formData]);
         mixPanelRecord("third Party Entry Successful (Admin)", $request);
+        
         return redirect($redirect_url);
     }
 }

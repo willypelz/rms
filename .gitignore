@@ -12,4 +12,3 @@ LocalValetDriver.php
 /.vscode
 /public_html/uploads
 /config/snappy.php
-composer.lock

@@ -20,7 +20,8 @@ class EnvValuesSeeder extends Seeder
                 SystemSetting::updateOrCreate(
                     [
                         'client_id' => $clientId,
-                        'key' => strtoupper($envKey),
+                        'key' => strtoupper($envKey)],
+                    [
                         'value' => $envValue
                     ]
                 );

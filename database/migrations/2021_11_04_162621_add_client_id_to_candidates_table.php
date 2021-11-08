@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddClientIdToCompaniesTable extends Migration
+class AddClientIdToCandidatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddClientIdToCompaniesTable extends Migration
      */
     public function up()
     {
-        Schema::table('companies', function (Blueprint $table) {
-            $table->bigInteger('client_id')->unsigned()->nullable()->after('hrms_id');
+        Schema::table('candidates', function (Blueprint $table) {
+            $table->bigInteger('client_id')->unsigned()->nullable()->after('company_id');
             $table->foreign('client_id')->references('id')->on('clients')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
@@ -26,7 +26,7 @@ class AddClientIdToCompaniesTable extends Migration
      */
     public function down()
     {
-        Schema::table('companies', function (Blueprint $table) {
+        Schema::table('candidates', function (Blueprint $table) {
             $table->dropForeign(['client_id']);
             $table->dropColumn('client_id');
         });

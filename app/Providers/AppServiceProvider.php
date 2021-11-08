@@ -58,6 +58,6 @@ class AppServiceProvider extends ServiceProvider
 
     public function provides()
     {
-        return [\App\Services\UserService::class];
+        return [\App\Services\UserService::class]; 
     }
 }

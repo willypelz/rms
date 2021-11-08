@@ -14,4 +14,9 @@ LocalValetDriver.php
 /config/snappy.php
 /public_html/homepage
 /public_html/logs
-.DS_Store
+composer.lock
+dock-dev.yaml
+dock-qa.yaml
+dock-uat.yaml
+bit.yaml
+auth.json

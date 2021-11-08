@@ -401,7 +401,7 @@ $is_super_admin = auth()->user()->is_super_admin;
             var status_filter = "";
             var total_candidates = "{{ $application_statuses['ALL'] }}";
             var keyword = "";
-            var age_range = test_score_range = exp_years_range = video_application_score_range = null;
+            var age_range = test_score_range = exp_years_range = video_application_score_range = minimium_remuneration_range = maximium_remuneration_range = graduation_grade_range = null;
             var last_text_filter = "";
 
             var cv_ids = [];
@@ -409,6 +409,33 @@ $is_super_admin = auth()->user()->is_super_admin;
 
             String.prototype.capitalize = function () {
                 return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
+            }
+
+            function fieldSetter(key, value){
+                
+                switch(key){
+                    case "age_range":
+                        age_range = value
+                        break
+                    case "test_score_range":
+                        test_score_range = value
+                        break
+                    case "exp_years_range":
+                        exp_years_range = value
+                        break
+                    case "video_application_score_range":
+                        video_application_score_range = value
+                        break
+                    case "minimium_remuneration_range":
+                        minimium_remuneration_range = value
+                        break
+                    case "maximium_remuneration_range":
+                        maximium_remuneration_range = value
+                        break
+                    case "graduation_grade_range":
+                        graduation_grade_range = value
+                        break
+                }
             }
 
             function searchKeyword() {
@@ -526,7 +553,10 @@ $is_super_admin = auth()->user()->is_super_admin;
                         test_score: test_score_range,
                         exp_years: exp_years_range,
                         video_application_score: video_application_score_range,
-                        status: status_filter
+                        status: status_filter,
+                        minimium_remuneration: minimium_remuneration_range,
+                        maximium_remuneration: maximium_remuneration_range,
+                        graduation_grade: graduation_grade_range
                     }, function (data) {
                         //console.log(response);
                         // var response = JSON.parse(data);
@@ -832,7 +862,7 @@ $is_super_admin = auth()->user()->is_super_admin;
                     filters = [];
                     $('.filter-div input[type=checkbox]').prop('checked', false);
                     $('#search_keyword').val("");
-                    age_range = exp_years_range = test_score_range = video_application_score_range = null;
+                    age_range = exp_years_range = test_score_range = video_application_score_range = minimium_remuneration_range = maximium_remuneration_range = graduation_grade_range =  null;
                     $('.search-results').html('{!! preloader() !!}');
                     scrollTo('.job-progress-xs');
                     $('.result-label').html('');
@@ -863,6 +893,9 @@ $is_super_admin = auth()->user()->is_super_admin;
                         test_score: test_score_range,
                         exp_years: exp_years_range,
                         video_application_score: video_application_score_range,
+                        minimium_remuneration: minimium_remuneration_range,
+                        maximium_remuneration: maximium_remuneration_range,
+                        graduation_grade: graduation_grade_range,
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
@@ -882,6 +915,9 @@ $is_super_admin = auth()->user()->is_super_admin;
                         test_score: test_score_range,
                         exp_years: exp_years_range,
                         video_application_score: video_application_score_range,
+                        minimium_remuneration: minimium_remuneration_range,
+                        maximium_remuneration: maximium_remuneration_range,
+                        graduation_grade: graduation_grade_range,
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
@@ -902,6 +938,9 @@ $is_super_admin = auth()->user()->is_super_admin;
                         test_score: test_score_range,
                         exp_years: exp_years_range,
                         video_application_score: video_application_score_range,
+                        minimium_remuneration: minimium_remuneration_range,
+                        maximium_remuneration: maximium_remuneration_range,
+                        graduation_grade: graduation_grade_range,
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };
@@ -921,6 +960,9 @@ $is_super_admin = auth()->user()->is_super_admin;
                         test_score: test_score_range,
                         exp_years: exp_years_range,
                         video_application_score: video_application_score_range,
+                        minimium_remuneration: minimium_remuneration_range,
+                        maximium_remuneration: maximium_remuneration_range,
+                        graduation_grade: graduation_grade_range,
                         cv_ids: cv_ids,
                         app_ids: app_ids
                     };

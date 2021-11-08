@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Database\Seeders\ClientSeeder;
+use Database\Seeders\CompanySeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SchoolSeeder::class);
         $this->call(EnvValuesSeeder::class);
         $this->call(ClientSeeder::class);
+        $this->call(CompanySeeder::class);
         // $this->call(IntegrationSeeder::class);
     }
 }

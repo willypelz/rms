@@ -4,20 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ClientEnvRequest;
 use App\Models\SystemSetting;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 
 class SystemSettingsController extends Controller
 {
-    public $systemSetting;
-
-    public function __construct()
-    {
-        $this->systemSettings = SystemSetting::whereClientId(1)->get();
-    }
-    //get env details by client
     public function index()
     {
-        return view('admin.clientEnv.index')->with('clientEnv', $this->systemSettings);
+        $systemSettings =SystemSetting::whereClientId(1)->get();
+        return view('admin.clientEnv.index')->with('clientEnv', $systemSettings);
     }
 
     public function edit($id)
@@ -26,13 +21,23 @@ class SystemSettingsController extends Controller
         return view('admin.clientEnv.edit')->with('clientEnv', $systemSetting);
     }
 
-    public function update(ClientEnvRequest $clientEnvRequest)
+    public function update(ClientEnvRequest $clientEnvRequest, $id)
     {
-        $clientEvnDetails = $clientEnvRequest->validated();
-        $this->systemSetting->update([
+        $clientEnvDetails = $clientEnvRequest->validated();
 
+        SystemSetting::whereClientIdAndId(1,$id)->update([
+            'key' => $clientEnvDetails['key'],
+            'value' => $clientEnvDetails['value']
         ]);
 
+        session()->flash('success', 'Updated Successfully');
+        return redirect(route('index-env'));
+    }
+
+    public function delete($id)
+    {
+        SystemSetting::whereClientIdAndId(1, $id)->delete();
+        session()->flash('success', 'Deleted Successfully');
         return redirect(route('index-env'));
     }
 }

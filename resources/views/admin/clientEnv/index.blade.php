@@ -7,7 +7,6 @@
             <div class="col">
                 <div class="panel panel-default">
                     @include('layout.alerts')
-                    <a href="{{ route('edit-env') }}" class="btn btn-primary mb-2" >Edit ENV</a>
                     <div class="panel-body">
                         <table id="clientEnv" class="table table-striped" style="width:100%">
                             <thead>
@@ -32,7 +31,7 @@
                                         </td>
                                         <td>
                                             <a href="{{route('edit-env', ['id' => $env->id])}}" class="btn btn-primary">Edit</a>
-                                            <a href="" class="btn btn-danger">Delete</a>
+                                            <a href="{{route('delete-env', ['id' => $env->id])}}" onclick="return confirm('Sure you want to delete {{$env->key}}?')" class="btn btn-danger">Delete</a>
                                         </td>
                                     </tr>
                                     @endforeach

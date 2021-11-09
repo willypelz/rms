@@ -24,7 +24,8 @@ class ClientEnvRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'key' => 'required|string',
+            'value' => 'required|string'
         ];
     }
 }

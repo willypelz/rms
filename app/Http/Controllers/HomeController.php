@@ -13,6 +13,7 @@ use App\Models\JobActivity;
 use Illuminate\Http\Request;
 use App\Models\FolderContent;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule; 
 
 
 
@@ -92,8 +93,10 @@ class HomeController extends Controller
                 'email' => 'required|email',
                 'password' => 'required'
             ]);
-            
-            if (Auth::guard('candidate')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+
+            $loginCred = ['email' => $request->input('email'), 'password' => $request->input('password'),'client_id'=> $request->clientId];
+            //use $loginCred for existing candidates that have no client_id value, and push client_id to login_cred array for candidates who do 
+            if (Auth::guard('candidate')->attempt($loginCred)){
                 
             
                 if ($request->redirect_to) {
@@ -133,17 +136,20 @@ class HomeController extends Controller
             $this->validate($request, [
                 'first_name' => 'required|regex:/^[a-zA-Z]+$/u',
                 'last_name' => 'required|regex:/^[a-zA-Z]+$/u',
-                'email' => 'required|unique:candidates,email',
+                'email' => ['required','email', Rule::unique('candidates')->where(function($query) use($request) {
+                            $query->where('client_id', $request->clientId);
+                            })],
                 'password' => 'required',
             ]);
 
 
             $candidate = Candidate::firstOrCreate([
                 'email' => $request->email,
+                'client_id' => $request->clientId,
             ])->update($request->only(['first_name', 'last_name']) + [
                     'password' => bcrypt($request->input('password'))
                 ]);
-
+                
             $registerSuccess = "Candidate Registered Successfully(Candidate)";
             mixPanelRecord($registerSuccess, $request);
 

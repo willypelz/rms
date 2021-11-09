@@ -95,7 +95,8 @@ class HomeController extends Controller
             ]);
 
             $loginCred = ['email' => $request->input('email'), 'password' => $request->input('password'),'client_id'=> $request->clientId];
-            //use $loginCred for existing candidates that have no client_id value, and push client_id to login_cred array for candidates who do 
+            //added client_id to login_cred array for candidates to only login to the intended dashboard, since there can now be multiple 
+            //usage of same email provided it is for a different client
             if (Auth::guard('candidate')->attempt($loginCred)){
                 
             

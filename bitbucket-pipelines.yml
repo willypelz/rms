@@ -54,6 +54,11 @@ options:
 
 pipelines:
 
+  tags:
+    v3.*.*:
+      - step: *Composer
+      - step: *Code-Deploy
+
   branches:
     v2-kubernetes:
       - step: 

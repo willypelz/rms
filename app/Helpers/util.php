@@ -8,6 +8,7 @@ use App\Enum\Configs;
 use App\Libraries\Solr;
 use App\Models\Company;
 use App\Models\Candidate;
+use App\Models\Interview;
 use App\Models\Permission;
 use App\Models\ActivityLog;
 use App\Models\JobActivity;
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use App\Models\InterviewNoteTemplates;
 use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Types\Object_;
 use GeneaLabs\LaravelMixpanel\Facades\Mixpanel;
@@ -554,20 +556,25 @@ function get_company_logo($logo)
 
 function get_interview_note_templates($appl_id)
 {
-    $templates = null;
-    $user = User::find(auth()->id());
-    if(!$user->isInterviewer() && !$user->isCommenter()){
-        return \App\Models\InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
-    } 
-    $interview = App\Models\Interview::where('job_application_id', $appl_id)->first();
-    if($interview){
-        $check = $interview->users->where('id',auth()->id())->first();
-        if($check){
-            return $interview->templates;
-        } 
-    }
+    $appl = JobApplication::where('id', $appl_id)->first();
+    $workflowStep = $appl->job->workflow->workflowSteps->where('slug', $appl->status)->first();
 
-    return $templates;
+    if($workflowStep->type == "interview"){
+        $user = User::find(auth()->id());
+        if(!$user->isInterviewer() && !$user->isCommenter()){
+            return InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
+        } 
+        $interview = Interview::where('job_application_id', $appl_id)->first();
+        
+        if($interview){
+            $check = $user->interviews->where('id',$interview->id)->first();
+            if($check){
+                return $interview->templates;
+            }
+            return "You have not been Scheduled to interview this applicant";
+        }
+    }
+    return "This Applicant has not been moved to an interview step.";
 }
 
 function saveCompanyUploadedCv($cvs, $additional_data, $request)

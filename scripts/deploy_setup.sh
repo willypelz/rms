@@ -31,7 +31,7 @@ rm -rf ${STAGING_PATH}
 
 
 echo "-- running composer: [ $(timestamp) ]" >> ${DEBUG_FILE}
-COMPOSER_MEMORY_LIMIT=-1 php /usr/local/bin/composer install -d "${APP_PATH}" --no-interaction &>> ${DEBUG_FILE}
+COMPOSER_MEMORY_LIMIT=-1 php /usr/local/bin/composer update -d "${APP_PATH}" --no-interaction &>> ${DEBUG_FILE}
 echo "-- running migration: [ $(timestamp) ]" >> ${DEBUG_FILE}
 php "${APP_PATH}"/artisan migrate --seed --force &>> ${DEBUG_FILE}
 

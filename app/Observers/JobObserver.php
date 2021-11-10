@@ -32,7 +32,7 @@ class JobObserver
                 'causer_type' => 'Admin',
                 'properties' => '',
             ];
-            logAction($param);            
+            logAction($param);
         }
         if (isHrmsIntegrated()) {
             $company = Company::where('id', $job->company_id)->first();

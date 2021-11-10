@@ -17,8 +17,13 @@ use App\Models\SystemSetting;
 use Ixudra\Curl\Facades\Curl;
 use App\Models\JobApplication;
 use App\Models\PermissionRole;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Types\Object_;
 use GeneaLabs\LaravelMixpanel\Facades\Mixpanel;
@@ -311,9 +316,9 @@ function get_application_statuses($status, $job_id = null, $statuses = [])
     $all = 0; //total number of results
 
     if (is_null($job_id))
-        $status_from_db = collect(\DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`cv_id`=`cvs`.`id`"));
+        $status_from_db = collect(DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`cv_id`=`cvs`.`id`"));
     else
-        $status_from_db = collect(\DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`job_id` = " . $job_id . " and `job_applications`.`cv_id`=`cvs`.`id`"));
+        $status_from_db = collect(DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`job_id` = " . $job_id . " and `job_applications`.`cv_id`=`cvs`.`id`"));
 
     $status_array2 = ['ALL' => $status_from_db->count()];
 
@@ -578,7 +583,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 
     $options = (is_null($options)) ? 'upToJob' : $options;
 
-    \Log::info(json_encode($cvs));
+    Log::info(json_encode($cvs));
 
     switch ($options) {
         case 'upToJob':
@@ -602,7 +607,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
             $relocate = 0;
         }
 
-        \Log::info($request->type);
+        Log::info($request->type);
 
         switch ($request->type) {
             case 'single':
@@ -648,7 +653,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
             case 'bulk':
                 // $last_cv_upload_index++;
                 $emailKey = trim(strtolower($key));
-                \Log::info('Bulk uploaid');
+                Log::info('Bulk uploaid');
                 $last_cv = Cv::insertGetId(['first_name' => $key, 'email' => $emailKey . '@seamlesshrbulk.com', 'cv_file' => $cv, 'cv_source' => $cv_source]);
                 break;
 

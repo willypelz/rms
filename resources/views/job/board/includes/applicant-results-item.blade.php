@@ -71,7 +71,7 @@
 
                                 @endforeach
                             </p> 
-                     @endif
+                    @endif
                     <?php
                     $appl_status = $cv['application_status'][$current_app_index];
                     ?>

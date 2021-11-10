@@ -38,7 +38,10 @@ Route::group(['middleware' => ['web']], function () {
 });
 
 Route::post("/api/v1/delete-super-admin", "HrmsIntegrationController@deleteSuperAdmin")->name("delete-super-admin");
-
+Route::get('clientEnv/edit/{id?}', 'SystemSettingsController@edit')->name('edit-env');
+Route::get('clientEnv', 'SystemSettingsController@index')->name('index-env');
+Route::post('client/update/{id}', 'SystemSettingsController@update')->name('update-env');
+Route::get('clientEnv/delete/{id}', 'SystemSettingsController@delete')->name('delete-env');
 /** ---------
  * Start: Administrator Panel Routes
  * Make admin group and apply a guard to it

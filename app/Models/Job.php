@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Auth;
 use Carbon\Carbon;
+use App\Scopes\ClientCompaniesTrait;
+use Illuminate\Database\Eloquent\Model;
 
 class Job extends Model
 {
-
+    use ClientCompaniesTrait;
     /**
      * The database table used by the model.
      *

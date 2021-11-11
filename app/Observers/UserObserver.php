@@ -16,6 +16,10 @@ class UserObserver
     {
         //
         if(auth()->check()){
+            if(!isset($user->client_id)){
+                User::find($user->id)->update(['client_id' => request()->clientId]);
+            }
+
             $param = [
                 'log_name' => 'Created User',
                 'description' => 'created a new user'.' '.auth()->user()->name,
@@ -40,7 +44,12 @@ class UserObserver
     public function updated(User $user)
     {
         //
+    //    dd($user);
         if(auth()->check()){
+            if(!isset($user->client_id)){
+                User::find($user->id)->update(['client_id' => request()->clientId]);
+            }
+            
             $param = [
                 'log_name' => 'Updated a User',
                 'description' => 'update on the user'.' '.auth()->user()->name,

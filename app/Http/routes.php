@@ -45,8 +45,8 @@ Route::get('clientEnv/delete/{id}', 'SystemSettingsController@delete')->name('de
 
 // admin company 
 Route::group(['middleware' => ['web', 'auth', 'companyList']], function () {
+    Route::get('/seeCompnay', 'CompanyController@index');
 });
-Route::get('/seeCompnay', 'CompanyController@index');
 /** ---------
  * Start: Administrator Panel Routes
  * Make admin group and apply a guard to it

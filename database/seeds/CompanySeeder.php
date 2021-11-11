@@ -14,6 +14,9 @@ class CompanySeeder extends Seeder
      */
     public function run()
     {
-        Company::factory()->create();
+        $company = Company::whereSlug('signup-company')->first();
+        if (!$company) {
+            Company::factory()->create();
+        }
     }
 }

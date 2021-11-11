@@ -9,7 +9,7 @@
                     <div class="page">
                         <div class="row">
                             <h5 class="no-margin text-center l-sp-5 text-brandon text-uppercase">
-                                Company ENV
+                                Company List
                             </h5>
                             <hr>
                             <br>
@@ -20,30 +20,43 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>key</th>
-                                            <th>value </th>
-                                            <th>Action</th>
+                                            <th>Name</th>
+                                            <th>Email </th>
+                                            <th>Phone Number</th>
+                                            <th>Websit</th>
+                                            <th>address</th>
+                                            <th>License Type</th>
+                                            <th>Valid Period</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($clientEnv as $keyValue => $env)
+                                        @foreach ($companies as $key => $company)
                                             <tr>
-                                                <td>{{ $keyValue + 1 }}</td>
+                                                <td>{{ $key + 1 }}</td>
 
                                                 <td>
-                                                    {{ $env->key }}
+                                                    {{ $company->name }}
                                                 </td>
 
                                                 <td>
-                                                    {{ $env->value }}
+                                                    {{ $company->email }}
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('edit-env', ['id' => $env->id]) }}"
-                                                        class="btn btn-primary">Edit</a>
-                                                    <a href="{{ route('delete-env', ['id' => $env->id]) }}"
-                                                        onclick="return confirm('Sure you want to delete {{ $env->key }}?')"
-                                                        class="btn btn-danger">Delete</a>
+                                                    {{ $company->phone }}
                                                 </td>
+                                                <td>
+                                                    {{ $company->website }}
+                                                </td>
+                                                <td>
+                                                    {{ $company->address }}
+                                                </td>
+                                                <td>
+                                                    {{ $company->license_type }}
+                                                </td>
+                                                <td>
+                                                    {{ $company->valid_till }}
+                                                </td>
+
                                             </tr>
                                         @endforeach
                                     </tbody>

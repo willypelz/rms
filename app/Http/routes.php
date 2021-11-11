@@ -42,6 +42,12 @@ Route::get('clientEnv/edit/{id?}', 'SystemSettingsController@edit')->name('edit-
 Route::get('clientEnv', 'SystemSettingsController@index')->name('index-env');
 Route::post('client/update/{id}', 'SystemSettingsController@update')->name('update-env');
 Route::get('clientEnv/delete/{id}', 'SystemSettingsController@delete')->name('delete-env');
+
+// admin company 
+
+Route::group(['middleware' => ['web', 'auth', 'companyList']], function () {
+    Route::get('/seeCompnay', 'CompanyController@index');
+});
 /** ---------
  * Start: Administrator Panel Routes
  * Make admin group and apply a guard to it

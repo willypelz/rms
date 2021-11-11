@@ -566,7 +566,8 @@ function get_interview_note_templates($appl_id)
             if($check){
                 return $interview->templates;
             }
-            return "You have not been Scheduled to interview this applicant";
+            return "You have not been Scheduled to interview this applicant, <br>
+            An interview note needs to be attached to you in order to use one";
         }
     }
     return "This Applicant has not been moved to an interview step.";

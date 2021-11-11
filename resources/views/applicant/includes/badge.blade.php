@@ -86,7 +86,7 @@ $job_id = $appl->job->id;
                 <div class="btn-group" role="group">
                   <a href="#" class="btn btn-line dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Interview Note<i class="fa fa-caret-down"></i></a>
                   <ul class="dropdown-menu">
-                    <li><a href="Javascript:void(0)" style="color: red" data-type="wide">{{$interview_note_templates}}</a></li>
+                    <li><a href="Javascript:void(0)" style="color: red" data-type="wide">{!!html_entity_decode($interview_note_templates)!!}</a></li>
                   </ul>
                 </div>
                 @endif

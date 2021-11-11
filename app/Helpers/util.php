@@ -13,10 +13,12 @@ use App\Models\ActivityLog;
 use App\Models\JobActivity;
 use App\Models\TestRequest;
 use App\Jobs\UploadApplicant;
+use App\Models\SystemSetting;
 use Ixudra\Curl\Facades\Curl;
 use App\Models\JobApplication;
 use App\Models\PermissionRole;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Types\Object_;
 use GeneaLabs\LaravelMixpanel\Facades\Mixpanel;
@@ -372,22 +374,24 @@ function check_if_job_owner_on_queue($job_id, $current_company, $user)
 
 function get_current_company()
 {
+    $authUser = Auth::user();
+    $sessionId = Session::get('current_company_index');
 
-    if (!is_null(Auth::user())) {
+    if (!is_null($authUser)) {
         //If a company is selected
-        if (Session::get('current_company_index')) {
-            if (isset(Auth::user()->companies[Session::get('current_company_index')]))
-                return Auth::user()->companies[Session::get('current_company_index')];
+        if ($sessionId) {
+            if (isset($authUser->companies) && !is_null($authUser->companies()->where('company_users.company_id', $sessionId)->first()))
+                return $authUser->companies()->where('company_users.company_id', $sessionId)->first();
             else
-                return Auth::user()->companies[0];
+                return $authUser->companies->first();
         }
         
-        if (Auth::user()->companies && Auth::user()->companies->count() < 1) {
+        if ($authUser->companies && $authUser->companies->count() < 1) {
             return redirect()->guest('login');
         }
         
         // If a company is not selected, default to the first on the list
-        return Auth::user()->companies[0];
+        return $authUser->companies->first();
     } else {
         return redirect()->guest('login');
     }
@@ -1127,18 +1131,92 @@ function substring($string, $start=0, $length=5){
 /*
 * Gets the intended company among multiple companies a user belongs to
 * when trying to post a job from HRMS
-* @param $slug company slug
+* @param $id company id
 */
-function getIntendedCompanyToPostJobTo($slug){
+function getIntendedCompanyToPostJobTo($id){
     try{
         if(Auth::check()){
             foreach (Auth::user()->companies as $key => $company) {
-                if ($company->slug == $slug) {
-                    return Session::put('current_company_index', $key);
+                if ($company->id == $id) {
+                    return Session::put('current_company_index', $id);
                 }
             }
         }
     }catch(\Exception $e){
         return null;
     }
+}
+
+/**
+ * This helper function checks if the Cache has a particular key specific to client in use if it does it clear the key
+ * obtains settings from the database, sets the Cache and returns data
+ * @param $client_id
+ * @return
+ */
+function setSystemConfig($client_id)
+{
+    $client_id = !is_null($client_id) ? $client_id : get_current_company()->client_id;
+
+    if (is_null($client_id)) {
+        $client_id = request()->clientId;
+    }
+
+    if (Cache::has("SystemConfig-{$client_id}")) {
+        Cache::forget("SystemConfig-{$client_id}");
+    }
+    $systemSettingData = SystemSetting::where('client_id', $client_id)->get()->pluck('value', 'key')->all();
+    Cache::forever("SystemConfig-{$client_id}", $systemSettingData);
+    return $systemSettingData;
+}
+
+/**
+ * This helper function checks if the Cache has a particular key specific to company in use
+ * if the key doesn't exist it defaults to the database to get data sets the Cache and returns
+ * a data object
+ *
+ * @param $client_id
+ * @return object
+ */
+function getSystemConfig($client_id = null)
+{
+    $client_id = !is_null($client_id) ? $client_id : get_current_company()->client_id;
+    $systemSettingData = SystemSetting::where('client_id', $client_id)->get()->pluck('value', 'key')->all();
+
+    if (Cache::has("SystemConfig-{$client_id}")) {
+        $setting = Cache::get("SystemConfig-{$client_id}");
+    } else {
+        $setting = setSystemConfig($client_id);
+    }
+    return (object)$setting;
+}
+
+/**
+ * This helper function takes in a key as parameter
+ * and returns the data value linked to the key
+ * @param string $key
+ * @param mixed $default_value
+ * @param $client_id
+ * @return mixed
+ */
+
+function getEnvData(string $key, $default_value = null, $client_id = null)
+{
+    //change key to uppercase
+    $key = strtoupper($key);
+    //check if an empty string key is passed
+    if (is_null($key))
+        return $default_value;
+
+    if(is_null($client_id))
+        $client_id = get_current_company()->client_id;
+
+    $systemConfigObject = getSystemConfig($client_id);
+
+    if (!is_null($systemConfigObject)) {
+        $systemConfigData = $systemConfigObject->{$key} ?? null;
+        return $systemConfigData ?? $default_value;
+    }
+
+    return $default_value;
+
 }

@@ -47,7 +47,6 @@ Route::get('clientEnv/delete/{id}', 'SystemSettingsController@delete')->name('de
  * Make admin group and apply a guard to it
  */
 Route::group(['middleware' => ['web',"auth", 'admin']], function () {
-
     Route::get('/download-bulk-upload-applicant-to-workflow-stage-template', "BulkUploadApplicantsToWorkflowStepContoller@downloadBulkApplicantsToWorkflowStagesTemplate")->name("download-bulk-upload-applicant-to-workflow-stage-template");
 
     Route::get('/ping', 'SolariumController@ping');
@@ -697,7 +696,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'decline-invite/{id}',  ['uses' => 'JobsController@declineInvite', 'as' => 'decline-invite']);
 
-    Route::match(['get', 'post'], 'select-company/{slug?}', ['uses' => 'JobsController@selectCompany', 'as' => 'select-company'])->middleware('auth');
+    Route::match(['get', 'post'], 'select-company/{id?}', ['uses' => 'JobsController@selectCompany', 'as' => 'select-company'])->middleware('auth');
 
     Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
 

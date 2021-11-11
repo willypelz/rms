@@ -53,8 +53,8 @@ class JobObserver
         } else {
             if ($job->is_for == 'both' || $job->is_for == 'internal') {
                 $employees = User::where('activated', 1)->get();
-                dispatch(new SendJobNotice($employees, $job)); 
-            }            
+                dispatch(new SendJobNotice($employees, $job));
+            }
         }
 
         

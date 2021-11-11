@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Curl;
+use Mail;
+use App\Models\Job;
 use App\Http\Requests;
 use App\Libraries\Solr;
-use App\Models\Candidate;
 use App\Models\Company;
-use App\Models\FolderContent;
-use App\Models\Job;
+use App\Models\Candidate;
 use App\Models\JobActivity;
-use Auth;
-use Curl;
 use Illuminate\Http\Request;
-use Mail;
+use App\Models\FolderContent;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule; 
 
 
 
@@ -92,8 +93,11 @@ class HomeController extends Controller
                 'email' => 'required|email',
                 'password' => 'required'
             ]);
-            
-            if (Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password])) {
+
+            $loginCred = ['email' => $request->input('email'), 'password' => $request->input('password'),'client_id'=> $request->clientId];
+            //added client_id to login_cred array for candidates to only login to the intended dashboard, since there can now be multiple 
+            //usage of same email provided it is for a different client
+            if (Auth::guard('candidate')->attempt($loginCred)){
                 
             
                 if ($request->redirect_to) {
@@ -133,17 +137,20 @@ class HomeController extends Controller
             $this->validate($request, [
                 'first_name' => 'required|regex:/^[a-zA-Z]+$/u',
                 'last_name' => 'required|regex:/^[a-zA-Z]+$/u',
-                'email' => 'required|unique:candidates,email',
+                'email' => ['required','email', Rule::unique('candidates')->where(function($query) use($request) {
+                            $query->where('client_id', $request->clientId);
+                            })],
                 'password' => 'required',
             ]);
 
 
             $candidate = Candidate::firstOrCreate([
                 'email' => $request->email,
+                'client_id' => $request->clientId,
             ])->update($request->only(['first_name', 'last_name']) + [
                     'password' => bcrypt($request->input('password'))
                 ]);
-
+                
             $registerSuccess = "Candidate Registered Successfully(Candidate)";
             mixPanelRecord($registerSuccess, $request);
 

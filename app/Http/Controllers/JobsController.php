@@ -512,7 +512,7 @@ class JobsController extends Controller
                 $job_team_invite->save();
 
                 auth()->login($user);
-                return redirect()->route('select-company', ['slug' => $job->company->slug]);
+                return redirect()->route('select-company', ['id' => $job->company->id]);
             }
 
         } else {
@@ -614,7 +614,7 @@ class JobsController extends Controller
 
             // sign team(newly added user) into
             Auth::attempt(['email' => $newUser->email, 'password' => $request->input('password')]);
-            return redirect()->route('select-company', ['slug' => $team->company->slug]);
+            return redirect()->route('select-company', ['id' => $team->company->id]);
 
         }
 
@@ -3487,11 +3487,11 @@ class JobsController extends Controller
           return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
 	}
 
-    public function selectCompany(Request $request)
+    public function selectCompany(Request $request,$id)
     {
         foreach (Auth::user()->companies as $key => $company) {
-            if ($company->slug == $request->slug) {
-                Session::put('current_company_index', $key);
+            if ($company->id == $id) {
+                Session::put('current_company_index', $company->id);
                 return redirect('dashboard');
             }
         }
@@ -3586,7 +3586,10 @@ class JobsController extends Controller
                 ]);
             }
         }
-        $users = User::with('roles')->get();
+
+        $users = User::with('roles')->whereHas('companies',function($q) use($request){
+            $q->where('client_id',$request->clientId);
+        })->get();
         $roles = Role::get();
         return view ('admin.roles_management.index', compact ('users', 'roles'));
     }

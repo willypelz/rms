@@ -1,5 +1,5 @@
 <?php
 
 return [
-    "key" => env("MIXPANEL_TOKEN"),
+    "key" => getEnvData("MIXPANEL_TOKEN"),
 ];

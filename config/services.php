@@ -15,24 +15,24 @@ return [
     */
 
     'mailgun' => [
-        'domain' => env('MAILGUN_DOMAIN'),
-        'secret' => env('MAILGUN_SECRET'),
+        'domain' => getEnvData('MAILGUN_DOMAIN'),
+        'secret' => getEnvData('MAILGUN_SECRET'),
     ],
 
     'mandrill' => [
-        'secret' => env('MANDRILL_SECRET'),
+        'secret' => getEnvData('MANDRILL_SECRET'),
     ],
 
     'ses' => [
-        'key'    => env('SES_KEY'),
-        'secret' => env('SES_SECRET'),
-        'region' => env('SES_REGION'),
+        'key'    => getEnvData('SES_KEY'),
+        'secret' => getEnvData('SES_SECRET'),
+        'region' => getEnvData('SES_REGION'),
     ],
 
     'stripe' => [
         'model'  => App\User::class,
-        'key'    => env('STRIPE_KEY'),
-        'secret' => env('STRIPE_SECRET'),
+        'key'    => getEnvData('STRIPE_KEY'),
+        'secret' => getEnvData('STRIPE_SECRET'),
     ],
 
 ];

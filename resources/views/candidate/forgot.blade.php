@@ -6,7 +6,7 @@
             <section class="col-xs-10 col-md-4">
 
                 <div class="text-center">
-                    <img src="{{ env('APP_LOGO') }}" class="shr-auth-logo">
+                    <img src="{{ getEnvData('APP_LOGO') }}" class="shr-auth-logo">
                 </div>
 
                 <h4 class="my-4 dark-blue-text font-weight-bold">Enter your email to reset your password</h4>

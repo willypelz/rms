@@ -7,7 +7,7 @@
 
             <section class="col shr-auth-form">
 
-                <img src="{{ env('APP_LOGO') }}" class="shr-auth-logo">
+                <img src="{{ getEnvData('APP_LOGO') }}" class="shr-auth-logo">
 
                 <div class="shr-auth-form-inner">
                     <h2 class="dark-blue-text font-weight-bold">Welcome candidate</h2>

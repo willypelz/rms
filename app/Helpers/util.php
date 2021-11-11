@@ -641,7 +641,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
                 $accept_link = route('candidate-invite', ['id' => $candidate->id, 'token' => $token]);
 
                 Mail::send('emails.new.candidate-invite', ['data' => $data, 'company' => $company, 'accept_link' => $accept_link], function ($m) use ($data) {
-                    $m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
+                    $m->from(getEnvData('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
                 });
                 break;
 
@@ -677,7 +677,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
     $user = Auth::user();
 
     Mail::send('emails.new.cv_upload_successful', ['user' => $user, 'link' => url('cv/talent-pool')], function ($m) use ($user) {
-        $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
+        $m->from(getEnvData('COMPANY_EMAIL'))->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
     });
 
     return ['status' => 1, 'data' => 'Cv(s) uploaded successfully'];
@@ -818,8 +818,8 @@ function getCurrentLoggedInUserRole()
 
 function get_company_email_logo()
 {
-    $logo = env("APP_LOGO");
-    $url = env("APP_URL");
+    $logo = getEnvData("APP_LOGO");
+    $url = getEnvData("APP_URL");
     return
         "<a href='$url' style='font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2' target='_blank'>
 		<img src='$logo' width='50%' height='' style='outline:none;text-decoration:none;display:block;min-height:31px;margin:0 auto;border:0;' class='CToWUd' alt='COMPANY_LOGO'>
@@ -829,7 +829,7 @@ function get_company_email_logo()
 function defaultCompanyLogo()
 {
     $company = Company::where('has_expired', 0)->first();
-    return ($company && isset($company->logo)) ? get_company_logo($company->logo) : env('SEAMLESS_HIRING_LOGO');
+    return ($company && isset($company->logo)) ? get_company_logo($company->logo) : getEnvData('SEAMLESS_HIRING_LOGO');
 }
 
 function candidateDossierPercentage($value)
@@ -888,7 +888,7 @@ function candidateDossierRating($value)
 if (!function_exists('defaultCompanyLogo')) {
     function defaultCompanyLogo()
     {
-        return get_current_company()->logo ?? env('SEAMLESS_HIRING_LOGO');
+        return get_current_company()->logo ?? getEnvData('SEAMLESS_HIRING_LOGO');
     }
 }
 
@@ -974,7 +974,7 @@ function admin_audit_log()
  * @return bool
  */
 function isHrmsIntegrated(){
-    return (!is_null(env('STAFFSTRENGTH_URL'))) && env('RMS_STAND_ALONE')==false ? true: false;
+    return (!is_null(getEnvData('STAFFSTRENGTH_URL'))) && getEnvData('RMS_STAND_ALONE')==false ? true: false;
 }
 
 /**
@@ -1001,7 +1001,7 @@ function seamlessSave( $modelName, array $data, $id)
 function getResponseFromHrmsByGET(string $url, array $data = []){
     $rmsCompany = Company::whereNotNull('api_key')->first();
     if(isHrmsIntegrated() && $rmsCompany) {
-        $response = Curl::to(env('STAFFSTRENGTH_URL') . $url )
+        $response = Curl::to(getEnvData('STAFFSTRENGTH_URL') . $url )
                         ->withHeader("X-API-KEY: " . $rmsCompany->api_key)
                         ->withData($data)
                         ->asJson()

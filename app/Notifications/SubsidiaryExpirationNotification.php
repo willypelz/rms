@@ -52,7 +52,7 @@ class SubsidiaryExpirationNotification extends Notification
             'email'=> $this->company_email, 'user_name' => $this->user_name,
             'user_email'=> $this->user_email]
         )
-        ->from(env('COMPANY_EMAIL'))
+        ->from(getEnvData('COMPANY_EMAIL'))
         ->subject($this->title);
     }
 

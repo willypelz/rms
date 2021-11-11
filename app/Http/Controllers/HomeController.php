@@ -49,7 +49,7 @@ class HomeController extends Controller
     public function homepage()
     {
 
-        $hirs_redirect = env('HIRS_REDIRECT_LOGIN');
+        $hirs_redirect = getEnvData('HIRS_REDIRECT_LOGIN');
 
         // if(!is_null($hirs_redirect) &&  strlen($hirs_redirect) != 0 )
         //     return redirect('login');
@@ -82,7 +82,7 @@ class HomeController extends Controller
 	        ->where('is_for', '!=', 'internal')
             ->whereNotIn('is_private', [true])
             ->where('expiry_date', '>=', date('Y-m-d'))
-            ->take(env('JOB_HOMEPAGE_LIST', 3))
+            ->take(getEnvData('JOB_HOMEPAGE_LIST', 3))
             ->orderBy('id', 'desc')
             ->get();
         
@@ -126,7 +126,7 @@ class HomeController extends Controller
         $redirect_value = session()->get('redirect_to');
         $redirect_to = $request->redirect_to ?? $redirect_value;
 
-        $jobs = Job::whereStatus('ACTIVE')->where('is_for', '!=', 'internal')->where('expiry_date', '>=', date('Y-m-d'))->take(env('JOB_HOMEPAGE_LIST', 3))->orderBy('id', 'desc')->get();
+        $jobs = Job::whereStatus('ACTIVE')->where('is_for', '!=', 'internal')->where('expiry_date', '>=', date('Y-m-d'))->take(getEnvData('JOB_HOMEPAGE_LIST', 3))->orderBy('id', 'desc')->get();
         
 
         if ($request->isMethod('post')) {        

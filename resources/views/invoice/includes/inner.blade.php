@@ -34,7 +34,7 @@
 <table style="margin: 0 0 15px 0;
     width: 100%;"><tbody><tr><td width="25%" nowrap="">
 
-<p><img src="{{ env('SEAMLESS_HIRING_LOGO') }}" title="seamlesshiring"></p>
+<p><img src="{{ getEnvData('SEAMLESS_HIRING_LOGO') }}" title="seamlesshiring"></p>
 </td><td width="50%" align="center">
 
 <!-- <font style="font-size: 16px;

@@ -523,7 +523,7 @@ class JobController extends Controller
         $api_key = $company->api_key;
         try {
             $result = $client->get(
-                env('STAFFSTRENGTH_URL') . '/admin/employees/api/get/all/employees',
+                getEnvData('STAFFSTRENGTH_URL') . '/admin/employees/api/get/all/employees',
                 [
                     'headers' => ['Authorization' => $api_key],
                     'verify' => false,

@@ -15,7 +15,7 @@ class SyncController extends Controller
         try {
             $rmsCompany = Company::whereNotNull('api_key')->first();
             if (config('app.staff_strength_url') && config('app.rms_stand_alone') == false && $rmsCompany) {
-                $response = Curl::to(env('STAFFSTRENGTH_URL') . Configs::COMPANY_SUBSIDIARIES .
+                $response = Curl::to(getEnvData('STAFFSTRENGTH_URL') . Configs::COMPANY_SUBSIDIARIES .
                     base64_encode($rmsCompany->api_key))->get();
             }
 

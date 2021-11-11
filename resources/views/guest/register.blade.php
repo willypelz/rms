@@ -10,7 +10,7 @@
         <div class="row">
 
             <section class="col shr-auth-form">
-                <img src="{{ env('APP_LOGO') }}" class="shr-auth-logo">
+                <img src="{{ getEnvData('APP_LOGO') }}" class="shr-auth-logo">
                 <h2 class="dark-blue-text font-weight-bold">Welcome candidate</h2>
                 <p>We are an equal opportunity employer. All stages of the employment process will be based on merit, competence, performance and business needs.</p>
 

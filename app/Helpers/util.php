@@ -5,6 +5,7 @@ use App\Models\Cv;
 use Carbon\Carbon;
 use App\Models\Job;
 use App\Enum\Configs;
+use App\Models\Client;
 use App\Libraries\Solr;
 use App\Models\Company;
 use App\Models\Candidate;
@@ -1219,4 +1220,24 @@ function getEnvData(string $key, $default_value = null, $client_id = null)
 
     return $default_value;
 
+}
+
+
+/**
+ * Generate the company URL to a named route.
+ *
+ * @param int company_id
+ * @param string  $name
+ * @param array|null  $parameters
+ * @return string
+ */
+
+function companyRoute(int $company_id, string $name, array $parameters = []): string
+
+{
+	$client_url = Client::whereHas('companies', function ($q) use ($company_id) {
+		$q->where('id', $company_id);
+	})->first()->url ?? null;
+
+	return $client_url ? ($client_url . route($name, $parameters, false)) : route($name, $parameters);
 }

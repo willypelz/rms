@@ -33,8 +33,10 @@ class HrmsIntegrationController extends Controller
         $data = $request->validate($data);
         $apiKey = $request->header('X-API-KEY');
     
-        $user = User::where("email", base64_decode($data["email"]))->first();
+        $user = User::where("email", base64_decode($data["email"]))->where('client_id', $request->clientId)->first();
+
         if($user){
+            // info($user->companies());
             $authorized = $user->companies()->where("api_key", $apiKey)->first();
             if($authorized){
                 $data = $user;

@@ -10,7 +10,7 @@ class SystemSettingsController extends Controller
 {
     public function index()
     {
-        $systemSettings = SystemSetting::whereClientId(1)->get();
+        $systemSettings = SystemSetting::whereClientId(1)->paginate(30);
         return view('admin.clientEnv.index')->with('clientEnv', $systemSettings);
     }
 

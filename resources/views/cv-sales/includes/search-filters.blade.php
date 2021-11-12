@@ -707,7 +707,7 @@
               @endif
 
             <p></p>
-
+            @if(isset($result['facet_counts']['facet_fields']['marital_status']))
             <p class="border-bottom-thin text-muted">Marital Status<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
                   @php $other_marital_status = 0;
@@ -728,13 +728,13 @@
 
                   <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_marital_status.")" }}</label> <br></div>
               </div>
-
+              @endif
               @if($index > 4)
                 <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
               @endif
 
             <p></p>
-
+            @if(isset($result['facet_counts']['facet_fields']['state_of_origin']))
             <p class="border-bottom-thin text-muted">State Of Origin<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
                   @php $other_state_of_origin = 0;
@@ -755,13 +755,13 @@
 
                   <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_state_of_origin.")" }}</label> <br></div>
               </div>
-
+              @endif
               @if($index > 4)
                 <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
               @endif
 
             <p></p>
-
+            @if(isset($result['facet_counts']['facet_fields']['course_of_study']))
             <p class="border-bottom-thin text-muted">Course of Study<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
                   @php $other_course_of_study = 0;
@@ -782,13 +782,14 @@
 
                   <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_course_of_study.")" }}</label> <br></div>
               </div>
+              @endif
 
               @if($index > 4)
                 <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
               @endif
 
             <p></p>
-
+          @if(isset($result['facet_counts']['facet_fields']['specializations']))
             <p class="border-bottom-thin text-muted">Specialization<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
                   @php $other_specializations = 0;
@@ -809,13 +810,13 @@
 
                   <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_specializations.")" }}</label> <br></div>
               </div>
-
+              @endif
               @if($index > 4)
                 <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
               @endif
 
             <p></p>
-
+            @if(isset($result['facet_counts']['facet_fields']['completed_nysc']))
             <p class="border-bottom-thin text-muted">Completed Nysc<i class="fa fa-filter pull-right"></i></p>
             <div class="checkbox-inline">
                 @php $other_edu_school = 0;
@@ -836,7 +837,7 @@
 
                 <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_edu_school.")" }}</label> <br></div>
             </div>
-
+            @endif
             @if($index > 4)
               <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
             @endif

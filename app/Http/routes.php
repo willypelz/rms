@@ -42,6 +42,11 @@ Route::get('clientEnv/edit/{id?}', 'SystemSettingsController@edit')->name('edit-
 Route::get('clientEnv', 'SystemSettingsController@index')->name('index-env');
 Route::post('client/update/{id}', 'SystemSettingsController@update')->name('update-env');
 Route::get('clientEnv/delete/{id}', 'SystemSettingsController@delete')->name('delete-env');
+
+// admin company 
+Route::group(['middleware' => ['web', 'auth', 'companyList']], function () {
+    Route::get('/seeCompnay', 'CompanyController@index');
+});
 /** ---------
  * Start: Administrator Panel Routes
  * Make admin group and apply a guard to it
@@ -598,6 +603,11 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('/test/setup', ['as' => 'test-setup', 'uses' => 'TestSetupController@index']);
     Route::post('/test/setup/create', ['as' => 'test-setup-create', 'uses' => 'TestSetupController@create']);
+
+    Route::group(['prefix'=>'client'],function(){
+        Route::get('/sign-up', ['as' => 'client-signup-index', 'uses' => 'SelfSignUpController@index']);
+        Route::post('/sign-up', ['as' => 'client-signup-create', 'uses' => 'SelfSignUpController@create']);
+    });
 
     Route::get('download-csv-template',
     ['uses' => 'PrivateJobController@exportCsvTemplate', 

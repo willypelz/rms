@@ -21,25 +21,25 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ url('/') }}" title="SeamlessHiring Homepage"></a>
+            <a class="navbar-brand" href="" title="SeamlessHiring Homepage"></a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="{{ Request::is('/') ? 'active' : '' }}">
+                {{-- <li class="{{ Request::is('/') ? 'active' : '' }}">
                     <a class="" href="{{ url('/') }}">Home</a>
-                </li>
+                </li> --}}
             
             <!-- <li>
                     <a class="" href="{{ url('about') }}">About</a>
                 </li> -->
                 
-                <li class="{{ Request::is('about') ? 'active' : '' }}">
+                {{-- <li class="{{ Request::is('about') ? 'active' : '' }}">
                     <a class="" href="{{ url('about') }}">About</a>
-                </li>
+                </li> --}}
                 
                 <li class="{{ Request::is('pricing') ? 'active' : '' }}">
-                    <a class="" href="{{--{{ route('pricing-page') }}--}}">Pricing</a>
+                    <a class="" href="{{ route('pricing-page') }}">Pricing</a>
                 </li>
             
             <!-- <li class="{{ Request::is('cv/search*') ? 'active' : '' }}">
@@ -52,17 +52,17 @@
                                 </li>
                 --}}
                 
-                <li class="{{ Request::is('contact') ? 'active' : '' }}">
+                {{-- <li class="{{ Request::is('contact') ? 'active' : '' }}">
                     <a class="" href="{{ url('contact') }}">Contact</a>
-                </li>
+                </li> --}}
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {{-- <li>
                     <a class="btn btn-primary" href="{{ url('register') }}" >SIGN UP</a>
                 </li> --}}
-                <li>
+                {{-- <li>
                     <a class="signin" href="{{ url('login') }}">LOG IN</a>
-                </li>
+                </li> --}}
             </ul>
         </div>
         <!-- /.navbar-collapse -->

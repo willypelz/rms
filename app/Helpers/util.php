@@ -1226,28 +1226,16 @@ function getEnvData(string $key, $default_value = null, $client_id = null)
 /**
  * Generate the company URL to a named route.
  *
- * @param int company_id
+ * @param int client_id
  * @param string  $name
  * @param array|null  $parameters
  * @return string
  */
 
-function companyRoute(int $company_id, string $name, array $parameters = []): string
+function companyRoute(int $client_id, string $name, array $parameters = []): string
 
 {
-	$client_url = Client::whereHas('companies', function ($q) use ($company_id) {
-		$q->where('id', $company_id);
-	})->first()->url ?? null;
+	$client_url = Client::where('client_id', $client_id)->first()->url ?? null;
 
 	return $client_url ? ($client_url . route($name, $parameters, false)) : route($name, $parameters);
-}
-
-/**
- * Generate the company URL to a named route.
- *
- * @param int company_id
- * * @return object
- */
-function getClient($url){
-    return Client::where('id', $company_id)->first() ?? null;
 }

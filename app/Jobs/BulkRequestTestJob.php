@@ -91,7 +91,7 @@ class BulkRequestTestJob implements ShouldQueue
                 'employer_email' => $current_company->email,
                 'start_time' => $data['start_time'],
                 'end_time' => $data['end_time'],
-                'webhook_url' => route('save-test-result'),
+                'webhook_url' => companyRoute($request->client_id, 'save-test-result'),
             ];
             $ch = curl_init($testUrl);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

@@ -37,7 +37,11 @@ class Plans
         }
         if( Auth::check() )
         {
-            $current_company = get_current_company();
+            $current_company = get_current_company();  
+            if(!isset($current_company->id)){
+                return redirect()->route('logout');
+            }
+            
             $trial_time = Carbon::parse( $current_company->date_added );
             $now = Carbon::now();
             $diff = $now->diffInDays( $trial_time );

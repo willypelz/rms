@@ -44,7 +44,7 @@ class UserObserver
     public function updated(User $user)
     {
         //
-    //    dd($user);
+ 
         if(auth()->check()){
             if(!isset($user->client_id)){
                 User::find($user->id)->update(['client_id' => request()->clientId]);

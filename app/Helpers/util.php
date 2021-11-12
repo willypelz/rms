@@ -1241,3 +1241,13 @@ function companyRoute(int $company_id, string $name, array $parameters = []): st
 
 	return $client_url ? ($client_url . route($name, $parameters, false)) : route($name, $parameters);
 }
+
+/**
+ * Generate the company URL to a named route.
+ *
+ * @param int company_id
+ * * @return object
+ */
+function getClient($url){
+    return Client::where('id', $company_id)->first() ?? null;
+}

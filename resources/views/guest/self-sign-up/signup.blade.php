@@ -42,55 +42,57 @@
                                         <span class="col-xs-12">
                                              <span class="col-xs-6">
                                                 <div class="form-group">
-                                                    <label>Full Name *</label>
+                                                    <label>Full Name </label><span class="text-danger">*</span>
                                                     <br>
-                                                    <input type="text" name="name" class="form-control" placeholder="Enter your first name and last name">
+                                                    <input type="text" name="name" class="form-control" placeholder="Your first name and last name">
                                                 </div>
                                              </span>
                                              <span class="col-xs-6">
                                                 <div class="form-group">
-                                                    <label> Work Email *</label>
+                                                    <label> Work Email </label> <span class="text-danger">*</span>
                                                     <br>
-                                                    <input type="email" name="email" class="form-control" placeholder="Enter only a valid work email">
+                                                    <input type="email" name="email" class="form-control" placeholder="Only a valid work email is allowed">
                                                 </div>
                                              </span>
                                              <span class="col-xs-6">    
                                                 <div class="form-group">
-                                                    <label>Company Name *</label>
+                                                    <label>Company Name </label> <span class="text-danger">*</span>
                                                     <br>
-                                                    <input type="text" name="contact_phone" class="form-control" placeholder="Enter company name">
+                                                    <input type="text" name="contact_phone" class="form-control" placeholder="Name of your organisation">
                                                 </div>
                                              </span>
                                             
                                              <span class="col-xs-6">
                                                 <div class="form-group">
-                                                    <label>Phone Number *</label>
+                                                    <label>Phone Number </label> <span class="text-danger">*</span>
                                                     <br>
-                                                    <input type="text" name="phone" class="form-control" placeholder="Enter your phone number">
+                                                    <input type="text" name="phone" class="form-control" placeholder="Your phone number">
                                                 </div>
                                              </span>
-                                             <span class="col-xs-9">    
-                                                    <div class="form-group">
-                                                        <label>Preferred url *</label>
-                                                        <br>
-                                                        <input type="text" name="url" class="form-control" placeholder="Enter preferred name">
+                                             <div class="form-group col-xs-12">
+                                                   
+                                                    <label for="">Preferred url</label>  <span class="text-danger">*</span>
+                                                    <div class="row">
+                                                        <div class="col-xs-9">
+                                                            <input type="text" name="domain" id="domain" class="form-control angular" placeholder="Enter your company name only" required></div>
+                                                        <div class="col-xs-3">
+                                                            <b class="btn btn-warning" style="margin-top:0px; height:42px; margin-left:-30px; padding-top:10px;">.seamlesshiring.com</b>
+                                                        </div>
                                                     </div>
-                                                 </span>
-                                                 <span class="col-xs-3">
-                                                    <div class="form-group">  
-                                                        <b class="btn btn-primary" style="margin-top:24px; height:42px; margin-left:-30px; padding-top:10px; width:12em">.seamlesshiring.com</b>
-                                                    </div>
-                                                </span>
+                                                    <div id="domain" class="text-danger"></div>
+                                                    <div id="domainName" class="text-info"></div>
+                                                </div>
+                                             
                                              <span class="col-xs-6">
                                                 <div class="form-group">
-                                                    <label>Password *</label>
+                                                    <label>Password </label> <span class="text-danger">*</span>
                                                     <br>
-                                                    <input type="text" name="password" class="form-control" placeholder="Enter preferred password">
+                                                    <input type="text" name="password" class="form-control" placeholder="Preferred password">
                                                 </div>
                                              </span>
                                              <span class="col-xs-6">
                                                 <div class="form-group">
-                                                    <label>Confirm Password*</label>
+                                                    <label>Confirm Password </label> <span class="text-danger">*</span>
                                                     <br>
                                                     <input type="text" name="confirm_password" class="form-control" placeholder="Re-enter password">
                                                 </div>
@@ -100,7 +102,7 @@
                                             
                                             <br>
                                             <span class="col-xs-12">
-                                             <input type="submit" value="Send Message" class="btn btn-primary" disabled>  
+                                             <input type="submit" value="Create My Account" class="btn btn-primary" disabled>  
                                             </span>
                                         </span>                                            
 
@@ -131,6 +133,17 @@
     </div><div class="clearfix"><br></div>
   </div>
 </section>
-
+{{-- <script src="{{secure_asset('js/jquery-1.11.1.min.js') }}"> --}}
+    alert('f');
+        $(document).ready(function () {
+            $('#domain').keyup(function () {
+                if ($(this).val().length > 1) {
+                    $('#domainName').text($('#domain').val() + '.mygo1.com');
+                }
+                if ($(this).val().length < 1) {
+                    $('#domainName').text('');
+                }
+            });
+</script>
 
 @endsection

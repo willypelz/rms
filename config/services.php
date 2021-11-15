@@ -15,12 +15,12 @@ return [
     */
 
     'mailgun' => [
-        'domain' => getEnvData('MAILGUN_DOMAIN'),
-        'secret' => getEnvData('MAILGUN_SECRET'),
+        'domain' => env('MAILGUN_DOMAIN'),
+        'secret' => env('MAILGUN_SECRET'),
     ],
 
     'mandrill' => [
-        'secret' => getEnvData('MANDRILL_SECRET'),
+        'secret' => env('MANDRILL_SECRET'),
     ],
 
     'ses' => [

@@ -5,7 +5,6 @@ namespace App\Jobs;
 use App\Models\Cv;
 use App\Models\Job;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

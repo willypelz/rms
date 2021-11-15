@@ -177,17 +177,24 @@
                     data: datastring,
                     dataType: "json",
                     success: function (data, status) {
-                       
-                           
-                            // window.setTimeout(
-                            //     function () {
-                            //         location.reload(true)
-                            //     },
-                            //     2000
-                            // );
+                       if(data.status == true){
+                            $.growl.notice({ 
+                                message: data.msg, 
+                                location: 'tc', 
+                                size: 'large' 
+                            });
+                            window.setTimeout(function () {location.reload(true)},8000 );
+                       }else{
+                            $.growl.error({ 
+                                message: data.msg, 
+                                location: 'tc', 
+                                size: 'large' 
+                            });
+                       }
                     
                     },
                     error:function (data, status){
+                        console.log(data,status);
                         if(status === 'error'){
                             var error_list = (JSON.parse(data.responseText));
                             $.each(error_list.errors, function (index, value) {

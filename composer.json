@@ -33,7 +33,7 @@
         "wemersonjanuario/wkhtmltopdf-windows": "0.12.2.3",
         "laravel/helpers": "^1.2",
         "jdavidbakr/mail-tracker": "^5.0.3",
-        "seamlesshr/solrpackage": "dev-SolrUpgradeV8Dev",
+        "seamlesshr/solrpackage": "dev-multitenantSolr",
         "solarium/solarium": "^5.1",
         "predis/predis": "^1.1",
         "laravel/horizon": "^5.0.0",

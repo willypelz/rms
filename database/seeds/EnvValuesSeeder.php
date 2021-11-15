@@ -17,7 +17,7 @@ class EnvValuesSeeder extends Seeder
         foreach ($clientIds as $clientId) {
             $envFile = $_ENV;
             foreach ($envFile as $envKey => $envValue) {
-                SystemSetting::updateOrCreate(
+                SystemSetting::firstOrCreate(
                     [
                         'client_id' => $clientId,
                         'key' => strtoupper($envKey)],

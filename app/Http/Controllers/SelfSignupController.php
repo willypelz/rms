@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\Services\SelfSignUpService;
 use App\Http\Requests\SignUpRequest;
 
@@ -26,14 +27,15 @@ class SelfSignUpController extends Controller
     public function create(SignUpRequest $request, SelfSignUpService $signup)
     {
         try{
-            
-           return $signup->createDomain($request);
+            DB::transaction(function () use($request, $signup) {
+                 $user_sign_up =  $signup->createDomain($request);
+                 if($user_sign_up){
+                       return response()->json(['status'=>true, 'msg'=>'Account creation successful']);
+                 }
+            });
         }catch(\Exception $e){
-            dd($e);
-        //    return response()->json([
-        //                             'status'=>'error',
-        //                             'responseText'=>['errors'=>['something went wrong']]
-        //                             ]);
+            info($e);
+            return response()->json(['status'=>false, 'msg'=> $e->getMessage()]);
         }
            
     }

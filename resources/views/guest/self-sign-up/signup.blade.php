@@ -1,5 +1,6 @@
 @extends('layout.template-default')
 
+
 @section('content')
 <style>
 .btn.btn-primary, section.s-div{
@@ -27,7 +28,8 @@
                     <div class="">
                         <br>
                         <div class="pagehead">
-                            <form method="post" action="">
+                            <form method="post" action="" id="signup_form">
+                                {{ csrf_field() }}
                                     <div class="col-xs-2">
                                         </div>
                                 <div class="col-xs-8 contact">
@@ -58,7 +60,7 @@
                                                 <div class="form-group">
                                                     <label>Company Name </label> <span class="text-danger">*</span>
                                                     <br>
-                                                    <input type="text" name="contact_phone" class="form-control" placeholder="Name of your organisation">
+                                                    <input type="text" name="company_name" class="form-control" placeholder="Name of your organisation">
                                                 </div>
                                              </span>
                                             
@@ -87,22 +89,27 @@
                                                 <div class="form-group">
                                                     <label>Password </label> <span class="text-danger">*</span>
                                                     <br>
-                                                    <input type="text" name="password" class="form-control" placeholder="Preferred password">
+                                                    <input type="password" name="password" id="password" class="form-control" placeholder="Preferred password">
                                                 </div>
                                              </span>
+                                        
+
                                              <span class="col-xs-6">
                                                 <div class="form-group">
                                                     <label>Confirm Password </label> <span class="text-danger">*</span>
                                                     <br>
-                                                    <input type="text" name="confirm_password" class="form-control" placeholder="Re-enter password">
+                                                    <input type="password" name="password_confirmation" id="confirm_password" class="form-control" placeholder="Re-enter password">
                                                 </div>
                                              </span>
-                                           <span class="col-xs-12 text-center">By clicking submit, you agree to the SeamlesssHR <a href="https://seamlesshr.com/terms/">Terms of Service</a> and our <a href="https://seamlesshr.com/privacy-security/">Privacy Policy</a></span>
+                                            
+                                            <span class="col-xs-12 text-center">
+                                                <input type="checkbox" name="tos" id="tos" class="angular tos">
+                                                 I agree to the SeamlesssHR <a href="https://seamlesshr.com/terms/">Terms of Service</a> and <a href="https://seamlesshr.com/privacy-security/">Privacy Policy</a></span>
                                             <br>
                                             
                                             <br>
                                             <span class="col-xs-12">
-                                             <input type="submit" value="Create My Account" class="btn btn-primary" disabled>  
+                                             <input id="submitButton"  type="submit" value="Create My Account" class="btn btn-primary" disabled>  
                                             </span>
                                         </span>                                            
 
@@ -133,17 +140,69 @@
     </div><div class="clearfix"><br></div>
   </div>
 </section>
-{{-- <script src="{{secure_asset('js/jquery-1.11.1.min.js') }}"> --}}
-    alert('f');
+<script>
         $(document).ready(function () {
             $('#domain').keyup(function () {
-                if ($(this).val().length > 1) {
-                    $('#domainName').text($('#domain').val() + '.mygo1.com');
+                if ($(this).val().length > 0) {
+                    $('#domainName').text('https://' + $('#domain').val() + '.seamlesshiring.com');
                 }
                 if ($(this).val().length < 1) {
                     $('#domainName').text('');
                 }
             });
+   
+
+            $('#password,#confirm_password').mouseout(function () {
+                if ($(this).val().length >= 1 && $(this).val().length < 8) {
+                    $.growl.error({ message: "password cannot be less than 8 characters", location: 'tc', size: 'small' });
+                }
+            });
+
+            $('#tos').click(function () {
+                ($(this).prop('checked') == true) ?
+                $('#submitButton').attr('disabled', false) :
+                $('#submitButton').attr('disabled', 'disabled');
+            });
+
+
+            $('#submitButton').click(function (e) {
+                e.preventDefault();
+                var url = "",
+                    sub_form = $("#signup_form"),
+                    datastring = sub_form.serialize();
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: datastring,
+                    dataType: "json",
+                    success: function (data, status) {
+                       
+                           
+                            // window.setTimeout(
+                            //     function () {
+                            //         location.reload(true)
+                            //     },
+                            //     2000
+                            // );
+                    
+                    },
+                    error:function (data, status){
+                        if(status === 'error'){
+                            var error_list = (JSON.parse(data.responseText));
+                            $.each(error_list.errors, function (index, value) {
+                                $.growl.error({ 
+                                    message: value, 
+                                    location: 'tc', 
+                                    size: 'large' 
+                                });
+                            });
+
+                        }
+                    }
+                });
+            });
+        });
 </script>
 
 @endsection

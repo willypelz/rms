@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\SelfSignUpService;
+use App\Http\Requests\SignUpRequest;
+
 
 class SelfSignUpController extends Controller
 {
@@ -20,12 +23,17 @@ class SelfSignUpController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(SignUpRequest $request, SelfSignUpService $signup)
     {
         try{
-
+            
+           return $signup->createDomain($request);
         }catch(\Exception $e){
-           
+            dd($e);
+        //    return response()->json([
+        //                             'status'=>'error',
+        //                             'responseText'=>['errors'=>['something went wrong']]
+        //                             ]);
         }
            
     }

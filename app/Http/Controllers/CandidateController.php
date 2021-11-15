@@ -111,7 +111,7 @@ class CandidateController extends Controller
                 );
 
 
-                Mail::send('emails.candidate-forgot-password', ['token' => $token], function ($m) use ($candidate) {
+                Mail::send('emails.candidate-forgot-password', ['token' => $token, 'client_id' => $request->clientId], function ($m) use ($candidate) {
                     $m->from(env('COMPANY_EMAIL'), env('APP_NAME'));
                     $m->to($candidate->email, $candidate->first_name)->subject('Your Password Reset Link!');
                 });

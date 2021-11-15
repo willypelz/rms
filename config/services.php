@@ -24,15 +24,15 @@ return [
     ],
 
     'ses' => [
-        'key'    => getEnvData('SES_KEY'),
-        'secret' => getEnvData('SES_SECRET'),
-        'region' => getEnvData('SES_REGION'),
+        'key'    => env('SES_KEY'),
+        'secret' => env('SES_SECRET'),
+        'region' => env('SES_REGION'),
     ],
 
     'stripe' => [
         'model'  => App\User::class,
-        'key'    => getEnvData('STRIPE_KEY'),
-        'secret' => getEnvData('STRIPE_SECRET'),
+        'key'    => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
     ],
 
 ];

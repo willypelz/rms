@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'driver' => getEnvData('MAIL_DRIVER', 'smtp'),
+    'driver' => env('MAIL_DRIVER', 'smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'host' => getEnvData('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
 
 
     /*
@@ -42,7 +42,7 @@ return [
     |
     */
 
-    'port' => getEnvData('MAIL_PORT', 587),
+    'port' => env('MAIL_PORT', 587),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => getEnvData('COMPANY_EMAIL'), 'name' => getEnvData('COMPANY_NAME')],
+    'from' => ['address' => env('COMPANY_EMAIL'), 'name' => env('COMPANY_NAME')],
 
     /*
     |--------------------------------------------------------------------------
@@ -68,7 +68,7 @@ return [
     |
     */
 
-    'encryption' => getEnvData('MAIL_ENCRYPTION', 'tls'),
+    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
 
     /*
     |--------------------------------------------------------------------------
@@ -81,7 +81,7 @@ return [
     |
     */
 
-    'username' => getEnvData('MAIL_USERNAME'),
+    'username' => env('MAIL_USERNAME'),
 
     /*
     |--------------------------------------------------------------------------
@@ -94,7 +94,7 @@ return [
     |
     */
 
-    'password' => getEnvData('MAIL_PASSWORD'),
+    'password' => env('MAIL_PASSWORD'),
 
     /*
     |--------------------------------------------------------------------------

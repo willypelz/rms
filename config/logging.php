@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => getEnvData('LOG_CHANNEL', 'daily'),
+    'default' => env('LOG_CHANNEL', 'daily'),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,7 +55,7 @@ return [
 
         'slack' => [
             'driver' => 'slack',
-            'url' => getEnvData('LOG_SLACK_WEBHOOK_URL'),
+            'url' => env('LOG_SLACK_WEBHOOK_URL'),
             'username' => 'Laravel Log',
             'emoji' => ':boom:',
             'level' => 'critical',
@@ -66,15 +66,15 @@ return [
             'level' => 'debug',
             'handler' => SyslogUdpHandler::class,
             'handler_with' => [
-                'host' => getEnvData('PAPERTRAIL_URL'),
-                'port' => getEnvData('PAPERTRAIL_PORT'),
+                'host' => env('PAPERTRAIL_URL'),
+                'port' => env('PAPERTRAIL_PORT'),
             ],
         ],
 
         'stderr' => [
             'driver' => 'monolog',
             'handler' => StreamHandler::class,
-            'formatter' => getEnvData('LOG_STDERR_FORMATTER'),
+            'formatter' => env('LOG_STDERR_FORMATTER'),
             'with' => [
                 'stream' => 'php://stderr',
             ],

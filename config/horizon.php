@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'prefix' => getEnvData('HORIZON_PREFIX', 'horizon:'),
+    'prefix' => env('HORIZON_PREFIX', 'horizon:'),
 
     /*
     |--------------------------------------------------------------------------
@@ -142,38 +142,38 @@ return [
 
     'environments' => [
         'production' => [
-            'supervisor-1-'.getEnvData('DB_DATABASE') => [
+            'supervisor-1-'.env('DB_DATABASE') => [
                 'connection' => 'redis',
                 'queue' => ['default', 'solr'],
                 'balance' => 'auto',
-                'minProcesses' => getEnvData('HORIZON_PROCESS_MIN', 1),
-                'maxProcesses' => getEnvData('HORIZON_PROCESS_MAX', 10),
+                'minProcesses' => env('HORIZON_PROCESS_MIN', 1),
+                'maxProcesses' => env('HORIZON_PROCESS_MAX', 10),
                 'tries' => 1,
             ],
-            'supervisor-2-'.getEnvData('DB_DATABASE') => [
+            'supervisor-2-'.env('DB_DATABASE') => [
                 'connection' => 'redis',
                 'queue' => ['default', 'export'],
                 'balance' => 'auto',
-                'minProcesses' => getEnvData('HORIZON_PROCESS_MIN', 1),
-                'maxProcesses' => getEnvData('HORIZON_PROCESS_MAX', 1),
+                'minProcesses' => env('HORIZON_PROCESS_MIN', 1),
+                'maxProcesses' => env('HORIZON_PROCESS_MAX', 1),
                 'tries' => 1,
             ],
         ],
         'local' => [
-            'supervisor-1-'.getEnvData('DB_DATABASE') => [
+            'supervisor-1-'.env('DB_DATABASE') => [
                 'connection' => 'redis',
                 'queue' => ['default', 'solr'],
                 'balance' => 'auto',
-                'minProcesses' => getEnvData('HORIZON_PROCESS_MIN', 1),
-                'maxProcesses' => getEnvData('HORIZON_PROCESS_MAX', 10),
+                'minProcesses' => env('HORIZON_PROCESS_MIN', 1),
+                'maxProcesses' => env('HORIZON_PROCESS_MAX', 10),
                 'tries' => 1,
             ],
-            'supervisor-2-'.getEnvData('DB_DATABASE') => [
+            'supervisor-2-'.env('DB_DATABASE') => [
                 'connection' => 'redis',
                 'queue' => ['default', 'export'],
                 'balance' => 'auto',
-                'minProcesses' => getEnvData('HORIZON_PROCESS_MIN', 1),
-                'maxProcesses' => getEnvData('HORIZON_PROCESS_MAX', 1),
+                'minProcesses' => env('HORIZON_PROCESS_MIN', 1),
+                'maxProcesses' => env('HORIZON_PROCESS_MAX', 1),
                 'tries' => 1,
             ],
         ],

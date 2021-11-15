@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => getEnvData('QUEUE_DRIVER', 'database'),
+    'default' => env('QUEUE_DRIVER', 'database'),
 
     /*
     |--------------------------------------------------------------------------
@@ -79,7 +79,7 @@ return [
     */
 
     'failed' => [
-        'database' => getEnvData('DB_CONNECTION', 'mysql'),
+        'database' => env('DB_CONNECTION', 'mysql'),
         'table'    => 'failed_queue_jobs',
     ],
 

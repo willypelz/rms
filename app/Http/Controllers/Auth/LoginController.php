@@ -61,10 +61,15 @@ class LoginController extends Controller
     public function verifyUser(Request $request)
     {
 
-        $user = User::whereEmail($request->email)->orWhere('username', $request->email)->first();
+        $user = User::whereEmail($request->email);
+        $user_clone =  $user->clone();
 
-        if($user){
-        // TODO
+        if($user->count()){
+            //if client_id is not set, continue with normal flow hence use the client_id
+            
+            $user = $user->where('client_id', $request->clientId)->orWhere('username', $request->email)->first() ?? $user_clone->orWhere('username', $request->email)->first();
+
+            // TODO
             $is_internal = $user->is_internal;
 
 
@@ -386,5 +391,18 @@ class LoginController extends Controller
             return redirect(env('STAFFSTRENGTH_URL'));
         }
         return redirect('/');
+    }
+
+    public function login(Request $request){
+        $loginCred = ['email' => $request->input('email'), 'password' => $request->input('password'),'client_id'=> $request->clientId];
+        //added client_id to login_cred array for users to only login to the intended dashboard, since there can now be multiple 
+        //usage of same email provided it is for a different client
+        if (Auth::attempt($loginCred)){
+               return redirect()->route('dashboard');
+
+        } else {
+            $request->session()->flash('warning', "Invalid Credentials");
+            return back();
+        }
     }
 }

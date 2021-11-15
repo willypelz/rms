@@ -10,8 +10,8 @@
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,600" rel="stylesheet">
     <link rel="shortcut icon" href="{{ secure_asset('img/favicon.png') }}">
     <!-- Add Custom CSS for brand white listing here -->
-    @if(env('CUSTOM_STYLE'))
-        <link href="{{ secure_asset('css/'.env('CUSTOM_STYLE').'.theme.css') }}" rel="stylesheet">
+    @if(getEnvData('CUSTOM_STYLE', null, request()->clientId))
+        <link href="{{ secure_asset('css/'.getEnvData('CUSTOM_STYLE', null, request()->clientId).'.theme.css') }}" rel="stylesheet">
     @else
         <link href="{{ secure_asset('css/seamlesshiring.css') }}" rel="stylesheet">
     @endif

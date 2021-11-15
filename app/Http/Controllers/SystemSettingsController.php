@@ -17,7 +17,9 @@ class SystemSettingsController extends Controller
      */
     public function index()
     {
-        $systemSettings =SystemSetting::whereClientId(1)->paginate(30);
+        $systemSettings = SystemSetting::whereClientId(
+            request()->clientId
+        )->paginate(30);
         return view('admin.clientEnv.index')->with('clientEnv', $systemSettings);
     }
 
@@ -45,7 +47,7 @@ class SystemSettingsController extends Controller
     public function update(ClientEnvRequest $clientEnvRequest, $id)
     {
         $clientEnvDetails = $clientEnvRequest->validated();
-        SystemSetting::whereClientIdAndId(1, $id)->update(
+        SystemSetting::whereClientIdAndId(request()->clientId, $id)->update(
             [
                 'key' => $clientEnvDetails['key'],
                 'value' => $clientEnvDetails['value']
@@ -57,7 +59,7 @@ class SystemSettingsController extends Controller
 
     public function delete($id)
     {
-        SystemSetting::whereClientIdAndId(1, $id)->delete();
+        SystemSetting::whereClientIdAndId(request()->clientId, $id)->delete();
         session()->flash('success', 'Deleted Successfully');
         return redirect(route('index-env'));
     }

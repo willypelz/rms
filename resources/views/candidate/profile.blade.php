@@ -117,7 +117,11 @@
                         <!--/footer-->
                         <div class="page page-sm foot no-bod-rad">
                             <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                                <p><img src="{{ env('SEAMLESS_HIRING_LOGO') }}" alt=""
+<<<<<<< Updated upstream
+                                <p><img src="{{ getEnvData('SEAMLESS_HIRING_LOGO') }}" alt=""
+=======
+                                <p><img src="{{ getEnvData('SEAMLESS_HIRING_LOGO',null,request()->clientId) }}" alt=""
+>>>>>>> Stashed changes
                                         width="200px"></p>
                                 <p>
                                     <small class="text-muted"> &nbsp;

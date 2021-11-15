@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'file'),
+    'driver' => getEnvData('SESSION_DRIVER', 'file'),
 
     /*
     |--------------------------------------------------------------------------
@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'lifetime' => env("IDLE_PERIOD_SESSION_TIMEOUT", 1500),
+    'lifetime' => getEnvData("IDLE_PERIOD_SESSION_TIMEOUT", 1500),
 
     'expire_on_close' => false,
 
@@ -150,6 +150,6 @@ return [
 
     'secure' => false,
 
-    'idle_period_session_timeout' => env("IDLE_PERIOD_SESSION_TIMEOUT", 1500)
+    'idle_period_session_timeout' => getEnvData("IDLE_PERIOD_SESSION_TIMEOUT", 1500)
 
 ];

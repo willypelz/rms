@@ -27,7 +27,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => getEnvData('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,34 +56,34 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'read' => [
-		        'host' => [env('DB_HOST_READ', '127.0.0.1')],
+		        'host' => [getEnvData('DB_HOST_READ', '127.0.0.1')],
 		    ],
 		    'write' => [
-		        'host' => [env('DB_HOST_WRITE', '127.0.0.1')],
+		        'host' => [getEnvData('DB_HOST_WRITE', '127.0.0.1')],
 		    ],
 		    'sticky'    => true,
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'unix_socket' => env('DB_SOCKET', ''),
+            'port' => getEnvData('DB_PORT', '3306'),
+            'database' => getEnvData('DB_DATABASE', 'forge'),
+            'username' => getEnvData('DB_USERNAME', 'forge'),
+            'password' => getEnvData('DB_PASSWORD', ''),
+            'unix_socket' => getEnvData('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
             'strict' => false,
             'engine' => null,
-            'sslmode' => env('DB_SSLMODE', 'prefer'),
-		    'options' => (env('MYSQL_SSL')) ? [
-		        PDO::MYSQL_ATTR_SSL_KEY    => env('MYSQL_ATTR_SSL_KEY'), 
+            'sslmode' => getEnvData('DB_SSLMODE', 'prefer'),
+		    'options' => (getEnvData('MYSQL_SSL')) ? [
+		        PDO::MYSQL_ATTR_SSL_KEY    => getEnvData('MYSQL_ATTR_SSL_KEY'), 
 		    ] : [],
         ],
 
         'pgsql' => [
             'driver'   => 'pgsql',
-            'host'     => env('DB_HOST', 'localhost'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'host'     => getEnvData('DB_HOST', 'localhost'),
+            'database' => getEnvData('DB_DATABASE', 'forge'),
+            'username' => getEnvData('DB_USERNAME', 'forge'),
+            'password' => getEnvData('DB_PASSWORD', ''),
             'charset'  => 'utf8',
             'prefix'   => '',
             'schema'   => 'public',
@@ -91,10 +91,10 @@ return [
 
         'sqlsrv' => [
             'driver'   => 'sqlsrv',
-            'host'     => env('DB_HOST', 'localhost'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'host'     => getEnvData('DB_HOST', 'localhost'),
+            'database' => getEnvData('DB_DATABASE', 'forge'),
+            'username' => getEnvData('DB_USERNAME', 'forge'),
+            'password' => getEnvData('DB_PASSWORD', ''),
             'charset'  => 'utf8',
             'prefix'   => '',
         ],
@@ -129,22 +129,22 @@ return [
 
         'client' => 'predis',
         'options'=>[
-            'cluster' => env('REDIS_CLUSTER', 'predis'),
-            'prefix' => Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'.env('DB_DATABASE', 'forge'),
+            'cluster' => getEnvData('REDIS_CLUSTER', 'predis'),
+            'prefix' => Str::slug(getEnvData('APP_NAME', 'laravel'), '_').'_database_'.getEnvData('DB_DATABASE', 'forge'),
         ],
 
         'default' => [
-            'host' => env('REDIS_HOST', '127.0.0.1'),
-            'password' => env('REDIS_PASSWORD', null),
-            'port' => env('REDIS_PORT', 6379),
-            'database' => env('REDIS_DB', 0),
+            'host' => getEnvData('REDIS_HOST', '127.0.0.1'),
+            'password' => getEnvData('REDIS_PASSWORD', null),
+            'port' => getEnvData('REDIS_PORT', 6379),
+            'database' => getEnvData('REDIS_DB', 0),
         ],
         
         'cache' => [
-            'host' => env('REDIS_HOST', '127.0.0.1'),
-            'password' =>  env('REDIS_PASSWORD', null),
-            'port' => env('REDIS_PORT', 6379),
-            'database' => env('REDIS_CACHE_DB', 1),
+            'host' => getEnvData('REDIS_HOST', '127.0.0.1'),
+            'password' =>  getEnvData('REDIS_PASSWORD', null),
+            'port' => getEnvData('REDIS_PORT', 6379),
+            'database' => getEnvData('REDIS_CACHE_DB', 1),
         ]
 
     ],

@@ -23,7 +23,7 @@ class SubsidiariesController extends Controller
      */
     public function index()
     {
-        $subsidiaries =   Company::whereIsDefault(false)->OrderBy('date_added', 'desc')->get();
+        $subsidiaries =   Company::whereIsDefault(false)->where('client_id',request()->clientId)->OrderBy('date_added', 'desc')->get();
 	    return view('company.subsidiaries.index', compact('subsidiaries'));
     }
 

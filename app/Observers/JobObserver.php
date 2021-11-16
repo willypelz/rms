@@ -32,7 +32,7 @@ class JobObserver
                 'causer_type' => 'Admin',
                 'properties' => '',
             ];
-            logAction($param);            
+            logAction($param);
         }
         if (isHrmsIntegrated()) {
             $company = Company::where('id', $job->company_id)->first();
@@ -44,7 +44,7 @@ class JobObserver
                     'position' => $job->position,
                     'hrms_id' => $company->hrms_id
                 ];
-                $response = Curl::to(config('app.staff_strength_url') . 'api/v1/send/notification')
+                $response = Curl::to(getEnvData('STAFFSTRENGTH_URL',null,request()->clientId) . 'api/v1/send/notification')
                     ->withData($sendJob)
                     ->asJson()
                     ->get();

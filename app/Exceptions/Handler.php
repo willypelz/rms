@@ -38,7 +38,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Throwable $exception)
     {
-        if (!env('APP_DEBUG')) {
+        if (!getEnvData('APP_DEBUG',null,request()->clientId)) {
             if (app()->bound('sentry') && $this->shouldReport($exception)) {
                 app('sentry')->captureException($exception);
             }
@@ -59,7 +59,7 @@ class Handler extends ExceptionHandler
     {
         // 
         
-         if(!env('APP_DEBUG')){
+         if(!getEnvData('APP_DEBUG',null,request()->clientId)){
             if ($exception instanceof MaintenanceModeException) {
                 return response()->view('errors.maintainance');
             }

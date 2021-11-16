@@ -79,7 +79,7 @@ class AuthController extends Controller
                 // Redirect to StaffStrength with Login
                 $user_email = base64_encode($request->email);
 
-                $redirect_url = env('HIRS_REDIRECT_LOGIN').'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;
+                $redirect_url = getEnvData('HIRS_REDIRECT_LOGIN').'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;
 
                 return ['status' => 200, 'is_external' => false, 'redirect_url' => $redirect_url];
 
@@ -247,7 +247,7 @@ class AuthController extends Controller
             if( $request->hasFile('logo') )
             {
                 $upload = $request->file('logo')->move(
-                    env('fileupload'), $logo
+                    getEnvData('fileupload'), $logo
                 );
             }
 

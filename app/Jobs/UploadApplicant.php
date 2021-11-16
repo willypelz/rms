@@ -26,6 +26,7 @@ class UploadApplicant implements ShouldQueue
     {
         //$applicant refers to JobApplication table
         $this->applicant = $applicant;
+        $job = $this->applicant->job;
     }
 
     /**
@@ -83,6 +84,11 @@ class UploadApplicant implements ShouldQueue
             $cand['hrms_location'] = $applicant->cv->hrms_location ?? null;
             $cand['hrms_length_of_stay'] = $applicant->cv->hrms_length_of_stay ?? null;
             $cand['edu_school'] = $applicant->cv->school->name ?? null;
+            $cand['specializations'] = $applicant->cv->specializations->pluck("name")->toArray() ?? null;
+            $cand['minimum_remuneration'] = (int) ($job->minimum_remuneration ?? null);
+            $cand['maximum_remuneration'] = (int) ($job->maximum_remuneration ?? null);
+            $cand['completed_nysc'] = (bool)($applicant->cv->completed_nysc ?? null);
+            $cand['graduation_grade'] = (int)($applicant->cv->graduation_grade ?? null);
             //custom fields
             foreach ($this->applicant->custom_fields as $key=>$value) {
                 if($value->form_field != null && isset($value->form_field->name) && isset($value->value)){

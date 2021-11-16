@@ -33,7 +33,7 @@ class MessageObserver
         if(auth()->guard('candidate')->check()){
             $param = [
                'log_name' => 'Applicant sent a message',
-               'description' => 'Message was sent from '.auth()->guard('candidate')->user()->name(),
+               'description' => 'Message was sent from '.auth()->guard('candidate')->user()->getNameAttribute(),
                'action_id' => $message->id,
                'action_type' => 'App\Models\Message',
                'causee_id' =>  null,

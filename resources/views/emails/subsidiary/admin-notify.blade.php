@@ -46,7 +46,7 @@
 																			<br><br>
 																			<p> Amazing work creating a new subsidiary {{$subsidiary}} on your Hiring platform </b> </p>
 																			<br>
-																			We are delighted you would like to expand your access to more Talents. We are giving you a free 14-day access to {{$subsidiary}} after which a subscription will be required.
+																			We are delighted you would like to expand your access to more Talents. We are giving you a free 28-day access to {{$subsidiary}} after which a subscription will be required.
 																			<br>
 																			If you enjoyed the experience and wish to activate your subsidiary account, please email our Customer success team at support-team@seamlesshr.com or call 08090643874 and we will be sure to offer all the required assistance.
 																			<br>

@@ -44,7 +44,7 @@
 																			<hr style="border-width:0 0 1px">
 																			<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">Dear Sales and CS Team,
 																			<br><br>
-																			<p> {{ isset($user->name) ? $user->name : $user->first_name }} of {{ @get_current_company()->name }} has just created {{$subsidiary}} subsidiary on RMS on a 14 day trial period.</b> </p>
+																			<p> {{ isset($user->name) ? $user->name : $user->first_name }} of {{ @get_current_company()->name }} has just created {{$subsidiary}} subsidiary on RMS on a 28 day trial period.</b> </p>
 																			<br>
 																			Please reach out to client on how subscription payment will be made for the new addition before the trial period expires. 
 																			</p>

@@ -23,7 +23,8 @@ class GetClientInformation
         try{
             $currentUrl = url(''); 
             $client = DB::table('clients')->where('url', $currentUrl)->first();
-            $companyIds = Company::whereClientId($client->id)->pluck('id');
+           
+            $companyIds = Company::where('client_id',$client->id)->pluck('id');
             $request->merge(['clientId' => $client->id, 'companyIds' => $companyIds]);
 
             return $next($request);

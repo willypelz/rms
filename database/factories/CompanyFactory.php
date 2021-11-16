@@ -22,7 +22,7 @@ class CompanyFactory extends Factory
      */
     public function definition()
     {
-        $defaultClient = Client::where('name', 'signup client')->first()->id;
+        $defaultClient = Client::where('url','https://signup.seamlesshiring.com')->first()->id;
         return [
             'name' => 'signup company',
             'slug' => str_slug('signup company'),

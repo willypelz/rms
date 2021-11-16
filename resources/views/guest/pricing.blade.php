@@ -14,7 +14,7 @@
             <div class="row text-center text-brandon text-light text-white">
                <br>
                 <h1>Get a Free Trial Now!</h1>
-                <h5 class="text-uppercase l-sp-5"> 14 days of free and unlimited Access on all plans</h5><br>
+                <h5 class="text-uppercase l-sp-5"> 14 days of free and unlimited Access</h5><br>
             </div>
           @endif
 
@@ -45,12 +45,7 @@
 
     </section>
 
-<!--
-   <section>
-
-   </section>
--->
-
+@include('guest.pricing-card')
 
     <section class="s-div no-margin blue dark">
         <div class="container">
@@ -186,37 +181,7 @@
                 </div>
             </form>
 
-            <script>
-                $(document).ready(function(){
-                   $('body #request-form').on('submit', function(e){
-                        e.preventDefault();
-                        $field = $(this);
-                        params = {
-                            company_name : $('#company_name').val(),
-                            firstname : $('#firstname').val(),
-                            surname : $('#surname').val(),
-                            phone : $('#phone').val(),
-                            email : $('#email').val(),
-                        };
-                        $("body #request-form input").prop("disabled", true);
-
-                        $.post("{{ route('request-a-call') }}", params,function(data){
-                                // $('#reviewBtn-' + $field.data('app-id') ).trigger('click');
-
-                                $( '#requestCall' ).modal('toggle');
-
-                                $('#company_name').val("");
-                                $('#firstname').val("");
-                                $('#surname').val("");
-                                $('#phone').val("");
-                                $('#email').val("");
-                                $("body #request-form input").prop("disabled", false);
-
-                                $.growl.notice({ message: "Your request has been sent",location: 'tc', size: 'large' });
-                            });
-                    });
-                });
-              </script>
+           
       </div>
     </div>
   </div>

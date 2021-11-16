@@ -5,6 +5,7 @@ use App\Models\Cv;
 use Carbon\Carbon;
 use App\Models\Job;
 use App\Enum\Configs;
+use App\Models\Client;
 use App\Libraries\Solr;
 use App\Models\Company;
 use App\Models\Candidate;
@@ -28,6 +29,7 @@ use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Types\Object_;
 use GeneaLabs\LaravelMixpanel\Facades\Mixpanel;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
+
 
 // use Faker;
 
@@ -646,7 +648,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
                 $accept_link = route('candidate-invite', ['id' => $candidate->id, 'token' => $token]);
 
                 Mail::send('emails.new.candidate-invite', ['data' => $data, 'company' => $company, 'accept_link' => $accept_link], function ($m) use ($data) {
-                    $m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
+                    $m->from(getEnvData('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
                 });
                 break;
 
@@ -682,7 +684,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
     $user = Auth::user();
 
     Mail::send('emails.new.cv_upload_successful', ['user' => $user, 'link' => url('cv/talent-pool')], function ($m) use ($user) {
-        $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
+        $m->from(getEnvData('COMPANY_EMAIL'))->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
     });
 
     return ['status' => 1, 'data' => 'Cv(s) uploaded successfully'];
@@ -823,8 +825,8 @@ function getCurrentLoggedInUserRole()
 
 function get_company_email_logo()
 {
-    $logo = env("APP_LOGO");
-    $url = env("APP_URL");
+    $logo = getEnvData("APP_LOGO");
+    $url = getEnvData("APP_URL");
     return
         "<a href='$url' style='font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2' target='_blank'>
 		<img src='$logo' width='50%' height='' style='outline:none;text-decoration:none;display:block;min-height:31px;margin:0 auto;border:0;' class='CToWUd' alt='COMPANY_LOGO'>
@@ -834,7 +836,7 @@ function get_company_email_logo()
 function defaultCompanyLogo()
 {
     $company = Company::where('has_expired', 0)->first();
-    return ($company && isset($company->logo)) ? get_company_logo($company->logo) : env('SEAMLESS_HIRING_LOGO');
+    return ($company && isset($company->logo)) ? get_company_logo($company->logo) : getEnvData('SEAMLESS_HIRING_LOGO');
 }
 
 function candidateDossierPercentage($value)
@@ -893,7 +895,7 @@ function candidateDossierRating($value)
 if (!function_exists('defaultCompanyLogo')) {
     function defaultCompanyLogo()
     {
-        return get_current_company()->logo ?? env('SEAMLESS_HIRING_LOGO');
+        return get_current_company()->logo ?? getEnvData('SEAMLESS_HIRING_LOGO');
     }
 }
 
@@ -905,7 +907,7 @@ function logAction($logAction)
         'action_id' => @$logAction['action_id'],
         'action_type' => @$logAction['action_type'],
         'causee_id' => @$logAction['causee_id'],
-        'company_id'=> get_current_company()->id ?? Null,
+        'company_id'=> Auth::guard('candidate')->check() ? getCandidateCompanyId() : (Auth::check() ? get_current_company()->id: Null),
         'causer_id' => isset($logAction['causer_id']) ? $logAction['causer_id'] : Auth::user()->id,
         'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
         'properties' => @$logAction['properties'],
@@ -979,7 +981,7 @@ function admin_audit_log()
  * @return bool
  */
 function isHrmsIntegrated(){
-    return (!is_null(env('STAFFSTRENGTH_URL'))) && env('RMS_STAND_ALONE')==false ? true: false;
+    return (!is_null(getEnvData('STAFFSTRENGTH_URL'))) && getEnvData('RMS_STAND_ALONE')==false ? true: false;
 }
 
 /**
@@ -1006,7 +1008,7 @@ function seamlessSave( $modelName, array $data, $id)
 function getResponseFromHrmsByGET(string $url, array $data = []){
     $rmsCompany = Company::whereNotNull('api_key')->first();
     if(isHrmsIntegrated() && $rmsCompany) {
-        $response = Curl::to(env('STAFFSTRENGTH_URL') . $url )
+        $response = Curl::to(getEnvData('STAFFSTRENGTH_URL') . $url )
                         ->withHeader("X-API-KEY: " . $rmsCompany->api_key)
                         ->withData($data)
                         ->asJson()
@@ -1224,4 +1226,49 @@ function getEnvData(string $key, $default_value = null, $client_id = null)
 
     return $default_value;
 
+}
+
+
+/**
+ * Generate the company URL to a named route.
+ *
+ * @param int client_id
+ * @param string  $name
+ * @param array|null  $parameters
+ * @return string
+ */
+
+function companyRoute(int $client_id, string $name, array $parameters = []): string
+
+{
+	$client_url = Client::where('client_id', $client_id)->first()->url ?? null;
+
+	return $client_url ? ($client_url . route($name, $parameters, false)) : route($name, $parameters);
+}
+
+/**
+ * Generate the company URL to a named route.
+ *
+ * @param int company_id
+ * * @return object
+ */
+function getClient($url){
+    return Client::where('id', $company_id)->first() ?? null;
+}
+
+function getCandidateCompanyId(){
+    $authCandidate = Auth::guard('candidate')->user();
+    if($authCandidate){
+        $jobappl = JobApplication::where('candidate_id',$authCandidate->id)->first();
+        if($jobappl){
+            return $jobappl->job->company_id;
+        }else{
+          $companyId = Company::where('client_id',request()->clientId)->first()->id;
+          return $companyId;
+        }
+        
+    }else{
+        return redirect()->to(getEnvData('APP_URL', null, request()->clientId));
+    }
+    
 }

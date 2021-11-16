@@ -38,7 +38,8 @@ class Company extends Model
         'api_key',
         'license_type',
 	    'is_active',
-	    'is_default'
+        'is_default',
+        'client_id',
     ];
 
     public $timestamps = false;

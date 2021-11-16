@@ -26,5 +26,6 @@
 				'remuneration' => 'Remuneration (min/max)'
 		],
 		'pagination' => env('PAGINATION',100),
+		
 	];
 

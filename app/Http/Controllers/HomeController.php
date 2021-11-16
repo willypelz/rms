@@ -12,8 +12,9 @@ use App\Models\Candidate;
 use App\Models\JobActivity;
 use Illuminate\Http\Request;
 use App\Models\FolderContent;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule; 
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\RequestACallRequest;
 
 
 
@@ -229,20 +230,12 @@ class HomeController extends Controller
         return view('guest.talentSource');
     }
 
-    public function requestACall(Request $request)
-    {
-        // Mail::send('emails.welcome', $data, function($message)
-        // {
-        //     // $message->from('us@example.com', 'Laravel');
-
-        //     $message->to('foo@example.com')->cc('bar@example.com');
-
-        //     $message->attach($pathToFile);
-        // });
-
+    public function requestACall(RequestACallRequest $request)
+    {   
         Mail::send('emails.guest.request-call', $request->all(), function($message){
             $message->from('support@seamlesshiring.com');
-            $message->to('support@seamlesshiring.com', 'Seamless Hiring Call Request');
+            $message->to('support@seamlesshr.com', 'Seamless Hiring Call Request');
+            $message->subject('Request For A Call');
         });
     }
 

@@ -181,37 +181,7 @@
                 </div>
             </form>
 
-            <script>
-                $(document).ready(function(){
-                   $('body #request-form').on('submit', function(e){
-                        e.preventDefault();
-                        $field = $(this);
-                        params = {
-                            company_name : $('#company_name').val(),
-                            firstname : $('#firstname').val(),
-                            surname : $('#surname').val(),
-                            phone : $('#phone').val(),
-                            email : $('#email').val(),
-                        };
-                        $("body #request-form input").prop("disabled", true);
-
-                        $.post("{{ route('request-a-call') }}", params,function(data){
-                                // $('#reviewBtn-' + $field.data('app-id') ).trigger('click');
-
-                                $( '#requestCall' ).modal('toggle');
-
-                                $('#company_name').val("");
-                                $('#firstname').val("");
-                                $('#surname').val("");
-                                $('#phone').val("");
-                                $('#email').val("");
-                                $("body #request-form input").prop("disabled", false);
-
-                                $.growl.notice({ message: "Your request has been sent",location: 'tc', size: 'large' });
-                            });
-                    });
-                });
-              </script>
+           
       </div>
     </div>
   </div>

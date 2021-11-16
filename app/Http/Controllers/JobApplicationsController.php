@@ -437,13 +437,14 @@ class JobApplicationsController extends Controller
             $this->search_params,
             $request->jobID,
             @$request->status,
+            @$request->clientId,
             @$solr_age,
             @$solr_exp_years,
             @$solr_video_application_score,
             @$solr_test_score,
             @$solr_graduation_grade,
             @$solr_minimium_remuneration,
-            @$solr_maximium_remuneration,
+            @$solr_maximium_remuneration,      
         );
         $statuses = $job->workflow->workflowSteps()->pluck('slug');
 
@@ -584,7 +585,8 @@ class JobApplicationsController extends Controller
             $cand['application_status'] = [$applicant->status];
             $cand['job_title'] = [$applicant->job->title];
 
-            App\Libraries\SolrPackage::create_new_document($cand);
+            $client_id = $applicant->candidate->client_id ?? null;
+            App\Libraries\SolrPackage::create_new_document($cand, $client_id);
 
         }
 
@@ -852,7 +854,7 @@ class JobApplicationsController extends Controller
 
     public function JobListData(Request $request)
     {
-        $result = SolrPackage::get_applicants($this->search_params, $request->job_id, @$request->status);
+        $result = SolrPackage::get_applicants($this->search_params, $request->job_id, @$request->status, @$request->clientId);
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$request->job_id,
             $statuses = $request->workflow_steps);
 
@@ -894,7 +896,7 @@ class JobApplicationsController extends Controller
                     ])->find($job_id);
 
                     $result = SolrPackage::get_applicants($this->search_params, $job_id,
-                        ''); // status parater value is formerly : @$request->status
+                        '', $request->clientId); // status parater value is formerly : @$request->status
                     $application_statuses = isset($result['facet_counts']) ? get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$job_id,
                         $statuses = $job->workflow->workflowSteps()->pluck('slug')) : [];
 
@@ -936,7 +938,7 @@ class JobApplicationsController extends Controller
                 ])->find($job_id);
 
                 $result = SolrPackage::get_applicants($this->search_params, $job_id,
-                    ''); // status parater value is formerly : @$request->status
+                    '', $request->clientId); // status parater value is formerly : @$request->status
 
 
                 $application_statuses = isset($result['facet_counts']) ? get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$job_id,
@@ -960,7 +962,7 @@ class JobApplicationsController extends Controller
     public function JobViewData(Request $request)
     {
 
-        $result = SolrPackage::get_applicants($this->search_params, $request->job_id, @$request->status);
+        $result = SolrPackage::get_applicants($this->search_params, $request->job_id, @$request->status, $request->clientId);
         $solr_total_applicants = ($result['response']['numFound']);
         $matching = 10000;
 

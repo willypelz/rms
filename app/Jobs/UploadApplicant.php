@@ -97,6 +97,8 @@ class UploadApplicant implements ShouldQueue
                 }
             }
             info('commenced push to solr');
-            SolrPackage::create_new_document($cand);
+            $client_id = $applicant->candidate->client_id ?? null;
+
+            SolrPackage::create_new_document($cand, $client_id);
     }
 }

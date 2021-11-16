@@ -16,16 +16,22 @@ class SubsidiaryExpirationNotification extends Notification
      *
      * @return void
      */
-    private $company_name, $company_email, $title, $user_name, $user_email;
+    private $company_name, $company_email, $title, $user_name, $user_email, $date;
 
-    public function __construct($company_name,$company_email,$title,$user_name,$user_email)
-    {
+    public function __construct(
+        $company_name,
+        $company_email,
+        $title,$user_name,
+        $user_email,
+        $date
+    ) {
         //
         $this->company_name = $company_name;
         $this->company_email = $company_email;
         $this->title = $title;
         $this->user_name = $user_name;
         $this->user_email = $user_email;
+        $this->date = $date;
     }
 
     /**
@@ -53,7 +59,8 @@ class SubsidiaryExpirationNotification extends Notification
                 'email_title' => $this->title, 
                 'email'=> $this->company_email, 
                 'user_name' => $this->user_name,
-                'user_email'=> $this->user_email
+                'user_email'=> $this->user_email,
+                'date' => $this->date
             ]
         )
             ->from(env('COMPANY_EMAIL'))

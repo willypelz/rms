@@ -48,12 +48,16 @@ class SubsidiaryExpirationNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)->view(
-            'emails.subsidiary.expire-notify',['subsidiary'=> $this->company_name, 'email_title' => $this->title, 
-            'email'=> $this->company_email, 'user_name' => $this->user_name,
-            'user_email'=> $this->user_email]
+            'emails.subsidiary.expire-notify', [
+                'subsidiary'=> $this->company_name, 
+                'email_title' => $this->title, 
+                'email'=> $this->company_email, 
+                'user_name' => $this->user_name,
+                'user_email'=> $this->user_email
+            ]
         )
-        ->from(env('COMPANY_EMAIL'))
-        ->subject($this->title);
+            ->from(env('COMPANY_EMAIL'))
+            ->subject($this->title);
     }
 
     /**

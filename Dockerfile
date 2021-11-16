@@ -77,10 +77,10 @@ RUN  mkdir -p storage/logs && \
   mkdir -p bootstrap/cache
 
 
-# RUN COMPOSER_MEMORY_LIMIT=-1 composer install --no-scripts
-
 RUN rm composer.lock
-RUN COMPOSER_MEMORY_LIMIT=-1 composer install
+
+RUN COMPOSER_MEMORY_LIMIT=-1 composer install --no-scripts
+# RUN COMPOSER_MEMORY_LIMIT=-1 composer install
 
 RUN apt-get install -y ssl-cert
 

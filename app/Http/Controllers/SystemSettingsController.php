@@ -47,21 +47,13 @@ class SystemSettingsController extends Controller
     public function update(ClientEnvRequest $clientEnvRequest, $id)
     {
         $clientEnvDetails = $clientEnvRequest->validated();
-<<<<<<< HEAD
-
-        SystemSetting::whereClientIdAndId(1,$id)->update([
-            'key' => $clientEnvDetails['key'],
-            'value' => $clientEnvDetails['value']
-        ]);
-
-=======
-        SystemSetting::whereClientIdAndId(1, $id)->update(
+        SystemSetting::whereClientIdAndId(request()->clientId, $id)->update(
             [
                 'key' => $clientEnvDetails['key'],
                 'value' => $clientEnvDetails['value']
             ]
         );
->>>>>>> 6c869d1edab5cf9a7e8a39e85583bafebe91e971
+
         session()->flash('success', 'Updated Successfully');
         return redirect(route('index-env'));
     }

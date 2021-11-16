@@ -57,24 +57,13 @@ class SubsidiaryExpireNotify extends Command
             $date = Carbon::parse($company->date_added)->addDays(25);
             $twoWeeksDate = Carbon::parse($company->date_added)->addWeek(2);
             $oneWeekDate = Carbon::parse($company->date_added)->addWeek(3);
-            if ((now() == $date) || (now() == $twoWeeksDate) 
-                || (now() == $oneWeekDate)
-            ) {
+            if ((now() == $date) || (now() == $twoWeeksDate) || ( now() == $oneWeekDate)) {
                 $company_name = $company->name;
                 $company_email = $company->email;
-                $date = isset($date) ? "1 day" : (isset($twoWeeksDate) ? "2 weeks"
-                    : "1 week");
-                Notification::send(
-                    $user, new SubsidiaryExpirationNotification(
-                        $company_name,
-                        $company_email,
-                        $title,
-                        $user_name,
-                        $user_email,
-                        $date
-                    )
-                );
-            }
+                $client_id = $company->client_id;
+                $date = isset($date) ? "1 day" : (isset($twoWeeksDate) ? "2 weeks"  : "1 week");
+                Notification::send($user, new SubsidiaryExpirationNotification($company_name,$company_email,$title,$user_name,$user_email,$client_id,$date));
+            } 
             
         }
     }

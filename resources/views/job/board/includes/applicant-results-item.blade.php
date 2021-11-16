@@ -29,7 +29,7 @@
         // dd($cv['application_id'], $current_app_index );
         $current_status = ($cv['application_status'][$current_app_index] == "ASSESSED") ? "TEST" : $cv['application_status'][$current_app_index];
         $check_both_permissions = checkForBothPermissions ($jobID);
-        $is_stand_alone = env('RMS_STAND_ALONE');
+        $is_stand_alone = getEnvData('RMS_STAND_ALONE');
         ?>
 
         <div class="ats-abx">

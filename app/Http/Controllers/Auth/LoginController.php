@@ -82,7 +82,7 @@ class LoginController extends Controller
                 // Redirect to StaffStrength with Login
                 $user_email = base64_encode($request->email);
 
-                $redirect_url = env('HIRS_REDIRECT_LOGIN').'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;
+                $redirect_url = getEnvData('HIRS_REDIRECT_LOGIN').'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;
 
                 return ['status' => 200, 'is_external' => false, 'redirect_url' => $redirect_url];
 
@@ -249,7 +249,7 @@ class LoginController extends Controller
             if( $request->hasFile('logo') )
             {
                 $upload = $request->file('logo')->move(
-                    env('fileupload'), $logo
+                    getEnvData('fileupload'), $logo
                 );
             }
 
@@ -387,8 +387,8 @@ class LoginController extends Controller
 
     public function logout(){
         auth()->logout();
-        if(env('RMS_STAND_ALONE',true) == false){ //redirect to hrms if rms is not stand alone
-            return redirect(env('STAFFSTRENGTH_URL'));
+        if(getEnvData('RMS_STAND_ALONE',true,request()->clientId) == false){ //redirect to hrms if rms is not stand alone
+            return redirect(getEnvData('STAFFSTRENGTH_URL',null,request()->clientId));
         }
         return redirect('/');
     }

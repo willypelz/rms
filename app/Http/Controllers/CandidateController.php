@@ -111,8 +111,8 @@ class CandidateController extends Controller
                 );
 
 
-                Mail::send('emails.candidate-forgot-password', ['token' => $token], function ($m) use ($candidate) {
-                    $m->from(env('COMPANY_EMAIL'), env('APP_NAME'));
+                Mail::send('emails.candidate-forgot-password', ['token' => $token, 'client_id' => $request->clientId], function ($m) use ($candidate) {
+                    $m->from(getEnvData('COMPANY_EMAIL'), getEnvData('APP_NAME'));
                     $m->to($candidate->email, $candidate->first_name)->subject('Your Password Reset Link!');
                 });
 
@@ -296,7 +296,7 @@ class CandidateController extends Controller
                 $file_name  = $request->attachment->getClientOriginalName();
                 $attachment = $job_applications[0]->id . '-' . time() . '-' . $file_name;
 
-                $request->file('attachment')->move(env('fileupload'), $attachment);
+                $request->file('attachment')->move(getEnvData('fileupload'), $attachment);
 
             } else {
                 $attachment = '';
@@ -324,7 +324,7 @@ class CandidateController extends Controller
 
 
                  Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
-                    $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
+                    $m->from(getEnvData('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
                 });
 
             }
@@ -379,7 +379,7 @@ class CandidateController extends Controller
             $document_file = $request->application_id . '-' . time() . '-' . $file_name;
 
             $upload = $request->file('document_file')->move(
-                env('fileupload'), $document_file
+                getEnvData('fileupload'), $document_file
             );
         } else {
             $document_file = '';
@@ -403,7 +403,7 @@ class CandidateController extends Controller
             $user = User::find($admin_user->user_id);
         }else{
             $user = new \stdClass();
-            $user->email = env('COMPANY_EMAIL');
+            $user->email = getEnvData('COMPANY_EMAIL');
             $user->name = "Admin";
             $user->first_name = "Admin";
         }
@@ -417,7 +417,7 @@ class CandidateController extends Controller
 
 
          Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
-            $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
+            $m->from(getEnvData('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
         });
         if ($candidate->is_from == 'internal') 
         {

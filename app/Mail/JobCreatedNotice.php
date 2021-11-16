@@ -22,7 +22,7 @@ class JobCreatedNotice extends Mailable
     {
         $this->data = $job;
         $this->user = $user;
-        $this->url = config('app.staff_strength_url').'/internal-recruitment/recruitment/jobs';
+        $this->url = getEnvData('STAFFSTRENGTH_URL',null,request()->clientId).'/internal-recruitment/recruitment/jobs';
     }
 
     /**

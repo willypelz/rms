@@ -36,7 +36,7 @@
                                                 <div class="fileinput fileinput-new" data-provides="fileinput">
                                                     <div class="fileinput-preview thumbnail" data-trigger="fileinput"
                                                          style="width: 200px; height: 150px;">
-                                                        <img src="{{ url( env('fileupload') ).'/'.$company->logo }}" alt="Logo" style="width: 200px; height: 150px;">
+                                                        <img src="{{ url( getEnvData('fileupload') ).'/'.$company->logo }}" alt="Logo" style="width: 200px; height: 150px;">
 
                                                     </div>
                                                     <div>

@@ -80,7 +80,7 @@ class OnboardingController extends Controller
         // });
 
         Mail::send('emails.guest.request-call', $request->all(), function($message){
-            $message->from(env('COMPANY_EMAIL'));
+            $message->from(getEnvData('COMPANY_EMAIL'));
             $message->to('support@seamlesshiring.com', 'Seamless Hiring Call Request');
         });
     }

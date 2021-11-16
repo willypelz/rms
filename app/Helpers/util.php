@@ -9,6 +9,7 @@ use App\Models\Client;
 use App\Libraries\Solr;
 use App\Models\Company;
 use App\Models\Candidate;
+use App\Models\Interview;
 use App\Models\Permission;
 use App\Models\ActivityLog;
 use App\Models\JobActivity;
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Models\InterviewNoteTemplates;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -560,20 +562,30 @@ function get_company_logo($logo)
 
 function get_interview_note_templates($appl_id)
 {
-    $templates = null;
-    $user = User::find(auth()->id());
-    if(!$user->isInterviewer() && !$user->isCommenter()){
-        return \App\Models\InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
-    } 
-    $interview = App\Models\Interview::where('job_application_id', $appl_id)->first();
-    if($interview){
-        $check = $interview->users->where('id',auth()->id())->first();
-        if($check){
-            return $interview->templates;
-        } 
+    $appl = JobApplication::where('id', $appl_id)->first();
+    $workflowStep = $appl->job->workflow->workflowSteps->where('slug', $appl->status)->first();
+
+    if($workflowStep->type != "interview"){
+        return "This Applicant has not been moved to an interview step.";
     }
 
-    return $templates;
+    $user = User::find(auth()->id());
+    if((!$user->isInterviewer() && !$user->isCommenter()) || $user->is_super_admin ){
+        return InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
+    } 
+
+    $interview = Interview::where('job_application_id', $appl_id)->first();
+    if($interview){
+        $check = $user->interviews->where('id',$interview->id)->first();
+        if($check){
+            return $interview->templates;
+        }else{
+            return "You have not been Scheduled to interview this applicant, <br>
+            An interview note needs to be attached to you in order to use one";
+        }
+        
+    }
+    
 }
 
 function saveCompanyUploadedCv($cvs, $additional_data, $request)

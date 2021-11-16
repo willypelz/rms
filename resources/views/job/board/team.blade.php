@@ -163,7 +163,7 @@
                                              &nbsp; Your mail has been sent. Refresh page to send more.
                                          </div-->
                                         <br/><br/>
-                                        @if(!env('RMS_STAND_ALONE'))
+                                        @if(!getEnvData('RMS_STAND_ALONE'))
                                             <form action="{{ route('job-team-add') }}" method="post" id="JobTeamAdd">
                                                 {!! csrf_field() !!}
                                                 <div class="form-group">
@@ -197,7 +197,7 @@
                                                                 <br><br>
                                                             </div>
                                                             <div id="internal_div">
-                                                                <label for="">Select Employee from {{env('STAFFSTRENGTH_NAME') ?? 'HRMS'}}</label>
+                                                                <label for="">Select Employee from {{getEnvData('STAFFSTRENGTH_NAME') ?? 'HRMS'}}</label>
                                                                 <select type="text" class="form-control" name=""
                                                                         id="employeeSelect">
                                                                     <option value="{{null}}">--Select Employee--

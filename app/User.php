@@ -33,7 +33,8 @@ class User extends Authenticatable
         'is_internal',
         'role_name',
         'is_super_admin',
-        'user_token'
+        'user_token',
+        'client_id'
     ];
 
     /**

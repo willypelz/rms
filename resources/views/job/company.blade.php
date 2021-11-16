@@ -155,7 +155,7 @@
                                                     <p><img src="{{ @$company->logo }}" alt="" width="60%"></p>
                                                     <br>
                                                     <p class="small text-muted"
-                                                       style="text-align: justify;">{{ @$company->about }}</p>
+                                                       style="text-align: justify;">{!!html_entity_decode($company->about) !!}</p>
                                                     <br>
                                                     <p><i class="fa fa-map-marker"></i> <b>Address</b></p>
                                                     <p>

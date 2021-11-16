@@ -2,14 +2,15 @@
 
 namespace App\Jobs;
 
+use App\Models\Cv;
+use App\Models\Job;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use App\Models\Cv;
-use Illuminate\Support\Facades\Mail;
-use App\Models\Job;
+
 
 class WorkflowStepWithEmailJob implements ShouldQueue
 {
@@ -40,6 +41,7 @@ class WorkflowStepWithEmailJob implements ShouldQueue
         $title = "Update On Your Job Application";
         $job = Job::where('id',$this->job_id)->first();
         $company_name = $job->company->name;
+        $client_id = $job->company->client_id;
 
         foreach($this->cv_id as $id ){
             $emailTemplate = $this->stepEmail;
@@ -56,8 +58,9 @@ class WorkflowStepWithEmailJob implements ShouldQueue
                 $new = str_replace('{' . $key . '}', $transformable, $emailTemplate);
                 $emailTemplate = $new;
             }
-            Mail::send('emails.new.workflowstepemail', compact('emailTemplate','mail','company_name'), function ($m) use ($sendMail, $title) {
-                $m->from(env('COMPANY_EMAIL'))->to($sendMail->email)->subject($title);
+            
+            Mail::send('emails.new.workflowstepemail', compact('emailTemplate','mail','company_name','client_id'), function ($m) use ($sendMail, $title, $client_id) {
+                $m->from(getEnvData('COMPANY_EMAIL', null, $client_id))->to($sendMail->email)->subject($title);
             });
         }
        

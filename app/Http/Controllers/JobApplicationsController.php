@@ -143,11 +143,11 @@ class JobApplicationsController extends Controller
         $this->mailer = $mailer;
 
         if (Auth::check()) {
-            $this->sender = (get_current_company()->slug != "" && get_current_company()->slug) ? get_current_company()->slug . '@seamlesshr.com' : env('COMPANY_EMAIL');
-            $this->replyTo = (get_current_company()->email) ? get_current_company()->email : env('COMPANY_EMAIL');
+            $this->sender = (get_current_company()->slug != "" && get_current_company()->slug) ? get_current_company()->slug . '@seamlesshr.com' : getEnvData('COMPANY_EMAIL');
+            $this->replyTo = (get_current_company()->email) ? get_current_company()->email : getEnvData('COMPANY_EMAIL');
         } else {
-            $this->sender = env('COMPANY_EMAIL');
-            $this->replyTo = env('COMPANY_EMAIL');
+            $this->sender = getEnvData('COMPANY_EMAIL', null, request()->clientId);
+            $this->replyTo = getEnvData('COMPANY_EMAIL', null, request()->clientId);
         }
 
         
@@ -155,7 +155,7 @@ class JobApplicationsController extends Controller
 
         $job = (object) [ "title" => "CEO", "company" => (object) [ "name" => "Insidify" ] ];
         $this->mailer->send('emails.new.reject_email', ['cv' => $cv, 'job' => $job], function (Message $m) use ($cv) {
-                                $m->from(env('COMPANY_EMAIL'))->to($cv->email)->subject('Feedback');
+                                $m->from(getEnvData('COMPANY_EMAIL'))->to($cv->email)->subject('Feedback');
                             });*/
     }
 
@@ -308,7 +308,7 @@ class JobApplicationsController extends Controller
             $document_file = $request->application_id . '-' . time() . '-' . $file_name;
 
             $upload = $request->file('document_file')->move(
-                env('fileupload'), $document_file
+                getEnvData('fileupload'), $document_file
             );
         } else {
             $document_file = '';
@@ -331,7 +331,7 @@ class JobApplicationsController extends Controller
         $link = route('candidate-messages', $request->application_id);
 
         Mail::send('emails.new.admin_send_message', compact('candidate', 'email_title', 'email_message', 'message_content', 'user', 'link'), function ($m) use ($candidate, $email_title) {
-            $m->from(env('COMPANY_EMAIL'))->to($candidate->candidate->email)->subject($email_title);
+            $m->from(getEnvData('COMPANY_EMAIL'))->to($candidate->candidate->email)->subject($email_title);
         });
 
         return redirect()->route('applicant-messages', ['appl_id' => $application_id]);
@@ -373,7 +373,7 @@ class JobApplicationsController extends Controller
 
             $solr_age = [$start_dob, $end_dob];
         } else {
-            $request->age = [env('AGE_START'), env('AGE_END')];
+            $request->age = [getEnvData('AGE_START'), getEnvData('AGE_END')];
             $solr_age = null;
         }
 
@@ -382,10 +382,35 @@ class JobApplicationsController extends Controller
             //2015-09-16T00:00:00Z
             $solr_exp_years = [@$request->exp_years[0], @$request->exp_years[1]];
         } else {
-            $request->exp_years = [env('EXPERIENCE_START'), env('EXPERIENCE_END')];
+            $request->exp_years = [getEnvData('EXPERIENCE_START'), getEnvData('EXPERIENCE_END')];
             $solr_exp_years = null;
         }
-        
+
+        //If graduation grade  is available
+        if (@$request->graduation_grade) {
+            //2015-09-16T00:00:00Z
+            $solr_graduation_grade = [@$request->graduation_grade[0], @$request->graduation_grade[1]];
+        } else {
+            $request->graduation_grade = [getEnvData('GRADUATION_GRADE_START'), getEnvData('GRADUATION_GRADE_START')];
+            $solr_graduation_grade = null;
+        }
+
+        if (@$request->minimium_remuneration) {
+            //2015-09-16T00:00:00Z
+            $solr_minimium_remuneration = [@$request->minimium_remuneration[0], @$request->minimium_remuneration[1]];
+        } else {
+            $request->minimium_remuneration = [getEnvData('REMUNERATION_MINIMIUM'), getEnvData('REMUNERATION_MAXIMIUM')];
+            $solr_minimium_remuneration = null;
+        }
+
+        if (@$request->maximium_remuneration) {
+            //2015-09-16T00:00:00Z
+            $solr_maximium_remuneration = [@$request->maximium_remuneration[0], @$request->maximium_remuneration[1]];
+        } else {
+            $request->maximium_remuneration = [getEnvData('REMUNERATION_MINIMIUM'), getEnvData('REMUNERATION_MAXIMIUM')];
+            $solr_maximium_remuneration = null;
+        }
+
         //If test score is available
         if (@$request->test_score) {
             //2015-09-16T00:00:00Z
@@ -403,7 +428,7 @@ class JobApplicationsController extends Controller
                 @$request->video_application_score[1]
             ];
         } else {
-            $request->video_application_score = [env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END')];
+            $request->video_application_score = [getEnvData('VIDEO_APPLICATION_START'), getEnvData('VIDEO_APPLICATION_END')];
             $solr_video_application_score = null;
         }
 
@@ -415,9 +440,11 @@ class JobApplicationsController extends Controller
             @$solr_age,
             @$solr_exp_years,
             @$solr_video_application_score,
-            @$solr_test_score
+            @$solr_test_score,
+            @$solr_graduation_grade,
+            @$solr_minimium_remuneration,
+            @$solr_maximium_remuneration,
         );
-
         $statuses = $job->workflow->workflowSteps()->pluck('slug');
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$request->jobID,
@@ -464,6 +491,9 @@ class JobApplicationsController extends Controller
                 'age' => @$request->age,
                 'exp_years' => @$request->exp_years,
                 'job' => $job,
+                'graduation_grade' => $request->graduation_grade,
+                'minimium_remuneration' => $request->minimium_remuneration,
+                'maximium_remuneration' => $request->maximium_remuneration,
                 'video_application_score' => @$request->video_application_score,
                 'test_score' => @$request->test_score
             ])->render();
@@ -477,13 +507,20 @@ class JobApplicationsController extends Controller
             ]);
 
         } else {
-            $age = [env('AGE_START'), env('AGE_END')];
-            $exp_years = [env('EXPERIENCE_START'), env('EXPERIENCE_END')];
-            $video_application_score = [env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END')];
+            $age = [getEnvData('AGE_START'), getEnvData('AGE_END')];
+            $exp_years = [getEnvData('EXPERIENCE_START'), getEnvData('EXPERIENCE_END')];
+            $graduation_grade = [ getEnvData('GRADUATION_GRADE_START'), getEnvData('GRADUATION_GRADE_END') ];
+            $minimium_remuneration = [ getEnvData('GRADUATION_GRADE_START'), getEnvData('GRADUATION_GRADE_END') ];
+            $maximium_remuneration = [ getEnvData('GRADUATION_GRADE_START'), getEnvData('GRADUATION_GRADE_END') ];
+            $video_application_score = [getEnvData('VIDEO_APPLICATION_START'), getEnvData('VIDEO_APPLICATION_END')];
             $test_score = [40, 160];
             $check_both_permissions = checkForBothPermissions($jobID);
             return view('job.board.candidates',
-                compact('job',
+                compact(
+                    'minimium_remuneration',
+                    'maximium_remuneration',
+                    'graduation_grade',
+                    'job',
                     'active_tab',
                     'status',
                     'result',
@@ -607,11 +644,11 @@ class JobApplicationsController extends Controller
             @$request->video_application_score[1]
             ];
         } else {
-            $request->video_application_score = [env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END')];
+            $request->video_application_score = [getEnvData('VIDEO_APPLICATION_START'), getEnvData('VIDEO_APPLICATION_END')];
             $solr_video_application_score = null;
         }
 
-        $filename = str_replace(['/','\'',' '], '', "Applicants Report - {$job->title}.csv");
+        $filename = str_replace(['/','\'',' '], '', "Applicants Report - {$job->title} - {$job->id}.csv");
         // findOrMakeDirectory('exports');
   
         CommenceProcessingForApplicantsSpreedsheet::dispatch(get_current_company(),Auth::user(),$filename,$this->search_params, $request->jobId, @$request->status,
@@ -683,10 +720,10 @@ class JobApplicationsController extends Controller
             @$request->video_application_score[1]
         ];
     } else {
-        $request->video_application_score = [env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END')];
+        $request->video_application_score = [getEnvData('VIDEO_APPLICATION_START'), getEnvData('VIDEO_APPLICATION_END')];
         $solr_video_application_score = null;
     }
-    $filename = Auth::user()->id . "_" . get_current_company()->id . "_" . time() . ".zip";
+    $filename = Auth::user()->id . "_" . get_current_company()->id . "_" . time() . "_" . $job->id . ".zip";
     // findOrMakeDirectory('exports');
     
     CommenceProcessingForApplicantsCV::dispatch(get_current_company(),Auth::user(),$filename,$this->search_params, $request->jobId, @$request->status,
@@ -714,7 +751,7 @@ class JobApplicationsController extends Controller
           $application_ids = $request->app_ids;
         }
         if($application_ids->count()){
-            $filename = "Bulk Interview Notes.zip";
+            $filename = "Bulk Interview Notes {$job->id}.zip";
             // findOrMakeDirectory('exports');
             $download_type = 'Interview Notes ZIP';
             CommenceProcessingForInterviewNotes::dispatch(get_current_company(),Auth::user(),$application_ids,$request->jobId,$filename,$download_type);
@@ -741,7 +778,7 @@ class JobApplicationsController extends Controller
 
         $application_ids = (!$request->has('app_ids')) ? $job->applicantsViaJAT->pluck('id') : $request->app_ids;
 
-        $export_file = "interview-note-".time().".csv";
+        $export_file = "interview-note-".time()."{$job->id}.csv";
         // findOrMakeDirectory('exports');
         $download_type = 'Interview Notes CSV';
         if(count($application_ids)){
@@ -1047,7 +1084,7 @@ class JobApplicationsController extends Controller
         }
 
 
-        $test_path = env('SEAMLESS_TESTING_APP_URL', 'http://seamlesstesting.com'). "/test/combined/pdf/" . $appl->id;
+        $test_path = getEnvData('SEAMLESS_TESTING_APP_URL', 'http://seamlesstesting.com'). "/test/combined/pdf/" . $appl->id;
         $test_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' tests.pdf';
 
 
@@ -1612,7 +1649,7 @@ class JobApplicationsController extends Controller
             if ($appl->job->company->id == 96) {
                 Mail::send('emails.new.interview_invitation_ibfc',
                     ['cv' => $cv, 'job' => $job, 'interview' => (object)$data], function (Message $m) use ($cv) {
-                        $m->from(env('COMPANY_EMAIL'))->to($cv->email)->subject('Interview Invitation');
+                        $m->from(getEnvData('COMPANY_EMAIL'))->to($cv->email)->subject('Interview Invitation');
                     });
             } else {
                 Mail::send('emails.new.interview_invitation',

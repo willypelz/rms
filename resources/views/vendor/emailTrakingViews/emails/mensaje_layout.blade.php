@@ -130,7 +130,7 @@
                   <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;" width="100%">
                     <tr>
                       <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;" align="right">
-                          <a href="{{env('APP_URL')}}" style="text-decoration:none; font-size: 24px; vertical-align: top; color:#4b679d;">
+                          <a href="{{getEnvData('APP_URL')}}" style="text-decoration:none; font-size: 24px; vertical-align: top; color:#4b679d;">
                               {{config('mail-tracker.name')}}
                           </a>
                       </td>
@@ -173,12 +173,12 @@
               <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;" width="100%">
                 <tr>
                   <td class="content-block" style="font-family: sans-serif; vertical-align: top; padding-top: 10px; padding-bottom: 10px; font-size: 12px; color: #999999; text-align: center;" valign="top" align="center">
-                    <span class="apple-link" style="color: #999999; font-size: 12px; text-align: center;">{{config('mail-tracker.name')}} - {{env('APP_URL')}}</span>.
+                    <span class="apple-link" style="color: #999999; font-size: 12px; text-align: center;">{{config('mail-tracker.name')}} - {{getEnvData('APP_URL')}}</span>.
                   </td>
                 </tr>
                 <tr>
                   <td class="content-block powered-by" style="font-family: sans-serif; vertical-align: top; padding-top: 10px; padding-bottom: 10px; font-size: 12px; color: #999999; text-align: center;" valign="top" align="center">
-                    Email from <a href="{{env('APP_URL')}}" style="color: #999999; font-size: 12px; text-align: center; text-decoration: none;">{{config('mail-tracker.name')}}</a>.
+                    Email from <a href="{{getEnvData('APP_URL')}}" style="color: #999999; font-size: 12px; text-align: center; text-decoration: none;">{{config('mail-tracker.name')}}</a>.
                   </td>
                 </tr>
               </table>

@@ -108,7 +108,7 @@
                                           $details = isset($thirdPartyData['job_description']) ? $thirdPartyData['job_description'] : NULL;
                                           $job_summary = isset($thirdPartyData['job_summary']) ? $thirdPartyData['job_summary'] : NULL;
                                         }
-                                        $eligibilty = (@isset($job->is_for) ? $eligibilty : ((env('RMS_STAND_ALONE')) ? "external" : NULL));
+                                        $eligibilty = (@isset($job->is_for) ? $eligibilty : ((getEnvData('RMS_STAND_ALONE')) ? "external" : NULL));
                                     @endphp
 
                                     <div class="form-group">

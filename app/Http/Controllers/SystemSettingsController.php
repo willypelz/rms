@@ -53,6 +53,7 @@ class SystemSettingsController extends Controller
                 'value' => $clientEnvDetails['value']
             ]
         );
+
         session()->flash('success', 'Updated Successfully');
         return redirect(route('index-env'));
     }

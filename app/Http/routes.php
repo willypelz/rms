@@ -44,7 +44,6 @@ Route::post('client/update/{id}', 'SystemSettingsController@update')->name('upda
 Route::get('clientEnv/delete/{id}', 'SystemSettingsController@delete')->name('delete-env');
 
 // admin company 
-
 Route::group(['middleware' => ['web', 'auth', 'companyList']], function () {
     Route::get('/seeCompnay', 'CompanyController@index');
 });

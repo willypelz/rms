@@ -144,7 +144,7 @@ class CvSalesController extends Controller
 
             // $response = SolrPackage::search_resume($this->search_params);
 
-            $result = SolrPackage::search_resume($this->search_params, @$additional);
+            $result = SolrPackage::search_resume($this->search_params, @$additional, $request->clientId);
             $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
             $cart = Utilities::getCartContent('cv-sales');

@@ -44,7 +44,7 @@
 																			<hr style="border-width:0 0 1px">
 																			<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">Dear {{ isset($user_name) ? $user_name : 'Admin' }},
 																			<br><br>
-																			<p> This is to notify you that your free access to {{$subsidiary}} will expire in 1 day</b> </p>
+																			<p> This is to notify you that your free access to {{$subsidiary}} will expire in {{ $date }} time</b> </p>
 																			<br>
 																			If you enjoyed the experience and wish to activate your subsidiary account, please email our Customer success team at support-team@seamlesshr.com or call 08090643874 and we will be sure to offer all the required assistance.
 																			<br>

@@ -559,23 +559,27 @@ function get_interview_note_templates($appl_id)
     $appl = JobApplication::where('id', $appl_id)->first();
     $workflowStep = $appl->job->workflow->workflowSteps->where('slug', $appl->status)->first();
 
-    if($workflowStep->type == "interview"){
-        $user = User::find(auth()->id());
-        if(!$user->isInterviewer() && !$user->isCommenter()){
-            return InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
-        } 
-        $interview = Interview::where('job_application_id', $appl_id)->first();
-        
-        if($interview){
-            $check = $user->interviews->where('id',$interview->id)->first();
-            if($check){
-                return $interview->templates;
-            }
+    if($workflowStep->type != "interview"){
+        return "This Applicant has not been moved to an interview step.";
+    }
+
+    $user = User::find(auth()->id());
+    if((!$user->isInterviewer() && !$user->isCommenter()) || $user->is_super_admin ){
+        return InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
+    } 
+
+    $interview = Interview::where('job_application_id', $appl_id)->first();
+    if($interview){
+        $check = $user->interviews->where('id',$interview->id)->first();
+        if($check){
+            return $interview->templates;
+        }else{
             return "You have not been Scheduled to interview this applicant, <br>
             An interview note needs to be attached to you in order to use one";
         }
+        
     }
-    return "This Applicant has not been moved to an interview step.";
+    
 }
 
 function saveCompanyUploadedCv($cvs, $additional_data, $request)

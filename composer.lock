@@ -6209,7 +6209,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://boladeakerele@bitbucket.org/insidify/shr-cloudflare-domain-generator.git",
+                "url": "https://git@bitbucket.org/insidify/shr-cloudflare-domain-generator.git",
                 "reference": "b755cc49308c430c6b1ac4b24849437caad85efd"
             },
             "default-branch": true,

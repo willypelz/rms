@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Notification;
 use App\User;
 
 class SubsidiaryExpireNotify extends Command
-{    
+{
     /**
      * The name and signature of the console command.
      *
@@ -24,7 +24,7 @@ class SubsidiaryExpireNotify extends Command
      *
      * @var string
      */
-    protected $description = 'Notify Admin before 14-Day trial expires';
+    protected $description = 'Notify Admin before 28-Day trial expires';
 
     /**
      * Create a new command instance.
@@ -43,23 +43,27 @@ class SubsidiaryExpireNotify extends Command
      */
     public function handle()
     {
-        $title = '14-Day Free Trial Expiration';
-        $data = Company::where('license_type','TRIAL')->get();
+        $title = '28-Day Free Trial Expiration';
+        $data = Company::where('license_type', 'TRIAL')->get();
         foreach ($data as $company) {
-            $user = DB::table('users')->join('company_users', 'users.id', '=', 'company_users.user_id')
-            ->select('users.*')
-            ->where('company_id',$company->id)->first();
+            $user = DB::table('users')
+                ->join('company_users', 'users.id', '=', 'company_users.user_id')
+                ->select('users.*')
+                ->where('company_id', $company->id)->first();
         
             $user_name = $user->name;
             $user_email = $user->email;
-            $user = User::where('email',$user->email)->get();
-            $date = Carbon::parse($company->date_added)->addDays(12);
-            if(now() > $date && $date->diffInDays(now()) == 1){
+            $user = User::where('email', $user->email)->get();
+            $date = Carbon::parse($company->date_added)->addDays(25);
+            $twoWeeksDate = Carbon::parse($company->date_added)->addWeek(2);
+            $oneWeekDate = Carbon::parse($company->date_added)->addWeek(3);
+            if ((now() == $date) || (now() == $twoWeeksDate) || ( now() == $oneWeekDate)) {
                 $company_name = $company->name;
                 $company_email = $company->email;
                 $client_id = $company->client_id;
-                Notification::send($user,new SubsidiaryExpirationNotification($company_name,$company_email,$title,$user_name,$user_email,$client_id));
-            }
+                $date = isset($date) ? "1 day" : (isset($twoWeeksDate) ? "2 weeks"  : "1 week");
+                Notification::send($user, new SubsidiaryExpirationNotification($company_name,$company_email,$title,$user_name,$user_email,$client_id,$date));
+            } 
             
         }
     }

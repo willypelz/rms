@@ -9,6 +9,7 @@ use App\Models\Company;
 use App\Models\SystemSetting;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\NotifyAdminOfNewRMSAccount;
+use Seamlesshr\ShrCloudflareDomainGenerator\DomainGenerator;
 
 
 class SelfSignUpService {
@@ -19,11 +20,17 @@ class SelfSignUpService {
      * @return App\Model\Company
     */
     public function createDomain($request){
-      // create $request->domain
-     
-      if(true){
-        return $this->createClientAndCompany($request);
-
+      //get the baseurl to be used e.g seamlesshiring.com
+      $base_url = DomainGenerator::getBaseURL(); 
+      if($base_url == 'seamlesshiring.com'){
+            $sub_domain_available = DomainGenerator::isSubdomainAvailable($request->domain); //true/false
+            if($sub_domain_available){
+                //returns either true or an exception. You can pass either "add" or "delete" as second param
+                $add_subdomain = DomainGenerator::mapURL($request->domain,'add'); 
+                if(is_bool($add_subdomain) && $add_subdomain){
+                    return $this->createClientAndCompany($request);
+                }
+            }  
       }else{
         throw new Exception('Chosen url is no longer available, please try another');
       }

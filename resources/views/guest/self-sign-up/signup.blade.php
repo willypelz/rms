@@ -183,7 +183,7 @@
                                 location: 'tc', 
                                 size: 'large' 
                             });
-                            window.setTimeout(function () {location.reload(true)},8000 );
+                            window.setTimeout(function () {location.reload(true)},10000 );
                        }else{
                             $.growl.error({ 
                                 message: data.msg, 

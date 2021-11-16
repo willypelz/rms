@@ -34,13 +34,15 @@
         "laravel/helpers": "^1.2",
         "jdavidbakr/mail-tracker": "^5.0.3",
         "seamlesshr/solrpackage": "dev-multitenantSolr",
+        "seamlesshr/shr-cloudflare-domain-generator":"dev-master",
         "solarium/solarium": "^5.1",
         "predis/predis": "^1.1",
         "laravel/horizon": "^5.0.0",
         "laravel/telescope": "^4.0",
         "laravel/ui": "^3.3",
         "genealabs/laravel-mixpanel": "^0.11.0",
-        "arcanedev/log-viewer": "^8.0.0"
+        "arcanedev/log-viewer": "^8.0.0",
+        "cloudflare/sdk": "^1.3"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.9.2",
@@ -58,7 +60,13 @@
             "type": "vcs",
             "url": "https://git@bitbucket.org/insidify/solr-package.git"
 
+        },
+        {
+            "type": "vcs",
+            "url": "https://boladeakerele@bitbucket.org/insidify/shr-cloudflare-domain-generator.git"
+
         }
+        
     ],
     "autoload": {
         "classmap": [

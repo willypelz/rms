@@ -8,7 +8,7 @@
 	<b>URL:</b><a href="{{getEnvData('APP_URL',null, $notifiable->client_id).'/login'}}"></a> <br>
 	<b>Email:</b>{{$notifiable->email}} <br>
 	<b>Password:</b> "Your preset password" <br>
-	<a href="{{ route('login') }}" class="btn btn-block shr-auth-form-button">Go to login page</a>
+	<a href="{{ route('login') }}" class="btn btn-block">Go to login page</a>
 	</p>
 @include('emails.layout.footer')
 

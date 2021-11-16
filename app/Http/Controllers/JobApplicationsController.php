@@ -648,7 +648,7 @@ class JobApplicationsController extends Controller
             $solr_video_application_score = null;
         }
 
-        $filename = str_replace(['/','\'',' '], '', "Applicants Report - {$job->title}.csv");
+        $filename = str_replace(['/','\'',' '], '', "Applicants Report - {$job->title} - {$job->id}.csv");
         // findOrMakeDirectory('exports');
   
         CommenceProcessingForApplicantsSpreedsheet::dispatch(get_current_company(),Auth::user(),$filename,$this->search_params, $request->jobId, @$request->status,
@@ -723,7 +723,7 @@ class JobApplicationsController extends Controller
         $request->video_application_score = [getEnvData('VIDEO_APPLICATION_START'), getEnvData('VIDEO_APPLICATION_END')];
         $solr_video_application_score = null;
     }
-    $filename = Auth::user()->id . "_" . get_current_company()->id . "_" . time() . ".zip";
+    $filename = Auth::user()->id . "_" . get_current_company()->id . "_" . time() . "_" . $job->id . ".zip";
     // findOrMakeDirectory('exports');
     
     CommenceProcessingForApplicantsCV::dispatch(get_current_company(),Auth::user(),$filename,$this->search_params, $request->jobId, @$request->status,
@@ -751,7 +751,7 @@ class JobApplicationsController extends Controller
           $application_ids = $request->app_ids;
         }
         if($application_ids->count()){
-            $filename = "Bulk Interview Notes.zip";
+            $filename = "Bulk Interview Notes {$job->id}.zip";
             // findOrMakeDirectory('exports');
             $download_type = 'Interview Notes ZIP';
             CommenceProcessingForInterviewNotes::dispatch(get_current_company(),Auth::user(),$application_ids,$request->jobId,$filename,$download_type);
@@ -778,7 +778,7 @@ class JobApplicationsController extends Controller
 
         $application_ids = (!$request->has('app_ids')) ? $job->applicantsViaJAT->pluck('id') : $request->app_ids;
 
-        $export_file = "interview-note-".time().".csv";
+        $export_file = "interview-note-".time()."{$job->id}.csv";
         // findOrMakeDirectory('exports');
         $download_type = 'Interview Notes CSV';
         if(count($application_ids)){

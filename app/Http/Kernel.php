@@ -58,6 +58,6 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\IsAdmin::class,
         'trim' => \App\Http\Middleware\RequestEmptySpaceTrimmer::class,
         'companyList' => \App\Http\Middleware\CompanyList::class,
-        'allowUrl' => \App\Http\Middleware\AllowUrl::class,
+        // 'allowUrl' => \App\Http\Middleware\AllowUrl::class,
     ];
 }

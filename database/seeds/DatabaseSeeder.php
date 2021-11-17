@@ -3,7 +3,6 @@
 use Illuminate\Database\Seeder;
 use Database\Seeders\ClientSeeder;
 use Database\Seeders\CompanySeeder;
-use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,7 +13,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Artisan::call('optimize:clear');
         // $this->call(UserTableSeeder::class);
         $this->call(PermissionsSeeder::class);
         $this->call(RolesSeeder::class);

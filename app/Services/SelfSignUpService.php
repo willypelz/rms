@@ -57,7 +57,7 @@ class SelfSignUpService {
                         ['slug' => str_slug($request->company_name.microtime()),
                         'date_added' => date('Y-m-d')]);
         //$solr = "http://solr-load-balancer-785410781.eu-west-1.elb.amazonaws.com:8983/solr/admin/cores?action=CREATE&name=".str_slug($client->slug);
-       //$this->updateEnvValueInDb($client,$company);
+        $this->updateEnvValueInDb($client,$company);
         $user = $this->createUserAndRoles($request->name, $request->email, $request->password, $company);
                 $this->notifyOfAccountCreation($user);
         return $user;
@@ -70,8 +70,9 @@ class SelfSignUpService {
      * @return App\User
     */
     private function updateEnvValueInDb($client, $company){
+        $core = env('SOLR_CORE'); //str_slug($client->name)
         $envKeys = ['APP_URL'=>$client->url, 'COMPANY_EMAIL'=>$company->email,'COMPANY_NAME'=>$company->name, 
-                    'SOLR_URL'=>"http://solr-load-balancer-785410781.eu-west-1.elb.amazonaws.com:8983/solr/",'SOLR_CORE'=>str_slug($client->name),];
+                    'SOLR_URL'=>"http://solr-load-balancer-785410781.eu-west-1.elb.amazonaws.com:8983/solr/",'SOLR_CORE'=> $core,];
         
         foreach($envKeys as $key=>$value) {
                      SystemSetting::updateOrCreate([

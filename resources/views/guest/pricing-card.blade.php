@@ -22,7 +22,7 @@
 
               <div class="row text-center text-brandon text-light text-white">
                  <br>
-                  <h1>Keep <br>enjoying your 14 days experience!</h1>
+                  <h1>Keep <br>enjoying your 28 days experience!</h1>
                   <div class="col-xs-2 col-xs-offset-5"><hr></div>
                   <div class="clearfix"></div>
                   <h5 class="text-uppercase l-sp-5"> Choose a plan below that will best suit your needs</h5><br>

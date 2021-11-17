@@ -31,7 +31,7 @@ definitions:
           - rm -rf composer-build
           - mkdir -p bootstrap/cache
           - mkdir -p storage/framework storage/framework/views storage/framework/sessions storage/framework/cache
-          - zip -r application.zip .
+          - zip -r application-multi-tenancy-v8.zip .
           - pipe: atlassian/aws-code-deploy:0.5.0
             variables:
               AWS_DEFAULT_REGION: $AWS_DEPLOYMENT_REGION
@@ -40,7 +40,7 @@ definitions:
               APPLICATION_NAME: $AWS_APPLICATION_NAME
               S3_BUCKET: $AWS_DEPLOYMENT_BUCKET
               COMMAND: 'upload'
-              ZIP_FILE: 'application.zip'
+              ZIP_FILE: 'application-multi-tenancy-v8.zip'
               VERSION_LABEL: 'rms-build-${BITBUCKET_BUILD_NUMBER}'
 
           - pipe: atlassian/aws-code-deploy:0.5.0
@@ -68,3 +68,9 @@ pipelines:
     code-deploy:
       - step: *Composer
       - step: *Code-Deploy
+    MultitenancyV8:
+      - step: *Composer
+      - step:
+          <<: *Code-Deploy
+          name: Code Deploy
+          deployment: MultitenancyV8

@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class CompanyList
+class AllowUrl
 {
     /**
      * Handle an incoming request.
@@ -17,8 +17,7 @@ class CompanyList
     public function handle(Request $request, Closure $next)
     {
         try {
-            $user = auth()->user();
-            if ($user->isAdmin() && (url('') == config('constants.signupUrl'))) {
+            if ( (url('') == config('constants.signupUrl'))) {
                 return $next($request);
             }else{
                 abort(404);

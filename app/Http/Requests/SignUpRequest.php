@@ -14,7 +14,7 @@ class SignUpRequest extends FormRequest
      */
     public function authorize()
     {
-        // return url('') == "https://signup.seamlesshiring.com" ? true : false;
+        // return url('') == config('constants.signupUrl') ? true : false;
         return true;
     }
 

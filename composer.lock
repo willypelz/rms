@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "346dfec0fc32d13bb0637e2a9e909f76",
+    "content-hash": "83b96051d2285661672aa3584786b18e",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -378,16 +378,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.203.0",
+            "version": "3.203.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "498f2466114bc8f3583b1db6943a3e291dd9ee70"
+                "reference": "63be45bbf3d2a325017f92fcad6764ebd98bb266"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/498f2466114bc8f3583b1db6943a3e291dd9ee70",
-                "reference": "498f2466114bc8f3583b1db6943a3e291dd9ee70",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/63be45bbf3d2a325017f92fcad6764ebd98bb266",
+                "reference": "63be45bbf3d2a325017f92fcad6764ebd98bb266",
                 "shasum": ""
             },
             "require": {
@@ -463,9 +463,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.203.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.203.1"
             },
-            "time": "2021-11-15T20:32:57+00:00"
+            "time": "2021-11-16T19:23:28+00:00"
         },
         {
             "name": "balping/json-raw-encoder",
@@ -3047,16 +3047,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.70.2",
+            "version": "v8.71.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "dec9524cd0f9fa35a6eb8e25d0b40f8bbc8ec225"
+                "reference": "d822426d75ecf8e8ccd3ccd404db7202d1a9875e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/dec9524cd0f9fa35a6eb8e25d0b40f8bbc8ec225",
-                "reference": "dec9524cd0f9fa35a6eb8e25d0b40f8bbc8ec225",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/d822426d75ecf8e8ccd3ccd404db7202d1a9875e",
+                "reference": "d822426d75ecf8e8ccd3ccd404db7202d1a9875e",
                 "shasum": ""
             },
             "require": {
@@ -3133,12 +3133,12 @@
             },
             "require-dev": {
                 "aws/aws-sdk-php": "^3.198.1",
-                "doctrine/dbal": "^2.13.3|^3.1.2",
+                "doctrine/dbal": "^2.13.3|^3.1.4",
                 "filp/whoops": "^2.14.3",
                 "guzzlehttp/guzzle": "^6.5.5|^7.0.1",
                 "league/flysystem-cached-adapter": "^1.0",
                 "mockery/mockery": "^1.4.4",
-                "orchestra/testbench-core": "^6.23",
+                "orchestra/testbench-core": "^6.27",
                 "pda/pheanstalk": "^4.0",
                 "phpunit/phpunit": "^8.5.19|^9.5.8",
                 "predis/predis": "^1.1.9",
@@ -3147,7 +3147,7 @@
             "suggest": {
                 "aws/aws-sdk-php": "Required to use the SQS queue driver, DynamoDb failed job storage and SES mail driver (^3.198.1).",
                 "brianium/paratest": "Required to run tests in parallel (^6.0).",
-                "doctrine/dbal": "Required to rename columns and drop SQLite columns (^2.13.3|^3.1.2).",
+                "doctrine/dbal": "Required to rename columns and drop SQLite columns (^2.13.3|^3.1.4).",
                 "ext-bcmath": "Required to use the multiple_of validation rule.",
                 "ext-ftp": "Required to use the Flysystem FTP driver.",
                 "ext-gd": "Required to use Illuminate\\Http\\Testing\\FileFactory::image().",
@@ -3168,7 +3168,7 @@
                 "phpunit/phpunit": "Required to use assertions and run tests (^8.5.19|^9.5.8).",
                 "predis/predis": "Required to use the predis connector (^1.1.9).",
                 "psr/http-message": "Required to allow Storage::put to accept a StreamInterface (^1.0).",
-                "pusher/pusher-php-server": "Required to use the Pusher broadcast driver (^4.0|^5.0|^6.0).",
+                "pusher/pusher-php-server": "Required to use the Pusher broadcast driver (^4.0|^5.0|^6.0|^7.0).",
                 "symfony/cache": "Required to PSR-6 cache bridge (^5.1.4).",
                 "symfony/filesystem": "Required to enable support for relative symbolic links (^5.1.4).",
                 "symfony/psr-http-message-bridge": "Required to use PSR-7 bridging features (^2.0).",
@@ -3215,7 +3215,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-11-09T22:48:33+00:00"
+            "time": "2021-11-16T15:00:50+00:00"
         },
         {
             "name": "laravel/helpers",
@@ -3352,16 +3352,16 @@
         },
         {
             "name": "laravel/serializable-closure",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/serializable-closure.git",
-                "reference": "6cfc678735f22ccedad761b8cae2bab14c3d8e5b"
+                "reference": "8148e72e6c2c3af7f05640ada1b26c3bca970f8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/6cfc678735f22ccedad761b8cae2bab14c3d8e5b",
-                "reference": "6cfc678735f22ccedad761b8cae2bab14c3d8e5b",
+                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/8148e72e6c2c3af7f05640ada1b26c3bca970f8d",
+                "reference": "8148e72e6c2c3af7f05640ada1b26c3bca970f8d",
                 "shasum": ""
             },
             "require": {
@@ -3407,20 +3407,20 @@
                 "issues": "https://github.com/laravel/serializable-closure/issues",
                 "source": "https://github.com/laravel/serializable-closure"
             },
-            "time": "2021-10-07T14:00:57+00:00"
+            "time": "2021-11-16T17:01:57+00:00"
         },
         {
             "name": "laravel/telescope",
-            "version": "v4.6.6",
+            "version": "v4.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/telescope.git",
-                "reference": "8607c0f30b666104da47a6a81812397369c002b9"
+                "reference": "505623831a5b35454491add4a4a2fd0af34d21b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/telescope/zipball/8607c0f30b666104da47a6a81812397369c002b9",
-                "reference": "8607c0f30b666104da47a6a81812397369c002b9",
+                "url": "https://api.github.com/repos/laravel/telescope/zipball/505623831a5b35454491add4a4a2fd0af34d21b9",
+                "reference": "505623831a5b35454491add4a4a2fd0af34d21b9",
                 "shasum": ""
             },
             "require": {
@@ -3469,9 +3469,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/telescope/issues",
-                "source": "https://github.com/laravel/telescope/tree/v4.6.6"
+                "source": "https://github.com/laravel/telescope/tree/v4.6.7"
             },
-            "time": "2021-11-04T10:21:02+00:00"
+            "time": "2021-11-16T17:04:00+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -6210,7 +6210,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git@bitbucket.org/insidify/shr-cloudflare-domain-generator.git",
-                "reference": "b755cc49308c430c6b1ac4b24849437caad85efd"
+                "reference": "43955a1289b679d49241b4756e5447154f217f1c"
             },
             "default-branch": true,
             "type": "library",
@@ -6239,7 +6239,7 @@
                 "MIT"
             ],
             "description": "Handles domain generation",
-            "time": "2021-11-16T10:00:42+00:00"
+            "time": "2021-11-16T14:41:29+00:00"
         },
         {
             "name": "seamlesshr/solrpackage",
@@ -9988,16 +9988,16 @@
         },
         {
             "name": "facade/ignition",
-            "version": "2.16.0",
+            "version": "2.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facade/ignition.git",
-                "reference": "23400e6cc565c9dcae2c53704b4de1c4870c0697"
+                "reference": "29b533f63a3b269aa599d08dd4d22a0d720e295f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facade/ignition/zipball/23400e6cc565c9dcae2c53704b4de1c4870c0697",
-                "reference": "23400e6cc565c9dcae2c53704b4de1c4870c0697",
+                "url": "https://api.github.com/repos/facade/ignition/zipball/29b533f63a3b269aa599d08dd4d22a0d720e295f",
+                "reference": "29b533f63a3b269aa599d08dd4d22a0d720e295f",
                 "shasum": ""
             },
             "require": {
@@ -10061,7 +10061,7 @@
                 "issues": "https://github.com/facade/ignition/issues",
                 "source": "https://github.com/facade/ignition"
             },
-            "time": "2021-10-28T11:47:23+00:00"
+            "time": "2021-11-16T13:09:30+00:00"
         },
         {
             "name": "facade/ignition-contracts",

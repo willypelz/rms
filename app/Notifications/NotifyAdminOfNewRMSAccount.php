@@ -48,7 +48,7 @@ class NotifyAdminOfNewRMSAccount extends Notification
             'emails.self-sign-up.new-account-notify',['notifiable'=> $notifiable, 'email_title' => $this->title, 
             'email'=> $this->company->email,'user_email'=> $this->user_email]
         )
-        ->from(getEnvData('COMPANY_EMAIL',null,$this->company->client_id))
+        ->from('support@seamlesshr.com')
         ->subject($this->title);
     }
 

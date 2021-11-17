@@ -38,14 +38,16 @@ Route::group(['middleware' => ['web']], function () {
 });
 
 Route::post("/api/v1/delete-super-admin", "HrmsIntegrationController@deleteSuperAdmin")->name("delete-super-admin");
-Route::get('clientEnv/edit/{id?}', 'SystemSettingsController@edit')->name('edit-env');
-Route::get('clientEnv', 'SystemSettingsController@index')->name('index-env');
-Route::post('client/update/{id}', 'SystemSettingsController@update')->name('update-env');
-Route::get('clientEnv/delete/{id}', 'SystemSettingsController@delete')->name('delete-env');
+Route::group(['middleware' => ['web','auth','admin']], function () {
+    Route::get('clientEnv/edit/{id?}', 'SystemSettingsController@edit')->name('edit-env');
+    Route::get('clientEnv', 'SystemSettingsController@index')->name('index-env');
+    Route::post('client/update/{id}', 'SystemSettingsController@update')->name('update-env');
+    Route::get('clientEnv/delete/{id}', 'SystemSettingsController@delete')->name('delete-env');
+});
 
 // admin company 
 Route::group(['middleware' => ['web', 'auth', 'companyList']], function () {
-    Route::get('/seeCompnay', 'CompanyController@index');
+    Route::get('/view-company-list', 'CompanyController@index')->name('view-company-list');
 });
 /** ---------
  * Start: Administrator Panel Routes
@@ -604,7 +606,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/test/setup', ['as' => 'test-setup', 'uses' => 'TestSetupController@index']);
     Route::post('/test/setup/create', ['as' => 'test-setup-create', 'uses' => 'TestSetupController@create']);
 
-    Route::group(['prefix'=>'client'],function(){
+    Route::group(['prefix'=>'client','middleware'=>'allowUrl'],function(){
         Route::get('/sign-up', ['as' => 'client-signup-index', 'uses' => 'SelfSignUpController@index']);
         Route::post('/sign-up', ['as' => 'client-signup-create', 'uses' => 'SelfSignUpController@create']);
     });

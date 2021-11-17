@@ -8,7 +8,10 @@
 	<b>URL:</b><a href="{{getEnvData('APP_URL',null, $notifiable->client_id).'/login'}}"></a> <br>
 	<b>Email:</b>{{$notifiable->email}} <br>
 	<b>Password:</b> "Your preset password" <br>
-	<a href="{{ route('login') }}" class="btn btn-block">Go to login page</a>
+	<button class="btn btn-primary">
+			<a href="{{ route('login') }}">Go to login page</a>
+	</button>
+	
 	</p>
 @include('emails.layout.footer')
 

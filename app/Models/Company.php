@@ -69,4 +69,8 @@ class Company extends Model
         return $this->hasMany('App\Models\CompanyTest', "company_id");
     }
 
+    public function client()
+    {
+        return $this->belongsTo('App\Models\Client', "client_id");
+    }
 }

@@ -23,7 +23,8 @@
                                             <th>Name</th>
                                             <th>Email </th>
                                             <th>Phone Number</th>
-                                            <th>Websit</th>
+                                            <th>Website</th>
+                                            <th>Parent Company</th>
                                             <th>address</th>
                                             <th>License Type</th>
                                             <th>Valid Period</th>
@@ -35,26 +36,29 @@
                                                 <td>{{ $key + 1 }}</td>
 
                                                 <td>
-                                                    {{ $company->name }}
+                                                    {{ $company->name ?? 'NA' }}
                                                 </td>
 
                                                 <td>
-                                                    {{ $company->email }}
+                                                    {{ $company->email ?? 'NA' }}
                                                 </td>
                                                 <td>
-                                                    {{ $company->phone }}
+                                                    {{ $company->phone ?? 'NA' }}
                                                 </td>
                                                 <td>
-                                                    {{ $company->website }}
+                                                    {{ $company->website ?? 'NA' }}
                                                 </td>
                                                 <td>
-                                                    {{ $company->address }}
+                                                    {{ $company->client->name ?? 'NA' }}
                                                 </td>
                                                 <td>
-                                                    {{ $company->license_type }}
+                                                    {{ $company->address ?? 'NA' }}
                                                 </td>
                                                 <td>
-                                                    {{ $company->valid_till }}
+                                                    {{ $company->license_type ?? 'NA' }}
+                                                </td>
+                                                <td>
+                                                    {{ $company->valid_till ?? 'NA' }}
                                                 </td>
 
                                             </tr>

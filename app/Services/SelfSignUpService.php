@@ -7,6 +7,9 @@ use App\Models\Role;
 use App\Models\Client;
 use App\Models\Company;
 use App\Models\SystemSetting;
+use App\Mail\NewRMSAccountCreated;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\NotifyAdminOfNewRMSAccount;
 use Seamlesshr\ShrCloudflareDomainGenerator\DomainGenerator;
@@ -30,7 +33,7 @@ class SelfSignUpService {
                 if(is_bool($add_subdomain) && $add_subdomain){
                     return $this->createClientAndCompany($request);
                 }
-            }  
+            }else{ throw new Exception('Chosen url is no longer available, please try another'); }  
       }else{
         throw new Exception('Chosen url is no longer available, please try another');
       }
@@ -55,7 +58,9 @@ class SelfSignUpService {
                         'date_added' => date('Y-m-d')]);
         //$solr = "http://solr-load-balancer-785410781.eu-west-1.elb.amazonaws.com:8983/solr/admin/cores?action=CREATE&name=".str_slug($client->slug);
        //$this->updateEnvValueInDb($client,$company);
-        return $this->createUserAndRoles($request,$company);
+        $user = $this->createUserAndRoles($request->name, $request->email, $request->password, $company);
+                $this->notifyOfAccountCreation($user);
+        return $user;
     }
  
     /**
@@ -78,18 +83,20 @@ class SelfSignUpService {
 
     /**
      * create user and attach user to admin role and  the created company
-     * @param $request 
+     * @param $name
+     * @param $email 
      * @param $company
      * @return App\User
     */
-    private function createUserAndRoles($request, $company){
+    public function createUserAndRoles($name, $email,$password, $company){
         //using this approach cos firstOrCreate strangely doesn't work on RMS with user table
-            $user = User::where('email',$request->email)->where('client_id', $company->client_id)->first();
+            $user = User::where('email',$email)->where('client_id', $company->client_id)->first();
             if(!$user){
                 $user = new User();
-                $user->name = $request->name;
-                $user->email = $request->email;
-                $user->is_internal = 1;
+                $user->name = $name;
+                $user->email = $email;
+                $user->password =  Hash::make($password);
+                $user->is_internal = 0;
                 $user->activated = 1;
                 $user->is_super_admin = 1;
                 $user->client_id = $company->client_id;
@@ -101,10 +108,25 @@ class SelfSignUpService {
             $role = Role::whereName('admin')->first()->id;
             $company->users()->attach($user->id, ['role' => $role,'date_added'=>date('Y-m-d')]);
             $user->roles()->attach([$role]);
-         
-            Notification::send($user,new NotifyAdminOfNewRMSAccount($company,$user));
             
             return $user;
+    }
+
+    /**
+     * send email notification company
+     * @param $user
+     * @return bool
+    */
+    public function notifyOfAccountCreation($user){
+            //notify new client
+            Notification::send($user,new NotifyAdminOfNewRMSAccount($company,$user));
+
+            //notify support and sales team
+            Mail::to('support@seamlesshr.com')->cc('sales@seamlesshr.com')->send(
+                new NewRMSAccountCreated($user)
+            );
+   
+            return true;
     }
    
 

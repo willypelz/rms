@@ -57,5 +57,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'admin' => \App\Http\Middleware\IsAdmin::class,
         'trim' => \App\Http\Middleware\RequestEmptySpaceTrimmer::class,
+        'companyList' => \App\Http\Middleware\CompanyList::class,
+        'allowUrl' => \App\Http\Middleware\AllowUrl::class,
     ];
 }

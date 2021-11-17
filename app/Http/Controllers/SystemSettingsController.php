@@ -31,6 +31,7 @@ class SystemSettingsController extends Controller
      */
     public function edit($id)
     {
+        
         $systemSetting = SystemSetting::whereId($id)->first();
         return view('admin.clientEnv.edit')->with('clientEnv', $systemSetting);
     }
@@ -46,7 +47,7 @@ class SystemSettingsController extends Controller
     public function update(ClientEnvRequest $clientEnvRequest, $id)
     {
         $clientEnvDetails = $clientEnvRequest->validated();
-        SystemSetting::whereClientIdAndId(1, $id)->update(
+        SystemSetting::whereClientIdAndId(request()->clientId, $id)->update(
             [
                 'key' => $clientEnvDetails['key'],
                 'value' => $clientEnvDetails['value']

@@ -40,9 +40,9 @@
                                                 <td>
                                                     <a href="{{ route('edit-env', ['id' => $env->id]) }}"
                                                         class="btn btn-primary">Edit</a>
-                                                    <a href="{{ route('delete-env', ['id' => $env->id]) }}"
+                                                    {{-- <a href="{{ route('delete-env', ['id' => $env->id]) }}"
                                                         onclick="return confirm('Sure you want to delete {{ $env->key }}?')"
-                                                        class="btn btn-danger">Delete</a>
+                                                        class="btn btn-danger">Delete</a> --}}
                                                 </td>
                                             </tr>
                                         @endforeach

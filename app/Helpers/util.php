@@ -988,7 +988,7 @@ function admin_audit_log()
  * @return bool
  */
 function isHrmsIntegrated(){
-    return (!is_null(getEnvData('STAFFSTRENGTH_URL'))) && getEnvData('RMS_STAND_ALONE')==false ? true: false;
+    return (!is_null(getEnvData('STAFFSTRENGTH_URL'))) && getEnvData('RMS_STAND_ALONE')=="false" ? true: false;
 }
 
 /**

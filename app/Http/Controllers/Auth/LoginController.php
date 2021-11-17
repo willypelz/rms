@@ -386,6 +386,7 @@ class LoginController extends Controller
     }
 
     public function logout(){
+        cache()->flush();
         auth()->logout();
         if(getEnvData('RMS_STAND_ALONE',true,request()->clientId) == false){ //redirect to hrms if rms is not stand alone
             return redirect(getEnvData('STAFFSTRENGTH_URL',null,request()->clientId));

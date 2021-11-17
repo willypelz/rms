@@ -26,7 +26,7 @@
 				'remuneration' => 'Remuneration (min/max)'
 		],
 		'pagination' => env('PAGINATION',100),
-		'signupUrl' => 'https://seamlesshiring-v8.test'//'https://signup.seamlesshiring.com',
+		'signupUrl' => 'https://qa-signup.seamlesshiring.com'//'https://seamlesshiring-v8.test'//'https://signup.seamlesshiring.com',
 		
 	];
 

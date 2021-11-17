@@ -61,32 +61,27 @@
                                     @endif
 
                                         <div class="panel-heading">
-                                            <!-- <i class="fa fa-star"></i> -->
-                                            <h3 class="text-brandon">FREE</h3>
-                                            <small> For you to get a feel of the <br>SeamlessHiring magic.</small>
+                                            <i class="fa fa-star" style="color:#2889ce"></i>
+                                            <h3 class="text-brandon"></i>Starter</h3>
+                                            {{-- <small> 28 days free access to get a feel of the <br>SeamlessHiring magic.</small> --}}
+                                        </div>
+                                        <div class="panel-body text-center text-brandon"> 
+                                            <p class=" no-margin" style="background: #2889ce; color:#fff !important;"><strong>&#8358;35,000 per month </strong></p>
                                         </div>
                                         <div class="panel-body text-center text-brandon">
-                                            <p class=" no-margin"><strong>14-days Access <br> to All Features:</strong></p>
+                                            <p class=" no-margin"><strong>5,000 applications per annum</strong></p>
                                         </div>
                                         <ul class="list-group text-center">
                                                    <li class="list-group-item">Applicant Tracking System</li>
-
-                                                   <li class="list-group-item">Team Member Collaboration</li>
-
-                                                   <li class="list-group-item">Background Check</li>
-
-                                                   <li class="list-group-item">Online Tests</li>
-
-                                                   <li class="list-group-item">Video Job Posting</li>
-
-                                                   <li class="list-group-item">Extensive Job Broadcast</li>
-
-                                                   <li class="list-group-item">Medical Check</li>
-
-                                                   <li class="list-group-item">Dossier</li>
-
-                                                   <li class="list-group-item">Customer Support</li>
-
+                                                   <li class="list-group-item">Customisable workflow</li>
+                                                   <li class="list-group-item">Career page integration</li>
+                                                   <li class="list-group-item">Social media job promotion</li>
+                                                   <li class="list-group-item">Job Teams Collaboration</li>
+                                                   <li class="list-group-item">Interview Management</li>
+                                                   <li class="list-group-item">Applicant dashboard</li>
+                                                   <li class="list-group-item">Applicant email messaging and chat</li>
+                                                   <li class="list-group-item">Reports Generation</li>
+                                                   <li class="list-group-item">Talent pool</li>
                                         </ul>
                                         <div class="panel-footer">
                                             @if( @@$account->has_expired == true or @$account->status == 'TRIAL')
@@ -105,33 +100,36 @@
                                   <!-- <img src="img/rope-big.png" width="300px" class="rope big"> -->
                                     <div class="panel panel-default panel-pricing panel-sme">
                                         <div class="panel-heading">
-                                            <!-- <i class="fa fa-star"></i><i class="fa fa-star"></i> -->
+                                           
                                             <div class="label label-default">&nbsp; MOST POPULAR &nbsp;</div>
-                                            <h3 class="text-brandon">SME</h3>
+                                              <i class="fa fa-star" style="color:#4bb779"></i><i class="fa fa-star" style="color:#4bb779"></i>
+                                            <h3 class="text-brandon">Professional</h3>
 
-                                            <small>For companies that post 1-3 jobs per month and hire between 5-10 candidates in a year.</small>
+                                            {{-- <small>For companies that post 1-3 jobs per month and hire between 5-10 candidates in a year.</small> --}}
                                         </div>
-                                        <div class="panel-body no-margin text-center text-brandon" style="
-                                                background: #2889ce;
-                                            ">
-                                            <p class=" no-margin no-pad" style="
-                                                background: #2889ce;
-                                            "><strong>3Months - &#8358;90,000</strong></p>
+                                        <div class="panel-body no-margin text-center text-brandon" style="background: #2889ce;">
+                                            <p class=" no-margin no-pad" style="background: #2889ce;">
+                                              <strong> &#8358;60,000 per month</strong>
+                                            </p>
                                         </div>
                                         <div class="panel-body no-margin text-center text-brandon">
-                                            <p class=" no-margin no-pad"><strong>1 year - &#8358;330,000</strong></p>
+                                            <p class=" no-margin no-pad"><strong>50,000 applications per annum</strong></p>
                                             <!-- <small>20% Discount</small> -->
                                         </div>
                                         <ul class="list-group text-center">
-                                            <li class="list-group-item"> Full access to SeamlessHiring database for candidate search</li>
-                                            <li class="list-group-item"> 5% off Video Job Posting</li>
-                                            <li class="list-group-item">3 Team Members</li>
-                                            <li class="list-group-item">Unlimited Job Posting on Free Job Boards</li>
-                                            <li class="list-group-item">5% off Online Tests, Background & Medical Checks, Discount on Newspaper Ads</li>
-                                            <li class="list-group-item">Dedicated Relationship Manager for Resource Support</li>
-
+                                            <li class="list-group-item"> Applicant Tracking </li>
+                                            <li class="list-group-item"> Customisable workflow</li>
+                                            <li class="list-group-item">Career page integration</li>
+                                            <li class="list-group-item">Social media job promotion</li>
+                                            <li class="list-group-item">Job Teams Collaboration </li>
+                                            <li class="list-group-item">Interview Management </li>
+                                            <li class="list-group-item">Applicant dashboard</li>
+                                            <li class="list-group-item">Applicant email messaging and chat</li>
+                                            <li class="list-group-item">Reports Generation </li>
+                                            <li class="list-group-item">Talent pool</li>
+                                            <li class="list-group-item">Multi Company Configuration</li>
+                                            <li class="list-group-item"> Online Testing (2 templates)</li>      
 <!--                                            <li class="list-group-item">3 Team Members</li>-->
-
                                         </ul>
                                         <div class="panel-footer">
                                             <a class="btn btn-lg btn-block btn-success text-uppercase" data-toggle="modal" data-target="#requestCall" id="modalButton" href="#requestCall" data-title="Request a call">Request a call</a>
@@ -146,29 +144,29 @@
                                   <!-- <img src="img/rope.png" width="100px" class="rope"> -->
                                     <div class="panel panel-default panel-pricing panel-premium">
                                         <div class="panel-heading">
-                                            <!-- <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> -->
-                                            <h3 class="text-brandon">PREMIUM</h3>
-                                            <small> For companies that post more than 3 jobs per month and hire over 10 candidates in a year. </small>
+                                             <i class="fa fa-star" style="color:#f0ad4e"></i><i class="fa fa-star" style="color:#f0ad4e"></i><i class="fa fa-star" style="color:#f0ad4e"></i>
+                                            <h3 class="text-brandon">Enterprise </h3>
+                                            {{-- <small> For companies that post more than 3 jobs per month and hire over 10 candidates in a year. </small> --}}
                                         </div>
                                         <div class="panel-body text-center">
-                                            <p class=" no-margin text-brandon" style=" font-size: 17px;    padding: 12px;"><strong>CALL US ON 08068873719</strong></p>
+                                            <p class=" no-margin text-brandon" style=" font-size: 17px; background:#f0ad4e; padding: 12px; color:#fff !important;"><strong>Contact Us</strong></p>
                                         </div>
                                         <ul class="list-group text-center">
-                                            <!-- <li class="list-group-item"> Unlimited free job posting.</li>
-                                            <li class="list-group-item"> Unlimited processing access unlimited jobs/month.</li>
-                                            <li class="list-group-item"> 24/7 dedicated staff support</li>
-                                            <li class="list-group-item"> Free embed on your career site. </li>
-                                            <li class="list-group-item"> Discounts on value added services. </li> -->
-
-                                            <li class="list-group-item">Full access to SeamlessHiring database for candidate search</li>
-                                            <li class="list-group-item">20% off Video Job Posting </li>
-                                            <li class="list-group-item"> Analytics Reporting</li>
-                                            <li class="list-group-item">Different Access Levels for Admin</li>
-                                            <li class="list-group-item">Unlimited Team Collaboration</li>
-                                            <li class="list-group-item">Unlimited Job Posting on Paid/Free Job Boards</li>
-                                            <li class="list-group-item">10% off Online Tests, Background & Medical Checks, Discount on Newspaper Ads </li>
-                                            <li class="list-group-item">Company In-House Talent Resource  and Periodic Refresher Training on Portal Updates</li>
-                                            <li class="list-group-item">Dedicated  Relationship Manager for 24/7 Resource Support </li>
+                                          
+                                            <li class="list-group-item">Unlimited applications per annum</li>
+                                            <li class="list-group-item">Applicant Tracking </li>
+                                            <li class="list-group-item">Customisable workflow</li>
+                                            <li class="list-group-item">Career page integration</li>
+                                            <li class="list-group-item">Social media job promotion</li>
+                                            <li class="list-group-item">Job Teams Collaboration </li>
+                                            <li class="list-group-item">Interview Management </li>
+                                            <li class="list-group-item">Applicant dashboard</li>
+                                            <li class="list-group-item">Applicant email messaging and chat</li>
+                                            <li class="list-group-item">Reports Generation </li>
+                                            <li class="list-group-item">Talent pool</li>
+                                            <li class="list-group-item">Multi Company Configuration</li>
+                                            <li class="list-group-item">Internal & External Job Post</li>
+                                            <li class="list-group-item">Online Testing (2 templates)</li>
                                         </ul>
                                         <div class="panel-footer">
                                             <a class="btn btn-lg btn-warning text-uppercase" data-toggle="modal" data-target="#requestCall" id="modalButton" href="#requestCall" data-title="Request a call">Request a call</a>
@@ -186,16 +184,7 @@
 
 
 
-                      <!-- <div id="" class="col-sm-12">
-                        <div class="text-center">
-                            <div class="col-sm-4 col-sm-offset-4">
-                            <br>
-                                <a href="{{ url('register') }}" class="btn btn-lg btn-block btn-success btn-trial">
-                                    Get Started for free
-                                </a>
-                            </div>
-                        </div>
-                      </div> -->
+                      
                         <div class="clearfix"></div>
 
 

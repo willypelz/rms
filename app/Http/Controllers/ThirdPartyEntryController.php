@@ -49,7 +49,7 @@ class ThirdPartyEntryController extends Controller
             Auth::login($user, true);
 
             //get and push the intended company into session so that user gets logged into intended company
-            getIntendedCompanyToPostJobTo($company->slug) ?? null;
+            getIntendedCompanyToPostJobTo($company->id) ?? null;
 
             $redirect_url = $request->input('intended_url');
         } else {
@@ -70,6 +70,7 @@ class ThirdPartyEntryController extends Controller
         // store the form_data in session for retrival on job posting page
         session(['third_party_data' => $formData]);
         mixPanelRecord("third Party Entry Successful (Admin)", $request);
+        
         return redirect($redirect_url);
     }
 }

@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Curl;
+use Mail;
+use App\Models\Job;
 use App\Http\Requests;
 use App\Libraries\Solr;
-use App\Models\Candidate;
 use App\Models\Company;
-use App\Models\FolderContent;
-use App\Models\Job;
+use App\Models\Candidate;
 use App\Models\JobActivity;
-use Auth;
-use Curl;
 use Illuminate\Http\Request;
-use Mail;
+use App\Models\FolderContent;
+use Illuminate\Validation\Rule; 
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\RequestACallRequest;
 
 
 
@@ -48,7 +50,7 @@ class HomeController extends Controller
     public function homepage()
     {
 
-        $hirs_redirect = env('HIRS_REDIRECT_LOGIN');
+        $hirs_redirect = getEnvData('HIRS_REDIRECT_LOGIN');
 
         // if(!is_null($hirs_redirect) &&  strlen($hirs_redirect) != 0 )
         //     return redirect('login');
@@ -81,7 +83,7 @@ class HomeController extends Controller
 	        ->where('is_for', '!=', 'internal')
             ->whereNotIn('is_private', [true])
             ->where('expiry_date', '>=', date('Y-m-d'))
-            ->take(env('JOB_HOMEPAGE_LIST', 3))
+            ->take(getEnvData('JOB_HOMEPAGE_LIST', 3))
             ->orderBy('id', 'desc')
             ->get();
         
@@ -92,8 +94,11 @@ class HomeController extends Controller
                 'email' => 'required|email',
                 'password' => 'required'
             ]);
-            
-            if (Auth::guard('candidate')->attempt(['email' => $request->email, 'password' => $request->password])) {
+
+            $loginCred = ['email' => $request->input('email'), 'password' => $request->input('password'),'client_id'=> $request->clientId];
+            //added client_id to login_cred array for candidates to only login to the intended dashboard, since there can now be multiple 
+            //usage of same email provided it is for a different client
+            if (Auth::guard('candidate')->attempt($loginCred)){
                 
             
                 if ($request->redirect_to) {
@@ -122,7 +127,7 @@ class HomeController extends Controller
         $redirect_value = session()->get('redirect_to');
         $redirect_to = $request->redirect_to ?? $redirect_value;
 
-        $jobs = Job::whereStatus('ACTIVE')->where('is_for', '!=', 'internal')->where('expiry_date', '>=', date('Y-m-d'))->take(env('JOB_HOMEPAGE_LIST', 3))->orderBy('id', 'desc')->get();
+        $jobs = Job::whereStatus('ACTIVE')->where('is_for', '!=', 'internal')->where('expiry_date', '>=', date('Y-m-d'))->take(getEnvData('JOB_HOMEPAGE_LIST', 3, request()->clientId))->orderBy('id', 'desc')->get();
         
 
         if ($request->isMethod('post')) {        
@@ -133,17 +138,20 @@ class HomeController extends Controller
             $this->validate($request, [
                 'first_name' => 'required|regex:/^[a-zA-Z]+$/u',
                 'last_name' => 'required|regex:/^[a-zA-Z]+$/u',
-                'email' => 'required|unique:candidates,email',
+                'email' => ['required','email', Rule::unique('candidates')->where(function($query) use($request) {
+                            $query->where('client_id', $request->clientId);
+                            })],
                 'password' => 'required',
             ]);
 
 
             $candidate = Candidate::firstOrCreate([
                 'email' => $request->email,
+                'client_id' => $request->clientId,
             ])->update($request->only(['first_name', 'last_name']) + [
                     'password' => bcrypt($request->input('password'))
                 ]);
-
+                
             $registerSuccess = "Candidate Registered Successfully(Candidate)";
             mixPanelRecord($registerSuccess, $request);
 
@@ -222,20 +230,12 @@ class HomeController extends Controller
         return view('guest.talentSource');
     }
 
-    public function requestACall(Request $request)
-    {
-        // Mail::send('emails.welcome', $data, function($message)
-        // {
-        //     // $message->from('us@example.com', 'Laravel');
-
-        //     $message->to('foo@example.com')->cc('bar@example.com');
-
-        //     $message->attach($pathToFile);
-        // });
-
+    public function requestACall(RequestACallRequest $request)
+    {   
         Mail::send('emails.guest.request-call', $request->all(), function($message){
             $message->from('support@seamlesshiring.com');
-            $message->to('support@seamlesshiring.com', 'Seamless Hiring Call Request');
+            $message->to('support@seamlesshr.com', 'Seamless Hiring Call Request');
+            $message->subject('Request For A Call');
         });
     }
 

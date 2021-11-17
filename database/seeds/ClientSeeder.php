@@ -16,7 +16,7 @@ class ClientSeeder extends Seeder
     {
         Client::FirstOrCreate(
             [
-                'url' => 'signup.seamlesshiring.com'],
+                'url' => config('constants.signupUrl')],
             [
                 'name' => 'signup client',
         ]);

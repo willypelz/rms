@@ -244,10 +244,10 @@ class JobsController extends Controller
             $data = (object)$job_team_invite;
 
             //Send notification mail
-            $email_from = (Auth::user()->email) ? Auth::user()->email : env('COMPANY_EMAIL');
+            $email_from = (Auth::user()->email) ? Auth::user()->email : getEnvData('COMPANY_EMAIL');
 
             \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $job_team_invite, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($job_team_invite) {
-                $m->from(env('COMPANY_EMAIL'))->to($job_team_invite->email)->subject('You Have Been Exclusively Invited');
+                $m->from(getEnvData('COMPANY_EMAIL'))->to($job_team_invite->email)->subject('You Have Been Exclusively Invited');
             });
 
 
@@ -268,10 +268,10 @@ class JobsController extends Controller
         $data = (object)$job_team_invite;
 
         //Send notification mail
-        $email_from = (Auth::user()->email) ? Auth::user()->email : env('COMPANY_EMAIL');
+        $email_from = (Auth::user()->email) ? Auth::user()->email : getEnvData('COMPANY_EMAIL');
 
         \Illuminate\Support\Facades\Mail::send('emails.new.cancel_job_team_invitation', ['data' => $job_team_invite, 'job_title' => $job->title, 'company' => $company->name], function (Message $m) use ($job_team_invite) {
-            $m->from(env('COMPANY_EMAIL'))->to($job_team_invite->email)->subject('Notice of cancellation');
+            $m->from(getEnvData('COMPANY_EMAIL'))->to($job_team_invite->email)->subject('Notice of cancellation');
         });
 
         return back();
@@ -352,7 +352,7 @@ class JobsController extends Controller
 
                         if (isset($request->resend_email) || !isset($request->id)) {
                             \Illuminate\Support\Facades\Mail::send('emails.new.admin_invite', ['data' => $data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) use ($email) {
-                                $m->from(env('COMPANY_EMAIL'))->to($email)->subject('You Have Been Exclusively Invited');
+                                $m->from(getEnvData('COMPANY_EMAIL'))->to($email)->subject('You Have Been Exclusively Invited');
                             });
 
                             return back()->with('success', "Invite Sent successfully");
@@ -414,10 +414,10 @@ class JobsController extends Controller
                     $data = (object)$data;
 
                     //Send notification mail
-                    $email_from = (Auth::user()->email) ? Auth::user()->email : env('COMPANY_EMAIL');
+                    $email_from = (Auth::user()->email) ? Auth::user()->email : getEnvData('COMPANY_EMAIL');
 
                     \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $data, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
-                        $m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
+                        $m->from(getEnvData('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
                     });
 
                     $jobteam = "Successfully added a member to the Job team(Admin)";
@@ -480,6 +480,11 @@ class JobsController extends Controller
         if($job_team_invite->is_cancelled == true) {
             return view('job.cancelled-job-invite', compact('job_team_invite', 'job', 'company'));
         }
+
+        if($job_team_invite->is_declined) {
+            $status = false;
+            return view('job.decline-invite', compact('company', 'job', 'status'));
+        }
         // this is when the user is creating password.. happens to only external team members on first access
         if ($request->isMethod('post')) {
             $validator = Validator::make($request->all(), [
@@ -512,7 +517,7 @@ class JobsController extends Controller
                 $job_team_invite->save();
 
                 auth()->login($user);
-                return redirect()->route('select-company', ['slug' => $job->company->slug]);
+                return redirect()->route('select-company', ['id' => $job->company->id]);
             }
 
         } else {
@@ -614,7 +619,7 @@ class JobsController extends Controller
 
             // sign team(newly added user) into
             Auth::attempt(['email' => $newUser->email, 'password' => $request->input('password')]);
-            return redirect()->route('select-company', ['slug' => $team->company->slug]);
+            return redirect()->route('select-company', ['id' => $team->company->id]);
 
         }
 
@@ -1104,7 +1109,7 @@ class JobsController extends Controller
                 $job = Job::FirstorCreate($job_data);
 
                 //Send New job notification email
-                $to = env('COMPANY_EMAIL');
+                $to = getEnvData('COMPANY_EMAIL');
                 $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
                     $m->from($to, @$company->name);
                     $m->to($to)->subject('New Job initiated');
@@ -1315,7 +1320,7 @@ class JobsController extends Controller
                 $job = Job::firstOrCreate($job_data);
 
                 //Send New job notification email
-                $to = env('COMPANY_EMAIL');
+                $to = getEnvData('COMPANY_EMAIL');
                 $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
                     $m->from($to, @$company->name);
 
@@ -1614,7 +1619,7 @@ class JobsController extends Controller
 			$document_file = $request->application_id . '-' . time() . '-' . $file_name;
 
 			$upload = $request->file('document_file')->move(
-				env('fileupload'), $document_file
+				getEnvData('fileupload'), $document_file
 			);
 		} else {
 			$document_file = '';
@@ -2233,7 +2238,7 @@ class JobsController extends Controller
 
         $active_tab = 'activities';
 
-        $result = SolrPackage::get_applicants($this->search_params, $id, '');
+        $result = SolrPackage::get_applicants($this->search_params, $id, '', $request->clientId);
 
 
 
@@ -2280,7 +2285,7 @@ class JobsController extends Controller
         $job = Job::find($id);
         $active_tab = 'matching';
 
-        $result = SolrPackage::get_applicants($this->search_params, $id, '');
+        $result = SolrPackage::get_applicants($this->search_params, $id, '',$request->clientId);
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id);
 
@@ -2725,7 +2730,7 @@ class JobsController extends Controller
                         if ($request->hasFile($name)) {
 
                             $filename = time() . '_' . str_slug($request->email) . '_' . $request->file($name)->getClientOriginalName();
-                            $destinationPath = env('fileupload','uploads') . '/Others';
+                            $destinationPath = getEnvData('fileupload','uploads') . '/Others';
                             findOrMakeDirectory($destinationPath);
 
                             $request->file($name)->move($destinationPath, $filename);
@@ -2752,19 +2757,19 @@ class JobsController extends Controller
 
 
             if ($request->hasFile('cv_file')) {
-                $destinationPath = env('fileupload') . '/CVs';
+                $destinationPath = getEnvData('fileupload') . '/CVs';
                 findOrMakeDirectory($destinationPath);
                 $request->file('cv_file')->move($destinationPath, $data['cv_file']);
 
             }
 
             if ($request->hasFile('optional_attachment_1')) {
-                $destinationPath = env('fileupload') . '/CVs';
+                $destinationPath = getEnvData('fileupload') . '/CVs';
                 findOrMakeDirectory($destinationPath);
                 $request->file('optional_attachment_1')->move($destinationPath, $data['optional_attachment_1']);
             }
             if ($request->hasFile('optional_attachment_2')) {
-                $destinationPath = env('fileupload') . '/CVs';
+                $destinationPath = getEnvData('fileupload') . '/CVs';
                 findOrMakeDirectory($destinationPath);
                 $request->file('optional_attachment_2')->move($destinationPath, $data['optional_attachment_2']);
             }
@@ -2776,7 +2781,7 @@ class JobsController extends Controller
             }
 
             Mail::send('emails.new.job_application_successful', ['user' => $candidate, 'link' => route('candidate-dashboard'), 'job' => $job], function (Message $m) use ($candidate) {
-                $m->from(env('COMPANY_EMAIL'))->to($candidate->email)->subject('Job Application Successful');
+                $m->from(getEnvData('COMPANY_EMAIL'))->to($candidate->email)->subject('Job Application Successful');
             });
 
             try {
@@ -3117,7 +3122,7 @@ class JobsController extends Controller
     {
         $job = Job::find($request->job_id);
         $company = get_current_company();
-        $to = env('COMPANY_EMAIL');
+        $to = getEnvData('COMPANY_EMAIL');
 
         if ($request->type == 'JOB_BOARD') {
             $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => $request->boards, 'company' => $company], function ($m) use ($company, $to) {
@@ -3216,7 +3221,7 @@ class JobsController extends Controller
 
                 $user = Auth::user();
                 $mail = Mail::send('emails.new.successful_payment', compact('invoice', 'invoice_type', 'user', 'amount'), function ($m) use ($invoice, $invoice_type) {
-                    $m->from(env('COMPANY_EMAIL'), 'Seamlesshiring');
+                    $m->from(getEnvData('COMPANY_EMAIL'), 'Seamlesshiring');
 
                     // $m->to(env('COMPANY_EMAIL'))->subject('Customer Invoice: #'.$invoice->id);
                     $m->to(Auth::user()->email)->subject('Customer Invoice: #' . $invoice->id);
@@ -3308,7 +3313,7 @@ class JobsController extends Controller
 
                 JobApplication::massAction(@$request->job_id, @$request->cv_ids, $request->step, $request->stepId);
 
-                $testUrl = env('SEAMLESS_TESTING_APP_URL').'/test-request';
+                $testUrl = getEnvData('SEAMLESS_TESTING_APP_URL').'/test-request';
 
                 $data = [
                     'job_title' => $app->job->title,
@@ -3448,11 +3453,11 @@ class JobsController extends Controller
             $subsidiary = $request->company_name;
             //mail to cs and sales
             $mail = Mail::send('emails.subsidiary.cs-sales-notify', compact('email_title','user', 'subsidiary'), function ($m) use ($email_title) {
-                $m->from(env('COMPANY_EMAIL'))->to('support-team@seamlesshr.com')->cc('sales@seamlesshr.com')->subject($email_title);
+                $m->from(getEnvData('COMPANY_EMAIL'))->to('support-team@seamlesshr.com')->cc('sales@seamlesshr.com')->subject($email_title);
             });
             
             Mail::send('emails.subsidiary.admin-notify', compact('email_title','user', 'subsidiary'), function ($m) use ($user, $email_title) {
-                $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
+                $m->from(getEnvData('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
             });
             
             
@@ -3487,11 +3492,11 @@ class JobsController extends Controller
           return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
 	}
 
-    public function selectCompany(Request $request)
+    public function selectCompany(Request $request,$id)
     {
-        foreach (Auth::user()->companies as $key => $company) {
-            if ($company->slug == $request->slug) {
-                Session::put('current_company_index', $key);
+        foreach (Auth::user()->companies->where('client_id', $request->clientId) as $key => $company) {
+            if ($company->id == $id) {
+                Session::put('current_company_index', $company->id);
                 return redirect('dashboard');
             }
         }
@@ -3572,21 +3577,24 @@ class JobsController extends Controller
     {
         if ( $request->isMethod ( 'post' ) ) {
             $user = User::with('roles')->find($request->id);
-            if (!is_null(env('STAFFSTRENGTH_URL')) || env('RMS_STAND_ALONE') ) {
+            if (!is_null(getEnvData('STAFFSTRENGTH_URL')) || getEnvData('RMS_STAND_ALONE') ) {
                 $user->update([
                     'is_super_admin' => $request->role
                 ]);
                 mixPanelRecord("Admin Role Updated successfully (Admin)", auth()->user());
                 return response()->json (['status' => true]);
             } else {
-                mixPanelRecord("Admin Creation failed (Admin)", auth()->user());
+                mixPanelRecord("Admin creation failed (Admin)", $user);
                 return response()->json([
                     'status' => false,
                     'message' => "you have to manage super admins from HRMS"
                 ]);
             }
         }
-        $users = User::with('roles')->get();
+
+        $users = User::with('roles')->whereHas('companies',function($q) use($request){
+            $q->where('client_id',$request->clientId);
+        })->get();
         $roles = Role::get();
         return view ('admin.roles_management.index', compact ('users', 'roles'));
     }

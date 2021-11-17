@@ -13,7 +13,7 @@ class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
 {
     use Queueable;
 
-    protected $filename,$type,$job;
+    protected $filename,$type,$job,$admin;
 
 
 
@@ -24,9 +24,10 @@ class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
      * @param $job
      * @param string $filename
      */
-    public function __construct(string  $filename, string $type, $jobId)
+    public function __construct(string  $filename, string $type, $jobId, $admin)
     {
         $this->filename = $filename; 
+        $this->admin = $admin;
         $this->type = $type;
         $this->job = Job::find($jobId) ?? '';
     }
@@ -53,7 +54,8 @@ class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
         $data = [
             "filename" => $this->job->title,
             "name" => $notifiable->name,
-            "route" => route( "download_applicants_interview_file", ["filename" => encrypt($this->filename) ])
+            "route" => companyRoute($this->admin->client_id, "download_applicants_interview_file", ["filename" => encrypt($this->filename) ]),
+            "client_id" => request()->clientId
         ];
         return (new MailMessage())
              ->subject(ucwords("{$this->job->title} {$this->type} export completed"))

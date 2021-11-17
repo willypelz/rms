@@ -37,7 +37,7 @@
                         You have accepted the invitation to join the job team for the recruitment of <strong>{{ $job->title }}</strong> in <strong>{{ $job->company->name }}</strong>
                         <hr>
                         <div class="col-sm-4 col-sm-offset-4">
-                          <a href="{{ route('select-company',['slug'=>$job->company->slug]) }}" class="btn btn-success btn-block">Login</a>
+                          <a href="{{ route('select-company',['id'=>$job->company->id]) }}" class="btn btn-success btn-block">Login</a>
                         </div>
                     @else
                         You have declined the invitation to join the job team for the recruitment of <strong>{{ $job->title }}</strong> in <strong>{{ $job->company->name }}</strong>
@@ -81,7 +81,7 @@
           </div>
           <div class="page page-sm foot no-bod-rad">
             <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-              <p><img src="{{ env('SEAMLESS_HIRING_LOGO') }}" alt="" width="250px"> </p>
+              <p><img src="{{ getEnvData('SEAMLESS_HIRING_LOGO',null,request()->clientId) }}" alt="" width="250px"> </p>
               <p class="text-muted small">@ <?php echo date('Y') ?></p>
             </div>
             <div class="clearfix"></div>

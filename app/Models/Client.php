@@ -10,4 +10,16 @@ class Client extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'url'];
+
+    /**
+
+	 * Client has many company relation
+	 * 
+	 * @return mixed
+	 */
+
+	public function companies()
+	{
+		return $this->hasMany('App\Models\Company', 'client_id');
+	}
 }

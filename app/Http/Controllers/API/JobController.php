@@ -523,7 +523,7 @@ class JobController extends Controller
         $api_key = $company->api_key;
         try {
             $result = $client->get(
-                env('STAFFSTRENGTH_URL') . '/admin/employees/api/get/all/employees',
+                getEnvData('STAFFSTRENGTH_URL', null,request()->clientId) . '/admin/employees/api/get/all/employees',
                 [
                     'headers' => ['Authorization' => $api_key],
                     'verify' => false,
@@ -552,7 +552,7 @@ class JobController extends Controller
             );
         }
 
-        $company = Company::where('hrms_id',$request->company_id)->first() ?? Company::first();
+        $company = Company::where('client_id', $request->clientId)->where('hrms_id', $request->company_id)->first();
 
         if (is_null($company)) {
             return response()->json([
@@ -581,7 +581,7 @@ class JobController extends Controller
             );
         }
 
-        $user = User::whereName($request->name)->whereEmail($request->email)->first();
+        $user = User::whereName($request->name)->whereEmail($request->email)->where('client_id', $request->clientId)->first();
 
         if (!is_null($user)) {
             return response()->json([
@@ -602,6 +602,7 @@ class JobController extends Controller
         $user->is_internal = 1;
         $user->activated = 1;
         $user->is_super_admin = 1;
+        $user->client_id = $request->clientId;
         $user->save();
 
         $role = Role::whereName('admin')->first()->id;

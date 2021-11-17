@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Company extends Model
 {
@@ -37,7 +38,8 @@ class Company extends Model
         'api_key',
         'license_type',
 	    'is_active',
-	    'is_default'
+        'is_default',
+        'client_id',
     ];
 
     public $timestamps = false;
@@ -67,4 +69,8 @@ class Company extends Model
         return $this->hasMany('App\Models\CompanyTest', "company_id");
     }
 
+    public function client()
+    {
+        return $this->belongsTo('App\Models\Client', "client_id");
+    }
 }

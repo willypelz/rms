@@ -38,16 +38,22 @@ Route::group(['middleware' => ['web']], function () {
 });
 
 Route::post("/api/v1/delete-super-admin", "HrmsIntegrationController@deleteSuperAdmin")->name("delete-super-admin");
-Route::get('clientEnv/edit/{id?}', 'SystemSettingsController@edit')->name('edit-env');
-Route::get('clientEnv', 'SystemSettingsController@index')->name('index-env');
-Route::post('client/update/{id}', 'SystemSettingsController@update')->name('update-env');
-Route::get('clientEnv/delete/{id}', 'SystemSettingsController@delete')->name('delete-env');
+Route::group(['middleware' => ['web','auth','admin']], function () {
+    Route::get('clientEnv/edit/{id?}', 'SystemSettingsController@edit')->name('edit-env');
+    Route::get('clientEnv', 'SystemSettingsController@index')->name('index-env');
+    Route::post('client/update/{id}', 'SystemSettingsController@update')->name('update-env');
+    Route::get('clientEnv/delete/{id}', 'SystemSettingsController@delete')->name('delete-env');
+});
+
+// admin company 
+Route::group(['middleware' => ['web', 'auth', 'companyList']], function () {
+    Route::get('/view-company-list', 'CompanyController@index')->name('view-company-list');
+});
 /** ---------
  * Start: Administrator Panel Routes
  * Make admin group and apply a guard to it
  */
 Route::group(['middleware' => ['web',"auth", 'admin']], function () {
-
     Route::get('/download-bulk-upload-applicant-to-workflow-stage-template', "BulkUploadApplicantsToWorkflowStepContoller@downloadBulkApplicantsToWorkflowStagesTemplate")->name("download-bulk-upload-applicant-to-workflow-stage-template");
 
     Route::get('/ping', 'SolariumController@ping');
@@ -600,6 +606,11 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/test/setup', ['as' => 'test-setup', 'uses' => 'TestSetupController@index']);
     Route::post('/test/setup/create', ['as' => 'test-setup-create', 'uses' => 'TestSetupController@create']);
 
+    Route::group(['prefix'=>'client','middleware'=>'allowUrl'],function(){
+        Route::get('/sign-up', ['as' => 'client-signup-index', 'uses' => 'SelfSignUpController@index']);
+        Route::post('/sign-up', ['as' => 'client-signup-create', 'uses' => 'SelfSignUpController@create']);
+    });
+
     Route::get('download-csv-template',
     ['uses' => 'PrivateJobController@exportCsvTemplate', 
     'as' => 'download-privatejob-template']);
@@ -697,7 +708,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'decline-invite/{id}',  ['uses' => 'JobsController@declineInvite', 'as' => 'decline-invite']);
 
-    Route::match(['get', 'post'], 'select-company/{slug?}', ['uses' => 'JobsController@selectCompany', 'as' => 'select-company'])->middleware('auth');
+    Route::match(['get', 'post'], 'select-company/{id?}', ['uses' => 'JobsController@selectCompany', 'as' => 'select-company'])->middleware('auth');
 
     Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
 

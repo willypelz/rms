@@ -72,7 +72,7 @@
                                             <p class=" no-margin"><strong>5,000 applications per annum</strong></p>
                                         </div>
                                         <ul class="list-group text-center">
-                                                   <li class="list-group-item">Applicants Tracking System</li>
+                                                   <li class="list-group-item">Applicant Tracking System</li>
                                                    <li class="list-group-item">Customisable workflow</li>
                                                    <li class="list-group-item">Career page integration</li>
                                                    <li class="list-group-item">Social media job promotion</li>

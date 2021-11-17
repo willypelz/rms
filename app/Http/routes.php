@@ -606,10 +606,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/test/setup', ['as' => 'test-setup', 'uses' => 'TestSetupController@index']);
     Route::post('/test/setup/create', ['as' => 'test-setup-create', 'uses' => 'TestSetupController@create']);
 
-    // Route::group(['prefix'=>'client'],function(){
-        Route::get('/sign-up', ['as' => 'client-signup-index', 'uses' => 'SelfSignUpController@index']);
-        Route::post('/sign-up', ['as' => 'client-signup-create', 'uses' => 'SelfSignUpController@create']);
-    // });
+    Route::group(['prefix'=>'client'],function(){
+        Route::get('/new/signup', ['as' => 'client-signup-index', 'uses' => 'SelfSignUpController@index']);
+        Route::post('/new/signup', ['as' => 'client-signup-create', 'uses' => 'SelfSignUpController@create']);
+    });
 
     Route::get('download-csv-template',
     ['uses' => 'PrivateJobController@exportCsvTemplate', 

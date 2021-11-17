@@ -15,7 +15,7 @@
                   <h1>Hey! We bet you did <br>enjoy your trial experience!</h1>
                   <div class="col-xs-2 col-xs-offset-5"><hr></div>
                   <div class="clearfix"></div>
-                  <h5 class="text-uppercase l-sp-5"> Chooose a plan below that will best suit your needs</h5><br>
+                  <h5 class="text-uppercase l-sp-5"> Choose a plan below that will best suit your needs</h5><br>
               </div>
 
             @else
@@ -72,7 +72,7 @@
                                             <p class=" no-margin"><strong>5,000 applications per annum</strong></p>
                                         </div>
                                         <ul class="list-group text-center">
-                                                   <li class="list-group-item">Applicant Tracking System</li>
+                                                   <li class="list-group-item">Applicants Tracking System</li>
                                                    <li class="list-group-item">Customisable workflow</li>
                                                    <li class="list-group-item">Career page integration</li>
                                                    <li class="list-group-item">Social media job promotion</li>

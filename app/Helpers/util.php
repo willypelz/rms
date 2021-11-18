@@ -5,21 +5,20 @@ use App\Models\Cv;
 use Carbon\Carbon;
 use App\Models\Job;
 use App\Enum\Configs;
-use App\Models\Client;
 use App\Libraries\Solr;
 use App\Models\Company;
 use App\Models\Candidate;
+use App\Models\Interview;
 use App\Models\Permission;
 use App\Models\ActivityLog;
 use App\Models\JobActivity;
 use App\Models\TestRequest;
 use App\Jobs\UploadApplicant;
-use App\Models\SystemSetting;
 use Ixudra\Curl\Facades\Curl;
 use App\Models\JobApplication;
 use App\Models\PermissionRole;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Cache;
+use App\Models\InterviewNoteTemplates;
 use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Types\Object_;
 use GeneaLabs\LaravelMixpanel\Facades\Mixpanel;
@@ -375,24 +374,22 @@ function check_if_job_owner_on_queue($job_id, $current_company, $user)
 
 function get_current_company()
 {
-    $authUser = Auth::user();
-    $sessionId = Session::get('current_company_index');
 
-    if (!is_null($authUser)) {
+    if (!is_null(Auth::user())) {
         //If a company is selected
-        if ($sessionId) {
-            if (isset($authUser->companies) && !is_null($authUser->companies()->where('company_users.company_id', $sessionId)->first()))
-                return $authUser->companies()->where('company_users.company_id', $sessionId)->first();
+        if (Session::get('current_company_index')) {
+            if (isset(Auth::user()->companies[Session::get('current_company_index')]))
+                return Auth::user()->companies[Session::get('current_company_index')];
             else
-                return $authUser->companies->first();
+                return Auth::user()->companies[0];
         }
         
-        if ($authUser->companies && $authUser->companies->count() < 1) {
+        if (Auth::user()->companies && Auth::user()->companies->count() < 1) {
             return redirect()->guest('login');
         }
         
         // If a company is not selected, default to the first on the list
-        return $authUser->companies->first();
+        return Auth::user()->companies[0];
     } else {
         return redirect()->guest('login');
     }
@@ -554,20 +551,25 @@ function get_company_logo($logo)
 
 function get_interview_note_templates($appl_id)
 {
-    $templates = null;
-    $user = User::find(auth()->id());
-    if(!$user->isInterviewer() && !$user->isCommenter()){
-        return \App\Models\InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
-    } 
-    $interview = App\Models\Interview::where('job_application_id', $appl_id)->first();
-    if($interview){
-        $check = $interview->users->where('id',auth()->id())->first();
-        if($check){
-            return $interview->templates;
-        } 
-    }
+    $appl = JobApplication::where('id', $appl_id)->first();
+    $workflowStep = $appl->job->workflow->workflowSteps->where('slug', $appl->status)->first();
 
-    return $templates;
+    if($workflowStep->type == "interview"){
+        $user = User::find(auth()->id());
+        if(!$user->isInterviewer() && !$user->isCommenter()){
+            return InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
+        } 
+        $interview = Interview::where('job_application_id', $appl_id)->first();
+        
+        if($interview){
+            $check = $user->interviews->where('id',$interview->id)->first();
+            if($check){
+                return $interview->templates;
+            }
+            return "You have not been Scheduled to interview this applicant";
+        }
+    }
+    return "This Applicant has not been moved to an interview step.";
 }
 
 function saveCompanyUploadedCv($cvs, $additional_data, $request)
@@ -889,8 +891,7 @@ function candidateDossierRating($value)
 if (!function_exists('defaultCompanyLogo')) {
     function defaultCompanyLogo()
     {
-        $answer = get_current_company()->logo ?? env('SEAMLESS_HIRING_LOGO');
-        return $answer;
+        return get_current_company()->logo ?? env('SEAMLESS_HIRING_LOGO');
     }
 }
 
@@ -1133,110 +1134,18 @@ function substring($string, $start=0, $length=5){
 /*
 * Gets the intended company among multiple companies a user belongs to
 * when trying to post a job from HRMS
-* @param $id company id
+* @param $slug company slug
 */
-function getIntendedCompanyToPostJobTo($id){
+function getIntendedCompanyToPostJobTo($slug){
     try{
         if(Auth::check()){
             foreach (Auth::user()->companies as $key => $company) {
-                if ($company->id == $id) {
-                    return Session::put('current_company_index', $id);
+                if ($company->slug == $slug) {
+                    return Session::put('current_company_index', $key);
                 }
             }
         }
     }catch(\Exception $e){
         return null;
     }
-}
-
-/**
- * This helper function checks if the Cache has a particular key specific to client in use if it does it clear the key
- * obtains settings from the database, sets the Cache and returns data
- * @param $client_id
- * @return
- */
-function setSystemConfig($client_id)
-{
-    $client_id = !is_null($client_id) ? $client_id : get_current_company()->client_id;
-
-    if (is_null($client_id)) {
-        $client_id = request()->clientId;
-    }
-
-    if (Cache::has("SystemConfig-{$client_id}")) {
-        Cache::forget("SystemConfig-{$client_id}");
-    }
-    $systemSettingData = SystemSetting::where('client_id', $client_id)->get()->pluck('value', 'key')->all();
-    Cache::forever("SystemConfig-{$client_id}", $systemSettingData);
-    return $systemSettingData;
-}
-
-/**
- * This helper function checks if the Cache has a particular key specific to company in use
- * if the key doesn't exist it defaults to the database to get data sets the Cache and returns
- * a data object
- *
- * @param $client_id
- * @return object
- */
-function getSystemConfig($client_id = null)
-{
-    $client_id = !is_null($client_id) ? $client_id : get_current_company()->client_id;
-    $systemSettingData = SystemSetting::where('client_id', $client_id)->get()->pluck('value', 'key')->all();
-
-    if (Cache::has("SystemConfig-{$client_id}")) {
-        $setting = Cache::get("SystemConfig-{$client_id}");
-    } else {
-        $setting = setSystemConfig($client_id);
-    }
-    return (object)$setting;
-}
-
-/**
- * This helper function takes in a key as parameter
- * and returns the data value linked to the key
- * @param string $key
- * @param mixed $default_value
- * @param $client_id
- * @return mixed
- */
-
-function getEnvData(string $key, $default_value = null, $client_id = null)
-{
-    //change key to uppercase
-    $key = strtoupper($key);
-    //check if an empty string key is passed
-    if (is_null($key))
-        return $default_value;
-
-    if(is_null($client_id))
-        $client_id = get_current_company()->client_id;
-
-    $systemConfigObject = getSystemConfig($client_id);
-
-    if (!is_null($systemConfigObject)) {
-        $systemConfigData = $systemConfigObject->{$key} ?? null;
-        return $systemConfigData ?? $default_value;
-    }
-
-    return $default_value;
-
-}
-
-
-/**
- * Generate the company URL to a named route.
- *
- * @param int client_id
- * @param string  $name
- * @param array|null  $parameters
- * @return string
- */
-
-function companyRoute(int $client_id, string $name, array $parameters = []): string
-
-{
-	$client_url = Client::where('client_id', $client_id)->first()->url ?? null;
-
-	return $client_url ? ($client_url . route($name, $parameters, false)) : route($name, $parameters);
 }

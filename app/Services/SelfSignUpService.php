@@ -59,7 +59,7 @@ class SelfSignUpService {
         //$solr = "http://solr-load-balancer-785410781.eu-west-1.elb.amazonaws.com:8983/solr/admin/cores?action=CREATE&name=".str_slug($client->slug);
         $this->updateEnvValueInDb($client,$company);
         $user = $this->createUserAndRoles($request->name, $request->email, $request->password, $company);
-                $this->notifyOfAccountCreation($user);
+                $this->notifyOfAccountCreation($company,$user);
         return $user;
     }
  
@@ -118,7 +118,7 @@ class SelfSignUpService {
      * @param $user
      * @return bool
     */
-    public function notifyOfAccountCreation($user){
+    public function notifyOfAccountCreation($company,$user){
             //notify new client
             Notification::send($user,new NotifyAdminOfNewRMSAccount($company,$user));
 

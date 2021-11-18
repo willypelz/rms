@@ -33,7 +33,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
     Route::get('/sso/auto/login/verify/role/{email}/{key}', 'Auth\LoginController@verifyUserHasRole');
     Route::any('admin-accept-invite/{id}/{company_id}',['uses' => 'AdminsController@adminAcceptInvite', 'as' => 'admin-accept-invite']);
-    Route::match( ["get", "post"],'jobs/post-a-job/{id?}', ['uses' => 'JobsController@createJob', 'as' => 'create-job']);
+    Route::match( ["get", "post"],'jobs/post-a-job/{id?}', ['uses' => 'JobsController@createJob', 'as' => 'create-post-job']);
     Route::post('/third-party/entry', 'ThirdPartyEntryController@index');
 });
 
@@ -71,7 +71,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
         'prefix' => '/admin',
         'middleware' => 'admin'
     ], function () {
-        Route::get('auth/logout', 'LoginController@logout');
+        Route::get('auth/logout', 'Auth\LoginController@logout');
     });
 
     /** -- End: Administrator Panel Route -- */
@@ -698,11 +698,11 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'job/video-application/{jobID}/{slug}/{appl_id}',['uses' => 'JobsController@JobVideoApplication', 'as' => 'job-video-application']);
 
-    Route::get('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
+    Route::match(['get', 'post'],'embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
 
-    Route::post('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
+    // Route::post('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
 
-    Route::get('embed-test', ['as' => 'embed', 'uses' => 'JobsController@getEmbedTest']);
+    Route::get('embed-test', ['as' => 'embed-test', 'uses' => 'JobsController@getEmbedTest']);
 
     Route::match(['get', 'post'], 'accept-invite/{id}',['uses' => 'JobsController@acceptInvite', 'as' => 'accept-invite']);
 

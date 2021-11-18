@@ -169,7 +169,7 @@
 
                     <p></p>
 
-                    <p class="border-bottom-thin text-muted">Minimium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
+                    {{-- <p class="border-bottom-thin text-muted">Minimium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                     <p class="text-center">
                        <input id="age-slider" type="text" class="span2" value="" data-slider-min="0" data-slider-max="1000000000000000" data-slider-step="1" data-slider-value="@if(!is_null($minimum_remuneration[0]) && !is_null($age[1])) {{ '['.$minimum_remuneration[0].','.$age[1].']' }} @endif"/>
                        <div class="text-center">
@@ -178,11 +178,11 @@
                          <small id="age-range"> {{ $age[0].' - '.$age[1].' years' }} </small>
                        </div>
                       <div class="clearfix"></div>
-                    </p>
+                    </p> --}}
 
                    <p></p>
 
-                   <p class="border-bottom-thin text-muted">Maximium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
+                   {{-- <p class="border-bottom-thin text-muted">Maximium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                    <p class="text-center">
                       <input id="age-slider" type="text" class="span2" value="" data-slider-min="0" data-slider-max="1000000000000000" data-slider-step="1" data-slider-value="@if(!is_null($age[0]) && !is_null($age[1])) {{ '['.$age[0].','.$age[1].']' }} @endif"/>
                       <div class="text-center">
@@ -193,7 +193,7 @@
                      <div class="clearfix"></div>
                    </p>
 
-                  <p></p>
+                  <p></p> --}}
 
               <style type="text/css">
                 #ex1Slider .slider-selection {
@@ -412,6 +412,7 @@
                  </p>
 
                 <p></p>
+            @if(isset($graduation_grade))
             <p class="border-bottom-thin text-muted">Graduation Grade<i class="glyphicon glyphicon-birthday pull-right"></i></p>
             <p class="text-center">
                 <input id="graduation_grade-slider" type="text" class="span2" value="" data-slider-min="{{ env('GRADUATION_GRADE_START') }}" data-slider-max="{{ env('GRADUATION_GRADE_END') }}" data-slider-step="1" data-slider-value="@if(!is_null ($graduation_grade[0]) && !is_null ($graduation_grade[1])) {{ '['.$graduation_grade[0].','.$graduation_grade[1].']' }} @endif"/>
@@ -422,9 +423,9 @@
                 </div>
               <div class="clearfix"></div>
             </p>
-
+            @endif
             <p></p>
-
+            @if(isset($minimium_remuneration))
             <p class="border-bottom-thin text-muted">Minimium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
             <p class="text-center">
                 <input id="minimium_remuneration-slider" type="text" class="span2" value="" data-slider-min="{{ env('REMUNERATION_MINIMIUM') }}" data-slider-max="{{ env('REMUNERATION_MAXIMIUM') }}" data-slider-step="100" data-slider-value="@if(!is_null ($minimium_remuneration[0]) && !is_null ($minimium_remuneration[1])) {{ '['.$minimium_remuneration[0].','.$minimium_remuneration[1].']' }} @endif"/>
@@ -439,9 +440,9 @@
                 </div>
               <div class="clearfix"></div>
             </p>
-
+            @endif
             <p></p>
-
+            @if(isset($maximium_remuneration))
             <p class="border-bottom-thin text-muted">Maximium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
             <p class="text-center">
                 <input id="maximium_remuneration-slider" type="text" class="span2" value="" data-slider-min="{{ env('REMUNERATION_MINIMIUM') }}" data-slider-max="{{ env('REMUNERATION_MAXIMIUM') }}" data-slider-step="100" data-slider-value="@if(!is_null ($maximium_remuneration[0]) && !is_null ($maximium_remuneration[1])) {{ '['.$maximium_remuneration[0].','.$maximium_remuneration[1].']' }} @endif"/>
@@ -456,7 +457,7 @@
                 </div>
               <div class="clearfix"></div>
             </p>
-
+            @endif
             <p></p>
           <script type="text/javascript">
               $(document).ready(function(){

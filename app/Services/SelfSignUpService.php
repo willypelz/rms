@@ -26,10 +26,10 @@ class SelfSignUpService {
       //get the baseurl to be used e.g seamlesshiring.com
       $base_url = DomainGenerator::getBaseURL(); 
       if($base_url == 'seamlesshiring.com'){
-            $sub_domain_available = DomainGenerator::isSubdomainAvailable($request->domain); //true/false
+            $sub_domain_available = DomainGenerator::isSubdomainAvailable($request->sub_domain_string); //true/false
             if($sub_domain_available){
                 //returns either true or an exception. You can pass either "add" or "delete" as second param
-                $add_subdomain = DomainGenerator::mapURL($request->domain,'add'); 
+                $add_subdomain = DomainGenerator::mapURL($request->sub_domain_string,'add'); 
                 if(is_bool($add_subdomain) && $add_subdomain){
                     return $this->createClientAndCompany($request);
                 }

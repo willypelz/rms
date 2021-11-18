@@ -45,6 +45,11 @@ Route::group(['middleware' => ['web','auth','admin']], function () {
     Route::get('clientEnv/delete/{id}', 'SystemSettingsController@delete')->name('delete-env');
 });
 
+Route::group(['prefix'=>'client'],function(){
+    Route::get('/signup', ['as' => 'client-signup-index', 'uses' => 'SelfSignUpController@index']);
+    Route::post('/signup', ['as' => 'client-signup-create', 'uses' => 'SelfSignUpController@create']);
+});
+
 // admin company 
 Route::group(['middleware' => ['web', 'auth', 'companyList']], function () {
     Route::get('/view-company-list', 'CompanyController@index')->name('view-company-list');
@@ -606,10 +611,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/test/setup', ['as' => 'test-setup', 'uses' => 'TestSetupController@index']);
     Route::post('/test/setup/create', ['as' => 'test-setup-create', 'uses' => 'TestSetupController@create']);
 
-    Route::group(['prefix'=>'client'],function(){
-        Route::get('/signup', ['as' => 'client-signup-index', 'uses' => 'SelfSignUpController@index']);
-        Route::post('/signup', ['as' => 'client-signup-create', 'uses' => 'SelfSignUpController@create']);
-    });
+    
 
     Route::get('download-csv-template',
     ['uses' => 'PrivateJobController@exportCsvTemplate', 

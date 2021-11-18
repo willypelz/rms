@@ -480,6 +480,11 @@ class JobsController extends Controller
         if($job_team_invite->is_cancelled == true) {
             return view('job.cancelled-job-invite', compact('job_team_invite', 'job', 'company'));
         }
+
+        if($job_team_invite->is_declined) {
+            $status = false;
+            return view('job.decline-invite', compact('company', 'job', 'status'));
+        }
         // this is when the user is creating password.. happens to only external team members on first access
         if ($request->isMethod('post')) {
             $validator = Validator::make($request->all(), [
@@ -512,7 +517,7 @@ class JobsController extends Controller
                 $job_team_invite->save();
 
                 auth()->login($user);
-                return redirect()->route('select-company', ['id' => $job->company->id]);
+                return redirect()->route('select-company', ['slug' => $job->company->slug]);
             }
 
         } else {
@@ -614,7 +619,7 @@ class JobsController extends Controller
 
             // sign team(newly added user) into
             Auth::attempt(['email' => $newUser->email, 'password' => $request->input('password')]);
-            return redirect()->route('select-company', ['id' => $team->company->id]);
+            return redirect()->route('select-company', ['slug' => $team->company->slug]);
 
         }
 
@@ -3487,11 +3492,11 @@ class JobsController extends Controller
           return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
 	}
 
-    public function selectCompany(Request $request,$id)
+    public function selectCompany(Request $request)
     {
-        foreach (Auth::user()->companies->where('client_id', $request->clientId) as $key => $company) {
-            if ($company->id == $id) {
-                Session::put('current_company_index', $company->id);
+        foreach (Auth::user()->companies as $key => $company) {
+            if ($company->slug == $request->slug) {
+                Session::put('current_company_index', $key);
                 return redirect('dashboard');
             }
         }
@@ -3586,10 +3591,7 @@ class JobsController extends Controller
                 ]);
             }
         }
-
-        $users = User::with('roles')->whereHas('companies',function($q) use($request){
-            $q->where('client_id',$request->clientId);
-        })->get();
+        $users = User::with('roles')->get();
         $roles = Role::get();
         return view ('admin.roles_management.index', compact ('users', 'roles'));
     }

@@ -116,9 +116,9 @@
                                     <li>
                                     <strong>Last Company Worked:</strong>&nbsp; {{ @$cv['last_company_worked'] }}.</li>
                                     <li>
-                                    <strong>Minimum Remuneration:</strong>&nbsp; {{ @$cv['minimum_remuneration'] ?? 'N/A' }}</li>
+                                    <strong>Minimum Remuneration:</strong>&nbsp; {{(!is_null(@$cv['minimum_remuneration'])) ? (is_array($cv['minimum_remuneration']) ? $cv['minimum_remuneration'][0] : $cv['minimum_remuneration'] )  : 'N/A' }}</li>
                                     <li>
-                                    <strong>Maximum Remuneration:</strong>&nbsp; {{ @$cv['maximum_remuneration'] ?? 'N/A' }}</li>
+                                    <strong>Maximum Remuneration:</strong>&nbsp; {{(!is_null(@$cv['maximum_remuneration'])) ? (is_array($cv['maximum_remuneration']) ? $cv['maximum_remuneration'][0] : $cv['maximum_remuneration'] )  : 'N/A' }}</li>
                                     <li>
                                     <strong>Willing to Relocate?:</strong>&nbsp; @if(@$cv['willing_to_relocate']) Yes @else No @endif.</li>
                                 </ul>

@@ -14,7 +14,7 @@
             <div class="row text-center text-brandon text-light text-white">
                <br>
                 <h1>Get a Free Trial Now!</h1>
-                <h5 class="text-uppercase l-sp-5"> 14 days of free and unlimited Access</h5><br>
+                <h5 class="text-uppercase l-sp-5"> 14 days of free and unlimited Access on all plans</h5><br>
             </div>
           @endif
 
@@ -45,7 +45,12 @@
 
     </section>
 
-@include('guest.pricing-card')
+<!--
+   <section>
+
+   </section>
+-->
+
 
     <section class="s-div no-margin blue dark">
         <div class="container">

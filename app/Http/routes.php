@@ -607,8 +607,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('/test/setup/create', ['as' => 'test-setup-create', 'uses' => 'TestSetupController@create']);
 
     Route::group(['prefix'=>'client'],function(){
-        Route::get('/new/signup', ['as' => 'client-signup-index', 'uses' => 'SelfSignUpController@index']);
-        Route::post('/new/signup', ['as' => 'client-signup-create', 'uses' => 'SelfSignUpController@create']);
+        Route::get('/signup', ['as' => 'client-signup-index', 'uses' => 'SelfSignUpController@index']);
+        Route::post('/signup', ['as' => 'client-signup-create', 'uses' => 'SelfSignUpController@create']);
     });
 
     Route::get('download-csv-template',

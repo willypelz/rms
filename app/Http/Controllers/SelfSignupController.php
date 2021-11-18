@@ -30,10 +30,8 @@ class SelfSignUpController extends Controller
              
            DB::transaction(function () use($request, $signup) {
                  $user_sign_up =  $signup->createDomain($request);
-                 if($user_sign_up){
-                       return response()->json(['status'=>true, 'msg'=>'Account created successfully, please check your email']);
-                 }
             });
+            return response()->json(['status'=>true, 'msg'=>'Account created successfully, please check your email']); 
         }catch(\Exception $e){
             info($e);
             return response()->json(['status'=>false, 'msg'=> $e->getMessage()]);

@@ -196,6 +196,8 @@
                                 location: 'tc', 
                                 size: 'large' 
                             });
+                            $(this).attr('disabled', false);
+                            $('#hide-spinner').hide();
                        }
                     
                     },
@@ -209,7 +211,8 @@
                                     size: 'large' 
                                 });
                             });
-
+                            $(this).attr('disabled', false);
+                            $('#hide-spinner').hide();
                         }
                     }
                 });

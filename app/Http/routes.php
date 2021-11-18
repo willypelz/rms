@@ -46,8 +46,9 @@ Route::group(['middleware' => ['web','auth','admin']], function () {
 });
 
 Route::group(['prefix'=>'client'],function(){
-    Route::get('/signup', ['as' => 'client-signup-index', 'uses' => 'SelfSignUpController@index']);
-    Route::post('/signup', ['as' => 'client-signup-create', 'uses' => 'SelfSignUpController@create']);
+    
+    Route::get('/signup', 'SelfSignupController@index')->name('client-signup-index');
+    Route::post('/signup', 'SelfSignupController@create')->name('client-signup-create');
 });
 
 // admin company 

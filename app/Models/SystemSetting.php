@@ -9,5 +9,5 @@ class SystemSetting extends Model
 {
     use HasFactory;
 
-    protected $fillables = '*';
+    protected $guarded = [];
 }

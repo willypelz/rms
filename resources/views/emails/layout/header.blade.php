@@ -40,5 +40,5 @@
 
 																	<div style="color:#5d5d5d;background-color: #fbfbfb;padding:5% 7% 7%;border: 1px dotted #cecece;border-radius: 4px;">
 																		<div style="color:#2d2d2d;width:100%;margin:0 auto;">
-																			<h3 style="font-size: 20px;margin:0 0 5%;padding:0;"><span  style="font-family: Roboto,'Open Sans','Helvetica Neue',Arial,Helvetica,sans-serif;word-wrap:break-word;text-decoration:none;display:block;text-align: center;width:100%;" target="_blank"> {{ $email_title}} </span></h3>
+																			<h3 style="font-size: 20px;margin:0 0 5%;padding:0;"><span  style="font-family: Roboto,'Open Sans','Helvetica Neue',Arial,Helvetica,sans-serif;word-wrap:break-word;text-decoration:none;display:block;text-align: center;width:100%;" target="_blank"> {{ isset($email_title) ? $email_title : ''}} </span></h3>
 																			<hr style="border-width:0 0 1px">

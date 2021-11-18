@@ -169,7 +169,7 @@
 
                     <p></p>
 
-                    <p class="border-bottom-thin text-muted">Minimium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
+                    {{-- <p class="border-bottom-thin text-muted">Minimium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                     <p class="text-center">
                        <input id="age-slider" type="text" class="span2" value="" data-slider-min="0" data-slider-max="1000000000000000" data-slider-step="1" data-slider-value="@if(!is_null($minimum_remuneration[0]) && !is_null($age[1])) {{ '['.$minimum_remuneration[0].','.$age[1].']' }} @endif"/>
                        <div class="text-center">
@@ -178,11 +178,11 @@
                          <small id="age-range"> {{ $age[0].' - '.$age[1].' years' }} </small>
                        </div>
                       <div class="clearfix"></div>
-                    </p>
+                    </p> --}}
 
                    <p></p>
 
-                   <p class="border-bottom-thin text-muted">Maximium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
+                   {{-- <p class="border-bottom-thin text-muted">Maximium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                    <p class="text-center">
                       <input id="age-slider" type="text" class="span2" value="" data-slider-min="0" data-slider-max="1000000000000000" data-slider-step="1" data-slider-value="@if(!is_null($age[0]) && !is_null($age[1])) {{ '['.$age[0].','.$age[1].']' }} @endif"/>
                       <div class="text-center">
@@ -193,7 +193,7 @@
                      <div class="clearfix"></div>
                    </p>
 
-                  <p></p>
+                  <p></p> --}}
 
               <style type="text/css">
                 #ex1Slider .slider-selection {

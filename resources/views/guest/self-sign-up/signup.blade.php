@@ -188,16 +188,16 @@
                                 location: 'tc', 
                                 size: 'large' 
                             });
-                            $(this).attr('disabled', false);
+                            $('#submitButton').attr('disabled', false);
                             $('#hide-spinner').hide();
-                            window.setTimeout(function () {location.reload(true)},10000 );
+                            window.setTimeout(function () {location.reload(true)},8000 );
                        }else{
                             $.growl.error({ 
                                 message: data.msg, 
                                 location: 'tc', 
                                 size: 'large' 
                             });
-                            $(this).attr('disabled', false);
+                            $('#submitButton').attr('disabled', false);
                             $('#hide-spinner').hide();
                        }
                     
@@ -212,7 +212,7 @@
                                     size: 'large' 
                                 });
                             });
-                            $(this).attr('disabled', false);
+                            $('#submitButton').attr('disabled', false);
                             $('#hide-spinner').hide();
                         }
                     }

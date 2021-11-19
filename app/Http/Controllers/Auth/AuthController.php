@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
-use App\Models\Company;
-use Validator;
-use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
-use App\Http\Requests;
-use Illuminate\Http\Request;
-use Auth;
 use DB;
-use App\ActivationService;
-use Illuminate\Support\Facades\Hash;
+use Auth;
 use Crypt;
+use App\User;
+use Validator;
+use App\Http\Requests;
+use App\Models\Company;
+use App\ActivationService;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 
 class AuthController extends Controller
@@ -30,7 +30,7 @@ class AuthController extends Controller
     |
     */
 
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+    use AuthenticatesUsers, ThrottlesLogins;
 
     /**
      * Where to redirect users after login / registration.
@@ -50,7 +50,7 @@ class AuthController extends Controller
 
     public function __construct(ActivationService $activationService)
     {
-        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+        $this->middleware('guest', ['except' => 'logout']);
         $this->activationService = $activationService;
     }
 

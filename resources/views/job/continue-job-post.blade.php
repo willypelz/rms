@@ -280,7 +280,7 @@
                                         <hr>
                                     </div>
                                     <div class="col-xs-7">
-                                        <a href="{{ route('create-job', $job->id) }}" type="submit" id="previousStep"
+                                        <a href="{{ route('create-post-job', $job->id) }}" type="submit" id="previousStep"
                                            class="btn job-posting-text-dark">
                                             <i class="fa fa-arrow-left"></i>
                                             Previous step

@@ -245,8 +245,9 @@
                                 <label for="">Preferred package</label><span class="text-danger">*</span>
                                 <select class="form-control" name="package" id="package_name" required>
                                   <option>--select package-- </option>
-                                  <option value="SME"> SME</option>
-                                  <option value="PREMIUM">PREMIUM </option>
+                                  <option value="STARTER"> STARTER</option>
+                                  <option value="PROFESSIONAL">PROFESSIONAL </option>
+                                  <option value="ENTERPRISE">ENTERPRISE</option>
                                  
                                 </select>
                             </div>

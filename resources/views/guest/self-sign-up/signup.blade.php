@@ -109,7 +109,7 @@
                                             
                                             <br>
                                             <span class="col-xs-12">
-                                             <input id="submitButton"  type="submit" value="Create My Account" class="btn btn-primary" disabled>  
+                                             <button id="submitButton"  type="submit" value="" class="btn btn-primary btn-block" disabled>   <i id="hide-spinner" class="fa fa-spinner fa-pulse" style="font-size:19px; color:white; display:none"></i>Create My Account
                                             </span>
                                         </span>                                            
 
@@ -167,6 +167,10 @@
 
             $('#submitButton').click(function (e) {
                 e.preventDefault();
+                $(this).attr('disabled', 'disabled');
+                $('#hide-spinner').show();
+
+
                 var url = "",
                     sub_form = $("#signup_form"),
                     datastring = sub_form.serialize();
@@ -177,24 +181,28 @@
                     data: datastring,
                     dataType: "json",
                     success: function (data, status) {
+
                        if(data.status == true){
                             $.growl.notice({ 
                                 message: data.msg, 
                                 location: 'tc', 
                                 size: 'large' 
                             });
-                            window.setTimeout(function () {location.reload(true)},10000 );
+                            $('#submitButton').attr('disabled', false);
+                            $('#hide-spinner').hide();
+                            window.setTimeout(function () {location.reload(true)},8000 );
                        }else{
                             $.growl.error({ 
                                 message: data.msg, 
                                 location: 'tc', 
                                 size: 'large' 
                             });
+                            $('#submitButton').attr('disabled', false);
+                            $('#hide-spinner').hide();
                        }
                     
                     },
                     error:function (data, status){
-                        console.log(data,status);
                         if(status === 'error'){
                             var error_list = (JSON.parse(data.responseText));
                             $.each(error_list.errors, function (index, value) {
@@ -204,7 +212,8 @@
                                     size: 'large' 
                                 });
                             });
-
+                            $('#submitButton').attr('disabled', false);
+                            $('#hide-spinner').hide();
                         }
                     }
                 });

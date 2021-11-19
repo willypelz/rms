@@ -378,16 +378,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.203.1",
+            "version": "3.204.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "63be45bbf3d2a325017f92fcad6764ebd98bb266"
+                "reference": "96ad45b95bfe4515623cec11576ec22c10dd22f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/63be45bbf3d2a325017f92fcad6764ebd98bb266",
-                "reference": "63be45bbf3d2a325017f92fcad6764ebd98bb266",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/96ad45b95bfe4515623cec11576ec22c10dd22f3",
+                "reference": "96ad45b95bfe4515623cec11576ec22c10dd22f3",
                 "shasum": ""
             },
             "require": {
@@ -463,9 +463,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.203.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.204.0"
             },
-            "time": "2021-11-16T19:23:28+00:00"
+            "time": "2021-11-17T19:17:36+00:00"
         },
         {
             "name": "balping/json-raw-encoder",
@@ -3047,16 +3047,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.71.0",
+            "version": "v8.72.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "d822426d75ecf8e8ccd3ccd404db7202d1a9875e"
+                "reference": "5168f8589195a5f48b9c41ad2eec77a6c15f14f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/d822426d75ecf8e8ccd3ccd404db7202d1a9875e",
-                "reference": "d822426d75ecf8e8ccd3ccd404db7202d1a9875e",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/5168f8589195a5f48b9c41ad2eec77a6c15f14f3",
+                "reference": "5168f8589195a5f48b9c41ad2eec77a6c15f14f3",
                 "shasum": ""
             },
             "require": {
@@ -3215,7 +3215,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-11-16T15:00:50+00:00"
+            "time": "2021-11-17T15:15:08+00:00"
         },
         {
             "name": "laravel/helpers",
@@ -6247,7 +6247,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git@bitbucket.org/insidify/solr-package.git",
-                "reference": "9de334f351c55298a82d05d38c0a1a01716dd7fd"
+                "reference": "014e8dec90446a8f72f70d72824e5ee37c749fbe"
             },
             "require": {
                 "illuminate/support": "~5|~6|~7|~8"
@@ -6295,7 +6295,7 @@
                 "Laravel",
                 "SolrPackage"
             ],
-            "time": "2021-11-14T12:13:21+00:00"
+            "time": "2021-11-17T15:09:54+00:00"
         },
         {
             "name": "sentry/sdk",

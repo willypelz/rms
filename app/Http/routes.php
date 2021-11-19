@@ -33,7 +33,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
     Route::get('/sso/auto/login/verify/role/{email}/{key}', 'Auth\LoginController@verifyUserHasRole');
     Route::any('admin-accept-invite/{id}/{company_id}',['uses' => 'AdminsController@adminAcceptInvite', 'as' => 'admin-accept-invite']);
-    Route::match( ["get", "post"],'jobs/post-a-job/{id?}', ['uses' => 'JobsController@createJob', 'as' => 'create-job']);
+    Route::match( ["get", "post"],'jobs/post-a-job/{id?}', ['uses' => 'JobsController@createJob', 'as' => 'create-post-job']);
     Route::post('/third-party/entry', 'ThirdPartyEntryController@index');
 });
 
@@ -43,6 +43,12 @@ Route::group(['middleware' => ['web','auth','admin']], function () {
     Route::get('clientEnv', 'SystemSettingsController@index')->name('index-env');
     Route::post('client/update/{id}', 'SystemSettingsController@update')->name('update-env');
     Route::get('clientEnv/delete/{id}', 'SystemSettingsController@delete')->name('delete-env');
+});
+
+Route::group(['prefix'=>'client','middleware'=>'allowUrl'],function(){
+    
+    Route::get('/signup', 'SelfSignupController@index')->name('client-signup-index');
+    Route::post('/signup', 'SelfSignupController@create')->name('client-signup-create');
 });
 
 // admin company 
@@ -71,7 +77,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
         'prefix' => '/admin',
         'middleware' => 'admin'
     ], function () {
-        Route::get('auth/logout', 'LoginController@logout');
+        Route::get('auth/logout', 'Auth\LoginController@logout');
     });
 
     /** -- End: Administrator Panel Route -- */
@@ -606,10 +612,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/test/setup', ['as' => 'test-setup', 'uses' => 'TestSetupController@index']);
     Route::post('/test/setup/create', ['as' => 'test-setup-create', 'uses' => 'TestSetupController@create']);
 
-    Route::group(['prefix'=>'client'],function(){
-        Route::get('/sign-up', ['as' => 'client-signup-index', 'uses' => 'SelfSignUpController@index']);
-        Route::post('/sign-up', ['as' => 'client-signup-create', 'uses' => 'SelfSignUpController@create']);
-    });
+    
 
     Route::get('download-csv-template',
     ['uses' => 'PrivateJobController@exportCsvTemplate', 
@@ -698,11 +701,11 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'job/video-application/{jobID}/{slug}/{appl_id}',['uses' => 'JobsController@JobVideoApplication', 'as' => 'job-video-application']);
 
-    Route::get('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
+    Route::match(['get', 'post'],'embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
 
-    Route::post('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
+    // Route::post('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
 
-    Route::get('embed-test', ['as' => 'embed', 'uses' => 'JobsController@getEmbedTest']);
+    Route::get('embed-test', ['as' => 'embed-test', 'uses' => 'JobsController@getEmbedTest']);
 
     Route::match(['get', 'post'], 'accept-invite/{id}',['uses' => 'JobsController@acceptInvite', 'as' => 'accept-invite']);
 

@@ -23,11 +23,12 @@
                                             <th>Name</th>
                                             <th>Email </th>
                                             <th>Phone Number</th>
-                                            <th>Website</th>
+                                            {{-- <th>Website</th> --}}
                                             <th>Parent Company</th>
-                                            <th>address</th>
+                                            <th>Client Url</th>
+                                            {{-- <th>address</th> --}}
                                             <th>License Type</th>
-                                            <th>Valid Period</th>
+                                            <th>Valid Till</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -45,20 +46,27 @@
                                                 <td>
                                                     {{ $company->phone ?? 'NA' }}
                                                 </td>
-                                                <td>
+                                                {{-- <td>
                                                     {{ $company->website ?? 'NA' }}
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     {{ $company->client->name ?? 'NA' }}
                                                 </td>
                                                 <td>
+                                                        {{ $company->client->url ?? 'NA' }}
+                                                    </td>
+                                                {{-- <td>
                                                     {{ $company->address ?? 'NA' }}
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     {{ $company->license_type ?? 'NA' }}
                                                 </td>
                                                 <td>
-                                                    {{ $company->valid_till ?? 'NA' }}
+                                                    @if (isset($company->date_added) && @$company->license_type == 'TRIAL') 
+                                                    {{Carbon\Carbon::parse($company->date_added)->addDays(28)->format('d M, Y')}} 
+                                                    @else
+                                                        Not Applicable
+                                                    @endif
                                                 </td>
 
                                             </tr>

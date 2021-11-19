@@ -26,10 +26,10 @@ class SelfSignUpService {
       //get the baseurl to be used e.g seamlesshiring.com
       $base_url = DomainGenerator::getBaseURL(); 
       if($base_url == 'seamlesshiring.com'){
-            $sub_domain_available = DomainGenerator::isSubdomainAvailable($request->domain); //true/false
+            $sub_domain_available = DomainGenerator::isSubdomainAvailable($request->sub_domain_string); //true/false
             if($sub_domain_available){
                 //returns either true or an exception. You can pass either "add" or "delete" as second param
-                $add_subdomain = DomainGenerator::mapURL($request->domain,'add'); 
+                $add_subdomain = DomainGenerator::mapURL($request->sub_domain_string,'add'); 
                 if(is_bool($add_subdomain) && $add_subdomain){
                     return $this->createClientAndCompany($request);
                 }
@@ -54,12 +54,14 @@ class SelfSignUpService {
                         'phone' => $request->phone,
                         'email' => $request->email,
                         ],
-                        ['slug' => str_slug($request->company_name.microtime()),
+                        [
+                        'website'=>$request->domain,
+                        'slug' => str_slug($request->company_name.microtime()),
                         'date_added' => date('Y-m-d')]);
         //$solr = "http://solr-load-balancer-785410781.eu-west-1.elb.amazonaws.com:8983/solr/admin/cores?action=CREATE&name=".str_slug($client->slug);
         $this->updateEnvValueInDb($client,$company);
         $user = $this->createUserAndRoles($request->name, $request->email, $request->password, $company);
-                $this->notifyOfAccountCreation($user);
+                $this->notifyOfAccountCreation($company,$user);
         return $user;
     }
  
@@ -118,7 +120,7 @@ class SelfSignUpService {
      * @param $user
      * @return bool
     */
-    public function notifyOfAccountCreation($user){
+    public function notifyOfAccountCreation($company,$user){
             //notify new client
             Notification::send($user,new NotifyAdminOfNewRMSAccount($company,$user));
 

@@ -27,6 +27,7 @@ class SignUpRequest extends FormRequest
     {
         $this->merge([ 
             "domain"  => strtolower(str_replace(' ','','https://'.trim($this->domain).'.seamlesshiring.com')),
+            "sub_domain_string" => strtolower(str_replace(' ','',trim($this->domain))),
         ]);
     }
 

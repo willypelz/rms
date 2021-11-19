@@ -79,7 +79,7 @@
 
                     </div><br>
 
-                        <p class="text-center"><small class="text-white">&copy; {{ date('Y') }}. All Rights Reserved. SeamlessHiring <br> Insidify Enterprise by Insidify.com</small></p>
+                        <p class="text-center"><small class="text-white">&copy; {{ date('Y') }}. All Rights Reserved.  <br>  SeamlessHiring{{--SeamlessHiring Enterprise by Insidify.com--}}</small></p>
                     <!--/tab-content-->
 
                 </div>

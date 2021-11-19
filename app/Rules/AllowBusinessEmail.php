@@ -25,7 +25,7 @@ class AllowBusinessEmail implements Rule
      */
     public function passes($attribute, $value)
     {
-        $exempted_email_servers = ['yahoo.com', 'gmail.com','ymail.com', 'yopmail.com','live.com','aol.com','outlook.com'];
+        $exempted_email_servers = ['yahoo.com', 'gmail.com','ymail.com', 'yopmail.com','live.com','aol.com','outlook.com','mailinator.com'];
         $get_server = substr($value, strpos($value, '@') + 1);
         return !in_array($get_server,$exempted_email_servers) ? true : false;
     }

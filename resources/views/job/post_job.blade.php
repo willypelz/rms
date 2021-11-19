@@ -682,11 +682,12 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
+
        function errorAlert(err){
             $.growl.error({
-            message: err,
-            location: 'tc',
-            size: 'large'
+                message: err,
+                location: 'tc',
+                size: 'large'
             });
         }
 

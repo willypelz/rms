@@ -71,6 +71,17 @@
                 // $(".select2-container option").remove();
                 workflow_name = '';
                 workflow_description = '';
+            },
+            error:function (err) {
+                if(err.status === 422) {
+                    $.each(err.responseJSON.errors, function (key, val) {
+                        $.growl.error({
+                            title:"Error!",
+                            message:val,
+                            duration:9000
+                        });
+                    });
+                }
             }
         });
     });

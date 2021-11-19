@@ -53,7 +53,7 @@
 <body>
     <a  href="/" class="btn leave-404-btn">
         {{-- <i class="fas fa-angle-left"></i> --}}
-        <img class="dash-img" src="{{ getCompanyImage() }}" alt="" height='45px'>
+        {{-- <img class="dash-img" src="{{ @get_company_logo(@get_current_company()->logo) }}" alt="" height='45px'> --}}
     </a>
     <div class="full-width-height d-flex flex-column justify-content-center align-items-center text-center pt-3">
         <div class="container">

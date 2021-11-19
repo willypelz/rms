@@ -1283,3 +1283,14 @@ function getCandidateCompanyId(){
     }
     
 }
+
+/**
+ * receives job builder and checks if activities buton should show on dashboard
+ *
+ * @param [builder] $job_builder
+ * @return bool
+ */
+function showActivitiesButton($job_builder){
+    $job_ids = $job_builder->pluck('id')->toArray();
+    return JobActivity::with('user', 'application.cv', 'job')->whereIn('job_id', $job_ids)->count() ? true : false;
+}

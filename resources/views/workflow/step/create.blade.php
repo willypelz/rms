@@ -109,6 +109,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="name">Name</label>
+                                            <span class="text-danger">*</span>
                                             <input type="text"
                                                    name="name"
                                                    id="name"
@@ -133,6 +134,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="type">Type</label>
+                                            <span class="text-danger">*</span>
                                             <select name="type"
                                                     id="type"
                                                     class="select2"
@@ -158,6 +160,7 @@
                                 
                                 <div class="form-group" id="approvalUsersBlock">
                                     <label for="approvalUsers">Approval Users</label>
+                                    <span class="text-danger">*</span>
                                     <select class="select2"
                                             name="approval_users[]"
                                             id="approvalUsers"

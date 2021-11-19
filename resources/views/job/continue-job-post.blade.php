@@ -90,7 +90,7 @@
                                                 </div>
                                                 <div class="col-xs-3">
                                                     <input name="is_required[{{ $key }}][]" type="checkbox"
-                                                           class="is_required" style="margin:10px" id="is_reqired_{{$key}}"
+                                                           class="is_required" style="margin:10px" id="is_required{{$key}}"
 
                                                            @if(!is_null($selected_fields))
                                                            @if(isset($selected_fields->$key) && $selected_fields->$key->is_required)
@@ -436,6 +436,7 @@
             if ($(this).is(':checked')) {
                 $('.is_required').prop('checked', 'checked')
                 $('.is_visible').prop('checked', 'checked')
+                $('#is_visible_all').prop('checked', 'checked')
             } else {
                 $('.is_required').removeProp('checked')
             }
@@ -446,16 +447,45 @@
                 $('.is_visible').prop('checked', 'checked')
             } else {
                 $('.is_visible').removeProp('checked')
+                $('.is_required').removeProp('checked')
+                $('#is_required_all').removeProp('checked')
             }
         })
 
         $('.keyValue').each(function (index, value) {
-            $("#is_reqired_"+ value.defaultValue).on('click', function () {
+            $("#is_required"+ value.defaultValue).on('click', function () {
                 if ($(this).is(':checked')) {
-                $('#is_visible_'+ value.defaultValue).prop('checked', 'checked') 
+                    $('#is_visible_'+ value.defaultValue).prop('checked', 'checked') 
+                }
+                
+            })
+
+            $('#is_visible_'+ value.defaultValue).on('click', function () {
+                if (!$(this).is(':checked')) {
+                    $('#is_required'+ value.defaultValue).removeProp('checked', 'checked')
+                    $('#is_required_all').removeProp('checked', 'checked')
+                    $('#is_visible_all').removeProp('checked', 'checked')
                 }
             })
-        })  
+
+            
+        }) 
+
+        $(".is_visible").change(function(){
+            if ($('.is_visible:checked').length == $('.is_visible').length) {
+                $('#is_visible_all').prop('checked', 'checked')
+            }
+        });
+
+        $(".is_required").change(function(){
+            if ($('.is_required:checked').length == $('.is_required').length) {
+                $('#is_required_all').prop('checked', 'checked')
+            }else{
+                $('#is_required_all').removeProp('checked', 'checked')
+            }
+        });
+        
+        
     })
 
 

@@ -17,7 +17,7 @@
                 <div class="col-sm-12"><br>
                     @include('layout.alerts')
                     <!-- <h4>Interview Templates</h4> -->
-
+                    @include('layout.confirm-dialog')
                     <div class="row">
                         
                         @forelse( $interview_note_templates as $interview_note_template )
@@ -59,7 +59,7 @@
                                                     @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
                                                     
                                                     <div class="col-xs-6" >
-                                                        <a href="javascript:;"   onclick="event.preventDefault(); confirm('Are you sure you want to delete this template?') ? document.getElementById('{{ 'interview_note_template_id'. $interview_note_template->id }}').submit() : false"
+                                                        <a href="javascript:;"   onclick="remove('{{$interview_note_template->name}}', '{{'interview_note_template_id'. $interview_note_template->id}}')"
                                                             class=" btn text-danger pull-right" style=""><i
                                                                      class="fa fa-lg no-margin fa-trash" data-toggle="tooltip" data-placement="top" title="Delete this template?"></i>
                                                                     </a>
@@ -70,8 +70,9 @@
                                                         </form>
                                                         
                                                         <a href="{{ route('interview-note-template-duplicate', ['id' => $interview_note_template->id ]) }}"
-                                                                        class=" btn text-info pull-right" style=""><i
-                                                                                 class="fa fa-lg no-margin fa-copy" data-toggle="tooltip" data-placement="top" title="Duplicate this template?"></i></a>
+                                                                class=" btn text-info pull-right" style=""
+                                                                onclick="event.preventDefault(); duplicate('{{$interview_note_template->name}}', '{{ route('interview-note-template-duplicate', ['id' => $interview_note_template->id ]) }}')"><i class="fa fa-lg no-margin fa-copy" 
+                                                                data-toggle="tooltip" data-placement="top" title="Duplicate this template?"></i></a>
     
                                                         <a href="{{ route('interview-note-template-edit', ['id' => $interview_note_template->id ]) }}"
                                                         class=" btn text-success pull-right" style=""><i

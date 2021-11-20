@@ -284,18 +284,15 @@
                 </div>
 
                 <div class="row"><br>
-
                     <div class="col-sm-10 col-sm-offset-1 col-md-12 col-sm-offset-0">
                         <button type="submit" class="btn btn-primary btn-block">Submit Request</button>
                     </div>
-
-                    
-
                 </div>
             </form>
 
             <script>
-                $(document).ready(function(){
+              
+                $(document).ready(function(e){
                    $('body #request-form').on('submit', function(e){
                         e.preventDefault();
                         field = $(this);

@@ -28,13 +28,13 @@
 
             @else
 
-              <div class="row text-center text-brandon text-light text-white">
+              {{-- <div class="row text-center text-brandon text-light text-white">
                  <br>
                   <h1>Keep <br>enjoying your 28 days experience!</h1>
                   <div class="col-xs-2 col-xs-offset-5"><hr></div>
                   <div class="clearfix"></div>
                   <h5 class="text-uppercase l-sp-5"> Choose a plan below that will best suit your needs</h5><br>
-              </div>
+              </div> --}}
 
 
             @endif
@@ -86,7 +86,7 @@
                              
                                         <div class="" style="background-color:white; margin:10px">
                                             @if( @@$account->has_expired == true or @$account->status == 'TRIAL')
-                                              <a class="btn btn-lg btn-primary " href="{{ route('client-signup-index') }}" disabled>Try For Free</a>
+                                              <a class="btn btn-primary btn-outline " href="#" disabled>Try For Free</a>
                                             @else
                                               <a class="btn btn-primary btn-outline " href="{{ route('client-signup-index') }}">Try For Free</a>
                                             @endif
@@ -137,7 +137,7 @@
                                         
                                         <div class="" style="background-color:white; margin:10px">
                                             @if( @@$account->has_expired == true or @$account->status == 'TRIAL')
-                                              <a class="btn btn-lg btn-primary btn-outline " href="{{ route('client-signup-index') }}" disabled>Try For Free</a>
+                                              <a class="btn btn-lg btn-primary btn-outline " href="#" disabled>Try For Free</a>
                                             @else
                                               <a class="btn btn-primary btn-outline " href="{{ route('client-signup-index') }}">Try For Free</a>
                                             @endif

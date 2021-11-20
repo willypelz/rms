@@ -22,7 +22,7 @@ class GetClientInformation
     {
         try{
             $currentUrl = url(''); 
-            //cache()->flush(); 
+            // cache()->flush(); 
             $client = DB::table('clients')->where('url', $currentUrl)->first();
            
             $companyIds = Company::where('client_id',$client->id)->pluck('id');

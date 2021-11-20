@@ -1899,7 +1899,7 @@ class JobApplicationsController extends Controller
             'type' => 'required'
           ]);
 
-          if( (count($request->weight) > 0) && ($request->weight[0] > $request->weight[0])  ){
+          if( (count($request->weight) > 0) && ($request->weight[0] > $request->weight[1])  ){
               return redirect()->back()->with(["error" => "weight min must be less than weight max"]);
           }
           $check_box = !is_null($request->check[0]) ? json_encode($request->check) : null;

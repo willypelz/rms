@@ -58,6 +58,7 @@
                 let newOption = new Option(data.name, data.id, false, false);
                 $('.select2').append(newOption).trigger('change');
                 $(".select2-container option").remove();
+                $('#specialization_name').val('')
                 specialization_name = '';
             }
         });

@@ -9,6 +9,7 @@
                 $is_super_admin = auth()->user()->is_super_admin;
             @endphp
             @include('layout.alerts')
+            @include('layout.confirm-dialog')
             
             <div class="row">
                 
@@ -55,14 +56,14 @@
                                              </a>
                                             @endif
                                             @if(!$workflow->jobs()->exists())
-                                                <form action="{{ route('workflow-delete', ['id' => $workflow->id]) }}"
+                                                <form id="delForm" action="{{ route('workflow-delete', ['id' => $workflow->id]) }}"
                                                       method="post"
                                                       class="delete-spoof">
                                                     {{ csrf_field() }}
                                                     
                                                     <input type="hidden" name="_method" value="delete">
                                                     
-                                                    <button  onclick="return confirm('Are you sure you want to delete workflow?');" type="submit" class="btn btn-danger btn-sm">
+                                                    <button type="button" onclick="deleteConfirmation('Are you sure you want to delete this workflow?')" class="btn btn-danger btn-sm">
                                                         <i class="fa fa-trash fa-fw"></i>
                                                     </button>
                                                 </form>
@@ -109,6 +110,7 @@
                                 
                                 <div class="form-group">
                                     <label for="name">Name</label>
+                                    <span class="text-danger">*</span>
                                     <input type="text"
                                            name="name"
                                            id="name"
@@ -119,6 +121,7 @@
                                 
                                 <div class="form-group">
                                     <label for="description">Description</label>
+                                    <span class="text-danger">*</span>
                                     <textarea name="description"
                                               id="description"
                                               placeholder="A short note about this workflow"
@@ -142,5 +145,15 @@
             </div>
         </div>
     </section>
+    <script>
+        function deleteConfirmation(strg){
+            customConfirmation(strg)
+            setTimeout(() => {
+                $('#btn1').click(function(e){
+                    document.getElementById("delForm").submit()
+                })
+            }, 1000);
+        }
+    </script>
 
 @endsection

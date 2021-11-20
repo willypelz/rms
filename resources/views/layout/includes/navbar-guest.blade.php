@@ -21,7 +21,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="" title="SeamlessHiring Homepage"></a>
+            
+             <img src="{{ asset('img/seamlesshiring-logo.png') }}" style="width: 150px;  margin-top: 20px; margin-right: 20px; margin-left: 0 !important" alt="Seamlesshiring">
+            
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

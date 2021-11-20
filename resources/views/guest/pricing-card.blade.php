@@ -2,6 +2,14 @@
 .trial-over{
     opacity: 0.35;
 }
+
+.btn-outline{
+  background-color: white;
+  border: 1px solid #2677b1;
+  border-radius: 25px;
+  color: black; 
+  padding: 4px 25px;
+}
 </style>
 
   <section class="s-div homepage pricing">
@@ -55,42 +63,48 @@
                                 <div class="col-sm-4 text-center no-pad">
                                   <!-- <img src="img/rope.png" width="100px" class="rope"> -->
                                     @if( @@$account->has_expired == true or @$account->status == 'TRIAL')
-                                      <div class="panel panel-default panel-pricing panel-basic trial-over">
+                                      <div class="panel panel-default panel-basic trial-over">
                                     @else
-                                      <div class="panel panel-default panel-pricing panel-basic">
+                                      <div class="panel panel-default panel-basic">
                                     @endif
-
+                                    <div class="" style="width:100%; background:#2889ce; height:8px;border-radius:3px 3px 0px 0px">&nbsp; &nbsp;</div>
                                         <div class="panel-heading">
                                             <i class="fa fa-star" style="color:#2889ce"></i>
                                             <h3 class="text-brandon"></i>Starter</h3>
                                             {{-- <small> 28 days free access to get a feel of the <br>SeamlessHiring magic.</small> --}}
                                         </div>
                                         <div class="panel-body text-center text-brandon"> 
-                                            <p class=" no-margin" style="background: #2889ce; color:#fff !important;"><strong>&#8358;35,000 per month </strong></p>
+                                            <p class="no-margin" {{--style="background: #2889ce; color:#fff !important;"--}}>
+                                              <strong>
+                                                <h2>&#8358;35,000 <sup><h5>per month</h5> </sup></h2> 
+                                              </strong>
+                                              <strong>
+                                                  <h2><b>5,000 </b><sup><h5>applications per annum</h5> </sup></h2> 
+                                              </strong>
+                                            </p>
                                         </div>
-                                        <div class="panel-body text-center text-brandon">
-                                            <p class=" no-margin"><strong>5,000 applications per annum</strong></p>
-                                        </div>
-                                        <ul class="list-group text-center">
-                                                   <li class="list-group-item">Applicant Tracking System</li>
-                                                   <li class="list-group-item">Customisable workflow</li>
-                                                   <li class="list-group-item">Career page integration</li>
-                                                   <li class="list-group-item">Social media job promotion</li>
-                                                   <li class="list-group-item">Job Teams Collaboration</li>
-                                                   <li class="list-group-item">Interview Management</li>
-                                                   <li class="list-group-item">Applicant dashboard</li>
-                                                   <li class="list-group-item">Applicant email messaging and chat</li>
-                                                   <li class="list-group-item">Reports Generation</li>
-                                                   <li class="list-group-item">Talent pool</li>
-                                        </ul>
-                                        <div class="panel-footer">
+                             
+                                        <div class="" style="background-color:white; margin:10px">
                                             @if( @@$account->has_expired == true or @$account->status == 'TRIAL')
-                                              <a class="btn btn-lg btn-primary " href="{{ route('client-signup-index') }}" disabled>BEGIN TRIAL</a>
+                                              <a class="btn btn-lg btn-primary " href="{{ route('client-signup-index') }}" disabled>Try For Free</a>
                                             @else
-                                              <a class="btn btn-lg btn-primary " href="{{ route('client-signup-index') }}">BEGIN TRIAL</a>
+                                              <a class="btn btn-primary btn-outline " href="{{ route('client-signup-index') }}">Try For Free</a>
                                             @endif
 
                                         </div>
+                                        <ul class="list-group text-center">
+                                                   <li class="list-group-item">Applicant Tracking System</li>
+                                                   <li class="list-group-item">Customisable Workflow</li>
+                                                   <li class="list-group-item">Career Page Integration</li>
+                                                   <li class="list-group-item">Social Media Job Promotion</li>
+                                                   <li class="list-group-item">Job Teams Collaboration</li>
+                                                   <li class="list-group-item">Interview Management</li>
+                                                   <li class="list-group-item">Applicant Dashboard</li>
+                                                   <li class="list-group-item">Applicant Email Messaging and Chat</li>
+                                                   <li class="list-group-item">Reports Generation</li>
+                                                   <li class="list-group-item">Talent Pool</li>
+                                        </ul>
+                                        
                                     </div>
                                 </div>
                                 <!-- /item -->
@@ -98,42 +112,52 @@
                                 <!-- item -->
                                 <div class="col-sm-4 text-center no-pad">
                                   <!-- <img src="img/rope-big.png" width="300px" class="rope big"> -->
-                                    <div class="panel panel-default panel-pricing panel-sme">
+                                  
+                                    <div class="panel panel-default panel-sme" style="border-width:1px; border-radius:6px 6px 0px 0px">
+                                        <div class="" style="width:100%; background:#5CB85C; height:8px;">&nbsp; &nbsp;</div>
                                         <div class="panel-heading">
                                            
-                                            <div class="label label-default">&nbsp; MOST POPULAR &nbsp;</div>
+                                            
                                               <i class="fa fa-star" style="color:#4bb779"></i><i class="fa fa-star" style="color:#4bb779"></i>
                                             <h3 class="text-brandon">Professional</h3>
+                                            <div class="label label-default" style="color:#fff; background-color:#4bb779">&nbsp; MOST POPULAR &nbsp;</div>
 
                                             {{-- <small>For companies that post 1-3 jobs per month and hire between 5-10 candidates in a year.</small> --}}
                                         </div>
-                                        <div class="panel-body no-margin text-center text-brandon" style="background: #2889ce;">
-                                            <p class=" no-margin no-pad" style="background: #2889ce;">
-                                              <strong> &#8358;60,000 per month</strong>
+                                        <div class="panel-body text-center text-brandon"> 
+                                            <p class="no-margin" {{--style="background: #2889ce; color:#fff !important;"--}}>
+                                              <strong>
+                                                <h2>&#8358;60,000 <sup><h5>per month</h5> </sup></h2> 
+                                              </strong>
+                                              <strong>
+                                                  <h2><b>50,000</b> <sup><h5>applications per annum</h5> </sup></h2> 
+                                              </strong>
                                             </p>
                                         </div>
-                                        <div class="panel-body no-margin text-center text-brandon">
-                                            <p class=" no-margin no-pad"><strong>50,000 applications per annum</strong></p>
-                                            <!-- <small>20% Discount</small> -->
+                                        
+                                        <div class="" style="background-color:white; margin:10px">
+                                            @if( @@$account->has_expired == true or @$account->status == 'TRIAL')
+                                              <a class="btn btn-lg btn-primary btn-outline " href="{{ route('client-signup-index') }}" disabled>Try For Free</a>
+                                            @else
+                                              <a class="btn btn-primary btn-outline " href="{{ route('client-signup-index') }}">Try For Free</a>
+                                            @endif
                                         </div>
                                         <ul class="list-group text-center">
-                                            <li class="list-group-item"> Applicant Tracking </li>
-                                            <li class="list-group-item"> Customisable workflow</li>
-                                            <li class="list-group-item">Career page integration</li>
-                                            <li class="list-group-item">Social media job promotion</li>
+                                            <li class="list-group-item">Applicant Tracking </li>
+                                            <li class="list-group-item">Customisable Workflow</li>
+                                            <li class="list-group-item">Career Page Integration</li>
+                                            <li class="list-group-item">Social Media Job Promotion</li>
                                             <li class="list-group-item">Job Teams Collaboration </li>
                                             <li class="list-group-item">Interview Management </li>
-                                            <li class="list-group-item">Applicant dashboard</li>
-                                            <li class="list-group-item">Applicant email messaging and chat</li>
+                                            <li class="list-group-item">Applicant Dashboard</li>
+                                            <li class="list-group-item">Applicant Email Messaging and Chat</li>
                                             <li class="list-group-item">Reports Generation </li>
-                                            <li class="list-group-item">Talent pool</li>
+                                            <li class="list-group-item">Talent Pool</li>
                                             <li class="list-group-item">Multi Company Configuration</li>
                                             <li class="list-group-item"> Online Testing (2 templates)</li>      
 <!--                                            <li class="list-group-item">3 Team Members</li>-->
                                         </ul>
-                                        <div class="panel-footer">
-                                            <a class="btn btn-lg btn-block btn-success text-uppercase" data-toggle="modal" data-target="#requestCall" id="modalButton" href="#requestCall" data-title="Request a call">Request a call</a>
-                                        </div>
+                                       
                                     </div>
                                 </div>
                                 <!-- /item -->
@@ -142,35 +166,45 @@
                                 <!-- item -->
                                 <div class="col-sm-4 text-center no-pad">
                                   <!-- <img src="img/rope.png" width="100px" class="rope"> -->
-                                    <div class="panel panel-default panel-pricing panel-premium">
+                                  
+                                    <div class="panel panel-default panel-premium">
+                                        <div class="" style="width:100%; background:#f0ad4e; height:8px;">&nbsp; &nbsp;</div>
                                         <div class="panel-heading">
                                              <i class="fa fa-star" style="color:#f0ad4e"></i><i class="fa fa-star" style="color:#f0ad4e"></i><i class="fa fa-star" style="color:#f0ad4e"></i>
                                             <h3 class="text-brandon">Enterprise </h3>
                                             {{-- <small> For companies that post more than 3 jobs per month and hire over 10 candidates in a year. </small> --}}
                                         </div>
-                                        <div class="panel-body text-center">
-                                            <p class=" no-margin text-brandon" style=" font-size: 17px; background:#f0ad4e; padding: 12px; color:#fff !important;"><strong>Contact Us</strong></p>
+                                        <div class="panel-body text-center text-brandon"> 
+                                            <p class="no-margin" {{--style="background: #2889ce; color:#fff !important;"--}}>
+                                              <strong>
+                                                <h2 >Unlimited <sup><h5>access per annum</h5> </sup></h2> 
+                                              </strong>
+                                            </p>
                                         </div>
+                                        <div class="" style="background-color:white; margin:10px">
+                                            <a class="btn btn-primary btn-outline" data-toggle="modal" data-target="#requestCall" id="modalButton" href="#requestCall" data-title="Request a call">Request a call</a>
+                                        </div>
+                                        {{-- <div class="panel-body text-center">
+                                            <p class=" no-margin text-brandon" style=" font-size: 17px; background:#f0ad4e; padding: 12px; color:#fff !important;"><strong>Contact Us</strong></p>
+                                        </div> --}}
                                         <ul class="list-group text-center">
                                           
-                                            <li class="list-group-item">Unlimited applications per annum</li>
+                                            <li class="list-group-item">Unlimited Applications Per Annum</li>
                                             <li class="list-group-item">Applicant Tracking </li>
-                                            <li class="list-group-item">Customisable workflow</li>
-                                            <li class="list-group-item">Career page integration</li>
-                                            <li class="list-group-item">Social media job promotion</li>
+                                            <li class="list-group-item">Customisable Workflow</li>
+                                            <li class="list-group-item">Career Page Integration</li>
+                                            <li class="list-group-item">Social Media Job Promotion</li>
                                             <li class="list-group-item">Job Teams Collaboration </li>
                                             <li class="list-group-item">Interview Management </li>
-                                            <li class="list-group-item">Applicant dashboard</li>
-                                            <li class="list-group-item">Applicant email messaging and chat</li>
+                                            <li class="list-group-item">Applicant Dashboard</li>
+                                            <li class="list-group-item">Applicant Email Messaging and Chat</li>
                                             <li class="list-group-item">Reports Generation </li>
-                                            <li class="list-group-item">Talent pool</li>
+                                            <li class="list-group-item">Talent Pool</li>
                                             <li class="list-group-item">Multi Company Configuration</li>
                                             <li class="list-group-item">Internal & External Job Post</li>
-                                            <li class="list-group-item">Online Testing (2 templates)</li>
+                                            <li class="list-group-item">Online Testing (10 templates)</li>
                                         </ul>
-                                        <div class="panel-footer">
-                                            <a class="btn btn-lg btn-warning text-uppercase" data-toggle="modal" data-target="#requestCall" id="modalButton" href="#requestCall" data-title="Request a call">Request a call</a>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                                 <!-- /item -->

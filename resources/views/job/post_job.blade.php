@@ -579,14 +579,57 @@
         $('#SaveDraft').click(function (e) {
             e.preventDefault();
 
-
+            
             var title = $('#job_title').val();
             if (title == null || title == "") {
                 errorAlert("Title must be filled");
                 return false;
             }
 
-            var summary = $('#job_summary').val();
+            var country = $('.job_country option:selected').val();
+            if (country == null || country == "") {
+                errorAlert("country must be selected");
+                return false;
+            }
+
+
+            var job_type = $('.job_type option:selected').val();
+            if (job_type == null || job_type == "") {
+                errorAlert("Job type must be selected");
+                return false;
+            }
+
+            var job_level = $('.position').val();
+            if (job_level == null || job_level == "") {
+                errorAlert("Job level must be selected");
+                return false;
+            }
+
+            var eligibilty = $('#is_for').val();
+            if (eligibilty == null || eligibilty == "") {
+                errorAlert("Eligibility must be selected");
+                return false;
+            }
+
+            var expiry_date = $('.expiry_date').val();
+            if (expiry_date == null || expiry_date == "") {
+                errorAlert("Expiry Date must be selected");
+                return false;
+            }
+
+            var specialization = $('#specialization').val();
+            if (specialization == null || specialization == "") {
+                errorAlert("Specialization must be filled");
+                return false;
+            }
+
+            var workflowId = $('#workflowId').val();
+            if (workflowId == null || workflowId == "") {
+                errorAlert("Workflow must be selected");
+                return false;
+            }
+
+            var summary = $.trim($("#job_summary").val());
             if (summary == null || summary == "") {
                 errorAlert("Summary must be filled");
                 return false;
@@ -598,35 +641,16 @@
                 return false;
             }
 
-            var eligibilty = $('#is_for').val();
-            if (eligibilty == null || eligibilty == "") {
-                errorAlert("Eligibility must be selected");
+            var experience = exp.getData();
+            if (experience == null || experience == "") {
+                errorAlert("Experience must be filled");
                 return false;
             }
 
-            var country = $('.job_country option:selected').val();
-
-            if (country == null || country == "") {
-                errorAlert("country must be selected");
-                return false;
-            }
 
             var location = $('.job_location option:selected').val();
             if ((location == null || location == "") && country == 'Nigeria') {
                 errorAlert("location must be filled");
-                return false;
-            }
-
-
-            var workflowId = $('#workflowId').val();
-            if (workflowId == null || workflowId == "") {
-                errorAlert("Workflow must be selected");
-                return false;
-            }
-
-            var expiry_date = $('.expiry_date').val();
-            if (expiry_date == null || expiry_date == "") {
-                errorAlert("Expiry Date must be selected");
                 return false;
             }
 
@@ -653,7 +677,7 @@
                 data: {
                     _token: '{{ csrf_token() }}', title: title,
                     details: details, location: location, country: country,
-                    eligibilty: is_for, is_private: is_private, attach_email: attach_email, bulk: bulk_email,
+                    eligibilty: is_for, is_private: is_private, attach_email: attached_email, bulk: bulk_email,
                     job_type: job_type, position: position,
                     expiry_date: expiry_date, experience: experience,
                     specializations: specializations, workflow_id: workflowId,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 
@@ -26,9 +27,11 @@ class UpdateCompanyRequest extends FormRequest
 
 	public function rules()
 	{
+		$company_id = $this->company_id;
+		$client_id = $this->clientId;
 		return [
 			'slug' => 'unique:companies,slug,' . $this->company_id,
-			'email' => 'required|unique:companies,email,' . $this->company_id,
+			'email' => 'required|unique:companies,email,' . $this->company_id .',id,client_id,'.$this->clientId,
 			'name' => 'required',
 			'phone' => 'required',
 			'about' => 'required',

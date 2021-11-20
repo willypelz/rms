@@ -59,7 +59,6 @@
         customConfirmation(output)
         setTimeout(() => {
             $('#btn1').click(function(e){
-                // alert(strg)
                 window.location.href = address
             })
             $('#btn2').click(function (e) {

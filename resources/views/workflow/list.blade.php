@@ -109,6 +109,7 @@
                                 
                                 <div class="form-group">
                                     <label for="name">Name</label>
+                                    <span class="text-danger">*</span>
                                     <input type="text"
                                            name="name"
                                            id="name"
@@ -119,6 +120,7 @@
                                 
                                 <div class="form-group">
                                     <label for="description">Description</label>
+                                    <span class="text-danger">*</span>
                                     <textarea name="description"
                                               id="description"
                                               placeholder="A short note about this workflow"

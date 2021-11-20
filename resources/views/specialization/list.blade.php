@@ -76,6 +76,7 @@
 
                                 <div class="form-group">
                                     <label for="name">Name</label>
+                                    <span class="text-danger">*</span>
                                     <input type="text"
                                            name="name"
                                            id="name"

@@ -9,6 +9,7 @@
                 $is_super_admin = auth()->user()->is_super_admin;
             @endphp
             @include('layout.alerts')
+            @include('layout.confirm-dialog')
 
             <div class="row">
 
@@ -38,14 +39,14 @@
                                                 </a>
                                             @endif
                                             @if(!$specialization->jobs()->exists())
-                                                <form action="{{ route('delete-specialization', ['id' => $specialization->id]) }}"
+                                                <form id="delForm" action="{{ route('delete-specialization', ['id' => $specialization->id]) }}"
                                                       method="post"
                                                       class="delete-spoof">
                                                     {{ csrf_field() }}
 
                                                     <input type="hidden" name="_method" value="delete">
 
-                                                    <button  onclick="return confirm('Are you sure you want to delete specialization?');" type="submit" class="btn btn-danger btn-sm">
+                                                    <button  onclick="delConfirmation('Are you sure you want to delete this specialization?');" type="button" class="btn btn-danger btn-sm">
                                                         <i class="fa fa-trash fa-fw"></i>
                                                     </button>
                                                 </form>
@@ -102,5 +103,15 @@
             </div>
         </div>
     </section>
+    <script>
+        function delConfirmation(strg){
+            customConfirmation(strg)
+            setTimeout(() => {
+                $('#btn1').click(function(e){
+                    document.getElementById("delForm").submit()
+                })
+            }, 1000);
+        }
+    </script>
 
 @endsection

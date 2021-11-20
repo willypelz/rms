@@ -170,7 +170,7 @@
                                                     <label for="">Internal</label>
                                                     <input type="radio" name="internal" value="{{old('internal', '')}}" id="internal">
                                                     <label for="">External</label>
-                                                    <input type="radio" name="external" value="{{old('internal', '')}}" id="external">
+                                                    <input type="radio" name="external" value="{{old('external', '')}}" id="external">
                                                 </div>
 
                                                 <div class="form-group">

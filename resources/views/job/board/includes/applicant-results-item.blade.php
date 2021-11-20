@@ -27,7 +27,7 @@
         <?php  $pic = default_color_picture($cv);
         $current_app_index = array_search($jobID, $cv['job_id'] );
         // dd($cv['application_id'], $current_app_index );
-        $current_status = ($cv['application_status'][$current_app_index] == "ASSESSED") ? "TEST" : $cv['application_status'][$current_app_index];
+        $current_status = isset($cv['application_status'][$current_app_index]) ? (($cv['application_status'][$current_app_index] == "ASSESSED") ? "TEST" : $cv['application_status'][$current_app_index]) : null;
         $check_both_permissions = checkForBothPermissions ($jobID);
         $is_stand_alone = getEnvData('RMS_STAND_ALONE');
         ?>
@@ -73,7 +73,7 @@
                             </p> 
                      @endif
                     <?php
-                    $appl_status = $cv['application_status'][$current_app_index];
+                    $appl_status = isset($cv['application_status'][$current_app_index]) ? $cv['application_status'][$current_app_index] : null;
                     ?>
                     
                     @if( @$applicant_step->type == 'assessment' && in_array('can-test', $permissions) && $check_both_permissions)

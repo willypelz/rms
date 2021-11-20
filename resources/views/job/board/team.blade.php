@@ -109,7 +109,7 @@
                                             @foreach($job_team_invites->where('job_id', $job->id) as $job_team_invite)
                                                 <li class="list-group-item">
                                                     <div class="col-xs-2"><img width="100%" alt=""
-                                                                               src="{{ isset($user) ? default_picture( @$user, 'user' ) : null }}"
+                                                                               src="{{ isset($job_team_invite) ? default_picture( @$job_team_invite, 'user' ) : null }}"
                                                                                class="img-circle"></div>
                                                     <div class="col-xs-6">
                                                         <h5> {{ $job_team_invite->name }}</h5>

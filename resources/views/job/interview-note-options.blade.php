@@ -11,11 +11,17 @@
 
     <div class="">
         <br>
+        
         <div class="container">
+        
             <div class="panel h-80vh" style="">
+                <br>
+                <a style="text-decoration:none" href="{{ route('interview-note-templates') }}">  <span style="margin:15px"><i class="fa fa-arrow-left"></i> Go Back</a></span>
+               
                 <br><br>
+                
                 <div class="row">
-
+                
                     <div class="col-sm-6 col-sm-offset-2">
 
                         <h3 class="no-margin">

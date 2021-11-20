@@ -391,7 +391,7 @@ class LoginController extends Controller
         if(getEnvData('RMS_STAND_ALONE',true,request()->clientId) == false){ //redirect to hrms if rms is not stand alone
             return redirect(getEnvData('STAFFSTRENGTH_URL',null,request()->clientId));
         }
-        return redirect('/');
+        return redirect('/login');
     }
 
     public function login(Request $request){

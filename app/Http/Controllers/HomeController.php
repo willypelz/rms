@@ -82,11 +82,11 @@ class HomeController extends Controller
         $jobs = Job::whereStatus('ACTIVE')
 	        ->where('is_for', '!=', 'internal')
             ->whereNotIn('is_private', [true])
+            ->whereIn('company_id', $request->companyIds)
             ->where('expiry_date', '>=', date('Y-m-d'))
             ->take(getEnvData('JOB_HOMEPAGE_LIST', 3))
             ->orderBy('id', 'desc')
             ->get();
-        
         $redirect_to = $request->redirect_to;
         session()->put('redirect_to',$redirect_to);
         if ($request->isMethod('post')) {
@@ -204,8 +204,9 @@ class HomeController extends Controller
 
         $posts =   @json_decode($response)->data->posts;
         $talent_pool_count = $saved_cvs_count = $purchased_cvs_count = '--';
+        $activities_exist = showActivitiesButton($job_access);
 
-        return view('talent-pool.dashboard', compact('posts', 'jobs_count','talent_pool_count','saved_cvs_count','purchased_cvs_count'));
+        return view('talent-pool.dashboard', compact('posts', 'jobs_count','talent_pool_count','saved_cvs_count','purchased_cvs_count','activities_exist'));
     }
 
     public function viewTalentSource(Request $request)

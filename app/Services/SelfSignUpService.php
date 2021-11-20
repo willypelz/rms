@@ -54,7 +54,9 @@ class SelfSignUpService {
                         'phone' => $request->phone,
                         'email' => $request->email,
                         ],
-                        ['slug' => str_slug($request->company_name.microtime()),
+                        [
+                        'website'=>$request->domain,
+                        'slug' => str_slug($request->company_name.microtime()),
                         'date_added' => date('Y-m-d')]);
         //$solr = "http://solr-load-balancer-785410781.eu-west-1.elb.amazonaws.com:8983/solr/admin/cores?action=CREATE&name=".str_slug($client->slug);
         $this->updateEnvValueInDb($client,$company);

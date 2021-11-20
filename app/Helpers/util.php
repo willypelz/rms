@@ -914,7 +914,7 @@ function logAction($logAction)
         'action_id' => @$logAction['action_id'],
         'action_type' => @$logAction['action_type'],
         'causee_id' => @$logAction['causee_id'],
-        'company_id'=> Auth::guard('candidate')->check() ? getCandidateCompanyId() : (Auth::check() ? get_current_company()->id: Null),
+        'company_id'=> Auth::guard('candidate')->check() ? getCandidateCompanyId() : (Auth::check() ? (get_current_company()->id ?? null): null),
         'causer_id' => isset($logAction['causer_id']) ? $logAction['causer_id'] : Auth::user()->id,
         'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
         'properties' => @$logAction['properties'],
@@ -1282,4 +1282,15 @@ function getCandidateCompanyId(){
         return redirect()->to(getEnvData('APP_URL', null, request()->clientId));
     }
     
+}
+
+/**
+ * receives job builder and checks if activities buton should show on dashboard
+ *
+ * @param [builder] $job_builder
+ * @return bool
+ */
+function showActivitiesButton($job_builder){
+    $job_ids = $job_builder->pluck('id')->toArray();
+    return JobActivity::with('user', 'application.cv', 'job')->whereIn('job_id', $job_ids)->count() ? true : false;
 }

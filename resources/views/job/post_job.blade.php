@@ -227,15 +227,19 @@
                                                     <span class="text-danger">*</span>
                                                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Who can apply to this job post? Internal: Within your organization. External: outside your organization"></i>
                                                 </label>
+                                                
                                                 <select @if($eligibilty) readonly @endif name="eligibility"
                                                         class="form-control" id="is_for">
                                                     <option value=""> -- choose eligibility --</option>
-                                                    <option @if ($eligibilty == 'both') selected="selected"
-                                                            @endif  value="both"> BOTH
-                                                    </option>
-                                                    <option @if ($eligibilty == 'internal') selected="selected"
-                                                            @endif value="internal"> INTERNAL
-                                                    </option>
+                                                   
+                                                    @if(getEnvData('RMS_STAND_ALONE')=="false")
+                                                        <option @if ($eligibilty == 'both') selected="selected"
+                                                                @endif  value="both"> BOTH
+                                                        </option>
+                                                        <option @if ($eligibilty == 'internal') selected="selected"
+                                                                @endif value="internal"> INTERNAL
+                                                        </option>
+                                                    @endif
                                                     <option @if ($eligibilty == 'external') selected="selected"
                                                             @endif value="external"> EXTERNAL
                                                     </option>
@@ -260,7 +264,7 @@
                                                 <label for="job-loc">Make job private
                                                     <input type="checkbox" id="is_private" value="true" {{(old('is_private') == "true") ? 'checked': ''}} onchange="checkedPrivate()"
                                                            name="is_private" @if ($is_private == 1) checked @endif >
-                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="When a job posting is private, only candidate with the link to the job post can apply"></i>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="When a job posting is private, it will not be visible to anyone. Only candidates with the link to the job posting can apply"></i>
                                                 </label>
                                             </div>
                                             <div class="col-sm-6 attach_emails">
@@ -565,7 +569,7 @@
         function isFormValid(fieldId, fieldName) {
 
             if (fieldId == null || fieldId == '') {
-                alert(fieldName + ' must be filled')
+                errorAlert(fieldName + ' must be filled')
                 return false
             }
             return true
@@ -578,51 +582,51 @@
 
             var title = $('#job_title').val();
             if (title == null || title == "") {
-                alert("Title must be filled");
+                errorAlert("Title must be filled");
                 return false;
             }
 
             var summary = $('#job_summary').val();
             if (summary == null || summary == "") {
-                alert("Summary must be filled");
+                errorAlert("Summary must be filled");
                 return false;
             }
 
             var details = editor.getData();
             if (details == null || details == "") {
-                alert("Details must be filled");
+                errorAlert("Details must be filled");
                 return false;
             }
 
             var eligibilty = $('#is_for').val();
             if (eligibilty == null || eligibilty == "") {
-                alert("Eligibility must be selected");
+                errorAlert("Eligibility must be selected");
                 return false;
             }
 
             var country = $('.job_country option:selected').val();
 
             if (country == null || country == "") {
-                alert("country must be selected");
+                errorAlert("country must be selected");
                 return false;
             }
 
             var location = $('.job_location option:selected').val();
             if ((location == null || location == "") && country == 'Nigeria') {
-                alert("location must be filled");
+                errorAlert("location must be filled");
                 return false;
             }
 
 
             var workflowId = $('#workflowId').val();
             if (workflowId == null || workflowId == "") {
-                alert("Workflow must be selected");
+                errorAlert("Workflow must be selected");
                 return false;
             }
 
             var expiry_date = $('.expiry_date').val();
             if (expiry_date == null || expiry_date == "") {
-                alert("Expiry Date must be selected");
+                errorAlert("Expiry Date must be selected");
                 return false;
             }
 
@@ -682,6 +686,14 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
+
+       function errorAlert(err){
+            $.growl.error({
+                message: err,
+                location: 'tc',
+                size: 'large'
+            });
+        }
 
     </script>
 @endsection

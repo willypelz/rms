@@ -28,7 +28,7 @@ class RequestACallRequest extends FormRequest
             'package'=>'required',
             'firstname'=>'required|max:200|min:2',
             'surname'=> 'required|max:200|min:2',
-            'phone'=> 'required|min:11|max:15|numeric',
+            'phone'=> 'required|numeric',
             'email'=>'required|email',
         ];
     }

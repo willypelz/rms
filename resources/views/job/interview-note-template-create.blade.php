@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="form-group">
-                                        <label for="name">Name</label>
+                                        <label for="name">Name <span style="color: red">*</span></label>
                                         <input type="text" name="name" value="{{old('name')}}" class="form-control" required>
                                     </div>
 

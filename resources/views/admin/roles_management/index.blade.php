@@ -127,21 +127,21 @@
                                                         <div class="form-group">
                                                             <div id="hiddenForm">
                                                                 <div id="external_div">
-                                                                    <label for="">Name: </label>
+                                                                    <label for="">Name: <span style="color: red">*</span></label>
                                                                     <input type="text" value="{{ $user->name }}"
-                                                                           id="name" name="name" value=""
+                                                                           id="name" name="name" required
                                                                            class="form-control">
-                                                                    <small><em>The name of the team member</em></small>
+                                                                    <small style="color: red"><em>The name of the team member</em></small>
                                                                     <br><br>
                                                                     <input type="hidden" name="email_from"
                                                                            value="{{ get_current_company()->email }}"
                                                                            class="form-control">
-                                                                    <label for="">Email: </label>
-                                                                    <input type="text" name="email" id="email_to"
+                                                                    <label for="">Email: <span style="color: red">*</span></label>
+                                                                    <input type="email" name="email" id="email_to"
                                                                            placeholder="email addresses here"
-                                                                           value="{{ $user->email }}"
+                                                                           value="{{ $user->email }}" required
                                                                            class="form-control">
-                                                                    <small><em>The email address of the team member</em>
+                                                                    <small style="color: red"><em>The email address of the team member</em>
                                                                     </small>
                                                                     <br><br>
                                                                 </div>
@@ -239,16 +239,16 @@
                             <div class="form-group">
                                 <div id="hiddenForm">
                                     <div id="external_div">
-                                        <label for="">Name: </label>
+                                        <label for="">Name: <span style="color: red">*</span></label>
                                         <input type="text" required id="name" name="name" value="" class="form-control">
-                                        <small><em>The name of the team member</em></small>
+                                        <small style="color: red"><em>The name of the team member</em></small>
                                         <br><br>
                                         <input type="hidden" name="email_from"
                                                value="{{ get_current_company()->email }}" class="form-control">
-                                        <label for="">Email: </label>
-                                        <input type="text" required name="email" id="email_to"
+                                        <label for="">Email: <span style="color: red">*</span></label>
+                                        <input type="email" required name="email" id="email_to"
                                                placeholder="email addresses here" class="form-control">
-                                        <small><em>The email address of the team member</em>
+                                        <small style="color: red"><em>The email address of the team member</em>
                                         </small>
                                         <br><br>
                                     </div>

@@ -218,6 +218,8 @@
                     drop ? drop[i].removeAttribute("required"):false;
                 }
                 weightMin ? weightMin.removeAttribute("required"):false;
+                weightMin.value = '';
+                weightMax.value = '';
                 weightMax ? weightMax.removeAttribute("required"):false;
             }else if(value == 'dropdown'){
                 dropdownDiv.style.display = 'block';
@@ -231,6 +233,8 @@
                 }
                 weightMin ? weightMin.removeAttribute("required") : false;
                 weightMax ? weightMax.removeAttribute("required") : false;
+                weightMin.value = '';
+                weightMax.value = '';
             }else{
                 weightDiv.style.display = 'none';
                 checkDiv.style.display = 'none';
@@ -242,7 +246,9 @@
                     drop ? drop[i].removeAttribute("required"):false;
                 }
                 weightMin ? weightMin.removeAttribute("required") : false;
-                weightMax ? weightMax.removeAttribute("required") : false; 
+                weightMax ? weightMax.removeAttribute("required") : false;
+                weightMin.value = '';
+                weightMax.value = '';
             }
         }
     </script>

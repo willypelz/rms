@@ -8,7 +8,7 @@
                     <ul class="list-unstyled footer-logo">
                         <li>
                             <h4 class="text-brandon" style="text-transform: capitalize;"><img src="../img/seamlesshiring-logo.png" alt=""></h4>
-                            <small class="text-muted">&copy; 2016. All Rights Reserved. <br>An Insidify.com Campany</small>
+                            <small class="text-muted">&copy; {{date('Y')}} All Rights Reserved. <br>An Insidify.com Campany</small>
                         </li>
                     </ul>
                 </div>

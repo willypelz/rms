@@ -24,11 +24,11 @@ class RequestACallRequest extends FormRequest
     public function rules()
     {
         return [
-            'company_name'=>'required',
+            'company_name'=>'required|max:200|min:3',
             'package'=>'required',
-            'firstname'=>'required',
-            'surname'=>'required',
-            'phone'=>'required|min:11',
+            'firstname'=>'required|max:200|min:2',
+            'surname'=> 'required|max:200|min:2',
+            'phone'=> 'required|min:11|max:15|numeric',
             'email'=>'required|email',
         ];
     }

@@ -41,8 +41,30 @@
                     width: 400,
                     modal: true,
                      // buttons: btns
-                });
-                
-            
+                });       
+    }
+
+    function remove(strg, idName) {
+        let output = "Are you sure you want to delete this " + strg + "?"
+        customConfirmation(output)
+        setTimeout(() => {
+            $('#btn1').click(function(e){
+                document.getElementById(idName).submit()
+            })
+        }, 1000);
+    }
+
+    function duplicate(strg, address) {
+        let output = "Are you sure you want to duplicate " + strg + "?"
+        customConfirmation(output)
+        setTimeout(() => {
+            $('#btn1').click(function(e){
+                // alert(strg)
+                window.location.href = address
+            })
+            $('#btn2').click(function (e) {
+                e.preventDefault();
+            })
+        }, 1000);
     }
 </script>

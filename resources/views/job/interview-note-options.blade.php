@@ -54,7 +54,7 @@
                                               style="">{{ $interview_note_option->type }}</span>
                                         @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
                                         
-                                        <a href="javascript:;" onclick="remove('{{$interview_note_option->name}}', {{$interview_note_option->id}})" class="pull-right btn" style="margin-top: -5px;">
+                                        <a href="javascript:;" onclick="remove('{{$interview_note_option->name}}', '{{'interview_note_option_id'.$interview_note_option->id}}')" class="pull-right btn" style="margin-top: -5px;">
                                             <i class="fa fa-lg fa-trash"></i> Delete</a>
                                         <a href="{{ route('interview-note-option-edit', ['interview_template_id' => $interview_template_id,'id' => $interview_note_option->id ]) }}"
                                         class="pull-right btn" style="margin-top: -5px;"><i
@@ -142,16 +142,6 @@
             }
         });   
     })
-
-    function remove(strg, id) {
-            let output = "Sure you want to delete this " + strg + " option?"
-            customConfirmation(output)
-            setTimeout(() => {
-                $('#btn1').click(function(e){
-                    document.getElementById("interview_note_option_id"+id).submit()
-                })
-            }, 1000);
-        }
     </script>
 
 

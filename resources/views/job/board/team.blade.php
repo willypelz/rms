@@ -168,9 +168,9 @@
                                                 {!! csrf_field() !!}
                                                 <div class="form-group">
                                                     <label for="">Internal</label>
-                                                    <input type="radio" name="internal" value="internal" id="internal">
+                                                    <input type="radio" name="internal" value="{{old('internal', '')}}" id="internal">
                                                     <label for="">External</label>
-                                                    <input type="radio" name="external" value="external" id="external">
+                                                    <input type="radio" name="external" value="{{old('external', '')}}" id="external">
                                                 </div>
 
                                                 <div class="form-group">
@@ -178,7 +178,7 @@
                                                         <div id="hiddenForm">
                                                             <div id="external_div">
                                                                 <label for="">Name: </label>
-                                                                <input type="text" id="name" name="name" value=""
+                                                                <input type="text" id="name" name="name" value="{{old('name', "")}}"
                                                                        class="form-control">
                                                                 <small><em>The name of the team member</em></small>
                                                                 <br><br>
@@ -189,7 +189,7 @@
                                                                        value="{{ $job->id }}"
                                                                        class="form-control">
                                                                 <label for="">Email: </label>
-                                                                <input type="text" name="email" id="email_to"
+                                                                <input type="text" name="email" value="{{old('email', '')}}" id="email_to"
                                                                        placeholder="email addresses here"
                                                                        class="form-control">
                                                                 <small><em>The email address of the team member</em>
@@ -210,7 +210,7 @@
                                                         <div class="common-fields">
                                                             <div class="for-group">
                                                                 <label for="">Role Name</label>
-                                                                <input name="role_name" type="text"
+                                                                <input name="role_name" value="{{old('role_name', '')}}" type="text"
                                                                        class="form-control">
                                                             </div>
                                                             <div class="form-group">
@@ -286,7 +286,7 @@
                                                         <div id="">
                                                             <div id="">
                                                                 <label for="">Name: </label>
-                                                                <input type="text" id="name" name="name" value=""
+                                                                <input type="text" id="name" name="name" value="{{old('name', '')}}"
                                                                        class="form-control">
                                                                 <small><em>The name of the team member</em></small>
                                                                 <br><br>
@@ -299,7 +299,7 @@
                                                                 <label for="">Email: </label>
                                                                 <input type="text" name="email" id="email_to"
                                                                        placeholder="email addresses here"
-                                                                       class="form-control">
+                                                                       class="form-control" value="{{old('email', '')}}">
                                                                 <small><em>The email address of the team member</em>
                                                                 </small>
                                                                 <br><br>
@@ -310,7 +310,7 @@
                                                             <div class="for-group">
                                                                 <label for="">Role Name</label>
                                                                 <input name="role_name" type="text"
-                                                                       class="form-control">
+                                                                       class="form-control" value="{{old('role_name', '')}}">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="role">Permissions</label>

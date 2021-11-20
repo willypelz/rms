@@ -232,9 +232,9 @@ class CandidateController extends Controller
             $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->where('is_private', false)
             ->where(function($q){
                 $q->where('is_for','external')->orWhere('is_for', 'both');
-            })->whereIn('companyId',$request->companyIds)->get();
+            })->whereIn('company_id',$request->companyIds)->get();
         }else{
-            $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->whereIn('companyId',$request->companyIds)->get();
+            $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->whereIn('company_id',$request->companyIds)->get();
         }
 	    $companies =   Company::where('client_id',$request->clientId)->get();
         return view('candidate.job-list', compact('jobs', 'companies'));

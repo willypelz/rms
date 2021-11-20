@@ -84,13 +84,7 @@
         });
     </script>
     <script>
-        function toggle(source, className) {
-            checkboxes = document.getElementsByClassName(className);
-
-            for (var i = 0, n = checkboxes.length; i <= n; i++) {
-                checkboxes[i].checked = source.checked;
-            }
-        }
+        
         $('#toggle_all').on('click', function () {
             if ($(this).is(':checked')) {
                 $('.tg-permission').prop('checked', 'checked')

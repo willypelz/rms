@@ -67,8 +67,8 @@
                                     </div>
                                     <div class="col-xs-6" id="new_chq"> 
                                         <div  class="form-inline" style="margin-bottom:10px">
-                                        <a href="javascript:void(0)" class="add btn"><i class="fa fa-plus"></i></a>
-                                        <a href="javascript:void(0)" class="remove btn" id="add-btn-check" style="display:none"><i class="fa fa-trash"></i></a>
+                                        <button class="add btn"><i class="fa fa-plus"></i>Add more options</button>
+                                        <button class="remove btn" id="add-btn-check" style="display:none"><i class="fa fa-trash"></i>Remove</button>
                                         </div>
                                         <input type="text" class="form-control check" name="check[0]" required>
                                         <input type="hidden" value="1" id="total_chq">
@@ -136,7 +136,7 @@
             if($('#type').val() == 'checkbox'){
                 var new_chq_no = parseInt($('#total_chq').val()) + 1;
                 tchecks = $('.check').length;
-                var new_input = "<input type='text' style='margin-top:10px' class='form-control check' id='new_" + new_chq_no + "' name='check["+ tchecks + "]' required>";
+                var new_input = "<input type='text' style='margin-top:10px' class='form-control check' id='new_" + new_chq_no + "' name='check["+ tchecks + "]' required='true'>";
                 $('#new_chq').append(new_input);
                 $('#total_chq').val(new_chq_no);
                 btnCheck.style = 'block';
@@ -145,7 +145,7 @@
                 var new_chq_no = parseInt($('#total_drop').val()) + 1;
                 tdrops = $('.drop').length;
                 console.log(tdrops);
-                var new_input = "<input type='text' style='margin-top:10px' class='form-control drop' id='new_" + new_chq_no + "' name='drop["+ tdrops + "]' required>";
+                var new_input = "<input type='text' style='margin-top:10px' class='form-control drop' id='new_" + new_chq_no + "' name='drop["+ tdrops + "]' required='true'>";
                 $('#new_drop').append(new_input);
                 $('#total_drop').val(new_chq_no);
                 btn.style = 'block';

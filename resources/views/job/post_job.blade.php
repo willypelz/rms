@@ -227,15 +227,19 @@
                                                     <span class="text-danger">*</span>
                                                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Who can apply to this job post? Internal: Within your organization. External: outside your organization"></i>
                                                 </label>
+                                                
                                                 <select @if($eligibilty) readonly @endif name="eligibility"
                                                         class="form-control" id="is_for">
                                                     <option value=""> -- choose eligibility --</option>
-                                                    <option @if ($eligibilty == 'both') selected="selected"
-                                                            @endif  value="both"> BOTH
-                                                    </option>
-                                                    <option @if ($eligibilty == 'internal') selected="selected"
-                                                            @endif value="internal"> INTERNAL
-                                                    </option>
+                                                   
+                                                    @if(getEnvData('RMS_STAND_ALONE')=="false")
+                                                        <option @if ($eligibilty == 'both') selected="selected"
+                                                                @endif  value="both"> BOTH
+                                                        </option>
+                                                        <option @if ($eligibilty == 'internal') selected="selected"
+                                                                @endif value="internal"> INTERNAL
+                                                        </option>
+                                                    @endif
                                                     <option @if ($eligibilty == 'external') selected="selected"
                                                             @endif value="external"> EXTERNAL
                                                     </option>
@@ -260,7 +264,7 @@
                                                 <label for="job-loc">Make job private
                                                     <input type="checkbox" id="is_private" value="true" {{(old('is_private') == "true") ? 'checked': ''}} onchange="checkedPrivate()"
                                                            name="is_private" @if ($is_private == 1) checked @endif >
-                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="When a job posting is private, only candidate with the link to the job post can apply"></i>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="When a job posting is private, it will not be visible to anyone. Only candidates with the link to the job posting can apply"></i>
                                                 </label>
                                             </div>
                                             <div class="col-sm-6 attach_emails">

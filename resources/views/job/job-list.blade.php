@@ -10,7 +10,7 @@
         <div class="container">
             <div class="row no-pad">
 
-                <div class="col-xs-12 no-margin">
+                <div class="col-xs-6 no-margin">
                     <br>
                     <h3 class="text-green-light no-margin">
                         {{ $active + $expired + $suspended + $private }} {{ $company->name }}  @if($active + $suspended > 1)
@@ -22,8 +22,19 @@
                         @endif
                     </h3>
                 </div>
+                <div class="col-xs-6 no-margin">
+                    <br>
+                        <div class="btn-group pull-right" role="group">
+                        <a href="{{ route('post-job') }}" type="button"
+                           class="btn text-capitalize in" style="background:white">
+                            <span class="fa-lg"><i class="fa fa-briefcase"></i>
+                                <span class="hidden-xs text-brandon">Create a job</span><br></span>
+                        </a>
+                    </div>
+                </div>
 
             </div>
+           
         </div>
     </section>
     <div class="separator separator-small"></div>
@@ -74,9 +85,9 @@
                 <div class="col-md-4 col-sm-12" style="margin-top: -40px;margin-bottom: 20px;">
                     <form action="" class="form-group"><br>
 
-                        <div class="form-lg">
+                        <div class="form-lg" style="margin-top: 12px;">
                             <div class="col-xs-10">
-                                <div class="row"><input placeholder="Search" name="q" id="q" value="{{ @$q }}"
+                                <div class="row"><input placeholder="Search for A Job" name="q" id="q" value="{{ @$q }}"
                                                         class="form-control input-lg" type="text"></div>
                             </div>
                             <div class="col-xs-2">
@@ -101,7 +112,7 @@
                 @endif
 
 
-                @foreach( $all_jobs as $job_section)
+                @forelse( $all_jobs as $job_section)
                     @if( count(@$job_section) > 0 )
                         @foreach($job_section as $key => $job)
                             @php 
@@ -417,7 +428,15 @@
 
 
                     @endif
-                @endforeach
+                @empty
+                <div class="col-xs-12 text-center">
+                        <div class="panel panel-default b-db">
+                            <div class="panel-body no-pad">
+                                <h4>There are no job listings</h4>
+                            </div>
+                        </div>
+                    </div>
+                @endforelse
 
 
                 <span class="col-xs-6"></span>

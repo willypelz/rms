@@ -94,7 +94,7 @@
                                                 <i class="fa fa-5x fa-folder-open"></i>
                                                 <br>
                                                 <p class="lead">You have not created any template. <br> Start by
-                                                    creating a one
+                                                    creating one
                                                 </p>
                                                 @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
                                                 <p>

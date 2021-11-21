@@ -21,7 +21,7 @@ class NotifyAdminOfNewRMSAccount extends Notification
     public function __construct($company,$user)
     { 
         $this->company = $company;
-        $this->title = 'Your Seamless Hiring Account is ready';
+        $this->title = 'Your SeamlessHiring Account is ready';
         $this->user_email = $user->email;
     }
 

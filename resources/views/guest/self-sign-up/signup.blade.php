@@ -20,7 +20,7 @@
     </section>
 
 
- <section class="white">
+ <section class="white account-setup">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
@@ -129,6 +129,17 @@
         </div>
     </section>
 
+    <section class="white hidden account-success">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                            <div class="alert alert-success">
+                                    <p>Account created successfully, please check your email for instruction on the next steps. </p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+    </section>
 
 <section class="s-div dark no-margin">
   <div class="container">
@@ -142,6 +153,7 @@
 </section>
 <script>
         $(document).ready(function () {
+    
             $('#domain').keyup(function () {
                 if ($(this).val().length > 0) {
                     $('#domainName').text('https://' + $('#domain').val() + '.seamlesshiring.com');
@@ -175,6 +187,8 @@
                     sub_form = $("#signup_form"),
                     datastring = sub_form.serialize();
 
+                var redirect = '{{route("pricing-page")}}';
+
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -190,7 +204,9 @@
                             });
                             $('#submitButton').attr('disabled', false);
                             $('#hide-spinner').hide();
-                            window.setTimeout(function () {location.reload(true)},8000 );
+                            $('.account-setup').addClass('hidden');
+                            $('.account-success').removeClass('hidden');
+                            window.setTimeout(function () {window.location = redirect;},9000 );
                        }else{
                             $.growl.error({ 
                                 message: data.msg, 

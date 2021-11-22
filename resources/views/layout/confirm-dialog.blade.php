@@ -66,4 +66,16 @@
             })
         }, 1000);
     }
+    function cancelInvite(strg, address) {
+        let output = "Are you sure you want to cancel " + strg +"'s invite?"
+        customConfirmation(output)
+        setTimeout(() => {
+            $('#btn1').click(function(e){
+                window.location.href = address
+            })
+            $('#btn2').click(function (e) {
+                e.preventDefault();
+            })
+        }, 1000);
+    }
 </script>

@@ -68,7 +68,7 @@
                                                 <div class="input-group">
                                                     <span class="input-group-addon">https://</span>
                                                     <input type="text" class="form-control slug" id="" placeholder=""
-                                                           name="slug" value="{{  $company->slug }}" readonly>
+                                                           name="slug" value="{{isset($company->website) ? str_replace(['https://','www','.','.seamlesshiring.com'],'',$company->website): '' }}" readonly>
                                                     <span class="input-group-addon">.seamlesshiring.com</span>
 
                                                 </div>

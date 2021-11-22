@@ -134,9 +134,9 @@
                                 <a title="Upgrade now to avoid termination of service" class="btn btn-danger"
                                    href="{{--{{ route('pricing-page') }}--}}">{{ @$account->trial_time }} Days left</a>
                                 
-                                <div class="pricey-callout animated zoomInDown">Your trial period ends in
+                                {{-- <div class="pricey-callout animated zoomInDown">Your trial period ends in
                                     <span>{{ @$account->trial_time }}</span> days. Upgrade now to avoid termination of
-                                    service <a class="closer">&times;</a></div>
+                                    service <a class="closer">&times;</a></div> --}}
                             
                             </li>
                         
@@ -177,6 +177,7 @@
                         <li><a href="{{ route('page-settings') }}"><i class="fa fa-key"> </i> Settings</a></li>
                         <li><a href="{{ route('audit-trails') }}"><i class="fa fa-history fa-fw"></i>Audit Trails</a></li>
                         <li><a href="{{ url('company/subsidiaries') }}"><i class="fa fa-users "></i> Subsidiaries</a></li>
+                        <li><a href="https://seamlesshr-8444376.hs-sites.com/knowledge/recruitment-management-system" target=”_blank”><i class="fa fa-question "></i> Support</a></li>
                         <li> <a href="{{ url('logout') }}"><i class="fa fa-sign-out"> </i> Logout</a></li>
                     </ul>
                 </li>

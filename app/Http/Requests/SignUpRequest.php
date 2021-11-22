@@ -25,9 +25,10 @@ class SignUpRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
+        $char = [' ','.','*','/','www','https',':'];
         $this->merge([ 
-            "domain"  => strtolower(str_replace(' ','','https://'.trim($this->domain).'.seamlesshiring.com')),
-            "sub_domain_string" => strtolower(str_replace(' ','',trim($this->domain))),
+            "domain"  => strtolower('https://'.str_replace($char,'',trim($this->domain)).'.seamlesshiring.com'),
+            "sub_domain_string" => strtolower(str_replace($char,'',trim($this->domain))),
         ]);
     }
 
@@ -44,7 +45,8 @@ class SignUpRequest extends FormRequest
             "company_name" => "required",
             "phone" => "required|min:11",
             "domain" => "required",
-            "password" => "required|confirmed|min:8",            
+            "password" => "required|confirmed|min:8",  
+            "type"=>'required|in:STARTER,PROFESSIONAL,ENTERPRISE'          
         ];
     }
 }

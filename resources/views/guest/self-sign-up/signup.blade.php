@@ -101,7 +101,7 @@
                                                     <input type="password" name="password_confirmation" id="confirm_password" class="form-control" placeholder="Re-enter password">
                                                 </div>
                                              </span>
-                                            
+                                            <input type="hidden" name="type" class="form-control" value="{{request()->type ?? null}}">
                                             <span class="col-xs-12 text-center">
                                                 <input type="checkbox" name="tos" id="tos" class="angular tos">
                                                  I agree to the SeamlesssHR <a href="https://seamlesshr.com/terms/">Terms of Service</a> and <a href="https://seamlesshr.com/privacy-security/">Privacy Policy</a></span>
@@ -197,16 +197,16 @@
                     success: function (data, status) {
 
                        if(data.status == true){
-                            $.growl.notice({ 
-                                message: data.msg, 
-                                location: 'tc', 
-                                size: 'large' 
-                            });
+                            // $.growl.notice({ 
+                            //     message: data.msg, 
+                            //     location: 'tc', 
+                            //     size: 'large' 
+                            // });
                             $('#submitButton').attr('disabled', false);
                             $('#hide-spinner').hide();
                             $('.account-setup').addClass('hidden');
                             $('.account-success').removeClass('hidden');
-                            window.setTimeout(function () {window.location = redirect;},10000 );
+                            // window.setTimeout(function () {window.location = redirect;},500000 );
                        }else{
                             $.growl.error({ 
                                 message: data.msg, 

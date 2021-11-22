@@ -86,9 +86,9 @@
                              
                                         <div class="" style="background-color:white; margin:10px">
                                             @if( @@$account->has_expired == true or @$account->status == 'TRIAL')
-                                              <a class="btn btn-primary btn-outline " href="#" disabled>Try For Free</a>
+                                              <a class="btn btn-primary btn-outline" href="#" disabled>Try For Free</a>
                                             @else
-                                              <a class="btn btn-primary btn-outline " href="{{ route('client-signup-index') }}">Try For Free</a>
+                                              <a class="btn btn-primary btn-outline" href="{{ route('client-signup-index',['type'=>'STARTER']) }}">Try For Free</a>
                                             @endif
 
                                         </div>
@@ -139,7 +139,7 @@
                                             @if( @@$account->has_expired == true or @$account->status == 'TRIAL')
                                               <a class="btn btn-lg btn-primary btn-outline " href="#" disabled>Try For Free</a>
                                             @else
-                                              <a class="btn btn-primary btn-outline " href="{{ route('client-signup-index') }}">Try For Free</a>
+                                              <a class="btn btn-primary btn-outline " href="{{ route('client-signup-index',['type'=>'PROFESSIONAL']) }}">Try For Free</a>
                                             @endif
                                         </div>
                                         <ul class="list-group text-center">
@@ -174,14 +174,14 @@
                                             <h3 class="text-brandon">Enterprise </h3>
                                             {{-- <small> For companies that post more than 3 jobs per month and hire over 10 candidates in a year. </small> --}}
                                         </div>
-                                        <div class="panel-body text-center text-brandon"> 
-                                            <p class="no-margin" {{--style="background: #2889ce; color:#fff !important;"--}}>
+                                        <div class=""> 
+                                            <!--<p class="no-margin" {{--style="background: #2889ce; color:#fff !important;"--}}>
                                               <strong>
                                                 <h2 >Unlimited <sup><h5>access per annum</h5> </sup></h2> 
                                               </strong>
-                                            </p>
+                                            </p> -->
                                         </div>
-                                        <div class="" style="background-color:white; margin:10px">
+                                        <div class="" style="background-color:white; margin:24px">
                                             <a class="btn btn-primary btn-outline" data-toggle="modal" data-target="#requestCall" id="modalButton" href="#requestCall" data-title="Request a call">Request a call</a>
                                         </div>
                                         {{-- <div class="panel-body text-center">
@@ -281,7 +281,7 @@
                                   <option value="">--select package-- </option>
                                   <option value="STARTER"> STARTER</option>
                                   <option value="PROFESSIONAL">PROFESSIONAL </option>
-                                  <option value="ENTERPRISE">ENTERPRISE</option>
+                                  <option value="ENTERPRISE" selected>ENTERPRISE</option>
                                  
                                 </select>
                             </div>

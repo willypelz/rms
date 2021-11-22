@@ -6,6 +6,7 @@ use Exception;
 use App\Models\Role;
 use App\Models\Client;
 use App\Models\Company;
+use App\Models\Permission;
 use App\Models\SystemSetting;
 use App\Mail\NewRMSAccountCreated;
 use Illuminate\Support\Facades\Hash;
@@ -53,6 +54,7 @@ class SelfSignUpService {
                         'client_id' => $client->id,
                         'phone' => $request->phone,
                         'email' => $request->email,
+                        'sub_type' =>$request->type,
                         ],
                         [
                         'website'=>$request->domain,
@@ -108,9 +110,13 @@ class SelfSignUpService {
                 $user = $user;
             }
 
-            $role = Role::whereName('admin')->first()->id;
-            $company->users()->attach($user->id, ['role' => $role,'date_added'=>date('Y-m-d')]);
-            $user->roles()->attach([$role]);
+            $role = Role::whereName('admin')->first();
+            $company->users()->attach($user->id, ['role' => $role->id,'date_added'=>date('Y-m-d')]);
+            $user->roles()->attach([$role->id]);
+            if(isset($company->sub_type) && in_array($company->sub_type, ['PROFESSIONAL','ENTERPRISE'])){
+                $permission_id = Permission::whereIn('name',['can-add-subsidiaries','can-switch-across-companies'])->pluck('id')->toArray();
+                $role->perms()->attach($permission_id);
+            }
             
             return $user;
     }

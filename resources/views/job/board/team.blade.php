@@ -17,6 +17,7 @@
 
                         @include('layout.alerts')
                         @include('job.board.job-board-tabs')
+                        @include('layout.confirm-dialog')
 
                         <div class="tab-content">
 
@@ -124,14 +125,14 @@
                                                             <i class="fa fa-times"></i> Declined</span>
                                                         @elseif($job_team_invite->is_cancelled)
                                                             <i class="fa fa-times"></i> Cancelled</span>
-                                                            <a href="javascript:;" onclick="event.preventDefault(); document.getElementById('{{'jobteaminvitee' . $job_team_invite->id}}').submit();" class="text-danger"> <i class="fa fa-trash"> Delete </i> </a>
+                                                            <a href="javascript:;" onclick="event.preventDefault(); remove('{{$job_team_invite->name}}', '{{'jobteaminvitee'.$job_team_invite->id}}')" class="text-danger"> <i class="fa fa-trash"> Delete </i> </a>
                                                             <form   id='{{'jobteaminvitee' . $job_team_invite->id}}' action="{{route('delete-job-team-invitee')}}" method="post">
                                                                 <input type="hidden" name="invitee_id" value="{{$job_team_invite->id}}" >
                                                             </form>
                                                         @else
                                                             <i class="fa fa-hourglass"></i> Pending</span>
                                                              <a  class="btn btn-default btn-small" href="{{ route('resend-job-team-invite', $job_team_invite->id) }}">Resend Invite</a>
-                                                             <a  class="btn btn-warning btn-small" style="margin-top:5px;" href="{{ route('cancel-job-team-invite', $job_team_invite->id) }}">Cancel Invite</a>
+                                                             <a  class="btn btn-warning btn-small" onclick="event.preventDefault(); cancelInvite('{{$job_team_invite->name}}', '{{route('cancel-job-team-invite', ['id' => $job_team_invite->id])}}')" style="margin-top:5px;" href="{{ route('cancel-job-team-invite', $job_team_invite->id) }}">Cancel Invite</a>
                                                         @endif
                                                     </div>
 
@@ -285,7 +286,7 @@
                                                     <div class="form-group">
                                                         <div id="">
                                                             <div id="">
-                                                                <label for="">Name: </label>
+                                                                <label for="">Name<span class="text-danger">*</span>: </label>
                                                                 <input type="text" id="name" name="name" value="{{old('name', '')}}"
                                                                        class="form-control">
                                                                 <small><em>The name of the team member</em></small>
@@ -296,7 +297,7 @@
                                                                 <input type="hidden" name="job_id"
                                                                        value="{{ $job->id }}"
                                                                        class="form-control">
-                                                                <label for="">Email: </label>
+                                                                <label for="">Email<span class="text-danger">*</span>: </label>
                                                                 <input type="text" name="email" id="email_to"
                                                                        placeholder="email addresses here"
                                                                        class="form-control" value="{{old('email', '')}}">
@@ -308,12 +309,12 @@
                                                         </div>
                                                         <div class="">
                                                             <div class="for-group">
-                                                                <label for="">Role Name</label>
+                                                                <label for="">Role Name<span class="text-danger">*</span></label>
                                                                 <input name="role_name" type="text"
                                                                        class="form-control" value="{{old('role_name', '')}}">
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="role">Permissions</label>
+                                                                <label for="role">Permissions<span class="text-danger">*</span></label>
                                                                 <select class="select2 form-control" multiple
                                                                         name="role[]"
                                                                         id="role" class="form-control">
@@ -335,12 +336,12 @@
                                                                 </select>
                                                             </div>
 
-                                                            <label for="">Access: </label>
+                                                            <label for="">Access<span class="text-danger">*</span>: </label>
                                                             <select name="access" id="access" class="form-control"
                                                                     required>
                                                                 <option value="job" hidden>"{{ $job->title }}"</option>
                                                             </select>
-                                                            <label for="editor1">Invite Mail</label>
+                                                            <label for="editor1">Invite Mail<span class="text-danger">*</span></label>
                                                             <textarea rows="10" cols="30" id="editor1" name="body_mail"
                                                                       style="visibility: hidden; display: none;">
                                        &lt;p&gt;Hello,&lt;br&gt;

@@ -1214,9 +1214,11 @@ class JobsController extends Controller
             if($job->specializations){
                 $job_specilizations = $job->specializations()->pluck('specializations.id')->toArray();
             }
+            $checkCandidateStep = JobApplication::where('job_id',$id)->where('status','!=','PENDING')->first();
         }else{
             $job = NULL;
             $job_specilizations = [];
+            $checkCandidateStep = NULL;
 
             $start = "Initiated Create Job(Admin)";
             mixPanelRecord($start, auth()->user());
@@ -1418,7 +1420,8 @@ class JobsController extends Controller
             'workflows',
             'thirdPartyData',
             'application_fields',
-            'countries'
+            'countries',
+            'checkCandidateStep'
         ));
     }
 

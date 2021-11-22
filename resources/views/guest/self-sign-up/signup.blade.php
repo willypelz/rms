@@ -206,7 +206,7 @@
                             $('#hide-spinner').hide();
                             $('.account-setup').addClass('hidden');
                             $('.account-success').removeClass('hidden');
-                            window.setTimeout(function () {window.location = redirect;},9000 );
+                            window.setTimeout(function () {window.location = redirect;},10000 );
                        }else{
                             $.growl.error({ 
                                 message: data.msg, 

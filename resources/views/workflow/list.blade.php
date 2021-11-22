@@ -144,15 +144,4 @@
             </div>
         </div>
     </section>
-    <script>
-        function deleteConfirmation(strg){
-            customConfirmation(strg)
-            setTimeout(() => {
-                $('#btn1').click(function(e){
-                    document.getElementById("delForm").submit()
-                })
-            }, 1000);
-        }
-    </script>
-
 @endsection

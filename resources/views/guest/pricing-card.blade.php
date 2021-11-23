@@ -135,8 +135,12 @@
                                         </div>
                                         <ul class="list-group text-center">
                                             @include('guest.pricing-feature-list')
-                                            <li class="list-group-item">Multi Company Configuration</li>
-                                            <li class="list-group-item"> Online Testing (2 templates)</li>      
+                                            <li class="list-group-item" data-toggle="tooltip" data-placement="top" title="Manage recruitment for different subsidiaries within your organisation">
+                                              Multi Company Configuration
+                                            </li>
+                                            <li class="list-group-item" data-toggle="tooltip" data-placement="top" title="Administer online test to applicants using the system">
+                                               Online Testing (2 templates)
+                                            </li>      
 <!--                                            <li class="list-group-item">3 Team Members</li>-->
                                         </ul>
                                        
@@ -171,11 +175,17 @@
                                         </div> --}}
                                         <ul class="list-group text-center">
                                           
-                                            <li class="list-group-item">Unlimited Applications Per Annum</li>
+                                            <li class="list-group-item" data-toggle="tooltip" data-placement="top" title="Unlimited amount of candidate application yearly">Unlimited Applications Per Annum</li>
                                             @include('guest.pricing-feature-list')
-                                            <li class="list-group-item">Multi Company Configuration</li>
-                                            <li class="list-group-item">Internal & External Job Post</li>
-                                            <li class="list-group-item">Online Testing (10 templates)</li>
+                                            <li class="list-group-item" data-toggle="tooltip" data-placement="top" title="Manage recruitment for different subsidiaries within your organisation">
+                                              Multi Company Configuration
+                                            </li>
+                                            <li class="list-group-item" data-toggle="tooltip" data-placement="top" title="Post jobs to external candidates and internal staff">
+                                              Internal & External Job Post
+                                            </li>
+                                            <li class="list-group-item" data-toggle="tooltip" data-placement="top" title="Administer online test to applicants using the system">
+                                              Online Testing (10 templates)
+                                            </li>
                                         </ul>
                                         
                                     </div>
@@ -300,6 +310,8 @@
             <script>
               
                 $(document).ready(function(e){
+                  $('[data-toggle="tooltip"]').tooltip();
+
                    $('body #request-form').on('submit', function(e){
                         e.preventDefault();
                         field = $(this);

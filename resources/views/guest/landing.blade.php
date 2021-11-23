@@ -6,7 +6,8 @@
         <div class="row">
 
             <section class="col shr-auth-form">
-
+                <a class="shr-auth-form-toggle" style=" margin-left: 85%; margin-top: -20px;width: 150px; text-decoration:none;" href="{{url('/login')}}">Admin Portal</a>
+                   
                 <img src="{{ getEnvData('APP_LOGO', null, request()->clientId) }}" class="shr-auth-logo">
 
                 <div class="shr-auth-form-inner">

@@ -93,16 +93,7 @@
 
                                         </div>
                                         <ul class="list-group text-center">
-                                                   <li class="list-group-item">Applicant Tracking System</li>
-                                                   <li class="list-group-item">Customisable Workflow</li>
-                                                   <li class="list-group-item">Career Page Integration</li>
-                                                   <li class="list-group-item">Social Media Job Promotion</li>
-                                                   <li class="list-group-item">Job Teams Collaboration</li>
-                                                   <li class="list-group-item">Interview Management</li>
-                                                   <li class="list-group-item">Applicant Dashboard</li>
-                                                   <li class="list-group-item">Applicant Email Messaging and Chat</li>
-                                                   <li class="list-group-item">Reports Generation</li>
-                                                   <li class="list-group-item">Talent Pool</li>
+                                          @include('guest.pricing-feature-list')
                                         </ul>
                                         
                                     </div>
@@ -143,16 +134,7 @@
                                             @endif
                                         </div>
                                         <ul class="list-group text-center">
-                                            <li class="list-group-item">Applicant Tracking </li>
-                                            <li class="list-group-item">Customisable Workflow</li>
-                                            <li class="list-group-item">Career Page Integration</li>
-                                            <li class="list-group-item">Social Media Job Promotion</li>
-                                            <li class="list-group-item">Job Teams Collaboration </li>
-                                            <li class="list-group-item">Interview Management </li>
-                                            <li class="list-group-item">Applicant Dashboard</li>
-                                            <li class="list-group-item">Applicant Email Messaging and Chat</li>
-                                            <li class="list-group-item">Reports Generation </li>
-                                            <li class="list-group-item">Talent Pool</li>
+                                            @include('guest.pricing-feature-list')
                                             <li class="list-group-item">Multi Company Configuration</li>
                                             <li class="list-group-item"> Online Testing (2 templates)</li>      
 <!--                                            <li class="list-group-item">3 Team Members</li>-->
@@ -190,16 +172,7 @@
                                         <ul class="list-group text-center">
                                           
                                             <li class="list-group-item">Unlimited Applications Per Annum</li>
-                                            <li class="list-group-item">Applicant Tracking </li>
-                                            <li class="list-group-item">Customisable Workflow</li>
-                                            <li class="list-group-item">Career Page Integration</li>
-                                            <li class="list-group-item">Social Media Job Promotion</li>
-                                            <li class="list-group-item">Job Teams Collaboration </li>
-                                            <li class="list-group-item">Interview Management </li>
-                                            <li class="list-group-item">Applicant Dashboard</li>
-                                            <li class="list-group-item">Applicant Email Messaging and Chat</li>
-                                            <li class="list-group-item">Reports Generation </li>
-                                            <li class="list-group-item">Talent Pool</li>
+                                            @include('guest.pricing-feature-list')
                                             <li class="list-group-item">Multi Company Configuration</li>
                                             <li class="list-group-item">Internal & External Job Post</li>
                                             <li class="list-group-item">Online Testing (10 templates)</li>

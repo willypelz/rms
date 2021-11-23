@@ -156,7 +156,7 @@ class CandidateController extends Controller
 
 
 
-            $candidate = Candidate::whereEmail($token_reset->email)->first();
+            $candidate = Candidate::whereEmail($token_reset->email)->where('client_id', $request->clientId)->first();
             $candidate->update(['password' => bcrypt($request->password)]);
 
             $name = $candidate->first_name.' '.$candidate->last_name;

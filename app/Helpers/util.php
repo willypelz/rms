@@ -648,7 +648,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
                 $data = (object)$data;
 
                 $candidate = Candidate::firstOrCreate(['email' => $request->cv_email, 'first_name' => $request->cv_first_name,
-                    'last_name' => $request->cv_last_name]);
+                    'last_name' => $request->cv_last_name, 'client_id' => $request->clientId]);
                 Candidate::where('id', $candidate->id)->update(['token' => $token]);
 
                 $company = Company::find(get_current_company()->id);

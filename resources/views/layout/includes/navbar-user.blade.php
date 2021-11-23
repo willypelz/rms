@@ -115,6 +115,7 @@
             </ul>
             
             <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://seamlesshr-8444376.hs-sites.com/knowledge/recruitment-management-system" target=”_blank”><i class="fa fa-info-circle "></i> Support</a></li>
                 @if( get_current_company()->id != 13 )
                     @if( @$account->status == 'TRIAL')
                         @if( @$account->has_expired )
@@ -177,7 +178,6 @@
                         <li><a href="{{ route('page-settings') }}"><i class="fa fa-key"> </i> Settings</a></li>
                         <li><a href="{{ route('audit-trails') }}"><i class="fa fa-history fa-fw"></i>Audit Trails</a></li>
                         <li><a href="{{ url('company/subsidiaries') }}"><i class="fa fa-users "></i> Subsidiaries</a></li>
-                        <li><a href="https://seamlesshr-8444376.hs-sites.com/knowledge/recruitment-management-system" target=”_blank”><i class="fa fa-question "></i> Support</a></li>
                         <li> <a href="{{ url('logout') }}"><i class="fa fa-sign-out"> </i> Logout</a></li>
                     </ul>
                 </li>

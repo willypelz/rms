@@ -100,7 +100,7 @@ class CandidateController extends Controller
 
         if($request->isMethod('post')){
 
-            $candidate = Candidate::whereEmail($request->email)->first();
+            $candidate = Candidate::whereEmail($request->email)->where('client_id',$request->clientId)->first();
 
             if($candidate){
 
@@ -111,8 +111,8 @@ class CandidateController extends Controller
                 );
 
 
-                Mail::send('emails.candidate-forgot-password', ['token' => $token, 'client_id' => $request->clientId], function ($m) use ($candidate) {
-                    $m->from(getEnvData('COMPANY_EMAIL'), getEnvData('APP_NAME'));
+                Mail::send('emails.candidate-forgot-password', ['token' => $token, 'client_id' => $request->clientId], function ($m) use ($candidate,$request) {
+                    $m->from(getEnvData('COMPANY_EMAIL',null,$request->clientId), getEnvData('APP_NAME'));
                     $m->to($candidate->email, $candidate->first_name)->subject('Your Password Reset Link!');
                 });
 

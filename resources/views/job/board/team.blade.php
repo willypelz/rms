@@ -51,6 +51,7 @@
                                                                 $user_roles = getRoleArrayName($job->id, $user);
                                                             @endphp
                                                             @foreach($all_roles as $role)
+                                                            @php if($role->display_name == "background check admin") continue; @endphp
                                                                 <li>
                                                                     <input @if(auth()->user()->is_super_admin == 0) disabled
                                                                            @endif class="role-{!! $user->id !!}-{!! $role->id !!}"
@@ -319,7 +320,9 @@
                                                                         name="role[]"
                                                                         id="role" class="form-control">
                                                                     @foreach($roles as $role)
-                                                                        <option value="{{ $role->id }}">{{ ucwords($role->display_name) }}</option>
+                                                                        @if($role->display_name != "background check admin") 
+                                                                            <option value="{{ $role->id }}">{{ ucwords($role->display_name) }}</option>
+                                                                        @endif
                                                                     @endforeach
                                                                 </select>
                                                             </div>

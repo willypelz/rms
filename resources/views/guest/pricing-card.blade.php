@@ -127,7 +127,7 @@
                                         <div class="panel-body text-center text-brandon"> 
                                             <p class="no-margin" {{--style="background: #2889ce; color:#fff !important;"--}}>
                                               <strong>
-                                                <h2>&#8358;60,000 <sup><h5>per month</h5> </sup></h2> 
+                                                <h2>&#8358;78,000 <sup><h5>per month</h5> </sup></h2> 
                                               </strong>
                                               <strong>
                                                   <h2><b>50,000</b> <sup><h5>applications per annum</h5> </sup></h2> 

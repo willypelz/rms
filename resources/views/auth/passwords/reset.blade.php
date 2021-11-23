@@ -32,7 +32,7 @@
             <div class="white padbox rounded">
                 <div class="col-sm-12">
                                 <p class="text-center">Choose Password</p>
-                                <p class="text-left"><small>Please choose password you will use to sign in to your seamless hiring account</small></p>
+                                <p class="text-left"><small>Please choose password you will use to sign in to your seamlessHiring account</small></p>
                                 <br/>
                             </div>
 

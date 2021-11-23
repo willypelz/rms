@@ -3625,6 +3625,9 @@ class JobsController extends Controller
             if(isHrmsIntegrated()) {
                 return redirect()->back()->with(['warning' => "You are synced with HRMS and can only delete a super admin from HRMS"]);
             }
+            if(onlyOneAdminLeft()){
+                return redirect()->back()->with(['warning' => "The only super admin in company cannot be deleted"]);
+            }
             $data = $user;
             $user->delete();
             logAction([

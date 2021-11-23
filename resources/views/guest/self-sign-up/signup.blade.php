@@ -20,7 +20,7 @@
     </section>
 
 
- <section class="white">
+ <section class="white account-setup">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
@@ -101,7 +101,7 @@
                                                     <input type="password" name="password_confirmation" id="confirm_password" class="form-control" placeholder="Re-enter password">
                                                 </div>
                                              </span>
-                                            
+                                            <input type="hidden" name="type" class="form-control" value="{{request()->type ?? null}}">
                                             <span class="col-xs-12 text-center">
                                                 <input type="checkbox" name="tos" id="tos" class="angular tos">
                                                  I agree to the SeamlesssHR <a href="https://seamlesshr.com/terms/">Terms of Service</a> and <a href="https://seamlesshr.com/privacy-security/">Privacy Policy</a></span>
@@ -129,6 +129,17 @@
         </div>
     </section>
 
+    <section class="white hidden account-success">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                            <div class="alert alert-success">
+                                    <p>Account created successfully, please check your email for instruction on the next steps. </p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+    </section>
 
 <section class="s-div dark no-margin">
   <div class="container">
@@ -142,6 +153,7 @@
 </section>
 <script>
         $(document).ready(function () {
+    
             $('#domain').keyup(function () {
                 if ($(this).val().length > 0) {
                     $('#domainName').text('https://' + $('#domain').val() + '.seamlesshiring.com');
@@ -175,6 +187,8 @@
                     sub_form = $("#signup_form"),
                     datastring = sub_form.serialize();
 
+                var redirect = '{{route("pricing-page")}}';
+
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -183,14 +197,16 @@
                     success: function (data, status) {
 
                        if(data.status == true){
-                            $.growl.notice({ 
-                                message: data.msg, 
-                                location: 'tc', 
-                                size: 'large' 
-                            });
+                            // $.growl.notice({ 
+                            //     message: data.msg, 
+                            //     location: 'tc', 
+                            //     size: 'large' 
+                            // });
                             $('#submitButton').attr('disabled', false);
                             $('#hide-spinner').hide();
-                            window.setTimeout(function () {location.reload(true)},8000 );
+                            $('.account-setup').addClass('hidden');
+                            $('.account-success').removeClass('hidden');
+                            // window.setTimeout(function () {window.location = redirect;},500000 );
                        }else{
                             $.growl.error({ 
                                 message: data.msg, 

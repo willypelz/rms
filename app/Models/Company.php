@@ -40,6 +40,7 @@ class Company extends Model
 	    'is_active',
         'is_default',
         'client_id',
+        'sub_type',
     ];
 
     public $timestamps = false;

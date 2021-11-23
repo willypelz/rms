@@ -35,7 +35,7 @@
 																		<hr style="border-width:0 0 1px">
 																		<p style="font-family:Arial,Helvetica,sans-serif;color:#2d2d2d;font-size:15px;font-weight:400;margin:16px 0;padding:0;text-align: none;line-height:1.4em;">Dear {{ ucwords( $data->name ) }},
 																			<br><br>
-																			Regarding the ongoing recruitment process at {{ $company->name }} company for the a job, this is to inform you that your CV/Resume have been uploaded and applicant account have been created for you.
+																		Regarding the ongoing recruitment process at {{ $company->name }} company for {{isset($data->job_name) ? $data->job_name : 'a job'}}, this is to inform you that your CV/Resume has been uploaded and an applicant account created for you.
 																			<br><br>To activate and continue in the apllication process, click the link below to create a password
 																		</p>
 																		<div style="color:#2d2d2d;" align="center">

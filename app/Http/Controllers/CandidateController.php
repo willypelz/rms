@@ -100,7 +100,7 @@ class CandidateController extends Controller
 
         if($request->isMethod('post')){
 
-            $candidate = Candidate::whereEmail($request->email)->first();
+            $candidate = Candidate::whereEmail($request->email)->where('client_id',$request->clientId)->first();
 
             if($candidate){
 
@@ -111,8 +111,8 @@ class CandidateController extends Controller
                 );
 
 
-                Mail::send('emails.candidate-forgot-password', ['token' => $token, 'client_id' => $request->clientId], function ($m) use ($candidate) {
-                    $m->from(getEnvData('COMPANY_EMAIL'), getEnvData('APP_NAME'));
+                Mail::send('emails.candidate-forgot-password', ['token' => $token, 'client_id' => $request->clientId], function ($m) use ($candidate,$request) {
+                    $m->from(getEnvData('COMPANY_EMAIL',null,$request->clientId), getEnvData('APP_NAME'));
                     $m->to($candidate->email, $candidate->first_name)->subject('Your Password Reset Link!');
                 });
 
@@ -156,7 +156,7 @@ class CandidateController extends Controller
 
 
 
-            $candidate = Candidate::whereEmail($token_reset->email)->first();
+            $candidate = Candidate::whereEmail($token_reset->email)->where('client_id', $request->clientId)->first();
             $candidate->update(['password' => bcrypt($request->password)]);
 
             $name = $candidate->first_name.' '.$candidate->last_name;
@@ -232,9 +232,9 @@ class CandidateController extends Controller
             $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->where('is_private', false)
             ->where(function($q){
                 $q->where('is_for','external')->orWhere('is_for', 'both');
-            })->whereIn('companyId',$request->companyIds)->get();
+            })->whereIn('company_id',$request->companyIds)->get();
         }else{
-            $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->whereIn('companyId',$request->companyIds)->get();
+            $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->whereIn('company_id',$request->companyIds)->get();
         }
 	    $companies =   Company::where('client_id',$request->clientId)->get();
         return view('candidate.job-list', compact('jobs', 'companies'));

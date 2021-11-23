@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\AllowBusinessEmail;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SignUpRequest extends FormRequest
@@ -25,9 +26,10 @@ class SignUpRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
+        $char = [' ','.','*','/','www','https',':'];
         $this->merge([ 
-            "domain"  => strtolower(str_replace(' ','','https://'.trim($this->domain).'.seamlesshiring.com')),
-            "sub_domain_string" => strtolower(str_replace(' ','',trim($this->domain))),
+            "domain"  => strtolower('https://'.str_replace($char,'',trim($this->domain)).'.seamlesshiring.com'),
+            "sub_domain_string" => strtolower(str_replace($char,'',trim($this->domain))),
         ]);
     }
 
@@ -44,7 +46,9 @@ class SignUpRequest extends FormRequest
             "company_name" => "required",
             "phone" => "required|min:11",
             "domain" => "required",
-            "password" => "required|confirmed|min:8",            
+            "password" => ["required","confirmed",Password::min(8)->mixedCase()->numbers()->symbols()],  
+            "type"=>'required|in:STARTER,PROFESSIONAL,ENTERPRISE'          
         ];
     }
+
 }

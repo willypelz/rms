@@ -17,7 +17,7 @@ use App\Models\Job;
 use App\Models\Role;
 use App\Enum\Configs;
 use App\Http\Requests;
-use App\Jobs\UploadSolrFromCode;
+use App\Models\Client;
 use App\Models\School;
 use App\Libraries\Solr;
 use App\Models\Company;
@@ -39,11 +39,13 @@ use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
 use App\Jobs\UploadApplicant;
 use App\Models\JobTeamInvite;
+use App\Models\SystemSetting;
 use App\Models\JobApplication;
 use App\Models\Specialization;
 use App\Models\FormFieldValues;
 use App\Rules\PrivateEmailRule;
 use App\Imports\PrivateJobEmail;
+use App\Jobs\UploadSolrFromCode;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -3396,7 +3398,7 @@ class JobsController extends Controller
     }
     public function addCompany(Request $request)
     {
-
+        $client = Client::find($request->clientId);
         if ($request->isMethod('post')) {
 
 
@@ -3405,7 +3407,7 @@ class JobsController extends Controller
 				'company_name' => 'required|unique:companies,name',
 				'phone' => 'required',
 				'about_company' => 'required',
-				'website' => 'regex:/^https:\/\/\w+(\.\w+)*(:[0-9]+)?\/?$/',
+				'website' => 'required', //'regex:/^https:\/\/\w+(\.\w+)*(:[0-9]+)?\/?$/',
             ]);
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
@@ -3433,6 +3435,7 @@ class JobsController extends Controller
                 'address' => $request->address,
                 'about' => $request->about_company,
                 'logo' => $logo,
+                'client_id' => $request->clientId,
                 //'license_type'=>'PREMIUM',
                 'date_added' => date('Y-m-d H:i:s'),
             ]);
@@ -3464,12 +3467,12 @@ class JobsController extends Controller
             
 
             // if($upload){
-            return redirect('select-company/' . str_slug($request->company_name));
+            return redirect('select-company/' . ($comp->id));
             // }
 
 
         }
-        return view('company.add');
+        return view('company.add',compact('client'));
     }
     public function editCompany(UpdateCompanyRequest $request)
 	{
@@ -3487,7 +3490,8 @@ class JobsController extends Controller
 			   $collect['logo'] = "" ;
             }
 
-	      seamlessSave(Configs::COMPANY_MODEL,  $collect->toArray(), $request->company_id);
+          seamlessSave(Configs::COMPANY_MODEL,  $collect->toArray(), $request->company_id);
+          $envSettings = SystemSetting::updateOrCreate(['key'=>'APP_LOGO','client_id'=>$request->clientId], ['value'=> url('/img/'.$logo)]);
             if ($request->company_creation_page) return back()->with('success', "Company updated successfully.");
           return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
 	}

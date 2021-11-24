@@ -642,12 +642,13 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
                 $data = [
                     'name' => $request->cv_last_name,
                     'job' => $job_id,
-                    'email' => $request->cv_email
+                    'email' => $request->cv_email,
+                    'job_name' => Job::find($job_id)->title
                 ];
                 $data = (object)$data;
 
                 $candidate = Candidate::firstOrCreate(['email' => $request->cv_email, 'first_name' => $request->cv_first_name,
-                    'last_name' => $request->cv_last_name]);
+                    'last_name' => $request->cv_last_name, 'client_id' => $request->clientId]);
                 Candidate::where('id', $candidate->id)->update(['token' => $token]);
 
                 $company = Company::find(get_current_company()->id);
@@ -832,7 +833,7 @@ function getCurrentLoggedInUserRole()
 
 function get_company_email_logo()
 {
-    $logo = getEnvData("APP_LOGO");
+    $logo = getEnvData("APP_LOGO",url('img/seamlesshiring-logo.png'));
     $url = getEnvData("APP_URL");
     return
         "<a href='$url' style='font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2' target='_blank'>
@@ -1294,4 +1295,13 @@ function getCandidateCompanyId(){
 function showActivitiesButton($job_builder){
     $job_ids = $job_builder->pluck('id')->toArray();
     return JobActivity::with('user', 'application.cv', 'job')->whereIn('job_id', $job_ids)->count() ? true : false;
+}
+
+/**
+ * check if user is the only admin in company
+ *
+ * @return bool
+ */
+function onlyOneAdminLeft(){
+    return get_current_company()->users->unique()->count() == 1 ? true : false;
 }

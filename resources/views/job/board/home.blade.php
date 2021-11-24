@@ -131,10 +131,50 @@
                               </a>
                             <p></p>
                           </div>
+                          <div class="panel panel-default">
+                                
+                              <div class="panel-heading">
+                                <h3 class="panel-title text-center">Share on Social Media</h3>
+                              </div>
+                              <div class="panel-body">
+                                <div class="text-center">
+                               <p class="">Share this job directly on LinkedIn, Twitter, Facebook. <a href="{{ route('job-preview', $job['id']) }}" target="_blank" >Preview job</a></p><br>
+                           
+                                       <ul class="list-inline">
+                                           <li>
+                                               <a href="{{getEnvData('FACEBOOK_URL', 'https://www.facebook.com/')}}sharer/sharer.php?u={{$job_url}}" class="" target="_blank" >
+                                                       <span class="fa-stack fa-2x">
+                                                         <i class="fa fa-circle fa-stack-2x text-" style="color:#3b5998"></i>
+                                                         <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                                       </span>
+                                               </a>
+                                           </li>
+                                                                          
+                                           <li>
+                                               <a href="{{getEnvData('TWITTER_URL', 'https://www.twitter.com/')}}intent/tweet?url={{$job_url}}"     class="" target="_blank" >
+                                                       <span class="fa-stack fa-2x">
+                                                         <i class="fa fa-circle fa-stack-2x text-" style="color:#0084b4"></i>
+                                                         <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                                       </span>
+                                               </a>
+                                           </li>
+                                               
+                                           <li>
+                                               <a href="https://www.linkedin.com/sharing/share-offsite/?url={{$job_url}}&title={{$job->title}}" class="" target="_blank" >
+                                                       <span class="fa-stack fa-2x">
+                                                         <i class="fa fa-circle fa-stack-2x text-" style="color:#007bb6"></i>
+                                                         <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                                                       </span>
+                                               </a>
+                                           </li>
+                                       </ul>
+                               </div>
+                              </div>
+                            </div>
                           <p class="text-center"></p>
                           <div class="well text-center">
                             <h1 class="no-margin"><i class="fa-2x fa fa-cloud-upload"></i></h1><br>
-                            <p class="h4">You can choose to start with uploading candidates' CVs to this job</p>
+                            <p class="h4">Start with uploading candidates' CVs to this job</p>
                             <p>
                               </p><hr>
                               
@@ -162,46 +202,7 @@
                         
                                 
 
-                                <div class="panel panel-default">
-                                
-                                  <div class="panel-heading">
-                                    <h3 class="panel-title text-center">Share on Social Media</h3>
-                                  </div>
-                                  <div class="panel-body">
-                                    <div class="text-center">
-                                   <p class="">Share this job directly on LinkedIn, Twitter, Facebook. <a href="{{ route('job-preview', $job['id']) }}" target="_blank" >Preview job</a></p><br>
                                
-                                           <ul class="list-inline">
-                                               <li>
-                                                   <a href="{{getEnvData('FACEBOOK_URL', 'https://www.facebook.com/')}}sharer/sharer.php?u={{$job_url}}" class="" target="_blank" >
-                                                           <span class="fa-stack fa-2x">
-                                                             <i class="fa fa-circle fa-stack-2x text-" style="color:#3b5998"></i>
-                                                             <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                                   </a>
-                                               </li>
-                                                                              
-                                               <li>
-                                                   <a href="{{getEnvData('TWITTER_URL', 'https://www.twitter.com/')}}intent/tweet?url={{$job_url}}"     class="" target="_blank" >
-                                                           <span class="fa-stack fa-2x">
-                                                             <i class="fa fa-circle fa-stack-2x text-" style="color:#0084b4"></i>
-                                                             <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                                   </a>
-                                               </li>
-                                                   
-                                               <li>
-                                                   <a href="https://www.linkedin.com/sharing/share-offsite/?url={{$job_url}}&title={{$job->title}}" class="" target="_blank" >
-                                                           <span class="fa-stack fa-2x">
-                                                             <i class="fa fa-circle fa-stack-2x text-" style="color:#007bb6"></i>
-                                                             <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
-                                                           </span>
-                                                   </a>
-                                               </li>
-                                           </ul>
-                                   </div>
-                                  </div>
-                                </div>
                                 </div>
                                 <div class="col-xs-4">
 

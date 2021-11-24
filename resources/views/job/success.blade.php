@@ -195,7 +195,7 @@
                           <p class="text-center">- OR -</p>
                           <div class="well text-center">
                             <h1 class=""><i class="fa-lg fa text-muted fa-cloud-upload"></i></h1><br>
-                            <p class="h4">You can choose to start with uploading candidates' CVs to this job</p>
+                            <p class="h4">Start with uploading candidates' CVs to this job</p>
                             <p>
                               <hr>
                               

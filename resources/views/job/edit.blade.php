@@ -163,7 +163,7 @@
                                             </div>
                                             <div class="col-sm-6 attach_emails">                                        
                                                 <label for="job-title">Attach Emails
-                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Attach Emails to these private jobs"></i>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="If you attach emails, only candidates with the attached emails can apply for the private job"></i>
                                                 </label>
                                                 <input type="text"
                                                         name="attach_email"

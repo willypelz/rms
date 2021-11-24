@@ -89,7 +89,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-12">
+                                {{-- <div class="col-sm-12">
                                     <div class="form-group{{ $errors->has('slug') ? ' has-error' : '' }}">
                                         <label for="">Company url</label>
                                         <div class="input-group">
@@ -103,7 +103,7 @@
                                             </span>
                                         @endif
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-sm-6">
                                     <div class="form-group{{ $errors->has('company_email') ? ' has-error' : '' }}">
                                         <label for="">Company Email</label>
@@ -132,7 +132,7 @@
                                  <div class="col-sm-12">
                                     <div class="form-group{{ $errors->has('website') ? ' has-error' : '' }}">
                                         <label for="">Website</label>
-                                        <input type="text" class="form-control" id="" placeholder="" name="website" value="{{ old('website') }}" required>
+                                        <input type="text" class="form-control" id="" placeholder="" name="website" value="{{ @$client->url ?? old('website') }}" readonly>
                                         @if ($errors->has('website'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('website') }}</strong>

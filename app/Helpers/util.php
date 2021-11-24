@@ -1118,12 +1118,13 @@ function validateCustomFields($name,$attr,$field_type,$required,$request){
 
 function mixPanelRecord($nameOfPoint, $candidate)
 {
+    $RMSnameOfPoint = "RMS " . $nameOfPoint;
     $email = $candidate->email;
     $companyName = get_current_company()->name ?? null;
     $name = isset($candidate->first_name) ? $candidate->first_name . " " . $candidate->last_name : $candidate->name;
     $name = $name ?? $candidate->full_name ;
     $mp = Mixpanel::getInstance(config('mixpanel.key'));
-    $mp->track($nameOfPoint, ['email' => $email]);
+    $mp->track($RMSnameOfPoint, ['email' => $email]);
     $mp->identify($email);
     $mp->people->set(
         $candidate->email,

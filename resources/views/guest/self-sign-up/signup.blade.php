@@ -13,7 +13,7 @@
 
             <div class="row text-center text-light text-white"><br>
                 <h1> Sign Up</h1>
-                <h1 class="lead">Create your SeamlessHiring Account in simple steps</h1>
+                <h1 class="lead">Create your SeamlessHiring Account in very simple steps</h1>
             </div>
 
         </div>

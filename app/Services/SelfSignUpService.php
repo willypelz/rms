@@ -114,7 +114,8 @@ class SelfSignUpService {
             $company->users()->attach($user->id, ['role' => $role->id,'date_added'=>date('Y-m-d')]);
             $user->roles()->attach([$role->id]);
             if(isset($company->sub_type) && in_array($company->sub_type, ['PROFESSIONAL','ENTERPRISE'])){
-                $permission_id = Permission::whereIn('name',['can-add-subsidiaries','can-switch-across-companies'])->pluck('id')->toArray();
+                $permission_id = Permission::all()->pluck('id')->toArray();
+                $role->perms()->detach($permission_id);
                 $role->perms()->attach($permission_id);
             }
             

@@ -1216,9 +1216,11 @@ class JobsController extends Controller
             if($job->specializations){
                 $job_specilizations = $job->specializations()->pluck('specializations.id')->toArray();
             }
+            $checkCandidateStep = JobApplication::where('job_id',$id)->where('status','!=','PENDING')->first();
         }else{
             $job = NULL;
             $job_specilizations = [];
+            $checkCandidateStep = NULL;
 
             $start = "Initiated Create Job(Admin)";
             mixPanelRecord($start, auth()->user());
@@ -1420,7 +1422,8 @@ class JobsController extends Controller
             'workflows',
             'thirdPartyData',
             'application_fields',
-            'countries'
+            'countries',
+            'checkCandidateStep'
         ));
     }
 
@@ -2566,12 +2569,13 @@ class JobsController extends Controller
 
             if (isset($fields->school->is_visible) && $fields->school->is_visible && (isset($data['school']))) {
 
-                if($data['school']=='others'){
+                if($data['school']=='others' && (!is_null($data['others']) && !empty($data['others']))){
                     $school = School::FirstOrCreate([
                         'name' => $data['others']
-                    ]);
+                    ]);   
+                }else{
+                    return back()->withInput()->withErrors(['warning' => 'School cannot be null or empty']);
                 }
-            
                 $school_id = isset($data['others']) && isset($school) ? $school->id : $data['school'];
             }
 
@@ -3669,11 +3673,20 @@ class JobsController extends Controller
         return redirect()->back()->with(['error' => "Operation delete Job Team Invitee Not Successful"]);
     }
     
-    public function fetchSchools(){
-        $schools = School::get()->toArray();
-        
+    public function fetchSchools(Request $request){
+        $search = $request->search;
+        $schools = School::orderby('name','asc')
+        ->select('id','name')->where('name', 'like', '%' .$search . '%')
+        ->limit(5)
+        ->get();
 
-        return $schools;
-        
+        $response = array();
+        foreach($schools as $school){
+            $response[] = array(
+                "id"=>$school->id,
+                "text"=>$school->name
+            );
+        } 
+      return response()->json($response); 
     }
 }

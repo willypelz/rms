@@ -8,6 +8,7 @@ use App\Enum\Configs;
 use App\Libraries\Solr;
 use App\Models\Company;
 use App\Models\Candidate;
+use App\Models\Interview;
 use App\Models\Permission;
 use App\Models\ActivityLog;
 use App\Models\JobActivity;
@@ -16,12 +17,8 @@ use App\Jobs\UploadApplicant;
 use Ixudra\Curl\Facades\Curl;
 use App\Models\JobApplication;
 use App\Models\PermissionRole;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
+use App\Models\InterviewNoteTemplates;
 use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Types\Object_;
 use GeneaLabs\LaravelMixpanel\Facades\Mixpanel;
@@ -314,9 +311,9 @@ function get_application_statuses($status, $job_id = null, $statuses = [])
     $all = 0; //total number of results
 
     if (is_null($job_id))
-        $status_from_db = collect(DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`cv_id`=`cvs`.`id`"));
+        $status_from_db = collect(\DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`cv_id`=`cvs`.`id`"));
     else
-        $status_from_db = collect(DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`job_id` = " . $job_id . " and `job_applications`.`cv_id`=`cvs`.`id`"));
+        $status_from_db = collect(\DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`job_id` = " . $job_id . " and `job_applications`.`cv_id`=`cvs`.`id`"));
 
     $status_array2 = ['ALL' => $status_from_db->count()];
 
@@ -554,20 +551,30 @@ function get_company_logo($logo)
 
 function get_interview_note_templates($appl_id)
 {
-    $templates = null;
-    $user = User::find(auth()->id());
-    if(!$user->isInterviewer() && !$user->isCommenter()){
-        return \App\Models\InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
-    } 
-    $interview = App\Models\Interview::where('job_application_id', $appl_id)->first();
-    if($interview){
-        $check = $interview->users->where('id',auth()->id())->first();
-        if($check){
-            return $interview->templates;
-        } 
+    $appl = JobApplication::where('id', $appl_id)->first();
+    $workflowStep = $appl->job->workflow->workflowSteps->where('slug', $appl->status)->first();
+
+    if($workflowStep->type != "interview"){
+        return "This Applicant has not been moved to an interview step.";
     }
 
-    return $templates;
+    $user = User::find(auth()->id());
+    if((!$user->isInterviewer() && !$user->isCommenter()) || $user->is_super_admin ){
+        return InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
+    } 
+
+    $interview = Interview::where('job_application_id', $appl_id)->first();
+    if($interview){
+        $check = $user->interviews->where('id',$interview->id)->first();
+        if($check){
+            return $interview->templates;
+        }else{
+            return "You have not been Scheduled to interview this applicant, <br>
+            An interview note needs to be attached to you in order to use one";
+        }
+        
+    }
+    
 }
 
 function saveCompanyUploadedCv($cvs, $additional_data, $request)
@@ -579,7 +586,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 
     $options = (is_null($options)) ? 'upToJob' : $options;
 
-    Log::info(json_encode($cvs));
+    \Log::info(json_encode($cvs));
 
     switch ($options) {
         case 'upToJob':
@@ -603,7 +610,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
             $relocate = 0;
         }
 
-        Log::info($request->type);
+        \Log::info($request->type);
 
         switch ($request->type) {
             case 'single':
@@ -649,7 +656,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
             case 'bulk':
                 // $last_cv_upload_index++;
                 $emailKey = trim(strtolower($key));
-                Log::info('Bulk uploaid');
+                \Log::info('Bulk uploaid');
                 $last_cv = Cv::insertGetId(['first_name' => $key, 'email' => $emailKey . '@seamlesshrbulk.com', 'cv_file' => $cv, 'cv_source' => $cv_source]);
                 break;
 
@@ -1106,12 +1113,13 @@ function validateCustomFields($name,$attr,$field_type,$required,$request){
 
 function mixPanelRecord($nameOfPoint, $candidate)
 {
+    $RMSnameOfPoint = "RMS " . $nameOfPoint;
     $email = $candidate->email;
     $companyName = get_current_company()->name ?? null;
     $name = isset($candidate->first_name) ? $candidate->first_name . " " . $candidate->last_name : $candidate->name;
     $name = $name ?? $candidate->full_name ;
     $mp = Mixpanel::getInstance(config('mixpanel.key'));
-    $mp->track($nameOfPoint, ['email' => $email]);
+    $mp->track($RMSnameOfPoint, ['email' => $email]);
     $mp->identify($email);
     $mp->people->set(
         $candidate->email,

@@ -480,6 +480,11 @@ class JobsController extends Controller
         if($job_team_invite->is_cancelled == true) {
             return view('job.cancelled-job-invite', compact('job_team_invite', 'job', 'company'));
         }
+
+        if($job_team_invite->is_declined) {
+            $status = false;
+            return view('job.decline-invite', compact('company', 'job', 'status'));
+        }
         // this is when the user is creating password.. happens to only external team members on first access
         if ($request->isMethod('post')) {
             $validator = Validator::make($request->all(), [
@@ -3579,7 +3584,7 @@ class JobsController extends Controller
                 mixPanelRecord("Admin Role Updated successfully (Admin)", auth()->user());
                 return response()->json (['status' => true]);
             } else {
-                mixPanelRecord("Admin Creation failed (Admin)", auth()->user());
+                mixPanelRecord("Admin creation failed (Admin)", $user);
                 return response()->json([
                     'status' => false,
                     'message' => "you have to manage super admins from HRMS"

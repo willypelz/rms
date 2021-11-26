@@ -48,6 +48,7 @@
 		                    <a class="job-title font-weight-bold text-dark h5" href="{{ route('job-view', [$job['id'], str_slug($job['title']) ]) }}" target="_blank">
 		                        {{ ucwords( $job['title'] ) }}
 		                    </a>
+							<p>{{ ucwords($company->name) }}</p>
 		                </div>
 		                <div>
 		                </div>

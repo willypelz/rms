@@ -1586,9 +1586,8 @@ class JobApplicationsController extends Controller
             $interview = Interview::create($data);
 
             //attach interview notes to interview
-            foreach($request->interview_template_ids as $interview_template_id){
-                $interview->templates()->attach($interview_template_id);
-            }
+            $interviewer_template_ids = explode(",", $request->interview_template_ids[0]);
+            $interview->templates()->attach($interviewer_template_ids);
 
             // attach interviewers to interview
             $interviewer_ids = explode(",", $request->interviewer_id[0]);

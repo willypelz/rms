@@ -4,10 +4,6 @@ BASE_PATH=/var/www
 STAGING_PATH=${BASE_PATH}/staging
 APP_PATH=${BASE_PATH}/rms
 
-cd ${APP_PATH} 
-
-rm -rf .env.example .git .gitattributes .gitignore app appspec.yml artisan bitbucket-pipelines.yml bootstrap composer.json composer.lock composer.upgrade.json config database gulpfile.js notes package-lock.json package.json parser_py phpunit.xml readme.md resources scripts server.php solr tests vendor webpack.mix.js yarn.lock
-
 DEBUG_FILE=${APP_PATH}/storage/logs/debug-deploy.log
 touch ${DEBUG_FILE}
 

@@ -89,7 +89,7 @@
                                         <i class="fa fa-5x fa-list"></i>
                                         <br><br>
                                         <p class="lead">You have not created any options under this template. Start by
-                                            creating a one </p>
+                                            creating one </p>
                                         <p>
                                             @if((isset($user_role) && !is_null($user_role) && in_array($user_role->name, ['admin'])) || $is_super_admin)
                                             <a href="{{ route('interview-note-option-create', ['interview_template_id' => $interview_template_id]) }}"

@@ -9,8 +9,8 @@ class Candidate extends Authenticatable
 
     protected $fillable = [
         'first_name', 'last_name', 'email', 
-        'password', 'remember_token','token',
-        'is_from','company_id'
+        'password', 'remember_token','token','
+        is_from','company_id'
     ];
 
     public function getNameAttribute()

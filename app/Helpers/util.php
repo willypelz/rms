@@ -17,12 +17,7 @@ use App\Jobs\UploadApplicant;
 use Ixudra\Curl\Facades\Curl;
 use App\Models\JobApplication;
 use App\Models\PermissionRole;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 use App\Models\InterviewNoteTemplates;
 use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Types\Object_;
@@ -316,9 +311,9 @@ function get_application_statuses($status, $job_id = null, $statuses = [])
     $all = 0; //total number of results
 
     if (is_null($job_id))
-        $status_from_db = collect(DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`cv_id`=`cvs`.`id`"));
+        $status_from_db = collect(\DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`cv_id`=`cvs`.`id`"));
     else
-        $status_from_db = collect(DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`job_id` = " . $job_id . " and `job_applications`.`cv_id`=`cvs`.`id`"));
+        $status_from_db = collect(\DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`job_id` = " . $job_id . " and `job_applications`.`cv_id`=`cvs`.`id`"));
 
     $status_array2 = ['ALL' => $status_from_db->count()];
 
@@ -591,7 +586,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 
     $options = (is_null($options)) ? 'upToJob' : $options;
 
-    Log::info(json_encode($cvs));
+    \Log::info(json_encode($cvs));
 
     switch ($options) {
         case 'upToJob':
@@ -615,7 +610,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
             $relocate = 0;
         }
 
-        Log::info($request->type);
+        \Log::info($request->type);
 
         switch ($request->type) {
             case 'single':
@@ -661,7 +656,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
             case 'bulk':
                 // $last_cv_upload_index++;
                 $emailKey = trim(strtolower($key));
-                Log::info('Bulk uploaid');
+                \Log::info('Bulk uploaid');
                 $last_cv = Cv::insertGetId(['first_name' => $key, 'email' => $emailKey . '@seamlesshrbulk.com', 'cv_file' => $cv, 'cv_source' => $cv_source]);
                 break;
 
@@ -1118,13 +1113,12 @@ function validateCustomFields($name,$attr,$field_type,$required,$request){
 
 function mixPanelRecord($nameOfPoint, $candidate)
 {
-    $RMSnameOfPoint = "RMS " . $nameOfPoint;
     $email = $candidate->email;
     $companyName = get_current_company()->name ?? null;
     $name = isset($candidate->first_name) ? $candidate->first_name . " " . $candidate->last_name : $candidate->name;
     $name = $name ?? $candidate->full_name ;
     $mp = Mixpanel::getInstance(config('mixpanel.key'));
-    $mp->track($RMSnameOfPoint, ['email' => $email]);
+    $mp->track($nameOfPoint, ['email' => $email]);
     $mp->identify($email);
     $mp->people->set(
         $candidate->email,

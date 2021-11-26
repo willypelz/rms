@@ -32,7 +32,7 @@ class JobObserver
                 'causer_type' => 'Admin',
                 'properties' => '',
             ];
-            logAction($param);
+            logAction($param);            
         }
         if (isHrmsIntegrated()) {
             $company = Company::where('id', $job->company_id)->first();
@@ -53,8 +53,8 @@ class JobObserver
         } else {
             if ($job->is_for == 'both' || $job->is_for == 'internal') {
                 $employees = User::where('activated', 1)->get();
-                dispatch(new SendJobNotice($employees, $job)); 
-            }            
+                dispatch(new SendJobNotice($employees, $job));
+            }
         }
 
         

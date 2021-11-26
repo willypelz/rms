@@ -695,7 +695,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'job/apply/{jobID}/{slug}',['uses' => 'JobsController@jobApply', 'as' => 'job-apply']);
 
-    Route::get('fetch/schools', ['uses'=>'JobsController@fetchSchools', 'as' => 'ajax-fetch-schools']);
+    Route::post('fetch/schools', ['uses'=>'JobsController@fetchSchools', 'as' => 'ajax-fetch-schools']);
 
     Route::match(['get', 'post'], 'job/applied/{jobID}/{slug}',['uses' => 'JobsController@JobApplied', 'as' => 'job-applied']);
 

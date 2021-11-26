@@ -99,6 +99,7 @@
                                             $minimum_remuneration = $job->minimum_remuneration;
                                             $maximum_remuneration = $job->maximum_remuneration;
                                             $jobId = $job->id;
+                                            $checkCandidateStep = $checkCandidateStep;
                                         }
 
                                         if(($job == null) && isset($thirdPartyData)){
@@ -330,7 +331,7 @@
                                                 </label>
                                                 <select name="workflow_id"
                                                         id="workflowId"
-                                                        class="form-control"
+                                                        @if($checkCandidateStep) class="form-control hidden" @else class="form-control" @endif
                                                         style="width: 100%;"
                                                         required>
                                                     <option value="">- Select Workflow -</option>
@@ -338,8 +339,13 @@
                                                         <option {{ ( $workflowId == $workflow->id) ? 'selected="selected"' : '' }} value="{{ $workflow->id }}" {{ (collect(old('workflow_id'))->contains($workflow->id)) ? 'selected':'' }}>{{ $workflow->name }}</option>
                                                     @endforeach
                                                 </select>
+                                                @if($checkCandidateStep)
+                                                <input type="text" readonly="readonly" value="{{ $job->workflow->name }}" class="form-control">  
+                                                <span class="text-danger">Workflow can no longer be changed because applicants are already on this job</span>
+                                                @else
                                                 <div id="showWorkFlowSteps"></div>
                                                 <span><a data-toggle="modal" data-target="#workflowModal"><i class="fa fa-plus-circle"></i> Add workflow to the list</a></span>
+                                                @endif
 
 
                                             </div>

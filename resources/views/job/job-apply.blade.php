@@ -8,7 +8,7 @@
 
 
 @section('content')
-    <link href="{{ asset('css/select2.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/select3.css') }}" rel="stylesheet">
 
     <style type="text/css">
         .custom-field {
@@ -326,31 +326,25 @@
                                                                         <label for="job-title">School @if( isset($fields->school->is_required) && $fields->school->is_required )
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label>
-                                                                        <select class="form-control"
+                                                                        <select class="form-control select-school"
                                                                                 name="school"
-                                                                                id="select-school"
-                                                                                placeholder="Select your school..."
+                                                                                style="width: 253px;"
                                                                                 @if( $fields->school->is_required ) required @endif>
-
-                                                                            <option id="loading">Choose one</option>
-                                                                            <option value="others">Others</option>
-
+                                                                            <option value="others"></option>
                                                                         </select>
-                                                                        <span>Can't find your school? Select Others </span>
+                                                                        <span>Can't find your school? <a id="others" onclick="event.preventDefault()" href="#">Click Here</a></span>
+
+                                                                    </div>
+                                                               
+                                                                    <div class="col-sm-6 others hidden">
+                                                                        <label for="">
+                                                                            Others @if( isset($fields->school->is_required) && $fields->school->is_required )
+                                                                                <span class="text-danger">*</span>@endif
+                                                                        </label>
+                                                                        {{ Form::text('others',null, array('class'=>'form-control otherSchool',( isset($fields->school->is_required) && $fields->school->is_required  ) ? "" : "" )) }}
 
                                                                     </div>
                                                                 @endif
-
-                                                                
-                                                                <div class="col-sm-6 others hidden">
-                                                                    <label for="">
-                                                                        Others @if( isset($fields->school->is_required) && $fields->school->is_required )
-                                                                            <span class="text-danger">*</span>@endif
-                                                                    </label>
-                                                                    {{ Form::text('others',null, array('class'=>'form-control otherSchool',( isset($fields->school->is_required) && $fields->school->is_required  ) ? "" : "" )) }}
-
-                                                                </div>
-                                                                
                                                             </div>
                                                         </div>
 
@@ -719,7 +713,7 @@
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <script src="{{ asset('js/select2.min.js') }}"></script>
+    <script src="{{ asset('js/select3.min.js') }}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
     <script type="text/javascript">
@@ -732,7 +726,7 @@
                 yearRange: '-100:+0'
 
             });
-            $('.select2').select2();
+            $('.select2').select3();
 
             var country = $('#country');
             country.change(function () {
@@ -752,32 +746,53 @@
                 }
             })
 
-            $.ajax({
-                url: '{{route("ajax-fetch-schools")}}',
-                type: 'GET',
-                dataType: 'json',
-                success: function(data){
-                    let school = data; 
-                    $.each(school, function(key, modelName){
-                        let option = new Option(school[key].name, school[key].id);
-                        $(option).html();
-                        $('#select-school').append(option);
-                    });
-                    
-                    $('#select-school').selectize({
-                       sortField: 'text'
-                    });
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            $('.select-school').select3({
+                minimumInputLength: 3,
+                allowClear: true,
+                placeholder: {
+                    id: 'others', // the value of the option
+                    text: 'Select a School'
+                },
+                ajax:{
+                    url: '{{route("ajax-fetch-schools")}}',
+                    type: 'POST',
+                    dataType: 'json',
+                    delay:250,
+                    data: function (params) {
+                        return {
+                        _token: CSRF_TOKEN,
+                        search: params.term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                        results: response
+                        };
+                    }
+
                 }
             });
             
-            let school = $('#select-school');
-            school.change(function () {
+            let other = $('#others');
+            let school = $('.select-school');
+            other.click(function () {
                 if (school.val() == 'others') {
                     $('.others').removeClass('hidden');
                     $('.otherSchools').prop('required', true)
                 } else {
                     $('.others').addClass('hidden');
                     $('.otherSchools').prop('required', false)
+                }
+            });
+            school.change(function (){
+                if (school.val() != 'others') {
+                    $('.others').addClass('hidden');
+                    $('.otherSchools').prop('required', false)
+                } else {
+                    $('.others').removeClass('hidden');
+                    $('.otherSchools').prop('required', true)
+
                 }
             });
         });

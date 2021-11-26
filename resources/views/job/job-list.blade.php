@@ -408,7 +408,7 @@
                                             jobs_ids: {!! $job->id !!} }),
                                         success: function (response) {
 
-                                            console.log(response)
+                                            // console.log(response)
 
                                             response.forEach(function (v) {
                                                 $("#job-list-data-" + v.id).html(v.html_data);

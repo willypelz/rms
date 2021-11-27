@@ -81,4 +81,11 @@ class JobApplication extends Model
     {
         return $this->hasMany('App\Models\Message','job_application_id');
     }
+
+    public function testRequests()
+    {
+
+        return $this->hasMany('App\Models\TestRequest');
+
+    }
 }

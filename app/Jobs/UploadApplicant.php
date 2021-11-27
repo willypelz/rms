@@ -14,7 +14,7 @@ class UploadApplicant implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     
-    var $applicant;
+    var $applicant,$test_score;
 
     public $timeout = 2000;
     /**
@@ -27,6 +27,7 @@ class UploadApplicant implements ShouldQueue
         //$applicant refers to JobApplication table
         $this->applicant = $applicant;
         $job = $this->applicant->job;
+        $this->test_score = $this->applicant->testRequests;
     }
 
     /**

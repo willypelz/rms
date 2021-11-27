@@ -1854,7 +1854,7 @@ class JobsController extends Controller
 
         $content = '<ul class="list-group list-notify">';
         $shouldAppend = true;
-        $activities_pager = 10;
+        $activities_pager = 20;
         $isThereMoreActivities = false;
 
        

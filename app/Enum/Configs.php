@@ -14,5 +14,6 @@ abstract class Configs
 	const CAN_SWITCH_BETWEEN_COMPANY = "can-switch-across-companies";
 	const DEFAULT_ADMIN_NAME = "John Doe";
 	const DEFAULT_ADMIN_EMAIL =  "johndoe@seamlesshr.com";
+	const PAGINATION_NUMBER = 15;
 
 }

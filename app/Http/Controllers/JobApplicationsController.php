@@ -648,7 +648,7 @@ class JobApplicationsController extends Controller
             $solr_video_application_score = null;
         }
 
-        $filename = str_replace(['/','\'',' '], '', "Applicants Report - {$job->title}.csv");
+        $filename = str_replace(['/','\'',' ',','], '', "Applicants Report - {$job->title}.csv");
         // findOrMakeDirectory('exports');
   
         CommenceProcessingForApplicantsSpreedsheet::dispatch(get_current_company(),Auth::user(),$filename,$this->search_params, $request->jobId, @$request->status,

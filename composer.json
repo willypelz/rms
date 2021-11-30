@@ -91,7 +91,8 @@
             "php artisan clear-compiled"
         ],
         "post-update-cmd": [
-            "php artisan config:clear"
+            "php artisan config:clear",
+            "@php artisan horizon:publish --ansi"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

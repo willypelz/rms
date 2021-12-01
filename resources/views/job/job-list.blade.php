@@ -150,40 +150,6 @@
         </div>
     </div>
     <script>
-        // $(document).on('click', '.pagination a',function(e){
-        //     e.preventDefault();
-        //     var page = $(this).attr('href').split('page=')[1];
-        //     let url = '/my-jobs-content?page='+page
-        //     $.ajax({
-        //         type: 'GET',
-        //         url: url,
-        //         data: ({
-        //             rnd: Math.random() * 100000,
-        //             type: 'dashboard',
-        //             shouldPaginate: true,
-        //             page:page
-        //         }),
-        //         success: function (response) {
-        //             $('#DynamicContent').html(response.content);
-        //             $('#showAll').show();
-        //             // $('html, body').animate({
-        //             //     scrollTop: $("#activities").offset().top
-        //             // }, 2000);
-        //         },
-        //     });
-        // });
-
-        // $(window).on('hashchange', function() {
-        //     if (window.location.hash) {
-        //         var page = window.location.hash.replace('#', '');
-        //         if (page == Number.NaN || page <= 0) {
-        //             return false;
-        //         }else{
-        //             getData(page);
-        //         }
-        //     }
-        // });
-
         $(document).ready(function()
         {
             $(document).on('click', '.pagination a',function(event)

@@ -1062,7 +1062,8 @@ function isHrmsCompaniesSyncedWithRms(){
 }
 
 function saveFileFromHrms($file_name, $file_url){
-    File::put( public_path("uploads/CVs/$file_name"), $file_url);
+    $contents = file_get_contents($file_url);
+    File::put( public_path("uploads/CVs/$file_name"), $contents);
 }
 
 function validateCustomFields($name,$attr,$field_type,$required,$request){

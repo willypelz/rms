@@ -6,7 +6,8 @@
         $user_role = getCurrentLoggedInUserRole();
         $is_super_admin = auth()->user()->is_super_admin;
     @endphp
-    <section class="s-div">
+    <div id="page-refresh">
+     <section class="s-div">
         <div class="container">
             <div class="row no-pad">
                 <div class="col-xs-6 no-margin">
@@ -119,6 +120,7 @@
         </div>
         <h1></h1>
     </section>
+    </div>
 
     <div class="modal widemodal fade" id="deleteJob" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="false">
@@ -155,12 +157,9 @@
             $(document).on('click', '.pagination a',function(event)
             {
                 event.preventDefault();
-
                 $('li').removeClass('active');
                 $(this).parent('li').addClass('active');
-
                 var page=$(this).attr('href').split('page=')[1];
-
                 getData(page);
             });
 
@@ -179,7 +178,7 @@
                     type: "get",
                     datatype: "html"
                 }).done(function(data){
-                $("#tag_container").empty().html(data);
+                $("#page-refresh").empty().html(data)
                 // location.hash = page;
             }).fail(function(jqXHR, ajaxOptions, thrownError){
                 alert('No response from server');

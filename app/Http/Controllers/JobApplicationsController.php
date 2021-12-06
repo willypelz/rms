@@ -40,6 +40,7 @@ use App\Jobs\WorkflowStepWithEmailJob;
 use App\Models\InterviewNoteTemplates;
 use App\Jobs\AddApplicantToExportInBits;
 use Madnest\Madzipper\Facades\Madzipper;
+use App\Jobs\SaveSeamlessTestingResultJob;
 use App\Models\Message as CandidateMessage;
 use App\Jobs\CommenceProcessingForApplicantsCV;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
@@ -650,7 +651,7 @@ class JobApplicationsController extends Controller
             $solr_video_application_score = null;
         }
 
-        $filename = str_replace(['/','\'',' '], '', "Applicants Report - {$job->title} - {$job->id}.csv");
+        $filename = str_replace(['/','\'',' ',','], '', "Applicants Report - {$job->title} - {$job->id}.csv");
         // findOrMakeDirectory('exports');
   
         CommenceProcessingForApplicantsSpreedsheet::dispatch(get_current_company(),Auth::user(),$filename,$this->search_params, $request->jobId, @$request->status,
@@ -1487,21 +1488,7 @@ class JobApplicationsController extends Controller
             if ($validator->fails()) {
                 return back()->with('error',($validator->messages()));
             } else {
-                $app = JobApplication::with('job')->where('id', $request->job_application_id)->first();
-
-                save_activities('TEST_RESULT', @$app->job->id, $request->job_application_id);
-
-                TestRequest::where('job_application_id', $request->job_application_id)
-                    ->where('test_id', $request->test_id)
-                    ->update([
-                        'actual_start_time' => $request->actual_start_time,
-                        'actual_end_time' => $request->actual_end_time,
-                        'score' => $request->score,
-                        'result_comment' => @$request->result_comment,
-                        'status' => @$request->status
-                    ]);
-                SolrPackage::update_core();
-
+                SaveSeamlessTestingResultJob::dispatch($request->all());
             }
 
 

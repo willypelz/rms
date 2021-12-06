@@ -14,7 +14,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\UploadApplicantsToSor::class,
-        Commands\FixNullCvs::class
+        Commands\FixNullCvs::class,
+        Commands\ResyncTestScoreFromSeamlessTesting::class,
+        Commands\StreamFilesFromHRMS::class
     ];
 
     /**

@@ -74,9 +74,3 @@ pipelines:
           <<: *Code-Deploy
           name: Code Deploy
           deployment: MultitenancyV8
-    MultitenancyV8Dev:
-      - step: *Composer
-      - step:
-          <<: *Code-Deploy
-          name: Code Deploy
-          deployment: MultitenancyV8Dev

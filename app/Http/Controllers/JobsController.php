@@ -1665,7 +1665,7 @@ class JobsController extends Controller
             $jobs = $jobs->whereIn('id', $job_access);
         }
 
-        $jobs = $jobs->with('workflow.workflowSteps.users')->get();
+        $jobs = $jobs->with('workflow.workflowSteps.users')->paginate(Configs::PAGINATION_NUMBER);
         $active = 0;
         $suspended = 0;
         $deleted = 0;
@@ -1714,6 +1714,9 @@ class JobsController extends Controller
 
         @$q = @$request->q;
 
+		if ($request->shouldPaginate) {
+			return view('job.includes.jobs-partial', compact('jobs', 'draft', 'active', 'suspended', 'deleted', 'company', 'all_jobs', 'expired', 'q', 'private'));
+		}
         return view('job.job-list', compact('jobs', 'draft', 'active', 'suspended', 'deleted', 'company', 'all_jobs', 'expired', 'q', 'private'));
     }
 

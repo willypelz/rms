@@ -424,6 +424,7 @@
               <div class="clearfix"></div>
             </p>
             @endif
+            
             <p></p> --}}
             @if(isset($minimium_remuneration) && (is_null($minimium_remuneration[0]) && is_null ($minimium_remuneration[1])))
             <p class="border-bottom-thin text-muted">Minimium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>

@@ -40,6 +40,7 @@ use App\Jobs\WorkflowStepWithEmailJob;
 use App\Models\InterviewNoteTemplates;
 use App\Jobs\AddApplicantToExportInBits;
 use Madnest\Madzipper\Facades\Madzipper;
+use App\Jobs\SaveSeamlessTestingResultJob;
 use App\Models\Message as CandidateMessage;
 use App\Jobs\CommenceProcessingForApplicantsCV;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
@@ -385,7 +386,32 @@ class JobApplicationsController extends Controller
             $request->exp_years = [env('EXPERIENCE_START'), env('EXPERIENCE_END')];
             $solr_exp_years = null;
         }
-        
+
+        //If graduation grade  is available
+        if (@$request->graduation_grade) {
+            //2015-09-16T00:00:00Z
+            $solr_graduation_grade = [@$request->graduation_grade[0], @$request->graduation_grade[1]];
+        } else {
+            $request->graduation_grade = [env('GRADUATION_GRADE_START'), env('GRADUATION_GRADE_START')];
+            $solr_graduation_grade = null;
+        }
+
+        if (@$request->minimium_remuneration) {
+            //2015-09-16T00:00:00Z
+            $solr_minimium_remuneration = [@$request->minimium_remuneration[0], @$request->minimium_remuneration[1]];
+        } else {
+            $request->minimium_remuneration = [env('REMUNERATION_MINIMIUM'), env('REMUNERATION_MAXIMIUM')];
+            $solr_minimium_remuneration = null;
+        }
+
+        if (@$request->maximium_remuneration) {
+            //2015-09-16T00:00:00Z
+            $solr_maximium_remuneration = [@$request->maximium_remuneration[0], @$request->maximium_remuneration[1]];
+        } else {
+            $request->maximium_remuneration = [env('REMUNERATION_MINIMIUM'), env('REMUNERATION_MAXIMIUM')];
+            $solr_maximium_remuneration = null;
+        }
+
         //If test score is available
         if (@$request->test_score) {
             //2015-09-16T00:00:00Z
@@ -415,9 +441,11 @@ class JobApplicationsController extends Controller
             @$solr_age,
             @$solr_exp_years,
             @$solr_video_application_score,
-            @$solr_test_score
+            @$solr_test_score,
+            @$solr_graduation_grade,
+            @$solr_minimium_remuneration,
+            @$solr_maximium_remuneration,
         );
-
         $statuses = $job->workflow->workflowSteps()->pluck('slug');
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$request->jobID,
@@ -464,6 +492,9 @@ class JobApplicationsController extends Controller
                 'age' => @$request->age,
                 'exp_years' => @$request->exp_years,
                 'job' => $job,
+                'graduation_grade' => $request->graduation_grade,
+                'minimium_remuneration' => $request->minimium_remuneration,
+                'maximium_remuneration' => $request->maximium_remuneration,
                 'video_application_score' => @$request->video_application_score,
                 'test_score' => @$request->test_score
             ])->render();
@@ -479,11 +510,18 @@ class JobApplicationsController extends Controller
         } else {
             $age = [env('AGE_START'), env('AGE_END')];
             $exp_years = [env('EXPERIENCE_START'), env('EXPERIENCE_END')];
+            $graduation_grade = [ env('GRADUATION_GRADE_START'), env('GRADUATION_GRADE_END') ];
+            $minimium_remuneration = [ env('GRADUATION_GRADE_START'), env('GRADUATION_GRADE_END') ];
+            $maximium_remuneration = [ env('GRADUATION_GRADE_START'), env('GRADUATION_GRADE_END') ];
             $video_application_score = [env('VIDEO_APPLICATION_START'), env('VIDEO_APPLICATION_END')];
             $test_score = [40, 160];
             $check_both_permissions = checkForBothPermissions($jobID);
             return view('job.board.candidates',
-                compact('job',
+                compact(
+                    'minimium_remuneration',
+                    'maximium_remuneration',
+                    'graduation_grade',
+                    'job',
                     'active_tab',
                     'status',
                     'result',
@@ -611,7 +649,7 @@ class JobApplicationsController extends Controller
             $solr_video_application_score = null;
         }
 
-        $filename = str_replace(['/','\'',' '], '', "Applicants Report - {$job->title}.csv");
+        $filename = str_replace(['/','\'',' ',','], '', "Applicants Report - {$job->title}.csv");
         // findOrMakeDirectory('exports');
   
         CommenceProcessingForApplicantsSpreedsheet::dispatch(get_current_company(),Auth::user(),$filename,$this->search_params, $request->jobId, @$request->status,
@@ -1448,21 +1486,7 @@ class JobApplicationsController extends Controller
             if ($validator->fails()) {
                 return back()->with('error',($validator->messages()));
             } else {
-                $app = JobApplication::with('job')->where('id', $request->job_application_id)->first();
-
-                save_activities('TEST_RESULT', @$app->job->id, $request->job_application_id);
-
-                TestRequest::where('job_application_id', $request->job_application_id)
-                    ->where('test_id', $request->test_id)
-                    ->update([
-                        'actual_start_time' => $request->actual_start_time,
-                        'actual_end_time' => $request->actual_end_time,
-                        'score' => $request->score,
-                        'result_comment' => @$request->result_comment,
-                        'status' => @$request->status
-                    ]);
-                SolrPackage::update_core();
-
+                SaveSeamlessTestingResultJob::dispatch($request->all());
             }
 
 

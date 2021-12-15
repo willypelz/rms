@@ -39,7 +39,7 @@
                                         </td>
                                     
                                         <td>
-                                            {{ isset($audit->subject) ? $audit->subject->name : (isset($audit->candidateSubject) ? $audit->candidateSubject->name() : 'N/A')}}
+                                            {{ isset($audit->subject) ? $audit->subject->name : (isset($audit->candidateSubject) ? $audit->candidateSubject->getNameAttribute() : 'N/A')}}
                                         </td>
 
                                         <td>

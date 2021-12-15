@@ -425,7 +425,7 @@
             </p>
             @endif
             <p></p> --}}
-            @if(isset($minimium_remuneration) && (is_null($minimium_remuneration[0]) && is_null ($minimium_remuneration[1])))
+            @if(isset($minimium_remuneration) && (!is_null($minimium_remuneration[0]) && !is_null($minimium_remuneration[1])))
             <p class="border-bottom-thin text-muted">Minimium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
             <p class="text-center">
                 <input id="minimium_remuneration-slider" type="text" class="span2" value="" data-slider-min="{{ env('REMUNERATION_MINIMIUM') }}" data-slider-max="{{ env('REMUNERATION_MAXIMIUM') }}" data-slider-step="100" data-slider-value="@if(!is_null ($minimium_remuneration[0]) && !is_null ($minimium_remuneration[1])) {{ '['.$minimium_remuneration[0].','.$minimium_remuneration[1].']' }} @endif"/>
@@ -442,7 +442,7 @@
             </p>
             @endif
             <p></p>
-            @if(isset($maximium_remuneration) && (is_null($maximium_remuneration[0]) && is_null ($maximium_remuneration[1])))
+            @if(isset($maximium_remuneration) && (!is_null($maximium_remuneration[0]) && !is_null($maximium_remuneration[1])))
             <p class="border-bottom-thin text-muted">Maximium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
             <p class="text-center">
                 <input id="maximium_remuneration-slider" type="text" class="span2" value="" data-slider-min="{{ env('REMUNERATION_MINIMIUM') }}" data-slider-max="{{ env('REMUNERATION_MAXIMIUM') }}" data-slider-step="100" data-slider-value="@if(!is_null ($maximium_remuneration[0]) && !is_null ($maximium_remuneration[1])) {{ '['.$maximium_remuneration[0].','.$maximium_remuneration[1].']' }} @endif"/>

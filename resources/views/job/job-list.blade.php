@@ -151,38 +151,4 @@
             </div>
         </div>
     </div>
-    <script>
-        $(document).ready(function()
-        {
-            $(document).on('click', '.pagination a',function(event)
-            {
-                event.preventDefault();
-                $('li').removeClass('active');
-                $(this).parent('li').addClass('active');
-                var page=$(this).attr('href').split('page=')[1];
-                getData(page);
-            });
-
-        });
-
-        function getData(page){
-            var url = '/my-jobs-content';
-            $("#tag_container").empty().html("<h5 class=\"no-margin text-center text-success \">\n" +
-                "                <i class=\"fa fa-spinner fa-pulse\"></i> &nbsp;\n" +
-                "                Loading...\n" +
-                "            </h5>");
-
-            $.ajax(
-                {
-                    url: url + '?page=' + page,
-                    type: "get",
-                    datatype: "html"
-                }).done(function(data){
-                $("#page-refresh").empty().html(data)
-                // location.hash = page;
-            }).fail(function(jqXHR, ajaxOptions, thrownError){
-                alert('No response from server');
-            });
-        }
-    </script>
 @endsection

@@ -155,7 +155,9 @@
                 </div>
             </div>
 
+
             <script type="text/javascript">
+
                 function copyLink(text){
                     var $temp = $("<input>");
                     $("body").append($temp);

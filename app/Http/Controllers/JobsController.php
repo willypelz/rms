@@ -1667,7 +1667,7 @@ class JobsController extends Controller
             $jobs = $jobs->whereIn('id', $job_access);
         }
 
-        $jobs = $jobs->with('workflow.workflowSteps.users')->get();
+        $jobs = $jobs->with('workflow.workflowSteps.users')->paginate(Configs::PAGINATION_NUMBER);
         $active = 0;
         $suspended = 0;
         $deleted = 0;

@@ -502,6 +502,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 
     Route::get('/my-career-page', 'JobsController@MyCompany');
     Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
+    Route::get('my-jobs-content', ['uses' => 'JobsController@JobList', 'as' => 'job-list-content']);
 
 });
 /*********************************/

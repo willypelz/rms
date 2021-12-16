@@ -1667,7 +1667,7 @@ class JobsController extends Controller
             $jobs = $jobs->whereIn('id', $job_access);
         }
 
-        $jobs = $jobs->with('workflow.workflowSteps.users')->get();
+        $jobs = $jobs->with('workflow.workflowSteps.users')->paginate(Configs::PAGINATION_NUMBER);
         $active = 0;
         $suspended = 0;
         $deleted = 0;
@@ -1878,13 +1878,15 @@ class JobsController extends Controller
             // echo "activity count - " .$activities->count();
             if ($activities->count() > $activities_pager) {
                 $take = $activities->count() - $activities_pager;
-                $activities = $activities->skip($activities_pager)->take($take)->get();
+                $activities = $activities->skip($activities_pager)->take($take)->paginate(20);
             } else {
                 $activities = $activities->get();
                 $shouldAppend = false;
             }
 
-        } else if (@$request->allActivities == "false") {
+        }else if(isset($request->page)){
+            $activities = $activities->paginate(20);
+        }else if (@$request->allActivities == "false") {
             $isThereMoreActivities = $activities->count() > $activities_pager;
             $activities = $activities->take($activities_pager)->get();
             // $activities = $activities->skip( 20 * intval(@$request->activities_index) )->take(20)->get();
@@ -2220,6 +2222,10 @@ class JobsController extends Controller
 
 
         $content .= '</ul>';
+
+        if ((@$request->allActivities == "true" && $request->type == 'dashboard') || isset($request->page)){
+            $content .= $activities->links('vendor.pagination.simple-default');
+        }
 
         if (count($activities) == 0) {
             $content = '<div class="row">

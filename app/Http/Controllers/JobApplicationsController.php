@@ -1585,7 +1585,9 @@ class JobApplicationsController extends Controller
               'message' => 'required',
               'duration' => 'required',
               'interviewer_id' => 'required',
-              'interview_template_ids' => 'required|array',
+              'interview_template_ids' => 'required',
+          ],[
+            'interview_template_id.required' => 'Interview notes must be attached'
           ]);
           if ($validator->fails()) {
             return response()->json([

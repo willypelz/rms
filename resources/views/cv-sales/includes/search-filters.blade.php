@@ -548,7 +548,7 @@
 
             <p></p>
 
-           <p class="border-bottom-thin text-muted">Graduaution Grade<i class="fa fa-filter pull-right"></i></p>
+           <p class="border-bottom-thin text-muted">Graduation Grade<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
                   @php  $other_grade = 0;  
                    $index = 0  @endphp

@@ -111,7 +111,7 @@
       form_data.append('interviewer_id[]', $('#interviewer_id').val());
     }
     if ($('#interview_notes').val() == null) {
-      form_data.append('interview_template_ids[]', '');
+      form_data.append('interview_template_ids', '');
     } else {
       form_data.append('interview_template_ids[]', $('#interview_notes').val());
     }

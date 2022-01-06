@@ -412,7 +412,7 @@
                  </p>
 
                 <p></p>
-            @if(isset($graduation_grade))
+            {{-- @if(isset($graduation_grade))
             <p class="border-bottom-thin text-muted">Graduation Grade<i class="glyphicon glyphicon-birthday pull-right"></i></p>
             <p class="text-center">
                 <input id="graduation_grade-slider" type="text" class="span2" value="" data-slider-min="{{ env('GRADUATION_GRADE_START') }}" data-slider-max="{{ env('GRADUATION_GRADE_END') }}" data-slider-step="1" data-slider-value="@if(!is_null ($graduation_grade[0]) && !is_null ($graduation_grade[1])) {{ '['.$graduation_grade[0].','.$graduation_grade[1].']' }} @endif"/>
@@ -424,8 +424,8 @@
               <div class="clearfix"></div>
             </p>
             @endif
-            <p></p>
-            @if(isset($minimium_remuneration))
+            <p></p> --}}
+            @if(isset($minimium_remuneration) && (!is_null($minimium_remuneration[0]) && !is_null($minimium_remuneration[1])))
             <p class="border-bottom-thin text-muted">Minimium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
             <p class="text-center">
                 <input id="minimium_remuneration-slider" type="text" class="span2" value="" data-slider-min="{{ env('REMUNERATION_MINIMIUM') }}" data-slider-max="{{ env('REMUNERATION_MAXIMIUM') }}" data-slider-step="100" data-slider-value="@if(!is_null ($minimium_remuneration[0]) && !is_null ($minimium_remuneration[1])) {{ '['.$minimium_remuneration[0].','.$minimium_remuneration[1].']' }} @endif"/>
@@ -442,7 +442,7 @@
             </p>
             @endif
             <p></p>
-            @if(isset($maximium_remuneration))
+            @if(isset($maximium_remuneration) && (!is_null($maximium_remuneration[0]) && !is_null($maximium_remuneration[1])))
             <p class="border-bottom-thin text-muted">Maximium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
             <p class="text-center">
                 <input id="maximium_remuneration-slider" type="text" class="span2" value="" data-slider-min="{{ env('REMUNERATION_MINIMIUM') }}" data-slider-max="{{ env('REMUNERATION_MAXIMIUM') }}" data-slider-step="100" data-slider-value="@if(!is_null ($maximium_remuneration[0]) && !is_null ($maximium_remuneration[1])) {{ '['.$maximium_remuneration[0].','.$maximium_remuneration[1].']' }} @endif"/>
@@ -545,7 +545,7 @@
 
             <p></p>
 
-           <p class="border-bottom-thin text-muted">Grade<i class="fa fa-filter pull-right"></i></p>
+           <p class="border-bottom-thin text-muted">Graduation Grade<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
                   @php  $other_grade = 0;  
                    $index = 0  @endphp

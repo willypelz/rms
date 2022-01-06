@@ -72,7 +72,7 @@
 
                 <div class="col-xs-8">
 
-                    <div class="page no-rad-btn">
+                    <div class="page no-rad-btn" id="activities">
 
 
                         <div class="row">
@@ -95,7 +95,7 @@
                                     <div id="act_loader"
                                          style="display:none">{!! preloader() !!}</div>
                                     <div class="alert alert-danger" id="errorShowMoreActivities" style="display:none"></div>
-                                    <button onclick="getCon(true); activities_index++"
+                                    <button id="showMore" onclick="getCon(true); activities_index++"
                                             class="btn btn-default">Show more activities 
                                     </button>
                                 </div>
@@ -221,6 +221,7 @@
                 success: function (response) {
                     if (allActivities && (response.shouldAppend)) {
                         $('#ActivityContent').append(response.content);
+                        $('#showMore').hide();
                     } else {
                         $('#ActivityContent').html(response.content);
                     }
@@ -236,5 +237,30 @@
         $("#errorShowMoreActivities").show();
         return ;
     }
+
+    $(document).on('click', '.pagination a',function(e){
+        e.preventDefault();
+        var page = $(this).attr('href').split('page=')[1];
+        let url = '/job/activities-content?page='+page
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data: ({
+                rnd: Math.random() * 100000,
+                type: 'dashboard',
+                allActivities: false,
+                activities_index: activities_index,
+                page:page
+            }),
+            success: function (response) {
+                $('#ActivityContent').html(response.content);
+                $('#showAll').show();
+                $('html, body').animate({
+                    scrollTop: $("#activities").offset().top
+                }, 2000);
+            },
+        });
+        
+    })
     </script>
 @endsection

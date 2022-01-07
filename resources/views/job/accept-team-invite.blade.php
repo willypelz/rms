@@ -17,7 +17,7 @@
                         <div class="">
                             <div class="row">
                                 <div class="col-sm-12 text-center">
-                                    <h4 class="text-brandon l-sp-5 text-uppercase">Job Team Accept</h4>
+                                    <h4 class="text-brandon l-sp-5 text-uppercase">WELCOME TO THE JOB TEAM</h4>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>

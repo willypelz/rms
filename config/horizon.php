@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Str;
 
 return [
 
@@ -39,7 +40,7 @@ return [
     |
     */
 
-    'use' => 'default',
+    'use' => 'horizon',
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +53,8 @@ return [
     |
     */
 
-    'prefix' => env('HORIZON_PREFIX', 'horizon:'),
+    'prefix' => env('HORIZON_PREFIX', 'horizon:' . env('APP_NAME', 'laravel'), '_').'_database_' . env('DB_DATABASE', 'forge'),
+
 
     /*
     |--------------------------------------------------------------------------
@@ -127,7 +129,7 @@ return [
     |
     */
 
-    'memory_limit' => 64,
+    'memory_limit' => 1024,
 
     /*
     |--------------------------------------------------------------------------
@@ -142,39 +144,51 @@ return [
 
     'environments' => [
         'production' => [
-            'supervisor-1-'.env('DB_DATABASE') => [
+            'supervisor-1' => [
                 'connection' => 'redis',
                 'queue' => ['default', 'solr'],
                 'balance' => 'auto',
                 'minProcesses' => env('HORIZON_PROCESS_MIN', 1),
                 'maxProcesses' => env('HORIZON_PROCESS_MAX', 10),
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
                 'tries' => 1,
+                'timeout' => 100
             ],
-            'supervisor-2-'.env('DB_DATABASE') => [
+            'supervisor-2' => [
                 'connection' => 'redis',
-                'queue' => ['default', 'export'],
-                'balance' => 'auto',
+                'queue' => ['export', 'default'],
+                'balance' => 'false',
                 'minProcesses' => env('HORIZON_PROCESS_MIN', 1),
                 'maxProcesses' => env('HORIZON_PROCESS_MAX', 1),
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
                 'tries' => 1,
+                'timeout' => 900
             ],
         ],
         'local' => [
-            'supervisor-1-'.env('DB_DATABASE') => [
+            'supervisor-1' => [
                 'connection' => 'redis',
                 'queue' => ['default', 'solr'],
                 'balance' => 'auto',
                 'minProcesses' => env('HORIZON_PROCESS_MIN', 1),
                 'maxProcesses' => env('HORIZON_PROCESS_MAX', 10),
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
                 'tries' => 1,
+                'timeout' => 100
             ],
-            'supervisor-2-'.env('DB_DATABASE') => [
+            'supervisor-2' => [
                 'connection' => 'redis',
-                'queue' => ['default', 'export'],
-                'balance' => 'auto',
+                'queue' => ['export', 'default'],
+                'balance' => 'false',
                 'minProcesses' => env('HORIZON_PROCESS_MIN', 1),
                 'maxProcesses' => env('HORIZON_PROCESS_MAX', 1),
+                'balanceMaxShift' => 1,
+                'balanceCooldown' => 3,
                 'tries' => 1,
+                'timeout' => 900
             ],
         ],
     ],

@@ -87,7 +87,7 @@
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
-            "php artisan clear-compiled",
+            "@php artisan clear-compiled",
             "@php artisan config:clear",
             "@php artisan horizon:publish --ansi",
             "@php artisan telescope:publish --ansi",

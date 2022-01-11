@@ -3501,7 +3501,10 @@ class JobsController extends Controller
             }
 
           seamlessSave(Configs::COMPANY_MODEL,  $collect->toArray(), $request->company_id);
-          $envSettings = SystemSetting::updateOrCreate(['key'=>'APP_LOGO','client_id'=>$request->clientId], ['value'=> url('/img/'.$logo)]);
+          $envSettings = SystemSetting::updateOrCreate(
+              ['key'=>'APP_LOGO','client_id'=>$request->clientId], 
+              ['value'=> url('/img/'. $collect['logo'])]
+            );
             if ($request->company_creation_page) return back()->with('success', "Company updated successfully.");
           return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
 	}

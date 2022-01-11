@@ -60,7 +60,7 @@ return [
 
         'redis' => [
             'driver'     => 'redis',
-            'connection' => 'default',
+            'connection' => 'queue',
             'queue'      => 'default',
             'expire'     => 60,
         ],

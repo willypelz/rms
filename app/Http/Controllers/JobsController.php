@@ -22,6 +22,7 @@ use App\Models\School;
 use App\Libraries\Solr;
 use App\Models\Company;
 use Alchemy\Zippy\Zippy;
+use App\Helpers\AlgoliaSearch;
 use App\Models\Invoices;
 use App\Models\JobBoard;
 use App\Models\Settings;
@@ -61,7 +62,12 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
 class JobsController extends Controller
 {
-    private $search_params = ['q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false, 'sort' => 'application_date+desc', 'grouped' => FALSE];
+    private $search_params = [
+        'q' => '*', 'row' => 20, 'start' => 0, 
+        'default_op' => 'AND', 'search_field' => 'text', 
+        'show_expired' => false, 'sort' => 'application_date+desc', 
+        'grouped' => FALSE 
+    ];
 
     protected $mailer;
     protected $settings;
@@ -1523,7 +1529,8 @@ class JobsController extends Controller
         }
 
         $myJobs = Job::getMyJobs();
-        $cv_array = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
+        $cv_array = AlgoliaSearch::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
+        // $cv_array = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
         if(!empty($cv_array)){
             $myFolders = array_unique(array_pluck($cv_array, 'cv_source'));
@@ -1748,7 +1755,8 @@ class JobsController extends Controller
 
         $myJobs = Job::getMyJobs();
 
-        $cv_arrayray = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
+        // $cv_arrayray = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
+        $cv_arrayray = AlgoliaSearch::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
 
         if(!empty($cv_array)){
@@ -1757,7 +1765,11 @@ class JobsController extends Controller
 
         mixPanelRecord("Job promote page accessed", auth()->user());
 
-        return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
+        return view('job.board.home', compact(
+            'subscribed_boards', 'job_id', 'job', 'active_tab', 
+            'company', 'approved_count', 'pending_count', 'myJobs', 
+            'myFolders', 'states', 'qualifications', 'grades'
+        ));
     }
 
     public function JobTeam($id, Request $request)
@@ -2247,7 +2259,8 @@ class JobsController extends Controller
 
         $active_tab = 'activities';
 
-        $result = SolrPackage::get_applicants($this->search_params, $id, '');
+        // $result = SolrPackage::get_applicants($this->search_params, $id, '');
+        $result = AlgoliaSearch::get_applicants($this->search_params, $id, '');
 
 
 
@@ -2294,7 +2307,8 @@ class JobsController extends Controller
         $job = Job::find($id);
         $active_tab = 'matching';
 
-        $result = SolrPackage::get_applicants($this->search_params, $id, '');
+        $result = AlgoliaSearch::get_applicants($this->search_params, $id, '');
+        // $result = SolrPackage::get_applicants($this->search_params, $id, '');
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id);
 

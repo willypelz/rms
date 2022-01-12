@@ -48,6 +48,7 @@ use App\Http\Requests\DownloadApplicantCvRequest;
 use App\Jobs\CommenceProcessingForInterviewNotes;
 use App\Imports\BulkImportOfApplicantsToWorkflowStage;
 use App\Exceptions\DownloadApplicantsInterviewException;
+use App\Helpers\AlgoliaSearch;
 use App\Jobs\CommenceProcessingForApplicantsSpreedsheet;
 use App\Http\Requests\DownloadApplicantSpreedsheetRequest;
 
@@ -434,7 +435,7 @@ class JobApplicationsController extends Controller
         }
 
 
-        $result = SolrPackage::get_applicants(
+        $result = AlgoliaSearch::get_applicants(
             $this->search_params,
             $request->jobID,
             @$request->status,
@@ -466,7 +467,7 @@ class JobApplicationsController extends Controller
             'filters' => $request->filter_query
         ])->render();
         $myJobs = Job::getMyJobs();
-        $all_my_cvs = SolrPackage::get_all_my_cvs($this->search_params, null,
+        $all_my_cvs = AlgoliaSearch::get_all_my_cvs($this->search_params, null,
         null)['response']['docs'];
         $myFolders = $all_my_cvs ? array_unique(array_pluck($all_my_cvs, 'cv_source')) : [];
 
@@ -586,6 +587,7 @@ class JobApplicationsController extends Controller
             $cand['job_title'] = [$applicant->job->title];
 
             App\Libraries\SolrPackage::create_new_document($cand);
+            // AlgoliaSearch::create_new_document($cand);
 
         }
 
@@ -853,7 +855,7 @@ class JobApplicationsController extends Controller
 
     public function JobListData(Request $request)
     {
-        $result = SolrPackage::get_applicants($this->search_params, $request->job_id, @$request->status);
+        $result = AlgoliaSearch::get_applicants($this->search_params, $request->job_id, @$request->status);
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$request->job_id,
             $statuses = $request->workflow_steps);
 
@@ -894,7 +896,7 @@ class JobApplicationsController extends Controller
                         }
                     ])->find($job_id);
 
-                    $result = SolrPackage::get_applicants($this->search_params, $job_id,
+                    $result = AlgoliaSearch::get_applicants($this->search_params, $job_id,
                         ''); // status parater value is formerly : @$request->status
                     $application_statuses = isset($result['facet_counts']) ? get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$job_id,
                         $statuses = $job->workflow->workflowSteps()->pluck('slug')) : [];
@@ -936,7 +938,7 @@ class JobApplicationsController extends Controller
                     }
                 ])->find($job_id);
 
-                $result = SolrPackage::get_applicants($this->search_params, $job_id,
+                $result = AlgoliaSearch::get_applicants($this->search_params, $job_id,
                     ''); // status parater value is formerly : @$request->status
 
 
@@ -961,7 +963,7 @@ class JobApplicationsController extends Controller
     public function JobViewData(Request $request)
     {
 
-        $result = SolrPackage::get_applicants($this->search_params, $request->job_id, @$request->status);
+        $result = AlgoliaSearch::get_applicants($this->search_params, $request->job_id, @$request->status);
         $solr_total_applicants = ($result['response']['numFound']);
         $matching = 10000;
 
@@ -1276,6 +1278,7 @@ class JobApplicationsController extends Controller
 
             $this->sendWorkflowStepNotification($request->app_ids, $stepId);
 
+            // AlgoliaSearch::update_core();
             SolrPackage::update_core();
 
             return ($JA) ? 'true' : 'false';

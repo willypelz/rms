@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Str;
 
 return [
 
@@ -70,7 +71,7 @@ return [
     |
     */
 
-    'connection' => null,
+    'connection' => 'session',
 
     /*
     |--------------------------------------------------------------------------

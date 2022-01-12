@@ -130,22 +130,42 @@ return [
         'client' => 'predis',
         'options'=>[
             'cluster' => env('REDIS_CLUSTER', 'predis'),
-            'prefix' => Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'.env('DB_DATABASE', 'forge'),
+            'prefix' => Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'. env('DB_DATABASE', 'forge'),
         ],
 
         'default' => [
-            'host' => env('REDIS_HOST', '127.0.0.1'),
-            'password' => env('REDIS_PASSWORD', null),
+            'host' =>  env('REDIS_HOST', '127.0.0.1'),
+            'password' =>  env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
-            'database' => env('REDIS_DB', 0),
+            'database' => env('REDIS_DB', 5),
         ],
         
         'cache' => [
-            'host' => env('REDIS_HOST', '127.0.0.1'),
+            'host' =>  env('REDIS_HOST', '127.0.0.1'),
+            'password' =>   env('REDIS_PASSWORD', null),
+            'port' => env('REDIS_PORT', 6379),
+            'database' => env('REDIS_CACHE_DB', 6),
+        ],
+
+        'session' => [
+            'host' =>  env('REDIS_HOST', '127.0.0.1'),
             'password' =>  env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
-            'database' => env('REDIS_CACHE_DB', 1),
+            'database' => env('REDIS_DB', 7),
+        ],
+        
+        'queue' => [
+            'host' =>  env('REDIS_HOST', '127.0.0.1'),
+            'password' =>   env('REDIS_PASSWORD', null),
+            'port' => env('REDIS_PORT', 6379),
+            'database' => env('REDIS_CACHE_DB', 8),
+        ],
+        
+        'horizon' => [
+            'host' =>  env('REDIS_HOST', '127.0.0.1'),
+            'password' =>   env('REDIS_PASSWORD', null),
+            'port' => env('REDIS_PORT', 6379),
+            'database' => env('REDIS_CACHE_DB', 9),
         ]
-
     ],
 ];

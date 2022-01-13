@@ -142,6 +142,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div id="job-list-data-{{ $job['id'] }}" class="job-items">
+{{--                                    @dd($job->workflow->workflowSteps)--}}
                                     @foreach($job->workflow->workflowSteps as $workflowStep)
                                         <div class="job-item">
                                                             <span class="number"> @if($workflowStep->name == 'All') - @else - @endif

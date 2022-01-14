@@ -136,12 +136,27 @@ class JobApplication extends Model
         $cand['hrms_location'] = $applicant->cv->hrms_location ?? null;
         $cand['hrms_length_of_stay'] = $applicant->cv->hrms_length_of_stay ?? null;
         $cand['edu_school'] = $applicant->cv->school->name ?? null;
+        $cand['specializations'] = $applicant->cv->specializations->pluck("name")->toArray() ?? null;
+        $cand['completed_nysc'] = ($applicant->cv->completed_nysc ?? null);
+        $cand['graduation_grade'] = (int)($applicant->cv->graduation_grade ?? null);
+        $cand['minimum_remuneration'] = (int) ($applicant->job->minimum_remuneration ?? null);
+        $cand['maximum_remuneration'] = (int) ($applicant->job->maximum_remuneration ?? null);
         //custom fields
         foreach ($this->custom_fields as $key => $value) {
             if ($value->form_field != null && isset($value->form_field->name) && isset($value->value)) {
                 $cand['custom_field_name'][] = str_slug($value->form_field->name, '_');
                 $cand['custom_field_value'][] = ($value->value ?? null);
             }
+        }
+        if (count($applicant->testRequests)) {
+            $applicant->testRequests->map(function ($score) use (&$cand) {
+                // $cand['test_id'][] = $score->test_id ?? null;
+                $cand['test_name'][] = $score->test_name ?? null;
+                $cand['test_owner'][] = $score->provider->name ?? null;
+                $cand['test_result_comment'][] = $score->result_comment ?? null;
+                $cand['test_score'][] = $score->score ?? null;
+                $cand['test_status'][] = $score->status ?? null;
+            });
         }
         return $cand;
     }

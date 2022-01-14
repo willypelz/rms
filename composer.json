@@ -8,6 +8,7 @@
         "php": "^7.3",
         "alchemy/zippy": "1.0.0",
         "algolia/algoliasearch-client-php": "^3.2",
+        "algolia/scout-extended": "^1.20",
         "arcanedev/log-viewer": "^8.0.0",
         "aws/aws-sdk-php": "~3.0",
         "barryvdh/laravel-dompdf": "^0.8.6",
@@ -75,7 +76,7 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeds/"
         }
     },
     "autoload-dev": {

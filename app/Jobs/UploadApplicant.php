@@ -86,8 +86,8 @@ class UploadApplicant implements ShouldQueue
             $cand['hrms_length_of_stay'] = $applicant->cv->hrms_length_of_stay ?? null;
             $cand['edu_school'] = $applicant->cv->school->name ?? null;
             $cand['specializations'] = $applicant->cv->specializations->pluck("name")->toArray() ?? null;
-            $cand['minimum_remuneration'] = (int) ($job->minimum_remuneration ?? null);
-            $cand['maximum_remuneration'] = (int) ($job->maximum_remuneration ?? null);
+            $cand['minimum_remuneration'] = (int) ($applicant->job->minimum_remuneration ?? null);
+            $cand['maximum_remuneration'] = (int) ($applicant->maximum_remuneration ?? null);
             $cand['completed_nysc'] = ($applicant->cv->completed_nysc ?? null);
             $cand['graduation_grade'] = (int)($applicant->cv->graduation_grade ?? null);
             if(count($this->test_score)){

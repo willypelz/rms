@@ -857,3 +857,5 @@ Route::group(['middleware' => 'web'], function () {
 Route::group(['prefix' => 'api/v2', 'namespace' => 'API'], function () {
     Route::get('rms-company-subsidiaries', ['uses' => 'SyncController@companyAndSubsidiaries', 'as' => 'rms-company-subsidiaries']);
 });
+
+// dd(env('ALGOLIA_SECRET'));

@@ -1,6 +1,7 @@
 <?php
 
 return [
+
     /*
     |--------------------------------------------------------------------------
     | Searchable Attributes
@@ -16,41 +17,22 @@ return [
     */
 
     'searchableAttributes' => [
-        'gender',
-        'last_company_worked',
-        'dob',
-        'cv_file',
-        'display_picture',
-        'years_of_experience',
-        'rank',
-        'state',
-        'first_name',
-        'last_name',
-        'headline',
-        'last_modified',
-        'grade',
-        'willing_to_relocate',
-        'email',
-        'last_position',
-        'cv_source',
-        'highest_qualification',
-        'marital_status',
-        'phone',
-        'state_of_origin',
-        'cover_note',
-        'application_date',
-        'application_modified',
-        'is_approved',
-        'application_status',
-        'job_title',
-        'course_of_study',
-        'school',
-        'applicant_type',
-        'hrms_grade',
-        'hrms_dept',
-        'hrms_location',
-        'hrms_length_of_stay',
-        'edu_school',
+        'gender', 'test_name', 'test_status',
+        'last_company_worked', 'test_score',
+        'dob', 'video_application_score',
+        'cv_file', 'custom_field_name', 'custom_field_value',
+        'display_picture', 'completed_nysc', 'minimum_remuneration',
+        'years_of_experience', 'maximum_remuneration',
+        'rank', 'specializations', 'state',
+        'first_name', 'last_name', 'headline', 'last_modified',
+        'grade', 'willing_to_relocate', 'email', 'last_position',
+        'cv_source', 'highest_qualification', 'marital_status',
+        'phone', 'state_of_origin', 'cover_note', 'application_date',
+        'application_modified', 'is_approved', 'application_status',
+        'job_title', 'course_of_study', 'school',
+        'applicant_type', 'hrms_grade', 'hrms_dept',
+        'hrms_location', 'hrms_length_of_stay', 'edu_school',
+        'folder_name', 'folder_type'
     ],
 
     /*
@@ -114,40 +96,7 @@ return [
     |
     */
 
-    'attributesForFaceting' => [
-        'custom_field_name',
-        'gender',
-        'marital_status',
-        'last_position',
-        'years_of_experience',
-        'state',
-        'state_of_origin',
-        'last_company_worked',
-        'last_company_worked',
-        'folder_name',
-        'folder_type',
-        'application_status',
-        'test_name',
-        'test_status',
-        'test_score',
-        'highest_qualification',
-        'willing_to_relocate',
-        'cv_source',
-        'video_application_score',
-        'custom_field_name',
-        'custom_field_value',
-        'grade',
-        'is_approved',
-        'applicant_type',
-        'edu_school',
-        'marital_status',
-        'state_of_origin',
-        'course_of_study',
-        'completed_nysc',
-        'minimum_remuneration',
-        'maximum_remuneration',
-        'specializations',
-    ],
+    'attributesForFaceting' => ['applicant_type'],
 
     /*
     |--------------------------------------------------------------------------
@@ -212,7 +161,7 @@ return [
 
     'distinct' => null,
     'attributeForDistinct' => null,
-    
+
     /*
     |--------------------------------------------------------------------------
     | Other Settings

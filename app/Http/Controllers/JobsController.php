@@ -2626,7 +2626,7 @@ class JobsController extends Controller
             $cv->last_name = $data['last_name'] ?? null;
             $cv->email = $data['email'] ?? null;
             $cv->phone = $data['phone'] ?? null;
-            
+
             if ($fields->cover_note->is_visible && isset($data['cover_note'])) {
                 $cv->headline = $data['cover_note'];
             }

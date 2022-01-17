@@ -9,26 +9,29 @@ class IsAdmin
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $excludedRole=null)
+    public function handle($request, Closure $next, $excludedRole = null)
     {
         $user = auth()->user();
-        if($user){
+
+        if ($user && !$user->roles->where('name', 'admin')->first()) {
             $shouldProceed = false;
-            if(is_null($excludedRole)){
+            if (is_null($excludedRole)) {
                 $shouldProceed = $user->isAdmin();
-            }else if ($excludedRole == "interviewer"){
+            } else if ($excludedRole == "interviewer") {
                 $shouldProceed = !$user->isInterviewer();
             }
-            return ((bool)$shouldProceed) ?  $next($request) : $this->isApiRequest($request);
+            return ((bool)$shouldProceed) ? $next($request) : $this->isApiRequest($request);
         }
+
         return $next($request);
     }
 
-    private function isApiRequest($request){
+    private function isApiRequest($request)
+    {
         if ($request->wantsJson() || $request->ajax()) {
             return response()->json([
                 'status' => false,

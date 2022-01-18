@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Helpers\AlgoliaSearch;
 use App\Libraries\Solr;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -110,5 +111,6 @@ class UploadApplicant implements ShouldQueue
             }
             info('commenced push to solr');
             SolrPackage::create_new_document($cand);
+            // AlgoliaSearch::create_new_document($cand);
     }
 }

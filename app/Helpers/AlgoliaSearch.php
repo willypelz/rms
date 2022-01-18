@@ -4,8 +4,11 @@ namespace App\Helpers;
 use App\Models\Job;
 use App\Models\JobApplication;
 
+use function PHPUnit\Framework\isNull;
+
 class AlgoliaSearch
 {
+
     public static function search_resume(array $data, array $additional = [])
     {
         extract($data);
@@ -14,10 +17,13 @@ class AlgoliaSearch
         $data = JobApplication::search($q, function ($algolia, $query, $options) use ($pageNumber) {
             $customOptions = [
                 'facets' => ['*'],
-                'paginationLimitedTo' => 100, // pagination count, we could make this a config
+                // 'paginationLimitedTo' => 100, // pagination count, we could make this a config
                 'page' => $pageNumber // used for paginating results
             ];
-            return $algolia->search($query, array_merge($options, $customOptions));
+            $newArray = array_merge($options, $customOptions);
+            unset($newArray['numericFilters']);
+            // dd(array_merge($options, $customOptions));
+            return $algolia->search($query, $newArray);
         });
         if ($additional['job_id'] ?? null) {
             $data = $data->where('job_id', $additional['job_id']);
@@ -40,6 +46,7 @@ class AlgoliaSearch
         //        dd($formatted);
         return $formatted;
     }
+
     public static function filterBetween($data, array $additionalData, string $field)
     {
         $from = "{$field}_from";
@@ -49,6 +56,7 @@ class AlgoliaSearch
         }
         return $data;
     }
+
     static function get_applicants(
         $data, $job_id, $status = "", $age = null, 
         $exp_years = null, $video_application_score = null, 
@@ -90,6 +98,7 @@ class AlgoliaSearch
         }
         return AlgoliaSearch::search_resume($data, $extra);
     }
+
     public static function createApplicationSchema(array $applications)
     {
         return collect($applications)->transform(function ($application) {
@@ -98,6 +107,7 @@ class AlgoliaSearch
             return $application;
         })->toArray();
     }
+
     public static function get_all_my_cvs($data, $age = null, $exp_years = null)
     {
         $job_ids = Job::getMyJobIds();
@@ -116,6 +126,7 @@ class AlgoliaSearch
         }
         return AlgoliaSearch::search_resume($data, $additional);
     }
+
     public static function get_saved_cvs($data)
     {
         $additional = [
@@ -124,6 +135,7 @@ class AlgoliaSearch
         ];
         return AlgoliaSearch::search_resume($data, $additional);
     }
+
     public static function get_interview_notes($data)
     {
         $additional = [
@@ -132,6 +144,7 @@ class AlgoliaSearch
         ];
         return AlgoliaSearch::search_resume($data, $additional);
     }
+
     function get_faceted_values($solr_arr)
     {
         $ret = array();
@@ -152,6 +165,7 @@ class AlgoliaSearch
         ksort($ret);
         return $ret;
     }
+
     function get_faceted_dates($solr_arr)
     {
         $ret = array();
@@ -165,6 +179,7 @@ class AlgoliaSearch
         }
         return $ret;
     }
+
     public static function createSolrStyleResponse(array $response): array
     {
         $object = [];
@@ -196,24 +211,21 @@ class AlgoliaSearch
         ];
         return $object;
     }
+
     public static function handleFacetSchema(array $facets): array
     {
-        $facets['cv_source'] = AlgoliaSearch::convertFlatArrayToObject($facets['cv_source']);
-        $facets['highest_qualification'] = AlgoliaSearch::convertFlatArrayToObject($facets['highest_qualification']);
-        $facets['willing_to_relocate'] = AlgoliaSearch::convertFlatArrayToObject($facets['willing_to_relocate'] ?? []);
-        $facets['grade'] = AlgoliaSearch::convertFlatArrayToObject($facets['grade'] ?? []);
-        $facets['state'] = AlgoliaSearch::convertFlatArrayToObject($facets['state'] ?? []);
-        $facets['custom_field_name'] = AlgoliaSearch::convertFlatArrayToObject($facets['custom_field_name'] ?? []);
-        $facets['custom_field_value'] = AlgoliaSearch::convertFlatArrayToObject($facets['custom_field_value'] ?? []);
-        $facets['last_position'] = AlgoliaSearch::convertFlatArrayToObject($facets['last_position'] ?? []);
-        $facets['last_company_worked'] = AlgoliaSearch::convertFlatArrayToObject($facets['last_company_worked'] ?? []);
+        
+        foreach ($facets as $key => $facet) {
+            $facets[$key] =AlgoliaSearch::convertFlatArrayToObject($facet);
+        }
         return $facets;
     }
+
     public static function convertFlatArrayToObject(array $array): array
     {
         $converted = [];
         foreach ($array as $key => $item) {
-            $converted[] = [$key => $item];
+            $converted[$item] =  $key;
         }
         return $converted;
     }

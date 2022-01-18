@@ -25,8 +25,7 @@
     @foreach( @$result['response']['docs'] as $cv )
 
         <?php  $pic = default_color_picture($cv);
-        $current_app_index = array_search($jobID, $cv['job_id'] );
-        // dd($cv['application_id'], $current_app_index );
+        $current_app_index = (int)array_search($jobID, $cv['job_id']);
         $current_status = ($cv['application_status'][$current_app_index] == "ASSESSED") ? "TEST" : $cv['application_status'][$current_app_index];
         $check_both_permissions = checkForBothPermissions ($jobID);
         $is_stand_alone = env('RMS_STAND_ALONE');

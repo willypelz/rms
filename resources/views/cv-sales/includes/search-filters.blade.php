@@ -36,11 +36,11 @@
                         {{-- */ $index = 0  /* --}}
 
                         @foreach ($result['facet_counts']['facet_fields']['is_approved'] as $key => $is_approved)
-                            @if ($key % 2 == 0 && $result['facet_counts']['facet_fields']['is_approved'][$key + 1] != 0)
+                            @if ($key % 2 == 0 && ($result['facet_counts']['facet_fields']['is_approved'][$key + 1] ?? null != 0))
 
                                 @php $index = ($loop->iteration) @endphp
 
-                                {{-- */ $index++  /* --}}
+                                
                                 <div class="{{ $index ?? 0 > 4 ? 'see-more' : '' }}"><label
                                         class="normal"><input type="checkbox" class=""
                                             data-field="is_approved" data-value="{{ $is_approved }}">
@@ -52,7 +52,7 @@
                                     </label> <br></div>
                             @else
 
-                                {{-- */ @$other_willing_to_relocate += $result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ] /* --}}
+                                 {{-- */ @$other_willing_to_relocate += $result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ] /*  --}}
 
                             @endif
                         @endforeach
@@ -318,14 +318,15 @@
                             @endphp
                             {{-- */ $index = 0  /* --}}
                             @foreach (optional($result['facet_counts']['facet_fields'])['gender'] ?? [] as $key => $gender)
-                                @if( $key % 2 == 0  && optional(optional($result['facet_counts']['facet_fields'])['gender'])[ $key + 1 ] != 0  && ( strtolower($gender) == 'male' || strtolower($gender) == 'female' ))
+                            {{-- {{ dd($key)}} --}}
+                                @if(optional($result['facet_counts']['facet_fields']['gender'])[ $key ]  && ( strtolower($gender) == 'male' || strtolower($gender) == 'female' ))
 
                                     @php $genderArray[] = $gender @endphp
                                     {{-- */ $index++  /* --}}
                                     <div class="{{ $index ?? 0 > 4 ? 'see-more' : '' }}"><label
                                             class="normal"><input type="checkbox" class=""
                                                 data-field="gender" data-value="{{ $gender }}">
-                                            {{ ucwords($gender) . ' (' . $result['facet_counts']['facet_fields']['gender'][$key + 1] . ')' }}</label>
+                                            {{ ucwords($gender) . ' (' . $result['facet_counts']['facet_fields']['gender'][$key] . ')' }}</label>
                                         <br></div>
                                 @else
 
@@ -363,7 +364,9 @@
                                         <div class="{{ $index ?? 0 > 4 ? 'see-more' : '' }}"><label
                                                 class="normal"><input type="checkbox" class=""
                                                     data-field="cv_source" data-value="{{ $cv_source }}">
-                                                {{ ucwords($cv_source) . ' (' . $result['facet_counts']['facet_fields']['cv_source'][$key + 1] . ')' }}</label>
+                                                    {{ __('Let see')}}
+                                                {{ ucwords($cv_source) . ' (' . $result['facet_counts']['facet_fields']['cv_source'][$key + 1] . ')' }}
+                                            </label>
                                             <br></div>
                                     @else
 
@@ -602,12 +605,13 @@
                             @foreach ($result['facet_counts']['facet_fields']['highest_qualification'] as $key => $highest_qualification)
                                 @if ($key % 2 == 0 && optional($result['facet_counts']['facet_fields']['highest_qualification'])[$key + 1] != 0 && $highest_qualification != '' && $highest_qualification != '0')
 
-                                    @php  $index++  @endphp
+                                    {{-- @php  $index++  @endphp --}}
                                     <div class="{{ $index ?? 0 > 4 ? 'see-more' : '' }}"><label
                                             class="normal"><input type="checkbox" class=""
                                                 data-field="highest_qualification"
-                                                data-value="{{ $highest_qualification }}">
-                                            {{ ucwords($highest_qualification) . ' (' . $result['facet_counts']['facet_fields']['highest_qualification'][$key + 1] . ')' }}</label>
+                                                data-value="{{ json_encode($highest_qualification) }}">
+                                                {{ __('let see B.sc')}}
+                                            {{-- {{ ucwords($highest_qualification) . ' (' . $result['facet_counts']['facet_fields']['highest_qualification'][$key + 1] . ')' }}</label> --}}
                                         <br></div>
                                 @else
 
@@ -637,11 +641,12 @@
                             @foreach ($result['facet_counts']['facet_fields']['grade'] as $key => $grade)
                                 @if ($key % 2 == 0 && optional($result['facet_counts']['facet_fields']['grade'])[$key + 1] != 0 && $grade != '')
 
-                                    @php $index++  @endphp
+                                    {{-- @php $index++  @endphp --}}
                                     <div class="{{ $index ?? 0 > 4 ? 'see-more' : '' }}"><label
                                             class="normal"><input type="checkbox" class=""
-                                                data-field="grade" data-value="{{ $grade }}">
-                                            {{ ucwords(getGrade($grade)) . ' (' . $result['facet_counts']['facet_fields']['grade'][$key + 1] . ')' }}</label>
+                                                data-field="grade" data-value="{{ json_encode($grade) }}">
+                                                {{ __('let see Grade')}}
+                                            {{-- {{ ucwords(getGrade($grade)) . ' (' . $result['facet_counts']['facet_fields']['grade'][$key + 1] . ')' }}</label> --}}
                                         <br></div>
                                 @else
 
@@ -678,7 +683,7 @@
                                         <br></div>
                                 @else
 
-                                    @php@$other_state += isset($result['facet_counts']['facet_fields']['state'][$key + 1]) && is_numeric($result['facet_counts']['facet_fields']['state'][$key + 1]) ? $result['facet_counts']['facet_fields']['state'][$key + 1] : 0;
+                                    @php @$other_state += isset($result['facet_counts']['facet_fields']['state'][$key + 1]) && is_numeric($result['facet_counts']['facet_fields']['state'][$key + 1]) ? $result['facet_counts']['facet_fields']['state'][$key + 1] : 0;
                                         
                                     @endphp
 
@@ -701,9 +706,8 @@
                             <p class="border-bottom-thin text-muted">Applicant Type<i
                                     class="fa fa-filter pull-right"></i></p>
                             <div class="checkbox-inline">
-
                                 @foreach ($result['facet_counts']['facet_fields']['applicant_type'] as $key => $type)
-                                    @if ($key % 2 == 0 && $result['facet_counts']['facet_fields']['applicant_type'][$key + 1] != 0)
+                                    @if ($key % 2 == 0 && @$result['facet_counts']['facet_fields']['applicant_type'][$key + 1] != 0)
 
                                         <div class="{{ $index ?? 0 > 4 ? 'see-more' : '' }}">
                                             <label class="normal">
@@ -798,7 +802,7 @@
                         <div class="checkbox-inline">
                             @php$other_edu_school = 0;
                             $index = 0; @endphp
-                            {{-- @foreach ($result['facet_counts']['facet_fields']['last_position'] as $key => $last_position)
+                            @foreach ($result['facet_counts']['facet_fields']['last_position'] as $key => $last_position)
                                 @if ($key % 2 == 0 && $result['facet_counts']['facet_fields']['last_position'][$key + 1] != 0 && $last_position != '' && $last_position != '0')
 
                                     @php $index++  @endphp
@@ -812,7 +816,7 @@
                                     @php @$other_edu_school += isset($result['facet_counts']['facet_fields']['last_position'][$key + 1]) && is_numeric($result['facet_counts']['facet_fields']['last_position'][$key + 1]) ? $result['facet_counts']['facet_fields']['last_position'][$key + 1] : 0; @endphp
 
                                 @endif
-                            @endforeach --}}
+                            @endforeach 
 
                             <div class="hide"><label class="normal"><input type="checkbox"
                                         class=""> unspecified {{ ' (' . $other_edu_school . ')' }}</label>
@@ -934,7 +938,7 @@
                                 @php$other_specializations = 0;
                                 $index = 0; @endphp
                                 @foreach ($result['facet_counts']['facet_fields']['specializations'] as $key => $specializations)
-                                    @if ($key % 2 == 0 && $result['facet_counts']['facet_fields']['specializations'][$key + 1] != 0 && $specializations != '' && $specializations != '0')
+                                    @if ($key % 2 == 0 && @$result['facet_counts']['facet_fields']['specializations'][$key + 1] != 0 && $specializations != '' && $specializations != '0')
 
                                         @php $index++  @endphp
                                         <div class="{{ $index ?? 0 > 4 ? 'see-more' : '' }}"><label
@@ -1035,9 +1039,9 @@
                         <div class="checkbox-inline">
                             @php$other_exp_company = 0;
                             $index = 0; @endphp
-                            {{-- @foreach ($result['facet_counts']['facet_fields']['last_company_worked'] as $key => $last_company_worked)
+                            @foreach ($result['facet_counts']['facet_fields']['last_company_worked'] as $key => $last_company_worked)
                                 
-                                @if ($key % 2 == 0 && $result['facet_counts']['facet_fields']['last_company_worked'][$key + 1] != 0 && $last_company_worked != '' && $last_company_worked != '0')
+                                @if ($key % 2 == 0 && @$result['facet_counts']['facet_fields']['last_company_worked'][$key + 1] != 0 && $last_company_worked != '' && $last_company_worked != '0')
 
                                     @php $index++  @endphp
                                     <div class="{{ $index ?? 0 > 4 ? 'see-more' : '' }}"><label
@@ -1051,7 +1055,7 @@
                                     @php @$other_exp_company += isset($result['facet_counts']['facet_fields']['last_company_worked'][$key + 1]) && is_numeric($result['facet_counts']['facet_fields']['last_company_worked'][$key + 1]) ? $result['facet_counts']['facet_fields']['last_company_worked'][$key + 1] : 0; @endphp
 
                                 @endif
-                            @endforeach --}}
+                            @endforeach
 
                             <div class="hide"><label class="normal"><input type="checkbox"
                                         class=""> unspecified

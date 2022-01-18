@@ -447,9 +447,9 @@ class JobApplicationsController extends Controller
             @$solr_minimium_remuneration,
             @$solr_maximium_remuneration,
         );
-        $statuses = $job->workflow->workflowSteps()->pluck('slug');
 
-        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$request->jobID,
+        $statuses = $job->workflow->workflowSteps()->pluck('slug');
+        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'] ?? [],$request->jobID,
             $statuses);
 
         if (isset($request->status)) {
@@ -469,6 +469,7 @@ class JobApplicationsController extends Controller
         $myJobs = Job::getMyJobs();
         $all_my_cvs = AlgoliaSearch::get_all_my_cvs($this->search_params, null,
         null)['response']['docs'];
+        // dd($all_my_cvs);
         $myFolders = $all_my_cvs ? array_unique(array_pluck($all_my_cvs, 'cv_source')) : [];
 
         if (($key = array_search('Direct Application', $myFolders)) !== false) {
@@ -546,10 +547,6 @@ class JobApplicationsController extends Controller
 
     }
 
-
-
-
-
     public function oneApplicantData(Request $request){
 
         $applicants = JobApplication::with('job', 'cv')->find([68825, 68824, 68827]);
@@ -590,9 +587,6 @@ class JobApplicationsController extends Controller
             // AlgoliaSearch::create_new_document($cand);
 
         }
-
-        dd('DONE');
-
     }
 
     /**

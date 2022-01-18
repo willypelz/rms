@@ -2262,8 +2262,6 @@ class JobsController extends Controller
         // $result = SolrPackage::get_applicants($this->search_params, $id, '');
         $result = AlgoliaSearch::get_applicants($this->search_params, $id, '');
 
-
-
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id, $job->workflow->workflowSteps()->pluck('slug'));
 
         $applicant_funnel = [];

@@ -1,30 +1,29 @@
 <?php
 
-namespace App\Helpers;
-use App\Models\Job;
+namespace App\SearchEngine;
+
 use App\Models\JobApplication;
+use App\SearchEngine\SearchEngine;
+use App\Models\Job;
 
-use function PHPUnit\Framework\isNull;
-
-class AlgoliaSearch
+class AlgoliaSearch implements SearchEngine
 {
-
-    public static function search_resume(array $data, array $additional = [])
+    public function search_resume($data, $additional = [])
     {
         extract($data);
         $q = $q == '*' ? '' : $q;
         $pageNumber = $page ?? 1;
-        $data = JobApplication::search($q, function ($algolia, $query, $options) use ($pageNumber) {
-            $customOptions = [
-                'facets' => ['*'],
-                // 'paginationLimitedTo' => 100, // pagination count, we could make this a config
-                'page' => $pageNumber // used for paginating results
-            ];
-            $newArray = array_merge($options, $customOptions);
-            unset($newArray['numericFilters']);
-            // dd(array_merge($options, $customOptions));
-            return $algolia->search($query, $newArray);
-        });
+        $data = JobApplication::search(
+            $q, function ($algolia, $query, $options) use ($pageNumber) {
+                $customOptions = [
+                    'facets' => ['*'],
+                    'page' => $pageNumber 
+                ];
+                $newArray = array_merge($options, $customOptions);
+                unset($newArray['numericFilters']);
+                return $algolia->search($query, $newArray);
+            }
+        );
         if ($additional['job_id'] ?? null) {
             $data = $data->where('job_id', $additional['job_id']);
         }
@@ -39,13 +38,14 @@ class AlgoliaSearch
         }
         $filterBys = ['years_of_experience', 'grade', 'age'];
         foreach ($filterBys as $filterBy) {
-            $data = AlgoliaSearch::filterBetween($data, $additional, $filterBy);
+            $data = $this->filterBetween($data, $additional, $filterBy);
         }
-        $formatted = AlgoliaSearch::createSolrStyleResponse($data->raw());
+        $formatted = $this->createSolrStyleResponse($data->raw());
+        
         return $formatted;
     }
 
-    public static function filterBetween($data, array $additionalData, string $field)
+    public function filterBetween($data, array $additionalData, string $field)
     {
         $from = "{$field}_from";
         $to = "{$field}_to";
@@ -55,12 +55,18 @@ class AlgoliaSearch
         return $data;
     }
 
-    static function get_applicants(
-        $data, $job_id, $status = "", $age = null, 
-        $exp_years = null, $video_application_score = null, 
-        $test_score = null, $graduation_grade = null, 
-        $minimium_remuneration = null, $maximium_remuneration = null)
-    {
+    public function get_applicants(
+        $data,
+        $job_id,
+        $status = "",
+        $age = null,
+        $exp_years = null,
+        $video_application_score = null,
+        $test_score = null,
+        $graduation_grade = null,
+        $minimium_remuneration = null,
+        $maximium_remuneration = null
+    ) {
         $extra = [];
         $extra['job_id'] = $job_id;
         if ($status != "") {
@@ -94,19 +100,21 @@ class AlgoliaSearch
             $extra['test_score_from'] = $test_score[0];
             $extra['test_score_to'] = $test_score[1];
         }
-        return AlgoliaSearch::search_resume($data, $extra);
+        return $this->search_resume($data, $extra);
     }
 
-    public static function createApplicationSchema(array $applications)
+    public function createApplicationSchema(array $applications)
     {
-        return collect($applications)->transform(function ($application) {
-            $application['job_id'] = [$application['job_id']];
-            $application['application_id'] = [$application['application_id']];
-            return $application;
-        })->toArray();
+        return collect($applications)->transform(
+            function ($application) {
+                $application['job_id'] = [$application['job_id']];
+                $application['application_id'] = [$application['application_id']];
+                return $application;
+            }
+        )->toArray();
     }
 
-    public static function get_all_my_cvs($data, $age = null, $exp_years = null)
+    public function get_all_my_cvs($data, $age = null, $exp_years = null)
     {
         $job_ids = Job::getMyJobIds();
         $additional = [
@@ -122,63 +130,66 @@ class AlgoliaSearch
             $additional['years_of_experience_from'] = $exp_years[0];
             $additional['years_of_experience_to'] = $exp_years[1];
         }
-        return AlgoliaSearch::search_resume($data, $additional);
+        return $this->search_resume($data, $additional);
     }
 
-    public static function get_saved_cvs($data)
+    public function get_saved_cvs($data)
     {
         $additional = [
             'company_folder_id' => @get_current_company()->id,
             'folder_type' => 'purchased'
         ];
-        return AlgoliaSearch::search_resume($data, $additional);
+        return $this->search_resume($data, $additional);
     }
 
-    public static function get_interview_notes($data)
+    public function get_interview_notes($data)
     {
         $additional = [
             'company_folder_id' => @get_current_company()->id,
             'interview_recommendation' => '*'
         ];
-        return AlgoliaSearch::search_resume($data, $additional);
+        return $this->search_resume($data, $additional);
     }
 
-    function get_faceted_values($solr_arr)
+    public function get_faceted_values($solr_arr)
     {
         $ret = array();
         for ($i = 0; $i < count($solr_arr); $i = $i + 2) {
             $val = $solr_arr[$i];
             $count = $solr_arr[$i + 1];
-            if (empty($val))
+            if (empty($val)) {
                 $val = "Not Specified";
-            if (
-                strtolower($val) == 'choose' ||
-                strtolower(preg_replace('|[^a-z]|i', '', $val)) == 'choose' ||
-                strtolower($val) == 'select'
-            )
+            }
+            if (strtolower($val) == 'choose' || strtolower(preg_replace('|[^a-z]|i', '', $val)) == 'choose' 
+                || strtolower($val) == 'select'
+            ) {
                 $val = "Not Specified";
-            if ($count > 0)
+            }
+            if ($count > 0) {
                 $ret[$val] = $ret[$val] ? $count : $ret[$val] + $count;
+            }
         }
         ksort($ret);
         return $ret;
     }
 
-    function get_faceted_dates($solr_arr)
+    public function get_faceted_dates($solr_arr)
     {
         $ret = array();
         $index = 0;
-        if (empty($solr_arr))
+        if (empty($solr_arr)) {
             return $ret;
+        }
         foreach ($solr_arr as $key => $value) {
             $index++;
-            if ($value > 0 && ($key != 'gap') && ($key != 'start') && ($key != 'end'))
+            if ($value > 0 && ($key != 'gap') && ($key != 'start') && ($key != 'end')) {
                 $ret[$index . ' week(s) '] = $value;
+            }
         }
         return $ret;
     }
 
-    public static function createSolrStyleResponse(array $response): array
+    public function createSolrStyleResponse(array $response): array
     {
         $object = [];
         $object['responseHeader'] = [
@@ -198,11 +209,11 @@ class AlgoliaSearch
             "numFound" => count($response['hits']),
             "start" => 0,
             "numFoundExact" => true,
-            "docs" => AlgoliaSearch::createApplicationSchema($response['hits'])
+            "docs" => $this->createApplicationSchema($response['hits'])
         ];
         $object['facet_counts'] = [
             'facet_queries' => [],
-            'facet_fields' => AlgoliaSearch::handleFacetSchema($response['facets']),
+            'facet_fields' => $this->handleFacetSchema($response['facets']),
             'facet_ranges' => [],
             'facet_intervals' => [],
             'facet_heatmaps' => [],
@@ -210,21 +221,46 @@ class AlgoliaSearch
         return $object;
     }
 
-    public static function handleFacetSchema(array $facets): array
+    public function handleFacetSchema(array $facets): array
     {
-        
+
         foreach ($facets as $key => $facet) {
-            $facets[$key] =AlgoliaSearch::convertFlatArrayToObject($facet);
+            $facets[$key] = $this->convertFlatArrayToObject($facet);
         }
         return $facets;
     }
 
-    public static function convertFlatArrayToObject(array $array): array
+    public function convertFlatArrayToObject(array $array): array
     {
         $converted = [];
         foreach ($array as $key => $item) {
             $converted[$item] =  $key;
         }
         return $converted;
+    }
+
+    /**
+     * This function is not needed for algolia so we return void
+     * 
+     * @param $in_data 
+     * 
+     * @return void
+     */
+    public function create_new_document($in_data)
+    {
+        return [];
+    }
+
+    /**
+     * This function is not needed for algolia so we return void
+     * 
+     * @param $core 
+     * @param $command 
+     * 
+     * @return void
+     */
+    public function update_core($core = null, $command = "delta-import")
+    {
+        return [];
     }
 }

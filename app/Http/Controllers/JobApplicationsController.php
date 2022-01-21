@@ -26,11 +26,13 @@ use Illuminate\Mail\Mailer;
 use App\Models\WorkflowStep;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
+use App\Helpers\AlgoliaSearch;
 use App\Models\InterviewNotes;
 use App\Models\JobApplication;
 use Spatie\CalendarLinks\Link;
 use App\Jobs\BulkRequestTestJob;
 use App\Exports\ApplicantsExport;
+use App\SearchEngine\SearchEngine;
 use App\Models\InterviewNoteValues;
 use App\Exports\InterviewNoteExport;
 use App\Models\InterviewNoteOptions;
@@ -48,7 +50,6 @@ use App\Http\Requests\DownloadApplicantCvRequest;
 use App\Jobs\CommenceProcessingForInterviewNotes;
 use App\Imports\BulkImportOfApplicantsToWorkflowStage;
 use App\Exceptions\DownloadApplicantsInterviewException;
-use App\Helpers\AlgoliaSearch;
 use App\Jobs\CommenceProcessingForApplicantsSpreedsheet;
 use App\Http\Requests\DownloadApplicantSpreedsheetRequest;
 
@@ -57,6 +58,7 @@ use App\Http\Requests\DownloadApplicantSpreedsheetRequest;
 
 class JobApplicationsController extends Controller
 {
+
     private $search_params = [
         'q' => '*',
         'row' => 20,
@@ -69,57 +71,26 @@ class JobApplicationsController extends Controller
     ];
 
     private $states = [
-        'Lagos',
-        'Abia',
-        'Abuja',
-        'Adamawa',
-        'Akwa Ibom',
-        'Anambra',
-        'Bauchi',
-        'Bayelsa',
-        'Benue',
-        'Borno',
-        'Cross river',
-        'Delta',
-        'Edo',
-        'Ebonyi',
-        'Ekiti',
-        'Enugu',
-        'Gombe',
-        'Imo',
-        'Jigawa',
-        'Kaduna',
-        'Kano',
-        'Katsina',
-        'Kebbi',
-        'Kogi',
-        'Kwara',
-        'Niger',
-        'Ogun',
-        'Ondo',
-        'Osun',
-        'Oyo',
-        'Nassarawa',
-        'Plateau',
-        'Rivers',
-        'Sokoto',
-        'Taraba',
-        'Yobe',
+        'Lagos', 'Abia', 'Abuja',
+        'Adamawa', 'Akwa Ibom', 'Anambra',
+        'Bauchi', 'Bayelsa', 'Benue',
+        'Borno', 'Cross river', 'Delta',
+        'Edo', 'Ebonyi', 'Ekiti',
+        'Enugu', 'Gombe', 'Imo',
+        'Jigawa', 'Kaduna', 'Kano',
+        'Katsina', 'Kebbi', 'Kogi',
+        'Kwara', 'Niger', 'Ogun',
+        'Ondo', 'Osun', 'Oyo',
+        'Nassarawa', 'Plateau', 'Rivers',
+        'Sokoto', 'Taraba', 'Yobe',
         'Zamfara'
     ];
     private $qualifications = [
 
-        'MPhil / PhD',
-        'MBA / MSc',
-        'MBBS',
-        'B.Sc',
-        'HND',
-        'OND',
-        'N.C.E',
-        'Diploma',
-        'High School (S.S.C.E)',
-        'Vocational',
-        'Others'
+        'MPhil / PhD', 'MBA / MSc', 'MBBS',
+        'B.Sc', 'HND', 'OND',
+        'N.C.E', 'Diploma', 'High School (S.S.C.E)',
+        'Vocational', 'Others'
 
     ];
 
@@ -130,12 +101,14 @@ class JobApplicationsController extends Controller
 
     private $replyTo;
 
+    protected $searchEnginer;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Mailer $mailer)
+    public function __construct(Mailer $mailer, SearchEngine $searchEnginer)
     {
         $this->middleware('auth', [
             'except' => [
@@ -152,13 +125,8 @@ class JobApplicationsController extends Controller
             $this->replyTo = env('COMPANY_EMAIL');
         }
 
+        $this->searchEnginer = $searchEnginer;
         
-        /*$cv = (object) [ "first_name" => "Emmanuel", "last_name" => "Okeleji", "email" => "emmanuel@insidify.com" ];
-
-        $job = (object) [ "title" => "CEO", "company" => (object) [ "name" => "Insidify" ] ];
-        $this->mailer->send('emails.new.reject_email', ['cv' => $cv, 'job' => $job], function (Message $m) use ($cv) {
-                                $m->from(env('COMPANY_EMAIL'))->to($cv->email)->subject('Feedback');
-                            });*/
     }
 
     public function assess($appl_id)
@@ -434,8 +402,7 @@ class JobApplicationsController extends Controller
             $solr_video_application_score = null;
         }
 
-
-        $result = AlgoliaSearch::get_applicants(
+        $result = $this->searchEnginer->get_applicants(
             $this->search_params,
             $request->jobID,
             @$request->status,
@@ -449,8 +416,11 @@ class JobApplicationsController extends Controller
         );
 
         $statuses = $job->workflow->workflowSteps()->pluck('slug');
-        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'] ?? [],$request->jobID,
-            $statuses);
+        $application_statuses = get_application_statuses(
+            $result['facet_counts']['facet_fields']['application_status'] ?? [],
+            $request->jobID,
+            $statuses
+        );
 
         if (isset($request->status)) {
             $status = $request->status;
@@ -467,9 +437,11 @@ class JobApplicationsController extends Controller
             'filters' => $request->filter_query
         ])->render();
         $myJobs = Job::getMyJobs();
-        $all_my_cvs = AlgoliaSearch::get_all_my_cvs($this->search_params, null,
-        null)['response']['docs'];
-        // dd($all_my_cvs);
+
+        $all_my_cvs = $this->searchEnginer->get_all_my_cvs(
+            $this->search_params, null, null
+        )['response']['docs'];
+        
         $myFolders = $all_my_cvs ? array_unique(array_pluck($all_my_cvs, 'cv_source')) : [];
 
         if (($key = array_search('Direct Application', $myFolders)) !== false) {
@@ -583,8 +555,7 @@ class JobApplicationsController extends Controller
             $cand['application_status'] = [$applicant->status];
             $cand['job_title'] = [$applicant->job->title];
 
-            App\Libraries\SolrPackage::create_new_document($cand);
-            // AlgoliaSearch::create_new_document($cand);
+            $this->searchEnginer->create_new_document($cand);
 
         }
     }
@@ -849,7 +820,7 @@ class JobApplicationsController extends Controller
 
     public function JobListData(Request $request)
     {
-        $result = AlgoliaSearch::get_applicants($this->search_params, $request->job_id, @$request->status);
+        $result = $this->searchEnginer->get_applicants($this->search_params, $request->job_id, @$request->status);
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$request->job_id,
             $statuses = $request->workflow_steps);
 
@@ -890,9 +861,8 @@ class JobApplicationsController extends Controller
                         }
                     ])->find($job_id);
 
-                    $result = AlgoliaSearch::get_applicants($this->search_params, $job_id,
-                        ''); // status parater value is formerly : @$request->status
-                    $application_statuses = isset($result['facet_counts']) ? get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$job_id,
+                    $result = $this->searchEnginer->get_applicants($this->search_params, $job_id, ''); // status parater value is formerly : @$request->status
+                    $application_statuses = isset($result['facet_counts']) ? get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $job_id,
                         $statuses = $job->workflow->workflowSteps()->pluck('slug')) : [];
 
 
@@ -932,9 +902,7 @@ class JobApplicationsController extends Controller
                     }
                 ])->find($job_id);
 
-                $result = AlgoliaSearch::get_applicants($this->search_params, $job_id,
-                    ''); // status parater value is formerly : @$request->status
-
+                $result = $this->searchEnginer->get_applicants($this->search_params, $job_id, ''); 
 
                 $application_statuses = isset($result['facet_counts']) ? get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$job_id,
                     $statuses = $job->workflow->workflowSteps()->pluck('slug')) : [];
@@ -957,7 +925,7 @@ class JobApplicationsController extends Controller
     public function JobViewData(Request $request)
     {
 
-        $result = AlgoliaSearch::get_applicants($this->search_params, $request->job_id, @$request->status);
+        $result = $this->searchEnginer->get_applicants($this->search_params, $request->job_id, @$request->status);
         $solr_total_applicants = ($result['response']['numFound']);
         $matching = 10000;
 
@@ -1272,8 +1240,7 @@ class JobApplicationsController extends Controller
 
             $this->sendWorkflowStepNotification($request->app_ids, $stepId);
 
-            // AlgoliaSearch::update_core();
-            SolrPackage::update_core();
+            $this->searchEnginer->update_core();
 
             return ($JA) ? 'true' : 'false';
 

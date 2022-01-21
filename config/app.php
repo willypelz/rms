@@ -119,6 +119,12 @@ return [
 
     'log' => env('APP_LOG', 'daily'),
 
+    'searcher' => env('SEARCH_ENGINE', 'algolia'),
+
+    'solr_core' => env("SOLR_CORE"),
+
+    ''
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -178,9 +184,8 @@ return [
         Jenssegers\Agent\AgentServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
         Sentry\Laravel\ServiceProvider::class,
-
-                App\Providers\SolariumServiceProvider::class,
-
+        App\Providers\SolariumServiceProvider::class,
+        App\Providers\SearchEngineServiceProvider::class
     ],
 
     /*

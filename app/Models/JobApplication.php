@@ -80,7 +80,7 @@ class JobApplication extends Model
 
     public function messages()
     {
-        return $this->hasMany('App\Models\Message','job_application_id');
+        return $this->hasMany('App\Models\Message', 'job_application_id');
     }
 
     public function testRequests()
@@ -89,11 +89,13 @@ class JobApplication extends Model
         return $this->hasMany('App\Models\TestRequest');
 
     }
-
+    
     public function toSearchableArray()
     {
         $cand = [];
-        if (is_null($this->job)) return $cand;
+        if (is_null($this->job) ) {
+            return $cand;
+        } 
         $applicant = $this;
         $cand['gender'] = $applicant->cv->gender ?? null;
         $cand['last_company_worked'] = $applicant->cv->last_company_worked ?? null;
@@ -149,14 +151,16 @@ class JobApplication extends Model
             }
         }
         if (count($applicant->testRequests)) {
-            $applicant->testRequests->map(function ($score) use (&$cand) {
-                // $cand['test_id'][] = $score->test_id ?? null;
-                $cand['test_name'][] = $score->test_name ?? null;
-                $cand['test_owner'][] = $score->provider->name ?? null;
-                $cand['test_result_comment'][] = $score->result_comment ?? null;
-                $cand['test_score'][] = $score->score ?? null;
-                $cand['test_status'][] = $score->status ?? null;
-            });
+            $applicant->testRequests->map(
+                function ($score) use (&$cand) {
+                    // $cand['test_id'][] = $score->test_id ?? null;
+                    $cand['test_name'][] = $score->test_name ?? null;
+                    $cand['test_owner'][] = $score->provider->name ?? null;
+                    $cand['test_result_comment'][] = $score->result_comment ?? null;
+                    $cand['test_score'][] = $score->score ?? null;
+                    $cand['test_status'][] = $score->status ?? null;
+                }
+            );
         }
         return $cand;
     }

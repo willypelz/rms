@@ -35,6 +35,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::any('admin-accept-invite/{id}/{company_id}',['uses' => 'AdminsController@adminAcceptInvite', 'as' => 'admin-accept-invite']);
     Route::match( ["get", "post"],'jobs/post-a-job/{id?}', ['uses' => 'JobsController@createJob', 'as' => 'create-post-job']);
     Route::post('/third-party/entry', 'ThirdPartyEntryController@index');
+
+    Route::get('setup', 'SetupController@index');
+    Route::get('generate-key', 'SetupController@generateApiKey')->name('generate-key');
+    Route::get('save-setup', 'SetupController@saveSetup')->name('save-setup');
 });
 
 Route::post("/api/v1/delete-super-admin", "HrmsIntegrationController@deleteSuperAdmin")->name("delete-super-admin");

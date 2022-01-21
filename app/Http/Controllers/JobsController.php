@@ -793,7 +793,7 @@ class JobsController extends Controller
                 $jb->update($job_data);  
             }
 
-            if($request->specializations){
+            if($request->specializations) {
                 $job->specializations()->detach();
                 foreach ($request->specializations as $e) {
                     $job->specializations()->attach($e);

@@ -554,22 +554,27 @@ function get_interview_note_templates($appl_id)
     $appl = JobApplication::where('id', $appl_id)->first();
     $workflowStep = $appl->job->workflow->workflowSteps->where('slug', $appl->status)->first();
 
-    if($workflowStep->type == "interview"){
-        $user = User::find(auth()->id());
-        if(!$user->isInterviewer() && !$user->isCommenter()){
-            return InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
-        } 
-        $interview = Interview::where('job_application_id', $appl_id)->first();
-        
-        if($interview){
-            $check = $user->interviews->where('id',$interview->id)->first();
-            if($check){
-                return $interview->templates;
-            }
-            return "You have not been Scheduled to interview this applicant";
-        }
+    if($workflowStep->type != "interview"){
+        return "This Applicant has not been moved to an interview step.";
     }
-    return "This Applicant has not been moved to an interview step.";
+
+    $user = User::find(auth()->id());
+    if((!$user->isInterviewer() && !$user->isCommenter()) || $user->is_super_admin ){
+        return InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
+    } 
+
+    $interview = Interview::where('job_application_id', $appl_id)->first();
+    if($interview){
+        $check = $user->interviews->where('id',$interview->id)->first();
+        if($check){
+            return $interview->templates;
+        }else{
+            return "You have not been Scheduled to interview this applicant, <br>
+            An interview note needs to be attached to you in order to use one";
+        }
+        
+    }
+    
 }
 
 function saveCompanyUploadedCv($cvs, $additional_data, $request)
@@ -1057,7 +1062,8 @@ function isHrmsCompaniesSyncedWithRms(){
 }
 
 function saveFileFromHrms($file_name, $file_url){
-    File::put( public_path("uploads/CVs/$file_name"), $file_url);
+    $contents = file_get_contents($file_url);
+    File::put( public_path("uploads/CVs/$file_name"), $contents);
 }
 
 function validateCustomFields($name,$attr,$field_type,$required,$request){
@@ -1108,12 +1114,13 @@ function validateCustomFields($name,$attr,$field_type,$required,$request){
 
 function mixPanelRecord($nameOfPoint, $candidate)
 {
+    $RMSnameOfPoint = "RMS " . $nameOfPoint;
     $email = $candidate->email;
     $companyName = get_current_company()->name ?? null;
     $name = isset($candidate->first_name) ? $candidate->first_name . " " . $candidate->last_name : $candidate->name;
     $name = $name ?? $candidate->full_name ;
     $mp = Mixpanel::getInstance(config('mixpanel.key'));
-    $mp->track($nameOfPoint, ['email' => $email]);
+    $mp->track($RMSnameOfPoint, ['email' => $email]);
     $mp->identify($email);
     $mp->people->set(
         $candidate->email,

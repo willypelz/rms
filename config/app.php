@@ -119,6 +119,12 @@ return [
 
     'log' => env('APP_LOG', 'daily'),
 
+    'searcher' => env('SEARCH_ENGINE', 'algolia'),
+
+    'solr_core' => env("SOLR_CORE"),
+
+    ''
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -164,7 +170,9 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\HorizonServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TelescopeServiceProvider::class,
         Trebol\Entrust\EntrustServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
@@ -176,9 +184,8 @@ return [
         Jenssegers\Agent\AgentServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
         Sentry\Laravel\ServiceProvider::class,
-
-                App\Providers\SolariumServiceProvider::class,
-
+        App\Providers\SolariumServiceProvider::class,
+        App\Providers\SearchEngineServiceProvider::class
     ],
 
     /*

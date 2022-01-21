@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Helpers\AlgoliaSearch;
 use App\Libraries\Solr;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -14,7 +15,7 @@ class UploadApplicant implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     
-    var $applicant;
+    var $applicant,$test_score;
 
     public $timeout = 2000;
     /**
@@ -27,6 +28,7 @@ class UploadApplicant implements ShouldQueue
         //$applicant refers to JobApplication table
         $this->applicant = $applicant;
         $job = $this->applicant->job;
+        $this->test_score = $this->applicant->testRequests;
     }
 
     /**
@@ -85,10 +87,21 @@ class UploadApplicant implements ShouldQueue
             $cand['hrms_length_of_stay'] = $applicant->cv->hrms_length_of_stay ?? null;
             $cand['edu_school'] = $applicant->cv->school->name ?? null;
             $cand['specializations'] = $applicant->cv->specializations->pluck("name")->toArray() ?? null;
-            $cand['minimum_remuneration'] = (int) ($job->minimum_remuneration ?? null);
-            $cand['maximum_remuneration'] = (int) ($job->maximum_remuneration ?? null);
+            $cand['minimum_remuneration'] = (int) ($applicant->job->minimum_remuneration ?? null);
+            $cand['maximum_remuneration'] = (int) ($applicant->maximum_remuneration ?? null);
             $cand['completed_nysc'] = ($applicant->cv->completed_nysc ?? null);
             $cand['graduation_grade'] = (int)($applicant->cv->graduation_grade ?? null);
+            if(count($this->test_score)){
+                $this->test_score->map(function($score) use(&$cand){
+                    // $cand['test_id'][] = $score->test_id ?? null;
+                    $cand['test_name'][] = $score->test_name ?? null;
+                    $cand['test_owner'][] = $score->provider->name ?? null;
+                    $cand['test_result_comment'][] = $score->result_comment ?? null;
+                    $cand['test_score'][] = $score->score ?? null;
+                    $cand['test_status'][] = $score->status ?? null;
+                });
+            }
+            
             //custom fields
             foreach ($this->applicant->custom_fields as $key=>$value) {
                 if($value->form_field != null && isset($value->form_field->name) && isset($value->value)){
@@ -97,6 +110,6 @@ class UploadApplicant implements ShouldQueue
                 }
             }
             info('commenced push to solr');
-            SolrPackage::create_new_document($cand);
+        $this->searchEnginer->create_new_document($cand);
     }
 }

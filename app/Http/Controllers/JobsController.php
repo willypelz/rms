@@ -22,6 +22,7 @@ use App\Models\School;
 use App\Libraries\Solr;
 use App\Models\Company;
 use Alchemy\Zippy\Zippy;
+use App\Helpers\AlgoliaSearch;
 use App\Models\Invoices;
 use App\Models\JobBoard;
 use App\Models\Settings;
@@ -61,7 +62,12 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
 class JobsController extends Controller
 {
-    private $search_params = ['q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false, 'sort' => 'application_date+desc', 'grouped' => FALSE];
+    private $search_params = [
+        'q' => '*', 'row' => 20, 'start' => 0, 
+        'default_op' => 'AND', 'search_field' => 'text', 
+        'show_expired' => false, 'sort' => 'application_date+desc', 
+        'grouped' => FALSE 
+    ];
 
     protected $mailer;
     protected $settings;
@@ -787,7 +793,7 @@ class JobsController extends Controller
                 $jb->update($job_data);  
             }
 
-            if($request->specializations){
+            if($request->specializations) {
                 $job->specializations()->detach();
                 foreach ($request->specializations as $e) {
                     $job->specializations()->attach($e);
@@ -1329,12 +1335,6 @@ class JobsController extends Controller
                     $m->to($to)->subject('New Job initiated');
                 });
 
-                // $insidify_url = Curl::to("https://insidify.com/ss-post-job")
-                //             ->withData(  [ 'secret' => '1ns1d1fy', 'data' =>  [ 'job' => $job_data, 'specializations' => @$request->specializations, 'company' => get_current_company()->toArray(), 'action_link' => url('job/apply/'.$job->id.'/'.str_slug($job->title) ) ]  ]  )
-                //             // ->asJson()
-                //             ->post();
-                // $urls[1] = $insidify_url;
-                //
                 $urls[1] = "";
 
                 //Save job creation to activity
@@ -1433,17 +1433,7 @@ class JobsController extends Controller
 
         $subscribed_boards = $job->boards()->get()->toArray();
 
-        /*$approved_count = array_filter( array_pluck( $subscribed_boards, 'pivot.url' ), function(){
-
-                if(@$subscribed_board['url'] != null && @$subscribed_boards['url'] != '')
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-         } );*/
+        
         $approved_count = $pending_count = 0;
 
         foreach ($subscribed_boards as $key => $board) {
@@ -1456,7 +1446,6 @@ class JobsController extends Controller
         };
         $subscribed_boards_id = array_pluck($subscribed_boards, 'id');
 
-        // $all_job_boards = JobBoard::where('type', 'free')->get()->toArray();
         $all_job_boards = JobBoard::all()->toArray();
 
 
@@ -1499,7 +1488,6 @@ class JobsController extends Controller
 
     public function Share($id)
     {
-
         $user = Auth::user();
         $company = get_current_company();
 
@@ -1523,9 +1511,10 @@ class JobsController extends Controller
         }
 
         $myJobs = Job::getMyJobs();
-        $cv_array = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
-        if(!empty($cv_array)){
+        $cv_array = $this->searchEnginer->get_all_my_cvs($this->search_params, null, null)['response']['docs'];
+
+        if (!empty($cv_array)) {
             $myFolders = array_unique(array_pluck($cv_array, 'cv_source'));
 
             if (($key = array_search('Direct Application', $myFolders)) !== false) {
@@ -1748,8 +1737,7 @@ class JobsController extends Controller
 
         $myJobs = Job::getMyJobs();
 
-        $cv_arrayray = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
-
+        $cv_arrayray = $this->searchEnginer->get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
         if(!empty($cv_array)){
             $myFolders = array_unique(array_pluck($cv_array, 'cv_source'));
@@ -1757,7 +1745,11 @@ class JobsController extends Controller
 
         mixPanelRecord("Job promote page accessed", auth()->user());
 
-        return view('job.board.home', compact('subscribed_boards', 'job_id', 'job', 'active_tab', 'company', 'approved_count', 'pending_count', 'myJobs', 'myFolders', 'states', 'qualifications', 'grades'));
+        return view('job.board.home', compact(
+            'subscribed_boards', 'job_id', 'job', 'active_tab', 
+            'company', 'approved_count', 'pending_count', 'myJobs', 
+            'myFolders', 'states', 'qualifications', 'grades'
+        ));
     }
 
     public function JobTeam($id, Request $request)
@@ -2247,9 +2239,7 @@ class JobsController extends Controller
 
         $active_tab = 'activities';
 
-        $result = SolrPackage::get_applicants($this->search_params, $id, '');
-
-
+        $result = $this->searchEnginer->get_applicants($this->search_params, $id, '');
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id, $job->workflow->workflowSteps()->pluck('slug'));
 
@@ -2294,7 +2284,7 @@ class JobsController extends Controller
         $job = Job::find($id);
         $active_tab = 'matching';
 
-        $result = SolrPackage::get_applicants($this->search_params, $id, '');
+        $result = $this->searchEnginer->get_applicants($this->search_params, $id, '');
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id);
 

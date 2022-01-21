@@ -111,7 +111,7 @@
       form_data.append('interviewer_id[]', $('#interviewer_id').val());
     }
     if ($('#interview_notes').val() == null) {
-      form_data.append('interview_template_ids[]', '');
+      form_data.append('interview_template_ids', '');
     } else {
       form_data.append('interview_template_ids[]', $('#interview_notes').val());
     }
@@ -144,7 +144,7 @@
         } else {
           $('#viewModal').modal('toggle');
           $.growl.notice({
-            message: "You have scheduled " + $field.closest('.modal-body').find('.media-heading a').text() + " for an interview"
+            message: "You have scheduled " + $('.modal-body').find('.media-heading a').text() + " for an interview"
           });
           sh.reloadStatus();
           setTimeout(function() {

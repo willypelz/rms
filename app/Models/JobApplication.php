@@ -137,7 +137,7 @@ class JobApplication extends Model
         $cand['hrms_location'] = $applicant->cv->hrms_location ?? null;
         $cand['hrms_length_of_stay'] = $applicant->cv->hrms_length_of_stay ?? null;
         $cand['edu_school'] = $applicant->cv->school->name ?? null;
-        $cand['specializations'] = $applicant->cv->specializations->pluck("name")->toArray() ?? null;
+        $cand['specializations'] = optional($applicant->cv)->specializations ? $applicant->cv->specializations->pluck("name")->toArray() : null;
         $cand['completed_nysc'] = ($applicant->cv->completed_nysc ?? null);
         $cand['graduation_grade'] = (int)($applicant->cv->graduation_grade ?? null);
         $cand['minimum_remuneration'] = (int) ($applicant->job->minimum_remuneration ?? null);

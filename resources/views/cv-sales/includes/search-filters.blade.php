@@ -553,7 +553,7 @@
                   @php  $other_grade = 0;  
                    $index = 0  @endphp
                   @foreach( $result['facet_counts']['facet_fields']['grade'] as $key => $grade )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['grade'][ $key + 1 ] != 0 &&  $grade != ''   )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['grade'][ $key + 1 ] != 0 &&  $grade != ''   )
 
                         @php $index++  @endphp
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="grade" data-value="{{ $grade }}"> {{ ucwords( getGrade( $grade ) )." (".$result['facet_counts']['facet_fields']['grade'][ $key + 1 ].")" }}</label> <br></div>
@@ -771,7 +771,7 @@
                   @php $other_course_of_study = 0;
                    $index = 0  @endphp
                   @foreach( $result['facet_counts']['facet_fields']['course_of_study'] as $key => $course_of_study )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['course_of_study'][ $key + 1 ] != 0 &&  $course_of_study != ''  && $course_of_study != "0"  )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['course_of_study'][ $key + 1 ] != 0 &&  $course_of_study != ''  && $course_of_study != "0"  )
 
                         @php $index++  @endphp
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="course_of_study" data-value="{{ $course_of_study }}"> {{ ucwords( $course_of_study )." (".$result['facet_counts']['facet_fields']['course_of_study'][ $key + 1 ].")" }}</label> <br></div>
@@ -855,7 +855,7 @@
                    $index = 0  @endphp
                   @foreach( $result['facet_counts']['facet_fields']['edu_school'] as $key => $school )
 
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ] != 0 &&  $school != ''  && $school != "0"  )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ] != 0 &&  $school != ''  && $school != "0"  )
 
                         @php $index++  @endphp
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="edu_school" data-value="{{ $school }}"> {{ ucwords( $school )." (".$result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ].")" }}</label> <br></div>

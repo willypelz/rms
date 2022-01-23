@@ -25,7 +25,7 @@
     @foreach( @$result['response']['docs'] as $cv )
 
         <?php  $pic = default_color_picture($cv);
-        $current_app_index = array_search($jobID, $cv['job_id'] );
+        $current_app_index = (int) array_search($jobID, $cv['job_id'] );
         // dd($cv['application_id'], $current_app_index );
         $current_status = isset($cv['application_status'][$current_app_index]) ? (($cv['application_status'][$current_app_index] == "ASSESSED") ? "TEST" : $cv['application_status'][$current_app_index]) : null;
         $check_both_permissions = checkForBothPermissions ($jobID);

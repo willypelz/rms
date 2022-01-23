@@ -32,7 +32,7 @@
                   {{--*/ $index = 0  /*--}}
 
                   @foreach( $result['facet_counts']['facet_fields']['is_approved'] as $key => $is_approved )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['is_approved'][ $key + 1 ] != 0 )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['is_approved'][ $key + 1 ] != 0 )
 
                       @php $index = ($loop->iteration) @endphp
 
@@ -54,7 +54,7 @@
                   {{-- <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_willing_to_relocate.")" }}</label> <br></div> --}}
               </div>
 
-              @if($index > 4)
+              @if($index ?? 0 > 4)
                 <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
               @endif
 
@@ -285,7 +285,7 @@
                   @php  $other_gender = 0; $genderArray = [];  @endphp
                   {{--*/ $index = 0  /*--}}
                   @foreach( $result['facet_counts']['facet_fields']['gender'] as $key => $gender )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] != 0  && ( strtolower($gender) == 'male' || strtolower($gender) == 'female' ))
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['gender'][ $key + 1 ] != 0  && ( strtolower($gender) == 'male' || strtolower($gender) == 'female' ))
                         
                         @php $genderArray[] = $gender @endphp
                         {{--*/ $index++  /*--}}
@@ -306,7 +306,7 @@
                   @endif
               </div>
 
-              @if($index > 4)
+              @if($index ?? 0 > 4)
                 <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
               @endif
               <p></p>
@@ -339,7 +339,7 @@
                   <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_highest_qualification.")" }}</label> <br></div>
               </div>
 
-              @if($index > 4)
+              @if($index ?? 0 > 4)
                 <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
               @endif
 
@@ -525,7 +525,7 @@
                   @php $other_highest_qualificationl = 0;  
                    $index = 0  @endphp
                   @foreach( $result['facet_counts']['facet_fields']['highest_qualification'] as $key => $highest_qualification )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ] != 0 &&  $highest_qualification != ''  && $highest_qualification != "0"  )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ] != 0 &&  $highest_qualification != ''  && $highest_qualification != "0"  )
 
                         @php  $index++  @endphp
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="highest_qualification" data-value="{{ $highest_qualification }}"> {{ ucwords( $highest_qualification )." (".$result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ].")" }}</label> <br></div>
@@ -579,7 +579,7 @@
                    $index = 0  @endphp
 
                   @foreach( $result['facet_counts']['facet_fields']['state'] as $key => $state )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['state'][ $key + 1 ] != 0 )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['state'][ $key + 1 ] != 0 )
 
                       @php $index++  @endphp
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="state" data-value="{{ $state }}"> {{ ucwords( $state )." (".$result['facet_counts']['facet_fields']['state'][ $key + 1 ].")" }}</label> <br></div>
@@ -623,9 +623,9 @@
               @endif
 
 
-
-               @foreach ($result['facet_counts']['facet_fields']['custom_field_name'] as $key => $custom_field_name)
-                 @if($key % 2 == 0  && $result['facet_counts']['facet_fields']['custom_field_name'][ $key + 1 ] != 0)
+              @foreach ($result['facet_counts']['facet_fields']['custom_field_name'] as $key => $custom_field_name)
+              
+                 @if($key % 2 == 0  && @$result['facet_counts']['facet_fields']['custom_field_name'][ $key + 1 ] != 0)
                    <?php
                       $custom_field_name = explode('--', $custom_field_name);
                     ?>
@@ -657,7 +657,7 @@
                    $index = 0  @endphp
 
                   @foreach( $result['facet_counts']['facet_fields']['willing_to_relocate'] as $key => $willing_to_relocate )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ] != 0 )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ] != 0 )
 
                         @php $index++  @endphp
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="willing_to_relocate" data-value="{{ $willing_to_relocate }}">
@@ -799,7 +799,7 @@
                   @php $other_specializations = 0;
                    $index = 0  @endphp
                   @foreach( $result['facet_counts']['facet_fields']['specializations'] as $key => $specializations )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['specializations'][ $key + 1 ] != 0 &&  $specializations != ''  && $specializations != "0"  )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['specializations'][ $key + 1 ] != 0 &&  $specializations != ''  && $specializations != "0"  )
 
                         @php $index++  @endphp
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="specializations" data-value="{{ $specializations }}"> {{ ucwords( $specializations )." (".$result['facet_counts']['facet_fields']['specializations'][ $key + 1 ].")" }}</label> <br></div>
@@ -826,7 +826,7 @@
                 @php $other_edu_school = 0;
                  $index = 0  @endphp
                 @foreach( $result['facet_counts']['facet_fields']['completed_nysc'] as $key => $completed_nysc )
-                    @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['completed_nysc'][ $key + 1 ] != 0 &&  $completed_nysc != ''  && $completed_nysc != "0"  )
+                    @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['completed_nysc'][ $key + 1 ] != 0 &&  $completed_nysc != ''  && $completed_nysc != "0"  )
 
                       @php $index++  @endphp
                       <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="completed_nysc" data-value="{{ $completed_nysc }}"> {{ ucwords( $completed_nysc )." (".$result['facet_counts']['facet_fields']['completed_nysc'][ $key + 1 ].")" }}</label> <br></div>
@@ -883,7 +883,7 @@
                    $index = 0  @endphp
                   @foreach( $result['facet_counts']['facet_fields']['last_company_worked'] as $key => $last_company_worked )
                       {{-- {{dd($key)}} --}}
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ] != 0 &&  $last_company_worked != ''  && $last_company_worked != "0"  )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ] != 0 &&  $last_company_worked != ''  && $last_company_worked != "0"  )
 
                         @php $index++  @endphp
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="last_company_worked" data-value="{{ $last_company_worked }}"> {{ ucwords( $last_company_worked )." (".$result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ].")" }}</label> <br></div>

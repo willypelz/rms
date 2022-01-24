@@ -552,7 +552,7 @@ class JobController extends Controller
             );
         }
 
-        $company = Company::where('client_id', $request->clientId)->where('hrms_id', $request->company_id)->first();
+        $company = Company::with('client')->where('api_key', $req_header)->first();
 
         if (is_null($company)) {
             return response()->json([
@@ -563,14 +563,14 @@ class JobController extends Controller
             );
         }
 
-        if ($req_header != $company->api_key) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Invalid API Key',
-            ],
-                400
-            );
-        }
+        //        if ($req_header != $company->api_key) {
+//            return response()->json([
+//                'status' => false,
+//                'message' => 'Invalid API Key',
+//            ],
+//                400
+//            );
+//        }
 
         if (!$request->name || !$request->email) {
             return response()->json([
@@ -581,7 +581,7 @@ class JobController extends Controller
             );
         }
 
-        $user = User::whereName($request->name)->whereEmail($request->email)->where('client_id', $request->clientId)->first();
+        $user = User::whereName($request->name)->whereEmail($request->email)->where('client_id', $company->client->id)->first();
 
         if (!is_null($user)) {
             return response()->json([
@@ -602,7 +602,7 @@ class JobController extends Controller
         $user->is_internal = 1;
         $user->activated = 1;
         $user->is_super_admin = 1;
-        $user->client_id = $request->clientId;
+        $user->client_id = $company->client->id;
         $user->save();
 
         $role = Role::whereName('admin')->first()->id;

@@ -296,14 +296,20 @@ class LoginController extends Controller
       if(!$user){
         return ['status' => false, 'message' => 'User email does not exist'];
       }
-      $api_key = $user->companies()->where('api_key', $decoded_key)->first();
-      if($api_key == null){
+      $company = $user->companies()->where('api_key', $decoded_key)->first();
+      if($company == null){
           return ['status' => false, 'message' => 'API key not valid'];
       }else{
         $token =  Crypt::encrypt($user->email.time());
         $user->user_token = $token;
         $user->save();
-        return ['status' => true, 'message' => 'API key valid', 'user_id' => $user->id, 'token' => $token];
+        return [
+            'status' => true,
+            'message' => 'API key valid',
+            'user_id' => $user->id,
+            'token' => $token,
+            'company_id' => $company->id
+        ];
       }
 
     }
@@ -344,6 +350,11 @@ class LoginController extends Controller
           Auth::login($user);
           $user->user_token = '';
           $user->save();
+          $company = Company::find(base64_decode(\request()->company_id));
+
+          if ($company) {
+              session()->put('current_company_index', $company->id);
+          }
 
           return redirect($url);
         }else{

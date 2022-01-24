@@ -16,7 +16,6 @@ class Kernel extends ConsoleKernel
         Commands\UploadApplicantsToSor::class,
         Commands\FixNullCvs::class,
         Commands\ResyncTestScoreFromSeamlessTesting::class,
-        Commands\StreamFilesFromHRMS::class
     ];
 
     /**

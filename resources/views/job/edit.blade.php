@@ -158,12 +158,12 @@
                                                 <label for="job-loc">Make job private
                                                     <input type="checkbox" id="is_private" value="true" onchange="checkedPrivate()"
                                                            name="is_private" @if ($is_private == 1) checked @endif >
-                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="When a job posting is private, only candidate with the link to the job post can apply"></i>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="When a job posting is private, it will not be visible to anyone. Only candidates with the link to the job posting can apply"></i>
                                                 </label>
                                             </div>
                                             <div class="col-sm-6 attach_emails">                                        
                                                 <label for="job-title">Attach Emails
-                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Attach Emails to these private jobs"></i>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="If you attach emails, only candidates with the attached emails can apply for the private job"></i>
                                                 </label>
                                                 <input type="text"
                                                         name="attach_email"

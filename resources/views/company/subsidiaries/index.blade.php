@@ -18,7 +18,7 @@
                                 @include('layout.alerts')
 
                                 @permission("can-add-subsidiaries")
-                                @if(env('RMS_STAND_ALONE'))
+                                @if(getEnvData('RMS_STAND_ALONE') && @get_current_company()->sub_type != "STARTER")
                                     <a  href="{{ url('company/subsidiaries/create') }}"
                                          style="margin-bottom:15px"
                                          class="btn btn-primary pull-right"><i class="fa fa-plus-circle"></i> Add Subsidiary

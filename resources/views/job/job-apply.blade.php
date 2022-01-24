@@ -8,7 +8,7 @@
 
 
 @section('content')
-    <link href="{{ asset('css/select2.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/select3.css') }}" rel="stylesheet">
 
     <style type="text/css">
         .custom-field {
@@ -156,7 +156,7 @@
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label>
                                                                         <input id="job-loc" name="phone"
-                                                                               value="{{ @$last_cv->phone }}"
+                                                                               value="{{@$last_cv->phone ? @$last_cv->phone : old('phone')}}"
                                                                                @if( $fields->phone->is_required ) required
                                                                                @endif type="text" class="form-control">
                                                                     </div>
@@ -216,7 +216,7 @@
                                                                         <label for="job-title">gender @if( $fields->gender->is_required )
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label>
-                                                                        {{ Form::select('gender', array('Male' => 'Male', 'Female' => 'Female'), @$last_cv->gender, array('placeholder'=>'choose', 'class'=>'form-control', ( $fields->gender->is_required ) ? "required" : "" )) }}
+                                                                        {{ Form::select('gender', array('Male' => 'Male', 'Female' => 'Female'), @$last_cv->gender ? @$last_cv->gender : old('gender'), array('placeholder'=>'choose', 'class'=>'form-control', ( $fields->gender->is_required ) ? "required" : "" )) }}
 
                                                                     </div>
                                                                 @endif
@@ -227,7 +227,7 @@
                                                                             status @if( $fields->marital_status->is_required )
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label>
-                                                                        {{ Form::select('marital_status', array('Single' => 'Single', 'Married' => 'Married', 'Divorced'=>'Divorced', 'Separated'=>'Separated'), @$last_cv->marital_status, array('placeholder'=>'choose', 'class'=>'form-control', ( $fields->marital_status->is_required ) ? "required" : "" )) }}
+                                                                        {{ Form::select('marital_status', array('Single' => 'Single', 'Married' => 'Married', 'Divorced'=>'Divorced', 'Separated'=>'Separated'), @$last_cv->marital_status ? @$last_cv->marital_status : old('marital_status') , array('placeholder'=>'choose', 'class'=>'form-control', ( $fields->marital_status->is_required ) ? "required" : "" )) }}
 
                                                                     </div>
                                                                 @endif
@@ -238,7 +238,7 @@
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label><input id="datepicker2"
                                                                                        name="date_of_birth"
-                                                                                       value="{{ @$last_cv->date_of_birth }}"
+                                                                                       value="{{ @$last_cv->date_of_birth ? @$last_cv->date_of_birth : old('date_of_birth') }}"
                                                                                        type="text" class=" form-control"
                                                                                        @if( $fields->date_of_birth->is_required ) required @endif>
                                                                     </div>
@@ -259,7 +259,7 @@
                                                                             Qualifications @if( $fields->highest_qualification->is_required )
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label>
-                                                                        {{ Form::select('highest_qualification', $qualifications, @$last_cv->highest_qualification, array('placeholder'=>'choose', 'class'=>'form-control', ( $fields->highest_qualification->is_required ) ? "required" : "" )) }}
+                                                                        {{ Form::select('highest_qualification', $qualifications, @$last_cv->highest_qualification ? @$last_cv->highest_qualification : old('highest_qualification'), array('placeholder'=>'choose', 'class'=>'form-control', ( $fields->highest_qualification->is_required ) ? "required" : "" )) }}
 
                                                                     </div>
                                                                 @endif
@@ -277,7 +277,7 @@
                                                                                 @if( $fields->years_of_experience->is_required ) required @endif>
                                                                             <option>choose one</option>
                                                                             @for( $i = 0; $i <= 50; $i ++ )
-                                                                                <option value="{{ $i }}"
+                                                                                <option value="{{ $i }}" {{ (collect(old('years_of_experience'))->contains($i)) ? 'selected':'' }}
                                                                                         @if( @$last_cv->years_of_experience == $i ) selected="selected" @endif >{{ $i }}</option>
                                                                             @endfor
 
@@ -298,7 +298,7 @@
                                                                             Worked @if( $fields->last_company_worked->is_required )
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label>
-                                                                        {{ Form::text('last_company_worked', @$last_cv->last_company_worked, array('class'=>'form-control',  ( $fields->last_company_worked->is_required ) ? "required" : "" )) }}
+                                                                        {{ Form::text('last_company_worked', @$last_cv->last_company_worked ? @$last_cv->last_company_worked : old('last_company_worked'), array('class'=>'form-control',  ( $fields->last_company_worked->is_required ) ? "required" : "" )) }}
 
                                                                     </div>
                                                                 @endif
@@ -309,7 +309,7 @@
                                                                             Position @if( $fields->last_position->is_required )
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label>
-                                                                        {{ Form::text('last_position', @$last_cv->last_position, array('class'=>'form-control', ( $fields->last_position->is_required ) ? "required" : "" )) }}
+                                                                        {{ Form::text('last_position', @$last_cv->last_position ? @$last_cv->last_position : old('last_position'), array('class'=>'form-control', ( $fields->last_position->is_required ) ? "required" : "" )) }}
 
                                                                     </div>
                                                                 @endif
@@ -326,31 +326,25 @@
                                                                         <label for="job-title">School @if( isset($fields->school->is_required) && $fields->school->is_required )
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label>
-                                                                        <select class="form-control"
+                                                                        <select class="form-control select-school"
                                                                                 name="school"
-                                                                                id="select-school"
-                                                                                placeholder="Select your school..."
+                                                                                style="width: 253px;"
                                                                                 @if( $fields->school->is_required ) required @endif>
-
-                                                                            <option id="loading">Choose one</option>
-                                                                            <option value="others">Others</option>
-
+                                                                            <option value="others"></option>
                                                                         </select>
-                                                                        <span>Can't find your school? Select Others </span>
+                                                                        <span>Can't find your school? <a id="others" onclick="event.preventDefault()" href="#">Click Here</a></span>
+
+                                                                    </div>
+                                                               
+                                                                    <div class="col-sm-6 others hidden">
+                                                                        <label for="">
+                                                                            Others @if( isset($fields->school->is_required) && $fields->school->is_required )
+                                                                                <span class="text-danger">*</span>@endif
+                                                                        </label>
+                                                                        {{ Form::text('others',null, array('class'=>'form-control otherSchool',( isset($fields->school->is_required) && $fields->school->is_required  ) ? "" : "" )) }}
 
                                                                     </div>
                                                                 @endif
-
-                                                                
-                                                                <div class="col-sm-6 others hidden">
-                                                                    <label for="">
-                                                                        Others @if( isset($fields->school->is_required) && $fields->school->is_required )
-                                                                            <span class="text-danger">*</span>@endif
-                                                                    </label>
-                                                                    {{ Form::text('others',null, array('class'=>'form-control otherSchool',( isset($fields->school->is_required) && $fields->school->is_required  ) ? "" : "" )) }}
-
-                                                                </div>
-                                                                
                                                             </div>
                                                         </div>
 
@@ -363,7 +357,7 @@
                                                                             Course of Study @if( $fields->course_of_study->is_required )
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label>
-                                                                        {{ Form::text('course_of_study', @$last_cv->course_of_study, array('class'=>'form-control',  ( $fields->course_of_study->is_required ) ? "required" : "" )) }}
+                                                                        {{ Form::text('course_of_study', @$last_cv->course_of_study ? @$last_cv->course_of_study : old('course_of_study'), array('class'=>'form-control',  ( $fields->course_of_study->is_required ) ? "required" : "" )) }}
 
                                                                     </div>
                                                                 @endif
@@ -379,9 +373,9 @@
                                                                                 @if( $fields->completed_nysc->is_required ) required @endif>
                                                                             <option>--choose--</option>
                                                                             
-                                                                            <option value="yes"
+                                                                            <option {{ old('completed_nysc') == "yes" ? 'selected': '' }} value="yes"
                                                                                         @if( @$last_cv->completed_nysc == 1 ) selected="selected" @endif >Yes</option>
-                                                                            <option value="no"
+                                                                            <option {{ old('completed_nysc') == "no" ? 'selected': '' }} value="no"
                                                                                         @if( @$last_cv->completed_nysc == 0 ) selected="selected" @endif > No</option>
                                                                         
 
@@ -421,9 +415,9 @@
                                                                             relocate? @if( $fields->willing_to_relocate->is_required )
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label><br/>
-                                                                        <label>{{ Form::radio('willing_to_relocate', 'yes',  @$last_cv->willing_to_relocate, ( $fields->willing_to_relocate->is_required ) ? ["required"] : null) }}
+                                                                        <label>{{ Form::radio('willing_to_relocate', 'yes',  old('willing_to_relocate') == 'yes' ? old('willing_to_relocate') : @$last_cv->willing_to_relocate, ( $fields->willing_to_relocate->is_required ) ? ["required"] : null) }}
                                                                             Yes</label>
-                                                                        <label>{{ Form::radio('willing_to_relocate', 'no', @!$last_cv->willing_to_relocate, ( $fields->willing_to_relocate->is_required ) ? ["required"] : null) }}
+                                                                        <label>{{ Form::radio('willing_to_relocate', 'no',old('willing_to_relocate') == 'no' ? old('willing_to_relocate') : @!$last_cv->willing_to_relocate, ( $fields->willing_to_relocate->is_required ) ? ["required"] : null) }}
                                                                             No </label>
                                                                     </div>
                                                                 @endif
@@ -437,7 +431,7 @@
                                                                         <label for="job-title">Minimum Remuneration @if( $fields->remuneration->is_required )
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label>
-                                                                        {{ Form::number('minimum_remuneration', @$last_cv->minimum_remuneration, array('class'=>'form-control', 'min' => '0' ,( $fields->remuneration->is_required ) ? "required" : "" )) }}
+                                                                        {{ Form::number('minimum_remuneration', @$last_cv->minimum_remuneration ? @$last_cv->minimum_remuneration : old('minimum_remuneration'), array('class'=>'form-control', 'min' => '0' ,( $fields->remuneration->is_required ) ? "required" : "" )) }}
 
                                                                     </div>
                                                                 
@@ -446,7 +440,7 @@
                                                                             Maximum Remuneration @if( $fields->remuneration->is_required )
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label>
-                                                                        {{ Form::number('maximum_remuneration', @$last_cv->maximum_remuneration, array('class'=>'form-control', 'min' => '0' ,( $fields->remuneration->is_required ) ? "required" : "" )) }}
+                                                                        {{ Form::number('maximum_remuneration', @$last_cv->maximum_remuneration ? @$last_cv->maximum_remuneration : old('maximum_remuneration'), array('class'=>'form-control', 'min' => '0' ,( $fields->remuneration->is_required ) ? "required" : "" )) }}
 
                                                                     </div>
                                                                 @endif
@@ -471,7 +465,7 @@
                                                                             <option value="">--choose specialization
                                                                             </option>
                                                                             @foreach($specializations as $s)
-                                                                                <option value="{{ $s->id }}">{{ $s->name }}</option>
+                                                                                <option value="{{ $s->id }}" {{ (collect(old('specializations'))->contains($s->id)) ? 'selected':'' }}>{{ $s->name }}</option>
                                                                             @endforeach
                                                                         </select>
                                                                     </div>
@@ -483,7 +477,7 @@
                                                                             Grade @if( $fields->graduation_grade->is_required )
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label>
-                                                                        {{ Form::select('graduation_grade', $grades, @$last_cv->graduation_grade, array('placeholder'=>'choose', 'class'=>'form-control', ( $fields->graduation_grade->is_required ) ? "required" : "" )) }}
+                                                                        {{ Form::select('graduation_grade', $grades, @$last_cv->graduation_grade ? @$last_cv->graduation_grade : old('graduation_grade') , array('placeholder'=>'choose', 'class'=>'form-control', ( $fields->graduation_grade->is_required ) ? "required" : "" )) }}
 
                                                                     </div>
                                                                 @endif
@@ -719,7 +713,7 @@
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <script src="{{ asset('js/select2.min.js') }}"></script>
+    <script src="{{ asset('js/select3.min.js') }}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
     <script type="text/javascript">
@@ -732,7 +726,7 @@
                 yearRange: '-100:+0'
 
             });
-            $('.select2').select2();
+            $('.select2').select3();
 
             var country = $('#country');
             country.change(function () {
@@ -752,32 +746,53 @@
                 }
             })
 
-            $.ajax({
-                url: '{{route("ajax-fetch-schools")}}',
-                type: 'GET',
-                dataType: 'json',
-                success: function(data){
-                    let school = data; 
-                    $.each(school, function(key, modelName){
-                        let option = new Option(school[key].name, school[key].id);
-                        $(option).html();
-                        $('#select-school').append(option);
-                    });
-                    
-                    $('#select-school').selectize({
-                       sortField: 'text'
-                    });
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            $('.select-school').select3({
+                minimumInputLength: 3,
+                allowClear: true,
+                placeholder: {
+                    id: 'others', // the value of the option
+                    text: 'Select a School'
+                },
+                ajax:{
+                    url: '{{route("ajax-fetch-schools")}}',
+                    type: 'POST',
+                    dataType: 'json',
+                    delay:250,
+                    data: function (params) {
+                        return {
+                        _token: CSRF_TOKEN,
+                        search: params.term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                        results: response
+                        };
+                    }
+
                 }
             });
             
-            let school = $('#select-school');
-            school.change(function () {
+            let other = $('#others');
+            let school = $('.select-school');
+            other.click(function () {
                 if (school.val() == 'others') {
                     $('.others').removeClass('hidden');
                     $('.otherSchools').prop('required', true)
                 } else {
                     $('.others').addClass('hidden');
                     $('.otherSchools').prop('required', false)
+                }
+            });
+            school.change(function (){
+                if (school.val() != 'others') {
+                    $('.others').addClass('hidden');
+                    $('.otherSchools').prop('required', false)
+                } else {
+                    $('.others').removeClass('hidden');
+                    $('.otherSchools').prop('required', true)
+
                 }
             });
         });

@@ -42,8 +42,8 @@
 
 
     <!-- Add Custom CSS for brand white listing here -->
-    @if(env('CUSTOM_STYLE'))
-        <link href="{{ secure_asset('css/'.env('CUSTOM_STYLE').'.theme.css') }}" rel="stylesheet">
+    @if(getEnvData('CUSTOM_STYLE'))
+        <link href="{{ secure_asset('css/'.getEnvData('CUSTOM_STYLE').'.theme.css') }}" rel="stylesheet">
     @else
         <link href="{{ secure_asset('css/seamlesshiring.css') }}" rel="stylesheet">
     @endif

@@ -16,9 +16,10 @@ class SubsidiaryExpirationNotification extends Notification
      *
      * @return void
      */
-    private $company_name, $company_email, $title, $user_name, $user_email;
 
-    public function __construct($company_name,$company_email,$title,$user_name,$user_email)
+    private $company_name, $company_email, $title, $user_name, $user_email, $client_id, $date;
+
+    public function __construct($company_name,$company_email,$title,$user_name,$user_email,$client_id,$date) 
     {
         //
         $this->company_name = $company_name;
@@ -26,6 +27,8 @@ class SubsidiaryExpirationNotification extends Notification
         $this->title = $title;
         $this->user_name = $user_name;
         $this->user_email = $user_email;
+        $this->date = $date;
+        $this->client_id = $client_id;
     }
 
     /**
@@ -48,12 +51,13 @@ class SubsidiaryExpirationNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)->view(
-            'emails.subsidiary.expire-notify',['subsidiary'=> $this->company_name, 'email_title' => $this->title, 
-            'email'=> $this->company_email, 'user_name' => $this->user_name,
-            'user_email'=> $this->user_email]
+            'emails.subsidiary.expire-notify', ['subsidiary'=> $this->company_name, 'email_title' => $this->title, 
+                'email'=> $this->company_email, 'user_name' => $this->user_name,
+                'user_email'=> $this->user_email,'date' => $this->date,'client_id'=> $this->client_id]
         )
-        ->from(env('COMPANY_EMAIL'))
+        ->from(getEnvData('COMPANY_EMAIL', null, $this->client_id))
         ->subject($this->title);
+
     }
 
     /**

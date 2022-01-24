@@ -33,7 +33,8 @@
         "wemersonjanuario/wkhtmltopdf-windows": "0.12.2.3",
         "laravel/helpers": "^1.2",
         "jdavidbakr/mail-tracker": "^5.0.3",
-        "seamlesshr/solrpackage": "dev-SolrUpgradeV8",
+        "seamlesshr/solrpackage": "dev-multitenantSolr",
+        "seamlesshr/shr-cloudflare-domain-generator": "^1.0",
         "solarium/solarium": "^5.1",
         "predis/predis": "^1.1",
         "laravel/horizon": "^5.0.0",
@@ -41,7 +42,9 @@
         "laravel/ui": "^3.3",
         "laravel/sanctum": "^2.11",
         "genealabs/laravel-mixpanel": "^0.11.0",
-        "arcanedev/log-viewer": "^8.0.0"
+        "arcanedev/log-viewer": "^8.0.0",
+        "cloudflare/sdk": "^1.3",
+        "seamlesshr/stringcrypt": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",
@@ -61,6 +64,14 @@
             "type": "vcs",
             "url": "git@bitbucket.org:insidify/solr-package.git"
 
+        },
+        {
+            "type": "vcs",
+            "url": "https://git@bitbucket.org/insidify/shr-cloudflare-domain-generator.git"
+        },
+        {
+        	"type": "vcs",
+        	"url": "https://git@bitbucket.org/insidify/stringcrypt.git"
         }
     ],
     "autoload": {

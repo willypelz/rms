@@ -95,9 +95,11 @@
                                     <div id="act_loader"
                                          style="display:none">{!! preloader() !!}</div>
                                     <div class="alert alert-danger" id="errorShowMoreActivities" style="display:none"></div>
+                                   @if(isset($activities_exist) && $activities_exist) 
                                     <button id="showMore" onclick="getCon(true); activities_index++"
                                             class="btn btn-default">Show more activities 
                                     </button>
+                                    @endif
                                 </div>
                             </div>
 

@@ -46,6 +46,7 @@ use App\Models\FormFieldValues;
 use App\Rules\PrivateEmailRule;
 use App\Imports\PrivateJobEmail;
 use App\Jobs\UploadSolrFromCode;
+use App\SearchEngine\SearchEngine;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -68,44 +69,22 @@ class JobsController extends Controller
     protected $mailer;
     protected $settings;
     private $states = [
-        'Lagos',
-        'Abia',
-        'Abuja',
-        'Adamawa',
-        'Akwa Ibom',
-        'Anambra',
-        'Bauchi',
-        'Bayelsa',
-        'Benue',
-        'Borno',
-        'Cross river',
-        'Delta',
-        'Edo',
-        'Ebonyi',
-        'Ekiti',
-        'Enugu',
-        'Gombe',
-        'Imo',
-        'Jigawa',
-        'Kaduna',
-        'Kano',
-        'Katsina',
-        'Kebbi',
-        'Kogi',
-        'Kwara',
-        'Niger',
-        'Ogun',
-        'Ondo',
-        'Osun',
-        'Oyo',
-        'Nassarawa',
-        'Plateau',
-        'Rivers',
-        'Sokoto',
-        'Taraba',
-        'Yobe',
+        'Lagos', 'Abia', 'Abuja',
+        'Adamawa', 'Akwa Ibom', 'Anambra',
+        'Bauchi', 'Bayelsa', 'Benue',
+        'Borno', 'Cross river', 'Delta',
+        'Edo', 'Ebonyi', 'Ekiti',
+        'Enugu', 'Gombe', 'Imo',
+        'Jigawa', 'Kaduna', 'Kano',
+        'Katsina', 'Kebbi', 'Kogi',
+        'Kwara', 'Niger', 'Ogun',
+        'Ondo', 'Osun', 'Oyo',
+        'Nassarawa', 'Plateau', 'Rivers',
+        'Sokoto', 'Taraba', 'Yobe',
         'Zamfara'
     ];
+
+    protected $searchEnginer;
 
 	/**
 	 * Create a new controller instance.
@@ -113,21 +92,13 @@ class JobsController extends Controller
 	 * @param Mailer $mailer
 	 * @param Settings $settings
 	 */
-    public function __construct(Mailer $mailer, Settings $settings)
+    public function __construct(Mailer $mailer, Settings $settings, SearchEngine $searchEnginer)
     {
         $this->middleware('auth', ['except' => [
-            'JobView',
-            'jobShare',
-            'company',
-            'jobApply',
-            'JobApplied',
-            'JobVideoApplication',
-            'getEmbed',
-            'getEmbedTest',
-            'acceptInvite',
-            'declineInvite',
-            'selectCompany',
-            'makeOldStaffsAdmin',
+            'JobView', 'jobShare', 'company',
+            'jobApply', 'JobApplied', 'JobVideoApplication',
+            'getEmbed', 'getEmbedTest', 'acceptInvite',
+            'declineInvite', 'selectCompany', 'makeOldStaffsAdmin',
             'fetchSchools',
         ]]);
 
@@ -135,8 +106,7 @@ class JobsController extends Controller
         $this->qualifications = qualifications();
 
         $this->mailer = $mailer;
-
-
+        $this->searchEnginer = $searchEnginer;
     }
 
     /**
@@ -1525,7 +1495,7 @@ class JobsController extends Controller
         }
 
         $myJobs = Job::getMyJobs();
-        $cv_array = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
+        $cv_array = $this->searchEnginer->get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
         if(!empty($cv_array)){
             $myFolders = array_unique(array_pluck($cv_array, 'cv_source'));
@@ -1750,7 +1720,7 @@ class JobsController extends Controller
 
         $myJobs = Job::getMyJobs();
 
-        $cv_arrayray = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
+        $cv_arrayray = $this->searchEnginer->get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
 
         if(!empty($cv_array)){
@@ -2249,7 +2219,7 @@ class JobsController extends Controller
 
         $active_tab = 'activities';
 
-        $result = SolrPackage::get_applicants($this->search_params, $id, '', $request->clientId);
+        $result = $this->searchEnginer->get_applicants($this->search_params, $id, '', $request->clientId);
 
 
 
@@ -2296,7 +2266,7 @@ class JobsController extends Controller
         $job = Job::find($id);
         $active_tab = 'matching';
 
-        $result = SolrPackage::get_applicants($this->search_params, $id, '',$request->clientId);
+        $result = $this->searchEnginer->get_applicants($this->search_params, $id, '',$request->clientId);
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id);
 
@@ -3161,7 +3131,7 @@ class JobsController extends Controller
             'amount' => $amount,
             'amount_currency' => $amount_currency
         );
-        $data_string = json_encode($data); //var_dump( $request->all() );
+        $data_string = json_encode($data); 
 
         $ch = curl_init();
 
@@ -3350,8 +3320,6 @@ class JobsController extends Controller
                 // close the connection, release resources used
                 curl_close($ch);
             }
-
-            // var_dump($data);
         }
     }
 
@@ -3553,8 +3521,6 @@ class JobsController extends Controller
         header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With,X-Auth-Token, Origin');
 
         list($id, $email, $created_at, $company_id) = explode('~&', Crypt::decrypt($request->key));
-
-        // var_dump($id, $email, $created_at);
 
         $user = User::with('companies')->whereHas('companies', function ($query) use ($company_id) {
             $query->where('company_id', $company_id);

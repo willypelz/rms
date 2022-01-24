@@ -293,16 +293,6 @@ class DownloadApplicantDto  {
         $this->all_applicants = $all_applicants;
     }
 
-    
-    /**
-    * Set All Applicants
-    * @return array | null 
-    */
-    public function setAllApplicants($all_applicants)
-    {
-        $this->all_applicants = $all_applicants;
-    }
-
      /**
      * Get value from Applicants data 
      * @param string key the key mapped to the value on the applicants data

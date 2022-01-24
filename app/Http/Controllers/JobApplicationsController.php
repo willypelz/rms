@@ -31,6 +31,7 @@ use App\Models\JobApplication;
 use Spatie\CalendarLinks\Link;
 use App\Jobs\BulkRequestTestJob;
 use App\Exports\ApplicantsExport;
+use App\SearchEngine\SearchEngine;
 use App\Models\InterviewNoteValues;
 use App\Exports\InterviewNoteExport;
 use App\Models\InterviewNoteOptions;
@@ -68,58 +69,25 @@ class JobApplicationsController extends Controller
     ];
 
     private $states = [
-        'Lagos',
-        'Abia',
-        'Abuja',
-        'Adamawa',
-        'Akwa Ibom',
-        'Anambra',
-        'Bauchi',
-        'Bayelsa',
-        'Benue',
-        'Borno',
-        'Cross river',
-        'Delta',
-        'Edo',
-        'Ebonyi',
-        'Ekiti',
-        'Enugu',
-        'Gombe',
-        'Imo',
-        'Jigawa',
-        'Kaduna',
-        'Kano',
-        'Katsina',
-        'Kebbi',
-        'Kogi',
-        'Kwara',
-        'Niger',
-        'Ogun',
-        'Ondo',
-        'Osun',
-        'Oyo',
-        'Nassarawa',
-        'Plateau',
-        'Rivers',
-        'Sokoto',
-        'Taraba',
-        'Yobe',
+        'Lagos', 'Abia', 'Abuja',
+        'Adamawa', 'Akwa Ibom', 'Anambra',
+        'Bauchi', 'Bayelsa', 'Benue',
+        'Borno', 'Cross river', 'Delta',
+        'Edo', 'Ebonyi', 'Ekiti',
+        'Enugu', 'Gombe', 'Imo',
+        'Jigawa', 'Kaduna', 'Kano',
+        'Katsina', 'Kebbi', 'Kogi',
+        'Kwara', 'Niger', 'Ogun',
+        'Ondo', 'Osun', 'Oyo',
+        'Nassarawa', 'Plateau', 'Rivers',
+        'Sokoto', 'Taraba', 'Yobe',
         'Zamfara'
     ];
     private $qualifications = [
-
-        'MPhil / PhD',
-        'MBA / MSc',
-        'MBBS',
-        'B.Sc',
-        'HND',
-        'OND',
-        'N.C.E',
-        'Diploma',
-        'High School (S.S.C.E)',
-        'Vocational',
-        'Others'
-
+        'MPhil / PhD', 'MBA / MSc', 'MBBS',
+        'B.Sc', 'HND', 'OND',
+        'N.C.E', 'Diploma', 'High School (S.S.C.E)',
+        'Vocational', 'Others'
     ];
 
     protected $mailer;
@@ -129,12 +97,14 @@ class JobApplicationsController extends Controller
 
     private $replyTo;
 
+    protected $searchEnginer;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Mailer $mailer)
+    public function __construct(Mailer $mailer, SearchEngine $searchEnginer)
     {
         $this->middleware('auth', [
             'except' => [
@@ -151,13 +121,7 @@ class JobApplicationsController extends Controller
             $this->replyTo = getEnvData('COMPANY_EMAIL', null, request()->clientId);
         }
 
-        
-        /*$cv = (object) [ "first_name" => "Emmanuel", "last_name" => "Okeleji", "email" => "emmanuel@insidify.com" ];
-
-        $job = (object) [ "title" => "CEO", "company" => (object) [ "name" => "Insidify" ] ];
-        $this->mailer->send('emails.new.reject_email', ['cv' => $cv, 'job' => $job], function (Message $m) use ($cv) {
-                                $m->from(getEnvData('COMPANY_EMAIL'))->to($cv->email)->subject('Feedback');
-                            });*/
+        $this->searchEnginer = $searchEnginer;
     }
 
     public function assess($appl_id)
@@ -438,7 +402,7 @@ class JobApplicationsController extends Controller
         }
 
 
-        $result = SolrPackage::get_applicants(
+        $result = $this->searchEnginer->get_applicants(
             $this->search_params,
             $request->jobID,
             @$request->status,
@@ -471,7 +435,7 @@ class JobApplicationsController extends Controller
             'filters' => $request->filter_query
         ])->render();
         $myJobs = Job::getMyJobs();
-        $all_my_cvs = SolrPackage::get_all_my_cvs($this->search_params, null,
+        $all_my_cvs = $this->searchEnginer->get_all_my_cvs($this->search_params, null,
         null)['response']['docs'];
         $myFolders = $all_my_cvs ? array_unique(array_pluck($all_my_cvs, 'cv_source')) : [];
 
@@ -593,11 +557,9 @@ class JobApplicationsController extends Controller
             $cand['job_title'] = [$applicant->job->title];
 
             $client_id = $applicant->candidate->client_id ?? null;
-            App\Libraries\SolrPackage::create_new_document($cand, $client_id);
+            $this->searchEnginer->create_new_document($cand, $client_id);
 
         }
-
-        dd('DONE');
 
     }
 
@@ -863,7 +825,7 @@ class JobApplicationsController extends Controller
 
     public function JobListData(Request $request)
     {
-        $result = SolrPackage::get_applicants($this->search_params, $request->job_id, @$request->status, @$request->clientId);
+        $result = $this->searchEnginer->get_applicants($this->search_params, $request->job_id, @$request->status, @$request->clientId);
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$request->job_id,
             $statuses = $request->workflow_steps);
 
@@ -904,7 +866,7 @@ class JobApplicationsController extends Controller
                         }
                     ])->find($job_id);
 
-                    $result = SolrPackage::get_applicants($this->search_params, $job_id,
+                    $result = $this->searchEnginer->get_applicants($this->search_params, $job_id,
                         '', $request->clientId); // status parater value is formerly : @$request->status
                     $application_statuses = isset($result['facet_counts']) ? get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$job_id,
                         $statuses = $job->workflow->workflowSteps()->pluck('slug')) : [];
@@ -946,7 +908,7 @@ class JobApplicationsController extends Controller
                     }
                 ])->find($job_id);
 
-                $result = SolrPackage::get_applicants($this->search_params, $job_id,
+                $result = $this->searchEnginer->get_applicants($this->search_params, $job_id,
                     '', $request->clientId); // status parater value is formerly : @$request->status
 
 
@@ -971,7 +933,7 @@ class JobApplicationsController extends Controller
     public function JobViewData(Request $request)
     {
 
-        $result = SolrPackage::get_applicants($this->search_params, $request->job_id, @$request->status, $request->clientId);
+        $result = $this->searchEnginer->get_applicants($this->search_params, $request->job_id, @$request->status, $request->clientId);
         $solr_total_applicants = ($result['response']['numFound']);
         $matching = 10000;
 
@@ -1286,7 +1248,7 @@ class JobApplicationsController extends Controller
 
             $this->sendWorkflowStepNotification($request->app_ids, $stepId);
 
-            SolrPackage::update_core();
+            $this->searchEnginer->update_core();
 
             return ($JA) ? 'true' : 'false';
 
@@ -1468,7 +1430,6 @@ class JobApplicationsController extends Controller
             info('commenced bulk test request');
             BulkRequestTestJob::dispatch($key, $test, $order, $request->all(), get_current_company()); 
             info('completed job');
-            // var_dump($data);
         }
 
 
@@ -1553,9 +1514,6 @@ class JobApplicationsController extends Controller
                 $check = AtsRequest::create($data);
                 $check_ids[] = $check->id;
             }
-
-
-            // var_dump($data);
 
         }
         $res = [];
@@ -1732,7 +1690,7 @@ class JobApplicationsController extends Controller
     {
 
         $data = array_merge(@$request->texts, ((array)json_decode(@$request->radios)));
-        // var_dump( $data );
+        
         $data['interview_date'] = Carbon::now();
         InterviewNotes::create($data);
     }

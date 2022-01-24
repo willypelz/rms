@@ -1222,11 +1222,13 @@ function getEnvData(string $key, $default_value = null, $client_id = null)
         //change key to uppercase
         $key = strtoupper($key);
         //check if an empty string key is passed
-        if (is_null($key))
+        if (is_null($key)) {
             return $default_value;
+        }
 
-        if(is_null($client_id))
+        if(is_null($client_id)) {
             $client_id = get_current_company()->client_id;
+        }
 
         $systemConfigObject = getSystemConfig($client_id);
 

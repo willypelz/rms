@@ -108,47 +108,49 @@
                                                         <div class="row">
                                                             <div class="separator separator-small"></div>
                                                         </div>
-                                @if(isset($fields))
-                                                        <div class="form-group">
-                                                            <div class="row">
+                                                        @if(isset($fields))
+                                                            <div class="form-group">
+                                                                <div class="row">
 
-                                                                @if( $fields->first_name->is_visible )
-                                                                    <div class="col-sm-6"><label for="job-title">first
-                                                                            name @if( $fields->first_name->is_required )
-                                                                                <span class="text-danger">*</span>@endif
-                                                                        </label><input id="job-title" name='first_name'
-                                                                                       value="{{ $candidate->first_name }}"
-                                                                                       @if( $fields->first_name->is_required ) required
-                                                                                       @endif type="text"
-                                                                                       class="form-control"></div>
-                                                                @endif
+                                                                    @if( $fields->first_name->is_visible )
+                                                                        <div class="col-sm-6"><label for="job-title">first
+                                                                                name @if( $fields->first_name->is_required )
+                                                                                    <span class="text-danger">*</span>@endif
+                                                                            </label><input id="job-title"
+                                                                                           name='first_name'
+                                                                                           value="{{ $candidate->first_name }}"
+                                                                                           @if( $fields->first_name->is_required ) required
+                                                                                           @endif type="text"
+                                                                                           class="form-control"></div>
+                                                                    @endif
 
-                                                                @if( $fields->last_name->is_visible )
-                                                                    <div class="col-sm-6"><label for="job-loc">last
-                                                                            name @if( $fields->last_name->is_required )
-                                                                                <span class="text-danger">*</span>@endif
-                                                                        </label><input id="job-loc" name="last_name"
-                                                                                       @if( $fields->last_name->is_required ) required
-                                                                                       @endif value="{{ $candidate->last_name }}"
-                                                                                       type="text" class="form-control">
-                                                                    </div>
-                                                                @endif
+                                                                    @if( $fields->last_name->is_visible )
+                                                                        <div class="col-sm-6"><label for="job-loc">last
+                                                                                name @if( $fields->last_name->is_required )
+                                                                                    <span class="text-danger">*</span>@endif
+                                                                            </label><input id="job-loc" name="last_name"
+                                                                                           @if( $fields->last_name->is_required ) required
+                                                                                           @endif value="{{ $candidate->last_name }}"
+                                                                                           type="text"
+                                                                                           class="form-control">
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <div class="row">
-                                                                @if( $fields->email->is_visible )
-                                                                    <div class="col-sm-6">
-                                                                        <label for="job-title">email @if( $fields->email->is_required )
-                                                                                <span class="text-danger">*</span>@endif
-                                                                        </label>
-                                                                        <input id="job-title" name='email'
-                                                                               value="{{ $candidate->email }}"
-                                                                               @if( $fields->email->is_required ) required
-                                                                               @endif type="email" readonly
-                                                                               class="form-control">
-                                                                    </div>
-                                                                @endif
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    @if( $fields->email->is_visible )
+                                                                        <div class="col-sm-6">
+                                                                            <label for="job-title">email @if( $fields->email->is_required )
+                                                                                    <span class="text-danger">*</span>@endif
+                                                                            </label>
+                                                                            <input id="job-title" name='email'
+                                                                                   value="{{ $candidate->email }}"
+                                                                                   @if( $fields->email->is_required ) required
+                                                                                   @endif type="email" readonly
+                                                                                   class="form-control">
+                                                                        </div>
+                                                                    @endif
 
                                                                 @if( $fields->phone->is_visible )
                                                                     <div class="col-sm-6">
@@ -162,51 +164,57 @@
                                                                     </div>
                                                                 @endif
                                                             </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <div class="row">
+                                                            <div class="form-group">
+                                                                <div class="row">
 
-                                                                @if( $fields->location->is_visible ||  $fields->state_of_origin->is_visible)
-                                                                    <div class="col-sm-6">
-                                                                        <label for="job-title">
-                                                                            Country of Origin
-                                                                            @if( $fields->state_of_origin->is_required || $fields->location->is_required )
-                                                                                <span class="text-danger">*</span>@endif
-                                                                        </label>
-                                                                        <select required
-                                                                                name="country"
-                                                                                id="country"
-                                                                                class="form-control job_country"
-                                                                                type="text"
-                                                                                style="width: 270px;">
-                                                                            <option value="">--choose country--</option>
-                                                                            @foreach($countries as $country)
-                                                                                <option value="{{ $country }}" {{ ( @$last_cv->location == $country || (in_array(@$last_cv->location,$states) && $country == 'Nigeria')) ? 'selected="selected"' : '' }} >{{ $country }}</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </div>
-                                                                    <div class="col-sm-6 state_section @if( (Request::old('location')) || $errors->has('location') || (in_array(@$last_cv->location,$states) || @$last_cv->location == 'Nigeria'))  @else hidden @endif"
-                                                                         style="margin-top: 10px">
-                                                                        <label for="job-title">Current
-                                                                            Location @if( $fields->location->is_required )
-                                                                                <span class="text-danger">*</span>@endif
-                                                                        </label>
-                                                                        <select {{( $fields->location->is_required ) ? "required" : "" }}
-                                                                                name="location"
-                                                                                id="location"
-                                                                                class="form-control job_location"
-                                                                                type="text"
-                                                                                style="width: 270px;">
-                                                                            <option value="">--choose--</option>
-                                                                            @foreach($states as $state)
-                                                                                <option value="{{$state != 'Nigeria' ? $state : 'Across Nigeria' }}" {{ ( str_replace('Nigeria','Across Nigeria',@$last_cv->location) == $state) ? 'selected="selected"' : '' }} >{{ $state != 'Nigeria' ? $state : 'Across Nigeria' }}</option>
-                                                                            @endforeach
-                                                                        </select>
+                                                                    @if( $fields->location->is_visible ||  $fields->state_of_origin->is_visible)
+                                                                        <div class="col-sm-6">
+                                                                            <label for="job-title">
+                                                                                Country of Origin
+                                                                                @if( $fields->state_of_origin->is_required || $fields->location->is_required )
+                                                                                    <span class="text-danger">*</span>@endif
+                                                                            </label>
+                                                                            <select required
+                                                                                    name="country"
+                                                                                    id="country"
+                                                                                    class="form-control job_country"
+                                                                                    type="text"
+                                                                                    style="width: 270px;">
+                                                                                <option value="">--choose country--
+                                                                                </option>
+                                                                                @foreach($countries as $country)
+                                                                                    <option value="{{ $country }}" {{ ( @$last_cv->location == $country || (in_array(@$last_cv->location,$states) && $country == 'Nigeria')) ? 'selected="selected"' : '' }} >
+                                                                                        {{ $country }}
+                                                                                    </option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-sm-6 state_section @if( (Request::old('location')) || $errors->has('location') || (in_array(@$last_cv->location,$states) || @$last_cv->location == 'Nigeria'))  @else hidden @endif"
+                                                                             style="margin-top: 10px">
+                                                                            <label for="job-title">Current
+                                                                                Location @if( $fields->location->is_required )
+                                                                                    <span class="text-danger">*</span>@endif
+                                                                            </label>
+                                                                            <select {{( $fields->location->is_required ) ? "required" : "" }}
+                                                                                    name="location"
+                                                                                    id="location"
+                                                                                    class="form-control job_location"
+                                                                                    type="text"
+                                                                                    style="width: 270px;">
+                                                                                <option value="">--choose--</option>
+                                                                                @foreach($states as $state)
+                                                                                    <option value="{{$state != 'Nigeria' ? $state : 'Across Nigeria' }}" {{ ( str_replace('Nigeria','Across Nigeria',@$last_cv->location) == $state) ? 'selected="selected"' : '' }} >
+                                                                                        {{ $state != 'Nigeria' ? $state
+                                                                                        : 'Across Nigeria' }}
+                                                                                    </option>
+                                                                                @endforeach
+                                                                            </select>
 
-                                                                    </div>
-                                                                @endif
+                                                                        </div>
+                                                                    @endif
 
 
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
@@ -229,8 +237,8 @@
                                                                         </label>
                                                                         {{ Form::select('marital_status', array('Single' => 'Single', 'Married' => 'Married', 'Divorced'=>'Divorced', 'Separated'=>'Separated'), @$last_cv->marital_status ? @$last_cv->marital_status : old('marital_status') , array('placeholder'=>'choose', 'class'=>'form-control', ( $fields->marital_status->is_required ) ? "required" : "" )) }}
 
-                                                                    </div>
-                                                                @endif
+                                                                        </div>
+                                                                    @endif
 
                                                                 @if( $fields->date_of_birth->is_visible )
                                                                     <div class="col-sm-4"><label for="job-loc">date of
@@ -244,12 +252,7 @@
                                                                     </div>
                                                                 @endif
                                                             </div>
-                                                        </div>
 
-
-                                                        <br/>
-                                                        <hr/>
-                                                        <p class="text-center">Career Summary.</p><Br/>
 
                                                         <div class="form-group">
                                                             <div class="row">
@@ -281,14 +284,36 @@
                                                                                         @if( @$last_cv->years_of_experience == $i ) selected="selected" @endif >{{ $i }}</option>
                                                                             @endfor
 
-                                                                        </select>
+                                                                        </div>
+                                                                    @endif
 
-                                                                    </div>
-                                                                @endif
+                                                                    @if( $fields->years_of_experience->is_visible )
+                                                                        <div class="col-sm-6">
+                                                                            <label for="">
+                                                                                <!-- <i class="fa fa-lock"></i>&nbsp;  -->
+                                                                                Years of
+                                                                                experience @if( $fields->years_of_experience->is_required )
+                                                                                    <span class="text-danger">*</span>@endif
+                                                                            </label>
+                                                                            <select class="form-control"
+                                                                                    name="years_of_experience"
+                                                                                    @if( $fields->years_of_experience->is_required ) required @endif>
+                                                                                <option>choose one</option>
+                                                                                @for( $i = 0; $i <= 50; $i ++ )
+                                                                                    <option value="{{ $i }}"
+                                                                                            @if( @$last_cv->years_of_experience == $i ) selected="selected" @endif >
+                                                                                        {{ $i }}
+                                                                                    </option>
+                                                                                @endfor
+
+                                                                            </select>
+
+                                                                        </div>
+                                                                    @endif
 
 
+                                                                </div>
                                                             </div>
-                                                        </div>
 
                                                         <div class="form-group">
                                                             <div class="row">
@@ -300,8 +325,13 @@
                                                                         </label>
                                                                         {{ Form::text('last_company_worked', @$last_cv->last_company_worked ? @$last_cv->last_company_worked : old('last_company_worked'), array('class'=>'form-control',  ( $fields->last_company_worked->is_required ) ? "required" : "" )) }}
 
-                                                                    </div>
-                                                                @endif
+                                                                    @if( $fields->last_position->is_visible )
+                                                                        <div class="col-sm-6">
+                                                                            <label for="job-title">Last
+                                                                                Position @if( $fields->last_position->is_required )
+                                                                                    <span class="text-danger">*</span>@endif
+                                                                            </label>
+                                                                            {{ Form::text('last_position', @$last_cv->last_position, array('class'=>'form-control', ( $fields->last_position->is_required ) ? "required" : "" )) }}
 
                                                                 @if( $fields->last_position->is_visible )
                                                                     <div class="col-sm-6">
@@ -315,6 +345,7 @@
                                                                 @endif
 
 
+                                                                </div>
                                                             </div>
                                                         </div>
 
@@ -348,19 +379,14 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="form-group">
-                                                            <div class="row">
-                                                                @if( isset($fields->course_of_study->is_visible) && $fields->course_of_study->is_visible  )
-                                                                    <div class="col-sm-6">
+                                                                    <div class="col-sm-6 others hidden">
                                                                         <label for="">
-                                                                            <!-- <i class="fa fa-lock"></i>&nbsp;  -->
-                                                                            Course of Study @if( $fields->course_of_study->is_required )
+                                                                            Others @if( isset($fields->school->is_required) && $fields->school->is_required )
                                                                                 <span class="text-danger">*</span>@endif
                                                                         </label>
                                                                         {{ Form::text('course_of_study', @$last_cv->course_of_study ? @$last_cv->course_of_study : old('course_of_study'), array('class'=>'form-control',  ( $fields->course_of_study->is_required ) ? "required" : "" )) }}
 
                                                                     </div>
-                                                                @endif
 
                                                                 @if( isset($fields->completed_nysc->is_visible) && $fields->completed_nysc->is_visible  )
                                                                     <div class="col-sm-6">
@@ -381,31 +407,109 @@
 
                                                                         </select>
 
-                                                                    </div>
-                                                                @endif
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    @if( isset($fields->course_of_study->is_visible) && $fields->course_of_study->is_visible  )
+                                                                        <div class="col-sm-6">
+                                                                            <label for="">
+                                                                                <!-- <i class="fa fa-lock"></i>&nbsp;  -->
+                                                                                Course of
+                                                                                Study @if( $fields->course_of_study->is_required )
+                                                                                    <span class="text-danger">*</span>@endif
+                                                                            </label>
+                                                                            {{ Form::text('course_of_study', @$last_cv->course_of_study, array('class'=>'form-control',  ( $fields->course_of_study->is_required ) ? "required" : "" )) }}
 
+                                                                        </div>
+                                                                    @endif
+
+                                                                    @if( isset($fields->completed_nysc->is_visible) && $fields->completed_nysc->is_visible  )
+                                                                        <div class="col-sm-6">
+                                                                            <label for="job-title">Completed NYSC
+                                                                                @if( $fields->completed_nysc->is_required )
+                                                                                    <span class="text-danger">*</span>@endif
+                                                                            </label>
+                                                                            <select class="form-control"
+                                                                                    name="completed_nysc"
+                                                                                    @if( $fields->completed_nysc->is_required ) required @endif>
+                                                                                <option>--choose--</option>
+
+                                                                                <option value="yes"
+                                                                                        @if( @$last_cv->completed_nysc == 1 ) selected="selected" @endif >
+                                                                                    Yes
+                                                                                </option>
+                                                                                <option value="no"
+                                                                                        @if( @$last_cv->completed_nysc == 0 ) selected="selected" @endif >
+                                                                                    No
+                                                                                </option>
+
+
+                                                                            </select>
+
+                                                                        </div>
+                                                                    @endif
+
+                                                                </div>
                                                             </div>
-                                                        </div>
 
 
-                                                    <!--div class="form-group">
+                                                        <!--div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <label for="job-title">State of Origin <span class="text-danger">*</span></label>
                                                 {{ Form::select('state_of_origin', array('Lagos' => 'Lagos', 'Abuja' => 'Abuja'), @$last_cv->state_of_origin, array('placeholder'=>'choose', 'class'=>'form-control')) }}
 
-                                                            </div>
+                                                                </div>
 
-                                                            <div class="col-sm-6">
-                                                                <label for="job-title">Current Location <span class="text-danger">*</span></label>
+                                                                <div class="col-sm-6">
+                                                                    <label for="job-title">Current Location <span class="text-danger">*</span></label>
 {{ Form::select('location', array('Lagos' => 'Lagos', 'Abuja' => 'Abuja'), @$last_cv->location, array('placeholder'=>'choose', 'class'=>'form-control')) }}
 
+                                                                </div>
+
+
+                                                            </div>
+                                                        </div-->
+
+
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    @if( $fields->willing_to_relocate->is_visible )
+                                                                        <div class="col-xs-12">
+                                                                            <label for="">Are you willing to
+                                                                                relocate? @if( $fields->willing_to_relocate->is_required )
+                                                                                    <span class="text-danger">*</span>@endif
+                                                                            </label><br/>
+                                                                            <label>{{ Form::radio('willing_to_relocate', 'yes',  @$last_cv->willing_to_relocate, ( $fields->willing_to_relocate->is_required ) ? ["required"] : null) }}
+                                                                                Yes</label>
+                                                                            <label>{{ Form::radio('willing_to_relocate', 'no', @!$last_cv->willing_to_relocate, ( $fields->willing_to_relocate->is_required ) ? ["required"] : null) }}
+                                                                                No </label>
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
                                                             </div>
 
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    @if( isset($fields->remuneration->is_visible) && $fields->remuneration->is_visible )
+                                                                        <div class="col-sm-6">
+                                                                            <label for="job-title">Minimum
+                                                                                Remuneration @if( $fields->remuneration->is_required )
+                                                                                    <span class="text-danger">*</span>@endif
+                                                                            </label>
+                                                                            {{ Form::number('minimum_remuneration', @$last_cv->minimum_remuneration, array('class'=>'form-control', 'min' => '0' ,( $fields->remuneration->is_required ) ? "required" : "" )) }}
 
-                                                        </div>
-                                                    </div-->
+                                                                        </div>
 
+                                                                        <div class="col-sm-6">
+                                                                            <label for="">
+                                                                                Maximum
+                                                                                Remuneration @if( $fields->remuneration->is_required )
+                                                                                    <span class="text-danger">*</span>@endif
+                                                                            </label>
+                                                                            {{ Form::number('maximum_remuneration', @$last_cv->maximum_remuneration, array('class'=>'form-control', 'min' => '0' ,( $fields->remuneration->is_required ) ? "required" : "" )) }}
+
+                                                                        </div>
+                                                                    @endif
 
                                                         <div class="form-group">
                                                             <div class="row">
@@ -422,7 +526,6 @@
                                                                     </div>
                                                                 @endif
                                                             </div>
-                                                        </div>
 
                                                         <div class="form-group">
                                                             <div class="row">
@@ -442,12 +545,19 @@
                                                                         </label>
                                                                         {{ Form::number('maximum_remuneration', @$last_cv->maximum_remuneration ? @$last_cv->maximum_remuneration : old('maximum_remuneration'), array('class'=>'form-control', 'min' => '0' ,( $fields->remuneration->is_required ) ? "required" : "" )) }}
 
-                                                                    </div>
-                                                                @endif
+                                                                    @if( $fields->graduation_grade->is_visible )
+                                                                        <div class="col-sm-6">
+                                                                            <label for="job-title">Graduation
+                                                                                Grade @if( $fields->graduation_grade->is_required )
+                                                                                    <span class="text-danger">*</span>@endif
+                                                                            </label>
+                                                                            {{ Form::select('graduation_grade', $grades, @$last_cv->graduation_grade, array('placeholder'=>'choose', 'class'=>'form-control', ( $fields->graduation_grade->is_required ) ? "required" : "" )) }}
 
+                                                                        </div>
+                                                                    @endif
 
+                                                                </div>
                                                             </div>
-                                                        </div>
 
 
                                                         <div class="form-group">
@@ -479,173 +589,154 @@
                                                                         </label>
                                                                         {{ Form::select('graduation_grade', $grades, @$last_cv->graduation_grade ? @$last_cv->graduation_grade : old('graduation_grade') , array('placeholder'=>'choose', 'class'=>'form-control', ( $fields->graduation_grade->is_required ) ? "required" : "" )) }}
 
-                                                                    </div>
-                                                                @endif
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    @if( $fields->cv_file->is_visible )
+                                                                        <div class="col-xs-12">
 
-                                                            </div>
-                                                        </div>
+                                                                            <label for="">Attach your
+                                                                                CV @if( $fields->cv_file->is_required )
+                                                                                    <span
+                                                                                            class="text-danger">*</span>@endif
+                                                                            </label>
 
+                                                                            {{ Form::file('cv_file', ( $fields->cv_file->is_required ) ? ["required"] : null ) }}
+                                                                        </div>
+                                                                        <div class="col-xs-12 mt-20">
 
-                                                        <div class="form-group">
-                                                            <div class="row">
-                                                                @if( $fields->cover_note->is_visible )
-                                                                    <div class="col-xs-12">
-                                                                        <label for="">Cover
-                                                                            Letter @if( $fields->cover_note->is_required )
-                                                                                <span class="text-danger">*</span>@endif
-                                                                        </label>
-                                                                        <textarea name="cover_note" id="" cols="30"
-                                                                                  rows="4" class="form-control"
-                                                                                  placeholder=""
-                                                                                  @if( $fields->cover_note->is_required ) required @endif>{{ @$last_cv->cover_note ??  old('cover_note') }}</textarea>
-                                                                    </div>
-                                                                @endif
-                                                            </div>
-                                                        </div>
+                                                                            <label for="">Attachment 1
+                                                                                (Optional)</label>
 
-
-                                                        <div class="form-group">
-                                                            <div class="row">
-                                                                @if( $fields->cv_file->is_visible )
-                                                                    <div class="col-xs-12">
-
-                                                                        <label for="">Attach your
-                                                                            CV @if( $fields->cv_file->is_required )<span
-                                                                                    class="text-danger">*</span>@endif
-                                                                        </label>
-
-                                                                        {{ Form::file('cv_file', ( $fields->cv_file->is_required ) ? ["required"] : null ) }}
-                                                                    </div>
-                                                                    <div class="col-xs-12 mt-20">
-
-                                                                        <label for="">Attachment 1 (Optional)</label>
-
-                                                                        {{ Form::file('optional_attachment_1') }}
-                                                                    </div>
-                                                                    <div class="col-xs-12 mt-20">
-                                                                        <label for="">Attachment 2 (Optional)</label>
-                                                                        {{ Form::file('optional_attachment_2') }}
-                                                                    </div>
-                                                                @endif
-                                                            </div>
-                                                            {{ Form::hidden('applicant_type', 'external') }}
-                                                        </div>
-
-
-                                                        <div class="row">
-                                                            <div class="col-xs-12">
-                                                                <hr>
-                                                            </div>
-
-                                                            @if( count($custom_fields) > 0 )
-                                                                @php $index=0; @endphp
-                                                                @foreach( $custom_fields as $custom_field )
-
-                                                                    <div class="col-sm-6 custom-field">
-                                                                        <label for="custom-field">{{ $custom_field->name }} @if( $custom_field->is_required )
-                                                                                <span class="text-danger">*</span>@endif
-                                                                        </label><br>
-
-                                                                        <?php $options = explode(',', $custom_field->options) ?>
-
-                                                                        @if( $custom_field->type == 'DROPDOWN')
-                                                                            <?php
-                                                                            $select_options = [];
-                                                                            foreach ($options as $option) {
-                                                                                $select_options[$option] = str_replace('_', ' ', ucfirst($option));
-                                                                            }
-                                                                            ?>
-                                                                            {{ Form::select('cf_'.str_slug($custom_field->name,'_'), $select_options, null, array('class'=>'form-control', ( $custom_field->is_required ) ? "required" : "")) }}
-
-
-
-                                                                        @elseif( $custom_field->type == 'RADIO' )
-                                                                            @foreach( $options as $option )
-                                                                                {{ Form::radio('cf_'.str_slug($custom_field->name,'_'), $option,false, array( ( $custom_field->is_required ) ? "required" : "" ) ) }} {{ $option }}
-                                                                            @endforeach
-
-                                                                        @elseif( $custom_field->type == 'CHECKBOX' )
-
-                                                                            @foreach( $options as $option )
-                                                                                {{ Form::checkbox('cf_'.str_slug($custom_field->name,'_').'[]', $option,false, array( ( $custom_field->is_required ) ? "required" : "" )) }} {{ $option }}
-                                                                            @endforeach
-
-                                                                        @elseif( $custom_field->type == 'TEXT' )
-                                                                            {{ Form::text('cf_'.str_slug($custom_field->name,'_'), null, array('class'=>'form-control', ( $custom_field->is_required ) ? "required" : "" )) }}
-
-                                                                        @elseif( $custom_field->type == 'TEXTAREA' )
-                                                                            {{ Form::textarea('cf_'.str_slug($custom_field->name,'_'), null, array('class'=>'form-control', ( $custom_field->is_required ) ? "required" : "" )) }}
-
-                                                                        @elseif( $custom_field->type == 'MULTIPLE_OPTION' )
-                                                                            <?php
-                                                                            $select_options = [];
-                                                                            foreach ($options as $option) {
-                                                                                $select_options[$option] = str_replace('_', ' ', ucfirst($option));
-                                                                            }
-                                                                            ?>
-                                                                            {{ Form::select('cf_'.str_slug($custom_field->name,'_').'[]', $select_options, array('multiple'=>'multiple','class'=>'form-control', ( $custom_field->is_required ) ? "required" : "" )) }}
-
-                                                                        @elseif( $custom_field->type == 'FILE' )
-                                                                            <?php
-                                                                            $select_options = [];
-                                                                            foreach ($options as $option) {
-                                                                                $select_options[$option] = str_replace('_', ' ', ucfirst($option));
-                                                                            }
-                                                                            ?>
-                                                                            {{ Form::file('cf_'.str_slug($custom_field->name,'_'),array('class'=>'form-control', ( $custom_field->is_required ) ? "required" : "" )) }}
-                                                                            <small>Allowed files are doc, docx and pdf</small>
-                                                                        @endif
-
-
-                                                                    </div>
-
-                                                                    @if( $index % 2  )
-                                                                        <div class="clearfix"></div>
+                                                                            {{ Form::file('optional_attachment_1') }}
+                                                                        </div>
+                                                                        <div class="col-xs-12 mt-20">
+                                                                            <label for="">Attachment 2
+                                                                                (Optional)</label>
+                                                                            {{ Form::file('optional_attachment_2') }}
+                                                                        </div>
                                                                     @endif
-                                                                    @php $index++;  @endphp
-                                                                @endforeach
-                                                            @endif
-
-                                                        </div>
-
-                                                        {!! Captcha::display($google_captcha_attributes) !!}
-
-
-
-                                                        <div class="row">
-                                                            <div class="col-xs-12">
-                                                                <hr>
-                                                            </div>
-                                                            <div class="col-xs-4">
-                                                                <!--a href="job.php" target="_blank" type="submit" class="btn btn-line"><i class="fa fa-save"></i> Save as draft</a-->
-                                                            </div>
-                                                            <div class="col-sm-4">
-                                                                <!--a href="job.php" target="_blank" type="submit" class="btn pull-right">Preview Job</a-->
-
+                                                                </div>
+                                                                {{ Form::hidden('applicant_type', 'external') }}
                                                             </div>
 
-                                                            <div class="col-sm-4">
-                                                                @if( $job['video_posting_enabled'] )
-                                                                    <button type="submit"
-                                                                            class="btn btn-success btn-block">Next
-                                                                        &raquo;
-                                                                    </button>
-                                                                @else
-                                                                    <button type="submit"
-                                                                            class="btn btn-success btn-block">Apply
-                                                                        &raquo;
-                                                                    </button>
+
+                                                            <div class="row">
+                                                                <div class="col-xs-12">
+                                                                    <hr>
+                                                                </div>
+
+                                                                @if( count($custom_fields) > 0 )
+                                                                    @php $index=0; @endphp
+                                                                    @foreach( $custom_fields as $custom_field )
+
+                                                                        <div class="col-sm-6 custom-field">
+                                                                            <label for="custom-field">{{ $custom_field->name }} @if( $custom_field->is_required )
+                                                                                    <span class="text-danger">*</span>@endif
+                                                                            </label><br>
+
+																			<?php $options = explode(',', $custom_field->options) ?>
+
+                                                                            @if( $custom_field->type == 'DROPDOWN')
+																				<?php
+																				$select_options = [];
+																				foreach ($options as $option) {
+																					$select_options[$option] = str_replace('_', ' ', ucfirst($option));
+																				}
+																				?>
+                                                                                {{ Form::select('cf_'.str_slug($custom_field->name,'_'), $select_options, null, array('class'=>'form-control', ( $custom_field->is_required ) ? "required" : "")) }}
+
+
+
+                                                                            @elseif( $custom_field->type == 'RADIO' )
+                                                                                @foreach( $options as $option )
+                                                                                    {{ Form::radio('cf_'.str_slug($custom_field->name,'_'), $option,false, array( ( $custom_field->is_required ) ? "required" : "" ) ) }} {{ $option }}
+                                                                                @endforeach
+
+                                                                            @elseif( $custom_field->type == 'CHECKBOX' )
+
+                                                                                @foreach( $options as $option )
+                                                                                    {{ Form::checkbox('cf_'.str_slug($custom_field->name,'_').'[]', $option,false, array( ( $custom_field->is_required ) ? "required" : "" )) }} {{ $option }}
+                                                                                @endforeach
+
+                                                                            @elseif( $custom_field->type == 'TEXT' )
+                                                                                {{ Form::text('cf_'.str_slug($custom_field->name,'_'), null, array('class'=>'form-control', ( $custom_field->is_required ) ? "required" : "" )) }}
+
+                                                                            @elseif( $custom_field->type == 'TEXTAREA' )
+                                                                                {{ Form::textarea('cf_'.str_slug($custom_field->name,'_'), null, array('class'=>'form-control', ( $custom_field->is_required ) ? "required" : "" )) }}
+
+                                                                            @elseif( $custom_field->type == 'MULTIPLE_OPTION' )
+																				<?php
+																				$select_options = [];
+																				foreach ($options as $option) {
+																					$select_options[$option] = str_replace('_', ' ', ucfirst($option));
+																				}
+																				?>
+                                                                                {{ Form::select('cf_'.str_slug($custom_field->name,'_').'[]', $select_options, array('multiple'=>'multiple','class'=>'form-control', ( $custom_field->is_required ) ? "required" : "" )) }}
+
+                                                                            @elseif( $custom_field->type == 'FILE' )
+																				<?php
+																				$select_options = [];
+																				foreach ($options as $option) {
+																					$select_options[$option] = str_replace('_', ' ', ucfirst($option));
+																				}
+																				?>
+                                                                                {{ Form::file('cf_'.str_slug($custom_field->name,'_'),array('class'=>'form-control', ( $custom_field->is_required ) ? "required" : "" )) }}
+                                                                                <small>Allowed files are doc, docx and
+                                                                                    pdf</small>
+                                                                            @endif
+
+
+                                                                        </div>
+
+                                                                        @if( $index % 2  )
+                                                                            <div class="clearfix"></div>
+                                                                        @endif
+                                                                        @php $index++;  @endphp
+                                                                    @endforeach
                                                                 @endif
+
                                                             </div>
-                                                            <div class="separator separator-small"></div>
-                                                        </div>
+
+                                                            {!! Captcha::display($google_captcha_attributes) !!}
+
+
+
+                                                            <div class="row">
+                                                                <div class="col-xs-12">
+                                                                    <hr>
+                                                                </div>
+                                                                <div class="col-xs-4">
+                                                                    <!--a href="job.php" target="_blank" type="submit" class="btn btn-line"><i class="fa fa-save"></i> Save as draft</a-->
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <!--a href="job.php" target="_blank" type="submit" class="btn pull-right">Preview Job</a-->
+
+                                                                </div>
+
+                                                                <div class="col-sm-4">
+                                                                    @if( $job['video_posting_enabled'] )
+                                                                        <button type="submit"
+                                                                                class="btn btn-success btn-block">Next
+                                                                            &raquo;
+                                                                        </button>
+                                                                    @else
+                                                                        <button type="submit"
+                                                                                class="btn btn-success btn-block">Apply
+                                                                            &raquo;
+                                                                        </button>
+                                                                    @endif
+                                                                </div>
+                                                                <div class="separator separator-small"></div>
+                                                            </div>
 
                                                         @else
-                                                            <div>Something went wrong with this job posting, please contact support</div>
+                                                            <div>Something went wrong with this job posting, please
+                                                                contact support
+                                                            </div>
                                                         @endif
 
 
-                                                        <!-- $job->form_fields->toArray() -->
+                                                    <!-- $job->form_fields->toArray() -->
 
                                                         </form>
 
@@ -796,6 +887,17 @@
                 }
             });
         });
+
+        function schoolSelect(params) {
+            if (params == 'others') {
+                $('.others').removeClass('hidden');
+                $('.otherSchools').prop('required', true)
+            } else {
+                $('.others').addClass('hidden');
+                $('.otherSchools').prop('required', false)
+            }
+        }
+
     </script>
 
 

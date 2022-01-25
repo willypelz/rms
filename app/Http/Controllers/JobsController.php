@@ -2471,6 +2471,7 @@ class JobsController extends Controller
 
             $data = $request->all();
 
+
             $owned_applications_count = JobApplication::where('candidate_id', $candidate->id)->where('job_id', $jobID)->count();
 
             if ($owned_applications_count > 0) {
@@ -2573,7 +2574,7 @@ class JobsController extends Controller
 
             }
 
-            if (isset($fields->school->is_visible) && $fields->school->is_visible && (isset($data['school']))) {
+            if (isset($fields->school->is_visible)  && $fields->school->is_visible && (isset($data['school'])) && $fields->school->is_required) {
 
                 if($data['school']=='others' && (!is_null($data['others']) && !empty($data['others']))){
                     $school = School::FirstOrCreate([
@@ -2592,8 +2593,8 @@ class JobsController extends Controller
                     return back()->withErrors(['warning' => 'Maximum Remuneration cannot be less than Minimum Renumeration.']);
                 }
             }
-            
-            if (count($custom_fields) > 0) {
+
+	        if (count($custom_fields) > 0) {
                 foreach ($custom_fields as $custom_field) {
                     $name = 'cf_' . str_slug($custom_field->name, '_');
                     $attr = $custom_field->name;
@@ -2670,7 +2671,7 @@ class JobsController extends Controller
             if ($fields->graduation_grade->is_visible && isset($data['graduation_grade'])) {
                 $cv->graduation_grade = $data['graduation_grade'];
             }
-            if (isset($fields->school->is_visible) && $fields->school->is_visible && isset($data['school'])) {
+            if (isset($fields->school->is_visible) && $fields->school->is_visible && isset($data['school']) && $fields->school->is_required) {
                 $cv->school_id = $school_id;
             }
             if (isset($fields->course_of_study->is_visible) && $fields->course_of_study->is_visible && isset($data['course_of_study'])) {

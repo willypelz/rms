@@ -17,7 +17,7 @@ class UploadApplicant implements ShouldQueue
     
     var $applicant,$test_score;
 
-    public $searchEngineer;
+    public $searchEngine;
 
     public $timeout = 2000;
     /**
@@ -31,7 +31,7 @@ class UploadApplicant implements ShouldQueue
         $this->applicant = $applicant;
         $job = $this->applicant->job;
         $this->test_score = $this->applicant->testRequests;
-        $this->searchEngineer =  app(SearchEngine::class);
+        $this->searchEngine =  app(SearchEngine::class);
     }
 
     /**
@@ -107,6 +107,6 @@ class UploadApplicant implements ShouldQueue
             
             $client_id = $applicant->candidate->client_id ?? null;
 
-            $this->searchEngineer->create_new_document($cand, $client_id);
+            $this->searchEngine->create_new_document($cand, $client_id);
     }
 }

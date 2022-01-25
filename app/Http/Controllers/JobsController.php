@@ -2574,14 +2574,16 @@ class JobsController extends Controller
 
             }
 
-            if (isset($fields->school->is_visible)  && $fields->school->is_visible && (isset($data['school'])) && $fields->school->is_required) {
+            if (isset($fields->school->is_visible)  && $fields->school->is_visible && (isset($data['school']))) {
 
                 if($data['school']=='others' && (!is_null($data['others']) && !empty($data['others']))){
                     $school = School::FirstOrCreate([
                         'name' => $data['others']
                     ]);   
                 }else{
-                    return back()->withInput()->withErrors(['warning' => 'School cannot be null or empty']);
+	                if($fields->school->is_required) {
+		                return back()->withInput()->withErrors(['warning' => 'School cannot be null or empty']);
+	                }
                 }
                 $school_id = isset($data['others']) && isset($school) ? $school->id : $data['school'];
             }
@@ -2671,7 +2673,7 @@ class JobsController extends Controller
             if ($fields->graduation_grade->is_visible && isset($data['graduation_grade'])) {
                 $cv->graduation_grade = $data['graduation_grade'];
             }
-            if (isset($fields->school->is_visible) && $fields->school->is_visible && isset($data['school']) && $fields->school->is_required) {
+            if (isset($fields->school->is_visible) && $fields->school->is_visible && isset($data['school']) && isset($school_id)) {
                 $cv->school_id = $school_id;
             }
             if (isset($fields->course_of_study->is_visible) && $fields->course_of_study->is_visible && isset($data['course_of_study'])) {

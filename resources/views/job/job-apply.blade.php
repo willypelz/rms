@@ -619,11 +619,24 @@
                                                                 {{ Form::hidden('applicant_type', 'external') }}
                                                             </div>
 
+                                                                            {{ Form::file('cv_file', ( $fields->cv_file->is_required ) ? ["required"] : null ) }}
+                                                                        </div>
+                                                                        <div class="col-xs-12 mt-20">
 
-                                                            <div class="row">
-                                                                <div class="col-xs-12">
-                                                                    <hr>
+                                                                            <label for="">Attachment 1
+                                                                                (Optional)</label>
+
+                                                                            {{ Form::file('optional_attachment_1') }}
+                                                                        </div>
+                                                                        <div class="col-xs-12 mt-20">
+                                                                            <label for="">Attachment 2
+                                                                                (Optional)</label>
+                                                                            {{ Form::file('optional_attachment_2') }}
+                                                                        </div>
+                                                                    @endif
                                                                 </div>
+                                                                {{ Form::hidden('applicant_type', 'external') }}
+                                                            </div>
 
                                                                 @if( count($custom_fields) > 0 )
                                                                     @php $index=0; @endphp
@@ -700,6 +713,7 @@
                                                             {!! Captcha::display($google_captcha_attributes) !!}
 
 
+                                                                        </div>
 
                                                             <div class="row">
                                                                 <div class="col-xs-12">

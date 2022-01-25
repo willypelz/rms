@@ -84,7 +84,7 @@ class JobsController extends Controller
         'Zamfara'
     ];
 
-    protected $searchEnginer;
+    protected $searchEngine;
 
 	/**
 	 * Create a new controller instance.
@@ -92,7 +92,7 @@ class JobsController extends Controller
 	 * @param Mailer $mailer
 	 * @param Settings $settings
 	 */
-    public function __construct(Mailer $mailer, Settings $settings, SearchEngine $searchEnginer)
+    public function __construct(Mailer $mailer, Settings $settings, SearchEngine $searchEngine)
     {
         $this->middleware('auth', ['except' => [
             'JobView', 'jobShare', 'company',
@@ -106,7 +106,7 @@ class JobsController extends Controller
         $this->qualifications = qualifications();
 
         $this->mailer = $mailer;
-        $this->searchEnginer = $searchEnginer;
+        $this->searchEngine = $searchEngine;
     }
 
     /**
@@ -1495,7 +1495,7 @@ class JobsController extends Controller
         }
 
         $myJobs = Job::getMyJobs();
-        $cv_array = $this->searchEnginer->get_all_my_cvs($this->search_params, null, null)['response']['docs'];
+        $cv_array = $this->searchEngine->get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
         if(!empty($cv_array)){
             $myFolders = array_unique(array_pluck($cv_array, 'cv_source'));
@@ -1723,7 +1723,7 @@ class JobsController extends Controller
 
         $myJobs = Job::getMyJobs();
 
-        $cv_arrayray = $this->searchEnginer->get_all_my_cvs($this->search_params, null, null)['response']['docs'];
+        $cv_arrayray = $this->searchEngine->get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
 
         if(!empty($cv_array)){
@@ -2222,7 +2222,7 @@ class JobsController extends Controller
 
         $active_tab = 'activities';
 
-        $result = $this->searchEnginer->get_applicants($this->search_params, $id, '', $request->clientId);
+        $result = $this->searchEngine->get_applicants($this->search_params, $id, '', $request->clientId);
 
 
 
@@ -2269,7 +2269,7 @@ class JobsController extends Controller
         $job = Job::find($id);
         $active_tab = 'matching';
 
-        $result = $this->searchEnginer->get_applicants($this->search_params, $id, '',$request->clientId);
+        $result = $this->searchEngine->get_applicants($this->search_params, $id, '',$request->clientId);
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id);
 
@@ -2773,7 +2773,7 @@ class JobsController extends Controller
 
             try {
                 $job_application = JobApplication::with('cv')->find($appl->id);
-                UploadApplicant::dispatch($job_application, $this->searchEnginer)->onQueue('solr');
+                UploadApplicant::dispatch($job_application, $this->searchEngine)->onQueue('solr');
             } catch (Exception $e) {
                 Log::info(json_encode($e));
             }

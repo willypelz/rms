@@ -97,14 +97,14 @@ class JobApplicationsController extends Controller
 
     private $replyTo;
 
-    protected $searchEnginer;
+    protected $searchEngine;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Mailer $mailer, SearchEngine $searchEnginer)
+    public function __construct(Mailer $mailer, SearchEngine $searchEngine)
     {
         $this->middleware('auth', [
             'except' => [
@@ -121,7 +121,7 @@ class JobApplicationsController extends Controller
             $this->replyTo = getEnvData('COMPANY_EMAIL', null, request()->clientId);
         }
 
-        $this->searchEnginer = $searchEnginer;
+        $this->searchEngine = $searchEngine;
     }
 
     public function assess($appl_id)
@@ -407,7 +407,7 @@ class JobApplicationsController extends Controller
         }
 
 
-        $result = $this->searchEnginer->get_applicants(
+        $result = $this->searchEngine->get_applicants(
             $this->search_params,
             $request->jobID,
             @$request->status,
@@ -443,7 +443,7 @@ class JobApplicationsController extends Controller
             'filters' => $request->filter_query
         ])->render();
         $myJobs = Job::getMyJobs();
-        $all_my_cvs = $this->searchEnginer->get_all_my_cvs(
+        $all_my_cvs = $this->searchEngine->get_all_my_cvs(
             $this->search_params,
             null,
             null
@@ -590,7 +590,7 @@ class JobApplicationsController extends Controller
             $cand['job_title'] = [$applicant->job->title];
 
             $client_id = $applicant->candidate->client_id ?? null;
-            $this->searchEnginer->create_new_document($cand, $client_id);
+            $this->searchEngine->create_new_document($cand, $client_id);
         }
     }
 
@@ -893,7 +893,7 @@ class JobApplicationsController extends Controller
 
     public function JobListData(Request $request)
     {
-        $result = $this->searchEnginer->get_applicants($this->search_params, $request->job_id, @$request->status, @$request->clientId);
+        $result = $this->searchEngine->get_applicants($this->search_params, $request->job_id, @$request->status, @$request->clientId);
         $application_statuses = get_application_statuses(
             $result['facet_counts']['facet_fields']['application_status'],
             $request->job_id,
@@ -937,7 +937,7 @@ class JobApplicationsController extends Controller
                     }
                 ])->find($job_id);
 
-                $result = $this->searchEnginer->get_applicants(
+                $result = $this->searchEngine->get_applicants(
                     $this->search_params,
                     $job_id,
                     '',
@@ -984,7 +984,7 @@ class JobApplicationsController extends Controller
             }
         ])->find($job_id);
 
-        $result = $this->searchEnginer->get_applicants(
+        $result = $this->searchEngine->get_applicants(
             $this->search_params,
             $job_id,
             '',
@@ -1016,7 +1016,7 @@ class JobApplicationsController extends Controller
     public function JobViewData(Request $request)
     {
 
-        $result = $this->searchEnginer->get_applicants($this->search_params, $request->job_id, @$request->status, $request->clientId);
+        $result = $this->searchEngine->get_applicants($this->search_params, $request->job_id, @$request->status, $request->clientId);
         $solr_total_applicants = ($result['response']['numFound']);
         $matching = 10000;
 
@@ -1348,7 +1348,7 @@ class JobApplicationsController extends Controller
 
             $this->sendWorkflowStepNotification($request->app_ids, $stepId);
 
-            $this->searchEnginer->update_core();
+            $this->searchEngine->update_core();
 
             return ($JA) ? 'true' : 'false';
         }

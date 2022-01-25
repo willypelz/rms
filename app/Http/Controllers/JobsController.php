@@ -1580,36 +1580,40 @@ class JobsController extends Controller
     }
 
 
-	public function adminUploadDocument(Request $request)
-	{
+    public function adminUploadDocument(Request $request)
+    {
+        $request->validate(
+            [
+                'document_file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt,jpg,jpeg,png',
+            ]
+        );
 
-		$request->validate([
-			'document_file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt,jpg,jpeg,png',
-		]);
+        if ($request->hasFile('document_file')) {
 
-		if ($request->hasFile('document_file')) {
+            $file_name = (@$request->document_file->getClientOriginalName());
+            $fi = @$request->file('document_file')->getClientOriginalExtension();
+            $document_file = $request->application_id . '-' . time() . '-' . $file_name;
 
-			$file_name = (@$request->document_file->getClientOriginalName());
-			$fi = @$request->file('document_file')->getClientOriginalExtension();
-			$document_file = $request->application_id . '-' . time() . '-' . $file_name;
-
-			$upload = $request->file('document_file')->move(
-				getEnvData('fileupload'), $document_file
-			);
-		} else {
-			$document_file = '';
-		}
-		$message = CandidateMessage::create([
-			'job_application_id' => $request->appl_id,
-			'description' => $request->document_description,
-			'title' => $request->document_title,
-			'attachment' => $document_file,
-		]);
-		return ['status' => 1, 'data' => ['Documents Uploaded successfully']];
-	}
+            $upload = $request->file('document_file')->move(
+                getEnvData('FILEUPLOAD', 'uploads'),
+                $document_file
+            );
+        } else {
+            $document_file = '';
+        }
+        $message = CandidateMessage::create(
+            [
+                'job_application_id' => $request->appl_id,
+                'description' => $request->document_description,
+                'title' => $request->document_title,
+                'attachment' => $document_file,
+            ]
+        );
+        return ['status' => 1, 'data' => ['Documents Uploaded successfully']];
+    }
 
 	public function JobList(Request $request)
-	{
+    {
         $user = User::with([
             'companies.jobs'
         ])->where('id', Auth::user()->id)
@@ -1671,7 +1675,6 @@ class JobsController extends Controller
                 $draft_jobs[] = $job;
                 $draft++;
             }
-
         }
 
 
@@ -2371,7 +2374,7 @@ class JobsController extends Controller
 
     public function jobApply($jobID, $slug, Request $request)
     {
-
+        
         if (!Auth::guard('candidate')->check()) {
             return redirect()->route('candidate-login', ['redirect_to' => url()->current()]);
         }
@@ -2545,8 +2548,8 @@ class JobsController extends Controller
 
             if (isset($fields->school->is_visible) && $fields->school->is_visible && (isset($data['school']))) {
                 
-                if (is_null($data['school'])) {
-                    if ($data['school']=='others' && (!is_null($data['others']) && !empty($data['others']))) {
+                if (is_null($data['school']) || $data['school'] == 'others') {
+                    if ((!is_null($data['others']) && !empty($data['others']))) {
                             $school = School::FirstOrCreate(
                                 [
                                 'name' => $data['others']
@@ -2717,7 +2720,7 @@ class JobsController extends Controller
                         if ($request->hasFile($name)) {
 
                             $filename = time() . '_' . str_slug($request->email) . '_' . $request->file($name)->getClientOriginalName();
-                            $destinationPath = getEnvData('fileupload','uploads') . '/Others';
+                            $destinationPath = getEnvData('FILEUPLOAD','uploads') . '/Others';
                             findOrMakeDirectory($destinationPath);
 
                             $request->file($name)->move($destinationPath, $filename);
@@ -2744,19 +2747,17 @@ class JobsController extends Controller
 
 
             if ($request->hasFile('cv_file')) {
-                $destinationPath = getEnvData('fileupload') . '/CVs';
+                $destinationPath = getEnvData('FILEUPLOAD','uploads') . '/CVs';
                 findOrMakeDirectory($destinationPath);
                 $request->file('cv_file')->move($destinationPath, $data['cv_file']);
-
             }
-
             if ($request->hasFile('optional_attachment_1')) {
-                $destinationPath = getEnvData('fileupload') . '/CVs';
+                $destinationPath = getEnvData('FILEUPLOAD', 'uploads') . '/CVs';
                 findOrMakeDirectory($destinationPath);
                 $request->file('optional_attachment_1')->move($destinationPath, $data['optional_attachment_1']);
             }
             if ($request->hasFile('optional_attachment_2')) {
-                $destinationPath = getEnvData('fileupload') . '/CVs';
+                $destinationPath = getEnvData('FILEUPLOAD', 'uploads') . '/CVs';
                 findOrMakeDirectory($destinationPath);
                 $request->file('optional_attachment_2')->move($destinationPath, $data['optional_attachment_2']);
             }

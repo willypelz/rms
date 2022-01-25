@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Company;
 
 class Candidate extends Authenticatable
 {
@@ -30,5 +31,11 @@ class Candidate extends Authenticatable
     {
         return $this->HasMany('App\Models\JobApplication');
     }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
 
 }

@@ -322,7 +322,7 @@
                   @php $other_highest_qualification = 0  @endphp
                   {{--*/ $index = 0  /*--}}
                   @foreach( $result['facet_counts']['facet_fields']['cv_source'] as $key => $cv_source )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ] != 0 &&  $cv_source != ''  && $cv_source != "0"  )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ] != 0 &&  $cv_source != ''  && $cv_source != "0"  )
 
                         {{--*/ $index++  /*--}}
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="cv_source" data-value="{{ $cv_source }}"> {{ ucwords( $cv_source )." (".$result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ].")" }}</label> <br></div>
@@ -688,7 +688,8 @@
                   @php $other_edu_school = 0;
                    $index = 0  @endphp
                   @foreach( $result['facet_counts']['facet_fields']['last_position'] as $key => $last_position )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['last_position'][ $key + 1 ] != 0 &&  $last_position != ''  && $last_position != "0"  )
+                  
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['last_position'][ $key + 1 ] != 0 &&  $last_position != ''  && $last_position != "0"  )
 
                         @php $index++  @endphp
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="last_position" data-value="{{ $last_position }}"> {{ ucwords( $last_position )." (".$result['facet_counts']['facet_fields']['last_position'][ $key + 1 ].")" }}</label> <br></div>

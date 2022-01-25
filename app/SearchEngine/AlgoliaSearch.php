@@ -14,22 +14,22 @@ class AlgoliaSearch implements SearchEngine
         $q = $q == '*' ? '' : $q;
         $pageNumber = $page ?? 1;
         $data = JobApplication::search(
-            $q, function ($algolia, $query, $options) use ($pageNumber) {
+            $q, function ($algolia, $query, $options) use ($pageNumber, $additional) {
+
                 $customOptions = [
                     'facets' => ['*'],
-                    'page' => $pageNumber 
+                    'page' => $pageNumber,
+                    //  => 
                 ];
+                if (!is_null($additional['job_id'] ?? null)) {
+                    $customOptions['filters'] = "job_id = {$additional['job_id']}";
+                }
                 $newArray = array_merge($options, $customOptions);
                 unset($newArray['numericFilters']);
                 return $algolia->search($query, $newArray);
             }
         );
-        if ($additional['job_id'] ?? null) {
-            $data = $data->where('job_id', $additional['job_id']);
-        }
-        if ($additional['job_ids'] ?? null) {
-            $data = $data->whereIn('job_id', $additional['job_ids']);
-        }
+        
         if ($additional['company_folder_id'] ?? null) {
             $data = $data->where('company_folder_id', $additional['company_folder_id']);
         }
@@ -40,6 +40,13 @@ class AlgoliaSearch implements SearchEngine
         foreach ($filterBys as $filterBy) {
             $data = $this->filterBetween($data, $additional, $filterBy);
         }
+
+        // if ($additional['job_id'] ?? null) {
+        //     $data = $data->where('job_id', $additional['job_id']);
+        // }
+        // if ($additional['job_ids'] ?? null) {
+        //     $data = $data->whereIn('job_id', $additional['job_ids']);
+        // }
         $formatted = $this->createSolrStyleResponse($data->raw());
         
         return $formatted;

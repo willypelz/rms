@@ -395,8 +395,14 @@ function get_current_company()
         }
         
         // If a company is not selected, default to the first on the list
-        return $authUser->companies->first();
+        return optional(optional($authUser)->companies)->first();
     } else {
+        $user = Auth::guard('candidate')->user();
+        if($user) {
+            $client = Client::with('companies')->find($user->client_id);
+            $company = $client->companies->first();
+            return $company;
+        }
         return redirect()->guest('login');
     }
 
@@ -1226,7 +1232,7 @@ function getEnvData(string $key, $default_value = null, $client_id = null)
             return $default_value;
         }
 
-        if(is_null($client_id)) {
+        if (is_null($client_id)) {
             $client_id = get_current_company()->client_id;
         }
 

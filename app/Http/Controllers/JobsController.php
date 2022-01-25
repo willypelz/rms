@@ -2399,7 +2399,6 @@ class JobsController extends Controller
 
     public function jobApply($jobID, $slug, Request $request)
     {
-
         if (!Auth::guard('candidate')->check()) {
             return redirect()->route('candidate-login', ['redirect_to' => url()->current()]);
         }
@@ -2421,6 +2420,7 @@ class JobsController extends Controller
         }
 
         $candidate_cvs = CV::where('email', $candidate->email)->pluck('id');
+
         $candidate_applied_jobs = JobApplication::whereIn('cv_id', $candidate_cvs)->where(
             'job_id', $job->id
         )->count();
@@ -2438,7 +2438,7 @@ class JobsController extends Controller
             abort(404);
         }
 
-        $candidate = Candidate::find(Auth::guard('candidate')->user()->id);
+        $candidate = $candidate ?? Candidate::find(Auth::guard('candidate')->user()->id);
 
         if($candidate->is_from == 'external' && $job->is_for == 'internal')
         {
@@ -2468,6 +2468,10 @@ class JobsController extends Controller
         if ($request->isMethod('post')) {
 
             $data = $request->all();
+
+            $data['first_name'] = $data['first_name'] ?? $candidate->first_name;
+            $data['last_name'] = $data['last_name'] ?? $candidate->last_name;
+            $data['email'] = $data['email'] ?? $candidate->email;
 
             $owned_applications_count = JobApplication::where('candidate_id', $candidate->id)->where('job_id', $jobID)->count();
 
@@ -2617,21 +2621,16 @@ class JobsController extends Controller
 
             //saving cv...
             $cv = new Cv;
-            if ($fields->first_name->is_visible && isset($data['first_name'])) {
-                $cv->first_name = $data['first_name'];
-            }
-            if ($fields->last_name->is_visible && isset($data['last_name'])) {
-                $cv->last_name = $data['last_name'];
-            }
+
+            $cv->first_name = $data['first_name'] ?? null;
+            $cv->last_name = $data['last_name'] ?? null;
+            $cv->email = $data['email'] ?? null;
+            $cv->phone = $data['phone'] ?? null;
+
             if ($fields->cover_note->is_visible && isset($data['cover_note'])) {
                 $cv->headline = $data['cover_note'];
             }
-            if ($fields->email->is_visible && isset($data['email'])) {
-                $cv->email = $data['email'];
-            }
-            if ($fields->phone->is_visible && isset($data['phone'])) {
-                $cv->phone = $data['phone'];
-            }
+
             if ($fields->gender->is_visible && isset($data['gender'])) {
                 $cv->gender = $data['gender'];
             }

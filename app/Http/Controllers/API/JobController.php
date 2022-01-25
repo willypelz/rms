@@ -585,12 +585,10 @@ class JobController extends Controller
 
         if (!is_null($user)) {
             return response()->json([
-                'status' => false,
-                'message' => 'User already exist',
-            ],
-                400
+                    'status' => true,
+                    'message' => 'User already exists',
+                ]
             );
-
         }
 
         //formerly firstOrCreate but  started failing hence get user in db that already has the email , otherwise create one

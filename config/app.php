@@ -19,9 +19,11 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
-	'staff_strength_url' => env('STAFFSTRENGTH_URL'),
+    'staff_strength_url' => env('STAFFSTRENGTH_URL'),
     'rms_stand_alone' => env('RMS_STAND_ALONE'),
     'company_name' => env('COMPANY_NAME', 'Seamless Hiring'),
+    'searcher' => env('SEARCH_ENGINE', 'algolia'),
+    'solr_core' => env("SOLR_CORE"),
 
     /*
     |--------------------------------------------------------------------------
@@ -178,8 +180,8 @@ return [
         Jenssegers\Agent\AgentServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
         Sentry\Laravel\ServiceProvider::class,
-
-                App\Providers\SolariumServiceProvider::class,
+        App\Providers\SolariumServiceProvider::class,
+        App\Providers\SearchEngineServiceProvider::class
 
     ],
 

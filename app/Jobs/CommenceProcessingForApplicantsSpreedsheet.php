@@ -86,7 +86,7 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
 
 
     private function getApplicants(){
-          return SolrPackage::get_applicants($this->search_params, $this->jobId, @$this->status,
+          return SolrPackage::get_applicants($this->search_params, $this->jobId, @$this->status, @$this->admin->client_id,
                                              @$this->solr_age, @$this->solr_exp_years,
                                              @$this->solr_video_application_score, @$this->solr_test_score);
     }

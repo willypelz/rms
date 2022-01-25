@@ -74,7 +74,7 @@
 																			Account Name: Insidify Limited <br>
 																			Account No: 0114023729 <br>
 																			Bank: Guaranty Trust Bank (GTB) <br><br>
-																			OR visit <a href="{{ route('show-invoice',['invoice_id'=>$invoice->id])  }}">here</a> to make payment through your debit card. <br></p>
+																			OR visit <a href="{{ companyRoute($client_id, 'show-invoice',['invoice_id'=>$invoice->id]) }}">here</a> to make payment through your debit card. <br></p>
 																		<p>Please find attached the full invoice details.</p>
 																		<div style="color:#2d2d2d;" align="center">
 																			<a href="" style="font-family:Arial;word-wrap:break-word;color:#ffffff;border-radius: 3px;display:inline-block;font-size:14px;font-weight:400;line-height: 42px;text-align:center;text-decoration:none;width:200px;background-color: #4bb779;text-transform:uppercase" target="_blank">pay now</a>

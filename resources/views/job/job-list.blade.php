@@ -10,20 +10,28 @@
      <section class="s-div">
         <div class="container">
             <div class="row no-pad">
-
-                <div class="col-xs-12 no-margin">
+                <div class="col-xs-6 no-margin">
                     <br>
                     <h3 class="text-green-light no-margin">
                         {{ $active + $expired + $suspended + $private }} {{ $company->name }}  @if($active + $suspended > 1)
                             Jobs @else Job @endif
                         &nbsp;
                         @if($user_role == 'admin')
-                        <a href="{{ route('post-job') }}" class="btn btn-success"><i class="fa fa-plus"></i> Post a New
-                            Job</a>
+                            <a href="{{ route('post-job') }}" class="btn btn-success"><i class="fa fa-plus"></i> Post a New
+                                Job</a>
                         @endif
                     </h3>
                 </div>
-
+                <div class="col-xs-6 no-margin">
+                    <br>
+                    <div class="btn-group pull-right" role="group">
+                        <a href="{{ route('post-job') }}" type="button"
+                           class="btn text-capitalize in" style="background:white">
+                            <span class="fa-lg"><i class="fa fa-briefcase"></i>
+                                <span class="hidden-xs text-brandon">Create a job</span><br></span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -103,6 +111,7 @@
 
                 <div id="tag_container">
                     @include('job.includes.jobs-partial')
+                                        </div>
                 </div>
 
                 <span class="col-xs-6"></span>

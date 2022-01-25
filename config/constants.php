@@ -26,5 +26,7 @@
 				'remuneration' => 'Remuneration (min/max)'
 		],
 		'pagination' => env('PAGINATION',100),
+		'signupUrl' => env('APP_URL','https://signup.seamlesshiring.com')
+		
 	];
 

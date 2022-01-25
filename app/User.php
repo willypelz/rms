@@ -33,7 +33,8 @@ class User extends Authenticatable
         'is_internal',
         'role_name',
         'is_super_admin',
-        'user_token'
+        'user_token',
+        'client_id'
     ];
 
     /**
@@ -108,6 +109,11 @@ class User extends Authenticatable
         static::created(function (User $user) {
             $user->defaultCompany();
         });
+    }
+
+    public function client()
+    {
+        return $this->belongsTo('App\Models\Client', "client_id");
     }
 
 }

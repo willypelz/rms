@@ -15,13 +15,13 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="name" class="col-form-label">Name:</label>
+                        <label for="name" class="col-form-label">Name:</label><span class="text-danger">*</span>
                         <input type="text" class="form-control" name="workflow_name"
                                placeholder="A name for this workflow"
                                id="workflow_name">
                     </div>
                     <div class="form-group">
-                        <label for="description">Description</label>
+                        <label for="description">Description:</label><span class="text-danger">*</span>
                         <textarea name="description"
                                   id="workflow_description"
                                   placeholder="A short note about this workflow"
@@ -43,11 +43,11 @@
         var workflow_name = $('#workflow_name').val();
         var workflow_description = $('#workflow_description').val();
         if (workflow_name == null || workflow_name == "") {
-            $.growl.error({message: 'Please enter field name.'})
+            $.growl.error({message: 'Please enter workflow name.'})
             return false;
         }
         if (workflow_description == null || workflow_description == "") {
-            $.growl.error({message: 'Please enter field description.'})
+            $.growl.error({message: 'Please enter workflow description.'})
             return false;
         }
         var token = $('#token').val();
@@ -62,15 +62,26 @@
             },
             success: function (res) {
                 const data = res.data;
-                console.log('ssss', data)
-                console.log('ssss', data)
                 $('#workflowModal').modal('hide');
                 $.growl.notice({title: "Success", duration:9000,  message: `Workflow successfully created. If you want to Customise this workflow created click <a target="_blank" href="${workflow_url}"> here </a>`})
                 let newOption = new Option(data.name, data.id, false, false);
                 $('#workflowId').append(newOption).trigger('change');
                 // $(".select2-container option").remove();
+                $('#workflow_name').val('');
+                $('#workflow_description').val('');
                 workflow_name = '';
                 workflow_description = '';
+            },
+            error:function (err) {
+                if(err.status === 422) {
+                    $.each(err.responseJSON.errors, function (key, val) {
+                        $.growl.error({
+                            title:"Error!",
+                            message:val,
+                            duration:9000
+                        });
+                    });
+                }
             }
         });
     });

@@ -172,7 +172,7 @@
                 data: ({ rnd : Math.random() * 100000,  job_id:"{{ $job['id'] }}" , status:'ACTIVE'}),
                 success: function(response){
                      // $('#statusBtn').hide()
-                     $('#statusBtn').text('Un Publish').attr('onclick', 'UnPublish(1); return false')
+                     $('#statusBtn').text('Unpublish').attr('onclick', 'UnPublish(1); return false')
                      $('#status-box').text('Job is active').removeClass('label-danger').addClass('label-success')
 
                 }

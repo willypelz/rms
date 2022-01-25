@@ -100,7 +100,7 @@ class CandidateController extends Controller
 
         if($request->isMethod('post')){
 
-            $candidate = Candidate::whereEmail($request->email)->first();
+            $candidate = Candidate::whereEmail($request->email)->where('client_id',$request->clientId)->first();
 
             if($candidate){
 
@@ -111,8 +111,8 @@ class CandidateController extends Controller
                 );
 
 
-                Mail::send('emails.candidate-forgot-password', ['token' => $token], function ($m) use ($candidate) {
-                    $m->from(env('COMPANY_EMAIL'), env('APP_NAME'));
+                Mail::send('emails.candidate-forgot-password', ['token' => $token, 'client_id' => $request->clientId], function ($m) use ($candidate,$request) {
+                    $m->from(getEnvData('COMPANY_EMAIL',null,$request->clientId), getEnvData('APP_NAME'));
                     $m->to($candidate->email, $candidate->first_name)->subject('Your Password Reset Link!');
                 });
 
@@ -156,7 +156,7 @@ class CandidateController extends Controller
 
 
 
-            $candidate = Candidate::whereEmail($token_reset->email)->first();
+            $candidate = Candidate::whereEmail($token_reset->email)->where('client_id', $request->clientId)->first();
             $candidate->update(['password' => bcrypt($request->password)]);
 
             $name = $candidate->first_name.' '.$candidate->last_name;
@@ -232,11 +232,11 @@ class CandidateController extends Controller
             $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->where('is_private', false)
             ->where(function($q){
                 $q->where('is_for','external')->orWhere('is_for', 'both');
-            })->get();
+            })->whereIn('company_id',$request->companyIds)->get();
         }else{
-            $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->get();
+            $jobs = Job::with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->whereIn('company_id',$request->companyIds)->get();
         }
-	    $companies =   Company::all();
+	    $companies =   Company::where('client_id',$request->clientId)->get();
         return view('candidate.job-list', compact('jobs', 'companies'));
     }
 
@@ -254,7 +254,7 @@ class CandidateController extends Controller
 		    $jobs = Job::whereCompanyId($company_id)->with('company')->whereDate('expiry_date', '>', date('Y-m-d'))->where('status','ACTIVE')->get();
 	    }
 
-	    $companies =   Company::all();
+	    $companies =   Company::where('client_id', request()->clientId)->get();
 	    return view('candidate.job-list', compact('jobs', 'companies','company_details'));
     }
 
@@ -296,7 +296,7 @@ class CandidateController extends Controller
                 $file_name  = $request->attachment->getClientOriginalName();
                 $attachment = $job_applications[0]->id . '-' . time() . '-' . $file_name;
 
-                $request->file('attachment')->move(env('fileupload'), $attachment);
+                $request->file('attachment')->move(getEnvData('fileupload'), $attachment);
 
             } else {
                 $attachment = '';
@@ -324,7 +324,7 @@ class CandidateController extends Controller
 
 
                  Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
-                    $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
+                    $m->from(getEnvData('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
                 });
 
             }
@@ -379,7 +379,7 @@ class CandidateController extends Controller
             $document_file = $request->application_id . '-' . time() . '-' . $file_name;
 
             $upload = $request->file('document_file')->move(
-                env('fileupload'), $document_file
+                getEnvData('fileupload'), $document_file
             );
         } else {
             $document_file = '';
@@ -403,7 +403,7 @@ class CandidateController extends Controller
             $user = User::find($admin_user->user_id);
         }else{
             $user = new \stdClass();
-            $user->email = env('COMPANY_EMAIL');
+            $user->email = getEnvData('COMPANY_EMAIL');
             $user->name = "Admin";
             $user->first_name = "Admin";
         }
@@ -417,7 +417,7 @@ class CandidateController extends Controller
 
 
          Mail::send('emails.new.send_message', compact('candidate', 'email_title', 'message_content', 'user', 'link', 'job'), function ($m) use ($user, $email_title) {
-            $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
+            $m->from(getEnvData('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
         });
         if ($candidate->is_from == 'internal') 
         {

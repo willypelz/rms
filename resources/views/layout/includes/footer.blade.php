@@ -180,7 +180,7 @@
                 <ul class="list-unstyled footer-logo">
                     <li>
                         {{--<img src="{{env('SEAMLESS_HIRING_LOGO_WHITE')}}" alt="" width="185px"><br>--}}
-                        <small class="text-white">&copy; {{date('Y')}}. All Rights Reserved. Read our <a href="//seamlesshr.com/privacy">privacy policy</a></small>
+                        <small class="text-white">&copy; {{date('Y')}}. All Rights Reserved. Read our <a href="https://seamlesshr.com/privacy-security/">privacy policy</a></small>
                     </li>
                 </ul>
             </div>

@@ -60,7 +60,7 @@
                                                         onchange="javascript:location.href = this.value;"
                                                         id="specialization"
                                                         class="select2 company-filter" >
-                                                    <option value="">--choose  company</option>
+                                                    <option value="">--choose  company--</option>
                                                     @foreach($companies as $s)
                                                         <option value="{{ route('job-listing', ['company_id' => $s->id])}}">{{ $s->name }}</option>
                                                     @endforeach

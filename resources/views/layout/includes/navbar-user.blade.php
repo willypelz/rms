@@ -101,9 +101,9 @@
                     <a class="" href="{{ url('my-career-page') }}" target="_blank">My Career Page <i
                                 class="fa fa-building mask"></i></a>
                 </li>
-                @if( env('RMS_STAND_ALONE',true) == false)
+                @if( getEnvData('RMS_STAND_ALONE',true) == false)
                     <li class="">
-                            <a class="" href="{{url(env('STAFFSTRENGTH_URL'))}}" target="_blank">HRMS Portal <i
+                            <a class="" href="{{url(getEnvData('STAFFSTRENGTH_URL'))}}" target="_blank">HRMS Portal <i
                                         class="fa fa-building mask"></i></a>
                     </li>
                 @endif
@@ -115,6 +115,7 @@
             </ul>
             
             <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://seamlesshr-8444376.hs-sites.com/knowledge/recruitment-management-system" target=”_blank”><i class="fa fa-info-circle "></i> Support</a></li>
                 @if( get_current_company()->id != 13 )
                     @if( @$account->status == 'TRIAL')
                         @if( @$account->has_expired )
@@ -134,9 +135,9 @@
                                 <a title="Upgrade now to avoid termination of service" class="btn btn-danger"
                                    href="{{--{{ route('pricing-page') }}--}}">{{ @$account->trial_time }} Days left</a>
                                 
-                                <div class="pricey-callout animated zoomInDown">Your trial period ends in
+                                {{-- <div class="pricey-callout animated zoomInDown">Your trial period ends in
                                     <span>{{ @$account->trial_time }}</span> days. Upgrade now to avoid termination of
-                                    service <a class="closer">&times;</a></div>
+                                    service <a class="closer">&times;</a></div> --}}
                             
                             </li>
                         
@@ -159,11 +160,11 @@
                     </a>
                     <ul class="dropdown-menu top-user-menu" aria-labelledby="drop3">
                         <!-- <li><a href="setting.php">Account Setting</a></li>  -->
-                        <?php $companies = Auth::user()->companies->unique(); ?>
+                        <?php $companies = Auth::user()->companies->where('client_id', request()->clientId); ?>
                         @if (canSwitchBetweenPage())
                             @foreach( $companies as $key => $company )
                                 <li>
-                                    <a href="{{ route('select-company',['slug'=>$company->slug]) }}"> @if( $company->id == get_current_company()->id )
+                                    <a href="{{ route('select-company',['id'=>$company->id]) }}"> @if( $company->id == get_current_company()->id )
                                             <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>
                                     @if(count($companies)-1 != $key)
                                             <hr role="separator" class="divider pt-4 mt-5"/>

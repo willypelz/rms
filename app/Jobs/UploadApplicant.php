@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Libraries\Solr;
+use App\SearchEngine\SearchEngine;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -16,6 +17,8 @@ class UploadApplicant implements ShouldQueue
     
     var $applicant,$test_score;
 
+    public $searchEngineer;
+
     public $timeout = 2000;
     /**
      * Create a new job instance.
@@ -28,6 +31,7 @@ class UploadApplicant implements ShouldQueue
         $this->applicant = $applicant;
         $job = $this->applicant->job;
         $this->test_score = $this->applicant->testRequests;
+        $this->searchEngineer =  app(SearchEngine::class);
     }
 
     /**
@@ -40,8 +44,9 @@ class UploadApplicant implements ShouldQueue
         ini_set('memory_limit', '1024M');
         set_time_limit(0);
 
-        if(is_null($this->applicant->job))
+        if (is_null($this->applicant->job)) {
             return false;
+        }
 
             $applicant = $this->applicant;
             $job = $this->applicant->job;
@@ -92,16 +97,16 @@ class UploadApplicant implements ShouldQueue
             $cand['completed_nysc'] = ($applicant->cv->completed_nysc ?? null);
             $cand['graduation_grade'] = (int)($applicant->cv->graduation_grade ?? null);
             //custom fields
-            foreach ($this->applicant->custom_fields as $key=>$value) {
-                if($value->form_field != null && isset($value->form_field->name) && isset($value->value)){
-                    $cand['custom_field_name'][] = str_slug($value->form_field->name,'_');
-                    $cand['custom_field_value'][] = ($value->value ?? null);
-                }
+        foreach ($this->applicant->custom_fields as $key=>$value) {
+            if ($value->form_field != null && isset($value->form_field->name) && isset($value->value)) {
+                $cand['custom_field_name'][] = str_slug($value->form_field->name, '_');
+                $cand['custom_field_value'][] = ($value->value ?? null);
             }
+        }
             info('commenced push to solr');
             
             $client_id = $applicant->candidate->client_id ?? null;
 
-            SolrPackage::create_new_document($cand, $client_id);
+            $this->searchEngineer->create_new_document($cand, $client_id);
     }
 }

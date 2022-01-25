@@ -2544,14 +2544,19 @@ class JobsController extends Controller
             }
 
             if (isset($fields->school->is_visible) && $fields->school->is_visible && (isset($data['school']))) {
-
-                if($data['school']=='others' && (!is_null($data['others']) && !empty($data['others']))){
-                    $school = School::FirstOrCreate([
-                        'name' => $data['others']
-                    ]);   
-                }else{
-                    return back()->withInput()->withErrors(['warning' => 'School cannot be null or empty']);
+                
+                if (is_null($data['school'])) {
+                    if ($data['school']=='others' && (!is_null($data['others']) && !empty($data['others']))) {
+                            $school = School::FirstOrCreate(
+                                [
+                                'name' => $data['others']
+                                ]
+                            );   
+                    } else {
+                        return back()->withInput()->withErrors(['warning' => 'School cannot be null or empty']);
+                    }
                 }
+                
                 $school_id = isset($data['others']) && isset($school) ? $school->id : $data['school'];
             }
 
@@ -2768,7 +2773,7 @@ class JobsController extends Controller
 
             try {
                 $job_application = JobApplication::with('cv')->find($appl->id);
-                UploadApplicant::dispatch($job_application)->onQueue('solr');
+                UploadApplicant::dispatch($job_application, $this->searchEnginer)->onQueue('solr');
             } catch (Exception $e) {
                 Log::info(json_encode($e));
             }

@@ -163,11 +163,4 @@ class JobApplication extends Model
         }
         return $cand;
     }
-
-    public function testRequests()
-    {
-
-        return $this->hasMany('App\Models\TestRequest');
-
-    }
 }

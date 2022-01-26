@@ -29,10 +29,9 @@ class SearchEngineServiceProvider extends ServiceProvider
         $this->app->singleton(
             SearchEngine::class,
             function ($app) {
-                if (config('app.searcher') == 'Solr') {
+                if (config('app.searcher') == 'solr') {
                     return new SolrSearch;
                 }
-
                 return new AlgoliaSearch;
             }
 

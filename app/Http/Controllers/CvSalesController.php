@@ -602,7 +602,14 @@ class CvSalesController extends Controller
         }
 
      
-        $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $application_statuses['ALL'], 'type'=>'Cvs', 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();
+        $showing = view(
+            'cv-sales.includes.top-summary',
+            [
+                'start' => ( $start + 1 ),'end' => $end, 
+                'total'=> $application_statuses['ALL'], 'type'=>'Cvs', 
+                'page' => floor($request->start + 1), 'filters' => $request->filter_query 
+            ]
+        )->render();
 
         $cart = Cart::content();
         $count = Cart::count(false);
@@ -615,7 +622,7 @@ class CvSalesController extends Controller
         if(empty($ids))
             $ids = null;
 
-        $jobs = Job::where('company_id',get_current_company()->id)->get();
+        $jobs = Job::where('company_id', get_current_company()->id)->get();
 
         $myFolders = is_null($response) ? [] : array_unique( array_pluck( $response ,'cv_source') );
         if(($key = array_search('Direct Application', $myFolders)) !== false) {
@@ -631,15 +638,46 @@ class CvSalesController extends Controller
         if($request->ajax())
         {
 
-            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'myJobs' => Job::getMyJobs(), 'myFolders' => $myFolders, 'application_statuses' => $application_statuses ])->render();
-            $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query, 'age' => @$request->age,'exp_years' => @$request->exp_years])->render();
+            $search_results = view(
+                'cv-sales.includes.search-results-item',
+                [
+                    'result' => $response,'search_query' => $request->search_query, 
+                    'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 
+                    'start' => $start, 'page' => 'pool',  
+                    'is_saved' => true, 'myJobs' => Job::getMyJobs(), 
+                    'myFolders' => $myFolders, 'application_statuses' => $application_statuses 
+                    ]
+            )->render();
+            $search_filters = view(
+                'cv-sales.includes.search-filters',
+                [
+                    'result' => $response,'search_query' => $request->search_query, 
+                    'age' => @$request->age,'exp_years' => @$request->exp_years
+                    ]
+            )->render();
             mixPanelRecord("talent-pool search function used (Admin)", auth()->user());
-            return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing, 'count' => $result['response']['numFound'] ] );
+            return response()->json(
+                [ 
+                    'search_results' => $search_results, 'search_filters' => $search_filters, 
+                    'showing'=>$showing, 'count' => $result['response']['numFound'] 
+                ]
+            );
 
         }
         else{
 
-            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query,'showing'=>$showing, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 5, 85 ], 'exp_years' => [ 0, 60 ], 'myJobs' => Job::getMyJobs(), 'myFolders' => $myFolders, 'application_statuses' => $application_statuses, 'states' => $states, 'qualifications' => $qualifications, 'grades' => $grades ]);
+            return view(
+                'cv-sales.cv_pool',
+                [
+                    'result' => $response,'search_query' => $request->search_query,
+                    'showing'=>$showing, 'items'=> $cart, 'many'=>$count, 
+                    'ids'=>$ids, 'start' => $start, 'page' => 'pool',  
+                    'is_saved' => true, 'age' => [ 5, 85 ], 'exp_years' => [ 0, 60 ], 
+                    'myJobs' => Job::getMyJobs(), 'myFolders' => $myFolders, 
+                    'application_statuses' => $application_statuses, 'states' => $states, 
+                    'qualifications' => $qualifications, 'grades' => $grades 
+                ]
+            );
         }
     }
 

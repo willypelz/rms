@@ -26,6 +26,8 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
 class CvSalesController extends Controller
 {
+
+    protected $searchEngine;
     // private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'score+asc', 'grouped'=>FALSE ];
     private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'application_date+desc', 'grouped'=>FALSE ];
 
@@ -88,6 +90,8 @@ class CvSalesController extends Controller
             'Transactions',
             'TestEmail'
         ]]);
+
+        $this->searchEngine = app(SearchEngine::class);
     }
 
     public function search(Request $request)
@@ -142,9 +146,9 @@ class CvSalesController extends Controller
                 $this->search_params['filter_query'] = @$request->filter_query;
             }
 
-            // $response = SolrPackage::search_resume($this->search_params);
+            // $response = $this->searchEngine->search_resume($this->search_params);
 
-            $result = SolrPackage::search_resume($this->search_params, @$additional, $request->clientId);
+            $result = $this->searchEngine->search_resume($this->search_params, @$additional, $request->clientId);
             $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
             $cart = Utilities::getCartContent('cv-sales');
@@ -195,7 +199,7 @@ class CvSalesController extends Controller
             if(empty($ids))
                 $ids = null;
 
-            $response = SolrPackage::search_resume($this->search_params);
+            $response = $this->searchEngine->search_resume($this->search_params);
 
             return view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids ]);*/
     }
@@ -478,8 +482,8 @@ class CvSalesController extends Controller
 
 
         $this->search_params['filter_query'] = @$request->filter_query;
-        // $response = SolrPackage::search_resume($this->search_params);
-        $response = SolrPackage::get_saved_cvs($this->search_params);
+        // $response = $this->searchEngine->search_resume($this->search_params);
+        $response = $this->searchEngine->get_saved_cvs($this->search_params);
 
 
         $cart = Utilities::getCartContent('saved-cvs');
@@ -515,8 +519,8 @@ class CvSalesController extends Controller
 
 
         $this->search_params['filter_query'] = @$request->filter_query;
-        // $response = SolrPackage::search_resume($this->search_params);
-        $response = SolrPackage::get_purchased_cvs($this->search_params);
+        // $response = $this->searchEngine->search_resume($this->search_params);
+        $response = $this->searchEngine->->get_purchased_cvs($this->search_params);
 
 
         $cart = Cart::content();
@@ -589,7 +593,7 @@ class CvSalesController extends Controller
         }
 
         // $response = SolrPackage::search_resume($this->search_params);
-        $response = $result = SolrPackage::get_all_my_cvs($this->search_params, @$solr_age, @$solr_exp_years);
+        $response = $result = $this->searchEngine->get_all_my_cvs($this->search_params, @$solr_age, @$solr_exp_years);
         if ((isset($result['facet_counts']))) {
             $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status']);
             $end = (($start + $this->search_params['row']) > intval($application_statuses['ALL'])) ? $application_statuses['ALL'] : ($start + $this->search_params['row']);

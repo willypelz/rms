@@ -311,8 +311,6 @@ class JobApplicationsController extends Controller
         //Check if he  is the owner of the job
         check_if_job_owner($request->jobID);
 
-        dd($this->searchEngine);
-
         $job = Job::with([
             'form_fields',
             'applicants',

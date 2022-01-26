@@ -10,27 +10,32 @@ use Illuminate\Support\Facades\Log;
 
 class SolrSearch implements SearchEngine
 {
+
     static $url;
     static $host;
     static $core;
 
-    static function init()
+    static function init() 
     {
         SolrSearch::$url = env("SOLR_URL"); //getEnvData("SOLR_CORE",null, 1); // formerly env("SOLR_URL") but now gotten from DB. it's same value for all clients;
-        SolrSearch::$core = env("SOLR_CORE");  //null;
-        SolrSearch::$host = env("SOLR_URL") . SolrSearch::$core . "/select?"; // null; //formerly env("SOLR_URL").SolrSearch::$core."/select?" but now gotten from DB per client;
-
+        SolrSearch::$host = env("SOLR_CORE");  //null;
+        SolrSearch::$core = env("SOLR_URL") . SolrSearch::$core . "select?"; // null; //formerly env("SOLR_URL").SolrSearch::$core."/select?" but now gotten from DB per client;
     }
 
-    static $default_params = ['q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false, 'sort' => 'last_modified+desc', 'grouped' => FALSE];
+    
 
+    static $default_params = [
+        'q' => '*', 'row' => 20, 'start' => 0, 
+        'default_op' => 'AND', 'search_field' => 'text', 
+        'show_expired' => false, 'sort' => 'last_modified+desc', 
+        'grouped' => false
+    ];
 
 
     public function create_new_document($in_data, $client_id = '')
     {
         
-        $ch = curl_init(config("app.solr_url") . SolrSearch::$core . "/update?wt=json");
-        
+        $ch = curl_init(env("SOLR_URL") . SolrSearch::$core . "/update?wt=json");
         $data = array(
             "add" => array(
                 "doc" => $in_data,

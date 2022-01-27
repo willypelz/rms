@@ -31,7 +31,7 @@ class Candidate extends Authenticatable
         return $this->HasMany('App\Models\JobApplication');
     }
 
-    public function getDefaultCompanyAttribute()
+    public function defaultCompany()
     {
         return Company::first();
     }

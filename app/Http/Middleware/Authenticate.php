@@ -27,7 +27,7 @@ class Authenticate
 
         session([
             'active_company' => optional(auth()->user())->defaultCompany()
-                                    ?? optional(auth()->guard('candidate')->user())->default_company
+                                    ?? optional(auth()->guard('candidate')->user())->defaultCompany()
         ]);
 
         return $next($request);

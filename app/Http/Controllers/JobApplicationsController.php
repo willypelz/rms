@@ -420,6 +420,7 @@ class JobApplicationsController extends Controller
             @$solr_minimium_remuneration,
             @$solr_maximium_remuneration,
         );
+//        dd($result);
         $statuses = $job->workflow->workflowSteps()->pluck('slug');
 
         $application_statuses = get_application_statuses(

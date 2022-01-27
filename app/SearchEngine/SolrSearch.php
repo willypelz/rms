@@ -14,11 +14,11 @@ class SolrSearch implements SearchEngine
     static $host;
     static $core;
 
-    static function init()
+    public function __construct()
     {
-        SolrPackage::$url = env("SOLR_URL"); //getEnvData("SOLR_CORE",null, 1); // formerly env("SOLR_URL") but now gotten from DB. it's same value for all clients;
-        SolrPackage::$core = env("SOLR_CORE");  //null;
-        SolrPackage::$host = env("SOLR_URL") . SolrPackage::$core . "/select?"; // null; //formerly env("SOLR_URL").SolrPackage::$core."/select?" but now gotten from DB per client;
+        SolrPackage::$url = getEnvData("SOLR_URL"); //getEnvData("SOLR_CORE",null, 1); // formerly env("SOLR_URL") but now gotten from DB. it's same value for all clients;
+        SolrPackage::$core = getEnvData("SOLR_CORE");  //null;
+        SolrPackage::$host = getEnvData("SOLR_URL") . SolrPackage::$core . "/select?"; // null; //formerly env("SOLR_URL").SolrPackage::$core."/select?" but now gotten from DB per client;
 
     }
 
@@ -72,7 +72,6 @@ class SolrSearch implements SearchEngine
             $search_field .= ':';
         }
             
-
         // SolrPackage::$host = SolrPackage::$url . getEnvData("SOLR_CORE",null, $client_id);
         $filename = SolrPackage::$host . "q=" . $search_field . $q . "&rows=" . $row . "&start=" . $start
             . "&facet=true&facet.limit=-1&facet.field=gender&facet.field=marital_status&facet.field=last_position"
@@ -176,7 +175,6 @@ class SolrSearch implements SearchEngine
         $minimium_remuneration = null, $maximium_remuneration = null
     ) {
 
-
         $additional = "&fq=job_id:" . $job_id;
 
         if ($status != "") {
@@ -213,7 +211,7 @@ class SolrSearch implements SearchEngine
         }
 
 
-        return SolrPackage::search_resume($data, $additional, $client_id);
+        return $this->search_resume($data, $additional, $client_id);
     }
 
 

@@ -505,7 +505,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::post('/settings/api-key', 'ApiController@update');
 
     Route::get('/my-career-page', 'JobsController@MyCompany');
-    Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
+    Route::middleware('auth')->match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
     Route::get('my-jobs-content', ['uses' => 'JobsController@JobList', 'as' => 'job-list-content']);
 
 });

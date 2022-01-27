@@ -379,6 +379,7 @@ function check_if_job_owner_on_queue($job_id, $current_company, $user)
 function get_current_company()
 {
     $authUser = Auth::user();
+//    dd($authUser);
     $sessionId = Session::get('current_company_index');
 
     if (!is_null($authUser)) {
@@ -389,11 +390,10 @@ function get_current_company()
             else
                 return $authUser->companies->first();
         }
-        
+
         if ($authUser->companies && $authUser->companies->count() < 1) {
             return redirect()->guest('login');
         }
-        
         // If a company is not selected, default to the first on the list
         return optional(optional($authUser)->companies)->first();
     } else {
@@ -1178,7 +1178,7 @@ function getIntendedCompanyToPostJobTo($id){
  */
 function setSystemConfig($client_id)
 {
-    $client_id = !is_null($client_id) ? $client_id : get_current_company()->client_id;
+    $client_id = !is_null($client_id) ? $client_id : optional(get_current_company())->client_id;
 
     if (is_null($client_id)) {
         $client_id = request()->clientId;
@@ -1202,7 +1202,7 @@ function setSystemConfig($client_id)
  */
 function getSystemConfig($client_id = null)
 {
-    $client_id = !is_null($client_id) ? $client_id : get_current_company()->client_id;
+    $client_id = !is_null($client_id) ? $client_id : optional(get_current_company())->client_id;
     $systemSettingData = SystemSetting::where('client_id', $client_id)->get()->pluck('value', 'key')->all();
 
     if (Cache::has("SystemConfig-{$client_id}")) {
@@ -1224,7 +1224,8 @@ function getSystemConfig($client_id = null)
 
 function getEnvData(string $key, $default_value = null, $client_id = null)
 {
-    try{
+//    dd("here........");
+//    try{
         //change key to uppercase
         $key = strtoupper($key);
         //check if an empty string key is passed
@@ -1233,20 +1234,20 @@ function getEnvData(string $key, $default_value = null, $client_id = null)
         }
 
         if (is_null($client_id)) {
-            $client_id = get_current_company()->client_id;
+            $client_id = optional(get_current_company())->client_id;
         }
 
         $systemConfigObject = getSystemConfig($client_id);
 
         if (!is_null($systemConfigObject)) {
-            $systemConfigData = $systemConfigObject->{$key} ?? null;
+            $systemConfigData = optional($systemConfigObject)->{$key} ?? null;
             return $systemConfigData ?? $default_value;
         }
 
         return $default_value;
-    }catch(\Exception $e){
-        return null;
-    }
+//    }catch(\Exception $e){
+//        return null;
+//    }
 
 }
 

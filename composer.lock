@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "acadf902bce99e1122bcd267c3c6c754",
+    "content-hash": "9614231b620b772ddd2bd1041cedccc5",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -533,16 +533,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.209.10",
+            "version": "3.209.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "45082e9fac26bdbc5db504639373374084f616d3"
+                "reference": "02e488042410fac0af67fd37f222d5b3c0424b72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/45082e9fac26bdbc5db504639373374084f616d3",
-                "reference": "45082e9fac26bdbc5db504639373374084f616d3",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/02e488042410fac0af67fd37f222d5b3c0424b72",
+                "reference": "02e488042410fac0af67fd37f222d5b3c0424b72",
                 "shasum": ""
             },
             "require": {
@@ -618,9 +618,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.209.10"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.209.12"
             },
-            "time": "2022-01-21T19:18:51+00:00"
+            "time": "2022-01-25T19:17:24+00:00"
         },
         {
             "name": "balping/json-raw-encoder",
@@ -3279,16 +3279,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.80.0",
+            "version": "v8.81.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "8949a2e46b0f274f39c61eee8d5de1dc6a1f686b"
+                "reference": "9cc0efd724ce67a190b1695ba31a27bbb1ae9177"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/8949a2e46b0f274f39c61eee8d5de1dc6a1f686b",
-                "reference": "8949a2e46b0f274f39c61eee8d5de1dc6a1f686b",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/9cc0efd724ce67a190b1695ba31a27bbb1ae9177",
+                "reference": "9cc0efd724ce67a190b1695ba31a27bbb1ae9177",
                 "shasum": ""
             },
             "require": {
@@ -3321,7 +3321,7 @@
                 "symfony/var-dumper": "^5.4",
                 "tijsverkoyen/css-to-inline-styles": "^2.2.2",
                 "vlucas/phpdotenv": "^5.4.1",
-                "voku/portable-ascii": "^1.4.8"
+                "voku/portable-ascii": "^1.6.1"
             },
             "conflict": {
                 "tightenco/collect": "<5.5.33"
@@ -3448,7 +3448,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-01-18T15:51:42+00:00"
+            "time": "2022-01-25T16:41:46+00:00"
         },
         {
             "name": "laravel/helpers",
@@ -3915,16 +3915,16 @@
         },
         {
             "name": "laravel/ui",
-            "version": "v3.4.1",
+            "version": "v3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/ui.git",
-                "reference": "9a1e52442dd238647905b98d773d59e438eb9f9d"
+                "reference": "e01198123f7f4369d13c1f83a897c3f5e97fc9f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/ui/zipball/9a1e52442dd238647905b98d773d59e438eb9f9d",
-                "reference": "9a1e52442dd238647905b98d773d59e438eb9f9d",
+                "url": "https://api.github.com/repos/laravel/ui/zipball/e01198123f7f4369d13c1f83a897c3f5e97fc9f4",
+                "reference": "e01198123f7f4369d13c1f83a897c3f5e97fc9f4",
                 "shasum": ""
             },
             "require": {
@@ -3970,9 +3970,9 @@
                 "ui"
             ],
             "support": {
-                "source": "https://github.com/laravel/ui/tree/v3.4.1"
+                "source": "https://github.com/laravel/ui/tree/v3.4.2"
             },
-            "time": "2021-12-22T10:40:50+00:00"
+            "time": "2022-01-25T20:15:56+00:00"
         },
         {
             "name": "laravelcollective/html",
@@ -4048,16 +4048,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "c5aadcc15548629787d02b86a7afef03b46271b5"
+                "reference": "f8afb78f087777b040e0ab8a6b6ca93f6fc3f18a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/c5aadcc15548629787d02b86a7afef03b46271b5",
-                "reference": "c5aadcc15548629787d02b86a7afef03b46271b5",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/f8afb78f087777b040e0ab8a6b6ca93f6fc3f18a",
+                "reference": "f8afb78f087777b040e0ab8a6b6ca93f6fc3f18a",
                 "shasum": ""
             },
             "require": {
@@ -4065,7 +4065,7 @@
                 "league/config": "^1.1.1",
                 "php": "^7.4 || ^8.0",
                 "psr/event-dispatcher": "^1.0",
-                "symfony/deprecation-contracts": "^v2.1 || ^3.0",
+                "symfony/deprecation-contracts": "^2.1 || ^3.0",
                 "symfony/polyfill-php80": "^1.15"
             },
             "require-dev": {
@@ -4148,7 +4148,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-01-22T14:06:22+00:00"
+            "time": "2022-01-25T14:37:33+00:00"
         },
         {
             "name": "league/config",
@@ -6959,7 +6959,7 @@
             "version": "v1.0.2",
             "source": {
                 "type": "git",
-                "url": "git@bitbucket.org:insidify/shr-cloudflare-domain-generator.git",
+                "url": "https://git@bitbucket.org/insidify/shr-cloudflare-domain-generator.git",
                 "reference": "5dcf1043b06d09bc6bb4bd28d4802409fa1f17b2"
             },
             "require": {
@@ -6998,7 +6998,7 @@
             "version": "dev-multitenantSolr",
             "source": {
                 "type": "git",
-                "url": "git@bitbucket.org:insidify/solr-package.git",
+                "url": "https://git@bitbucket.org/insidify/solr-package.git",
                 "reference": "686346928c0c1189ae7686bdb3b653519b9394c5"
             },
             "require": {
@@ -7054,7 +7054,7 @@
             "version": "v1.0.4",
             "source": {
                 "type": "git",
-                "url": "git@bitbucket.org:insidify/stringcrypt.git",
+                "url": "https://git@bitbucket.org/insidify/stringcrypt.git",
                 "reference": "e427eb619fee656ac9facaaaf794abf7f641304c"
             },
             "require": {
@@ -10459,16 +10459,16 @@
         },
         {
             "name": "voku/portable-ascii",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/voku/portable-ascii.git",
-                "reference": "1f8b372a927ab2d17dbdab443aefbfe6a5354284"
+                "reference": "87337c91b9dfacee02452244ee14ab3c43bc485a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/voku/portable-ascii/zipball/1f8b372a927ab2d17dbdab443aefbfe6a5354284",
-                "reference": "1f8b372a927ab2d17dbdab443aefbfe6a5354284",
+                "url": "https://api.github.com/repos/voku/portable-ascii/zipball/87337c91b9dfacee02452244ee14ab3c43bc485a",
+                "reference": "87337c91b9dfacee02452244ee14ab3c43bc485a",
                 "shasum": ""
             },
             "require": {
@@ -10505,7 +10505,7 @@
             ],
             "support": {
                 "issues": "https://github.com/voku/portable-ascii/issues",
-                "source": "https://github.com/voku/portable-ascii/tree/1.6.0"
+                "source": "https://github.com/voku/portable-ascii/tree/1.6.1"
             },
             "funding": [
                 {
@@ -10529,7 +10529,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-01-24T09:37:53+00:00"
+            "time": "2022-01-24T18:55:24+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -11446,9 +11446,6 @@
             },
             "require": {
                 "php": "^7.1 || ^8.0"
-            },
-            "replace": {
-                "myclabs/deep-copy": "self.version"
             },
             "require-dev": {
                 "doctrine/collections": "^1.0",
@@ -13491,5 +13488,5 @@
         "ext-pcntl": "7.3",
         "ext-posix": "7.3"
     },
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.2.0"
 }

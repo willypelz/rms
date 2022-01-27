@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendApplicationMailJob;
 use DB;
 use Cart;
 use Curl;
@@ -2574,14 +2575,16 @@ class JobsController extends Controller
 
             }
 
-            if (isset($fields->school->is_visible)  && $fields->school->is_visible && (isset($data['school']))) {
 
-                if($data['school']=='others' && (!is_null($data['others']) && !empty($data['others']))){
+            if (isset($fields->school->is_visible)  && $fields->school->is_visible && (isset($data['school']))) {
+                $others = (string) $data['others'] ?? null;
+
+                if($data['school']=='others' && $others !== ''){
                     $school = School::FirstOrCreate([
                         'name' => $data['others']
                     ]);   
                 }else{
-	                if($fields->school->is_required) {
+	                if($fields->school->is_required && !isset($data['school'])) {
 		                return back()->withInput()->withErrors(['warning' => 'School cannot be null or empty']);
 	                }
                 }
@@ -2795,9 +2798,8 @@ class JobsController extends Controller
 
             }
 
-            Mail::send('emails.new.job_application_successful', ['user' => $candidate, 'link' => route('candidate-dashboard'), 'job' => $job], function (Message $m) use ($candidate) {
-                $m->from(getEnvData('COMPANY_EMAIL'))->to($candidate->email)->subject('Job Application Successful');
-            });
+            SendApplicationMailJob::dispatch($candidate->id, $job->id);
+
 
             try {
                 $job_application = JobApplication::with('cv')->find($appl->id);

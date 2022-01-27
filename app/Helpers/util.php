@@ -27,7 +27,7 @@ use phpDocumentor\Reflection\Types\Object_;
 use GeneaLabs\LaravelMixpanel\Facades\Mixpanel;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
-
+use Illuminate\Support\Facades\Auth;
 // use Faker;
 
 function test()
@@ -397,6 +397,13 @@ function get_current_company()
         // If a company is not selected, default to the first on the list
         return $authUser->companies->first();
     } else {
+        $user = Auth::guard('candidate')->user();
+
+        if($user) {
+            $client = Client::with('companies')->find($user->client_id);
+            $company = $client->companies->first();
+            return $company;
+        }
         return redirect()->guest('login');
     }
 

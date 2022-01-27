@@ -311,7 +311,6 @@ class JobApplicationsController extends Controller
         //Check if he  is the owner of the job
         check_if_job_owner($request->jobID);
 
-
         $job = Job::with([
             'form_fields',
             'applicants',
@@ -406,7 +405,7 @@ class JobApplicationsController extends Controller
             $solr_video_application_score = null;
         }
 
-
+        
         $result = $this->searchEngine->get_applicants(
             $this->search_params,
             $request->jobID,
@@ -420,7 +419,7 @@ class JobApplicationsController extends Controller
             @$solr_minimium_remuneration,
             @$solr_maximium_remuneration,
         );
-//        dd($result);
+
         $statuses = $job->workflow->workflowSteps()->pluck('slug');
 
         $application_statuses = get_application_statuses(
@@ -431,11 +430,13 @@ class JobApplicationsController extends Controller
 
         if (isset($request->status)) {
             $status = $request->status;
-            if ($request->status != "")
+            if ($request->status != "") {
                 $application_statuses['ALL'] = $application_statuses[$status];
+            }
         }
         $end = (($start + $this->search_params['row']) > intval($application_statuses['ALL'])) ? $application_statuses['ALL'] : ($start + $this->search_params['row']);
-        $showing = view('cv-sales.includes.top-summary', [
+        $showing = view(
+            'cv-sales.includes.top-summary', [
             'start' => ($start + 1),
             'end' => $end,
             'total' => $application_statuses['ALL'],
@@ -479,7 +480,8 @@ class JobApplicationsController extends Controller
                     'permissions'
                 )
             )->render();
-            $search_filters = view('cv-sales.includes.search-filters', [
+            $search_filters = view(
+                'cv-sales.includes.search-filters', [
                 'result' => $result,
                 'search_query' => $request->search_query,
                 'status' => $status,

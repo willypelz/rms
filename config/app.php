@@ -24,6 +24,7 @@ return [
     'company_name' => env('COMPANY_NAME', 'Seamless Hiring'),
     'searcher' => env('SEARCH_ENGINE', 'solr'),
     'solr_core' => env("SOLR_CORE"),
+    'solr_url' => env("SOLR_URL"),
 
     /*
     |--------------------------------------------------------------------------

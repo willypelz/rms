@@ -106,7 +106,7 @@ class UploadApplicant implements ShouldQueue
             info('commenced push to solr');
             
             $client_id = $applicant->candidate->client_id ?? null;
-
+            
             $this->searchEngine->create_new_document($cand, $client_id);
     }
 }

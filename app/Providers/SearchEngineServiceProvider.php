@@ -32,7 +32,6 @@ class SearchEngineServiceProvider extends ServiceProvider
                 if (config('app.searcher') == 'solr') {
                     return new SolrSearch;
                 }
-
                 return new AlgoliaSearch;
             }
 

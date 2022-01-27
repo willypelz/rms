@@ -55,7 +55,6 @@ return [
 
     'prefix' => env('HORIZON_PREFIX', 'horizon:' . env('APP_NAME', 'laravel'), '_').'_database_' . env('DB_DATABASE', 'forge'),
 
-
     /*
     |--------------------------------------------------------------------------
     | Horizon Route Middleware

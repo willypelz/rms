@@ -46,7 +46,7 @@
 																			<br><br>
 																			<p> Amazing work creating a new subsidiary {{$subsidiary}} on your Hiring platform </b> </p>
 																			<br>
-																			We are delighted you would like to expand your access to more Talents. We are giving you a free 14-day access to {{$subsidiary}} after which a subscription will be required.
+																			We are delighted you would like to expand your access to more Talents. We are giving you a free 28-day access to {{$subsidiary}} after which a subscription will be required.
 																			<br>
 																			If you enjoyed the experience and wish to activate your subsidiary account, please email our Customer success team at support-team@seamlesshr.com or call 08090643874 and we will be sure to offer all the required assistance.
 																			<br>
@@ -60,7 +60,7 @@
 																		</div>
 
 																		<!-- <br>
-																		<small style="color:#afafaf">If you did not attempt to sign up on {{ env('APP_URL') }}, kindly ignore this mail.</small> -->
+																		<small style="color:#afafaf">If you did not attempt to sign up on {{ getEnvData('APP_URL') }}, kindly ignore this mail.</small> -->
 																	</div>
 																</div>
 																<div style="color:#2d2d2d;width:100%;float:left;margin-bottom:7%">
@@ -83,7 +83,7 @@
 
 										<div style="color:#777;width:94%;text-align:center;margin:7% auto 0;padding:0" align="center">
 											<p style="font-family:Arial,Helvetica,sans-serif;color: #6b6b6b;font-size:12px;line-height:1.42em;text-align:center;margin:16px 0 8%;padding:0;" align="center">This notification was sent to <a href="mailto:{{$user->email}},{{@get_current_company()->email}}" target="_blank">{{$user->email}} & {{@get_current_company()->email}}</a>
-												<br> because you created a subsidiary on {{ env('APP_URL') }}
+												<br> because you created a subsidiary on {{ getEnvData('APP_URL') }}
 												<br>
 												<br> If you no longer wish to receive <i>any</i> notifications when an activity is carried out <a href="" style="font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2" target="_blank">unsubscribe</a>.
 												<br>View SeamlessHiring's <a href="" target="_blank">Privacy Policy</a></p>

@@ -45,7 +45,8 @@ class OnboardingController extends Controller
     {
 
         $comp_id = get_current_company()->id;
-        $jobs_count = Job::where('company_id', $comp_id)->where('status','!=','DELETED')->count();
+        $jobs_list =  Job::where('company_id', $comp_id)->where('status','!=','DELETED');
+        $jobs_count = $jobs_list->count();
 
         // dd($jobs);
         $response = Curl::to('https://api.insidify.com/articles/get-posts')
@@ -59,13 +60,9 @@ class OnboardingController extends Controller
         $purchased_cvs_count = SolrPackage::get_purchased_cvs($this->search_params)['response']['numFound'];
 
         // dd( FolderContent::where('getFolderType.type','saved')->get()->toArray() );
-         
-        // Mail::send('emails.cv-sales.invoice', [], function($message){
-        //     $message->from(env('COMPANY_EMAIL'));
-        //     $message->to('babatopeoni@gmail.com', 'SH test email');
-        // }); 
-
-        return view('talent-pool.dashboard', compact('posts', 'jobs_count','talent_pool_count','saved_cvs_count','purchased_cvs_count'));
+        $activities_exist = showActivitiesButton($jobs_list);
+        
+        return view('talent-pool.dashboard', compact('posts', 'jobs_count','talent_pool_count','saved_cvs_count','purchased_cvs_count','activities_exist'));
     }
 
     public function requestACall(Request $request)
@@ -80,7 +77,7 @@ class OnboardingController extends Controller
         // });
 
         Mail::send('emails.guest.request-call', $request->all(), function($message){
-            $message->from(env('COMPANY_EMAIL'));
+            $message->from(getEnvData('COMPANY_EMAIL'));
             $message->to('support@seamlesshiring.com', 'Seamless Hiring Call Request');
         });
     }

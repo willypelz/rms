@@ -99,6 +99,7 @@
                                             $minimum_remuneration = $job->minimum_remuneration;
                                             $maximum_remuneration = $job->maximum_remuneration;
                                             $jobId = $job->id;
+                                            $checkCandidateStep = $checkCandidateStep;
                                         }
 
                                         if(($job == null) && isset($thirdPartyData)){
@@ -108,7 +109,7 @@
                                           $details = isset($thirdPartyData['job_description']) ? $thirdPartyData['job_description'] : NULL;
                                           $job_summary = isset($thirdPartyData['job_summary']) ? $thirdPartyData['job_summary'] : NULL;
                                         }
-                                        $eligibilty = (@isset($job->is_for) ? $eligibilty : ((env('RMS_STAND_ALONE')) ? "external" : NULL));
+                                        $eligibilty = (@isset($job->is_for) ? $eligibilty : ((getEnvData('RMS_STAND_ALONE')) ? "external" : NULL));
                                     @endphp
 
                                     <div class="form-group">
@@ -227,15 +228,19 @@
                                                     <span class="text-danger">*</span>
                                                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Who can apply to this job post? Internal: Within your organization. External: outside your organization"></i>
                                                 </label>
+                                                
                                                 <select @if($eligibilty) readonly @endif name="eligibility"
                                                         class="form-control" id="is_for">
                                                     <option value=""> -- choose eligibility --</option>
-                                                    <option @if ($eligibilty == 'both') selected="selected"
-                                                            @endif  value="both"> BOTH
-                                                    </option>
-                                                    <option @if ($eligibilty == 'internal') selected="selected"
-                                                            @endif value="internal"> INTERNAL
-                                                    </option>
+                                                   
+                                                    @if(getEnvData('RMS_STAND_ALONE')=="false")
+                                                        <option @if ($eligibilty == 'both') selected="selected"
+                                                                @endif  value="both"> BOTH
+                                                        </option>
+                                                        <option @if ($eligibilty == 'internal') selected="selected"
+                                                                @endif value="internal"> INTERNAL
+                                                        </option>
+                                                    @endif
                                                     <option @if ($eligibilty == 'external') selected="selected"
                                                             @endif value="external"> EXTERNAL
                                                     </option>
@@ -260,13 +265,13 @@
                                                 <label for="job-loc">Make job private
                                                     <input type="checkbox" id="is_private" value="true" {{(old('is_private') == "true") ? 'checked': ''}} onchange="checkedPrivate()"
                                                            name="is_private" @if ($is_private == 1) checked @endif >
-                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="When a job posting is private, only candidate with the link to the job post can apply"></i>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="When a job posting is private, it will not be visible to anyone. Only candidates with the link to the job posting can apply"></i>
                                                 </label>
                                             </div>
                                             <div class="col-sm-6 attach_emails">
                                                 
                                                 <label for="job-title">Attach Emails
-                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Attach Emails to these private jobs"></i>
+                                                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="If you attach emails, only candidates with the attached emails can apply for the private job"></i>
                                                 </label>
                                                 <input type="text"
                                                        name="attach_email"
@@ -326,7 +331,7 @@
                                                 </label>
                                                 <select name="workflow_id"
                                                         id="workflowId"
-                                                        class="form-control"
+                                                        @if($checkCandidateStep) class="form-control hidden" @else class="form-control" @endif
                                                         style="width: 100%;"
                                                         required>
                                                     <option value="">- Select Workflow -</option>
@@ -334,8 +339,13 @@
                                                         <option {{ ( $workflowId == $workflow->id) ? 'selected="selected"' : '' }} value="{{ $workflow->id }}" {{ (collect(old('workflow_id'))->contains($workflow->id)) ? 'selected':'' }}>{{ $workflow->name }}</option>
                                                     @endforeach
                                                 </select>
+                                                @if($checkCandidateStep)
+                                                <input type="text" readonly="readonly" value="{{ $job->workflow->name }}" class="form-control">  
+                                                <span class="text-danger">Workflow can no longer be changed because applicants are already on this job</span>
+                                                @else
                                                 <div id="showWorkFlowSteps"></div>
                                                 <span><a data-toggle="modal" data-target="#workflowModal"><i class="fa fa-plus-circle"></i> Add workflow to the list</a></span>
+                                                @endif
 
 
                                             </div>
@@ -565,7 +575,7 @@
         function isFormValid(fieldId, fieldName) {
 
             if (fieldId == null || fieldId == '') {
-                alert(fieldName + ' must be filled')
+                errorAlert(fieldName + ' must be filled')
                 return false
             }
             return true
@@ -575,54 +585,78 @@
         $('#SaveDraft').click(function (e) {
             e.preventDefault();
 
-
+            
             var title = $('#job_title').val();
             if (title == null || title == "") {
-                alert("Title must be filled");
+                errorAlert("Title must be filled");
                 return false;
             }
 
-            var summary = $('#job_summary').val();
-            if (summary == null || summary == "") {
-                alert("Summary must be filled");
+            var country = $('.job_country option:selected').val();
+            if (country == null || country == "") {
+                errorAlert("country must be selected");
                 return false;
             }
 
-            var details = editor.getData();
-            if (details == null || details == "") {
-                alert("Details must be filled");
+
+            var job_type = $('.job_type option:selected').val();
+            if (job_type == null || job_type == "") {
+                errorAlert("Job type must be selected");
+                return false;
+            }
+
+            var job_level = $('.position').val();
+            if (job_level == null || job_level == "") {
+                errorAlert("Job level must be selected");
                 return false;
             }
 
             var eligibilty = $('#is_for').val();
             if (eligibilty == null || eligibilty == "") {
-                alert("Eligibility must be selected");
-                return false;
-            }
-
-            var country = $('.job_country option:selected').val();
-
-            if (country == null || country == "") {
-                alert("country must be selected");
-                return false;
-            }
-
-            var location = $('.job_location option:selected').val();
-            if ((location == null || location == "") && country == 'Nigeria') {
-                alert("location must be filled");
-                return false;
-            }
-
-
-            var workflowId = $('#workflowId').val();
-            if (workflowId == null || workflowId == "") {
-                alert("Workflow must be selected");
+                errorAlert("Eligibility must be selected");
                 return false;
             }
 
             var expiry_date = $('.expiry_date').val();
             if (expiry_date == null || expiry_date == "") {
-                alert("Expiry Date must be selected");
+                errorAlert("Expiry Date must be selected");
+                return false;
+            }
+
+            var specialization = $('#specialization').val();
+            if (specialization == null || specialization == "") {
+                errorAlert("Specialization must be filled");
+                return false;
+            }
+
+            var workflowId = $('#workflowId').val();
+            if (workflowId == null || workflowId == "") {
+                errorAlert("Workflow must be selected");
+                return false;
+            }
+
+            var summary = $.trim($("#job_summary").val());
+            if (summary == null || summary == "") {
+                errorAlert("Summary must be filled");
+                return false;
+            }
+
+            var details = editor.getData();
+            if (details == null || details == "") {
+                errorAlert("Details must be filled");
+                return false;
+            }
+
+            var experience = exp.getData();
+            if (experience == null || experience == "") {
+                errorAlert("Experience must be filled");
+                return false;
+            }
+
+
+            var location = $('.job_location option:selected').val();
+            if ((location == null || location == "") && country == 'Nigeria') {
+                errorAlert("location must be filled");
                 return false;
             }
 
@@ -649,7 +683,7 @@
                 data: {
                     _token: '{{ csrf_token() }}', title: title,
                     details: details, location: location, country: country,
-                    eligibilty: is_for, is_private: is_private, attach_email: attach_email, bulk: bulk_email,
+                    eligibilty: is_for, is_private: is_private, attach_email: attached_email, bulk: bulk_email,
                     job_type: job_type, position: position,
                     expiry_date: expiry_date, experience: experience,
                     specializations: specializations, workflow_id: workflowId,
@@ -682,6 +716,14 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
+
+       function errorAlert(err){
+            $.growl.error({
+                message: err,
+                location: 'tc',
+                size: 'large'
+            });
+        }
 
     </script>
 @endsection

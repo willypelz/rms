@@ -28,12 +28,13 @@
 
 
 <script type="text/javascript">
-    $(document).ready(function () {
+
+    // $(document).ready(function () {
         var country = $('#country');
 
-        country.change(function () {
+        country.on('change', function() {
 
-            if (country.val() == 'Nigeria') {
+            if (this.value == 'Nigeria') {
                 $('.state_section').removeClass('hidden');
                 $('#location').prop('required', true)
             } else {
@@ -43,9 +44,9 @@
         });
 
         $('.submitButton').click(function () {
-            if (country.val() != 'Nigeria') {
+            if (this.value != 'Nigeria') {
                 $('#location').prop('required', false)
             }
         })
-    });
+    // });
 </script>

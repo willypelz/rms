@@ -119,7 +119,7 @@ class CvSalesController extends Controller
             }
             else
             {
-                $request->age = [ env('AGE_START'), env('AGE_END')];
+                $request->age = [ getEnvData('AGE_START'), getEnvData('AGE_END')];
                 $solr_age = null;
             }
 
@@ -133,7 +133,7 @@ class CvSalesController extends Controller
             }
             else
             {
-                $request->exp_years = [ env('EXPERIENCE_START'), env('EXPERIENCE_END') ];
+                $request->exp_years = [ getEnvData('EXPERIENCE_START'), getEnvData('EXPERIENCE_END') ];
                 $solr_exp_years = null;
             }
 
@@ -144,7 +144,7 @@ class CvSalesController extends Controller
 
             // $response = SolrPackage::search_resume($this->search_params);
 
-            $result = SolrPackage::search_resume($this->search_params, @$additional);
+            $result = SolrPackage::search_resume($this->search_params, @$additional, $request->clientId);
             $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
             $cart = Utilities::getCartContent('cv-sales');

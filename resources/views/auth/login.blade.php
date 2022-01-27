@@ -20,7 +20,7 @@
             <div class="row">
 
                 <div class="col-sm-4 col-sm-offset-4 text-center text-white">
-                    <h2 class=""><img src="{{env('SEAMLESS_HIRING_LOGO_WHITE')}}" width="190px" alt=""></h2><br>
+                    <h2 class=""><img src="{{getEnvData('SEAMLESS_HIRING_LOGO_WHITE', null, request()->clientId)}}" width="190px" alt=""></h2><br>
                     <!-- <p class="">Everything You Need To Hire, In One Place!</p> -->
                 </div>
 
@@ -59,7 +59,7 @@
                                 </div>
 
                                   <div class="col-sm-12"><br>
-                                    <p class="small text-left"><a style="text-decoration: none" href="@if(env('USE_ACTIVE_DIRECTORY') == 1) {{env('STAFFSTRENGTH_URL') . 'forgot-password'}} @else {{ url('password/reset') }} @endif">:( I can't remember my password!</a></p>
+                                    <p class="small text-left"><a style="text-decoration: none" href="@if(getEnvData('USE_ACTIVE_DIRECTORY', null, request()->clientId) == 1) {{getEnvData('STAFFSTRENGTH_URL', null, request()->clientId) . 'forgot-password'}} @else {{ url('password/reset') }} @endif">Forgot password?</a></p>
                                 </div>
                             </div>
 
@@ -79,7 +79,7 @@
 
                     </div><br>
 
-                        <p class="text-center"><small class="text-white">&copy; {{ date('Y') }}. All Rights Reserved. SeamlessHiring <br> Insidify Enterprise by Insidify.com</small></p>
+                        <p class="text-center"><small class="text-white">&copy; {{ date('Y') }}. All Rights Reserved.  <br>  SeamlessHiring{{--SeamlessHiring Enterprise by Insidify.com--}}</small></p>
                     <!--/tab-content-->
 
                 </div>

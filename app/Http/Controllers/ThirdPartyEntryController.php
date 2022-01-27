@@ -49,7 +49,7 @@ class ThirdPartyEntryController extends Controller
             Auth::login($user, true);
 
             //get and push the intended company into session so that user gets logged into intended company
-            getIntendedCompanyToPostJobTo($company->slug) ?? null;
+            getIntendedCompanyToPostJobTo($company->id) ?? null;
 
             $redirect_url = $request->input('intended_url');
         } else {

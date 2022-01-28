@@ -26,6 +26,8 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
 class CvSalesController extends Controller
 {
+
+    protected $searchEngine;
     // private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'score+asc', 'grouped'=>FALSE ];
     private $search_params = [ 'q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false ,'sort' => 'application_date+desc', 'grouped'=>FALSE ];
 
@@ -88,6 +90,8 @@ class CvSalesController extends Controller
             'Transactions',
             'TestEmail'
         ]]);
+
+        $this->searchEngine = app(SearchEngine::class);
     }
 
     public function search(Request $request)
@@ -142,9 +146,9 @@ class CvSalesController extends Controller
                 $this->search_params['filter_query'] = @$request->filter_query;
             }
 
-            // $response = SolrPackage::search_resume($this->search_params);
+            // $response = $this->searchEngine->search_resume($this->search_params);
 
-            $result = SolrPackage::search_resume($this->search_params, @$additional, $request->clientId);
+            $result = $this->searchEngine->search_resume($this->search_params, @$additional, $request->clientId);
             $application_statuses = get_application_statuses( $result['facet_counts']['facet_fields']['application_status'] );
 
             $cart = Utilities::getCartContent('cv-sales');
@@ -195,7 +199,7 @@ class CvSalesController extends Controller
             if(empty($ids))
                 $ids = null;
 
-            $response = SolrPackage::search_resume($this->search_params);
+            $response = $this->searchEngine->search_resume($this->search_params);
 
             return view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids ]);*/
     }
@@ -478,8 +482,8 @@ class CvSalesController extends Controller
 
 
         $this->search_params['filter_query'] = @$request->filter_query;
-        // $response = SolrPackage::search_resume($this->search_params);
-        $response = SolrPackage::get_saved_cvs($this->search_params);
+        // $response = $this->searchEngine->search_resume($this->search_params);
+        $response = $this->searchEngine->get_saved_cvs($this->search_params);
 
 
         $cart = Utilities::getCartContent('saved-cvs');
@@ -515,8 +519,8 @@ class CvSalesController extends Controller
 
 
         $this->search_params['filter_query'] = @$request->filter_query;
-        // $response = SolrPackage::search_resume($this->search_params);
-        $response = SolrPackage::get_purchased_cvs($this->search_params);
+        // $response = $this->searchEngine->search_resume($this->search_params);
+        $response = $this->searchEngine->->get_purchased_cvs($this->search_params);
 
 
         $cart = Cart::content();
@@ -589,7 +593,7 @@ class CvSalesController extends Controller
         }
 
         // $response = SolrPackage::search_resume($this->search_params);
-        $response = $result = SolrPackage::get_all_my_cvs($this->search_params, @$solr_age, @$solr_exp_years);
+        $response = $result = $this->searchEngine->get_all_my_cvs($this->search_params, @$solr_age, @$solr_exp_years);
         if ((isset($result['facet_counts']))) {
             $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status']);
             $end = (($start + $this->search_params['row']) > intval($application_statuses['ALL'])) ? $application_statuses['ALL'] : ($start + $this->search_params['row']);
@@ -598,7 +602,14 @@ class CvSalesController extends Controller
         }
 
      
-        $showing = view('cv-sales.includes.top-summary',['start' => ( $start + 1 ),'end' => $end, 'total'=> $application_statuses['ALL'], 'type'=>'Cvs', 'page' => floor($request->start + 1), 'filters' => $request->filter_query ])->render();
+        $showing = view(
+            'cv-sales.includes.top-summary',
+            [
+                'start' => ( $start + 1 ),'end' => $end, 
+                'total'=> $application_statuses['ALL'], 'type'=>'Cvs', 
+                'page' => floor($request->start + 1), 'filters' => $request->filter_query 
+            ]
+        )->render();
 
         $cart = Cart::content();
         $count = Cart::count(false);
@@ -611,7 +622,7 @@ class CvSalesController extends Controller
         if(empty($ids))
             $ids = null;
 
-        $jobs = Job::where('company_id',get_current_company()->id)->get();
+        $jobs = Job::where('company_id', get_current_company()->id)->get();
 
         $myFolders = is_null($response) ? [] : array_unique( array_pluck( $response ,'cv_source') );
         if(($key = array_search('Direct Application', $myFolders)) !== false) {
@@ -627,15 +638,46 @@ class CvSalesController extends Controller
         if($request->ajax())
         {
 
-            $search_results = view('cv-sales.includes.search-results-item',['result' => $response,'search_query' => $request->search_query, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'myJobs' => Job::getMyJobs(), 'myFolders' => $myFolders, 'application_statuses' => $application_statuses ])->render();
-            $search_filters = view('cv-sales.includes.search-filters',['result' => $response,'search_query' => $request->search_query, 'age' => @$request->age,'exp_years' => @$request->exp_years])->render();
+            $search_results = view(
+                'cv-sales.includes.search-results-item',
+                [
+                    'result' => $response,'search_query' => $request->search_query, 
+                    'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 
+                    'start' => $start, 'page' => 'pool',  
+                    'is_saved' => true, 'myJobs' => Job::getMyJobs(), 
+                    'myFolders' => $myFolders, 'application_statuses' => $application_statuses 
+                    ]
+            )->render();
+            $search_filters = view(
+                'cv-sales.includes.search-filters',
+                [
+                    'result' => $response,'search_query' => $request->search_query, 
+                    'age' => @$request->age,'exp_years' => @$request->exp_years
+                    ]
+            )->render();
             mixPanelRecord("talent-pool search function used (Admin)", auth()->user());
-            return response()->json( [ 'search_results' => $search_results, 'search_filters' => $search_filters, 'showing'=>$showing, 'count' => $result['response']['numFound'] ] );
+            return response()->json(
+                [ 
+                    'search_results' => $search_results, 'search_filters' => $search_filters, 
+                    'showing'=>$showing, 'count' => $result['response']['numFound'] 
+                ]
+            );
 
         }
         else{
 
-            return view('cv-sales.cv_pool',['result' => $response,'search_query' => $request->search_query,'showing'=>$showing, 'items'=> $cart, 'many'=>$count, 'ids'=>$ids, 'start' => $start, 'page' => 'pool',  'is_saved' => true, 'age' => [ 5, 85 ], 'exp_years' => [ 0, 60 ], 'myJobs' => Job::getMyJobs(), 'myFolders' => $myFolders, 'application_statuses' => $application_statuses, 'states' => $states, 'qualifications' => $qualifications, 'grades' => $grades ]);
+            return view(
+                'cv-sales.cv_pool',
+                [
+                    'result' => $response,'search_query' => $request->search_query,
+                    'showing'=>$showing, 'items'=> $cart, 'many'=>$count, 
+                    'ids'=>$ids, 'start' => $start, 'page' => 'pool',  
+                    'is_saved' => true, 'age' => [ 5, 85 ], 'exp_years' => [ 0, 60 ], 
+                    'myJobs' => Job::getMyJobs(), 'myFolders' => $myFolders, 
+                    'application_statuses' => $application_statuses, 'states' => $states, 
+                    'qualifications' => $qualifications, 'grades' => $grades 
+                ]
+            );
         }
     }
 

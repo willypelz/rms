@@ -22,8 +22,9 @@ return [
     'staff_strength_url' => env('STAFFSTRENGTH_URL'),
     'rms_stand_alone' => env('RMS_STAND_ALONE'),
     'company_name' => env('COMPANY_NAME', 'Seamless Hiring'),
-    'searcher' => env('SEARCH_ENGINE', 'algolia'),
+    'searcher' => env('SEARCH_ENGINE', 'solr'),
     'solr_core' => env("SOLR_CORE"),
+    'solr_url' => env("SOLR_URL"),
 
     /*
     |--------------------------------------------------------------------------

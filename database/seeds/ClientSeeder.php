@@ -14,11 +14,14 @@ class ClientSeeder extends Seeder
      */
     public function run()
     {
-        Client::FirstOrCreate(
-            [
-                'url' => config('app.url'),
-                'name' => config('app.company_name'),
-            ]
-        );
+        if (Client::count() == 0) {
+            Client::FirstOrCreate(
+                [
+                    'url' => config('app.url'),
+                    'name' => config('app.company_name'),
+                ]
+            );
+        }
+
     }
 }

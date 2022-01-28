@@ -29,7 +29,7 @@ class AlgoliaSearch implements SearchEngine
                 return $algolia->search($query, $newArray);
             }
         );
-        
+
         if ($additional['company_folder_id'] ?? null) {
             $data = $data->where('company_folder_id', $additional['company_folder_id']);
         }
@@ -47,6 +47,7 @@ class AlgoliaSearch implements SearchEngine
         // if ($additional['job_ids'] ?? null) {
         //     $data = $data->whereIn('job_id', $additional['job_ids']);
         // }
+
         $formatted = $this->createSolrStyleResponse($data->raw());
         
         return $formatted;
@@ -75,7 +76,7 @@ class AlgoliaSearch implements SearchEngine
         $minimium_remuneration = null,
         $maximium_remuneration = null
     ) {
-        
+
         $extra = [];
         $extra['job_id'] = $job_id;
         if ($status != "") {
@@ -109,6 +110,7 @@ class AlgoliaSearch implements SearchEngine
             $extra['test_score_from'] = $test_score[0];
             $extra['test_score_to'] = $test_score[1];
         }
+
         return $this->search_resume($data, $extra);
     }
 
@@ -232,10 +234,12 @@ class AlgoliaSearch implements SearchEngine
 
     public function handleFacetSchema(array $facets): array
     {
+        $allFacets = config('scout-job-applications.attributesForFaceting');
 
-        foreach ($facets as $key => $facet) {
-            $facets[$key] = $this->convertFlatArrayToObject($facet);
+        foreach ($allFacets as $key => $facet) {
+            $facets[$facet] = isset($facets[$facet]) ? $this->convertFlatArrayToObject($facets[$facet] ) : [];
         }
+
         return $facets;
     }
 

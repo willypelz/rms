@@ -6,30 +6,41 @@ use App\Models\Job;
 use App\Jobs\UploadApplicant;
 use App\Models\JobApplication;
 use App\SearchEngine\SearchEngine;
-use SeamlessHR\SolrPackage\SolrPackage;
+
+use Illuminate\Support\Facades\Log;
 
 class SolrSearch implements SearchEngine
 {
+
     static $url;
     static $host;
     static $core;
+    static $clientId;
 
-    static function init()
+    public function __construct()
     {
-        SolrPackage::$url = env("SOLR_URL"); //getEnvData("SOLR_CORE",null, 1); // formerly env("SOLR_URL") but now gotten from DB. it's same value for all clients;
-        SolrPackage::$core = env("SOLR_CORE");  //null;
-        SolrPackage::$host = env("SOLR_URL") . SolrPackage::$core . "/select?"; // null; //formerly env("SOLR_URL").SolrPackage::$core."/select?" but now gotten from DB per client;
+        self::$url = getEnvData("SOLR_URL", null, self::$clientId); //getEnvData("SOLR_CORE",null, 1); // formerly env("SOLR_URL") but now gotten from DB. it's same value for all clients;
+        self::$core = getEnvData("SOLR_CORE", null, self::$clientId);  //null;
+        self::$host = getEnvData("SOLR_URL", null, self::$clientId) . self::$core . "/select?"; // null; //formerly env("SOLR_URL").self::$core."/select?" but now gotten from DB per client;
 
     }
 
-    static $default_params = ['q' => '*', 'row' => 20, 'start' => 0, 'default_op' => 'AND', 'search_field' => 'text', 'show_expired' => false, 'sort' => 'last_modified+desc', 'grouped' => FALSE];
+    
 
+    static $default_params = [
+        'q' => '*', 'row' => 20, 'start' => 0, 
+        'default_op' => 'AND', 'search_field' => 'text', 
+        'show_expired' => false, 'sort' => 'last_modified+desc', 
+        'grouped' => false
+    ];
 
 
     public function create_new_document($in_data, $client_id = '')
     {
-        
-        $ch = curl_init(env("SOLR_URL") . SolrPackage::$core . "/update?wt=json");
+        self::$clientId = $client_id;
+        self::__construct();
+
+        $ch = curl_init(self::$url . self::$core . "/update?wt=json");
 
         $data = array(
             "add" => array(
@@ -53,6 +64,11 @@ class SolrSearch implements SearchEngine
 
     public function search_resume($data, $additional = '', $client_id = '')
     {
+        if ($client_id !== '') {
+            self::$clientId = $client_id;
+            self::__construct();
+        }
+
         extract($data);
 
         if (empty($q)){
@@ -72,9 +88,9 @@ class SolrSearch implements SearchEngine
             $search_field .= ':';
         }
             
+        // self::$host = self::$url . getEnvData("SOLR_CORE",null, $client_id);
+        $filename = self::$host . "q=" . $search_field . $q . "&rows=" . $row . "&start=" . $start
 
-        // SolrPackage::$host = SolrPackage::$url . getEnvData("SOLR_CORE",null, $client_id);
-        $filename = SolrPackage::$host . "q=" . $search_field . $q . "&rows=" . $row . "&start=" . $start
             . "&facet=true&facet.limit=-1&facet.field=gender&facet.field=marital_status&facet.field=last_position"
             . "&facet.field=years_of_experience&facet.field=state&facet.field=state_of_origin&facet.field=last_company_worked"
             . "&facet.field=folder_name&facet.field=folder_type&facet.field=application_status&facet.field=test_name"
@@ -115,7 +131,7 @@ class SolrSearch implements SearchEngine
             curl_close($ch);
 
             return json_decode($re, true);
-        } catch (exception $e) {
+        } catch (\Exception $e) {
             print_r($e);
         }
 
@@ -126,19 +142,22 @@ class SolrSearch implements SearchEngine
     public function get_saved_cvs($data)
     {
         $additional = "&fq=company_folder_id:" . @get_current_company()->id . "&fq=folder_type:saved";
-        return SolrPackage::search_resume($data, $additional, @request()->clientId);
+
+        return $this->search_resume($data, $additional, @request()->clientId);
     }
 
     public function get_purchased_cvs($data)
     {
         $additional = "&fq=company_folder_id:" . @get_current_company()->id . "&fq=folder_type:purchased";
-        return SolrPackage::search_resume($data, $additional, @request()->clientId);
+
+        return $this->search_resume($data, $additional, @request()->clientId);
+
     }
 
     public function get_interview_notes($data)
     {
         $additional = "&fq=company_folder_id:" . @get_current_company()->id . "&fq=interview_recommendation:*";
-        return SolrPackage::search_resume($data, $additional, @request()->clientId);
+        return $this->search_resume($data, $additional, @request()->clientId);
     }
 
     public function get_all_my_cvs($data, $age = null, $exp_years = null)
@@ -163,9 +182,7 @@ class SolrSearch implements SearchEngine
             $additional .= "&fq=years_of_experience:[" . $exp_years[0] . "+TO+" . $exp_years[1] . "]";
         }
 
-
-
-        return SolrPackage::search_resume($data, $additional, @request()->clientId);
+        return $this->search_resume($data, $additional, @request()->clientId);
     }
 
 
@@ -175,8 +192,10 @@ class SolrSearch implements SearchEngine
         $test_score = null, $graduation_grade = null, 
         $minimium_remuneration = null, $maximium_remuneration = null
     ) {
-
-
+        if ($client_id !== '') {
+            self::$clientId = $client_id;
+            self::__construct();
+        }
         $additional = "&fq=job_id:" . $job_id;
 
         if ($status != "") {
@@ -213,7 +232,7 @@ class SolrSearch implements SearchEngine
         }
 
 
-        return SolrPackage::search_resume($data, $additional, $client_id);
+        return $this->search_resume($data, $additional, $client_id);
     }
 
 
@@ -236,7 +255,8 @@ class SolrSearch implements SearchEngine
             $search_field .= ':';
         }
 
-        $filename = SolrPackage::$host . "q=" . $search_field . $q . "&rows=" . $row . "&start=" . $start
+        $filename = self::$host . "q=" . $search_field . $q . "&rows=" . $row . "&start=" . $start
+
             . "&facet=false&wt=json&sort=" . $sort;
 
         if (!$show_expired) {
@@ -259,7 +279,7 @@ class SolrSearch implements SearchEngine
 
                 return $response;
             }
-        } catch (exception $e) {
+        } catch (\Exception $e) {
         }
 
 
@@ -337,7 +357,7 @@ class SolrSearch implements SearchEngine
 
         $sort = 'score+desc';
 
-        $filename = SolrPackage::$url . SolrPackage::$core . '/select?q={!q.op=AND}' . $q . '&rows=' . $row . '&start=' . $start . '&facet=true&facet.field=exp_company&facet.field=state&facet.field=gender&facet.field=experience&facet.field=edu_end_year&facet.field=edu_school&facet.field=edu_grade&facet.field=marital_status&facet.field=religion&facet.date=dob&facet.date.start=NOW/DAY-60YEAR&facet.date.end=NOW/DAY-10YEAR&facet.date.gap=%2B1YEAR&wt=json&sort=rank+desc';
+        $filename = self::$url . self::$core . '/select?q={!q.op=AND}' . $q . '&rows=' . $row . '&start=' . $start . '&facet=true&facet.field=exp_company&facet.field=state&facet.field=gender&facet.field=experience&facet.field=edu_end_year&facet.field=edu_school&facet.field=edu_grade&facet.field=marital_status&facet.field=religion&facet.date=dob&facet.date.start=NOW/DAY-60YEAR&facet.date.end=NOW/DAY-10YEAR&facet.date.gap=%2B1YEAR&wt=json&sort=rank+desc';
 
         // echo $filename.'<br/>';
 
@@ -348,7 +368,7 @@ class SolrSearch implements SearchEngine
                 fclose($handle);
                 return $response;
             }
-        } catch (exception $e) {
+        } catch (\Exception $e) {
             print_r($e);
         }
 
@@ -371,8 +391,8 @@ class SolrSearch implements SearchEngine
         $sort = 'score+desc';
 
 
+        $link = self::$url . 'applications/select?q=' . $q . '&rows=' . $row . '&start=' . $start
 
-        $link = SolrPackage::$url . 'applications/select?q=' . $q . '&rows=' . $row . '&start=' . $start
             . '&facet=true&facet.field=exp_company&facet.field=state&facet.field=gender&facet.field=experience'
             . '&facet.field=edu_end_year&facet.field=edu_school&facet.field=edu_grade&facet.field=marital_status&facet.field=religion&facet.field=test_name&facet.field=tr_status&facet.field=score&facet.date=dob&facet.date.start=NOW/DAY-60YEAR&facet.date.end=NOW'
             . '/DAY-10YEAR&facet.date.gap=%2B1YEAR&wt=json&sort=created+desc';
@@ -387,7 +407,7 @@ class SolrSearch implements SearchEngine
 
                 return $response;
             }
-        } catch (exception $e) {
+        } catch (\Exception $e) {
             print_r($e);
         }
 
@@ -398,7 +418,7 @@ class SolrSearch implements SearchEngine
     public function update_applications($command = "full-import")
     {
 
-        $url = SolrPackage::$url . "applications/dataimport?command=" . $command;
+        $url = self::$url . "applications/dataimport?command=" . $command;
 
         try {
             $handle = fopen($url, "r");
@@ -449,7 +469,7 @@ class SolrSearch implements SearchEngine
 
         $sort = 'score+desc';
 
-        $filename = SolrPackage::$url . SolrPackage::$core . '/select?q=' . $q . '&rows=' . $row . '&start=' . $start . '&wt=json&sort=rank+desc';
+        $filename = self::$url . self::$core . '/select?q=' . $q . '&rows=' . $row . '&start=' . $start . '&wt=json&sort=rank+desc';
 
         try {
             $handle = fopen($filename, "r");
@@ -458,7 +478,7 @@ class SolrSearch implements SearchEngine
                 fclose($handle);
                 return $response;
             }
-        } catch (exception $e) {
+        } catch (\Exception $e) {
             print_r($e);
         }
 
@@ -532,7 +552,8 @@ class SolrSearch implements SearchEngine
         } else {
             $sort = 'score+desc';
         }
-        $filename = SolrPackage::$url . SolrPackage::$core . "/select?q=" . $type . ":" . trim($q) . $dq . "&fq=-personal_url:[*+TO+*]&rows=" . $row . "&start=" . $start
+        $filename = self::$url . self::$core . "/select?q=" . $type . ":" . trim($q) . $dq . "&fq=-personal_url:[*+TO+*]&rows=" . $row . "&start=" . $start
+
             . "&fq=" . $sign . "userId:(" . $followers . ")&facet=false&wt=json";
 
         try {
@@ -543,7 +564,7 @@ class SolrSearch implements SearchEngine
 
                 return $response;
             }
-        } catch (exception $e) {
+        } catch (\Exception $e) {
             print_r($e);
         }
 
@@ -551,5 +572,3 @@ class SolrSearch implements SearchEngine
         return array();
     }
 }
-
-SolrPackage::init();

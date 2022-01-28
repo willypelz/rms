@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Candidate;
 use App\User;
 use App\Models\Role;
 use App\Models\Company;
@@ -24,13 +25,21 @@ class CompanySeeder extends Seeder
         //     $user = new SelfSignUpService();
         //     $user->createUserAndRoles('John Doe', 'johndoe@seamlesshr.com', 'password', $newCompany);
         // }
-        $defaultClient = Client::where('url', config('app.url'))->first()->id;
-        foreach ($companies as $company) {
-            $company->update(
-                [
-                    'client_id' => $defaultClient
-                ]
-            );
+        if (Client::count() == 1) {
+            $defaultClient = Client::where('url', config('app.url'))->first()->id;
+            foreach ($companies as $company) {
+                $company->update(
+                    [
+                        'client_id' => $defaultClient
+                    ]
+                );
+            }
+
+            Candidate::select('id')->get()->map(function ($candidate) use ($defaultClient) {
+                $candidate->update(['client_id' => $defaultClient]);
+            });
         }
+
+
     }
 }

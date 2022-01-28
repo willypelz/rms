@@ -405,7 +405,7 @@ class JobApplicationsController extends Controller
             $solr_video_application_score = null;
         }
 
-        
+
         $result = $this->searchEngine->get_applicants(
             $this->search_params,
             $request->jobID,

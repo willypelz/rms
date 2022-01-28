@@ -36,7 +36,7 @@
                     @if( $status )
                         <hr>
                         <div class="col-sm-4 col-sm-offset-4">
-                          <a href="{{ route('select-company',['id'=>$job->company->id]) }}" class="btn btn-success btn-block">Login</a>
+                          <a href="{{ route('select-company',['slug'=>$job->company->slug]) }}" class="btn btn-success btn-block">Login</a>
                         </div>
                     @else
                         <div class="clearfix"></div>

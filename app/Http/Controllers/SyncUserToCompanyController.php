@@ -38,7 +38,7 @@ class SyncUserToCompanyController extends Controller
 
 	public function syncUserToCompanyIndex(Request $request)
 	{
-		$companies = Company::where('is_active',1)->where('client_id', $request->clientId)->get();
+		$companies = Company::where('is_active',1)->get();
 		$user = User::find(base64_decode($request->user_id));
 		$userCompanies = $user->companies->pluck('id')->toArray();
 		mixPanelRecord('Attach New User Start (Admin)', auth()->user());

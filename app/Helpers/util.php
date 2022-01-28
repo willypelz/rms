@@ -379,7 +379,7 @@ function check_if_job_owner_on_queue($job_id, $current_company, $user)
 function get_current_company()
 {
     $authUser = Auth::user();
-//    dd($authUser);
+
     $sessionId = Session::get('current_company_index');
 
     if (!is_null($authUser)) {
@@ -1224,8 +1224,7 @@ function getSystemConfig($client_id = null)
 
 function getEnvData(string $key, $default_value = null, $client_id = null)
 {
-//    dd("here........");
-//    try{
+    try{
         //change key to uppercase
         $key = strtoupper($key);
         //check if an empty string key is passed
@@ -1245,9 +1244,9 @@ function getEnvData(string $key, $default_value = null, $client_id = null)
         }
 
         return $default_value;
-//    }catch(\Exception $e){
-//        return null;
-//    }
+    }catch(\Exception $e){
+        return null;
+    }
 
 }
 

@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => env('COMPANY_EMAIL'), 'name' => env('COMPANY_NAME')],
+    'from' => ['address' => getEnvData('COMPANY_EMAIL'), 'name' => env('COMPANY_NAME')],
 
     /*
     |--------------------------------------------------------------------------

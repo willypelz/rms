@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use Curl;
 use Mail;
 use App\Models\Job;
@@ -99,8 +100,13 @@ class HomeController extends Controller
             //added client_id to login_cred array for candidates to only login to the intended dashboard, since there can now be multiple 
             //usage of same email provided it is for a different client
             if (Auth::guard('candidate')->attempt($loginCred)){
-                
-            
+
+                $user = Auth::guard('candidate')->user();
+                if ($user) {
+                    $client = Client::with('companies')->find($user->client_id);
+                    $company = $client->companies->first();
+                    session()->put('active_company', $company);
+                }
                 if ($request->redirect_to) {
                     return redirect($request->redirect_to);
                 } else {

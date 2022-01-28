@@ -15,12 +15,13 @@ class SolrSearch implements SearchEngine
     static $url;
     static $host;
     static $core;
+    static $clientId;
 
     public function __construct()
     {
-        self::$url = getEnvData("SOLR_URL"); //getEnvData("SOLR_CORE",null, 1); // formerly env("SOLR_URL") but now gotten from DB. it's same value for all clients;
-        self::$core = getEnvData("SOLR_CORE");  //null;
-        self::$host = getEnvData("SOLR_URL") . self::$core . "/select?"; // null; //formerly env("SOLR_URL").self::$core."/select?" but now gotten from DB per client;
+        self::$url = getEnvData("SOLR_URL", null, self::$clientId); //getEnvData("SOLR_CORE",null, 1); // formerly env("SOLR_URL") but now gotten from DB. it's same value for all clients;
+        self::$core = getEnvData("SOLR_CORE", null, self::$clientId);  //null;
+        self::$host = getEnvData("SOLR_URL", null, self::$clientId) . self::$core . "/select?"; // null; //formerly env("SOLR_URL").self::$core."/select?" but now gotten from DB per client;
 
     }
 
@@ -36,8 +37,10 @@ class SolrSearch implements SearchEngine
 
     public function create_new_document($in_data, $client_id = '')
     {
-        
-        $ch = curl_init(env("SOLR_URL") . self::$core . "/update?wt=json");
+        self::$clientId = $client_id;
+        self::__construct();
+
+        $ch = curl_init(self::$url . self::$core . "/update?wt=json");
 
         $data = array(
             "add" => array(
@@ -61,6 +64,11 @@ class SolrSearch implements SearchEngine
 
     public function search_resume($data, $additional = '', $client_id = '')
     {
+        if ($client_id !== '') {
+            self::$clientId = $client_id;
+            self::__construct();
+        }
+
         extract($data);
 
         if (empty($q)){
@@ -184,7 +192,10 @@ class SolrSearch implements SearchEngine
         $test_score = null, $graduation_grade = null, 
         $minimium_remuneration = null, $maximium_remuneration = null
     ) {
-
+        if ($client_id !== '') {
+            self::$clientId = $client_id;
+            self::__construct();
+        }
         $additional = "&fq=job_id:" . $job_id;
 
         if ($status != "") {

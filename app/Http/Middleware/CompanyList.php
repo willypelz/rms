@@ -18,7 +18,7 @@ class CompanyList
     {
         try {
             $user = auth()->user();
-            if ($user->isAdmin() && (url()->current() == 'https://signup.seamlesshiring.com')) {
+            if ($user->isAdmin() && (url('') == config('constants.signupUrl'))) {
                 return $next($request);
             }else{
                 abort(404);

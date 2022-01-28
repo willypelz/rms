@@ -19,9 +19,12 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
-	'staff_strength_url' => env('STAFFSTRENGTH_URL'),
+    'staff_strength_url' => env('STAFFSTRENGTH_URL'),
     'rms_stand_alone' => env('RMS_STAND_ALONE'),
     'company_name' => env('COMPANY_NAME', 'Seamless Hiring'),
+    'searcher' => env('SEARCH_ENGINE', 'solr'),
+    'solr_core' => env("SOLR_CORE"),
+    'solr_url' => env("SOLR_URL"),
 
     /*
     |--------------------------------------------------------------------------
@@ -119,12 +122,6 @@ return [
 
     'log' => env('APP_LOG', 'daily'),
 
-    'searcher' => env('SEARCH_ENGINE', 'algolia'),
-
-    'solr_core' => env("SOLR_CORE"),
-
-    ''
-
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -186,6 +183,7 @@ return [
         Sentry\Laravel\ServiceProvider::class,
         App\Providers\SolariumServiceProvider::class,
         App\Providers\SearchEngineServiceProvider::class
+
     ],
 
     /*

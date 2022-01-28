@@ -14,7 +14,7 @@ interface SearchEngine
     public function get_all_my_cvs($data, $age = null, $exp_years = null);
 
     public function get_applicants(
-        $data, $job_id, $status = "", 
+        $data, $job_id, $status , $clientId, 
         $age = null, $exp_years = null, 
         $video_application_score = null, 
         $test_score = null, $graduation_grade = null, 

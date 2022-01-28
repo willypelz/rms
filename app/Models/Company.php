@@ -35,7 +35,9 @@ class Company extends Model
         'api_key',
         'license_type',
 	    'is_active',
-	    'is_default'
+        'is_default',
+        'client_id',
+        'sub_type',
     ];
 
     public $timestamps = false;
@@ -65,4 +67,8 @@ class Company extends Model
         return $this->hasMany('App\Models\CompanyTest', "company_id");
     }
 
+    public function client()
+    {
+        return $this->belongsTo('App\Models\Client', "client_id");
+    }
 }

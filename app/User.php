@@ -6,7 +6,6 @@ use App\Enum\Configs;
 use App\Models\Company;
 use App\Models\WorkflowStep;
 use App\Services\UserService;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Ixudra\Curl\Facades\Curl;
 use Illuminate\Notifications\Notifiable;
 use Trebol\Entrust\Traits\EntrustUserTrait;
@@ -14,7 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use EntrustUserTrait, Notifiable, HasFactory;
+    use EntrustUserTrait, Notifiable;
 
     protected $userService;
 
@@ -26,16 +25,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'invite_code',
-        'is_internal',
-        'role_name',
-        'is_super_admin',
-        'user_token'
-    ];
+    protected $guarded = ['id'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -109,6 +99,11 @@ class User extends Authenticatable
         static::created(function (User $user) {
             $user->defaultCompany();
         });
+    }
+
+    public function client()
+    {
+        return $this->belongsTo('App\Models\Client', "client_id");
     }
 
 }

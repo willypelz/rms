@@ -77,7 +77,7 @@ class LoginController extends Controller
                 // Redirect to StaffStrength with Login
                 $user_email = base64_encode($request->email);
 
-                $redirect_url = env('HIRS_REDIRECT_LOGIN').'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;
+                $redirect_url = getEnvData('HIRS_REDIRECT_LOGIN').'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;
 
                 return ['status' => 200, 'is_external' => false, 'redirect_url' => $redirect_url];
 
@@ -244,7 +244,7 @@ class LoginController extends Controller
             if( $request->hasFile('logo') )
             {
                 $upload = $request->file('logo')->move(
-                    env('fileupload'), $logo
+                    getEnvData('fileupload'), $logo
                 );
             }
 
@@ -291,14 +291,20 @@ class LoginController extends Controller
       if(!$user){
         return ['status' => false, 'message' => 'User email does not exist'];
       }
-      $api_key = $user->companies()->where('api_key', $decoded_key)->first();
-      if($api_key == null){
+      $company = $user->companies()->where('api_key', $decoded_key)->first();
+      if($company == null){
           return ['status' => false, 'message' => 'API key not valid'];
       }else{
         $token =  Crypt::encrypt($user->email.time());
         $user->user_token = $token;
         $user->save();
-        return ['status' => true, 'message' => 'API key valid', 'user_id' => $user->id, 'token' => $token];
+        return [
+            'status' => true,
+            'message' => 'API key valid',
+            'user_id' => $user->id,
+            'token' => $token,
+            'company_id' => $company->id
+        ];
       }
 
     }
@@ -339,6 +345,11 @@ class LoginController extends Controller
           Auth::login($user);
           $user->user_token = '';
           $user->save();
+          $company = Company::find(base64_decode(\request()->company_id));
+
+          if ($company) {
+              session()->put('current_company_index', $company->id);
+          }
 
           return redirect($url);
         }else{
@@ -381,10 +392,11 @@ class LoginController extends Controller
     }
 
     public function logout(){
+        cache()->flush();
         auth()->logout();
-        if(env('RMS_STAND_ALONE',true) == false){ //redirect to hrms if rms is not stand alone
-            return redirect(env('STAFFSTRENGTH_URL'));
+        if(getEnvData('RMS_STAND_ALONE',true,request()->clientId) == false){ //redirect to hrms if rms is not stand alone
+            return redirect(getEnvData('STAFFSTRENGTH_URL',null,request()->clientId));
         }
-        return redirect('/');
+        return redirect('/login');
     }
 }

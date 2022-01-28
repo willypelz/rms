@@ -22,9 +22,10 @@ class CompanyFactory extends Factory
      */
     public function definition()
     {
-        $defaultClient = Client::where('name', 'signup client')->first()->id;
+        $defaultClient = Client::where('url', config('constants.signupUrl'))->first()->id;
         return [
             'name' => 'signup company',
+            'email' => 'johndoe@seamlesshr.com',
             'slug' => str_slug('signup company'),
             'date_added' => date('Y-m-d'),
             'license_type' => 'PREMIUM',

@@ -14,22 +14,22 @@ class AlgoliaSearch implements SearchEngine
         $q = $q == '*' ? '' : $q;
         $pageNumber = $page ?? 1;
         $data = JobApplication::search(
-            $q, function ($algolia, $query, $options) use ($pageNumber) {
+            $q, function ($algolia, $query, $options) use ($pageNumber, $additional) {
+
                 $customOptions = [
                     'facets' => ['*'],
-                    'page' => $pageNumber 
+                    'page' => $pageNumber,
+                    //  => 
                 ];
+                if (!is_null($additional['job_id'] ?? null)) {
+                    $customOptions['filters'] = "job_id = {$additional['job_id']}";
+                }
                 $newArray = array_merge($options, $customOptions);
                 unset($newArray['numericFilters']);
                 return $algolia->search($query, $newArray);
             }
         );
-        if ($additional['job_id'] ?? null) {
-            $data = $data->where('job_id', $additional['job_id']);
-        }
-        if ($additional['job_ids'] ?? null) {
-            $data = $data->whereIn('job_id', $additional['job_ids']);
-        }
+
         if ($additional['company_folder_id'] ?? null) {
             $data = $data->where('company_folder_id', $additional['company_folder_id']);
         }
@@ -40,6 +40,14 @@ class AlgoliaSearch implements SearchEngine
         foreach ($filterBys as $filterBy) {
             $data = $this->filterBetween($data, $additional, $filterBy);
         }
+
+        // if ($additional['job_id'] ?? null) {
+        //     $data = $data->where('job_id', $additional['job_id']);
+        // }
+        // if ($additional['job_ids'] ?? null) {
+        //     $data = $data->whereIn('job_id', $additional['job_ids']);
+        // }
+
         $formatted = $this->createSolrStyleResponse($data->raw());
         
         return $formatted;
@@ -58,7 +66,8 @@ class AlgoliaSearch implements SearchEngine
     public function get_applicants(
         $data,
         $job_id,
-        $status = "",
+        $status,
+        $clientId,
         $age = null,
         $exp_years = null,
         $video_application_score = null,
@@ -67,6 +76,7 @@ class AlgoliaSearch implements SearchEngine
         $minimium_remuneration = null,
         $maximium_remuneration = null
     ) {
+
         $extra = [];
         $extra['job_id'] = $job_id;
         if ($status != "") {
@@ -100,6 +110,7 @@ class AlgoliaSearch implements SearchEngine
             $extra['test_score_from'] = $test_score[0];
             $extra['test_score_to'] = $test_score[1];
         }
+
         return $this->search_resume($data, $extra);
     }
 
@@ -223,10 +234,12 @@ class AlgoliaSearch implements SearchEngine
 
     public function handleFacetSchema(array $facets): array
     {
+        $allFacets = config('scout-job-applications.attributesForFaceting');
 
-        foreach ($facets as $key => $facet) {
-            $facets[$key] = $this->convertFlatArrayToObject($facet);
+        foreach ($allFacets as $key => $facet) {
+            $facets[$facet] = isset($facets[$facet]) ? $this->convertFlatArrayToObject($facets[$facet] ) : [];
         }
+
         return $facets;
     }
 

@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Helpers\AlgoliaSearch;
 use App\Libraries\Solr;
+use App\SearchEngine\SearchEngine;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -17,6 +17,8 @@ class UploadApplicant implements ShouldQueue
     
     var $applicant,$test_score;
 
+    public $searchEngine;
+
     public $timeout = 2000;
     /**
      * Create a new job instance.
@@ -29,6 +31,7 @@ class UploadApplicant implements ShouldQueue
         $this->applicant = $applicant;
         $job = $this->applicant->job;
         $this->test_score = $this->applicant->testRequests;
+        $this->searchEngine =  app(SearchEngine::class);
     }
 
     /**
@@ -41,10 +44,12 @@ class UploadApplicant implements ShouldQueue
         ini_set('memory_limit', '1024M');
         set_time_limit(0);
 
-        if(is_null($this->applicant->job))
+        if (is_null($this->applicant->job)) {
             return false;
+        }
 
             $applicant = $this->applicant;
+            $job = $this->applicant->job;
 
             $cand['gender'] = $applicant->cv->gender ?? null;
             $cand['last_company_worked'] = $applicant->cv->last_company_worked ?? null;
@@ -87,29 +92,21 @@ class UploadApplicant implements ShouldQueue
             $cand['hrms_length_of_stay'] = $applicant->cv->hrms_length_of_stay ?? null;
             $cand['edu_school'] = $applicant->cv->school->name ?? null;
             $cand['specializations'] = $applicant->cv->specializations->pluck("name")->toArray() ?? null;
-            $cand['minimum_remuneration'] = (int) ($applicant->job->minimum_remuneration ?? null);
-            $cand['maximum_remuneration'] = (int) ($applicant->maximum_remuneration ?? null);
+            $cand['minimum_remuneration'] = (int) ($job->minimum_remuneration ?? null);
+            $cand['maximum_remuneration'] = (int) ($job->maximum_remuneration ?? null);
             $cand['completed_nysc'] = ($applicant->cv->completed_nysc ?? null);
             $cand['graduation_grade'] = (int)($applicant->cv->graduation_grade ?? null);
-            if(count($this->test_score)){
-                $this->test_score->map(function($score) use(&$cand){
-                    // $cand['test_id'][] = $score->test_id ?? null;
-                    $cand['test_name'][] = $score->test_name ?? null;
-                    $cand['test_owner'][] = $score->provider->name ?? null;
-                    $cand['test_result_comment'][] = $score->result_comment ?? null;
-                    $cand['test_score'][] = $score->score ?? null;
-                    $cand['test_status'][] = $score->status ?? null;
-                });
-            }
-            
             //custom fields
-            foreach ($this->applicant->custom_fields as $key=>$value) {
-                if($value->form_field != null && isset($value->form_field->name) && isset($value->value)){
-                    $cand['custom_field_name'][] = str_slug($value->form_field->name,'_');
-                    $cand['custom_field_value'][] = ($value->value ?? null);
-                }
+        foreach ($this->applicant->custom_fields as $key=>$value) {
+            if ($value->form_field != null && isset($value->form_field->name) && isset($value->value)) {
+                $cand['custom_field_name'][] = str_slug($value->form_field->name, '_');
+                $cand['custom_field_value'][] = ($value->value ?? null);
             }
+        }
             info('commenced push to solr');
-        $this->searchEnginer->create_new_document($cand);
+            
+            $client_id = $applicant->candidate->client_id ?? null;
+
+            $this->searchEngine->create_new_document($cand, $client_id);
     }
 }

@@ -352,6 +352,11 @@ class LoginController extends Controller
             Auth::login($user);
             $user->user_token = '';
             $user->save();
+            $company = Company::find(base64_decode(\request()->company_id));
+
+            if ($company) {
+                session()->put('current_company_index', $company->id);
+            }
 
             return redirect($url);
         } else {

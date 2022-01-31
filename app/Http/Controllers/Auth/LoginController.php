@@ -312,7 +312,7 @@ class LoginController extends Controller
                     'message' => 'API key valid', 
                     'user_id' => $user->id, 
                     'token' => $token,
-                    'session' => 'fromHRMS'
+                    'company_id' => $company->id
                 ]
             );
         }

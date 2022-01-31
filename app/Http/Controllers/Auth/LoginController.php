@@ -281,30 +281,6 @@ class LoginController extends Controller
     public function singleSignOnVerify($encoded_email, $encoded_key)
     {
 
-<<<<<<< Updated upstream
-      $decoded_email = base64_decode($encoded_email);
-      $decoded_key = base64_decode($encoded_key);
-
-      $user = User::where('email', $decoded_email)->first();
-      if(!$user){
-        return ['status' => false, 'message' => 'User email does not exist'];
-      }
-      $company = $user->companies()->where('api_key', $decoded_key)->first();
-      if($company == null){
-          return ['status' => false, 'message' => 'API key not valid'];
-      }else{
-        $token =  Crypt::encrypt($user->email.time());
-        $user->user_token = $token;
-        $user->save();
-        return [
-            'status' => true,
-            'message' => 'API key valid',
-            'user_id' => $user->id,
-            'token' => $token,
-            'company_id' => $company->id
-        ];
-      }
-=======
         $decoded_email = base64_decode($encoded_email);
         $decoded_key = base64_decode($encoded_key);
 
@@ -340,7 +316,6 @@ class LoginController extends Controller
                 ]
             );
         }
->>>>>>> Stashed changes
 
     }
 
@@ -421,7 +396,7 @@ class LoginController extends Controller
     public function logout() {
         cache()->flush();
         auth()->logout();
-        if (getEnvData('RMS_STAND_ALONE', true, request()->clientId)) { //redirect to hrms if rms is not stand alone
+        if (getEnvData('RMS_STAND_ALONE', false, request()->clientId)) { //redirect to hrms if rms is not stand alone
             return redirect(getEnvData('STAFFSTRENGTH_URL', null, request()->clientId));
         }
 

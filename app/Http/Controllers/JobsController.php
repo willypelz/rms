@@ -1179,18 +1179,18 @@ class JobsController extends Controller
 
     public function createJob(Request $request, $id='')
     {
-        if(!empty($id)){
+        if (!empty($id)) {
             $job = Job::with('specializations')->find($id);
 
             // Get the specialization relations --- Using with callback didnt work, returns pivot
-            if($job->specializations){
+            if ($job->specializations) {
                 $job_specilizations = $job->specializations()->pluck('specializations.id')->toArray();
             }
-            $checkCandidateStep = JobApplication::where('job_id',$id)->where('status','!=','PENDING')->first();
-        }else{
-            $job = NULL;
+            $checkCandidateStep = JobApplication::where('job_id', $id)->where('status', '!=', 'PENDING')->first();
+        } else {
+            $job = null;
             $job_specilizations = [];
-            $checkCandidateStep = NULL;
+            $checkCandidateStep = null;
 
             $start = "Initiated Create Job(Admin)";
             mixPanelRecord($start, auth()->user());
@@ -1209,12 +1209,12 @@ class JobsController extends Controller
         $company = get_current_company();
         $job_boards = JobBoard::where('type', 'free')->get()->toArray();
 
-        if(count($job_boards) > 2){
+        if (count($job_boards) > 2) {
             $c = (count($job_boards) / 2);
             $t = array_chunk($job_boards, $c);
             $board1 = $t[0];
             $board2 = $t[1];
-        }else{
+        } else {
             $board1 = [];
             $board2 = [];
         }
@@ -1273,8 +1273,7 @@ class JobsController extends Controller
                         'is_visible' => (isset($request->is_visible[$key])) ? 1 : 0,
                     ];
                 }
-            $location_value = ($request->country != 'Nigeria') ? $request->country :
-                             ( ($request->job_location == 'Across Nigeria') ? 'Nigeria' : $request->job_location);
+                $location_value = ($request->country != 'Nigeria') ? $request->country : (($request->job_location == 'Across Nigeria') ? 'Nigeria' : $request->job_location);
                 $job_data = [
                     'title' => $request->job_title,
                     'location' => $location_value,
@@ -1382,19 +1381,21 @@ class JobsController extends Controller
 
         $workflows = Workflow::whereCompanyId(get_current_company()->id)->get();
 
-        return view('job.post_job', compact(
-            'qualifications',
-            'specializations',
-            'board1',
-            'job', 'job_specilizations',
-            'board2',
-            'locations',
-            'workflows',
-            'thirdPartyData',
-            'application_fields',
-            'countries',
-            'checkCandidateStep'
-        ));
+        return view(
+            'job.post_job', compact(
+                'qualifications',
+                'specializations',
+                'board1',
+                'job', 'job_specilizations',
+                'board2',
+                'locations',
+                'workflows',
+                'thirdPartyData',
+                'application_fields',
+                'countries',
+                'checkCandidateStep'
+            )
+        );
     }
 
 

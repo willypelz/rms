@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Models\JobTeamInvite;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use App\User;
-use App\Models\Company;
-use Validator;
-use Illuminate\Http\Request;
-use Auth;
 use DB;
-use App\ActivationService;
-use Illuminate\Support\Facades\Hash;
+use Auth;
 use Crypt;
+use App\User;
+use Validator;
+use App\Models\Company;
+use App\ActivationService;
+use Illuminate\Http\Request;
+use App\Models\JobTeamInvite;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
@@ -199,10 +200,6 @@ class LoginController extends Controller
                 $logo = '';
             }
 
-
-
-
-
             $com['name'] = $request->company_name;
             $com['slug'] = $request->slug;
             $com['phone'] = $request->phone;
@@ -284,28 +281,41 @@ class LoginController extends Controller
     public function singleSignOnVerify($encoded_email, $encoded_key)
     {
 
-      $decoded_email = base64_decode($encoded_email);
-      $decoded_key = base64_decode($encoded_key);
+        $decoded_email = base64_decode($encoded_email);
+        $decoded_key = base64_decode($encoded_key);
 
-      $user = User::where('email', $decoded_email)->first();
-      if(!$user){
-        return ['status' => false, 'message' => 'User email does not exist'];
-      }
-      $company = $user->companies()->where('api_key', $decoded_key)->first();
-      if($company == null){
-          return ['status' => false, 'message' => 'API key not valid'];
-      }else{
-        $token =  Crypt::encrypt($user->email.time());
-        $user->user_token = $token;
-        $user->save();
-        return [
-            'status' => true,
-            'message' => 'API key valid',
-            'user_id' => $user->id,
-            'token' => $token,
-            'company_id' => $company->id
-        ];
-      }
+        $user = User::where('email', $decoded_email)->first();
+        if (!$user) {
+            return response()->json(
+                [
+                'status' => false, 
+                'message' => 'User email does not exist'
+                ]
+            );
+        }
+        $api_key = $user->companies()->where('api_key', $decoded_key)->first();
+        if ($api_key == null) {
+            return response()->json(
+                [
+                    'status' => false, 
+                    'message' => 'API key not valid'
+                ]
+            );
+        } else {
+            $token =  Crypt::encrypt($user->email . time());
+            $user->user_token = $token;
+            $user->save();
+            
+            return response()->json(
+                [
+                    'status' => true, 
+                    'message' => 'API key valid', 
+                    'user_id' => $user->id, 
+                    'token' => $token,
+                    'company_id' => $api_key->id
+                ]
+            );
+        }
 
     }
 
@@ -315,15 +325,14 @@ class LoginController extends Controller
         if(Auth::check()){
             //audit trail
             admin_audit_log();
-          return redirect()->route('dashboard');
-        }
-        elseif(Auth::guard('candidate')->check()) {
+            return redirect()->route('dashboard');
+        } elseif (Auth::guard('candidate')->check()) {
             //audit trail
             audit_log();
-          return redirect()->route('candidate-dashboard');
+            return redirect()->route('candidate-dashboard');
+        } else {
+            return redirect('/');
         }
-        else
-          return redirect('/');
     }
 
     /**
@@ -335,25 +344,23 @@ class LoginController extends Controller
      */
     public function loginUser($url, $user_id, $token)
     {
-
-
         $user_id = base64_decode($user_id);
         $url = base64_decode($url);
 
         $user = User::find($user_id);
-        if($token == $user->user_token){
-          Auth::login($user);
-          $user->user_token = '';
-          $user->save();
-          $company = Company::find(base64_decode(\request()->company_id));
+        if ($token == $user->user_token) {
+            Auth::login($user);
+            $user->user_token = '';
+            $user->save();
+            $company = Company::find(base64_decode(\request()->company_id));
 
-          if ($company) {
-              session()->put('current_company_index', $company->id);
-          }
+            if ($company) {
+                session()->put('current_company_index', $company->id);
+            }
 
-          return redirect($url);
-        }else{
-          return ['status' => false, 'message' => 'Token not valid'];
+            return redirect($url);
+        } else {
+            return ['status' => false, 'message' => 'Token not valid'];
         }
     }
 
@@ -391,12 +398,13 @@ class LoginController extends Controller
 
     }
 
-    public function logout(){
+    public function logout() {
         cache()->flush();
         auth()->logout();
-        if(getEnvData('RMS_STAND_ALONE',true,request()->clientId) == false){ //redirect to hrms if rms is not stand alone
-            return redirect(getEnvData('STAFFSTRENGTH_URL',null,request()->clientId));
+        if (getEnvData('RMS_STAND_ALONE', false, request()->clientId)) { //redirect to hrms if rms is not stand alone
+            return redirect(getEnvData('STAFFSTRENGTH_URL', null, request()->clientId));
         }
+
         return redirect('/login');
     }
 }

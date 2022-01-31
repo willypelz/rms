@@ -312,7 +312,7 @@ class LoginController extends Controller
                     'message' => 'API key valid', 
                     'user_id' => $user->id, 
                     'token' => $token,
-                    'company_id' => $company->id
+                    'company_id' => $api_key->id
                 ]
             );
         }

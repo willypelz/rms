@@ -467,7 +467,35 @@
                 setupSliderField("minimium_remuneration", "unit");
                 setupSliderField("maximium_remuneration", "unit");
 
-                function setupSliderField(key, tag){
+                  function fieldSetter(key, value){
+
+                      switch(key){
+                          case "age_range":
+                              age_range = value
+                              break
+                          case "test_score_range":
+                              test_score_range = value
+                              break
+                          case "exp_years_range":
+                              exp_years_range = value
+                              break
+                          case "video_application_score_range":
+                              video_application_score_range = value
+                              break
+                          case "minimium_remuneration_range":
+                              minimium_remuneration_range = value
+                              break
+                          case "maximium_remuneration_range":
+                              maximium_remuneration_range = value
+                              break
+                          case "graduation_grade_range":
+                              graduation_grade_range = value
+                              break
+                      }
+                  }
+
+
+                  function setupSliderField(key, tag){
                       const sliderElement = "#" +  key + "-slider";
                       const sliderRange = "#" +  key + "-range";
                       $(sliderElement).bootstrapSlider({});

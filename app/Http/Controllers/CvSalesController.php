@@ -594,7 +594,8 @@ class CvSalesController extends Controller
         }
 
         // $response = SolrPackage::search_resume($this->search_params);
-        $response = $result = $this->searchEngine->get_all_my_cvs($this->search_params, @$solr_age, @$solr_exp_years);
+
+        $response = $result = $this->searchEngine->get_all_my_cvs($this->search_params, @$solr_age, @$solr_exp_years, @session('active_company')->client->id);
         if ((isset($result['facet_counts']))) {
             $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status']);
             $end = (($start + $this->search_params['row']) > intval($application_statuses['ALL'])) ? $application_statuses['ALL'] : ($start + $this->search_params['row']);

@@ -15,6 +15,7 @@ use App\Models\JobApplication;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Transaction;
+use App\SearchEngine\SearchEngine;
 use App\User;
 use Auth;
 use Carbon\Carbon;
@@ -520,7 +521,7 @@ class CvSalesController extends Controller
 
         $this->search_params['filter_query'] = @$request->filter_query;
         // $response = $this->searchEngine->search_resume($this->search_params);
-        $response = $this->searchEngine->->get_purchased_cvs($this->search_params);
+        $response = $this->searchEngine->get_purchased_cvs($this->search_params);
 
 
         $cart = Cart::content();

@@ -155,7 +155,6 @@
                       });
                   });
               </script>
-
           <p class="border-bottom-thin text-muted">Age<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                      <p class="text-center">
                         <input id="age-slider" type="text" class="span2" value="" data-slider-min="{{ getEnvData('AGE_START') }}" data-slider-max="{{ getEnvData('AGE_END') }}" data-slider-step="1" data-slider-value="@if(!is_null($age[0]) && !is_null($age[1])) {{ '['.$age[0].','.$age[1].']' }} @endif"/>

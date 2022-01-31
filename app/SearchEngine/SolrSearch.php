@@ -64,6 +64,7 @@ class SolrSearch implements SearchEngine
 
     public function search_resume($data, $additional = '', $client_id = '')
     {
+
         if ($client_id !== '') {
             self::$clientId = $client_id;
             self::__construct();
@@ -87,7 +88,7 @@ class SolrSearch implements SearchEngine
         if (!empty($search_field)) {
             $search_field .= ':';
         }
-            
+
         // self::$host = self::$url . getEnvData("SOLR_CORE",null, $client_id);
         $filename = self::$host . "q=" . $search_field . $q . "&rows=" . $row . "&start=" . $start
 
@@ -160,7 +161,7 @@ class SolrSearch implements SearchEngine
         return $this->search_resume($data, $additional, @request()->clientId);
     }
 
-    public function get_all_my_cvs($data, $age = null, $exp_years = null)
+    public function get_all_my_cvs($data, $age = null, $exp_years = null, $client_id = null)
     {
 
         $job_ids = Job::getMyJobIds();
@@ -182,7 +183,7 @@ class SolrSearch implements SearchEngine
             $additional .= "&fq=years_of_experience:[" . $exp_years[0] . "+TO+" . $exp_years[1] . "]";
         }
 
-        return $this->search_resume($data, $additional, @request()->clientId);
+        return $this->search_resume($data, $additional, @request()->clientId ?? $client_id);
     }
 
 

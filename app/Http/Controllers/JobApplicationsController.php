@@ -461,7 +461,6 @@ class JobApplicationsController extends Controller
         $grades = grades();
         $permissions = getUserPermissions();
 
-
         if ($request->ajax()) {
 
             $search_results = view(

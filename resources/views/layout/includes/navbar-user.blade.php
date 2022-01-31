@@ -101,7 +101,7 @@
                     <a class="" href="{{ url('my-career-page') }}" target="_blank">My Career Page <i
                                 class="fa fa-building mask"></i></a>
                 </li>
-                @if( getEnvData('RMS_STAND_ALONE', null, request()->clientId))
+                @if( getEnvData('RMS_STAND_ALONE', true, request()->clientId))
                     <li class="">
                             <a class="" href="{{url(getEnvData('STAFFSTRENGTH_URL', null, request()->clientId)))}}" target="_blank">HRMS Portal <i
                                         class="fa fa-building mask"></i></a>

@@ -103,7 +103,7 @@
                 </li>
                 @if( getEnvData('RMS_STAND_ALONE', null, request()->clientId))
                     <li class="">
-                            <a class="" href="{{url(getEnvData('STAFFSTRENGTH_URL', null, request()->clientId)))}}" target="_blank">HRMS Portal <i
+                            <a class="" href="{{url(getEnvData('STAFFSTRENGTH_URL', null, request()->clientId))}}" target="_blank">HRMS Portal <i
                                         class="fa fa-building mask"></i></a>
                     </li>
                 @endif

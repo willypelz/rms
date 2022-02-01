@@ -40,6 +40,6 @@ class MultitenacyDeploy extends Command
     {
         Artisan::call('migrate --seed');
         Artisan::call('scout:sync');
-        Artisan::call('scout:import');
+        Artisan::call('scout:reimport');
     }
 }

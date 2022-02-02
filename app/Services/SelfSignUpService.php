@@ -9,7 +9,6 @@ use App\Models\Company;
 use App\Models\Permission;
 use App\Models\SystemSetting;
 use App\Mail\NewRMSAccountCreated;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;

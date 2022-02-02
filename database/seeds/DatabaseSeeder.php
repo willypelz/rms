@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
                 ClientSeeder::class,
                 CompanySeeder::class,
                 EnvValuesSeeder::class,
+                \Database\Seeders\SeedCandidatesClientIdSeed::class
             ]
         );
         

@@ -64,7 +64,6 @@ class SolrSearch implements SearchEngine
 
     public function search_resume($data, $additional = '', $client_id = '')
     {
-
         if ($client_id !== '') {
             self::$clientId = $client_id;
             self::__construct();
@@ -165,6 +164,7 @@ class SolrSearch implements SearchEngine
     {
 
         $job_ids = Job::getMyJobIds();
+
 
         if (!empty($job_ids)) {
             $job = "job_id:(" .  implode('+', $job_ids)  . ")+OR+";

@@ -38,7 +38,7 @@ class IsAdmin
                 'msg' => 'You don\'t have permission to perform this action',
             ], 403);
         }
-        session()->flush();
-        return redirect()->guest('/');
+        session()->flash('message', 'You are unauthorised to view this page');
+        return back();
     }
 }

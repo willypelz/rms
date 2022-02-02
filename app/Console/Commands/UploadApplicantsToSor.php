@@ -40,7 +40,6 @@ class UploadApplicantsToSor extends Command
     public function handle()
     {
         
-        
         $applicants = JobApplication::has('cv')->with('job', 'cv')->chunk(100, function ($applicants) {
             foreach ($applicants as $applicant) {
                 UploadApplicant::dispatch($applicant)->onQueue('solr');                

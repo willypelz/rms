@@ -5,7 +5,7 @@
 	<br>
 	Find below some details that can help in your follow up with them.
 	<br><p></p>
-	<b>CLIENT:</b> {{$notifiable->name}}
+	<b>CLIENT:</b> {{$notifiable->client->name}}
 	<p></p>
 	<b>URL:</b><a href="{{$notifiable->client->url.'/login'}}">{{$notifiable->client->url}}</a> <br>
 	<p></p>

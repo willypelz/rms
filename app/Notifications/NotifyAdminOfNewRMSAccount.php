@@ -16,9 +16,9 @@ class NotifyAdminOfNewRMSAccount extends Notification
      *
      * @return void
      */
-    private $company, $title, $user_email, $user_name;
+    public $company, $title, $user_email, $user_name;
 
-    public function __construct($company,$user)
+    public function __construct($company, $user)
     { 
         $this->company = $company;
         $this->title = 'Your SeamlessHiring Account is ready';
@@ -46,11 +46,13 @@ class NotifyAdminOfNewRMSAccount extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)->view(
-            'emails.self-sign-up.new-account-notify',['notifiable'=> $notifiable, 'email_title' => $this->title, 
-            'email'=> $this->company->email,'user_email'=> $this->user_email,'user_name'=>$this->user_name]
-        )
-        ->from('support@seamlesshr.com')
-        ->subject($this->title);
+            'emails.self-sign-up.new-account-notify', 
+            [
+                'notifiable'=> $notifiable, 'email_title' => $this->title, 
+                'email'=> $this->company->email,'user_email'=> $this->user_email,
+                'user_name'=>$this->user_name
+            ]
+        )->from('support@seamlesshr.com')->subject($this->title);
     }
 
     /**

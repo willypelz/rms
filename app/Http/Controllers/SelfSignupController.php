@@ -26,15 +26,22 @@ class SelfSignUpController extends Controller
      */
     public function create(SignUpRequest $request, SelfSignUpService $signup)
     {
-        try{
-             
-           DB::transaction(function () use($request, $signup) {
-                 $user_sign_up =  $signup->createDomain($request);
-            });
-            return response()->json(['status'=>true, 'msg'=>'Account created successfully, please check your email']); 
-        }catch(\Exception $e){
+        try {
+
+            DB::transaction(
+                function () use ($request, $signup) {
+                    $user_sign_up =  $signup->createDomain($request);
+                }
+            );
+            return response()->json(
+                [
+                    'status' => true, 
+                    'msg' => 'Account created successfully, please check your email'
+                ]
+            );
+        } catch (\Exception $e) {
             info($e);
-            return response()->json(['status'=>false, 'msg'=> $e->getMessage()]);
+            return response()->json(['status' => false, 'msg' => $e->getMessage()]);
         }
            
     }

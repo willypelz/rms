@@ -5,11 +5,11 @@
 	<br>
 	Find below some details that can help in your follow up with them.
 	<br><p></p>
-	<b>CLIENT:</b> {{$notifiable->client->name}}
+	<b>CLIENT:</b> {{$user->name}}
 	<p></p>
-	<b>URL:</b><a href="{{$notifiable->client->url.'/login'}}">{{$notifiable->client->url}}</a> <br>
+	<b>URL:</b><a href="{{$user->client->url.'/login'}}">{{$user->client->url}}</a> <br>
 	<p></p>
-	<b>Email:</b>{{$notifiable->email}} <br>
+	<b>Email:</b>{{$user->email}} <br>
 	</p>
 	<hr style="border-width:0 0 1px">
 	<p style="color:#666">Best regards,

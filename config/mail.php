@@ -55,7 +55,10 @@ return [
     |
     */
 
-    'from' => ['address' => getEnvData('COMPANY_EMAIL'), 'name' => env('COMPANY_NAME')],
+    'from' => [
+        'address' => getEnvData('COMPANY_EMAIL', null, request()->clientId) ?? env('COMPANY_EMAIL'), 
+        'name' => env('COMPANY_NAME')
+    ],
 
     /*
     |--------------------------------------------------------------------------

@@ -147,7 +147,7 @@ class SelfSignUpService {
         Notification::send($user ?? $user->email, new NotifyAdminOfNewRMSAccount($company, $user));
         
         //notify support and sales team
-        Mail::to('support@seamlesshr.com')->cc('sales@seamlesshr.com')->send(
+        Mail::from('support@seamlesshr.com')->to('support@seamlesshr.com')->cc('sales@seamlesshr.com')->send(
             new NewRMSAccountCreated($user)
         );
 

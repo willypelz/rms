@@ -3,6 +3,7 @@
 namespace App\Services;
 use App\User;
 use Exception;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Role;
 use App\Models\Client;
 use App\Models\Company;
@@ -10,7 +11,6 @@ use App\Models\Permission;
 use App\Models\SystemSetting;
 use App\Mail\NewRMSAccountCreated;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\NotifyAdminOfNewRMSAccount;
 use Seamlesshr\ShrCloudflareDomainGenerator\DomainGenerator;
@@ -26,12 +26,15 @@ class SelfSignUpService {
     public function createDomain($request)
     {
         //get the baseurl to be used e.g seamlesshiring.com
-        $base_url = DomainGenerator::getBaseURL();
+        // $base_url = DomainGenerator::getBaseURL();
+        $base_url = true;
         if ($base_url == 'seamlesshiring.com') {
-            $sub_domain_available = DomainGenerator::isSubdomainAvailable($request->sub_domain_string); //true/false
+            // $sub_domain_available = DomainGenerator::isSubdomainAvailable($request->sub_domain_string); //true/false
+            $sub_domain_available = true; //true/false
             if ($sub_domain_available) {
                 //returns either true or an exception. You can pass either "add" or "delete" as second param
-                $add_subdomain = DomainGenerator::mapURL($request->sub_domain_string, 'add');
+                // $add_subdomain = DomainGenerator::mapURL($request->sub_domain_string, 'add');
+                $add_subdomain = true;
                 if (is_bool($add_subdomain) && $add_subdomain) {
                     return $this->createClientAndCompany($request);
                 }
@@ -147,9 +150,10 @@ class SelfSignUpService {
         Notification::send($user ?? $user->email, new NotifyAdminOfNewRMSAccount($company, $user));
         
         //notify support and sales team
-        Mail::from('support@seamlesshr.com')->to('support@seamlesshr.com')->cc('sales@seamlesshr.com')->send(
-            new NewRMSAccountCreated($user)
-        );
+        Mail::to('support@seamlesshr.com')
+            ->cc('sales@seamlesshr.com')->send(
+                new NewRMSAccountCreated($user)
+            );
 
         return true;
     }

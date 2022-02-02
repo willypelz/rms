@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => getEnvData('COMPANY_EMAIL') ?? env('COMPANY_EMAIL'), 
+        'address' => getEnvData('COMPANY_EMAIL') ?? 'support@seamlesshr.com', 
         'name' => env('COMPANY_NAME')
     ],
 

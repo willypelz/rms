@@ -3599,7 +3599,7 @@ class JobsController extends Controller
     {
         if ( $request->isMethod ( 'post' ) ) {
             $user = User::with('roles')->find($request->id);
-            if (!is_null(getEnvData('STAFFSTRENGTH_URL')) || getEnvData('RMS_STAND_ALONE') ) {
+            if (isHrmsIntegrated() == false ) {
                 $user->update([
                     'is_super_admin' => $request->role
                 ]);

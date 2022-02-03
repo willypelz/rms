@@ -69,8 +69,9 @@ chmod u+x fix-scripts.sh
 
 cd /etc && /usr/bin/supervisord
 
-supervisorctl reread && supervisorctl reload && supervisorctl stop all && supervisorctl start all
+# supervisorctl reread && supervisorctl reload && supervisorctl stop all && supervisorctl start all
 
+supervisorctl reread && supervisorctl reload && supervisorctl restart all
 crontab /etc/cron.d/laravel-cron
 
 /usr/sbin/apache2ctl -D FOREGROUND

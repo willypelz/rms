@@ -3599,19 +3599,19 @@ class JobsController extends Controller
     {
         if ( $request->isMethod ( 'post' ) ) {
             $user = User::with('roles')->find($request->id);
-            if (!is_null(getEnvData('STAFFSTRENGTH_URL')) || getEnvData('RMS_STAND_ALONE') ) {
-                $user->update([
-                    'is_super_admin' => $request->role
-                ]);
-                mixPanelRecord("Admin Role Updated successfully (Admin)", auth()->user());
-                return response()->json (['status' => true]);
-            } else {
+            if (isHrmsIntegrated()) {
                 mixPanelRecord("Admin creation failed (Admin)", $user);
                 return response()->json([
                     'status' => false,
                     'message' => "you have to manage super admins from HRMS"
                 ]);
             }
+            
+            $user->update([
+                    'is_super_admin' => $request->role
+                ]);
+            mixPanelRecord("Admin Role Updated successfully (Admin)", auth()->user());
+            return response()->json (['status' => true]);
         }
 
         $users = User::with('roles')->whereHas('companies',function($q) use($request){

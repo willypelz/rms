@@ -12,8 +12,7 @@
                     <div class="panel-body">
 
                         @include('layout.alerts')
-
-                        @if(getEnvData('RMS_STAND_ALONE'))
+                        @if(isHrmsIntegrated() == false)
                             <div data-toggle="modal" data-target="#superAdminModal" href="#superAdminModal"
                                  data-title="Background Check" style="margin-bottom:15px"
                                  class="btn btn-info pull-right">Invite Super Admin
@@ -91,10 +90,10 @@
                                                 <li role="separator" class="divider"></li>
                                                 <li>
                                                     <a href="#">
-                                                        @if(!(isHrmsIntegrated()))
-                                                            <div data-toggle="modal" data-target="#deleteSuperAdminModal{{ $user->id }}" href="#deleteSuperAdminModal{{ $user->id }}" data-title="Background Check"><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
+                                                        @if(isHrmsIntegrated())
+                                                        <div disabled data-toggle="tooltip" class="faint" data-placement="top" title="Your RMS is integrated with HRMS and as such you are only allowed to delete a super admin from HRMS"  data-title="Background Check" ><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
                                                         @else
-                                                            <div disabled data-toggle="tooltip" class="faint" data-placement="top" title="Your RMS is integrated with HRMS and as such you are only allowed to delete a super admin from HRMS"  data-title="Background Check" ><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
+                                                        <div data-toggle="modal" data-target="#deleteSuperAdminModal{{ $user->id }}" href="#deleteSuperAdminModal{{ $user->id }}" data-title="Background Check"><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
                                                         @endif
                                                     </a>
                                                 </li>

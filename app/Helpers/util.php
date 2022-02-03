@@ -995,8 +995,10 @@ function admin_audit_log()
  * Checks if HRMS is synced
  * @return bool
  */
-function isHrmsIntegrated(){
-    return (!is_null(getEnvData('STAFFSTRENGTH_URL'))) && getEnvData('RMS_STAND_ALONE')=="false" ? true: false;
+function isHrmsIntegrated()
+{
+    return (!is_null(getEnvData('STAFFSTRENGTH_URL', null, request()->clientId)))
+        && getEnvData('RMS_STAND_ALONE', null, request()->clientId) == "false" ? true : false;
 }
 
 /**
@@ -1010,8 +1012,8 @@ function seamlessSave( $modelName, array $data, $id)
 {
     $instance = $modelName::find($id);
     $data['slug'] = ($instance->slug) ?: str_slug($instance->name); //add slug if missing
-	$instance->fill($data)->save();
-	return $instance;
+    $instance->fill($data)->save();
+    return $instance;
 }
 
 /**

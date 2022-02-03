@@ -74,24 +74,24 @@ spec:
             initialDelaySeconds: 15
             timeoutSeconds: 30
             periodSeconds: 15
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 443
-              scheme: HTTPS
-            initialDelaySeconds: 15
-            timeoutSeconds: 30
-            periodSeconds: 15
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 443
+          #     scheme: HTTPS
+          #   initialDelaySeconds: 15
+          #   timeoutSeconds: 30
+          #   periodSeconds: 15
           volumeMounts:
           - name:  ${KUBE_META_NAME}-storage
             mountPath:  /var/www/mnt
           resources: 
             limits:
               cpu: 1000m
-              memory: 1.8Gi
+              memory: 2.4Gi
             requests:
               cpu: 450m
-              memory: 900Mi
+              memory: 1200Mi
           ports:
           - containerPort: 80
           imagePullPolicy: Always

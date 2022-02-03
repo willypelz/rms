@@ -61,7 +61,7 @@ function grades()
 
 function getGrade($index)
 {
-    return grades()[$index];
+    return grades()[$index] ?? 'Unspecified';
 }
 
 function human_time($time, $max_units = NULL)

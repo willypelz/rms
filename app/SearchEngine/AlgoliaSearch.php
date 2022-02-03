@@ -13,54 +13,66 @@ class AlgoliaSearch implements SearchEngine
         extract($data);
         $q = $q == '*' ? '' : $q;
         $pageNumber = $page ?? 1;
+
         $data = JobApplication::search(
-            $q, function ($algolia, $query, $options) use ($pageNumber, $additional) {
+            $q, function ($algolia, $query, $options) use ($pageNumber, $additional, $data) {
 
                 $customOptions = [
                     'facets' => ['*'],
                     'page' => $pageNumber,
-                    //  => 
                 ];
+     	        $searchContent  = "";
                 if (!is_null($additional['job_id'] ?? null)) {
-                    $customOptions['filters'] = "job_id = {$additional['job_id']}";
+	                $searchContent .= "job_id = {$additional['job_id']}";
                 }
+
+                if (!is_null($additional['job_ids'] ?? null)) {
+                    foreach ($additional['job_ids'] as $key => $id) {
+                        if ($key == 0) {
+                            $searchContent .= "job_id = {$id}";
+                        } else {
+                            $searchContent .= " OR job_id = {$id}";
+                        }
+                    }
+                }
+
+		        if ($additional['application_status'] ?? null) {
+		        	$searchContent .= "  AND application_status:{$additional['application_status']}";
+		        }
+
+                $filterBys = ['years_of_experience', 'grade', 'age'];
+
+                foreach ($filterBys as $filterBy) {
+                    $searchContent .= $this->filterBetween($additional, $filterBy);
+                }
+
+                foreach (($data['filter_query'] ?? []) as $item) {
+                    $defaultOperation = $data['default_op'] ?? 'AND';
+                    $searchContent .= " {$defaultOperation} {$item}";
+                }
+
+                $customOptions['filters'] = $searchContent;
+
                 $newArray = array_merge($options, $customOptions);
+
                 unset($newArray['numericFilters']);
+                unset($newArray['page']);
+
                 return $algolia->search($query, $newArray);
             }
         );
 
-        if ($additional['company_folder_id'] ?? null) {
-            $data = $data->where('company_folder_id', $additional['company_folder_id']);
-        }
-        if ($additional['folder_type'] ?? null) {
-            $data = $data->where('folder_type', $additional['folder_type']);
-        }
-        $filterBys = ['years_of_experience', 'grade', 'age'];
-        foreach ($filterBys as $filterBy) {
-            $data = $this->filterBetween($data, $additional, $filterBy);
-        }
-
-        // if ($additional['job_id'] ?? null) {
-        //     $data = $data->where('job_id', $additional['job_id']);
-        // }
-        // if ($additional['job_ids'] ?? null) {
-        //     $data = $data->whereIn('job_id', $additional['job_ids']);
-        // }
-
         $formatted = $this->createSolrStyleResponse($data->raw());
-        
+
         return $formatted;
     }
 
-    public function filterBetween($data, array $additionalData, string $field)
+    public function filterBetween(array $additional, string $field) : string
     {
-        $from = "{$field}_from";
-        $to = "{$field}_to";
-        if (($additionalData[$from] ?? false) && ($additionalData[$to] ?? false)) {
-            $data = $data->whereBetween($field, [$additionalData[$from], $additionalData[$to]]);
-        }
-        return $data;
+        $from = $additional["{$field}_from"] ?? null;
+        $to = $additional["{$field}_to"] ?? null;
+
+        return (!is_null($from) && !is_null($to)) ? "  AND years_of_experience:{$from} TO {$to}" : "";
     }
 
     public function get_applicants(
@@ -171,7 +183,7 @@ class AlgoliaSearch implements SearchEngine
             if (empty($val)) {
                 $val = "Not Specified";
             }
-            if (strtolower($val) == 'choose' || strtolower(preg_replace('|[^a-z]|i', '', $val)) == 'choose' 
+            if (strtolower($val) == 'choose' || strtolower(preg_replace('|[^a-z]|i', '', $val)) == 'choose'
                 || strtolower($val) == 'select'
             ) {
                 $val = "Not Specified";
@@ -222,6 +234,7 @@ class AlgoliaSearch implements SearchEngine
             "numFoundExact" => true,
             "docs" => $this->createApplicationSchema($response['hits'])
         ];
+
         $object['facet_counts'] = [
             'facet_queries' => [],
             'facet_fields' => $this->handleFacetSchema($response['facets']),
@@ -235,7 +248,6 @@ class AlgoliaSearch implements SearchEngine
     public function handleFacetSchema(array $facets): array
     {
         $allFacets = config('scout-job-applications.attributesForFaceting');
-
         foreach ($allFacets as $key => $facet) {
             $facets[$facet] = isset($facets[$facet]) ? $this->convertFlatArrayToObject($facets[$facet] ) : [];
         }
@@ -247,16 +259,17 @@ class AlgoliaSearch implements SearchEngine
     {
         $converted = [];
         foreach ($array as $key => $item) {
-            $converted[$item] =  $key;
+            $converted[] = $key;
+            $converted[] = $item;
         }
         return $converted;
     }
 
     /**
      * This function is not needed for algolia so we return void
-     * 
-     * @param $in_data 
-     * 
+     *
+     * @param $in_data
+     *
      * @return void
      */
     public function create_new_document($in_data)
@@ -266,10 +279,10 @@ class AlgoliaSearch implements SearchEngine
 
     /**
      * This function is not needed for algolia so we return void
-     * 
-     * @param $core 
-     * @param $command 
-     * 
+     *
+     * @param $core
+     * @param $command
+     *
      * @return void
      */
     public function update_core($core = null, $command = "delta-import")

@@ -16,6 +16,10 @@ class JobApplication extends Model
 
     public $timestamps = false;
 
+    protected $casts = [
+        'is_approved'  => 'bool'
+    ];
+
     public function job()
     {
         return $this->belongsTo(Job::class, 'job_id');

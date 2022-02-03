@@ -23,7 +23,7 @@
               </a>
                   <span class="small">
                   
-                  @if(@$cv['dob'] &&  $cv['dob'] != '1970-01-01T00:00:00Z')
+                  @if(@$cv['dob'] &&  $cv['dob'] != '1970-01-01T00:00:00Z' && $cv['dob'] != 'none')
                     . {{ \App\Libraries\Utilities::getAge($cv['dob']) }}
                   
                   @endif

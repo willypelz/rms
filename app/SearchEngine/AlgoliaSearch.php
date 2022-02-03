@@ -13,43 +13,57 @@ class AlgoliaSearch implements SearchEngine
         extract($data);
         $q = $q == '*' ? '' : $q;
         $pageNumber = $page ?? 1;
+
         $data = JobApplication::search(
             $q, function ($algolia, $query, $options) use ($pageNumber, $additional) {
 
                 $customOptions = [
                     'facets' => ['*'],
                     'page' => $pageNumber,
-                    //  =>
                 ];
      	        $searchContent  = "";
                 if (!is_null($additional['job_id'] ?? null)) {
-	                $searchContent = "job_id = {$additional['job_id']}";
+	                $searchContent .= "job_id = {$additional['job_id']}";
+                }
+
+                if (!is_null($additional['job_ids'] ?? null)) {
+                    foreach ($additional['job_ids'] as $key => $id) {
+                        if ($key == 0) {
+                            $searchContent .= "job_id = {$id}";
+                        } else {
+                            $searchContent .= " OR job_id = {$id}";
+                        }
+                    }
                 }
 		        if ($additional['application_status'] ?? null) {
 		        	$searchContent .= "  AND application_status:{$additional['application_status']}";
 		        }
-//		        if ($additional['folder_type'] ?? null) {
-////			        $searchContent .= "  AND folder_type:{$additional['folder_type']}";
-//		        }
+
+                if (!is_null($additional['years_of_experience_from'] ?? null) && !is_null($additional['years_of_experience_to'] ?? null)) {
+                    $searchContent .= "  AND years_of_experience:{$additional['years_of_experience_from']} TO {$additional['years_of_experience_to']}";
+                }
 
     	        $customOptions['filters'] = $searchContent;
 
                 $newArray = array_merge($options, $customOptions);
+
                 unset($newArray['numericFilters']);
-                return $algolia->searchForFacetValues($query, $newArray);
+                unset($newArray['page']);
+
+                return $algolia->search($query, $newArray);
             }
         );
 
-        if ($additional['company_folder_id'] ?? null) {
-            $data = $data->where('company_folder_id', $additional['company_folder_id']);
-        }
-        if ($additional['folder_type'] ?? null) {
-            $data = $data->where('folder_type', $additional['folder_type']);
-        }
-        $filterBys = ['years_of_experience', 'grade', 'age'];
-        foreach ($filterBys as $filterBy) {
-            $data = $this->filterBetween($data, $additional, $filterBy);
-        }
+//        if ($additional['company_folder_id'] ?? null) {
+//            $data = $data->where('company_folder_id', $additional['company_folder_id']);
+//        }
+//        if ($additional['folder_type'] ?? null) {
+//            $data = $data->where('folder_type', $additional['folder_type']);
+//        }
+//        $filterBys = ['years_of_experience', 'grade', 'age'];
+//        foreach ($filterBys as $filterBy) {
+//            $data = $this->filterBetween($data, $additional, $filterBy);
+//        }
 
         // if ($additional['job_id'] ?? null) {
         //     $data = $data->where('job_id', $additional['job_id']);

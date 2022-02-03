@@ -2,7 +2,13 @@
 
 namespace App\Observers;
 
+use App\User;
 use App\Models\Job;
+use App\Models\Company;
+use App\Jobs\SendJobNotice;
+use Ixudra\Curl\Facades\Curl;
+use Illuminate\Support\Facades\Log;
+use GuzzleHttp\Client as HttpClient;
 
 class JobObserver
 {
@@ -17,8 +23,8 @@ class JobObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a Job',
-                'description' => 'Created a new Job',
+                'log_name' => 'Created Job',
+                'description' => 'Created a Job'.' '.$job->title,
                 'action_id' => $job->id,
                 'action_type' => 'App\Models\Job',
                 'causee_id' => auth()->user()->id,
@@ -26,9 +32,32 @@ class JobObserver
                 'causer_type' => 'Admin',
                 'properties' => '',
             ];
-            logAction($param);
-           
+            logAction($param);            
         }
+        if (isHrmsIntegrated()) {
+            $company = Company::where('id', $job->company_id)->first();
+            if ($job->is_for == 'both' || $job->is_for == 'internal') {
+                $sendJob = [
+                    'title' => $job->title,
+                    'summary' => $job->summary,
+                    'expiry_date' => $job->expiry_date,
+                    'position' => $job->position,
+                    'hrms_id' => $company->hrms_id
+                ];
+                $response = Curl::to(getEnvData('STAFFSTRENGTH_URL',null,request()->clientId) . 'api/v1/send/notification')
+                    ->withData($sendJob)
+                    ->asJson()
+                    ->get();
+                Log::info($response);
+            }
+        } else {
+            if ($job->is_for == 'both' || $job->is_for == 'internal') {
+                $employees = User::where('activated', 1)->get();
+                dispatch(new SendJobNotice($employees, $job));
+            }
+        }
+
+        
     }
 
     /**
@@ -41,16 +70,32 @@ class JobObserver
     {
         //
         if(auth()->check()){
-            $param = [
-                'log_name' => 'Updated a Job',
-                'description' => 'Updated a Job',
-                'action_id' => $job->id,
-                'action_type' => 'App\Models\Job',
-                'causee_id' => auth()->user()->id,
-                'causer_id' => auth()->user()->id,
-                'causer_type' => 'Admin',
-                'properties' => '',
-            ];
+            $old = $job->getOriginal('title');
+            if($job->isDirty('title')){
+                $param = [
+                    'log_name' => 'Updated Job',
+                    'description' => 'Updated Job '.$old.' to '.$job->title,
+                    'action_id' => $job->id,
+                    'action_type' => 'App\Models\Job',
+                    'causee_id' => auth()->user()->id,
+                    'causer_id' => auth()->user()->id,
+                    'causer_type' => 'Admin',
+                    'properties' => '',
+                ];
+            }else{
+                $param = [
+                    'log_name' => 'Updated Job',
+                    'description' => 'Updated Job '.$job->title,
+                    'action_id' => $job->id,
+                    'action_type' => 'App\Models\Job',
+                    'causee_id' => auth()->user()->id,
+                    'causer_id' => auth()->user()->id,
+                    'causer_type' => 'Admin',
+                    'properties' => '',
+                ];
+            }
+            
+
             logAction($param);
            
         }

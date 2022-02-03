@@ -5,8 +5,9 @@ set -x;
 # # look for empty dir
 # if [ "$(ls -A /var/www/mnt/$CLIENT_NAME)" ]; then
 # #     echo "Take action $DIR is not Empty"
+    mv /var/www/html/public_html/uploads up
     rm -r /var/www/html/storage
-    rm -r /var/www/html/public_html/uploads
+    #rm -r /var/www/html/public_html/uploads
     rm -r /var/www/html/public_html/img
     rm /var/www/html/.env
 # else
@@ -21,6 +22,11 @@ ln -sfn /var/www/mnt/storage /var/www/html/
 ln -sfn /var/www/mnt/uploads /var/www/html/public_html/
 ln -sfn /var/www/mnt/img /var/www/html/public_html/
 ln -sfn /var/www/mnt/.env /var/www/html/
+
+cp -vnpr up/* /var/www/html/public_html/uploads
+
+rm -rf up
+
 cd /var/www/html
 
 php artisan cache:clear
@@ -66,8 +72,5 @@ cd /etc && /usr/bin/supervisord
 supervisorctl reread && supervisorctl reload && supervisorctl stop all && supervisorctl start all
 
 crontab /etc/cron.d/laravel-cron
-
-/usr/sbin/apache2ctl -D FOREGROUND
-
 
 /usr/sbin/apache2ctl -D FOREGROUND

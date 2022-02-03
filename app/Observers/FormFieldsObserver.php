@@ -17,7 +17,7 @@ class FormFieldsObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a FormFields',
+                'log_name' => 'Created FormFields',
                 'description' => 'Created a formfield',
                 'action_id' => $formFields->id,
                 'action_type' => 'App\Models\FormFields',

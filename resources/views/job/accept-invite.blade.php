@@ -20,7 +20,7 @@
             <div class="">
               <div class="row">
                 <div class="col-sm-12 text-center">
-                  <h4 class="text-brandon l-sp-5 text-uppercase">Job Team Accept</h4>
+                  <h4 class="text-brandon l-sp-5 text-uppercase">WELCOME TO THE JOB TEAM</h4>
                 </div>
                 <div class="clearfix"></div>
               </div>
@@ -47,7 +47,7 @@
                         @if($is_internal == 1)
                         @php
                             $user_email = base64_encode($user->email);
-                            $redirect_url = env('HIRS_REDIRECT_LOGIN').'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;
+                            $redirect_url = getEnvData('HIRS_REDIRECT_LOGIN', null, request()->clientId).'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;
                         @endphp
                         <div class="col-sm-4 col-sm-offset-4">
                             <!-- Click here if you already have an account -->
@@ -84,7 +84,7 @@
                   @elseif($is_internal == 1)
                     @php
                       $user_email = base64_encode($user->email);
-                      $redirect_url = env('HIRS_REDIRECT_LOGIN').'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;
+                      $redirect_url = getEnvData('HIRS_REDIRECT_LOGIN',null,request()->clientId).'?referrer='.url('dashboard').'&host=seamlesshiring&user='.$user_email;
                     @endphp
                     <div class="col-sm-4 col-sm-offset-4">
                       <!-- Click here if you already have an account -->
@@ -155,7 +155,7 @@
           </div>
           <div class="page page-sm foot no-bod-rad">
             <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-              <p><img src="{{ env('SEAMLESS_HIRING_LOGO') }}" alt="" width="250px"> </p>
+              <p><img src="{{ getEnvData('SEAMLESS_HIRING_LOGO',null,request()->clientId) }}" alt="" width="250px"> </p>
               <p class="text-muted small">@ <?php echo date('Y') ?></p>
             </div>
             <div class="clearfix"></div>

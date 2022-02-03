@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Console\Commands\MultitenacyDeploy;
+use App\Console\Commands\PopulateCvEmails;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -14,6 +16,11 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\UploadApplicantsToSor::class,
+        Commands\FixNullCvs::class,
+        Commands\ResyncTestScoreFromSeamlessTesting::class,
+        Commands\StreamFilesFromHRMS::class,
+        PopulateCvEmails::class,
+        MultitenacyDeploy::class,
     ];
 
     /**

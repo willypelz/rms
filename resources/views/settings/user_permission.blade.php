@@ -32,12 +32,12 @@
                                                     <h5 class="text-uppercase lsp3">{{ $user_role->role->display_name }}</h5>
                                                     <hr/>
                                                     <div class="ad-mgt-scroll">
-                                                        <label><input type="checkbox" onClick="toggle(this, '{{$key}}')" /> <b>Toggle All</b></label><br/>
+                                                        <label><input type="checkbox" id="toggle_all"/> <b>Toggle All</b></label><br/>
                                                     @foreach($permissions as $permission)
                                                             <label> <input id="sys-con" type="checkbox"
                                                                            name="permissions[]"
                                                                            value="{{$permission->id}}"
-                                                                           class="{{$key}}"
+                                                                           class="{{$key}} tg-permission"
                                                                            {{$check = in_array($permission->id, $permission->getRolePermissions($user_role->role_id)) ? "checked" : ''}}  onClick="systemControl(this, '{{$key}}')"> {{$permission->name}}
 
                                                             </label> <br/>
@@ -84,13 +84,21 @@
         });
     </script>
     <script>
-        function toggle(source, className) {
-            checkboxes = document.getElementsByClassName(className);
-
-            for (var i = 0, n = checkboxes.length; i < n; i++) {
-                checkboxes[i].checked = source.checked;
+        
+        $('#toggle_all').on('click', function () {
+            if ($(this).is(':checked')) {
+                $('.tg-permission').prop('checked', 'checked')
+            }else{
+                $('.tg-permission').removeProp('checked', 'checked')
             }
-        }
+        })
+        $(".tg-permission").change(function(){
+            if ($('.tg-permission:checked').length == $('.tg-permission').length) {
+                $('#toggle_all').prop('checked', 'checked')
+            }else{
+                $('#toggle_all').removeProp('checked', 'checked')
+            }
+        });
     </script>
     <script>
         function systemControl(source, className) {
@@ -121,6 +129,7 @@
 
               success: function (res) {
                   $.growl.notice({title: "Success", message: 'Role and permission settings updated successfully'})
+                  window.location.reload()
               }
           });
         }

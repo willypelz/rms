@@ -19,16 +19,9 @@
                     <div class="col-md-8">
                         <div class="content">
                             <div class="row">
-                                @if ($errors->any())
-                                    <ul class="alert alert-danger">
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                @endif
                                 <div class="col-md-10 col-md-offset-1">
-                                    @include('layout.alerts')
                                     {!! Form::open(array('route'=>'edit-company','method'=>'POST', 'id'=>'SignUPform', 'files'=>true, 'class'=>'form-signup', 'role'=>'form')) !!}
+                                    @include('layout.alerts')
 
                                     {!! csrf_field() !!}
                                     <input type="hidden" name="company_creation_page" value="true">
@@ -39,9 +32,13 @@
                                                 <label class="col-md-12" for="">Company Logo</label>
                                                 <div class="fileinput fileinput-new" data-provides="fileinput">
                                                     <div class="fileinput-preview thumbnail" data-trigger="fileinput"
-                                                         style="width: 200px; height: 150px;"></div>
+                                                         style="width: 200px; height: 150px;">
+                                                        <img src="{{ url( 'img' ).'/'.$company->logo }}" alt="Logo" style="width: 200px; height: 150px;">
+
+                                                    </div>
+                                                    <div style="font-size:10px; padding:5px;"><b>Recommmended Size - 1200(W) x 627(H)</b></div>
                                                     <div>
-                                                <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span
+                                                        <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span
                                                             class="fileinput-exists">Change</span>
                                                  <?php  echo Form::file('logo'); ?>
                                                 </span>
@@ -55,7 +52,7 @@
                                         </div>
                                         <div class="col-sm-12">
                                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                                <label for=""> Company name</label>
+                                                <label for=""> Company name  <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="name" placeholder=""
                                                        name="name" value="{{ $company->name }}" required>
                                                 @if ($errors->has('name'))
@@ -65,12 +62,29 @@
                                                 @endif
                                             </div>
                                         </div>
+                                        <!--<div class="col-sm-12">
+                                            <div class="form-group{{ $errors->has('slug') ? ' has-error' : '' }}">
+                                                <label for="">Company url</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">https://</span>
+                                                    <input type="text" class="form-control slug" id="" placeholder=""
+                                                           name="slug" value="{{isset($company->website) ? str_replace(['https://','www','.','.seamlesshiring.com'],'',$company->website): '' }}" readonly>
+                                                    <span class="input-group-addon">.seamlesshiring.com</span>
+
+                                                </div>
+                                                @if ($errors->has('slug'))
+                                                    <span class="help-block">
+                                                <strong>{{ $errors->first('slug') }}</strong>
+                                            </span>
+                                                @endif
+                                            </div>
+                                        </div>-->
 
                                         <div class="col-sm-6">
                                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                                <label for=""> Company Email</label>
-                                                <input type="text" class="form-control" id="" placeholder=""
-                                                       name="email" value="{{  $company->email }}" readonly>
+                                                <label for=""> Company Email  <span class="text-danger">*</span></label>
+                                                <input type="email" class="form-control" id="" placeholder=""
+                                                       name="email" value="{{  $company->email }}" required>
                                                 @if ($errors->has('email'))
                                                     <span class="help-block">
                                                 <strong>{{ $errors->first('email') }}</strong>
@@ -82,7 +96,7 @@
 
                                         <div class="col-sm-6">
                                             <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
-                                                <label for=""> Company Phone</label>
+                                                <label for=""> Company Phone  <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="" placeholder=""
                                                        name="phone" value="{{ $company->phone }}" required>
                                                 @if ($errors->has('phone'))
@@ -97,7 +111,8 @@
                                             <div class="form-group{{ $errors->has('website') ? ' has-error' : '' }}">
                                                 <label for=""> Company Website</label>
                                                 <input type="text" class="form-control" id="" placeholder=""
-                                                       name="website" value="{{ $company->website }}" required>
+                                                       name="website" value="{{ $company->website }}" disabled>
+                                                {{-- <small>e.g. https://site_name.com</small> --}}
                                                 @if ($errors->has('website'))
                                                     <span class="help-block">
                                                 <strong>{{ $errors->first('website') }}</strong>
@@ -108,7 +123,7 @@
 
                                         <div class="col-sm-12">
                                             <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
-                                                <label for=""> Company Address</label>
+                                                <label for=""> Company Address  <span class="text-danger">*</span></label>
                                                 <textarea name="address" class="form-control" id="" cols="30" rows="10"
                                                           required>{{ $company->address }}</textarea>
                                                 @if ($errors->has('address'))
@@ -121,9 +136,9 @@
 
                                         <div class="col-sm-12">
                                             <div class="form-group{{ $errors->has('about') ? ' has-error' : '' }}">
-                                                <label for="">About  Company</label>
-                                                <textarea name="about" class="form-control" id="" cols="30"
-                                                          rows="10" required>{{ $company->about }}</textarea>
+                                                <label for="">About Company  <span class="text-danger">*</span></label>
+                                                <textarea name="about" class="form-control" id="about" cols="30"
+                                                          rows="6" required>{{ $company->about }}</textarea>
                                                 @if ($errors->has('about'))
                                                     <span class="help-block">
                                                 <strong>{{ $errors->first('about') }}</strong>
@@ -156,4 +171,7 @@
         </div>
     </section>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+    <script>
+        var editor = CKEDITOR.replace('about')
+    </script>
 @endsection

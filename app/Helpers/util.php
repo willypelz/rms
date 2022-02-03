@@ -1,21 +1,32 @@
 <?php
 
-use App\Jobs\UploadApplicant;
-use App\Libraries\Solr;
-use App\Models\Candidate;
-use App\Models\Company;
-use App\Models\Cv;
-use App\Models\Job;
-use App\Models\JobActivity;
-use App\Models\JobApplication;
-use Illuminate\Support\Facades\File;
-use phpDocumentor\Reflection\Types\Object_;
-use SeamlessHR\SolrPackage\Facades\SolrPackage;
-use App\Models\TestRequest;
-use App\Models\ActivityLog;
-use Carbon\Carbon;
-use Ixudra\Curl\Facades\Curl;
 use App\User;
+use App\Models\Cv;
+use Carbon\Carbon;
+use App\Models\Job;
+use App\Enum\Configs;
+use App\Models\Client;
+use App\Libraries\Solr;
+use App\Models\Company;
+use App\Models\Candidate;
+use App\Models\Interview;
+use App\Models\Permission;
+use App\Models\ActivityLog;
+use App\Models\JobActivity;
+use App\Models\TestRequest;
+use App\Jobs\UploadApplicant;
+use App\Models\SystemSetting;
+use Ixudra\Curl\Facades\Curl;
+use App\Models\JobApplication;
+use App\Models\PermissionRole;
+use Illuminate\Support\Facades\File;
+use App\Models\InterviewNoteTemplates;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
+use phpDocumentor\Reflection\Types\Object_;
+use GeneaLabs\LaravelMixpanel\Facades\Mixpanel;
+use SeamlessHR\SolrPackage\Facades\SolrPackage;
+
 
 // use Faker;
 
@@ -340,32 +351,58 @@ function check_if_job_owner($job_id)
     if (!$company_role && $user->is_super_admin != 1) {
 
         if (!in_array($job_id, $job_access)) {
-            abort(404);
+            abort(403);
         }
     }
 
 
 }
 
+function check_if_job_owner_on_queue($job_id, $current_company, $user)
+{
+    $job_access = Job::where('id', $job_id)->whereHas('users', function ($q) use ($user) {
+        $q->where('user_id', $user->id);
+    })->get()->pluck('id')->toArray();
+
+    $company_role = $current_company->users()->wherePivot('user_id', $user->id)->first()->pivot->role;
+
+
+    if (!$company_role && $user->is_super_admin != 1) {
+
+        if (!in_array($job_id, $job_access)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 function get_current_company()
 {
+    $authUser = Auth::user();
 
-    if (!is_null(Auth::user())) {
+    $sessionId = Session::get('current_company_index');
+
+    if (!is_null($authUser)) {
         //If a company is selected
-        if (Session::get('current_company_index')) {
-            if (isset(Auth::user()->companies[Session::get('current_company_index')]))
-                return Auth::user()->companies[Session::get('current_company_index')];
+        if ($sessionId) {
+            if (isset($authUser->companies) && !is_null($authUser->companies()->where('company_users.company_id', $sessionId)->first()))
+                return $authUser->companies()->where('company_users.company_id', $sessionId)->first();
             else
-                return Auth::user()->companies[0];
+                return $authUser->companies->first();
         }
-        
-        if (Auth::user()->companies && Auth::user()->companies->count() < 1) {
+
+        if ($authUser->companies && $authUser->companies->count() < 1) {
             return redirect()->guest('login');
         }
-        
         // If a company is not selected, default to the first on the list
-        return Auth::user()->companies[0];
+        return optional(optional($authUser)->companies)->first();
     } else {
+        $user = Auth::guard('candidate')->user();
+        if($user) {
+            $client = Client::with('companies')->find($user->client_id);
+            $company = $client->companies->first();
+            return $company;
+        }
         return redirect()->guest('login');
     }
 
@@ -524,10 +561,32 @@ function get_company_logo($logo)
     }
 }
 
-function get_interview_note_templates()
+function get_interview_note_templates($appl_id)
 {
-    return \App\Models\InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
+    $appl = JobApplication::where('id', $appl_id)->first();
+    $workflowStep = $appl->job->workflow->workflowSteps->where('slug', $appl->status)->first();
 
+    if($workflowStep->type != "interview"){
+        return "This Applicant has not been moved to an interview step.";
+    }
+
+    $user = User::find(auth()->id());
+    if((!$user->isInterviewer() && !$user->isCommenter()) || $user->is_super_admin ){
+        return InterviewNoteTemplates::where('company_id', get_current_company()->id)->orderBy('name')->get();
+    } 
+
+    $interview = Interview::where('job_application_id', $appl_id)->first();
+    if($interview){
+        $check = $user->interviews->where('id',$interview->id)->first();
+        if($check){
+            return $interview->templates;
+        }else{
+            return "You have not been Scheduled to interview this applicant, <br>
+            An interview note needs to be attached to you in order to use one";
+        }
+        
+    }
+    
 }
 
 function saveCompanyUploadedCv($cvs, $additional_data, $request)
@@ -589,12 +648,13 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
                 $data = [
                     'name' => $request->cv_last_name,
                     'job' => $job_id,
-                    'email' => $request->cv_email
+                    'email' => $request->cv_email,
+                    'job_name' => Job::find($job_id)->title
                 ];
                 $data = (object)$data;
 
                 $candidate = Candidate::firstOrCreate(['email' => $request->cv_email, 'first_name' => $request->cv_first_name,
-                    'last_name' => $request->cv_last_name]);
+                    'last_name' => $request->cv_last_name, 'client_id' => $request->clientId]);
                 Candidate::where('id', $candidate->id)->update(['token' => $token]);
 
                 $company = Company::find(get_current_company()->id);
@@ -602,7 +662,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
                 $accept_link = route('candidate-invite', ['id' => $candidate->id, 'token' => $token]);
 
                 Mail::send('emails.new.candidate-invite', ['data' => $data, 'company' => $company, 'accept_link' => $accept_link], function ($m) use ($data) {
-                    $m->from(env('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
+                    $m->from(getEnvData('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
                 });
                 break;
 
@@ -638,7 +698,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
     $user = Auth::user();
 
     Mail::send('emails.new.cv_upload_successful', ['user' => $user, 'link' => url('cv/talent-pool')], function ($m) use ($user) {
-        $m->from(env('COMPANY_EMAIL'))->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
+        $m->from(getEnvData('COMPANY_EMAIL'))->to($user->email)->subject('Talent Pool :: File(s) Upload Successful');
     });
 
     return ['status' => 1, 'data' => 'Cv(s) uploaded successfully'];
@@ -715,6 +775,20 @@ function getUserPermissions()
 
 }
 
+function hasPermissionInCompany(string $permission) : bool
+{
+    if(!empty($permission)){
+        $company = auth()->user()->companies()->where("company_users.company_id", Session::get('current_company_index'))->first();
+        foreach ($company->roles as $role) {
+            $results = collect($role->perms)->filter(function($perm, $index) use ($permission) {
+                return $perm->name == $permission;
+            });
+            if( !$results->isEmpty() ) return true;
+        }
+    }
+    return false;
+}
+
 /**
  * @param $roleName
  * @return string
@@ -765,8 +839,8 @@ function getCurrentLoggedInUserRole()
 
 function get_company_email_logo()
 {
-    $logo = env("APP_LOGO");
-    $url = env("APP_URL");
+    $logo = getEnvData("APP_LOGO",url('img/seamlesshiring-logo.png'));
+    $url = getEnvData("APP_URL");
     return
         "<a href='$url' style='font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2' target='_blank'>
 		<img src='$logo' width='50%' height='' style='outline:none;text-decoration:none;display:block;min-height:31px;margin:0 auto;border:0;' class='CToWUd' alt='COMPANY_LOGO'>
@@ -776,7 +850,7 @@ function get_company_email_logo()
 function defaultCompanyLogo()
 {
     $company = Company::where('has_expired', 0)->first();
-    return ($company && isset($company->logo)) ? get_company_logo($company->logo) : env('SEAMLESS_HIRING_LOGO');
+    return ($company && isset($company->logo)) ? get_company_logo($company->logo) : getEnvData('SEAMLESS_HIRING_LOGO');
 }
 
 function candidateDossierPercentage($value)
@@ -835,8 +909,7 @@ function candidateDossierRating($value)
 if (!function_exists('defaultCompanyLogo')) {
     function defaultCompanyLogo()
     {
-        $answer = get_current_company()->logo ?? env('SEAMLESS_HIRING_LOGO');
-        return $answer;
+        return get_current_company()->logo ?? getEnvData('SEAMLESS_HIRING_LOGO');
     }
 }
 
@@ -848,6 +921,7 @@ function logAction($logAction)
         'action_id' => @$logAction['action_id'],
         'action_type' => @$logAction['action_type'],
         'causee_id' => @$logAction['causee_id'],
+        'company_id'=> Auth::guard('candidate')->check() ? getCandidateCompanyId() : (Auth::check() ? (get_current_company()->id ?? null): null),
         'causer_id' => isset($logAction['causer_id']) ? $logAction['causer_id'] : Auth::user()->id,
         'causer_type' => isset($logAction['causer_type']) ? $logAction['causer_type'] : getCauserType(isset($logAction['causee_id']) ? $logAction['causee_id'] : Null),
         'properties' => @$logAction['properties'],
@@ -921,7 +995,7 @@ function admin_audit_log()
  * @return bool
  */
 function isHrmsIntegrated(){
-    return is_null(env('STAFFSTRENGTH_URL')) ? false: true;
+    return (!is_null(getEnvData('STAFFSTRENGTH_URL'))) && getEnvData('RMS_STAND_ALONE')=="false" ? true: false;
 }
 
 /**
@@ -933,7 +1007,8 @@ function isHrmsIntegrated(){
  */
 function seamlessSave( $modelName, array $data, $id)
 {
-	$instance = $modelName::find($id);
+    $instance = $modelName::find($id);
+    $data['slug'] = ($instance->slug) ?: str_slug($instance->name); //add slug if missing
 	$instance->fill($data)->save();
 	return $instance;
 }
@@ -947,7 +1022,7 @@ function seamlessSave( $modelName, array $data, $id)
 function getResponseFromHrmsByGET(string $url, array $data = []){
     $rmsCompany = Company::whereNotNull('api_key')->first();
     if(isHrmsIntegrated() && $rmsCompany) {
-        $response = Curl::to(env('STAFFSTRENGTH_URL') . $url )
+        $response = Curl::to(getEnvData('STAFFSTRENGTH_URL') . $url )
                         ->withHeader("X-API-KEY: " . $rmsCompany->api_key)
                         ->withData($data)
                         ->asJson()
@@ -971,4 +1046,271 @@ function getCompanyId($userId = null) {
 	}
 
 	return $company_id;
+}
+
+function userPermissionsArray($useSession=true){
+
+	if ($useSession && session()->has('user_permissions')) return session()->get('user_permissions');
+
+	$role_ids = auth()->user()->roles()->pluck('id')->unique()->toArray();
+	$permission_role = PermissionRole::whereIn('role_id',$role_ids)->pluck('permission_id')->toArray();
+	$permission_array =Permission::find(array_unique($permission_role))->pluck('name')->toArray();
+	session()->put('user_permissions', $permission_array);
+
+	return $permission_array;
+}
+
+function canSwitchBetweenPage(){
+
+   	$user = auth()->user();
+	if($user->name === configs::DEFAULT_ADMIN_NAME  && $user->email === configs::DEFAULT_ADMIN_EMAIL) return true;
+
+	return in_array(configs::CAN_SWITCH_BETWEEN_COMPANY, userPermissionsArray());
+}
+
+
+function isHrmsCompaniesSyncedWithRms(){
+	$rmsDefaultCompany = Company::whereNotNull('hrms_id')->whereIsDefault(true)->first();
+	return $rmsDefaultCompany ? true : false;
+}
+
+function saveFileFromHrms($file_name, $file_url){
+    $contents = file_get_contents($file_url);
+    File::put( public_path("uploads/CVs/$file_name"), $contents);
+}
+
+function validateCustomFields($name,$attr,$field_type,$required,$request){
+   
+    if ($field_type == "FILE" && $required) {
+        $rule = [
+            $name => 'required|file'
+        ];
+        $message = [
+            "$name.required" => "$attr file is required",
+        ];
+        
+    }elseif($field_type == 'MULTIPLE_OPTION' && $required) {
+        $rule = [
+            $name => 'required|array|min:1'
+        ];
+        $message = [
+            "$name.required" => "$attr field is required",
+        ];
+            
+    }elseif($field_type == 'CHECKBOX' && $required) {
+        $rule = [
+            $name => 'required_without_all',
+        ];
+        $message = [
+            "$name.required_without_all" => "$attr field is required",
+        ];
+        
+    }elseif($field_type == 'DROPDOWN' || $field_type == 'RADIO' && $required) {
+        $rule = [
+            $name => 'required'
+        ];
+        $message = [
+            "$name.required" => "$attr field is required",
+        ];
+    }elseif ($field_type == 'TEXTAREA' || $field_type == 'TEXT'  && $required) {
+        $rule = [
+            $name => 'required'
+        ];
+        $message = [
+            "$name.required" => "$attr field is required",
+        ];
+        
+    }
+    $validator = Validator::make($request->all(),$rule,$message);
+    return $validator;
+}
+
+function mixPanelRecord($nameOfPoint, $candidate)
+{
+    $RMSnameOfPoint = "RMS " . $nameOfPoint;
+    $email = $candidate->email;
+    $companyName = get_current_company()->name ?? null;
+    $name = isset($candidate->first_name) ? $candidate->first_name . " " . $candidate->last_name : $candidate->name;
+    $name = $name ?? $candidate->full_name ;
+    $mp = Mixpanel::getInstance(config('mixpanel.key'));
+    $mp->track($RMSnameOfPoint, ['email' => $email]);
+    $mp->identify($email);
+    $mp->people->set(
+        $candidate->email,
+        array(
+            '$name' => "$name",
+            '$email' => "$email",
+            '$company_name' => "$companyName"
+        ),
+        $ip = 0,
+        $ignore_time = true
+    );
+}
+
+function substring($string, $start=0, $length=5){
+ return (strlen($string) > $length) ?	substr($string, $start, $length) . '...' : $string;
+}
+
+/*
+* Gets the intended company among multiple companies a user belongs to
+* when trying to post a job from HRMS
+* @param $id company id
+*/
+function getIntendedCompanyToPostJobTo($id){
+    try{
+        if(Auth::check()){
+            foreach (Auth::user()->companies as $key => $company) {
+                if ($company->id == $id) {
+                    return Session::put('current_company_index', $id);
+                }
+            }
+        }
+    }catch(\Exception $e){
+        return null;
+    }
+}
+
+/**
+ * This helper function checks if the Cache has a particular key specific to client in use if it does it clear the key
+ * obtains settings from the database, sets the Cache and returns data
+ * @param $client_id
+ * @return
+ */
+function setSystemConfig($client_id)
+{
+    $client_id = !is_null($client_id) ? $client_id : optional(get_current_company())->client_id;
+
+    if (is_null($client_id)) {
+        $client_id = request()->clientId;
+    }
+
+    if (Cache::has("SystemConfig-{$client_id}")) {
+        Cache::forget("SystemConfig-{$client_id}");
+    }
+    $systemSettingData = SystemSetting::where('client_id', $client_id)->get()->pluck('value', 'key')->all();
+    Cache::forever("SystemConfig-{$client_id}", $systemSettingData);
+    return $systemSettingData;
+}
+
+/**
+ * This helper function checks if the Cache has a particular key specific to company in use
+ * if the key doesn't exist it defaults to the database to get data sets the Cache and returns
+ * a data object
+ *
+ * @param $client_id
+ * @return object
+ */
+function getSystemConfig($client_id = null)
+{
+    $client_id = !is_null($client_id) ? $client_id : optional(get_current_company())->client_id;
+    $systemSettingData = SystemSetting::where('client_id', $client_id)->get()->pluck('value', 'key')->all();
+
+    if (Cache::has("SystemConfig-{$client_id}")) {
+        $setting = Cache::get("SystemConfig-{$client_id}");
+    } else {
+        $setting = setSystemConfig($client_id);
+    }
+    return (object)$setting;
+}
+
+/**
+ * This helper function takes in a key as parameter
+ * and returns the data value linked to the key
+ * @param string $key
+ * @param mixed $default_value
+ * @param $client_id
+ * @return mixed
+ */
+
+function getEnvData(string $key, $default_value = null, $client_id = null)
+{
+    try{
+        //change key to uppercase
+        $key = strtoupper($key);
+        //check if an empty string key is passed
+        if (is_null($key)) {
+            return $default_value;
+        }
+
+        if (is_null($client_id)) {
+            $client_id = optional(get_current_company())->client_id;
+        }
+
+        $systemConfigObject = getSystemConfig($client_id);
+
+        if (!is_null($systemConfigObject)) {
+            $systemConfigData = optional($systemConfigObject)->{$key} ?? null;
+            return $systemConfigData ?? $default_value;
+        }
+
+        return $default_value;
+    }catch(\Exception $e){
+        return null;
+    }
+
+}
+
+
+/**
+ * Generate the company URL to a named route.
+ *
+ * @param int client_id
+ * @param string  $name
+ * @param array|null  $parameters
+ * @return string
+ */
+
+function companyRoute(int $client_id, string $name, array $parameters = []): string
+
+{
+	$client_url = Client::where('id', $client_id)->first()->url ?? null;
+
+	return $client_url ? ($client_url . route($name, $parameters, false)) : route($name, $parameters);
+}
+
+/**
+ * Generate the company URL to a named route.
+ *
+ * @param int company_id
+ * * @return object
+ */
+function getClient($url){
+    return Client::where('id', $company_id)->first() ?? null;
+}
+
+function getCandidateCompanyId(){
+    $authCandidate = Auth::guard('candidate')->user();
+    if($authCandidate){
+        $jobappl = JobApplication::where('candidate_id',$authCandidate->id)->first();
+        if($jobappl){
+            return $jobappl->job->company_id;
+        }else{
+          $companyId = Company::where('client_id',request()->clientId)->first()->id;
+          return $companyId;
+        }
+        
+    }else{
+        return redirect()->to(getEnvData('APP_URL', null, request()->clientId));
+    }
+    
+}
+
+/**
+ * receives job builder and checks if activities buton should show on dashboard
+ *
+ * @param [builder] $job_builder
+ * @return bool
+ */
+function showActivitiesButton($job_builder){
+    $job_ids = $job_builder->pluck('id')->toArray();
+    return JobActivity::with('user', 'application.cv', 'job')->whereIn('job_id', $job_ids)->count() ? true : false;
+}
+
+/**
+ * check if user is the only admin in company
+ *
+ * @return bool
+ */
+function onlyOneAdminLeft(){
+    return get_current_company()->users->unique()->count() == 1 ? true : false;
 }

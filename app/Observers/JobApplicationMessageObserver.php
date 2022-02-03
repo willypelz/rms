@@ -17,8 +17,8 @@ class JobApplicationMessageObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a JobApplication Model',
-                'description' => 'created a job application',
+                'log_name' => 'Created Job Application',
+                'description' => 'Created a job application',
                 'action_id' => $jobApplicationMessage->id,
                 'action_type' => 'App\Models\JobApplicationMessage',
                 'causee_id' => $jobApplicationMessage>candidate_id,
@@ -26,7 +26,6 @@ class JobApplicationMessageObserver
                 'causer_type' => 'applicant',
                 'properties' => '',
             ];
-            dd($param);
             logAction($param);
            
         }

@@ -1,3 +1,6 @@
+@if(!isset($appl->job->id))
+ <div class="text-danger"> <h5>Cannot proceed! No applicants found</h5></div>
+@else
 <style type="text/css">
   .bootstrap-datetimepicker-widget.dropdown-menu {
     width: auto !important;
@@ -26,7 +29,7 @@
                                             <div class="col-xs-9">
                                                 <div class="media-left pull-left" style="padding-right: 20px;">
                                                     <a href="#">
-                                                        <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="{{ $product->provider->logo }}" data-holder-rendered="true" style="width: 100px; ">
+                                                        <img class="media-object" data-src="holder.js/64x64" alt="64x64" src="{{ $product->provider->logo ?? null }}" data-holder-rendered="true" style="width: 100px; ">
                                                     </a>
                                                 </div>
                                                 <div class="media-body">
@@ -156,7 +159,7 @@
         var app_ids = <?php echo json_encode($app_ids );?>  ;
         var cv_ids = <?php echo json_encode($cv_ids );?> ;
         var step = "{{ $step }}";
-        var stepId = <?php echo $stepId ?>;
+        var stepId = "{{ $stepId }}";
         var type = "{{ $type }}";
         var has_invoice = false;
 
@@ -450,3 +453,4 @@
   </script>
 
   <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+@endif

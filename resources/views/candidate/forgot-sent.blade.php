@@ -7,7 +7,7 @@
 
                 <img src="{{ asset('homepage/images/icon-check-mark.svg') }}" class="mt-5">
 
-                <h4 class="my-4 dark-blue-text font-weight-bold">A mail has been sent to your email</h4>
+                <h4 class="my-4 dark-blue-text font-weight-bold">A password reset link has been sent to your email</h4>
 
                 <a href="{{ route('candidate-login') }}" class="btn btn-block shr-auth-form-button">Go to login page</a>
             </section>

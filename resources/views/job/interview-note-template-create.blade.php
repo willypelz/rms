@@ -27,14 +27,14 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="form-group">
-                                        <label for="name">Name</label>
-                                        <input type="text" name="name" class="form-control" required>
+                                        <label for="name">Name <span style="color: red">*</span></label>
+                                        <input type="text" name="name" value="{{old('name')}}" class="form-control" required>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="description">Description</label>
                                         <textarea name="description" rows="7" id="summernote" class="form-control" required>
-
+                                            {{old('description')}}
                                         </textarea>
                                     </div>
                                 </div>

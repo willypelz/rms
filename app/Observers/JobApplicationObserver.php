@@ -17,12 +17,12 @@ class JobApplicationObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a new job application',
-                'description' => 'created a job application',
+                'log_name' => 'Created Job Application Message',
+                'description' => 'Created a job application message',
                 'action_id' => $jobApplication->id,
                 'action_type' => 'App\Models\JobApplication',
                 'causee_id' => $jobApplication->candidate_id,
-                'causer_id' => auth()->guard('candidate')->user()->id,
+                'causer_id' => auth()->guard('candidate')->id ?? null,
                 'causer_type' => 'applicant',
                 'properties' => '',
             ];

@@ -17,7 +17,7 @@ class FolderContentObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Created a FolderContent Model',
+                'log_name' => 'Created a FolderContent',
                 'description' => 'Created a folder content',
                 'action_id' => $folderContent->id,
                 'action_type' => 'App/Models/FolderContent',

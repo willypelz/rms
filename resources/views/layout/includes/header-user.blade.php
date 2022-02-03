@@ -32,12 +32,18 @@
             max-width: none !important;
             width: 1140px;
         }
+        .text-decoration-none{
+            text-decoration: none !important;
+        }
+        .button-top{
+            top: 5em!important;
+        }
     </style>
 
 
     <!-- Add Custom CSS for brand white listing here -->
-    @if(env('CUSTOM_STYLE'))
-        <link href="{{ secure_asset('css/'.env('CUSTOM_STYLE').'.theme.css') }}" rel="stylesheet">
+    @if(getEnvData('CUSTOM_STYLE'))
+        <link href="{{ secure_asset('css/'.getEnvData('CUSTOM_STYLE').'.theme.css') }}" rel="stylesheet">
     @else
         <link href="{{ secure_asset('css/seamlesshiring.css') }}" rel="stylesheet">
     @endif

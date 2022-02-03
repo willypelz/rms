@@ -3,7 +3,7 @@
     $locations = locations();
 @endphp
 
-<label for="job-title" class="pull-left">Country</label>
+<label for="job-title" class="pull-left">Country <span class="text-danger">*</span></label>
 <select required
         name="country"
         id="country"
@@ -17,7 +17,7 @@
 
 <div class="state_section @if($errors->has('location'))  @else hidden @endif"
      style="margin-top: 10px">
-    <label for="job-title" class="pull-left">Current Location</label>
+    <label for="job-title" class="pull-left">Current Location <span class="text-danger">*</span></label>
     <select required name="location" id="location" class="form-control job_location" type="text">
         <option value="">--choose state--</option>
         @foreach($locations as $state)
@@ -28,12 +28,13 @@
 
 
 <script type="text/javascript">
-    $(document).ready(function () {
+
+    // $(document).ready(function () {
         var country = $('#country');
 
-        country.change(function () {
+        country.on('change', function() {
 
-            if (country.val() == 'Nigeria') {
+            if (this.value == 'Nigeria') {
                 $('.state_section').removeClass('hidden');
                 $('#location').prop('required', true)
             } else {
@@ -43,9 +44,9 @@
         });
 
         $('.submitButton').click(function () {
-            if (country.val() != 'Nigeria') {
+            if (this.value != 'Nigeria') {
                 $('#location').prop('required', false)
             }
         })
-    });
+    // });
 </script>

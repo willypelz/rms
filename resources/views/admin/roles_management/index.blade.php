@@ -13,7 +13,7 @@
 
                         @include('layout.alerts')
 
-                        @if(env('RMS_STAND_ALONE'))
+                        @if(getEnvData('RMS_STAND_ALONE'))
                             <div data-toggle="modal" data-target="#superAdminModal" href="#superAdminModal"
                                  data-title="Background Check" style="margin-bottom:15px"
                                  class="btn btn-info pull-right">Invite Super Admin
@@ -71,6 +71,10 @@
                                                 <li role="separator" class="divider"></li>
                                                 <li><a href="{{ route('user-permission') }}"><i class="fa fa-key"></i>Role & Permission</a></li>
                                                 <li role="separator" class="divider"></li>
+                                                @if($user->is_super_admin)
+                                                    <li><a href="{{ route('sync-user-to-company-index',[base64_encode($user->id)]) }}"><i class="fa fa-home"></i>Attach/Detach User from a company</a></li>
+                                                    <li role="separator" class="divider"></li>
+                                                @endif
                                                 <li>
                                                     <a href="#">
                                                     @if($user->is_super_admin)
@@ -87,7 +91,7 @@
                                                 <li role="separator" class="divider"></li>
                                                 <li>
                                                     <a href="#">
-                                                        @if(!isHrmsIntegrated())
+                                                        @if(!(isHrmsIntegrated()))
                                                             <div data-toggle="modal" data-target="#deleteSuperAdminModal{{ $user->id }}" href="#deleteSuperAdminModal{{ $user->id }}" data-title="Background Check"><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
                                                         @else
                                                             <div disabled data-toggle="tooltip" class="faint" data-placement="top" title="Your RMS is integrated with HRMS and as such you are only allowed to delete a super admin from HRMS"  data-title="Background Check" ><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
@@ -112,6 +116,9 @@
                                                 <h4 class="modal-title" id="myModalLabel">Edit Super Admin</h4>
                                             </div>
                                             <div class="modal-body">
+                                                @php
+                                                    // mixPanelRecord("Edit Super Admin Accessed (Admin)", auth()->user());
+                                                @endphp
                                                 <form action="{{ route('job-team-add') }}" method="post"
                                                       id="SuperAdmin">
                                                     {!! csrf_field() !!}
@@ -120,21 +127,21 @@
                                                         <div class="form-group">
                                                             <div id="hiddenForm">
                                                                 <div id="external_div">
-                                                                    <label for="">Name: </label>
+                                                                    <label for="">Name: <span style="color: red">*</span></label>
                                                                     <input type="text" value="{{ $user->name }}"
-                                                                           id="name" name="name" value=""
+                                                                           id="name" name="name" required
                                                                            class="form-control">
-                                                                    <small><em>The name of the team member</em></small>
+                                                                    <small style="color: red"><em>The name of the team member</em></small>
                                                                     <br><br>
                                                                     <input type="hidden" name="email_from"
                                                                            value="{{ get_current_company()->email }}"
                                                                            class="form-control">
-                                                                    <label for="">Email: </label>
-                                                                    <input type="text" name="email" id="email_to"
+                                                                    <label for="">Email: <span style="color: red">*</span></label>
+                                                                    <input type="email" name="email" id="email_to"
                                                                            placeholder="email addresses here"
-                                                                           value="{{ $user->email }}"
+                                                                           value="{{ $user->email }}" required
                                                                            class="form-control">
-                                                                    <small><em>The email address of the team member</em>
+                                                                    <small style="color: red"><em>The email address of the team member</em>
                                                                     </small>
                                                                     <br><br>
                                                                 </div>
@@ -225,23 +232,23 @@
                     <h4 class="modal-title" id="myModalLabel">Invite Super Admin</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('user-permission') }}" method="post" id="SuperAdmin">
+                    <form action="{{ route('job-team-add') }}" method="post" id="SuperAdmin">
                         {!! csrf_field() !!}
                         <input type="hidden" name="mod" value="1">
                         <div class="form-group">
                             <div class="form-group">
                                 <div id="hiddenForm">
                                     <div id="external_div">
-                                        <label for="">Name: </label>
+                                        <label for="">Name: <span style="color: red">*</span></label>
                                         <input type="text" required id="name" name="name" value="" class="form-control">
-                                        <small><em>The name of the team member</em></small>
+                                        <small style="color: red"><em>The name of the team member</em></small>
                                         <br><br>
                                         <input type="hidden" name="email_from"
                                                value="{{ get_current_company()->email }}" class="form-control">
-                                        <label for="">Email: </label>
-                                        <input type="text" required name="email" id="email_to"
+                                        <label for="">Email: <span style="color: red">*</span></label>
+                                        <input type="email" required name="email" id="email_to"
                                                placeholder="email addresses here" class="form-control">
-                                        <small><em>The email address of the team member</em>
+                                        <small style="color: red"><em>The email address of the team member</em>
                                         </small>
                                         <br><br>
                                     </div>

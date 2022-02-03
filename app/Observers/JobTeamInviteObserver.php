@@ -17,8 +17,8 @@ class JobTeamInviteObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Created an Invite',
-                'description' => 'created a job invite',
+                'log_name' => 'Created Job Invite',
+                'description' => 'Created a job invite',
                 'action_id' => $jobTeamInvite->id,
                 'action_type' => 'App\Models\JobTeamInvite',
                 'causee_id' => '',
@@ -26,7 +26,6 @@ class JobTeamInviteObserver
                 'causer_type' => 'admin',
                 'properties' => '',
             ];
-            dd($param);
             logAction($param);
 
            

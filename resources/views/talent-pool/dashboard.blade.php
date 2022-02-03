@@ -72,7 +72,7 @@
 
                 <div class="col-xs-8">
 
-                    <div class="page no-rad-btn">
+                    <div class="page no-rad-btn" id="activities">
 
 
                         <div class="row">
@@ -94,9 +94,12 @@
                                 <div class="col-sm-6 col-sm-offset-3 text-center">
                                     <div id="act_loader"
                                          style="display:none">{!! preloader() !!}</div>
-                                    <button onclick="getCon(true); $('#act_loader').show(); activities_index++"
-                                            class="btn btn-default">Show more activities
+                                    <div class="alert alert-danger" id="errorShowMoreActivities" style="display:none"></div>
+                                   @if(isset($activities_exist) && $activities_exist) 
+                                    <button id="showMore" onclick="getCon(true); activities_index++"
+                                            class="btn btn-default">Show more activities 
                                     </button>
+                                    @endif
                                 </div>
                             </div>
 
@@ -195,6 +198,7 @@
 
     <script>
     var activities_index = 1;
+    let counterShowActivitiesClicked = 0;
     $('#ActivityContent').html('{!! preloader() !!}');
 
     var url = "{{ route('get-activity-content') }}";
@@ -202,29 +206,63 @@
     setTimeout(function () { getCon(); }, 2000);
 
     function getCon(allActivities = false) {
-        $.ajax
-        ({
-            type: 'POST',
+        if(++counterShowActivitiesClicked > 2){
+            actionOnNoMoreActivitiesToShow();
+        }else{
+            $('#act_loader').show()
+            $.ajax
+            ({
+                type: 'POST',
+                url: url,
+                data: ({
+                    rnd: Math.random() * 100000,
+                    type: 'dashboard',
+                    allActivities: allActivities,
+                    activities_index: activities_index,
+                }),
+                success: function (response) {
+                    if (allActivities && (response.shouldAppend)) {
+                        $('#ActivityContent').append(response.content);
+                        $('#showMore').hide();
+                    } else {
+                        $('#ActivityContent').html(response.content);
+                    }
+                    $('#showAll').show();
+                },
+            });
+        }
+        $('#act_loader').hide();
+    }
+
+    function actionOnNoMoreActivitiesToShow(){
+        $("#errorShowMoreActivities").text("No recent activity to display");
+        $("#errorShowMoreActivities").show();
+        return ;
+    }
+
+    $(document).on('click', '.pagination a',function(e){
+        e.preventDefault();
+        var page = $(this).attr('href').split('page=')[1];
+        let url = '/job/activities-content?page='+page
+        $.ajax({
+            type: 'GET',
             url: url,
             data: ({
                 rnd: Math.random() * 100000,
                 type: 'dashboard',
-                allActivities: allActivities,
+                allActivities: false,
                 activities_index: activities_index,
+                page:page
             }),
             success: function (response) {
-                if (allActivities) {
-                    $('#ActivityContent').append(response);
-                } else {
-                    $('#ActivityContent').html(response);
-                }
-
+                $('#ActivityContent').html(response.content);
                 $('#showAll').show();
-                $('#act_loader').hide();
+                $('html, body').animate({
+                    scrollTop: $("#activities").offset().top
+                }, 2000);
             },
         });
-    }
-
-
+        
+    })
     </script>
 @endsection

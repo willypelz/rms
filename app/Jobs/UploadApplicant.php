@@ -3,18 +3,21 @@
 namespace App\Jobs;
 
 use App\Libraries\Solr;
+use App\SearchEngine\SearchEngine;
 use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
 class UploadApplicant implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     
-    var $applicant;
+    var $applicant,$test_score;
+
+    public $searchEngine;
 
     public $timeout = 2000;
     /**
@@ -24,7 +27,11 @@ class UploadApplicant implements ShouldQueue
      */
     public function __construct($applicant)
     {
+        //$applicant refers to JobApplication table
         $this->applicant = $applicant;
+        $job = $this->applicant->job;
+        $this->test_score = $this->applicant->testRequests;
+        $this->searchEngine =  app(SearchEngine::class);
     }
 
     /**
@@ -37,10 +44,12 @@ class UploadApplicant implements ShouldQueue
         ini_set('memory_limit', '1024M');
         set_time_limit(0);
 
-        if(is_null($this->applicant->job))
+        if (is_null($this->applicant->job)) {
             return false;
+        }
 
             $applicant = $this->applicant;
+            $job = $this->applicant->job;
 
             $cand['gender'] = $applicant->cv->gender ?? null;
             $cand['last_company_worked'] = $applicant->cv->last_company_worked ?? null;
@@ -73,7 +82,31 @@ class UploadApplicant implements ShouldQueue
             $cand['is_approved'] = $applicant->is_approved ?? null;
             $cand['application_status'] = $applicant->status ?? null;
             $cand['job_title'] = $applicant->job->title ?? null;
+            $cand['course_of_study'] = $applicant->cv->course_of_study ?? null;
+            $cand['school'] = $applicant->cv->school->name ?? null;
+            $cand['applicant_type'] = $applicant->cv->applicant_type ?? null;
+            $cand['hrms_staff_id'] = $applicant->cv->hrms_staff_id ?? null;
+            $cand['hrms_grade'] = $applicant->cv->hrms_grade ?? null;
+            $cand['hrms_dept'] = $applicant->cv->hrms_dept ?? null;
+            $cand['hrms_location'] = $applicant->cv->hrms_location ?? null;
+            $cand['hrms_length_of_stay'] = $applicant->cv->hrms_length_of_stay ?? null;
+            $cand['edu_school'] = $applicant->cv->school->name ?? null;
+            $cand['specializations'] = $applicant->cv->specializations->pluck("name")->toArray() ?? null;
+            $cand['minimum_remuneration'] = (int) ($job->minimum_remuneration ?? null);
+            $cand['maximum_remuneration'] = (int) ($job->maximum_remuneration ?? null);
+            $cand['completed_nysc'] = ($applicant->cv->completed_nysc ?? null);
+            $cand['graduation_grade'] = (int)($applicant->cv->graduation_grade ?? null);
+            //custom fields
+        foreach ($this->applicant->custom_fields as $key=>$value) {
+            if ($value->form_field != null && isset($value->form_field->name) && isset($value->value)) {
+                $cand['custom_field_name'][] = str_slug($value->form_field->name, '_');
+                $cand['custom_field_value'][] = ($value->value ?? null);
+            }
+        }
+            info('commenced push to solr');
+            
+            $client_id = $applicant->candidate->client_id ?? null;
 
-            SolrPackage::create_new_document($cand);
+            $this->searchEngine->create_new_document($cand, $client_id);
     }
 }

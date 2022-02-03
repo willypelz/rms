@@ -27,9 +27,6 @@
 
                                             <div class="col-xs-12">
 
-                                                <h6 class="no-margin " id="your-statistics" style="display:none;">
-                                                    <span class="text-brandon text-uppercase"> Applications per day</span>
-                                                </h6>
                                                 <div class="clearfix">
                                                     <hr>
                                                 </div>
@@ -46,9 +43,6 @@
                                                 <br><br>
 
 
-                                                <h6 class="no-margin " id="your-statistics" >
-                                                    <span class="text-brandon text-uppercase"> Applications per stage</span>
-                                                </h6>
                                                 <div class="clearfix">
                                                     <hr>
                                                 </div>
@@ -66,9 +60,6 @@
                                                         },
                                                         title: {
                                                             text: 'APPLICATIONS PER DAY'
-                                                        },
-                                                        subtitle: {
-                                                            text: 'RMS'
                                                         },
                                                         xAxis: {
                                                             categories: application_key
@@ -196,7 +187,7 @@
                                                 allActivities: allActivities
                                             }),
                                             success: function (response) {
-                                                $("#ActivityContent").html(response);
+                                                $("#ActivityContent").html(response.content);
                                                 $('#showAll').show();
                                             }
                                         });

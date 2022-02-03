@@ -82,8 +82,7 @@
 
 
                                     @foreach( $application_fields as $key => $application_field )
-
-
+                                        <input type="hidden" class="keyValue" value="{{$key}}">
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col-xs-4">
@@ -91,10 +90,10 @@
                                                 </div>
                                                 <div class="col-xs-3">
                                                     <input name="is_required[{{ $key }}][]" type="checkbox"
-                                                           class="is_required" style="margin:10px"
+                                                           class="is_required" style="margin:10px" id="is_required{{$key}}"
 
                                                            @if(!is_null($selected_fields))
-                                                           @if($selected_fields->$key->is_required)
+                                                           @if(isset($selected_fields->$key) && $selected_fields->$key->is_required)
                                                            checked="checked"
                                                             @endif
                                                             @endif
@@ -104,9 +103,9 @@
                                                 </div>
                                                 <div class="col-xs-3">
                                                     <input type="checkbox" name="is_visible[{{ $key }}][]"
-                                                           class="is_visible" style="margin:10px"
+                                                           class="is_visible" style="margin:10px" id="is_visible_{{$key}}" 
                                                            @if(!is_null($selected_fields))
-                                                           @if($selected_fields->$key->is_visible)
+                                                           @if(isset($selected_fields->$key) && $selected_fields->$key->is_visible)
                                                            checked="checked"
                                                            @endif
                                                            @else
@@ -280,7 +279,7 @@
                                         <hr>
                                     </div>
                                     <div class="col-xs-7">
-                                        <a href="{{ route('create-job', $job->id) }}" type="submit" id="previousStep"
+                                        <a href="{{ route('create-post-job', $job->id) }}" type="submit" id="previousStep"
                                            class="btn job-posting-text-dark">
                                             <i class="fa fa-arrow-left"></i>
                                             Previous step
@@ -428,7 +427,7 @@
         $('body').on('click', '#remove-custom-field', function (e) {
             e.preventDefault()
             key = parseInt($(this).data('key'))
-            $.growl.notice({ message: custom_fields[key].name + ' custom field removed.' })
+            $.growl.notice({ message: custom_fields[key].name + ' custom field removed from list. Kindly click next  or (save and continue later) to save changes' })
             custom_fields.splice(key, 1)
             $(this).loadCustomFields()
         })
@@ -436,6 +435,8 @@
         $('#is_required_all').on('click', function () {
             if ($(this).is(':checked')) {
                 $('.is_required').prop('checked', 'checked')
+                $('.is_visible').prop('checked', 'checked')
+                $('#is_visible_all').prop('checked', 'checked')
             } else {
                 $('.is_required').removeProp('checked')
             }
@@ -446,8 +447,45 @@
                 $('.is_visible').prop('checked', 'checked')
             } else {
                 $('.is_visible').removeProp('checked')
+                $('.is_required').removeProp('checked')
+                $('#is_required_all').removeProp('checked')
             }
         })
+
+        $('.keyValue').each(function (index, value) {
+            $("#is_required"+ value.defaultValue).on('click', function () {
+                if ($(this).is(':checked')) {
+                    $('#is_visible_'+ value.defaultValue).prop('checked', 'checked') 
+                }
+                
+            })
+
+            $('#is_visible_'+ value.defaultValue).on('click', function () {
+                if (!$(this).is(':checked')) {
+                    $('#is_required'+ value.defaultValue).removeProp('checked', 'checked')
+                    $('#is_required_all').removeProp('checked', 'checked')
+                    $('#is_visible_all').removeProp('checked', 'checked')
+                }
+            })
+
+            
+        }) 
+
+        $(".is_visible").change(function(){
+            if ($('.is_visible:checked').length == $('.is_visible').length) {
+                $('#is_visible_all').prop('checked', 'checked')
+            }
+        });
+
+        $(".is_required").change(function(){
+            if ($('.is_required:checked').length == $('.is_required').length) {
+                $('#is_required_all').prop('checked', 'checked')
+            }else{
+                $('#is_required_all').removeProp('checked', 'checked')
+            }
+        });
+        
+        
     })
 
 

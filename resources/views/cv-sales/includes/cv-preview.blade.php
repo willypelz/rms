@@ -100,16 +100,25 @@
                                 <p class="text-muted">{{-- @$cv['headline'] --}}</p>
                                 <ul class="list-unstyled">
                                     <li>
+                                    <strong>School:</strong>&nbsp; {{ !is_null(@$cv['school_id']) ? (isset($cv_school->school->name) ? $cv_school->school->name :'N/A' )  : 'N/A' }}</li>
+                                    <li>
+                                    <strong>Course of Study:</strong>&nbsp; {{(!is_null(@$cv['course_of_study'])) ? (is_array($cv['course_of_study']) ? $cv['course_of_study'][0] : $cv['course_of_study'] )  : 'N/A' }}</li>
+                                    <li>
                                     <strong>Highest Qualification:</strong>&nbsp; {{ @$cv['highest_qualification'] }}</li>
                                     <li>
-                                    <li>
                                     <strong>Grade:</strong>&nbsp; {{ @getGrade( $cv['graduation_grade'] ) }}</li>
+                                    <li>
+                                    <strong>Completed NYSC:</strong>&nbsp; @if(@$cv['completed_nysc']) Yes @else No @endif.</li>
                                     <li>
                                     <strong>Years of Experience:</strong>&nbsp; {{ @$cv['years_of_experience'] }} {{ (@$cv['years_of_experience'] == 1 ) ? 'year' : 'years' }}</li>
                                     <li>
                                     <strong>Last Position:</strong>&nbsp; {{ @$cv['last_position'] }}</li>
                                     <li>
                                     <strong>Last Company Worked:</strong>&nbsp; {{ @$cv['last_company_worked'] }}.</li>
+                                    <li>
+                                    <strong>Minimum Remuneration:</strong>&nbsp; {{(!is_null(@$cv['minimum_remuneration'])) ? (is_array($cv['minimum_remuneration']) ? $cv['minimum_remuneration'][0] : $cv['minimum_remuneration'] )  : 'N/A' }}</li>
+                                    <li>
+                                    <strong>Maximum Remuneration:</strong>&nbsp; {{(!is_null(@$cv['maximum_remuneration'])) ? (is_array($cv['maximum_remuneration']) ? $cv['maximum_remuneration'][0] : $cv['maximum_remuneration'] )  : 'N/A' }}</li>
                                     <li>
                                     <strong>Willing to Relocate?:</strong>&nbsp; @if(@$cv['willing_to_relocate']) Yes @else No @endif.</li>
                                 </ul>
@@ -130,7 +139,7 @@
                                             @foreach($appl->custom_fields as $key => $form)
 
                                                 <li>
-                                                    @if ($form->form_field->type == 'FILE')
+                                                    @if (isset($form->form_field->type) && $form->form_field->type == 'FILE')
                                                       <a href="{{asset('uploads/Others/'.$form->value)}}">
                                                         <strong>{{ @$form->form_field->name }}</strong>
                                                       </a>
@@ -180,18 +189,18 @@
                             <div class="col-sm-11">
                                 <h5>UPLOADED CV</h5>
                                 <!--iframe src="https://drive.google.com/gview?url=http://www.nwu.ac.za/files/images/Basic_Curriculum_Vitae_example.pdf&embedded=true" style="width:100%;padding-left: 8px;height:100%" frameborder="1"-->
-                                @if( $cv['cv_file'] == '' )
+                                @if( !isset($cv['cv_file']) || $cv['cv_file'] == '' )
                                   <span>Sorry! No uploaded CV for this applicant.</span>
-                                @elseif(! (file_exists(env('fileupload').'/CVs/'.$cv['cv_file'])) )
+                                @elseif(isset($cv['cv_file']) && ! (file_exists(getEnvData('fileupload').'/CVs/'.($cv['cv_file'] ?? ''))) )
                                   <span>Sorry! The CV for this applicant cannot be found.</span>
                                 @else
 
-                                    @if(ends_with($cv['cv_file'], 'jpg')
-                                    || ends_with($cv['cv_file'], 'jpeg')
-                                    || ends_with($cv['cv_file'], 'png')
-                                    || ends_with($cv['cv_file'], 'gif'))
+                                    @if(ends_with(($cv['cv_file'] ?? null), 'jpg')
+                                    || ends_with(($cv['cv_file'] ?? null), 'jpeg')
+                                    || ends_with(($cv['cv_file'] ?? null), 'png')
+                                    || ends_with(($cv['cv_file'] ?? null), 'gif'))
 
-                                    <img src="{{ url( env('fileupload') ).'/CVs/'.$cv['cv_file'] }}" width="100%" />
+                                    <img src="{{ url( getEnvData('fileupload') ).'/CVs/'.($cv['cv_file'] ?? '') }}" width="100%" />
 {{--
                                     @elseif(ends_with($cv['cv_file'], 'doc')
                                     || ends_with($cv['cv_file'], 'docx'))
@@ -202,15 +211,15 @@
                                      --}}
                                     @else
 
-                                    <iframe src="https://docs.google.com/viewer?embedded=true&url={{ url( env('fileupload') ).'/CVs/'.$cv['cv_file'] }}" style="width:100%;padding-left: 8px;height:600px" frameborder="1"  allowfullscreen webkitallowfullscreen>
+                                    <iframe src="https://docs.google.com/viewer?embedded=true&url={{ url( getEnvData('fileupload') ).'/CVs/'.($cv['cv_file'] ?? '') }}" style="width:100%;padding-left: 8px;height:600px" frameborder="1"  allowfullscreen webkitallowfullscreen>
                                     {!! preloader() !!}
                                     </iframe>
-
+                                    
                                     @endif
                                 @endif
-                                @if((@$is_applicant || $page == 'pool') && $cv['cv_file'] != "")
+                                @if((@$is_applicant || $page == 'pool') && (isset($cv['cv_file']) && $cv['cv_file'] != ""))
                                 <div class="pull-right">
-                                    <a href="{{ url( env('fileupload') ).'/CVs/'.$cv['cv_file'] }}" class="btn btn-sm btn-success btn-block" title="Download Dossier">Download CV</a>
+                                    <a href="{{ url( getEnvData('fileupload') ).'/CVs/'.$cv['cv_file'] }}" class="btn btn-sm btn-success btn-block" title="Download Dossier">Download CV</a>
                                 </div>
                                 @endif
 
@@ -224,3 +233,4 @@
         </div>
     </div>
 </div>
+

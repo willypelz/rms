@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Services;
-use App\Interfaces\UserContract;
+use App\Services\UserContract;
 use App\User;
 use App\Enum\Configs;
 use App\Models\Company;
@@ -14,10 +14,14 @@ class UserService implements UserContract {
      * @return App\Model\Company
     */
     public function getDefaultCompany(User $user){
-        if(isHrmsIntegrated())
+        $defaultCompany = $user->companies()->wherePivot('is_default', 1)->first();
+        if($defaultCompany){
+            return $defaultCompany;
+        }else if(isHrmsIntegrated()){
             return $this->getDefaultCompanyFromHrms($user);
-        else
+        }else{
             return $this->getDefaultCompanyFromRms($user);
+        }
     }
 
     /**
@@ -26,6 +30,7 @@ class UserService implements UserContract {
      * @return App\Model\Company | null
     */
     private function getDefaultCompanyFromHrms(User $user){
+        try{
         $response = getResponseFromHrmsByGET(Configs::GET_USER_DEFAULT_COMPANY,  ["employeeEmail" =>  $user->email] );
         if($response){
             $userHrmsDefaultCompany = $response->data;
@@ -35,6 +40,9 @@ class UserService implements UserContract {
             return $company ? $rmsCompany  : null;
         }
         return null;
+    }catch(\Exception $e){
+        return null;
+    }
     }
     /**
      * TO GET THE DEFAULT COMPANY FOR A USER FROM RMS

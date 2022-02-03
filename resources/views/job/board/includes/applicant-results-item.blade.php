@@ -1,12 +1,35 @@
 @if( $result['response']['numFound'] > 0 )
+
+    <?php $applicant_step = $job->workflow->workflowSteps->where('slug', $status)->first() ?>
+    @if($applicant_step && ($applicant_step->type == 'assessment'))
+
+        <a  class="btn btn-line status-1 text-success"
+            data-toggle="modal"
+            data-target="#viewModal"
+            id="modalButton"
+            data-title="Bulk Send Assessment Link"
+            data-view="{{ route('modal-assess', [
+            'jobID' => $jobID,
+            'step' => $applicant_step->name,
+            'stepSlug' => $applicant_step->slug,
+            'stepId' => $applicant_step->id,
+            'operation' => "bulk_send_assessment_link",
+            'status' => $status,
+            ]) }}"
+            data-app-id=""
+            data-cv=""
+            data-type="wide">
+            Bulk Send Assessment Link
+        </a>
+    @endif
     @foreach( @$result['response']['docs'] as $cv )
 
         <?php  $pic = default_color_picture($cv);
-        $current_app_index = array_search($jobID, $cv['job_id'] );
+        $current_app_index = (int) array_search($jobID, $cv['job_id'] );
         // dd($cv['application_id'], $current_app_index );
-        $current_status = ($cv['application_status'][$current_app_index] == "ASSESSED") ? "TEST" : $cv['application_status'][$current_app_index];
+        $current_status = isset($cv['application_status'][$current_app_index]) ? (($cv['application_status'][$current_app_index] == "ASSESSED") ? "TEST" : $cv['application_status'][$current_app_index]) : null;
         $check_both_permissions = checkForBothPermissions ($jobID);
-        $is_stand_alone = env('RMS_STAND_ALONE');
+        $is_stand_alone = getEnvData('RMS_STAND_ALONE');
         ?>
 
         <div class="ats-abx">
@@ -39,13 +62,22 @@
                         @endforeach
                     </h4>
                     <p>{{ @$cv['last_position'] }} @if( @$cv['last_company_worked'] != '' ) {{ ' at '.@$cv['last_company_worked'] }}  @endif</p>
+                    @if(sizeof(percentageOf($cv['application_id'])) > 0)
+                            <p class="text-success">
+                                {{-- % Score(s): --}}
+                                @foreach(percentageOf($cv['application_id']) as $percentage)
+                                    {{ $percentage->test_name }} - {{ $percentage->status }}
+                                @if(!$loop->last) <br/> @endif
 
+                                @endforeach
+                            </p>
+                     @endif
                     <?php
-                    $appl_status = $cv['application_status'][$current_app_index];
-                    $applicant_step = $job->workflow->workflowSteps->where('slug', $appl_status)->first();?>
-                    
+                    $appl_status = isset($cv['application_status'][$current_app_index]) ? $cv['application_status'][$current_app_index] : null;
+                    ?>
+
                     @if( @$applicant_step->type == 'assessment' && in_array('can-test', $permissions) && $check_both_permissions)
-                        
+
                         @if( is_array( @$cv['test_name'] ) )
                             @for($i = 0; $i < count(@$cv['test_name']); $i++)
 
@@ -61,19 +93,19 @@
                                     @endif
                                 </p>
                             @endfor
-                            
+
                         @else
-                            
+
                             <!-- <p class="text-warning">No test requested for candidate</p> -->
                         @endif
-                        
+
                         @if(sizeof(percentageOf($cv['application_id'])) > 0)
-                            <p class="text-muted">
+                            {{-- <p class="text-muted">
                                 % Score(s):
                                 @foreach(percentageOf($cv['application_id']) as $percentage)
                                     {{ $percentage->test_name }} - {{ $percentage->percentage }}%
                                 @endforeach
-                            </p>
+                            </p> --}}
                         @else
                             <p class="text-warning">No test requested for candidate</p>
                         @endif
@@ -396,7 +428,7 @@
 --}}
                         <span class="text-muted">&nbsp; &middot; &nbsp;</span>
                         @if((isset($permissions) && in_array('can-view-comments', $permissions)) && $check_both_permissions)
-                        
+
                         <a data-toggle="modal" data-target="#viewModal" id="modalButton" href="#viewModal"
                            data-title="Comment" data-view="{{ route('modal-comment') }}"
                            data-app-id="{{ $cv['application_id'][ $current_app_index ] }}" data-cv="{{ $cv['id'] }}"
@@ -570,7 +602,11 @@
         <p class="lead" style="">
             <i class="fa-2x fa fa-exclamation-circle"></i><br>
             @if($request->ajax())
-                You have no applicants here.
+                @if(isset($application_statuses[$status]) && ($application_statuses[$status] > 0) )
+                Applicants are currently indexing, this may take a few minutes
+                @else
+                    You have no applicants here.
+                @endif
             @else
                 No candidate matches your search, please <a id="clearAllFilters" href="javacript://"> &nbsp; <i
                             class="fa fa-times" class="text-danger"></i>Clear Filters</a>

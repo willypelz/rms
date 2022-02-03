@@ -17,12 +17,12 @@ class CandidateObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Created a Candidate',
-                'description' => 'A new candidate info created',
+                'log_name' => 'Candidate Registration',
+                'description' => $candidate->getNameAttribute().''.'registered',
                 'action_id' => $candidate->id,
                 'action_type' => 'App\Models\Candidate',
-                'causee_id' => auth()->guard('candidate')->user()->id,
-                'causer_id' =>  auth()->guard('candidate')->user()->id,
+                'causee_id' => auth()->guard('candidate')->id ?? null,
+                'causer_id' =>  auth()->guard('candidate')->id ?? null,
                 'causer_type' => 'applicant',
                 'properties' => '',
             ];
@@ -42,12 +42,12 @@ class CandidateObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Update a Candidate',
-                'description' => 'updated the candidate info',
+                'log_name' => 'Updated Candidate Info',
+                'description' => $candidate->getNameAttribute().' '.'profile was updated',
                 'action_id' => $candidate->id,
                 'action_type' => 'App\Models\Candidate',
-                'causee_id' => auth()->guard('candidate')->user()->id,
-                'causer_id' =>  auth()->guard('candidate')->user()->id,
+                'causee_id' => auth()->guard('candidate')->id ?? null,
+                'causer_id' =>  auth()->guard('candidate')->id ?? null,
                 'causer_type' => 'Applicant',
                 'properties' => '',
             ];

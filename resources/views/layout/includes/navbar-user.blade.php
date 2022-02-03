@@ -77,12 +77,6 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('audit-trails') }}">
-                                <i class="fa fa-history fa-fw"></i>
-                                Audit Trails
-                            </a>
-                        </li>
-                        <li>
                             <a href="{{ route('settings-embed') }}">
                                 <i class="fa fa-code fa-fw"></i>
                                 Embed
@@ -107,23 +101,24 @@
                     <a class="" href="{{ url('my-career-page') }}" target="_blank">My Career Page <i
                                 class="fa fa-building mask"></i></a>
                 </li>
-            
-
-
-            <!--li class="">
-                    <a class="" href="">Mail <span class="badge badge-danger animated bounce">3</span></a>
-                </li-->
+                @if( getEnvData('RMS_STAND_ALONE', true, request()->clientId))
+                    <li class="">
+                            <a class="" href="{{url(getEnvData('STAFFSTRENGTH_URL', null, request()->clientId))}}" target="_blank">HRMS Portal <i
+                                        class="fa fa-building mask"></i></a>
+                    </li>
+                @endif
             
             </ul>
             
             <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://seamlesshr-8444376.hs-sites.com/knowledge/recruitment-management-system" target=”_blank”><i class="fa fa-info-circle "></i> Support</a></li>
                 @if( get_current_company()->id != 13 )
                     @if( @$account->status == 'TRIAL')
                         @if( @$account->has_expired )
                             
                             <li>
                                 <a title="Upgrade now to avoid termination of service" class="btn btn-danger"
-                                   href="{{ url('pricing') }}">{{ @$account->trial_time }} Days left</a>
+                                   href="{{--{{ route('pricing-page') }}--}}">{{ @$account->trial_time }} Days left</a>
                                 
                                 <div class="pricey-callout animated zoomInDown">Your trial period has ended <a
                                             class="closer">&times;</a></div>
@@ -134,11 +129,11 @@
                             
                             <li>
                                 <a title="Upgrade now to avoid termination of service" class="btn btn-danger"
-                                   href="{{ url('pricing') }}">{{ @$account->trial_time }} Days left</a>
+                                   href="{{--{{ route('pricing-page') }}--}}">{{ @$account->trial_time }} Days left</a>
                                 
-                                <div class="pricey-callout animated zoomInDown">Your trial period ends in
+                                {{-- <div class="pricey-callout animated zoomInDown">Your trial period ends in
                                     <span>{{ @$account->trial_time }}</span> days. Upgrade now to avoid termination of
-                                    service <a class="closer">&times;</a></div>
+                                    service <a class="closer">&times;</a></div> --}}
                             
                             </li>
                         
@@ -148,11 +143,11 @@
                     @endif
                 
                 @endif
-                
+
                 <li id="fat-menu" class="dropdown" title="{{ get_current_company()->name }}">
                     <a class="a-user" id="drop3" href="#" class="dropdown-toggle" style="" data-toggle="dropdown"
                        role="button" aria-haspopup="true" aria-expanded="false">
-                        
+
                         <span class="ellipsis comp-name"><i
                                     class="fa fa-bookmark"></i> {{ get_current_company()->name }} &nbsp;</span>
                         
@@ -162,16 +157,22 @@
                     <ul class="dropdown-menu top-user-menu" aria-labelledby="drop3">
                         <!-- <li><a href="setting.php">Account Setting</a></li>  -->
                         <?php $companies = Auth::user()->companies->unique(); ?>
-                        @foreach( $companies as $key => $company )
-                            <li>
-                                <a href="{{ route('select-company',['slug'=>$company->slug]) }}"> @if( $company->id == get_current_company()->id )
-                                        <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>
-                        @endforeach
-                        <hr role="separator" class="divider pt-4 mt-5"/>
+                        @if (canSwitchBetweenPage())
+                            @foreach( $companies as $key => $company )
+                                <li>
+                                    <a href="{{ route('select-company',['slug'=>$company->slug]) }}"> @if( $company->id == get_current_company()->id )
+                                            <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>
+                                    @if(count($companies)-1 != $key)
+                                            <hr role="separator" class="divider pt-4 mt-5"/>
+                                    @endif
+                            @endforeach
+                       
+                        @endif
 
                     <!-- <li><a href="{{-- route('edit-company', ['id' => get_current_company()->id ]) --}}">Edit <strong>{{ get_current_company()->name }}</strong> </a></li> -->
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ route('page-settings') }}"><i class="fa fa-key"> </i> Settings</a></li>
+                        <li><a href="{{ route('audit-trails') }}"><i class="fa fa-history fa-fw"></i>Audit Trails</a></li>
                         <li><a href="{{ url('company/subsidiaries') }}"><i class="fa fa-users "></i> Subsidiaries</a></li>
                         <li> <a href="{{ url('logout') }}"><i class="fa fa-sign-out"> </i> Logout</a></li>
                     </ul>

@@ -140,7 +140,7 @@
                         </li>
                         <li><a href="{{ url('about') }}">About SeamlessHiring</a>
                         </li>
-                        <li><a href="{{ url('pricing') }}">Pricing</a>
+                        <li><a href="{{--{{ route('pricing-page') }}--}}">Pricing</a>
                         </li>
                         <li class=""><a class="" href="{{ url('talentSource') }}">Talent Sourcing </a>
                         </li>
@@ -180,7 +180,7 @@
                 <ul class="list-unstyled footer-logo">
                     <li>
                         {{--<img src="{{env('SEAMLESS_HIRING_LOGO_WHITE')}}" alt="" width="185px"><br>--}}
-                        <small class="text-white">&copy; {{date('Y')}}. All Rights Reserved. Read our <a href="//seamlesshr.com/privacy">privacy policy</a></small>
+                        <small class="text-white">&copy; {{date('Y')}}. All Rights Reserved. Read our <a href="https://seamlesshr.com/privacy-security/">privacy policy</a></small>
                     </li>
                 </ul>
             </div>
@@ -218,30 +218,30 @@
                                       action="{{ route('ajax_login') }}">
                                     {!! csrf_field() !!}
 
-
+                                
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <div class="form-group{{ @$errors->has('email') ? ' has-error' : '' }}">
+                                            <div class="form-group{{ isset($errors) && @$errors->has('email') ? ' has-error' : '' }}">
                                                 <label for="">Your Email</label>
                                                 <input type="email" class="form-control" id="" placeholder=""
                                                        name="email" value="{{ old('email') }}" required>
 
-                                                @if (@$errors->has('email'))
+                                                @if (isset($errors) && @$errors->has('email'))
                                                     <span class="help-block">
-                                                        <strong>{{ @$errors->first('email') }}</strong>
+                                                        <strong>{{ isset($errors) ? @$errors->first('email') : null }}</strong>
                                                     </span>
                                                 @endif
                                             </div>
                                         </div>
 
                                         <div class="col-sm-12">
-                                            <div class="form-group{{ @$errors->has('password') ? ' has-error' : '' }}">
+                                            <div class="form-group{{ isset($errors) && @$errors->has('password') ? ' has-error' : '' }}">
                                                 <label for="">Your Password</label>
                                                 <input type="password" class="form-control" id="" placeholder=""
                                                        name="password" required>
-                                                @if (@$errors->has('password'))
+                                                @if (isset($errors) && @$errors->has('password'))
                                                     <span class="help-block">
-                                                        <strong>{{ @$errors->first('password') }}</strong>
+                                                        <strong>{{ isset($errors) ? @$errors->first('password') : null }}</strong>
                                                     </span>
                                                 @endif
                                             </div>
@@ -290,7 +290,6 @@
                         $('#AjaxLogin').ajaxForm({
                             beforeSubmit: genPreSubmit,
                             success: function (response) {
-                                console.log(response);
                                 if (response == 'Failed') {
                                     $('#mssg').html("<span class='alert alert-danger' > Your login credentials are incorrect. </span>");
                                     $("#SubBtn").html('Proceed');
@@ -310,7 +309,6 @@
                         });
 
                         function genPreSubmit() {
-                            console.log("We are here....");
                             $("#SubBtn").html('please wait...');
 
                         }
@@ -352,66 +350,66 @@
                             <div class="row">
 
                                 <div class="col-sm-6">
-                                    <div class="form-group{{ @$errors->has('first_name') ? ' has-error' : '' }}">
+                                    <div class="form-group{{ isset($errors) && @$errors->has('first_name') ? ' has-error' : '' }}">
                                         <label for="">First name</label>
                                         <input type="text" class="form-control" id="" placeholder="" name="first_name"
                                                value="{{ old('first_name') }}">
-                                        @if (@$errors->has('first_name'))
+                                        @if (isset($errors) && @$errors->has('first_name'))
                                             <span class="help-block">
-                                                <strong>{{ @$errors->first('first_name') }}</strong>
+                                                <strong>{{ isset($errors) ? @$errors->first('first_name') : null }}</strong>
                                             </span>
                                         @endif
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6">
-                                    <div class="form-group{{ @$errors->has('last_name') ? ' has-error' : '' }}">
+                                    <div class="form-group{{ isset($errors) && @$errors->has('last_name') ? ' has-error' : '' }}">
                                         <label for="">Last name</label>
                                         <input type="text" class="form-control" id="" placeholder="" name="last_name"
                                                value="{{ old('last_name') }}">
-                                        @if (@$errors->has('last_name'))
+                                        @if (isset($errors) && @$errors->has('last_name'))
                                             <span class="help-block">
-                                                <strong>{{ @$errors->first('last_name') }}</strong>
+                                                <strong>{{ isset($errors) ? @$errors->first('last_name') : null}}</strong>
                                             </span>
                                         @endif
                                     </div>
                                 </div>
 
                                 <div class="col-sm-12">
-                                    <div class="form-group{{ @$errors->has('email') ? ' has-error' : '' }}">
+                                    <div class="form-group{{ isset($errors) && @$errors->has('email') ? ' has-error' : '' }}">
                                         <label for="">Your Email</label>
                                         <input type="email" class="form-control" id="" placeholder="" name="email"
                                                value="{{ old('email') }}">
-                                        @if (@$errors->has('email'))
+                                        @if (isset($errors) && @$errors->has('email'))
                                             <span class="help-block">
-                                                <strong>{{ @$errors->first('email') }}</strong>
+                                                <strong>{{ isset($errors) ? @$errors->first('email') : null }}</strong>
                                             </span>
                                         @endif
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6">
-                                    <div class="form-group{{ @$errors->has('password') ? ' has-error' : '' }}">
+                                    <div class="form-group{{ isset($errors) && @$errors->has('password') ? ' has-error' : '' }}">
                                         <label for="">Create your Password</label>
                                         <input type="password" class="form-control" id="" placeholder=""
                                                name="password">
 
-                                        @if (@$errors->has('password'))
+                                        @if (isset($errors) && @$errors->has('password'))
                                             <span class="help-block">
-                                                <strong>{{ @$errors->first('password') }}</strong>
+                                                <strong>{{ isset($errors) ? @$errors->first('password') : null }}</strong>
                                             </span>
                                         @endif
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6">
-                                    <div class="form-group{{ @$errors->has('password_confirmation') ? ' has-error' : '' }}">
+                                    <div class="form-group{{ isset($errors) && @$errors->has('password_confirmation') ? ' has-error' : '' }}">
                                         <label for="">Re-type Password</label>
                                         <input type="password" class="form-control" id="" placeholder=""
                                                name="password_confirmation">
-                                        @if (@$errors->has('password_confirmation'))
+                                        @if (isset($errors) && @$errors->has('password_confirmation'))
                                             <span class="help-block">
-                                                <strong>{{ @$errors->first('password_confirmation') }}</strong>
+                                                <strong>{{ isset($errors) ? @$errors->first('password_confirmation') : null }}</strong>
                                             </span>
                                         @endif
                                     </div>

@@ -18,7 +18,7 @@
               <p class="border-bottom-thin text-muted">Keyword search <i class="fa fa-filter pull-right"></i></p>
               <div class="input-group">
 
-                <input type="text" class="form-control" id="search_keyword" placeholder="keyword">
+                <input type="text" class="form-control" id="search_keyword" placeholder="Search by name">
                 <a class="btn btn-small input-group-addon" href="#" onclick="searchKeyword(); return false;" >GO</a>
               </div>
               <p></p>
@@ -32,7 +32,7 @@
                   {{--*/ $index = 0  /*--}}
 
                   @foreach( $result['facet_counts']['facet_fields']['is_approved'] as $key => $is_approved )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['is_approved'][ $key + 1 ] != 0 )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['is_approved'][ $key + 1 ] != 0 )
 
                       @php $index = ($loop->iteration) @endphp
 
@@ -54,7 +54,7 @@
                   {{-- <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_willing_to_relocate.")" }}</label> <br></div> --}}
               </div>
 
-              @if($index > 4)
+              @if($index ?? 0 > 4)
                 <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
               @endif
 
@@ -155,19 +155,44 @@
                       });
                   });
               </script>
-
           <p class="border-bottom-thin text-muted">Age<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                      <p class="text-center">
-                        <input id="age-slider" type="text" class="span2" value="" data-slider-min="{{ env('AGE_START') }}" data-slider-max="{{ env('AGE_END') }}" data-slider-step="1" data-slider-value="@if(!is_null($age[0]) && !is_null($age[1])) {{ '['.$age[0].','.$age[1].']' }} @endif"/>
+                        <input id="age-slider" type="text" class="span2" value="" data-slider-min="{{ getEnvData('AGE_START') }}" data-slider-max="{{ getEnvData('AGE_END') }}" data-slider-step="1" data-slider-value="@if(!is_null($age[0]) && !is_null($age[1])) {{ '['.$age[0].','.$age[1].']' }} @endif"/>
                         <div class="text-center">
-                          <b class="col-sm-2 pull-left" style="color: #bbb;">{{ env('AGE_START') }}</b>
-                          <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ env('AGE_END') }}</b>
+                          <b class="col-sm-2 pull-left" style="color: #bbb;">{{ getEnvData('AGE_START') }}</b>
+                          <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ getEnvData('AGE_END') }}</b>
                           <small id="age-range"> {{ $age[0].' - '.$age[1].' years' }} </small>
                         </div>
                        <div class="clearfix"></div>
                      </p>
 
                     <p></p>
+
+                    {{-- <p class="border-bottom-thin text-muted">Minimium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
+                    <p class="text-center">
+                       <input id="age-slider" type="text" class="span2" value="" data-slider-min="0" data-slider-max="1000000000000000" data-slider-step="1" data-slider-value="@if(!is_null($minimum_remuneration[0]) && !is_null($age[1])) {{ '['.$minimum_remuneration[0].','.$age[1].']' }} @endif"/>
+                       <div class="text-center">
+                         <b class="col-sm-2 pull-left" style="color: #bbb;">{{ getEnvData('AGE_START') }}</b>
+                         <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ getEnvData('AGE_END') }}</b>
+                         <small id="age-range"> {{ $age[0].' - '.$age[1].' years' }} </small>
+                       </div>
+                      <div class="clearfix"></div>
+                    </p>
+
+                   <p></p>
+
+                   <p class="border-bottom-thin text-muted">Maximium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
+                   <p class="text-center">
+                      <input id="age-slider" type="text" class="span2" value="" data-slider-min="0" data-slider-max="1000000000000000" data-slider-step="1" data-slider-value="@if(!is_null($age[0]) && !is_null($age[1])) {{ '['.$age[0].','.$age[1].']' }} @endif"/>
+                      <div class="text-center">
+                        <b class="col-sm-2 pull-left" style="color: #bbb;">{{ getEnvData('AGE_START') }}</b>
+                        <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ getEnvData('AGE_END') }}</b>
+                        <small id="age-range"> {{ $age[0].' - '.$age[1].' years' }} </small>
+                      </div>
+                     <div class="clearfix"></div>
+                   </p> --}}
+
+                  <p></p>
 
               <style type="text/css">
                 #ex1Slider .slider-selection {
@@ -259,7 +284,7 @@
                   @php  $other_gender = 0; $genderArray = [];  @endphp
                   {{--*/ $index = 0  /*--}}
                   @foreach( $result['facet_counts']['facet_fields']['gender'] as $key => $gender )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] != 0  && ( strtolower($gender) == 'male' || strtolower($gender) == 'female' ))
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['gender'][ $key + 1 ] != 0  && ( strtolower($gender) == 'male' || strtolower($gender) == 'female' ))
                         
                         @php $genderArray[] = $gender @endphp
                         {{--*/ $index++  /*--}}
@@ -267,7 +292,11 @@
                       @else
 
                         @php 
-                          @$other_gender += $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] @endphp
+                          @$other_gender += isset($result['facet_counts']['facet_fields']['gender'][ $key + 1 ]) &&
+                          is_numeric($result['facet_counts']['facet_fields']['gender'][ $key + 1 ]) ?
+                          $result['facet_counts']['facet_fields']['gender'][ $key + 1 ] : 0;
+                          
+                          @endphp
                       @endif
                   @endforeach
                   
@@ -276,7 +305,7 @@
                   @endif
               </div>
 
-              @if($index > 4)
+              @if($index ?? 0 > 4)
                 <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
               @endif
               <p></p>
@@ -292,13 +321,16 @@
                   @php $other_highest_qualification = 0  @endphp
                   {{--*/ $index = 0  /*--}}
                   @foreach( $result['facet_counts']['facet_fields']['cv_source'] as $key => $cv_source )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ] != 0 &&  $cv_source != ''  && $cv_source != "0"  )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ] != 0 &&  $cv_source != ''  && $cv_source != "0"  )
 
                         {{--*/ $index++  /*--}}
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="cv_source" data-value="{{ $cv_source }}"> {{ ucwords( $cv_source )." (".$result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ].")" }}</label> <br></div>
                       @else
 
-                        @php @$other_highest_qualification += $result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ] @endphp
+                        @php @$other_highest_qualification += isset($result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ]) &&
+                        is_numeric($result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ]) ?
+                        $result['facet_counts']['facet_fields']['cv_source'][ $key + 1 ] : 0;
+                        @endphp
 
                       @endif
                   @endforeach
@@ -306,7 +338,7 @@
                   <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_highest_qualification.")" }}</label> <br></div>
               </div>
 
-              @if($index > 4)
+              @if($index ?? 0 > 4)
                 <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
               @endif
 
@@ -327,10 +359,10 @@
 
                 <p class="border-bottom-thin text-muted">Age<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                      <p class="text-center">
-                        <input id="age-slider" type="text" class="span2" value="" data-slider-min="{{ env('AGE_START') }}" data-slider-max="{{ env('AGE_END') }}" data-slider-step="1" data-slider-value="@if(!is_null($age[0]) && !is_null($age[1])) {{ '['.$age[0].','.$age[1].']' }} @endif"/>
+                        <input id="age-slider" type="text" class="span2" value="" data-slider-min="{{ getEnvData('AGE_START') }}" data-slider-max="{{ getEnvData('AGE_END') }}" data-slider-step="1" data-slider-value="@if(!is_null($age[0]) && !is_null($age[1])) {{ '['.$age[0].','.$age[1].']' }} @endif"/>
                         <div class="text-center">
-                          <b class="col-sm-2 pull-left" style="color: #bbb;">{{ env('AGE_START') }}</b>
-                          <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ env('AGE_END') }}</b>
+                          <b class="col-sm-2 pull-left" style="color: #bbb;">{{ getEnvData('AGE_START') }}</b>
+                          <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ getEnvData('AGE_END') }}</b>
                           <small id="age-range"> {{ $age[0].' - '.$age[1].' years' }} </small>
                         </div>
                        <div class="clearfix"></div>
@@ -369,32 +401,111 @@
 
           <p class="border-bottom-thin text-muted">Years of Experience<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                  <p class="text-center">
-                    <input id="exp_years-slider" type="text" class="span2" value="" data-slider-min="{{ env('EXPERIENCE_START') }}" data-slider-max="{{ env('EXPERIENCE_END') }}" data-slider-step="1" data-slider-value="@if(!is_null ($exp_years[0]) && !is_null ($exp_years[1])) {{ '['.$exp_years[0].','.$exp_years[1].']' }} @endif"/>
+                    <input id="exp_years-slider" type="text" class="span2" value="" data-slider-min="{{ getEnvData('EXPERIENCE_START') }}" data-slider-max="{{ getEnvData('EXPERIENCE_END') }}" data-slider-step="1" data-slider-value="@if(!is_null ($exp_years[0]) && !is_null ($exp_years[1])) {{ '['.$exp_years[0].','.$exp_years[1].']' }} @endif"/>
                     <div class="text-center">
-                      <b class="col-sm-2 pull-left" style="color: #bbb;">{{ env('EXPERIENCE_START') }}</b>
-                      <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ env('EXPERIENCE_END') }}</b>
+                      <b class="col-sm-2 pull-left" style="color: #bbb;">{{ getEnvData('EXPERIENCE_START') }}</b>
+                      <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ getEnvData('EXPERIENCE_END') }}</b>
                       <small id="exp_years-range"> {{ $exp_years[0].' - '.$exp_years[1].' years' }} </small>
                     </div>
                    <div class="clearfix"></div>
                  </p>
 
                 <p></p>
-
+            {{-- @if(isset($graduation_grade))
+            <p class="border-bottom-thin text-muted">Graduation Grade<i class="glyphicon glyphicon-birthday pull-right"></i></p>
+            <p class="text-center">
+                <input id="graduation_grade-slider" type="text" class="span2" value="" data-slider-min="{{ getEnvData('GRADUATION_GRADE_START') }}" data-slider-max="{{ getEnvData('GRADUATION_GRADE_END') }}" data-slider-step="1" data-slider-value="@if(!is_null ($graduation_grade[0]) && !is_null ($graduation_grade[1])) {{ '['.$graduation_grade[0].','.$graduation_grade[1].']' }} @endif"/>
+                <div class="text-center">
+                  <b class="col-sm-2 pull-left" style="color: #bbb;">{{ getEnvData('GRADUATION_GRADE_START') }}</b>
+                  <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ getEnvData('GRADUATION_GRADE_END') }}</b>
+                  <small id="graduation_grade-range"> {{ $graduation_grade[0].' - '.$graduation_grade[1].' grade' }} </small>
+                </div>
+              <div class="clearfix"></div>
+            </p>
+            @endif
+            
+            <p></p> --}}
+            @if(isset($minimium_remuneration) && (!is_null($minimium_remuneration[0]) && !is_null($minimium_remuneration[1])))
+            <p class="border-bottom-thin text-muted">Minimium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
+            <p class="text-center">
+                <input id="minimium_remuneration-slider" type="text" class="span2" value="" data-slider-min="{{ getEnvData('REMUNERATION_MINIMIUM') }}" data-slider-max="{{ getEnvData('REMUNERATION_MAXIMIUM') }}" data-slider-step="100" data-slider-value="@if(!is_null ($minimium_remuneration[0]) && !is_null ($minimium_remuneration[1])) {{ '['.$minimium_remuneration[0].','.$minimium_remuneration[1].']' }} @endif"/>
+                <div class="text-center">
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <b class="col-sm-2 pull-left" style="color: #bbb;">{{ getEnvData('REMUNERATION_MINIMIUM') }}</b>
+                      <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ getEnvData('REMUNERATION_MAXIMIUM') }}</b>
+                      <small id="minimium_remuneration-range"> {{ $minimium_remuneration[0].' - '.$minimium_remuneration[1].' Units' }} </small>
+                    </div>
+                  </div>
+                </div>
+              <div class="clearfix"></div>
+            </p>
+            @endif
+            <p></p>
+            @if(isset($maximium_remuneration) && (!is_null($maximium_remuneration[0]) && !is_null($maximium_remuneration[1])))
+            <p class="border-bottom-thin text-muted">Maximium Remuneration<i class="glyphicon glyphicon-birthday pull-right"></i></p>
+            <p class="text-center">
+                <input id="maximium_remuneration-slider" type="text" class="span2" value="" data-slider-min="{{ getEnvData('REMUNERATION_MINIMIUM') }}" data-slider-max="{{ getEnvData('REMUNERATION_MAXIMIUM') }}" data-slider-step="100" data-slider-value="@if(!is_null ($maximium_remuneration[0]) && !is_null ($maximium_remuneration[1])) {{ '['.$maximium_remuneration[0].','.$maximium_remuneration[1].']' }} @endif"/>
+                <div class="text-center">
+                  <div class="row">
+                    <div class="col-sm-8">
+                    <b class="col-sm-2 pull-left" style="color: #bbb;">{{ getEnvData('REMUNERATION_MINIMIUM') }}</b>
+                    <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ getEnvData('REMUNERATION_MAXIMIUM') }}</b>
+                    <small id="maximium_remuneration-range"> {{ $maximium_remuneration[0].' - '.$maximium_remuneration[1].' Units' }} </small>
+                    </div>
+                  </div>
+                </div>
+              <div class="clearfix"></div>
+            </p>
+            @endif
+            <p></p>
           <script type="text/javascript">
               $(document).ready(function(){
-                  $("#exp_years-slider").bootstrapSlider({
-                    // formatter: function(value,a) {
 
-                    //   return 'Current value: ' + value + "  ";
-                    // }
-                  });
-                  $("#exp_years-slider").on("slideStop", function(slideEvt) {
+                setupSliderField("exp_years", "years");
+                setupSliderField("graduation_grade", "grade");
+                setupSliderField("minimium_remuneration", "unit");
+                setupSliderField("maximium_remuneration", "unit");
 
-                    exp_years_range = slideEvt.value;
+                  function fieldSetter(key, value){
 
-                    $('#exp_years-range').html( slideEvt.value[0] + ' - ' + slideEvt.value[1] + ' years' )
-                    $("#exp_years-slider").performFilter();
-                  });
+                      switch(key){
+                          case "age_range":
+                              age_range = value
+                              break
+                          case "test_score_range":
+                              test_score_range = value
+                              break
+                          case "exp_years_range":
+                              exp_years_range = value
+                              break
+                          case "video_application_score_range":
+                              video_application_score_range = value
+                              break
+                          case "minimium_remuneration_range":
+                              minimium_remuneration_range = value
+                              break
+                          case "maximium_remuneration_range":
+                              maximium_remuneration_range = value
+                              break
+                          case "graduation_grade_range":
+                              graduation_grade_range = value
+                              break
+                      }
+                  }
+
+
+                  function setupSliderField(key, tag){
+                      const sliderElement = "#" +  key + "-slider";
+                      const sliderRange = "#" +  key + "-range";
+                      $(sliderElement).bootstrapSlider({});
+                      $(sliderElement).on("slideStop", function(slideEvt) {
+                          fieldSetter(key + "_range", slideEvt.value)
+                          $(sliderRange).html( slideEvt.value[0] + ' - ' + slideEvt.value[1] + ' ' + tag );
+                          $(sliderElement).performFilter();
+                      });
+                }
+
               });
           </script>
 
@@ -404,10 +515,10 @@
             @if( @$job['video_posting_enabled'] )
             <p class="border-bottom-thin text-muted">Video Application Score<i class="glyphicon glyphicon-birthday pull-right"></i></p>
                  <p class="text-center">
-                    <input id="video_application_score-slider" type="text" class="span2" value="" data-slider-min="{{ env('VIDEO_APPLICATION_START') }}" data-slider-max="{{ env('VIDEO_APPLICATION_END') }}" data-slider-step="1" data-slider-value="@if(!is_null ($video_application_score[0]) && !is_null ($video_application_score[1])) {{ '['.$video_application_score[0].','.$video_application_score[1].']' }} @endif"/>
+                    <input id="video_application_score-slider" type="text" class="span2" value="" data-slider-min="{{ getEnvData('VIDEO_APPLICATION_START') }}" data-slider-max="{{ getEnvData('VIDEO_APPLICATION_END') }}" data-slider-step="1" data-slider-value="@if(!is_null ($video_application_score[0]) && !is_null ($video_application_score[1])) {{ '['.$video_application_score[0].','.$video_application_score[1].']' }} @endif"/>
                     <div class="text-center">
-                      <b class="col-sm-2 pull-left" style="color: #bbb;">{{ env('VIDEO_APPLICATION_START') }}%</b>
-                      <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ env('VIDEO_APPLICATION_END') }}%</b>
+                      <b class="col-sm-2 pull-left" style="color: #bbb;">{{ getEnvData('VIDEO_APPLICATION_START') }}%</b>
+                      <b  class="col-sm-2 pull-right" style="color: #bbb;">{{ getEnvData('VIDEO_APPLICATION_END') }}%</b>
                       <small id="video_application_score-range"> {{ $video_application_score[0].' - '.$video_application_score[1].' %' }} </small>
                     </div>
                    <div class="clearfix"></div>
@@ -439,13 +550,16 @@
                   @php $other_highest_qualificationl = 0;  
                    $index = 0  @endphp
                   @foreach( $result['facet_counts']['facet_fields']['highest_qualification'] as $key => $highest_qualification )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ] != 0 &&  $highest_qualification != ''  && $highest_qualification != "0"  )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ] != 0 &&  $highest_qualification != ''  && $highest_qualification != "0"  )
 
                         @php  $index++  @endphp
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="highest_qualification" data-value="{{ $highest_qualification }}"> {{ ucwords( $highest_qualification )." (".$result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ].")" }}</label> <br></div>
                       @else
 
-                        @php @$other_highest_qualification += $result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ] @endphp
+                        @php @$other_highest_qualification += isset($result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ])
+                        && is_numeric($result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ]) ? 
+                        $result['facet_counts']['facet_fields']['highest_qualification'][ $key + 1 ] : 0 ;
+                        @endphp
 
                       @endif
                   @endforeach
@@ -459,12 +573,12 @@
 
             <p></p>
 
-           <p class="border-bottom-thin text-muted">Grade<i class="fa fa-filter pull-right"></i></p>
+           <p class="border-bottom-thin text-muted">Graduation Grade<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
                   @php  $other_grade = 0;  
                    $index = 0  @endphp
                   @foreach( $result['facet_counts']['facet_fields']['grade'] as $key => $grade )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['grade'][ $key + 1 ] != 0 &&  $grade != ''   )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['grade'][ $key + 1 ] != 0 &&  $grade != ''   )
 
                         @php $index++  @endphp
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="grade" data-value="{{ $grade }}"> {{ ucwords( getGrade( $grade ) )." (".$result['facet_counts']['facet_fields']['grade'][ $key + 1 ].")" }}</label> <br></div>
@@ -490,13 +604,17 @@
                    $index = 0  @endphp
 
                   @foreach( $result['facet_counts']['facet_fields']['state'] as $key => $state )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['state'][ $key + 1 ] != 0 )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['state'][ $key + 1 ] != 0 )
 
                       @php $index++  @endphp
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="state" data-value="{{ $state }}"> {{ ucwords( $state )." (".$result['facet_counts']['facet_fields']['state'][ $key + 1 ].")" }}</label> <br></div>
                       @else
 
-                        @php @$other_state += $result['facet_counts']['facet_fields']['state'][ $key + 1 ] @endphp
+                        @php @$other_state += isset($result['facet_counts']['facet_fields']['state'][ $key + 1 ]) &&
+                        is_numeric($result['facet_counts']['facet_fields']['state'][ $key + 1 ]) ? 
+                        $result['facet_counts']['facet_fields']['state'][ $key + 1 ] : 0;
+                        
+                        @endphp
 
                       @endif
                   @endforeach
@@ -510,7 +628,7 @@
 
               <p></p>
 
-              @if(!env('RMS_STAND_ALONE'))
+              @if(!getEnvData('RMS_STAND_ALONE'))
                 <p class="border-bottom-thin text-muted">Applicant Type<i class="fa fa-filter pull-right"></i></p>
                   <div class="checkbox-inline">
 
@@ -530,9 +648,9 @@
               @endif
 
 
-
-               @foreach ($result['facet_counts']['facet_fields']['custom_field_name'] as $key => $custom_field_name)
-                 @if($key % 2 == 0  && $result['facet_counts']['facet_fields']['custom_field_name'][ $key + 1 ] != 0)
+              @foreach ($result['facet_counts']['facet_fields']['custom_field_name'] as $key => $custom_field_name)
+              
+                 @if($key % 2 == 0  && @$result['facet_counts']['facet_fields']['custom_field_name'][ $key + 1 ] != 0)
                    <?php
                       $custom_field_name = explode('--', $custom_field_name);
                     ?>
@@ -564,7 +682,7 @@
                    $index = 0  @endphp
 
                   @foreach( $result['facet_counts']['facet_fields']['willing_to_relocate'] as $key => $willing_to_relocate )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ] != 0 )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ] != 0 )
 
                         @php $index++  @endphp
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="willing_to_relocate" data-value="{{ $willing_to_relocate }}">
@@ -576,7 +694,9 @@
                         </label> <br></div>
                       @else
 
-                        @php @$other_willing_to_relocate += $result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ] @endphp
+                        @php @$other_willing_to_relocate += isset($result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ]) &&
+                        is_numeric($result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ]) ?
+                        $result['facet_counts']['facet_fields']['willing_to_relocate'][ $key + 1 ] : 0; @endphp
 
                       @endif
                   @endforeach
@@ -595,13 +715,16 @@
                   @php $other_edu_school = 0;
                    $index = 0  @endphp
                   @foreach( $result['facet_counts']['facet_fields']['last_position'] as $key => $last_position )
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['last_position'][ $key + 1 ] != 0 &&  $last_position != ''  && $last_position != "0"  )
+                  
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['last_position'][ $key + 1 ] != 0 &&  $last_position != ''  && $last_position != "0"  )
 
                         @php $index++  @endphp
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="last_position" data-value="{{ $last_position }}"> {{ ucwords( $last_position )." (".$result['facet_counts']['facet_fields']['last_position'][ $key + 1 ].")" }}</label> <br></div>
                       @else
 
-                        @php @$other_edu_school += $result['facet_counts']['facet_fields']['last_position'][ $key + 1 ] @endphp
+                        @php @$other_edu_school += isset($result['facet_counts']['facet_fields']['last_position'][ $key + 1 ]) &&
+                        is_numeric($result['facet_counts']['facet_fields']['last_position'][ $key + 1 ]) ? 
+                        $result['facet_counts']['facet_fields']['last_position'][ $key + 1 ] : 0; @endphp
 
                       @endif
                   @endforeach
@@ -614,6 +737,171 @@
               @endif
 
             <p></p>
+            @if(isset($result['facet_counts']['facet_fields']['marital_status']))
+            <p class="border-bottom-thin text-muted">Marital Status<i class="fa fa-filter pull-right"></i></p>
+              <div class="checkbox-inline">
+                  @php $other_marital_status = 0;
+                   $index = 0  @endphp
+                  @foreach( $result['facet_counts']['facet_fields']['marital_status'] as $key => $marital_status )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['marital_status'][ $key + 1 ] != 0 &&  $marital_status != ''  && $marital_status != "0"  )
+
+                        @php $index++  @endphp
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="marital_status" data-value="{{ $marital_status }}"> {{ ucwords( $marital_status )." (".$result['facet_counts']['facet_fields']['marital_status'][ $key + 1 ].")" }}</label> <br></div>
+                      @else
+
+                        @php @$other_marital_status += isset($result['facet_counts']['facet_fields']['marital_status'][ $key + 1 ]) &&
+                        is_numeric($result['facet_counts']['facet_fields']['marital_status'][ $key + 1 ]) ? 
+                        $result['facet_counts']['facet_fields']['marital_status'][ $key + 1 ] : 0; @endphp
+
+                      @endif
+                  @endforeach
+
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_marital_status.")" }}</label> <br></div>
+              </div>
+              @endif
+              @if($index > 4)
+                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+              @endif
+
+            <p></p>
+            @if(isset($result['facet_counts']['facet_fields']['state_of_origin']))
+            <p class="border-bottom-thin text-muted">State Of Origin<i class="fa fa-filter pull-right"></i></p>
+              <div class="checkbox-inline">
+                  @php $other_state_of_origin = 0;
+                   $index = 0  @endphp
+                  @foreach( $result['facet_counts']['facet_fields']['state_of_origin'] as $key => $state_of_origin )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ] != 0 &&  $state_of_origin != ''  && $state_of_origin != "0"  )
+
+                        @php $index++  @endphp
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="state_of_origin" data-value="{{ $state_of_origin }}"> {{ ucwords( $state_of_origin )." (".$result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ].")" }}</label> <br></div>
+                      @else
+
+                        @php @$other_state_of_origin += isset($result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ]) &&
+                        is_numeric($result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ]) ? 
+                        $result['facet_counts']['facet_fields']['state_of_origin'][ $key + 1 ] : 0; @endphp
+
+                      @endif
+                  @endforeach
+
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_state_of_origin.")" }}</label> <br></div>
+              </div>
+              @endif
+              @if($index > 4)
+                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+              @endif
+
+            <p></p>
+            @if(isset($result['facet_counts']['facet_fields']['course_of_study']))
+            <p class="border-bottom-thin text-muted">Course of Study<i class="fa fa-filter pull-right"></i></p>
+              <div class="checkbox-inline">
+                  @php $other_course_of_study = 0;
+                   $index = 0  @endphp
+                  @foreach( $result['facet_counts']['facet_fields']['course_of_study'] as $key => $course_of_study )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['course_of_study'][ $key + 1 ] != 0 &&  $course_of_study != ''  && $course_of_study != "0"  )
+
+                        @php $index++  @endphp
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="course_of_study" data-value="{{ $course_of_study }}"> {{ ucwords( $course_of_study )." (".$result['facet_counts']['facet_fields']['course_of_study'][ $key + 1 ].")" }}</label> <br></div>
+                      @else
+
+                        @php @$other_course_of_study += isset($result['facet_counts']['facet_fields']['course_of_study'][ $key + 1 ]) &&
+                        is_numeric($result['facet_counts']['facet_fields']['course_of_study'][ $key + 1 ]) ? 
+                        $result['facet_counts']['facet_fields']['course_of_study'][ $key + 1 ] : 0; @endphp
+
+                      @endif
+                  @endforeach
+
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_course_of_study.")" }}</label> <br></div>
+              </div>
+              @endif
+
+              @if($index > 4)
+                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+              @endif
+
+            <p></p>
+          @if(isset($result['facet_counts']['facet_fields']['specializations']))
+            <p class="border-bottom-thin text-muted">Specialization<i class="fa fa-filter pull-right"></i></p>
+              <div class="checkbox-inline">
+                  @php $other_specializations = 0;
+                   $index = 0  @endphp
+                  @foreach( $result['facet_counts']['facet_fields']['specializations'] as $key => $specializations )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['specializations'][ $key + 1 ] != 0 &&  $specializations != ''  && $specializations != "0"  )
+
+                        @php $index++  @endphp
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="specializations" data-value="{{ $specializations }}"> {{ ucwords( $specializations )." (".$result['facet_counts']['facet_fields']['specializations'][ $key + 1 ].")" }}</label> <br></div>
+                      @else
+
+                        @php @$other_specializations += isset($result['facet_counts']['facet_fields']['specializations'][ $key + 1 ]) &&
+                        is_numeric($result['facet_counts']['facet_fields']['specializations'][ $key + 1 ]) ? 
+                        $result['facet_counts']['facet_fields']['specializations'][ $key + 1 ] : 0; @endphp
+
+                      @endif
+                  @endforeach
+
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_specializations.")" }}</label> <br></div>
+              </div>
+              @endif
+              @if($index > 4)
+                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+              @endif
+
+            <p></p>
+            @if(isset($result['facet_counts']['facet_fields']['completed_nysc']))
+            <p class="border-bottom-thin text-muted">Completed Nysc<i class="fa fa-filter pull-right"></i></p>
+            <div class="checkbox-inline">
+                @php $other_edu_school = 0;
+                 $index = 0  @endphp
+                @foreach( $result['facet_counts']['facet_fields']['completed_nysc'] as $key => $completed_nysc )
+                    @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['completed_nysc'][ $key + 1 ] != 0 &&  $completed_nysc != ''  && $completed_nysc != "0"  )
+
+                      @php $index++  @endphp
+                      <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="completed_nysc" data-value="{{ $completed_nysc }}"> {{ ucwords( $completed_nysc )." (".$result['facet_counts']['facet_fields']['completed_nysc'][ $key + 1 ].")" }}</label> <br></div>
+                    @else
+
+                      @php @$other_edu_school += isset($result['facet_counts']['facet_fields']['completed_nysc'][ $key + 1 ]) &&
+                      is_numeric($result['facet_counts']['facet_fields']['completed_nysc'][ $key + 1 ]) ? 
+                      $result['facet_counts']['facet_fields']['completed_nysc'][ $key + 1 ] : 0; @endphp
+
+                    @endif
+                @endforeach
+
+                <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$other_edu_school.")" }}</label> <br></div>
+            </div>
+            @endif
+            @if($index > 4)
+              <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+            @endif
+
+          <p></p>
+
+            @if(isset($result['facet_counts']['facet_fields']['edu_school']))
+            <p class="border-bottom-thin text-muted">Schools Attended <i class="fa fa-filter pull-right"></i></p>
+              <div class="checkbox-inline">
+                  @php $edu_school = 0;
+                   $index = 0  @endphp
+                  @foreach( $result['facet_counts']['facet_fields']['edu_school'] as $key => $school )
+
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ] != 0 &&  $school != ''  && $school != "0"  )
+
+                        @php $index++  @endphp
+                        <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="edu_school" data-value="{{ $school }}"> {{ ucwords( $school )." (".$result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ].")" }}</label> <br></div>
+                      @else
+
+                        @php @$edu_school += isset($result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ]) &&
+                        is_numeric($result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ]) ?
+                        $result['facet_counts']['facet_fields']['edu_school'][ $key + 1 ] : 0; @endphp
+
+                      @endif
+                  @endforeach
+
+                  <div class="hide"><label class="normal"><input type="checkbox"  class=""> unspecified {{ " (".$edu_school.")" }}</label> <br></div>
+              </div>
+              @endif
+              @if($index > 4)
+                <div><a href="javascript://" class="more-link read-more-show "><small>See More</small></a></div>
+              @endif
+
+            <p></p>
 
             <p class="border-bottom-thin text-muted">Last Company Worked at<i class="fa fa-filter pull-right"></i></p>
               <div class="checkbox-inline">
@@ -621,13 +909,15 @@
                    $index = 0  @endphp
                   @foreach( $result['facet_counts']['facet_fields']['last_company_worked'] as $key => $last_company_worked )
                       {{-- {{dd($key)}} --}}
-                      @if( $key % 2 == 0  && $result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ] != 0 &&  $last_company_worked != ''  && $last_company_worked != "0"  )
+                      @if( $key % 2 == 0  && @$result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ] != 0 &&  $last_company_worked != ''  && $last_company_worked != "0"  )
 
                         @php $index++  @endphp
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="last_company_worked" data-value="{{ $last_company_worked }}"> {{ ucwords( $last_company_worked )." (".$result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ].")" }}</label> <br></div>
                       @else
 
-                        @php @$other_exp_company += $result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ] @endphp
+                        @php @$other_exp_company += isset($result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ]) &&
+                        is_numeric($result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ]) ?
+                        $result['facet_counts']['facet_fields']['last_company_worked'][ $key + 1 ] : 0; @endphp
 
                       @endif
                   @endforeach

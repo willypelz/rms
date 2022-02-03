@@ -64,9 +64,9 @@ $job_id = $appl->job->id;
 
               </div>
               <div class="col-xs-6">
-                <?php $interview_note_templates = get_interview_note_templates(); ?>
+                <?php $interview_note_templates = get_interview_note_templates($appl->id); ?>
 
-               @if( $interview_note_templates->count() )
+               @if(is_object($interview_note_templates) && $interview_note_templates->count() )
                 <div class="btn-group" role="group">
                   @if((isset($permissions) && in_array('can-view-interview', $permissions)) || checkForBothPermissions($job_id))
                   <a href="#" class="btn btn-line dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Interview Note <i class="fa fa-caret-down"></i> </a>
@@ -82,7 +82,13 @@ $job_id = $appl->job->id;
 
                   </ul>
                 </div>
-
+                @else
+                <div class="btn-group" role="group">
+                  <a href="#" class="btn btn-line dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Interview Note<i class="fa fa-caret-down"></i></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="Javascript:void(0)" style="color: red" data-type="wide">{!!html_entity_decode($interview_note_templates)!!}</a></li>
+                  </ul>
+                </div>
                 @endif
               </div>
             </div>

@@ -19,8 +19,12 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
-	'staff_strength_url' => env('STAFFSTRENGTH_URL'),
+    'staff_strength_url' => env('STAFFSTRENGTH_URL'),
     'rms_stand_alone' => env('RMS_STAND_ALONE'),
+    'company_name' => env('COMPANY_NAME', 'Seamless Hiring'),
+    'searcher' => env('SEARCH_ENGINE', 'solr'),
+    'solr_core' => env("SOLR_CORE"),
+    'solr_url' => env("SOLR_URL"),
 
     /*
     |--------------------------------------------------------------------------
@@ -163,7 +167,9 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\HorizonServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TelescopeServiceProvider::class,
         Trebol\Entrust\EntrustServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
@@ -175,8 +181,8 @@ return [
         Jenssegers\Agent\AgentServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
         Sentry\Laravel\ServiceProvider::class,
-
-                App\Providers\SolariumServiceProvider::class,
+        App\Providers\SolariumServiceProvider::class,
+        App\Providers\SearchEngineServiceProvider::class
 
     ],
 
@@ -237,5 +243,6 @@ return [
         'Uuid' => Webpatser\Uuid\Uuid::class,
         'Entrust'   => Trebol\Entrust\EntrustFacade::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
+        'Str' =>  \Illuminate\Support\Str::class
     ],
 ];

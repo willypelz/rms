@@ -20,7 +20,13 @@
 				'graduation_grade' => 'Graduation grade',
 				'cover_note' => 'Cover note',
 				'cv_file' => 'Cv file',
+				'school'=> 'School',
+				'course_of_study' => 'Course of Study',
+				'completed_nysc' => 'Completed NYSC',
+				'remuneration' => 'Remuneration (min/max)'
 		],
 		'pagination' => env('PAGINATION',100),
+		'signupUrl' => env('APP_URL','https://signup.seamlesshiring.com')
+		
 	];
 

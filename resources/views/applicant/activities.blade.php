@@ -86,7 +86,7 @@
                             data: ({ rnd : Math.random() * 100000, appl_id:"{{ $appl->id }}", allActivities: activitiesStatus }),
                             success: function(response){
                               activitiesStatus = true;
-                            $("#ActivityContent").html(response);
+                            $("#ActivityContent").html(response.content);
 
                             }
                         });

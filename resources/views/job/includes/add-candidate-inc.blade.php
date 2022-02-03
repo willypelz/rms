@@ -1,4 +1,12 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+<style>
+
+  .li-msg li {
+    text-align: left;
+
+  }
+
+</style>
 
 <div class="row">
                             
@@ -105,7 +113,7 @@
                             <div id="inputer-opt" class="well">
 
                                 <ul class="nav nav-tabs select-type">
-                                  <li class="active"><a data-toggle="tab" href="#single" data-value="single">Single Upload</a></li>
+                                  <li class="active"><a data-toggle="tab" href="#single" data-value="single">Upload</a></li>
                                   <!-- <li><a data-toggle="tab" href="#bulk" data-value="bulk">Bulk Upload</a></li> -->
                                 </ul>
 
@@ -126,30 +134,30 @@
                                     <div class="alert alert-success u_s" style="display:none;" ></div>
 
                                     <div class="form-group col-xs-6">
-                                        <label for="cv-name" class="pull-left">Firstname</label>
-                                        <input type="text" name="cv_first_name" id="cv-first_name" class="form-control" />
+                                        <label for="cv-name" class="pull-left">First name <span class="text-danger">*</span></label>
+                                        <input type="text" name="cv_first_name" id="cv-first_name" class="form-control" required/>
                                     </div>
 
                                     <div class="form-group col-xs-6">
-                                        <label for="cv-name" class="pull-left">Lastname</label>
-                                        <input type="text" name="cv_last_name" id="cv-last_name" class="form-control" />
+                                        <label for="cv-name" class="pull-left">Last name <span class="text-danger">*</span></label>
+                                        <input type="text" name="cv_last_name" id="cv-last_name" class="form-control" required />
                                     </div>
 
                                     
 
                                     <div class="form-group col-xs-6">
-                                        <label for="cv-email" class="pull-left">Email</label>
-                                        <input type="email" name="cv_email" id="cv-email" class="form-control" />
+                                        <label for="cv-email" class="pull-left">Email <span class="text-danger">*</span></label>
+                                        <input type="email" name="cv_email" id="cv-email" class="form-control" required/>
                                     </div>
 
                                     <div class="form-group col-xs-6">
-                                        <label for="cv-phone" class="pull-left">Phone</label>
-                                        <input type="text" name="cv_phone" id="cv-phone" class="form-control" />
+                                        <label for="cv-phone" class="pull-left">Phone <span class="text-danger">*</span></label>
+                                        <input type="text" name="cv_phone" id="cv-phone" class="form-control" required />
                                     </div>
 
                                     <div class="form-group col-xs-6">
-                                        <label for="gender" class="pull-left">Gender</label>
-                                        {{ Form::select('gender', array('Male' => 'Male', 'Female' => 'Female'), 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
+                                        <label for="gender" class="pull-left">Gender <span class="text-danger">*</span></label>
+                                        {{ Form::select('gender', array('Male' => 'Male', 'Female' => 'Female'), 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
                                     </div>
 
 
@@ -158,18 +166,18 @@
                                     </div>
 
                                     <div class="form-group col-xs-6">
-                                        <label for="highest_qualification" class="pull-left">Highest Qualification</label>
-                                        {{ Form::select('highest_qualification', qualifications(), 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
+                                        <label for="highest_qualification" class="pull-left">Highest Qualification <span class="text-danger">*</span></label>
+                                        {{ Form::select('highest_qualification', qualifications(), 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
                                     </div>
 
                                     <div class="form-group col-xs-6">
-                                        <label for="graduation_grade" class="pull-left">Graduation Grade</label>
-                                        {{ Form::select('graduation_grade', grades(), 'null', array('placeholder'=>'choose', 'class'=>'form-control')) }}
+                                        <label for="graduation_grade" class="pull-left">Graduation Grade <span class="text-danger">*</span></label>
+                                        {{ Form::select('graduation_grade', grades(), 'null', array('placeholder'=>'choose', 'class'=>'form-control', 'required')) }}
                                     </div>
 
                                     <div class="form-group col-xs-6">
-                                        <label for="years_of_experience" class="pull-left">Years of experience</label>
-                                        <select name="years_of_experience" class="form-control">
+                                        <label for="years_of_experience" class="pull-left">Years of experience <span class="text-danger">*</span></label>
+                                        <select required name="years_of_experience" class="form-control">
                                             @for($i = 1; $i <= 50; $i++)
                                                 <option value="{{ $i }}">{{ $i }}</option>
                                             @endfor
@@ -178,18 +186,18 @@
 
 
                                     <div class="form-group col-xs-6">
-                                        <label for="last_company_worked" class="pull-left">Last Company Worked</label>
-                                        {{ Form::text('last_company_worked', null, array('class'=>'form-control')) }}
+                                        <label for="last_company_worked" class="pull-left">Last Company Worked <span class="text-danger">*</span></label>
+                                        {{ Form::text('last_company_worked', null, array('class'=>'form-control', 'required')) }}
                                     </div>
 
 
                                     <div class="form-group col-xs-6">
-                                        <label for="last_position" class="pull-left">Last Position</label>
-                                        {{ Form::text('last_position', null, array('class'=>'form-control')) }}
+                                        <label for="last_position" class="pull-left">Last Position <span class="text-danger">*</span></label>
+                                        {{ Form::text('last_position', null, array('class'=>'form-control', 'required')) }}
                                     </div>
 
                                     <div class="form-group text-left col-xs-6">
-                                        <label for="willing_to_relocate">Willing to relocate?</label><br/>
+                                        <label for="willing_to_relocate">Willing to relocate? <span class="text-danger">*</span></label><br/>
                                         <label>{{ Form::radio('willing_to_relocate', 'yes',  false) }} Yes</label>
                                         <label>{{ Form::radio('willing_to_relocate', 'no',  false) }} No </label>
                                     </div>
@@ -211,7 +219,8 @@
                                       </div>
                                     </div>
                                     <div class="loader"></div>
-                                    <div class="alert alert-danger u_f" style="display:none;" ></div>
+                                    <div class="alert alert-danger u_f" style="display:none;" >
+                                    </div>
                                     <div class="alert alert-success u_s" style="display:none;" ></div>
 
                                     <p class="alert alert-warning">
@@ -234,7 +243,7 @@
                                 </div><br>
 
                                 <button type="submit" class="btn btn-success text-capitalize" id="importFileButton">
-                                        <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Import file</span>
+                                        <i class="fa fa-file-text-o"></i>&nbsp; <span class="hidden-xs">Upload File</span>
                                 </button>
 
                             </div>
@@ -375,40 +384,46 @@
     });
           
 
-                    function beforeUpload(){
-                        $('.u_f').hide();
-                        $('.u_s').hide();
+    function beforeUpload(){
+        $('.u_f').hide();
+        $('.u_s').hide();
 
-                        $(".loader").html( '{!! preloader() !!}' );
-                        $(".progress").show();
-                        $('#importFileButton').prop("disabled",true);
+        $(".loader").html( '{!! preloader() !!}' );
+        $(".progress").show();
+        $('#importFileButton').prop("disabled",true);
+        
+    }
+
+    function showResponse(response){
+
+        $(".loader").html( '' );
+        
+
+        if(response.status)
+        {
+            
+            $('.u_s').text( response.data ).show();
+            setInterval('window.location.reload()', 5000);
+        }
+        else
+        {
+            let showError = "";
+            for (let index = 0; index < response.data.length; index++) {
+                showError += "<div class='li-msg'><li>"+(response.data[index]) +"</li></div>"
+            }
+            
+            $('.u_f').html(showError).show(); 
+            
+        }
+
+        $(".progress").hide();
+        $('#importFileButton').prop("disabled",false);
                         
-                    }
 
-                    function showResponse(response){
+    // $.growl.notice({ message: "The file uploaded is being parsed. You will have access to it in within 48 hours" });
 
-                        $(".loader").html( '' );
-                       
-
-                        if(response.status)
-                        {
-                            
-                            $('.u_s').text( response.data ).show();
-                            setInterval('window.location.reload()', 5000);
-                        }
-                        else
-                        {
-                            $('.u_f').text( response.data ).show();
-                        }
-
-                        $(".progress").hide();
-                        $('#importFileButton').prop("disabled",false);
-                        
-
-                        // $.growl.notice({ message: "The file uploaded is being parsed. You will have access to it in within 48 hours" });
-
-                        // $('#u_s').text( "You will receive email notification once successfully uploaded" ).show();
-                    }
+    // $('#u_s').text( "You will receive email notification once successfully uploaded" ).show();
+    }
 
 
 </script>

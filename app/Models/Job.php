@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 
 class Job extends Model
 {
@@ -65,7 +65,11 @@ class Job extends Model
     {
         return $this->belongsTo('App\Models\Company', 'company_id');
     }
-
+    
+    public function privateJobEmails()
+    {
+        return $this->hasMany('App\Models\PrivateJob');
+    }
     public function form_fields()
     {
         return $this->hasMany('App\Models\FormFields');

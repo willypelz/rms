@@ -16,6 +16,8 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        \App\Http\Middleware\RequestEmptySpaceTrimmer::class,
+        \App\Http\Middleware\GetClientInformation::class,
         // Cors::class,
     ];
 
@@ -33,6 +35,7 @@ class Kernel extends HttpKernel
             // \App\Http\Middleware\VerifyCsrfToken::class,
             // \App\Http\Middleware\HttpsProtocol::class,
             \App\Http\Middleware\Plans::class,
+            \App\Http\Middleware\SessionExpired::class,
         ],
 
         'api' => [
@@ -53,5 +56,8 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'admin' => \App\Http\Middleware\IsAdmin::class,
+        'trim' => \App\Http\Middleware\RequestEmptySpaceTrimmer::class,
+        'companyList' => \App\Http\Middleware\CompanyList::class,
+        'allowUrl' => \App\Http\Middleware\AllowUrl::class,
     ];
 }

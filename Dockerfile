@@ -37,8 +37,9 @@ RUN apt-get install ca-certificates
 
 RUN curl -fsSL https://apt.secrethub.io/pub | apt-key add -
 
-RUN echo "deb https://apt.secrethub.io stable main" > /etc/apt/sources.list.d/secrethub.sources.list && apt-get update
-
+#RUN echo "deb https://apt.secrethub.io stable main" > /etc/apt/sources.list.d/secrethub.sources.list && apt-get update
+RUN echo "deb [trusted=yes] https://apt.secrethub.io stable main" > /etc/apt/sources.list.d/secrethub.sources.list && apt-get update
+RUN apt-get install -y secrethub-cli
 RUN apt-get install -y secrethub-cli
 
 
@@ -60,7 +61,7 @@ RUN BITBUCKET_PASSWORD=$(secrethub read abd-afeez/performance/bitbucket_password
 
 WORKDIR /var/www/html/
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.10.19
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=2.1.12
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
@@ -75,8 +76,10 @@ RUN  mkdir -p storage/logs && \
   mkdir -p storage/framework/sessions && \
   mkdir -p bootstrap/cache
 
-RUN COMPOSER_MEMORY_LIMIT=-1 composer install --no-scripts
 
+RUN rm composer.lock
+
+RUN COMPOSER_MEMORY_LIMIT=-1 composer install --no-scripts
 # RUN COMPOSER_MEMORY_LIMIT=-1 composer install
 
 RUN apt-get install -y ssl-cert

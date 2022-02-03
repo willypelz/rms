@@ -2,14 +2,14 @@
 
 namespace App;
 
-use App\Models\WorkflowStep;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Trebol\Entrust\Traits\EntrustUserTrait;
-use Illuminate\Notifications\Notifiable;
-use App\Models\Company;
-use Ixudra\Curl\Facades\Curl;
 use App\Enum\Configs;
-use \App\Interfaces\UserContract;
+use App\Models\Company;
+use App\Models\WorkflowStep;
+use App\Services\UserService;
+use Ixudra\Curl\Facades\Curl;
+use Illuminate\Notifications\Notifiable;
+use Trebol\Entrust\Traits\EntrustUserTrait;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -18,23 +18,14 @@ class User extends Authenticatable
     protected $userService;
 
     public function __construct(){
-        $this->userService = app()->make(UserContract::class);
+        $this->userService = app()->make(UserService::class);
     }
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'invite_code',
-        'is_internal',
-        'role_name',
-        'is_super_admin',
-        'user_token'
-    ];
+    protected $guarded = ['id'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -83,6 +74,18 @@ class User extends Authenticatable
         return $admin ? true:false;
     }
 
+    public function isInterviewer()
+    {
+        $interviewer = $this->roles()->where("name", "interviewer")->first();
+        return $interviewer ? true:false;
+    }
+    
+    public function isCommenter()
+    {
+        $commenter = $this->roles()->where("name", "commenter")->first();
+        return $commenter ? true:false;
+    }
+
      /**
      * TO GET THE DEFAULT COMPANY FOR A USER
      * @return App\Model\Company
@@ -96,6 +99,11 @@ class User extends Authenticatable
         static::created(function (User $user) {
             $user->defaultCompany();
         });
+    }
+
+    public function client()
+    {
+        return $this->belongsTo('App\Models\Client', "client_id");
     }
 
 }

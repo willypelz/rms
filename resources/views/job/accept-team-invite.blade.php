@@ -17,7 +17,7 @@
                         <div class="">
                             <div class="row">
                                 <div class="col-sm-12 text-center">
-                                    <h4 class="text-brandon l-sp-5 text-uppercase">Job Team Accept</h4>
+                                    <h4 class="text-brandon l-sp-5 text-uppercase">WELCOME TO THE JOB TEAM</h4>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -81,7 +81,7 @@
                     </div>
                     <div class="page page-sm foot no-bod-rad">
                         <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                            <p><img src="{{ env('SEAMLESS_HIRING_LOGO') }}" alt="" width="250px">
+                            <p><img src="{{ getEnvData('SEAMLESS_HIRING_LOGO', null, request()->clientId) }}" alt="" width="250px">
                             </p>
                             <p class="text-muted small">@ <?php echo date('Y') ?></p>
                         </div>

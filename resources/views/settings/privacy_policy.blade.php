@@ -49,7 +49,7 @@
                                             <div class="col-sm-4"></div>
                                             <div class="col-sm-4">
                                                 <button id="p-p-btn" type="submit" class="btn btn-success btn-block">
-                                                    Update Configuration
+                                                   Save
                                                 </button>
                                             </div>
                                             <div class="separator separator-small"></div>

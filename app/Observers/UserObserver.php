@@ -17,7 +17,7 @@ class UserObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Create a User Model',
+                'log_name' => 'Created User',
                 'description' => 'created a new user'.' '.auth()->user()->name,
                 'action_id' => $user->id,
                 'action_type' => 'App\User',
@@ -42,7 +42,7 @@ class UserObserver
         //
         if(auth()->check()){
             $param = [
-                'log_name' => 'Updated a User Model',
+                'log_name' => 'Updated a User',
                 'description' => 'update on the user'.' '.auth()->user()->name,
                 'action_id' => $user->id,
                 'action_type' => 'App\User',

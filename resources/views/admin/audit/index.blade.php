@@ -14,6 +14,7 @@
                                     <th>Initiator</th>
                                     <th>Actions</th>
                                     <th>Description </th>
+                                    <th>Company </th>
                                     <th>Subject</th>
                                     <th>Date Created </th>
                                 </tr>
@@ -24,9 +25,9 @@
                                         <td>{{$key + 1}}</td>
 
                                         <td>
-                                            {{ $audit->causer->name ?? $audit->candidate->name()}}
+                                            {{ isset($audit->causer) ? $audit->causer->name : (isset($audit->candidate) ? $audit->candidate->getNameAttribute() : 'N/A')}}
                                         </td>
-                    
+
                                         <td>
                                             {{ $audit->log_name }}
                                         </td>
@@ -34,8 +35,13 @@
                                             {{ $audit->description}}
                                         </td>
                                         <td>
-                                            {{ $audit->subject->name ?? $audit->subjectCandidate->name()}}
+                                         {{ $audit->company->name ?? 'N/A'}}
                                         </td>
+                                    
+                                        <td>
+                                            {{ isset($audit->subject) ? $audit->subject->name : (isset($audit->candidateSubject) ? $audit->candidateSubject->getNameAttribute() : 'N/A')}}
+                                        </td>
+
                                         <td>
                                             {{ $audit->created_at->toDayDateTimeString()}}
                                         </td>

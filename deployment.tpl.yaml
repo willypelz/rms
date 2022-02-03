@@ -66,14 +66,14 @@ spec:
             value: ${ATATUS_LICENSE_KEY}
           - name: ENABLE_ATATUS
             value: "false"
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 443
-              scheme: HTTPS
-            initialDelaySeconds: 15
-            timeoutSeconds: 30
-            periodSeconds: 15
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 443
+          #     scheme: HTTPS
+          #   initialDelaySeconds: 15
+          #   timeoutSeconds: 30
+          #   periodSeconds: 15
           # readinessProbe:
           #   httpGet:
           #     path: /
@@ -87,11 +87,11 @@ spec:
             mountPath:  /var/www/mnt
           resources: 
             limits:
-              cpu: 2000m
-              memory: 4Gi
-            requests:
               cpu: 1000m
               memory: 2Gi
+            requests:
+              cpu: 450m
+              memory: 1Gi
           ports:
           - containerPort: 80
           imagePullPolicy: Always

@@ -19,14 +19,24 @@ class AlgoliaSearch implements SearchEngine
                 $customOptions = [
                     'facets' => ['*'],
                     'page' => $pageNumber,
-                    //  => 
+                    //  =>
                 ];
+     	        $searchContent  = "";
                 if (!is_null($additional['job_id'] ?? null)) {
-                    $customOptions['filters'] = "job_id = {$additional['job_id']}";
+	                $searchContent = "job_id = {$additional['job_id']}";
                 }
+		        if ($additional['application_status'] ?? null) {
+		        	$searchContent .= "  AND application_status:{$additional['application_status']}";
+		        }
+//		        if ($additional['folder_type'] ?? null) {
+////			        $searchContent .= "  AND folder_type:{$additional['folder_type']}";
+//		        }
+
+    	        $customOptions['filters'] = $searchContent;
+
                 $newArray = array_merge($options, $customOptions);
                 unset($newArray['numericFilters']);
-                return $algolia->search($query, $newArray);
+                return $algolia->searchForFacetValues($query, $newArray);
             }
         );
 
@@ -49,7 +59,7 @@ class AlgoliaSearch implements SearchEngine
         // }
 
         $formatted = $this->createSolrStyleResponse($data->raw());
-        
+
         return $formatted;
     }
 
@@ -171,7 +181,7 @@ class AlgoliaSearch implements SearchEngine
             if (empty($val)) {
                 $val = "Not Specified";
             }
-            if (strtolower($val) == 'choose' || strtolower(preg_replace('|[^a-z]|i', '', $val)) == 'choose' 
+            if (strtolower($val) == 'choose' || strtolower(preg_replace('|[^a-z]|i', '', $val)) == 'choose'
                 || strtolower($val) == 'select'
             ) {
                 $val = "Not Specified";
@@ -254,9 +264,9 @@ class AlgoliaSearch implements SearchEngine
 
     /**
      * This function is not needed for algolia so we return void
-     * 
-     * @param $in_data 
-     * 
+     *
+     * @param $in_data
+     *
      * @return void
      */
     public function create_new_document($in_data)
@@ -266,10 +276,10 @@ class AlgoliaSearch implements SearchEngine
 
     /**
      * This function is not needed for algolia so we return void
-     * 
-     * @param $core 
-     * @param $command 
-     * 
+     *
+     * @param $core
+     * @param $command
+     *
      * @return void
      */
     public function update_core($core = null, $command = "delta-import")

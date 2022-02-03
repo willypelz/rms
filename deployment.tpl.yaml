@@ -87,11 +87,11 @@ spec:
             mountPath:  /var/www/mnt
           resources: 
             limits:
-              cpu: 1000m
-              memory: 2.4Gi
+              cpu: 2000m
+              memory: 4Gi
             requests:
-              cpu: 450m
-              memory: 1200Mi
+              cpu: 1000m
+              memory: 2Gi
           ports:
           - containerPort: 80
           imagePullPolicy: Always

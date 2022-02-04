@@ -30,6 +30,11 @@ class JobApplication extends Model
         return $this->belongsTo('App\Models\Cv', 'cv_id');
     }
 
+    public function cvSelected()
+    {
+        return $this->belongsTo(Cv::class, 'cv_id')->select('id', 'email');
+    }
+
     public static function massAction($job_id, $cv_ids, $status, $step_id)
     {
 

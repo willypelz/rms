@@ -240,6 +240,8 @@ return [
 
     'distinct' => null,
     'attributeForDistinct' => null,
+    'paginationLimitedTo' => 20000,
+
 
     /*
     |--------------------------------------------------------------------------

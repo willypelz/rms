@@ -159,7 +159,7 @@ class JobController extends Controller
             [
                 'status' => true,
                 'message' => 'success',
-                'data' => Company::get(),
+                'data' => Company::where('api_key', $request->header('X-API-KEY'))->get(),
             ]
         );
 
@@ -216,14 +216,19 @@ class JobController extends Controller
                 'jobs.specializations',
                 'jobs.company',
             ]
-        )->when($request->hrms_id, function($q) use($request){
-            return $q->where('hrms_id', $request->hrms_id);
-        });
+        )
+        ->where('api_key', $request->header('X-API-KEY'))
+        ->when(
+            $request->hrms_id, function ($q) use ($request) {
+                return $q->where('hrms_id', $request->hrms_id);
+            }
+        );
 
-        if (is_null($company_id))
+        if (is_null($company_id)) {
             $company = $company->first();
-        else
+        } else {
             $company = $company->find($company_id);
+        }
 
         if (!$company) {
             return response()->json(
@@ -264,7 +269,7 @@ class JobController extends Controller
             );
         }
 
-        if (!$company = Company::whereApiKey($req_header)->first()) {
+        if (!$company = Company::whereApiKey($request->header('X-API-KEY'))->first()) {
             return response()->json(
                 [
                     'status' => false,
@@ -523,7 +528,11 @@ class JobController extends Controller
         $api_key = $company->api_key;
         try {
             $result = $client->get(
-                getEnvData('STAFFSTRENGTH_URL', null,request()->clientId) . '/admin/employees/api/get/all/employees',
+                getEnvData(
+                    'STAFFSTRENGTH_URL', 
+                    null, 
+                    request()->clientId
+                ) . '/admin/employees/api/get/all/employees',
                 [
                     'headers' => ['Authorization' => $api_key],
                     'verify' => false,
@@ -535,7 +544,12 @@ class JobController extends Controller
 
             return $result;
         } catch (\Exception $exception) {
-            return response()->json(['status' => false, 'message' => 'something went wrong']);
+            return response()->json(
+                [
+                    'status' => false, 
+                    'message' => 'something went wrong'
+                ]
+            );
         }
     }
 

@@ -10,7 +10,6 @@ class AlgoliaSearch implements SearchEngine
 {
     public function search_resume($data, $additional = [])
     {
-//        dd($data, $additional);
         extract($data);
         $q = $q == '*' ? '' : $q;
         $pageNumber = (($start ?? 0) / 20);
@@ -60,7 +59,7 @@ class AlgoliaSearch implements SearchEngine
                 return $algolia->search($query, $newArray);
             }
         );
-//        dd($data->raw());
+
         $formatted = $this->createSolrStyleResponse($data->raw());
 
         return $formatted;

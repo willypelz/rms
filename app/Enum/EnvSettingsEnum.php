@@ -35,6 +35,9 @@ class EnvSettingsEnum extends SeamlessHiringEnumBase
     const ALGOLIA_APP_ID = null;
     const ALGOLIA_SECRET = null;
 
+    const SEARCH_ENGINE_ID = null;
+    const SEARCH_ENGINE_SECRET = null;
+
     const USE_ACTIVE_DIRECTORY = false;
 
     const SENTRY_LARAVEL_DSN = 'https://ecab7db709a1431080ed1a11c76c01bb@o173819.ingest.sentry.io/5912775';

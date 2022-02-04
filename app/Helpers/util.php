@@ -314,10 +314,28 @@ function get_application_statuses($status, $job_id = null, $statuses = [])
     $ret = array();
     $all = 0; //total number of results
 
-    if (is_null($job_id))
-        $status_from_db = collect(\DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`cv_id`=`cvs`.`id`"));
-    else
-        $status_from_db = collect(\DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`job_id` = " . $job_id . " and `job_applications`.`cv_id`=`cvs`.`id`"));
+    $applications = JobApplication::with('cvSelected')
+                        ->whereHas('cvSelected');
+
+
+    if (is_null($job_id)) {
+        $companyJobs = Job::whereCompanyId(optional(session()->get('active_company'))->id)->where('status', 'active')->pluck('id')->toArray();
+
+        if (!empty($companyJobs)) {
+            $applications->whereIn('job_id', $companyJobs);
+        }
+
+    } else {
+        $applications = $applications->where('job_id', $job_id);
+    }
+
+    $status_from_db = $applications->get()
+                    ->transform(function ($app) {
+                        return [
+                            'email' => $app->cv->email,
+                            'status' => $app->status
+                        ];
+                    });
 
     $status_array2 = ['ALL' => $status_from_db->count()];
 

@@ -12,7 +12,7 @@ class AlgoliaSearch implements SearchEngine
     {
         extract($data);
         $q = $q == '*' ? '' : $q;
-        $pageNumber = $page ?? 1;
+        $pageNumber = (($start ?? 0) / 20);
 
         $data = JobApplication::search(
             $q, function ($algolia, $query, $options) use ($pageNumber, $additional, $data) {
@@ -20,6 +20,7 @@ class AlgoliaSearch implements SearchEngine
                 $customOptions = [
                     'facets' => ['*'],
                     'page' => $pageNumber,
+                    'hitsPerPage' => 20,
                 ];
      	        $searchContent  = "";
                 if (!is_null($additional['job_id'] ?? null)) {
@@ -54,9 +55,6 @@ class AlgoliaSearch implements SearchEngine
                 $customOptions['filters'] = $searchContent;
 
                 $newArray = array_merge($options, $customOptions);
-
-                unset($newArray['numericFilters']);
-                unset($newArray['page']);
 
                 return $algolia->search($query, $newArray);
             }
@@ -140,6 +138,7 @@ class AlgoliaSearch implements SearchEngine
     public function get_all_my_cvs($data, $age = null, $exp_years = null)
     {
         $job_ids = Job::getMyJobIds();
+
         $additional = [
             'job_ids' => $job_ids,
             'company_folder_id' => @get_current_company()->id,

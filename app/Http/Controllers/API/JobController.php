@@ -154,12 +154,13 @@ class JobController extends Controller
                 400
             );
         }
-
+        $company = Company::where('api_key', $request->header('X-API-KEY'))->first();
+        $clientId = $company->client_id;
         return response()->json(
             [
                 'status' => true,
                 'message' => 'success',
-                'data' => Company::where('api_key', $request->header('X-API-KEY'))->get(),
+                'data' => Company::where('client_id', $clientId)->get(),
             ]
         );
 

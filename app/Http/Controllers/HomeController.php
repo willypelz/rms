@@ -83,7 +83,7 @@ class HomeController extends Controller
         $jobs = Job::whereStatus('ACTIVE')
             ->where('is_for', '!=', 'internal')
             ->whereNotIn('is_private', [true])
-            ->where('company_id', $request->companyIds)
+            ->whereIn('company_id', $request->companyIds)
             ->where('expiry_date', '>=', date('Y-m-d'))
             ->take(getEnvData('JOB_HOMEPAGE_LIST', 3))
             ->orderBy('id', 'desc')
@@ -129,7 +129,6 @@ class HomeController extends Controller
             }
 
         }
-
 
         return view('guest.landing', compact('jobs'));
     }

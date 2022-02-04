@@ -19,10 +19,12 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
-	'staff_strength_url' => env('STAFFSTRENGTH_URL'),
+    'staff_strength_url' => env('STAFFSTRENGTH_URL'),
     'rms_stand_alone' => env('RMS_STAND_ALONE'),
     'company_name' => env('COMPANY_NAME', 'Seamless Hiring'),
-
+    'file_upload' => env('FILEUPLOAD', 'uploads'),
+    'company_email' => env('COMPANY_EMAIL'),
+    'seamless_testing_app_url' => env('SEAMLESS_TESTING_APP_URL'),
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode

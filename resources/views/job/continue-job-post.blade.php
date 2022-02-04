@@ -317,7 +317,7 @@
                                              <div class="text-center">
                                                 <br>
                                                 <i class="fa fa-check text-success fa-4x"></i>
-                                                <h5>Your job posting has been saved as draft</h5>
+                                                <h5>Your job posting has been saved</h5>
                                                 <div class="pad-ft">
                                                     <a href="{{ route('job-list') }}" class="btn btn-success">Go to job list</a>
                                                 </div>

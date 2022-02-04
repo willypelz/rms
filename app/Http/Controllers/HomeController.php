@@ -51,7 +51,7 @@ class HomeController extends Controller
     public function homepage()
     {
 
-        $hirs_redirect = getEnvData('HIRS_REDIRECT_LOGIN');
+        $hirs_redirect = getEnvData('HIRS_REDIRECT_LOGIN', null, request()->clientId);
 
         // if(!is_null($hirs_redirect) &&  strlen($hirs_redirect) != 0 )
         //     return redirect('login');
@@ -81,25 +81,32 @@ class HomeController extends Controller
         }
 
         $jobs = Job::whereStatus('ACTIVE')
-	        ->where('is_for', '!=', 'internal')
+            ->where('is_for', '!=', 'internal')
             ->whereNotIn('is_private', [true])
-            ->whereIn('company_id', $request->companyIds)
+            ->where('company_id', $request->companyIds)
             ->where('expiry_date', '>=', date('Y-m-d'))
             ->take(getEnvData('JOB_HOMEPAGE_LIST', 3))
             ->orderBy('id', 'desc')
             ->get();
         $redirect_to = $request->redirect_to;
-        session()->put('redirect_to',$redirect_to);
+        session()->put('redirect_to', $redirect_to);
+
         if ($request->isMethod('post')) {
-            $this->validate($request, [
+            $this->validate(
+                $request, [
                 'email' => 'required|email',
                 'password' => 'required'
-            ]);
+                ]
+            );
 
-            $loginCred = ['email' => $request->input('email'), 'password' => $request->input('password'),'client_id'=> $request->clientId];
+            $loginCred = [
+                'email' => $request->input('email'), 
+                'password' => $request->input('password'),
+                'client_id'=> $request->clientId
+            ];
             //added client_id to login_cred array for candidates to only login to the intended dashboard, since there can now be multiple 
             //usage of same email provided it is for a different client
-            if (Auth::guard('candidate')->attempt($loginCred)){
+            if (Auth::guard('candidate')->attempt($loginCred)) {
 
                 $user = Auth::guard('candidate')->user();
                 if ($user) {
@@ -133,7 +140,11 @@ class HomeController extends Controller
         $redirect_value = session()->get('redirect_to');
         $redirect_to = $request->redirect_to ?? $redirect_value;
 
-        $jobs = Job::whereStatus('ACTIVE')->where('is_for', '!=', 'internal')->where('expiry_date', '>=', date('Y-m-d'))->take(getEnvData('JOB_HOMEPAGE_LIST', 3, request()->clientId))->orderBy('id', 'desc')->get();
+        $jobs = Job::whereStatus('ACTIVE')
+            ->where('is_for', '!=', 'internal')
+            ->where('expiry_date', '>=', date('Y-m-d'))
+            ->take(getEnvData('JOB_HOMEPAGE_LIST', 3, request()->clientId))
+            ->orderBy('id', 'desc')->get();
         
 
         if ($request->isMethod('post')) {        

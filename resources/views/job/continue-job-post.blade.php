@@ -287,13 +287,15 @@
                                     </div>
                                     <div class="col-xs-5">
                                         <div class="row">
-                                            <div class="col-sm-6">
-                                                <button id="save-continue-btn" data-target='none' data-toggle="modal"
-                                                        data-target="#savedAsDraft"
-                                                        class="btn btn-primary btn-block submit-continue">
-                                                    Save and continue later
-                                                </button>
-                                            </div>
+                                            @if(!$job)
+                                                <div class="col-sm-6">
+                                                    <button id="save-continue-btn" data-target='none' data-toggle="modal"
+                                                            data-target="#savedAsDraft"
+                                                            class="btn btn-primary btn-block submit-continue">
+                                                        Save and continue later
+                                                    </button>
+                                                </div>
+                                            @endif
                                             <div class="col-sm-6">
                                                 <button id="next-job-btn" data-target='redirect'
                                                         class="btn btn-success btn-block submit-continue">

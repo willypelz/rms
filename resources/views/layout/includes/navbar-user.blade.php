@@ -11,7 +11,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ url('/') }}" title="SeamlessHiring Homepage"></a>
+            @if (get_current_company()->logo)
+                <a href="{{ url('/') }}" title="SeamlessHiring Homepage">
+                    <img style="margin-top: 20px; margin-right:20px" width="100" src="{{ asset('img/'.get_current_company()->logo)}}">
+                </a>
+            @else
+                <a class="navbar-brand" href="{{ url('/') }}" title="SeamlessHiring Homepage"></a>
+            @endif
+            
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

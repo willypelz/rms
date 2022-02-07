@@ -11,12 +11,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            @if(get_current_company()->logo && config("app.company_name") == "FMDQ")
-            <a  href="{{ url('/') }}" title="SeamlessHiring Homepage">
-            <img style="margin-top: 20px; margin-right:20px" width="100" src="{{ asset('img/'.get_current_company()->logo)}}">
-            </a>
+            @if (get_current_company()->logo)
+                <a href="{{ url('/') }}" title="SeamlessHiring Homepage">
+                    <img style="margin-top: 20px; margin-right:20px" width="100" src="{{ asset('img/'.get_current_company()->logo)}}">
+                </a>
             @else
-            <a class="navbar-brand" href="{{ url('/') }}" title="SeamlessHiring Homepage"></a>
+                <a class="navbar-brand" href="{{ url('/') }}" title="SeamlessHiring Homepage"></a>
             @endif
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->

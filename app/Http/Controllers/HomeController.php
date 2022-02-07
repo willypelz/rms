@@ -134,39 +134,46 @@ class HomeController extends Controller
     }
 
 
-      public function register(Request $request)
+    public function register(Request $request)
     {
         $redirect_value = session()->get('redirect_to');
         $redirect_to = $request->redirect_to ?? $redirect_value;
-
+        
         $jobs = Job::whereStatus('ACTIVE')
             ->where('is_for', '!=', 'internal')
             ->where('expiry_date', '>=', date('Y-m-d'))
             ->take(getEnvData('JOB_HOMEPAGE_LIST', 3, request()->clientId))
             ->orderBy('id', 'desc')->get();
         
-
-        if ($request->isMethod('post')) {        
+            
+        if ($request->isMethod('post')) {
 
             $registerCandidate = "Initiate Candidate Register(Candidate)";
             mixPanelRecord($registerCandidate, $request);
 
-            $this->validate($request, [
-                'first_name' => 'required|regex:/^[a-zA-Z]+$/u',
-                'last_name' => 'required|regex:/^[a-zA-Z]+$/u',
-                'email' => ['required','email', Rule::unique('candidates')->where(function($query) use($request) {
+            $this->validate(
+                $request, [
+                    'first_name' => 'required|regex:/^[a-zA-Z]+$/u',
+                    'last_name' => 'required|regex:/^[a-zA-Z]+$/u',
+                    'email' => ['required','email', Rule::unique('candidates')->where(
+                        function ($query) use ($request) {
                             $query->where('client_id', $request->clientId);
-                            })],
-                'password' => 'required',
-            ]);
-
-
-            $candidate = Candidate::firstOrCreate([
-                'email' => $request->email,
-                'client_id' => $request->clientId,
-            ])->update($request->only(['first_name', 'last_name']) + [
+                        }
+                    )
+                    ],
+                    'password' => 'required',
+                ]
+            );
+            $candidate = Candidate::updateOrCreate(
+                [
+                    'email' => $request->email,
+                    'client_id' => request()->clientId,
+                ], [
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
                     'password' => bcrypt($request->input('password'))
-                ]);
+                ]
+            );
                 
             $registerSuccess = "Candidate Registered Successfully(Candidate)";
             mixPanelRecord($registerSuccess, $request);
@@ -178,18 +185,15 @@ class HomeController extends Controller
                     if ($redirect_to) {
                         session()->forget('redirect_to');
                         return redirect($redirect_to);
-                    } else {
+                    } 
                         //audit_trail
-                        audit_log();
-                        return redirect()->route('candidate-dashboard');
-                    }
-
-                } else {
-                    $request->session()->flash('error', "Could not register. Please try again.");
-                    return back();
+                    audit_log();
+                    return redirect()->route('candidate-dashboard');
                 }
+                $request->session()->flash('error', "Could not register. Please try again.");
+                return back();
+                
             }
-
         }
 
         return view('guest.register', compact('redirect_to', 'jobs'));

@@ -12,7 +12,7 @@
                 <span class="icon-bar"></span>
             </button>
             @if (get_current_company()->logo)
-                <a href="{{ url('/') }}">
+                <a href="{{ url('/') }}" title="SeamlessHiring Homepage">
                     <img style="margin-top: 20px; margin-right:20px" width="100" src="{{ asset('img/'.get_current_company()->logo)}}">
                 </a>
             @else

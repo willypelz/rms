@@ -87,7 +87,7 @@
 
 
                                 <div class="form-group">
-                                    <button @if((isset($user_role) && !is_null($user_role) && !in_array($user_role->name, ['admin'])) || !$is_super_admin) disabled @endif type="submit" class="btn btn-primary">
+                                    <button @if(userHasRole('admin') && !$is_super_admin) disabled @endif type="submit" class="btn btn-primary">
                                         <i class="fa fa-plus fa-fw"></i>
                                         Create
                                     </button>

@@ -855,6 +855,14 @@ function getCurrentLoggedInUserRole()
     return auth()->user()->roles()->first();
 }
 
+if (!function_exists('userHasRole')) {
+    function userHasRole(string $role) : bool {
+        $roles = auth()->user()->roles()->pluck('name')->toArray();
+        return in_array($role, $roles);
+    }
+}
+
+
 function get_company_email_logo()
 {
     $logo = getEnvData("APP_LOGO",url('img/seamlesshiring-logo.png'));

@@ -19,7 +19,7 @@
                         <a href="" class="toggle-button active">Create an account</a>
                 </div>
 
-                <form action="" method="POST">
+                <form action="{{ route('candidate-register') }}" method="POST">
                         @include('layout.alerts')
 
                     <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }} shr-form-group">

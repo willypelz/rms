@@ -25,7 +25,10 @@ class SpecializationController extends Controller
      */
     public function index()
     {
-        $specializations = Specialization::with('jobs')->orderBy('id', 'DESC')->get();
+        $specializations = Specialization::with('jobs')
+            ->where('company_id', null)
+            ->orWhere('company_id', getCompanyId())
+            ->orderBy('id', 'DESC')->get();
 
         return view('specialization.list', compact('specializations'));
     }

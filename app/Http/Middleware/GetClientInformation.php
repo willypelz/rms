@@ -28,6 +28,14 @@ class GetClientInformation
             $companyIds = Company::where('client_id',$client->id)->pluck('id');
             $request->merge(['clientId' => $client->id, 'companyIds' => $companyIds]);
 
+            if (!session()->get('current_company_index')) {
+                \session()->put('current_company_index', $companyIds->first());
+            }
+
+            if (!session()->get('active_company')) {
+                \session()->put('active_company', Company::find($companyIds->first()));
+            }
+
             return $next($request);
             
         }catch(Exception $e){

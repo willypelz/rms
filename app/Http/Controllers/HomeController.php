@@ -88,6 +88,7 @@ class HomeController extends Controller
             ->take(getEnvData('JOB_HOMEPAGE_LIST', 3))
             ->orderBy('id', 'desc')
             ->get();
+
         $redirect_to = $request->redirect_to;
         session()->put('redirect_to', $redirect_to);
 

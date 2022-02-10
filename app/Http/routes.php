@@ -23,7 +23,6 @@
 |
 */
 
-
 use App\Libraries\Solr;
 use Illuminate\Support\Facades\Route;
 

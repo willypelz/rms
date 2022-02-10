@@ -1621,6 +1621,7 @@ class JobsController extends Controller
             ->first();
 
         $company = get_current_company();
+
         $jobsOrm = $company->jobs()->with([
             'workflow.workflowSteps' => function ($q) {
                 return $q->orderBy('order', 'asc');

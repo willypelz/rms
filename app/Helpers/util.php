@@ -398,17 +398,20 @@ function get_current_company()
 {
     $authUser = Auth::user();
 
-    $sessionId = Session::get('current_company_index');
+    $sessionId = session()->get('current_company_index');
 
     if (!is_null($authUser)) {
         //If a company is selected
         if ($sessionId) {
-            if (isset($authUser->companies) 
+
+            if (isset($authUser->companies)
                 && !is_null($authUser->companies()->where('company_users.company_id', $sessionId)->first())
             ) {
                 return $authUser->companies()->where('company_users.company_id', $sessionId)->first();
             }
-            return $authUser->companies->first();
+            session()->flash('error', 'You are not allowed access');
+            auth()->logout();
+            return collect([]);
         }
 
         if ($authUser->companies && $authUser->companies->count() < 1) {

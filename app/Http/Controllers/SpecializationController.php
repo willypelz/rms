@@ -23,8 +23,8 @@ class SpecializationController extends Controller
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(){
-
+    public function index()
+    {
         $specializations = Specialization::with('jobs')->orderBy('id', 'DESC')->get();
 
         return view('specialization.list', compact('specializations'));
@@ -36,25 +36,36 @@ class SpecializationController extends Controller
      */
     public function store(SpecializationRequest $request){
 
-        if($request->has('id')){
+        if ($request->has('id')) {
             $specialization = Specialization::find($request->id);
 
-            $specialization->update([
-                'name' => $request->name
-            ]);
+            $specialization->update(
+                [
+                    'name' => $request->name
+                ]
+            );
 
             $msg = "You have successfully updated a specialization";
 
-        } else {
-           $specialization = Specialization::create([
-                'name' => $request->name
-            ]);
-
-            $msg = "You have successfully created a specialization";
-	        if ($request->background_callback) return response()->json(['status'=> Response::HTTP_OK,
-	           'data' => $specialization], Response::HTTP_OK);
         }
+        $specialization = Specialization::create(
+            [
+                'name' => $request->name,
+                'company_id' => getCompanyId()
+            ]
+        );
 
+        $msg = "You have successfully created a specialization";
+        if ($request->background_callback) {
+            
+            return response()->json(
+                [
+                        'status'=> Response::HTTP_OK,
+                        'data' => $specialization
+                    ], Response::HTTP_OK
+            );
+        } 
+        
         return redirect()->route('specialization')->with('success', $msg);
 
     }
@@ -63,8 +74,8 @@ class SpecializationController extends Controller
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function update($id){
-
+    public function update($id)
+    {
         $specialization = Specialization::find($id);
 
         return view('specialization.update', compact('specialization'));
@@ -74,10 +85,20 @@ class SpecializationController extends Controller
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function delete($id){
-        Specialization::destroy($id);
-
-        return redirect()->back()->with('success', "You have successfully deleted a specialization");
+    public function delete($id)
+    {
+        $specialization = Specialization::find($id);
+        if ($specialization->company_id == getCompanyId()) {
+            Specialization::destroy($id);
+            return redirect()->back()->with(
+                'success', 
+                "You have successfully deleted a specialization"
+            );
+        }
+        return redirect()->back()->with(
+            'error', 
+            'Sorry you cannot delete this specialization'
+        );
     }
             
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App;
+use Illuminate\Validation\Rule;
 use PDF;
 use Curl;
 use File;
@@ -1849,7 +1850,7 @@ class JobApplicationsController extends Controller
         if ($request->isMethod('post')) {
 
             $this->validate($request, [
-                'name' => 'required|unique:interview_note_templates,name,' . $request->id,
+                'name' => ['required', validateInterviewNoteByCompany($request->id)],
             ], [
                 'name.unique' => "Template already exist, Try creating template with another name"
             ]);
@@ -1878,7 +1879,7 @@ class JobApplicationsController extends Controller
         if ($request->isMethod('post')) {
 
             $this->validate($request, [
-                'name' => 'required|unique:interview_note_templates,name,' . $request->id,
+                'name' => ['required', validateInterviewNoteByCompany('NULL')],
             ], [
                 'name.unique' => "Template already exist, Try creating template with another name"
             ]);

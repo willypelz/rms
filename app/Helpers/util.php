@@ -16,6 +16,7 @@ use App\Models\JobActivity;
 use App\Models\TestRequest;
 use App\Jobs\UploadApplicant;
 use App\Models\SystemSetting;
+use Illuminate\Validation\Rule;
 use Ixudra\Curl\Facades\Curl;
 use App\Models\JobApplication;
 use App\Models\PermissionRole;
@@ -1347,4 +1348,21 @@ function showActivitiesButton($job_builder){
  */
 function onlyOneAdminLeft(){
     return get_current_company()->users->unique()->count() == 1 ? true : false;
+}
+
+
+/**
+ * @param int $id
+ * @return \Illuminate\Validation\Rules\Unique
+ */
+function validateInterviewNoteByCompany($id) {
+	return Rule::unique('interview_note_templates')->where(
+		function ($query) use ($id) {
+			$result = $query->where('company_id', '=', get_current_company()->id);
+			if($id !=='NULL'){
+				$result->where('id', '!=', $id);
+			}
+			return $result;
+		}
+	);
 }

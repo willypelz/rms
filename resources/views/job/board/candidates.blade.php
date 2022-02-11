@@ -250,7 +250,8 @@ $is_super_admin = auth()->user()->is_super_admin;
                                     <div class="clearfix"></div>
 
                                     <div class="search-results scroll">
-                                    @include('job.board.includes.applicant-results-item')
+
+                                    @include('job.board.includes.applicant-results-item', compact('defaultView'))
 
                                     <!--a href="{{ route('job-candidates-infinite', [$jobID, $start ]) }}" class="nextPageLoad">load next page</a-->
                                     </div>
@@ -858,7 +859,8 @@ $is_super_admin = auth()->user()->is_super_admin;
 
                 };
 
-                $('body').on('click', '#clearAllFilters', function () {
+                $('body').on('click', '#clearAllFilters', function (e) {
+                    e.preventDefault();
                     filters = [];
                     $('.filter-div input[type=checkbox]').prop('checked', false);
                     $('#search_keyword').val("");
@@ -883,7 +885,8 @@ $is_super_admin = auth()->user()->is_super_admin;
                     });
 
                 });
-                $('body').on('click', '#downSpreadsheet', function () {
+                $('body').on('click', '#downSpreadsheet', function (e) {
+                    e.preventDefault();
                     $data = {
                         search_query: $('#search_query').val(),
                         filter_query: filters,
@@ -905,7 +908,9 @@ $is_super_admin = auth()->user()->is_super_admin;
                     });
                 });
 
-                $('body').on('click', '#downCv', function () {
+                $('body').on('click', '#downCv', function (e) {
+                    e.preventDefault();
+
                     $data = {
                         search_query: $('#search_query').val(),
                         filter_query: filters,
@@ -928,7 +933,8 @@ $is_super_admin = auth()->user()->is_super_admin;
                 });
 
 
-                $('body').on('click', '#downloadInterviewNotes', function () {
+                $('body').on('click', '#downloadInterviewNotes', function (e) {
+                    e.preventDefault();
                     $data = {
                         search_query: $('#search_query').val(),
                         filter_query: filters,
@@ -950,7 +956,8 @@ $is_super_admin = auth()->user()->is_super_admin;
                     });
                 });
 
-                $('body').on('click', '#downloadInterviewNotesInCSV', function () {
+                $('body').on('click', '#downloadInterviewNotesInCSV', function (e) {
+                    e.preventDefault();
                     $data = {
                         search_query: $('#search_query').val(),
                         filter_query: filters,
@@ -985,6 +992,7 @@ $is_super_admin = auth()->user()->is_super_admin;
                     window.stop();
                     break;
                 case "error":
+                    window.stop();
                     $.growl.error({message: data.msg} , {delay: 10000});
                     break;
             }

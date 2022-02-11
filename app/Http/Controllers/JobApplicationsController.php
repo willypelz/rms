@@ -513,11 +513,13 @@ class JobApplicationsController extends Controller
 
             $test_score = [40, 160];
             $check_both_permissions = checkForBothPermissions($jobID);
+            $defaultView = true;
             return view(
                 'job.board.candidates',
                 compact(
                     'minimium_remuneration',
                     'maximium_remuneration',
+                    'defaultView',
                     'graduation_grade',
                     'job',
                     'active_tab',
@@ -691,7 +693,6 @@ class JobApplicationsController extends Controller
      */
     public function downloadApplicantCv(Request $request)
     {
-
         //Check if you should have access to the excel
         check_if_job_owner($request->jobId);
 
@@ -744,7 +745,7 @@ class JobApplicationsController extends Controller
             ];
         } else {
             $request->video_application_score = [
-                getEnvData('VIDEO_APPLICATION_START'), 
+                getEnvData('VIDEO_APPLICATION_START'),
                 getEnvData('VIDEO_APPLICATION_END')
             ];
             $solr_video_application_score = null;

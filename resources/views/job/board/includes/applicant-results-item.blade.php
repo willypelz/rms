@@ -601,8 +601,8 @@
         <!-- <p class="p-empty" style=""> -->
         <p class="lead" style="">
             <i class="fa-2x fa fa-exclamation-circle"></i><br>
-            @if($request->ajax())
-                @if(isset($application_statuses[$status]) && ($application_statuses[$status] > 0) )
+            @if($request->ajax() || isset($defaultView))
+                @if((isset($application_statuses[$status]) && ($application_statuses[$status] > 0) || (isset($defaultView) && $defaultView != true)) )
                 Applicants are currently indexing, this may take a few minutes
                 @else
                     You have no applicants here.

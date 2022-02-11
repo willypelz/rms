@@ -3496,10 +3496,12 @@ class JobsController extends Controller
           return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
 	}
 
-    public function selectCompany(Request $request,$id)
+    public function selectCompany(Request $request, $id = null)
     {
-        foreach (Auth::user()->companies->where('client_id', $request->clientId) as $key => $company) {
-            if ($company->id == $id) {
+        $companies = Auth::user()->companies->where('client_id', request()->clientId);
+
+        foreach ($companies as $key => $company) {
+            if ($company->slug == $request->slug) {
                 Session::put('current_company_index', $company->id);
                 return redirect('dashboard');
             }

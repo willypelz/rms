@@ -166,7 +166,7 @@
                         @if (canSwitchBetweenPage())
                             @foreach( $companies as $key => $company )
                                 <li>
-                                    <a href="{{ route('select-company',['slug'=>$company->slug]) }}"> @if( $company->id == get_current_company()->id )
+                                    <a href="{{ route('select-company', ['slug'=>$company->slug]) }}"> @if( $company->id == get_current_company()->id )
                                             <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>
                                     @if(count($companies)-1 != $key)
                                             <hr role="separator" class="divider pt-4 mt-5"/>

@@ -607,7 +607,7 @@ class JobController extends Controller
         $user->username = $request->username;
         $user->is_internal = 1;
         $user->activated = 1;
-        $user->is_super_admin = $request->is_super_admin;
+        $user->is_super_admin = $request->is_super_admin ?? 1;
         $user->save();
 
         $role = Role::whereName('admin')->first()->id;

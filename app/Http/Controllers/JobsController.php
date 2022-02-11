@@ -3594,8 +3594,8 @@ class JobsController extends Controller
             return response()->json (['status' => true]);
         }
 
-        $users = User::with('roles')->whereHas('companies',function($q) use($request){
-            $q->where('client_id',$request->clientId);
+        $users = User::with('roles')->whereHas('companies', function ($q) use ($request) {
+            $q->where('client_id', request()->clientId);
         })->get();
         $roles = Role::get();
         return view ('admin.roles_management.index', compact ('users', 'roles'));

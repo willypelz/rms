@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\User;
 use Trebol\Entrust\EntrustRole;
 
 class Role extends EntrustRole
@@ -19,6 +20,6 @@ class Role extends EntrustRole
 
   public function users()
   {
-    return $this->belongsToMany('App\User', 'role_user', 'user_id', 'role_id');
+    return $this->belongsToMany(User::class, 'role_user', 'user_id', 'role_id');
   }
 }

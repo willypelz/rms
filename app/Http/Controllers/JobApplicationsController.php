@@ -307,7 +307,7 @@ class JobApplicationsController extends Controller
         return redirect()->route('applicant-messages', ['appl_id' => $application_id]);
     }
 
-    public function viewApplicantsviewApplicants(Request $request)
+    public function viewApplicants(Request $request)
     {
         //Check if he  is the owner of the job
         check_if_job_owner($request->jobID);

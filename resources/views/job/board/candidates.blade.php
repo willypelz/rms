@@ -250,7 +250,8 @@ $is_super_admin = auth()->user()->is_super_admin;
                                     <div class="clearfix"></div>
 
                                     <div class="search-results scroll">
-                                    @include('job.board.includes.applicant-results-item')
+
+                                    @include('job.board.includes.applicant-results-item', compact('defaultView'))
 
                                     <!--a href="{{ route('job-candidates-infinite', [$jobID, $start ]) }}" class="nextPageLoad">load next page</a-->
                                     </div>

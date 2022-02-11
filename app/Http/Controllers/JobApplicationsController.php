@@ -513,11 +513,13 @@ class JobApplicationsController extends Controller
 
             $test_score = [40, 160];
             $check_both_permissions = checkForBothPermissions($jobID);
+            $defaultView = true;
             return view(
                 'job.board.candidates',
                 compact(
                     'minimium_remuneration',
                     'maximium_remuneration',
+                    'defaultView',
                     'graduation_grade',
                     'job',
                     'active_tab',

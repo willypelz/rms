@@ -165,7 +165,7 @@
                              height="40px" alt="">
                     </a>
                     <ul class="dropdown-menu top-user-menu" aria-labelledby="drop3">
-                        <!-- <li><a href="setting.php">Account Setting</a></li>  -->
+                        {{-- <li><a href="setting.php">Account Setting</a></li>   --}}
                         <?php $companies = Auth::user()->companies->unique(); ?>
                         @if (canSwitchBetweenPage())
                             @foreach( $companies as $key => $company )

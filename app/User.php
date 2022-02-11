@@ -4,6 +4,7 @@ namespace App;
 
 use App\Enum\Configs;
 use App\Models\Company;
+use App\Models\Role;
 use App\Models\WorkflowStep;
 use App\Services\UserService;
 use Ixudra\Curl\Facades\Curl;
@@ -54,7 +55,7 @@ class User extends Authenticatable
 
     public function roles()
     {
-        return $this->belongsToMany('App\Models\Role', 'role_user')->withPivot('job_id');
+        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
     }
 
     public function workflowSteps()

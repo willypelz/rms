@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9614231b620b772ddd2bd1041cedccc5",
+    "content-hash": "d077527513345da618cd60234659c63b",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2997,16 +2997,16 @@
         },
         {
             "name": "jdavidbakr/mail-tracker",
-            "version": "5.0.7",
+            "version": "5.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jdavidbakr/mail-tracker.git",
-                "reference": "530b7d8d418f712456421f9c388a6dd7eb2de899"
+                "reference": "c6bb93200bdb033431637cb8912f17ae8652eea1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jdavidbakr/mail-tracker/zipball/530b7d8d418f712456421f9c388a6dd7eb2de899",
-                "reference": "530b7d8d418f712456421f9c388a6dd7eb2de899",
+                "url": "https://api.github.com/repos/jdavidbakr/mail-tracker/zipball/c6bb93200bdb033431637cb8912f17ae8652eea1",
+                "reference": "c6bb93200bdb033431637cb8912f17ae8652eea1",
                 "shasum": ""
             },
             "require": {
@@ -3057,9 +3057,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jdavidbakr/mail-tracker/issues",
-                "source": "https://github.com/jdavidbakr/mail-tracker/tree/5.0.7"
+                "source": "https://github.com/jdavidbakr/mail-tracker/tree/5.0.8"
             },
-            "time": "2021-12-14T19:44:00+00:00"
+            "time": "2022-01-31T22:44:26+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",

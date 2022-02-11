@@ -16,6 +16,7 @@ use App\Models\JobActivity;
 use App\Models\TestRequest;
 use App\Jobs\UploadApplicant;
 use App\Models\SystemSetting;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Ixudra\Curl\Facades\Curl;
 use App\Models\JobApplication;
@@ -318,7 +319,6 @@ function get_application_statuses($status, $job_id = null, $statuses = [])
     $applications = JobApplication::with('cvSelected')
                         ->whereHas('cvSelected');
 
-
     if (is_null($job_id)) {
         $companyJobs = Job::whereCompanyId(optional(session()->get('active_company'))->id)->where('status', 'active')->pluck('id')->toArray();
 
@@ -347,6 +347,33 @@ function get_application_statuses($status, $job_id = null, $statuses = [])
 
     return $status_array2;
 
+}
+
+if (!function_exists('setSessions')) {
+    function setSessions(?\Illuminate\Http\Request $request = null) {
+        $currentUrl = url('');
+
+        $client = DB::table('clients')->where('url', $currentUrl)->first();
+
+        $companyIds = Company::where('client_id',$client->id)->pluck('id');
+
+
+        if (!session()->get('current_company_index')) {
+            \session()->put('current_company_index', $companyIds->first());
+        }
+
+        if (!session()->get('active_company')) {
+            \session()->put('active_company', Company::find($companyIds->first()));
+        }
+
+        if ($request) {
+            $request->merge(['clientId' => $client->id, 'companyIds' => $companyIds]);
+
+            return $request;
+        }
+
+        return null;
+    }
 }
 
 

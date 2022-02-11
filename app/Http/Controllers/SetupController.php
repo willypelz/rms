@@ -71,7 +71,7 @@ class SetupController extends Controller
         } else {
             session()->flash('success', 'Updated successfully');
         }
-        
+
         return back();
     }
 }

@@ -551,6 +551,7 @@ class CvSalesController extends Controller
 
     public function viewTalentPool(Request $request)
     {
+        setSessions();
         mixPanelRecord("talent-pool accessed (Admin)", auth()->user());
         ini_set('memory_limit', '1024M');
         set_time_limit(0);

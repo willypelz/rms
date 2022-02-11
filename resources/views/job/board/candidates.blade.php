@@ -906,7 +906,9 @@ $is_super_admin = auth()->user()->is_super_admin;
                     });
                 });
 
-                $('body').on('click', '#downCv', function () {
+                $('body').on('click', '#downCv', function (e) {
+                    e.preventDefault();
+
                     $data = {
                         search_query: $('#search_query').val(),
                         filter_query: filters,
@@ -986,6 +988,7 @@ $is_super_admin = auth()->user()->is_super_admin;
                     window.stop();
                     break;
                 case "error":
+                    window.stop();
                     $.growl.error({message: data.msg} , {delay: 10000});
                     break;
             }

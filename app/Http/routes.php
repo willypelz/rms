@@ -22,7 +22,6 @@
 | kernel and includes session state, CSRF protection, and more.
 |
 */
-
 use App\Libraries\Solr;
 use Illuminate\Support\Facades\Route;
 

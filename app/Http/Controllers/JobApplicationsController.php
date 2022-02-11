@@ -307,7 +307,7 @@ class JobApplicationsController extends Controller
         return redirect()->route('applicant-messages', ['appl_id' => $application_id]);
     }
 
-    public function viewApplicants(Request $request)
+    public function viewApplicantsviewApplicants(Request $request)
     {
         //Check if he  is the owner of the job
         check_if_job_owner($request->jobID);
@@ -693,7 +693,6 @@ class JobApplicationsController extends Controller
      */
     public function downloadApplicantCv(Request $request)
     {
-
         //Check if you should have access to the excel
         check_if_job_owner($request->jobId);
 
@@ -746,7 +745,7 @@ class JobApplicationsController extends Controller
             ];
         } else {
             $request->video_application_score = [
-                getEnvData('VIDEO_APPLICATION_START'), 
+                getEnvData('VIDEO_APPLICATION_START'),
                 getEnvData('VIDEO_APPLICATION_END')
             ];
             $solr_video_application_score = null;

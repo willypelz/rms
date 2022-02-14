@@ -3500,8 +3500,8 @@ class JobsController extends Controller
     {
         $companies = Auth::user()->companies->where('client_id', request()->clientId);
 
-        foreach ($companies as $key => $company) {
-            if ($company->slug == $request->slug) {
+        foreach ($companies as $company) {
+            if ($company->slug == $request->slug || $company->id == $request->id) {
                 Session::put('current_company_index', $company->id);
                 return redirect('dashboard');
             }

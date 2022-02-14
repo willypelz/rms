@@ -388,8 +388,6 @@ function get_current_company()
         if ($sessionId) {
             if (isset($authUser->companies) && !is_null($authUser->companies()->where('company_users.company_id', $sessionId)->first())) {
 	            return $authUser->companies()->where('company_users.company_id', $sessionId)->first();
-            } else {
-	            return $authUser->companies->first();
             }
         }
 

@@ -3496,7 +3496,7 @@ class JobsController extends Controller
           return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
 	}
 
-    public function selectCompany(Request $request, $id = null)
+    public function selectCompany(Request $request)
     {
         $companies = Auth::user()->companies->where('client_id', request()->clientId);
 

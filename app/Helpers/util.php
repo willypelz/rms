@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CompanyUser;
 use App\User;
 use App\Models\Cv;
 use Carbon\Carbon;
@@ -378,26 +379,41 @@ function check_if_job_owner_on_queue($job_id, $current_company, $user)
 
 function get_current_company()
 {
+
     $authUser = Auth::user();
     $sessionId = Session::get('current_company_index');
 
     if (!is_null($authUser)) {
         //If a company is selected
         if ($sessionId) {
-            if (isset($authUser->companies) && !is_null($authUser->companies()->where('company_users.company_id', $sessionId)->first())){
+            if (isset($authUser->companies) && !is_null($authUser->companies()->where('company_users.company_id', $sessionId)->first())) {
 	            return $authUser->companies()->where('company_users.company_id', $sessionId)->first();
             } else {
-	            Session::flush();
-	            return [];
+	            return $authUser->companies->first();
             }
         }
-        
-        if ($authUser->companies && $authUser->companies->count() < 1) {
+
+	    if ($authUser->companies && $authUser->companies->count() < 1) {
             return redirect()->guest('login');
         }
-        
-        // If a company is not selected, default to the first on the list
-        return $authUser->companies->first();
+	    $currentUrl = url('');
+	    $client = DB::table('clients')->where('url', $currentUrl)->first();
+	    $company = Company::where('client_id', optional($client)->id)->get('id')->first();
+	    if (!$company) {
+		    Session::flush();
+		    return [];
+	    }
+	    //TODO:: refactor to establish a correct user model with compan
+	    $user_companies = CompanyUser::where('user_id', $authUser->id)->get()->toArray();
+	    $user_company = array_filter($user_companies,  function($user_company) use ($company) {
+	    	return $user_company['company_id'] === $company->id;
+	    });
+	    if (!empty($user_company)) {
+		    return  $authUser->companies()->where('company_users.company_id', $user_company[0]['company_id'])->first();
+	    }
+        // if user doesnt have access to the company would be logged out automatically.
+	     Session::flush();
+        return [];
     } else {
         $user = Auth::guard('candidate')->user();
 

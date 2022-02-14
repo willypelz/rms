@@ -384,10 +384,12 @@ function get_current_company()
     if (!is_null($authUser)) {
         //If a company is selected
         if ($sessionId) {
-            if (isset($authUser->companies) && !is_null($authUser->companies()->where('company_users.company_id', $sessionId)->first()))
-                return $authUser->companies()->where('company_users.company_id', $sessionId)->first();
-            else
-                return $authUser->companies->first();
+            if (isset($authUser->companies) && !is_null($authUser->companies()->where('company_users.company_id', $sessionId)->first())){
+	            return $authUser->companies()->where('company_users.company_id', $sessionId)->first();
+            } else {
+	            Session::flush();
+	            return [];
+            }
         }
         
         if ($authUser->companies && $authUser->companies->count() < 1) {

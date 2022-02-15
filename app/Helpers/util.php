@@ -322,9 +322,7 @@ function get_application_statuses($status, $job_id = null, $statuses = [])
     if (is_null($job_id)) {
         $companyJobs = Job::whereCompanyId(optional(session()->get('active_company'))->id)->where('status', 'active')->pluck('id')->toArray();
 
-        if (!empty($companyJobs)) {
-            $applications->whereIn('job_id', $companyJobs);
-        }
+        $applications->whereIn('job_id', $companyJobs);
 
     } else {
         $applications = $applications->where('job_id', $job_id);

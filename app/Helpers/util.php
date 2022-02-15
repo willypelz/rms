@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CompanyUser;
 use App\User;
 use App\Models\Cv;
 use Carbon\Carbon;
@@ -29,7 +30,7 @@ use phpDocumentor\Reflection\Types\Object_;
 use GeneaLabs\LaravelMixpanel\Facades\Mixpanel;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
-
+use Illuminate\Support\Facades\Auth;
 // use Faker;
 
 function test()
@@ -423,6 +424,7 @@ function check_if_job_owner_on_queue($job_id, $current_company, $user)
 
 function get_current_company()
 {
+
     $authUser = Auth::user();
 
     $sessionId = session()->get('current_company_index');
@@ -430,27 +432,35 @@ function get_current_company()
     if (!is_null($authUser)) {
         //If a company is selected
         if ($sessionId) {
-
-            if (isset($authUser->companies)
-                && !is_null($authUser->companies()->where('company_users.company_id', $sessionId)->first())
-            ) {
-                return $authUser->companies()->where('company_users.company_id', $sessionId)->first();
+            if (isset($authUser->companies) && !is_null($authUser->companies()->where('company_users.company_id', $sessionId)->first())) {
+	            return $authUser->companies()->where('company_users.company_id', $sessionId)->first();
             }
-            session()->flash('error', 'You are not allowed access');
-            auth()->logout();
-            return collect([]);
         }
 
-        if ($authUser->companies && $authUser->companies->count() < 1) {
+	    if ($authUser->companies && $authUser->companies->count() < 1) {
             return redirect()->guest('login');
         }
-        // If a company is not selected, default to the first on the list
-        return optional(optional($authUser)->companies)->first();
+        $authUserCompanies = $authUser->companies->pluck('id')->toArray();
+        $currentUrl = url('');
+
+        $client = DB::table('clients')->where('url', $currentUrl)->first();
+        $companies = Company::where('client_id', $client->id)->get()->pluck('id')->toArray();
+
+        $intersecting = array_intersect($authUserCompanies, $companies);
+
+        if (!empty($intersecting)) {
+            $currentCompany = array_values($intersecting)[0];
+            session()->put('current_company_index', $currentCompany);
+            return $authUser->companies()->where('company_users.company_id', $currentCompany)->first();
+        }
+        // if user doesnt have access to the company would be logged out automatically.
+	     Session::flush();
+        return [];
     } else {
         $user = Auth::guard('candidate')->user();
-        if ($user) {
-            $client_id = $user->client_id ?? request()->clientId;
-            $client = Client::with('companies')->find($client_id);
+
+        if($user) {
+            $client = Client::with('companies')->find($user->client_id);
             $company = $client->companies->first();
             return $company;
         }
@@ -1070,8 +1080,8 @@ function seamlessSave( $modelName, array $data, $id)
 {
     $instance = $modelName::find($id);
     $data['slug'] = ($instance->slug) ?: str_slug($instance->name); //add slug if missing
-	$instance->fill($data)->save();
-	return $instance;
+    $instance->fill($data)->save();
+    return $instance;
 }
 
 /**

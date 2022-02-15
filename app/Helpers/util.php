@@ -394,21 +394,19 @@ function get_current_company()
 	    if ($authUser->companies && $authUser->companies->count() < 1) {
             return redirect()->guest('login');
         }
-	    $currentUrl = url('');
-	    $client = DB::table('clients')->where('url', $currentUrl)->first();
-	    $company = Company::where('client_id', optional($client)->id)->get('id')->first();
-	    if (!$company) {
-		    Session::flush();
-		    return [];
-	    }
-	    //TODO:: refactor to establish a correct user model with compan
-	    $user_companies = CompanyUser::where('user_id', $authUser->id)->get()->toArray();
-	    $user_company = array_filter($user_companies,  function($user_company) use ($company) {
-	    	return $user_company['company_id'] === $company->id;
-	    });
-	    if (!empty($user_company)) {
-		    return  $authUser->companies()->where('company_users.company_id', $user_company[0]['company_id'])->first();
-	    }
+        $authUserCompanies = $authUser->companies->pluck('id')->toArray();
+        $currentUrl = url('');
+
+        $client = DB::table('clients')->where('url', $currentUrl)->first();
+        $companies = Company::where('client_id', $client->id)->get()->pluck('id')->toArray();
+
+        $intersecting = array_intersect($authUserCompanies, $companies);
+
+        if (!empty($intersecting)) {
+            $currentCompany = array_values($intersecting)[0];
+            session()->put('current_company_index', $currentCompany);
+            return $authUser->companies()->where('company_users.company_id', $currentCompany)->first();
+        }
         // if user doesnt have access to the company would be logged out automatically.
 	     Session::flush();
         return [];

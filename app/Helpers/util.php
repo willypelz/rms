@@ -320,7 +320,8 @@ function get_application_statuses($status, $job_id = null, $statuses = [])
                         ->whereHas('cvSelected');
 
     if (is_null($job_id)) {
-        $companyJobs = Job::whereCompanyId(optional(session()->get('active_company'))->id)->where('status', 'active')->pluck('id')->toArray();
+
+        $companyJobs = Job::getMyJobIds(true);
 
         $applications->whereIn('job_id', $companyJobs);
 

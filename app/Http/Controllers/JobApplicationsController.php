@@ -831,7 +831,7 @@ class JobApplicationsController extends Controller
         //check if the step has message
         $getStep = WorkflowStep::where('id',$request->step_id)->first();
         if(!is_null($getStep->message_template) && !empty($getStep->message_template)){
-            dispatch(new WorkflowstepWithEmailJob($request->cv_ids,$getStep->message_template,$request->job_id));
+//            dispatch(new WorkflowstepWithEmailJob($request->cv_ids,$getStep->message_template,$request->job_id));
         }
 
         return save_activities($request->status, $request->job_id, $request->app_ids);
@@ -1088,7 +1088,7 @@ class JobApplicationsController extends Controller
         }
 
 
-        $test_path = getEnvData('SEAMLESS_TESTING_APP_URL', 'http://seamlesstesting.com'). "/test/combined/pdf/" . $appl->id;
+        $test_path = getEnvData('SEAMLESS_TESTING_APP_URL', env('SEAMLESS_TESTING_APP_URL')). "/test/combined/pdf/" . $appl->id;
         $test_local_file = $path . $appl->cv->first_name . ' ' . $appl->cv->last_name . ' tests.pdf';
 
 

@@ -30,7 +30,7 @@ class ResyncTestScoreFromSeamlessTesting extends Command
     public function handle()
     {
         try{
-        $webhook_url = env('SEAMLESS_TESTING_APP_URL').'/sync/test-result';
+        $webhook_url = getEnvData('SEAMLESS_TESTING_APP_URL', env('SEAMLESS_TESTING_APP_URL')).'/sync/test-result';
         $test_requests =  TestRequest::select(['id','job_application_id','test_id','start_time','end_time'])->whereStatus('PENDING')
         ->chunk(100, function ($test_requests) use($webhook_url) {
             foreach($test_requests as $test){

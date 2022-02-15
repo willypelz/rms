@@ -47,11 +47,15 @@ Route::group(['middleware' => ['web','auth','admin']], function () {
     Route::get('clientEnv/delete/{id}', 'SystemSettingsController@delete')->name('delete-env');
 });
 
-Route::group(['prefix'=>'client','middleware'=>'allowUrl'],function(){
-    
-    Route::get('/signup', 'SelfSignupController@index')->name('client-signup-index');
-    Route::post('/signup', 'SelfSignupController@create')->name('client-signup-create');
-});
+Route::group(
+    ['prefix'=>'client', 'middleware' => 'allowUrl'], 
+    function () {
+        Route::get('/signup', 'SelfSignupController@index')
+        ->name('client-signup-index');
+        Route::post('/signup', 'SelfSignupController@create')
+        ->name('client-signup-create');
+    }
+);
 
 // admin company 
 Route::group(['middleware' => ['web', 'auth', 'companyList']], function () {

@@ -17,11 +17,22 @@ class AllowUrl
     public function handle(Request $request, Closure $next)
     {
         try {
-            if ( (url('') == config('constants.signupUrl'))) {
-                return $next($request);
-            }else{
-                abort(404);
+            $dbUrl = getEnvData('APP_URL', null, request()->clientId);
+            $currentURL = url('');
+
+            if (substr($dbUrl, -1) !== '/' && substr($currentURL, -1) !== '/') {
+                if ($currentURL == $dbUrl) {
+                    return $next($request);
+                }
             }
+
+            if (substr($dbUrl, -1) !== '/') {
+                $dbUrl = $dbUrl . "/";
+                if ($currentURL == $dbUrl) {
+                    return $next($request);
+                }
+            }
+            abort(404);
         } catch (\Throwable $th) {
             abort(404);
         }

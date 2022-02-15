@@ -104,6 +104,7 @@ class JobApplication extends Model
         if (is_null($this->job)) {
             return $cand;
         }
+
         $applicant = $this;
         $cand['gender'] = $applicant->cv->gender ?? "none";
         $cand['last_company_worked'] = $applicant->cv->last_company_worked ?? "none";

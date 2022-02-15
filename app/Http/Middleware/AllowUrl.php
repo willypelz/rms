@@ -17,11 +17,11 @@ class AllowUrl
     public function handle(Request $request, Closure $next)
     {
         try {
-            if ( (url('') == config('constants.signupUrl'))) {
+            if (url('') == getEnvData("APP_URL", null, $request->clientId)) {
                 return $next($request);
-            }else{
-                abort(404);
             }
+            abort(404);
+            
         } catch (\Throwable $th) {
             abort(404);
         }

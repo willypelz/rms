@@ -3499,14 +3499,18 @@ class JobsController extends Controller
     public function selectCompany(Request $request)
     {
         $companies = Auth::user()->companies->where('client_id', request()->clientId);
+        $switched = false;
 
         foreach ($companies as $company) {
             if ($company->slug == $request->slug || $company->id == $request->id) {
+                $switched = true;
                 Session::put('current_company_index', $company->id);
-                return redirect('dashboard');
             }
         }
-    
+        if (!$switched) {
+            session()->flash('error', 'You are not allowed to access this company');
+        }
+        return redirect('dashboard');
     }
 
     public function embed()

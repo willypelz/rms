@@ -2370,7 +2370,7 @@ class JobsController extends Controller
         if (empty($job) || is_null($job)) {
             abort(404);
         }
-        
+
         $company = $job->company;
         $company->logo = get_company_logo($company->logo);
 

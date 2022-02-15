@@ -100,7 +100,10 @@ class BulkRequestTestJobSmallerBits implements ShouldQueue
                 curl_close($ch);
                 // Leave this next line untouched, its imperative
                 dump($response);
-                info(json_encode($response));
+                info('response');
+                info('response: ' . json_encode($response));
+                info('url: ' . $testUrl);
+                info('done');
             }
         }catch(\Exception $e){
             info($e);

@@ -17,7 +17,7 @@ class AllowUrl
     public function handle(Request $request, Closure $next)
     {
         try {
-            if (url('') == getEnvData("APP_URL", null, $request->clientId)) {
+            if (url('') == config('constants.signupUrl')) {
                 return $next($request);
             }
             abort(404);

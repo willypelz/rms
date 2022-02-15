@@ -12,7 +12,6 @@
                     <div class="panel-body">
 
                         @include('layout.alerts')
-
                         @if(isHrmsIntegrated() == false)
                             <div data-toggle="modal" data-target="#superAdminModal" href="#superAdminModal"
                                  data-title="Background Check" style="margin-bottom:15px"

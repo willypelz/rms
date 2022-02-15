@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendApplicationMailJob;
 use DB;
 use Cart;
 use Curl;
@@ -2344,6 +2345,7 @@ class JobsController extends Controller
         if (empty($job) || is_null($job)) {
             abort(404);
         }
+
         $company = $job->company;
         $company->logo = get_company_logo($company->logo);
 
@@ -2576,8 +2578,8 @@ class JobsController extends Controller
                     return back()->withErrors(['warning' => 'Maximum Remuneration cannot be less than Minimum Renumeration.']);
                 }
             }
-            
-            if (count($custom_fields) > 0) {
+
+	        if (count($custom_fields) > 0) {
                 foreach ($custom_fields as $custom_field) {
                     $name = 'cf_' . str_slug($custom_field->name, '_');
                     $attr = $custom_field->name;
@@ -2649,7 +2651,7 @@ class JobsController extends Controller
             if ($fields->graduation_grade->is_visible && isset($data['graduation_grade'])) {
                 $cv->graduation_grade = $data['graduation_grade'];
             }
-            if (isset($fields->school->is_visible) && $fields->school->is_visible && isset($data['school'])) {
+            if (isset($fields->school->is_visible) && $fields->school->is_visible && isset($data['school']) && isset($school_id)) {
                 $cv->school_id = $school_id;
             }
             if (isset($fields->course_of_study->is_visible) && $fields->course_of_study->is_visible && isset($data['course_of_study'])) {
@@ -2772,6 +2774,8 @@ class JobsController extends Controller
             Mail::send('emails.new.job_application_successful', ['user' => $candidate, 'link' => route('candidate-dashboard'), 'job' => $job], function (Message $m) use ($candidate) {
                 $m->from(getEnvData('COMPANY_EMAIL', null, request()->clientId))->to($candidate->email)->subject('Job Application Successful');
             });
+            SendApplicationMailJob::dispatch($candidate->id, $job->id);
+
 
             try {
                 $job_application = JobApplication::with('cv')->find($appl->id);
@@ -3592,10 +3596,8 @@ class JobsController extends Controller
             $user->update([
                     'is_super_admin' => $request->role
                 ]);
-            mixPanelRecord("Admin Role Updated successfully (Admin)", auth()->user());
-            return response()->json (['status' => true]);
-        }
-
+            }
+            
         $users = User::with('roles')->whereHas('companies', function ($q) use ($request) {
             $q->where('client_id', request()->clientId);
         })->get();

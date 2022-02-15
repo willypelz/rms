@@ -280,42 +280,29 @@ class LoginController extends Controller
      */
     public function singleSignOnVerify($encoded_email, $encoded_key)
     {
+      $decoded_email = base64_decode($encoded_email);
+      $decoded_key = base64_decode($encoded_key);
+      
+      $user = User::with('companies')->where('email', $decoded_email)->whereHas('companies', function ($company) use ($decoded_key) {
+          return $company->where('api_key', $decoded_key);
+      })->first();
 
-        $decoded_email = base64_decode($encoded_email);
-        $decoded_key = base64_decode($encoded_key);
+      $company = $user->companies->where('api_key', $decoded_key)->first();
 
-        $user = User::where('email', $decoded_email)->first();
-        if (!$user) {
-            return response()->json(
-                [
-                'status' => false, 
-                'message' => 'User email does not exist'
-                ]
-            );
-        }
-        $api_key = $user->companies()->where('api_key', $decoded_key)->first();
-        if ($api_key == null) {
-            return response()->json(
-                [
-                    'status' => false, 
-                    'message' => 'API key not valid'
-                ]
-            );
-        } else {
-            $token =  Crypt::encrypt($user->email . time());
-            $user->user_token = $token;
-            $user->save();
-            
-            return response()->json(
-                [
-                    'status' => true, 
-                    'message' => 'API key valid', 
-                    'user_id' => $user->id, 
-                    'token' => $token,
-                    'company_id' => $api_key->id
-                ]
-            );
-        }
+      if($user == null){
+          return ['status' => false, 'message' => 'API key not valid'];
+      }else{
+        $token =  Crypt::encrypt($user->email.time());
+        $user->user_token = $token;
+        $user->save();
+        return [
+            'status' => true,
+            'message' => 'API key valid',
+            'user_id' => $user->id,
+            'token' => $token,
+            'company_id' => $company->id
+        ];
+      }
 
     }
 

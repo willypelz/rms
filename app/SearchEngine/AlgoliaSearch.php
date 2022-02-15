@@ -14,6 +14,10 @@ class AlgoliaSearch implements SearchEngine
         $q = $q == '*' ? '' : $q;
         $pageNumber = (($start ?? 0) / 20);
 
+        if (is_null($additional['job_id'] ?? null) && empty($additional['job_ids'] ?? [])) {
+            return $this->createSolrStyleResponse([]);
+        }
+
         $data = JobApplication::search(
             $q, function ($algolia, $query, $options) use ($pageNumber, $additional, $data) {
 
@@ -137,7 +141,7 @@ class AlgoliaSearch implements SearchEngine
 
     public function get_all_my_cvs($data, $age = null, $exp_years = null)
     {
-        $job_ids = Job::getMyJobIds();
+        $job_ids = Job::getMyJobIds(true);
 
         $additional = [
             'job_ids' => $job_ids,
@@ -228,15 +232,15 @@ class AlgoliaSearch implements SearchEngine
             ]
         ];
         $object['response'] = [
-            "numFound" => count($response['hits']),
+            "numFound" => empty($response) ? 0 : count($response['hits']),
             "start" => 0,
             "numFoundExact" => true,
-            "docs" => $this->createApplicationSchema($response['hits'])
+            "docs" => empty($response) ? [] : $this->createApplicationSchema($response['hits'])
         ];
 
         $object['facet_counts'] = [
             'facet_queries' => [],
-            'facet_fields' => $this->handleFacetSchema($response['facets']),
+            'facet_fields' => $this->handleFacetSchema($response['facets'] ?? []),
             'facet_ranges' => [],
             'facet_intervals' => [],
             'facet_heatmaps' => [],

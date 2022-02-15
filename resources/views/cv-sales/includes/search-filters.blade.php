@@ -583,8 +583,13 @@
                         @php $index++  @endphp
                         <div class="{{ ($index > 4 ) ? 'see-more' : '' }}"><label class="normal"><input type="checkbox"  class="" data-field="grade" data-value="{{ $grade }}"> {{ ucwords( getGrade( $grade ) )." (".$result['facet_counts']['facet_fields']['grade'][ $key + 1 ].")" }}</label> <br></div>
                       @else
+                          @php
+                              $grade_ = $result['facet_counts']['facet_fields']['grade'][ $key + 1 ] ?? '';
+                              $grade_ = ($grade_ == 'none' || $grade_ == '') ? 0 :  $grade_;
 
-                        @php @$other_grade += $result['facet_counts']['facet_fields']['grade'][ $key + 1 ] @endphp
+                          @endphp
+
+                        @php @$other_grade += $grade_ @endphp
 
                       @endif
                   @endforeach

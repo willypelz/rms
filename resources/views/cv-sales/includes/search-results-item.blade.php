@@ -2,7 +2,7 @@
                       
   @foreach( @$result['response']['docs'] as $cv )
   
-  <?php  $pic = default_color_picture( $cv )  ?>
+  <?php  $pic = default_color_picture( $cv ); $source = '';  ?>
   
 <li class="row">
       <span class="col-md-2 col-sm-3">

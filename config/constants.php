@@ -29,4 +29,3 @@ return [
 	'signupUrl' => env('APP_URL', 'https://signup.seamlesshiring.com')
 
 ];
-

@@ -1250,18 +1250,18 @@ function getEnvData(string $key, $default_value = null, $client_id = null)
 
         if(is_null($client_id))
             $client_id = optional(get_current_company())->client_id;
-        info($client_id);
+        info('clientId: ' . $client_id);
         $systemConfigObject = getSystemConfig($client_id);
-        info($systemConfigObject);
+        info('Gotten config: ' . json_encode($systemConfigObject));
         if (!is_null($systemConfigObject)) {
             $systemConfigData = $systemConfigObject->{$key} ?? null;
-            info($systemConfigData);
+            info('Extracted Config: '. json_encode($systemConfigData));
             return $systemConfigData ?? $default_value;
         }
 
         return $default_value;
     }catch(\Exception $e){
-        info('entered exception');
+        info('entered exception: ' . $default_value);
         return $default_value;
     }
 

@@ -1219,7 +1219,7 @@ function setSystemConfig($client_id)
  */
 function getSystemConfig($client_id = null)
 {
-    $client_id = !is_null($client_id) ? $client_id : get_current_company()->client_id;
+    $client_id = !is_null($client_id) ? $client_id : optional(get_current_company())->client_id;
     $systemSettingData = SystemSetting::where('client_id', $client_id)->get()->pluck('value', 'key')->all();
 
     if (Cache::has("SystemConfig-{$client_id}")) {
@@ -1249,18 +1249,19 @@ function getEnvData(string $key, $default_value = null, $client_id = null)
             return $default_value;
 
         if(is_null($client_id))
-            $client_id = get_current_company()->client_id;
-
+            $client_id = optional(get_current_company())->client_id;
+        dump($client_id);
         $systemConfigObject = getSystemConfig($client_id);
-
+        dump($systemConfigObject);
         if (!is_null($systemConfigObject)) {
             $systemConfigData = $systemConfigObject->{$key} ?? null;
+            dump($systemConfigData);
             return $systemConfigData ?? $default_value;
         }
 
         return $default_value;
     }catch(\Exception $e){
-        return null;
+        return $default_value;
     }
 
 }

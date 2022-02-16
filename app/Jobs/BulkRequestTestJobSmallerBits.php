@@ -76,6 +76,7 @@ class BulkRequestTestJobSmallerBits implements ShouldQueue
                 JobApplication::massAction(@$request->job_id, @$request->cv_ids, $request->step, $request->stepId);
 
                 $testUrl = getEnvData('SEAMLESS_TESTING_APP_URL', env('SEAMLESS_TESTING_APP_URL'), $request->clientId).'/test-request';
+
                 $data = [
                     'job_title' => $app->job->title,
                     'test_id' => $data['test_id'],

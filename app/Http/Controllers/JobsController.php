@@ -3601,7 +3601,7 @@ class JobsController extends Controller
                     'is_super_admin' => $request->role
                 ]);
             }
-            
+
         $users = User::with('roles')->whereHas('companies', function ($q) use ($request) {
             $q->where('client_id', request()->clientId);
         })->get();

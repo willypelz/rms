@@ -282,7 +282,7 @@ class LoginController extends Controller
     {
       $decoded_email = base64_decode($encoded_email);
       $decoded_key = base64_decode($encoded_key);
-      
+
       $user = User::with('companies')->where('email', $decoded_email)->whereHas('companies', function ($company) use ($decoded_key) {
           return $company->where('api_key', $decoded_key);
       })->first();

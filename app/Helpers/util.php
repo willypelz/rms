@@ -1307,16 +1307,21 @@ function getEnvData(string $key, $default_value = null, $client_id = null)
             $client_id = optional(get_current_company())->client_id;
         }
 
+        if(is_null($client_id))
+            $client_id = optional(get_current_company())->client_id;
+        info('clientId: ' . $client_id);
         $systemConfigObject = getSystemConfig($client_id);
-
+        info('Gotten config: ' . json_encode($systemConfigObject));
         if (!is_null($systemConfigObject)) {
-            $systemConfigData = optional($systemConfigObject)->{$key} ?? null;
+            $systemConfigData = $systemConfigObject->{$key} ?? null;
+            info('Extracted Config: '. json_encode($systemConfigData));
             return $systemConfigData ?? $default_value;
         }
 
         return $default_value;
     }catch(\Exception $e){
-        return null;
+        info('entered exception: ' . $default_value);
+        return $default_value;
     }
 
 }

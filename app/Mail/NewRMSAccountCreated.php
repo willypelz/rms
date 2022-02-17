@@ -30,6 +30,9 @@ class NewRMSAccountCreated extends Mailable
     public function build()
     {
         return $this->subject('New RMS Account Created')
-                    ->markdown('emails.self-sign-up.sales-and-support-team-new-account-notify',['notifiable'=>$this->user]);
+            ->markdown(
+                'emails.self-sign-up.sales-and-support-team-new-account-notify',
+                ['notifiable'=>$this->user]
+            );
     }
 }

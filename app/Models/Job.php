@@ -85,7 +85,6 @@ class Job extends Model
         if ($all) {
             $companies = Company::where('client_id', @get_current_company()->client_id)->pluck('id')->toArray();
 
-//            dd(Job::whereIn('company_id', $companies)->get());
             return Job::whereIn('company_id', $companies)->where('status', '!=',
                 'DELETED')->get()->pluck('id')->toArray();
         }

@@ -3509,12 +3509,13 @@ class JobsController extends Controller
             if ($company->slug == $request->slug || $company->id == $request->id) {
                 $switched = true;
                 Session::put('current_company_index', $company->id);
+                Session::put('active_company', $company);
             }
         }
         if (!$switched) {
             session()->flash('error', 'You are not allowed to access this company');
         }
-        return redirect('dashboard');
+        return redirect(url()->previous());
     }
 
     public function embed()

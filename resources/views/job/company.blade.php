@@ -200,8 +200,6 @@
                                 <!--/tab-content-->
                                 <div class="page page-sm foot no-bod-rad">
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                                        <p><img src="{{ url('/') }}/img/seamlesshiring-logo.png" alt="" width="225px">
-                                        </p>
                                         <p>
                                             <small class="text-muted">Powered by <a
                                                         href="http://www.seamlesshiring.com"> SeamlessHiring</a> &nbsp;

@@ -1116,6 +1116,9 @@ function getCompanyId($userId = null) {
 		$company_id = User::find($userId)->first()->defaultCompany()->id;
 	}
 
+    if (is_null(session('active_company'))) {
+        session()->put('active_company', $company_id);
+    }
 	return $company_id;
 }
 

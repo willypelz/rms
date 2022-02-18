@@ -27,7 +27,7 @@ class SpecializationController extends Controller
     {
         $specializations = Specialization::with('jobs')
             ->where('company_id', null)
-            ->orWhere('company_id', optional(session()->get('active_company'))->id ?? getCompanyId())
+            ->orWhere('company_id', getCompanyId())
             ->orderBy('id', 'DESC')->get();
 
         return view('specialization.list', compact('specializations'));
@@ -91,7 +91,7 @@ class SpecializationController extends Controller
     public function delete($id)
     {
         $specialization = Specialization::find($id);
-        if ($specialization->company_id == optional(session()->get('active_company'))->id ?? getCompanyId()) {
+        if ($specialization->company_id == getCompanyId()) {
             Specialization::destroy($id);
             return redirect()->back()->with(
                 'success', 

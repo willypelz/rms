@@ -91,7 +91,7 @@ class SpecializationController extends Controller
     public function delete($id)
     {
         $specialization = Specialization::find($id);
-        if ($specialization->company_id == getCompanyId()) {
+        if ($specialization->company_id == optional(session()->get('active_company'))->id ?? getCompanyId()) {
             Specialization::destroy($id);
             return redirect()->back()->with(
                 'success', 

@@ -319,7 +319,6 @@ You will be asked some questions based on it on the next page. Click Next when y
                                 <!--/tab-content-->
                                 <div class="page page-sm foot no-bod-rad">
                                     <div class="col-sm-6 col-sm-offset-3 text-center"><!-- <hr> -->
-                                        <p><img src="{{ url('/') }}/img/seamlesshiring-logo.png" alt="" width="150px"> </p> 
                                         <p><small class="text-muted">Powered by <a href="http://www.seamlesshiring.com"> SeamlessHiring</a> &nbsp;
                                         &copy; {{ date('Y') }}. SeamlessHiring</small></p>
                                     </div>

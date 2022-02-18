@@ -1109,11 +1109,10 @@ function getResponseFromHrmsByGET(string $url, array $data = []){
  * @return int
  */
 function getCompanyId($userId = null) {
-
 	if (is_null($userId)) {
-		$company_id = is_null(session('active_company')) ? optional(auth()->user())->defaultCompany()->id : session('active_company')->id;
+		$company_id = is_null(session('current_company_index')) ? optional(auth()->user())->defaultCompany()->id : session('current_company_index');
 	} else {
-		$company_id = is_null(session('active_company')) ? User::find($userId)->first()->defaultCompany()->id : session('active_company')->id;
+		$company_id = is_null(session('current_company_index')) ? User::find($userId)->first()->defaultCompany()->id : session('current_company_index');
 	}
 
     if (is_null(session('active_company'))) {

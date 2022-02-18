@@ -362,7 +362,6 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::get('onboard/noAction3', ['as' => 'onboard-no-action-3', 'uses' => 'OnboardingController@noAction3']);
 
 
-
     Route::get('settings/embed',
     ['as' => 'settings-embed', 'uses' => 'JobsController@embed']);
 

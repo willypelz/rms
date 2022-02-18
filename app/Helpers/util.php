@@ -1113,12 +1113,13 @@ function getCompanyId($userId = null) {
 	if (is_null($userId)) {
 		$company_id = is_null(session('active_company')) ? optional(auth()->user())->defaultCompany()->id : session('active_company')->id;
 	} else {
-		$company_id = User::find($userId)->first()->defaultCompany()->id;
+		$company_id = is_null(session('active_company')) ? User::find($userId)->first()->defaultCompany()->id : session('active_company')->id;
 	}
 
     if (is_null(session('active_company'))) {
-        session()->put('active_company', $company_id);
+        session()->put('active_company', Company::find($company_id));
     }
+
 	return $company_id;
 }
 

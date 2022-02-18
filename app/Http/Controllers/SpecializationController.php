@@ -27,7 +27,7 @@ class SpecializationController extends Controller
     {
         $specializations = Specialization::with('jobs')
             ->where('company_id', null)
-            ->orWhere('company_id', getCompanyId())
+            ->orWhere('company_id', optional(session()->get('active_company'))->id ?? getCompanyId())
             ->orderBy('id', 'DESC')->get();
 
         return view('specialization.list', compact('specializations'));

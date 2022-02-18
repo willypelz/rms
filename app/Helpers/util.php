@@ -1117,7 +1117,7 @@ function getCompanyId($userId = null) {
 	}
 
     if (is_null(session('active_company'))) {
-        session()->put('active_company', $company_id);
+        session()->put('active_company', Company::find($company_id));
     }
 	return $company_id;
 }

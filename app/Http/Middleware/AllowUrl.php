@@ -18,15 +18,11 @@ class AllowUrl
     {
         try {
             $dbUrl = getEnvData('APP_URL', null, request()->clientId);
+            
             $currentURL = url('');
-            if (substr($dbUrl, -1) !== '/' && substr($currentURL, -1) !== '/') {
-                if ($currentURL == $dbUrl) {
-                    return $next($request);
-                }
-            }
 
-            if (substr($dbUrl, -1) !== '/') {
-                $dbUrl = $dbUrl . "/";
+            if (substr($dbUrl, -1) == '/') {
+                $dbUrl = substr($dbUrl, 0, -1);
                 if ($currentURL == $dbUrl) {
                     return $next($request);
                 }

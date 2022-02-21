@@ -20,7 +20,13 @@
             <div class="row">
 
                 <div class="col-sm-4 col-sm-offset-4 text-center text-white">
-                    <h2 class=""><img src="{{getEnvData('SEAMLESS_HIRING_LOGO_WHITE', null, request()->clientId)}}" width="190px" alt=""></h2><br>
+                    <h2 class="">
+                        @if (get_current_company()->logo)
+                                <img width="100" src="{{ asset('img/'.get_current_company()->logo)}}">
+                        @else
+                            <img src="{{getEnvData('SEAMLESS_HIRING_LOGO_WHITE', null, request()->clientId)}}" width="190px" alt="">
+                        @endif
+                    </h2><br>
                     <!-- <p class="">Everything You Need To Hire, In One Place!</p> -->
                 </div>
 

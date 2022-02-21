@@ -24,10 +24,8 @@ class AllowUrl
                 if ($currentURL == $dbUrl) {
                     return $next($request);
                 }
-            } else {
-                if ($currentURL == $dbUrl) {
-                    return $next($request);
-                }
+            } else if ($currentURL == $dbUrl) { 
+                return $next($request);
             }
             
             abort(404);

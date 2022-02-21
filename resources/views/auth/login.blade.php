@@ -21,11 +21,7 @@
 
                 <div class="col-sm-4 col-sm-offset-4 text-center text-white">
                     <h2 class="">
-                        @if (get_current_company()->logo)
-                                <img width="100" src="{{ asset('img/'.get_current_company()->logo)}}">
-                        @else
-                            <img src="{{getEnvData('SEAMLESS_HIRING_LOGO_WHITE', null, request()->clientId)}}" width="190px" alt="">
-                        @endif
+                        <img src="{{ getEnvData('APP_LOGO', null, request()->clientId) }}" class="shr-auth-logo">
                     </h2><br>
                     <!-- <p class="">Everything You Need To Hire, In One Place!</p> -->
                 </div>

@@ -43,7 +43,7 @@ Route::post("/api/v1/delete-super-admin", "HrmsIntegrationController@deleteSuper
  * Start: Administrator Panel Routes
  * Make admin group and apply a guard to it
  */
-Route::group(['middleware' => ['web',"auth", 'admin']], function () {
+Route::group(['middleware' => ['web', "auth", 'admin']], function () {
 
     Route::get('/download-bulk-upload-applicant-to-workflow-stage-template', "BulkUploadApplicantsToWorkflowStepContoller@downloadBulkApplicantsToWorkflowStagesTemplate")->name("download-bulk-upload-applicant-to-workflow-stage-template");
 
@@ -85,14 +85,11 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
         });
 
         if (count(Mail::failures()) > 0) {
-//        dd(Mail::failures());
 
         } else {
             echo "No errors, all sent successfully!";
         }
 
-        // dd('here');
-        // dd(save_activities('APPLIED', '10', '9', ''));
         //return view('payment.simplepay');
     });
 
@@ -185,8 +182,6 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::get('/one_applicant', 'JobApplication@oneApplicantData');
     
     Route::resource('schedule', 'JobApplicationsController');
-
-    Route::get('/download_applicants_interview_file/{filename}', 'JobApplicationsController@downloadApplicantsInterviewFile')->name("download_applicants_interview_file");
 
     Route::match(['get', 'post'], 'one_applicant',
         ['uses' => 'JobApplicationsController@oneApplicantData']);
@@ -851,6 +846,10 @@ Route::group(['middleware' => 'web'], function () {
         }
     ]);
 
+    Route::get(
+        '/download-applicants-interview-file/{filename}',
+        'JobApplicationsController@downloadApplicantsInterviewFile'
+    )->name("download_applicants_interview_file");
 });
 
 

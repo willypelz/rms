@@ -1278,11 +1278,10 @@ function getEnvData(string $key, $default_value = null, $client_id = null)
  */
 
 function companyRoute(int $client_id, string $name, array $parameters = []): string
-
 {
-	$client_url = Client::where('id', $client_id)->first()->url ?? null;
+    $client_url = Client::where('id', $client_id)->first()->url ?? null;
 
-	return $client_url ? ($client_url . route($name, $parameters, false)) : route($name, $parameters);
+    return $client_url ? route($name, $parameters) : ($client_url . route($name, $parameters));
 }
 
 /**

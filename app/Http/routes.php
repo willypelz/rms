@@ -48,7 +48,7 @@ Route::group(['middleware' => ['web','auth','admin']], function () {
     Route::get('clientEnv/delete/{id}', 'SystemSettingsController@delete')->name('delete-env');
 });
 
-Route::group(['prefix'=>'client','middleware'=>'allowUrl'],function(){
+Route::group(['prefix' => 'client', 'middleware' => 'allowUrl'], function () {
     
     Route::get('/signup', 'SelfSignupController@index')->name('client-signup-index');
     Route::post('/signup', 'SelfSignupController@create')->name('client-signup-create');
@@ -103,7 +103,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
         });
 
         if (count(Mail::failures()) > 0) {
-//        dd(Mail::failures());
+
 
         } else {
             echo "No errors, all sent successfully!";
@@ -871,9 +871,18 @@ Route::group(['middleware' => 'web'], function () {
         }
     ]);
 
+    Route::get(
+        '/download-applicants-interview-file/{filename}',
+        'JobApplicationsController@downloadApplicantsInterviewFile'
+    )->name("download-applicants-interview-file");
+
 });
+
+
 
 
 Route::group(['prefix' => 'api/v2', 'namespace' => 'API'], function () {
     Route::get('rms-company-subsidiaries', ['uses' => 'SyncController@companyAndSubsidiaries', 'as' => 'rms-company-subsidiaries']);
 });
+
+

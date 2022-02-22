@@ -83,7 +83,7 @@
                                                    </li>
                                                                                   
                                                    <li class="no-pad no-margin">
-                                                       <a href="{{getEnvData('TWITTER_URL', 'https://www.twitter.com/')}}intent/tweet?url={{$job_url}}" class="btn-disabled" target="_blank" >
+                                                       <a href="{{getEnvData('TWITTER_URL', 'https://www.twitter.com/', request()->clientId)}}intent/tweet?url={{$job_url}}" class="btn-disabled" target="_blank" >
                                                                <span class="fa-stack fa-lg">
                                                                  <i class="fa fa-square fa-stack-2x text-"></i>
                                                                  <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
@@ -92,7 +92,7 @@
                                                    </li>
                                                                                   
                                                    <li class="no-pad no-margin">
-                                                       <a href="{{getEnvData('LINKEDIN_URL', 'https://www.linkedin.com/')}}shareArticle?mini=true&url={{$job_url}}&title={{$job->title}}&summary=&source=Seamlesshiring" class="btn-disabled" target="_blank" >
+                                                       <a href="{{getEnvData('LINKEDIN_URL', 'https://www.linkedin.com/', request()->clientId)}}shareArticle?mini=true&url={{$job_url}}&title={{$job->title}}&summary=&source=Seamlesshiring" class="btn-disabled" target="_blank" >
                                                                <span class="fa-stack fa-lg">
                                                                  <i class="fa fa-square fa-stack-2x text-"></i>
                                                                  <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>

@@ -38,7 +38,7 @@ class IsAdmin
                 'msg' => 'You don\'t have permission to perform this action',
             ], 403);
         }
-        session()->flush();
+        session()->flash('error', 'Please Login as an Admin');
         return redirect()->guest('/');
     }
 }

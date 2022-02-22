@@ -53,7 +53,7 @@ class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
         $data = [
             "filename" => $this->job->title,
             "name" => $notifiable->name,
-            "route" => route( "download_applicants_interview_file", ["filename" => encrypt($this->filename) ])
+            "route" => route("download-applicants-interview-file", ["filename" => encrypt($this->filename)])
         ];
         return (new MailMessage())
              ->subject(ucwords("{$this->job->title} {$this->type} export completed"))

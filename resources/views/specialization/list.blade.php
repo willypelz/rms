@@ -106,7 +106,6 @@
     <script>
         function delConfirmation(strg, id){
             let elementName = "delForm" + id;
-            console.log(elementName);
             customConfirmation(strg)
             setTimeout(() => {
                 $('#btn1').click(function(e){

@@ -1205,7 +1205,7 @@ class JobsController extends Controller
         $locations = locations();
         $countries = countries();
         $company = get_current_company();
-        
+
         $specializations = Specialization::where(function ($sp) use ($company) {
             $sp->whereNull('company_id')->orWhere('company_id', optional($company)->id);
         })->get();

@@ -160,7 +160,7 @@ class AlgoliaSearch implements SearchEngine
         ];
 
         $data['q'] = $filterQuery[0] ?? '';
-//        dd($additional);
+
         if (!is_null($age)) {
             $additional['age_from'] = $age[0];
             $additional['age_to'] = $age[1];

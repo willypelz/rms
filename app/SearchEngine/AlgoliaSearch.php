@@ -11,8 +11,10 @@ class AlgoliaSearch implements SearchEngine
     public function search_resume($data, $additional = [])
     {
         extract($data);
+
         $q = $q == '*' ? '' : $q;
         $pageNumber = (($start ?? 0) / 20);
+
 
         if (is_null($additional['job_id'] ?? null) && empty($additional['job_ids'] ?? [])) {
             return $this->createSolrStyleResponse([]);
@@ -26,6 +28,7 @@ class AlgoliaSearch implements SearchEngine
                     'page' => $pageNumber,
                     'hitsPerPage' => 20,
                 ];
+
      	        $searchContent  = "";
                 if (!is_null($additional['job_id'] ?? null)) {
 	                $searchContent .= "job_id = {$additional['job_id']}";
@@ -54,6 +57,10 @@ class AlgoliaSearch implements SearchEngine
                 foreach (($data['filter_query'] ?? []) as $item) {
                     $defaultOperation = $data['default_op'] ?? 'AND';
                     $searchContent .= " {$defaultOperation} {$item}";
+                }
+
+                if ($query !== '') {
+                    $customOptions['query'] = $query;
                 }
 
                 $customOptions['filters'] = $searchContent;
@@ -142,12 +149,18 @@ class AlgoliaSearch implements SearchEngine
     public function get_all_my_cvs($data, $age = null, $exp_years = null)
     {
         $job_ids = Job::getMyJobIds(true);
+        $filterQuery = $data['filter_query'] ?? '';
+        $filterQuery = str_replace('"', '', str_replace('text:"', '', $filterQuery));
+        unset($data['filter_query']);
 
         $additional = [
             'job_ids' => $job_ids,
             'company_folder_id' => @get_current_company()->id,
-            'folder_type' => 'saved'
+            'folder_type' => 'saved',
         ];
+
+        $data['q'] = $filterQuery[0] ?? '';
+
         if (!is_null($age)) {
             $additional['age_from'] = $age[0];
             $additional['age_to'] = $age[1];

@@ -559,8 +559,6 @@ class CvSalesController extends Controller
 
         $this->search_params['start'] = $start = ( $request->start ) ? ( $request->start * $this->search_params['row'] ) : 0;
 
-
-
         if( @$request->age ){
 
             //2015-09-16T00:00:00Z
@@ -593,7 +591,6 @@ class CvSalesController extends Controller
         if( $request->filter_query ){
             $this->search_params['filter_query'] = @$request->filter_query;
         }
-
         // $response = SolrPackage::search_resume($this->search_params);
         $response = $result = $this->searchEngine->get_all_my_cvs($this->search_params, @$solr_age, @$solr_exp_years, $request->clientId);
 

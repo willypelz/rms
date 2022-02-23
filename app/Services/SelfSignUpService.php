@@ -17,6 +17,12 @@ use Seamlesshr\ShrCloudflareDomainGenerator\DomainGenerator;
 
 
 class SelfSignUpService {
+    protected $domainGenerator;
+
+    public function __construct(DomainGenerator $domainGenerator)
+    {
+        $this->domainGenerator = $domainGenerator;
+    }
 
     /**
      * TO CREATE THE DOMAIN NAME and pass the values to other methods
@@ -26,12 +32,13 @@ class SelfSignUpService {
     public function createDomain($request)
     {
         //get the baseurl to be used e.g seamlesshiring.com
-        $base_url = DomainGenerator::getBaseURL();
+        $base_url = config('app.env') == 'local' ? 'seamlesshiring.com' : $this->domainGenerator->getBaseURL();
+
         if ($base_url == 'seamlesshiring.com') {
-            $sub_domain_available = DomainGenerator::isSubdomainAvailable($request->sub_domain_string); //true/false
+            $sub_domain_available = config('app.env') == 'local' || $this->domainGenerator->isSubdomainAvailable($request->sub_domain_string); //true/false
             if ($sub_domain_available) {
                 //returns either true or an exception. You can pass either "add" or "delete" as second param
-                $add_subdomain = DomainGenerator::mapURL($request->sub_domain_string, 'add');
+                $add_subdomain = config('app.env') == 'local' || $this->domainGenerator->mapURL($request->sub_domain_string, 'add');
                 if (is_bool($add_subdomain) && $add_subdomain) {
                     return $this->createClientAndCompany($request);
                 }
@@ -60,6 +67,7 @@ class SelfSignUpService {
                 'phone' => $request->phone,
                 'email' => $request->email,
                 'sub_type' => $request->type,
+                'is_default' => true
             ],
             [
                 'website' => $request->domain,

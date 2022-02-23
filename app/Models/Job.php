@@ -82,12 +82,12 @@ class Job extends Model
 
     public static function getMyJobIds(bool $all = false)
     {
-        if ($all) {
-            $companies = Company::where('client_id', @get_current_company()->client_id)->pluck('id')->toArray();
-
-            return Job::whereIn('company_id', $companies)->where('status', '!=',
-                'DELETED')->get()->pluck('id')->toArray();
-        }
+//        if ($all) {
+//            $companies = Company::where('client_id', @get_current_company()->client_id)->pluck('id')->toArray();
+//
+//            return Job::whereIn('company_id', $companies)->where('status', '!=',
+//                'DELETED')->get()->pluck('id')->toArray();
+//        }
 
         return Job::where('company_id', @get_current_company()->id)->where('status', '!=',
             'DELETED')->get()->pluck('id')->toArray();

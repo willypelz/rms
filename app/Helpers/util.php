@@ -906,9 +906,9 @@ if (!function_exists('userHasRole')) {
 }
 
 
-function get_company_email_logo()
+function get_company_email_logo($logo)
 {
-    $logo = getEnvData("APP_LOGO",url('img/seamlesshiring-logo.png'));
+
     $url = getEnvData("APP_URL");
     return
         "<a href='$url' style='font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2' target='_blank'>

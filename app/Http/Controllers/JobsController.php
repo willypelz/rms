@@ -1204,10 +1204,14 @@ class JobsController extends Controller
         $qualifications = qualifications();
         $locations = locations();
         $countries = countries();
-        $specializations = Specialization::get();
+        $company = get_current_company();
+        
+        $specializations = Specialization::where(function ($sp) use ($company) {
+            $sp->whereNull('company_id')->orWhere('company_id', optional($company)->id);
+        })->get();
 
         $user = Auth::user();
-        $company = get_current_company();
+
         $job_boards = JobBoard::where('type', 'free')->get()->toArray();
 
         if (count($job_boards) > 2) {
@@ -1380,7 +1384,7 @@ class JobsController extends Controller
             return redirect()->route('post-success', ['jobID' => $job->id]);
         }
 
-        $workflows = Workflow::whereCompanyId(get_current_company()->id)->get();
+        $workflows = Workflow::whereCompanyId(optional($company)->id)->get();
 
         return view(
             'job.post_job', compact(

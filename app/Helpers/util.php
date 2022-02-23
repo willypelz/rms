@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\CompanyUser;
 use App\User;
 use App\Models\Cv;
 use Carbon\Carbon;
@@ -13,6 +12,7 @@ use App\Models\Candidate;
 use App\Models\Interview;
 use App\Models\Permission;
 use App\Models\ActivityLog;
+use App\Models\CompanyUser;
 use App\Models\JobActivity;
 use App\Models\TestRequest;
 use App\Jobs\UploadApplicant;
@@ -20,15 +20,16 @@ use App\Models\SystemSetting;
 use Ixudra\Curl\Facades\Curl;
 use App\Models\JobApplication;
 use App\Models\PermissionRole;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use App\Models\InterviewNoteTemplates;
 use Illuminate\Support\Facades\Cache;
+use App\Models\InterviewNoteTemplates;
 use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Types\Object_;
+
 use GeneaLabs\LaravelMixpanel\Facades\Mixpanel;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
-
-use Illuminate\Support\Facades\Auth;
 // use Faker;
 
 function test()
@@ -1279,9 +1280,11 @@ function getEnvData(string $key, $default_value = null, $client_id = null)
 
 function companyRoute(int $client_id, string $name, array $parameters = []): string
 {
-    $client_url = Client::where('id', $client_id)->first()->url ?? null;
+    $clientUrl = Client::where('id', $client_id)->first()->url ?? null;
+    Log::info('the url :'. $clientUrl);
+    app('url')->forceRootUrl($clientUrl);
 
-    return $client_url ? route($name, $parameters) : ($client_url . route($name, $parameters));
+    return route($name, $parameters);
 }
 
 /**

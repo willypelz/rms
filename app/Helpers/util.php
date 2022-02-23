@@ -614,7 +614,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 
     $options = (is_null($options)) ? 'upToJob' : $options;
 
-    \Log::info(json_encode($cvs));
+    Log::info(json_encode($cvs));
 
     switch ($options) {
         case 'upToJob':
@@ -638,7 +638,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
             $relocate = 0;
         }
 
-        \Log::info($request->type);
+        Log::info($request->type);
 
         switch ($request->type) {
             case 'single':
@@ -685,7 +685,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
             case 'bulk':
                 // $last_cv_upload_index++;
                 $emailKey = trim(strtolower($key));
-                \Log::info('Bulk uploaid');
+                Log::info('Bulk uploaid');
                 $last_cv = Cv::insertGetId(['first_name' => $key, 'email' => $emailKey . '@seamlesshrbulk.com', 'cv_file' => $cv, 'cv_source' => $cv_source]);
                 break;
 
@@ -1281,7 +1281,6 @@ function getEnvData(string $key, $default_value = null, $client_id = null)
 function companyRoute(int $client_id, string $name, array $parameters = []): string
 {
     $clientUrl = Client::where('id', $client_id)->first()->url ?? null;
-    Log::info('the url :'. $clientUrl);
     app('url')->forceRootUrl($clientUrl);
 
     return route($name, $parameters);

@@ -56,7 +56,14 @@ class JobApplication extends Model
         $applicants = JobApplication::where('job_id', $job_id)->whereIn('cv_id', $cv_ids)->get();
 
         foreach ($applicants as $applicant) {
-            UploadApplicant::dispatch($applicant)->onQueue('solr');                
+            switch (config('app.searcher')) {
+                case 'solr':
+                    UploadApplicant::dispatch($applicant)->onQueue('solr');
+                    break;
+                case 'algolia':
+                    $applicant->searchable();
+                    break;
+            }
         }
 
         return $app;

@@ -205,7 +205,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     
     Route::resource('schedule', 'JobApplicationsController');
 
-    Route::get('/download_applicants_interview_file/{filename}', 'JobApplicationsController@downloadApplicantsInterviewFile')->name("download_applicants_interview_file");
+    Route::get('/download-applicants-interview-file/{filename}', 'JobApplicationsController@downloadApplicantsInterviewFile')->name("download-applicants-interview-file");
 
     Route::match(['get', 'post'], 'one_applicant',
         ['uses' => 'JobApplicationsController@oneApplicantData']);

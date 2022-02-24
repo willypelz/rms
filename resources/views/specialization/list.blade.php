@@ -39,14 +39,14 @@
                                                 </a>
                                             @endif
                                             @if(!$specialization->jobs()->exists())
-                                                <form id="delForm" action="{{ route('delete-specialization', ['id' => $specialization->id]) }}"
+                                                <form id="{{ "delForm" . $specialization->id}}" action="{{ route('delete-specialization', ['id' => $specialization->id]) }}"
                                                       method="post"
                                                       class="delete-spoof">
                                                     {{ csrf_field() }}
 
                                                     <input type="hidden" name="_method" value="delete">
 
-                                                    <button  onclick="delConfirmation('Are you sure you want to delete this specialization?');" type="button" class="btn btn-danger btn-sm">
+                                                    <button  onclick="delConfirmation('Are you sure you want to delete this specialization?', {{ $specialization->id }});" type="button" class="btn btn-danger btn-sm">
                                                         <i class="fa fa-trash fa-fw"></i>
                                                     </button>
                                                 </form>
@@ -104,11 +104,12 @@
         </div>
     </section>
     <script>
-        function delConfirmation(strg){
+        function delConfirmation(strg, id){
+            let elementName = "delForm" + id;
             customConfirmation(strg)
             setTimeout(() => {
                 $('#btn1').click(function(e){
-                    document.getElementById("delForm").submit()
+                    document.getElementById(elementName).submit()
                 })
             }, 1000);
         }

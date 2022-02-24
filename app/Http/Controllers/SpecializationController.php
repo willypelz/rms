@@ -92,7 +92,7 @@ class SpecializationController extends Controller
     {
         $specialization = Specialization::find($id);
         if ($specialization->company_id == getCompanyId()) {
-            Specialization::destroy($id);
+            Specialization::destroy($specialization->id);
             return redirect()->back()->with(
                 'success', 
                 "You have successfully deleted a specialization"

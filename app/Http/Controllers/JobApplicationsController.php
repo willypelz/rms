@@ -1492,7 +1492,6 @@ class JobApplicationsController extends Controller
                 'cv_ids',
                 'products',
                 'appl',
-                'test_available',
                 'count',
                 'section',
                 'type',

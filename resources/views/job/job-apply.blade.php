@@ -342,7 +342,7 @@
                                                                             <select class="form-control"
                                                                                     name="school"
                                                                                     id="select-school"
-                                                                                    placeholder="Select your school..."
+                                                                                    placeholder="Search your school..."
                                                                                     @if( $fields->school->is_required ) required @endif>
 
                                                                                 <option id="loading">Choose one</option>

@@ -449,9 +449,8 @@ class JobApplicationsController extends Controller
             @$solr_maximium_remuneration,
         );
         $statuses = $job->workflow->workflowSteps()->pluck('slug');
-
-        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$request->jobID,
-            $statuses);
+        
+        $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $request->jobID, $statuses);
 
         if (isset($request->status)) {
             $status = $request->status;
@@ -938,9 +937,7 @@ class JobApplicationsController extends Controller
                     }
                 ])->find($job_id);
 
-                $result = SolrPackage::get_applicants($this->search_params, $job_id,
-                    ''); // status parater value is formerly : @$request->status
-
+                $result = SolrPackage::get_applicants($this->search_params, $job_id, ''); // status parater value is formerly : @$request->status
 
                 $application_statuses = isset($result['facet_counts']) ? get_application_statuses($result['facet_counts']['facet_fields']['application_status'],$job_id,
                     $statuses = $job->workflow->workflowSteps()->pluck('slug')) : [];

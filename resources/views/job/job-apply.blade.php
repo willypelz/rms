@@ -345,7 +345,7 @@
                                                                                     placeholder="Search your school..."
                                                                                     @if( $fields->school->is_required ) required @endif>
 
-                                                                                <option id="loading">Choose one</option>
+                                                                                <option id="loading">Search your school...</option>
                                                                                 <option value="others">Others</option>
 
                                                                             </select>

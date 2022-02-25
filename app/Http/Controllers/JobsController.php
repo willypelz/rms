@@ -1581,7 +1581,16 @@ class JobsController extends Controller
             saveCompanyUploadedCv($cvs, $additional_data, $request);
             return ['status' => 1, 'data' => ['Cv(s) uploaded successfully']];
         }
-        UploadSolrFromCode::dispatch();
+
+        switch (config('app.searcher')) {
+            case 'solr':
+                UploadSolrFromCode::dispatch();
+                break;
+            case 'algolia':
+
+                break;
+        }
+
         return $response;
     }
 

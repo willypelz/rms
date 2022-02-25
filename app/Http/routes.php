@@ -846,11 +846,13 @@ Route::group(['middleware' => 'web'], function () {
         }
     ]);
 
-    Route::get(
+    
+});
+
+Route::middleware('web')->get(
         '/download-applicants-interview-file/{filename}',
         'JobApplicationsController@downloadApplicantsInterviewFile'
     )->name("download-applicants-interview-file");
-});
 
 
 Route::group(['prefix' => 'api/v2', 'namespace' => 'API'], function () {

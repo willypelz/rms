@@ -849,7 +849,7 @@ Route::group(['middleware' => 'web'], function () {
     
 });
 
-Route::middleware('web')->get(
+Route::get(
         '/download-applicants-interview-file/{filename}',
         'JobApplicationsController@downloadApplicantsInterviewFile'
     )->name("download-applicants-interview-file");

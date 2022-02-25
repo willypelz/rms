@@ -140,7 +140,8 @@ class JobApplicationsController extends Controller
     {
         $this->middleware('auth', [
             'except' => [
-                'saveTestResult'
+                'saveTestResult',
+                'downloadApplicantsInterviewFile'
             ]
         ]);
         $this->mailer = $mailer;

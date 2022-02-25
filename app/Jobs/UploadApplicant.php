@@ -41,6 +41,8 @@ class UploadApplicant implements ShouldQueue
      */
     public function handle()
     {
+        if (config('app.searcher') != 'solr') return;
+
         ini_set('memory_limit', '1024M');
         set_time_limit(0);
 

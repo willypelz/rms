@@ -800,6 +800,7 @@ class JobApplicationsController extends Controller
         try {
             $decrypted_file_name = decrypt($filename);
             $file = Storage::disk('Csv')->get($decrypted_file_name);
+            ini_set('max_execution_time', 500);
 
             return (new Response($file, 200))
                 ->header('Content-Type', 'application/*')

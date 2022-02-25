@@ -167,15 +167,13 @@ class PaymentController extends Controller
 
         $invoice = Invoices::with('items')->where('id',$invoiceDB->id)->first();
 
-        $user = Auth::user();
-$mail = Mail::send('emails.new.invoice', compact('invoice','invoice_type','user'), function ($m) use($invoice,$invoice_type) {
-                    $m->from('support@seamlesshiring.com', 'Seamlesshiring');
+        $client_id = $request->clientId;
 
-                    // $m->to('support@seamlesshiring.com')->subject('Customer Invoice: #'.$invoice->id);
+        $user = Auth::user();
+		$mail = Mail::send('emails.new.invoice', compact('invoice','invoice_type','user', 'client_id'), function ($m) use($invoice,$invoice_type, $client_id) {
+                    $m->from('support@seamlesshiring.com', 'Seamlesshiring');
                     $m->to(Auth::user()->email)->subject('Customer Invoice: #'.$invoice->id);
             });
-
-        
 
 
 

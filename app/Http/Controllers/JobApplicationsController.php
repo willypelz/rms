@@ -797,7 +797,7 @@ class JobApplicationsController extends Controller
 
     public function downloadApplicantsInterviewFile(string $filename)
     {
-        try {
+        
             $decrypted_file_name = decrypt($filename);
             $file = Storage::disk('Csv')->get($decrypted_file_name);
             ini_set('max_execution_time', 500);
@@ -807,9 +807,7 @@ class JobApplicationsController extends Controller
                 ->header('Cache-Control', 'public')
                 ->header('Content-Description', 'File Transfer')
                 ->header('Content-Disposition', 'attachment; filename=' . $decrypted_file_name);
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'File not found');
-        }
+        
     }
 
     public function massAction(Request $request)

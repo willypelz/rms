@@ -625,9 +625,7 @@ function get_company_logo($logo)
 function get_interview_note_templates($appl_id)
 {
     $appl = JobApplication::where('id', $appl_id)->first();
-    $workflowStep = $appl->job->workflow->workflowSteps->where('slug', $appl->status)->first();
-
-    if($workflowStep->type != "interview"){
+	if(strtolower( $appl->status) != "interview"){
         return "This Applicant has not been moved to an interview step.";
     }
 

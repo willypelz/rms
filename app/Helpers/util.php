@@ -908,7 +908,7 @@ if (!function_exists('userHasRole')) {
 
 function get_company_email_logo($logo='')
 {
-		$logo = empty($logo) ? getEnvData("APP_LOGO",url('img/seamlesshiring-logo.png')) :  url( 'img' ).'/'.$company->logo;
+	$logo = empty($logo) ? getEnvData("APP_LOGO",url('img/seamlesshiring-logo.png')) :  url( 'img' ).'/'.$logo;
 
 	$url = getEnvData("APP_URL");
     return

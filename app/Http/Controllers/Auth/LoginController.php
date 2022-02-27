@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Models\JobTeamInvite;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use App\User;
-use App\Models\Company;
-use Validator;
-use Illuminate\Http\Request;
-use Auth;
 use DB;
-use App\ActivationService;
-use Illuminate\Support\Facades\Hash;
+use Auth;
 use Crypt;
+use App\User;
+use Validator;
+use App\Models\Company;
+use App\ActivationService;
+use Illuminate\Http\Request;
+use App\Models\JobTeamInvite;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
@@ -61,15 +62,10 @@ class LoginController extends Controller
     public function verifyUser(Request $request)
     {
 
-        $user = User::whereEmail($request->email);
-        $user_clone =  $user->clone();
+        $user = User::whereEmail($request->email)->orWhere('username', $request->email)->first();
 
-        if($user->count()){
-            //if client_id is not set, continue with normal flow hence use the client_id
-            
-            $user = $user->where('client_id', $request->clientId)->orWhere('username', $request->email)->first() ?? $user_clone->orWhere('username', $request->email)->first();
-
-            // TODO
+        if($user){
+        // TODO
             $is_internal = $user->is_internal;
 
 
@@ -204,10 +200,6 @@ class LoginController extends Controller
                 $logo = '';
             }
 
-
-
-
-
             $com['name'] = $request->company_name;
             $com['slug'] = $request->slug;
             $com['phone'] = $request->phone;
@@ -320,15 +312,14 @@ class LoginController extends Controller
         if(Auth::check()){
             //audit trail
             admin_audit_log();
-          return redirect()->route('dashboard');
-        }
-        elseif(Auth::guard('candidate')->check()) {
+            return redirect()->route('dashboard');
+        } elseif (Auth::guard('candidate')->check()) {
             //audit trail
             audit_log();
-          return redirect()->route('candidate-dashboard');
+            return redirect()->route('candidate-dashboard');
+        } else {
+            return redirect('/');
         }
-        else
-          return redirect('/');
     }
 
     /**
@@ -340,25 +331,23 @@ class LoginController extends Controller
      */
     public function loginUser($url, $user_id, $token)
     {
-
-
         $user_id = base64_decode($user_id);
         $url = base64_decode($url);
 
         $user = User::find($user_id);
-        if($token == $user->user_token){
-          Auth::login($user);
-          $user->user_token = '';
-          $user->save();
-          $company = Company::find(base64_decode(\request()->company_id));
+        if ($token == $user->user_token) {
+            Auth::login($user);
+            $user->user_token = '';
+            $user->save();
+            $company = Company::find(base64_decode(\request()->company_id));
 
-          if ($company) {
-              session()->put('current_company_index', $company->id);
-          }
+            if ($company) {
+                session()->put('current_company_index', $company->id);
+            }
 
-          return redirect($url);
-        }else{
-          return ['status' => false, 'message' => 'Token not valid'];
+            return redirect($url);
+        } else {
+            return ['status' => false, 'message' => 'Token not valid'];
         }
     }
 
@@ -396,25 +385,13 @@ class LoginController extends Controller
 
     }
 
-    public function logout(){
+    public function logout() {
         cache()->flush();
         auth()->logout();
-        if(getEnvData('RMS_STAND_ALONE',true,request()->clientId) == false){ //redirect to hrms if rms is not stand alone
-            return redirect(getEnvData('STAFFSTRENGTH_URL',null,request()->clientId));
+        if (getEnvData('RMS_STAND_ALONE', false, request()->clientId)) { //redirect to hrms if rms is not stand alone
+            return redirect(getEnvData('STAFFSTRENGTH_URL', null, request()->clientId));
         }
+
         return redirect('/login');
-    }
-
-    public function login(Request $request){
-        $loginCred = ['email' => $request->input('email'), 'password' => $request->input('password'),'client_id'=> $request->clientId];
-        //added client_id to login_cred array for users to only login to the intended dashboard, since there can now be multiple 
-        //usage of same email provided it is for a different client
-        if (Auth::attempt($loginCred)){
-               return redirect()->route('dashboard');
-
-        } else {
-            $request->session()->flash('warning', "Invalid Credentials");
-            return back();
-        }
     }
 }

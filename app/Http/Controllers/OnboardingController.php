@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use Curl;
+use Mail;
+use App\User;
+use Carbon\Carbon;
+use App\Models\Job;
 use App\Http\Requests;
 use App\Libraries\Solr;
 use App\Models\Company;
-use App\Models\FolderContent;
-use App\Models\Job;
 use App\Models\JobActivity;
-use App\User;
-use Auth;
-use Carbon\Carbon;
-use Curl;
 use Illuminate\Http\Request;
-use Mail;
+use App\Models\FolderContent;
+use App\SearchEngine\SearchEngine;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 
 
@@ -29,6 +30,7 @@ class OnboardingController extends Controller
     public function __construct()
     {
         // $this->middleware('auth');
+        $this->searchEngine = app(SearchEngine::class);
     }
 
     /**
@@ -55,9 +57,9 @@ class OnboardingController extends Controller
 
         $posts = @json_decode($response)->data->posts;
 
-        $talent_pool_count = SolrPackage::get_all_my_cvs($this->search_params)['response']['numFound'];
-        $saved_cvs_count = SolrPackage::get_saved_cvs($this->search_params)['response']['numFound'];
-        $purchased_cvs_count = SolrPackage::get_purchased_cvs($this->search_params)['response']['numFound'];
+        $talent_pool_count = $this->searchEngine->get_all_my_cvs($this->search_params)['response']['numFound'];
+        $saved_cvs_count = $this->searchEngine->get_saved_cvs($this->search_params)['response']['numFound'];
+        $purchased_cvs_count = $this->searchEngine->get_purchased_cvs($this->search_params)['response']['numFound'];
 
         // dd( FolderContent::where('getFolderType.type','saved')->get()->toArray() );
         $activities_exist = showActivitiesButton($jobs_list);

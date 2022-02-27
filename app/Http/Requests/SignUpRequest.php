@@ -47,7 +47,7 @@ class SignUpRequest extends FormRequest
             "phone" => "required|min:11",
             "domain" => "required",
             "password" => ["required","confirmed",Password::min(8)->mixedCase()->numbers()->symbols()],  
-            "type"=>'required|in:STARTER,PROFESSIONAL,ENTERPRISE'          
+            "type"=>'nullable|in:STARTER,PROFESSIONAL,ENTERPRISE'
         ];
     }
 

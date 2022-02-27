@@ -18,7 +18,7 @@ class SystemSettingsController extends Controller
     {
         $systemSettings = SystemSetting::whereClientId(
             request()->clientId
-        )->paginate(30);
+        )->paginate(100);
         return view('admin.clientEnv.index')->with('clientEnv', $systemSettings);
     }
 

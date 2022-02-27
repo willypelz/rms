@@ -20,7 +20,7 @@
             <div class="">
               <div class="row">
                 <div class="col-sm-12 text-center">
-                  <h4 class="text-brandon l-sp-5 text-uppercase">Job Team Accept</h4>
+                  <h4 class="text-brandon l-sp-5 text-uppercase">WELCOME TO THE JOB TEAM</h4>
                 </div>
                 <div class="clearfix"></div>
               </div>
@@ -55,7 +55,7 @@
                         </div>
                         @else
                             <div class="col-sm-4 col-sm-offset-4">
-                              <a href="{{ route('select-company',['id'=>$company->id]) }}" class="btn btn-success btn-block">Login</a>
+                              <a href="{{ route('select-company',['slug'=>$company->slug]) }}" class="btn btn-success btn-block">Login</a>
                             </div>
                         @endif
                         @else
@@ -79,7 +79,7 @@
                   @if( !$is_new_user && Auth::check() )
                   <div class="col-sm-4 col-sm-offset-4">
                     <!-- Click here if you already have an account -->
-                    <a href="{{ route('select-company',['id'=> $company->id]) }}" class="btn btn-success btn-block">Login</a>
+                    <a href="{{ route('select-company',['slug'=> $company->slug]) }}" class="btn btn-success btn-block">Login</a>
                   </div>
                   @elseif($is_internal == 1)
                     @php

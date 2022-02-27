@@ -287,13 +287,15 @@
                                     </div>
                                     <div class="col-xs-5">
                                         <div class="row">
-                                            <div class="col-sm-6">
-                                                <button id="save-continue-btn" data-target='none' data-toggle="modal"
-                                                        data-target="#savedAsDraft"
-                                                        class="btn btn-primary btn-block submit-continue">
-                                                    Save and continue later
-                                                </button>
-                                            </div>
+                                            @if(!$job)
+                                                <div class="col-sm-6">
+                                                    <button id="save-continue-btn" data-target='none' data-toggle="modal"
+                                                            data-target="#savedAsDraft"
+                                                            class="btn btn-primary btn-block submit-continue">
+                                                        Save and continue later
+                                                    </button>
+                                                </div>
+                                            @endif
                                             <div class="col-sm-6">
                                                 <button id="next-job-btn" data-target='redirect'
                                                         class="btn btn-success btn-block submit-continue">
@@ -315,7 +317,7 @@
                                              <div class="text-center">
                                                 <br>
                                                 <i class="fa fa-check text-success fa-4x"></i>
-                                                <h5>Your job posting has been saved as draft</h5>
+                                                <h5>Your job posting has been saved</h5>
                                                 <div class="pad-ft">
                                                     <a href="{{ route('job-list') }}" class="btn btn-success">Go to job list</a>
                                                 </div>

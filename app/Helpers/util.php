@@ -17,6 +17,8 @@ use App\Models\JobActivity;
 use App\Models\TestRequest;
 use App\Jobs\UploadApplicant;
 use App\Models\SystemSetting;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Ixudra\Curl\Facades\Curl;
 use App\Models\JobApplication;
 use App\Models\PermissionRole;
@@ -63,7 +65,7 @@ function grades()
 
 function getGrade($index)
 {
-    return grades()[$index];
+    return grades()[$index] ?? 'Unspecified';
 }
 
 function human_time($time, $max_units = NULL)
@@ -316,10 +318,26 @@ function get_application_statuses($status, $job_id = null, $statuses = [])
     $ret = array();
     $all = 0; //total number of results
 
-    if (is_null($job_id))
-        $status_from_db = collect(\DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`cv_id`=`cvs`.`id`"));
-    else
-        $status_from_db = collect(\DB::select("SELECT DISTINCT `cvs`.`email`,`job_applications`.status FROM `cvs`,`job_applications` where `job_applications`.`job_id` = " . $job_id . " and `job_applications`.`cv_id`=`cvs`.`id`"));
+    $applications = JobApplication::with('cvSelected')
+                        ->whereHas('cvSelected');
+
+    if (is_null($job_id)) {
+
+        $companyJobs = Job::getMyJobIds(true);
+
+        $applications->whereIn('job_id', $companyJobs);
+
+    } else {
+        $applications = $applications->where('job_id', $job_id);
+    }
+
+    $status_from_db = $applications->get()
+                    ->transform(function ($app) {
+                        return [
+                            'email' => $app->cv->email,
+                            'status' => $app->status
+                        ];
+                    });
 
     $status_array2 = ['ALL' => $status_from_db->count()];
 
@@ -330,6 +348,33 @@ function get_application_statuses($status, $job_id = null, $statuses = [])
 
     return $status_array2;
 
+}
+
+if (!function_exists('setSessions')) {
+    function setSessions(?\Illuminate\Http\Request $request = null) {
+        $currentUrl = url('');
+
+        $client = DB::table('clients')->where('url', $currentUrl)->first();
+
+        $companyIds = Company::where('client_id',$client->id)->pluck('id');
+
+
+        if (!session()->get('current_company_index')) {
+            \session()->put('current_company_index', $companyIds->first());
+        }
+
+        if (!session()->get('active_company')) {
+            \session()->put('active_company', Company::find($companyIds->first()));
+        }
+
+        if ($request) {
+            $request->merge(['clientId' => $client->id, 'companyIds' => $companyIds]);
+
+            return $request;
+        }
+
+        return null;
+    }
 }
 
 
@@ -382,7 +427,8 @@ function get_current_company()
 {
 
     $authUser = Auth::user();
-    $sessionId = Session::get('current_company_index');
+
+    $sessionId = session()->get('current_company_index');
 
     if (!is_null($authUser)) {
         //If a company is selected
@@ -580,9 +626,7 @@ function get_company_logo($logo)
 function get_interview_note_templates($appl_id)
 {
     $appl = JobApplication::where('id', $appl_id)->first();
-    $workflowStep = $appl->job->workflow->workflowSteps->where('slug', $appl->status)->first();
-
-    if($workflowStep->type != "interview"){
+	if(strtolower( $appl->status) != "interview"){
         return "This Applicant has not been moved to an interview step.";
     }
 
@@ -614,7 +658,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
 
     $options = (is_null($options)) ? 'upToJob' : $options;
 
-    Log::info(json_encode($cvs));
+    \Log::info(json_encode($cvs));
 
     switch ($options) {
         case 'upToJob':
@@ -638,7 +682,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
             $relocate = 0;
         }
 
-        Log::info($request->type);
+        \Log::info($request->type);
 
         switch ($request->type) {
             case 'single':
@@ -685,7 +729,7 @@ function saveCompanyUploadedCv($cvs, $additional_data, $request)
             case 'bulk':
                 // $last_cv_upload_index++;
                 $emailKey = trim(strtolower($key));
-                Log::info('Bulk uploaid');
+                \Log::info('Bulk uploaid');
                 $last_cv = Cv::insertGetId(['first_name' => $key, 'email' => $emailKey . '@seamlesshrbulk.com', 'cv_file' => $cv, 'cv_source' => $cv_source]);
                 break;
 
@@ -853,10 +897,19 @@ function getCurrentLoggedInUserRole()
     return auth()->user()->roles()->first();
 }
 
-function get_company_email_logo()
+if (!function_exists('userHasRole')) {
+    function userHasRole(string $role) : bool {
+        $roles = auth()->user()->roles()->pluck('name')->toArray();
+        return in_array($role, $roles);
+    }
+}
+
+
+function get_company_email_logo($logo='')
 {
-    $logo = getEnvData("APP_LOGO",url('img/seamlesshiring-logo.png'));
-    $url = getEnvData("APP_URL");
+	$logo = empty($logo) ? getEnvData("APP_LOGO",url('img/seamlesshiring-logo.png')) :  url( 'img' ).'/'.$logo;
+
+	$url = getEnvData("APP_URL");
     return
         "<a href='$url' style='font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2' target='_blank'>
 		<img src='$logo' width='50%' height='' style='outline:none;text-decoration:none;display:block;min-height:31px;margin:0 auto;border:0;' class='CToWUd' alt='COMPANY_LOGO'>
@@ -1056,12 +1109,15 @@ function getResponseFromHrmsByGET(string $url, array $data = []){
  * @return int
  */
 function getCompanyId($userId = null) {
-
 	if (is_null($userId)) {
-		$company_id = is_null(session('active_company')) ? optional(auth()->user())->defaultCompany()->id : session('active_company')->id;
+		$company_id = is_null(session('current_company_index')) ? optional(auth()->user())->defaultCompany()->id : session('current_company_index');
 	} else {
-		$company_id = User::find($userId)->first()->defaultCompany()->id;
+		$company_id = is_null(session('current_company_index')) ? User::find($userId)->first()->defaultCompany()->id : session('current_company_index');
 	}
+
+    if (is_null(session('active_company'))) {
+        session()->put('active_company', Company::find($company_id));
+    }
 
 	return $company_id;
 }
@@ -1196,7 +1252,7 @@ function getIntendedCompanyToPostJobTo($id){
  */
 function setSystemConfig($client_id)
 {
-    $client_id = !is_null($client_id) ? $client_id : get_current_company()->client_id;
+    $client_id = !is_null($client_id) ? $client_id : optional(get_current_company())->client_id;
 
     if (is_null($client_id)) {
         $client_id = request()->clientId;
@@ -1246,12 +1302,17 @@ function getEnvData(string $key, $default_value = null, $client_id = null)
         //change key to uppercase
         $key = strtoupper($key);
         //check if an empty string key is passed
-        if (is_null($key))
+        if (is_null($key)) {
             return $default_value;
+        }
+
+        if (is_null($client_id)) {
+            $client_id = optional(get_current_company())->client_id;
+        }
 
         if(is_null($client_id))
             $client_id = optional(get_current_company())->client_id;
-        info('clientId: ' . $client_id);
+
         $systemConfigObject = getSystemConfig($client_id);
         info('Gotten config: ' . json_encode($systemConfigObject));
         if (!is_null($systemConfigObject)) {
@@ -1293,7 +1354,7 @@ function companyRoute(int $client_id, string $name, array $parameters = []): str
  * * @return object
  */
 function getClient($url){
-    return Client::where('id', $company_id)->first() ?? null;
+    return Client::where('id', $company_id ?? null)->first() ?? null;
 }
 
 function getCandidateCompanyId(){
@@ -1331,4 +1392,21 @@ function showActivitiesButton($job_builder){
  */
 function onlyOneAdminLeft(){
     return get_current_company()->users->unique()->count() == 1 ? true : false;
+}
+
+
+/**
+ * @param int $id
+ * @return \Illuminate\Validation\Rules\Unique
+ */
+function validateInterviewNoteByCompany($id) {
+	return Rule::unique('interview_note_templates')->where(
+		function ($query) use ($id) {
+			$result = $query->where('company_id', '=', get_current_company()->id);
+			if($id !=='NULL'){
+				$result->where('id', '!=', $id);
+			}
+			return $result;
+		}
+	);
 }

@@ -107,16 +107,12 @@
                     <a class="" href="{{ url('my-career-page') }}" target="_blank">My Career Page <i
                                 class="fa fa-building mask"></i></a>
                 </li>
-                @if( getEnvData('RMS_STAND_ALONE',true) == false)
+                @if( isHrmsIntegrated())
                     <li class="">
-                            <a class="" href="{{url(getEnvData('STAFFSTRENGTH_URL'))}}" target="_blank">HRMS Portal <i
+                            <a class="" href="{{url(getEnvData('STAFFSTRENGTH_URL', null, request()->clientId))}}" target="_blank">HRMS Portal <i
                                         class="fa fa-building mask"></i></a>
                     </li>
                 @endif
-
-            <!--li class="">
-                    <a class="" href="">Mail <span class="badge badge-danger animated bounce">3</span></a>
-                </li-->
             
             </ul>
             
@@ -166,11 +162,11 @@
                     </a>
                     <ul class="dropdown-menu top-user-menu" aria-labelledby="drop3">
                         <!-- <li><a href="setting.php">Account Setting</a></li>  -->
-                        <?php $companies = Auth::user()->companies->where('client_id', request()->clientId); ?>
+                        <?php $companies = Auth::user()->companies->where('client_id', request()->clientId)->unique(); ?>
                         @if (canSwitchBetweenPage())
                             @foreach( $companies as $key => $company )
                                 <li>
-                                    <a href="{{ route('select-company',['id'=>$company->id]) }}"> @if( $company->id == get_current_company()->id )
+                                    <a href="{{ route('select-company', ['slug'=>$company->slug, 'id'=>$company->id]) }}"> @if( $company->id == get_current_company()->id )
                                             <i class="fa fa-check"></i> @endif {{  $company->name }}</a></li>
                                     @if(count($companies)-1 != $key)
                                             <hr role="separator" class="divider pt-4 mt-5"/>

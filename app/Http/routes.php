@@ -22,7 +22,6 @@
 | kernel and includes session state, CSRF protection, and more.
 |
 */
-
 use App\Libraries\Solr;
 use Illuminate\Support\Facades\Route;
 
@@ -48,11 +47,13 @@ Route::group(['middleware' => ['web','auth','admin']], function () {
     Route::get('clientEnv/delete/{id}', 'SystemSettingsController@delete')->name('delete-env');
 });
 
-Route::group(['prefix' => 'client', 'middleware' => 'allowUrl'], function () {
-    
-    Route::get('/signup', 'SelfSignupController@index')->name('client-signup-index');
-    Route::post('/signup', 'SelfSignupController@create')->name('client-signup-create');
-});
+Route::group(
+    ['prefix'=>'client', 'middleware' => 'allowUrl'],
+    function () {
+        Route::get('/signup', 'SelfSignupController@index')->name('client-signup-index');
+        Route::post('/signup', 'SelfSignupController@create')->name('client-signup-create');
+    }
+);
 
 // admin company 
 Route::group(['middleware' => ['web', 'auth', 'companyList']], function () {
@@ -359,7 +360,6 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::get('onboard/noAction1', ['as' => 'onboard-no-action-1', 'uses' => 'OnboardingController@noAction1']);
     Route::get('onboard/noAction2', ['as' => 'onboard-no-action-2', 'uses' => 'OnboardingController@noAction2']);
     Route::get('onboard/noAction3', ['as' => 'onboard-no-action-3', 'uses' => 'OnboardingController@noAction3']);
-
 
 
     Route::get('settings/embed',
@@ -715,7 +715,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'decline-invite/{id}',  ['uses' => 'JobsController@declineInvite', 'as' => 'decline-invite']);
 
-    Route::match(['get', 'post'], 'select-company/{id?}', ['uses' => 'JobsController@selectCompany', 'as' => 'select-company'])->middleware('auth');
+    Route::match(['get', 'post'], 'select-company', ['uses' => 'JobsController@selectCompany', 'as' => 'select-company'])->middleware('auth');
 
     Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
 

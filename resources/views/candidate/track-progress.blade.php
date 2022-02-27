@@ -28,7 +28,7 @@
       <ul class="list-group list-notify list-track">
         
         @foreach( Auth::guard('candidate')->user()->applications as $application )
-          @if(@$application->job->status == "ACTIVE")
+          @if($application->job->status == "ACTIVE")
           <li role="candidate-application" class="list-group-item">
             
             <a href="{{ route('candidate-activities', ['application_id' => $application->id ]) }}"><h4 class="no-margin text-info">{{ $application->job->title }}</h4></a>

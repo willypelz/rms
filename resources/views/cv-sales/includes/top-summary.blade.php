@@ -1,4 +1,4 @@
-	<?php 
+<?php
 		$type = ( $type == 'ASSESSED' ) ? 'TEST' : $type;
 	?>
 	<strong class="text-warning">Showing
@@ -7,10 +7,8 @@
 
 
 	<div class=" text-uppercase">
-
 	@if( !empty( @$filters ) )
-		
-		<i class="fa fa-filter"></i> Filtering by: 
+		<i class="fa fa-filter"></i> Filtering by:
 
 		<span class="text-uppercase text-warning"> 
 			<?php 

@@ -48,7 +48,7 @@ Route::group(['middleware' => ['web','auth','admin']], function () {
 });
 
 Route::group(
-    ['prefix'=>'client', 'middleware' => 'allowUrl'],
+    ['prefix'=>'client', 'middleware' => 'allowUrl'], 
     function () {
         Route::get('/signup', 'SelfSignupController@index')->name('client-signup-index');
         Route::post('/signup', 'SelfSignupController@create')->name('client-signup-create');
@@ -205,7 +205,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     
     Route::resource('schedule', 'JobApplicationsController');
 
-    Route::get('/download_applicants_interview_file/{filename}', 'JobApplicationsController@downloadApplicantsInterviewFile')->name("download_applicants_interview_file");
+    Route::get('/download-applicants-interview-file/{filename}', 'JobApplicationsController@downloadApplicantsInterviewFile')->name("download-applicants-interview-file");
 
     Route::match(['get', 'post'], 'one_applicant',
         ['uses' => 'JobApplicationsController@oneApplicantData']);
@@ -504,7 +504,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::post('/settings/api-key', 'ApiController@update');
 
     Route::get('/my-career-page', 'JobsController@MyCompany');
-    Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
+    Route::middleware('auth')->match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
     Route::get('my-jobs-content', ['uses' => 'JobsController@JobList', 'as' => 'job-list-content']);
 
 });

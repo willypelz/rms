@@ -263,7 +263,6 @@ class JobApplicationsController extends Controller
 
         $messages = CandidateMessage::where('job_application_id', $appl->id)->get();
         return view('applicant.messages', compact('appl', 'nav_type', 'messages'));
-
     }
 
 

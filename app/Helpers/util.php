@@ -1314,10 +1314,10 @@ function getEnvData(string $key, $default_value = null, $client_id = null)
             $client_id = optional(get_current_company())->client_id;
 
         $systemConfigObject = getSystemConfig($client_id);
-        info('Gotten config: ' . json_encode($systemConfigObject));
+
         if (!is_null($systemConfigObject)) {
             $systemConfigData = $systemConfigObject->{$key} ?? null;
-            info('Extracted Config: '. json_encode($systemConfigData));
+
             return $systemConfigData ?? $default_value;
         }
 
@@ -1343,7 +1343,6 @@ function companyRoute(int $client_id, string $name, array $parameters = []): str
 {
     $clientUrl = Client::where('id', $client_id)->first()->url ?? null;
     app('url')->forceRootUrl($clientUrl);
-
     return route($name, $parameters);
 }
 

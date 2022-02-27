@@ -543,7 +543,7 @@
                                                                                             class="text-danger">*</span>@endif
                                                                             </label>
 
-                                                                            {{ Form::file('cv_file', ( $fields->cv_file->is_required ) ? ["required"] : null ) }}
+                                                                            <input type="file" name="cv_file" @if($fields->cv_file->is_required) required @endif accept="application/pdf">
                                                                         </div>
                                                                         <div class="col-xs-12 mt-20">
 

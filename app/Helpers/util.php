@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\CompanyUser;
 use App\User;
 use App\Models\Cv;
 use Carbon\Carbon;
@@ -13,6 +12,7 @@ use App\Models\Candidate;
 use App\Models\Interview;
 use App\Models\Permission;
 use App\Models\ActivityLog;
+use App\Models\CompanyUser;
 use App\Models\JobActivity;
 use App\Models\TestRequest;
 use App\Jobs\UploadApplicant;
@@ -22,15 +22,16 @@ use Illuminate\Validation\Rule;
 use Ixudra\Curl\Facades\Curl;
 use App\Models\JobApplication;
 use App\Models\PermissionRole;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use App\Models\InterviewNoteTemplates;
 use Illuminate\Support\Facades\Cache;
+use App\Models\InterviewNoteTemplates;
 use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Types\Object_;
+
 use GeneaLabs\LaravelMixpanel\Facades\Mixpanel;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
-
-use Illuminate\Support\Facades\Auth;
 // use Faker;
 
 function test()
@@ -1342,7 +1343,6 @@ function companyRoute(int $client_id, string $name, array $parameters = []): str
 {
     $clientUrl = Client::where('id', $client_id)->first()->url ?? null;
     app('url')->forceRootUrl($clientUrl);
-    
     return route($name, $parameters);
 }
 
@@ -1353,7 +1353,7 @@ function companyRoute(int $client_id, string $name, array $parameters = []): str
  * * @return object
  */
 function getClient($url){
-    return Client::where('id', $company_id)->first() ?? null;
+    return Client::where('id', $company_id ?? null)->first() ?? null;
 }
 
 function getCandidateCompanyId(){

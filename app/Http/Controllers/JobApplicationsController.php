@@ -1737,7 +1737,7 @@ class JobApplicationsController extends Controller
             if ($appl->job->company->id == 96) {
                 Mail::send(
                     'emails.new.interview_invitation_ibfc',
-                    ['cv' => $cv, 'job' => $job, 'interview' => (object)$data],
+                    ['cv' => $cv, 'job' => $job, 'companyDetails' => $appl->job->company, 'interview' => (object)$data],
                     function (Message $m) use ($cv) {
                         $m->from(getEnvData('COMPANY_EMAIL'))->to($cv->email)->subject('Interview Invitation');
                     }
@@ -1745,7 +1745,7 @@ class JobApplicationsController extends Controller
             } else {
                 Mail::send(
                     'emails.new.interview_invitation',
-                    ['cv' => $cv, 'job' => $job, 'interview' => (object)$data],
+                    ['cv' => $cv, 'job' => $job, 'companyDetails' => $appl->job->company, 'interview' => (object)$data],
                     function (Message $m) use ($cv, $invite) {
                         $m->from($this->sender, get_current_company()->name)
                             ->replyTo($this->replyTo, get_current_company()->name)
@@ -1765,7 +1765,7 @@ class JobApplicationsController extends Controller
                 //send mail to interviewer
                 Mail::send(
                     'emails.new.interviewer',
-                    ['cv' => $cv, 'job' => $job, 'interviewer' => $interviewer, 'interview' => (object)$data],
+                    ['cv' => $cv, 'job' => $job, 'companyDetails' => $appl->job->company,  'interviewer' => $interviewer, 'interview' => (object)$data],
                     function (Message $m) use ($cv, $interviewer) {
                         $m->from($this->sender, get_current_company()->name)
                             ->replyTo($this->replyTo, get_current_company()->name)
@@ -1814,12 +1814,13 @@ class JobApplicationsController extends Controller
 
             $interview = (object) $data;
 
+
             $invite_email = view('emails.new.interview_invitation', compact('cv', 'job', 'interview'))->render();
 
             $interviewer['name'] = "{Interviewer Name}";
             $interviewer = (object) $interviewer;
-
-            $interviewer_email = view('emails.new.interviewer', compact('cv', 'job', 'interview', 'interviewer'))->render();
+	        $companyDetails = $appl->job->company,
+            $interviewer_email = view('emails.new.interviewer', compact('cv', 'job', 'companyDetails', 'interview', 'interviewer'))->render();
             return view('admin.preview', compact('invite_email', 'interviewer_email'));
         }
     }

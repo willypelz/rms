@@ -53,38 +53,38 @@ options:
   size: 2x
 
 pipelines:
-  
+
   branches:
     v2-kubernetes:
-      - step: 
+      - step:
           <<: *Build-Image
           name: Build-Image
           deployment: rms-kubernetes
         services:
           - docker
     non-recurring-dev-kubernetes:
-      - step: 
+      - step:
           <<: *Build-Image
           name: Build-Image
           deployment: non-recurring-dev-rms-kube
         services:
           - docker
     non-recurring-qa-kubernetes:
-      - step: 
+      - step:
           <<: *Build-Image
           name: Build-Image
           deployment: non-recurring-qa-rms-kube
         services:
           - docker
     non-recurring-uat-kubernetes:
-      - step: 
+      - step:
           <<: *Build-Image
           name: Build-Image
           deployment: non-recurring-uat-rms-kube
         services:
           - docker
     non-recurring-standalone-kubernetes:
-      - step: 
+      - step:
           <<: *Build-Image
           name: Build-Image
           deployment: non-recurring-standalone-kube

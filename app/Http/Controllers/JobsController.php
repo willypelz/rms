@@ -219,7 +219,7 @@ class JobsController extends Controller
             //Send notification mail
             $email_from = (Auth::user()->email) ? Auth::user()->email : getEnvData('COMPANY_EMAIL', null, request()->clientId);
 
-            \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $job_team_invite, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($job_team_invite) {
+            \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $job_team_invite, 'job_title' => $job->title, 'companyDetails' => $company, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($job_team_invite) {
                 $m->from(getEnvData('COMPANY_EMAIL', null, request()->clientId))->to($job_team_invite->email)->subject('You Have Been Exclusively Invited');
             });
 
@@ -243,7 +243,7 @@ class JobsController extends Controller
         //Send notification mail
         $email_from = (Auth::user()->email) ? Auth::user()->email : getEnvData('COMPANY_EMAIL', null, request()->clientId);
 
-        \Illuminate\Support\Facades\Mail::send('emails.new.cancel_job_team_invitation', ['data' => $job_team_invite, 'job_title' => $job->title, 'company' => $company->name], function (Message $m) use ($job_team_invite) {
+        \Illuminate\Support\Facades\Mail::send('emails.new.cancel_job_team_invitation', ['data' => $job_team_invite, 'job_title' => $job->title, 'companyDetails' => $company, 'company' => $company->name], function (Message $m) use ($job_team_invite) {
             $m->from(getEnvData('COMPANY_EMAIL', null, request()->clientId))->to($job_team_invite->email)->subject('Notice of cancellation');
         });
 

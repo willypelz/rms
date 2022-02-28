@@ -1,82 +1,92 @@
-#image: atlassian/default-image:2
-image: php:7.3-cli
+image: atlassian/default-image:2
 
 definitions:
+  services:
+    docker:
+      memory: 7128
   steps:
-    - step: &Composer
-        name: Composer
-        caches:
-          - composer
+    - step: &Build-Image
+        name: Build Image
+        services:
+          - docker
         script:
-          - apt-get update
-          - apt-get install -y zip git jq zlib1g-dev libpng-dev libzip-dev
-          - docker-php-ext-install gd zip pdo mysqli pdo_mysql mbstring pcntl
-          - echo ${AUTH_JSON} > auth.json
-          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-          - mkdir -p bootstrap/cache
-          - mkdir -p storage/framework storage/framework/views storage/framework/sessions storage/framework/cache
-          - rm auth.json
-          - cd ..
-          - mkdir -p composer-build
-          - (cd build; tar cf - .) | (cd composer-build; tar xvf -)
-          - mv composer-build build
-          - chmod -R 775 build/composer-build
-        artifacts:
-          - composer-build/**
-    - step: &Code-Deploy
-        name: Code Deploy
-        script:
-          - apt-get update && apt-get install -y zip
-          - cp -R composer-build/* .
-          - rm -rf composer-build
-          - mkdir -p bootstrap/cache
-          - mkdir -p storage/framework storage/framework/views storage/framework/sessions storage/framework/cache
-          - zip -r application-multi-tenancy-v8.zip .
-          - pipe: atlassian/aws-code-deploy:0.5.0
-            variables:
-              AWS_DEFAULT_REGION: $AWS_DEPLOYMENT_REGION
-              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-              APPLICATION_NAME: $AWS_APPLICATION_NAME
-              S3_BUCKET: $AWS_DEPLOYMENT_BUCKET
-              COMMAND: 'upload'
-              ZIP_FILE: 'application-multi-tenancy-v8.zip'
-              VERSION_LABEL: 'rms-build-${BITBUCKET_BUILD_NUMBER}'
 
-          - pipe: atlassian/aws-code-deploy:0.5.0
+          - source ./check.sh
+          - IMAGE="seamlesshr/${KUBE_META_NAME}"
+          - VERSION="HRMS-${BITBUCKET_BUILD_NUMBER}"
+          - echo ${DOCKERHUB_PASSWORD} | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
+          # - sh [[ ! -z "${BITBUCKET_TAG}" ]] && export IMAGE_BRANCH="${BITBUCKET_TAG}" || export IMAGE_BRANCH="${BITBUCKET_BRANCH}"
+          - docker build -t ${IMAGE} --build-arg SECRETHUB_CREDENTIAL=${SECRETHUB_CRED} --build-arg IMAGE_TAG={BITBUCKET_BRANCH} .
+          - docker tag ${IMAGE} ${IMAGE}:${VERSION}
+          - docker push ${IMAGE}
+          - envsubst < deployment.tpl.yaml > deployment-${KUBE_META_NAME}.yaml
+          - mkdir -p s3/products && cp deployment-${KUBE_META_NAME}.yaml s3/products/deployment-${KUBE_META_NAME}.yaml
+          - pipe: atlassian/aws-s3-deploy:0.4.5
+
             variables:
-              AWS_DEFAULT_REGION: $AWS_DEPLOYMENT_REGION
-              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-              APPLICATION_NAME: $AWS_APPLICATION_NAME
-              DEPLOYMENT_GROUP: $AWS_DEPLOYMENT_GROUP
-              S3_BUCKET: $AWS_DEPLOYMENT_BUCKET
-              COMMAND: 'deploy'
-              WAIT: 'false'
-              VERSION_LABEL: 'rms-build-${BITBUCKET_BUILD_NUMBER}'
-              IGNORE_APPLICATION_STOP_FAILURES: 'true'
-              FILE_EXISTS_BEHAVIOR: 'OVERWRITE'
-  
+              S3_BUCKET: 'seamlesshrms-kubernetes-deployments'
+              LOCAL_PATH: 's3'
+              EXTRA_ARGS: '--metadata image-tag="${IMAGE}:${VERSION}"'
+          - pipe: atlassian/aws-eks-kubectl-run:1.2.0
+            variables:
+              AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID_KUBERNETES}
+              AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY_KUBERNETES}
+              AWS_DEFAULT_REGION: "us-east-1"
+              CLUSTER_NAME: ${AWS_CLUSTER_NAME_KUBERNETES}
+              KUBECTL_COMMAND: "apply"
+              RESOURCE_PATH: "deployment-${KUBE_META_NAME}.yaml"
+              DEBUG: "true"
+              KUBECTL_ARGS:
+                - "--dry-run"
+          - pipe: atlassian/aws-eks-kubectl-run:1.2.0
+            variables:
+              AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID_KUBERNETES}
+              AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY_KUBERNETES}
+              AWS_DEFAULT_REGION: "us-east-1"
+              CLUSTER_NAME: ${AWS_CLUSTER_NAME_KUBERNETES}
+              KUBECTL_COMMAND: "apply"
+              RESOURCE_PATH: "deployment-${KUBE_META_NAME}.yaml"
+              DEBUG: "true"
+
+
+options:
+  size: 2x
+
 pipelines:
 
-  tags:
-    v3.*.*:
-      - step: *Composer
-      - step: *Code-Deploy
-
   branches:
-    code-deploy:
-      - step: *Composer
-      - step: *Code-Deploy
-    MultitenancyV8:
-      - step: *Composer
+    v2-kubernetes:
       - step:
-          <<: *Code-Deploy
-          name: Code Deploy
-          deployment: MultitenancyV8
-    MultitenancyV8Dev:
-      - step: *Composer
+          <<: *Build-Image
+          name: Build-Image
+          deployment: rms-kubernetes
+        services:
+          - docker
+    non-recurring-dev-kubernetes:
       - step:
-          <<: *Code-Deploy
-          name: Code Deploy
-          deployment: MultitenancyV8Dev
+          <<: *Build-Image
+          name: Build-Image
+          deployment: non-recurring-dev-rms-kube
+        services:
+          - docker
+    non-recurring-qa-kubernetes:
+      - step:
+          <<: *Build-Image
+          name: Build-Image
+          deployment: non-recurring-qa-rms-kube
+        services:
+          - docker
+    non-recurring-uat-kubernetes:
+      - step:
+          <<: *Build-Image
+          name: Build-Image
+          deployment: non-recurring-uat-rms-kube
+        services:
+          - docker
+    non-recurring-standalone-kubernetes:
+      - step:
+          <<: *Build-Image
+          name: Build-Image
+          deployment: non-recurring-standalone-kube
+        services:
+          - docker

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Client;
 use Curl;
 use Mail;
 use App\Models\Job;
 use App\Http\Requests;
+use App\Models\Client;
 use App\Libraries\Solr;
 use App\Models\Company;
 use App\Models\Candidate;
@@ -51,7 +51,7 @@ class HomeController extends Controller
     public function homepage()
     {
 
-        $hirs_redirect = getEnvData('HIRS_REDIRECT_LOGIN');
+        $hirs_redirect = getEnvData('HIRS_REDIRECT_LOGIN', null, request()->clientId);
 
         // if(!is_null($hirs_redirect) &&  strlen($hirs_redirect) != 0 )
         //     return redirect('login');
@@ -81,25 +81,33 @@ class HomeController extends Controller
         }
 
         $jobs = Job::whereStatus('ACTIVE')
-	        ->where('is_for', '!=', 'internal')
+            ->where('is_for', '!=', 'internal')
             ->whereNotIn('is_private', [true])
             ->whereIn('company_id', $request->companyIds)
             ->where('expiry_date', '>=', date('Y-m-d'))
             ->take(getEnvData('JOB_HOMEPAGE_LIST', 3))
             ->orderBy('id', 'desc')
             ->get();
+
         $redirect_to = $request->redirect_to;
-        session()->put('redirect_to',$redirect_to);
+        session()->put('redirect_to', $redirect_to);
+
         if ($request->isMethod('post')) {
-            $this->validate($request, [
+            $this->validate(
+                $request, [
                 'email' => 'required|email',
                 'password' => 'required'
-            ]);
+                ]
+            );
 
-            $loginCred = ['email' => $request->input('email'), 'password' => $request->input('password'),'client_id'=> $request->clientId];
+            $loginCred = [
+                'email' => $request->input('email'), 
+                'password' => $request->input('password'),
+                'client_id'=> $request->clientId
+            ];
             //added client_id to login_cred array for candidates to only login to the intended dashboard, since there can now be multiple 
             //usage of same email provided it is for a different client
-            if (Auth::guard('candidate')->attempt($loginCred)){
+            if (Auth::guard('candidate')->attempt($loginCred)) {
 
                 $user = Auth::guard('candidate')->user();
                 if ($user) {
@@ -123,40 +131,50 @@ class HomeController extends Controller
 
         }
 
-
         return view('guest.landing', compact('jobs'));
     }
 
 
-      public function register(Request $request)
+    public function register(Request $request)
     {
         $redirect_value = session()->get('redirect_to');
         $redirect_to = $request->redirect_to ?? $redirect_value;
-
-        $jobs = Job::whereStatus('ACTIVE')->where('is_for', '!=', 'internal')->where('expiry_date', '>=', date('Y-m-d'))->take(getEnvData('JOB_HOMEPAGE_LIST', 3, request()->clientId))->orderBy('id', 'desc')->get();
         
-
-        if ($request->isMethod('post')) {        
+        $jobs = Job::whereStatus('ACTIVE')
+            ->where('is_for', '!=', 'internal')
+            ->where('expiry_date', '>=', date('Y-m-d'))
+            ->take(getEnvData('JOB_HOMEPAGE_LIST', 3, request()->clientId))
+            ->orderBy('id', 'desc')->get();
+        
+            
+        if ($request->isMethod('post')) {
 
             $registerCandidate = "Initiate Candidate Register(Candidate)";
             mixPanelRecord($registerCandidate, $request);
 
-            $this->validate($request, [
-                'first_name' => 'required|regex:/^[a-zA-Z]+$/u',
-                'last_name' => 'required|regex:/^[a-zA-Z]+$/u',
-                'email' => ['required','email', Rule::unique('candidates')->where(function($query) use($request) {
+            $this->validate(
+                $request, [
+                    'first_name' => 'required|regex:/^[a-zA-Z]+$/u',
+                    'last_name' => 'required|regex:/^[a-zA-Z]+$/u',
+                    'email' => ['required','email', Rule::unique('candidates')->where(
+                        function ($query) use ($request) {
                             $query->where('client_id', $request->clientId);
-                            })],
-                'password' => 'required',
-            ]);
-
-
-            $candidate = Candidate::firstOrCreate([
-                'email' => $request->email,
-                'client_id' => $request->clientId,
-            ])->update($request->only(['first_name', 'last_name']) + [
+                        }
+                    )
+                    ],
+                    'password' => 'required',
+                ]
+            );
+            $candidate = Candidate::updateOrCreate(
+                [
+                    'email' => $request->email,
+                    'client_id' => request()->clientId,
+                ], [
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
                     'password' => bcrypt($request->input('password'))
-                ]);
+                ]
+            );
                 
             $registerSuccess = "Candidate Registered Successfully(Candidate)";
             mixPanelRecord($registerSuccess, $request);
@@ -168,18 +186,15 @@ class HomeController extends Controller
                     if ($redirect_to) {
                         session()->forget('redirect_to');
                         return redirect($redirect_to);
-                    } else {
+                    } 
                         //audit_trail
-                        audit_log();
-                        return redirect()->route('candidate-dashboard');
-                    }
-
-                } else {
-                    $request->session()->flash('error', "Could not register. Please try again.");
-                    return back();
+                    audit_log();
+                    return redirect()->route('candidate-dashboard');
                 }
+                $request->session()->flash('error', "Could not register. Please try again.");
+                return back();
+                
             }
-
         }
 
         return view('guest.register', compact('redirect_to', 'jobs'));

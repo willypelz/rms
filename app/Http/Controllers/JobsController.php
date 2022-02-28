@@ -47,6 +47,7 @@ use App\Models\FormFieldValues;
 use App\Rules\PrivateEmailRule;
 use App\Imports\PrivateJobEmail;
 use App\Jobs\UploadSolrFromCode;
+use App\SearchEngine\SearchEngine;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -69,44 +70,22 @@ class JobsController extends Controller
     protected $mailer;
     protected $settings;
     private $states = [
-        'Lagos',
-        'Abia',
-        'Abuja',
-        'Adamawa',
-        'Akwa Ibom',
-        'Anambra',
-        'Bauchi',
-        'Bayelsa',
-        'Benue',
-        'Borno',
-        'Cross river',
-        'Delta',
-        'Edo',
-        'Ebonyi',
-        'Ekiti',
-        'Enugu',
-        'Gombe',
-        'Imo',
-        'Jigawa',
-        'Kaduna',
-        'Kano',
-        'Katsina',
-        'Kebbi',
-        'Kogi',
-        'Kwara',
-        'Niger',
-        'Ogun',
-        'Ondo',
-        'Osun',
-        'Oyo',
-        'Nassarawa',
-        'Plateau',
-        'Rivers',
-        'Sokoto',
-        'Taraba',
-        'Yobe',
+        'Lagos', 'Abia', 'Abuja',
+        'Adamawa', 'Akwa Ibom', 'Anambra',
+        'Bauchi', 'Bayelsa', 'Benue',
+        'Borno', 'Cross river', 'Delta',
+        'Edo', 'Ebonyi', 'Ekiti',
+        'Enugu', 'Gombe', 'Imo',
+        'Jigawa', 'Kaduna', 'Kano',
+        'Katsina', 'Kebbi', 'Kogi',
+        'Kwara', 'Niger', 'Ogun',
+        'Ondo', 'Osun', 'Oyo',
+        'Nassarawa', 'Plateau', 'Rivers',
+        'Sokoto', 'Taraba', 'Yobe',
         'Zamfara'
     ];
+
+    protected $searchEngine;
 
 	/**
 	 * Create a new controller instance.
@@ -114,21 +93,13 @@ class JobsController extends Controller
 	 * @param Mailer $mailer
 	 * @param Settings $settings
 	 */
-    public function __construct(Mailer $mailer, Settings $settings)
+    public function __construct(Mailer $mailer, Settings $settings, SearchEngine $searchEngine)
     {
         $this->middleware('auth', ['except' => [
-            'JobView',
-            'jobShare',
-            'company',
-            'jobApply',
-            'JobApplied',
-            'JobVideoApplication',
-            'getEmbed',
-            'getEmbedTest',
-            'acceptInvite',
-            'declineInvite',
-            'selectCompany',
-            'makeOldStaffsAdmin',
+            'JobView', 'jobShare', 'company',
+            'jobApply', 'JobApplied', 'JobVideoApplication',
+            'getEmbed', 'getEmbedTest', 'acceptInvite',
+            'declineInvite', 'selectCompany', 'makeOldStaffsAdmin',
             'fetchSchools',
         ]]);
 
@@ -136,8 +107,7 @@ class JobsController extends Controller
         $this->qualifications = qualifications();
 
         $this->mailer = $mailer;
-
-
+        $this->searchEngine = $searchEngine;
     }
 
     /**
@@ -247,10 +217,10 @@ class JobsController extends Controller
             $data = (object)$job_team_invite;
 
             //Send notification mail
-            $email_from = (Auth::user()->email) ? Auth::user()->email : getEnvData('COMPANY_EMAIL');
+            $email_from = (Auth::user()->email) ? Auth::user()->email : getEnvData('COMPANY_EMAIL', null, request()->clientId);
 
             \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $job_team_invite, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($job_team_invite) {
-                $m->from(getEnvData('COMPANY_EMAIL'))->to($job_team_invite->email)->subject('You Have Been Exclusively Invited');
+                $m->from(getEnvData('COMPANY_EMAIL', null, request()->clientId))->to($job_team_invite->email)->subject('You Have Been Exclusively Invited');
             });
 
 
@@ -271,10 +241,10 @@ class JobsController extends Controller
         $data = (object)$job_team_invite;
 
         //Send notification mail
-        $email_from = (Auth::user()->email) ? Auth::user()->email : getEnvData('COMPANY_EMAIL');
+        $email_from = (Auth::user()->email) ? Auth::user()->email : getEnvData('COMPANY_EMAIL', null, request()->clientId);
 
         \Illuminate\Support\Facades\Mail::send('emails.new.cancel_job_team_invitation', ['data' => $job_team_invite, 'job_title' => $job->title, 'company' => $company->name], function (Message $m) use ($job_team_invite) {
-            $m->from(getEnvData('COMPANY_EMAIL'))->to($job_team_invite->email)->subject('Notice of cancellation');
+            $m->from(getEnvData('COMPANY_EMAIL', null, request()->clientId))->to($job_team_invite->email)->subject('Notice of cancellation');
         });
 
         return back();
@@ -355,7 +325,7 @@ class JobsController extends Controller
 
                         if (isset($request->resend_email) || !isset($request->id)) {
                             \Illuminate\Support\Facades\Mail::send('emails.new.admin_invite', ['data' => $data, 'company' => $company, 'accept_link' => $accept_link], function (Message $m) use ($email) {
-                                $m->from(getEnvData('COMPANY_EMAIL'))->to($email)->subject('You Have Been Exclusively Invited');
+                                $m->from(getEnvData('COMPANY_EMAIL', null, request()->clientId))->to($email)->subject('You Have Been Exclusively Invited');
                             });
 
                             return back()->with('success', "Invite Sent successfully");
@@ -417,10 +387,10 @@ class JobsController extends Controller
                     $data = (object)$data;
 
                     //Send notification mail
-                    $email_from = (Auth::user()->email) ? Auth::user()->email : getEnvData('COMPANY_EMAIL');
+                    $email_from = (Auth::user()->email) ? Auth::user()->email : getEnvData('COMPANY_EMAIL', null, request()->clientId);
 
                     \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $data, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
-                        $m->from(getEnvData('COMPANY_EMAIL'))->to($data->email)->subject('You Have Been Exclusively Invited');
+                        $m->from(getEnvData('COMPANY_EMAIL',null, request()->clientId))->to($data->email)->subject('You Have Been Exclusively Invited');
                     });
 
                     $jobteam = "Successfully added a member to the Job team(Admin)";
@@ -1112,7 +1082,7 @@ class JobsController extends Controller
                 $job = Job::FirstorCreate($job_data);
 
                 //Send New job notification email
-                $to = getEnvData('COMPANY_EMAIL');
+                $to = getEnvData('COMPANY_EMAIL', null, request()->clientId);
                 $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
                     $m->from($to, @$company->name);
                     $m->to($to)->subject('New Job initiated');
@@ -1210,18 +1180,18 @@ class JobsController extends Controller
 
     public function createJob(Request $request, $id='')
     {
-        if(!empty($id)){
+        if (!empty($id)) {
             $job = Job::with('specializations')->find($id);
 
             // Get the specialization relations --- Using with callback didnt work, returns pivot
-            if($job->specializations){
+            if ($job->specializations) {
                 $job_specilizations = $job->specializations()->pluck('specializations.id')->toArray();
             }
-            $checkCandidateStep = JobApplication::where('job_id',$id)->where('status','!=','PENDING')->first();
-        }else{
-            $job = NULL;
+            $checkCandidateStep = JobApplication::where('job_id', $id)->where('status', '!=', 'PENDING')->first();
+        } else {
+            $job = null;
             $job_specilizations = [];
-            $checkCandidateStep = NULL;
+            $checkCandidateStep = null;
 
             $start = "Initiated Create Job(Admin)";
             mixPanelRecord($start, auth()->user());
@@ -1234,18 +1204,22 @@ class JobsController extends Controller
         $qualifications = qualifications();
         $locations = locations();
         $countries = countries();
-        $specializations = Specialization::get();
+        $company = get_current_company();
+
+        $specializations = Specialization::where(function ($sp) use ($company) {
+            $sp->whereNull('company_id')->orWhere('company_id', optional($company)->id);
+        })->get();
 
         $user = Auth::user();
-        $company = get_current_company();
+
         $job_boards = JobBoard::where('type', 'free')->get()->toArray();
 
-        if(count($job_boards) > 2){
+        if (count($job_boards) > 2) {
             $c = (count($job_boards) / 2);
             $t = array_chunk($job_boards, $c);
             $board1 = $t[0];
             $board2 = $t[1];
-        }else{
+        } else {
             $board1 = [];
             $board2 = [];
         }
@@ -1304,8 +1278,7 @@ class JobsController extends Controller
                         'is_visible' => (isset($request->is_visible[$key])) ? 1 : 0,
                     ];
                 }
-            $location_value = ($request->country != 'Nigeria') ? $request->country :
-                             ( ($request->job_location == 'Across Nigeria') ? 'Nigeria' : $request->job_location);
+                $location_value = ($request->country != 'Nigeria') ? $request->country : (($request->job_location == 'Across Nigeria') ? 'Nigeria' : $request->job_location);
                 $job_data = [
                     'title' => $request->job_title,
                     'location' => $location_value,
@@ -1325,7 +1298,7 @@ class JobsController extends Controller
                 $job = Job::firstOrCreate($job_data);
 
                 //Send New job notification email
-                $to = getEnvData('COMPANY_EMAIL');
+                $to = getEnvData('COMPANY_EMAIL', null, request()->clientId);
                 $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => null, 'company' => $company], function ($m) use ($company, $to) {
                     $m->from($to, @$company->name);
 
@@ -1411,21 +1384,23 @@ class JobsController extends Controller
             return redirect()->route('post-success', ['jobID' => $job->id]);
         }
 
-        $workflows = Workflow::whereCompanyId(get_current_company()->id)->get();
+        $workflows = Workflow::whereCompanyId(optional($company)->id)->get();
 
-        return view('job.post_job', compact(
-            'qualifications',
-            'specializations',
-            'board1',
-            'job', 'job_specilizations',
-            'board2',
-            'locations',
-            'workflows',
-            'thirdPartyData',
-            'application_fields',
-            'countries',
-            'checkCandidateStep'
-        ));
+        return view(
+            'job.post_job', compact(
+                'qualifications',
+                'specializations',
+                'board1',
+                'job', 'job_specilizations',
+                'board2',
+                'locations',
+                'workflows',
+                'thirdPartyData',
+                'application_fields',
+                'countries',
+                'checkCandidateStep'
+            )
+        );
     }
 
 
@@ -1526,7 +1501,7 @@ class JobsController extends Controller
         }
 
         $myJobs = Job::getMyJobs();
-        $cv_array = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
+        $cv_array = $this->searchEngine->get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
         if(!empty($cv_array)){
             $myFolders = array_unique(array_pluck($cv_array, 'cv_source'));
@@ -1606,47 +1581,61 @@ class JobsController extends Controller
             saveCompanyUploadedCv($cvs, $additional_data, $request);
             return ['status' => 1, 'data' => ['Cv(s) uploaded successfully']];
         }
-        UploadSolrFromCode::dispatch();
+
+        switch (config('app.searcher')) {
+            case 'solr':
+                UploadSolrFromCode::dispatch();
+                break;
+            case 'algolia':
+
+                break;
+        }
+
         return $response;
     }
 
 
-	public function adminUploadDocument(Request $request)
-	{
+    public function adminUploadDocument(Request $request)
+    {
+        $request->validate(
+            [
+                'document_file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt,jpg,jpeg,png',
+            ]
+        );
 
-		$request->validate([
-			'document_file' => 'required|mimes:zip,pdf,doc,docx,txt,rtf,pptx,ppt,jpg,jpeg,png',
-		]);
+        if ($request->hasFile('document_file')) {
 
-		if ($request->hasFile('document_file')) {
+            $file_name = (@$request->document_file->getClientOriginalName());
+            $fi = @$request->file('document_file')->getClientOriginalExtension();
+            $document_file = $request->application_id . '-' . time() . '-' . $file_name;
 
-			$file_name = (@$request->document_file->getClientOriginalName());
-			$fi = @$request->file('document_file')->getClientOriginalExtension();
-			$document_file = $request->application_id . '-' . time() . '-' . $file_name;
-
-			$upload = $request->file('document_file')->move(
-				getEnvData('fileupload'), $document_file
-			);
-		} else {
-			$document_file = '';
-		}
-		$message = CandidateMessage::create([
-			'job_application_id' => $request->appl_id,
-			'description' => $request->document_description,
-			'title' => $request->document_title,
-			'attachment' => $document_file,
-		]);
-		return ['status' => 1, 'data' => ['Documents Uploaded successfully']];
-	}
+            $upload = $request->file('document_file')->move(
+                getEnvData('FILEUPLOAD', 'uploads', request()->clientId),
+                $document_file
+            );
+        } else {
+            $document_file = '';
+        }
+        $message = CandidateMessage::create(
+            [
+                'job_application_id' => $request->appl_id,
+                'description' => $request->document_description,
+                'title' => $request->document_title,
+                'attachment' => $document_file,
+            ]
+        );
+        return ['status' => 1, 'data' => ['Documents Uploaded successfully']];
+    }
 
 	public function JobList(Request $request)
-	{
+    {
         $user = User::with([
             'companies.jobs'
         ])->where('id', Auth::user()->id)
             ->first();
 
         $company = get_current_company();
+
         $jobsOrm = $company->jobs()->with([
             'workflow.workflowSteps' => function ($q) {
                 return $q->orderBy('order', 'asc');
@@ -1702,7 +1691,6 @@ class JobsController extends Controller
                 $draft_jobs[] = $job;
                 $draft++;
             }
-
         }
 
 
@@ -1751,7 +1739,7 @@ class JobsController extends Controller
 
         $myJobs = Job::getMyJobs();
 
-        $cv_arrayray = SolrPackage::get_all_my_cvs($this->search_params, null, null)['response']['docs'];
+        $cv_arrayray = $this->searchEngine->get_all_my_cvs($this->search_params, null, null)['response']['docs'];
 
 
         if(!empty($cv_array)){
@@ -2250,7 +2238,7 @@ class JobsController extends Controller
 
         $active_tab = 'activities';
 
-        $result = SolrPackage::get_applicants($this->search_params, $id, '', $request->clientId);
+        $result = $this->searchEngine->get_applicants($this->search_params, $id, '', $request->clientId);
 
 
 
@@ -2297,7 +2285,7 @@ class JobsController extends Controller
         $job = Job::find($id);
         $active_tab = 'matching';
 
-        $result = SolrPackage::get_applicants($this->search_params, $id, '',$request->clientId);
+        $result = $this->searchEngine->get_applicants($this->search_params, $id, '',$request->clientId);
 
         $application_statuses = get_application_statuses($result['facet_counts']['facet_fields']['application_status'], $id);
 
@@ -2403,7 +2391,6 @@ class JobsController extends Controller
 
     public function jobApply($jobID, $slug, Request $request)
     {
-
         if (!Auth::guard('candidate')->check()) {
             return redirect()->route('candidate-login', ['redirect_to' => url()->current()]);
         }
@@ -2425,6 +2412,7 @@ class JobsController extends Controller
         }
 
         $candidate_cvs = CV::where('email', $candidate->email)->pluck('id');
+
         $candidate_applied_jobs = JobApplication::whereIn('cv_id', $candidate_cvs)->where(
             'job_id', $job->id
         )->count();
@@ -2442,7 +2430,7 @@ class JobsController extends Controller
             abort(404);
         }
 
-        $candidate = Candidate::find(Auth::guard('candidate')->user()->id);
+        $candidate = $candidate ?? Candidate::find(Auth::guard('candidate')->user()->id);
 
         if($candidate->is_from == 'external' && $job->is_for == 'internal')
         {
@@ -2473,6 +2461,9 @@ class JobsController extends Controller
 
             $data = $request->all();
 
+            $data['first_name'] = $data['first_name'] ?? $candidate->first_name;
+            $data['last_name'] = $data['last_name'] ?? $candidate->last_name;
+            $data['email'] = $data['email'] ?? $candidate->email;
 
             $owned_applications_count = JobApplication::where('candidate_id', $candidate->id)->where('job_id', $jobID)->count();
 
@@ -2576,19 +2567,20 @@ class JobsController extends Controller
 
             }
 
-
-            if (isset($fields->school->is_visible)  && $fields->school->is_visible && (isset($data['school']))) {
-                $others = (string) $data['others'] ?? null;
-
-                if($data['school']=='others' && $others !== ''){
-                    $school = School::FirstOrCreate([
-                        'name' => $data['others']
-                    ]);   
-                }else{
-	                if($fields->school->is_required && !isset($data['school'])) {
-		                return back()->withInput()->withErrors(['warning' => 'School cannot be null or empty']);
-	                }
+            if (isset($fields->school->is_visible) && $fields->school->is_visible && (isset($data['school']))) {
+                
+                if (is_null($data['school']) || $data['school'] == 'others') {
+                    if ((!is_null($data['others']) && !empty($data['others']))) {
+                            $school = School::FirstOrCreate(
+                                [
+                                'name' => $data['others']
+                                ]
+                            );   
+                    } else {
+                        return back()->withInput()->withErrors(['warning' => 'School cannot be null or empty']);
+                    }
                 }
+                
                 $school_id = isset($data['others']) && isset($school) ? $school->id : $data['school'];
             }
 
@@ -2627,21 +2619,16 @@ class JobsController extends Controller
 
             //saving cv...
             $cv = new Cv;
-            if ($fields->first_name->is_visible && isset($data['first_name'])) {
-                $cv->first_name = $data['first_name'];
-            }
-            if ($fields->last_name->is_visible && isset($data['last_name'])) {
-                $cv->last_name = $data['last_name'];
-            }
+
+            $cv->first_name = $data['first_name'] ?? null;
+            $cv->last_name = $data['last_name'] ?? null;
+            $cv->email = $data['email'] ?? null;
+            $cv->phone = $data['phone'] ?? null;
+
             if ($fields->cover_note->is_visible && isset($data['cover_note'])) {
                 $cv->headline = $data['cover_note'];
             }
-            if ($fields->email->is_visible && isset($data['email'])) {
-                $cv->email = $data['email'];
-            }
-            if ($fields->phone->is_visible && isset($data['phone'])) {
-                $cv->phone = $data['phone'];
-            }
+
             if ($fields->gender->is_visible && isset($data['gender'])) {
                 $cv->gender = $data['gender'];
             }
@@ -2749,7 +2736,7 @@ class JobsController extends Controller
                         if ($request->hasFile($name)) {
 
                             $filename = time() . '_' . str_slug($request->email) . '_' . $request->file($name)->getClientOriginalName();
-                            $destinationPath = getEnvData('fileupload','uploads') . '/Others';
+                            $destinationPath = getEnvData('FILEUPLOAD','uploads', request()->clientId) . '/Others';
                             findOrMakeDirectory($destinationPath);
 
                             $request->file($name)->move($destinationPath, $filename);
@@ -2776,19 +2763,17 @@ class JobsController extends Controller
 
 
             if ($request->hasFile('cv_file')) {
-                $destinationPath = getEnvData('fileupload') . '/CVs';
+                $destinationPath = getEnvData('FILEUPLOAD','uploads', request()->clientId) . '/CVs';
                 findOrMakeDirectory($destinationPath);
                 $request->file('cv_file')->move($destinationPath, $data['cv_file']);
-
             }
-
             if ($request->hasFile('optional_attachment_1')) {
-                $destinationPath = getEnvData('fileupload') . '/CVs';
+                $destinationPath = getEnvData('FILEUPLOAD', 'uploads', request()->clientId) . '/CVs';
                 findOrMakeDirectory($destinationPath);
                 $request->file('optional_attachment_1')->move($destinationPath, $data['optional_attachment_1']);
             }
             if ($request->hasFile('optional_attachment_2')) {
-                $destinationPath = getEnvData('fileupload') . '/CVs';
+                $destinationPath = getEnvData('FILEUPLOAD', 'uploads', request()->clientId) . '/CVs';
                 findOrMakeDirectory($destinationPath);
                 $request->file('optional_attachment_2')->move($destinationPath, $data['optional_attachment_2']);
             }
@@ -2799,12 +2784,15 @@ class JobsController extends Controller
 
             }
 
+            Mail::send('emails.new.job_application_successful', ['user' => $candidate, 'link' => route('candidate-dashboard'), 'job' => $job], function (Message $m) use ($candidate) {
+                $m->from(getEnvData('COMPANY_EMAIL', null, request()->clientId))->to($candidate->email)->subject('Job Application Successful');
+            });
             SendApplicationMailJob::dispatch($candidate->id, $job->id);
 
 
             try {
                 $job_application = JobApplication::with('cv')->find($appl->id);
-                UploadApplicant::dispatch($job_application)->onQueue('solr');
+                UploadApplicant::dispatch($job_application, $this->searchEngine)->onQueue('solr');
             } catch (Exception $e) {
                 Log::info(json_encode($e));
             }
@@ -3140,14 +3128,21 @@ class JobsController extends Controller
     {
         $job = Job::find($request->job_id);
         $company = get_current_company();
-        $to = getEnvData('COMPANY_EMAIL');
+        $to = getEnvData('COMPANY_EMAIL', null, request()->clientId);
 
         if ($request->type == 'JOB_BOARD') {
-            $mail = Mail::send('emails.new.job-application', ['job' => $job, 'boards' => $request->boards, 'company' => $company], function ($m) use ($company, $to) {
-                $m->from($to, @$company->name);
+            $mail = Mail::send(
+                'emails.new.job-application', 
+                [
+                    'job' => $job, 'boards' => $request->boards, 
+                    'company' => $company
+                ], 
+                function ($m) use ($company, $to) {
+                    $m->from($to, @$company->name);
 
-                $m->to($to)->subject('New Job initiated');
-            });
+                    $m->to($to)->subject('New Job initiated');
+                }
+            );
         }
 
 
@@ -3167,7 +3162,7 @@ class JobsController extends Controller
             'amount' => $amount,
             'amount_currency' => $amount_currency
         );
-        $data_string = json_encode($data); //var_dump( $request->all() );
+        $data_string = json_encode($data); 
 
         $ch = curl_init();
 
@@ -3238,12 +3233,16 @@ class JobsController extends Controller
 
 
                 $user = Auth::user();
-                $mail = Mail::send('emails.new.successful_payment', compact('invoice', 'invoice_type', 'user', 'amount'), function ($m) use ($invoice, $invoice_type) {
-                    $m->from(getEnvData('COMPANY_EMAIL'), 'Seamlesshiring');
+                $mail = Mail::send(
+                    'emails.new.successful_payment', 
+                    compact('invoice', 'invoice_type', 'user', 'amount'), 
+                    function ($m) use ($invoice, $invoice_type) {
+                        $m->from(getEnvData('COMPANY_EMAIL'), 'Seamlesshiring', request()->clientId);
 
-                    // $m->to(env('COMPANY_EMAIL'))->subject('Customer Invoice: #'.$invoice->id);
-                    $m->to(Auth::user()->email)->subject('Customer Invoice: #' . $invoice->id);
-                });
+                        // $m->to(env('COMPANY_EMAIL'))->subject('Customer Invoice: #'.$invoice->id);
+                        $m->to(Auth::user()->email)->subject('Customer Invoice: #' . $invoice->id);
+                    }
+                );
                 if ($request->type == 'JOB_BOARD') {
 
                     foreach ($request->boards as $key => $board) {
@@ -3331,7 +3330,7 @@ class JobsController extends Controller
 
                 JobApplication::massAction(@$request->job_id, @$request->cv_ids, $request->step, $request->stepId);
 
-                $testUrl = getEnvData('SEAMLESS_TESTING_APP_URL', 'http://seamlesstesting.com').'/test-request';
+                $testUrl = getEnvData('SEAMLESS_TESTING_APP_URL', env('SEAMLESS_TESTING_APP_URL')).'/test-request';
 
                 $data = [
                     'job_title' => $app->job->title,
@@ -3356,8 +3355,6 @@ class JobsController extends Controller
                 // close the connection, release resources used
                 curl_close($ch);
             }
-
-            // var_dump($data);
         }
     }
 
@@ -3472,11 +3469,11 @@ class JobsController extends Controller
             $subsidiary = $request->company_name;
             //mail to cs and sales
             $mail = Mail::send('emails.subsidiary.cs-sales-notify', compact('email_title','user', 'subsidiary'), function ($m) use ($email_title) {
-                $m->from(getEnvData('COMPANY_EMAIL'))->to('support-team@seamlesshr.com')->cc('sales@seamlesshr.com')->subject($email_title);
+                $m->from(getEnvData('COMPANY_EMAIL', null, request()->clientId))->to('support-team@seamlesshr.com')->cc('sales@seamlesshr.com')->subject($email_title);
             });
             
             Mail::send('emails.subsidiary.admin-notify', compact('email_title','user', 'subsidiary'), function ($m) use ($user, $email_title) {
-                $m->from(getEnvData('COMPANY_EMAIL'))->to($user->email)->subject($email_title);
+                $m->from(getEnvData('COMPANY_EMAIL', null, request()->clientId))->to($user->email)->subject($email_title);
             });
             
             
@@ -3490,6 +3487,7 @@ class JobsController extends Controller
         }
         return view('company.add',compact('client'));
     }
+
     public function editCompany(UpdateCompanyRequest $request)
 	{
 		$collect = collect($request);
@@ -3515,15 +3513,22 @@ class JobsController extends Controller
           return redirect('company/subsidiaries')->with('success', "Subsidiary updated successfully.");
 	}
 
-    public function selectCompany(Request $request,$id)
+    public function selectCompany(Request $request)
     {
-        foreach (Auth::user()->companies->where('client_id', $request->clientId) as $key => $company) {
-            if ($company->id == $id) {
+        $companies = Auth::user()->companies->where('client_id', request()->clientId);
+        $switched = false;
+
+        foreach ($companies as $company) {
+            if ($company->slug == $request->slug || $company->id == $request->id) {
+                $switched = true;
                 Session::put('current_company_index', $company->id);
-                return redirect('dashboard');
+                Session::put('active_company', $company);
             }
         }
-    
+        if (!$switched) {
+            session()->flash('error', 'You are not allowed to access this company');
+        }
+        return redirect(url()->previous());
     }
 
     public function embed()
@@ -3559,8 +3564,6 @@ class JobsController extends Controller
         header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With,X-Auth-Token, Origin');
 
         list($id, $email, $created_at, $company_id) = explode('~&', Crypt::decrypt($request->key));
-
-        // var_dump($id, $email, $created_at);
 
         $user = User::with('companies')->whereHas('companies', function ($query) use ($company_id) {
             $query->where('company_id', $company_id);
@@ -3600,23 +3603,21 @@ class JobsController extends Controller
     {
         if ( $request->isMethod ( 'post' ) ) {
             $user = User::with('roles')->find($request->id);
-            if (isHrmsIntegrated()) {
+            if (isHrmsIntegrated() ) {
                 mixPanelRecord("Admin creation failed (Admin)", $user);
-                return response()->json([
-                    'status' => false,
-                    'message' => "you have to manage super admins from HRMS"
-                ]);
-            }
+                 return response()->json([
+                     'status' => false,
+                     'message' => "you have to manage super admins from HRMS"
+                 ]);
+             }
             
             $user->update([
                     'is_super_admin' => $request->role
                 ]);
-            mixPanelRecord("Admin Role Updated successfully (Admin)", auth()->user());
-            return response()->json (['status' => true]);
-        }
+            }
 
-        $users = User::with('roles')->whereHas('companies',function($q) use($request){
-            $q->where('client_id',$request->clientId);
+        $users = User::with('roles')->whereHas('companies', function ($q) use ($request) {
+            $q->where('client_id', request()->clientId);
         })->get();
         $roles = Role::get();
         return view ('admin.roles_management.index', compact ('users', 'roles'));

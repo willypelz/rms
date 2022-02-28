@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Company;
 
 class Candidate extends Authenticatable
 {
@@ -10,7 +11,7 @@ class Candidate extends Authenticatable
     protected $fillable = [
         'first_name', 'last_name', 'email', 
         'password', 'remember_token','token','
-        is_from','company_id','client_id'
+        is_from','company_id', 'client_id'
     ];
 
     public function getNameAttribute()
@@ -30,6 +31,12 @@ class Candidate extends Authenticatable
     {
         return $this->HasMany('App\Models\JobApplication');
     }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
 
     public function client()
     {

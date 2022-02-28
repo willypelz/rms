@@ -66,7 +66,11 @@ class SetupController extends Controller
 
         $resp = Http::withoutVerifying()->post($url, $body);
 
-        session()->flash('success', 'Updated successfully');
+        if (!$resp->successful()) {
+            session()->flash('error', 'Update unsuccessful');
+        } else {
+            session()->flash('success', 'Updated successfully');
+        }
 
         return back();
     }

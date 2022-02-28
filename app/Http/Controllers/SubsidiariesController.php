@@ -21,9 +21,9 @@ class SubsidiariesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $subsidiaries =   Company::whereIsDefault(false)->where('client_id',request()->clientId)->OrderBy('date_added', 'desc')->get();
+        $subsidiaries =   Company::where('client_id', $request->clientId)->whereIsDefault(false)->OrderBy('date_added', 'desc')->get();
 	    return view('company.subsidiaries.index', compact('subsidiaries'));
     }
 

@@ -43,6 +43,5 @@ class NotifyAdminOfCompletedExportJob implements ShouldQueue
     public function handle()
     {
       $this->admin->notify( new NotifyAdminOfApplicantsSpreedsheetExportCompleted($this->filename,$this->type,$this->jobId, $this->admin));
-                          
     }
 }

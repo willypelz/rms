@@ -363,7 +363,7 @@
                                                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Job summary: a brief summary of what the job entails"></i>
                                                 </label>
                                                 <textarea name="summary" id="job_summary" class="form-control"
-                                                          required=""> {{ $job_summary ? $job_summary : old('summary')}}</textarea>
+                                                          required=""> {!! $job_summary ? $job_summary : old('summary') !!}</textarea>
                                             </div>
 
                                         </div>
@@ -457,12 +457,14 @@
                                     </div>
                                     <div class="col-xs-5">
                                         <div class="row">
+                                            @if (!$job)    
                                             <div class="col-sm-6">
                                                 <a id="SaveDraft" data-toggle="modal" data-target="#savedAsDraft"
                                                    class="btn btn-primary btn-block submitButton">
                                                     Save and continue later
                                                 </a>
                                             </div>
+                                            @endif
                                             <div class="col-sm-6">
                                                 <button id="post-job-next-btn" type="submit"
                                                         class="btn btn-success btn-block submitButton">

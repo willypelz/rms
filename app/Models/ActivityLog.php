@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use App\Scopes\ClientCompaniesTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ActivityLog extends Model
 {
-    use SoftDeletes, ClientCompaniesTrait;
+    use SoftDeletes;
 
     public $table = 'activity_logs';
 

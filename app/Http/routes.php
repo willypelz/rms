@@ -22,7 +22,6 @@
 | kernel and includes session state, CSRF protection, and more.
 |
 */
-
 use App\Libraries\Solr;
 use Illuminate\Support\Facades\Route;
 
@@ -48,11 +47,13 @@ Route::group(['middleware' => ['web','auth','admin']], function () {
     Route::get('clientEnv/delete/{id}', 'SystemSettingsController@delete')->name('delete-env');
 });
 
-Route::group(['prefix' => 'client', 'middleware' => 'allowUrl'], function () {
-    
-    Route::get('/signup', 'SelfSignupController@index')->name('client-signup-index');
-    Route::post('/signup', 'SelfSignupController@create')->name('client-signup-create');
-});
+Route::group(
+    ['prefix'=>'client', 'middleware' => 'allowUrl'], 
+    function () {
+        Route::get('/signup', 'SelfSignupController@index')->name('client-signup-index');
+        Route::post('/signup', 'SelfSignupController@create')->name('client-signup-create');
+    }
+);
 
 // admin company 
 Route::group(['middleware' => ['web', 'auth', 'companyList']], function () {
@@ -204,7 +205,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     
     Route::resource('schedule', 'JobApplicationsController');
 
-    Route::get('/download_applicants_interview_file/{filename}', 'JobApplicationsController@downloadApplicantsInterviewFile')->name("download_applicants_interview_file");
+    Route::get('/download-applicants-interview-file/{filename}', 'JobApplicationsController@downloadApplicantsInterviewFile')->name("download-applicants-interview-file");
 
     Route::match(['get', 'post'], 'one_applicant',
         ['uses' => 'JobApplicationsController@oneApplicantData']);
@@ -361,7 +362,6 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::get('onboard/noAction3', ['as' => 'onboard-no-action-3', 'uses' => 'OnboardingController@noAction3']);
 
 
-
     Route::get('settings/embed',
     ['as' => 'settings-embed', 'uses' => 'JobsController@embed']);
 
@@ -504,7 +504,7 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
     Route::post('/settings/api-key', 'ApiController@update');
 
     Route::get('/my-career-page', 'JobsController@MyCompany');
-    Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
+    Route::middleware('auth')->match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
     Route::get('my-jobs-content', ['uses' => 'JobsController@JobList', 'as' => 'job-list-content']);
 
 });
@@ -715,7 +715,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'decline-invite/{id}',  ['uses' => 'JobsController@declineInvite', 'as' => 'decline-invite']);
 
-    Route::match(['get', 'post'], 'select-company/{id?}', ['uses' => 'JobsController@selectCompany', 'as' => 'select-company'])->middleware('auth');
+    Route::match(['get', 'post'], 'select-company', ['uses' => 'JobsController@selectCompany', 'as' => 'select-company'])->middleware('auth');
 
     Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
 

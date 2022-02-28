@@ -47,15 +47,16 @@ class SaveApplicantCVJob implements ShouldQueue
     public function handle()
     {
         $cvChunked = collect($this->cvs)->chunk(500)->toArray();
+
             $batch_count = 1;
             foreach($cvChunked as $chunk){
                 SaveApplicantCVInBitsJob::dispatch($this->zipPath,$chunk);
-                $batch_count ++;
+
                     if($batch_count == count($cvChunked)){ //This ensures email sends only in the last batch loop
                         $type = "Applicant CVs"; 
                         NotifyAdminOfCompletedExportJob::dispatch($this->filename,$this->admin,$type,$this->jobId)->delay(120); 
                     }
-                
+                $batch_count ++;
             }
     }
 

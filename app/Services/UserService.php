@@ -15,6 +15,9 @@ class UserService implements UserContract {
     */
     public function getDefaultCompany(User $user){
         $defaultCompany = $user->companies()->wherePivot('is_default', 1)->first();
+        if(!$defaultCompany) {
+            $defaultCompany = $user->companies->first();
+        }
         if($defaultCompany){
             return $defaultCompany;
         }else if(isHrmsIntegrated()){

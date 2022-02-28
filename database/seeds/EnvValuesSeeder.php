@@ -15,17 +15,21 @@ class EnvValuesSeeder extends Seeder
     {
         $clientIds = Client::pluck('id')->toArray();
         foreach ($clientIds as $clientId) {
+            $envValues = \App\Enum\EnvSettingsEnum::getConstants();
+            $keys = array_keys($envValues);
             $envFile = $_ENV;
-            foreach ($envFile as $envKey => $envValue) {
+
+            foreach ($keys as $envValue) {
                 SystemSetting::firstOrCreate(
                     [
                         'client_id' => $clientId,
-                        'key' => strtoupper($envKey)],
+                        'key' => $envValue],
                     [
-                        'value' => $envValue
+                        'value' => $envFile[$envValue] ?? ($envValues[$envValue] ?? '')
                     ]
                 );
             }
+
         }
     }
 }

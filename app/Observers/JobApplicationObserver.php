@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\JobApplication;
+use Illuminate\Support\Facades\Artisan;
 
 class JobApplicationObserver
 {
@@ -27,8 +28,8 @@ class JobApplicationObserver
                 'properties' => '',
             ];
             logAction($param);
-           
         }
+//        Artisan::call('scout:reimport');
     }
 
     /**

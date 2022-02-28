@@ -1,0 +1,8 @@
+{
+    "http-basic": {
+        "bitbucket.org": {
+            "username": "abd-afeez",
+            "password": "${BITBUCKET_PASSWORD2}"
+        }
+    }
+}

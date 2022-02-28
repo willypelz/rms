@@ -200,13 +200,18 @@ class JobController extends Controller
             [
                 'jobs' => function ($query) use ($jobType, $request) {
                     $query
-                    ->with(['workflow.workflowSteps'=>function($sort){
-                        $sort->orderBy('order', 'asc');
-                    }])
+                    ->with(
+                        ['workflow.workflowSteps' => function($sort) {
+                            $sort->orderBy('order', 'asc');
+                        }
+                        ]
+                    )
                         ->whereStatus("ACTIVE")
-                        ->when($request->with_expiry, function($q){
-                            return $q->where('expiry_date','>=',Carbon::now()->toDateString());
-                        })
+                        ->when(
+                            $request->with_expiry, function ($q) {
+                                return $q->where('expiry_date', '>=', Carbon::now()->toDateString());
+                            }
+                        )
                         ->orderBy('created_at', 'desc');
                     if ($jobType != 'all') {
                         $query->whereIsFor($jobType); // default $jobType == external

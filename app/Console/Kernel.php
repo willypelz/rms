@@ -36,6 +36,6 @@ class Kernel extends ConsoleKernel
         //$this->load(__DIR__.'/Commands');
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->command('AlgoliaSync:data')->everyFiveMinutes();
+//        $schedule->command('AlgoliaSync:data')->everyFiveMinutes();
     }
 }

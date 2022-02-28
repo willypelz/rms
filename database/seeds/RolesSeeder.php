@@ -21,6 +21,7 @@ class RolesSeeder extends Seeder
             'can-view-interview',
             'can-perform-interview-actions',
         ];
+        
         $commenter_permission_list = ['can-view-job', 'can-view-candidates', 'can-view-comments', 'can-make-comments'];
         $test_admin_permission_list = ['can-view-job', 'can-view-candidates', 'can-test'];
         $check_admin_permission_list = ['can-view-job', 'can-view-candidates', 'can-view-background-check'];

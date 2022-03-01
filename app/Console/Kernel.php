@@ -2,7 +2,9 @@
 
 namespace App\Console;
 
+use App\Console\Commands\MultitenacyDeploy;
 use App\Console\Commands\PopulateCvEmails;
+use App\Console\Commands\SyncAlgolia;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -19,6 +21,8 @@ class Kernel extends ConsoleKernel
         Commands\ResyncTestScoreFromSeamlessTesting::class,
         Commands\StreamFilesFromHRMS::class,
         PopulateCvEmails::class,
+        MultitenacyDeploy::class,
+        Commands\SyncAlgolia::class
     ];
 
     /**
@@ -32,5 +36,6 @@ class Kernel extends ConsoleKernel
         //$this->load(__DIR__.'/Commands');
         // $schedule->command('inspire')
         //          ->hourly();
+//        $schedule->command('AlgoliaSync:data')->everyFiveMinutes();
     }
 }

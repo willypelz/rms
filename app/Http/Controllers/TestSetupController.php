@@ -25,7 +25,8 @@ class TestSetupController extends Controller
             $created_products = AtsProduct::find($created_test_id);
             $tests = AtsService::where('type','TEST')->get();
             $company = base64_encode(get_current_company()->name);
-            $response = Curl::to(env('SEAMLESS_QUESTION_APP_URL').'/company-test-names/'.$company)->get();  
+            $response = Curl::to(getEnvData('SEAMLESS_QUESTION_APP_URL', env('SEAMLESS_QUESTION_APP_URL')).'/company-test-names/'.$company)->get();
+
             if($response && json_decode($response)->status == true){
                 $test_names = json_decode($response)->data;
                

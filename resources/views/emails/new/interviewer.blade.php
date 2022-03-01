@@ -20,7 +20,7 @@
 												<tr>
 													<td valign="top" style="font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;color:#2a3744;line-height:200%;padding: 30px 18px 0px;">
 														<div style="color:#2d2d2d;display:block;width:100%;margin: 0 auto 5px;" align="center">
-															{!! get_company_email_logo() !!}
+															{!! get_company_email_logo($companyDetails->logo) !!}
 														</div>
 
 
@@ -73,7 +73,7 @@
 																	</div>
 
 																	<br>
-																	<small style="color:#afafaf">If you did not attempt to sign up on {{ env('APP_URL') }}, kindly ignore this mail.</small>
+																	<small style="color:#afafaf">If you did not attempt to sign up on {{ getEnvData('APP_URL') }}, kindly ignore this mail.</small>
 																</div>
 															</div>
 															<div style="color:#2d2d2d;width:100%;float:left;margin-bottom:7%">
@@ -98,7 +98,7 @@
 
 										<div style="color:#777;width:94%;text-align:center;margin:7% auto 0;padding:0" align="center">
 											<p style="font-family:Arial,Helvetica,sans-serif;color: #6b6b6b;font-size:12px;line-height:1.42em;text-align:center;margin:16px 0 8%;padding:0;" align="center">This notification was sent to <a href="mailto:{{ $cv->email }}" target="_blank">{{ $cv->email }}</a>
-												<br> because you registered on {{ env('APP_URL') }}
+												<br> because you registered on {{ getEnvData('APP_URL') }}
 												<br>
 												<br> If you no longer wish to receive <i>any</i> notifications when an activity is carried out <a href="" style="font-family:Arial,Helvetica,sans-serif;word-wrap:break-word;color:#136fd2" target="_blank">unsubscribe</a>.
 												<br>View SeamlessHiring's <a href="" target="_blank">Privacy Policy</a></p>

@@ -3,6 +3,8 @@
 namespace App\Jobs;
 
 
+use App\Helpers\SearchEngineable;
+use App\SearchEngine\SearchEngine;
 use App\User;
 use App\Models\Company;
 use Illuminate\Bus\Queueable;
@@ -18,7 +20,7 @@ use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use App\Notifications\NotifyAdminOfFailedDownload;
 
 
-class CommenceProcessingForApplicantsCV implements ShouldQueue
+class CommenceProcessingForApplicantsCV extends SearchEngineable implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -62,7 +64,8 @@ class CommenceProcessingForApplicantsCV implements ShouldQueue
      */
     public function handle()
     {
-            $result =  $this->getApplicants();   
+            $result =  $this->getApplicants();
+
             $data = $result['response']['docs'];
             $path = storage_path('app/public/uploads/export/'); //public_path('exports/');
             $cvs = array_pluck($data, 'cv_file');
@@ -109,7 +112,8 @@ class CommenceProcessingForApplicantsCV implements ShouldQueue
 
 
     private function getApplicants(){
-          return SolrPackage::get_applicants($this->search_params, $this->jobId, @$this->status,
+        parent::__construct();
+          return $this->searchEngine->get_applicants($this->search_params, $this->jobId, @$this->status, @$this->admin->client_id,
                                              @$this->solr_age, @$this->solr_exp_years,
                                              @$this->solr_video_application_score, @$this->solr_test_score);
     }

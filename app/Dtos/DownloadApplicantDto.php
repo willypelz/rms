@@ -288,20 +288,10 @@ class DownloadApplicantDto  {
     * Set All Applicants
     * @return array | null 
     */
-    public function setAllApplicants($all_applicants)
-    {
-        $this->all_applicants = $all_applicants;
-    }
-
-    
-    /**
-    * Set All Applicants
-    * @return array | null 
-    */
-    public function setAllApplicants($all_applicants)
-    {
-        $this->all_applicants = $all_applicants;
-    }
+    // public function setAllApplicants($all_applicants)
+    // {
+    //     $this->all_applicants = $all_applicants;
+    // }
 
      /**
      * Get value from Applicants data 

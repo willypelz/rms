@@ -10,7 +10,7 @@
         <div class="row">
 
             <section class="col shr-auth-form">
-                <img src="{{ env('APP_LOGO') }}" class="shr-auth-logo">
+                <img src="{{ getEnvData('APP_LOGO',null,request()->clientId) }}" class="shr-auth-logo">
                 <h2 class="dark-blue-text font-weight-bold">Welcome candidate</h2>
                 <p>We are an equal opportunity employer. All stages of the employment process will be based on merit, competence, performance and business needs.</p>
 
@@ -19,7 +19,7 @@
                         <a href="" class="toggle-button active">Create an account</a>
                 </div>
 
-                <form action="" method="POST">
+                <form action="{{ route('candidate-register') }}" method="POST">
                         @include('layout.alerts')
 
                     <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }} shr-form-group">

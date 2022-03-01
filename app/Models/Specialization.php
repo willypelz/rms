@@ -19,7 +19,7 @@ class Specialization extends Model
      *
      * @var array
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'company_id'];
 
     public $timestamps = false;
 

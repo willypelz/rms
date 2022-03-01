@@ -30,7 +30,7 @@
                             <div class="panel-body no-border">
                                 <div class="">
                                     <div class="form-group text-left">
-                                        <label for="name">Name</label>
+                                        <label for="name">Name <span style="color: red">*</span></label>
                                         <input type="text" name="name" class="form-control" value="{{ $interview_note_template->name }}" required>
                                     </div>
 

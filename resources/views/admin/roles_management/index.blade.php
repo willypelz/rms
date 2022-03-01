@@ -12,8 +12,7 @@
                     <div class="panel-body">
 
                         @include('layout.alerts')
-
-                        @if(env('RMS_STAND_ALONE'))
+                        @if(isHrmsIntegrated() == false)
                             <div data-toggle="modal" data-target="#superAdminModal" href="#superAdminModal"
                                  data-title="Background Check" style="margin-bottom:15px"
                                  class="btn btn-info pull-right">Invite Super Admin
@@ -59,46 +58,52 @@
                                                 Action
                                                 <span class="caret"></span>
                                             </button>
+
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                                <li><a href="#">
+                                                @if(auth()->user()->id != $user->id)
+                                                    <li><a href="#">
                                                     <span data-toggle="modal"
-                                                         data-target="#editSuperAdminModal{{ $user->id }}"
-                                                         href="#editSuperAdminModal{{ $user->id }}"
-                                                         data-title="Background Check"> <i class="fa fa-edit"></i> Edit Super Admin
+                                                          data-target="#editSuperAdminModal{{ $user->id }}"
+                                                          href="#editSuperAdminModal{{ $user->id }}"
+                                                          data-title="Background Check"> <i class="fa fa-edit"></i> Edit Super Admin
                                                     </span>
-                                                    </a>
-                                                </li>
-                                                <li role="separator" class="divider"></li>
-                                                <li><a href="{{ route('user-permission') }}"><i class="fa fa-key"></i>Role & Permission</a></li>
-                                                <li role="separator" class="divider"></li>
-                                                @if($user->is_super_admin)
-                                                    <li><a href="{{ route('sync-user-to-company-index',[base64_encode($user->id)]) }}"><i class="fa fa-home"></i>Attach/Detach User from a company</a></li>
+                                                        </a>
+                                                    </li>
                                                     <li role="separator" class="divider"></li>
-                                                @endif
-                                                <li>
-                                                    <a href="#">
+                                                    <li><a href="{{ route('user-permission') }}"><i class="fa fa-key"></i>Role & Permission</a></li>
+                                                    <li role="separator" class="divider"></li>
                                                     @if($user->is_super_admin)
-                                                        <div onclick="removeRole({!! $user->id !!})"
-                                                           > <i class="fa fa-minus-circle"></i> Remove super admin role
-                                                        </div>
-                                                    @else
-                                                        <div onclick="assignRole({!! $user->id !!})"
-                                                            ><i class="fa fa-plus-circle"></i> Assign super admin role
-                                                        </div>
+                                                        <li><a href="{{ route('sync-user-to-company-index',[base64_encode($user->id)]) }}"><i class="fa fa-home"></i>Attach/Detach User from a company</a></li>
+                                                        <li role="separator" class="divider"></li>
                                                     @endif
-                                                    </a>
-                                                </li>
-                                                <li role="separator" class="divider"></li>
-                                                <li>
-                                                    <a href="#">
-                                                        @if(!(isHrmsIntegrated()))
-                                                            <div data-toggle="modal" data-target="#deleteSuperAdminModal{{ $user->id }}" href="#deleteSuperAdminModal{{ $user->id }}" data-title="Background Check"><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
-                                                        @else
-                                                            <div disabled data-toggle="tooltip" class="faint" data-placement="top" title="Your RMS is integrated with HRMS and as such you are only allowed to delete a super admin from HRMS"  data-title="Background Check" ><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
-                                                        @endif
-                                                    </a>
-                                                </li>
+                                                    <li>
+                                                        <a href="#">
+                                                            @if($user->is_super_admin)
+                                                                <div onclick="removeRole({!! $user->id !!})"
+                                                                > <i class="fa fa-minus-circle"></i> Remove super admin role
+                                                                </div>
+                                                            @else
+                                                                <div onclick="assignRole({!! $user->id !!})"
+                                                                ><i class="fa fa-plus-circle"></i> Assign super admin role
+                                                                </div>
+                                                            @endif
+                                                        </a>
+                                                    </li>
+                                                    <li role="separator" class="divider"></li>
+                                                    <li>
+                                                        <a href="#">
+                                                            @if(isHrmsIntegrated())
+                                                                <div disabled data-toggle="tooltip" class="faint" data-placement="top" title="Your RMS is integrated with HRMS and as such you are only allowed to delete a super admin from HRMS"  data-title="Background Check" ><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
+                                                            @else
+                                                                <div data-toggle="modal" data-target="#deleteSuperAdminModal{{ $user->id }}" href="#deleteSuperAdminModal{{ $user->id }}" data-title="Background Check"><i class="fa fa-trash"></i>&nbsp; Delete Super Admin</div>
+                                                            @endif
+                                                        </a>
+                                                    </li>
+                                                @else
+                                                    This user is currently logged in
+                                                @endif
                                             </ul>
+
                                         </div>
                                     </td>
                                 </tr>
@@ -127,21 +132,21 @@
                                                         <div class="form-group">
                                                             <div id="hiddenForm">
                                                                 <div id="external_div">
-                                                                    <label for="">Name: </label>
+                                                                    <label for="">Name: <span style="color: red">*</span></label>
                                                                     <input type="text" value="{{ $user->name }}"
-                                                                           id="name" name="name" value=""
+                                                                           id="name" name="name" required
                                                                            class="form-control">
-                                                                    <small><em>The name of the team member</em></small>
+                                                                    <small style="color: red"><em>The name of the team member</em></small>
                                                                     <br><br>
                                                                     <input type="hidden" name="email_from"
                                                                            value="{{ get_current_company()->email }}"
                                                                            class="form-control">
-                                                                    <label for="">Email: </label>
-                                                                    <input type="text" name="email" id="email_to"
+                                                                    <label for="">Email: <span style="color: red">*</span></label>
+                                                                    <input type="email" name="email" id="email_to"
                                                                            placeholder="email addresses here"
-                                                                           value="{{ $user->email }}"
+                                                                           value="{{ $user->email }}" required
                                                                            class="form-control">
-                                                                    <small><em>The email address of the team member</em>
+                                                                    <small style="color: red"><em>The email address of the team member</em>
                                                                     </small>
                                                                     <br><br>
                                                                 </div>
@@ -239,16 +244,16 @@
                             <div class="form-group">
                                 <div id="hiddenForm">
                                     <div id="external_div">
-                                        <label for="">Name: </label>
+                                        <label for="">Name: <span style="color: red">*</span></label>
                                         <input type="text" required id="name" name="name" value="" class="form-control">
-                                        <small><em>The name of the team member</em></small>
+                                        <small style="color: red"><em>The name of the team member</em></small>
                                         <br><br>
                                         <input type="hidden" name="email_from"
                                                value="{{ get_current_company()->email }}" class="form-control">
-                                        <label for="">Email: </label>
-                                        <input type="text" required name="email" id="email_to"
+                                        <label for="">Email: <span style="color: red">*</span></label>
+                                        <input type="email" required name="email" id="email_to"
                                                placeholder="email addresses here" class="form-control">
-                                        <small><em>The email address of the team member</em>
+                                        <small style="color: red"><em>The email address of the team member</em>
                                         </small>
                                         <br><br>
                                     </div>

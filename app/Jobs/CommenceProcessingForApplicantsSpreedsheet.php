@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 
+use App\Helpers\SearchEngineable;
 use App\User;
 use App\Models\Company;
 use Illuminate\Bus\Queueable;
@@ -16,7 +17,7 @@ use App\Jobs\NotifyAdminOfCompletedExportJob;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use App\Notifications\NotifyAdminOfFailedDownload;
 
-class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
+class CommenceProcessingForApplicantsSpreedsheet extends SearchEngineable implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -86,7 +87,8 @@ class CommenceProcessingForApplicantsSpreedsheet implements ShouldQueue
 
 
     private function getApplicants(){
-          return SolrPackage::get_applicants($this->search_params, $this->jobId, @$this->status,
+         parent::__construct();
+          return $this->searchEngine->get_applicants($this->search_params, $this->jobId, @$this->status, @$this->admin->client_id,
                                              @$this->solr_age, @$this->solr_exp_years,
                                              @$this->solr_video_application_score, @$this->solr_test_score);
     }

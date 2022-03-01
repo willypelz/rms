@@ -9,7 +9,7 @@
                 $is_super_admin = auth()->user()->is_super_admin;
             @endphp
             @include('layout.alerts')
-            
+            @include('layout.confirm-dialog')
             <div class="row">
                 
                 <div class="col-md-6">
@@ -49,20 +49,20 @@
                                                 Edit
                                             </a>
                                             <a href="{{ route('workflow-duplicate', ['id' => $workflow->id]) }}"
-                                                class="btn btn-info btn-sm">
+                                                class="btn btn-info btn-sm" onclick="event.preventDefault(); duplicate('{{$workflow->name}}', '{{route('workflow-duplicate', ['id' => $workflow->id])}}')">
                                                  <i class="fa fa-copy fa-fw"></i>
                                                  Duplicate
                                              </a>
                                             @endif
                                             @if(!$workflow->jobs()->exists())
-                                                <form action="{{ route('workflow-delete', ['id' => $workflow->id]) }}"
+                                                <form id="workflow{{$workflow->id}}" action="{{ route('workflow-delete', ['id' => $workflow->id]) }}"
                                                       method="post"
                                                       class="delete-spoof">
                                                     {{ csrf_field() }}
                                                     
                                                     <input type="hidden" name="_method" value="delete">
                                                     
-                                                    <button  onclick="return confirm('Are you sure you want to delete workflow?');" type="submit" class="btn btn-danger btn-sm">
+                                                    <button  onclick="event.preventDefault(); remove('{{$workflow->name}}', '{{'workflow'.$workflow->id}}')" type="submit" class="btn btn-danger btn-sm">
                                                         <i class="fa fa-trash fa-fw"></i>
                                                     </button>
                                                 </form>
@@ -109,6 +109,7 @@
                                 
                                 <div class="form-group">
                                     <label for="name">Name</label>
+                                    <span class="text-danger">*</span>
                                     <input type="text"
                                            name="name"
                                            id="name"
@@ -119,6 +120,7 @@
                                 
                                 <div class="form-group">
                                     <label for="description">Description</label>
+                                    <span class="text-danger">*</span>
                                     <textarea name="description"
                                               id="description"
                                               placeholder="A short note about this workflow"
@@ -126,7 +128,8 @@
                                 </div>
                                 
                                 <div class="form-group">
-                                    <button @if((isset($user_role) && !is_null($user_role) && !in_array($user_role->name, ['admin'])) || !$is_super_admin) disabled @endif type="submit" class="btn btn-primary">
+
+                                    <button @if(userHasRole('admin') && !$is_super_admin) disabled @endif type="submit" class="btn btn-primary">
                                         <i class="fa fa-plus fa-fw"></i>
                                         Create
                                     </button>
@@ -142,5 +145,4 @@
             </div>
         </div>
     </section>
-
 @endsection

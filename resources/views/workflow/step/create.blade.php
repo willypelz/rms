@@ -19,6 +19,7 @@
         <div class="container">
             
             @include('layout.alerts')
+            @include('layout.confirm-dialog')
             
             <div class="row">
                 
@@ -68,14 +69,14 @@
                                                     Edit
                                                 </a>
                                                 
-                                                <form action="{{ route('step-delete', ['id' => $workflowStep->id]) }}"
+                                                <form id="delForm" action="{{ route('step-delete', ['id' => $workflowStep->id]) }}"
                                                       method="post"
                                                       class="delete-spoof">
                                                     {{ csrf_field() }}
 
                                                     <input type="hidden" name="_method" value="delete">
 
-                                                    <button onclick="return confirm('Are you sure you want to delete workflow?');" type="submit" class="btn btn-danger btn-sm">
+                                                    <button onclick="deleteStepConfirmation('Are you sure you want to delete workflow?')" type="button" class="btn btn-danger btn-sm">
                                                         <i class="fa fa-trash fa-fw"></i> Delete
                                                     </button>
                                                 </form>
@@ -109,6 +110,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="name">Name</label>
+                                            <span class="text-danger">*</span>
                                             <input type="text"
                                                    name="name"
                                                    id="name"
@@ -133,6 +135,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="type">Type</label>
+                                            <span class="text-danger">*</span>
                                             <select name="type"
                                                     id="type"
                                                     class="select2"
@@ -158,6 +161,7 @@
                                 
                                 <div class="form-group" id="approvalUsersBlock">
                                     <label for="approvalUsers">Approval Users</label>
+                                    <span class="text-danger">*</span>
                                     <select class="select2"
                                             name="approval_users[]"
                                             id="approvalUsers"
@@ -237,6 +241,15 @@
             </div>
         </div>
     </section>
-
+<script>
+    function deleteStepConfirmation(strg){
+        customConfirmation(strg)
+        setTimeout(() => {
+            $('#btn1').click(function(e){
+                document.getElementById("delForm").submit()
+            })
+        }, 1000);
+    }
+</script>
 @endsection
 

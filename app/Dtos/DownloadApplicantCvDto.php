@@ -98,13 +98,6 @@ class DownloadApplicantCvDto extends DownloadApplicantDto {
 	     $this->getAllApplicantsFromSolr($next);
 	}
 
-    
-    public function processApplicantsCvs(\Closure $next){
-	     $this->getAllApplicantsFromSolr($next);
-	}
-
-
-
 }
 
 ?>

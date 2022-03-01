@@ -25,6 +25,10 @@ return [
     'file_upload' => env('FILEUPLOAD', 'uploads'),
     'company_email' => env('COMPANY_EMAIL'),
     'seamless_testing_app_url' => env('SEAMLESS_TESTING_APP_URL'),
+    'searcher' => env('SEARCH_ENGINE', 'solr'),
+    'solr_core' => env("SOLR_CORE"),
+    'solr_url' => env("SOLR_URL"),
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
@@ -180,8 +184,8 @@ return [
         Jenssegers\Agent\AgentServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
         Sentry\Laravel\ServiceProvider::class,
-
-                App\Providers\SolariumServiceProvider::class,
+        App\Providers\SolariumServiceProvider::class,
+        App\Providers\SearchEngineServiceProvider::class
 
     ],
 

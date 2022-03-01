@@ -75,7 +75,8 @@ class BulkRequestTestJobSmallerBits implements ShouldQueue
 
                 JobApplication::massAction(@$request->job_id, @$request->cv_ids, $request->step, $request->stepId);
 
-                $testUrl = env('SEAMLESS_TESTING_APP_URL', 'http://seamlesstesting.com').'/test-request';
+                $testUrl = getEnvData('SEAMLESS_TESTING_APP_URL', env('SEAMLESS_TESTING_APP_URL'), $request->clientId).'/test-request';
+
                 $data = [
                     'job_title' => $app->job->title,
                     'test_id' => $data['test_id'],
@@ -86,7 +87,7 @@ class BulkRequestTestJobSmallerBits implements ShouldQueue
                     'employer_email' => $current_company->email,
                     'start_time' => $data['start_time'],
                     'end_time' => $data['end_time'],
-                    'webhook_url' => route('save-test-result'),
+                    'webhook_url' => companyRoute($request->clientId, 'save-test-result'),
                 ];
                 $ch = curl_init($testUrl);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -100,6 +101,10 @@ class BulkRequestTestJobSmallerBits implements ShouldQueue
                 curl_close($ch);
                 // Leave this next line untouched, its imperative
                 dump($response);
+                info('response');
+                info('response: ' . json_encode($response));
+                info('url: ' . $testUrl);
+                info('done');
             }
         }catch(\Exception $e){
             info($e);

@@ -22,8 +22,6 @@
 | kernel and includes session state, CSRF protection, and more.
 |
 */
-
-
 use App\Libraries\Solr;
 use Illuminate\Support\Facades\Route;
 
@@ -33,17 +31,40 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/sso/auto/login/{url}/{user_id}/{token}', 'Auth\LoginController@loginUser');
     Route::get('/sso/auto/login/verify/role/{email}/{key}', 'Auth\LoginController@verifyUserHasRole');
     Route::any('admin-accept-invite/{id}/{company_id}',['uses' => 'AdminsController@adminAcceptInvite', 'as' => 'admin-accept-invite']);
-    Route::match( ["get", "post"],'jobs/post-a-job/{id?}', ['uses' => 'JobsController@createJob', 'as' => 'create-job']);
+    Route::match( ["get", "post"],'jobs/post-a-job/{id?}', ['uses' => 'JobsController@createJob', 'as' => 'create-post-job']);
     Route::post('/third-party/entry', 'ThirdPartyEntryController@index');
+
+    Route::get('setup', 'SetupController@index');
+    Route::get('generate-key', 'SetupController@generateApiKey')->name('generate-key');
+    Route::get('save-setup', 'SetupController@saveSetup')->name('save-setup');
 });
 
 Route::post("/api/v1/delete-super-admin", "HrmsIntegrationController@deleteSuperAdmin")->name("delete-super-admin");
+Route::group(['middleware' => ['web','auth','admin']], function () {
+    Route::get('clientEnv/edit/{id?}', 'SystemSettingsController@edit')->name('edit-env');
+    Route::get('clientEnv', 'SystemSettingsController@index')->name('index-env');
+    Route::post('client/update/{id}', 'SystemSettingsController@update')->name('update-env');
+    Route::get('clientEnv/delete/{id}', 'SystemSettingsController@delete')->name('delete-env');
+});
 
+Route::group(
+    ['prefix'=>'client', 'middleware' => 'allowUrl'], 
+    function () {
+        Route::get('/signup', 'SelfSignupController@index')->name('client-signup-index');
+        Route::post('/signup', 'SelfSignupController@create')->name('client-signup-create');
+    }
+);
+
+// admin company 
+Route::group(['middleware' => ['web', 'auth', 'companyList']], function () {
+    Route::get('/view-company-list', 'CompanyController@index')->name('view-company-list');
+});
 /** ---------
  * Start: Administrator Panel Routes
  * Make admin group and apply a guard to it
  */
-Route::group(['middleware' => ['web', "auth", 'admin']], function () {
+
+Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 
     Route::get('/download-bulk-upload-applicant-to-workflow-stage-template', "BulkUploadApplicantsToWorkflowStepContoller@downloadBulkApplicantsToWorkflowStagesTemplate")->name("download-bulk-upload-applicant-to-workflow-stage-template");
 
@@ -62,7 +83,7 @@ Route::group(['middleware' => ['web', "auth", 'admin']], function () {
         'prefix' => '/admin',
         'middleware' => 'admin'
     ], function () {
-        Route::get('auth/logout', 'LoginController@logout');
+        Route::get('auth/logout', 'Auth\LoginController@logout');
     });
 
     /** -- End: Administrator Panel Route -- */
@@ -182,6 +203,8 @@ Route::group(['middleware' => ['web', "auth", 'admin']], function () {
     Route::get('/one_applicant', 'JobApplication@oneApplicantData');
     
     Route::resource('schedule', 'JobApplicationsController');
+
+    Route::get('/download-applicants-interview-file/{filename}', 'JobApplicationsController@downloadApplicantsInterviewFile')->name("download-applicants-interview-file");
 
     Route::match(['get', 'post'], 'one_applicant',
         ['uses' => 'JobApplicationsController@oneApplicantData']);
@@ -338,7 +361,6 @@ Route::group(['middleware' => ['web', "auth", 'admin']], function () {
     Route::get('onboard/noAction3', ['as' => 'onboard-no-action-3', 'uses' => 'OnboardingController@noAction3']);
 
 
-
     Route::get('settings/embed',
     ['as' => 'settings-embed', 'uses' => 'JobsController@embed']);
 
@@ -481,7 +503,7 @@ Route::group(['middleware' => ['web', "auth", 'admin']], function () {
     Route::post('/settings/api-key', 'ApiController@update');
 
     Route::get('/my-career-page', 'JobsController@MyCompany');
-    Route::match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
+    Route::middleware('auth')->match(['get', 'post'], 'my-jobs', ['uses' => 'JobsController@JobList', 'as' => 'job-list']);
     Route::get('my-jobs-content', ['uses' => 'JobsController@JobList', 'as' => 'job-list-content']);
 
 });
@@ -593,6 +615,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/test/setup', ['as' => 'test-setup', 'uses' => 'TestSetupController@index']);
     Route::post('/test/setup/create', ['as' => 'test-setup-create', 'uses' => 'TestSetupController@create']);
 
+    
+
     Route::get('download-csv-template',
     ['uses' => 'PrivateJobController@exportCsvTemplate', 
     'as' => 'download-privatejob-template']);
@@ -674,23 +698,23 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::match(['get', 'post'], 'job/apply/{jobID}/{slug}',['uses' => 'JobsController@jobApply', 'as' => 'job-apply']);
 
-    Route::get('fetch/schools', ['uses'=>'JobsController@fetchSchools', 'as' => 'ajax-fetch-schools']);
+    Route::post('fetch/schools', ['uses'=>'JobsController@fetchSchools', 'as' => 'ajax-fetch-schools']);
 
     Route::match(['get', 'post'], 'job/applied/{jobID}/{slug}',['uses' => 'JobsController@JobApplied', 'as' => 'job-applied']);
 
     Route::match(['get', 'post'], 'job/video-application/{jobID}/{slug}/{appl_id}',['uses' => 'JobsController@JobVideoApplication', 'as' => 'job-video-application']);
 
-    Route::get('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
+    Route::match(['get', 'post'],'embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
 
-    Route::post('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
+    // Route::post('embed-view', ['as' => 'embed', 'uses' => 'JobsController@getEmbed']);
 
-    Route::get('embed-test', ['as' => 'embed', 'uses' => 'JobsController@getEmbedTest']);
+    Route::get('embed-test', ['as' => 'embed-test', 'uses' => 'JobsController@getEmbedTest']);
 
     Route::match(['get', 'post'], 'accept-invite/{id}',['uses' => 'JobsController@acceptInvite', 'as' => 'accept-invite']);
 
     Route::match(['get', 'post'], 'decline-invite/{id}',  ['uses' => 'JobsController@declineInvite', 'as' => 'decline-invite']);
 
-    Route::match(['get', 'post'], 'select-company/{slug?}', ['uses' => 'JobsController@selectCompany', 'as' => 'select-company'])->middleware('auth');
+    Route::match(['get', 'post'], 'select-company', ['uses' => 'JobsController@selectCompany', 'as' => 'select-company'])->middleware('auth');
 
     Route::get('/admin/force-create-admins', 'JobsController@makeOldStaffsAdmin');
 
@@ -846,7 +870,12 @@ Route::group(['middleware' => 'web'], function () {
         }
     ]);
 
-    
+
+    Route::get(
+        '/download-applicants-interview-file/{filename}',
+        'JobApplicationsController@downloadApplicantsInterviewFile'
+    )->name("download-applicants-interview-file");
+
 });
 
 Route::get(
@@ -855,6 +884,10 @@ Route::get(
     )->name("download-applicants-interview-file");
 
 
+
+
 Route::group(['prefix' => 'api/v2', 'namespace' => 'API'], function () {
     Route::get('rms-company-subsidiaries', ['uses' => 'SyncController@companyAndSubsidiaries', 'as' => 'rms-company-subsidiaries']);
 });
+
+

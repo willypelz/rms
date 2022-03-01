@@ -6,8 +6,9 @@
         <div class="row">
 
             <section class="col shr-auth-form">
-
-                <img src="{{ env('APP_LOGO') }}" class="shr-auth-logo">
+                <a class="shr-auth-form-toggle" style=" margin-left: 85%; margin-top: -20px;width: 150px; text-decoration:none;" href="{{url('/login')}}">Admin Portal</a>
+                   
+                <img src="{{ getEnvData('APP_LOGO', null, request()->clientId) }}" class="shr-auth-logo">
 
                 <div class="shr-auth-form-inner">
                     <h2 class="dark-blue-text font-weight-bold">Welcome candidate</h2>
@@ -59,7 +60,6 @@
                     <img src="{{ asset('homepage/images/icon-jobs.svg') }}">
                     <h4 class="dark-blue-text font-weight-bold ml-3"> Jobs you may be interested in</h4>
                 </div>
-
                 @forelse($jobs as $job)
                     <div class="job-card">
                         <a href="{{ route('job-view', [$job->id, $job->slug]) }}"><h5

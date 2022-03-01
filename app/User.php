@@ -26,16 +26,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'invite_code',
-        'is_internal',
-        'role_name',
-        'is_super_admin',
-        'user_token'
-    ];
+    protected $guarded = ['id'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -109,6 +100,11 @@ class User extends Authenticatable
         static::created(function (User $user) {
             $user->defaultCompany();
         });
+    }
+
+    public function client()
+    {
+        return $this->belongsTo('App\Models\Client', "client_id");
     }
 
 }

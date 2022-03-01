@@ -154,12 +154,13 @@ class JobController extends Controller
                 400
             );
         }
-
+        $company = Company::where('api_key', $request->header('X-API-KEY'))->first();
+        $clientId = $company->client_id;
         return response()->json(
             [
                 'status' => true,
                 'message' => 'success',
-                'data' => Company::get(),
+                'data' => Company::where('client_id', $clientId)->get(),
             ]
         );
 
@@ -199,13 +200,18 @@ class JobController extends Controller
             [
                 'jobs' => function ($query) use ($jobType, $request) {
                     $query
-                    ->with(['workflow.workflowSteps'=>function($sort){
-                        $sort->orderBy('order', 'asc');
-                    }])
+                    ->with(
+                        ['workflow.workflowSteps' => function($sort) {
+                            $sort->orderBy('order', 'asc');
+                        }
+                        ]
+                    )
                         ->whereStatus("ACTIVE")
-                        ->when($request->with_expiry, function($q){
-                            return $q->where('expiry_date','>=',Carbon::now()->toDateString());
-                        })
+                        ->when(
+                            $request->with_expiry, function ($q) {
+                                return $q->where('expiry_date', '>=', Carbon::now()->toDateString());
+                            }
+                        )
                         ->orderBy('created_at', 'desc');
                     if ($jobType != 'all') {
                         $query->whereIsFor($jobType); // default $jobType == external
@@ -216,14 +222,19 @@ class JobController extends Controller
                 'jobs.specializations',
                 'jobs.company',
             ]
-        )->when($request->hrms_id, function($q) use($request){
-            return $q->where('hrms_id', $request->hrms_id);
-        });
+        )
+        ->where('api_key', $request->header('X-API-KEY'))
+        ->when(
+            $request->hrms_id, function ($q) use ($request) {
+                return $q->where('hrms_id', $request->hrms_id);
+            }
+        );
 
-        if (is_null($company_id))
+        if (is_null($company_id)) {
             $company = $company->first();
-        else
+        } else {
             $company = $company->find($company_id);
+        }
 
         if (!$company) {
             return response()->json(
@@ -264,7 +275,7 @@ class JobController extends Controller
             );
         }
 
-        if (!$company = Company::whereApiKey($req_header)->first()) {
+        if (!$company = Company::whereApiKey($request->header('X-API-KEY'))->first()) {
             return response()->json(
                 [
                     'status' => false,
@@ -523,7 +534,11 @@ class JobController extends Controller
         $api_key = $company->api_key;
         try {
             $result = $client->get(
-                env('STAFFSTRENGTH_URL') . '/admin/employees/api/get/all/employees',
+                getEnvData(
+                    'STAFFSTRENGTH_URL', 
+                    null, 
+                    request()->clientId
+                ) . '/admin/employees/api/get/all/employees',
                 [
                     'headers' => ['Authorization' => $api_key],
                     'verify' => false,
@@ -535,7 +550,12 @@ class JobController extends Controller
 
             return $result;
         } catch (\Exception $exception) {
-            return response()->json(['status' => false, 'message' => 'something went wrong']);
+            return response()->json(
+                [
+                    'status' => false, 
+                    'message' => 'something went wrong'
+                ]
+            );
         }
     }
 
@@ -552,8 +572,8 @@ class JobController extends Controller
                 400
             );
         }
-        
-        $company = Company::where('hrms_id', $request->company_id)->first() ?? Company::first();
+
+       $company = Company::with('client')->where('api_key', $req_header)->first();
 
         if (is_null($company)) {
             return response()->json(
@@ -565,15 +585,7 @@ class JobController extends Controller
             );
         }
 
-        if ($req_header != $company->api_key) {
-            return response()->json(
-                [
-                    'status' => false,
-                    'message' => 'Invalid API Key',
-                ],
-                400
-            );
-        }
+
 
         if (!$request->name || !$request->email) {
             return response()->json(
@@ -585,17 +597,13 @@ class JobController extends Controller
             );
         }
 
-        $user = User::whereName($request->name)
-            ->whereEmail($request->email)
-            ->first();
+        $user = User::whereName($request->name)->whereEmail($request->email)->where('client_id', $company->client->id)->first();
 
         if (!is_null($user)) {
-            return response()->json(
-                [
-                    'status' => false,
-                    'message' => 'User already exist',
-                ],
-                400
+            return response()->json([
+                    'status' => true,
+                    'message' => 'User already exists',
+                ]
             );
         }
 
@@ -608,6 +616,9 @@ class JobController extends Controller
         $user->is_internal = 1;
         $user->activated = 1;
         $user->is_super_admin = $request->is_super_admin ?? 1;
+        $user->is_super_admin = 1;
+        $user->client_id = $company->client->id;
+
         $user->save();
 
         $role = Role::whereName('admin')->first()->id;

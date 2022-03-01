@@ -389,7 +389,7 @@ class JobsController extends Controller
                     //Send notification mail
                     $email_from = (Auth::user()->email) ? Auth::user()->email : getEnvData('COMPANY_EMAIL', null, request()->clientId);
 
-                    \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $data, 'job_title' => $job->title, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
+                    \Illuminate\Support\Facades\Mail::send('emails.new.exclusively_invited', ['data' => $data, 'job_title' => $job->title,'companyDetails' => $company, 'company' => $company->name, 'accept_link' => $accept_link, 'decline_link' => $decline_link], function (Message $m) use ($data) {
                         $m->from(getEnvData('COMPANY_EMAIL',null, request()->clientId))->to($data->email)->subject('You Have Been Exclusively Invited');
                     });
 

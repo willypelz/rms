@@ -68,7 +68,6 @@ class CommenceProcessingForApplicantsSpreedsheet extends SearchEngineable implem
     public function handle()
     {
 
-
         $sheets = $this->exporter->getExportSheets();
 
         $batch = Bus::batch($sheets)->then(function (Batch $batch) {
@@ -76,6 +75,7 @@ class CommenceProcessingForApplicantsSpreedsheet extends SearchEngineable implem
         })->catch(function (Batch $batch, \Throwable $e) {
             // First batch job failure detected...
         })->finally(function (Batch $batch) {
+
 
         })->onQueue('export')->dispatch();
 
@@ -96,9 +96,12 @@ class CommenceProcessingForApplicantsSpreedsheet extends SearchEngineable implem
     }
 
 
-    public function failed($exception)
+    public function failed(\Exception $exception)
     {
         $type = "Applicant Spreadsheet";
+
+        info($exception->getMessage());
+
         $this->fail($this->admin->notify(new NotifyAdminOfFailedDownload($this->admin, $type, $this->jobId)));
     }
 

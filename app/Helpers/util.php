@@ -1329,7 +1329,7 @@ function getEnvData(string $key, $default_value = null, $client_id = null)
 
         return $default_value;
     }catch(\Exception $e){
-        info('entered exception: ' . $default_value);
+
         return $default_value;
     }
 

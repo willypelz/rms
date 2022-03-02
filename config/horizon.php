@@ -145,7 +145,7 @@ return [
         'production' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => ['default', 'solr'],
+                'queue' => ['default', 'solr', 'algolia'],
                 'balance' => 'auto',
                 'minProcesses' => env('HORIZON_PROCESS_MIN', 1),
                 'maxProcesses' => env('HORIZON_PROCESS_MAX', 10),
@@ -169,7 +169,7 @@ return [
         'local' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => ['default', 'solr'],
+                'queue' => ['default', 'solr', 'algolia'],
                 'balance' => 'auto',
                 'minProcesses' => env('HORIZON_PROCESS_MIN', 1),
                 'maxProcesses' => env('HORIZON_PROCESS_MAX', 10),

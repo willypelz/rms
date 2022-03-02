@@ -27,6 +27,6 @@ class CheckSpreadsheetSentNotificationStatus
      */
     public function handle(NotificationSent $event)
     {
-        SpreadSheetDoneExporting::where('id', $event->notification->sheetId)->delete();
+        SpreadSheetDoneExporting::where('id', optional($event->notification)->sheetId)->delete();
     }
 }

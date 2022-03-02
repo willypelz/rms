@@ -46,7 +46,7 @@ class SpreadSheetExporter extends SearchEngineable
 
         while ($page <= $batches) {
             $this->search_params['start'] = $page * $this->paginateBy;
-            $data = $this->getApplicants()['response']['doc'];
+            $data = $this->getApplicants()['response']['docs'];
 
             if (!empty($data)) {
                 if ($page == 1) {

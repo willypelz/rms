@@ -8,7 +8,7 @@ use PDF;
 use Curl;
 use File;
 use App\User;
-use Response;
+use Exception;
 use Validator;
 use App\Models\Cv;
 use Carbon\Carbon;
@@ -26,6 +26,7 @@ use Illuminate\Mail\Mailer;
 use App\Models\WorkflowStep;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
+use Illuminate\Http\Response;
 use App\Models\InterviewNotes;
 use App\Models\JobApplication;
 use Spatie\CalendarLinks\Link;
@@ -40,6 +41,7 @@ use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Jobs\WorkflowStepWithEmailJob;
 use App\Models\InterviewNoteTemplates;
+use Illuminate\Support\Facades\Storage;
 use App\Jobs\AddApplicantToExportInBits;
 use Madnest\Madzipper\Facades\Madzipper;
 use App\Jobs\SaveSeamlessTestingResultJob;
@@ -109,7 +111,8 @@ class JobApplicationsController extends Controller
     {
         $this->middleware('auth', [
             'except' => [
-                'saveTestResult'
+                'saveTestResult',
+                'downloadApplicantsInterviewFile'
             ]
         ]);
         $this->mailer = $mailer;
@@ -429,6 +432,7 @@ class JobApplicationsController extends Controller
             $statuses
         );
 
+
         if (isset($request->status)) {
             $status = $request->status;
             if ($request->status != "") {
@@ -675,7 +679,8 @@ class JobApplicationsController extends Controller
             @$solr_video_application_score,
             @$solr_test_score,
             @$request->cv_ids
-        );
+        )->onQueue('export');
+
         $link = asset("exports/{$filename}");
         return response()->json(
             [
@@ -837,6 +842,7 @@ class JobApplicationsController extends Controller
 
     public function downloadApplicantsInterviewFile(string $filename)
     {
+
         try {
             $decrypted_file_name = decrypt($filename);
             $file = \Storage::disk('Csv')->get($decrypted_file_name);
@@ -846,9 +852,11 @@ class JobApplicationsController extends Controller
                 ->header('Cache-Control', 'public')
                 ->header('Content-Description', 'File Transfer')
                 ->header('Content-Disposition', 'attachment; filename=' . $decrypted_file_name);
+
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'File not found');
         }
+
     }
 
     public function massAction(Request $request)
@@ -952,7 +960,6 @@ class JobApplicationsController extends Controller
                     $job_id,
                     $statuses = $job->workflow->workflowSteps()->pluck('slug')
                 ) : [];
-
 
                 foreach ($application_statuses as $key => $value) {
                     $job_response_data['html_data'] .= '<div class="job-item">'
@@ -1820,6 +1827,7 @@ class JobApplicationsController extends Controller
             $interviewer['name'] = "{Interviewer Name}";
             $interviewer = (object) $interviewer;
 	        $companyDetails = $appl->job->company;
+
             $interviewer_email = view('emails.new.interviewer', compact('cv', 'job', 'companyDetails', 'interview', 'interviewer'))->render();
             return view('admin.preview', compact('invite_email', 'interviewer_email'));
         }

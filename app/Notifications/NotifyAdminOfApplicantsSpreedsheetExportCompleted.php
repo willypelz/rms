@@ -13,7 +13,7 @@ class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
 {
     use Queueable;
 
-    protected $filename,$type,$job,$admin;
+    public $filename,$type,$job,$admin, $sheetId;
 
 
 
@@ -24,12 +24,13 @@ class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
      * @param $job
      * @param string $filename
      */
-    public function __construct(string  $filename, string $type, $jobId, $admin)
+    public function __construct(string  $filename, string $type, $jobId, $admin, $sheetId = null)
     {
         $this->filename = $filename; 
         $this->admin = $admin;
         $this->type = $type;
         $this->job = Job::find($jobId) ?? '';
+        $this->sheetId = $sheetId;
     }
 
     /**
@@ -76,4 +77,6 @@ class NotifyAdminOfApplicantsSpreedsheetExportCompleted extends Notification
             'type' => 'export'
         ];
     }
+
+
 }

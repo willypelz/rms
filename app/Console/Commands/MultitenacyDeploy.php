@@ -40,6 +40,14 @@ class MultitenacyDeploy extends Command
     {
         Artisan::call('migrate --seed');
         Artisan::call('scout:sync');
-        Artisan::call('scout:reimport');
+        if (config('app.env' == 'local')) {
+            //since personal accounts a free and donot have luxury of plenty operations, do not always do this
+            if($this->ask('do you want to reimport scout?', 'yes') == 'yes') {
+                Artisan::call('scout:reimport');
+            }
+        } else {
+            Artisan::call('scout:reimport');
+        }
+
     }
 }

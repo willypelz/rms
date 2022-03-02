@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\MultitenacyDeploy;
 use App\Console\Commands\PopulateCvEmails;
+use App\Console\Commands\SendExportDoneNotification;
 use App\Console\Commands\SyncAlgolia;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -22,7 +23,8 @@ class Kernel extends ConsoleKernel
         Commands\StreamFilesFromHRMS::class,
         PopulateCvEmails::class,
         MultitenacyDeploy::class,
-        Commands\SyncAlgolia::class
+        Commands\SyncAlgolia::class,
+        SendExportDoneNotification::class,
     ];
 
     /**
@@ -37,5 +39,6 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
 //        $schedule->command('AlgoliaSync:data')->everyFiveMinutes();
+        $schedule->command('check:spreadsheet-is-done-exporting')->everyFiveMinutes();
     }
 }

@@ -1122,24 +1122,30 @@ function getCompanyId($userId = null) {
 	return $company_id;
 }
 
-function userPermissionsArray($useSession=true){
+function userPermissionsArray($useSession = true)
+{
 
-	if ($useSession && session()->has('user_permissions')) return session()->get('user_permissions');
+    if ($useSession && session()->has('user_permissions')) {
+        return session()->get('user_permissions');
+    }
+    
 
-	$role_ids = auth()->user()->roles()->pluck('id')->unique()->toArray();
-	$permission_role = PermissionRole::whereIn('role_id',$role_ids)->pluck('permission_id')->toArray();
-	$permission_array =Permission::find(array_unique($permission_role))->pluck('name')->toArray();
-	session()->put('user_permissions', $permission_array);
+    $role_ids = auth()->user()->roles()->pluck('role_id')->unique()->toArray();
+    $permission_role = PermissionRole::whereIn('role_id', $role_ids)->pluck('permission_id')->toArray();
+    $permission_array = Permission::find(array_unique($permission_role))->pluck('name')->toArray();
+    session()->put('user_permissions', $permission_array);
 
-	return $permission_array;
+    return $permission_array;
 }
 
-function canSwitchBetweenPage(){
-
-   	$user = auth()->user();
-	if($user->name === configs::DEFAULT_ADMIN_NAME  && $user->email === configs::DEFAULT_ADMIN_EMAIL) return true;
-
-	return in_array(configs::CAN_SWITCH_BETWEEN_COMPANY, userPermissionsArray());
+function canSwitchBetweenPage()
+{
+    $user = auth()->user();
+    if ($user->name === configs::DEFAULT_ADMIN_NAME  && $user->email === configs::DEFAULT_ADMIN_EMAIL) {
+        return true;
+    }
+    
+    return in_array(configs::CAN_SWITCH_BETWEEN_COMPANY, userPermissionsArray());
 }
 
 

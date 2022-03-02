@@ -16,7 +16,7 @@ class NotifyAdminOfCompletedExportJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $filename, $admin,$type,$jobId;
+    public $filename, $admin,$type,$jobId, $sheetId;
 
     public $timeout = 2500;
 
@@ -26,13 +26,14 @@ class NotifyAdminOfCompletedExportJob implements ShouldQueue
      * @param  $jobId
      * @param $filename
      */
-    public function __construct($filename, User $admin,$type, $jobId=null)
+    public function __construct($filename, User $admin,$type, $jobId=null, $sheetId = null)
     {
       $this->filename = $filename;
       $this->admin = $admin; 
       $this->jobId = $jobId; 
       $this->type = $type; 
       $this->queue = "export";
+      $this->sheetId = $sheetId;
     }
 
     /**
@@ -42,6 +43,7 @@ class NotifyAdminOfCompletedExportJob implements ShouldQueue
      */
     public function handle()
     {
-      $this->admin->notify( new NotifyAdminOfApplicantsSpreedsheetExportCompleted($this->filename,$this->type,$this->jobId, $this->admin));
+      $this->admin->notify( new NotifyAdminOfApplicantsSpreedsheetExportCompleted($this->filename,$this->type,$this->jobId, $this->admin, $this->sheetId));
+
     }
 }

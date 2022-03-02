@@ -564,39 +564,35 @@ class JobController extends Controller
 
         $req_header = $request->header('X-API-KEY');
         if (!$req_header) {
-            return response()->json([
-                'status' => false,
-                'message' => 'No API Key',
-            ],
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => 'No API Key',
+                ],
                 400
             );
         }
 
-        $company = Company::with('client')->where('api_key', $req_header)->first();
+       $company = Company::with('client')->where('api_key', $req_header)->first();
 
         if (is_null($company)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'No company has being set up on this platform',
-            ],
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => 'No company has being set up on this platform',
+                ],
                 400
             );
         }
 
-        //        if ($req_header != $company->api_key) {
-//            return response()->json([
-//                'status' => false,
-//                'message' => 'Invalid API Key',
-//            ],
-//                400
-//            );
-//        }
+
 
         if (!$request->name || !$request->email) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Name and employee email required',
-            ],
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => 'Name and employee email required',
+                ],
                 400
             );
         }
@@ -619,17 +615,20 @@ class JobController extends Controller
         $user->username = $request->username;
         $user->is_internal = 1;
         $user->activated = 1;
+        $user->is_super_admin = $request->is_super_admin ?? 1;
         $user->is_super_admin = 1;
         $user->client_id = $company->client->id;
+
         $user->save();
 
         $role = Role::whereName('admin')->first()->id;
 
         $company->users()->attach($user->id, ['role' => $role]);
-    
+
         $user->roles()->attach([$role]);
 
-        return response()->json([
+        return response()->json(
+            [
                 'status' => true,
                 'message' => 'created successfully',
             ]

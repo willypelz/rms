@@ -98,14 +98,7 @@ class CommenceProcessingForApplicantsSpreedsheet extends SearchEngineable implem
 
     public function failed($exception)
     {
-        dd($exception);
         $type = "Applicant Spreadsheet";
-    }
-
-    public function batchComplete()
-    {
-        $type = "Applicant Spreadsheet";
-
         $this->fail($this->admin->notify(new NotifyAdminOfFailedDownload($this->admin, $type, $this->jobId)));
     }
 

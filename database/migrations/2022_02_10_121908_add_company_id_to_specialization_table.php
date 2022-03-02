@@ -13,11 +13,13 @@ class AddCompanyIdToSpecializationTable extends Migration
      */
     public function up()
     {
-        Schema::table(
-            'specializations', function (Blueprint $table) {
+        if (!Schema::hasColumn('specializations', 'company_id')) {
+            Schema::table(
+                'specializations', function (Blueprint $table) {
                 $table->foreignId('company_id')->nullable()->constrained();
             }
-        );
+            );
+        }
     }
 
     /**
@@ -27,12 +29,14 @@ class AddCompanyIdToSpecializationTable extends Migration
      */
     public function down()
     {
-        Schema::table(
-            'specializations', function (Blueprint $table) {
+
+
+        if (Schema::hasColumn('specializations', 'company_id')) {
+            Schema::table(
+                'specializations', function (Blueprint $table) {
                 $table->dropForeign(['company_id']);
             }
-        );
-        if (Schema::hasColumn('specializations', 'company_id')) {
+            );
             Schema::table(
                 'specializations',
                 function (Blueprint $table) {

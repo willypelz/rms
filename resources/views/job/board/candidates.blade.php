@@ -935,6 +935,7 @@ $is_super_admin = auth()->user()->is_super_admin;
 
                 $('body').on('click', '#downloadInterviewNotes', function (e) {
                     e.preventDefault();
+
                     $data = {
                         search_query: $('#search_query').val(),
                         filter_query: filters,
@@ -996,6 +997,7 @@ $is_super_admin = auth()->user()->is_super_admin;
                     $.growl.error({message: data.msg} , {delay: 10000});
                     break;
             }
+
         }
 
         function messageAllCandidates() {

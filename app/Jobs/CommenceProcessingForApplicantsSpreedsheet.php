@@ -3,17 +3,24 @@
 namespace App\Jobs;
 
 
+use App\Events\SpreadSheetGenerated;
 use App\Helpers\SearchEngineable;
+use App\Helpers\SpreadsheetExport\SpreadSheetExporter;
+use App\Jobs\CreateSheetHeader;
+use App\Jobs\NotifyAdminOfCompletedExportJob;
+use App\Models\JobApplication;
+use App\Models\SpreadSheetDoneExporting;
+use App\Notifications\NotifyAdminOfApplicantsSpreedsheetExportCompleted;
 use App\User;
 use App\Models\Company;
+use Illuminate\Bus\Batch;
 use Illuminate\Bus\Queueable;
-use App\Jobs\CreateSheetHeader;
+use Illuminate\Support\Facades\Bus;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Jobs\NotifyAdminOfCompletedExportJob;
 use SeamlessHR\SolrPackage\Facades\SolrPackage;
 use App\Notifications\NotifyAdminOfFailedDownload;
 
@@ -21,11 +28,10 @@ class CommenceProcessingForApplicantsSpreedsheet extends SearchEngineable implem
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $admin,$company,$filename,$search_params, 
-              $jobId, $status,$solr_age, $solr_exp_years, 
-              $solr_video_application_score, $solr_test_score,$cv_ids;
+    protected $admin,$jobId,$filename;
 
     public $timeout = 2500;
+    protected $exporter;
 
     /**
      * Create a new job instance.
@@ -36,24 +42,22 @@ class CommenceProcessingForApplicantsSpreedsheet extends SearchEngineable implem
      * @param User $admin
      * @param array $data
      * @param $filename
-     * 
+     *
      */
-    public function __construct(Company $company, User $admin, $filename, array $search_params, 
-                                int $jobId, $status, $solr_age=null, $solr_exp_years=null, 
-                                $solr_video_application_score=null, $solr_test_score=null,$cv_ids=null)
+    public function __construct(Company $company, User $admin, $filename, array $search_params,
+                                int     $jobId, $status, $solr_age = null, $solr_exp_years = null,
+                                        $solr_video_application_score = null, $solr_test_score = null, $cv_ids = null)
     {
-      $this->company = $company;
-      $this->admin = $admin;
-      $this->filename = $filename;
-      $this->search_params = $search_params;
-      $this->jobId = $jobId;
-      $this->status = $status;
-      $this->solr_age = $solr_age;
-      $this->solr_exp_years = $solr_exp_years;
-      $this->solr_video_application_score = $solr_video_application_score;
-      $this->solr_test_score = $solr_test_score;
-      $this->cv_ids = $cv_ids;
-      $this->queue = "export";
+
+        $data = compact('company', 'admin', 'filename', 'search_params',
+            'jobId', 'status', 'solr_age', 'solr_exp_years',
+            'solr_video_application_score', 'solr_test_score', 'cv_ids'
+        );
+
+        $this->exporter = (new SpreadSheetExporter($data));
+        $this->admin = $admin;
+        $this->jobId = $jobId;
+        $this->filename = $filename;
     }
 
     /**
@@ -63,39 +67,46 @@ class CommenceProcessingForApplicantsSpreedsheet extends SearchEngineable implem
      */
     public function handle()
     {
-        
-        $applicants =  $this->getApplicants(); 
-        $response = $applicants['response'];
-        $number_found = $response["numFound"];
-        $header = $response['docs'][0];   
-
-       //create excel sheet header in readiness for the excel data insertion 
-        CreateSheetHeader::dispatch($this->filename, $header);
-        $chunked_applicants =  collect($response['docs'])->chunk(500)->toArray();
-        $chunk_count = count($chunked_applicants);
-        $counter = 0;
-        foreach($chunked_applicants as $data){
-                ++$counter;
-           SendApplicantsSpreedsheet::dispatch($data,$this->company,$this->admin,$this->filename,$this->cv_ids)->delay(\Carbon\Carbon::now()->addSeconds(10));  
-        }
-        if($counter == $chunk_count){
-          info('initiated admin notification of export job');
-                $type = "Applicant Spreadsheet";
-                NotifyAdminOfCompletedExportJob::dispatch($this->filename,$this->admin,$type,$this->jobId)->delay(\Carbon\Carbon::now()->addSeconds($number_found < 4000 ? 60 : 240)); 
-        }
-     }
 
 
-    private function getApplicants(){
-         parent::__construct();
-          return $this->searchEngine->get_applicants($this->search_params, $this->jobId, @$this->status, @$this->admin->client_id,
-                                             @$this->solr_age, @$this->solr_exp_years,
-                                             @$this->solr_video_application_score, @$this->solr_test_score);
+        $sheets = $this->exporter->getExportSheets();
+
+        $batch = Bus::batch($sheets)->then(function (Batch $batch) {
+            // All jobs completed successfully...
+        })->catch(function (Batch $batch, \Throwable $e) {
+            // First batch job failure detected...
+        })->finally(function (Batch $batch) {
+
+        })->onQueue('export')->dispatch();
+
+
+        SpreadSheetDoneExporting::firstOrCreate(
+            [
+                'batch_id' => $batch->id,
+                'admin_id' => $this->admin->id,
+                'data' => [
+                    'filename' => $this->filename,
+                    'type' => "Applicant Spreadsheet",
+                    'jobId' => $this->jobId,
+                    'admin' => $this->admin
+                ]
+
+            ]
+        );
     }
 
-    public function failed(){
-      $type = "Applicant Spreadsheet";
-      $this->fail($this->admin->notify(new NotifyAdminOfFailedDownload($this->admin, $type, $this->jobId)));
+
+    public function failed($exception)
+    {
+        dd($exception);
+        $type = "Applicant Spreadsheet";
+    }
+
+    public function batchComplete()
+    {
+        $type = "Applicant Spreadsheet";
+
+        $this->fail($this->admin->notify(new NotifyAdminOfFailedDownload($this->admin, $type, $this->jobId)));
     }
 
 }

@@ -679,7 +679,8 @@ class JobApplicationsController extends Controller
             @$solr_video_application_score,
             @$solr_test_score,
             @$request->cv_ids
-        );
+        )->onQueue('export');
+
         $link = asset("exports/{$filename}");
         return response()->json(
             [

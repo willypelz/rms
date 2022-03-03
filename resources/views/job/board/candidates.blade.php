@@ -568,8 +568,8 @@ $is_super_admin = auth()->user()->is_super_admin;
                         $('.result-label').show();
                         if (data.count > 0) {
                             $('#pagination').show();
-                            // $('.result-label').show();
-                            $('#search-filters').html(data.search_filters);
+                            $('.result-label').show();
+                            // $('#search-filters').html(data.search_filters);
                         } else {
                             $('#pagination').hide();
                             // $('.result-label').hide();

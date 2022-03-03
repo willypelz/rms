@@ -1819,7 +1819,7 @@ class JobApplicationsController extends Controller
 
             $interviewer['name'] = "{Interviewer Name}";
             $interviewer = (object) $interviewer;
-	        $companyDetails = $appl->job->company,
+	        $companyDetails = $appl->job->company;
             $interviewer_email = view('emails.new.interviewer', compact('cv', 'job', 'companyDetails', 'interview', 'interviewer'))->render();
             return view('admin.preview', compact('invite_email', 'interviewer_email'));
         }

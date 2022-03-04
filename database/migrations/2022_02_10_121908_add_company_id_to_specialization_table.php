@@ -29,8 +29,6 @@ class AddCompanyIdToSpecializationTable extends Migration
      */
     public function down()
     {
-
-
         if (Schema::hasColumn('specializations', 'company_id')) {
             Schema::table(
                 'specializations', function (Blueprint $table) {

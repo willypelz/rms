@@ -319,10 +319,11 @@ function get_application_statuses($status, $job_id = null, $statuses = [])
     $all = 0; //total number of results
 
     $applications = JobApplication::with('cvSelected')
-                        ->whereHas('cvSelected');
+                        ->whereHas('cvSelected', function ($q) {
+                            $q->whereNotNull('email');
+                        });
 
     if (is_null($job_id)) {
-
         $companyJobs = Job::getMyJobIds(true);
 
         $applications->whereIn('job_id', $companyJobs);
@@ -330,21 +331,15 @@ function get_application_statuses($status, $job_id = null, $statuses = [])
     } else {
         $applications = $applications->where('job_id', $job_id);
     }
-
-    $status_from_db = $applications->get()
-                    ->transform(function ($app) {
-                        return [
-                            'email' => $app->cv->email,
-                            'status' => $app->status
-                        ];
-                    });
-
-    $status_array2 = ['ALL' => $status_from_db->count()];
+    $applications =$applications->select('status')->get();
 
     foreach ($statuses as $stat) {
-        $status_array2[$stat] = $status_from_db->where('status', $stat)->count();
+        if ($stat == 'ALL') {
+            $status_array2['ALL'] = $applications->count();
+        } else {
+            $status_array2[$stat] = $applications->where('status', $stat)->count();
+        }
     }
-    $status_array2 ['ALL'] = $status_from_db->count();
 
     return $status_array2;
 
@@ -425,6 +420,9 @@ function check_if_job_owner_on_queue($job_id, $current_company, $user)
 
 function get_current_company()
 {
+    if ($company = session()->get('active_company')) {
+        return $company;
+    }
 
     $authUser = Auth::user();
 
@@ -432,9 +430,10 @@ function get_current_company()
 
     if (!is_null($authUser)) {
         //If a company is selected
+        $company = $authUser->companies()->where('company_users.company_id', $sessionId)->first();
         if ($sessionId) {
-            if (isset($authUser->companies) && !is_null($authUser->companies()->where('company_users.company_id', $sessionId)->first())) {
-	            return $authUser->companies()->where('company_users.company_id', $sessionId)->first();
+            if (isset($authUser->companies) && !is_null($company)) {
+	            return $company;
             }
         }
 
@@ -1282,8 +1281,14 @@ function setSystemConfig($client_id)
  */
 function getSystemConfig($client_id = null)
 {
-    $client_id = !is_null($client_id) ? $client_id : optional(get_current_company())->client_id;
-    $systemSettingData = SystemSetting::where('client_id', $client_id)->get()->pluck('value', 'key')->all();
+    if (!is_null($client_id)) {
+        $activeCompany = session()->get('active_company');
+        if ($activeCompany) {
+            $client_id = $activeCompany->client_id;
+        } else {
+            $client_id = optional(get_current_company())->client_id;
+        }
+    }
 
     if (Cache::has("SystemConfig-{$client_id}")) {
         $setting = Cache::get("SystemConfig-{$client_id}");

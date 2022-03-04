@@ -38,25 +38,36 @@ class SpreadSheetExporter extends SearchEngineable
             $job->where('id', $this->jobId);
         })->count();
 
-        $this->search_params['paginationCount'] = $this->paginateBy;
+        $this->search_params['paginationCount'] = 20;
         $batches = floor(($totalApplications / 20)) + 1;
 
-        $page = 1;
         $exports = [];
 
-        while ($page <= $batches) {
-            $this->search_params['start'] = $page * $this->paginateBy;
+        if (config('app.searcher') == 'solr') {
             $data = $this->getApplicants()['response']['docs'];
-
-            if (!empty($data)) {
-                if ($page == 1) {
-                    CreateSheetHeader::dispatch($this->filename, $data[0]);
+            $data = array_chunk($data, 20);
+            foreach ($data as $key => $datum) {
+                if ($key == 0) {
+                    CreateSheetHeader::dispatch($this->filename, $datum[0]);
                 }
-                $exports [] = (new SendApplicantsSpreedsheetInSmallerBits($data, $this->company, $this->admin, $this->filename, $this->cv_ids));
+                $exports [] = (new SendApplicantsSpreedsheetInSmallerBits($datum, $this->company, $this->admin, $this->filename, $this->cv_ids));
             }
+        } else {
+            $page = 1;
+            while ($page <= $batches) {
+                $data = $this->getApplicants()['response']['docs'];
 
-            $page++;
+                if (!empty($data)) {
+                    if ($page == 1) {
+                        CreateSheetHeader::dispatch($this->filename, $data[0]);
+                    }
+                    $exports [] = (new SendApplicantsSpreedsheetInSmallerBits($data, $this->company, $this->admin, $this->filename, $this->cv_ids));
+                }
+
+                $page++;
+            }
         }
+
         return $exports;
     }
 

@@ -13,6 +13,7 @@ class AlgoliaSearch implements SearchEngine
         extract($data);
 
         $q = $q == '*' ? '' : $q;
+
         $pageNumber = (($start ?? 0) / ($paginationCount ?? 20));
 
         if (is_null($additional['job_id'] ?? null) && empty($additional['job_ids'] ?? [])) {

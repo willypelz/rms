@@ -54,10 +54,14 @@ class AlgoliaSearch implements SearchEngine
                     $searchContent .= $this->filterBetween($additional, $filterBy);
                 }
 
+                $filterTracker = [];
                 foreach (($data['filter_query'] ?? []) as $item) {
-                    $defaultOperation = $data['default_op'] ?? 'AND';
+                	$searchKey = explode(':',$item)[0];
+	                $defaultOperation =	(in_array($searchKey, $filterTracker)) ? 'OR' : 'AND';
                     $searchContent .= " {$defaultOperation} {$item}";
+	                $filterTracker[] = $searchKey;
                 }
+
 
                 if ($query !== '') {
                     $customOptions['query'] = $query;

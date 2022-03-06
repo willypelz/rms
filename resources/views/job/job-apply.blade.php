@@ -314,7 +314,6 @@
                                                                     </div>
                                                                 @endif
 
-
                                                             </div>
                                                         </div>
 
@@ -513,10 +512,10 @@
                                                                             CV @if( $fields->cv_file->is_required )<span
                                                                                     class="text-danger">*</span>@endif
                                                                         </label>
+                                                                         <input type="file" name="cv_file" @if($fields->cv_file->is_required) required @endif accept="application/pdf">
+                                                                        </div>
+                                                                        <div class="col-xs-12 mt-20">
 
-                                                                        {{ Form::file('cv_file', ( $fields->cv_file->is_required ) ? ["required"] : null ) }}
-                                                                    </div>
-                                                                    <div class="col-xs-12 mt-20">
 
                                                                         <label for="">Attachment 1 (Optional)</label>
 

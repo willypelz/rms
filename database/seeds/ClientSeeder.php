@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\User;
 use Illuminate\Database\Seeder;
 use App\Models\Client;
 
@@ -15,12 +16,14 @@ class ClientSeeder extends Seeder
     public function run()
     {
         if (Client::count() == 0) {
-            Client::FirstOrCreate(
+            $client = Client::FirstOrCreate(
                 [
                     'url' => config('app.url'),
                     'name' => config('app.company_name'),
                 ]
             );
+
+            User::whereNull('client_id')->update(['client_id' => $client->id]);
         }
 
     }

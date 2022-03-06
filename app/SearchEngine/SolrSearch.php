@@ -197,6 +197,7 @@ class SolrSearch implements SearchEngine
             self::$clientId = $client_id;
             self::__construct();
         }
+
         $additional = "&fq=job_id:" . $job_id;
 
         if ($status != "") {

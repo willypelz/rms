@@ -14,10 +14,12 @@ class UserService implements UserContract {
      * @return App\Model\Company
     */
     public function getDefaultCompany(User $user){
-        $defaultCompany = $user->companies()->wherePivot('is_default', 1)->first();
+        $companies = $user->companies;
+        $defaultCompany = $companies->where('pivot.is_default', 1)->first();
         if(!$defaultCompany) {
-            $defaultCompany = $user->companies->first();
+            $defaultCompany = $companies->first();
         }
+
         if($defaultCompany){
             return $defaultCompany;
         }else if(isHrmsIntegrated()){

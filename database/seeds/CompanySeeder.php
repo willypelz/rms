@@ -27,6 +27,7 @@ class CompanySeeder extends Seeder
         // }
         if (Client::count() == 1) {
             $defaultClient = Client::where('url', config('app.url'))->first()->id;
+
             foreach ($companies as $company) {
                 $company->update(
                     [
@@ -35,9 +36,8 @@ class CompanySeeder extends Seeder
                 );
             }
 
-            Candidate::select('id')->get()->map(function ($candidate) use ($defaultClient) {
-                $candidate->update(['client_id' => $defaultClient]);
-            });
+            Candidate::whereNotNull('id')->update(['client_id' => $defaultClient]);
+            User::whereNotNull('id')->update(['client_id' => $defaultClient]);
         }
 
 

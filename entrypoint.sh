@@ -73,5 +73,7 @@ cd /etc && /usr/bin/supervisord
 
 supervisorctl reread && supervisorctl reload && supervisorctl restart all
 crontab /etc/cron.d/laravel-cron
+service cron start
+service cron status
 
 /usr/sbin/apache2ctl -D FOREGROUND

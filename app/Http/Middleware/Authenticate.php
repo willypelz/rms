@@ -17,8 +17,7 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
-       
-        if (Auth::guard($guard)->guest()) {
+        if (Auth::guard($guard)->guest() ) {
             if ($request->ajax() || $request->wantsJson()) {
                 // return response('Unauthorized.', 401);
             } else {
@@ -26,7 +25,11 @@ class Authenticate
             }
         }
 
-        session(['active_company' => auth()->user()->defaultCompany()]);
+        session([
+            'active_company' => optional(auth()->user())->defaultCompany()
+                                    ?? optional(auth()->guard('candidate')->user())->defaultCompany()
+        ]);
+
         return $next($request);
     }
 }

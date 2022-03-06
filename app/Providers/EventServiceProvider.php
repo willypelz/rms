@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Listeners\CheckSpreadsheetSentNotificationStatus;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use App\Models\Company;
@@ -85,6 +86,9 @@ class EventServiceProvider extends ServiceProvider
         
         'Illuminate\Auth\Events\PasswordReset' => [
             'App\Listeners\LogPasswordReset',
+        ],
+        'Illuminate\Notifications\Events\NotificationSent' => [
+            CheckSpreadsheetSentNotificationStatus::class,
         ],
     ];
 

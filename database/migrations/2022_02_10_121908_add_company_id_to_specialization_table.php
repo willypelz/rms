@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class   AddCompanyIdToSpecializationTable extends Migration
+class AddCompanyIdToSpecializationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -20,7 +20,6 @@ class   AddCompanyIdToSpecializationTable extends Migration
             }
             );
         }
-
     }
 
     /**
@@ -30,7 +29,6 @@ class   AddCompanyIdToSpecializationTable extends Migration
      */
     public function down()
     {
-
         if (Schema::hasColumn('specializations', 'company_id')) {
             Schema::table(
                 'specializations', function (Blueprint $table) {

@@ -63,7 +63,9 @@ Route::group(['middleware' => ['web', 'auth', 'companyList']], function () {
  * Start: Administrator Panel Routes
  * Make admin group and apply a guard to it
  */
+
 Route::group(['middleware' => ['web',"auth", 'admin']], function () {
+
     Route::get('/download-bulk-upload-applicant-to-workflow-stage-template', "BulkUploadApplicantsToWorkflowStepContoller@downloadBulkApplicantsToWorkflowStagesTemplate")->name("download-bulk-upload-applicant-to-workflow-stage-template");
 
     Route::get('/ping', 'SolariumController@ping');
@@ -105,13 +107,10 @@ Route::group(['middleware' => ['web',"auth", 'admin']], function () {
 
         if (count(Mail::failures()) > 0) {
 
-
         } else {
             echo "No errors, all sent successfully!";
         }
 
-        // dd('here');
-        // dd(save_activities('APPLIED', '10', '9', ''));
         //return view('payment.simplepay');
     });
 
@@ -871,12 +870,18 @@ Route::group(['middleware' => 'web'], function () {
         }
     ]);
 
+
     Route::get(
         '/download-applicants-interview-file/{filename}',
         'JobApplicationsController@downloadApplicantsInterviewFile'
     )->name("download-applicants-interview-file");
 
 });
+
+Route::get(
+        '/download-applicants-interview-file/{filename}',
+        'JobApplicationsController@downloadApplicantsInterviewFile'
+    )->name("download-applicants-interview-file");
 
 
 

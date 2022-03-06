@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\JobApplication;
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -15,7 +16,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class SendApplicantsSpreedsheetInSmallerBits implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $admin,$data,$company,$filename,$cv_ids;
     public $timeout = 2500;

@@ -70,17 +70,12 @@ class AlgoliaSearch implements SearchEngine
                 $customOptions['filters'] = $searchContent;
 
                 $newArray = array_merge($options, $customOptions);
-                info("requests----------");
-                info(json_encode($newArray));
 
                 return $algolia->search($query, $newArray);
             }
         );
 
         $response = $data->raw();
-
-        info("response----------");
-        info(json_encode($response));
 
         $formatted = $this->createSolrStyleResponse($response);
 

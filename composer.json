@@ -63,16 +63,16 @@
      "repositories": [
         {
             "type": "vcs",
-            "url": "https://git@bitbucket.org/insidify/solr-package.git"
+            "url": "https://bitbucket.org/insidify/solr-package.git"
 
         },
         {
             "type": "vcs",
-            "url": "https://git@bitbucket.org/insidify/shr-cloudflare-domain-generator.git"
+            "url": "https://bitbucket.org/insidify/shr-cloudflare-domain-generator.git"
         },
         {
         	"type": "vcs",
-        	"url": "https://git@bitbucket.org/insidify/stringcrypt.git"
+        	"url": "https://bitbucket.org/insidify/stringcrypt.git"
         }
     ],
     "autoload": {

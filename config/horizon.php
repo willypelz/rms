@@ -145,7 +145,7 @@ return [
         'production' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => ['default', 'solr', 'algolia'],
+                'queue' => ['default', 'solr'],
                 'balance' => 'auto',
                 'minProcesses' => env('HORIZON_PROCESS_MIN', 1),
                 'maxProcesses' => env('HORIZON_PROCESS_MAX', 10),
@@ -156,7 +156,7 @@ return [
             ],
             'supervisor-2' => [
                 'connection' => 'redis',
-                'queue' => ['export', 'default'],
+                'queue' => ['export'],
                 'balance' => 'false',
                 'minProcesses' => env('HORIZON_PROCESS_MIN', 1),
                 'maxProcesses' => env('HORIZON_PROCESS_MAX', 1),
@@ -169,7 +169,7 @@ return [
         'local' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => ['default', 'solr', 'algolia'],
+                'queue' => ['default', 'solr'],
                 'balance' => 'auto',
                 'minProcesses' => env('HORIZON_PROCESS_MIN', 1),
                 'maxProcesses' => env('HORIZON_PROCESS_MAX', 10),
@@ -180,7 +180,7 @@ return [
             ],
             'supervisor-2' => [
                 'connection' => 'redis',
-                'queue' => ['export', 'default'],
+                'queue' => ['export'],
                 'balance' => 'false',
                 'minProcesses' => env('HORIZON_PROCESS_MIN', 1),
                 'maxProcesses' => env('HORIZON_PROCESS_MAX', 1),

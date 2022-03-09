@@ -3,6 +3,7 @@
 BASE_PATH=/var/www
 STAGING_PATH=${BASE_PATH}/staging
 APP_PATH=${BASE_PATH}/rms
+COMPOSER_PATH=/home/ec2-user/.composer
 
 DEBUG_FILE=${APP_PATH}/storage/logs/debug-deploy.log
 touch ${DEBUG_FILE}
@@ -17,6 +18,9 @@ echo "::::::: DEPLOY SETUP SCRIPT: [ $(timestamp) ]" >> ${DEBUG_FILE}
 
 sudo chown -R ec2-user:apache ${STAGING_PATH}
 sudo chmod 2775 ${STAGING_PATH}
+
+rm -rf ${COMPOSER_PATH}/auth.json
+mv -R ${STAGING_PATH}/auth.json ${COMPOSER_PATH}
 
 cp -R ${STAGING_PATH}/storage/. ${APP_PATH}/storage/
 cp -R ${STAGING_PATH}/public_html/uploads/. ${APP_PATH}/public_html/uploads/

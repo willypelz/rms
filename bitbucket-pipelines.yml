@@ -39,9 +39,9 @@ definitions:
           - rm -rf node_modules package-lock.json yarn.lock
           - php artisan migrate --seed
           - rm -rf homestead_rms.sql vendor
-          - zip -r application.zip . -x .env
+          - zip -r application-multi-tenancy-v8.zip . -x .env
         artifacts:
-          - application.zip
+          - application-multi-tenancy-v8.zip
         services:
           - mysql
           - docker

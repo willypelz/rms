@@ -29,7 +29,7 @@ definitions:
           - pip3 install -U awscli
           - aws --version
           - aws s3 cp s3://kubernetes-dummy-mysql/homestead_rms.sql .
-          - mysql -h 127.0.0.1 -uhomestead -psecret homestead < homestead.sql
+          - mysql -h 127.0.0.1 -uhomestead -psecret homestead < homestead_rms.sql
           - echo ${BITBUCKET_BUILD_NUMBER} > version.txt
           - ln -f -s .env.pipelines .env
           - mkdir -p bootstrap/cache storage/framework storage/framework/views storage/framework/sessions storage/framework/cache

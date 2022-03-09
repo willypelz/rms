@@ -46,7 +46,7 @@ definitions:
           - mysql
           - docker
           
-     - step: &Code-Deploy
+    - step: &Code-Deploy
         name: Code Deploy
         services:
           - docker

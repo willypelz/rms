@@ -1,7 +1,21 @@
-#image: atlassian/default-image:2
-image: php:7.3-cli
+image: php:7.3.28-cli
+
+options:
+  size: 2x
 
 definitions:
+  services:
+    mysql:
+      docker:
+        memory: 7128
+        
+      image: mysql:5.7
+      environment:
+        MYSQL_DATABASE: 'homestead'
+        MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+        MYSQL_USER: 'homestead'
+        MYSQL_PASSWORD: 'secret'
+        
   steps:
     - step: &Composer
         name: Composer
@@ -9,30 +23,35 @@ definitions:
           - composer
         script:
           - apt-get update
-          - apt-get install -y zip git jq zlib1g-dev libpng-dev libzip-dev
+          - apt-get install -y zip git jq zlib1g-dev libpng-dev libzip-dev default-mysql-client python3-pip
+          - apt-get clean 
           - docker-php-ext-install gd zip pdo mysqli pdo_mysql mbstring pcntl
-          - echo ${AUTH_JSON} > auth.json
+          - pip3 install -U awscli
+          - aws --version
+          - aws s3 cp s3://kubernetes-dummy-mysql/homestead_rms.sql .
+          - mysql -h 127.0.0.1 -uhomestead -psecret homestead < homestead.sql
+          - echo ${BITBUCKET_BUILD_NUMBER} > version.txt
+          - ln -f -s .env.pipelines .env
+          - mkdir -p bootstrap/cache storage/framework storage/framework/views storage/framework/sessions storage/framework/cache
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-          - mkdir -p bootstrap/cache
-          - mkdir -p storage/framework storage/framework/views storage/framework/sessions storage/framework/cache
-          - rm auth.json
-          - cd ..
-          - mkdir -p composer-build
-          - (cd build; tar cf - .) | (cd composer-build; tar xvf -)
-          - mv composer-build build
-          - chmod -R 775 build/composer-build
+          - echo ${AUTH_JSON} > auth.json
+          - COMPOSER_MEMORY_LIMIT=-1 composer  update --no-interaction
+          - rm -rf node_modules package-lock.json yarn.lock
+          - php artisan migrate --seed
+          - rm -rf homestead_rms.sql vendor
+          - zip -r application.zip . -x .env
         artifacts:
-          - composer-build/**
-    - step: &Code-Deploy
+          - application.zip
+        services:
+          - mysql
+          - docker
+          
+     - step: &Code-Deploy
         name: Code Deploy
+        services:
+          - docker
         script:
-          - apt-get update && apt-get install -y zip
-          - cp -R composer-build/* .
-          - rm -rf composer-build
-          - mkdir -p bootstrap/cache
-          - mkdir -p storage/framework storage/framework/views storage/framework/sessions storage/framework/cache
-          - zip -r application-multi-tenancy-v8.zip .
-          - pipe: atlassian/aws-code-deploy:0.5.0
+          - pipe: atlassian/aws-code-deploy:1.1.1
             variables:
               AWS_DEFAULT_REGION: $AWS_DEPLOYMENT_REGION
               AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
@@ -43,7 +62,7 @@ definitions:
               ZIP_FILE: 'application-multi-tenancy-v8.zip'
               VERSION_LABEL: 'rms-build-${BITBUCKET_BUILD_NUMBER}'
 
-          - pipe: atlassian/aws-code-deploy:0.5.0
+          - pipe: atlassian/aws-code-deploy:1.1.1
             variables:
               AWS_DEFAULT_REGION: $AWS_DEPLOYMENT_REGION
               AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
@@ -68,7 +87,7 @@ pipelines:
     code-deploy:
       - step: *Composer
       - step: *Code-Deploy
-    MultitenancyV8:
+    master:
       - step: *Composer
       - step:
           <<: *Code-Deploy

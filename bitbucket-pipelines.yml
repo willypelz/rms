@@ -68,7 +68,7 @@ pipelines:
     code-deploy:
       - step: *Composer
       - step: *Code-Deploy
-    MultitenancyV8:
+    master:
       - step: *Composer
       - step:
           <<: *Code-Deploy

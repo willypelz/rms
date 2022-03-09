@@ -1558,7 +1558,7 @@ class JobApplicationsController extends Controller
         $order = Order::firstOrCreate([
             'company_id' => $comp_id,
             'order_date' => date('Y-m-d H:i:s'),
-            'total_amount' => $request->total_amount,
+            'total_amount' => (double) $request->total_amount,
             'invoice_no' => $invoice_no,
             'type' => $request->type
 

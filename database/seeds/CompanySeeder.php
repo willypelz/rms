@@ -25,8 +25,18 @@ class CompanySeeder extends Seeder
         //     $user = new SelfSignUpService();
         //     $user->createUserAndRoles('John Doe', 'johndoe@seamlesshr.com', 'password', $newCompany);
         // }
+
+
         if (Client::count() == 1) {
-            $defaultClient = Client::where('url', config('app.url'))->first()->id;
+            $defaultClient = Optional(Client::where('url', config('app.url'))->first())->id;
+            if(!$defaultClient) {
+	           if( substr(config('app.url'), -1) == '/'){
+		          $defaultClient = Optional(Client::where('url',  substr_replace(config('app.url'), "", -1))->first())->id;
+					if(!$defaultClient) exit;
+	           }else {
+		           exit;
+	           }
+            }
 
             foreach ($companies as $company) {
                 $company->update(

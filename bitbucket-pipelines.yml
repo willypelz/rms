@@ -1,7 +1,21 @@
-#image: atlassian/default-image:2
-image: php:7.3-cli
+image: php:7.3.28-cli
+
+options:
+  size: 2x
 
 definitions:
+  services:
+    mysql:
+      docker:
+        memory: 7128
+        
+      image: mysql:5.7
+      environment:
+        MYSQL_DATABASE: 'homestead'
+        MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+        MYSQL_USER: 'homestead'
+        MYSQL_PASSWORD: 'secret'
+        
   steps:
     - step: &Composer
         name: Composer
@@ -15,13 +29,11 @@ definitions:
           - pip3 install -U awscli
           - aws --version
           - aws s3 cp s3://kubernetes-dummy-mysql/homestead.sql .
-          - mysql -h 127.0.0.1 -uhomestead -psecret homestead < homestead.sql 
-          - mkdir -p storage/fonts
+          - mysql -h 127.0.0.1 -uhomestead -psecret homestead < homestead.sql
           - echo ${BITBUCKET_BUILD_NUMBER} > version.txt
           - ln -f -s .env.pipelines .env
-          - mkdir -p bootstrap/cache
+          - mkdir -p bootstrap/cache storage/framework storage/framework/views storage/framework/sessions storage/framework/cache
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-          - COMPOSER_MEMORY_LIMIT=-1 composer selfupdate --1
           - echo ${AUTH_JSON} > auth.json
           - COMPOSER_MEMORY_LIMIT=-1 composer  update --no-interaction
           - rm -rf node_modules package-lock.json yarn.lock
@@ -30,26 +42,42 @@ definitions:
           - zip -r application.zip . -x .env
         artifacts:
           - application.zip
+        services:
+          - mysql
+          - docker
           
-        script:
-          - apt-get update
-          - apt-get install -y zip git jq zlib1g-dev libpng-dev libzip-dev
-          - docker-php-ext-install gd zip pdo mysqli pdo_mysql mbstring pcntl
-          - echo ${AUTH_JSON} > auth.json
-          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-          - mkdir -p bootstrap/cache
-          - mkdir -p storage/framework storage/framework/views storage/framework/sessions storage/framework/cache
-          - cd ..
-          - mkdir -p composer-build
-          - (cd build; tar cf - .) | (cd composer-build; tar xvf -)
-          - mv composer-build build
-          - chmod -R 775 build/composer-build
-        artifacts:
-          - composer-build/**
     - step: &Code-Deploy
         name: Code Deploy
         script:
-          - apt-get update && apt-get install -y zip
+          - apt-get upda- step: &Code-Deploy
+        name: Code Deploy
+        services:
+          - docker
+        script:
+          - pipe: atlassian/aws-code-deploy:1.1.1
+            variables:
+              AWS_DEFAULT_REGION: $AWS_DEPLOYMENT_REGION
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              APPLICATION_NAME: $AWS_APPLICATION_NAME
+              S3_BUCKET: $AWS_DEPLOYMENT_BUCKET
+              COMMAND: 'upload'
+              ZIP_FILE: 'application.zip'
+              VERSION_LABEL: 'hrms-build-${BITBUCKET_BUILD_NUMBER}'
+
+          - pipe: atlassian/aws-code-deploy:1.1.1
+            variables:
+              AWS_DEFAULT_REGION: $AWS_DEPLOYMENT_REGION
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              APPLICATION_NAME: $AWS_APPLICATION_NAME
+              DEPLOYMENT_GROUP: $AWS_DEPLOYMENT_GROUP
+              S3_BUCKET: $AWS_DEPLOYMENT_BUCKET
+              COMMAND: 'deploy'
+              WAIT: 'false'
+              VERSION_LABEL: 'hrms-build-${BITBUCKET_BUILD_NUMBER}'
+              IGNORE_APPLICATION_STOP_FAILURES: 'true'
+              FILE_EXISTS_BEHAVIOR: 'OVERWRITE'te && apt-get install -y zip
           - cp -R composer-build/* .
           - rm -rf composer-build
           - mkdir -p bootstrap/cache

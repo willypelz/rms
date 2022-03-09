@@ -9,13 +9,36 @@ definitions:
           - composer
         script:
           - apt-get update
+          - apt-get install -y zip git jq zlib1g-dev libpng-dev libzip-dev default-mysql-client python3-pip
+          - apt-get clean 
+          - docker-php-ext-install gd zip pdo mysqli pdo_mysql mbstring pcntl
+          - pip3 install -U awscli
+          - aws --version
+          - aws s3 cp s3://kubernetes-dummy-mysql/homestead.sql .
+          - mysql -h 127.0.0.1 -uhomestead -psecret homestead < homestead.sql 
+          - mkdir -p storage/fonts
+          - echo ${BITBUCKET_BUILD_NUMBER} > version.txt
+          - ln -f -s .env.pipelines .env
+          - mkdir -p bootstrap/cache
+          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          - COMPOSER_MEMORY_LIMIT=-1 composer selfupdate --1
+          - echo ${AUTH_JSON} > auth.json
+          - COMPOSER_MEMORY_LIMIT=-1 composer  update --no-interaction
+          - rm -rf node_modules package-lock.json yarn.lock
+          - php artisan migrate --seed
+          - rm -rf homestead.sql vendor
+          - zip -r application.zip . -x .env
+        artifacts:
+          - application.zip
+          
+        script:
+          - apt-get update
           - apt-get install -y zip git jq zlib1g-dev libpng-dev libzip-dev
           - docker-php-ext-install gd zip pdo mysqli pdo_mysql mbstring pcntl
           - echo ${AUTH_JSON} > auth.json
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
           - mkdir -p bootstrap/cache
           - mkdir -p storage/framework storage/framework/views storage/framework/sessions storage/framework/cache
-          - rm auth.json
           - cd ..
           - mkdir -p composer-build
           - (cd build; tar cf - .) | (cd composer-build; tar xvf -)
